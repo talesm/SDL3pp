@@ -59727,7 +59727,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 /// @}
 
 /**
- * @defgroup CategoryGPU 3D Rendering and GPU Compute
+ * @defgroup CategoryGPU Category GPU
  *
  * The GPU API offers a cross-platform way for apps to talk to modern graphics
  * hardware. It offers both 3D graphics and compute support, in the style of
@@ -60081,6 +60081,2656 @@ using GPUComputePassRaw = SDL_GPUComputePass*;
 
 /// Alias to raw representation for GPUCopyPass.
 using GPUCopyPassRaw = SDL_GPUCopyPass*;
+
+/**
+ * A structure specifying the parameters of a buffer.
+ *
+ * Usage flags can be bitwise OR'd together for combinations of usages. Note
+ * that certain combinations are invalid, for example VERTEX and INDEX.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUBuffer.GPUBuffer
+ * @sa GPUBufferUsageFlags
+ */
+using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
+
+/**
+ * An opaque handle representing a buffer.
+ *
+ * Used for vertices, indices, indirect draw commands, and general compute
+ * data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUBuffer.GPUBuffer
+ * @sa GPUCopyPass.UploadToGPUBuffer
+ * @sa GPUCopyPass.DownloadFromGPUBuffer
+ * @sa GPUCopyPass.CopyGPUBufferToBuffer
+ * @sa GPURenderPass.BindGPUVertexBuffers
+ * @sa GPURenderPass.BindGPUIndexBuffer
+ * @sa GPURenderPass.BindGPUVertexStorageBuffers
+ * @sa GPURenderPass.BindGPUFragmentStorageBuffers
+ * @sa GPURenderPass.DrawGPUPrimitivesIndirect
+ * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+ * @sa GPUComputePass.BindGPUComputeStorageBuffers
+ * @sa GPUComputePass.DispatchGPUComputeIndirect
+ * @sa GPUDevice.ReleaseGPUBuffer
+ */
+class GPUBuffer
+{
+  GPUBufferRaw m_gPUBuffer;
+
+public:
+  /**
+   * Wraps GPUBuffer.
+   *
+   * @param gPUBuffer the value to be wrapped
+   */
+  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {})
+    : m_gPUBuffer(gPUBuffer)
+  {
+  }
+
+  /**
+   * Creates a buffer object to be used in graphics or compute workflows.
+   *
+   * The contents of this buffer are undefined until data is written to the
+   * buffer.
+   *
+   * Note that certain combinations of usage flags are invalid. For example, a
+   * buffer cannot have both the VERTEX and INDEX flags.
+   *
+   * If you use a STORAGE flag, the data in the buffer must respect std140
+   * layout conventions. In practical terms this means you must ensure that vec3
+   * and vec4 fields are 16-byte aligned.
+   *
+   * For better understanding of underlying concepts and memory management with
+   * SDL GPU API, you may refer
+   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
+   * .
+   *
+   * There are optional properties that can be provided through `props`. These
+   * are the supported properties:
+   *
+   * - `SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING`: a name that can be displayed in
+   *   debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the buffer to create.
+   * @post a buffer object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCopyPass.UploadToGPUBuffer
+   * @sa GPUCopyPass.DownloadFromGPUBuffer
+   * @sa GPUCopyPass.CopyGPUBufferToBuffer
+   * @sa GPURenderPass.BindGPUVertexBuffers
+   * @sa GPURenderPass.BindGPUIndexBuffer
+   * @sa GPURenderPass.BindGPUVertexStorageBuffers
+   * @sa GPURenderPass.BindGPUFragmentStorageBuffers
+   * @sa GPURenderPass.DrawGPUPrimitivesIndirect
+   * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+   * @sa GPUComputePass.BindGPUComputeStorageBuffers
+   * @sa GPUComputePass.DispatchGPUComputeIndirect
+   * @sa GPUDevice.ReleaseGPUBuffer
+   */
+  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo* createinfo)
+    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUBuffer& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUBufferRaw gPUBuffer) const
+  {
+    return operator==(GPUBuffer(gPUBuffer));
+  }
+
+  /**
+   * Unwraps to the underlying GPUBuffer.
+   *
+   * @returns the underlying GPUBufferRaw.
+   */
+  constexpr operator GPUBufferRaw() const { return m_gPUBuffer; }
+};
+
+/**
+ * A structure specifying the parameters of a transfer buffer.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUTransferBuffer.GPUTransferBuffer
+ */
+using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
+
+/**
+ * An opaque handle representing a transfer buffer.
+ *
+ * Used for transferring data to and from the device.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUTransferBuffer.GPUTransferBuffer
+ * @sa GPUDevice.MapGPUTransferBuffer
+ * @sa GPUDevice.UnmapGPUTransferBuffer
+ * @sa GPUCopyPass.UploadToGPUBuffer
+ * @sa GPUCopyPass.UploadToGPUTexture
+ * @sa GPUCopyPass.DownloadFromGPUBuffer
+ * @sa GPUCopyPass.DownloadFromGPUTexture
+ * @sa GPUDevice.ReleaseGPUTransferBuffer
+ */
+class GPUTransferBuffer
+{
+  GPUTransferBufferRaw m_gPUTransferBuffer;
+
+public:
+  /**
+   * Wraps GPUTransferBuffer.
+   *
+   * @param gPUTransferBuffer the value to be wrapped
+   */
+  constexpr GPUTransferBuffer(GPUTransferBufferRaw gPUTransferBuffer = {})
+    : m_gPUTransferBuffer(gPUTransferBuffer)
+  {
+  }
+
+  /**
+   * Creates a transfer buffer to be used when uploading to or downloading from
+   * graphics resources.
+   *
+   * Download buffers can be particularly expensive to create, so it is good
+   * practice to reuse them if data will be downloaded regularly.
+   *
+   * There are optional properties that can be provided through `props`. These
+   * are the supported properties:
+   *
+   * - `SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING`: a name that can be
+   *   displayed in debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the transfer buffer to
+   *                   create.
+   * @post a transfer buffer on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCopyPass.UploadToGPUBuffer
+   * @sa GPUCopyPass.DownloadFromGPUBuffer
+   * @sa GPUCopyPass.UploadToGPUTexture
+   * @sa GPUCopyPass.DownloadFromGPUTexture
+   * @sa GPUDevice.ReleaseGPUTransferBuffer
+   */
+  GPUTransferBuffer(GPUDeviceParam device,
+                    const GPUTransferBufferCreateInfo* createinfo)
+    : m_gPUTransferBuffer(
+        CheckError(SDL_CreateGPUTransferBuffer(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUTransferBuffer& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUTransferBufferRaw gPUTransferBuffer) const
+  {
+    return operator==(GPUTransferBuffer(gPUTransferBuffer));
+  }
+
+  /**
+   * Unwraps to the underlying GPUTransferBuffer.
+   *
+   * @returns the underlying GPUTransferBufferRaw.
+   */
+  constexpr operator GPUTransferBufferRaw() const
+  {
+    return m_gPUTransferBuffer;
+  }
+};
+
+/**
+ * A structure specifying the parameters of a texture.
+ *
+ * Usage flags can be bitwise OR'd together for combinations of usages. Note
+ * that certain usage combinations are invalid, for example SAMPLER and
+ * GRAPHICS_STORAGE.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUTexture.GPUTexture
+ * @sa GPUTextureType
+ * @sa GPUTextureFormat
+ * @sa GPUTextureUsageFlags
+ * @sa GPUSampleCount
+ */
+using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
+
+/**
+ * An opaque handle representing a texture.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUTexture.GPUTexture
+ * @sa GPUCopyPass.UploadToGPUTexture
+ * @sa GPUCopyPass.DownloadFromGPUTexture
+ * @sa GPUCopyPass.CopyGPUTextureToTexture
+ * @sa GPURenderPass.BindGPUVertexSamplers
+ * @sa GPURenderPass.BindGPUVertexStorageTextures
+ * @sa GPURenderPass.BindGPUFragmentSamplers
+ * @sa GPURenderPass.BindGPUFragmentStorageTextures
+ * @sa GPUComputePass.BindGPUComputeStorageTextures
+ * @sa GPUCommandBuffer.GenerateMipmapsForGPUTexture
+ * @sa GPUCommandBuffer.BlitGPUTexture
+ * @sa GPUDevice.ReleaseGPUTexture
+ */
+class GPUTexture
+{
+  GPUTextureRaw m_gPUTexture;
+
+public:
+  /**
+   * Wraps GPUTexture.
+   *
+   * @param gPUTexture the value to be wrapped
+   */
+  constexpr GPUTexture(GPUTextureRaw gPUTexture = {})
+    : m_gPUTexture(gPUTexture)
+  {
+  }
+
+  /**
+   * Creates a texture object to be used in graphics or compute workflows.
+   *
+   * The contents of this texture are undefined until data is written to the
+   * texture.
+   *
+   * Note that certain combinations of usage flags are invalid. For example, a
+   * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
+   *
+   * If you request a sample count higher than the hardware supports, the
+   * implementation will automatically fall back to the highest available sample
+   * count.
+   *
+   * There are optional properties that can be provided through
+   * GPUTextureCreateInfo's `props`. These are the supported properties:
+   *
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   *   to a color with this red intensity. Defaults to zero.
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   *   to a color with this green intensity. Defaults to zero.
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   *   to a color with this blue intensity. Defaults to zero.
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
+   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
+   *   to a color with this alpha intensity. Defaults to zero.
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
+   *   if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
+   *   the texture to a depth of this value. Defaults to zero.
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
+   *   only) if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+   *   clear the texture to a stencil of this Uint8 value. Defaults to zero.
+   * - `SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING`: a name that can be displayed
+   *   in debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the texture to create.
+   * @post a texture object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCopyPass.UploadToGPUTexture
+   * @sa GPUCopyPass.DownloadFromGPUTexture
+   * @sa GPURenderPass.BindGPUVertexSamplers
+   * @sa GPURenderPass.BindGPUVertexStorageTextures
+   * @sa GPURenderPass.BindGPUFragmentSamplers
+   * @sa GPURenderPass.BindGPUFragmentStorageTextures
+   * @sa GPUComputePass.BindGPUComputeStorageTextures
+   * @sa GPUCommandBuffer.BlitGPUTexture
+   * @sa GPUDevice.ReleaseGPUTexture
+   * @sa GPUDevice.GPUTextureSupportsFormat
+   */
+  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo* createinfo)
+    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUTexture& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUTextureRaw gPUTexture) const
+  {
+    return operator==(GPUTexture(gPUTexture));
+  }
+
+  /**
+   * Unwraps to the underlying GPUTexture.
+   *
+   * @returns the underlying GPUTextureRaw.
+   */
+  constexpr operator GPUTextureRaw() const { return m_gPUTexture; }
+};
+
+/**
+ * A structure specifying the parameters of a sampler.
+ *
+ * Note that mip_lod_bias is a no-op for the Metal driver. For Metal, LOD bias
+ * must be applied via shader instead.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GPUSampler.GPUSampler
+ * @sa GPUFilter
+ * @sa GPUSamplerMipmapMode
+ * @sa GPUSamplerAddressMode
+ * @sa GPUCompareOp
+ */
+using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
+
+/**
+ * An opaque handle representing a sampler.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUSampler.GPUSampler
+ * @sa GPURenderPass.BindGPUVertexSamplers
+ * @sa GPURenderPass.BindGPUFragmentSamplers
+ * @sa GPUDevice.ReleaseGPUSampler
+ */
+class GPUSampler
+{
+  GPUSamplerRaw m_gPUSampler;
+
+public:
+  /**
+   * Wraps GPUSampler.
+   *
+   * @param gPUSampler the value to be wrapped
+   */
+  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {})
+    : m_gPUSampler(gPUSampler)
+  {
+  }
+
+  /**
+   * Creates a sampler object to be used when binding textures in a graphics
+   * workflow.
+   *
+   * There are optional properties that can be provided through `props`. These
+   * are the supported properties:
+   *
+   * - `SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING`: a name that can be displayed
+   *   in debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the sampler to create.
+   * @post a sampler object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPURenderPass.BindGPUVertexSamplers
+   * @sa GPURenderPass.BindGPUFragmentSamplers
+   * @sa GPUDevice.ReleaseGPUSampler
+   */
+  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo* createinfo)
+    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUSampler& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUSamplerRaw gPUSampler) const
+  {
+    return operator==(GPUSampler(gPUSampler));
+  }
+
+  /**
+   * Unwraps to the underlying GPUSampler.
+   *
+   * @returns the underlying GPUSamplerRaw.
+   */
+  constexpr operator GPUSamplerRaw() const { return m_gPUSampler; }
+};
+
+/**
+ * A structure specifying code and metadata for creating a shader object.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUShader.GPUShader
+ */
+using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
+
+/**
+ * An opaque handle representing a compiled shader object.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUShader.GPUShader
+ * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUDevice.ReleaseGPUShader
+ */
+class GPUShader
+{
+  GPUShaderRaw m_gPUShader;
+
+public:
+  /**
+   * Wraps GPUShader.
+   *
+   * @param gPUShader the value to be wrapped
+   */
+  constexpr GPUShader(GPUShaderRaw gPUShader = {})
+    : m_gPUShader(gPUShader)
+  {
+  }
+
+  /**
+   * Creates a shader to be used when creating a graphics pipeline.
+   *
+   * Shader resource bindings must be authored to follow a particular order
+   * depending on the shader format.
+   *
+   * For SPIR-V shaders, use the following resource sets:
+   *
+   * For vertex shaders:
+   *
+   * - 0: Sampled textures, followed by storage textures, followed by storage
+   *   buffers
+   * - 1: Uniform buffers
+   *
+   * For fragment shaders:
+   *
+   * - 2: Sampled textures, followed by storage textures, followed by storage
+   *   buffers
+   * - 3: Uniform buffers
+   *
+   * For DXBC and DXIL shaders, use the following register order:
+   *
+   * For vertex shaders:
+   *
+   * - (t[n], space0): Sampled textures, followed by storage textures, followed
+   *   by storage buffers
+   * - (s[n], space0): Samplers with indices corresponding to the sampled
+   *   textures
+   * - (b[n], space1): Uniform buffers
+   *
+   * For pixel shaders:
+   *
+   * - (t[n], space2): Sampled textures, followed by storage textures, followed
+   *   by storage buffers
+   * - (s[n], space2): Samplers with indices corresponding to the sampled
+   *   textures
+   * - (b[n], space3): Uniform buffers
+   *
+   * For MSL/metallib, use the following order:
+   *
+   * - [[texture]]: Sampled textures, followed by storage textures
+   * - [[sampler]]: Samplers with indices corresponding to the sampled textures
+   * - [[buffer]]: Uniform buffers, followed by storage buffers. Vertex buffer 0
+   *   is bound at [[buffer(14)]], vertex buffer 1 at [[buffer(15)]], and so on.
+   *   Rather than manually authoring vertex buffer indices, use the
+   *   [[stage_in]] attribute which will automatically use the vertex input
+   *   information from the GPUGraphicsPipeline.
+   *
+   * Shader semantics other than system-value semantics do not matter in D3D12
+   * and for ease of use the SDL implementation assumes that non system-value
+   * semantics will all be TEXCOORD. If you are using HLSL as the shader source
+   * language, your vertex semantics should start at TEXCOORD0 and increment
+   * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
+   * prefix to something other than TEXCOORD you can use
+   * SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING with
+   * GPUDevice.GPUDevice().
+   *
+   * There are optional properties that can be provided through `props`. These
+   * are the supported properties:
+   *
+   * - `SDL_PROP_GPU_SHADER_CREATE_NAME_STRING`: a name that can be displayed in
+   *   debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the shader to create.
+   * @post a shader object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+   * @sa GPUDevice.ReleaseGPUShader
+   */
+  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo* createinfo)
+    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUShader& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUShaderRaw gPUShader) const
+  {
+    return operator==(GPUShader(gPUShader));
+  }
+
+  /**
+   * Unwraps to the underlying GPUShader.
+   *
+   * @returns the underlying GPUShaderRaw.
+   */
+  constexpr operator GPUShaderRaw() const { return m_gPUShader; }
+};
+
+/**
+ * A structure specifying the parameters of a compute pipeline state.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUShaderFormat
+ */
+using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
+
+/**
+ * An opaque handle representing a compute pipeline.
+ *
+ * Used during compute passes.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUComputePipeline.GPUComputePipeline
+ * @sa GPUComputePass.BindGPUComputePipeline
+ * @sa GPUDevice.ReleaseGPUComputePipeline
+ */
+class GPUComputePipeline
+{
+  GPUComputePipelineRaw m_gPUComputePipeline;
+
+public:
+  /**
+   * Wraps GPUComputePipeline.
+   *
+   * @param gPUComputePipeline the value to be wrapped
+   */
+  constexpr GPUComputePipeline(GPUComputePipelineRaw gPUComputePipeline = {})
+    : m_gPUComputePipeline(gPUComputePipeline)
+  {
+  }
+
+  /**
+   * Creates a pipeline object to be used in a compute workflow.
+   *
+   * Shader resource bindings must be authored to follow a particular order
+   * depending on the shader format.
+   *
+   * For SPIR-V shaders, use the following resource sets:
+   *
+   * - 0: Sampled textures, followed by read-only storage textures, followed by
+   *   read-only storage buffers
+   * - 1: Read-write storage textures, followed by read-write storage buffers
+   * - 2: Uniform buffers
+   *
+   * For DXBC and DXIL shaders, use the following register order:
+   *
+   * - (t[n], space0): Sampled textures, followed by read-only storage textures,
+   *   followed by read-only storage buffers
+   * - (u[n], space1): Read-write storage textures, followed by read-write
+   *   storage buffers
+   * - (b[n], space2): Uniform buffers
+   *
+   * For MSL/metallib, use the following order:
+   *
+   * - [[buffer]]: Uniform buffers, followed by read-only storage buffers,
+   *   followed by read-write storage buffers
+   * - [[texture]]: Sampled textures, followed by read-only storage textures,
+   *   followed by read-write storage textures
+   *
+   * There are optional properties that can be provided through `props`. These
+   * are the supported properties:
+   *
+   * - `SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING`: a name that can be
+   *   displayed in debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the compute pipeline to
+   *                   create.
+   * @post a compute pipeline object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUComputePass.BindGPUComputePipeline
+   * @sa GPUDevice.ReleaseGPUComputePipeline
+   */
+  GPUComputePipeline(GPUDeviceParam device,
+                     const GPUComputePipelineCreateInfo* createinfo)
+    : m_gPUComputePipeline(
+        CheckError(SDL_CreateGPUComputePipeline(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUComputePipeline& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUComputePipelineRaw gPUComputePipeline) const
+  {
+    return operator==(GPUComputePipeline(gPUComputePipeline));
+  }
+
+  /**
+   * Unwraps to the underlying GPUComputePipeline.
+   *
+   * @returns the underlying GPUComputePipelineRaw.
+   */
+  constexpr operator GPUComputePipelineRaw() const
+  {
+    return m_gPUComputePipeline;
+  }
+};
+
+/**
+ * A structure specifying the parameters of a graphics pipeline state.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPUShader
+ * @sa GPUVertexInputState
+ * @sa GPUPrimitiveType
+ * @sa GPURasterizerState
+ * @sa GPUMultisampleState
+ * @sa GPUDepthStencilState
+ * @sa GPUGraphicsPipelineTargetInfo
+ */
+using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
+
+/**
+ * An opaque handle representing a graphics pipeline.
+ *
+ * Used during render passes.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ * @sa GPURenderPass.BindGPUGraphicsPipeline
+ * @sa GPUDevice.ReleaseGPUGraphicsPipeline
+ */
+class GPUGraphicsPipeline
+{
+  GPUGraphicsPipelineRaw m_gPUGraphicsPipeline;
+
+public:
+  /**
+   * Wraps GPUGraphicsPipeline.
+   *
+   * @param gPUGraphicsPipeline the value to be wrapped
+   */
+  constexpr GPUGraphicsPipeline(GPUGraphicsPipelineRaw gPUGraphicsPipeline = {})
+    : m_gPUGraphicsPipeline(gPUGraphicsPipeline)
+  {
+  }
+
+  /**
+   * Creates a pipeline object to be used in a graphics workflow.
+   *
+   * There are optional properties that can be provided through `props`. These
+   * are the supported properties:
+   *
+   * - `SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING`: a name that can be
+   *   displayed in debugging tools.
+   *
+   * @param device a GPU Context.
+   * @param createinfo a struct describing the state of the graphics pipeline to
+   *                   create.
+   * @post a graphics pipeline object on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   * @sa GPURenderPass.BindGPUGraphicsPipeline
+   * @sa GPUDevice.ReleaseGPUGraphicsPipeline
+   */
+  GPUGraphicsPipeline(GPUDeviceParam device,
+                      const GPUGraphicsPipelineCreateInfo* createinfo)
+    : m_gPUGraphicsPipeline(
+        CheckError(SDL_CreateGPUGraphicsPipeline(device, createinfo)))
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUGraphicsPipeline& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUGraphicsPipelineRaw gPUGraphicsPipeline) const
+  {
+    return operator==(GPUGraphicsPipeline(gPUGraphicsPipeline));
+  }
+
+  /**
+   * Unwraps to the underlying GPUGraphicsPipeline.
+   *
+   * @returns the underlying GPUGraphicsPipelineRaw.
+   */
+  constexpr operator GPUGraphicsPipelineRaw() const
+  {
+    return m_gPUGraphicsPipeline;
+  }
+};
+
+/**
+ * A structure specifying a viewport.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPURenderPass.SetGPUViewport
+ */
+using GPUViewport = SDL_GPUViewport;
+
+/**
+ * A structure specifying parameters in a buffer binding call.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPURenderPass.BindGPUVertexBuffers
+ * @sa GPURenderPass.BindGPUIndexBuffer
+ */
+using GPUBufferBinding = SDL_GPUBufferBinding;
+
+/**
+ * Specifies the size of elements in an index buffer.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
+ */
+using GPUIndexElementSize = SDL_GPUIndexElementSize;
+
+constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_16BIT =
+  SDL_GPU_INDEXELEMENTSIZE_16BIT; ///< The index elements are 16-bit.
+
+constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_32BIT =
+  SDL_GPU_INDEXELEMENTSIZE_32BIT; ///< The index elements are 32-bit.
+
+/**
+ * A structure specifying parameters in a sampler binding call.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPURenderPass.BindGPUVertexSamplers
+ * @sa GPURenderPass.BindGPUFragmentSamplers
+ */
+using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
+
+/**
+ * An opaque handle representing a render pass.
+ *
+ * This handle is transient and should not be held or referenced after
+ * GPURenderPass.End is called.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPURenderPass
+ * @sa GPURenderPass.End
+ */
+class GPURenderPass
+{
+  GPURenderPassRaw m_gPURenderPass;
+
+public:
+  /**
+   * Wraps GPURenderPass.
+   *
+   * @param gPURenderPass the value to be wrapped
+   */
+  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
+    : m_gPURenderPass(gPURenderPass)
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPURenderPass& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPURenderPassRaw gPURenderPass) const
+  {
+    return operator==(GPURenderPass(gPURenderPass));
+  }
+
+  /**
+   * Unwraps to the underlying GPURenderPass.
+   *
+   * @returns the underlying GPURenderPassRaw.
+   */
+  constexpr operator GPURenderPassRaw() const { return m_gPURenderPass; }
+
+  /**
+   * Binds a graphics pipeline on a render pass to be used in rendering.
+   *
+   * A graphics pipeline must be bound before making any draw calls.
+   *
+   * @param graphics_pipeline the graphics pipeline to bind.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void BindGPUGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
+
+  /**
+   * Sets the current viewport state on a command buffer.
+   *
+   * @param viewport the viewport to set.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetGPUViewport(const GPUViewport* viewport);
+
+  /**
+   * Sets the current scissor state on a command buffer.
+   *
+   * @param scissor the scissor area to set.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetGPUScissor(const RectRaw& scissor);
+
+  /**
+   * Sets the current blend constants on a command buffer.
+   *
+   * @param blend_constants the blend constant color.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPU_BLENDFACTOR_CONSTANT_COLOR
+   * @sa GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR
+   */
+  void SetGPUBlendConstants(FColorRaw blend_constants);
+
+  /**
+   * Sets the current stencil reference value on a command buffer.
+   *
+   * @param reference the stencil reference value to set.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetGPUStencilReference(Uint8 reference);
+
+  /**
+   * Binds vertex buffers on a command buffer for use with subsequent draw
+   * calls.
+   *
+   * @param first_slot the vertex buffer slot to begin binding from.
+   * @param bindings an array of GPUBufferBinding structs containing vertex
+   *                 buffers and offset values.
+   * @param num_bindings the number of bindings in the bindings array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void BindGPUVertexBuffers(Uint32 first_slot,
+                            const GPUBufferBinding* bindings,
+                            Uint32 num_bindings);
+
+  /**
+   * Binds an index buffer on a command buffer for use with subsequent draw
+   * calls.
+   *
+   * @param binding a pointer to a struct containing an index buffer and offset.
+   * @param index_element_size whether the index values in the buffer are 16- or
+   *                           32-bit.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void BindGPUIndexBuffer(const GPUBufferBinding* binding,
+                          GPUIndexElementSize index_element_size);
+
+  /**
+   * Binds texture-sampler pairs for use on the vertex shader.
+   *
+   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the vertex sampler slot to begin binding from.
+   * @param texture_sampler_bindings an array of texture-sampler binding
+   *                                 structs.
+   * @param num_bindings the number of texture-sampler pairs to bind from the
+   *                     array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUVertexSamplers(
+    Uint32 first_slot,
+    const GPUTextureSamplerBinding* texture_sampler_bindings,
+    Uint32 num_bindings);
+
+  /**
+   * Binds storage textures for use on the vertex shader.
+   *
+   * These textures must have been created with
+   * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the vertex storage texture slot to begin binding from.
+   * @param storage_textures an array of storage textures.
+   * @param num_bindings the number of storage texture to bind from the array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUVertexStorageTextures(Uint32 first_slot,
+                                    SDL_GPUTexture* const* storage_textures,
+                                    Uint32 num_bindings);
+
+  /**
+   * Binds storage buffers for use on the vertex shader.
+   *
+   * These buffers must have been created with
+   * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the vertex storage buffer slot to begin binding from.
+   * @param storage_buffers an array of buffers.
+   * @param num_bindings the number of buffers to bind from the array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUVertexStorageBuffers(Uint32 first_slot,
+                                   SDL_GPUBuffer* const* storage_buffers,
+                                   Uint32 num_bindings);
+
+  /**
+   * Binds texture-sampler pairs for use on the fragment shader.
+   *
+   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the fragment sampler slot to begin binding from.
+   * @param texture_sampler_bindings an array of texture-sampler binding
+   *                                 structs.
+   * @param num_bindings the number of texture-sampler pairs to bind from the
+   *                     array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUFragmentSamplers(
+    Uint32 first_slot,
+    const GPUTextureSamplerBinding* texture_sampler_bindings,
+    Uint32 num_bindings);
+
+  /**
+   * Binds storage textures for use on the fragment shader.
+   *
+   * These textures must have been created with
+   * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the fragment storage texture slot to begin binding from.
+   * @param storage_textures an array of storage textures.
+   * @param num_bindings the number of storage textures to bind from the array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUFragmentStorageTextures(Uint32 first_slot,
+                                      SDL_GPUTexture* const* storage_textures,
+                                      Uint32 num_bindings);
+
+  /**
+   * Binds storage buffers for use on the fragment shader.
+   *
+   * These buffers must have been created with
+   * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the fragment storage buffer slot to begin binding from.
+   * @param storage_buffers an array of storage buffers.
+   * @param num_bindings the number of storage buffers to bind from the array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUFragmentStorageBuffers(Uint32 first_slot,
+                                     SDL_GPUBuffer* const* storage_buffers,
+                                     Uint32 num_bindings);
+
+  /**
+   * Draws data using bound graphics state with an index buffer and instancing
+   * enabled.
+   *
+   * You must not call this function before binding a graphics pipeline.
+   *
+   * Note that the `first_vertex` and `first_instance` parameters are NOT
+   * compatible with built-in vertex/instance ID variables in shaders (for
+   * example, SV_VertexID); GPU APIs and shader languages do not define these
+   * built-in variables consistently, so if your shader depends on them, the
+   * only way to keep behavior consistent and portable is to always pass 0 for
+   * the correlating parameter in the draw calls.
+   *
+   * @param num_indices the number of indices to draw per instance.
+   * @param num_instances the number of instances to draw.
+   * @param first_index the starting index within the index buffer.
+   * @param vertex_offset value added to vertex index before indexing into the
+   *                      vertex buffer.
+   * @param first_instance the ID of the first instance to draw.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DrawGPUIndexedPrimitives(Uint32 num_indices,
+                                Uint32 num_instances,
+                                Uint32 first_index,
+                                Sint32 vertex_offset,
+                                Uint32 first_instance);
+
+  /**
+   * Draws data using bound graphics state.
+   *
+   * You must not call this function before binding a graphics pipeline.
+   *
+   * Note that the `first_vertex` and `first_instance` parameters are NOT
+   * compatible with built-in vertex/instance ID variables in shaders (for
+   * example, SV_VertexID); GPU APIs and shader languages do not define these
+   * built-in variables consistently, so if your shader depends on them, the
+   * only way to keep behavior consistent and portable is to always pass 0 for
+   * the correlating parameter in the draw calls.
+   *
+   * @param num_vertices the number of vertices to draw.
+   * @param num_instances the number of instances that will be drawn.
+   * @param first_vertex the index of the first vertex to draw.
+   * @param first_instance the ID of the first instance to draw.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DrawGPUPrimitives(Uint32 num_vertices,
+                         Uint32 num_instances,
+                         Uint32 first_vertex,
+                         Uint32 first_instance);
+
+  /**
+   * Draws data using bound graphics state and with draw parameters set from a
+   * buffer.
+   *
+   * The buffer must consist of tightly-packed draw parameter sets that each
+   * match the layout of GPUIndirectDrawCommand. You must not call this
+   * function before binding a graphics pipeline.
+   *
+   * @param buffer a buffer containing draw parameters.
+   * @param offset the offset to start reading from the draw buffer.
+   * @param draw_count the number of draw parameter sets that should be read
+   *                   from the draw buffer.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DrawGPUPrimitivesIndirect(GPUBuffer buffer,
+                                 Uint32 offset,
+                                 Uint32 draw_count);
+
+  /**
+   * Draws data using bound graphics state with an index buffer enabled and with
+   * draw parameters set from a buffer.
+   *
+   * The buffer must consist of tightly-packed draw parameter sets that each
+   * match the layout of GPUIndexedIndirectDrawCommand. You must not call
+   * this function before binding a graphics pipeline.
+   *
+   * @param buffer a buffer containing draw parameters.
+   * @param offset the offset to start reading from the draw buffer.
+   * @param draw_count the number of draw parameter sets that should be read
+   *                   from the draw buffer.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DrawGPUIndexedPrimitivesIndirect(GPUBuffer buffer,
+                                        Uint32 offset,
+                                        Uint32 draw_count);
+
+  /**
+   * Ends the given render pass.
+   *
+   * All bound graphics state on the render pass command buffer is unset. The
+   * render pass handle is now invalid.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void End();
+};
+
+/**
+ * An opaque handle representing a compute pass.
+ *
+ * This handle is transient and should not be held or referenced after
+ * GPUComputePass.End is called.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPUComputePass
+ * @sa GPUComputePass.End
+ */
+class GPUComputePass
+{
+  GPUComputePassRaw m_gPUComputePass;
+
+public:
+  /**
+   * Wraps GPUComputePass.
+   *
+   * @param gPUComputePass the value to be wrapped
+   */
+  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {})
+    : m_gPUComputePass(gPUComputePass)
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUComputePass& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUComputePassRaw gPUComputePass) const
+  {
+    return operator==(GPUComputePass(gPUComputePass));
+  }
+
+  /**
+   * Unwraps to the underlying GPUComputePass.
+   *
+   * @returns the underlying GPUComputePassRaw.
+   */
+  constexpr operator GPUComputePassRaw() const { return m_gPUComputePass; }
+
+  /**
+   * Binds a compute pipeline on a command buffer for use in compute dispatch.
+   *
+   * @param compute_pipeline a compute pipeline to bind.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void BindGPUComputePipeline(GPUComputePipeline compute_pipeline);
+
+  /**
+   * Binds texture-sampler pairs for use on the compute shader.
+   *
+   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the compute sampler slot to begin binding from.
+   * @param texture_sampler_bindings an array of texture-sampler binding
+   *                                 structs.
+   * @param num_bindings the number of texture-sampler bindings to bind from the
+   *                     array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUComputeSamplers(
+    Uint32 first_slot,
+    const GPUTextureSamplerBinding* texture_sampler_bindings,
+    Uint32 num_bindings);
+
+  /**
+   * Binds storage textures as readonly for use on the compute pipeline.
+   *
+   * These textures must have been created with
+   * SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the compute storage texture slot to begin binding from.
+   * @param storage_textures an array of storage textures.
+   * @param num_bindings the number of storage textures to bind from the array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUComputeStorageTextures(Uint32 first_slot,
+                                     SDL_GPUTexture* const* storage_textures,
+                                     Uint32 num_bindings);
+
+  /**
+   * Binds storage buffers as readonly for use on the compute pipeline.
+   *
+   * These buffers must have been created with
+   * SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
+   *
+   * Be sure your shader is set up according to the requirements documented in
+   * GPUShader.GPUShader().
+   *
+   * @param first_slot the compute storage buffer slot to begin binding from.
+   * @param storage_buffers an array of storage buffer binding structs.
+   * @param num_bindings the number of storage buffers to bind from the array.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUShader.GPUShader
+   */
+  void BindGPUComputeStorageBuffers(Uint32 first_slot,
+                                    SDL_GPUBuffer* const* storage_buffers,
+                                    Uint32 num_bindings);
+
+  /**
+   * Dispatches compute work.
+   *
+   * You must not call this function before binding a compute pipeline.
+   *
+   * A VERY IMPORTANT NOTE If you dispatch multiple times in a compute pass, and
+   * the dispatches write to the same resource region as each other, there is no
+   * guarantee of which order the writes will occur. If the write order matters,
+   * you MUST end the compute pass and begin another one.
+   *
+   * @param groupcount_x number of local workgroups to dispatch in the X
+   *                     dimension.
+   * @param groupcount_y number of local workgroups to dispatch in the Y
+   *                     dimension.
+   * @param groupcount_z number of local workgroups to dispatch in the Z
+   *                     dimension.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DispatchGPUCompute(Uint32 groupcount_x,
+                          Uint32 groupcount_y,
+                          Uint32 groupcount_z);
+
+  /**
+   * Dispatches compute work with parameters set from a buffer.
+   *
+   * The buffer layout should match the layout of
+   * GPUIndirectDispatchCommand. You must not call this function before
+   * binding a compute pipeline.
+   *
+   * A VERY IMPORTANT NOTE If you dispatch multiple times in a compute pass, and
+   * the dispatches write to the same resource region as each other, there is no
+   * guarantee of which order the writes will occur. If the write order matters,
+   * you MUST end the compute pass and begin another one.
+   *
+   * @param buffer a buffer containing dispatch parameters.
+   * @param offset the offset to start reading from the dispatch buffer.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DispatchGPUComputeIndirect(GPUBuffer buffer, Uint32 offset);
+
+  /**
+   * Ends the current compute pass.
+   *
+   * All bound compute state on the command buffer is unset. The compute pass
+   * handle is now invalid.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void End();
+};
+
+/**
+ * A structure specifying a region of a buffer.
+ *
+ * Used when transferring data to or from buffers.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.UploadToGPUBuffer
+ * @sa GPUCopyPass.DownloadFromGPUBuffer
+ */
+using GPUBufferRegion = SDL_GPUBufferRegion;
+
+/**
+ * A structure specifying a location in a texture.
+ *
+ * Used when copying data from one texture to another.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.CopyGPUTextureToTexture
+ */
+using GPUTextureLocation = SDL_GPUTextureLocation;
+
+/**
+ * A structure specifying a location in a buffer.
+ *
+ * Used when copying data between buffers.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.CopyGPUBufferToBuffer
+ */
+using GPUBufferLocation = SDL_GPUBufferLocation;
+
+/**
+ * A structure specifying a region of a texture.
+ *
+ * Used when transferring data to or from a texture.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.UploadToGPUTexture
+ * @sa GPUCopyPass.DownloadFromGPUTexture
+ * @sa GPUTexture.GPUTexture
+ */
+using GPUTextureRegion = SDL_GPUTextureRegion;
+
+/**
+ * A structure specifying parameters related to transferring data to or from a
+ * texture.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.UploadToGPUTexture
+ * @sa GPUCopyPass.DownloadFromGPUTexture
+ */
+using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
+
+/**
+ * A structure specifying a location in a transfer buffer.
+ *
+ * Used when transferring buffer data to or from a transfer buffer.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.UploadToGPUBuffer
+ * @sa GPUCopyPass.DownloadFromGPUBuffer
+ */
+using GPUTransferBufferLocation = SDL_GPUTransferBufferLocation;
+
+/**
+ * An opaque handle representing a copy pass.
+ *
+ * This handle is transient and should not be held or referenced after
+ * GPUCopyPass.End is called.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPUCopyPass
+ * @sa GPUCopyPass.End
+ */
+class GPUCopyPass
+{
+  GPUCopyPassRaw m_gPUCopyPass;
+
+public:
+  /**
+   * Wraps GPUCopyPass.
+   *
+   * @param gPUCopyPass the value to be wrapped
+   */
+  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
+    : m_gPUCopyPass(gPUCopyPass)
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUCopyPass& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUCopyPassRaw gPUCopyPass) const
+  {
+    return operator==(GPUCopyPass(gPUCopyPass));
+  }
+
+  /**
+   * Unwraps to the underlying GPUCopyPass.
+   *
+   * @returns the underlying GPUCopyPassRaw.
+   */
+  constexpr operator GPUCopyPassRaw() const { return m_gPUCopyPass; }
+
+  /**
+   * Uploads data from a transfer buffer to a texture.
+   *
+   * The upload occurs on the GPU timeline. You may assume that the upload has
+   * finished in subsequent commands.
+   *
+   * You must align the data in the transfer buffer to a multiple of the texel
+   * size of the texture format.
+   *
+   * @param source the source transfer buffer with image layout information.
+   * @param destination the destination texture region.
+   * @param cycle if true, cycles the texture if the texture is bound, otherwise
+   *              overwrites the data.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void UploadToGPUTexture(const GPUTextureTransferInfo* source,
+                          const GPUTextureRegion* destination,
+                          bool cycle);
+
+  /**
+   * Uploads data from a transfer buffer to a buffer.
+   *
+   * The upload occurs on the GPU timeline. You may assume that the upload has
+   * finished in subsequent commands.
+   *
+   * @param source the source transfer buffer with offset.
+   * @param destination the destination buffer with offset and size.
+   * @param cycle if true, cycles the buffer if it is already bound, otherwise
+   *              overwrites the data.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void UploadToGPUBuffer(const GPUTransferBufferLocation* source,
+                         const GPUBufferRegion* destination,
+                         bool cycle);
+
+  /**
+   * Performs a texture-to-texture copy.
+   *
+   * This copy occurs on the GPU timeline. You may assume the copy has finished
+   * in subsequent commands.
+   *
+   * @param source a source texture region.
+   * @param destination a destination texture region.
+   * @param w the width of the region to copy.
+   * @param h the height of the region to copy.
+   * @param d the depth of the region to copy.
+   * @param cycle if true, cycles the destination texture if the destination
+   *              texture is bound, otherwise overwrites the data.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void CopyGPUTextureToTexture(const GPUTextureLocation* source,
+                               const GPUTextureLocation* destination,
+                               Uint32 w,
+                               Uint32 h,
+                               Uint32 d,
+                               bool cycle);
+
+  /**
+   * Performs a buffer-to-buffer copy.
+   *
+   * This copy occurs on the GPU timeline. You may assume the copy has finished
+   * in subsequent commands.
+   *
+   * @param source the buffer and offset to copy from.
+   * @param destination the buffer and offset to copy to.
+   * @param size the length of the buffer to copy.
+   * @param cycle if true, cycles the destination buffer if it is already bound,
+   *              otherwise overwrites the data.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void CopyGPUBufferToBuffer(const GPUBufferLocation* source,
+                             const GPUBufferLocation* destination,
+                             Uint32 size,
+                             bool cycle);
+
+  /**
+   * Copies data from a texture to a transfer buffer on the GPU timeline.
+   *
+   * This data is not guaranteed to be copied until the command buffer fence is
+   * signaled.
+   *
+   * @param source the source texture region.
+   * @param destination the destination transfer buffer with image layout
+   *                    information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DownloadFromGPUTexture(const GPUTextureRegion* source,
+                              const GPUTextureTransferInfo* destination);
+
+  /**
+   * Copies data from a buffer to a transfer buffer on the GPU timeline.
+   *
+   * This data is not guaranteed to be copied until the command buffer fence is
+   * signaled.
+   *
+   * @param source the source buffer with offset and size.
+   * @param destination the destination transfer buffer with offset.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void DownloadFromGPUBuffer(const GPUBufferRegion* source,
+                             const GPUTransferBufferLocation* destination);
+
+  /**
+   * Ends the current copy pass.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void End();
+};
+
+/**
+ * A structure specifying the parameters of a color target used by a render
+ * pass.
+ *
+ * The load_op field determines what is done with the texture at the beginning
+ * of the render pass.
+ *
+ * - LOAD: Loads the data currently in the texture. Not recommended for
+ *   multisample textures as it requires significant memory bandwidth.
+ * - CLEAR: Clears the texture to a single color.
+ * - DONT_CARE: The driver will do whatever it wants with the texture memory.
+ *   This is a good option if you know that every single pixel will be touched
+ *   in the render pass.
+ *
+ * The store_op field determines what is done with the color results of the
+ * render pass.
+ *
+ * - STORE: Stores the results of the render pass in the texture. Not
+ *   recommended for multisample textures as it requires significant memory
+ *   bandwidth.
+ * - DONT_CARE: The driver will do whatever it wants with the texture memory.
+ *   This is often a good option for depth/stencil textures.
+ * - RESOLVE: Resolves a multisample texture into resolve_texture, which must
+ *   have a sample count of 1. Then the driver may discard the multisample
+ *   texture memory. This is the most performant method of resolving a
+ *   multisample target.
+ * - RESOLVE_AND_STORE: Resolves a multisample texture into the
+ *   resolve_texture, which must have a sample count of 1. Then the driver
+ *   stores the multisample texture's contents. Not recommended as it requires
+ *   significant memory bandwidth.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPURenderPass
+ */
+using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
+
+/**
+ * A structure specifying the parameters of a depth-stencil target used by a
+ * render pass.
+ *
+ * The load_op field determines what is done with the depth contents of the
+ * texture at the beginning of the render pass.
+ *
+ * - LOAD: Loads the depth values currently in the texture.
+ * - CLEAR: Clears the texture to a single depth.
+ * - DONT_CARE: The driver will do whatever it wants with the memory. This is
+ *   a good option if you know that every single pixel will be touched in the
+ *   render pass.
+ *
+ * The store_op field determines what is done with the depth results of the
+ * render pass.
+ *
+ * - STORE: Stores the depth results in the texture.
+ * - DONT_CARE: The driver will do whatever it wants with the depth results.
+ *   This is often a good option for depth/stencil textures that don't need to
+ *   be reused again.
+ *
+ * The stencil_load_op field determines what is done with the stencil contents
+ * of the texture at the beginning of the render pass.
+ *
+ * - LOAD: Loads the stencil values currently in the texture.
+ * - CLEAR: Clears the stencil values to a single value.
+ * - DONT_CARE: The driver will do whatever it wants with the memory. This is
+ *   a good option if you know that every single pixel will be touched in the
+ *   render pass.
+ *
+ * The stencil_store_op field determines what is done with the stencil results
+ * of the render pass.
+ *
+ * - STORE: Stores the stencil results in the texture.
+ * - DONT_CARE: The driver will do whatever it wants with the stencil results.
+ *   This is often a good option for depth/stencil textures that don't need to
+ *   be reused again.
+ *
+ * Note that depth/stencil targets do not support multisample resolves.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPURenderPass
+ */
+using GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo;
+
+/**
+ * A structure specifying parameters related to binding textures in a compute
+ * pass.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPUComputePass
+ */
+using GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding;
+
+/**
+ * A structure specifying parameters related to binding buffers in a compute
+ * pass.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BeginGPUComputePass
+ */
+using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
+
+/**
+ * A structure containing parameters for a blit command.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.BlitGPUTexture
+ */
+using GPUBlitInfo = SDL_GPUBlitInfo;
+
+/**
+ * An opaque handle representing a fence.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ * @sa GPUDevice.QueryGPUFence
+ * @sa GPUDevice.WaitForGPUFences
+ * @sa GPUDevice.ReleaseGPUFence
+ */
+using GPUFence = SDL_GPUFence;
+
+/**
+ * An opaque handle representing a command buffer.
+ *
+ * Most state is managed via command buffers. When setting state using a
+ * command buffer, that state is local to the command buffer.
+ *
+ * Commands only begin execution on the GPU once GPUCommandBuffer.Submit is
+ * called. Once the command buffer is submitted, it is no longer valid to use
+ * it.
+ *
+ * Command buffers are executed in submission order. If you submit command
+ * buffer A and then command buffer B all commands in A will begin executing
+ * before any command in B begins executing.
+ *
+ * In multi-threading scenarios, you should only access a command buffer on
+ * the thread you acquired it from.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GPUDevice.AcquireGPUCommandBuffer
+ * @sa GPUCommandBuffer.Submit
+ * @sa GPUCommandBuffer.SubmitAndAcquireFence
+ */
+class GPUCommandBuffer
+{
+  GPUCommandBufferRaw m_gPUCommandBuffer;
+
+public:
+  /**
+   * Wraps GPUCommandBuffer.
+   *
+   * @param gPUCommandBuffer the value to be wrapped
+   */
+  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
+    : m_gPUCommandBuffer(gPUCommandBuffer)
+  {
+  }
+
+  /// Default comparison operator
+  constexpr bool operator==(const GPUCommandBuffer& other) const = default;
+
+  /// Compares with the underlying type
+  constexpr bool operator==(GPUCommandBufferRaw gPUCommandBuffer) const
+  {
+    return operator==(GPUCommandBuffer(gPUCommandBuffer));
+  }
+
+  /**
+   * Unwraps to the underlying GPUCommandBuffer.
+   *
+   * @returns the underlying GPUCommandBufferRaw.
+   */
+  constexpr operator GPUCommandBufferRaw() const { return m_gPUCommandBuffer; }
+
+  /**
+   * Inserts an arbitrary string label into the command buffer callstream.
+   *
+   * Useful for debugging.
+   *
+   * @param text a UTF-8 string constant to insert as the label.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void InsertGPUDebugLabel(StringParam text);
+
+  /**
+   * Begins a debug group with an arbitrary name.
+   *
+   * Used for denoting groups of calls when viewing the command buffer
+   * callstream in a graphics debugging tool.
+   *
+   * Each call to GPUCommandBuffer.PushGPUDebugGroup must have a corresponding
+   * call to GPUCommandBuffer.PopGPUDebugGroup.
+   *
+   * On some backends (e.g. Metal), pushing a debug group during a
+   * render/blit/compute pass will create a group that is scoped to the native
+   * pass rather than the command buffer. For best results, if you push a debug
+   * group during a pass, always pop it in the same pass.
+   *
+   * @param name a UTF-8 string constant that names the group.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCommandBuffer.PopGPUDebugGroup
+   */
+  void PushGPUDebugGroup(StringParam name);
+
+  /**
+   * Ends the most-recently pushed debug group.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCommandBuffer.PushGPUDebugGroup
+   */
+  void PopGPUDebugGroup();
+
+  /**
+   * Pushes data to a vertex uniform slot on the command buffer.
+   *
+   * Subsequent draw calls will use this uniform data.
+   *
+   * The data being pushed must respect std140 layout conventions. In practical
+   * terms this means you must ensure that vec3 and vec4 fields are 16-byte
+   * aligned.
+   *
+   * @param slot_index the vertex uniform slot to push data to.
+   * @param data client data to write.
+   * @param length the length of the data to write.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void PushGPUVertexUniformData(Uint32 slot_index,
+                                const void* data,
+                                Uint32 length);
+
+  /**
+   * Pushes data to a fragment uniform slot on the command buffer.
+   *
+   * Subsequent draw calls will use this uniform data.
+   *
+   * The data being pushed must respect std140 layout conventions. In practical
+   * terms this means you must ensure that vec3 and vec4 fields are 16-byte
+   * aligned.
+   *
+   * @param slot_index the fragment uniform slot to push data to.
+   * @param data client data to write.
+   * @param length the length of the data to write.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void PushGPUFragmentUniformData(Uint32 slot_index,
+                                  const void* data,
+                                  Uint32 length);
+
+  /**
+   * Pushes data to a uniform slot on the command buffer.
+   *
+   * Subsequent draw calls will use this uniform data.
+   *
+   * The data being pushed must respect std140 layout conventions. In practical
+   * terms this means you must ensure that vec3 and vec4 fields are 16-byte
+   * aligned.
+   *
+   * @param slot_index the uniform slot to push data to.
+   * @param data client data to write.
+   * @param length the length of the data to write.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void PushGPUComputeUniformData(Uint32 slot_index,
+                                 const void* data,
+                                 Uint32 length);
+
+  /**
+   * Begins a render pass on a command buffer.
+   *
+   * A render pass consists of a set of texture subresources (or depth slices in
+   * the 3D texture case) which will be rendered to during the render pass,
+   * along with corresponding clear values and load/store operations. All
+   * operations related to graphics pipelines must take place inside of a render
+   * pass. A default viewport and scissor state are automatically set when this
+   * is called. You cannot begin another render pass, or begin a compute pass or
+   * copy pass until you have ended the render pass.
+   *
+   * @param color_target_infos an array of texture subresources with
+   *                           corresponding clear values and load/store ops.
+   * @param num_color_targets the number of color targets in the
+   *                          color_target_infos array.
+   * @param depth_stencil_target_info a texture subresource with corresponding
+   *                                  clear value and load/store ops, may be
+   *                                  nullptr.
+   * @returns a render pass handle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPURenderPass.End
+   */
+  GPURenderPass BeginGPURenderPass(
+    const GPUColorTargetInfo* color_target_infos,
+    Uint32 num_color_targets,
+    const GPUDepthStencilTargetInfo* depth_stencil_target_info);
+
+  /**
+   * Begins a compute pass on a command buffer.
+   *
+   * A compute pass is defined by a set of texture subresources and buffers that
+   * may be written to by compute pipelines. These textures and buffers must
+   * have been created with the COMPUTE_STORAGE_WRITE bit or the
+   * COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE bit. If you do not create a texture
+   * with COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE, you must not read from the
+   * texture in the compute pass. All operations related to compute pipelines
+   * must take place inside of a compute pass. You must not begin another
+   * compute pass, or a render pass or copy pass before ending the compute pass.
+   *
+   * A VERY IMPORTANT NOTE - Reads and writes in compute passes are NOT
+   * implicitly synchronized. This means you may cause data races by both
+   * reading and writing a resource region in a compute pass, or by writing
+   * multiple times to a resource region. If your compute work depends on
+   * reading the completed output from a previous dispatch, you MUST end the
+   * current compute pass and begin a new one before you can safely access the
+   * data. Otherwise you will receive unexpected results. Reading and writing a
+   * texture in the same compute pass is only supported by specific texture
+   * formats. Make sure you check the format support!
+   *
+   * @param storage_texture_bindings an array of writeable storage texture
+   *                                 binding structs.
+   * @param num_storage_texture_bindings the number of storage textures to bind
+   *                                     from the array.
+   * @param storage_buffer_bindings an array of writeable storage buffer binding
+   *                                structs.
+   * @param num_storage_buffer_bindings the number of storage buffers to bind
+   *                                    from the array.
+   * @returns a compute pass handle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUComputePass.End
+   */
+  GPUComputePass BeginGPUComputePass(
+    const GPUStorageTextureReadWriteBinding* storage_texture_bindings,
+    Uint32 num_storage_texture_bindings,
+    const GPUStorageBufferReadWriteBinding* storage_buffer_bindings,
+    Uint32 num_storage_buffer_bindings);
+
+  /**
+   * Begins a copy pass on a command buffer.
+   *
+   * All operations related to copying to or from buffers or textures take place
+   * inside a copy pass. You must not begin another copy pass, or a render pass
+   * or compute pass before ending the copy pass.
+   *
+   * @returns a copy pass handle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  GPUCopyPass BeginGPUCopyPass();
+
+  /**
+   * Generates mipmaps for the given texture.
+   *
+   * This function must not be called inside of any pass.
+   *
+   * @param texture a texture with more than 1 mip level.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void GenerateMipmapsForGPUTexture(GPUTexture texture);
+
+  /**
+   * Blits from a source texture region to a destination texture region.
+   *
+   * This function must not be called inside of any pass.
+   *
+   * @param info the blit info struct containing the blit parameters.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void BlitGPUTexture(const GPUBlitInfo* info);
+
+  /**
+   * Acquire a texture to use in presentation.
+   *
+   * When a swapchain texture is acquired on a command buffer, it will
+   * automatically be submitted for presentation when the command buffer is
+   * submitted. The swapchain texture should only be referenced by the command
+   * buffer used to acquire it.
+   *
+   * This function will fill the swapchain texture handle with nullptr if too
+   * many frames are in flight. This is not an error.
+   *
+   * If you use this function, it is possible to create a situation where many
+   * command buffers are allocated while the rendering context waits for the GPU
+   * to catch up, which will cause memory usage to grow. You should use
+   * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() unless you know what
+   * you are doing with timing.
+   *
+   * The swapchain texture is managed by the implementation and must not be
+   * freed by the user. You MUST NOT call this function from any thread other
+   * than the one that created the window.
+   *
+   * @param window a window that has been claimed.
+   * @param swapchain_texture a pointer filled in with a swapchain texture
+   *                          handle.
+   * @param swapchain_texture_width a pointer filled in with the swapchain
+   *                                texture width, may be nullptr.
+   * @param swapchain_texture_height a pointer filled in with the swapchain
+   *                                 texture height, may be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called from the thread that
+   *               created the window.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUDevice.ClaimWindowFor
+   * @sa GPUCommandBuffer.Submit
+   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   * @sa GPUCommandBuffer.Cancel
+   * @sa Window.GetSizeInPixels
+   * @sa GPUDevice.WaitForGPUSwapchain
+   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUDevice.SetGPUAllowedFramesInFlight
+   */
+  void AcquireGPUSwapchainTexture(WindowParam window,
+                                  SDL_GPUTexture** swapchain_texture,
+                                  Uint32* swapchain_texture_width,
+                                  Uint32* swapchain_texture_height);
+
+  /**
+   * Blocks the thread until a swapchain texture is available to be acquired,
+   * and then acquires it.
+   *
+   * When a swapchain texture is acquired on a command buffer, it will
+   * automatically be submitted for presentation when the command buffer is
+   * submitted. The swapchain texture should only be referenced by the command
+   * buffer used to acquire it. It is an error to call
+   * GPUCommandBuffer.Cancel() after a swapchain texture is acquired.
+   *
+   * This function can fill the swapchain texture handle with nullptr in certain
+   * cases, for example if the window is minimized. This is not an error. You
+   * should always make sure to check whether the pointer is nullptr before
+   * actually using it.
+   *
+   * The swapchain texture is managed by the implementation and must not be
+   * freed by the user. You MUST NOT call this function from any thread other
+   * than the one that created the window.
+   *
+   * The swapchain texture is write-only and cannot be used as a sampler or for
+   * another reading operation.
+   *
+   * @param window a window that has been claimed.
+   * @param swapchain_texture a pointer filled in with a swapchain texture
+   *                          handle.
+   * @param swapchain_texture_width a pointer filled in with the swapchain
+   *                                texture width, may be nullptr.
+   * @param swapchain_texture_height a pointer filled in with the swapchain
+   *                                 texture height, may be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called from the thread that
+   *               created the window.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCommandBuffer.Submit
+   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   */
+  void WaitAndAcquireGPUSwapchainTexture(WindowParam window,
+                                         SDL_GPUTexture** swapchain_texture,
+                                         Uint32* swapchain_texture_width,
+                                         Uint32* swapchain_texture_height);
+
+  /**
+   * Submits a command buffer so its commands can be processed on the GPU.
+   *
+   * It is invalid to use the command buffer after this is called.
+   *
+   * This must be called from the thread the command buffer was acquired on.
+   *
+   * All commands in the submission are guaranteed to begin executing before any
+   * command in a subsequent submission begins executing.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUDevice.AcquireGPUCommandBuffer
+   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.SubmitAndAcquireFence
+   */
+  void Submit();
+
+  /**
+   * Submits a command buffer so its commands can be processed on the GPU, and
+   * acquires a fence associated with the command buffer.
+   *
+   * You must release this fence when it is no longer needed or it will cause a
+   * leak. It is invalid to use the command buffer after this is called.
+   *
+   * This must be called from the thread the command buffer was acquired on.
+   *
+   * All commands in the submission are guaranteed to begin executing before any
+   * command in a subsequent submission begins executing.
+   *
+   * @returns a fence associated with the command buffer, or nullptr on failure;
+   *          call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUDevice.AcquireGPUCommandBuffer
+   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.Submit
+   * @sa GPUDevice.ReleaseGPUFence
+   */
+  GPUFence* SubmitAndAcquireFence();
+
+  /**
+   * Cancels a command buffer.
+   *
+   * None of the enqueued commands are executed.
+   *
+   * It is an error to call this function after a swapchain texture has been
+   * acquired.
+   *
+   * This must be called from the thread the command buffer was acquired on.
+   *
+   * You must not reference the command buffer after calling this function.
+   *
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUDevice.AcquireGPUCommandBuffer
+   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   */
+  void Cancel();
+};
+
+/**
+ * Specifies the format of shader code.
+ *
+ * Each format corresponds to a specific backend that accepts it.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa GPUShader.GPUShader
+ */
+using GPUShaderFormat = SDL_GPUShaderFormat;
+
+/**
+ * Specifies the texture format and colorspace of the swapchain textures.
+ *
+ * SDR will always be supported. Other compositions may not be supported on
+ * certain systems.
+ *
+ * It is recommended to query GPUDevice.WindowSupportsGPUSwapchainComposition
+ * after claiming the window if you wish to change the swapchain composition
+ * from SDR.
+ *
+ * - SDR: B8G8R8A8 or R8G8B8A8 swapchain. Pixel values are in sRGB encoding.
+ * - SDR_LINEAR: B8G8R8A8_SRGB or R8G8B8A8_SRGB swapchain. Pixel values are
+ *   stored in memory in sRGB encoding but accessed in shaders in "linear
+ *   sRGB" encoding which is sRGB but with a linear transfer function.
+ * - HDR_EXTENDED_LINEAR: R16G16B16A16_FLOAT swapchain. Pixel values are in
+ *   extended linear sRGB encoding and permits values outside of the [0, 1]
+ *   range.
+ * - HDR10_ST2084: A2R10G10B10 or A2B10G10R10 swapchain. Pixel values are in
+ *   BT.2020 ST2084 (PQ) encoding.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa GPUDevice.SetGPUSwapchainParameters
+ * @sa GPUDevice.WindowSupportsGPUSwapchainComposition
+ * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ */
+using GPUSwapchainComposition = SDL_GPUSwapchainComposition;
+
+constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_SDR =
+  SDL_GPU_SWAPCHAINCOMPOSITION_SDR; ///< GPU_SWAPCHAINCOMPOSITION_SDR
+
+constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR =
+  SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR; ///< GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR
+
+constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR =
+  SDL_GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR; ///< GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR
+
+constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 =
+  SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084; ///< GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084
+
+/**
+ * Specifies the timing that will be used to present swapchain textures to the
+ * OS.
+ *
+ * VSYNC mode will always be supported. IMMEDIATE and MAILBOX modes may not be
+ * supported on certain systems.
+ *
+ * It is recommended to query GPUDevice.WindowSupportsGPUPresentMode after
+ * claiming the window if you wish to change the present mode to IMMEDIATE or
+ * MAILBOX.
+ *
+ * - VSYNC: Waits for vblank before presenting. No tearing is possible. If
+ *   there is a pending image to present, the new image is enqueued for
+ *   presentation. Disallows tearing at the cost of visual latency.
+ * - IMMEDIATE: Immediately presents. Lowest latency option, but tearing may
+ *   occur.
+ * - MAILBOX: Waits for vblank before presenting. No tearing is possible. If
+ *   there is a pending image to present, the pending image is replaced by the
+ *   new image. Similar to VSYNC, but with reduced visual latency.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa GPUDevice.SetGPUSwapchainParameters
+ * @sa GPUDevice.WindowSupportsGPUPresentMode
+ * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ */
+using GPUPresentMode = SDL_GPUPresentMode;
+
+constexpr GPUPresentMode GPU_PRESENTMODE_VSYNC =
+  SDL_GPU_PRESENTMODE_VSYNC; ///< GPU_PRESENTMODE_VSYNC
+
+constexpr GPUPresentMode GPU_PRESENTMODE_IMMEDIATE =
+  SDL_GPU_PRESENTMODE_IMMEDIATE; ///< GPU_PRESENTMODE_IMMEDIATE
+
+constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
+  SDL_GPU_PRESENTMODE_MAILBOX; ///< GPU_PRESENTMODE_MAILBOX
+
+/**
+ * Specifies the pixel format of a texture.
+ *
+ * Texture format support varies depending on driver, hardware, and usage
+ * flags. In general, you should use GPUDevice.GPUTextureSupportsFormat to query
+ * if a format is supported before using it. However, there are a few guaranteed
+ * formats.
+ *
+ * FIXME: Check universal support for 32-bit component formats FIXME: Check
+ * universal support for SIMULTANEOUS_READ_WRITE
+ *
+ * For SAMPLER usage, the following formats are universally supported:
+ *
+ * - R8G8B8A8_UNORM
+ * - B8G8R8A8_UNORM
+ * - R8_UNORM
+ * - R8_SNORM
+ * - R8G8_UNORM
+ * - R8G8_SNORM
+ * - R8G8B8A8_SNORM
+ * - R16_FLOAT
+ * - R16G16_FLOAT
+ * - R16G16B16A16_FLOAT
+ * - R32_FLOAT
+ * - R32G32_FLOAT
+ * - R32G32B32A32_FLOAT
+ * - R11G11B10_UFLOAT
+ * - R8G8B8A8_UNORM_SRGB
+ * - B8G8R8A8_UNORM_SRGB
+ * - D16_UNORM
+ *
+ * For COLOR_TARGET usage, the following formats are universally supported:
+ *
+ * - R8G8B8A8_UNORM
+ * - B8G8R8A8_UNORM
+ * - R8_UNORM
+ * - R16_FLOAT
+ * - R16G16_FLOAT
+ * - R16G16B16A16_FLOAT
+ * - R32_FLOAT
+ * - R32G32_FLOAT
+ * - R32G32B32A32_FLOAT
+ * - R8_UINT
+ * - R8G8_UINT
+ * - R8G8B8A8_UINT
+ * - R16_UINT
+ * - R16G16_UINT
+ * - R16G16B16A16_UINT
+ * - R8_INT
+ * - R8G8_INT
+ * - R8G8B8A8_INT
+ * - R16_INT
+ * - R16G16_INT
+ * - R16G16B16A16_INT
+ * - R8G8B8A8_UNORM_SRGB
+ * - B8G8R8A8_UNORM_SRGB
+ *
+ * For STORAGE usages, the following formats are universally supported:
+ *
+ * - R8G8B8A8_UNORM
+ * - R8G8B8A8_SNORM
+ * - R16G16B16A16_FLOAT
+ * - R32_FLOAT
+ * - R32G32_FLOAT
+ * - R32G32B32A32_FLOAT
+ * - R8G8B8A8_UINT
+ * - R16G16B16A16_UINT
+ * - R8G8B8A8_INT
+ * - R16G16B16A16_INT
+ *
+ * For DEPTH_STENCIL_TARGET usage, the following formats are universally
+ * supported:
+ *
+ * - D16_UNORM
+ * - Either (but not necessarily both!) D24_UNORM or D32_FLOAT
+ * - Either (but not necessarily both!) D24_UNORM_S8_UINT or D32_FLOAT_S8_UINT
+ *
+ * Unless D16_UNORM is sufficient for your purposes, always check which of
+ * D24/D32 is supported before creating a depth-stencil texture!
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.GPUTextureSupportsFormat
+ */
+using GPUTextureFormat = SDL_GPUTextureFormat;
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_INVALID =
+  SDL_GPU_TEXTUREFORMAT_INVALID; ///< GPU_TEXTUREFORMAT_INVALID
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_A8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_A8_UNORM; ///< GPU_TEXTUREFORMAT_A8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R8_UNORM; ///< GPU_TEXTUREFORMAT_R8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R8G8_UNORM; ///< GPU_TEXTUREFORMAT_R8G8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM; ///< GPU_TEXTUREFORMAT_R8G8B8A8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R16_UNORM; ///< GPU_TEXTUREFORMAT_R16_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R16G16_UNORM; ///< GPU_TEXTUREFORMAT_R16G16_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_UNORM; ///< GPU_TEXTUREFORMAT_R16G16B16A16_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R10G10B10A2_UNORM =
+  SDL_GPU_TEXTUREFORMAT_R10G10B10A2_UNORM; ///< GPU_TEXTUREFORMAT_R10G10B10A2_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B5G6R5_UNORM =
+  SDL_GPU_TEXTUREFORMAT_B5G6R5_UNORM; ///< GPU_TEXTUREFORMAT_B5G6R5_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B5G5R5A1_UNORM =
+  SDL_GPU_TEXTUREFORMAT_B5G5R5A1_UNORM; ///< GPU_TEXTUREFORMAT_B5G5R5A1_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B4G4R4A4_UNORM =
+  SDL_GPU_TEXTUREFORMAT_B4G4R4A4_UNORM; ///< GPU_TEXTUREFORMAT_B4G4R4A4_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B8G8R8A8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_B8G8R8A8_UNORM; ///< GPU_TEXTUREFORMAT_B8G8R8A8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC1_RGBA_UNORM =
+  SDL_GPU_TEXTUREFORMAT_BC1_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC1_RGBA_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC2_RGBA_UNORM =
+  SDL_GPU_TEXTUREFORMAT_BC2_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC2_RGBA_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC3_RGBA_UNORM =
+  SDL_GPU_TEXTUREFORMAT_BC3_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC3_RGBA_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC4_R_UNORM =
+  SDL_GPU_TEXTUREFORMAT_BC4_R_UNORM; ///< GPU_TEXTUREFORMAT_BC4_R_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC5_RG_UNORM =
+  SDL_GPU_TEXTUREFORMAT_BC5_RG_UNORM; ///< GPU_TEXTUREFORMAT_BC5_RG_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC7_RGBA_UNORM =
+  SDL_GPU_TEXTUREFORMAT_BC7_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC7_RGBA_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT; ///< GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT =
+  SDL_GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT; ///< GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_SNORM =
+  SDL_GPU_TEXTUREFORMAT_R8_SNORM; ///< GPU_TEXTUREFORMAT_R8_SNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_SNORM =
+  SDL_GPU_TEXTUREFORMAT_R8G8_SNORM; ///< GPU_TEXTUREFORMAT_R8G8_SNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_SNORM =
+  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_SNORM; ///< GPU_TEXTUREFORMAT_R8G8B8A8_SNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_SNORM =
+  SDL_GPU_TEXTUREFORMAT_R16_SNORM; ///< GPU_TEXTUREFORMAT_R16_SNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_SNORM =
+  SDL_GPU_TEXTUREFORMAT_R16G16_SNORM; ///< GPU_TEXTUREFORMAT_R16G16_SNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_SNORM =
+  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_SNORM; ///< GPU_TEXTUREFORMAT_R16G16B16A16_SNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_R16_FLOAT; ///< GPU_TEXTUREFORMAT_R16_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_R16G16_FLOAT; ///< GPU_TEXTUREFORMAT_R16G16_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT; ///< GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_R32_FLOAT; ///< GPU_TEXTUREFORMAT_R32_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_R32G32_FLOAT; ///< GPU_TEXTUREFORMAT_R32G32_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT; ///< GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R11G11B10_UFLOAT =
+  SDL_GPU_TEXTUREFORMAT_R11G11B10_UFLOAT; ///< GPU_TEXTUREFORMAT_R11G11B10_UFLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_UINT =
+  SDL_GPU_TEXTUREFORMAT_R8_UINT; ///< GPU_TEXTUREFORMAT_R8_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_UINT =
+  SDL_GPU_TEXTUREFORMAT_R8G8_UINT; ///< GPU_TEXTUREFORMAT_R8G8_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_UINT =
+  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UINT; ///< GPU_TEXTUREFORMAT_R8G8B8A8_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_UINT =
+  SDL_GPU_TEXTUREFORMAT_R16_UINT; ///< GPU_TEXTUREFORMAT_R16_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_UINT =
+  SDL_GPU_TEXTUREFORMAT_R16G16_UINT; ///< GPU_TEXTUREFORMAT_R16G16_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_UINT =
+  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_UINT; ///< GPU_TEXTUREFORMAT_R16G16B16A16_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32_UINT =
+  SDL_GPU_TEXTUREFORMAT_R32_UINT; ///< GPU_TEXTUREFORMAT_R32_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32_UINT =
+  SDL_GPU_TEXTUREFORMAT_R32G32_UINT; ///< GPU_TEXTUREFORMAT_R32G32_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32B32A32_UINT =
+  SDL_GPU_TEXTUREFORMAT_R32G32B32A32_UINT; ///< GPU_TEXTUREFORMAT_R32G32B32A32_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_INT =
+  SDL_GPU_TEXTUREFORMAT_R8_INT; ///< GPU_TEXTUREFORMAT_R8_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_INT =
+  SDL_GPU_TEXTUREFORMAT_R8G8_INT; ///< GPU_TEXTUREFORMAT_R8G8_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_INT =
+  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_INT; ///< GPU_TEXTUREFORMAT_R8G8B8A8_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_INT =
+  SDL_GPU_TEXTUREFORMAT_R16_INT; ///< GPU_TEXTUREFORMAT_R16_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_INT =
+  SDL_GPU_TEXTUREFORMAT_R16G16_INT; ///< GPU_TEXTUREFORMAT_R16G16_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_INT =
+  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_INT; ///< GPU_TEXTUREFORMAT_R16G16B16A16_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32_INT =
+  SDL_GPU_TEXTUREFORMAT_R32_INT; ///< GPU_TEXTUREFORMAT_R32_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32_INT =
+  SDL_GPU_TEXTUREFORMAT_R32G32_INT; ///< GPU_TEXTUREFORMAT_R32G32_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32B32A32_INT =
+  SDL_GPU_TEXTUREFORMAT_R32G32B32A32_INT; ///< GPU_TEXTUREFORMAT_R32G32B32A32_INT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D16_UNORM =
+  SDL_GPU_TEXTUREFORMAT_D16_UNORM; ///< GPU_TEXTUREFORMAT_D16_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D24_UNORM =
+  SDL_GPU_TEXTUREFORMAT_D24_UNORM; ///< GPU_TEXTUREFORMAT_D24_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D32_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_D32_FLOAT; ///< GPU_TEXTUREFORMAT_D32_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT =
+  SDL_GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT; ///< GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT =
+  SDL_GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT; ///< GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_4x4_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_4x4_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_4x4_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x4_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_5x4_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_5x4_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x5_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_5x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_5x5_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x5_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_6x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_6x5_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x6_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_6x6_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_6x6_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x5_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_8x5_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x6_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x6_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_8x6_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x8_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_8x8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x5_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x5_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x6_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x6_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x6_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x8_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x8_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x8_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x10_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x10_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x10_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x10_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_12x10_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_12x10_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_UNORM =
+  SDL_GPU_TEXTUREFORMAT_ASTC_12x12_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_12x12_UNORM
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB =
+  SDL_GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT
+
+constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT =
+  SDL_GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT
+
+/**
+ * Specifies the type of a texture.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa GPUTexture.GPUTexture
+ */
+using GPUTextureType = SDL_GPUTextureType;
+
+constexpr GPUTextureType GPU_TEXTURETYPE_2D =
+  SDL_GPU_TEXTURETYPE_2D; ///< The texture is a 2-dimensional image.
+
+constexpr GPUTextureType GPU_TEXTURETYPE_2D_ARRAY =
+  SDL_GPU_TEXTURETYPE_2D_ARRAY; ///< The texture is a 2-dimensional array image.
+
+constexpr GPUTextureType GPU_TEXTURETYPE_3D =
+  SDL_GPU_TEXTURETYPE_3D; ///< The texture is a 3-dimensional image.
+
+constexpr GPUTextureType GPU_TEXTURETYPE_CUBE =
+  SDL_GPU_TEXTURETYPE_CUBE; ///< The texture is a cube image.
+
+constexpr GPUTextureType GPU_TEXTURETYPE_CUBE_ARRAY =
+  SDL_GPU_TEXTURETYPE_CUBE_ARRAY; ///< The texture is a cube array image.
+
+/**
+ * Specifies how a texture is intended to be used by the client.
+ *
+ * A texture must have at least one usage flag. Note that some usage flag
+ * combinations are invalid.
+ *
+ * With regards to compute storage usage, READ | WRITE means that you can have
+ * shader A that only writes into the texture and shader B that only reads
+ * from the texture and bind the same texture to either shader respectively.
+ * SIMULTANEOUS means that you can do reads and writes within the same shader
+ * or compute pass. It also implies that atomic ops can be used, since those
+ * are read-modify-write operations. If you use SIMULTANEOUS, you are
+ * responsible for avoiding data races, as there is no data synchronization
+ * within a compute pass. Note that SIMULTANEOUS usage is only supported by a
+ * limited number of texture formats.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa GPUTexture.GPUTexture
+ */
+using GPUTextureUsageFlags = SDL_GPUTextureUsageFlags;
+
+/**
+ * Specifies the sample count of a texture.
+ *
+ * Used in multisampling. Note that this value only applies when the texture
+ * is used as a render target.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa GPUTexture.GPUTexture
+ * @sa GPUDevice.GPUTextureSupportsSampleCount
+ */
+using GPUSampleCount = SDL_GPUSampleCount;
+
+constexpr GPUSampleCount GPU_SAMPLECOUNT_1 =
+  SDL_GPU_SAMPLECOUNT_1; ///< No multisampling.
+
+constexpr GPUSampleCount GPU_SAMPLECOUNT_2 =
+  SDL_GPU_SAMPLECOUNT_2; ///< MSAA 2x.
+
+constexpr GPUSampleCount GPU_SAMPLECOUNT_4 =
+  SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x.
+
+constexpr GPUSampleCount GPU_SAMPLECOUNT_8 =
+  SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x.
 
 /**
  * An opaque handle representing the SDL_GPU context.
@@ -60977,1779 +63627,6 @@ struct GPUDeviceRef : GPUDevice
 };
 
 /**
- * An opaque handle representing a buffer.
- *
- * Used for vertices, indices, indirect draw commands, and general compute
- * data.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUBuffer.GPUBuffer
- * @sa GPUCopyPass.UploadToGPUBuffer
- * @sa GPUCopyPass.DownloadFromGPUBuffer
- * @sa GPUCopyPass.CopyGPUBufferToBuffer
- * @sa GPURenderPass.BindGPUVertexBuffers
- * @sa GPURenderPass.BindGPUIndexBuffer
- * @sa GPURenderPass.BindGPUVertexStorageBuffers
- * @sa GPURenderPass.BindGPUFragmentStorageBuffers
- * @sa GPURenderPass.DrawGPUPrimitivesIndirect
- * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
- * @sa GPUComputePass.BindGPUComputeStorageBuffers
- * @sa GPUComputePass.DispatchGPUComputeIndirect
- * @sa GPUDevice.ReleaseGPUBuffer
- */
-class GPUBuffer
-{
-  GPUBufferRaw m_gPUBuffer;
-
-public:
-  /**
-   * Wraps GPUBuffer.
-   *
-   * @param gPUBuffer the value to be wrapped
-   */
-  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {})
-    : m_gPUBuffer(gPUBuffer)
-  {
-  }
-
-  /**
-   * Creates a buffer object to be used in graphics or compute workflows.
-   *
-   * The contents of this buffer are undefined until data is written to the
-   * buffer.
-   *
-   * Note that certain combinations of usage flags are invalid. For example, a
-   * buffer cannot have both the VERTEX and INDEX flags.
-   *
-   * If you use a STORAGE flag, the data in the buffer must respect std140
-   * layout conventions. In practical terms this means you must ensure that vec3
-   * and vec4 fields are 16-byte aligned.
-   *
-   * For better understanding of underlying concepts and memory management with
-   * SDL GPU API, you may refer
-   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
-   * .
-   *
-   * There are optional properties that can be provided through `props`. These
-   * are the supported properties:
-   *
-   * - `SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING`: a name that can be displayed in
-   *   debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the buffer to create.
-   * @post a buffer object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCopyPass.UploadToGPUBuffer
-   * @sa GPUCopyPass.DownloadFromGPUBuffer
-   * @sa GPUCopyPass.CopyGPUBufferToBuffer
-   * @sa GPURenderPass.BindGPUVertexBuffers
-   * @sa GPURenderPass.BindGPUIndexBuffer
-   * @sa GPURenderPass.BindGPUVertexStorageBuffers
-   * @sa GPURenderPass.BindGPUFragmentStorageBuffers
-   * @sa GPURenderPass.DrawGPUPrimitivesIndirect
-   * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
-   * @sa GPUComputePass.BindGPUComputeStorageBuffers
-   * @sa GPUComputePass.DispatchGPUComputeIndirect
-   * @sa GPUDevice.ReleaseGPUBuffer
-   */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo* createinfo)
-    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUBufferRaw gPUBuffer) const
-  {
-    return operator==(GPUBuffer(gPUBuffer));
-  }
-
-  /**
-   * Unwraps to the underlying GPUBuffer.
-   *
-   * @returns the underlying GPUBufferRaw.
-   */
-  constexpr operator GPUBufferRaw() const { return m_gPUBuffer; }
-};
-
-/**
- * An opaque handle representing a transfer buffer.
- *
- * Used for transferring data to and from the device.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUTransferBuffer.GPUTransferBuffer
- * @sa GPUDevice.MapGPUTransferBuffer
- * @sa GPUDevice.UnmapGPUTransferBuffer
- * @sa GPUCopyPass.UploadToGPUBuffer
- * @sa GPUCopyPass.UploadToGPUTexture
- * @sa GPUCopyPass.DownloadFromGPUBuffer
- * @sa GPUCopyPass.DownloadFromGPUTexture
- * @sa GPUDevice.ReleaseGPUTransferBuffer
- */
-class GPUTransferBuffer
-{
-  GPUTransferBufferRaw m_gPUTransferBuffer;
-
-public:
-  /**
-   * Wraps GPUTransferBuffer.
-   *
-   * @param gPUTransferBuffer the value to be wrapped
-   */
-  constexpr GPUTransferBuffer(GPUTransferBufferRaw gPUTransferBuffer = {})
-    : m_gPUTransferBuffer(gPUTransferBuffer)
-  {
-  }
-
-  /**
-   * Creates a transfer buffer to be used when uploading to or downloading from
-   * graphics resources.
-   *
-   * Download buffers can be particularly expensive to create, so it is good
-   * practice to reuse them if data will be downloaded regularly.
-   *
-   * There are optional properties that can be provided through `props`. These
-   * are the supported properties:
-   *
-   * - `SDL_PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING`: a name that can be
-   *   displayed in debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the transfer buffer to
-   *                   create.
-   * @post a transfer buffer on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCopyPass.UploadToGPUBuffer
-   * @sa GPUCopyPass.DownloadFromGPUBuffer
-   * @sa GPUCopyPass.UploadToGPUTexture
-   * @sa GPUCopyPass.DownloadFromGPUTexture
-   * @sa GPUDevice.ReleaseGPUTransferBuffer
-   */
-  GPUTransferBuffer(GPUDeviceParam device,
-                    const GPUTransferBufferCreateInfo* createinfo)
-    : m_gPUTransferBuffer(
-        CheckError(SDL_CreateGPUTransferBuffer(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUTransferBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUTransferBufferRaw gPUTransferBuffer) const
-  {
-    return operator==(GPUTransferBuffer(gPUTransferBuffer));
-  }
-
-  /**
-   * Unwraps to the underlying GPUTransferBuffer.
-   *
-   * @returns the underlying GPUTransferBufferRaw.
-   */
-  constexpr operator GPUTransferBufferRaw() const
-  {
-    return m_gPUTransferBuffer;
-  }
-};
-
-/**
- * An opaque handle representing a texture.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUTexture.GPUTexture
- * @sa GPUCopyPass.UploadToGPUTexture
- * @sa GPUCopyPass.DownloadFromGPUTexture
- * @sa GPUCopyPass.CopyGPUTextureToTexture
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUVertexStorageTextures
- * @sa GPURenderPass.BindGPUFragmentSamplers
- * @sa GPURenderPass.BindGPUFragmentStorageTextures
- * @sa GPUComputePass.BindGPUComputeStorageTextures
- * @sa GPUCommandBuffer.GenerateMipmapsForGPUTexture
- * @sa GPUCommandBuffer.BlitGPUTexture
- * @sa GPUDevice.ReleaseGPUTexture
- */
-class GPUTexture
-{
-  GPUTextureRaw m_gPUTexture;
-
-public:
-  /**
-   * Wraps GPUTexture.
-   *
-   * @param gPUTexture the value to be wrapped
-   */
-  constexpr GPUTexture(GPUTextureRaw gPUTexture = {})
-    : m_gPUTexture(gPUTexture)
-  {
-  }
-
-  /**
-   * Creates a texture object to be used in graphics or compute workflows.
-   *
-   * The contents of this texture are undefined until data is written to the
-   * texture.
-   *
-   * Note that certain combinations of usage flags are invalid. For example, a
-   * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
-   *
-   * If you request a sample count higher than the hardware supports, the
-   * implementation will automatically fall back to the highest available sample
-   * count.
-   *
-   * There are optional properties that can be provided through
-   * GPUTextureCreateInfo's `props`. These are the supported properties:
-   *
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
-   *   to a color with this red intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
-   *   to a color with this green intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
-   *   to a color with this blue intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT`: (Direct3D 12 only) if
-   *   the texture usage is SDL_GPU_TEXTUREUSAGE_COLOR_TARGET, clear the texture
-   *   to a color with this alpha intensity. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT`: (Direct3D 12 only)
-   *   if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, clear
-   *   the texture to a depth of this value. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER`: (Direct3D 12
-   *   only) if the texture usage is SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
-   *   clear the texture to a stencil of this Uint8 value. Defaults to zero.
-   * - `SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING`: a name that can be displayed
-   *   in debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the texture to create.
-   * @post a texture object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCopyPass.UploadToGPUTexture
-   * @sa GPUCopyPass.DownloadFromGPUTexture
-   * @sa GPURenderPass.BindGPUVertexSamplers
-   * @sa GPURenderPass.BindGPUVertexStorageTextures
-   * @sa GPURenderPass.BindGPUFragmentSamplers
-   * @sa GPURenderPass.BindGPUFragmentStorageTextures
-   * @sa GPUComputePass.BindGPUComputeStorageTextures
-   * @sa GPUCommandBuffer.BlitGPUTexture
-   * @sa GPUDevice.ReleaseGPUTexture
-   * @sa GPUDevice.GPUTextureSupportsFormat
-   */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo* createinfo)
-    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUTexture& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUTextureRaw gPUTexture) const
-  {
-    return operator==(GPUTexture(gPUTexture));
-  }
-
-  /**
-   * Unwraps to the underlying GPUTexture.
-   *
-   * @returns the underlying GPUTextureRaw.
-   */
-  constexpr operator GPUTextureRaw() const { return m_gPUTexture; }
-};
-
-/**
- * An opaque handle representing a sampler.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUSampler.GPUSampler
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUFragmentSamplers
- * @sa GPUDevice.ReleaseGPUSampler
- */
-class GPUSampler
-{
-  GPUSamplerRaw m_gPUSampler;
-
-public:
-  /**
-   * Wraps GPUSampler.
-   *
-   * @param gPUSampler the value to be wrapped
-   */
-  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {})
-    : m_gPUSampler(gPUSampler)
-  {
-  }
-
-  /**
-   * Creates a sampler object to be used when binding textures in a graphics
-   * workflow.
-   *
-   * There are optional properties that can be provided through `props`. These
-   * are the supported properties:
-   *
-   * - `SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING`: a name that can be displayed
-   *   in debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the sampler to create.
-   * @post a sampler object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPURenderPass.BindGPUVertexSamplers
-   * @sa GPURenderPass.BindGPUFragmentSamplers
-   * @sa GPUDevice.ReleaseGPUSampler
-   */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo* createinfo)
-    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUSampler& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUSamplerRaw gPUSampler) const
-  {
-    return operator==(GPUSampler(gPUSampler));
-  }
-
-  /**
-   * Unwraps to the underlying GPUSampler.
-   *
-   * @returns the underlying GPUSamplerRaw.
-   */
-  constexpr operator GPUSamplerRaw() const { return m_gPUSampler; }
-};
-
-/**
- * An opaque handle representing a compiled shader object.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUShader.GPUShader
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPUDevice.ReleaseGPUShader
- */
-class GPUShader
-{
-  GPUShaderRaw m_gPUShader;
-
-public:
-  /**
-   * Wraps GPUShader.
-   *
-   * @param gPUShader the value to be wrapped
-   */
-  constexpr GPUShader(GPUShaderRaw gPUShader = {})
-    : m_gPUShader(gPUShader)
-  {
-  }
-
-  /**
-   * Creates a shader to be used when creating a graphics pipeline.
-   *
-   * Shader resource bindings must be authored to follow a particular order
-   * depending on the shader format.
-   *
-   * For SPIR-V shaders, use the following resource sets:
-   *
-   * For vertex shaders:
-   *
-   * - 0: Sampled textures, followed by storage textures, followed by storage
-   *   buffers
-   * - 1: Uniform buffers
-   *
-   * For fragment shaders:
-   *
-   * - 2: Sampled textures, followed by storage textures, followed by storage
-   *   buffers
-   * - 3: Uniform buffers
-   *
-   * For DXBC and DXIL shaders, use the following register order:
-   *
-   * For vertex shaders:
-   *
-   * - (t[n], space0): Sampled textures, followed by storage textures, followed
-   *   by storage buffers
-   * - (s[n], space0): Samplers with indices corresponding to the sampled
-   *   textures
-   * - (b[n], space1): Uniform buffers
-   *
-   * For pixel shaders:
-   *
-   * - (t[n], space2): Sampled textures, followed by storage textures, followed
-   *   by storage buffers
-   * - (s[n], space2): Samplers with indices corresponding to the sampled
-   *   textures
-   * - (b[n], space3): Uniform buffers
-   *
-   * For MSL/metallib, use the following order:
-   *
-   * - [[texture]]: Sampled textures, followed by storage textures
-   * - [[sampler]]: Samplers with indices corresponding to the sampled textures
-   * - [[buffer]]: Uniform buffers, followed by storage buffers. Vertex buffer 0
-   *   is bound at [[buffer(14)]], vertex buffer 1 at [[buffer(15)]], and so on.
-   *   Rather than manually authoring vertex buffer indices, use the
-   *   [[stage_in]] attribute which will automatically use the vertex input
-   *   information from the GPUGraphicsPipeline.
-   *
-   * Shader semantics other than system-value semantics do not matter in D3D12
-   * and for ease of use the SDL implementation assumes that non system-value
-   * semantics will all be TEXCOORD. If you are using HLSL as the shader source
-   * language, your vertex semantics should start at TEXCOORD0 and increment
-   * like so: TEXCOORD1, TEXCOORD2, etc. If you wish to change the semantic
-   * prefix to something other than TEXCOORD you can use
-   * SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING with
-   * GPUDevice.GPUDevice().
-   *
-   * There are optional properties that can be provided through `props`. These
-   * are the supported properties:
-   *
-   * - `SDL_PROP_GPU_SHADER_CREATE_NAME_STRING`: a name that can be displayed in
-   *   debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the shader to create.
-   * @post a shader object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
-   * @sa GPUDevice.ReleaseGPUShader
-   */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo* createinfo)
-    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUShader& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUShaderRaw gPUShader) const
-  {
-    return operator==(GPUShader(gPUShader));
-  }
-
-  /**
-   * Unwraps to the underlying GPUShader.
-   *
-   * @returns the underlying GPUShaderRaw.
-   */
-  constexpr operator GPUShaderRaw() const { return m_gPUShader; }
-};
-
-/**
- * An opaque handle representing a compute pipeline.
- *
- * Used during compute passes.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUComputePipeline.GPUComputePipeline
- * @sa GPUComputePass.BindGPUComputePipeline
- * @sa GPUDevice.ReleaseGPUComputePipeline
- */
-class GPUComputePipeline
-{
-  GPUComputePipelineRaw m_gPUComputePipeline;
-
-public:
-  /**
-   * Wraps GPUComputePipeline.
-   *
-   * @param gPUComputePipeline the value to be wrapped
-   */
-  constexpr GPUComputePipeline(GPUComputePipelineRaw gPUComputePipeline = {})
-    : m_gPUComputePipeline(gPUComputePipeline)
-  {
-  }
-
-  /**
-   * Creates a pipeline object to be used in a compute workflow.
-   *
-   * Shader resource bindings must be authored to follow a particular order
-   * depending on the shader format.
-   *
-   * For SPIR-V shaders, use the following resource sets:
-   *
-   * - 0: Sampled textures, followed by read-only storage textures, followed by
-   *   read-only storage buffers
-   * - 1: Read-write storage textures, followed by read-write storage buffers
-   * - 2: Uniform buffers
-   *
-   * For DXBC and DXIL shaders, use the following register order:
-   *
-   * - (t[n], space0): Sampled textures, followed by read-only storage textures,
-   *   followed by read-only storage buffers
-   * - (u[n], space1): Read-write storage textures, followed by read-write
-   *   storage buffers
-   * - (b[n], space2): Uniform buffers
-   *
-   * For MSL/metallib, use the following order:
-   *
-   * - [[buffer]]: Uniform buffers, followed by read-only storage buffers,
-   *   followed by read-write storage buffers
-   * - [[texture]]: Sampled textures, followed by read-only storage textures,
-   *   followed by read-write storage textures
-   *
-   * There are optional properties that can be provided through `props`. These
-   * are the supported properties:
-   *
-   * - `SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING`: a name that can be
-   *   displayed in debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the compute pipeline to
-   *                   create.
-   * @post a compute pipeline object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUComputePass.BindGPUComputePipeline
-   * @sa GPUDevice.ReleaseGPUComputePipeline
-   */
-  GPUComputePipeline(GPUDeviceParam device,
-                     const GPUComputePipelineCreateInfo* createinfo)
-    : m_gPUComputePipeline(
-        CheckError(SDL_CreateGPUComputePipeline(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUComputePipeline& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUComputePipelineRaw gPUComputePipeline) const
-  {
-    return operator==(GPUComputePipeline(gPUComputePipeline));
-  }
-
-  /**
-   * Unwraps to the underlying GPUComputePipeline.
-   *
-   * @returns the underlying GPUComputePipelineRaw.
-   */
-  constexpr operator GPUComputePipelineRaw() const
-  {
-    return m_gPUComputePipeline;
-  }
-};
-
-/**
- * An opaque handle representing a graphics pipeline.
- *
- * Used during render passes.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPURenderPass.BindGPUGraphicsPipeline
- * @sa GPUDevice.ReleaseGPUGraphicsPipeline
- */
-class GPUGraphicsPipeline
-{
-  GPUGraphicsPipelineRaw m_gPUGraphicsPipeline;
-
-public:
-  /**
-   * Wraps GPUGraphicsPipeline.
-   *
-   * @param gPUGraphicsPipeline the value to be wrapped
-   */
-  constexpr GPUGraphicsPipeline(GPUGraphicsPipelineRaw gPUGraphicsPipeline = {})
-    : m_gPUGraphicsPipeline(gPUGraphicsPipeline)
-  {
-  }
-
-  /**
-   * Creates a pipeline object to be used in a graphics workflow.
-   *
-   * There are optional properties that can be provided through `props`. These
-   * are the supported properties:
-   *
-   * - `SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING`: a name that can be
-   *   displayed in debugging tools.
-   *
-   * @param device a GPU Context.
-   * @param createinfo a struct describing the state of the graphics pipeline to
-   *                   create.
-   * @post a graphics pipeline object on success.
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   * @sa GPURenderPass.BindGPUGraphicsPipeline
-   * @sa GPUDevice.ReleaseGPUGraphicsPipeline
-   */
-  GPUGraphicsPipeline(GPUDeviceParam device,
-                      const GPUGraphicsPipelineCreateInfo* createinfo)
-    : m_gPUGraphicsPipeline(
-        CheckError(SDL_CreateGPUGraphicsPipeline(device, createinfo)))
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUGraphicsPipeline& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUGraphicsPipelineRaw gPUGraphicsPipeline) const
-  {
-    return operator==(GPUGraphicsPipeline(gPUGraphicsPipeline));
-  }
-
-  /**
-   * Unwraps to the underlying GPUGraphicsPipeline.
-   *
-   * @returns the underlying GPUGraphicsPipelineRaw.
-   */
-  constexpr operator GPUGraphicsPipelineRaw() const
-  {
-    return m_gPUGraphicsPipeline;
-  }
-};
-
-/**
- * An opaque handle representing a command buffer.
- *
- * Most state is managed via command buffers. When setting state using a
- * command buffer, that state is local to the command buffer.
- *
- * Commands only begin execution on the GPU once GPUCommandBuffer.Submit is
- * called. Once the command buffer is submitted, it is no longer valid to use
- * it.
- *
- * Command buffers are executed in submission order. If you submit command
- * buffer A and then command buffer B all commands in A will begin executing
- * before any command in B begins executing.
- *
- * In multi-threading scenarios, you should only access a command buffer on
- * the thread you acquired it from.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUDevice.AcquireGPUCommandBuffer
- * @sa GPUCommandBuffer.Submit
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
- */
-class GPUCommandBuffer
-{
-  GPUCommandBufferRaw m_gPUCommandBuffer;
-
-public:
-  /**
-   * Wraps GPUCommandBuffer.
-   *
-   * @param gPUCommandBuffer the value to be wrapped
-   */
-  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
-    : m_gPUCommandBuffer(gPUCommandBuffer)
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUCommandBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUCommandBufferRaw gPUCommandBuffer) const
-  {
-    return operator==(GPUCommandBuffer(gPUCommandBuffer));
-  }
-
-  /**
-   * Unwraps to the underlying GPUCommandBuffer.
-   *
-   * @returns the underlying GPUCommandBufferRaw.
-   */
-  constexpr operator GPUCommandBufferRaw() const { return m_gPUCommandBuffer; }
-
-  /**
-   * Inserts an arbitrary string label into the command buffer callstream.
-   *
-   * Useful for debugging.
-   *
-   * @param text a UTF-8 string constant to insert as the label.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void InsertGPUDebugLabel(StringParam text);
-
-  /**
-   * Begins a debug group with an arbitrary name.
-   *
-   * Used for denoting groups of calls when viewing the command buffer
-   * callstream in a graphics debugging tool.
-   *
-   * Each call to GPUCommandBuffer.PushGPUDebugGroup must have a corresponding
-   * call to GPUCommandBuffer.PopGPUDebugGroup.
-   *
-   * On some backends (e.g. Metal), pushing a debug group during a
-   * render/blit/compute pass will create a group that is scoped to the native
-   * pass rather than the command buffer. For best results, if you push a debug
-   * group during a pass, always pop it in the same pass.
-   *
-   * @param name a UTF-8 string constant that names the group.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCommandBuffer.PopGPUDebugGroup
-   */
-  void PushGPUDebugGroup(StringParam name);
-
-  /**
-   * Ends the most-recently pushed debug group.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCommandBuffer.PushGPUDebugGroup
-   */
-  void PopGPUDebugGroup();
-
-  /**
-   * Pushes data to a vertex uniform slot on the command buffer.
-   *
-   * Subsequent draw calls will use this uniform data.
-   *
-   * The data being pushed must respect std140 layout conventions. In practical
-   * terms this means you must ensure that vec3 and vec4 fields are 16-byte
-   * aligned.
-   *
-   * @param slot_index the vertex uniform slot to push data to.
-   * @param data client data to write.
-   * @param length the length of the data to write.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void PushGPUVertexUniformData(Uint32 slot_index,
-                                const void* data,
-                                Uint32 length);
-
-  /**
-   * Pushes data to a fragment uniform slot on the command buffer.
-   *
-   * Subsequent draw calls will use this uniform data.
-   *
-   * The data being pushed must respect std140 layout conventions. In practical
-   * terms this means you must ensure that vec3 and vec4 fields are 16-byte
-   * aligned.
-   *
-   * @param slot_index the fragment uniform slot to push data to.
-   * @param data client data to write.
-   * @param length the length of the data to write.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void PushGPUFragmentUniformData(Uint32 slot_index,
-                                  const void* data,
-                                  Uint32 length);
-
-  /**
-   * Pushes data to a uniform slot on the command buffer.
-   *
-   * Subsequent draw calls will use this uniform data.
-   *
-   * The data being pushed must respect std140 layout conventions. In practical
-   * terms this means you must ensure that vec3 and vec4 fields are 16-byte
-   * aligned.
-   *
-   * @param slot_index the uniform slot to push data to.
-   * @param data client data to write.
-   * @param length the length of the data to write.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void PushGPUComputeUniformData(Uint32 slot_index,
-                                 const void* data,
-                                 Uint32 length);
-
-  /**
-   * Begins a render pass on a command buffer.
-   *
-   * A render pass consists of a set of texture subresources (or depth slices in
-   * the 3D texture case) which will be rendered to during the render pass,
-   * along with corresponding clear values and load/store operations. All
-   * operations related to graphics pipelines must take place inside of a render
-   * pass. A default viewport and scissor state are automatically set when this
-   * is called. You cannot begin another render pass, or begin a compute pass or
-   * copy pass until you have ended the render pass.
-   *
-   * @param color_target_infos an array of texture subresources with
-   *                           corresponding clear values and load/store ops.
-   * @param num_color_targets the number of color targets in the
-   *                          color_target_infos array.
-   * @param depth_stencil_target_info a texture subresource with corresponding
-   *                                  clear value and load/store ops, may be
-   *                                  nullptr.
-   * @returns a render pass handle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPURenderPass.End
-   */
-  GPURenderPass BeginGPURenderPass(
-    const GPUColorTargetInfo* color_target_infos,
-    Uint32 num_color_targets,
-    const GPUDepthStencilTargetInfo* depth_stencil_target_info);
-
-  /**
-   * Begins a compute pass on a command buffer.
-   *
-   * A compute pass is defined by a set of texture subresources and buffers that
-   * may be written to by compute pipelines. These textures and buffers must
-   * have been created with the COMPUTE_STORAGE_WRITE bit or the
-   * COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE bit. If you do not create a texture
-   * with COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE, you must not read from the
-   * texture in the compute pass. All operations related to compute pipelines
-   * must take place inside of a compute pass. You must not begin another
-   * compute pass, or a render pass or copy pass before ending the compute pass.
-   *
-   * A VERY IMPORTANT NOTE - Reads and writes in compute passes are NOT
-   * implicitly synchronized. This means you may cause data races by both
-   * reading and writing a resource region in a compute pass, or by writing
-   * multiple times to a resource region. If your compute work depends on
-   * reading the completed output from a previous dispatch, you MUST end the
-   * current compute pass and begin a new one before you can safely access the
-   * data. Otherwise you will receive unexpected results. Reading and writing a
-   * texture in the same compute pass is only supported by specific texture
-   * formats. Make sure you check the format support!
-   *
-   * @param storage_texture_bindings an array of writeable storage texture
-   *                                 binding structs.
-   * @param num_storage_texture_bindings the number of storage textures to bind
-   *                                     from the array.
-   * @param storage_buffer_bindings an array of writeable storage buffer binding
-   *                                structs.
-   * @param num_storage_buffer_bindings the number of storage buffers to bind
-   *                                    from the array.
-   * @returns a compute pass handle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUComputePass.End
-   */
-  GPUComputePass BeginGPUComputePass(
-    const GPUStorageTextureReadWriteBinding* storage_texture_bindings,
-    Uint32 num_storage_texture_bindings,
-    const GPUStorageBufferReadWriteBinding* storage_buffer_bindings,
-    Uint32 num_storage_buffer_bindings);
-
-  /**
-   * Begins a copy pass on a command buffer.
-   *
-   * All operations related to copying to or from buffers or textures take place
-   * inside a copy pass. You must not begin another copy pass, or a render pass
-   * or compute pass before ending the copy pass.
-   *
-   * @returns a copy pass handle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  GPUCopyPass BeginGPUCopyPass();
-
-  /**
-   * Generates mipmaps for the given texture.
-   *
-   * This function must not be called inside of any pass.
-   *
-   * @param texture a texture with more than 1 mip level.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void GenerateMipmapsForGPUTexture(GPUTexture texture);
-
-  /**
-   * Blits from a source texture region to a destination texture region.
-   *
-   * This function must not be called inside of any pass.
-   *
-   * @param info the blit info struct containing the blit parameters.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void BlitGPUTexture(const GPUBlitInfo* info);
-
-  /**
-   * Acquire a texture to use in presentation.
-   *
-   * When a swapchain texture is acquired on a command buffer, it will
-   * automatically be submitted for presentation when the command buffer is
-   * submitted. The swapchain texture should only be referenced by the command
-   * buffer used to acquire it.
-   *
-   * This function will fill the swapchain texture handle with nullptr if too
-   * many frames are in flight. This is not an error.
-   *
-   * If you use this function, it is possible to create a situation where many
-   * command buffers are allocated while the rendering context waits for the GPU
-   * to catch up, which will cause memory usage to grow. You should use
-   * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() unless you know what
-   * you are doing with timing.
-   *
-   * The swapchain texture is managed by the implementation and must not be
-   * freed by the user. You MUST NOT call this function from any thread other
-   * than the one that created the window.
-   *
-   * @param window a window that has been claimed.
-   * @param swapchain_texture a pointer filled in with a swapchain texture
-   *                          handle.
-   * @param swapchain_texture_width a pointer filled in with the swapchain
-   *                                texture width, may be nullptr.
-   * @param swapchain_texture_height a pointer filled in with the swapchain
-   *                                 texture height, may be nullptr.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called from the thread that
-   *               created the window.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUDevice.ClaimWindowFor
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUCommandBuffer.Cancel
-   * @sa Window.GetSizeInPixels
-   * @sa GPUDevice.WaitForGPUSwapchain
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUDevice.SetGPUAllowedFramesInFlight
-   */
-  void AcquireGPUSwapchainTexture(WindowParam window,
-                                  SDL_GPUTexture** swapchain_texture,
-                                  Uint32* swapchain_texture_width,
-                                  Uint32* swapchain_texture_height);
-
-  /**
-   * Blocks the thread until a swapchain texture is available to be acquired,
-   * and then acquires it.
-   *
-   * When a swapchain texture is acquired on a command buffer, it will
-   * automatically be submitted for presentation when the command buffer is
-   * submitted. The swapchain texture should only be referenced by the command
-   * buffer used to acquire it. It is an error to call
-   * GPUCommandBuffer.Cancel() after a swapchain texture is acquired.
-   *
-   * This function can fill the swapchain texture handle with nullptr in certain
-   * cases, for example if the window is minimized. This is not an error. You
-   * should always make sure to check whether the pointer is nullptr before
-   * actually using it.
-   *
-   * The swapchain texture is managed by the implementation and must not be
-   * freed by the user. You MUST NOT call this function from any thread other
-   * than the one that created the window.
-   *
-   * The swapchain texture is write-only and cannot be used as a sampler or for
-   * another reading operation.
-   *
-   * @param window a window that has been claimed.
-   * @param swapchain_texture a pointer filled in with a swapchain texture
-   *                          handle.
-   * @param swapchain_texture_width a pointer filled in with the swapchain
-   *                                texture width, may be nullptr.
-   * @param swapchain_texture_height a pointer filled in with the swapchain
-   *                                 texture height, may be nullptr.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called from the thread that
-   *               created the window.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
-   */
-  void WaitAndAcquireGPUSwapchainTexture(WindowParam window,
-                                         SDL_GPUTexture** swapchain_texture,
-                                         Uint32* swapchain_texture_width,
-                                         Uint32* swapchain_texture_height);
-
-  /**
-   * Submits a command buffer so its commands can be processed on the GPU.
-   *
-   * It is invalid to use the command buffer after this is called.
-   *
-   * This must be called from the thread the command buffer was acquired on.
-   *
-   * All commands in the submission are guaranteed to begin executing before any
-   * command in a subsequent submission begins executing.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUDevice.AcquireGPUCommandBuffer
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   */
-  void Submit();
-
-  /**
-   * Submits a command buffer so its commands can be processed on the GPU, and
-   * acquires a fence associated with the command buffer.
-   *
-   * You must release this fence when it is no longer needed or it will cause a
-   * leak. It is invalid to use the command buffer after this is called.
-   *
-   * This must be called from the thread the command buffer was acquired on.
-   *
-   * All commands in the submission are guaranteed to begin executing before any
-   * command in a subsequent submission begins executing.
-   *
-   * @returns a fence associated with the command buffer, or nullptr on failure;
-   *          call GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUDevice.AcquireGPUCommandBuffer
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.Submit
-   * @sa GPUDevice.ReleaseGPUFence
-   */
-  GPUFence* SubmitAndAcquireFence();
-
-  /**
-   * Cancels a command buffer.
-   *
-   * None of the enqueued commands are executed.
-   *
-   * It is an error to call this function after a swapchain texture has been
-   * acquired.
-   *
-   * This must be called from the thread the command buffer was acquired on.
-   *
-   * You must not reference the command buffer after calling this function.
-   *
-   * @throws Error on failure.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUDevice.AcquireGPUCommandBuffer
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
-   */
-  void Cancel();
-};
-
-/**
- * An opaque handle representing a render pass.
- *
- * This handle is transient and should not be held or referenced after
- * GPURenderPass.End is called.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPURenderPass
- * @sa GPURenderPass.End
- */
-class GPURenderPass
-{
-  GPURenderPassRaw m_gPURenderPass;
-
-public:
-  /**
-   * Wraps GPURenderPass.
-   *
-   * @param gPURenderPass the value to be wrapped
-   */
-  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
-    : m_gPURenderPass(gPURenderPass)
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPURenderPass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPURenderPassRaw gPURenderPass) const
-  {
-    return operator==(GPURenderPass(gPURenderPass));
-  }
-
-  /**
-   * Unwraps to the underlying GPURenderPass.
-   *
-   * @returns the underlying GPURenderPassRaw.
-   */
-  constexpr operator GPURenderPassRaw() const { return m_gPURenderPass; }
-
-  /**
-   * Binds a graphics pipeline on a render pass to be used in rendering.
-   *
-   * A graphics pipeline must be bound before making any draw calls.
-   *
-   * @param graphics_pipeline the graphics pipeline to bind.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void BindGPUGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
-
-  /**
-   * Sets the current viewport state on a command buffer.
-   *
-   * @param viewport the viewport to set.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void SetGPUViewport(const GPUViewport* viewport);
-
-  /**
-   * Sets the current scissor state on a command buffer.
-   *
-   * @param scissor the scissor area to set.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void SetGPUScissor(const RectRaw& scissor);
-
-  /**
-   * Sets the current blend constants on a command buffer.
-   *
-   * @param blend_constants the blend constant color.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPU_BLENDFACTOR_CONSTANT_COLOR
-   * @sa GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR
-   */
-  void SetGPUBlendConstants(FColorRaw blend_constants);
-
-  /**
-   * Sets the current stencil reference value on a command buffer.
-   *
-   * @param reference the stencil reference value to set.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void SetGPUStencilReference(Uint8 reference);
-
-  /**
-   * Binds vertex buffers on a command buffer for use with subsequent draw
-   * calls.
-   *
-   * @param first_slot the vertex buffer slot to begin binding from.
-   * @param bindings an array of GPUBufferBinding structs containing vertex
-   *                 buffers and offset values.
-   * @param num_bindings the number of bindings in the bindings array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void BindGPUVertexBuffers(Uint32 first_slot,
-                            const GPUBufferBinding* bindings,
-                            Uint32 num_bindings);
-
-  /**
-   * Binds an index buffer on a command buffer for use with subsequent draw
-   * calls.
-   *
-   * @param binding a pointer to a struct containing an index buffer and offset.
-   * @param index_element_size whether the index values in the buffer are 16- or
-   *                           32-bit.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void BindGPUIndexBuffer(const GPUBufferBinding* binding,
-                          GPUIndexElementSize index_element_size);
-
-  /**
-   * Binds texture-sampler pairs for use on the vertex shader.
-   *
-   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the vertex sampler slot to begin binding from.
-   * @param texture_sampler_bindings an array of texture-sampler binding
-   *                                 structs.
-   * @param num_bindings the number of texture-sampler pairs to bind from the
-   *                     array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUVertexSamplers(
-    Uint32 first_slot,
-    const GPUTextureSamplerBinding* texture_sampler_bindings,
-    Uint32 num_bindings);
-
-  /**
-   * Binds storage textures for use on the vertex shader.
-   *
-   * These textures must have been created with
-   * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the vertex storage texture slot to begin binding from.
-   * @param storage_textures an array of storage textures.
-   * @param num_bindings the number of storage texture to bind from the array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUVertexStorageTextures(Uint32 first_slot,
-                                    SDL_GPUTexture* const* storage_textures,
-                                    Uint32 num_bindings);
-
-  /**
-   * Binds storage buffers for use on the vertex shader.
-   *
-   * These buffers must have been created with
-   * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the vertex storage buffer slot to begin binding from.
-   * @param storage_buffers an array of buffers.
-   * @param num_bindings the number of buffers to bind from the array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUVertexStorageBuffers(Uint32 first_slot,
-                                   SDL_GPUBuffer* const* storage_buffers,
-                                   Uint32 num_bindings);
-
-  /**
-   * Binds texture-sampler pairs for use on the fragment shader.
-   *
-   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the fragment sampler slot to begin binding from.
-   * @param texture_sampler_bindings an array of texture-sampler binding
-   *                                 structs.
-   * @param num_bindings the number of texture-sampler pairs to bind from the
-   *                     array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUFragmentSamplers(
-    Uint32 first_slot,
-    const GPUTextureSamplerBinding* texture_sampler_bindings,
-    Uint32 num_bindings);
-
-  /**
-   * Binds storage textures for use on the fragment shader.
-   *
-   * These textures must have been created with
-   * SDL_GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the fragment storage texture slot to begin binding from.
-   * @param storage_textures an array of storage textures.
-   * @param num_bindings the number of storage textures to bind from the array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUFragmentStorageTextures(Uint32 first_slot,
-                                      SDL_GPUTexture* const* storage_textures,
-                                      Uint32 num_bindings);
-
-  /**
-   * Binds storage buffers for use on the fragment shader.
-   *
-   * These buffers must have been created with
-   * SDL_GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the fragment storage buffer slot to begin binding from.
-   * @param storage_buffers an array of storage buffers.
-   * @param num_bindings the number of storage buffers to bind from the array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUFragmentStorageBuffers(Uint32 first_slot,
-                                     SDL_GPUBuffer* const* storage_buffers,
-                                     Uint32 num_bindings);
-
-  /**
-   * Draws data using bound graphics state with an index buffer and instancing
-   * enabled.
-   *
-   * You must not call this function before binding a graphics pipeline.
-   *
-   * Note that the `first_vertex` and `first_instance` parameters are NOT
-   * compatible with built-in vertex/instance ID variables in shaders (for
-   * example, SV_VertexID); GPU APIs and shader languages do not define these
-   * built-in variables consistently, so if your shader depends on them, the
-   * only way to keep behavior consistent and portable is to always pass 0 for
-   * the correlating parameter in the draw calls.
-   *
-   * @param num_indices the number of indices to draw per instance.
-   * @param num_instances the number of instances to draw.
-   * @param first_index the starting index within the index buffer.
-   * @param vertex_offset value added to vertex index before indexing into the
-   *                      vertex buffer.
-   * @param first_instance the ID of the first instance to draw.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DrawGPUIndexedPrimitives(Uint32 num_indices,
-                                Uint32 num_instances,
-                                Uint32 first_index,
-                                Sint32 vertex_offset,
-                                Uint32 first_instance);
-
-  /**
-   * Draws data using bound graphics state.
-   *
-   * You must not call this function before binding a graphics pipeline.
-   *
-   * Note that the `first_vertex` and `first_instance` parameters are NOT
-   * compatible with built-in vertex/instance ID variables in shaders (for
-   * example, SV_VertexID); GPU APIs and shader languages do not define these
-   * built-in variables consistently, so if your shader depends on them, the
-   * only way to keep behavior consistent and portable is to always pass 0 for
-   * the correlating parameter in the draw calls.
-   *
-   * @param num_vertices the number of vertices to draw.
-   * @param num_instances the number of instances that will be drawn.
-   * @param first_vertex the index of the first vertex to draw.
-   * @param first_instance the ID of the first instance to draw.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DrawGPUPrimitives(Uint32 num_vertices,
-                         Uint32 num_instances,
-                         Uint32 first_vertex,
-                         Uint32 first_instance);
-
-  /**
-   * Draws data using bound graphics state and with draw parameters set from a
-   * buffer.
-   *
-   * The buffer must consist of tightly-packed draw parameter sets that each
-   * match the layout of GPUIndirectDrawCommand. You must not call this
-   * function before binding a graphics pipeline.
-   *
-   * @param buffer a buffer containing draw parameters.
-   * @param offset the offset to start reading from the draw buffer.
-   * @param draw_count the number of draw parameter sets that should be read
-   *                   from the draw buffer.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DrawGPUPrimitivesIndirect(GPUBuffer buffer,
-                                 Uint32 offset,
-                                 Uint32 draw_count);
-
-  /**
-   * Draws data using bound graphics state with an index buffer enabled and with
-   * draw parameters set from a buffer.
-   *
-   * The buffer must consist of tightly-packed draw parameter sets that each
-   * match the layout of GPUIndexedIndirectDrawCommand. You must not call
-   * this function before binding a graphics pipeline.
-   *
-   * @param buffer a buffer containing draw parameters.
-   * @param offset the offset to start reading from the draw buffer.
-   * @param draw_count the number of draw parameter sets that should be read
-   *                   from the draw buffer.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DrawGPUIndexedPrimitivesIndirect(GPUBuffer buffer,
-                                        Uint32 offset,
-                                        Uint32 draw_count);
-
-  /**
-   * Ends the given render pass.
-   *
-   * All bound graphics state on the render pass command buffer is unset. The
-   * render pass handle is now invalid.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void End();
-};
-
-/**
- * An opaque handle representing a compute pass.
- *
- * This handle is transient and should not be held or referenced after
- * GPUComputePass.End is called.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPUComputePass
- * @sa GPUComputePass.End
- */
-class GPUComputePass
-{
-  GPUComputePassRaw m_gPUComputePass;
-
-public:
-  /**
-   * Wraps GPUComputePass.
-   *
-   * @param gPUComputePass the value to be wrapped
-   */
-  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {})
-    : m_gPUComputePass(gPUComputePass)
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUComputePass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUComputePassRaw gPUComputePass) const
-  {
-    return operator==(GPUComputePass(gPUComputePass));
-  }
-
-  /**
-   * Unwraps to the underlying GPUComputePass.
-   *
-   * @returns the underlying GPUComputePassRaw.
-   */
-  constexpr operator GPUComputePassRaw() const { return m_gPUComputePass; }
-
-  /**
-   * Binds a compute pipeline on a command buffer for use in compute dispatch.
-   *
-   * @param compute_pipeline a compute pipeline to bind.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void BindGPUComputePipeline(GPUComputePipeline compute_pipeline);
-
-  /**
-   * Binds texture-sampler pairs for use on the compute shader.
-   *
-   * The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the compute sampler slot to begin binding from.
-   * @param texture_sampler_bindings an array of texture-sampler binding
-   *                                 structs.
-   * @param num_bindings the number of texture-sampler bindings to bind from the
-   *                     array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUComputeSamplers(
-    Uint32 first_slot,
-    const GPUTextureSamplerBinding* texture_sampler_bindings,
-    Uint32 num_bindings);
-
-  /**
-   * Binds storage textures as readonly for use on the compute pipeline.
-   *
-   * These textures must have been created with
-   * SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the compute storage texture slot to begin binding from.
-   * @param storage_textures an array of storage textures.
-   * @param num_bindings the number of storage textures to bind from the array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUComputeStorageTextures(Uint32 first_slot,
-                                     SDL_GPUTexture* const* storage_textures,
-                                     Uint32 num_bindings);
-
-  /**
-   * Binds storage buffers as readonly for use on the compute pipeline.
-   *
-   * These buffers must have been created with
-   * SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
-   *
-   * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
-   *
-   * @param first_slot the compute storage buffer slot to begin binding from.
-   * @param storage_buffers an array of storage buffer binding structs.
-   * @param num_bindings the number of storage buffers to bind from the array.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GPUShader.GPUShader
-   */
-  void BindGPUComputeStorageBuffers(Uint32 first_slot,
-                                    SDL_GPUBuffer* const* storage_buffers,
-                                    Uint32 num_bindings);
-
-  /**
-   * Dispatches compute work.
-   *
-   * You must not call this function before binding a compute pipeline.
-   *
-   * A VERY IMPORTANT NOTE If you dispatch multiple times in a compute pass, and
-   * the dispatches write to the same resource region as each other, there is no
-   * guarantee of which order the writes will occur. If the write order matters,
-   * you MUST end the compute pass and begin another one.
-   *
-   * @param groupcount_x number of local workgroups to dispatch in the X
-   *                     dimension.
-   * @param groupcount_y number of local workgroups to dispatch in the Y
-   *                     dimension.
-   * @param groupcount_z number of local workgroups to dispatch in the Z
-   *                     dimension.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DispatchGPUCompute(Uint32 groupcount_x,
-                          Uint32 groupcount_y,
-                          Uint32 groupcount_z);
-
-  /**
-   * Dispatches compute work with parameters set from a buffer.
-   *
-   * The buffer layout should match the layout of
-   * GPUIndirectDispatchCommand. You must not call this function before
-   * binding a compute pipeline.
-   *
-   * A VERY IMPORTANT NOTE If you dispatch multiple times in a compute pass, and
-   * the dispatches write to the same resource region as each other, there is no
-   * guarantee of which order the writes will occur. If the write order matters,
-   * you MUST end the compute pass and begin another one.
-   *
-   * @param buffer a buffer containing dispatch parameters.
-   * @param offset the offset to start reading from the dispatch buffer.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DispatchGPUComputeIndirect(GPUBuffer buffer, Uint32 offset);
-
-  /**
-   * Ends the current compute pass.
-   *
-   * All bound compute state on the command buffer is unset. The compute pass
-   * handle is now invalid.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void End();
-};
-
-/**
- * An opaque handle representing a copy pass.
- *
- * This handle is transient and should not be held or referenced after
- * GPUCopyPass.End is called.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPUCopyPass
- * @sa GPUCopyPass.End
- */
-class GPUCopyPass
-{
-  GPUCopyPassRaw m_gPUCopyPass;
-
-public:
-  /**
-   * Wraps GPUCopyPass.
-   *
-   * @param gPUCopyPass the value to be wrapped
-   */
-  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
-    : m_gPUCopyPass(gPUCopyPass)
-  {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUCopyPass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUCopyPassRaw gPUCopyPass) const
-  {
-    return operator==(GPUCopyPass(gPUCopyPass));
-  }
-
-  /**
-   * Unwraps to the underlying GPUCopyPass.
-   *
-   * @returns the underlying GPUCopyPassRaw.
-   */
-  constexpr operator GPUCopyPassRaw() const { return m_gPUCopyPass; }
-
-  /**
-   * Uploads data from a transfer buffer to a texture.
-   *
-   * The upload occurs on the GPU timeline. You may assume that the upload has
-   * finished in subsequent commands.
-   *
-   * You must align the data in the transfer buffer to a multiple of the texel
-   * size of the texture format.
-   *
-   * @param source the source transfer buffer with image layout information.
-   * @param destination the destination texture region.
-   * @param cycle if true, cycles the texture if the texture is bound, otherwise
-   *              overwrites the data.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void UploadToGPUTexture(const GPUTextureTransferInfo* source,
-                          const GPUTextureRegion* destination,
-                          bool cycle);
-
-  /**
-   * Uploads data from a transfer buffer to a buffer.
-   *
-   * The upload occurs on the GPU timeline. You may assume that the upload has
-   * finished in subsequent commands.
-   *
-   * @param source the source transfer buffer with offset.
-   * @param destination the destination buffer with offset and size.
-   * @param cycle if true, cycles the buffer if it is already bound, otherwise
-   *              overwrites the data.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void UploadToGPUBuffer(const GPUTransferBufferLocation* source,
-                         const GPUBufferRegion* destination,
-                         bool cycle);
-
-  /**
-   * Performs a texture-to-texture copy.
-   *
-   * This copy occurs on the GPU timeline. You may assume the copy has finished
-   * in subsequent commands.
-   *
-   * @param source a source texture region.
-   * @param destination a destination texture region.
-   * @param w the width of the region to copy.
-   * @param h the height of the region to copy.
-   * @param d the depth of the region to copy.
-   * @param cycle if true, cycles the destination texture if the destination
-   *              texture is bound, otherwise overwrites the data.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void CopyGPUTextureToTexture(const GPUTextureLocation* source,
-                               const GPUTextureLocation* destination,
-                               Uint32 w,
-                               Uint32 h,
-                               Uint32 d,
-                               bool cycle);
-
-  /**
-   * Performs a buffer-to-buffer copy.
-   *
-   * This copy occurs on the GPU timeline. You may assume the copy has finished
-   * in subsequent commands.
-   *
-   * @param source the buffer and offset to copy from.
-   * @param destination the buffer and offset to copy to.
-   * @param size the length of the buffer to copy.
-   * @param cycle if true, cycles the destination buffer if it is already bound,
-   *              otherwise overwrites the data.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void CopyGPUBufferToBuffer(const GPUBufferLocation* source,
-                             const GPUBufferLocation* destination,
-                             Uint32 size,
-                             bool cycle);
-
-  /**
-   * Copies data from a texture to a transfer buffer on the GPU timeline.
-   *
-   * This data is not guaranteed to be copied until the command buffer fence is
-   * signaled.
-   *
-   * @param source the source texture region.
-   * @param destination the destination transfer buffer with image layout
-   *                    information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DownloadFromGPUTexture(const GPUTextureRegion* source,
-                              const GPUTextureTransferInfo* destination);
-
-  /**
-   * Copies data from a buffer to a transfer buffer on the GPU timeline.
-   *
-   * This data is not guaranteed to be copied until the command buffer fence is
-   * signaled.
-   *
-   * @param source the source buffer with offset and size.
-   * @param destination the destination transfer buffer with offset.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void DownloadFromGPUBuffer(const GPUBufferRegion* source,
-                             const GPUTransferBufferLocation* destination);
-
-  /**
-   * Ends the current copy pass.
-   *
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void End();
-};
-
-/**
- * An opaque handle representing a fence.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUDevice.QueryGPUFence
- * @sa GPUDevice.WaitForGPUFences
- * @sa GPUDevice.ReleaseGPUFence
- */
-using GPUFence = SDL_GPUFence;
-
-/**
  * Specifies the primitive topology of a graphics pipeline.
  *
  * If you are using POINTLIST you must include a point size output in the
@@ -62843,445 +63720,6 @@ constexpr GPUStoreOp GPU_STOREOP_RESOLVE = SDL_GPU_STOREOP_RESOLVE;
 constexpr GPUStoreOp GPU_STOREOP_RESOLVE_AND_STORE =
   SDL_GPU_STOREOP_RESOLVE_AND_STORE;
 
-/**
- * Specifies the size of elements in an index buffer.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- */
-using GPUIndexElementSize = SDL_GPUIndexElementSize;
-
-constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_16BIT =
-  SDL_GPU_INDEXELEMENTSIZE_16BIT; ///< The index elements are 16-bit.
-
-constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_32BIT =
-  SDL_GPU_INDEXELEMENTSIZE_32BIT; ///< The index elements are 32-bit.
-
-/**
- * Specifies the pixel format of a texture.
- *
- * Texture format support varies depending on driver, hardware, and usage
- * flags. In general, you should use GPUDevice.GPUTextureSupportsFormat to query
- * if a format is supported before using it. However, there are a few guaranteed
- * formats.
- *
- * FIXME: Check universal support for 32-bit component formats FIXME: Check
- * universal support for SIMULTANEOUS_READ_WRITE
- *
- * For SAMPLER usage, the following formats are universally supported:
- *
- * - R8G8B8A8_UNORM
- * - B8G8R8A8_UNORM
- * - R8_UNORM
- * - R8_SNORM
- * - R8G8_UNORM
- * - R8G8_SNORM
- * - R8G8B8A8_SNORM
- * - R16_FLOAT
- * - R16G16_FLOAT
- * - R16G16B16A16_FLOAT
- * - R32_FLOAT
- * - R32G32_FLOAT
- * - R32G32B32A32_FLOAT
- * - R11G11B10_UFLOAT
- * - R8G8B8A8_UNORM_SRGB
- * - B8G8R8A8_UNORM_SRGB
- * - D16_UNORM
- *
- * For COLOR_TARGET usage, the following formats are universally supported:
- *
- * - R8G8B8A8_UNORM
- * - B8G8R8A8_UNORM
- * - R8_UNORM
- * - R16_FLOAT
- * - R16G16_FLOAT
- * - R16G16B16A16_FLOAT
- * - R32_FLOAT
- * - R32G32_FLOAT
- * - R32G32B32A32_FLOAT
- * - R8_UINT
- * - R8G8_UINT
- * - R8G8B8A8_UINT
- * - R16_UINT
- * - R16G16_UINT
- * - R16G16B16A16_UINT
- * - R8_INT
- * - R8G8_INT
- * - R8G8B8A8_INT
- * - R16_INT
- * - R16G16_INT
- * - R16G16B16A16_INT
- * - R8G8B8A8_UNORM_SRGB
- * - B8G8R8A8_UNORM_SRGB
- *
- * For STORAGE usages, the following formats are universally supported:
- *
- * - R8G8B8A8_UNORM
- * - R8G8B8A8_SNORM
- * - R16G16B16A16_FLOAT
- * - R32_FLOAT
- * - R32G32_FLOAT
- * - R32G32B32A32_FLOAT
- * - R8G8B8A8_UINT
- * - R16G16B16A16_UINT
- * - R8G8B8A8_INT
- * - R16G16B16A16_INT
- *
- * For DEPTH_STENCIL_TARGET usage, the following formats are universally
- * supported:
- *
- * - D16_UNORM
- * - Either (but not necessarily both!) D24_UNORM or D32_FLOAT
- * - Either (but not necessarily both!) D24_UNORM_S8_UINT or D32_FLOAT_S8_UINT
- *
- * Unless D16_UNORM is sufficient for your purposes, always check which of
- * D24/D32 is supported before creating a depth-stencil texture!
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa GPUTexture.GPUTexture
- * @sa GPUDevice.GPUTextureSupportsFormat
- */
-using GPUTextureFormat = SDL_GPUTextureFormat;
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_INVALID =
-  SDL_GPU_TEXTUREFORMAT_INVALID; ///< GPU_TEXTUREFORMAT_INVALID
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_A8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_A8_UNORM; ///< GPU_TEXTUREFORMAT_A8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R8_UNORM; ///< GPU_TEXTUREFORMAT_R8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R8G8_UNORM; ///< GPU_TEXTUREFORMAT_R8G8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM; ///< GPU_TEXTUREFORMAT_R8G8B8A8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R16_UNORM; ///< GPU_TEXTUREFORMAT_R16_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R16G16_UNORM; ///< GPU_TEXTUREFORMAT_R16G16_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_UNORM; ///< GPU_TEXTUREFORMAT_R16G16B16A16_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R10G10B10A2_UNORM =
-  SDL_GPU_TEXTUREFORMAT_R10G10B10A2_UNORM; ///< GPU_TEXTUREFORMAT_R10G10B10A2_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B5G6R5_UNORM =
-  SDL_GPU_TEXTUREFORMAT_B5G6R5_UNORM; ///< GPU_TEXTUREFORMAT_B5G6R5_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B5G5R5A1_UNORM =
-  SDL_GPU_TEXTUREFORMAT_B5G5R5A1_UNORM; ///< GPU_TEXTUREFORMAT_B5G5R5A1_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B4G4R4A4_UNORM =
-  SDL_GPU_TEXTUREFORMAT_B4G4R4A4_UNORM; ///< GPU_TEXTUREFORMAT_B4G4R4A4_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B8G8R8A8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_B8G8R8A8_UNORM; ///< GPU_TEXTUREFORMAT_B8G8R8A8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC1_RGBA_UNORM =
-  SDL_GPU_TEXTUREFORMAT_BC1_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC1_RGBA_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC2_RGBA_UNORM =
-  SDL_GPU_TEXTUREFORMAT_BC2_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC2_RGBA_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC3_RGBA_UNORM =
-  SDL_GPU_TEXTUREFORMAT_BC3_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC3_RGBA_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC4_R_UNORM =
-  SDL_GPU_TEXTUREFORMAT_BC4_R_UNORM; ///< GPU_TEXTUREFORMAT_BC4_R_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC5_RG_UNORM =
-  SDL_GPU_TEXTUREFORMAT_BC5_RG_UNORM; ///< GPU_TEXTUREFORMAT_BC5_RG_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC7_RGBA_UNORM =
-  SDL_GPU_TEXTUREFORMAT_BC7_RGBA_UNORM; ///< GPU_TEXTUREFORMAT_BC7_RGBA_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT; ///< GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT =
-  SDL_GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT; ///< GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_SNORM =
-  SDL_GPU_TEXTUREFORMAT_R8_SNORM; ///< GPU_TEXTUREFORMAT_R8_SNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_SNORM =
-  SDL_GPU_TEXTUREFORMAT_R8G8_SNORM; ///< GPU_TEXTUREFORMAT_R8G8_SNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_SNORM =
-  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_SNORM; ///< GPU_TEXTUREFORMAT_R8G8B8A8_SNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_SNORM =
-  SDL_GPU_TEXTUREFORMAT_R16_SNORM; ///< GPU_TEXTUREFORMAT_R16_SNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_SNORM =
-  SDL_GPU_TEXTUREFORMAT_R16G16_SNORM; ///< GPU_TEXTUREFORMAT_R16G16_SNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_SNORM =
-  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_SNORM; ///< GPU_TEXTUREFORMAT_R16G16B16A16_SNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_R16_FLOAT; ///< GPU_TEXTUREFORMAT_R16_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_R16G16_FLOAT; ///< GPU_TEXTUREFORMAT_R16G16_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT; ///< GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_R32_FLOAT; ///< GPU_TEXTUREFORMAT_R32_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_R32G32_FLOAT; ///< GPU_TEXTUREFORMAT_R32G32_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT; ///< GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R11G11B10_UFLOAT =
-  SDL_GPU_TEXTUREFORMAT_R11G11B10_UFLOAT; ///< GPU_TEXTUREFORMAT_R11G11B10_UFLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_UINT =
-  SDL_GPU_TEXTUREFORMAT_R8_UINT; ///< GPU_TEXTUREFORMAT_R8_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_UINT =
-  SDL_GPU_TEXTUREFORMAT_R8G8_UINT; ///< GPU_TEXTUREFORMAT_R8G8_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_UINT =
-  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UINT; ///< GPU_TEXTUREFORMAT_R8G8B8A8_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_UINT =
-  SDL_GPU_TEXTUREFORMAT_R16_UINT; ///< GPU_TEXTUREFORMAT_R16_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_UINT =
-  SDL_GPU_TEXTUREFORMAT_R16G16_UINT; ///< GPU_TEXTUREFORMAT_R16G16_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_UINT =
-  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_UINT; ///< GPU_TEXTUREFORMAT_R16G16B16A16_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32_UINT =
-  SDL_GPU_TEXTUREFORMAT_R32_UINT; ///< GPU_TEXTUREFORMAT_R32_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32_UINT =
-  SDL_GPU_TEXTUREFORMAT_R32G32_UINT; ///< GPU_TEXTUREFORMAT_R32G32_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32B32A32_UINT =
-  SDL_GPU_TEXTUREFORMAT_R32G32B32A32_UINT; ///< GPU_TEXTUREFORMAT_R32G32B32A32_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8_INT =
-  SDL_GPU_TEXTUREFORMAT_R8_INT; ///< GPU_TEXTUREFORMAT_R8_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8_INT =
-  SDL_GPU_TEXTUREFORMAT_R8G8_INT; ///< GPU_TEXTUREFORMAT_R8G8_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_INT =
-  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_INT; ///< GPU_TEXTUREFORMAT_R8G8B8A8_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16_INT =
-  SDL_GPU_TEXTUREFORMAT_R16_INT; ///< GPU_TEXTUREFORMAT_R16_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16_INT =
-  SDL_GPU_TEXTUREFORMAT_R16G16_INT; ///< GPU_TEXTUREFORMAT_R16G16_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R16G16B16A16_INT =
-  SDL_GPU_TEXTUREFORMAT_R16G16B16A16_INT; ///< GPU_TEXTUREFORMAT_R16G16B16A16_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32_INT =
-  SDL_GPU_TEXTUREFORMAT_R32_INT; ///< GPU_TEXTUREFORMAT_R32_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32_INT =
-  SDL_GPU_TEXTUREFORMAT_R32G32_INT; ///< GPU_TEXTUREFORMAT_R32G32_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R32G32B32A32_INT =
-  SDL_GPU_TEXTUREFORMAT_R32G32B32A32_INT; ///< GPU_TEXTUREFORMAT_R32G32B32A32_INT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D16_UNORM =
-  SDL_GPU_TEXTUREFORMAT_D16_UNORM; ///< GPU_TEXTUREFORMAT_D16_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D24_UNORM =
-  SDL_GPU_TEXTUREFORMAT_D24_UNORM; ///< GPU_TEXTUREFORMAT_D24_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D32_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_D32_FLOAT; ///< GPU_TEXTUREFORMAT_D32_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT =
-  SDL_GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT; ///< GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT =
-  SDL_GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT; ///< GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_4x4_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_4x4_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_4x4_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x4_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_5x4_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_5x4_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x5_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_5x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_5x5_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x5_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_6x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_6x5_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x6_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_6x6_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_6x6_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x5_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_8x5_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x6_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x6_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_8x6_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x8_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_8x8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x5_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x5_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x5_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x6_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x6_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x6_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x8_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x8_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x8_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x10_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x10_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_10x10_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x10_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_12x10_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_12x10_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_UNORM =
-  SDL_GPU_TEXTUREFORMAT_ASTC_12x12_UNORM; ///< GPU_TEXTUREFORMAT_ASTC_12x12_UNORM
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB =
-  SDL_GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB; ///< GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT
-
-constexpr GPUTextureFormat GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT =
-  SDL_GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT; ///< GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT
-
-/**
- * Specifies how a texture is intended to be used by the client.
- *
- * A texture must have at least one usage flag. Note that some usage flag
- * combinations are invalid.
- *
- * With regards to compute storage usage, READ | WRITE means that you can have
- * shader A that only writes into the texture and shader B that only reads
- * from the texture and bind the same texture to either shader respectively.
- * SIMULTANEOUS means that you can do reads and writes within the same shader
- * or compute pass. It also implies that atomic ops can be used, since those
- * are read-modify-write operations. If you use SIMULTANEOUS, you are
- * responsible for avoiding data races, as there is no data synchronization
- * within a compute pass. Note that SIMULTANEOUS usage is only supported by a
- * limited number of texture formats.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa GPUTexture.GPUTexture
- */
-using GPUTextureUsageFlags = SDL_GPUTextureUsageFlags;
-
 /// Texture supports sampling.
 #define SDL_GPU_TEXTUREUSAGE_SAMPLER (1u << 0)
 
@@ -63305,55 +63743,6 @@ using GPUTextureUsageFlags = SDL_GPUTextureUsageFlags;
  * equivalent to READ | WRITE.
  */
 #define SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE (1u << 6)
-
-/**
- * Specifies the type of a texture.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa GPUTexture.GPUTexture
- */
-using GPUTextureType = SDL_GPUTextureType;
-
-constexpr GPUTextureType GPU_TEXTURETYPE_2D =
-  SDL_GPU_TEXTURETYPE_2D; ///< The texture is a 2-dimensional image.
-
-constexpr GPUTextureType GPU_TEXTURETYPE_2D_ARRAY =
-  SDL_GPU_TEXTURETYPE_2D_ARRAY; ///< The texture is a 2-dimensional array image.
-
-constexpr GPUTextureType GPU_TEXTURETYPE_3D =
-  SDL_GPU_TEXTURETYPE_3D; ///< The texture is a 3-dimensional image.
-
-constexpr GPUTextureType GPU_TEXTURETYPE_CUBE =
-  SDL_GPU_TEXTURETYPE_CUBE; ///< The texture is a cube image.
-
-constexpr GPUTextureType GPU_TEXTURETYPE_CUBE_ARRAY =
-  SDL_GPU_TEXTURETYPE_CUBE_ARRAY; ///< The texture is a cube array image.
-
-/**
- * Specifies the sample count of a texture.
- *
- * Used in multisampling. Note that this value only applies when the texture
- * is used as a render target.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa GPUTexture.GPUTexture
- * @sa GPUDevice.GPUTextureSupportsSampleCount
- */
-using GPUSampleCount = SDL_GPUSampleCount;
-
-constexpr GPUSampleCount GPU_SAMPLECOUNT_1 =
-  SDL_GPU_SAMPLECOUNT_1; ///< No multisampling.
-
-constexpr GPUSampleCount GPU_SAMPLECOUNT_2 =
-  SDL_GPU_SAMPLECOUNT_2; ///< MSAA 2x.
-
-constexpr GPUSampleCount GPU_SAMPLECOUNT_4 =
-  SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x.
-
-constexpr GPUSampleCount GPU_SAMPLECOUNT_8 =
-  SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x.
 
 /**
  * Specifies the face of a cube map.
@@ -63451,17 +63840,6 @@ constexpr GPUShaderStage GPU_SHADERSTAGE_VERTEX =
 
 constexpr GPUShaderStage GPU_SHADERSTAGE_FRAGMENT =
   SDL_GPU_SHADERSTAGE_FRAGMENT; ///< GPU_SHADERSTAGE_FRAGMENT
-
-/**
- * Specifies the format of shader code.
- *
- * Each format corresponds to a specific backend that accepts it.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa GPUShader.GPUShader
- */
-using GPUShaderFormat = SDL_GPUShaderFormat;
 
 #define SDL_GPU_SHADERFORMAT_INVALID 0
 
@@ -63894,139 +64272,6 @@ constexpr GPUSamplerAddressMode GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE =
   SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
 /**
- * Specifies the timing that will be used to present swapchain textures to the
- * OS.
- *
- * VSYNC mode will always be supported. IMMEDIATE and MAILBOX modes may not be
- * supported on certain systems.
- *
- * It is recommended to query GPUDevice.WindowSupportsGPUPresentMode after
- * claiming the window if you wish to change the present mode to IMMEDIATE or
- * MAILBOX.
- *
- * - VSYNC: Waits for vblank before presenting. No tearing is possible. If
- *   there is a pending image to present, the new image is enqueued for
- *   presentation. Disallows tearing at the cost of visual latency.
- * - IMMEDIATE: Immediately presents. Lowest latency option, but tearing may
- *   occur.
- * - MAILBOX: Waits for vblank before presenting. No tearing is possible. If
- *   there is a pending image to present, the pending image is replaced by the
- *   new image. Similar to VSYNC, but with reduced visual latency.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa GPUDevice.SetGPUSwapchainParameters
- * @sa GPUDevice.WindowSupportsGPUPresentMode
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
- */
-using GPUPresentMode = SDL_GPUPresentMode;
-
-constexpr GPUPresentMode GPU_PRESENTMODE_VSYNC =
-  SDL_GPU_PRESENTMODE_VSYNC; ///< GPU_PRESENTMODE_VSYNC
-
-constexpr GPUPresentMode GPU_PRESENTMODE_IMMEDIATE =
-  SDL_GPU_PRESENTMODE_IMMEDIATE; ///< GPU_PRESENTMODE_IMMEDIATE
-
-constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
-  SDL_GPU_PRESENTMODE_MAILBOX; ///< GPU_PRESENTMODE_MAILBOX
-
-/**
- * Specifies the texture format and colorspace of the swapchain textures.
- *
- * SDR will always be supported. Other compositions may not be supported on
- * certain systems.
- *
- * It is recommended to query GPUDevice.WindowSupportsGPUSwapchainComposition
- * after claiming the window if you wish to change the swapchain composition
- * from SDR.
- *
- * - SDR: B8G8R8A8 or R8G8B8A8 swapchain. Pixel values are in sRGB encoding.
- * - SDR_LINEAR: B8G8R8A8_SRGB or R8G8B8A8_SRGB swapchain. Pixel values are
- *   stored in memory in sRGB encoding but accessed in shaders in "linear
- *   sRGB" encoding which is sRGB but with a linear transfer function.
- * - HDR_EXTENDED_LINEAR: R16G16B16A16_FLOAT swapchain. Pixel values are in
- *   extended linear sRGB encoding and permits values outside of the [0, 1]
- *   range.
- * - HDR10_ST2084: A2R10G10B10 or A2B10G10R10 swapchain. Pixel values are in
- *   BT.2020 ST2084 (PQ) encoding.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa GPUDevice.SetGPUSwapchainParameters
- * @sa GPUDevice.WindowSupportsGPUSwapchainComposition
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
- */
-using GPUSwapchainComposition = SDL_GPUSwapchainComposition;
-
-constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_SDR =
-  SDL_GPU_SWAPCHAINCOMPOSITION_SDR; ///< GPU_SWAPCHAINCOMPOSITION_SDR
-
-constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR =
-  SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR; ///< GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR
-
-constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR =
-  SDL_GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR; ///< GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR
-
-constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 =
-  SDL_GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084; ///< GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084
-
-/**
- * A structure specifying a viewport.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPURenderPass.SetGPUViewport
- */
-using GPUViewport = SDL_GPUViewport;
-
-/**
- * A structure specifying parameters related to transferring data to or from a
- * texture.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCopyPass.UploadToGPUTexture
- * @sa GPUCopyPass.DownloadFromGPUTexture
- */
-using GPUTextureTransferInfo = SDL_GPUTextureTransferInfo;
-
-/**
- * A structure specifying a location in a transfer buffer.
- *
- * Used when transferring buffer data to or from a transfer buffer.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCopyPass.UploadToGPUBuffer
- * @sa GPUCopyPass.DownloadFromGPUBuffer
- */
-using GPUTransferBufferLocation = SDL_GPUTransferBufferLocation;
-
-/**
- * A structure specifying a location in a texture.
- *
- * Used when copying data from one texture to another.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCopyPass.CopyGPUTextureToTexture
- */
-using GPUTextureLocation = SDL_GPUTextureLocation;
-
-/**
- * A structure specifying a region of a texture.
- *
- * Used when transferring data to or from a texture.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCopyPass.UploadToGPUTexture
- * @sa GPUCopyPass.DownloadFromGPUTexture
- * @sa GPUTexture.GPUTexture
- */
-using GPUTextureRegion = SDL_GPUTextureRegion;
-
-/**
  * A structure specifying a region of a texture used in the blit operation.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -64034,29 +64279,6 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  * @sa GPUCommandBuffer.BlitGPUTexture
  */
 using GPUBlitRegion = SDL_GPUBlitRegion;
-
-/**
- * A structure specifying a location in a buffer.
- *
- * Used when copying data between buffers.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCopyPass.CopyGPUBufferToBuffer
- */
-using GPUBufferLocation = SDL_GPUBufferLocation;
-
-/**
- * A structure specifying a region of a buffer.
- *
- * Used when transferring data to or from buffers.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCopyPass.UploadToGPUBuffer
- * @sa GPUCopyPass.DownloadFromGPUBuffer
- */
-using GPUBufferRegion = SDL_GPUBufferRegion;
 
 /**
  * A structure specifying the parameters of an indirect draw command.
@@ -64098,22 +64320,6 @@ using GPUIndexedIndirectDrawCommand = SDL_GPUIndexedIndirectDrawCommand;
  * @sa GPUComputePass.DispatchGPUComputeIndirect
  */
 using GPUIndirectDispatchCommand = SDL_GPUIndirectDispatchCommand;
-
-/**
- * A structure specifying the parameters of a sampler.
- *
- * Note that mip_lod_bias is a no-op for the Metal driver. For Metal, LOD bias
- * must be applied via shader instead.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GPUSampler.GPUSampler
- * @sa GPUFilter
- * @sa GPUSamplerMipmapMode
- * @sa GPUSamplerAddressMode
- * @sa GPUCompareOp
- */
-using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
 
 /**
  * A structure specifying the parameters of vertex buffers used in a graphics
@@ -64180,54 +64386,6 @@ using GPUStencilOpState = SDL_GPUStencilOpState;
 using GPUColorTargetBlendState = SDL_GPUColorTargetBlendState;
 
 /**
- * A structure specifying code and metadata for creating a shader object.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUShader.GPUShader
- */
-using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
-
-/**
- * A structure specifying the parameters of a texture.
- *
- * Usage flags can be bitwise OR'd together for combinations of usages. Note
- * that certain usage combinations are invalid, for example SAMPLER and
- * GRAPHICS_STORAGE.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUTexture.GPUTexture
- * @sa GPUTextureType
- * @sa GPUTextureFormat
- * @sa GPUTextureUsageFlags
- * @sa GPUSampleCount
- */
-using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
-
-/**
- * A structure specifying the parameters of a buffer.
- *
- * Usage flags can be bitwise OR'd together for combinations of usages. Note
- * that certain combinations are invalid, for example VERTEX and INDEX.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUBuffer.GPUBuffer
- * @sa GPUBufferUsageFlags
- */
-using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
-
-/**
- * A structure specifying the parameters of a transfer buffer.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUTransferBuffer.GPUTransferBuffer
- */
-using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
-
-/**
  * A structure specifying the parameters of the graphics pipeline rasterizer
  * state.
  *
@@ -64286,164 +64444,6 @@ using GPUColorTargetDescription = SDL_GPUColorTargetDescription;
  * @sa GPUTextureFormat
  */
 using GPUGraphicsPipelineTargetInfo = SDL_GPUGraphicsPipelineTargetInfo;
-
-/**
- * A structure specifying the parameters of a graphics pipeline state.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPUShader
- * @sa GPUVertexInputState
- * @sa GPUPrimitiveType
- * @sa GPURasterizerState
- * @sa GPUMultisampleState
- * @sa GPUDepthStencilState
- * @sa GPUGraphicsPipelineTargetInfo
- */
-using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
-
-/**
- * A structure specifying the parameters of a compute pipeline state.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUComputePipeline.GPUComputePipeline
- * @sa GPUShaderFormat
- */
-using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
-
-/**
- * A structure specifying the parameters of a color target used by a render
- * pass.
- *
- * The load_op field determines what is done with the texture at the beginning
- * of the render pass.
- *
- * - LOAD: Loads the data currently in the texture. Not recommended for
- *   multisample textures as it requires significant memory bandwidth.
- * - CLEAR: Clears the texture to a single color.
- * - DONT_CARE: The driver will do whatever it wants with the texture memory.
- *   This is a good option if you know that every single pixel will be touched
- *   in the render pass.
- *
- * The store_op field determines what is done with the color results of the
- * render pass.
- *
- * - STORE: Stores the results of the render pass in the texture. Not
- *   recommended for multisample textures as it requires significant memory
- *   bandwidth.
- * - DONT_CARE: The driver will do whatever it wants with the texture memory.
- *   This is often a good option for depth/stencil textures.
- * - RESOLVE: Resolves a multisample texture into resolve_texture, which must
- *   have a sample count of 1. Then the driver may discard the multisample
- *   texture memory. This is the most performant method of resolving a
- *   multisample target.
- * - RESOLVE_AND_STORE: Resolves a multisample texture into the
- *   resolve_texture, which must have a sample count of 1. Then the driver
- *   stores the multisample texture's contents. Not recommended as it requires
- *   significant memory bandwidth.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPURenderPass
- */
-using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
-
-/**
- * A structure specifying the parameters of a depth-stencil target used by a
- * render pass.
- *
- * The load_op field determines what is done with the depth contents of the
- * texture at the beginning of the render pass.
- *
- * - LOAD: Loads the depth values currently in the texture.
- * - CLEAR: Clears the texture to a single depth.
- * - DONT_CARE: The driver will do whatever it wants with the memory. This is
- *   a good option if you know that every single pixel will be touched in the
- *   render pass.
- *
- * The store_op field determines what is done with the depth results of the
- * render pass.
- *
- * - STORE: Stores the depth results in the texture.
- * - DONT_CARE: The driver will do whatever it wants with the depth results.
- *   This is often a good option for depth/stencil textures that don't need to
- *   be reused again.
- *
- * The stencil_load_op field determines what is done with the stencil contents
- * of the texture at the beginning of the render pass.
- *
- * - LOAD: Loads the stencil values currently in the texture.
- * - CLEAR: Clears the stencil values to a single value.
- * - DONT_CARE: The driver will do whatever it wants with the memory. This is
- *   a good option if you know that every single pixel will be touched in the
- *   render pass.
- *
- * The stencil_store_op field determines what is done with the stencil results
- * of the render pass.
- *
- * - STORE: Stores the stencil results in the texture.
- * - DONT_CARE: The driver will do whatever it wants with the stencil results.
- *   This is often a good option for depth/stencil textures that don't need to
- *   be reused again.
- *
- * Note that depth/stencil targets do not support multisample resolves.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPURenderPass
- */
-using GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo;
-
-/**
- * A structure containing parameters for a blit command.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BlitGPUTexture
- */
-using GPUBlitInfo = SDL_GPUBlitInfo;
-
-/**
- * A structure specifying parameters in a buffer binding call.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPURenderPass.BindGPUVertexBuffers
- * @sa GPURenderPass.BindGPUIndexBuffer
- */
-using GPUBufferBinding = SDL_GPUBufferBinding;
-
-/**
- * A structure specifying parameters in a sampler binding call.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUFragmentSamplers
- */
-using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
-
-/**
- * A structure specifying parameters related to binding buffers in a compute
- * pass.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPUComputePass
- */
-using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
-
-/**
- * A structure specifying parameters related to binding textures in a compute
- * pass.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa GPUCommandBuffer.BeginGPUComputePass
- */
-using GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding;
 
 /**
  * Checks for GPU runtime support.
