@@ -1677,14 +1677,18 @@ const transform = {
         "SDL_ReleaseGPUComputePipeline": { hints: { methodName: "ReleaseComputePipeline" } },
         "SDL_ReleaseGPUShader": { hints: { methodName: "ReleaseShader" } },
         "SDL_ReleaseGPUGraphicsPipeline": { hints: { methodName: "ReleaseGraphicsPipeline" } },
+        "SDL_AcquireGPUCommandBuffer": { hints: { methodName: "AcquireCommandBuffer" } },
         "SDL_PushGPUVertexUniformData": {
           parameters: [{}, {}, { type: "SourceBytes" }],
+          hints: { methodName: "PushVertexUniformData" },
         },
         "SDL_PushGPUFragmentUniformData": {
           parameters: [{}, {}, { type: "SourceBytes" }],
+          hints: { methodName: "PushFragmentUniformData" },
         },
         "SDL_PushGPUComputeUniformData": {
           parameters: [{}, {}, { type: "SourceBytes" }],
+          hints: { methodName: "PushComputeUniformData" },
         },
         "SDL_BeginGPURenderPass": {
           parameters: [
@@ -1695,28 +1699,43 @@ const transform = {
           hints: { methodName: "BeginRenderPass" },
         },
         "SDL_BindGPUGraphicsPipeline": { hints: { methodName: "BindGraphicsPipeline" } },
+        "SDL_SetGPUViewport": { hints: { methodName: "SetViewport" } },
+        "SDL_SetGPUScissor": { hints: { methodName: "SetScissor" } },
+        "SDL_SetGPUBlendConstants": { hints: { methodName: "SetBlendConstants" } },
+        "SDL_SetGPUStencilReference": { hints: { methodName: "SetStencilReference" } },
         "SDL_BindGPUVertexBuffers": {
           parameters: [{}, {}, { type: "std::span<const GPUBufferBinding>" }],
+          hints: { methodName: "BindVertexBuffers" },
         },
+        "SDL_BindGPUIndexBuffer": { hints: { methodName: "BindIndexBuffer" } },
         "SDL_BindGPUVertexSamplers": {
           parameters: [{}, {}, { type: "std::span<const GPUTextureSamplerBinding>" }],
+          hints: { methodName: "BindVertexSamplers" },
         },
         "SDL_BindGPUVertexStorageTextures": {
           parameters: [{}, {}, { type: "SpanRef<const GPUTextureRaw>" }],
+          hints: { methodName: "BindVertexStorageTextures" },
         },
         "SDL_BindGPUVertexStorageBuffers": {
           parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
+          hints: { methodName: "BindVertexStorageBuffers" },
         },
         "SDL_BindGPUFragmentSamplers": {
           parameters: [{}, {}, { type: "std::span<const GPUTextureSamplerBinding>" }],
+          hints: { methodName: "BindFragmentSamplers" },
         },
         "SDL_BindGPUFragmentStorageTextures": {
           parameters: [{}, {}, { type: "SpanRef<const GPUTextureRaw>" }],
+          hints: { methodName: "BindFragmentStorageTextures" },
         },
         "SDL_BindGPUFragmentStorageBuffers": {
           parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
+          hints: { methodName: "BindFragmentStorageBuffers" },
         },
-        // "SDL_DrawGPUIndexedPrimitives": { hints: { methodName: "Draw" } },
+        "SDL_DrawGPUIndexedPrimitives": { hints: { methodName: "DrawIndexedPrimitives" } },
+        "SDL_DrawGPUPrimitives": { hints: { methodName: "DrawPrimitives" } },
+        "SDL_DrawGPUPrimitivesIndirect": { hints: { methodName: "DrawPrimitivesIndirect" } },
+        "SDL_DrawGPUIndexedPrimitivesIndirect": { hints: { methodName: "DrawIndexedPrimitivesIndirect" } },
         "SDL_BeginGPUComputePass": {
           parameters: [
             {},

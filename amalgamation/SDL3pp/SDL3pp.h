@@ -59753,7 +59753,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  *   GPUGraphicsPipeline.GPUGraphicsPipeline()
  *
  * To render, the app creates one or more command buffers, with
- * GPUDevice.AcquireGPUCommandBuffer(). Command buffers collect rendering
+ * GPUDevice.AcquireCommandBuffer(). Command buffers collect rendering
  * instructions that will be submitted to the GPU in batch. Complex scenes can
  * use multiple command buffers, maybe configured across multiple threads in
  * parallel, as long as they are submitted in the correct order, but many apps
@@ -59776,16 +59776,16 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  * needs for each draw:
  *
  * - GPURenderPass.BindGraphicsPipeline()
- * - GPURenderPass.SetGPUViewport()
- * - GPURenderPass.BindGPUVertexBuffers()
- * - GPURenderPass.BindGPUVertexSamplers()
+ * - GPURenderPass.SetViewport()
+ * - GPURenderPass.BindVertexBuffers()
+ * - GPURenderPass.BindVertexSamplers()
  * - etc
  *
  * Then, make the actual draw commands with these states:
  *
- * - GPURenderPass.DrawGPUPrimitives()
- * - GPURenderPass.DrawGPUPrimitivesIndirect()
- * - GPURenderPass.DrawGPUIndexedPrimitivesIndirect()
+ * - GPURenderPass.DrawPrimitives()
+ * - GPURenderPass.DrawPrimitivesIndirect()
+ * - GPURenderPass.DrawIndexedPrimitivesIndirect()
  * - etc
  *
  * After all the drawing commands for a pass are complete, the app should call
@@ -60107,12 +60107,12 @@ using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
  * @sa GPUCopyPass.UploadToGPUBuffer
  * @sa GPUCopyPass.DownloadFromGPUBuffer
  * @sa GPUCopyPass.CopyGPUBufferToBuffer
- * @sa GPURenderPass.BindGPUVertexBuffers
- * @sa GPURenderPass.BindGPUIndexBuffer
- * @sa GPURenderPass.BindGPUVertexStorageBuffers
- * @sa GPURenderPass.BindGPUFragmentStorageBuffers
- * @sa GPURenderPass.DrawGPUPrimitivesIndirect
- * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+ * @sa GPURenderPass.BindVertexBuffers
+ * @sa GPURenderPass.BindIndexBuffer
+ * @sa GPURenderPass.BindVertexStorageBuffers
+ * @sa GPURenderPass.BindFragmentStorageBuffers
+ * @sa GPURenderPass.DrawPrimitivesIndirect
+ * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
  * @sa GPUComputePass.BindGPUComputeStorageBuffers
  * @sa GPUComputePass.DispatchGPUComputeIndirect
  * @sa GPUDevice.ReleaseBuffer
@@ -60166,12 +60166,12 @@ public:
    * @sa GPUCopyPass.UploadToGPUBuffer
    * @sa GPUCopyPass.DownloadFromGPUBuffer
    * @sa GPUCopyPass.CopyGPUBufferToBuffer
-   * @sa GPURenderPass.BindGPUVertexBuffers
-   * @sa GPURenderPass.BindGPUIndexBuffer
-   * @sa GPURenderPass.BindGPUVertexStorageBuffers
-   * @sa GPURenderPass.BindGPUFragmentStorageBuffers
-   * @sa GPURenderPass.DrawGPUPrimitivesIndirect
-   * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+   * @sa GPURenderPass.BindVertexBuffers
+   * @sa GPURenderPass.BindIndexBuffer
+   * @sa GPURenderPass.BindVertexStorageBuffers
+   * @sa GPURenderPass.BindFragmentStorageBuffers
+   * @sa GPURenderPass.DrawPrimitivesIndirect
+   * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
    * @sa GPUComputePass.BindGPUComputeStorageBuffers
    * @sa GPUComputePass.DispatchGPUComputeIndirect
    * @sa GPUDevice.ReleaseBuffer
@@ -60318,10 +60318,10 @@ using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
  * @sa GPUCopyPass.UploadToGPUTexture
  * @sa GPUCopyPass.DownloadFromGPUTexture
  * @sa GPUCopyPass.CopyGPUTextureToTexture
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUVertexStorageTextures
- * @sa GPURenderPass.BindGPUFragmentSamplers
- * @sa GPURenderPass.BindGPUFragmentStorageTextures
+ * @sa GPURenderPass.BindVertexSamplers
+ * @sa GPURenderPass.BindVertexStorageTextures
+ * @sa GPURenderPass.BindFragmentSamplers
+ * @sa GPURenderPass.BindFragmentStorageTextures
  * @sa GPUComputePass.BindGPUComputeStorageTextures
  * @sa GPUCommandBuffer.GenerateMipmapsForGPUTexture
  * @sa GPUCommandBuffer.BlitGPUTexture
@@ -60388,10 +60388,10 @@ public:
    *
    * @sa GPUCopyPass.UploadToGPUTexture
    * @sa GPUCopyPass.DownloadFromGPUTexture
-   * @sa GPURenderPass.BindGPUVertexSamplers
-   * @sa GPURenderPass.BindGPUVertexStorageTextures
-   * @sa GPURenderPass.BindGPUFragmentSamplers
-   * @sa GPURenderPass.BindGPUFragmentStorageTextures
+   * @sa GPURenderPass.BindVertexSamplers
+   * @sa GPURenderPass.BindVertexStorageTextures
+   * @sa GPURenderPass.BindFragmentSamplers
+   * @sa GPURenderPass.BindFragmentStorageTextures
    * @sa GPUComputePass.BindGPUComputeStorageTextures
    * @sa GPUCommandBuffer.BlitGPUTexture
    * @sa GPUDevice.ReleaseTexture
@@ -60441,8 +60441,8 @@ using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUSampler.GPUSampler
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUFragmentSamplers
+ * @sa GPURenderPass.BindVertexSamplers
+ * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPUDevice.ReleaseSampler
  */
 class GPUSampler
@@ -60477,8 +60477,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPURenderPass.BindGPUVertexSamplers
-   * @sa GPURenderPass.BindGPUFragmentSamplers
+   * @sa GPURenderPass.BindVertexSamplers
+   * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
   GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
@@ -60834,7 +60834,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.SetGPUViewport
+ * @sa GPURenderPass.SetViewport
  */
 using GPUViewport = SDL_GPUViewport;
 
@@ -60843,8 +60843,8 @@ using GPUViewport = SDL_GPUViewport;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.BindGPUVertexBuffers
- * @sa GPURenderPass.BindGPUIndexBuffer
+ * @sa GPURenderPass.BindVertexBuffers
+ * @sa GPURenderPass.BindIndexBuffer
  */
 using GPUBufferBinding = SDL_GPUBufferBinding;
 
@@ -60868,8 +60868,8 @@ constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_32BIT =
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUFragmentSamplers
+ * @sa GPURenderPass.BindVertexSamplers
+ * @sa GPURenderPass.BindFragmentSamplers
  */
 using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
 
@@ -60933,7 +60933,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetGPUViewport(const GPUViewport& viewport);
+  void SetViewport(const GPUViewport& viewport);
 
   /**
    * Sets the current scissor state on a command buffer.
@@ -60942,7 +60942,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetGPUScissor(const RectRaw& scissor);
+  void SetScissor(const RectRaw& scissor);
 
   /**
    * Sets the current blend constants on a command buffer.
@@ -60954,7 +60954,7 @@ public:
    * @sa GPU_BLENDFACTOR_CONSTANT_COLOR
    * @sa GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR
    */
-  void SetGPUBlendConstants(FColorRaw blend_constants);
+  void SetBlendConstants(FColorRaw blend_constants);
 
   /**
    * Sets the current stencil reference value on a command buffer.
@@ -60963,7 +60963,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetGPUStencilReference(Uint8 reference);
+  void SetStencilReference(Uint8 reference);
 
   /**
    * Binds vertex buffers on a command buffer for use with subsequent draw
@@ -60975,8 +60975,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BindGPUVertexBuffers(Uint32 first_slot,
-                            std::span<const GPUBufferBinding> bindings);
+  void BindVertexBuffers(Uint32 first_slot,
+                         std::span<const GPUBufferBinding> bindings);
 
   /**
    * Binds an index buffer on a command buffer for use with subsequent draw
@@ -60988,8 +60988,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BindGPUIndexBuffer(const GPUBufferBinding& binding,
-                          GPUIndexElementSize index_element_size);
+  void BindIndexBuffer(const GPUBufferBinding& binding,
+                       GPUIndexElementSize index_element_size);
 
   /**
    * Binds texture-sampler pairs for use on the vertex shader.
@@ -61009,7 +61009,7 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUVertexSamplers(
+  void BindVertexSamplers(
     Uint32 first_slot,
     std::span<const GPUTextureSamplerBinding> texture_sampler_bindings);
 
@@ -61029,9 +61029,8 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUVertexStorageTextures(
-    Uint32 first_slot,
-    SpanRef<const GPUTextureRaw> storage_textures);
+  void BindVertexStorageTextures(Uint32 first_slot,
+                                 SpanRef<const GPUTextureRaw> storage_textures);
 
   /**
    * Binds storage buffers for use on the vertex shader.
@@ -61049,8 +61048,8 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUVertexStorageBuffers(Uint32 first_slot,
-                                   SpanRef<const GPUBufferRaw> storage_buffers);
+  void BindVertexStorageBuffers(Uint32 first_slot,
+                                SpanRef<const GPUBufferRaw> storage_buffers);
 
   /**
    * Binds texture-sampler pairs for use on the fragment shader.
@@ -61068,7 +61067,7 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUFragmentSamplers(
+  void BindFragmentSamplers(
     Uint32 first_slot,
     std::span<const GPUTextureSamplerBinding> texture_sampler_bindings);
 
@@ -61088,7 +61087,7 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUFragmentStorageTextures(
+  void BindFragmentStorageTextures(
     Uint32 first_slot,
     SpanRef<const GPUTextureRaw> storage_textures);
 
@@ -61108,9 +61107,8 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUFragmentStorageBuffers(
-    Uint32 first_slot,
-    SpanRef<const GPUBufferRaw> storage_buffers);
+  void BindFragmentStorageBuffers(Uint32 first_slot,
+                                  SpanRef<const GPUBufferRaw> storage_buffers);
 
   /**
    * Draws data using bound graphics state with an index buffer and instancing
@@ -61134,11 +61132,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DrawGPUIndexedPrimitives(Uint32 num_indices,
-                                Uint32 num_instances,
-                                Uint32 first_index,
-                                Sint32 vertex_offset,
-                                Uint32 first_instance);
+  void DrawIndexedPrimitives(Uint32 num_indices,
+                             Uint32 num_instances,
+                             Uint32 first_index,
+                             Sint32 vertex_offset,
+                             Uint32 first_instance);
 
   /**
    * Draws data using bound graphics state.
@@ -61159,10 +61157,10 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DrawGPUPrimitives(Uint32 num_vertices,
-                         Uint32 num_instances,
-                         Uint32 first_vertex,
-                         Uint32 first_instance);
+  void DrawPrimitives(Uint32 num_vertices,
+                      Uint32 num_instances,
+                      Uint32 first_vertex,
+                      Uint32 first_instance);
 
   /**
    * Draws data using bound graphics state and with draw parameters set from a
@@ -61179,9 +61177,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DrawGPUPrimitivesIndirect(GPUBuffer buffer,
-                                 Uint32 offset,
-                                 Uint32 draw_count);
+  void DrawPrimitivesIndirect(GPUBuffer buffer,
+                              Uint32 offset,
+                              Uint32 draw_count);
 
   /**
    * Draws data using bound graphics state with an index buffer enabled and with
@@ -61198,9 +61196,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DrawGPUIndexedPrimitivesIndirect(GPUBuffer buffer,
-                                        Uint32 offset,
-                                        Uint32 draw_count);
+  void DrawIndexedPrimitivesIndirect(GPUBuffer buffer,
+                                     Uint32 offset,
+                                     Uint32 draw_count);
 
   /**
    * Ends the given render pass.
@@ -61751,7 +61749,7 @@ using GPUFence = SDL_GPUFence;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUDevice.AcquireGPUCommandBuffer
+ * @sa GPUDevice.AcquireCommandBuffer
  * @sa GPUCommandBuffer.Submit
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
@@ -61843,7 +61841,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PushGPUVertexUniformData(Uint32 slot_index, SourceBytes data);
+  void PushVertexUniformData(Uint32 slot_index, SourceBytes data);
 
   /**
    * Pushes data to a fragment uniform slot on the command buffer.
@@ -61859,7 +61857,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PushGPUFragmentUniformData(Uint32 slot_index, SourceBytes data);
+  void PushFragmentUniformData(Uint32 slot_index, SourceBytes data);
 
   /**
    * Pushes data to a uniform slot on the command buffer.
@@ -61875,7 +61873,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void PushGPUComputeUniformData(Uint32 slot_index, SourceBytes data);
+  void PushComputeUniformData(Uint32 slot_index, SourceBytes data);
 
   /**
    * Begins a render pass on a command buffer.
@@ -62082,7 +62080,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.AcquireGPUCommandBuffer
+   * @sa GPUDevice.AcquireCommandBuffer
    * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
    * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
@@ -62106,7 +62104,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.AcquireGPUCommandBuffer
+   * @sa GPUDevice.AcquireCommandBuffer
    * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
    * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
    * @sa GPUCommandBuffer.Submit
@@ -62131,7 +62129,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUDevice.AcquireGPUCommandBuffer
+   * @sa GPUDevice.AcquireCommandBuffer
    * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
    */
   void Cancel();
@@ -63009,8 +63007,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPURenderPass.BindGPUVertexSamplers
-   * @sa GPURenderPass.BindGPUFragmentSamplers
+   * @sa GPURenderPass.BindVertexSamplers
+   * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
   GPUSampler CreateSampler(const GPUSamplerCreateInfo& createinfo);
@@ -63134,10 +63132,10 @@ public:
    *
    * @sa GPUCopyPass.UploadToGPUTexture
    * @sa GPUCopyPass.DownloadFromGPUTexture
-   * @sa GPURenderPass.BindGPUVertexSamplers
-   * @sa GPURenderPass.BindGPUVertexStorageTextures
-   * @sa GPURenderPass.BindGPUFragmentSamplers
-   * @sa GPURenderPass.BindGPUFragmentStorageTextures
+   * @sa GPURenderPass.BindVertexSamplers
+   * @sa GPURenderPass.BindVertexStorageTextures
+   * @sa GPURenderPass.BindFragmentSamplers
+   * @sa GPURenderPass.BindFragmentStorageTextures
    * @sa GPUComputePass.BindGPUComputeStorageTextures
    * @sa GPUCommandBuffer.BlitGPUTexture
    * @sa GPUDevice.ReleaseTexture
@@ -63178,12 +63176,12 @@ public:
    * @sa GPUCopyPass.UploadToGPUBuffer
    * @sa GPUCopyPass.DownloadFromGPUBuffer
    * @sa GPUCopyPass.CopyGPUBufferToBuffer
-   * @sa GPURenderPass.BindGPUVertexBuffers
-   * @sa GPURenderPass.BindGPUIndexBuffer
-   * @sa GPURenderPass.BindGPUVertexStorageBuffers
-   * @sa GPURenderPass.BindGPUFragmentStorageBuffers
-   * @sa GPURenderPass.DrawGPUPrimitivesIndirect
-   * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+   * @sa GPURenderPass.BindVertexBuffers
+   * @sa GPURenderPass.BindIndexBuffer
+   * @sa GPURenderPass.BindVertexStorageBuffers
+   * @sa GPURenderPass.BindFragmentStorageBuffers
+   * @sa GPURenderPass.DrawPrimitivesIndirect
+   * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
    * @sa GPUComputePass.BindGPUComputeStorageBuffers
    * @sa GPUComputePass.DispatchGPUComputeIndirect
    * @sa GPUDevice.ReleaseBuffer
@@ -63356,7 +63354,7 @@ public:
    * @sa GPUCommandBuffer.Submit
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    */
-  GPUCommandBuffer AcquireGPUCommandBuffer();
+  GPUCommandBuffer AcquireCommandBuffer();
 
   /**
    * Maps a transfer buffer into application address space.
@@ -64265,7 +64263,7 @@ using GPUBlitRegion = SDL_GPUBlitRegion;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.DrawGPUPrimitivesIndirect
+ * @sa GPURenderPass.DrawPrimitivesIndirect
  */
 using GPUIndirectDrawCommand = SDL_GPUIndirectDrawCommand;
 
@@ -64281,7 +64279,7 @@ using GPUIndirectDrawCommand = SDL_GPUIndirectDrawCommand;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+ * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
  */
 using GPUIndexedIndirectDrawCommand = SDL_GPUIndexedIndirectDrawCommand;
 
@@ -64298,10 +64296,10 @@ using GPUIndirectDispatchCommand = SDL_GPUIndirectDispatchCommand;
  * A structure specifying the parameters of vertex buffers used in a graphics
  * pipeline.
  *
- * When you call GPURenderPass.BindGPUVertexBuffers, you specify the binding
- * slots of the vertex buffers. For example if you called
- * GPURenderPass.BindGPUVertexBuffers with a first_slot of 2 and num_bindings of
- * 3, the binding slots 2, 3, 4 would be used by the vertex buffers you pass in.
+ * When you call GPURenderPass.BindVertexBuffers, you specify the binding slots
+ * of the vertex buffers. For example if you called
+ * GPURenderPass.BindVertexBuffers with a first_slot of 2 and num_bindings of 3,
+ * the binding slots 2, 3, 4 would be used by the vertex buffers you pass in.
  *
  * Vertex attributes are linked to buffers via the buffer_slot field of
  * GPUVertexAttribute. For example, if an attribute has a buffer_slot of
@@ -64770,8 +64768,8 @@ inline GPUSampler GPUDevice::CreateSampler(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUFragmentSamplers
+ * @sa GPURenderPass.BindVertexSamplers
+ * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPUDevice.ReleaseSampler
  */
 inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
@@ -64928,10 +64926,10 @@ inline GPUTexture GPUDevice::CreateTexture(
  *
  * @sa GPUCopyPass.UploadToGPUTexture
  * @sa GPUCopyPass.DownloadFromGPUTexture
- * @sa GPURenderPass.BindGPUVertexSamplers
- * @sa GPURenderPass.BindGPUVertexStorageTextures
- * @sa GPURenderPass.BindGPUFragmentSamplers
- * @sa GPURenderPass.BindGPUFragmentStorageTextures
+ * @sa GPURenderPass.BindVertexSamplers
+ * @sa GPURenderPass.BindVertexStorageTextures
+ * @sa GPURenderPass.BindFragmentSamplers
+ * @sa GPURenderPass.BindFragmentStorageTextures
  * @sa GPUComputePass.BindGPUComputeStorageTextures
  * @sa GPUCommandBuffer.BlitGPUTexture
  * @sa GPUDevice.ReleaseTexture
@@ -65006,12 +65004,12 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
  * @sa GPUCopyPass.UploadToGPUBuffer
  * @sa GPUCopyPass.DownloadFromGPUBuffer
  * @sa GPUCopyPass.CopyGPUBufferToBuffer
- * @sa GPURenderPass.BindGPUVertexBuffers
- * @sa GPURenderPass.BindGPUIndexBuffer
- * @sa GPURenderPass.BindGPUVertexStorageBuffers
- * @sa GPURenderPass.BindGPUFragmentStorageBuffers
- * @sa GPURenderPass.DrawGPUPrimitivesIndirect
- * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
+ * @sa GPURenderPass.BindVertexBuffers
+ * @sa GPURenderPass.BindIndexBuffer
+ * @sa GPURenderPass.BindVertexStorageBuffers
+ * @sa GPURenderPass.BindFragmentStorageBuffers
+ * @sa GPURenderPass.DrawPrimitivesIndirect
+ * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
  * @sa GPUComputePass.BindGPUComputeStorageBuffers
  * @sa GPUComputePass.DispatchGPUComputeIndirect
  * @sa GPUDevice.ReleaseBuffer
@@ -65379,7 +65377,7 @@ inline GPUCommandBuffer AcquireGPUCommandBuffer(GPUDeviceParam device)
   return SDL_AcquireGPUCommandBuffer(device);
 }
 
-inline GPUCommandBuffer GPUDevice::AcquireGPUCommandBuffer()
+inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 {
   return SDL::AcquireGPUCommandBuffer(m_resource);
 }
@@ -65407,8 +65405,8 @@ inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
     command_buffer, slot_index, data.data, data.size_bytes);
 }
 
-inline void GPUCommandBuffer::PushGPUVertexUniformData(Uint32 slot_index,
-                                                       SourceBytes data)
+inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
+                                                    SourceBytes data)
 {
   SDL::PushGPUVertexUniformData(
     m_gPUCommandBuffer, slot_index, std::move(data));
@@ -65437,8 +65435,8 @@ inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
     command_buffer, slot_index, data.data, data.size_bytes);
 }
 
-inline void GPUCommandBuffer::PushGPUFragmentUniformData(Uint32 slot_index,
-                                                         SourceBytes data)
+inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
+                                                      SourceBytes data)
 {
   SDL::PushGPUFragmentUniformData(
     m_gPUCommandBuffer, slot_index, std::move(data));
@@ -65467,8 +65465,8 @@ inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
     command_buffer, slot_index, data.data, data.size_bytes);
 }
 
-inline void GPUCommandBuffer::PushGPUComputeUniformData(Uint32 slot_index,
-                                                        SourceBytes data)
+inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
+                                                     SourceBytes data)
 {
   SDL::PushGPUComputeUniformData(
     m_gPUCommandBuffer, slot_index, std::move(data));
@@ -65552,7 +65550,7 @@ inline void SetGPUViewport(GPURenderPass render_pass,
   SDL_SetGPUViewport(render_pass, &viewport);
 }
 
-inline void GPURenderPass::SetGPUViewport(const GPUViewport& viewport)
+inline void GPURenderPass::SetViewport(const GPUViewport& viewport)
 {
   SDL::SetGPUViewport(m_gPURenderPass, viewport);
 }
@@ -65570,7 +65568,7 @@ inline void SetGPUScissor(GPURenderPass render_pass, const RectRaw& scissor)
   SDL_SetGPUScissor(render_pass, &scissor);
 }
 
-inline void GPURenderPass::SetGPUScissor(const RectRaw& scissor)
+inline void GPURenderPass::SetScissor(const RectRaw& scissor)
 {
   SDL::SetGPUScissor(m_gPURenderPass, scissor);
 }
@@ -65592,7 +65590,7 @@ inline void SetGPUBlendConstants(GPURenderPass render_pass,
   SDL_SetGPUBlendConstants(render_pass, blend_constants);
 }
 
-inline void GPURenderPass::SetGPUBlendConstants(FColorRaw blend_constants)
+inline void GPURenderPass::SetBlendConstants(FColorRaw blend_constants)
 {
   SDL::SetGPUBlendConstants(m_gPURenderPass, blend_constants);
 }
@@ -65610,7 +65608,7 @@ inline void SetGPUStencilReference(GPURenderPass render_pass, Uint8 reference)
   SDL_SetGPUStencilReference(render_pass, reference);
 }
 
-inline void GPURenderPass::SetGPUStencilReference(Uint8 reference)
+inline void GPURenderPass::SetStencilReference(Uint8 reference)
 {
   SDL::SetGPUStencilReference(m_gPURenderPass, reference);
 }
@@ -65634,7 +65632,7 @@ inline void BindGPUVertexBuffers(GPURenderPass render_pass,
     render_pass, first_slot, bindings.data(), bindings.size());
 }
 
-inline void GPURenderPass::BindGPUVertexBuffers(
+inline void GPURenderPass::BindVertexBuffers(
   Uint32 first_slot,
   std::span<const GPUBufferBinding> bindings)
 {
@@ -65659,7 +65657,7 @@ inline void BindGPUIndexBuffer(GPURenderPass render_pass,
   SDL_BindGPUIndexBuffer(render_pass, &binding, index_element_size);
 }
 
-inline void GPURenderPass::BindGPUIndexBuffer(
+inline void GPURenderPass::BindIndexBuffer(
   const GPUBufferBinding& binding,
   GPUIndexElementSize index_element_size)
 {
@@ -65694,7 +65692,7 @@ inline void BindGPUVertexSamplers(
                             texture_sampler_bindings.size());
 }
 
-inline void GPURenderPass::BindGPUVertexSamplers(
+inline void GPURenderPass::BindVertexSamplers(
   Uint32 first_slot,
   std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
@@ -65728,7 +65726,7 @@ inline void BindGPUVertexStorageTextures(
     render_pass, first_slot, storage_textures.data(), storage_textures.size());
 }
 
-inline void GPURenderPass::BindGPUVertexStorageTextures(
+inline void GPURenderPass::BindVertexStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
@@ -65762,7 +65760,7 @@ inline void BindGPUVertexStorageBuffers(
     render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
 }
 
-inline void GPURenderPass::BindGPUVertexStorageBuffers(
+inline void GPURenderPass::BindVertexStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
@@ -65798,7 +65796,7 @@ inline void BindGPUFragmentSamplers(
                               texture_sampler_bindings.size());
 }
 
-inline void GPURenderPass::BindGPUFragmentSamplers(
+inline void GPURenderPass::BindFragmentSamplers(
   Uint32 first_slot,
   std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
@@ -65832,7 +65830,7 @@ inline void BindGPUFragmentStorageTextures(
     render_pass, first_slot, storage_textures.data(), storage_textures.size());
 }
 
-inline void GPURenderPass::BindGPUFragmentStorageTextures(
+inline void GPURenderPass::BindFragmentStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
@@ -65866,7 +65864,7 @@ inline void BindGPUFragmentStorageBuffers(
     render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
 }
 
-inline void GPURenderPass::BindGPUFragmentStorageBuffers(
+inline void GPURenderPass::BindFragmentStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
@@ -65912,11 +65910,11 @@ inline void DrawGPUIndexedPrimitives(GPURenderPass render_pass,
                                first_instance);
 }
 
-inline void GPURenderPass::DrawGPUIndexedPrimitives(Uint32 num_indices,
-                                                    Uint32 num_instances,
-                                                    Uint32 first_index,
-                                                    Sint32 vertex_offset,
-                                                    Uint32 first_instance)
+inline void GPURenderPass::DrawIndexedPrimitives(Uint32 num_indices,
+                                                 Uint32 num_instances,
+                                                 Uint32 first_index,
+                                                 Sint32 vertex_offset,
+                                                 Uint32 first_instance)
 {
   SDL::DrawGPUIndexedPrimitives(m_gPURenderPass,
                                 num_indices,
@@ -65956,10 +65954,10 @@ inline void DrawGPUPrimitives(GPURenderPass render_pass,
     render_pass, num_vertices, num_instances, first_vertex, first_instance);
 }
 
-inline void GPURenderPass::DrawGPUPrimitives(Uint32 num_vertices,
-                                             Uint32 num_instances,
-                                             Uint32 first_vertex,
-                                             Uint32 first_instance)
+inline void GPURenderPass::DrawPrimitives(Uint32 num_vertices,
+                                          Uint32 num_instances,
+                                          Uint32 first_vertex,
+                                          Uint32 first_instance)
 {
   SDL::DrawGPUPrimitives(
     m_gPURenderPass, num_vertices, num_instances, first_vertex, first_instance);
@@ -65989,9 +65987,9 @@ inline void DrawGPUPrimitivesIndirect(GPURenderPass render_pass,
   SDL_DrawGPUPrimitivesIndirect(render_pass, buffer, offset, draw_count);
 }
 
-inline void GPURenderPass::DrawGPUPrimitivesIndirect(GPUBuffer buffer,
-                                                     Uint32 offset,
-                                                     Uint32 draw_count)
+inline void GPURenderPass::DrawPrimitivesIndirect(GPUBuffer buffer,
+                                                  Uint32 offset,
+                                                  Uint32 draw_count)
 {
   SDL::DrawGPUPrimitivesIndirect(m_gPURenderPass, buffer, offset, draw_count);
 }
@@ -66020,9 +66018,9 @@ inline void DrawGPUIndexedPrimitivesIndirect(GPURenderPass render_pass,
   SDL_DrawGPUIndexedPrimitivesIndirect(render_pass, buffer, offset, draw_count);
 }
 
-inline void GPURenderPass::DrawGPUIndexedPrimitivesIndirect(GPUBuffer buffer,
-                                                            Uint32 offset,
-                                                            Uint32 draw_count)
+inline void GPURenderPass::DrawIndexedPrimitivesIndirect(GPUBuffer buffer,
+                                                         Uint32 offset,
+                                                         Uint32 draw_count)
 {
   SDL::DrawGPUIndexedPrimitivesIndirect(
     m_gPURenderPass, buffer, offset, draw_count);
@@ -67019,7 +67017,7 @@ inline void GPUCommandBuffer::WaitAndAcquireGPUSwapchainTexture(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.AcquireGPUCommandBuffer
+ * @sa GPUDevice.AcquireCommandBuffer
  * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
  * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
@@ -67052,7 +67050,7 @@ inline void GPUCommandBuffer::Submit()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.AcquireGPUCommandBuffer
+ * @sa GPUDevice.AcquireCommandBuffer
  * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
  * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
  * @sa GPUCommandBuffer.Submit
@@ -67087,7 +67085,7 @@ inline GPUFence* GPUCommandBuffer::SubmitAndAcquireFence()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
- * @sa GPUDevice.AcquireGPUCommandBuffer
+ * @sa GPUDevice.AcquireCommandBuffer
  * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
  */
 inline void CancelGPUCommandBuffer(GPUCommandBuffer command_buffer)
