@@ -68,6 +68,9 @@ public:
   /// Retrieves contained size
   constexpr size_t size() const { return value.size(); }
 
+  /// Retrieves contained size in bytes
+  constexpr size_t size_bytes() const { return value.size_bytes(); }
+
   /// Retrieves contained data
   constexpr T* data() const { return value.data(); }
 };
