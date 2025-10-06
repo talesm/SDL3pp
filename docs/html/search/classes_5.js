@@ -6,6 +6,20 @@ var searchData=
   ['glcontext_3',['GLContext',['../classSDL_1_1GLContext.html',1,'SDL']]],
   ['glcontextparam_4',['GLContextParam',['../structSDL_1_1GLContextParam.html',1,'SDL']]],
   ['glcontextscoped_5',['GLContextScoped',['../structSDL_1_1GLContextScoped.html',1,'SDL']]],
-  ['gputextengine_6',['GPUTextEngine',['../structSDL_1_1GPUTextEngine.html',1,'SDL']]],
-  ['guid_7',['GUID',['../structSDL_1_1GUID.html',1,'SDL']]]
+  ['gpubuffer_6',['GPUBuffer',['../classSDL_1_1GPUBuffer.html',1,'SDL']]],
+  ['gpucommandbuffer_7',['GPUCommandBuffer',['../classSDL_1_1GPUCommandBuffer.html',1,'SDL']]],
+  ['gpucomputepass_8',['GPUComputePass',['../classSDL_1_1GPUComputePass.html',1,'SDL']]],
+  ['gpucomputepipeline_9',['GPUComputePipeline',['../classSDL_1_1GPUComputePipeline.html',1,'SDL']]],
+  ['gpucopypass_10',['GPUCopyPass',['../classSDL_1_1GPUCopyPass.html',1,'SDL']]],
+  ['gpudevice_11',['GPUDevice',['../classSDL_1_1GPUDevice.html',1,'SDL']]],
+  ['gpudeviceparam_12',['GPUDeviceParam',['../structSDL_1_1GPUDeviceParam.html',1,'SDL']]],
+  ['gpudeviceref_13',['GPUDeviceRef',['../structSDL_1_1GPUDeviceRef.html',1,'SDL']]],
+  ['gpugraphicspipeline_14',['GPUGraphicsPipeline',['../classSDL_1_1GPUGraphicsPipeline.html',1,'SDL']]],
+  ['gpurenderpass_15',['GPURenderPass',['../classSDL_1_1GPURenderPass.html',1,'SDL']]],
+  ['gpusampler_16',['GPUSampler',['../classSDL_1_1GPUSampler.html',1,'SDL']]],
+  ['gpushader_17',['GPUShader',['../classSDL_1_1GPUShader.html',1,'SDL']]],
+  ['gputextengine_18',['GPUTextEngine',['../structSDL_1_1GPUTextEngine.html',1,'SDL']]],
+  ['gputexture_19',['GPUTexture',['../classSDL_1_1GPUTexture.html',1,'SDL']]],
+  ['gputransferbuffer_20',['GPUTransferBuffer',['../classSDL_1_1GPUTransferBuffer.html',1,'SDL']]],
+  ['guid_21',['GUID',['../structSDL_1_1GUID.html',1,'SDL']]]
 ];

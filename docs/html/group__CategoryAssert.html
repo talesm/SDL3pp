@@ -159,9 +159,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae41c089f14043779e761f3ff07c9fdae" id="r_gae41c089f14043779e761f3ff07c9fdae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryAssert.html#ga26233ae390b2dfe2932f09fe97419979">AssertionHandlerCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#gae41c089f14043779e761f3ff07c9fdae">SDL::GetAssertionHandler</a> ()</td></tr>
 <tr class="memdesc:gae41c089f14043779e761f3ff07c9fdae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current assertion handler.  <br /></td></tr>
 <tr class="separator:gae41c089f14043779e761f3ff07c9fdae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1762888858d7ecdaad03f39e260f8dc8" id="r_ga1762888858d7ecdaad03f39e260f8dc8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8">SDL::GetAssertionReport</a> ()</td></tr>
-<tr class="memdesc:ga1762888858d7ecdaad03f39e260f8dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a list of all assertion failures.  <br /></td></tr>
-<tr class="separator:ga1762888858d7ecdaad03f39e260f8dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c800f88c351cd89c71839b063a2cfa2" id="r_ga0c800f88c351cd89c71839b063a2cfa2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga0c800f88c351cd89c71839b063a2cfa2">SDL::GetAssertionReport</a> ()</td></tr>
+<tr class="memdesc:ga0c800f88c351cd89c71839b063a2cfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a list of all assertion failures.  <br /></td></tr>
+<tr class="separator:ga0c800f88c351cd89c71839b063a2cfa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2b6d3ba74888bd9cc5a7634cb0511652" id="r_ga2b6d3ba74888bd9cc5a7634cb0511652"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652">SDL::ResetAssertionReport</a> ()</td></tr>
 <tr class="memdesc:ga2b6d3ba74888bd9cc5a7634cb0511652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the list of all assertion failures.  <br /></td></tr>
 <tr class="separator:ga2b6d3ba74888bd9cc5a7634cb0511652"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -539,7 +539,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This structure is filled in with information about a triggered assertion, used by the assertion handler, then added to the assertion report. This is returned as a linked list from <a class="el" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8" title="Get a list of all assertion failures.">GetAssertionReport()</a>.</p>
+<p>This structure is filled in with information about a triggered assertion, used by the assertion handler, then added to the assertion report. This is returned as a linked list from <a class="el" href="group__CategoryAssert.html#ga0c800f88c351cd89c71839b063a2cfa2" title="Get a list of all assertion failures.">GetAssertionReport()</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
@@ -679,8 +679,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga1762888858d7ecdaad03f39e260f8dc8" name="ga1762888858d7ecdaad03f39e260f8dc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1762888858d7ecdaad03f39e260f8dc8">&#9670;&#160;</a></span>GetAssertionReport()</h2>
+<a id="ga0c800f88c351cd89c71839b063a2cfa2" name="ga0c800f88c351cd89c71839b063a2cfa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0c800f88c351cd89c71839b063a2cfa2">&#9670;&#160;</a></span>GetAssertionReport()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -689,7 +689,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> * SDL::GetAssertionReport </td>
+          <td class="memname">const <a class="el" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> &amp; SDL::GetAssertionReport </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -703,7 +703,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>This function gets all assertions triggered since the last call to <a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport()</a>, or the start of the program.</p>
 <p>The proper way to examine this data looks something like this:</p>
-<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_typedef" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> *item = <a class="code hl_function" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8">GetAssertionReport</a>();</div>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_typedef" href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">AssertData</a> *item = <a class="code hl_function" href="group__CategoryAssert.html#ga0c800f88c351cd89c71839b063a2cfa2">GetAssertionReport</a>();</div>
 <div class="line"><span class="keywordflow">while</span> (item) {</div>
 <div class="line">   printf(<span class="stringliteral">&quot;&#39;%s&#39;, %s (%s:%d), triggered %u times, always ignore: %s.\@n&quot;</span>,</div>
 <div class="line">          item-&gt;condition, item-&gt;function, item-&gt;filename,</div>
@@ -711,7 +711,7 @@ Variables</h2></td></tr>
 <div class="line">          item-&gt;always_ignore ? <span class="stringliteral">&quot;yes&quot;</span> : <span class="stringliteral">&quot;no&quot;</span>);</div>
 <div class="line">   item = item-&gt;next;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryAssert_html_ga1762888858d7ecdaad03f39e260f8dc8"><div class="ttname"><a href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8">SDL::GetAssertionReport</a></div><div class="ttdeci">const AssertData * GetAssertionReport()</div><div class="ttdoc">Get a list of all assertion failures.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:590</div></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga0c800f88c351cd89c71839b063a2cfa2"><div class="ttname"><a href="group__CategoryAssert.html#ga0c800f88c351cd89c71839b063a2cfa2">SDL::GetAssertionReport</a></div><div class="ttdeci">const AssertData &amp; GetAssertionReport()</div><div class="ttdoc">Get a list of all assertion failures.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:590</div></div>
 <div class="ttc" id="agroup__CategoryAssert_html_gab8af1dcb1cc2d54244bf65a8a0c4af4d"><div class="ttname"><a href="group__CategoryAssert.html#gab8af1dcb1cc2d54244bf65a8a0c4af4d">SDL::AssertData</a></div><div class="ttdeci">SDL_AssertData AssertData</div><div class="ttdoc">Information about an assertion failure.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:198</div></div>
 </div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>a list of all failed assertions or nullptr if the list is empty. This memory should not be modified or freed by the application. This pointer remains valid until the next call to <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> or <a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport()</a>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe. Other threads calling <a class="el" href="group__CategoryAssert.html#ga2b6d3ba74888bd9cc5a7634cb0511652" title="Clear the list of all assertion failures.">ResetAssertionReport()</a> simultaneously, may render the returned pointer invalid.</dd></dl>
@@ -836,7 +836,7 @@ Variables</h2></td></tr>
 <p>This function will clear the list of all assertions triggered up to that point. Immediately following this call, GetAssertionReport will return no items. In addition, any previously-triggered assertions will be reset to a trigger_count of zero, and their always_ignore state will be false.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe. Other threads triggering an assertion, or simultaneously calling this function may cause memory leaks or crashes.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga1762888858d7ecdaad03f39e260f8dc8" title="Get a list of all assertion failures.">GetAssertionReport</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryAssert.html#ga0c800f88c351cd89c71839b063a2cfa2" title="Get a list of all assertion failures.">GetAssertionReport</a> </dd></dl>
 
 </div>
 </div>

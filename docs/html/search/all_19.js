@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['zero_0',['zero',['../group__CategoryStdinc.html#ga4d65aa4051722f968f6fde80d47d761f',1,'SDL']]],
-  ['zeroa_1',['zeroa',['../group__CategoryStdinc.html#ga51ba04c3b473e95c7808a55669162521',1,'SDL']]],
-  ['zerop_2',['zerop',['../group__CategoryStdinc.html#gab0fc530b6aa46072077289b0a200c21c',1,'SDL']]]
+  ['x11eventhook_0',['X11EventHook',['../group__CategorySystem.html#gaacc6348e0d3b07e445476db864b14251',1,'SDL']]],
+  ['x11eventhookcb_1',['X11EventHookCB',['../group__CategorySystem.html#gaded3dee87565b2420489c28c317fecb5',1,'SDL']]]
 ];

@@ -59727,7 +59727,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 /// @}
 
 /**
- * @defgroup CategoryGPU Category GPU
+ * @defgroup CategoryGPU 3D Rendering and GPU Compute
  *
  * The GPU API offers a cross-platform way for apps to talk to modern graphics
  * hardware. It offers both 3D graphics and compute support, in the style of
@@ -59854,8 +59854,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  * limited hardware support, this API is probably not for you.
  *
  * Examples demonstrating proper usage of this API can be found
- * [here](https://github.com/TheSpydog/SDL_gpu_examples)
- * .
+ * [here](https://github.com/TheSpydog/SDL_gpu_examples).
  *
  * ## Performance considerations
  *
@@ -61002,8 +61001,6 @@ public:
    * @param first_slot the vertex sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
    *                                 structs.
-   * @param num_bindings the number of texture-sampler pairs to bind from the
-   *                     array.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -63151,8 +63148,7 @@ public:
    *
    * For better understanding of underlying concepts and memory management with
    * SDL GPU API, you may refer
-   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
-   * .
+   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
@@ -64978,8 +64974,7 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
  *
  * For better understanding of underlying concepts and memory management with
  * SDL GPU API, you may refer
- * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
- * .
+ * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
  *
  * There are optional properties that can be provided through `props`. These
  * are the supported properties:
@@ -67816,10 +67811,8 @@ public:
    *                 update.
    * @param finger the index of the finger on the touchpad to set.
    * @param down true if the finger is pressed, false if the finger is released.
-   * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
-   *          with the origin in the upper left.
-   * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
-   *          with the origin in the upper left.
+   * @param p the x, y coordinates of the finger on the touchpad, normalized 0
+   *          to 1, with the origin in the upper left.
    * @param pressure the pressure of the finger.
    * @throws Error on failure.
    *

@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structSDL_1_1IConvParam.html" title="Safely wrap IConv for non owning parameters." alt="" coords="5,5,139,31"/>
+<area shape="rect" id="Node000000" href="$classSDL_1_1GPUDevice.html" title="An opaque handle representing the SDL_GPU context." alt="" coords="5,5,133,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1GPUDeviceRef.html" title="Semi&#45;safe reference for GPUDevice." alt="" coords="181,5,332,31"/>
+<area shape="poly" id="edge33_Node000000_Node000001" title=" " alt="" coords="147,15,181,15,181,21,147,21"/>
 </map>

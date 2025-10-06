@@ -574,10 +574,8 @@ public:
    *                 update.
    * @param finger the index of the finger on the touchpad to set.
    * @param down true if the finger is pressed, false if the finger is released.
-   * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
-   *          with the origin in the upper left.
-   * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
-   *          with the origin in the upper left.
+   * @param p the x, y coordinates of the finger on the touchpad, normalized 0
+   *          to 1, with the origin in the upper left.
    * @param pressure the pressure of the finger.
    * @throws Error on failure.
    *
