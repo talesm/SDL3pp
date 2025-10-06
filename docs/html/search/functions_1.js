@@ -1,7 +1,7 @@
 var searchData=
 [
   ['back_0',['back',['../classSDL_1_1OwnArray.html#ae9a395531727174f94d25bd854e6daf3',1,'SDL::OwnArray']]],
-  ['begin_1',['begin',['../classSDL_1_1OwnArray.html#a42379b8c94d29bcfb38b021d2b0b7e49',1,'SDL::OwnArray::begin()'],['../classSDL_1_1Text.html#a6d8c7d48e4a7eaabba40598160dd8a0e',1,'SDL::Text::begin()']]],
+  ['begin_1',['begin',['../classSDL_1_1OwnArray.html#a42379b8c94d29bcfb38b021d2b0b7e49',1,'SDL::OwnArray::begin()'],['../classSDL_1_1Text.html#a6d8c7d48e4a7eaabba40598160dd8a0e',1,'SDL::Text::begin()'],['../classSDL_1_1OwnArray.html#a843e2bf5352a457261e7c05155994bc2',1,'SDL::OwnArray::begin()']]],
   ['begincomputepass_2',['BeginComputePass',['../group__CategoryGPU.html#ga94a40eb89d9af8a06054a029bcc92dc7',1,'SDL::GPUCommandBuffer']]],
   ['begincopypass_3',['BeginCopyPass',['../group__CategoryGPU.html#ga5260dd36b46eea0864c1dbd89c544df2',1,'SDL::GPUCommandBuffer']]],
   ['begingpucomputepass_4',['BeginGPUComputePass',['../group__CategoryGPU.html#ga7c30db9796f7da21a958fecc86e14195',1,'SDL']]],
@@ -42,7 +42,7 @@ var searchData=
   ['blitgputexture_39',['BlitGPUTexture',['../group__CategoryGPU.html#ga123ea0dae77b7f646aee56c82fde1f69',1,'SDL']]],
   ['blitscaled_40',['BlitScaled',['../group__CategorySurface.html#gac1a3d13723cf9bbd9d12d207e32b52d2',1,'SDL::Surface']]],
   ['blitsurface_41',['BlitSurface',['../group__CategorySurface.html#gadc46b56e2ce87354c17523ed9576dfbd',1,'SDL']]],
-  ['blitsurface9grid_42',['blitsurface9grid',['../group__CategorySurface.html#ga839fe7b54144b793566787f7664676b2',1,'SDL::BlitSurface9Grid(SurfaceParam src, OptionalRef&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SurfaceParam dst, OptionalRef&lt; const RectRaw &gt; dstrect)'],['../group__CategorySurface.html#gac47efab2ea577e49710861c3ad185b93',1,'SDL::BlitSurface9Grid(SurfaceParam src, OptionalRef&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, SurfaceParam dst, OptionalRef&lt; const RectRaw &gt; dstrect)']]],
+  ['blitsurface9grid_42',['blitsurface9grid',['../group__CategorySurface.html#gac47efab2ea577e49710861c3ad185b93',1,'SDL::BlitSurface9Grid(SurfaceParam src, OptionalRef&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, SurfaceParam dst, OptionalRef&lt; const RectRaw &gt; dstrect)'],['../group__CategorySurface.html#ga839fe7b54144b793566787f7664676b2',1,'SDL::BlitSurface9Grid(SurfaceParam src, OptionalRef&lt; const RectRaw &gt; srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SurfaceParam dst, OptionalRef&lt; const RectRaw &gt; dstrect)']]],
   ['blitsurfaceat_43',['BlitSurfaceAt',['../group__CategorySurface.html#ga502856a9378be976b571c61ba6cf8878',1,'SDL']]],
   ['blitsurfacescaled_44',['BlitSurfaceScaled',['../group__CategorySurface.html#ga1a046f84b877443482cc456591ba0cff',1,'SDL']]],
   ['blitsurfacetiled_45',['BlitSurfaceTiled',['../group__CategorySurface.html#ga9428ddcfbbd1c60703aaf63e44906ed9',1,'SDL']]],

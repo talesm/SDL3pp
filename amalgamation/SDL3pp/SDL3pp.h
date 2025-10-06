@@ -956,6 +956,7 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
 /// Calls SDL_free()
 struct PtrDeleter
 {
+  /// @private
   void operator()(void* ptr) const;
 };
 
@@ -985,14 +986,17 @@ class OwnArray
   size_t m_size = 0;
 
 public:
+  /// Constructor
   constexpr OwnArray(std::nullptr_t = nullptr) {}
 
+  /// Constructor
   constexpr explicit OwnArray(T* ptr, size_t size)
     : m_ptr(ptr)
     , m_size(size)
   {
   }
 
+  /// Constructor
   constexpr explicit OwnArray(T* ptr)
     : m_ptr(ptr)
   {
@@ -1060,25 +1064,23 @@ public:
   /// Access index
   constexpr const T& operator[](size_t i) const { return m_ptr.get()[i]; }
 
-  /**
-   * @{
-   *
-   * Get iterator to first element
-   */
+  /// Get iterator to first element
   T* begin() { return data(); }
-  const T* begin() const { return data(); }
-  const T* cbegin() const { return begin(); }
-  /// @}
 
-  /**
-   * @{
-   *
-   * Get iterator to one past end element
-   */
+  /// Get iterator to first element
+  const T* begin() const { return data(); }
+
+  /// Get iterator to first element
+  const T* cbegin() const { return begin(); }
+
+  /// Get iterator to one past end element
   T* end() { return begin() + size(); }
+
+  /// Get iterator to one past end element
   const T* end() const { return begin() + size(); }
+
+  /// Get iterator to one past end element
   const T* cend() const { return begin() + size(); }
-  /// @}
 
   /// Return first element.
   T& front() { return *data(); }

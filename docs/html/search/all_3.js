@@ -3,7 +3,7 @@ var searchData=
   ['back_0',['back',['../classSDL_1_1OwnArray.html#ae9a395531727174f94d25bd854e6daf3',1,'SDL::OwnArray']]],
   ['basic_20use_20text_1',['Basic use (text)',['../group__CategoryClipboard.html#basic-use-text',1,'']]],
   ['basics_2',['basics',['../group__CategoriesBasics.html',1,'Basics'],['../ApiByCategory.html#basics',1,'Basics']]],
-  ['begin_3',['begin',['../classSDL_1_1OwnArray.html#a42379b8c94d29bcfb38b021d2b0b7e49',1,'SDL::OwnArray::begin()'],['../classSDL_1_1Text.html#a6d8c7d48e4a7eaabba40598160dd8a0e',1,'SDL::Text::begin()']]],
+  ['begin_3',['begin',['../classSDL_1_1OwnArray.html#a42379b8c94d29bcfb38b021d2b0b7e49',1,'SDL::OwnArray::begin()'],['../classSDL_1_1OwnArray.html#a843e2bf5352a457261e7c05155994bc2',1,'SDL::OwnArray::begin() const'],['../classSDL_1_1Text.html#a6d8c7d48e4a7eaabba40598160dd8a0e',1,'SDL::Text::begin()']]],
   ['begincomputepass_4',['BeginComputePass',['../group__CategoryGPU.html#ga94a40eb89d9af8a06054a029bcc92dc7',1,'SDL::GPUCommandBuffer']]],
   ['begincopypass_5',['BeginCopyPass',['../group__CategoryGPU.html#ga5260dd36b46eea0864c1dbd89c544df2',1,'SDL::GPUCommandBuffer']]],
   ['begingpucomputepass_6',['BeginGPUComputePass',['../group__CategoryGPU.html#ga7c30db9796f7da21a958fecc86e14195',1,'SDL']]],
