@@ -173,9 +173,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga35abd4cd8bd02ababf9f30024844b38d" id="r_ga35abd4cd8bd02ababf9f30024844b38d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1JoystickRef.html">JoystickRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryJoystick.html#ga35abd4cd8bd02ababf9f30024844b38d">SDL::GetJoystickFromPlayerIndex</a> (int player_index)</td></tr>
 <tr class="memdesc:ga35abd4cd8bd02ababf9f30024844b38d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classSDL_1_1Joystick.html" title="The joystick structure used to identify an SDL joystick.">Joystick</a> associated with a player index.  <br /></td></tr>
 <tr class="separator:ga35abd4cd8bd02ababf9f30024844b38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa869aa2c8a975cd8f48a75cef5dc558e" id="r_gaa869aa2c8a975cd8f48a75cef5dc558e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1JoystickID.html">JoystickID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryJoystick.html#gaa869aa2c8a975cd8f48a75cef5dc558e">SDL::AttachVirtualJoystick</a> (const <a class="el" href="group__CategoryJoystick.html#gac6c78a4223809d6dd815dc3aaf12d77a">VirtualJoystickDesc</a> *desc)</td></tr>
-<tr class="memdesc:gaa869aa2c8a975cd8f48a75cef5dc558e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a new virtual joystick.  <br /></td></tr>
-<tr class="separator:gaa869aa2c8a975cd8f48a75cef5dc558e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a071fa322bcd612663b0d89dca0aea2" id="r_ga1a071fa322bcd612663b0d89dca0aea2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1JoystickID.html">JoystickID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryJoystick.html#ga1a071fa322bcd612663b0d89dca0aea2">SDL::AttachVirtualJoystick</a> (const <a class="el" href="group__CategoryJoystick.html#gac6c78a4223809d6dd815dc3aaf12d77a">VirtualJoystickDesc</a> &amp;desc)</td></tr>
+<tr class="memdesc:ga1a071fa322bcd612663b0d89dca0aea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach a new virtual joystick.  <br /></td></tr>
+<tr class="separator:ga1a071fa322bcd612663b0d89dca0aea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga53be9e6d260d3da38274a0f0e240a2f6" id="r_ga53be9e6d260d3da38274a0f0e240a2f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryJoystick.html#ga53be9e6d260d3da38274a0f0e240a2f6">SDL::DetachVirtualJoystick</a> (<a class="el" href="classSDL_1_1JoystickID.html">JoystickID</a> instance_id)</td></tr>
 <tr class="memdesc:ga53be9e6d260d3da38274a0f0e240a2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detach a virtual joystick.  <br /></td></tr>
 <tr class="separator:ga53be9e6d260d3da38274a0f0e240a2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,7 +582,7 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
 </div><div class="memdoc">
 <p>This structure should be initialized using <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE()</a>. All elements of this structure are optional.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryJoystick.html#gaa869aa2c8a975cd8f48a75cef5dc558e" title="Attach a new virtual joystick.">AttachVirtualJoystick</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryJoystick.html#ga1a071fa322bcd612663b0d89dca0aea2" title="Attach a new virtual joystick.">AttachVirtualJoystick</a> </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#gaad520b6fa62d69fe36edadb0925196aa" title="A macro to initialize an SDL interface.">SDL_INIT_INTERFACE</a> </dd>
 <dd>
@@ -625,8 +625,8 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gaa869aa2c8a975cd8f48a75cef5dc558e" name="gaa869aa2c8a975cd8f48a75cef5dc558e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa869aa2c8a975cd8f48a75cef5dc558e">&#9670;&#160;</a></span>AttachVirtualJoystick()</h2>
+<a id="ga1a071fa322bcd612663b0d89dca0aea2" name="ga1a071fa322bcd612663b0d89dca0aea2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a071fa322bcd612663b0d89dca0aea2">&#9670;&#160;</a></span>AttachVirtualJoystick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -637,7 +637,7 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1JoystickID.html">JoystickID</a> SDL::AttachVirtualJoystick </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__CategoryJoystick.html#gac6c78a4223809d6dd815dc3aaf12d77a">VirtualJoystickDesc</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__CategoryJoystick.html#gac6c78a4223809d6dd815dc3aaf12d77a">VirtualJoystickDesc</a> &amp;&#160;</td>
           <td class="paramname"><em>desc</em></td><td>)</td>
           <td></td>
         </tr>
@@ -778,7 +778,7 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryJoystick.html#gaa869aa2c8a975cd8f48a75cef5dc558e" title="Attach a new virtual joystick.">AttachVirtualJoystick</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryJoystick.html#ga1a071fa322bcd612663b0d89dca0aea2" title="Attach a new virtual joystick.">AttachVirtualJoystick</a> </dd></dl>
 
 </div>
 </div>
@@ -807,7 +807,7 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">instance_id</td><td>the joystick instance ID, previously returned from <a class="el" href="group__CategoryJoystick.html#gaa869aa2c8a975cd8f48a75cef5dc558e" title="Attach a new virtual joystick.">AttachVirtualJoystick()</a>. </td></tr>
+    <tr><td class="paramname">instance_id</td><td>the joystick instance ID, previously returned from <a class="el" href="group__CategoryJoystick.html#ga1a071fa322bcd612663b0d89dca0aea2" title="Attach a new virtual joystick.">AttachVirtualJoystick()</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -818,7 +818,7 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
   </dd>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryJoystick.html#gaa869aa2c8a975cd8f48a75cef5dc558e" title="Attach a new virtual joystick.">AttachVirtualJoystick</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryJoystick.html#ga1a071fa322bcd612663b0d89dca0aea2" title="Attach a new virtual joystick.">AttachVirtualJoystick</a> </dd></dl>
 
 </div>
 </div>
@@ -4963,8 +4963,7 @@ constexpr <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003
     <tr><td class="paramname">touchpad</td><td>the index of the touchpad on the virtual joystick to update. </td></tr>
     <tr><td class="paramname">finger</td><td>the index of the finger on the touchpad to set. </td></tr>
     <tr><td class="paramname">down</td><td>true if the finger is pressed, false if the finger is released. </td></tr>
-    <tr><td class="paramname">x</td><td>the x coordinate of the finger on the touchpad, normalized 0 to 1, with the origin in the upper left. </td></tr>
-    <tr><td class="paramname">y</td><td>the y coordinate of the finger on the touchpad, normalized 0 to 1, with the origin in the upper left. </td></tr>
+    <tr><td class="paramname">p</td><td>the x, y coordinates of the finger on the touchpad, normalized 0 to 1, with the origin in the upper left. </td></tr>
     <tr><td class="paramname">pressure</td><td>the pressure of the finger. </td></tr>
   </table>
   </dd>

@@ -74,6 +74,7 @@ $(function() {
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>CACHELINE_SIZE&#160;:&#160;<a class="el" href="group__CategoryCPUInfo.html#ga8c917acea8f78fbf7b797009ddd7d226">SDL</a></li>
+<li>CalculateGPUTextureFormatSize()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#gaa45ed13d924cada7cb53f5b094c0057a">SDL</a></li>
 <li>calloc()&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#gab24b3e9482f5a1c26602b83f2de05d09">SDL</a></li>
 <li>calloc_func&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#ga4f2714c0d9540b5e1e85ed5503c59215">SDL</a></li>
 <li>CAMERA_POSITION_BACK_FACING&#160;:&#160;<a class="el" href="group__CategoryCamera.html#ga5fcb7f24099f7419b19fe52abe7b593d">SDL</a></li>
@@ -84,6 +85,7 @@ $(function() {
 <li>CameraPosition&#160;:&#160;<a class="el" href="group__CategoryCamera.html#ga820304a9abb81d4e7bac0f1dc66efe09">SDL</a></li>
 <li>CameraRaw&#160;:&#160;<a class="el" href="group__CategoryCamera.html#ga990c2e49dc4cb021c2c5172089e2b2bf">SDL</a></li>
 <li>CameraSpec&#160;:&#160;<a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">SDL</a></li>
+<li>CancelGPUCommandBuffer()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga27c79b73d90fd76f73b2df0a67054f22">SDL</a></li>
 <li>Capitalization&#160;:&#160;<a class="el" href="group__CategoryKeyboard.html#gab3829ba140229524ce50f886a5274355">SDL</a></li>
 <li>CAPITALIZE_LETTERS&#160;:&#160;<a class="el" href="group__CategoryKeyboard.html#gaf0560218f684aa5e7d464532fefe047c">SDL</a></li>
 <li>CAPITALIZE_NONE&#160;:&#160;<a class="el" href="group__CategoryKeyboard.html#gaaf1c7a1ab426de84e90e153db74d4eeb">SDL</a></li>
@@ -98,6 +100,7 @@ $(function() {
 <li>CHROMA_LOCATION_NONE&#160;:&#160;<a class="el" href="group__CategoryPixels.html#gade3d0b182e1cc5d629e95d74b1c139e8">SDL</a></li>
 <li>CHROMA_LOCATION_TOPLEFT&#160;:&#160;<a class="el" href="group__CategoryPixels.html#ga55aeeff590010b069e623d04217c6ec6">SDL</a></li>
 <li>ChromaLocation&#160;:&#160;<a class="el" href="group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca">SDL</a></li>
+<li>ClaimWindowForGPUDevice()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga3d1d6f5c1e4f0a1c097cbc1b40b86b78">SDL</a></li>
 <li>clamp()&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#gaac38a0101c9805315f8ba8872ba4d258">SDL</a></li>
 <li>CleanupPropertyCallback&#160;:&#160;<a class="el" href="group__CategoryProperties.html#gac68e366c86f4169ac6f6928589c0c4a8">SDL</a></li>
 <li>CleanupPropertyCB&#160;:&#160;<a class="el" href="group__CategoryProperties.html#gaab288dc29211f88377acbd318c40e323">SDL</a></li>
@@ -184,8 +187,10 @@ $(function() {
 <li>ConvertSurfaceAndColorspace()&#160;:&#160;<a class="el" href="group__CategorySurface.html#ga88c4491f6b242f39a621dd80b0ad27dd">SDL</a></li>
 <li>CopyFile()&#160;:&#160;<a class="el" href="group__CategoryFilesystem.html#ga94730b089c0a55291adc6f085eaf08b9">SDL</a></li>
 <li>CopyFont()&#160;:&#160;<a class="el" href="group__CategorySDLTTF.html#ga624ef9c669ddb52f7e8daaabe43ca56d">SDL</a></li>
+<li>CopyGPUBufferToBuffer()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#gab10c443a232ead5285455f1b57446530">SDL</a></li>
+<li>CopyGPUTextureToTexture()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga0fbebbbcf601bcc0feab74edc95e37af">SDL</a></li>
 <li>CopyProperties()&#160;:&#160;<a class="el" href="group__CategoryProperties.html#ga70b9462864283a256b526639e71bf19e">SDL</a></li>
-<li>copysign()&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#ga10134c20bebfe5922fcaefbbcbcaa76d">SDL</a></li>
+<li>copysign()&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#ga476595ece87ed3441c672348366f0adb">SDL</a></li>
 <li>CopyStorageFile()&#160;:&#160;<a class="el" href="group__CategoryStorage.html#gaa56c79ada072fe299cee7a0d83670f18">SDL</a></li>
 <li>cos()&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#gadf8c80d673a05784387fa5e349a9f6dd">SDL</a></li>
 <li>CountProperties()&#160;:&#160;<a class="el" href="group__CategoryProperties.html#ga2cd4aa8722e9b9a491008c28db9ad46c">SDL</a></li>
@@ -198,8 +203,17 @@ $(function() {
 <li>CreateCursor()&#160;:&#160;<a class="el" href="group__CategoryMouse.html#ga0c1d774f3a981c8f2cee9f3121d98b43">SDL</a></li>
 <li>CreateDirectory()&#160;:&#160;<a class="el" href="group__CategoryFilesystem.html#gaac1f7873e28ccb8d9ebb7a193491d4ed">SDL</a></li>
 <li>CreateEnvironment()&#160;:&#160;<a class="el" href="group__CategoryStdinc.html#ga484673040d5c7311f014305d61c9f860">SDL</a></li>
-<li>CreateGPUTextEngine()&#160;:&#160;<a class="el" href="group__CategorySDLTTF.html#ga327ddcef3a36adb14a46125d366365aa">SDL</a></li>
+<li>CreateGPUBuffer()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga8461578dfc858efa73dfd1e49295eed7">SDL</a></li>
+<li>CreateGPUComputePipeline()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#gaa21891e9ebd97f17eda06d0e9fd2436b">SDL</a></li>
+<li>CreateGPUDevice()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#gabd7a0adc1bbd7e1bd628f257c2f2f51d">SDL</a></li>
+<li>CreateGPUDeviceWithProperties()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga570cf45429ab2969bb5351037fba5919">SDL</a></li>
+<li>CreateGPUGraphicsPipeline()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga7d5e158e09ece9950142df75d9212b9c">SDL</a></li>
+<li>CreateGPUSampler()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#gafe94feb1e693d65d092e72bd6d4cfdac">SDL</a></li>
+<li>CreateGPUShader()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#gaa11cb7a06cff34927d31e120e90eb064">SDL</a></li>
+<li>CreateGPUTextEngine()&#160;:&#160;<a class="el" href="group__CategorySDLTTF.html#ga79f11add750daada860e7df1eb65f66a">SDL</a></li>
 <li>CreateGPUTextEngineWithProperties()&#160;:&#160;<a class="el" href="group__CategorySDLTTF.html#ga5aeee2c0392879507802d1a8390c9c80">SDL</a></li>
+<li>CreateGPUTexture()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga9c21cb9e36008832e5d982833c5ff581">SDL</a></li>
+<li>CreateGPUTransferBuffer()&#160;:&#160;<a class="el" href="group__CategoryGPU.html#ga0309af2a31bb393288d480bcc42edce2">SDL</a></li>
 <li>CreateHapticEffect()&#160;:&#160;<a class="el" href="group__CategoryHaptic.html#gaed59b6bbc615ef5570994ac3b0e89240">SDL</a></li>
 <li>CreateMutex()&#160;:&#160;<a class="el" href="group__CategoryMutex.html#ga286ff79ca381dece6e7c98b7f461f85f">SDL</a></li>
 <li>CreatePalette()&#160;:&#160;<a class="el" href="group__CategoryPixels.html#gafbad9b4ce56b7ae880bf4c1053aee0d6">SDL</a></li>

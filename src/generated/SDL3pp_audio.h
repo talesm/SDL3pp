@@ -1345,7 +1345,7 @@ public:
    * @sa AudioStream.GetDevice
    * @sa AudioStream.ResumeDevice
    */
-  AudioStreamRef OpenStream(const AudioSpec* spec,
+  AudioStreamRef OpenStream(const AudioSpec& spec,
                             AudioStreamCallback callback,
                             void* userdata);
 
@@ -1474,7 +1474,7 @@ constexpr AudioDeviceRaw AUDIO_DEVICE_DEFAULT_RECORDING =
  */
 constexpr int AudioFrameSize(const AudioSpec& x)
 {
-  return SDL_AUDIO_FRAMESIZE(x);
+  return SDL_AUDIO_FRAMESIZE(&x);
 }
 
 /**
@@ -2731,7 +2731,7 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * @sa AudioDevice.GetFormat
  */
 inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
-                                   const AudioSpec* spec)
+                                   const AudioSpec& spec)
 {
   return AudioDevice(devid, spec);
 }
@@ -3157,8 +3157,8 @@ inline AudioDeviceRef AudioStream::GetDevice() const
  * @sa AudioStream.SetFormat
  * @sa AudioStream.Destroy
  */
-inline AudioStream CreateAudioStream(const AudioSpec* src_spec,
-                                     const AudioSpec* dst_spec)
+inline AudioStream CreateAudioStream(const AudioSpec& src_spec,
+                                     const AudioSpec& dst_spec)
 {
   return AudioStream(src_spec, dst_spec);
 }
@@ -4064,7 +4064,7 @@ inline void DestroyAudioStream(AudioStreamRaw stream)
 
 inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
 
-inline AudioStreamRef AudioDevice::OpenStream(const AudioSpec* spec,
+inline AudioStreamRef AudioDevice::OpenStream(const AudioSpec& spec,
                                               AudioStreamCallback callback,
                                               void* userdata)
 {
@@ -4136,7 +4136,7 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
  * @sa AudioStream.ResumeDevice
  */
 inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
-                                         const AudioSpec* spec,
+                                         const AudioSpec& spec,
                                          AudioStreamCallback callback,
                                          void* userdata)
 {
@@ -4518,7 +4518,7 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
                                            const AudioSpec& dst_spec)
 {
   return CheckError(SDL_ConvertAudioSamples(
-    src_spec, src_data.data, src_data.size_bytes, dst_spec));
+    &src_spec, src_data.data, src_data.size_bytes, &dst_spec));
 }
 
 /**

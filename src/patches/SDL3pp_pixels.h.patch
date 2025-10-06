@@ -187,14 +187,14 @@
 <    * @sa PixelFormat.GetBitsPerPixel
 ---
 >    * @sa GetBitsPerPixel
-514,517c551
+514c551
 <    * A macro to determine if an PixelFormat is an indexed format.
-<    *
-<    * Note that this macro double-evaluates its parameter, so do not use
-<    * expressions with side-effects here.
 ---
 >    * Determine if this is an indexed format.
-519d552
+516,519d552
+<    * Note that this macro double-evaluates its parameter, so do not use
+<    * expressions with side-effects here.
+<    *
 <    * @param format an PixelFormat to check.
 522c555
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -204,14 +204,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-529,532c562
+529c562
 <    * A macro to determine if an PixelFormat is a packed format.
-<    *
-<    * Note that this macro double-evaluates its parameter, so do not use
-<    * expressions with side-effects here.
 ---
 >    * Determine if this is a packed format.
-534d563
+531,534d563
+<    * Note that this macro double-evaluates its parameter, so do not use
+<    * expressions with side-effects here.
+<    *
 <    * @param format an PixelFormat to check.
 537c566
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -221,14 +221,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-544c573
+544,547c573
 <    * A macro to determine if an PixelFormat is an array format.
----
->    * Determine if this is an array format.
-546,549d574
+<    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
-<    *
+---
+>    * Determine if this is an array format.
+549d574
 <    * @param format an PixelFormat to check.
 552c577
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -272,14 +272,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-589c606
+589,592c606
 <    * A macro to determine if an PixelFormat has an alpha channel.
----
->    * Determine if this has an alpha channel.
-591,594d607
+<    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
-<    *
+---
+>    * Determine if this has an alpha channel.
+594d607
 <    * @param format an PixelFormat to check.
 597c610
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -306,6 +306,10 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
+687c696
+<    * @returns a pointer to a PixelFormatDetails structure or nullptr on
+---
+>    * @returns a PixelFormatDetails structure or nullptr on
 695a705,736
 >   /**
 >    * Map an RGBA quadruple to a pixel value for a given pixel format.
@@ -936,6 +940,14 @@
 2425a2622,2623
 >    *
 >    * @sa Palette.Palette
+2534c2732
+<  * @returns a pointer to a PixelFormatDetails structure or nullptr on
+---
+>  * @returns a PixelFormatDetails structure or nullptr on
+2543c2741
+<   return SDL_GetPixelFormatDetails(format);
+---
+>   return *SDL_GetPixelFormatDetails(format);
 2576d2773
 <  * @param ncolors the number of entries to modify.
 2588c2785,2786
@@ -956,15 +968,15 @@
 ---
 >  * @param c the color components of the pixel in the range 0-255.
 2699c2893
-<   return SDL_MapRGBA(format, palette, c);
+<   return SDL_MapRGBA(&format, palette, c);
 ---
->   return SDL_MapRGBA(format, palette, c.r, c.g, c.b, c.a);
+>   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
 2779a2974,3000
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const
 > {
->   return MapRGBA(&format, palette, {r, g, b, a});
+>   return MapRGBA(format, palette, {r, g, b, a});
 > }
 > 
 > inline Color Color::Get(Uint32 pixel,
@@ -972,18 +984,18 @@
 >                         PaletteConstParam palette = nullptr)
 > {
 >   Color c;
->   GetRGBA(pixel, &format, palette, &c.r, &c.g, &c.b, &c.a);
+>   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
 >   return c;
 > }
 > 
 > inline Uint32 PixelFormat::Map(Color color,
 >                                PaletteConstParam palette = nullptr) const
 > {
->   return color.Map(*GetDetails(), palette);
+>   return color.Map(GetDetails(), palette);
 > }
 > 
 > inline Color PixelFormat::Get(Uint32 pixel,
 >                               PaletteConstParam palette = nullptr) const
 > {
->   return Color::Get(pixel, *GetDetails(), palette);
+>   return Color::Get(pixel, GetDetails(), palette);
 > }

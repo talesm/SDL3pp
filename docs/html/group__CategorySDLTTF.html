@@ -438,9 +438,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3372f79aa17162997b2b3c980f19ce23" id="r_ga3372f79aa17162997b2b3c980f19ce23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3372f79aa17162997b2b3c980f19ce23">SDL::DestroyRendererTextEngine</a> (<a class="el" href="group__CategorySDLTTF.html#ga9edf9b33efc3560be092202b8d46c940">TextEngineRaw</a> engine)</td></tr>
 <tr class="memdesc:ga3372f79aa17162997b2b3c980f19ce23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text on an <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> renderer.  <br /></td></tr>
 <tr class="separator:ga3372f79aa17162997b2b3c980f19ce23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga327ddcef3a36adb14a46125d366365aa" id="r_ga327ddcef3a36adb14a46125d366365aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1GPUTextEngine.html">GPUTextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga327ddcef3a36adb14a46125d366365aa">SDL::CreateGPUTextEngine</a> (SDL_GPUDevice *device)</td></tr>
-<tr class="memdesc:ga327ddcef3a36adb14a46125d366365aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> GPU API.  <br /></td></tr>
-<tr class="separator:ga327ddcef3a36adb14a46125d366365aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga79f11add750daada860e7df1eb65f66a" id="r_ga79f11add750daada860e7df1eb65f66a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1GPUTextEngine.html">GPUTextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga79f11add750daada860e7df1eb65f66a">SDL::CreateGPUTextEngine</a> (<a class="el" href="structSDL_1_1GPUDeviceParam.html">GPUDeviceParam</a> device)</td></tr>
+<tr class="memdesc:ga79f11add750daada860e7df1eb65f66a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> GPU API.  <br /></td></tr>
+<tr class="separator:ga79f11add750daada860e7df1eb65f66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5aeee2c0392879507802d1a8390c9c80" id="r_ga5aeee2c0392879507802d1a8390c9c80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1GPUTextEngine.html">GPUTextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga5aeee2c0392879507802d1a8390c9c80">SDL::CreateGPUTextEngineWithProperties</a> (<a class="el" href="structSDL_1_1PropertiesParam.html">PropertiesParam</a> props)</td></tr>
 <tr class="memdesc:ga5aeee2c0392879507802d1a8390c9c80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> GPU API, with the specified properties.  <br /></td></tr>
 <tr class="separator:ga5aeee2c0392879507802d1a8390c9c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1644,8 +1644,8 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga4093a44b42b26b9a1f196
 
 </div>
 </div>
-<a id="ga327ddcef3a36adb14a46125d366365aa" name="ga327ddcef3a36adb14a46125d366365aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga327ddcef3a36adb14a46125d366365aa">&#9670;&#160;</a></span>CreateGPUTextEngine()</h2>
+<a id="ga79f11add750daada860e7df1eb65f66a" name="ga79f11add750daada860e7df1eb65f66a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga79f11add750daada860e7df1eb65f66a">&#9670;&#160;</a></span>CreateGPUTextEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1656,7 +1656,7 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga4093a44b42b26b9a1f196
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1GPUTextEngine.html">GPUTextEngine</a> SDL::CreateGPUTextEngine </td>
           <td>(</td>
-          <td class="paramtype">SDL_GPUDevice *&#160;</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1GPUDeviceParam.html">GPUDeviceParam</a>&#160;</td>
           <td class="paramname"><em>device</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1669,14 +1669,14 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga4093a44b42b26b9a1f196
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">device</td><td>the SDL_GPUDevice to use for creating textures and drawing text. </td></tr>
+    <tr><td class="paramname">device</td><td>the <a class="el" href="classSDL_1_1GPUDevice.html" title="An opaque handle representing the SDL_GPU context.">GPUDevice</a> to use for creating textures and drawing text. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the device.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
 <dd>
 TextEngine.DestroyGPU </dd>
 <dd>
@@ -1709,7 +1709,7 @@ TextEngine.DestroyGPU </dd>
 </div><div class="memdoc">
 <p>These are the supported properties:</p>
 <ul>
-<li><code>prop::GpuTextEngine.DEVICE_POINTER</code>: the SDL_GPUDevice to use for creating textures and drawing text.</li>
+<li><code>prop::GpuTextEngine.DEVICE_POINTER</code>: the <a class="el" href="classSDL_1_1GPUDevice.html" title="An opaque handle representing the SDL_GPU context.">GPUDevice</a> to use for creating textures and drawing text.</li>
 <li><code>prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER</code>: the size of the texture atlas</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1721,7 +1721,7 @@ TextEngine.DestroyGPU </dd>
 <dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the device.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
 <dd>
 TextEngine.DestroyGPU </dd>
 <dd>
@@ -2183,7 +2183,7 @@ TextEngine.DestroyRenderer </dd>
 <p>All text created by this engine should be destroyed before calling this function.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
 
 <p>Implements <a class="el" href="classSDL_1_1TextEngine.html#a2938031fbbe47ad42d8d04fde53179a1">SDL::TextEngine</a>.</p>
 
@@ -2215,13 +2215,13 @@ TextEngine.DestroyRenderer </dd>
 <p>All text created by this engine should be destroyed before calling this function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">engine</td><td>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object created with <a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>.</td></tr>
+    <tr><td class="paramname">engine</td><td>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object created with <a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
 
 </div>
 </div>
@@ -2427,7 +2427,7 @@ TextEngine.DestroyRenderer </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererTextEngine.html#aef8f493eb4a716a4bd963f45ca6631d8" title="Create a text engine for drawing text on an SDL renderer.">RendererTextEngine.RendererTextEngine</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
+<a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
 
 </div>
 </div>
@@ -4539,13 +4539,13 @@ TextEngine.DestroyRenderer </dd>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> from <a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>.</p>
+<p><code>text</code> must have been created using a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> from <a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>.</p>
 <p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
 <p>If the text looks blocky use linear filtering.</p>
 <dl class="section return"><dt>Returns</dt><dd>a nullptr terminated linked list of GPUAtlasDrawSequence objects or nullptr if the passed text is empty or in case of failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
 <dd>
 <a class="el" href="classSDL_1_1Text.html#a55de5298974560911f995d3c61fe94a6" title="Default ctor.">Text.Text</a> </dd></dl>
 
@@ -4574,7 +4574,7 @@ TextEngine.DestroyRenderer </dd>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> from <a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>.</p>
+<p><code>text</code> must have been created using a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> from <a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>.</p>
 <p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
 <p>If the text looks blocky use linear filtering.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -4586,9 +4586,9 @@ TextEngine.DestroyRenderer </dd>
 <dl class="section return"><dt>Returns</dt><dd>a nullptr terminated linked list of GPUAtlasDrawSequence objects or nullptr if the passed text is empty or in case of failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
+<a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine</a> </dd></dl>
 
 </div>
 </div>
@@ -4617,7 +4617,7 @@ TextEngine.DestroyRenderer </dd>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">engine</td><td>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object created with <a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>. </td></tr>
+    <tr><td class="paramname">engine</td><td>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object created with <a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -10188,7 +10188,7 @@ TTF_GetFontSizeDPI </dd></dl>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">engine</td><td>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object created with <a class="el" href="structSDL_1_1GPUTextEngine.html#a5c6590446b16a0b240ccf56d3bc524a0" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>. </td></tr>
+    <tr><td class="paramname">engine</td><td>a <a class="el" href="classSDL_1_1TextEngine.html" title="A resource engine.">TextEngine</a> object created with <a class="el" href="structSDL_1_1GPUTextEngine.html#ad8ad86148a3eb1273dfc388e9cc4dcd8" title="Create a text engine for drawing text with the SDL GPU API.">GPUTextEngine.GPUTextEngine()</a>. </td></tr>
     <tr><td class="paramname">winding</td><td>the new winding order option.</td></tr>
   </table>
   </dd>

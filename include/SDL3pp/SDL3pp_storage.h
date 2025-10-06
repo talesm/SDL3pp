@@ -427,8 +427,8 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(const StorageInterface* iface, void* userdata)
-    : m_resource(CheckError(SDL_OpenStorage(iface, userdata)))
+  Storage(const StorageInterface& iface, void* userdata)
+    : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
   {
   }
 
@@ -884,7 +884,7 @@ inline Storage OpenFileStorage(StringParam path)
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline Storage OpenStorage(const StorageInterface* iface, void* userdata)
+inline Storage OpenStorage(const StorageInterface& iface, void* userdata)
 {
   return Storage(iface, userdata);
 }

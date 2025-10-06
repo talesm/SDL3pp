@@ -145,15 +145,3 @@
 <   return CheckError(SDL_GetHapticFromID(instance_id));
 ---
 >   return {CheckError(SDL_GetHapticFromID(instance_id))};
-1556c1577
-<   return SDL_HapticEffectSupported(haptic, effect);
----
->   return SDL_HapticEffectSupported(haptic, &effect);
-1581c1602
-<   return CheckError(SDL_CreateHapticEffect(haptic, effect));
----
->   return CheckError(SDL_CreateHapticEffect(haptic, &effect));
-1612c1633
-<   CheckError(SDL_UpdateHapticEffect(haptic, effect, data));
----
->   CheckError(SDL_UpdateHapticEffect(haptic, effect, &data));

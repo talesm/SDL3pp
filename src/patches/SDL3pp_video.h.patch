@@ -406,6 +406,14 @@
 >                                                  include_high_density_modes,
 >                                                  &mode));
 >   return mode;
+3840c3969
+<   return SDL_GetDesktopDisplayMode(displayID);
+---
+>   return *SDL_GetDesktopDisplayMode(displayID);
+3869c3998
+<   return SDL_GetCurrentDisplayMode(displayID);
+---
+>   return *SDL_GetCurrentDisplayMode(displayID);
 3893c4022
 <   return SDL_GetDisplayForPoint(point);
 ---
@@ -414,6 +422,10 @@
 <   return SDL_GetDisplayForRect(rect);
 ---
 >   return SDL_GetDisplayForRect(&rect);
+4069c4198
+<   return SDL_GetWindowFullscreenMode(window);
+---
+>   return *SDL_GetWindowFullscreenMode(window);
 4081d4209
 <  * @param size the size of the ICC profile.
 4091c4219,4220

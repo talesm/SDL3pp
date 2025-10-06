@@ -224,8 +224,8 @@ public:
    * @sa GetCameras
    * @sa Camera.GetFormat
    */
-  Camera(CameraID instance_id, const CameraSpec* spec)
-    : m_resource(SDL_OpenCamera(instance_id, spec))
+  Camera(CameraID instance_id, const CameraSpec& spec)
+    : m_resource(SDL_OpenCamera(instance_id, &spec))
   {
   }
 
@@ -670,7 +670,7 @@ inline CameraPosition GetCameraPosition(CameraID instance_id)
  * @sa GetCameras
  * @sa Camera.GetFormat
  */
-inline Camera OpenCamera(CameraID instance_id, const CameraSpec* spec)
+inline Camera OpenCamera(CameraID instance_id, const CameraSpec& spec)
 {
   return Camera(instance_id, spec);
 }

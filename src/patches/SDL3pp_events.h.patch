@@ -297,6 +297,6 @@
 >     },
 >     &filter);
 1714c1788
-<   return CheckError(SDL_GetWindowFromEvent(event));
+<   return CheckError(SDL_GetWindowFromEvent(&event));
 ---
 >   return {CheckError(SDL_GetWindowFromEvent(&event))};

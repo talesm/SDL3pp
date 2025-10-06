@@ -45,9 +45,9 @@ Category            | Header
 
 ## GPU
 
-Category                      | Header
------------------------------ | -----------------
-3D Rendering and GPU Compute  | SDL3pp_gpu.h
+Category         | Header
+---------------- | ---------------
+@ref CategoryGPU | SDL3pp_gpu.h
 
 ## Input Events
 
@@ -171,6 +171,8 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryHaptic
 
 @addtogroup CategoryAudio
+
+@addtogroup CategoryGPU
 
 @defgroup CategoriesEvents Input Events
 @{

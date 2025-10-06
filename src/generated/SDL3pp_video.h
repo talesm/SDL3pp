@@ -444,7 +444,7 @@ public:
    * @sa Display.GetCurrentMode
    * @sa Display.GetAll
    */
-  const DisplayMode* GetDesktopMode() const;
+  const DisplayMode& GetDesktopMode() const;
 
   /**
    * Get information about the current display mode.
@@ -464,7 +464,7 @@ public:
    * @sa Display.GetDesktopMode
    * @sa Display.GetAll
    */
-  const DisplayMode* GetCurrentMode() const;
+  const DisplayMode& GetCurrentMode() const;
 
   /**
    * Get the display containing a point.
@@ -1235,7 +1235,7 @@ public:
    * @sa Window.SetFullscreenMode
    * @sa Window.SetFullscreen
    */
-  const DisplayMode* GetFullscreenMode() const;
+  const DisplayMode& GetFullscreenMode() const;
 
   /**
    * Get the raw ICC profile data for the screen the window is currently on.
@@ -3835,12 +3835,12 @@ inline DisplayMode Display::GetClosestFullscreenMode(
  * @sa Display.GetCurrentMode
  * @sa Display.GetAll
  */
-inline const DisplayMode* GetDesktopDisplayMode(DisplayID displayID)
+inline const DisplayMode& GetDesktopDisplayMode(DisplayID displayID)
 {
   return SDL_GetDesktopDisplayMode(displayID);
 }
 
-inline const DisplayMode* Display::GetDesktopMode() const
+inline const DisplayMode& Display::GetDesktopMode() const
 {
   return SDL::GetDesktopDisplayMode(m_displayID);
 }
@@ -3864,12 +3864,12 @@ inline const DisplayMode* Display::GetDesktopMode() const
  * @sa Display.GetDesktopMode
  * @sa Display.GetAll
  */
-inline const DisplayMode* GetCurrentDisplayMode(DisplayID displayID)
+inline const DisplayMode& GetCurrentDisplayMode(DisplayID displayID)
 {
   return SDL_GetCurrentDisplayMode(displayID);
 }
 
-inline const DisplayMode* Display::GetCurrentMode() const
+inline const DisplayMode& Display::GetCurrentMode() const
 {
   return SDL::GetCurrentDisplayMode(m_displayID);
 }
@@ -4064,12 +4064,12 @@ inline void Window::SetFullscreenMode(OptionalRef<const DisplayMode> mode)
  * @sa Window.SetFullscreenMode
  * @sa Window.SetFullscreen
  */
-inline const DisplayMode* GetWindowFullscreenMode(WindowParam window)
+inline const DisplayMode& GetWindowFullscreenMode(WindowParam window)
 {
   return SDL_GetWindowFullscreenMode(window);
 }
 
-inline const DisplayMode* Window::GetFullscreenMode() const
+inline const DisplayMode& Window::GetFullscreenMode() const
 {
   return SDL::GetWindowFullscreenMode(m_resource);
 }
