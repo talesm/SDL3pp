@@ -1694,6 +1694,25 @@ const transform = {
         "SDL_BindGPUFragmentStorageBuffers": {
           parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
         },
+        "SDL_BeginGPUComputePass": {
+          parameters: [
+            {},
+            { type: "std::span<const GPUStorageTextureReadWriteBinding>" },
+            { type: "std::span<const GPUStorageBufferReadWriteBinding>", name: "storage_buffer_bindings" },
+          ],
+        },
+        "SDL_BindGPUComputeSamplers": {
+          parameters: [{}, {}, { type: "std::span<const GPUTextureSamplerBinding>" }],
+        },
+        "SDL_BindGPUComputeStorageTextures": {
+          parameters: [{}, {}, { type: "SpanRef<const GPUTextureRaw>" }],
+        },
+        "SDL_BindGPUComputeStorageBuffers": {
+          parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
+        },
+        "SDL_WaitForGPUFences": {
+          parameters: [{}, {}, { type: "std::span<GPUFence* const>" }],
+        },
       }
     },
     "SDL_guid.h": {

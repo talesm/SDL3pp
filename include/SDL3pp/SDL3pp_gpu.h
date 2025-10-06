@@ -1561,8 +1561,6 @@ public:
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
    *                                 structs.
-   * @param num_bindings the number of texture-sampler bindings to bind from the
-   *                     array.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1570,8 +1568,7 @@ public:
    */
   void BindGPUComputeSamplers(
     Uint32 first_slot,
-    const GPUTextureSamplerBinding& texture_sampler_bindings,
-    Uint32 num_bindings);
+    std::span<const GPUTextureSamplerBinding> texture_sampler_bindings);
 
   /**
    * Binds storage textures as readonly for use on the compute pipeline.
@@ -1584,15 +1581,14 @@ public:
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
-   * @param num_bindings the number of storage textures to bind from the array.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUComputeStorageTextures(Uint32 first_slot,
-                                     SDL_GPUTexture* const* storage_textures,
-                                     Uint32 num_bindings);
+  void BindGPUComputeStorageTextures(
+    Uint32 first_slot,
+    SpanRef<const GPUTextureRaw> storage_textures);
 
   /**
    * Binds storage buffers as readonly for use on the compute pipeline.
@@ -1605,15 +1601,14 @@ public:
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
-   * @param num_bindings the number of storage buffers to bind from the array.
    *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUComputeStorageBuffers(Uint32 first_slot,
-                                    SDL_GPUBuffer* const* storage_buffers,
-                                    Uint32 num_bindings);
+  void BindGPUComputeStorageBuffers(
+    Uint32 first_slot,
+    SpanRef<const GPUBufferRaw> storage_buffers);
 
   /**
    * Dispatches compute work.
@@ -2217,12 +2212,8 @@ public:
    *
    * @param storage_texture_bindings an array of writeable storage texture
    *                                 binding structs.
-   * @param num_storage_texture_bindings the number of storage textures to bind
-   *                                     from the array.
    * @param storage_buffer_bindings an array of writeable storage buffer binding
    *                                structs.
-   * @param num_storage_buffer_bindings the number of storage buffers to bind
-   *                                    from the array.
    * @returns a compute pass handle.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2230,10 +2221,8 @@ public:
    * @sa GPUComputePass.End
    */
   GPUComputePass BeginGPUComputePass(
-    const GPUStorageTextureReadWriteBinding& storage_texture_bindings,
-    Uint32 num_storage_texture_bindings,
-    const GPUStorageBufferReadWriteBinding& storage_buffer_bindings,
-    Uint32 num_storage_buffer_bindings);
+    std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
+    std::span<const GPUStorageBufferReadWriteBinding> storage_buffer_bindings);
 
   /**
    * Begins a copy pass on a command buffer.
@@ -3849,7 +3838,6 @@ public:
    * @param wait_all if 0, wait for any fence to be signaled, if 1, wait for all
    *                 fences to be signaled.
    * @param fences an array of fences to wait on.
-   * @param num_fences the number of fences in the fences array.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -3857,9 +3845,7 @@ public:
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    * @sa GPUDevice.WaitForGPUIdle
    */
-  void WaitForGPUFences(bool wait_all,
-                        SDL_GPUFence* const* fences,
-                        Uint32 num_fences);
+  void WaitForGPUFences(bool wait_all, std::span<GPUFence* const> fences);
 
   /**
    * Checks the status of a fence.
@@ -6372,12 +6358,8 @@ inline void GPURenderPass::End() { SDL::EndGPURenderPass(m_gPURenderPass); }
  * @param command_buffer a command buffer.
  * @param storage_texture_bindings an array of writeable storage texture
  *                                 binding structs.
- * @param num_storage_texture_bindings the number of storage textures to bind
- *                                     from the array.
  * @param storage_buffer_bindings an array of writeable storage buffer binding
  *                                structs.
- * @param num_storage_buffer_bindings the number of storage buffers to bind
- *                                    from the array.
  * @returns a compute pass handle.
  *
  * @since This function is available since SDL 3.2.0.
@@ -6386,29 +6368,22 @@ inline void GPURenderPass::End() { SDL::EndGPURenderPass(m_gPURenderPass); }
  */
 inline GPUComputePass BeginGPUComputePass(
   GPUCommandBuffer command_buffer,
-  const GPUStorageTextureReadWriteBinding& storage_texture_bindings,
-  Uint32 num_storage_texture_bindings,
-  const GPUStorageBufferReadWriteBinding& storage_buffer_bindings,
-  Uint32 num_storage_buffer_bindings)
+  std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
+  std::span<const GPUStorageBufferReadWriteBinding> storage_buffer_bindings)
 {
   return SDL_BeginGPUComputePass(command_buffer,
-                                 &storage_texture_bindings,
-                                 num_storage_texture_bindings,
-                                 &storage_buffer_bindings,
-                                 num_storage_buffer_bindings);
+                                 storage_texture_bindings.data(),
+                                 storage_texture_bindings.size(),
+                                 storage_buffer_bindings.data(),
+                                 storage_buffer_bindings.size());
 }
 
 inline GPUComputePass GPUCommandBuffer::BeginGPUComputePass(
-  const GPUStorageTextureReadWriteBinding& storage_texture_bindings,
-  Uint32 num_storage_texture_bindings,
-  const GPUStorageBufferReadWriteBinding& storage_buffer_bindings,
-  Uint32 num_storage_buffer_bindings)
+  std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
+  std::span<const GPUStorageBufferReadWriteBinding> storage_buffer_bindings)
 {
-  return SDL::BeginGPUComputePass(m_gPUCommandBuffer,
-                                  storage_texture_bindings,
-                                  num_storage_texture_bindings,
-                                  storage_buffer_bindings,
-                                  num_storage_buffer_bindings);
+  return SDL::BeginGPUComputePass(
+    m_gPUCommandBuffer, storage_texture_bindings, storage_buffer_bindings);
 }
 
 /**
@@ -6443,8 +6418,6 @@ inline void GPUComputePass::BindGPUComputePipeline(
  * @param first_slot the compute sampler slot to begin binding from.
  * @param texture_sampler_bindings an array of texture-sampler binding
  *                                 structs.
- * @param num_bindings the number of texture-sampler bindings to bind from the
- *                     array.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6453,20 +6426,20 @@ inline void GPUComputePass::BindGPUComputePipeline(
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
   Uint32 first_slot,
-  const GPUTextureSamplerBinding& texture_sampler_bindings,
-  Uint32 num_bindings)
+  std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
-  SDL_BindGPUComputeSamplers(
-    compute_pass, first_slot, &texture_sampler_bindings, num_bindings);
+  SDL_BindGPUComputeSamplers(compute_pass,
+                             first_slot,
+                             texture_sampler_bindings.data(),
+                             texture_sampler_bindings.size());
 }
 
 inline void GPUComputePass::BindGPUComputeSamplers(
   Uint32 first_slot,
-  const GPUTextureSamplerBinding& texture_sampler_bindings,
-  Uint32 num_bindings)
+  std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
   SDL::BindGPUComputeSamplers(
-    m_gPUComputePass, first_slot, texture_sampler_bindings, num_bindings);
+    m_gPUComputePass, first_slot, texture_sampler_bindings);
 }
 
 /**
@@ -6481,7 +6454,6 @@ inline void GPUComputePass::BindGPUComputeSamplers(
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
  * @param storage_textures an array of storage textures.
- * @param num_bindings the number of storage textures to bind from the array.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6490,20 +6462,18 @@ inline void GPUComputePass::BindGPUComputeSamplers(
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
   Uint32 first_slot,
-  SDL_GPUTexture* const* storage_textures,
-  Uint32 num_bindings)
+  SpanRef<const GPUTextureRaw> storage_textures)
 {
   SDL_BindGPUComputeStorageTextures(
-    compute_pass, first_slot, storage_textures, num_bindings);
+    compute_pass, first_slot, storage_textures.data(), storage_textures.size());
 }
 
 inline void GPUComputePass::BindGPUComputeStorageTextures(
   Uint32 first_slot,
-  SDL_GPUTexture* const* storage_textures,
-  Uint32 num_bindings)
+  SpanRef<const GPUTextureRaw> storage_textures)
 {
   SDL::BindGPUComputeStorageTextures(
-    m_gPUComputePass, first_slot, storage_textures, num_bindings);
+    m_gPUComputePass, first_slot, storage_textures);
 }
 
 /**
@@ -6518,28 +6488,26 @@ inline void GPUComputePass::BindGPUComputeStorageTextures(
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
  * @param storage_buffers an array of storage buffer binding structs.
- * @param num_bindings the number of storage buffers to bind from the array.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUShader.GPUShader
  */
-inline void BindGPUComputeStorageBuffers(GPUComputePass compute_pass,
-                                         Uint32 first_slot,
-                                         SDL_GPUBuffer* const* storage_buffers,
-                                         Uint32 num_bindings)
+inline void BindGPUComputeStorageBuffers(
+  GPUComputePass compute_pass,
+  Uint32 first_slot,
+  SpanRef<const GPUBufferRaw> storage_buffers)
 {
   SDL_BindGPUComputeStorageBuffers(
-    compute_pass, first_slot, storage_buffers, num_bindings);
+    compute_pass, first_slot, storage_buffers.data(), storage_buffers.size());
 }
 
 inline void GPUComputePass::BindGPUComputeStorageBuffers(
   Uint32 first_slot,
-  SDL_GPUBuffer* const* storage_buffers,
-  Uint32 num_bindings)
+  SpanRef<const GPUBufferRaw> storage_buffers)
 {
   SDL::BindGPUComputeStorageBuffers(
-    m_gPUComputePass, first_slot, storage_buffers, num_bindings);
+    m_gPUComputePass, first_slot, storage_buffers);
 }
 
 /**
@@ -7444,7 +7412,6 @@ inline void GPUDevice::WaitForGPUIdle() { SDL::WaitForGPUIdle(m_resource); }
  * @param wait_all if 0, wait for any fence to be signaled, if 1, wait for all
  *                 fences to be signaled.
  * @param fences an array of fences to wait on.
- * @param num_fences the number of fences in the fences array.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -7454,17 +7421,16 @@ inline void GPUDevice::WaitForGPUIdle() { SDL::WaitForGPUIdle(m_resource); }
  */
 inline void WaitForGPUFences(GPUDeviceParam device,
                              bool wait_all,
-                             SDL_GPUFence* const* fences,
-                             Uint32 num_fences)
+                             std::span<GPUFence* const> fences)
 {
-  CheckError(SDL_WaitForGPUFences(device, wait_all, fences, num_fences));
+  CheckError(
+    SDL_WaitForGPUFences(device, wait_all, fences.data(), fences.size()));
 }
 
 inline void GPUDevice::WaitForGPUFences(bool wait_all,
-                                        SDL_GPUFence* const* fences,
-                                        Uint32 num_fences)
+                                        std::span<GPUFence* const> fences)
 {
-  SDL::WaitForGPUFences(m_resource, wait_all, fences, num_fences);
+  SDL::WaitForGPUFences(m_resource, wait_all, fences);
 }
 
 /**
