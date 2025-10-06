@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data() const'],['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()']]],
+  ['data_0',['data',['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data()'],['../classSDL_1_1SpanRef.html#a23d68d09a1e467f402d05938133cec4a',1,'SDL::SpanRef::data()'],['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()']]],
   ['datetime_1',['datetime',['../structSDL_1_1DateTime.html#a6eb10e084a8b09788db99e1eaef2f518',1,'SDL::DateTime::DateTime(const DateTimeRaw &amp;dateTime={})'],['../structSDL_1_1DateTime.html#aee00aebad97035b43d0169e7f5cfef0a',1,'SDL::DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int nanosecond, int day_of_week, int utc_offset)'],['../structSDL_1_1DateTime.html#ae847319a174d7457b73a4c7b1cba76c8',1,'SDL::DateTime::DateTime(Time ticks, bool localTime=true)']]],
   ['datetimetotime_2',['DateTimeToTime',['../group__CategoryTime.html#gabdf901de43495f7f42cc28019c68f6f4',1,'SDL']]],
   ['defaultclassdestroy_3',['DefaultClassDestroy',['../group__CategoryInit.html#gaab9867564fcaf4a3954fd7aa6b6a524a',1,'SDL']]],

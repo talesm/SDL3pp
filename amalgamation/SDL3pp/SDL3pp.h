@@ -1402,18 +1402,21 @@ class SpanRef
 public:
   constexpr SpanRef() = default;
 
+  /// Constructor
   template<DerivedWrapper<T> U, size_t N>
   constexpr SpanRef(U (&other)[N])
     : value(static_cast<T*>(other), N)
   {
   }
 
+  /// Constructor
   template<DerivedWrapper<T> U>
   constexpr SpanRef(const std::span<U>& other)
     : value(other.data(), other.size())
   {
   }
 
+  /// Constructor
   template<std::contiguous_iterator It>
     requires DerivedWrapper<std::iter_value_t<It>, T>
   constexpr SpanRef(It first, size_t count)
@@ -1421,12 +1424,15 @@ public:
   {
   }
 
+  /// Constructor
   template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
     requires DerivedWrapper<std::iter_value_t<It>, T>
   constexpr SpanRef(It first, End last)
     : value((T*)(&*first), size_t(last - first))
   {
   }
+
+  /// Constructor
   template<std::ranges::contiguous_range R>
     requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
   constexpr SpanRef(R&& range)
@@ -1434,8 +1440,10 @@ public:
   {
   }
 
+  /// Retrieves contained size
   constexpr size_t size() const { return value.size(); }
 
+  /// Retrieves contained data
   constexpr T* data() const { return value.data(); }
 };
 

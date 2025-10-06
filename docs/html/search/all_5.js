@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../structSDL_1_1SourceBytes.html#a9201ebff024eb0e51c7dbdc0dbae8dcb',1,'SDL::SourceBytes::data'],['../structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754',1,'SDL::TargetBytes::data'],['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()'],['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data() const'],['../group__CategoryGPU.html#uniform-data',1,'Uniform Data']]],
+  ['data_0',['data',['../structSDL_1_1SourceBytes.html#a9201ebff024eb0e51c7dbdc0dbae8dcb',1,'SDL::SourceBytes::data'],['../structSDL_1_1TargetBytes.html#ab8abdd8643e3d331f153317b17f24754',1,'SDL::TargetBytes::data'],['../classSDL_1_1OwnArray.html#afd861fe7aa8df55c4c8f5efe023af4e6',1,'SDL::OwnArray::data()'],['../classSDL_1_1OwnArray.html#a7eb9f1bb3310984f12c229e6b28a3b0b',1,'SDL::OwnArray::data() const'],['../classSDL_1_1SpanRef.html#a23d68d09a1e467f402d05938133cec4a',1,'SDL::SpanRef::data()'],['../group__CategoryGPU.html#uniform-data',1,'Uniform Data']]],
   ['data_20other_20than_20text_1',['Clipboard callbacks (data other than text)',['../group__CategoryClipboard.html#clipboard-callbacks-data-other-than-text',1,'']]],
   ['date_20and_20time_2',['Date and Time',['../group__CategoryTime.html',1,'']]],
   ['date_5fformat_5fddmmyyyy_3',['DATE_FORMAT_DDMMYYYY',['../group__CategoryTime.html#ga5eb6af9540557e89e7bc86669ab70947',1,'SDL']]],
