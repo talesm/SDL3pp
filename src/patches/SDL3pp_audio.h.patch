@@ -874,33 +874,38 @@
 4431d4775
 <  * @param len the length of the audio buffer in bytes.
 4445c4789,4790
-<   CheckError(SDL_MixAudio(dst, src.data, src.size_bytes, format, volume));
+<   CheckError(SDL_MixAudio(dst, src.data(), src.size_bytes(), format, volume));
 ---
->   CheckError(SDL_MixAudio(
->     dst, static_cast<const Uint8*>(src.data), format, src.size_bytes, volume));
+>   CheckError(
+>     SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
 4472d4816
 <  * @param len the length of the audio buffer in bytes.
-4486c4830,4831
+4486c4830,4836
 <   static_assert(false, "Not implemented");
 ---
->   if (dst.size_bytes < src.size_bytes) src.size_bytes = dst.size_bytes;
->   MixAudio(static_cast<Uint8*>(dst.data), src, format, volume);
-4504d4848
+>   if (dst.size_bytes() < src.size_bytes()) {
+>     MixAudio(dst.data_as<Uint8>(),
+>              SourceBytes{src.data(), dst.size_bytes()},
+>              format,
+>              volume);
+>   } else
+>     MixAudio(dst.data_as<Uint8>(), src, format, volume);
+4504d4853
 <  * @param src_len the len of src_data.
-4506,4509d4849
+4506,4509d4854
 <  * @param dst_data will be filled with a pointer to converted audio data,
 <  *                 which should be freed with free(). On error, it will be
 <  *                 nullptr.
 <  * @param dst_len will be filled with the len of dst_data.
-4520,4521c4860,4868
+4520,4521c4865,4873
 <   return CheckError(SDL_ConvertAudioSamples(
-<     &src_spec, src_data.data, src_data.size_bytes, &dst_spec));
+<     &src_spec, src_data.data(), src_data.size_bytes(), &dst_spec));
 ---
 >   Uint8* buf;
 >   int len;
 >   CheckError(SDL_ConvertAudioSamples(&src_spec,
->                                      static_cast<const Uint8*>(src_data.data),
->                                      src_data.size_bytes,
+>                                      src_data.data_as<Uint8>(),
+>                                      src_data.size_bytes(),
 >                                      &dst_spec,
 >                                      &buf,
 >                                      &len));

@@ -5704,7 +5704,7 @@ inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
                                      SourceBytes data)
 {
   SDL_PushGPUVertexUniformData(
-    command_buffer, slot_index, data.data, data.size_bytes);
+    command_buffer, slot_index, data.data(), data.size_bytes());
 }
 
 inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
@@ -5735,7 +5735,7 @@ inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
                                        SourceBytes data)
 {
   SDL_PushGPUFragmentUniformData(
-    command_buffer, slot_index, data.data, data.size_bytes);
+    command_buffer, slot_index, data.data(), data.size_bytes());
 }
 
 inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
@@ -5766,7 +5766,7 @@ inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
                                       SourceBytes data)
 {
   SDL_PushGPUComputeUniformData(
-    command_buffer, slot_index, data.data, data.size_bytes);
+    command_buffer, slot_index, data.data(), data.size_bytes());
 }
 
 inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,

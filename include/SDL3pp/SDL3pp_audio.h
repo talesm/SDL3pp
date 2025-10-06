@@ -3935,7 +3935,7 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamParam stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf.data, buf.size_bytes));
+  CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -3972,7 +3972,7 @@ inline void AudioStream::PutData(SourceBytes buf)
  */
 inline int GetAudioStreamData(AudioStreamParam stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf.data, buf.size_bytes);
+  return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -4786,8 +4786,8 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(SDL_MixAudio(
-    dst, static_cast<const Uint8*>(src.data), format, src.size_bytes, volume));
+  CheckError(
+    SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
 }
 
 /**
@@ -4827,8 +4827,13 @@ inline void MixAudio(TargetBytes dst,
                      AudioFormat format,
                      float volume)
 {
-  if (dst.size_bytes < src.size_bytes) src.size_bytes = dst.size_bytes;
-  MixAudio(static_cast<Uint8*>(dst.data), src, format, volume);
+  if (dst.size_bytes() < src.size_bytes()) {
+    MixAudio(dst.data_as<Uint8>(),
+             SourceBytes{src.data(), dst.size_bytes()},
+             format,
+             volume);
+  } else
+    MixAudio(dst.data_as<Uint8>(), src, format, volume);
 }
 
 /**
@@ -4860,8 +4865,8 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
   Uint8* buf;
   int len;
   CheckError(SDL_ConvertAudioSamples(&src_spec,
-                                     static_cast<const Uint8*>(src_data.data),
-                                     src_data.size_bytes,
+                                     src_data.data_as<Uint8>(),
+                                     src_data.size_bytes(),
                                      &dst_spec,
                                      &buf,
                                      &len));

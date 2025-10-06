@@ -1806,7 +1806,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  */
 inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 {
-  return SDL_ReadIO(context, buf.data, buf.size_bytes);
+  return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
 
 inline size_t IOStream::Read(TargetBytes buf)
@@ -1846,7 +1846,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  */
 inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 {
-  return SDL_WriteIO(context, buf.data, buf.size_bytes);
+  return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
 
 inline size_t IOStream::Write(SourceBytes buf)
@@ -2012,7 +2012,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  */
 inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
 {
-  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
+  CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
 
 /**
@@ -2033,7 +2033,7 @@ inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
  */
 inline void SaveFile(StringParam file, SourceBytes data)
 {
-  CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
+  CheckError(SDL_SaveFile(file, data.data(), data.size_bytes()));
 }
 
 inline void IOStream::SaveFile(SourceBytes data)

@@ -316,8 +316,8 @@ inline void SetClipboardData(ClipboardDataCB callback,
   SetClipboardData(
     [](void*, const char* mime_type, size_t* size) -> const void* {
       auto source = s_callback(mime_type);
-      *size = source.size_bytes;
-      return source.data;
+      *size = source.size_bytes();
+      return source.data();
     },
     [](void*) {
       if (s_cleanup) s_cleanup();

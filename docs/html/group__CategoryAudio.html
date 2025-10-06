@@ -286,10 +286,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5729ee5049a905a97a1b82de9d4973b0" id="r_ga5729ee5049a905a97a1b82de9d4973b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga5729ee5049a905a97a1b82de9d4973b0">SDL::SetAudioStreamOutputChannelMap</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream, std::span&lt; int &gt; chmap)</td></tr>
 <tr class="memdesc:ga5729ee5049a905a97a1b82de9d4973b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current output channel map of an audio stream.  <br /></td></tr>
 <tr class="separator:ga5729ee5049a905a97a1b82de9d4973b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4636071f6caeb049ebbd7e4da2220688" id="r_ga4636071f6caeb049ebbd7e4da2220688"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga4636071f6caeb049ebbd7e4da2220688">SDL::PutAudioStreamData</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> buf)</td></tr>
+<tr class="memitem:ga4636071f6caeb049ebbd7e4da2220688" id="r_ga4636071f6caeb049ebbd7e4da2220688"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga4636071f6caeb049ebbd7e4da2220688">SDL::PutAudioStreamData</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream, <a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a> buf)</td></tr>
 <tr class="memdesc:ga4636071f6caeb049ebbd7e4da2220688"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
 <tr class="separator:ga4636071f6caeb049ebbd7e4da2220688"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac57ab123c70120fab363389458168192" id="r_gac57ab123c70120fab363389458168192"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac57ab123c70120fab363389458168192">SDL::GetAudioStreamData</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream, <a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> buf)</td></tr>
+<tr class="memitem:gac57ab123c70120fab363389458168192" id="r_gac57ab123c70120fab363389458168192"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gac57ab123c70120fab363389458168192">SDL::GetAudioStreamData</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream, <a class="el" href="classSDL_1_1TargetBytes.html">TargetBytes</a> buf)</td></tr>
 <tr class="memdesc:gac57ab123c70120fab363389458168192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
 <tr class="separator:gac57ab123c70120fab363389458168192"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga70b0c00251f9656ab123a062d85f2d20" id="r_ga70b0c00251f9656ab123a062d85f2d20"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga70b0c00251f9656ab123a062d85f2d20">SDL::GetAudioStreamAvailable</a> (<a class="el" href="structSDL_1_1AudioStreamParam.html">AudioStreamParam</a> stream)</td></tr>
@@ -343,13 +343,13 @@ Functions</h2></td></tr>
 <tr class="memitem:gaaff063971ee474fedad66da38c10ec43" id="r_gaaff063971ee474fedad66da38c10ec43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaaff063971ee474fedad66da38c10ec43">SDL::LoadWAV</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path, <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> *spec)</td></tr>
 <tr class="memdesc:gaaff063971ee474fedad66da38c10ec43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a WAV from a file path.  <br /></td></tr>
 <tr class="separator:gaaff063971ee474fedad66da38c10ec43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaa8a066451543172b07d02bf4eff8882" id="r_gaaa8a066451543172b07d02bf4eff8882"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882">SDL::MixAudio</a> (<a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *dst, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
+<tr class="memitem:gaaa8a066451543172b07d02bf4eff8882" id="r_gaaa8a066451543172b07d02bf4eff8882"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gaaa8a066451543172b07d02bf4eff8882">SDL::MixAudio</a> (<a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> *dst, <a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a> src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
 <tr class="memdesc:gaaa8a066451543172b07d02bf4eff8882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mix audio data in a specified format.  <br /></td></tr>
 <tr class="separator:gaaa8a066451543172b07d02bf4eff8882"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga90ebbeaafbf2f69bbd771abbd5b94f23" id="r_ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga90ebbeaafbf2f69bbd771abbd5b94f23">SDL::MixAudio</a> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> dst, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
+<tr class="memitem:ga90ebbeaafbf2f69bbd771abbd5b94f23" id="r_ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga90ebbeaafbf2f69bbd771abbd5b94f23">SDL::MixAudio</a> (<a class="el" href="classSDL_1_1TargetBytes.html">TargetBytes</a> dst, <a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a> src, <a class="el" href="classSDL_1_1AudioFormat.html">AudioFormat</a> format, float volume)</td></tr>
 <tr class="memdesc:ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mix audio data in a specified format.  <br /></td></tr>
 <tr class="separator:ga90ebbeaafbf2f69bbd771abbd5b94f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga21787c751aa8f17579f1dca4a1b8b8ff" id="r_ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga21787c751aa8f17579f1dca4a1b8b8ff">SDL::ConvertAudioSamples</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;src_spec, <a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> src_data, const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;dst_spec)</td></tr>
+<tr class="memitem:ga21787c751aa8f17579f1dca4a1b8b8ff" id="r_ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OwnArray.html">OwnArray</a>&lt; <a class="el" href="group__CategoryStdinc.html#gadeddb36a6d67c5bc92003dd7679b4b17">Uint8</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga21787c751aa8f17579f1dca4a1b8b8ff">SDL::ConvertAudioSamples</a> (const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;src_spec, <a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a> src_data, const <a class="el" href="group__CategoryAudio.html#ga278e46a8d2922ad0aa9a58e35bbcb92e">AudioSpec</a> &amp;dst_spec)</td></tr>
 <tr class="memdesc:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert some audio data of one format to another format.  <br /></td></tr>
 <tr class="separator:ga21787c751aa8f17579f1dca4a1b8b8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5a3741582de11b0d3858be6fce00bc9b" id="r_ga5a3741582de11b0d3858be6fce00bc9b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga5a3741582de11b0d3858be6fce00bc9b">SDL::GetAudioFormatName</a> (<a class="el" href="group__CategoryAudio.html#ga20a78e54306f2776c59a47921d6bcb47">AudioFormatRaw</a> format)</td></tr>
@@ -460,10 +460,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8ebb01f74c1ec0e545d8e446e118ebba" id="r_ga8ebb01f74c1ec0e545d8e446e118ebba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga8ebb01f74c1ec0e545d8e446e118ebba">SDL::AudioStream::SetOutputChannelMap</a> (std::span&lt; int &gt; chmap)</td></tr>
 <tr class="memdesc:ga8ebb01f74c1ec0e545d8e446e118ebba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current output channel map of an audio stream.  <br /></td></tr>
 <tr class="separator:ga8ebb01f74c1ec0e545d8e446e118ebba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadc921b984761c77b7e3a5777ed47ce08" id="r_gadc921b984761c77b7e3a5777ed47ce08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gadc921b984761c77b7e3a5777ed47ce08">SDL::AudioStream::PutData</a> (<a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a> buf)</td></tr>
+<tr class="memitem:gadc921b984761c77b7e3a5777ed47ce08" id="r_gadc921b984761c77b7e3a5777ed47ce08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#gadc921b984761c77b7e3a5777ed47ce08">SDL::AudioStream::PutData</a> (<a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a> buf)</td></tr>
 <tr class="memdesc:gadc921b984761c77b7e3a5777ed47ce08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add data to the stream.  <br /></td></tr>
 <tr class="separator:gadc921b984761c77b7e3a5777ed47ce08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2c54a9610b20a92f33c2fca8f55298ee" id="r_ga2c54a9610b20a92f33c2fca8f55298ee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga2c54a9610b20a92f33c2fca8f55298ee">SDL::AudioStream::GetData</a> (<a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a> buf)</td></tr>
+<tr class="memitem:ga2c54a9610b20a92f33c2fca8f55298ee" id="r_ga2c54a9610b20a92f33c2fca8f55298ee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga2c54a9610b20a92f33c2fca8f55298ee">SDL::AudioStream::GetData</a> (<a class="el" href="classSDL_1_1TargetBytes.html">TargetBytes</a> buf)</td></tr>
 <tr class="memdesc:ga2c54a9610b20a92f33c2fca8f55298ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get converted/resampled data from the stream.  <br /></td></tr>
 <tr class="separator:ga2c54a9610b20a92f33c2fca8f55298ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga44b0de198b6ca7f61ba0cdf6086632df" id="r_ga44b0de198b6ca7f61ba0cdf6086632df"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryAudio.html#ga44b0de198b6ca7f61ba0cdf6086632df">SDL::AudioStream::GetAvailable</a> () const</td></tr>
@@ -1691,7 +1691,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>src_data</em>, </td>
         </tr>
         <tr>
@@ -2427,7 +2427,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
           <td class="paramname"><em>buf</em>&#160;</td>
         </tr>
         <tr>
@@ -2957,7 +2957,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">int SDL::AudioStream::GetData </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
           <td></td>
         </tr>
@@ -4032,13 +4032,13 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">void SDL::MixAudio </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1TargetBytes.html">TargetBytes</a>&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -4107,7 +4107,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -4723,7 +4723,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>buf</em>&#160;</td>
         </tr>
         <tr>
@@ -4777,7 +4777,7 @@ right, then it repeats for the next audio frame".</p>
         <tr>
           <td class="memname">void SDL::AudioStream::PutData </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1SourceBytes.html">SourceBytes</a>&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
           <td></td>
         </tr>

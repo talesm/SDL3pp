@@ -10,7 +10,7 @@ var searchData=
   ['sharedobject_7',['SharedObject',['../classSDL_1_1SharedObject.html',1,'SDL']]],
   ['sharedobjectparam_8',['SharedObjectParam',['../structSDL_1_1SharedObjectParam.html',1,'SDL']]],
   ['sharedobjectref_9',['SharedObjectRef',['../structSDL_1_1SharedObjectRef.html',1,'SDL']]],
-  ['sourcebytes_10',['SourceBytes',['../structSDL_1_1SourceBytes.html',1,'SDL']]],
+  ['sourcebytes_10',['SourceBytes',['../classSDL_1_1SourceBytes.html',1,'SDL']]],
   ['spanref_11',['SpanRef',['../classSDL_1_1SpanRef.html',1,'SDL']]],
   ['storage_12',['Storage',['../classSDL_1_1Storage.html',1,'SDL']]],
   ['storageparam_13',['StorageParam',['../structSDL_1_1StorageParam.html',1,'SDL']]],

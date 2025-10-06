@@ -986,7 +986,7 @@ inline bool ReadStorageFile(StorageParam storage,
                             TargetBytes destination)
 {
   return SDL_ReadStorageFile(
-    storage, path, destination.data, destination.size_bytes);
+    storage, path, destination.data(), destination.size_bytes());
 }
 
 /**
@@ -1057,7 +1057,7 @@ inline void WriteStorageFile(StorageParam storage,
                              StringParam path,
                              SourceBytes source)
 {
-  SDL_WriteStorageFile(storage, path, source.data, source.size_bytes);
+  SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes());
 }
 
 inline void Storage::WriteFile(StringParam path, SourceBytes source)

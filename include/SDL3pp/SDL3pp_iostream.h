@@ -1806,7 +1806,7 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  */
 inline IOStream IOFromMem(TargetBytes mem)
 {
-  return IOStream(CheckError(SDL_IOFromMem(mem.data, mem.size_bytes)));
+  return IOStream(CheckError(SDL_IOFromMem(mem.data(), mem.size_bytes())));
 }
 
 inline IOStream IOStream::FromMem(TargetBytes mem)
@@ -1854,7 +1854,7 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  */
 inline IOStream IOFromConstMem(SourceBytes mem)
 {
-  return IOStream(CheckError(SDL_IOFromConstMem(mem.data, mem.size_bytes)));
+  return IOStream(CheckError(SDL_IOFromConstMem(mem.data(), mem.size_bytes())));
 }
 
 inline IOStream IOStream::FromConstMem(SourceBytes mem)
@@ -2116,7 +2116,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  */
 inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 {
-  return SDL_ReadIO(context, buf.data, buf.size_bytes);
+  return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
 
 inline size_t IOStream::Read(TargetBytes buf)
@@ -2155,7 +2155,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  */
 inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 {
-  return SDL_WriteIO(context, buf.data, buf.size_bytes);
+  return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
 
 inline size_t IOStream::Write(SourceBytes buf)
@@ -2353,7 +2353,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  */
 inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
 {
-  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
+  CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
 
 /**
@@ -2372,7 +2372,7 @@ inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
  */
 inline void SaveFile(StringParam file, SourceBytes data)
 {
-  CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
+  CheckError(SDL_SaveFile(file, data.data(), data.size_bytes()));
 }
 
 inline void IOStream::SaveFile(SourceBytes data)

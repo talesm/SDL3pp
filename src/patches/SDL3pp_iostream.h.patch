@@ -597,7 +597,7 @@
 1497c1809
 <   return IOStream(SDL_IOFromMem(mem, size));
 ---
->   return IOStream(CheckError(SDL_IOFromMem(mem.data, mem.size_bytes)));
+>   return IOStream(CheckError(SDL_IOFromMem(mem.data(), mem.size_bytes())));
 1529,1532c1841,1843
 <  * @param mem a pointer to a read-only buffer to feed an IOStream stream.
 <  * @param size the buffer size, in bytes.
@@ -614,7 +614,7 @@
 1546c1857
 <   return IOStream(SDL_IOFromConstMem(mem, size));
 ---
->   return IOStream(CheckError(SDL_IOFromConstMem(mem.data, mem.size_bytes)));
+>   return IOStream(CheckError(SDL_IOFromConstMem(mem.data(), mem.size_bytes())));
 1670c1981
 <   return CheckError(SDL_GetIOProperties(context));
 ---

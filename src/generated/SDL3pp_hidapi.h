@@ -654,7 +654,7 @@ inline HidDevice hid_open_path(StringParam path)
  */
 inline int hid_write(HidDeviceParam dev, SourceBytes data)
 {
-  return SDL_hid_write(dev, data.data, data.size_bytes);
+  return SDL_hid_write(dev, data.data(), data.size_bytes());
 }
 
 inline int HidDevice::write(SourceBytes data)
@@ -685,7 +685,7 @@ inline int hid_read_timeout(HidDeviceParam dev,
                             TargetBytes data,
                             Milliseconds timeout)
 {
-  return SDL_hid_read_timeout(dev, data.data, data.size_bytes, timeout);
+  return SDL_hid_read_timeout(dev, data.data(), data.size_bytes(), timeout);
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
@@ -714,7 +714,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  */
 inline int hid_read(HidDeviceParam dev, TargetBytes data)
 {
-  return SDL_hid_read(dev, data.data, data.size_bytes);
+  return SDL_hid_read(dev, data.data(), data.size_bytes());
 }
 
 inline int HidDevice::read(TargetBytes data)
@@ -774,7 +774,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
  */
 inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
 {
-  return SDL_hid_send_feature_report(dev, data.data, data.size_bytes);
+  return SDL_hid_send_feature_report(dev, data.data(), data.size_bytes());
 }
 
 inline int HidDevice::send_feature_report(SourceBytes data)
@@ -805,7 +805,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
  */
 inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
 {
-  return SDL_hid_get_feature_report(dev, data.data, data.size_bytes);
+  return SDL_hid_get_feature_report(dev, data.data(), data.size_bytes());
 }
 
 inline int HidDevice::get_feature_report(TargetBytes data)
@@ -836,7 +836,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
  */
 inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
 {
-  return SDL_hid_get_input_report(dev, data.data, data.size_bytes);
+  return SDL_hid_get_input_report(dev, data.data(), data.size_bytes());
 }
 
 inline int HidDevice::get_input_report(TargetBytes data)
@@ -993,7 +993,7 @@ inline hid_device_info* HidDevice::get_device_info()
  */
 inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
 {
-  return SDL_hid_get_report_descriptor(dev, buf.data, buf.size_bytes);
+  return SDL_hid_get_report_descriptor(dev, buf.data(), buf.size_bytes());
 }
 
 inline int HidDevice::get_report_descriptor(TargetBytes buf)

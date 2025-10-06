@@ -630,8 +630,7 @@ inline HidDevice hid_open_path(StringParam path)
  */
 inline int hid_write(HidDeviceParam dev, SourceBytes data)
 {
-  return SDL_hid_write(
-    dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
+  return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::write(SourceBytes data)
@@ -659,10 +658,8 @@ inline int hid_read_timeout(HidDeviceParam dev,
                             TargetBytes data,
                             Milliseconds timeout)
 {
-  return SDL_hid_read_timeout(dev,
-                              static_cast<unsigned char*>(data.data),
-                              data.size_bytes,
-                              timeout.count());
+  return SDL_hid_read_timeout(
+    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
@@ -688,8 +685,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  */
 inline int hid_read(HidDeviceParam dev, TargetBytes data)
 {
-  return SDL_hid_read(
-    dev, static_cast<unsigned char*>(data.data), data.size_bytes);
+  return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::read(TargetBytes data)
@@ -747,7 +743,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
 inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
 {
   return SDL_hid_send_feature_report(
-    dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
+    dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::send_feature_report(SourceBytes data)
@@ -777,7 +773,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
 inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
 {
   return SDL_hid_get_feature_report(
-    dev, static_cast<unsigned char*>(data.data), data.size_bytes);
+    dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::get_feature_report(TargetBytes data)
@@ -807,7 +803,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
 inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
 {
   return SDL_hid_get_input_report(
-    dev, static_cast<unsigned char*>(data.data), data.size_bytes);
+    dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::get_input_report(TargetBytes data)
@@ -960,7 +956,7 @@ inline hid_device_info* HidDevice::get_device_info()
 inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
 {
   return SDL_hid_get_report_descriptor(
-    dev, static_cast<unsigned char*>(buf.data), buf.size_bytes);
+    dev, buf.data_as<Uint8>(), buf.size_bytes());
 }
 
 inline int HidDevice::get_report_descriptor(TargetBytes buf)

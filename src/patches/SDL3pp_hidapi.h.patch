@@ -81,84 +81,80 @@
 >  * @returns a HidDevice object on success.
 649d625
 <  * @param length the length in bytes of the data to send.
-657c633,634
-<   return SDL_hid_write(dev, data.data, data.size_bytes);
+657c633
+<   return SDL_hid_write(dev, data.data(), data.size_bytes());
 ---
->   return SDL_hid_write(
->     dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
-674,677c651
+>   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
+674,677c650
 <  * @param length the number of bytes to read. For devices with multiple
 <  *               reports, make sure to read an extra byte for the report
 <  *               number.
 <  * @param milliseconds timeout in milliseconds or -1 for blocking wait.
 ---
 >  * @param timeout timeout in milliseconds
-688c662,665
-<   return SDL_hid_read_timeout(dev, data.data, data.size_bytes, timeout);
+688c661,662
+<   return SDL_hid_read_timeout(dev, data.data(), data.size_bytes(), timeout);
 ---
->   return SDL_hid_read_timeout(dev,
->                               static_cast<unsigned char*>(data.data),
->                               data.size_bytes,
->                               timeout.count());
-705,707d681
+>   return SDL_hid_read_timeout(
+>     dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+705,707d678
 <  * @param length the number of bytes to read. For devices with multiple
 <  *               reports, make sure to read an extra byte for the report
 <  *               number.
-717c691,692
-<   return SDL_hid_read(dev, data.data, data.size_bytes);
+717c688
+<   return SDL_hid_read(dev, data.data(), data.size_bytes());
 ---
->   return SDL_hid_read(
->     dev, static_cast<unsigned char*>(data.data), data.size_bytes);
-735,737c710,711
+>   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
+735,737c706,707
 <  * @param nonblock enable or not the nonblocking reads - 1 to enable
 <  *                 nonblocking - 0 to disable nonblocking.
 <  * @returns 0 on success.
 ---
 >  * @param nonblock enable or not the nonblocking reads - true to enable
 >  *                 nonblocking - false to disable nonblocking.
-768,769d741
+768,769d737
 <  * @param length the length in bytes of the data to send, including the report
 <  *               number.
-777c749,750
-<   return SDL_hid_send_feature_report(dev, data.data, data.size_bytes);
+777c745,746
+<   return SDL_hid_send_feature_report(dev, data.data(), data.size_bytes());
 ---
 >   return SDL_hid_send_feature_report(
->     dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
-798,799d770
+>     dev, data.data_as<Uint8>(), data.size_bytes());
+798,799d766
 <  * @param length the number of bytes to read, including an extra byte for the
 <  *               report ID. The buffer can be longer than the actual report.
-808c779,780
-<   return SDL_hid_get_feature_report(dev, data.data, data.size_bytes);
+808c775,776
+<   return SDL_hid_get_feature_report(dev, data.data(), data.size_bytes());
 ---
 >   return SDL_hid_get_feature_report(
->     dev, static_cast<unsigned char*>(data.data), data.size_bytes);
-829,830d800
+>     dev, data.data_as<Uint8>(), data.size_bytes());
+829,830d796
 <  * @param length the number of bytes to read, including an extra byte for the
 <  *               report ID. The buffer can be longer than the actual report.
-839c809,810
-<   return SDL_hid_get_input_report(dev, data.data, data.size_bytes);
+839c805,806
+<   return SDL_hid_get_input_report(dev, data.data(), data.size_bytes());
 ---
 >   return SDL_hid_get_input_report(
->     dev, static_cast<unsigned char*>(data.data), data.size_bytes);
-851d821
+>     dev, data.data_as<Uint8>(), data.size_bytes());
+851d817
 <  * @returns 0 on success.
-856c826
+856c822
 < inline int hid_close(HidDeviceRaw dev)
 ---
 > inline void hid_close(HidDeviceRaw dev)
-858c828
+858c824
 <   return CheckError(SDL_hid_close(dev));
 ---
 >   CheckErrorIfNot(SDL_hid_close(dev), 0);
-869d838
+869d834
 <  * @returns 0 on success.
-892d860
+892d856
 <  * @returns 0 on success.
-915d882
+915d878
 <  * @returns 0 on success.
-939d905
+939d901
 <  * @returns 0 on success.
-964,966c930,933
+964,966c926,929
 <  * @returns a pointer to the hid_device_info for this hid_device or nullptr
 <  *          on failure; call GetError() for more information. This struct
 <  *          is valid until the device is closed with HidDevice.close().
@@ -167,10 +163,10 @@
 >  *          This struct is valid until the device is closed with
 >  *          HidDevice.close().
 >  * @throws Error on failure.
-988d954
+988d950
 <  * @param buf_size the size of the buffer in bytes.
-996c962,963
-<   return SDL_hid_get_report_descriptor(dev, buf.data, buf.size_bytes);
+996c958,959
+<   return SDL_hid_get_report_descriptor(dev, buf.data(), buf.size_bytes());
 ---
 >   return SDL_hid_get_report_descriptor(
->     dev, static_cast<unsigned char*>(buf.data), buf.size_bytes);
+>     dev, buf.data_as<Uint8>(), buf.size_bytes());

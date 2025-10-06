@@ -1443,6 +1443,9 @@ public:
   /// Retrieves contained size
   constexpr size_t size() const { return value.size(); }
 
+  /// Retrieves contained size in bytes
+  constexpr size_t size_bytes() const { return value.size_bytes(); }
+
   /// Retrieves contained data
   constexpr T* data() const { return value.data(); }
 };
@@ -1822,11 +1825,12 @@ struct StringResult : OwnArray<char>
  *
  * Source byte stream, tipically used as source where bytes are copied from.
  */
-struct SourceBytes
+class SourceBytes
 {
-  const void* data;  ///< The data copied from
-  size_t size_bytes; ///< The size in bytes
+  const void* m_data;  ///< The data copied from
+  size_t m_size_bytes; ///< The size in bytes
 
+public:
   /// Default ctor
   constexpr SourceBytes() = default;
 
@@ -1877,9 +1881,28 @@ struct SourceBytes
    *
    */
   constexpr SourceBytes(const void* data, size_t size_bytes)
-    : data(size_bytes > 0 ? data : nullptr)
-    , size_bytes(data != nullptr ? size_bytes : 0)
+    : m_data(size_bytes > 0 ? data : nullptr)
+    , m_size_bytes(data != nullptr ? size_bytes : 0)
   {
+  }
+
+  /// Retrieves contained size
+  constexpr size_t size() const { return m_size_bytes; }
+
+  /// Retrieves contained size in bytes
+  constexpr size_t size_bytes() const { return m_size_bytes; }
+
+  /// Retrieves contained data
+  constexpr const char* data() const
+  {
+    return static_cast<const char*>(m_data);
+  }
+
+  /// Retrieves contained data
+  template<class T>
+  constexpr const T* data_as() const
+  {
+    return static_cast<const T*>(m_data);
   }
 };
 
@@ -1888,11 +1911,12 @@ struct SourceBytes
  *
  * Target byte stream, tipically used as target where bytes are copied to.
  */
-struct TargetBytes
+class TargetBytes
 {
-  void* data = nullptr;  ///< The address to have data copied to it
-  size_t size_bytes = 0; ///< The size in bytes
+  void* m_data = nullptr;  ///< The address to have data copied to it
+  size_t m_size_bytes = 0; ///< The size in bytes
 
+public:
   /// Default ctor
   constexpr TargetBytes() = default;
 
@@ -1962,9 +1986,25 @@ struct TargetBytes
    *
    */
   constexpr TargetBytes(void* data, size_t size_bytes)
-    : data(size_bytes > 0 ? data : nullptr)
-    , size_bytes(data != nullptr ? size_bytes : 0)
+    : m_data(size_bytes > 0 ? data : nullptr)
+    , m_size_bytes(data != nullptr ? size_bytes : 0)
   {
+  }
+
+  /// Retrieves contained size
+  constexpr size_t size() const { return m_size_bytes; }
+
+  /// Retrieves contained size in bytes
+  constexpr size_t size_bytes() const { return m_size_bytes; }
+
+  /// Retrieves contained data
+  constexpr char* data() const { return static_cast<char*>(m_data); }
+
+  /// Retrieves contained data
+  template<class T>
+  constexpr T* data_as() const
+  {
+    return static_cast<T*>(m_data);
   }
 };
 
@@ -21381,8 +21421,8 @@ inline void SetClipboardData(ClipboardDataCB callback,
   SetClipboardData(
     [](void*, const char* mime_type, size_t* size) -> const void* {
       auto source = s_callback(mime_type);
-      *size = source.size_bytes;
-      return source.data;
+      *size = source.size_bytes();
+      return source.data();
     },
     [](void*) {
       if (s_cleanup) s_cleanup();
@@ -23563,8 +23603,7 @@ inline HidDevice hid_open_path(StringParam path)
  */
 inline int hid_write(HidDeviceParam dev, SourceBytes data)
 {
-  return SDL_hid_write(
-    dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
+  return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::write(SourceBytes data)
@@ -23592,10 +23631,8 @@ inline int hid_read_timeout(HidDeviceParam dev,
                             TargetBytes data,
                             Milliseconds timeout)
 {
-  return SDL_hid_read_timeout(dev,
-                              static_cast<unsigned char*>(data.data),
-                              data.size_bytes,
-                              timeout.count());
+  return SDL_hid_read_timeout(
+    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
 }
 
 inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
@@ -23621,8 +23658,7 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
  */
 inline int hid_read(HidDeviceParam dev, TargetBytes data)
 {
-  return SDL_hid_read(
-    dev, static_cast<unsigned char*>(data.data), data.size_bytes);
+  return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::read(TargetBytes data)
@@ -23680,7 +23716,7 @@ inline void HidDevice::set_nonblocking(bool nonblock)
 inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
 {
   return SDL_hid_send_feature_report(
-    dev, static_cast<const unsigned char*>(data.data), data.size_bytes);
+    dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::send_feature_report(SourceBytes data)
@@ -23710,7 +23746,7 @@ inline int HidDevice::send_feature_report(SourceBytes data)
 inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
 {
   return SDL_hid_get_feature_report(
-    dev, static_cast<unsigned char*>(data.data), data.size_bytes);
+    dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::get_feature_report(TargetBytes data)
@@ -23740,7 +23776,7 @@ inline int HidDevice::get_feature_report(TargetBytes data)
 inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
 {
   return SDL_hid_get_input_report(
-    dev, static_cast<unsigned char*>(data.data), data.size_bytes);
+    dev, data.data_as<Uint8>(), data.size_bytes());
 }
 
 inline int HidDevice::get_input_report(TargetBytes data)
@@ -23893,7 +23929,7 @@ inline hid_device_info* HidDevice::get_device_info()
 inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
 {
   return SDL_hid_get_report_descriptor(
-    dev, static_cast<unsigned char*>(buf.data), buf.size_bytes);
+    dev, buf.data_as<Uint8>(), buf.size_bytes());
 }
 
 inline int HidDevice::get_report_descriptor(TargetBytes buf)
@@ -26501,7 +26537,7 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  */
 inline IOStream IOFromMem(TargetBytes mem)
 {
-  return IOStream(CheckError(SDL_IOFromMem(mem.data, mem.size_bytes)));
+  return IOStream(CheckError(SDL_IOFromMem(mem.data(), mem.size_bytes())));
 }
 
 inline IOStream IOStream::FromMem(TargetBytes mem)
@@ -26549,7 +26585,7 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  */
 inline IOStream IOFromConstMem(SourceBytes mem)
 {
-  return IOStream(CheckError(SDL_IOFromConstMem(mem.data, mem.size_bytes)));
+  return IOStream(CheckError(SDL_IOFromConstMem(mem.data(), mem.size_bytes())));
 }
 
 inline IOStream IOStream::FromConstMem(SourceBytes mem)
@@ -26811,7 +26847,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  */
 inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
 {
-  return SDL_ReadIO(context, buf.data, buf.size_bytes);
+  return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
 
 inline size_t IOStream::Read(TargetBytes buf)
@@ -26850,7 +26886,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  */
 inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
 {
-  return SDL_WriteIO(context, buf.data, buf.size_bytes);
+  return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
 
 inline size_t IOStream::Write(SourceBytes buf)
@@ -27048,7 +27084,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  */
 inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
 {
-  CheckError(SDL_SaveFile_IO(src, data.data, data.size_bytes, closeio));
+  CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
 
 /**
@@ -27067,7 +27103,7 @@ inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
  */
 inline void SaveFile(StringParam file, SourceBytes data)
 {
-  CheckError(SDL_SaveFile(file, data.data, data.size_bytes));
+  CheckError(SDL_SaveFile(file, data.data(), data.size_bytes()));
 }
 
 inline void IOStream::SaveFile(SourceBytes data)
@@ -36964,7 +37000,7 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  */
 inline void PutAudioStreamData(AudioStreamParam stream, SourceBytes buf)
 {
-  CheckError(SDL_PutAudioStreamData(stream, buf.data, buf.size_bytes));
+  CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
 }
 
 inline void AudioStream::PutData(SourceBytes buf)
@@ -37001,7 +37037,7 @@ inline void AudioStream::PutData(SourceBytes buf)
  */
 inline int GetAudioStreamData(AudioStreamParam stream, TargetBytes buf)
 {
-  return SDL_GetAudioStreamData(stream, buf.data, buf.size_bytes);
+  return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
 }
 
 inline int AudioStream::GetData(TargetBytes buf)
@@ -37815,8 +37851,8 @@ inline void MixAudio(Uint8* dst,
                      AudioFormat format,
                      float volume)
 {
-  CheckError(SDL_MixAudio(
-    dst, static_cast<const Uint8*>(src.data), format, src.size_bytes, volume));
+  CheckError(
+    SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
 }
 
 /**
@@ -37856,8 +37892,13 @@ inline void MixAudio(TargetBytes dst,
                      AudioFormat format,
                      float volume)
 {
-  if (dst.size_bytes < src.size_bytes) src.size_bytes = dst.size_bytes;
-  MixAudio(static_cast<Uint8*>(dst.data), src, format, volume);
+  if (dst.size_bytes() < src.size_bytes()) {
+    MixAudio(dst.data_as<Uint8>(),
+             SourceBytes{src.data(), dst.size_bytes()},
+             format,
+             volume);
+  } else
+    MixAudio(dst.data_as<Uint8>(), src, format, volume);
 }
 
 /**
@@ -37889,8 +37930,8 @@ inline OwnArray<Uint8> ConvertAudioSamples(const AudioSpec& src_spec,
   Uint8* buf;
   int len;
   CheckError(SDL_ConvertAudioSamples(&src_spec,
-                                     static_cast<const Uint8*>(src_data.data),
-                                     src_data.size_bytes,
+                                     src_data.data_as<Uint8>(),
+                                     src_data.size_bytes(),
                                      &dst_spec,
                                      &buf,
                                      &len));
@@ -40749,7 +40790,7 @@ inline bool ReadStorageFile(StorageParam storage,
                             TargetBytes destination)
 {
   return SDL_ReadStorageFile(
-    storage, path, destination.data, destination.size_bytes);
+    storage, path, destination.data(), destination.size_bytes());
 }
 
 /**
@@ -40837,7 +40878,7 @@ inline void WriteStorageFile(StorageParam storage,
                              SourceBytes source)
 {
   CheckError(
-    SDL_WriteStorageFile(storage, path, source.data, source.size_bytes));
+    SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes()));
 }
 
 inline void Storage::WriteFile(StringParam path, SourceBytes source)
@@ -65398,7 +65439,7 @@ inline void PushGPUVertexUniformData(GPUCommandBuffer command_buffer,
                                      SourceBytes data)
 {
   SDL_PushGPUVertexUniformData(
-    command_buffer, slot_index, data.data, data.size_bytes);
+    command_buffer, slot_index, data.data(), data.size_bytes());
 }
 
 inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
@@ -65428,7 +65469,7 @@ inline void PushGPUFragmentUniformData(GPUCommandBuffer command_buffer,
                                        SourceBytes data)
 {
   SDL_PushGPUFragmentUniformData(
-    command_buffer, slot_index, data.data, data.size_bytes);
+    command_buffer, slot_index, data.data(), data.size_bytes());
 }
 
 inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
@@ -65458,7 +65499,7 @@ inline void PushGPUComputeUniformData(GPUCommandBuffer command_buffer,
                                       SourceBytes data)
 {
   SDL_PushGPUComputeUniformData(
-    command_buffer, slot_index, data.data, data.size_bytes);
+    command_buffer, slot_index, data.data(), data.size_bytes());
 }
 
 inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,

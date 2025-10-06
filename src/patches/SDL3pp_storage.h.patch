@@ -205,10 +205,10 @@
 ---
 >  * @throws Error on failure.
 1060c1070,1071
-<   SDL_WriteStorageFile(storage, path, source.data, source.size_bytes);
+<   SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes());
 ---
 >   CheckError(
->     SDL_WriteStorageFile(storage, path, source.data, source.size_bytes));
+>     SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes()));
 1142d1152
 <  * @param userdata a pointer that is passed to `callback`.
 1153c1163,1170

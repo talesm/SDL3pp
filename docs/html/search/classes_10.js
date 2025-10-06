@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['targetbytes_0',['TargetBytes',['../structSDL_1_1TargetBytes.html',1,'SDL']]],
+  ['targetbytes_0',['TargetBytes',['../classSDL_1_1TargetBytes.html',1,'SDL']]],
   ['text_1',['Text',['../classSDL_1_1Text.html',1,'SDL']]],
   ['textengine_2',['TextEngine',['../classSDL_1_1TextEngine.html',1,'SDL']]],
   ['textengineparam_3',['TextEngineParam',['../structSDL_1_1TextEngineParam.html',1,'SDL']]],

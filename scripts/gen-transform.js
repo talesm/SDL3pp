@@ -81,8 +81,8 @@ const transform = {
     replaceParams: [{ type: "const FPointRaw &", name: "offset" }]
   }],
   paramReplacements: {
-    "SourceBytes": "$.data, $.size_bytes",
-    "TargetBytes": "$.data, $.size_bytes",
+    "SourceBytes": "$.data(), $.size_bytes()",
+    "TargetBytes": "$.data(), $.size_bytes()",
   },
   delegatedReplacements: {
     "StringParam": "std::move($)",
