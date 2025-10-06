@@ -34,14 +34,15 @@ var searchData=
   ['freeanimation_31',['FreeAnimation',['../group__CategorySDLImage.html#ga13f44f394d2907f3bd2dc34f73b93fbe',1,'SDL']]],
   ['fromcenter_32',['fromcenter',['../structSDL_1_1Rect.html#a067efea36422349a2484c13eae798435',1,'SDL::Rect::FromCenter(int cx, int cy, int w, int h)'],['../structSDL_1_1Rect.html#ac98019c8265ebe194164e0bdd39d4b8a',1,'SDL::Rect::FromCenter(Point center, Point size)'],['../structSDL_1_1FRect.html#a85e4a5a25338b7add9ea692de35a4417',1,'SDL::FRect::FromCenter(float cx, float cy, float w, float h)'],['../structSDL_1_1FRect.html#a54601e13dda7d901b4fb2eb2db83aaa6',1,'SDL::FRect::FromCenter(FPoint center, FPoint size)']]],
   ['fromconstmem_33',['FromConstMem',['../group__CategoryIOStream.html#gaaf957729cbfeb9fdf85c24d63ce7c643',1,'SDL::IOStream']]],
-  ['fromcorners_34',['fromcorners',['../structSDL_1_1Rect.html#ab65cfd97c165c41b3600b0656830466c',1,'SDL::Rect::FromCorners()'],['../structSDL_1_1FRect.html#a2a0702352da34486755280936769d4e5',1,'SDL::FRect::FromCorners(FPoint p1, FPoint p2)'],['../structSDL_1_1FRect.html#aa9f4be1a92292a4926d1fbd8bc037d4f',1,'SDL::FRect::FromCorners(float x1, float y1, float x2, float y2)'],['../structSDL_1_1Rect.html#aa7a6808a15b140872bd5bbb3ed99255a',1,'SDL::Rect::FromCorners()']]],
+  ['fromcorners_34',['fromcorners',['../structSDL_1_1Rect.html#aa7a6808a15b140872bd5bbb3ed99255a',1,'SDL::Rect::FromCorners()'],['../structSDL_1_1FRect.html#a2a0702352da34486755280936769d4e5',1,'SDL::FRect::FromCorners(FPoint p1, FPoint p2)'],['../structSDL_1_1FRect.html#aa9f4be1a92292a4926d1fbd8bc037d4f',1,'SDL::FRect::FromCorners(float x1, float y1, float x2, float y2)'],['../structSDL_1_1Rect.html#ab65cfd97c165c41b3600b0656830466c',1,'SDL::Rect::FromCorners()']]],
   ['fromdynamicmem_35',['FromDynamicMem',['../group__CategoryIOStream.html#gaa90f11d812d44927fb6c3c8ffe8acd3f',1,'SDL::IOStream']]],
   ['fromfile_36',['FromFile',['../group__CategoryIOStream.html#gadd4937dbab104fbc5e421b8a8b3617a8',1,'SDL::IOStream']]],
   ['fromid_37',['FromID',['../group__CategoryVideo.html#gac3fd6fc27bfbb7bd820565ddbbad0426',1,'SDL::Window']]],
   ['frommem_38',['FromMem',['../group__CategoryIOStream.html#gae68a4c715786cb2be535c9e733264db3',1,'SDL::IOStream']]],
-  ['fromns_39',['fromns',['../classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837',1,'SDL::Time::FromNS()'],['../group__CategoryStdinc.html#gaad30b4d080eea68663b6b7326840886e',1,'SDL::FromNS()']]],
-  ['fromposix_40',['FromPosix',['../group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44',1,'SDL::Time']]],
-  ['fromseconds_41',['fromseconds',['../classSDL_1_1Time.html#afdf25c6023976820a2a38fff2cc7ec28',1,'SDL::Time::FromSeconds()'],['../group__CategoryStdinc.html#ga826f3a4e90205fda831df93e431881ac',1,'SDL::FromSeconds()']]],
-  ['fromwindows_42',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]],
-  ['front_43',['front',['../classSDL_1_1OwnArray.html#a9e02233e4b59688716916d6b11b43055',1,'SDL::OwnArray']]]
+  ['fromns_39',['fromns',['../classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837',1,'SDL::Time::FromNS()'],['../group__CategoryStdinc.html#gaad30b4d080eea68663b6b7326840886e',1,'SDL::FromNS(Sint64 duration)']]],
+  ['fromnullable_40',['fromNullable',['../namespaceSDL.html#a64f1d7cb9cde4ee104fc15e8ac067c8a',1,'SDL']]],
+  ['fromposix_41',['FromPosix',['../group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44',1,'SDL::Time']]],
+  ['fromseconds_42',['fromseconds',['../classSDL_1_1Time.html#afdf25c6023976820a2a38fff2cc7ec28',1,'SDL::Time::FromSeconds()'],['../group__CategoryStdinc.html#ga826f3a4e90205fda831df93e431881ac',1,'SDL::FromSeconds()']]],
+  ['fromwindows_43',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]],
+  ['front_44',['front',['../classSDL_1_1OwnArray.html#a9e02233e4b59688716916d6b11b43055',1,'SDL::OwnArray']]]
 ];

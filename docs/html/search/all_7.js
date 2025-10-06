@@ -87,13 +87,14 @@ var searchData=
   ['fromfile_84',['FromFile',['../group__CategoryIOStream.html#gadd4937dbab104fbc5e421b8a8b3617a8',1,'SDL::IOStream']]],
   ['fromid_85',['FromID',['../group__CategoryVideo.html#gac3fd6fc27bfbb7bd820565ddbbad0426',1,'SDL::Window']]],
   ['frommem_86',['FromMem',['../group__CategoryIOStream.html#gae68a4c715786cb2be535c9e733264db3',1,'SDL::IOStream']]],
-  ['fromns_87',['fromns',['../group__CategoryStdinc.html#gaad30b4d080eea68663b6b7326840886e',1,'SDL::FromNS()'],['../classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837',1,'SDL::Time::FromNS(Sint64 time)']]],
-  ['fromposix_88',['FromPosix',['../group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44',1,'SDL::Time']]],
-  ['fromseconds_89',['fromseconds',['../group__CategoryStdinc.html#ga826f3a4e90205fda831df93e431881ac',1,'SDL::FromSeconds()'],['../classSDL_1_1Time.html#afdf25c6023976820a2a38fff2cc7ec28',1,'SDL::Time::FromSeconds(float interval)']]],
-  ['fromwindows_90',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]],
-  ['front_91',['front',['../classSDL_1_1OwnArray.html#a9e02233e4b59688716916d6b11b43055',1,'SDL::OwnArray']]],
-  ['function_20rules_92',['Function rules',['../transformations.html#function-rules',1,'']]],
-  ['functionality_93',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategorySystem.html',1,'Platform-specific Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
-  ['functionpointer_94',['FunctionPointer',['../group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7',1,'SDL']]],
-  ['functions_95',['Rectangle Functions',['../group__CategoryRect.html',1,'']]]
+  ['fromns_87',['fromns',['../group__CategoryStdinc.html#gaad30b4d080eea68663b6b7326840886e',1,'SDL::FromNS()'],['../classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837',1,'SDL::Time::FromNS()']]],
+  ['fromnullable_88',['fromNullable',['../namespaceSDL.html#a64f1d7cb9cde4ee104fc15e8ac067c8a',1,'SDL']]],
+  ['fromposix_89',['FromPosix',['../group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44',1,'SDL::Time']]],
+  ['fromseconds_90',['fromseconds',['../group__CategoryStdinc.html#ga826f3a4e90205fda831df93e431881ac',1,'SDL::FromSeconds()'],['../classSDL_1_1Time.html#afdf25c6023976820a2a38fff2cc7ec28',1,'SDL::Time::FromSeconds(float interval)']]],
+  ['fromwindows_91',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]],
+  ['front_92',['front',['../classSDL_1_1OwnArray.html#a9e02233e4b59688716916d6b11b43055',1,'SDL::OwnArray']]],
+  ['function_20rules_93',['Function rules',['../transformations.html#function-rules',1,'']]],
+  ['functionality_94',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategorySystem.html',1,'Platform-specific Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
+  ['functionpointer_95',['FunctionPointer',['../group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7',1,'SDL']]],
+  ['functions_96',['Rectangle Functions',['../group__CategoryRect.html',1,'']]]
 ];
