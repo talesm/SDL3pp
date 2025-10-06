@@ -57,10 +57,10 @@ namespace SDL {
  * simultaneously. If the set of textures being rendered to needs to change,
  * the Render Pass must be ended and a new one must be begun.
  *
- * The app calls GPUCommandBuffer.BeginGPURenderPass(). Then it sets states it
+ * The app calls GPUCommandBuffer.BeginRenderPass(). Then it sets states it
  * needs for each draw:
  *
- * - GPURenderPass.BindGPUGraphicsPipeline()
+ * - GPURenderPass.BindGraphicsPipeline()
  * - GPURenderPass.SetGPUViewport()
  * - GPURenderPass.BindGPUVertexBuffers()
  * - GPURenderPass.BindGPUVertexSamplers()
@@ -400,7 +400,7 @@ using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
  * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
  * @sa GPUComputePass.BindGPUComputeStorageBuffers
  * @sa GPUComputePass.DispatchGPUComputeIndirect
- * @sa GPUDevice.ReleaseGPUBuffer
+ * @sa GPUDevice.ReleaseBuffer
  */
 class GPUBuffer
 {
@@ -459,7 +459,7 @@ public:
    * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
    * @sa GPUComputePass.BindGPUComputeStorageBuffers
    * @sa GPUComputePass.DispatchGPUComputeIndirect
-   * @sa GPUDevice.ReleaseGPUBuffer
+   * @sa GPUDevice.ReleaseBuffer
    */
   GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo)
     : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
@@ -506,7 +506,7 @@ using GPUTransferBufferCreateInfo = SDL_GPUTransferBufferCreateInfo;
  * @sa GPUCopyPass.UploadToGPUTexture
  * @sa GPUCopyPass.DownloadFromGPUBuffer
  * @sa GPUCopyPass.DownloadFromGPUTexture
- * @sa GPUDevice.ReleaseGPUTransferBuffer
+ * @sa GPUDevice.ReleaseTransferBuffer
  */
 class GPUTransferBuffer
 {
@@ -548,7 +548,7 @@ public:
    * @sa GPUCopyPass.DownloadFromGPUBuffer
    * @sa GPUCopyPass.UploadToGPUTexture
    * @sa GPUCopyPass.DownloadFromGPUTexture
-   * @sa GPUDevice.ReleaseGPUTransferBuffer
+   * @sa GPUDevice.ReleaseTransferBuffer
    */
   GPUTransferBuffer(GPUDeviceParam device,
                     const GPUTransferBufferCreateInfo& createinfo)
@@ -610,7 +610,7 @@ using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
  * @sa GPUComputePass.BindGPUComputeStorageTextures
  * @sa GPUCommandBuffer.GenerateMipmapsForGPUTexture
  * @sa GPUCommandBuffer.BlitGPUTexture
- * @sa GPUDevice.ReleaseGPUTexture
+ * @sa GPUDevice.ReleaseTexture
  */
 class GPUTexture
 {
@@ -679,7 +679,7 @@ public:
    * @sa GPURenderPass.BindGPUFragmentStorageTextures
    * @sa GPUComputePass.BindGPUComputeStorageTextures
    * @sa GPUCommandBuffer.BlitGPUTexture
-   * @sa GPUDevice.ReleaseGPUTexture
+   * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.GPUTextureSupportsFormat
    */
   GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo)
@@ -728,7 +728,7 @@ using GPUSamplerCreateInfo = SDL_GPUSamplerCreateInfo;
  * @sa GPUSampler.GPUSampler
  * @sa GPURenderPass.BindGPUVertexSamplers
  * @sa GPURenderPass.BindGPUFragmentSamplers
- * @sa GPUDevice.ReleaseGPUSampler
+ * @sa GPUDevice.ReleaseSampler
  */
 class GPUSampler
 {
@@ -764,7 +764,7 @@ public:
    *
    * @sa GPURenderPass.BindGPUVertexSamplers
    * @sa GPURenderPass.BindGPUFragmentSamplers
-   * @sa GPUDevice.ReleaseGPUSampler
+   * @sa GPUDevice.ReleaseSampler
    */
   GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
     : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
@@ -804,7 +804,7 @@ using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
  *
  * @sa GPUShader.GPUShader
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPUDevice.ReleaseGPUShader
+ * @sa GPUDevice.ReleaseShader
  */
 class GPUShader
 {
@@ -892,7 +892,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
-   * @sa GPUDevice.ReleaseGPUShader
+   * @sa GPUDevice.ReleaseShader
    */
   GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo)
     : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
@@ -935,7 +935,7 @@ using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
  *
  * @sa GPUComputePipeline.GPUComputePipeline
  * @sa GPUComputePass.BindGPUComputePipeline
- * @sa GPUDevice.ReleaseGPUComputePipeline
+ * @sa GPUDevice.ReleaseComputePipeline
  */
 class GPUComputePipeline
 {
@@ -995,7 +995,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUComputePass.BindGPUComputePipeline
-   * @sa GPUDevice.ReleaseGPUComputePipeline
+   * @sa GPUDevice.ReleaseComputePipeline
    */
   GPUComputePipeline(GPUDeviceParam device,
                      const GPUComputePipelineCreateInfo& createinfo)
@@ -1048,8 +1048,8 @@ using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPURenderPass.BindGPUGraphicsPipeline
- * @sa GPUDevice.ReleaseGPUGraphicsPipeline
+ * @sa GPURenderPass.BindGraphicsPipeline
+ * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 class GPUGraphicsPipeline
 {
@@ -1084,8 +1084,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUShader.GPUShader
-   * @sa GPURenderPass.BindGPUGraphicsPipeline
-   * @sa GPUDevice.ReleaseGPUGraphicsPipeline
+   * @sa GPURenderPass.BindGraphicsPipeline
+   * @sa GPUDevice.ReleaseGraphicsPipeline
    */
   GPUGraphicsPipeline(GPUDeviceParam device,
                       const GPUGraphicsPipelineCreateInfo& createinfo)
@@ -1166,7 +1166,7 @@ using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPURenderPass
+ * @sa GPUCommandBuffer.BeginRenderPass
  * @sa GPURenderPass.End
  */
 class GPURenderPass
@@ -1209,7 +1209,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BindGPUGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
+  void BindGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
 
   /**
    * Sets the current viewport state on a command buffer.
@@ -1937,7 +1937,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPURenderPass
+ * @sa GPUCommandBuffer.BeginRenderPass
  */
 using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
 
@@ -1983,7 +1983,7 @@ using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPURenderPass
+ * @sa GPUCommandBuffer.BeginRenderPass
  */
 using GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo;
 
@@ -2091,7 +2091,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void InsertGPUDebugLabel(StringParam text);
+  void InsertDebugLabel(StringParam text);
 
   /**
    * Begins a debug group with an arbitrary name.
@@ -2099,8 +2099,8 @@ public:
    * Used for denoting groups of calls when viewing the command buffer
    * callstream in a graphics debugging tool.
    *
-   * Each call to GPUCommandBuffer.PushGPUDebugGroup must have a corresponding
-   * call to GPUCommandBuffer.PopGPUDebugGroup.
+   * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
+   * to GPUCommandBuffer.PopDebugGroup.
    *
    * On some backends (e.g. Metal), pushing a debug group during a
    * render/blit/compute pass will create a group that is scoped to the native
@@ -2111,9 +2111,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.PopGPUDebugGroup
+   * @sa GPUCommandBuffer.PopDebugGroup
    */
-  void PushGPUDebugGroup(StringParam name);
+  void PushDebugGroup(StringParam name);
 
   /**
    * Ends the most-recently pushed debug group.
@@ -2121,9 +2121,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.PushGPUDebugGroup
+   * @sa GPUCommandBuffer.PushDebugGroup
    */
-  void PopGPUDebugGroup();
+  void PopDebugGroup();
 
   /**
    * Pushes data to a vertex uniform slot on the command buffer.
@@ -2200,7 +2200,7 @@ public:
    *
    * @sa GPURenderPass.End
    */
-  GPURenderPass BeginGPURenderPass(
+  GPURenderPass BeginRenderPass(
     std::span<const GPUColorTargetInfo> color_target_infos,
     OptionalRef<const GPUDepthStencilTargetInfo> depth_stencil_target_info);
 
@@ -3107,7 +3107,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.GetGPUShaderFormats
+   * @sa GPUDevice.GetShaderFormats
    * @sa GPUDevice.GetDriver
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsShaderFormats
@@ -3156,7 +3156,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.GetGPUShaderFormats
+   * @sa GPUDevice.GetShaderFormats
    * @sa GPUDevice.GetDriver
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsProperties
@@ -3226,7 +3226,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  GPUShaderFormat GetGPUShaderFormats();
+  GPUShaderFormat GetShaderFormats();
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -3270,9 +3270,9 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUComputePass.BindGPUComputePipeline
-   * @sa GPUDevice.ReleaseGPUComputePipeline
+   * @sa GPUDevice.ReleaseComputePipeline
    */
-  GPUComputePipeline CreateGPUComputePipeline(
+  GPUComputePipeline CreateComputePipeline(
     const GPUComputePipelineCreateInfo& createinfo);
 
   /**
@@ -3292,10 +3292,10 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUShader.GPUShader
-   * @sa GPURenderPass.BindGPUGraphicsPipeline
-   * @sa GPUDevice.ReleaseGPUGraphicsPipeline
+   * @sa GPURenderPass.BindGraphicsPipeline
+   * @sa GPUDevice.ReleaseGraphicsPipeline
    */
-  GPUGraphicsPipeline CreateGPUGraphicsPipeline(
+  GPUGraphicsPipeline CreateGraphicsPipeline(
     const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
@@ -3316,9 +3316,9 @@ public:
    *
    * @sa GPURenderPass.BindGPUVertexSamplers
    * @sa GPURenderPass.BindGPUFragmentSamplers
-   * @sa GPUDevice.ReleaseGPUSampler
+   * @sa GPUDevice.ReleaseSampler
    */
-  GPUSampler CreateGPUSampler(const GPUSamplerCreateInfo& createinfo);
+  GPUSampler CreateSampler(const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Creates a shader to be used when creating a graphics pipeline.
@@ -3390,9 +3390,9 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
-   * @sa GPUDevice.ReleaseGPUShader
+   * @sa GPUDevice.ReleaseShader
    */
-  GPUShader CreateGPUShader(const GPUShaderCreateInfo& createinfo);
+  GPUShader CreateShader(const GPUShaderCreateInfo& createinfo);
 
   /**
    * Creates a texture object to be used in graphics or compute workflows.
@@ -3445,10 +3445,10 @@ public:
    * @sa GPURenderPass.BindGPUFragmentStorageTextures
    * @sa GPUComputePass.BindGPUComputeStorageTextures
    * @sa GPUCommandBuffer.BlitGPUTexture
-   * @sa GPUDevice.ReleaseGPUTexture
+   * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.GPUTextureSupportsFormat
    */
-  GPUTexture CreateGPUTexture(const GPUTextureCreateInfo& createinfo);
+  GPUTexture CreateTexture(const GPUTextureCreateInfo& createinfo);
 
   /**
    * Creates a buffer object to be used in graphics or compute workflows.
@@ -3491,9 +3491,9 @@ public:
    * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
    * @sa GPUComputePass.BindGPUComputeStorageBuffers
    * @sa GPUComputePass.DispatchGPUComputeIndirect
-   * @sa GPUDevice.ReleaseGPUBuffer
+   * @sa GPUDevice.ReleaseBuffer
    */
-  GPUBuffer CreateGPUBuffer(const GPUBufferCreateInfo& createinfo);
+  GPUBuffer CreateBuffer(const GPUBufferCreateInfo& createinfo);
 
   /**
    * Creates a transfer buffer to be used when uploading to or downloading from
@@ -3519,9 +3519,9 @@ public:
    * @sa GPUCopyPass.DownloadFromGPUBuffer
    * @sa GPUCopyPass.UploadToGPUTexture
    * @sa GPUCopyPass.DownloadFromGPUTexture
-   * @sa GPUDevice.ReleaseGPUTransferBuffer
+   * @sa GPUDevice.ReleaseTransferBuffer
    */
-  GPUTransferBuffer CreateGPUTransferBuffer(
+  GPUTransferBuffer CreateTransferBuffer(
     const GPUTransferBufferCreateInfo& createinfo);
 
   /**
@@ -3540,7 +3540,7 @@ public:
    *
    * @sa GPUBuffer.GPUBuffer
    */
-  void SetGPUBufferName(GPUBuffer buffer, StringParam text);
+  void SetBufferName(GPUBuffer buffer, StringParam text);
 
   /**
    * Sets an arbitrary string constant to label a texture.
@@ -3559,7 +3559,7 @@ public:
    *
    * @sa GPUTexture.GPUTexture
    */
-  void SetGPUTextureName(GPUTexture texture, StringParam text);
+  void SetTextureName(GPUTexture texture, StringParam text);
 
   /**
    * Frees the given texture as soon as it is safe to do so.
@@ -3570,7 +3570,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUTexture(GPUTexture texture);
+  void ReleaseTexture(GPUTexture texture);
 
   /**
    * Frees the given sampler as soon as it is safe to do so.
@@ -3581,7 +3581,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUSampler(GPUSampler sampler);
+  void ReleaseSampler(GPUSampler sampler);
 
   /**
    * Frees the given buffer as soon as it is safe to do so.
@@ -3592,7 +3592,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUBuffer(GPUBuffer buffer);
+  void ReleaseBuffer(GPUBuffer buffer);
 
   /**
    * Frees the given transfer buffer as soon as it is safe to do so.
@@ -3603,7 +3603,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUTransferBuffer(GPUTransferBuffer transfer_buffer);
+  void ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer);
 
   /**
    * Frees the given compute pipeline as soon as it is safe to do so.
@@ -3614,7 +3614,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUComputePipeline(GPUComputePipeline compute_pipeline);
+  void ReleaseComputePipeline(GPUComputePipeline compute_pipeline);
 
   /**
    * Frees the given shader as soon as it is safe to do so.
@@ -3625,7 +3625,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUShader(GPUShader shader);
+  void ReleaseShader(GPUShader shader);
 
   /**
    * Frees the given graphics pipeline as soon as it is safe to do so.
@@ -3636,7 +3636,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ReleaseGPUGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
+  void ReleaseGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
 
   /**
    * Acquire a command buffer.
@@ -3990,7 +3990,7 @@ constexpr GPUPrimitiveType GPU_PRIMITIVETYPE_POINTLIST =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPURenderPass
+ * @sa GPUCommandBuffer.BeginRenderPass
  */
 using GPULoadOp = SDL_GPULoadOp;
 
@@ -4012,7 +4012,7 @@ constexpr GPULoadOp GPU_LOADOP_DONT_CARE = SDL_GPU_LOADOP_DONT_CARE;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPURenderPass
+ * @sa GPUCommandBuffer.BeginRenderPass
  */
 using GPUStoreOp = SDL_GPUStoreOp;
 
@@ -4771,7 +4771,7 @@ inline bool GPUSupportsProperties(PropertiesParam props)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GetGPUShaderFormats
+ * @sa GPUDevice.GetShaderFormats
  * @sa GPUDevice.GetDriver
  * @sa GPUDevice.Destroy
  * @sa GPUSupportsShaderFormats
@@ -4821,7 +4821,7 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.GetGPUShaderFormats
+ * @sa GPUDevice.GetShaderFormats
  * @sa GPUDevice.GetDriver
  * @sa GPUDevice.Destroy
  * @sa GPUSupportsProperties
@@ -4942,12 +4942,12 @@ inline GPUShaderFormat GetGPUShaderFormats(GPUDeviceParam device)
   return SDL_GetGPUShaderFormats(device);
 }
 
-inline GPUShaderFormat GPUDevice::GetGPUShaderFormats()
+inline GPUShaderFormat GPUDevice::GetShaderFormats()
 {
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-inline GPUComputePipeline GPUDevice::CreateGPUComputePipeline(
+inline GPUComputePipeline GPUDevice::CreateComputePipeline(
   const GPUComputePipelineCreateInfo& createinfo)
 {
   return GPUComputePipeline(m_resource, createinfo);
@@ -4996,7 +4996,7 @@ inline GPUComputePipeline GPUDevice::CreateGPUComputePipeline(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUComputePass.BindGPUComputePipeline
- * @sa GPUDevice.ReleaseGPUComputePipeline
+ * @sa GPUDevice.ReleaseComputePipeline
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
   GPUDeviceParam device,
@@ -5012,7 +5012,7 @@ constexpr auto CREATE_NAME_STRING =
 
 } // namespace prop::GPUComputePipeline
 
-inline GPUGraphicsPipeline GPUDevice::CreateGPUGraphicsPipeline(
+inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
   return GPUGraphicsPipeline(m_resource, createinfo);
@@ -5036,8 +5036,8 @@ inline GPUGraphicsPipeline GPUDevice::CreateGPUGraphicsPipeline(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUShader.GPUShader
- * @sa GPURenderPass.BindGPUGraphicsPipeline
- * @sa GPUDevice.ReleaseGPUGraphicsPipeline
+ * @sa GPURenderPass.BindGraphicsPipeline
+ * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   GPUDeviceParam device,
@@ -5053,7 +5053,7 @@ constexpr auto CREATE_NAME_STRING =
 
 } // namespace prop::GPUGraphicsPipeline
 
-inline GPUSampler GPUDevice::CreateGPUSampler(
+inline GPUSampler GPUDevice::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(m_resource, createinfo);
@@ -5078,7 +5078,7 @@ inline GPUSampler GPUDevice::CreateGPUSampler(
  *
  * @sa GPURenderPass.BindGPUVertexSamplers
  * @sa GPURenderPass.BindGPUFragmentSamplers
- * @sa GPUDevice.ReleaseGPUSampler
+ * @sa GPUDevice.ReleaseSampler
  */
 inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
                                    const GPUSamplerCreateInfo& createinfo)
@@ -5092,8 +5092,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUSampler
 
-inline GPUShader GPUDevice::CreateGPUShader(
-  const GPUShaderCreateInfo& createinfo)
+inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
 {
   return GPUShader(m_resource, createinfo);
 }
@@ -5169,7 +5168,7 @@ inline GPUShader GPUDevice::CreateGPUShader(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPUDevice.ReleaseGPUShader
+ * @sa GPUDevice.ReleaseShader
  */
 inline GPUShader CreateGPUShader(GPUDeviceParam device,
                                  const GPUShaderCreateInfo& createinfo)
@@ -5183,7 +5182,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUShader
 
-inline GPUTexture GPUDevice::CreateGPUTexture(
+inline GPUTexture GPUDevice::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(m_resource, createinfo);
@@ -5241,7 +5240,7 @@ inline GPUTexture GPUDevice::CreateGPUTexture(
  * @sa GPURenderPass.BindGPUFragmentStorageTextures
  * @sa GPUComputePass.BindGPUComputeStorageTextures
  * @sa GPUCommandBuffer.BlitGPUTexture
- * @sa GPUDevice.ReleaseGPUTexture
+ * @sa GPUDevice.ReleaseTexture
  * @sa GPUDevice.GPUTextureSupportsFormat
  */
 inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
@@ -5274,8 +5273,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUTexture
 
-inline GPUBuffer GPUDevice::CreateGPUBuffer(
-  const GPUBufferCreateInfo& createinfo)
+inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
 {
   return GPUBuffer(m_resource, createinfo);
 }
@@ -5322,7 +5320,7 @@ inline GPUBuffer GPUDevice::CreateGPUBuffer(
  * @sa GPURenderPass.DrawGPUIndexedPrimitivesIndirect
  * @sa GPUComputePass.BindGPUComputeStorageBuffers
  * @sa GPUComputePass.DispatchGPUComputeIndirect
- * @sa GPUDevice.ReleaseGPUBuffer
+ * @sa GPUDevice.ReleaseBuffer
  */
 inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
                                  const GPUBufferCreateInfo& createinfo)
@@ -5336,7 +5334,7 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUBuffer
 
-inline GPUTransferBuffer GPUDevice::CreateGPUTransferBuffer(
+inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(m_resource, createinfo);
@@ -5367,7 +5365,7 @@ inline GPUTransferBuffer GPUDevice::CreateGPUTransferBuffer(
  * @sa GPUCopyPass.DownloadFromGPUBuffer
  * @sa GPUCopyPass.UploadToGPUTexture
  * @sa GPUCopyPass.DownloadFromGPUTexture
- * @sa GPUDevice.ReleaseGPUTransferBuffer
+ * @sa GPUDevice.ReleaseTransferBuffer
  */
 inline GPUTransferBuffer CreateGPUTransferBuffer(
   GPUDeviceParam device,
@@ -5407,7 +5405,7 @@ inline void SetGPUBufferName(GPUDeviceParam device,
   SDL_SetGPUBufferName(device, buffer, text);
 }
 
-inline void GPUDevice::SetGPUBufferName(GPUBuffer buffer, StringParam text)
+inline void GPUDevice::SetBufferName(GPUBuffer buffer, StringParam text)
 {
   SDL::SetGPUBufferName(m_resource, buffer, std::move(text));
 }
@@ -5437,7 +5435,7 @@ inline void SetGPUTextureName(GPUDeviceParam device,
   SDL_SetGPUTextureName(device, texture, text);
 }
 
-inline void GPUDevice::SetGPUTextureName(GPUTexture texture, StringParam text)
+inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
 {
   SDL::SetGPUTextureName(m_resource, texture, std::move(text));
 }
@@ -5458,7 +5456,7 @@ inline void InsertGPUDebugLabel(GPUCommandBuffer command_buffer,
   SDL_InsertGPUDebugLabel(command_buffer, text);
 }
 
-inline void GPUCommandBuffer::InsertGPUDebugLabel(StringParam text)
+inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
 {
   SDL::InsertGPUDebugLabel(m_gPUCommandBuffer, std::move(text));
 }
@@ -5469,8 +5467,8 @@ inline void GPUCommandBuffer::InsertGPUDebugLabel(StringParam text)
  * Used for denoting groups of calls when viewing the command buffer
  * callstream in a graphics debugging tool.
  *
- * Each call to GPUCommandBuffer.PushGPUDebugGroup must have a corresponding
- * call to GPUCommandBuffer.PopGPUDebugGroup.
+ * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
+ * to GPUCommandBuffer.PopDebugGroup.
  *
  * On some backends (e.g. Metal), pushing a debug group during a
  * render/blit/compute pass will create a group that is scoped to the native
@@ -5482,14 +5480,14 @@ inline void GPUCommandBuffer::InsertGPUDebugLabel(StringParam text)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.PopGPUDebugGroup
+ * @sa GPUCommandBuffer.PopDebugGroup
  */
 inline void PushGPUDebugGroup(GPUCommandBuffer command_buffer, StringParam name)
 {
   SDL_PushGPUDebugGroup(command_buffer, name);
 }
 
-inline void GPUCommandBuffer::PushGPUDebugGroup(StringParam name)
+inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 {
   SDL::PushGPUDebugGroup(m_gPUCommandBuffer, std::move(name));
 }
@@ -5501,14 +5499,14 @@ inline void GPUCommandBuffer::PushGPUDebugGroup(StringParam name)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.PushGPUDebugGroup
+ * @sa GPUCommandBuffer.PushDebugGroup
  */
 inline void PopGPUDebugGroup(GPUCommandBuffer command_buffer)
 {
   SDL_PopGPUDebugGroup(command_buffer);
 }
 
-inline void GPUCommandBuffer::PopGPUDebugGroup()
+inline void GPUCommandBuffer::PopDebugGroup()
 {
   SDL::PopGPUDebugGroup(m_gPUCommandBuffer);
 }
@@ -5528,7 +5526,7 @@ inline void ReleaseGPUTexture(GPUDeviceParam device, GPUTexture texture)
   SDL_ReleaseGPUTexture(device, texture);
 }
 
-inline void GPUDevice::ReleaseGPUTexture(GPUTexture texture)
+inline void GPUDevice::ReleaseTexture(GPUTexture texture)
 {
   SDL::ReleaseGPUTexture(m_resource, texture);
 }
@@ -5548,7 +5546,7 @@ inline void ReleaseGPUSampler(GPUDeviceParam device, GPUSampler sampler)
   SDL_ReleaseGPUSampler(device, sampler);
 }
 
-inline void GPUDevice::ReleaseGPUSampler(GPUSampler sampler)
+inline void GPUDevice::ReleaseSampler(GPUSampler sampler)
 {
   SDL::ReleaseGPUSampler(m_resource, sampler);
 }
@@ -5568,7 +5566,7 @@ inline void ReleaseGPUBuffer(GPUDeviceParam device, GPUBuffer buffer)
   SDL_ReleaseGPUBuffer(device, buffer);
 }
 
-inline void GPUDevice::ReleaseGPUBuffer(GPUBuffer buffer)
+inline void GPUDevice::ReleaseBuffer(GPUBuffer buffer)
 {
   SDL::ReleaseGPUBuffer(m_resource, buffer);
 }
@@ -5589,8 +5587,7 @@ inline void ReleaseGPUTransferBuffer(GPUDeviceParam device,
   SDL_ReleaseGPUTransferBuffer(device, transfer_buffer);
 }
 
-inline void GPUDevice::ReleaseGPUTransferBuffer(
-  GPUTransferBuffer transfer_buffer)
+inline void GPUDevice::ReleaseTransferBuffer(GPUTransferBuffer transfer_buffer)
 {
   SDL::ReleaseGPUTransferBuffer(m_resource, transfer_buffer);
 }
@@ -5611,7 +5608,7 @@ inline void ReleaseGPUComputePipeline(GPUDeviceParam device,
   SDL_ReleaseGPUComputePipeline(device, compute_pipeline);
 }
 
-inline void GPUDevice::ReleaseGPUComputePipeline(
+inline void GPUDevice::ReleaseComputePipeline(
   GPUComputePipeline compute_pipeline)
 {
   SDL::ReleaseGPUComputePipeline(m_resource, compute_pipeline);
@@ -5632,7 +5629,7 @@ inline void ReleaseGPUShader(GPUDeviceParam device, GPUShader shader)
   SDL_ReleaseGPUShader(device, shader);
 }
 
-inline void GPUDevice::ReleaseGPUShader(GPUShader shader)
+inline void GPUDevice::ReleaseShader(GPUShader shader)
 {
   SDL::ReleaseGPUShader(m_resource, shader);
 }
@@ -5653,7 +5650,7 @@ inline void ReleaseGPUGraphicsPipeline(GPUDeviceParam device,
   SDL_ReleaseGPUGraphicsPipeline(device, graphics_pipeline);
 }
 
-inline void GPUDevice::ReleaseGPUGraphicsPipeline(
+inline void GPUDevice::ReleaseGraphicsPipeline(
   GPUGraphicsPipeline graphics_pipeline)
 {
   SDL::ReleaseGPUGraphicsPipeline(m_resource, graphics_pipeline);
@@ -5820,7 +5817,7 @@ inline GPURenderPass BeginGPURenderPass(
     command_buffer, color_target_infos, depth_stencil_target_info);
 }
 
-inline GPURenderPass GPUCommandBuffer::BeginGPURenderPass(
+inline GPURenderPass GPUCommandBuffer::BeginRenderPass(
   std::span<const GPUColorTargetInfo> color_target_infos,
   OptionalRef<const GPUDepthStencilTargetInfo> depth_stencil_target_info)
 {
@@ -5844,7 +5841,7 @@ inline void BindGPUGraphicsPipeline(GPURenderPass render_pass,
   SDL_BindGPUGraphicsPipeline(render_pass, graphics_pipeline);
 }
 
-inline void GPURenderPass::BindGPUGraphicsPipeline(
+inline void GPURenderPass::BindGraphicsPipeline(
   GPUGraphicsPipeline graphics_pipeline)
 {
   SDL::BindGPUGraphicsPipeline(m_gPURenderPass, graphics_pipeline);
