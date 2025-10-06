@@ -1698,7 +1698,7 @@ const transform = {
           ],
           hints: { methodName: "BeginRenderPass" },
         },
-        "SDL_BindGPUGraphicsPipeline": { hints: { methodName: "BindGraphicsPipeline" } },
+        "SDL_BindGPUGraphicsPipeline": { hints: { methodName: "BindPipeline" } },
         "SDL_SetGPUViewport": { hints: { methodName: "SetViewport" } },
         "SDL_SetGPUScissor": { hints: { methodName: "SetScissor" } },
         "SDL_SetGPUBlendConstants": { hints: { methodName: "SetBlendConstants" } },
@@ -1742,16 +1742,23 @@ const transform = {
             { type: "std::span<const GPUStorageTextureReadWriteBinding>" },
             { type: "std::span<const GPUStorageBufferReadWriteBinding>", name: "storage_buffer_bindings" },
           ],
+          hints: { methodName: "BeginComputePass" },
         },
+        "SDL_BindGPUComputePipeline": { hints: { methodName: "BindPipeline" } },
         "SDL_BindGPUComputeSamplers": {
           parameters: [{}, {}, { type: "std::span<const GPUTextureSamplerBinding>" }],
+          hints: { methodName: "BindSamplers" },
         },
         "SDL_BindGPUComputeStorageTextures": {
           parameters: [{}, {}, { type: "SpanRef<const GPUTextureRaw>" }],
+          hints: { methodName: "BindStorageTextures" },
         },
         "SDL_BindGPUComputeStorageBuffers": {
           parameters: [{}, {}, { type: "SpanRef<const GPUBufferRaw>" }],
+          hints: { methodName: "BindStorageBuffers" },
         },
+        "SDL_DispatchGPUCompute": { hints: { methodName: "Dispatch" } },
+        "SDL_DispatchGPUComputeIndirect": { hints: { methodName: "DispatchIndirect" } },
         "SDL_WaitForGPUFences": {
           parameters: [{}, {}, { type: "std::span<GPUFence* const>" }],
         },

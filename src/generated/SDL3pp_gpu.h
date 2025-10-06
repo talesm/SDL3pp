@@ -60,7 +60,7 @@ namespace SDL {
  * The app calls GPUCommandBuffer.BeginRenderPass(). Then it sets states it
  * needs for each draw:
  *
- * - GPURenderPass.BindGraphicsPipeline()
+ * - GPURenderPass.BindPipeline()
  * - GPURenderPass.SetViewport()
  * - GPURenderPass.BindVertexBuffers()
  * - GPURenderPass.BindVertexSamplers()
@@ -93,17 +93,17 @@ namespace SDL {
  * Make sure to call GPUDevice.ReleaseGPUFence() when done with the fence.
  *
  * The API also has "compute" support. The app calls
- * GPUCommandBuffer.BeginGPUComputePass() with compute-writeable textures and/or
+ * GPUCommandBuffer.BeginComputePass() with compute-writeable textures and/or
  * buffers, which can be written to in a compute shader. Then it sets states it
  * needs for the compute dispatches:
  *
- * - GPUComputePass.BindGPUComputePipeline()
- * - GPUComputePass.BindGPUComputeStorageBuffers()
- * - GPUComputePass.BindGPUComputeStorageTextures()
+ * - GPUComputePass.BindPipeline()
+ * - GPUComputePass.BindStorageBuffers()
+ * - GPUComputePass.BindStorageTextures()
  *
  * Then, dispatch compute work:
  *
- * - GPUComputePass.DispatchGPUCompute()
+ * - GPUComputePass.Dispatch()
  *
  * For advanced users, this opens up powerful GPU-driven workflows.
  *
@@ -398,8 +398,8 @@ using GPUBufferCreateInfo = SDL_GPUBufferCreateInfo;
  * @sa GPURenderPass.BindFragmentStorageBuffers
  * @sa GPURenderPass.DrawPrimitivesIndirect
  * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
- * @sa GPUComputePass.BindGPUComputeStorageBuffers
- * @sa GPUComputePass.DispatchGPUComputeIndirect
+ * @sa GPUComputePass.BindStorageBuffers
+ * @sa GPUComputePass.DispatchIndirect
  * @sa GPUDevice.ReleaseBuffer
  */
 class GPUBuffer
@@ -457,8 +457,8 @@ public:
    * @sa GPURenderPass.BindFragmentStorageBuffers
    * @sa GPURenderPass.DrawPrimitivesIndirect
    * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
-   * @sa GPUComputePass.BindGPUComputeStorageBuffers
-   * @sa GPUComputePass.DispatchGPUComputeIndirect
+   * @sa GPUComputePass.BindStorageBuffers
+   * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
   GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo)
@@ -607,7 +607,7 @@ using GPUTextureCreateInfo = SDL_GPUTextureCreateInfo;
  * @sa GPURenderPass.BindVertexStorageTextures
  * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPURenderPass.BindFragmentStorageTextures
- * @sa GPUComputePass.BindGPUComputeStorageTextures
+ * @sa GPUComputePass.BindStorageTextures
  * @sa GPUCommandBuffer.GenerateMipmapsForGPUTexture
  * @sa GPUCommandBuffer.BlitGPUTexture
  * @sa GPUDevice.ReleaseTexture
@@ -677,7 +677,7 @@ public:
    * @sa GPURenderPass.BindVertexStorageTextures
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPURenderPass.BindFragmentStorageTextures
-   * @sa GPUComputePass.BindGPUComputeStorageTextures
+   * @sa GPUComputePass.BindStorageTextures
    * @sa GPUCommandBuffer.BlitGPUTexture
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.GPUTextureSupportsFormat
@@ -934,7 +934,7 @@ using GPUComputePipelineCreateInfo = SDL_GPUComputePipelineCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUComputePipeline.GPUComputePipeline
- * @sa GPUComputePass.BindGPUComputePipeline
+ * @sa GPUComputePass.BindPipeline
  * @sa GPUDevice.ReleaseComputePipeline
  */
 class GPUComputePipeline
@@ -994,7 +994,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePass.BindGPUComputePipeline
+   * @sa GPUComputePass.BindPipeline
    * @sa GPUDevice.ReleaseComputePipeline
    */
   GPUComputePipeline(GPUDeviceParam device,
@@ -1048,7 +1048,7 @@ using GPUGraphicsPipelineCreateInfo = SDL_GPUGraphicsPipelineCreateInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
- * @sa GPURenderPass.BindGraphicsPipeline
+ * @sa GPURenderPass.BindPipeline
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 class GPUGraphicsPipeline
@@ -1084,7 +1084,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUShader.GPUShader
-   * @sa GPURenderPass.BindGraphicsPipeline
+   * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
   GPUGraphicsPipeline(GPUDeviceParam device,
@@ -1209,7 +1209,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BindGraphicsPipeline(GPUGraphicsPipeline graphics_pipeline);
+  void BindPipeline(GPUGraphicsPipeline graphics_pipeline);
 
   /**
    * Sets the current viewport state on a command buffer.
@@ -1512,7 +1512,7 @@ public:
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPUComputePass
+ * @sa GPUCommandBuffer.BeginComputePass
  * @sa GPUComputePass.End
  */
 class GPUComputePass
@@ -1553,7 +1553,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void BindGPUComputePipeline(GPUComputePipeline compute_pipeline);
+  void BindPipeline(GPUComputePipeline compute_pipeline);
 
   /**
    * Binds texture-sampler pairs for use on the compute shader.
@@ -1573,7 +1573,7 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUComputeSamplers(
+  void BindSamplers(
     Uint32 first_slot,
     std::span<const GPUTextureSamplerBinding> texture_sampler_bindings);
 
@@ -1594,9 +1594,8 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUComputeStorageTextures(
-    Uint32 first_slot,
-    SpanRef<const GPUTextureRaw> storage_textures);
+  void BindStorageTextures(Uint32 first_slot,
+                           SpanRef<const GPUTextureRaw> storage_textures);
 
   /**
    * Binds storage buffers as readonly for use on the compute pipeline.
@@ -1615,9 +1614,8 @@ public:
    *
    * @sa GPUShader.GPUShader
    */
-  void BindGPUComputeStorageBuffers(
-    Uint32 first_slot,
-    SpanRef<const GPUBufferRaw> storage_buffers);
+  void BindStorageBuffers(Uint32 first_slot,
+                          SpanRef<const GPUBufferRaw> storage_buffers);
 
   /**
    * Dispatches compute work.
@@ -1638,9 +1636,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DispatchGPUCompute(Uint32 groupcount_x,
-                          Uint32 groupcount_y,
-                          Uint32 groupcount_z);
+  void Dispatch(Uint32 groupcount_x, Uint32 groupcount_y, Uint32 groupcount_z);
 
   /**
    * Dispatches compute work with parameters set from a buffer.
@@ -1659,7 +1655,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void DispatchGPUComputeIndirect(GPUBuffer buffer, Uint32 offset);
+  void DispatchIndirect(GPUBuffer buffer, Uint32 offset);
 
   /**
    * Ends the current compute pass.
@@ -1991,7 +1987,7 @@ using GPUDepthStencilTargetInfo = SDL_GPUDepthStencilTargetInfo;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPUComputePass
+ * @sa GPUCommandBuffer.BeginComputePass
  */
 using GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding;
 
@@ -2001,7 +1997,7 @@ using GPUStorageTextureReadWriteBinding = SDL_GPUStorageTextureReadWriteBinding;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.BeginGPUComputePass
+ * @sa GPUCommandBuffer.BeginComputePass
  */
 using GPUStorageBufferReadWriteBinding = SDL_GPUStorageBufferReadWriteBinding;
 
@@ -2238,7 +2234,7 @@ public:
    *
    * @sa GPUComputePass.End
    */
-  GPUComputePass BeginGPUComputePass(
+  GPUComputePass BeginComputePass(
     std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
     std::span<const GPUStorageBufferReadWriteBinding> storage_buffer_bindings);
 
@@ -3267,7 +3263,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUComputePass.BindGPUComputePipeline
+   * @sa GPUComputePass.BindPipeline
    * @sa GPUDevice.ReleaseComputePipeline
    */
   GPUComputePipeline CreateComputePipeline(
@@ -3290,7 +3286,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUShader.GPUShader
-   * @sa GPURenderPass.BindGraphicsPipeline
+   * @sa GPURenderPass.BindPipeline
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
   GPUGraphicsPipeline CreateGraphicsPipeline(
@@ -3441,7 +3437,7 @@ public:
    * @sa GPURenderPass.BindVertexStorageTextures
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPURenderPass.BindFragmentStorageTextures
-   * @sa GPUComputePass.BindGPUComputeStorageTextures
+   * @sa GPUComputePass.BindStorageTextures
    * @sa GPUCommandBuffer.BlitGPUTexture
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.GPUTextureSupportsFormat
@@ -3487,8 +3483,8 @@ public:
    * @sa GPURenderPass.BindFragmentStorageBuffers
    * @sa GPURenderPass.DrawPrimitivesIndirect
    * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
-   * @sa GPUComputePass.BindGPUComputeStorageBuffers
-   * @sa GPUComputePass.DispatchGPUComputeIndirect
+   * @sa GPUComputePass.BindStorageBuffers
+   * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
   GPUBuffer CreateBuffer(const GPUBufferCreateInfo& createinfo);
@@ -4594,7 +4590,7 @@ using GPUIndexedIndirectDrawCommand = SDL_GPUIndexedIndirectDrawCommand;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa GPUComputePass.DispatchGPUComputeIndirect
+ * @sa GPUComputePass.DispatchIndirect
  */
 using GPUIndirectDispatchCommand = SDL_GPUIndirectDispatchCommand;
 
@@ -4993,7 +4989,7 @@ inline GPUComputePipeline GPUDevice::CreateComputePipeline(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUComputePass.BindGPUComputePipeline
+ * @sa GPUComputePass.BindPipeline
  * @sa GPUDevice.ReleaseComputePipeline
  */
 inline GPUComputePipeline CreateGPUComputePipeline(
@@ -5034,7 +5030,7 @@ inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUShader.GPUShader
- * @sa GPURenderPass.BindGraphicsPipeline
+ * @sa GPURenderPass.BindPipeline
  * @sa GPUDevice.ReleaseGraphicsPipeline
  */
 inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
@@ -5236,7 +5232,7 @@ inline GPUTexture GPUDevice::CreateTexture(
  * @sa GPURenderPass.BindVertexStorageTextures
  * @sa GPURenderPass.BindFragmentSamplers
  * @sa GPURenderPass.BindFragmentStorageTextures
- * @sa GPUComputePass.BindGPUComputeStorageTextures
+ * @sa GPUComputePass.BindStorageTextures
  * @sa GPUCommandBuffer.BlitGPUTexture
  * @sa GPUDevice.ReleaseTexture
  * @sa GPUDevice.GPUTextureSupportsFormat
@@ -5316,8 +5312,8 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
  * @sa GPURenderPass.BindFragmentStorageBuffers
  * @sa GPURenderPass.DrawPrimitivesIndirect
  * @sa GPURenderPass.DrawIndexedPrimitivesIndirect
- * @sa GPUComputePass.BindGPUComputeStorageBuffers
- * @sa GPUComputePass.DispatchGPUComputeIndirect
+ * @sa GPUComputePass.BindStorageBuffers
+ * @sa GPUComputePass.DispatchIndirect
  * @sa GPUDevice.ReleaseBuffer
  */
 inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
@@ -5839,8 +5835,7 @@ inline void BindGPUGraphicsPipeline(GPURenderPass render_pass,
   SDL_BindGPUGraphicsPipeline(render_pass, graphics_pipeline);
 }
 
-inline void GPURenderPass::BindGraphicsPipeline(
-  GPUGraphicsPipeline graphics_pipeline)
+inline void GPURenderPass::BindPipeline(GPUGraphicsPipeline graphics_pipeline)
 {
   SDL::BindGPUGraphicsPipeline(m_gPURenderPass, graphics_pipeline);
 }
@@ -6397,7 +6392,7 @@ inline GPUComputePass BeginGPUComputePass(
     command_buffer, storage_texture_bindings, storage_buffer_bindings);
 }
 
-inline GPUComputePass GPUCommandBuffer::BeginGPUComputePass(
+inline GPUComputePass GPUCommandBuffer::BeginComputePass(
   std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
   std::span<const GPUStorageBufferReadWriteBinding> storage_buffer_bindings)
 {
@@ -6419,8 +6414,7 @@ inline void BindGPUComputePipeline(GPUComputePass compute_pass,
   SDL_BindGPUComputePipeline(compute_pass, compute_pipeline);
 }
 
-inline void GPUComputePass::BindGPUComputePipeline(
-  GPUComputePipeline compute_pipeline)
+inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
 {
   SDL::BindGPUComputePipeline(m_gPUComputePass, compute_pipeline);
 }
@@ -6453,7 +6447,7 @@ inline void BindGPUComputeSamplers(
     compute_pass, first_slot, texture_sampler_bindings);
 }
 
-inline void GPUComputePass::BindGPUComputeSamplers(
+inline void GPUComputePass::BindSamplers(
   Uint32 first_slot,
   std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
 {
@@ -6487,7 +6481,7 @@ inline void BindGPUComputeStorageTextures(
   SDL_BindGPUComputeStorageTextures(compute_pass, first_slot, storage_textures);
 }
 
-inline void GPUComputePass::BindGPUComputeStorageTextures(
+inline void GPUComputePass::BindStorageTextures(
   Uint32 first_slot,
   SpanRef<const GPUTextureRaw> storage_textures)
 {
@@ -6521,7 +6515,7 @@ inline void BindGPUComputeStorageBuffers(
   SDL_BindGPUComputeStorageBuffers(compute_pass, first_slot, storage_buffers);
 }
 
-inline void GPUComputePass::BindGPUComputeStorageBuffers(
+inline void GPUComputePass::BindStorageBuffers(
   Uint32 first_slot,
   SpanRef<const GPUBufferRaw> storage_buffers)
 {
@@ -6558,9 +6552,9 @@ inline void DispatchGPUCompute(GPUComputePass compute_pass,
     compute_pass, groupcount_x, groupcount_y, groupcount_z);
 }
 
-inline void GPUComputePass::DispatchGPUCompute(Uint32 groupcount_x,
-                                               Uint32 groupcount_y,
-                                               Uint32 groupcount_z)
+inline void GPUComputePass::Dispatch(Uint32 groupcount_x,
+                                     Uint32 groupcount_y,
+                                     Uint32 groupcount_z)
 {
   SDL::DispatchGPUCompute(
     m_gPUComputePass, groupcount_x, groupcount_y, groupcount_z);
@@ -6591,8 +6585,7 @@ inline void DispatchGPUComputeIndirect(GPUComputePass compute_pass,
   SDL_DispatchGPUComputeIndirect(compute_pass, buffer, offset);
 }
 
-inline void GPUComputePass::DispatchGPUComputeIndirect(GPUBuffer buffer,
-                                                       Uint32 offset)
+inline void GPUComputePass::DispatchIndirect(GPUBuffer buffer, Uint32 offset)
 {
   SDL::DispatchGPUComputeIndirect(m_gPUComputePass, buffer, offset);
 }
