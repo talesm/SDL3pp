@@ -365,25 +365,29 @@ constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRED =
 constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRELESS =
   SDL_JOYSTICK_CONNECTION_WIRELESS; ///< JOYSTICK_CONNECTION_WIRELESS
 
+/**
+ * Represents tbe HatState for a Joystick.
+ *
+ */
 using HatState = Uint8;
 
-constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED;
+constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED; ///< CENTERED
 
-constexpr Uint8 HAT_UP = SDL_HAT_UP;
+constexpr Uint8 HAT_UP = SDL_HAT_UP; ///< UP
 
-constexpr Uint8 HAT_RIGHT = SDL_HAT_RIGHT;
+constexpr Uint8 HAT_RIGHT = SDL_HAT_RIGHT; ///< RIGHT
 
-constexpr Uint8 HAT_DOWN = SDL_HAT_DOWN;
+constexpr Uint8 HAT_DOWN = SDL_HAT_DOWN; ///< DOWN
 
-constexpr Uint8 HAT_LEFT = SDL_HAT_LEFT;
+constexpr Uint8 HAT_LEFT = SDL_HAT_LEFT; ///< LEFT
 
-constexpr Uint8 HAT_RIGHTUP = SDL_HAT_RIGHTUP;
+constexpr Uint8 HAT_RIGHTUP = SDL_HAT_RIGHTUP; ///< RIGHTUP
 
-constexpr Uint8 HAT_RIGHTDOWN = SDL_HAT_RIGHTDOWN;
+constexpr Uint8 HAT_RIGHTDOWN = SDL_HAT_RIGHTDOWN; ///< RIGHTDOWN
 
-constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP;
+constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP; ///< LEFTUP
 
-constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN;
+constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN; ///< LEFTDOWN
 
 /**
  * The joystick structure used to identify an SDL joystick.

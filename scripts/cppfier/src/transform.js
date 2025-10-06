@@ -394,6 +394,10 @@ function expandTypes(sourceEntries, file, context) {
     context.addReturnType(`const ${sourceName} *`, `const ${targetName} &`);
   }
 
+  for (const [targetName, targetDelta] of Object.entries(file.transform)) {
+    if (targetDelta.enum) expandEnumeration(targetName, { kind: "alias", name: targetName }, targetName, targetDelta);
+  }
+
   /**
    * 
    * @param {ApiEntry}          sourceEntry 

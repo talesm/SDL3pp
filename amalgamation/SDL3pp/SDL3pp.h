@@ -67602,25 +67602,29 @@ constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRED =
 constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRELESS =
   SDL_JOYSTICK_CONNECTION_WIRELESS; ///< JOYSTICK_CONNECTION_WIRELESS
 
+/**
+ * Represents tbe HatState for a Joystick.
+ *
+ */
 using HatState = Uint8;
 
-constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED;
+constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED; ///< CENTERED
 
-constexpr Uint8 HAT_UP = SDL_HAT_UP;
+constexpr Uint8 HAT_UP = SDL_HAT_UP; ///< UP
 
-constexpr Uint8 HAT_RIGHT = SDL_HAT_RIGHT;
+constexpr Uint8 HAT_RIGHT = SDL_HAT_RIGHT; ///< RIGHT
 
-constexpr Uint8 HAT_DOWN = SDL_HAT_DOWN;
+constexpr Uint8 HAT_DOWN = SDL_HAT_DOWN; ///< DOWN
 
-constexpr Uint8 HAT_LEFT = SDL_HAT_LEFT;
+constexpr Uint8 HAT_LEFT = SDL_HAT_LEFT; ///< LEFT
 
-constexpr Uint8 HAT_RIGHTUP = SDL_HAT_RIGHTUP;
+constexpr Uint8 HAT_RIGHTUP = SDL_HAT_RIGHTUP; ///< RIGHTUP
 
-constexpr Uint8 HAT_RIGHTDOWN = SDL_HAT_RIGHTDOWN;
+constexpr Uint8 HAT_RIGHTDOWN = SDL_HAT_RIGHTDOWN; ///< RIGHTDOWN
 
-constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP;
+constexpr Uint8 HAT_LEFTUP = SDL_HAT_LEFTUP; ///< LEFTUP
 
-constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN;
+constexpr Uint8 HAT_LEFTDOWN = SDL_HAT_LEFTDOWN; ///< LEFTDOWN
 
 /**
  * The joystick structure used to identify an SDL joystick.
@@ -71491,6 +71495,22 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural.
 
 /**
+ * Represents a button index.
+ *
+ */
+using MouseButton = Uint8;
+
+constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
+
+constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
+
+constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
+
+constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
+
+constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
+
+/**
  * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
  *
  * - Button 1: Left mouse button
@@ -71516,22 +71536,6 @@ constexpr MouseButtonFlags BUTTON_RMASK = SDL_BUTTON_RMASK; ///< RMASK
 constexpr MouseButtonFlags BUTTON_X1MASK = SDL_BUTTON_X1MASK; ///< X1MASK
 
 constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
-
-/**
- * Represents a button index.
- *
- */
-using MouseButton = Uint8;
-
-constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
-
-constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
-
-constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
-
-constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
-
-constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
 /** Returns mask for button */
 constexpr MouseButtonFlags ButtonMask(MouseButton button)

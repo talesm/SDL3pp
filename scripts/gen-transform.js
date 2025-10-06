@@ -3069,7 +3069,7 @@ const transform = {
               "SDL_BUTTON_X2",
             ],
           },
-          after: "SDL_MouseButtonFlags",
+          before: "SDL_MouseButtonFlags",
         },
         "SDL_MouseButtonFlags": {
           enum: {

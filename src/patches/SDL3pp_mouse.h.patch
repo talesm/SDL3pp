@@ -27,29 +27,29 @@
 <     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
 ---
 >     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
-451a449,452
+424a422,425
 > /**
 >  * Represents a button index.
 >  *
 >  */
-454c455
-< #define SDL_BUTTON_LEFT 1
+427c428
+< constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< LEFT
 ---
 > constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
-456c457
-< #define SDL_BUTTON_MIDDLE 2
+429c430
+< constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< MIDDLE
 ---
 > constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
-458c459
-< #define SDL_BUTTON_RIGHT 3
+431c432
+< constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< RIGHT
 ---
 > constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
-460c461
-< #define SDL_BUTTON_X1 4
+433c434
+< constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1
 ---
 > constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
-462c463
-< #define SDL_BUTTON_X2 5
+435c436
+< constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2
 ---
 > constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 463a465

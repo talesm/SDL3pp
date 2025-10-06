@@ -420,6 +420,22 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural.
 
 /**
+ * Represents a button index.
+ *
+ */
+using MouseButton = Uint8;
+
+constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
+
+constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
+
+constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
+
+constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
+
+constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
+
+/**
  * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
  *
  * - Button 1: Left mouse button
@@ -445,22 +461,6 @@ constexpr MouseButtonFlags BUTTON_RMASK = SDL_BUTTON_RMASK; ///< RMASK
 constexpr MouseButtonFlags BUTTON_X1MASK = SDL_BUTTON_X1MASK; ///< X1MASK
 
 constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
-
-/**
- * Represents a button index.
- *
- */
-using MouseButton = Uint8;
-
-constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
-
-constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
-
-constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
-
-constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
-
-constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
 /** Returns mask for button */
 constexpr MouseButtonFlags ButtonMask(MouseButton button)
