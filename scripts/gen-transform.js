@@ -1796,10 +1796,15 @@ const transform = {
           ],
           hints: { methodName: "WaitAndAcquireSwapchainTexture" },
         },
+        "SDL_WaitForGPUIdle": { hints: { methodName: "WaitForIdle" } },
         "SDL_WaitForGPUFences": {
           parameters: [{}, {}, { type: "std::span<GPUFence* const>" }],
           hints: { methodName: "WaitForFences" }
         },
+        "SDL_QueryGPUFence": { hints: { methodName: "QueryFence" } },
+        "SDL_ReleaseGPUFence": { hints: { methodName: "ReleaseFence" } },
+        "SDL_GPUTextureSupportsFormat": { hints: { methodName: "TextureSupportsFormat" } },
+        "SDL_GPUTextureSupportsSampleCount": { hints: { methodName: "TextureSupportsSampleCount" } },
       }
     },
     "SDL_guid.h": {

@@ -59805,7 +59805,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  * GPUCommandBuffer.SubmitAndAcquireFence() will return a fence handle that
  * the app can poll or wait on in a thread. Once the fence indicates that the
  * command buffer is done processing, it is safe to read the downloaded data.
- * Make sure to call GPUDevice.ReleaseGPUFence() when done with the fence.
+ * Make sure to call GPUDevice.ReleaseFence() when done with the fence.
  *
  * The API also has "compute" support. The app calls
  * GPUCommandBuffer.BeginComputePass() with compute-writeable textures and/or
@@ -60395,7 +60395,7 @@ public:
    * @sa GPUComputePass.BindStorageTextures
    * @sa GPUCommandBuffer.BlitTexture
    * @sa GPUDevice.ReleaseTexture
-   * @sa GPUDevice.GPUTextureSupportsFormat
+   * @sa GPUDevice.TextureSupportsFormat
    */
   GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo)
     : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
@@ -61720,9 +61720,9 @@ using GPUBlitInfo = SDL_GPUBlitInfo;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUDevice.QueryGPUFence
+ * @sa GPUDevice.QueryFence
  * @sa GPUDevice.WaitForFences
- * @sa GPUDevice.ReleaseGPUFence
+ * @sa GPUDevice.ReleaseFence
  */
 using GPUFence = SDL_GPUFence;
 
@@ -62102,7 +62102,7 @@ public:
    * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUCommandBuffer.AcquireSwapchainTexture
    * @sa GPUCommandBuffer.Submit
-   * @sa GPUDevice.ReleaseGPUFence
+   * @sa GPUDevice.ReleaseFence
    */
   GPUFence* SubmitAndAcquireFence();
 
@@ -62241,8 +62241,8 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  * Specifies the pixel format of a texture.
  *
  * Texture format support varies depending on driver, hardware, and usage
- * flags. In general, you should use GPUDevice.GPUTextureSupportsFormat to query
- * if a format is supported before using it. However, there are a few guaranteed
+ * flags. In general, you should use GPUDevice.TextureSupportsFormat to query if
+ * a format is supported before using it. However, there are a few guaranteed
  * formats.
  *
  * FIXME: Check universal support for 32-bit component formats FIXME: Check
@@ -62320,7 +62320,7 @@ constexpr GPUPresentMode GPU_PRESENTMODE_MAILBOX =
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa GPUTexture.GPUTexture
- * @sa GPUDevice.GPUTextureSupportsFormat
+ * @sa GPUDevice.TextureSupportsFormat
  */
 using GPUTextureFormat = SDL_GPUTextureFormat;
 
@@ -62724,7 +62724,7 @@ constexpr GPUTextureUsageFlags
  * @since This enum is available since SDL 3.2.0.
  *
  * @sa GPUTexture.GPUTexture
- * @sa GPUDevice.GPUTextureSupportsSampleCount
+ * @sa GPUDevice.TextureSupportsSampleCount
  */
 using GPUSampleCount = SDL_GPUSampleCount;
 
@@ -63132,7 +63132,7 @@ public:
    * @sa GPUComputePass.BindStorageTextures
    * @sa GPUCommandBuffer.BlitTexture
    * @sa GPUDevice.ReleaseTexture
-   * @sa GPUDevice.GPUTextureSupportsFormat
+   * @sa GPUDevice.TextureSupportsFormat
    */
   GPUTexture CreateTexture(const GPUTextureCreateInfo& createinfo);
 
@@ -63536,7 +63536,7 @@ public:
    *
    * @sa GPUDevice.WaitForFences
    */
-  void WaitForGPUIdle();
+  void WaitForIdle();
 
   /**
    * Blocks the thread until the given fences are signaled.
@@ -63549,7 +63549,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUDevice.WaitForGPUIdle
+   * @sa GPUDevice.WaitForIdle
    */
   void WaitForFences(bool wait_all, std::span<GPUFence* const> fences);
 
@@ -63563,7 +63563,7 @@ public:
    *
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    */
-  bool QueryGPUFence(GPUFence* fence);
+  bool QueryFence(GPUFence* fence);
 
   /**
    * Releases a fence obtained from GPUCommandBuffer.SubmitAndAcquireFence.
@@ -63576,7 +63576,7 @@ public:
    *
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    */
-  void ReleaseGPUFence(GPUFence* fence);
+  void ReleaseFence(GPUFence* fence);
 
   /**
    * Determines whether a texture format is supported for a given type and
@@ -63589,9 +63589,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GPUTextureSupportsFormat(GPUTextureFormat format,
-                                GPUTextureType type,
-                                GPUTextureUsageFlags usage);
+  bool TextureSupportsFormat(GPUTextureFormat format,
+                             GPUTextureType type,
+                             GPUTextureUsageFlags usage);
 
   /**
    * Determines if a sample count for a texture format is supported.
@@ -63602,8 +63602,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GPUTextureSupportsSampleCount(GPUTextureFormat format,
-                                     GPUSampleCount sample_count);
+  bool TextureSupportsSampleCount(GPUTextureFormat format,
+                                  GPUSampleCount sample_count);
 };
 
 /// Semi-safe reference for GPUDevice.
@@ -64926,7 +64926,7 @@ inline GPUTexture GPUDevice::CreateTexture(
  * @sa GPUComputePass.BindStorageTextures
  * @sa GPUCommandBuffer.BlitTexture
  * @sa GPUDevice.ReleaseTexture
- * @sa GPUDevice.GPUTextureSupportsFormat
+ * @sa GPUDevice.TextureSupportsFormat
  */
 inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
                                    const GPUTextureCreateInfo& createinfo)
@@ -67036,7 +67036,7 @@ inline void GPUCommandBuffer::Submit()
  * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUCommandBuffer.AcquireSwapchainTexture
  * @sa GPUCommandBuffer.Submit
- * @sa GPUDevice.ReleaseGPUFence
+ * @sa GPUDevice.ReleaseFence
  */
 inline GPUFence* SubmitGPUCommandBufferAndAcquireFence(
   GPUCommandBuffer command_buffer)
@@ -67095,7 +67095,7 @@ inline void WaitForGPUIdle(GPUDeviceParam device)
   CheckError(SDL_WaitForGPUIdle(device));
 }
 
-inline void GPUDevice::WaitForGPUIdle() { SDL::WaitForGPUIdle(m_resource); }
+inline void GPUDevice::WaitForIdle() { SDL::WaitForGPUIdle(m_resource); }
 
 /**
  * Blocks the thread until the given fences are signaled.
@@ -67109,7 +67109,7 @@ inline void GPUDevice::WaitForGPUIdle() { SDL::WaitForGPUIdle(m_resource); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUDevice.WaitForGPUIdle
+ * @sa GPUDevice.WaitForIdle
  */
 inline void WaitForGPUFences(GPUDeviceParam device,
                              bool wait_all,
@@ -67141,7 +67141,7 @@ inline bool QueryGPUFence(GPUDeviceParam device, GPUFence* fence)
   return SDL_QueryGPUFence(device, fence);
 }
 
-inline bool GPUDevice::QueryGPUFence(GPUFence* fence)
+inline bool GPUDevice::QueryFence(GPUFence* fence)
 {
   return SDL::QueryGPUFence(m_resource, fence);
 }
@@ -67163,7 +67163,7 @@ inline void ReleaseGPUFence(GPUDeviceParam device, GPUFence* fence)
   SDL_ReleaseGPUFence(device, fence);
 }
 
-inline void GPUDevice::ReleaseGPUFence(GPUFence* fence)
+inline void GPUDevice::ReleaseFence(GPUFence* fence)
 {
   SDL::ReleaseGPUFence(m_resource, fence);
 }
@@ -67203,9 +67203,9 @@ inline bool GPUTextureSupportsFormat(GPUDeviceParam device,
   return SDL_GPUTextureSupportsFormat(device, format, type, usage);
 }
 
-inline bool GPUDevice::GPUTextureSupportsFormat(GPUTextureFormat format,
-                                                GPUTextureType type,
-                                                GPUTextureUsageFlags usage)
+inline bool GPUDevice::TextureSupportsFormat(GPUTextureFormat format,
+                                             GPUTextureType type,
+                                             GPUTextureUsageFlags usage)
 {
   return SDL::GPUTextureSupportsFormat(m_resource, format, type, usage);
 }
@@ -67227,9 +67227,8 @@ inline bool GPUTextureSupportsSampleCount(GPUDeviceParam device,
   return SDL_GPUTextureSupportsSampleCount(device, format, sample_count);
 }
 
-inline bool GPUDevice::GPUTextureSupportsSampleCount(
-  GPUTextureFormat format,
-  GPUSampleCount sample_count)
+inline bool GPUDevice::TextureSupportsSampleCount(GPUTextureFormat format,
+                                                  GPUSampleCount sample_count)
 {
   return SDL::GPUTextureSupportsSampleCount(m_resource, format, sample_count);
 }
