@@ -47,7 +47,7 @@ namespace SDL {
  * Rendering can happen to a texture (what other APIs call a "render target")
  * or it can happen to the swapchain texture (which is just a special texture
  * that represents a window's contents). The app can use
- * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() to render to the window.
+ * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() to render to the window.
  *
  * Rendering actually happens in a Render Pass, which is encoded into a
  * command buffer. One can encode multiple render passes (or alternate between
@@ -2006,7 +2006,7 @@ using GPUBlitInfo = SDL_GPUBlitInfo;
  *
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  * @sa GPUDevice.QueryGPUFence
- * @sa GPUDevice.WaitForGPUFences
+ * @sa GPUDevice.WaitForFences
  * @sa GPUDevice.ReleaseGPUFence
  */
 using GPUFence = SDL_GPUFence;
@@ -2267,20 +2267,19 @@ public:
    * If you use this function, it is possible to create a situation where many
    * command buffers are allocated while the rendering context waits for the GPU
    * to catch up, which will cause memory usage to grow. You should use
-   * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() unless you know what
-   * you are doing with timing.
+   * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() unless you know what you
+   * are doing with timing.
    *
    * The swapchain texture is managed by the implementation and must not be
    * freed by the user. You MUST NOT call this function from any thread other
    * than the one that created the window.
    *
    * @param window a window that has been claimed.
-   * @param swapchain_texture a pointer filled in with a swapchain texture
-   *                          handle.
    * @param swapchain_texture_width a pointer filled in with the swapchain
    *                                texture width, may be nullptr.
    * @param swapchain_texture_height a pointer filled in with the swapchain
    *                                 texture height, may be nullptr.
+   * @returns a swapchain texture handle.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called from the thread that
@@ -2293,14 +2292,14 @@ public:
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    * @sa GPUCommandBuffer.Cancel
    * @sa Window.GetSizeInPixels
-   * @sa GPUDevice.WaitForGPUSwapchain
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUDevice.WaitForSwapchain
+   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
-  void AcquireGPUSwapchainTexture(WindowParam window,
-                                  SDL_GPUTexture** swapchain_texture,
-                                  Uint32* swapchain_texture_width,
-                                  Uint32* swapchain_texture_height);
+  GPUTexture AcquireSwapchainTexture(
+    WindowParam window,
+    Uint32* swapchain_texture_width = nullptr,
+    Uint32* swapchain_texture_height = nullptr);
 
   /**
    * Blocks the thread until a swapchain texture is available to be acquired,
@@ -2325,12 +2324,11 @@ public:
    * another reading operation.
    *
    * @param window a window that has been claimed.
-   * @param swapchain_texture a pointer filled in with a swapchain texture
-   *                          handle.
    * @param swapchain_texture_width a pointer filled in with the swapchain
    *                                texture width, may be nullptr.
    * @param swapchain_texture_height a pointer filled in with the swapchain
    *                                 texture height, may be nullptr.
+   * @returns a swapchain texture handle.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called from the thread that
@@ -2340,12 +2338,12 @@ public:
    *
    * @sa GPUCommandBuffer.Submit
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireSwapchainTexture
    */
-  void WaitAndAcquireGPUSwapchainTexture(WindowParam window,
-                                         SDL_GPUTexture** swapchain_texture,
-                                         Uint32* swapchain_texture_width,
-                                         Uint32* swapchain_texture_height);
+  GPUTexture WaitAndAcquireSwapchainTexture(
+    WindowParam window,
+    Uint32* swapchain_texture_width = nullptr,
+    Uint32* swapchain_texture_height = nullptr);
 
   /**
    * Submits a command buffer so its commands can be processed on the GPU.
@@ -2362,8 +2360,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.AcquireCommandBuffer
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireSwapchainTexture
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    */
   void Submit();
@@ -2386,8 +2384,8 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.AcquireCommandBuffer
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireSwapchainTexture
    * @sa GPUCommandBuffer.Submit
    * @sa GPUDevice.ReleaseGPUFence
    */
@@ -2409,9 +2407,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.AcquireCommandBuffer
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireSwapchainTexture
    */
   void Cancel();
 };
@@ -2472,7 +2470,7 @@ constexpr GPUShaderFormat GPU_SHADERFORMAT_METALLIB =
  *
  * @sa GPUDevice.SetSwapchainParameters
  * @sa GPUDevice.WindowSupportsSwapchainComposition
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  */
 using GPUSwapchainComposition = SDL_GPUSwapchainComposition;
 
@@ -2511,7 +2509,7 @@ constexpr GPUSwapchainComposition GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084 =
  *
  * @sa GPUDevice.SetSwapchainParameters
  * @sa GPUDevice.WindowSupportsPresentMode
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  */
 using GPUPresentMode = SDL_GPUPresentMode;
 
@@ -3697,7 +3695,7 @@ public:
   /**
    * Claims a window, creating a swapchain structure for it.
    *
-   * This must be called before GPUCommandBuffer.AcquireGPUSwapchainTexture is
+   * This must be called before GPUCommandBuffer.AcquireSwapchainTexture is
    * called using the window. You should only call this function from the thread
    * that created the window.
    *
@@ -3714,7 +3712,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.ReleaseWindow
    * @sa GPUDevice.WindowSupportsPresentMode
    * @sa GPUDevice.WindowSupportsSwapchainComposition
@@ -3764,9 +3762,9 @@ public:
    *
    * The default value when the device is created is 2. This means that after
    * you have submitted 2 frames for presentation, if the GPU has not finished
-   * working on the first frame, GPUCommandBuffer.AcquireGPUSwapchainTexture()
-   * will fill the swapchain texture pointer with nullptr, and
-   * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() will block.
+   * working on the first frame, GPUCommandBuffer.AcquireSwapchainTexture() will
+   * fill the swapchain texture pointer with nullptr, and
+   * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() will block.
    *
    * Higher values increase throughput at the expense of visual latency. Lower
    * values decrease visual latency at the expense of throughput.
@@ -3808,11 +3806,11 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
-   * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+   * @sa GPUCommandBuffer.AcquireSwapchainTexture
+   * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
    * @sa GPUDevice.SetAllowedFramesInFlight
    */
-  void WaitForGPUSwapchain(WindowParam window);
+  void WaitForSwapchain(WindowParam window);
 
   /**
    * Blocks the thread until the GPU is completely idle.
@@ -3821,7 +3819,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUDevice.WaitForGPUFences
+   * @sa GPUDevice.WaitForFences
    */
   void WaitForGPUIdle();
 
@@ -3838,7 +3836,7 @@ public:
    * @sa GPUCommandBuffer.SubmitAndAcquireFence
    * @sa GPUDevice.WaitForGPUIdle
    */
-  void WaitForGPUFences(bool wait_all, std::span<GPUFence* const> fences);
+  void WaitForFences(bool wait_all, std::span<GPUFence* const> fences);
 
   /**
    * Checks the status of a fence.
@@ -6955,9 +6953,9 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
 /**
  * Claims a window, creating a swapchain structure for it.
  *
- * This must be called before GPUCommandBuffer.AcquireGPUSwapchainTexture is
- * called using the window. You should only call this function from the thread
- * that created the window.
+ * This must be called before GPUCommandBuffer.AcquireSwapchainTexture is called
+ * using the window. You should only call this function from the thread that
+ * created the window.
  *
  * The swapchain will be created with GPU_SWAPCHAINCOMPOSITION_SDR and
  * GPU_PRESENTMODE_VSYNC. If you want to have different swapchain
@@ -6973,7 +6971,7 @@ inline bool GPUDevice::WindowSupportsPresentMode(WindowParam window,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.ReleaseWindow
  * @sa GPUDevice.WindowSupportsPresentMode
  * @sa GPUDevice.WindowSupportsSwapchainComposition
@@ -7056,9 +7054,9 @@ inline bool GPUDevice::SetSwapchainParameters(
  *
  * The default value when the device is created is 2. This means that after
  * you have submitted 2 frames for presentation, if the GPU has not finished
- * working on the first frame, GPUCommandBuffer.AcquireGPUSwapchainTexture()
- * will fill the swapchain texture pointer with nullptr, and
- * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() will block.
+ * working on the first frame, GPUCommandBuffer.AcquireSwapchainTexture() will
+ * fill the swapchain texture pointer with nullptr, and
+ * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() will block.
  *
  * Higher values increase throughput at the expense of visual latency. Lower
  * values decrease visual latency at the expense of throughput.
@@ -7123,7 +7121,7 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  * If you use this function, it is possible to create a situation where many
  * command buffers are allocated while the rendering context waits for the GPU
  * to catch up, which will cause memory usage to grow. You should use
- * GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture() unless you know what you
+ * GPUCommandBuffer.WaitAndAcquireSwapchainTexture() unless you know what you
  * are doing with timing.
  *
  * The swapchain texture is managed by the implementation and must not be
@@ -7132,12 +7130,11 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  *
  * @param command_buffer a command buffer.
  * @param window a window that has been claimed.
- * @param swapchain_texture a pointer filled in with a swapchain texture
- *                          handle.
  * @param swapchain_texture_width a pointer filled in with the swapchain
  *                                texture width, may be nullptr.
  * @param swapchain_texture_height a pointer filled in with the swapchain
  *                                 texture height, may be nullptr.
+ * @returns a swapchain texture handle.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called from the thread that
@@ -7150,34 +7147,34 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  * @sa GPUCommandBuffer.Cancel
  * @sa Window.GetSizeInPixels
- * @sa GPUDevice.WaitForGPUSwapchain
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ * @sa GPUDevice.WaitForSwapchain
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.SetAllowedFramesInFlight
  */
-inline void AcquireGPUSwapchainTexture(GPUCommandBuffer command_buffer,
-                                       WindowParam window,
-                                       SDL_GPUTexture** swapchain_texture,
-                                       Uint32* swapchain_texture_width,
-                                       Uint32* swapchain_texture_height)
+inline GPUTexture AcquireGPUSwapchainTexture(
+  GPUCommandBuffer command_buffer,
+  WindowParam window,
+  Uint32* swapchain_texture_width = nullptr,
+  Uint32* swapchain_texture_height = nullptr)
 {
+  GPUTextureRaw texture;
   CheckError(SDL_AcquireGPUSwapchainTexture(command_buffer,
                                             window,
-                                            swapchain_texture,
+                                            &texture,
                                             swapchain_texture_width,
                                             swapchain_texture_height));
+  return texture;
 }
 
-inline void GPUCommandBuffer::AcquireGPUSwapchainTexture(
+inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
   WindowParam window,
-  SDL_GPUTexture** swapchain_texture,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
-  SDL::AcquireGPUSwapchainTexture(m_gPUCommandBuffer,
-                                  window,
-                                  swapchain_texture,
-                                  swapchain_texture_width,
-                                  swapchain_texture_height);
+  return SDL::AcquireGPUSwapchainTexture(m_gPUCommandBuffer,
+                                         window,
+                                         swapchain_texture_width,
+                                         swapchain_texture_height);
 }
 
 /**
@@ -7192,8 +7189,8 @@ inline void GPUCommandBuffer::AcquireGPUSwapchainTexture(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.AcquireSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.SetAllowedFramesInFlight
  */
 inline void WaitForGPUSwapchain(GPUDeviceParam device, WindowParam window)
@@ -7201,7 +7198,7 @@ inline void WaitForGPUSwapchain(GPUDeviceParam device, WindowParam window)
   CheckError(SDL_WaitForGPUSwapchain(device, window));
 }
 
-inline void GPUDevice::WaitForGPUSwapchain(WindowParam window)
+inline void GPUDevice::WaitForSwapchain(WindowParam window)
 {
   SDL::WaitForGPUSwapchain(m_resource, window);
 }
@@ -7230,12 +7227,11 @@ inline void GPUDevice::WaitForGPUSwapchain(WindowParam window)
  *
  * @param command_buffer a command buffer.
  * @param window a window that has been claimed.
- * @param swapchain_texture a pointer filled in with a swapchain texture
- *                          handle.
  * @param swapchain_texture_width a pointer filled in with the swapchain
  *                                texture width, may be nullptr.
  * @param swapchain_texture_height a pointer filled in with the swapchain
  *                                 texture height, may be nullptr.
+ * @returns a swapchain texture handle.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called from the thread that
@@ -7245,33 +7241,32 @@ inline void GPUDevice::WaitForGPUSwapchain(WindowParam window)
  *
  * @sa GPUCommandBuffer.Submit
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
- * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.AcquireSwapchainTexture
  */
-inline void WaitAndAcquireGPUSwapchainTexture(
+inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
   GPUCommandBuffer command_buffer,
   WindowParam window,
-  SDL_GPUTexture** swapchain_texture,
-  Uint32* swapchain_texture_width,
-  Uint32* swapchain_texture_height)
+  Uint32* swapchain_texture_width = nullptr,
+  Uint32* swapchain_texture_height = nullptr)
 {
+  GPUTextureRaw texture;
   CheckError(SDL_WaitAndAcquireGPUSwapchainTexture(command_buffer,
                                                    window,
-                                                   swapchain_texture,
+                                                   &texture,
                                                    swapchain_texture_width,
                                                    swapchain_texture_height));
+  return texture;
 }
 
-inline void GPUCommandBuffer::WaitAndAcquireGPUSwapchainTexture(
+inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
   WindowParam window,
-  SDL_GPUTexture** swapchain_texture,
   Uint32* swapchain_texture_width,
   Uint32* swapchain_texture_height)
 {
-  SDL::WaitAndAcquireGPUSwapchainTexture(m_gPUCommandBuffer,
-                                         window,
-                                         swapchain_texture,
-                                         swapchain_texture_width,
-                                         swapchain_texture_height);
+  return SDL::WaitAndAcquireGPUSwapchainTexture(m_gPUCommandBuffer,
+                                                window,
+                                                swapchain_texture_width,
+                                                swapchain_texture_height);
 }
 
 /**
@@ -7290,8 +7285,8 @@ inline void GPUCommandBuffer::WaitAndAcquireGPUSwapchainTexture(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
- * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
+ * @sa GPUCommandBuffer.AcquireSwapchainTexture
  * @sa GPUCommandBuffer.SubmitAndAcquireFence
  */
 inline void SubmitGPUCommandBuffer(GPUCommandBuffer command_buffer)
@@ -7323,8 +7318,8 @@ inline void GPUCommandBuffer::Submit()
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
- * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
+ * @sa GPUCommandBuffer.AcquireSwapchainTexture
  * @sa GPUCommandBuffer.Submit
  * @sa GPUDevice.ReleaseGPUFence
  */
@@ -7356,9 +7351,9 @@ inline GPUFence* GPUCommandBuffer::SubmitAndAcquireFence()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUCommandBuffer.WaitAndAcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.WaitAndAcquireSwapchainTexture
  * @sa GPUDevice.AcquireCommandBuffer
- * @sa GPUCommandBuffer.AcquireGPUSwapchainTexture
+ * @sa GPUCommandBuffer.AcquireSwapchainTexture
  */
 inline void CancelGPUCommandBuffer(GPUCommandBuffer command_buffer)
 {
@@ -7378,7 +7373,7 @@ inline void GPUCommandBuffer::Cancel()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUDevice.WaitForGPUFences
+ * @sa GPUDevice.WaitForFences
  */
 inline void WaitForGPUIdle(GPUDeviceParam device)
 {
@@ -7409,8 +7404,8 @@ inline void WaitForGPUFences(GPUDeviceParam device,
     SDL_WaitForGPUFences(device, wait_all, fences.data(), fences.size()));
 }
 
-inline void GPUDevice::WaitForGPUFences(bool wait_all,
-                                        std::span<GPUFence* const> fences)
+inline void GPUDevice::WaitForFences(bool wait_all,
+                                     std::span<GPUFence* const> fences)
 {
   SDL::WaitForGPUFences(m_resource, wait_all, fences);
 }

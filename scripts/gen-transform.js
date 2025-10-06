@@ -1777,9 +1777,28 @@ const transform = {
         "SDL_SetGPUSwapchainParameters": { hints: { methodName: "SetSwapchainParameters" } },
         "SDL_SetGPUAllowedFramesInFlight": { hints: { methodName: "SetAllowedFramesInFlight" } },
         "SDL_GetGPUSwapchainTextureFormat": { hints: { methodName: "GetSwapchainTextureFormat" } },
-        // "SDL_AcquireGPUSwapchainTexture": { hints: { methodName: "AcquireSwapchainTexture" } },
+        "SDL_AcquireGPUSwapchainTexture": {
+          type: "GPUTexture",
+          parameters: [
+            {}, {},
+            { name: "swapchain_texture_width", type: "Uint32 *", default: "nullptr" },
+            { name: "swapchain_texture_height", type: "Uint32 *", default: "nullptr" },
+          ],
+          hints: { methodName: "AcquireSwapchainTexture" },
+        },
+        "SDL_WaitForGPUSwapchain": { hints: { methodName: "WaitForSwapchain" } },
+        "SDL_WaitAndAcquireGPUSwapchainTexture": {
+          type: "GPUTexture",
+          parameters: [
+            {}, {},
+            { name: "swapchain_texture_width", type: "Uint32 *", default: "nullptr" },
+            { name: "swapchain_texture_height", type: "Uint32 *", default: "nullptr" },
+          ],
+          hints: { methodName: "WaitAndAcquireSwapchainTexture" },
+        },
         "SDL_WaitForGPUFences": {
           parameters: [{}, {}, { type: "std::span<GPUFence* const>" }],
+          hints: { methodName: "WaitForFences" }
         },
       }
     },
