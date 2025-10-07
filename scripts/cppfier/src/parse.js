@@ -2,7 +2,7 @@ const { readLinesSync, system } = require("./utils");
 const { Tokenizer } = require("./tokenize.js");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiFile, ApiParameters, FileTokenKind } from "./types"
+ * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, SourceApi, FileTokenKind, SourceApiFile } from "./types"
  */
 
 /**
@@ -19,7 +19,7 @@ const { Tokenizer } = require("./tokenize.js");
 function parseApi(config) {
   const { baseDir, sources } = config;
 
-  /** @type {Api} */
+  /** @type {SourceApi} */
   const api = { files: {} };
   for (const name of sources) {
     system.log(`Reading file ${name}`);
@@ -60,7 +60,7 @@ function readContent(name, baseDirs) {
 function parseContent(name, content, config) {
   if (!config) config = {};
 
-  /** @type {ApiFile} */
+  /** @type {SourceApiFile} */
   const apiFile = {
     name,
     doc: '',

@@ -6,17 +6,25 @@ export interface Api {
   delegatedReplacements?: Dict<string>;
 }
 
+export interface SourceApi {
+  files: Dict<SourceApiFile>
+}
+
 export interface ApiFile {
   name: string;
   doc?: string;
   entries?: ApiEntries;
-  docBegin?: number;
-  docEnd?: number;
   namespace?: string;
-  entriesBegin?: number;
-  entriesEnd?: number;
   includes?: string[];
   localIncludes?: string[];
+}
+
+export interface SourceApiFile extends ApiFile {
+  entries: Dict<ApiEntry>
+  docBegin?: number;
+  docEnd?: number;
+  entriesBegin?: number;
+  entriesEnd?: number;
 }
 
 export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | 'plc';

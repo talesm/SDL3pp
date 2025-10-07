@@ -3,12 +3,12 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, QuickTransform } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, QuickTransform, SourceApi } from "./types"
  */
 
 /**
  * @typedef {object} TransformConfig
- * @prop {Api}            sourceApi
+ * @prop {SourceApi}      sourceApi
  * @prop {ApiTransform=}  transform
  */
 
@@ -96,7 +96,7 @@ function transformApi(config) {
 class ApiContext {
   /** 
    * @param {ApiTransform}  transform  
-   * @param {Api}           source 
+   * @param {SourceApi}     source 
    **/
   constructor(transform, source) {
     this.namespace = transform.namespace;
@@ -352,7 +352,7 @@ function isType(kind) {
 
 /**
  * 
- * @param {ApiEntries}        sourceEntries 
+ * @param {Dict<ApiEntry>}    sourceEntries 
  * @param {ApiFileTransform}  file
  * @param {ApiContext}        context 
  */
@@ -362,7 +362,7 @@ function expandTypes(sourceEntries, file, context) {
   const transformMap = file.transform ?? {};
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
-    if (context.blacklist.has(sourceName) || Array.isArray(sourceEntry)) continue;
+    if (context.blacklist.has(sourceName)) continue;
     if (!isType(sourceEntry.kind)) continue;
     const targetDelta = getOrCreateDelta(sourceName);
     const targetName = targetDelta.name;
@@ -412,7 +412,7 @@ function expandTypes(sourceEntries, file, context) {
     const ctors = [];
 
     for (const functionEntry of Object.values(sourceEntries)) {
-      if (Array.isArray(functionEntry) || functionEntry.kind !== "function") continue;
+      if (functionEntry.kind !== "function") continue;
 
       const param0 = functionEntry.parameters?.[0];
       if (typeof param0 !== "object") continue;
@@ -1467,7 +1467,7 @@ function expandTypes(sourceEntries, file, context) {
 
 /**
  * 
- * @param {ApiEntries}        sourceEntries 
+ * @param {Dict<ApiEntry>}    sourceEntries 
  * @param {ApiFileTransform}  file
  * @param {ApiContext}        context 
  */
@@ -1510,9 +1510,9 @@ function transformEntries(sourceEntries, file, context) {
 
 /**
  * 
- * @param {ApiEntries}    sourceEntries 
- * @param {ApiFileTransform} file,
- * @param {ApiContext}    context 
+ * @param {Dict<ApiEntry>}    sourceEntries 
+ * @param {ApiFileTransform}  file,
+ * @param {ApiContext}        context 
  */
 function makeSortedEntryArray(sourceEntries, file, context) {
   const transformEntries = file.transform ?? {};
@@ -1698,9 +1698,9 @@ function makeSortedEntryArray(sourceEntries, file, context) {
 
 /**
  * 
- * @param {ApiEntries}    sourceEntries 
- * @param {ApiFileTransform} file,
- * @param {ApiContext}    context 
+ * @param {Dict<ApiEntry>}    sourceEntries 
+ * @param {ApiFileTransform}  file,
+ * @param {ApiContext}        context 
  */
 function expandNamespaces(sourceEntries, file, context) {
   const namespacesMap = file.namespacesMap ?? {};
@@ -1710,7 +1710,6 @@ function expandNamespaces(sourceEntries, file, context) {
     const sourceEntriesListed = Object.entries(sourceEntries)
       .filter(([key]) => key.startsWith(prefix));
     for (const [key, entry] of sourceEntriesListed) {
-      if (Array.isArray(entry)) continue;
       const transformEntry = file.transform[key] || {};
       const localName = entry.name.slice(prefix.length);
       file.transform[key] = transformEntry;
@@ -1759,19 +1758,19 @@ function combineHints(entry, hints) {
 
 /**
  * 
- * @param {ApiEntries}            sourceEntries 
- * @param {Dict<ApiEntryTransform>}  transformEntries 
+ * @param {Dict<ApiEntry>}          sourceEntries 
+ * @param {Dict<ApiEntryTransform>} transformEntries 
  * @param {Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>} transformSubEntries 
- * @param {string} paramType 
- * @param {string} constParamType 
- * @param {string} resultType 
+ * @param {string}                  paramType 
+ * @param {string}                  constParamType 
+ * @param {string}                  resultType 
  */
 function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, paramType, constParamType, resultType) {
   for (const [sourceName, subEntry] of Object.entries(transformSubEntries)) {
     if (Array.isArray(subEntry)) continue;
 
     const sourceEntry = sourceEntries[sourceName];
-    if (!sourceEntry || Array.isArray(sourceEntry)) continue;
+    if (!sourceEntry) continue;
     if (sourceEntry.kind !== 'function' && typeof subEntry !== 'string' && subEntry.kind !== 'function') continue;
 
     const transformEntry = transformEntries[sourceName];
@@ -1890,9 +1889,9 @@ function getEnumDefinition(entry) {
 
 /**
  * 
- * @param {ApiEntries}  entries 
- * @param {string}      uniqueType 
- * @param {string}      pointerType
+ * @param {Dict<ApiEntry>}  entries 
+ * @param {string}          uniqueType 
+ * @param {string}          pointerType
  */
 function scanFreeFunction(entries, uniqueType, pointerType) {
   /** @type {ApiEntry[]} */
@@ -1900,9 +1899,7 @@ function scanFreeFunction(entries, uniqueType, pointerType) {
   for (const sourceName of Object.keys(entries)) {
     if (looksLikeFreeFunction(sourceName)) {
       const sourceEntry = entries[sourceName];
-      if (Array.isArray(sourceEntry) || sourceEntry?.parameters?.length !== 1) {
-        continue;
-      }
+      if (sourceEntry?.parameters?.length !== 1) continue;
       const firstParameter = sourceEntry.parameters[0];
       if (sourceEntry.name.endsWith(uniqueType) || (typeof firstParameter !== 'string' && firstParameter.type === pointerType)) {
         candidates.push(sourceEntry);
