@@ -32,7 +32,7 @@
 >   int count;
 >   auto data = SDL_GetKeyboardState(&count);
 >   return std::span{data, size_t(count)};
-588c591
+336c339
 <   CheckError(SDL_SetTextInputArea(m_resource, rect, cursor));
 ---
 >   CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));

@@ -268,98 +268,11 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
   return Surface(IMG_Load_IO(src, closeio));
 }
 
-/**
- * Load an image from a filesystem path into a software surface.
- *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
- *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
- *
- * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
- *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Surface.Surface().
- *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
- *
- * @param file a path on the filesystem to load an image from.
- * @post a new SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadSurfaceTyped
- * @sa Surface.Surface
- * @sa Surface.Destroy
- */
 inline Surface::Surface(StringParam file)
   : m_resource(IMG_Load(file))
 {
 }
 
-/**
- * Load an image from an SDL data source into a software surface.
- *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
- *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
- *
- * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
- * There is a separate function to read files from disk without having to deal
- * with IOStream: `Surface.Surface("filename.jpg")` will call this function and
- * manage those details for you, determining the file type from the filename's
- * extension.
- *
- * There is also LoadSurfaceTyped(), which is equivalent to this function
- * except a file extension (like "BMP", "JPG", etc) can be specified, in case
- * SDL_image cannot autodetect the file format.
- *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
- *
- * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
- * @post a new SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa Surface.Surface
- * @sa LoadSurfaceTyped
- * @sa Surface.Destroy
- */
 inline Surface::Surface(IOStreamParam src, bool closeio)
   : m_resource(IMG_Load_IO(src, closeio))
 {
@@ -449,83 +362,11 @@ inline Texture LoadTexture(RendererParam renderer,
   return Texture(IMG_LoadTexture_IO(renderer, src, closeio));
 }
 
-/**
- * Load an image from a filesystem path into a GPU texture.
- *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
- *
- * If the loaded image has transparency or a colorkey, a texture with an alpha
- * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
- *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Texture.Texture().
- *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
- *
- * @param renderer the Renderer to use to create the GPU texture.
- * @param file a path on the filesystem to load an image from.
- * @post a new texture, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadTextureTyped
- * @sa Texture.Texture
- */
 inline Texture::Texture(RendererParam renderer, StringParam file)
   : m_resource(IMG_LoadTexture(renderer, file))
 {
 }
 
-/**
- * Load an image from an SDL data source into a GPU texture.
- *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
- *
- * If the loaded image has transparency or a colorkey, a texture with an alpha
- * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
- * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
- * this function and manage those details for you, determining the file type
- * from the filename's extension.
- *
- * There is also LoadTextureTyped(), which is equivalent to this
- * function except a file extension (like "BMP", "JPG", etc) can be specified,
- * in case SDL_image cannot autodetect the file format.
- *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
- *
- * @param renderer the Renderer to use to create the GPU texture.
- * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
- * @post a new texture, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa Texture.Texture
- * @sa LoadTextureTyped
- * @sa Texture.Destroy
- */
 inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
   : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
 {

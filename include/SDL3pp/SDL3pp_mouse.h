@@ -651,24 +651,6 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-/**
- * Move the mouse cursor to the given position within the window.
- *
- * This function generates a mouse motion event if relative mode is not
- * enabled. If relative mode is enabled, you can force mouse events for the
- * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
- *
- * Note that this function will appear to succeed, but not actually move the
- * mouse when used over Microsoft Remote Desktop.
- *
- * @param p the x, y coordinates within the window.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WarpMouse
- */
 inline void Window::WarpMouse(const FPointRaw& p)
 {
   SDL_WarpMouseInWindow(m_resource, p.x, p.y);

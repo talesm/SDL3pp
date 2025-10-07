@@ -431,8 +431,7 @@ public:
    *
    * For better understanding of underlying concepts and memory management with
    * SDL GPU API, you may refer
-   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
-   * .
+   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:

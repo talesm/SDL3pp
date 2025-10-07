@@ -647,26 +647,6 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-/**
- * Move the mouse cursor to the given position within the window.
- *
- * This function generates a mouse motion event if relative mode is not
- * enabled. If relative mode is enabled, you can force mouse events for the
- * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
- *
- * Note that this function will appear to succeed, but not actually move the
- * mouse when used over Microsoft Remote Desktop.
- *
- *               mouse focus.
- * @param x the x coordinate within the window.
- * @param y the y coordinate within the window.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WarpMouse
- */
 inline void Window::WarpMouse(const FPointRaw& p)
 {
   SDL_WarpMouseInWindow(m_resource, p);
@@ -698,46 +678,11 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p));
 }
 
-/**
- * Set relative mouse mode for a window.
- *
- * While the window has focus and relative mouse mode is enabled, the cursor
- * is hidden, the mouse position is constrained to the window, and SDL will
- * report continuous relative mouse motion even if the mouse is at the edge of
- * the window.
- *
- * If you'd like to keep the mouse position fixed while in relative mode you
- * can use Window.SetMouseRect(). If you'd like the cursor to be at a
- * specific location when relative mode ends, you should use
- * Window.WarpMouse() before disabling relative mode.
- *
- * This function will flush any pending mouse motion for this window.
- *
- * @param enabled true to enable relative mode, false to disable.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.GetRelativeMouseMode
- */
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
   CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
 }
 
-/**
- * Query whether relative mouse mode is enabled for a window.
- *
- * @returns true if relative mode is enabled for a window or false otherwise.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.SetRelativeMouseMode
- */
 inline bool Window::GetRelativeMouseMode() const
 {
   return SDL_GetWindowRelativeMouseMode(m_resource);

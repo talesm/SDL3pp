@@ -32632,14 +32632,6 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
   CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
 }
 
-/**
- * Gets the current value of the system realtime clock in nanoseconds since
- * Jan 1, 1970 in Universal Coordinated Time (UTC).
- *
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline Time Time::Current()
 {
   SDL_Time t;
@@ -32686,37 +32678,11 @@ inline Time DateTimeToTime(const DateTimeRaw& dt)
 
 inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
 
-/**
- * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
- * since January 1, 1601).
- *
- * This function fills in the two 32-bit values of the FILETIME structure.
- *
- * @param dwLowDateTime a pointer filled in with the low portion of the
- *                      Windows FILETIME value.
- * @param dwHighDateTime a pointer filled in with the high portion of the
- *                       Windows FILETIME value.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
 {
   SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
 }
 
-/**
- * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
- * 1601) to an SDL time.
- *
- * This function takes the two 32-bit values of the FILETIME structure as
- * parameters.
- *
- * @param dwLowDateTime the low portion of the Windows FILETIME value.
- * @param dwHighDateTime the high portion of the Windows FILETIME value.
- * @returns the converted SDL time.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
 {
   return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));
@@ -32789,34 +32755,11 @@ inline int GetDayOfWeek(int year, int month, int day)
  * @{
  */
 
-/**
- * Convert seconds to nanoseconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @param time the number of seconds to convert.
- * @returns the converted Time.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
 constexpr Time Time::FromPosix(Sint64 time)
 {
   return Time::FromNS(SDL_SECONDS_TO_NS(time));
 }
 
-/**
- * Convert nanoseconds to seconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @returns Posix time (in seconds).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
 constexpr Sint64 Time::ToPosix() const
 {
   return SDL_NS_TO_SECONDS(m_time.count());
@@ -60217,8 +60160,7 @@ public:
    *
    * For better understanding of underlying concepts and memory management with
    * SDL GPU API, you may refer
-   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
-   * .
+   * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
    *
    * There are optional properties that can be provided through `props`. These
    * are the supported properties:
@@ -69997,242 +69939,46 @@ inline Keymod GetModState() { return SDL_GetModState(); }
  */
 inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
 
-/**
- * Get the key code corresponding to the given scancode according to the
- * current keyboard layout.
- *
- * If you want to get the keycode as it would be delivered in key events,
- * including options specified in SDL_HINT_KEYCODE_OPTIONS, then you should
- * pass `key_event` as true. Otherwise this function simply translates the
- * scancode based on the given modifier state.
- *
- * @param scancode the desired Scancode to query.
- * @param modstate the modifier state to use when translating the scancode to
- *                 a keycode.
- * @param key_event true if the keycode will be used in key events.
- * @post the Keycode that corresponds to the given Scancode.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.GetName
- * @sa Keycode.GetScancode
- */
 inline Keycode::Keycode(Scancode scancode, Keymod modstate, bool key_event)
   : m_keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
 {
 }
 
-/**
- * Get a key code from a human-readable name.
- *
- * @param name the human-readable key name.
- * @post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
- *          GetError() for more information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Keycode.GetName
- * @sa Scancode.Scancode
- */
 inline Keycode::Keycode(StringParam name)
   : m_keycode(SDL_GetKeyFromName(name))
 {
 }
 
-/**
- * Get the scancode corresponding to the given key code according to the
- * current keyboard layout.
- *
- * Note that there may be multiple scancode+modifier states that can generate
- * this keycode, this will just return the first one found.
- *
- * @param modstate a pointer to the modifier state that would be used when the
- *                 scancode generates this key, may be nullptr.
- * @returns the Scancode that corresponds to the given Keycode.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Scancode.GetName
- */
 inline Scancode Keycode::GetScancode(Keymod* modstate) const
 {
   return SDL_GetScancodeFromKey(m_keycode, modstate);
 }
 
-/**
- * Set a human-readable name for a scancode.
- *
- * @param name the name to use for the scancode, encoded as UTF-8. The string
- *             is not copied, so the pointer given to this function must stay
- *             valid while SDL is being used.
- * @throws Error on failure.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Scancode.GetName
- */
 inline void Scancode::SetName(StringParam name)
 {
   CheckError(SDL_SetScancodeName(m_scancode, name));
 }
 
-/**
- * Get a human-readable name for a scancode.
- *
- * **Warning**: The returned name is by design not stable across platforms,
- * e.g. the name for `SCANCODE_LGUI` is "Left GUI" under Linux but "Left
- * Windows" under Microsoft Windows, and some scancodes like
- * `SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even
- * scancodes that share names, e.g. `SCANCODE_RETURN` and
- * `SCANCODE_RETURN2` (both called "Return"). This function is therefore
- * unsuitable for creating a stable cross-platform two-way mapping between
- * strings and scancodes.
- *
- * @returns a pointer to the name for the scancode. If the scancode doesn't
- *          have a name this function returns an empty string ("").
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.GetScancode
- * @sa Scancode.Scancode
- * @sa Scancode.SetName
- */
 inline const char* Scancode::GetName() const
 {
   return SDL_GetScancodeName(m_scancode);
 }
 
-/**
- * Get a scancode from a human-readable name.
- *
- * @param name the human-readable scancode name.
- * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't
- *          recognized; call GetError() for more information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Keycode.GetScancode
- * @sa Scancode.GetName
- */
 inline Scancode::Scancode(StringParam name)
   : m_scancode(SDL_GetScancodeFromName(name))
 {
 }
 
-/**
- * Get a human-readable name for a key.
- *
- * If the key doesn't have a name, this function returns an empty string ("").
- *
- * Letters will be presented in their uppercase form, if applicable.
- *
- * @returns a UTF-8 encoded string of the key name.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Keycode.Keycode
- * @sa Keycode.GetScancode
- */
 inline const char* Keycode::GetName() const
 {
   return SDL_GetKeyName(m_keycode);
 }
 
-/**
- * Start accepting Unicode text input events in a window.
- *
- * This function will enable text input (EVENT_TEXT_INPUT and
- * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with Window.StopTextInput().
- *
- * Text input events are not received by default.
- *
- * On some platforms using this function shows the screen keyboard and/or
- * activates an IME, which can prevent some key press events from being passed
- * through.
- *
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.SetTextInputArea
- * @sa Window.StartTextInput
- * @sa Window.StopTextInput
- * @sa Window.IsTextInputActive
- */
 inline void Window::StartTextInput()
 {
   CheckError(SDL_StartTextInput(m_resource));
 }
 
-/**
- * Start accepting Unicode text input events in a window, with properties
- * describing the input.
- *
- * This function will enable text input (EVENT_TEXT_INPUT and
- * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with Window.StopTextInput().
- *
- * Text input events are not received by default.
- *
- * On some platforms using this function shows the screen keyboard and/or
- * activates an IME, which can prevent some key press events from being passed
- * through.
- *
- * These are the supported properties:
- *
- * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
- *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
- * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
- *   that describes how text should be capitalized, defaults to
- *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
- *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
- *   addresses, usernames, and passwords.
- * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
- *   and auto correction, defaults to true.
- * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
- *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
- *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
- *   is "1".
- *
- * On Android you can directly specify the input type:
- *
- * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
- *   use, overriding other properties. This is documented at
- *   https://developer.android.com/reference/android/text/InputType
- *
- * @param props the properties to use.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.SetTextInputArea
- * @sa Window.StartTextInput
- * @sa Window.StopTextInput
- * @sa Window.IsTextInputActive
- */
 inline void Window::StartTextInput(PropertiesParam props)
 {
   CheckError(SDL_StartTextInputWithProperties(m_resource, props));
@@ -70323,99 +70069,26 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 } // namespace prop::TextInput
 
-/**
- * Check whether or not Unicode text input events are enabled for a window.
- *
- * @returns true if text input events are enabled else false.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.StartTextInput
- */
 inline bool Window::IsTextInputActive() const
 {
   return SDL_TextInputActive(m_resource);
 }
 
-/**
- * Stop receiving any text input events in a window.
- *
- * If Window.StartTextInput() showed the screen keyboard, this function will
- * hide it.
- *
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.StartTextInput
- */
 inline void Window::StopTextInput()
 {
   CheckError(SDL_StopTextInput(m_resource));
 }
 
-/**
- * Dismiss the composition window/IME without disabling the subsystem.
- *
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.StartTextInput
- * @sa Window.StopTextInput
- */
 inline void Window::ClearComposition()
 {
   CheckError(SDL_ClearComposition(m_resource));
 }
 
-/**
- * Set the area used to type Unicode text input.
- *
- * Native input methods may place a window with word suggestions near the
- * cursor, without covering the text being entered.
- *
- * @param rect the Rect representing the text input area, in window
- *             coordinates, or nullptr to clear it.
- * @param cursor the offset of the current cursor location relative to
- *               `rect->x`, in window coordinates.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.GetTextInputArea
- * @sa Window.StartTextInput
- */
 inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
 {
   CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));
 }
 
-/**
- * Get the area used to type Unicode text input.
- *
- * This returns the values previously set by Window.SetTextInputArea().
- *
- * @param rect a pointer to an Rect filled in with the text input area,
- *             may be nullptr.
- * @param cursor a pointer to the offset of the current cursor location
- *               relative to `rect->x`, may be nullptr.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.SetTextInputArea
- */
 inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
 {
   CheckError(SDL_GetTextInputArea(m_resource, rect, cursor));
@@ -70439,17 +70112,6 @@ inline bool HasScreenKeyboardSupport()
   return SDL_HasScreenKeyboardSupport();
 }
 
-/**
- * Check whether the screen keyboard is shown for given window.
- *
- * @returns true if screen keyboard is shown or false if not.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa HasScreenKeyboardSupport
- */
 inline bool Window::IsScreenKeyboardShown() const
 {
   return SDL_ScreenKeyboardShown(m_resource);
@@ -71797,24 +71459,6 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-/**
- * Move the mouse cursor to the given position within the window.
- *
- * This function generates a mouse motion event if relative mode is not
- * enabled. If relative mode is enabled, you can force mouse events for the
- * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
- *
- * Note that this function will appear to succeed, but not actually move the
- * mouse when used over Microsoft Remote Desktop.
- *
- * @param p the x, y coordinates within the window.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WarpMouse
- */
 inline void Window::WarpMouse(const FPointRaw& p)
 {
   SDL_WarpMouseInWindow(m_resource, p.x, p.y);
@@ -80199,16 +79843,6 @@ inline Renderer CreateSoftwareRenderer(SurfaceParam surface)
   return Renderer(surface);
 }
 
-/**
- * Get the renderer associated with a window.
- *
- * @returns the rendering context on success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline RendererRef Window::GetRenderer() const
 {
   return {CheckError(SDL_GetRenderer(m_resource))};
@@ -85017,98 +84651,11 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
   return Surface(IMG_Load_IO(src, closeio));
 }
 
-/**
- * Load an image from a filesystem path into a software surface.
- *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
- *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
- *
- * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
- *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Surface.Surface().
- *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
- *
- * @param file a path on the filesystem to load an image from.
- * @post a new SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadSurfaceTyped
- * @sa Surface.Surface
- * @sa Surface.Destroy
- */
 inline Surface::Surface(StringParam file)
   : m_resource(IMG_Load(file))
 {
 }
 
-/**
- * Load an image from an SDL data source into a software surface.
- *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
- *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
- *
- * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
- * There is a separate function to read files from disk without having to deal
- * with IOStream: `Surface.Surface("filename.jpg")` will call this function and
- * manage those details for you, determining the file type from the filename's
- * extension.
- *
- * There is also LoadSurfaceTyped(), which is equivalent to this function
- * except a file extension (like "BMP", "JPG", etc) can be specified, in case
- * SDL_image cannot autodetect the file format.
- *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
- *
- * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
- * @post a new SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa Surface.Surface
- * @sa LoadSurfaceTyped
- * @sa Surface.Destroy
- */
 inline Surface::Surface(IOStreamParam src, bool closeio)
   : m_resource(IMG_Load_IO(src, closeio))
 {
@@ -85198,83 +84745,11 @@ inline Texture LoadTexture(RendererParam renderer,
   return Texture(IMG_LoadTexture_IO(renderer, src, closeio));
 }
 
-/**
- * Load an image from a filesystem path into a GPU texture.
- *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
- *
- * If the loaded image has transparency or a colorkey, a texture with an alpha
- * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
- *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Texture.Texture().
- *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
- *
- * @param renderer the Renderer to use to create the GPU texture.
- * @param file a path on the filesystem to load an image from.
- * @post a new texture, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadTextureTyped
- * @sa Texture.Texture
- */
 inline Texture::Texture(RendererParam renderer, StringParam file)
   : m_resource(IMG_LoadTexture(renderer, file))
 {
 }
 
-/**
- * Load an image from an SDL data source into a GPU texture.
- *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
- *
- * If the loaded image has transparency or a colorkey, a texture with an alpha
- * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
- * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
- * this function and manage those details for you, determining the file type
- * from the filename's extension.
- *
- * There is also LoadTextureTyped(), which is equivalent to this
- * function except a file extension (like "BMP", "JPG", etc) can be specified,
- * in case SDL_image cannot autodetect the file format.
- *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
- *
- * @param renderer the Renderer to use to create the GPU texture.
- * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
- * @post a new texture, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa Texture.Texture
- * @sa LoadTextureTyped
- * @sa Texture.Destroy
- */
 inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
   : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
 {

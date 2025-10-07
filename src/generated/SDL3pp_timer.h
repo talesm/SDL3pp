@@ -27,33 +27,8 @@ namespace SDL {
  * @{
  */
 
-/**
- * Convert seconds to nanoseconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @param S the number of seconds to convert.
- * @returns S, expressed in nanoseconds.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
 constexpr Time Time::FromPosix(Sint64 time) { return SDL_SECONDS_TO_NS(time); }
 
-/**
- * Convert nanoseconds to seconds.
- *
- * This performs a division, so the results can be dramatically different if
- * `NS` is an integer or floating point value.
- *
- * @param NS the number of nanoseconds to convert.
- * @returns NS, expressed in seconds.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
 constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
 
 /**

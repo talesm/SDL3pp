@@ -341,14 +341,6 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
   CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
 }
 
-/**
- * Gets the current value of the system realtime clock in nanoseconds since
- * Jan 1, 1970 in Universal Coordinated Time (UTC).
- *
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline Time Time::Current() { return CheckError(SDL_GetCurrentTime(m_time)); }
 
 /**
@@ -388,37 +380,11 @@ inline Time DateTimeToTime(const DateTimeRaw& dt)
 
 inline DateTime::operator Time() const : DateTimeRaw(SDL::DateTimeToTime()) {}
 
-/**
- * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
- * since January 1, 1601).
- *
- * This function fills in the two 32-bit values of the FILETIME structure.
- *
- * @param dwLowDateTime a pointer filled in with the low portion of the
- *                      Windows FILETIME value.
- * @param dwHighDateTime a pointer filled in with the high portion of the
- *                       Windows FILETIME value.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
 {
   SDL_TimeToWindows(m_time, dwLowDateTime, dwHighDateTime);
 }
 
-/**
- * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
- * 1601) to an SDL time.
- *
- * This function takes the two 32-bit values of the FILETIME structure as
- * parameters.
- *
- * @param dwLowDateTime the low portion of the Windows FILETIME value.
- * @param dwHighDateTime the high portion of the Windows FILETIME value.
- * @returns the converted SDL time.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
 {
   return SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime);

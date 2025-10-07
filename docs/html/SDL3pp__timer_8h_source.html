@@ -90,122 +90,122 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">   39</a></span><span class="keyword">constexpr</span> <a class="code hl_class" href="classSDL_1_1Time.html">Time</a> <a class="code hl_function" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">Time::FromPosix</a>(<a class="code hl_typedef" href="group__CategoryStdinc.html#ga2feaa627ab3612aab570e5a359b1e637">Sint64</a> time)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837">Time::FromNS</a>(SDL_SECONDS_TO_NS(time));</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">   27</a></span><span class="keyword">constexpr</span> <a class="code hl_class" href="classSDL_1_1Time.html">Time</a> <a class="code hl_function" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">Time::FromPosix</a>(<a class="code hl_typedef" href="group__CategoryStdinc.html#ga2feaa627ab3612aab570e5a359b1e637">Sint64</a> time)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837">Time::FromNS</a>(SDL_SECONDS_TO_NS(time));</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">   55</a></span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryStdinc.html#ga2feaa627ab3612aab570e5a359b1e637">Sint64</a> <a class="code hl_function" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">Time::ToPosix</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">return</span> SDL_NS_TO_SECONDS(m_time.count());</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">   32</a></span><span class="keyword">constexpr</span> <a class="code hl_typedef" href="group__CategoryStdinc.html#ga2feaa627ab3612aab570e5a359b1e637">Sint64</a> <a class="code hl_function" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">Time::ToPosix</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">return</span> SDL_NS_TO_SECONDS(m_time.count());</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e">   70</a></span><span class="keyword">inline</span> std::chrono::nanoseconds <a class="code hl_function" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e">GetTicks</a>()</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">return</span> std::chrono::nanoseconds{SDL_GetTicksNS()};</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e">   47</a></span><span class="keyword">inline</span> std::chrono::nanoseconds <a class="code hl_function" href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e">GetTicks</a>()</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>{</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">return</span> std::chrono::nanoseconds{SDL_GetTicksNS()};</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
 </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861">   92</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> <a class="code hl_function" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861">GetPerformanceCounter</a>() { <span class="keywordflow">return</span> SDL_GetPerformanceCounter(); }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga575a1e9c00d5e2766847148b6309f71f">  105</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> <a class="code hl_function" href="group__CategoryTimer.html#ga575a1e9c00d5e2766847148b6309f71f">GetPerformanceFrequency</a>()</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>{</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordflow">return</span> SDL_GetPerformanceFrequency();</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861">   69</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> <a class="code hl_function" href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861">GetPerformanceCounter</a>() { <span class="keywordflow">return</span> SDL_GetPerformanceCounter(); }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga575a1e9c00d5e2766847148b6309f71f">   82</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> <a class="code hl_function" href="group__CategoryTimer.html#ga575a1e9c00d5e2766847148b6309f71f">GetPerformanceFrequency</a>()</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>{</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordflow">return</span> SDL_GetPerformanceFrequency();</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
 </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">  125</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">Delay</a>(std::chrono::nanoseconds duration)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>{</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  SDL_DelayNS(duration.count());</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>}</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">  102</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">Delay</a>(std::chrono::nanoseconds duration)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  SDL_DelayNS(duration.count());</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
 </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="foldopen" id="foldopen00145" data-start="{" data-end="}">
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">  145</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">DelayPrecise</a>(std::chrono::nanoseconds duration)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>{</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  SDL_DelayPrecise(duration.count());</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">  122</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">DelayPrecise</a>(std::chrono::nanoseconds duration)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>{</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  SDL_DelayPrecise(duration.count());</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
 </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">  155</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> = SDL_TimerID;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">  181</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">TimerCallback</a> = SDL_NSTimerCallback;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">  208</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a> =</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  std::function&lt;std::chrono::nanoseconds(<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;;</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="foldopen" id="foldopen00245" data-start="{" data-end="}">
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">  245</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <a class="code hl_function" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">AddTimer</a>(std::chrono::nanoseconds interval,</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                        <a class="code hl_typedef" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">TimerCallback</a> callback,</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                        <span class="keywordtype">void</span>* userdata)</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>{</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(SDL_AddTimerNS(interval.count(), callback, userdata));</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>}</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">  132</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> = SDL_TimerID;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">  158</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">TimerCallback</a> = SDL_NSTimerCallback;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">  185</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a> =</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  std::function&lt;std::chrono::nanoseconds(<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="foldopen" id="foldopen00222" data-start="{" data-end="}">
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">  222</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <a class="code hl_function" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">AddTimer</a>(std::chrono::nanoseconds interval,</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                        <a class="code hl_typedef" href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">TimerCallback</a> callback,</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                        <span class="keywordtype">void</span>* userdata)</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>{</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(SDL_AddTimerNS(interval.count(), callback, userdata));</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>}</div>
 </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="foldopen" id="foldopen00288" data-start="{" data-end="}">
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga4605aebef3c001d56891a33e116e0201">  288</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <a class="code hl_function" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">AddTimer</a>(std::chrono::nanoseconds interval, <a class="code hl_typedef" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a> callback)</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>{</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper&lt;TimerCB&gt;</a>;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  <span class="keyword">using </span>Store = <a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper&lt;TimerID, TimerCB*&gt;</a>;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="keyword">auto</span> cb = Wrapper::Wrap(std::move(callback));</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keywordflow">if</span> (<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <span class="keywordtype">id</span> = SDL_AddTimerNS(</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        interval.count(),</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        [](<span class="keywordtype">void</span>* userdata, <a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> timerID, <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> interval) -&gt; <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> {</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>          auto&amp; f = *static_cast&lt;TimerCB*&gt;(userdata);</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>          <span class="comment">// If ask to removal, then remove it</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>          if (next == 0) delete Store::release(timerID);</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>          return next;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        },</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        cb)) {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    Store::Wrap(<span class="keywordtype">id</span>, std::move(cb));</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <span class="keywordflow">return</span> id;</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  }</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <span class="keyword">delete</span> cb;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <span class="keywordflow">throw</span> <a class="code hl_class" href="classSDL_1_1Error.html">Error</a>{};</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>}</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="foldopen" id="foldopen00265" data-start="{" data-end="}">
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga4605aebef3c001d56891a33e116e0201">  265</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <a class="code hl_function" href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">AddTimer</a>(std::chrono::nanoseconds interval, <a class="code hl_typedef" href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a> callback)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>{</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper&lt;TimerCB&gt;</a>;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  <span class="keyword">using </span>Store = <a class="code hl_struct" href="structSDL_1_1KeyValueWrapper.html">KeyValueWrapper&lt;TimerID, TimerCB*&gt;</a>;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="keyword">auto</span> cb = Wrapper::Wrap(std::move(callback));</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <span class="keywordflow">if</span> (<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <span class="keywordtype">id</span> = SDL_AddTimerNS(</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        interval.count(),</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        [](<span class="keywordtype">void</span>* userdata, <a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> timerID, <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> interval) -&gt; <a class="code hl_typedef" href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">Uint64</a> {</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>          auto&amp; f = *static_cast&lt;TimerCB*&gt;(userdata);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>          <span class="comment">// If ask to removal, then remove it</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>          if (next == 0) delete Store::release(timerID);</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>          return next;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        },</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        cb)) {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    Store::Wrap(<span class="keywordtype">id</span>, std::move(cb));</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keywordflow">return</span> id;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="keyword">delete</span> cb;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  <span class="keywordflow">throw</span> <a class="code hl_class" href="classSDL_1_1Error.html">Error</a>{};</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>}</div>
 </div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
-<div class="foldopen" id="foldopen00324" data-start="{" data-end="}">
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">  324</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">RemoveTimer</a>(<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <span class="keywordtype">id</span>)</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>{</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keyword">delete</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a045d561210f467202833db72a173600f">KeyValueWrapper&lt;TimerID, TimerCB*&gt;::release</a>(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(SDL_RemoveTimer(<span class="keywordtype">id</span>));</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>}</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
+<div class="foldopen" id="foldopen00301" data-start="{" data-end="}">
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno"><a class="line" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">  301</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">RemoveTimer</a>(<a class="code hl_typedef" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a> <span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>{</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keyword">delete</span> <a class="code hl_function" href="structSDL_1_1KeyValueWrapper.html#a045d561210f467202833db72a173600f">KeyValueWrapper&lt;TimerID, TimerCB*&gt;::release</a>(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <a class="code hl_function" href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">CheckError</a>(SDL_RemoveTimer(<span class="keywordtype">id</span>));</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>}</div>
 </div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_TIMER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_TIMER_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1Error_html"><div class="ttname"><a href="classSDL_1_1Error.html">SDL::Error</a></div><div class="ttdoc">An exception that returns GetError()</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:165</div></div>
 <div class="ttc" id="aclassSDL_1_1Time_html"><div class="ttname"><a href="classSDL_1_1Time.html">SDL::Time</a></div><div class="ttdoc">SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:408</div></div>
 <div class="ttc" id="aclassSDL_1_1Time_html_aef14fc81403f1036d3aac0242d460837"><div class="ttname"><a href="classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837">SDL::Time::FromNS</a></div><div class="ttdeci">static constexpr Time FromNS(Sint64 time)</div><div class="ttdoc">Create from a nanoseconds Sint64.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:454</div></div>
 <div class="ttc" id="agroup__CategoryError_html_ga95070a91dd4a8149c71efdbcd7bf9fbf"><div class="ttname"><a href="group__CategoryError.html#ga95070a91dd4a8149c71efdbcd7bf9fbf">SDL::CheckError</a></div><div class="ttdeci">constexpr void CheckError(bool result)</div><div class="ttdoc">Check and throw if returned value from SDL is an error.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:198</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_ga2feaa627ab3612aab570e5a359b1e637"><div class="ttname"><a href="group__CategoryStdinc.html#ga2feaa627ab3612aab570e5a359b1e637">SDL::Sint64</a></div><div class="ttdeci">Sint64 Sint64</div><div class="ttdoc">A signed 64-bit integer type.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:344</div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gad1c0b6121968b312e1133bcf0db2a2b0"><div class="ttname"><a href="group__CategoryStdinc.html#gad1c0b6121968b312e1133bcf0db2a2b0">SDL::Uint64</a></div><div class="ttdeci">Uint64 Uint64</div><div class="ttdoc">An unsigned 64-bit integer type.</div><div class="ttdef"><b>Definition</b> SDL3pp_stdinc.h:363</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga161606d2ba9e8445e9d60e6482925c6d"><div class="ttname"><a href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">SDL::Time::ToPosix</a></div><div class="ttdeci">constexpr Sint64 ToPosix() const</div><div class="ttdoc">Convert nanoseconds to seconds.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:55</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:125</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga2a4d27f17a6668eb347a8bfb7cbb7a65"><div class="ttname"><a href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">SDL::AddTimer</a></div><div class="ttdeci">TimerID AddTimer(std::chrono::nanoseconds interval, TimerCallback callback, void *userdata)</div><div class="ttdoc">Call a callback function at a future time.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:245</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga34db37a7f8654034eb6ad62e88a2e2de"><div class="ttname"><a href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">SDL::DelayPrecise</a></div><div class="ttdeci">void DelayPrecise(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:145</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga418a6ee007995b046629a7f12a797c53"><div class="ttname"><a href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">SDL::TimerCB</a></div><div class="ttdeci">std::function&lt; std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)&gt; TimerCB</div><div class="ttdoc">Function prototype for the nanosecond timer callback function.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:209</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga50284930ebbdfa513525372174348b3e"><div class="ttname"><a href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e">SDL::GetTicks</a></div><div class="ttdeci">std::chrono::nanoseconds GetTicks()</div><div class="ttdoc">Get the time elapsed since SDL library initialization.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:70</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga575a1e9c00d5e2766847148b6309f71f"><div class="ttname"><a href="group__CategoryTimer.html#ga575a1e9c00d5e2766847148b6309f71f">SDL::GetPerformanceFrequency</a></div><div class="ttdeci">Uint64 GetPerformanceFrequency()</div><div class="ttdoc">Get the count per second of the high resolution counter.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:105</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga598490e641c8e0a73532bd8c866b6146"><div class="ttname"><a href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">SDL::TimerID</a></div><div class="ttdeci">SDL_TimerID TimerID</div><div class="ttdoc">Definition of the timer ID type.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:155</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga5c6c04d58e7ea399a1f66c48dc1f0861"><div class="ttname"><a href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861">SDL::GetPerformanceCounter</a></div><div class="ttdeci">Uint64 GetPerformanceCounter()</div><div class="ttdoc">Get the current value of the high resolution counter.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:92</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga764c5af8d93b59d3e435db5cb44c8379"><div class="ttname"><a href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">SDL::RemoveTimer</a></div><div class="ttdeci">void RemoveTimer(TimerID id)</div><div class="ttdoc">Remove a timer created with SDL_AddTimer().</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:324</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_ga8e76a11451307f2a1dd5cd8b1a4008d3"><div class="ttname"><a href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">SDL::TimerCallback</a></div><div class="ttdeci">SDL_NSTimerCallback TimerCallback</div><div class="ttdoc">Function prototype for the nanosecond timer callback function.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:181</div></div>
-<div class="ttc" id="agroup__CategoryTimer_html_gada9d792477503fe89dade93666a5df44"><div class="ttname"><a href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">SDL::Time::FromPosix</a></div><div class="ttdeci">static constexpr Time FromPosix(Sint64 time)</div><div class="ttdoc">Convert seconds to nanoseconds.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:39</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga161606d2ba9e8445e9d60e6482925c6d"><div class="ttname"><a href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">SDL::Time::ToPosix</a></div><div class="ttdeci">constexpr Sint64 ToPosix() const</div><div class="ttdoc">Convert nanoseconds to seconds.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:32</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:102</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga2a4d27f17a6668eb347a8bfb7cbb7a65"><div class="ttname"><a href="group__CategoryTimer.html#ga2a4d27f17a6668eb347a8bfb7cbb7a65">SDL::AddTimer</a></div><div class="ttdeci">TimerID AddTimer(std::chrono::nanoseconds interval, TimerCallback callback, void *userdata)</div><div class="ttdoc">Call a callback function at a future time.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:222</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga34db37a7f8654034eb6ad62e88a2e2de"><div class="ttname"><a href="group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de">SDL::DelayPrecise</a></div><div class="ttdeci">void DelayPrecise(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:122</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga418a6ee007995b046629a7f12a797c53"><div class="ttname"><a href="group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53">SDL::TimerCB</a></div><div class="ttdeci">std::function&lt; std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)&gt; TimerCB</div><div class="ttdoc">Function prototype for the nanosecond timer callback function.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:186</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga50284930ebbdfa513525372174348b3e"><div class="ttname"><a href="group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e">SDL::GetTicks</a></div><div class="ttdeci">std::chrono::nanoseconds GetTicks()</div><div class="ttdoc">Get the time elapsed since SDL library initialization.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:47</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga575a1e9c00d5e2766847148b6309f71f"><div class="ttname"><a href="group__CategoryTimer.html#ga575a1e9c00d5e2766847148b6309f71f">SDL::GetPerformanceFrequency</a></div><div class="ttdeci">Uint64 GetPerformanceFrequency()</div><div class="ttdoc">Get the count per second of the high resolution counter.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:82</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga598490e641c8e0a73532bd8c866b6146"><div class="ttname"><a href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">SDL::TimerID</a></div><div class="ttdeci">SDL_TimerID TimerID</div><div class="ttdoc">Definition of the timer ID type.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:132</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga5c6c04d58e7ea399a1f66c48dc1f0861"><div class="ttname"><a href="group__CategoryTimer.html#ga5c6c04d58e7ea399a1f66c48dc1f0861">SDL::GetPerformanceCounter</a></div><div class="ttdeci">Uint64 GetPerformanceCounter()</div><div class="ttdoc">Get the current value of the high resolution counter.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:69</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga764c5af8d93b59d3e435db5cb44c8379"><div class="ttname"><a href="group__CategoryTimer.html#ga764c5af8d93b59d3e435db5cb44c8379">SDL::RemoveTimer</a></div><div class="ttdeci">void RemoveTimer(TimerID id)</div><div class="ttdoc">Remove a timer created with SDL_AddTimer().</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:301</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_ga8e76a11451307f2a1dd5cd8b1a4008d3"><div class="ttname"><a href="group__CategoryTimer.html#ga8e76a11451307f2a1dd5cd8b1a4008d3">SDL::TimerCallback</a></div><div class="ttdeci">SDL_NSTimerCallback TimerCallback</div><div class="ttdoc">Function prototype for the nanosecond timer callback function.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:158</div></div>
+<div class="ttc" id="agroup__CategoryTimer_html_gada9d792477503fe89dade93666a5df44"><div class="ttname"><a href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">SDL::Time::FromPosix</a></div><div class="ttdeci">static constexpr Time FromPosix(Sint64 time)</div><div class="ttdoc">Convert seconds to nanoseconds.</div><div class="ttdef"><b>Definition</b> SDL3pp_timer.h:27</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">Main include header for the SDL3pp library.</div></div>
 <div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:66</div></div>
 <div class="ttc" id="astructSDL_1_1KeyValueWrapper_html"><div class="ttname"><a href="structSDL_1_1KeyValueWrapper.html">SDL::KeyValueWrapper</a></div><div class="ttdoc">Wrapper key to value result callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:145</div></div>

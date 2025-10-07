@@ -1979,10 +1979,8 @@ function transformHierarchy(targetEntries, context) {
       if (entry.static) addHints(entry, { static: true });
       delete entry.static;
       delete entry.explicit;
-      if (isSameFile && typeof entry.doc === 'string') {
-        if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
-        delete entry.doc;
-      }
+      if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
+      delete entry.doc;
     }
   }
 
