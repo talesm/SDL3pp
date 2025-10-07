@@ -1952,7 +1952,6 @@ function transformHierarchy(targetEntries, context) {
     const entry = targetEntries[key];
     const typeName = obj.name;
     const targetName = path[path.length - 1];
-    const isSameFile = !!targetEntries[path[0]];
     if (Array.isArray(entry)) {
       entry.forEach(e => prepareForTypeInsert(e, targetName, typeName));
     } else prepareForTypeInsert(entry, targetName, typeName);
@@ -1974,7 +1973,7 @@ function transformHierarchy(targetEntries, context) {
         proto: true,
       });
       entry.name = makeMemberName(key, obj.template);
-      entry.template = obj.template;
+      if (obj.template) entry.template = obj.template;
       if (entry.parameters) entry.parameters = entry.parameters.map(p => {
         if (typeof p === 'object') {
           p = deepClone(p);

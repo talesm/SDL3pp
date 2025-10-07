@@ -1682,7 +1682,7 @@ public:
    * @sa Renderer.RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  void RenderDebugText(FPoint p, StringParam str);
+  void RenderDebugText(const FPointRaw& p, StringParam str);
 
   /**
    * Draw debug text to an Renderer.
@@ -6229,12 +6229,14 @@ inline int Renderer::GetVSync() const
  * @sa Renderer.RenderDebugTextFormat
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
-inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
+inline void RenderDebugText(RendererParam renderer,
+                            const FPointRaw& p,
+                            StringParam str)
 {
   CheckError(SDL_RenderDebugText(renderer, p, str));
 }
 
-inline void Renderer::RenderDebugText(FPoint p, StringParam str)
+inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 {
   SDL::RenderDebugText(m_resource, p, std::move(str));
 }
@@ -6273,6 +6275,7 @@ inline void RenderDebugTextFormat(RendererParam renderer,
   CheckError(SDL_RenderDebugTextFormat(renderer, p, fmt, args));
 }
 
+template<class... ARGS>
 inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
                                             std::string_view fmt,
                                             ARGS... args)

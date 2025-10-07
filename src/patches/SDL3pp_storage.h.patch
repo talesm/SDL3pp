@@ -192,26 +192,24 @@
 >   std::vector<T> buffer(*sz / sizeof(T) + (*sz % sizeof(T) ? 1 : 0), 0);
 >   CheckError(ReadFile(std::move(path), {buffer.data(), *sz}));
 >   return buffer;
-1034a1046
-> template<class T>
-1037c1049
+1038c1049
 <   return SDL::ReadStorageFileAs(m_resource, std::move(path));
 ---
 >   return SDL::ReadStorageFileAs<T>(m_resource, std::move(path));
-1046,1048c1058
+1047,1049c1058
 <  * @param length the length of the source buffer.
 <  * @returns true if the file was written or false on failure; call
 <  *          GetError() for more information.
 ---
 >  * @throws Error on failure.
-1060c1070,1071
+1061c1070,1071
 <   SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes());
 ---
 >   CheckError(
 >     SDL_WriteStorageFile(storage, path, source.data(), source.size_bytes()));
-1142d1152
+1143d1152
 <  * @param userdata a pointer that is passed to `callback`.
-1153c1163,1170
+1154c1163,1170
 <   static_assert(false, "Not implemented");
 ---
 >   EnumerateStorageDirectory(
@@ -222,12 +220,12 @@
 >       return cb(dirname, fname);
 >     },
 >     &callback);
-1174,1175c1191
+1175,1176c1191
 <  * @param callback a function that is called for each entry in the directory.
 <  * @param userdata a pointer that is passed to `callback`.
 ---
 >  * @returns all the directory contents.
-1185c1201,1206
+1186c1201,1206
 <   static_assert(false, "Not implemented");
 ---
 >   std::vector<Path> r;
@@ -236,24 +234,24 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-1276,1278c1297,1298
+1277,1279c1297,1298
 <  * @param info a pointer filled in with information about the path, or nullptr
 <  * to check for the existence of a file.
 <  * @throws Error on failure.
 ---
 >  * @returns the info on success or false if the file doesn't exist, or another
 >  *          failure; call GetError() for more information.
-1286c1306,1309
+1287c1306,1309
 <   return CheckError(SDL_GetStoragePathInfo(storage, path));
 ---
 >   if (PathInfo info; SDL_GetStoragePathInfo(storage, path, &info)) {
 >     return info;
 >   }
 >   return {};
-1340,1341d1362
+1341,1342d1362
 <  * @param count on return, will be set to the number of items in the returned
 <  *              array. Can be nullptr.
-1355c1376,1379
+1356c1376,1379
 <   return CheckError(SDL_GlobStorageDirectory(storage, path, pattern, flags));
 ---
 >   int count;

@@ -78251,7 +78251,7 @@ public:
    * @sa Renderer.RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  void RenderDebugText(FPoint p, StringParam str);
+  void RenderDebugText(const FPointRaw& p, StringParam str);
 
   /**
    * Draw debug text to an Renderer.
@@ -78279,10 +78279,9 @@ public:
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
-  {
-    RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
-  }
+  void RenderDebugTextFormat(const FPointRaw& p,
+                             std::string_view fmt,
+                             ARGS... args);
 
   /**
    * Create a texture for a rendering context.
@@ -82908,12 +82907,14 @@ inline int Renderer::GetVSync() const
  * @sa Renderer.RenderDebugTextFormat
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
-inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
+inline void RenderDebugText(RendererParam renderer,
+                            const FPointRaw& p,
+                            StringParam str)
 {
   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
 }
 
-inline void Renderer::RenderDebugText(FPoint p, StringParam str)
+inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 {
   SDL::RenderDebugText(m_resource, p, std::move(str));
 }
@@ -82944,12 +82945,20 @@ inline void Renderer::RenderDebugText(FPoint p, StringParam str)
  */
 template<class... ARGS>
 inline void RenderDebugTextFormat(RendererParam renderer,
-                                  FPoint p,
+                                  const FPointRaw& p,
                                   std::string_view fmt,
                                   ARGS... args)
 {
   RenderDebugText(
     renderer, p, std::vformat(fmt, std::make_format_args(args...)));
+}
+
+template<class... ARGS>
+inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
+                                            std::string_view fmt,
+                                            ARGS... args)
+{
+  SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
 
 /// @}

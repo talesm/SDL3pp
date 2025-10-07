@@ -5112,16 +5112,9 @@ const transform = {
             },
             "SDL_RenderDebugText": {
               parameters: [
-                {
-                },
-                {
-                  "type": "FPoint",
-                  "name": "p"
-                },
-                {
-                  "type": "StringParam",
-                  "name": "str"
-                }
+                {},
+                {},
+                { type: "StringParam", name: "str" },
               ]
             },
             "SDL_RenderDebugTextFormat": {

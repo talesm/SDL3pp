@@ -1032,6 +1032,7 @@ inline std::vector<T> ReadStorageFileAs(StorageParam storage, StringParam path)
   static_assert(false, "Not implemented");
 }
 
+template<class T>
 inline std::vector<T> Storage::ReadFileAs(StringParam path)
 {
   return SDL::ReadStorageFileAs(m_resource, std::move(path));
