@@ -54,10 +54,6 @@
 >   size_t size = 0;
 >   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
 >   return StringResult(CheckError(data), size);
-748c773
-< inline StringResult Process::Read(int* exitcode = nullptr)
----
-> inline StringResult Process::Read(int* exitcode)
 779c804
 <   return SDL_GetProcessInput(process);
 ---

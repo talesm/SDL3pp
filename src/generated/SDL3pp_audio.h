@@ -2620,7 +2620,7 @@ inline AudioSpec GetAudioDeviceFormat(AudioDeviceParam devid,
   return CheckError(SDL_GetAudioDeviceFormat(devid, sample_frames));
 }
 
-inline AudioSpec AudioDevice::GetFormat(int* sample_frames = nullptr) const
+inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
 {
   return SDL::GetAudioDeviceFormat(m_resource, sample_frames);
 }

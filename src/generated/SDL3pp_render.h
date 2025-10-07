@@ -4446,8 +4446,7 @@ inline Surface LockTextureToSurface(
   return CheckError(SDL_LockTextureToSurface(texture, rect));
 }
 
-inline Surface Texture::LockToSurface(
-  OptionalRef<const SDL_Rect> rect = std::nullopt)
+inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
 {
   return SDL::LockTextureToSurface(m_resource, rect);
 }
@@ -5906,7 +5905,7 @@ inline Surface RenderReadPixels(RendererParam renderer,
   return CheckError(SDL_RenderReadPixels(renderer, rect));
 }
 
-inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect = {}) const
+inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
 {
   return SDL::RenderReadPixels(m_resource, rect);
 }

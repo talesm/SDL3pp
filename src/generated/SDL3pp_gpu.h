@@ -7190,8 +7190,8 @@ inline GPUTexture AcquireGPUSwapchainTexture(
 
 inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
   WindowParam window,
-  Uint32* swapchain_texture_width = nullptr,
-  Uint32* swapchain_texture_height = nullptr)
+  Uint32* swapchain_texture_width,
+  Uint32* swapchain_texture_height)
 {
   return SDL::AcquireGPUSwapchainTexture(m_gPUCommandBuffer,
                                          window,
@@ -7278,8 +7278,8 @@ inline GPUTexture WaitAndAcquireGPUSwapchainTexture(
 
 inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
   WindowParam window,
-  Uint32* swapchain_texture_width = nullptr,
-  Uint32* swapchain_texture_height = nullptr)
+  Uint32* swapchain_texture_width,
+  Uint32* swapchain_texture_height)
 {
   return SDL::WaitAndAcquireGPUSwapchainTexture(m_gPUCommandBuffer,
                                                 window,

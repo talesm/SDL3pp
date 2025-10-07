@@ -955,23 +955,18 @@
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2591,2592c2789
-< inline void Palette::SetColors(SpanRef<const ColorRaw> colors,
-<                                int firstcolor = 0)
----
-> inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-2679,2682c2876
+2678,2681c2876
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
 ---
 >  * @param c the color components of the pixel in the range 0-255.
-2699c2893
+2698c2893
 <   return SDL_MapRGBA(&format, palette, c);
 ---
 >   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
-2779a2974,3000
+2778a2974,3000
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const

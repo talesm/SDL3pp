@@ -745,7 +745,7 @@ inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
   return SDL_ReadProcess(process, exitcode);
 }
 
-inline StringResult Process::Read(int* exitcode = nullptr)
+inline StringResult Process::Read(int* exitcode)
 {
   return SDL::ReadProcess(m_resource, exitcode);
 }

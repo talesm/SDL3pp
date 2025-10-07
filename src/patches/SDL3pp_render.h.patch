@@ -804,38 +804,33 @@
 >   SurfaceRaw surface = nullptr;
 >   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
 >   return Surface::Borrow(surface);
-4449,4450c4676
-< inline Surface Texture::LockToSurface(
-<   OptionalRef<const SDL_Rect> rect = std::nullopt)
----
-> inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
-4529c4755,4757
+4528c4755,4757
 <   return SDL_GetRenderTarget(renderer);
 ---
 >   TextureRaw texture = SDL_GetRenderTarget(renderer);
 >   if (texture) return Texture::Borrow(texture);
 >   return {};
-4576,4577c4804
+4575,4576c4804
 <  * @param w the width of the logical resolution.
 <  * @param h the height of the logical resolution.
 ---
 >  * @param size the width and height of the logical resolution.
-4593c4820
+4592c4820
 <   CheckError(SDL_SetRenderLogicalPresentation(renderer, size, mode));
 ---
 >   CheckError(SDL_SetRenderLogicalPresentation(renderer, size.x, size.y, mode));
-4651,4652c4878
+4650,4651c4878
 <  * @param rect a pointer filled in with the final presentation rectangle, may
 <  *             be nullptr.
 ---
 >  * @returns with the final presentation rectangle.
-4663c4889,4891
+4662c4889,4891
 <   return CheckError(SDL_GetRenderLogicalPresentationRect(renderer));
 ---
 >   FRect rect;
 >   CheckError(SDL_GetRenderLogicalPresentationRect(renderer, &rect));
 >   return rect;
-4682,4685c4910,4911
+4681,4684c4910,4911
 <  * @param window_x the x coordinate in window coordinates.
 <  * @param window_y the y coordinate in window coordinates.
 <  * @param x a pointer filled with the x coordinate in render coordinates.
@@ -843,14 +838,14 @@
 ---
 >  * @param window_coord the x, y coordinate in window coordinates.
 >  * @returns the x, y coordinate in render coordinates.
-4698c4924,4927
+4697c4924,4927
 <   return CheckError(SDL_RenderCoordinatesFromWindow(renderer, window_coord));
 ---
 >   FPoint p;
 >   CheckError(SDL_RenderCoordinatesFromWindow(
 >     renderer, window_coord.x, window_coord.y, &p.x, &p.y));
 >   return p;
-4718,4723c4947,4948
+4717,4722c4947,4948
 <  * @param x the x coordinate in render coordinates.
 <  * @param y the y coordinate in render coordinates.
 <  * @param window_x a pointer filled with the x coordinate in window
@@ -860,56 +855,56 @@
 ---
 >  * @param coord the x, y coordinates in render coordinates.
 >  * @returns x, y in window coordinates.
-4737c4962,4965
+4736c4962,4965
 <   return CheckError(SDL_RenderCoordinatesToWindow(renderer, coord));
 ---
 >   FPoint p;
 >   CheckError(
 >     SDL_RenderCoordinatesToWindow(renderer, coord.x, coord.y, &p.x, &p.y));
 >   return p;
-4831c5059
+4830c5059
 <  * @param rect an Rect structure filled in with the current drawing area.
 ---
 >  * @returns an Rect structure filled in with the current drawing area.
-4843c5071,5073
+4842c5071,5073
 <   return CheckError(SDL_GetRenderViewport(renderer));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetRenderViewport(renderer, &rect));
 >   return rect;
-4892,4893c5122
+4891,4892c5122
 <  * @param rect a pointer filled in with the area that is safe for interactive
 <  *             content.
 ---
 >  * @returns the area that is safe for interactive content.
-4902c5131,5133
+4901c5131,5133
 <   return CheckError(SDL_GetRenderSafeArea(renderer));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetRenderSafeArea(renderer, &rect));
 >   return rect;
-4946,4947c5177,5178
+4945,4946c5177,5178
 <  * @param rect an Rect structure filled in with the current clipping area
 <  *             or an empty rectangle if clipping is disabled.
 ---
 >  * @returns an Rect structure filled in with the current clipping area
 >  *          or an empty rectangle if clipping is disabled.
-4959c5190,5192
+4958c5190,5192
 <   return CheckError(SDL_GetRenderClipRect(renderer));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetRenderClipRect(renderer, &rect));
 >   return rect;
-5009,5010c5242
+5008,5009c5242
 <  * @param scaleX the horizontal scaling factor.
 <  * @param scaleY the vertical scaling factor.
 ---
 >  * @param scale the horizontal and vertical scaling factors.
-5021c5253
+5020c5253
 <   CheckError(SDL_SetRenderScale(renderer, scale));
 ---
 >   CheckError(SDL_SetRenderScale(renderer, scale.x, scale.y));
-5063,5068c5295
+5062,5067c5295
 <  * @param r the red value used to draw on the rendering target.
 <  * @param g the green value used to draw on the rendering target.
 <  * @param b the blue value used to draw on the rendering target.
@@ -918,11 +913,11 @@
 <  *          specify how the alpha channel is used.
 ---
 >  * @param c the color used to draw on the rendering target.
-5080c5307
+5079c5307
 <   CheckError(SDL_SetRenderDrawColor(renderer, c));
 ---
 >   CheckError(SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a));
-5095,5100c5322
+5094,5099c5322
 <  * @param r the red value used to draw on the rendering target.
 <  * @param g the green value used to draw on the rendering target.
 <  * @param b the blue value used to draw on the rendering target.
@@ -931,46 +926,46 @@
 <  *          used.
 ---
 >  * @param c the color used to draw on the rendering target.
-5112c5334
+5111c5334
 <   CheckError(SDL_SetRenderDrawColorFloat(renderer, c));
 ---
 >   CheckError(SDL_SetRenderDrawColorFloat(renderer, c.r, c.g, c.b, c.a));
-5228c5450
+5227c5450
 <  * @param scale a pointer filled in with the current color scale value.
 ---
 >  * @return the current color scale value.
-5239c5461,5463
+5238c5461,5463
 <   return CheckError(SDL_GetRenderColorScale(renderer));
 ---
 >   float scale;
 >   CheckError(SDL_GetRenderColorScale(renderer, &scale));
 >   return scale;
-5276c5500
+5275c5500
 <  * @param blendMode a pointer filled in with the current BlendMode.
 ---
 >  * @return the current BlendMode.
-5287c5511,5513
+5286c5511,5513
 <   return CheckError(SDL_GetRenderDrawBlendMode(renderer));
 ---
 >   BlendMode blendMode;
 >   CheckError(SDL_GetRenderDrawBlendMode(renderer, &blendMode));
 >   return blendMode;
-5323,5324c5549
+5322,5323c5549
 <  * @param x the x coordinate of the point.
 <  * @param y the y coordinate of the point.
 ---
 >  * @param p the x, y coordinate of the point.
-5335c5560
+5334c5560
 <   CheckError(SDL_RenderPoint(renderer, p));
 ---
 >   CheckError(SDL_RenderPoint(renderer, p.x, p.y));
-5348d5572
+5347d5572
 <  * @param count the number of points to draw.
-5360c5584
+5359c5584
 <   CheckError(SDL_RenderPoints(renderer, points));
 ---
 >   CheckError(SDL_RenderPoints(renderer, points.data(), points.size()));
-5372,5375c5596,5597
+5371,5374c5596,5597
 <  * @param x1 the x coordinate of the start point.
 <  * @param y1 the y coordinate of the start point.
 <  * @param x2 the x coordinate of the end point.
@@ -978,41 +973,41 @@
 ---
 >  * @param p1 the x,y coordinates of the start point.
 >  * @param p2 the x,y coordinates of the end point.
-5388c5610
+5387c5610
 <   CheckError(SDL_RenderLine(renderer, p1, p2));
 ---
 >   CheckError(SDL_RenderLine(renderer, p1.x, p1.y, p2.x, p2.y));
-5402d5623
+5401d5623
 <  * @param count the number of points, drawing count-1 lines.
-5413c5634
+5412c5634
 <   CheckError(SDL_RenderLines(renderer, points));
 ---
 >   CheckError(SDL_RenderLines(renderer, points.data(), points.size()));
-5451d5671
+5450d5671
 <  * @param count the number of rectangles.
-5462c5682
+5461c5682
 <   CheckError(SDL_RenderRects(renderer, rects));
 ---
 >   CheckError(SDL_RenderRects(renderer, rects.data(), rects.size()));
-5502d5721
+5501d5721
 <  * @param count the number of rectangles.
-5514c5733
+5513c5733
 <   CheckError(SDL_RenderFillRects(renderer, rects));
 ---
 >   CheckError(SDL_RenderFillRects(renderer, rects.data(), rects.size()));
-5587c5806
+5586c5806
 <                                  FlipMode flip)
 ---
 >                                  FlipMode flip = FlipMode::SDL_FLIP_NONE)
-5771d5989
+5770d5989
 <  * @param num_vertices number of vertices.
-5775d5992
+5774d5992
 <  * @param num_indices number of indices.
-5787c6004
+5786c6004
 <                            std::span<const int> indices)
 ---
 >                            std::span<const int> indices = {})
-5789c6006,6011
+5788c6006,6011
 <   CheckError(SDL_RenderGeometry(renderer, texture, vertices, indices));
 ---
 >   CheckError(SDL_RenderGeometry(renderer,
@@ -1021,51 +1016,47 @@
 >                                 vertices.size(),
 >                                 indices.data(),
 >                                 indices.size()));
-5906c6128
+5905c6128
 <   return CheckError(SDL_RenderReadPixels(renderer, rect));
 ---
 >   return Surface{CheckError(SDL_RenderReadPixels(renderer, rect))};
-5909c6131
-< inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect = {}) const
----
-> inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
-6177a6400
+6176a6400
 > /// Constant for disabling renderer vsync
-6179a6403
+6178a6403
 > /// Constant for enabling asaptive renderer vsync
-6186,6187c6410,6411
+6185,6186c6410,6411
 <  * @param vsync an int filled with the current vertical refresh sync interval.
 <  *              See Renderer.SetVSync() for the meaning of the value.
 ---
 >  * @returns the current vertical refresh sync interval. See Renderer.SetVSync()
 >  *          for the meaning of the value.
-6198c6422,6424
+6197c6422,6424
 <   return CheckError(SDL_GetRenderVSync(renderer));
 ---
 >   int vsync;
 >   CheckError(SDL_GetRenderVSync(renderer, &vsync));
 >   return vsync;
-6243,6244c6469
+6242,6243c6469
 <  * @param x the x coordinate where the top-left corner of the text will draw.
 <  * @param y the y coordinate where the top-left corner of the text will draw.
 ---
 >  * @param p the x,y coordinates where the top-left corner of the text will draw.
-6257c6482
+6256c6482
 <   CheckError(SDL_RenderDebugText(renderer, p, str));
 ---
 >   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
-6276,6277c6501
+6275,6276c6501
 <  * @param x the x coordinate where the top-left corner of the text will draw.
 <  * @param y the y coordinate where the top-left corner of the text will draw.
 ---
 >  * @param p the x,y coordinate where the top-left corner of the text will draw.
-6279c6503
+6278c6503
 <  * @param ... additional parameters matching % tokens in the `fmt` string, if
 ---
 >  * @param args additional parameters matching % tokens in the `fmt` string, if
-6289a6514
+6288a6514
 > template<class... ARGS>
-6291,6294c6516,6518
+6290,6293c6516,6518
 <                                   float x,
 <                                   float y,
 <                                   SDL_PRINTF_FORMAT_STRING const char* fmt,
@@ -1074,7 +1065,7 @@
 >                                   FPoint p,
 >                                   std::string_view fmt,
 >                                   ARGS... args)
-6296c6520,6521
+6295c6520,6521
 <   CheckError(SDL_RenderDebugTextFormat(renderer, x, y, fmt, ...));
 ---
 >   RenderDebugText(

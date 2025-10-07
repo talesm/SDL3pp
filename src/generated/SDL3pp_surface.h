@@ -2208,7 +2208,7 @@ inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
  */
 inline Surface LoadBMP(StringParam file) { return Surface(SDL_LoadBMP(file)); }
 
-inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio = false)
+inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio)
 {
   return SDL::LoadBMP(src, closeio);
 }
@@ -2272,7 +2272,7 @@ inline void SaveBMP(SurfaceConstParam surface, StringParam file)
   CheckError(SDL_SaveBMP(surface, file));
 }
 
-inline void Surface::SaveBMP(IOStreamParam dst, bool closeio = false) const
+inline void Surface::SaveBMP(IOStreamParam dst, bool closeio) const
 {
   SDL::SaveBMP(m_resource, dst, closeio);
 }

@@ -628,10 +628,6 @@
 >   AudioSpec spec;
 >   CheckError(SDL_GetAudioDeviceFormat(devid, &spec, sample_frames));
 >   return spec;
-2623c2949
-< inline AudioSpec AudioDevice::GetFormat(int* sample_frames = nullptr) const
----
-> inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
 2638d2963
 <  * @param count On output, set to number of channels in the map. Can be nullptr.
 2640,2641c2965

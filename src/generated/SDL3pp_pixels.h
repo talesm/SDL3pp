@@ -2588,8 +2588,7 @@ inline void SetPaletteColors(PaletteParam palette,
   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 }
 
-inline void Palette::SetColors(SpanRef<const ColorRaw> colors,
-                               int firstcolor = 0)
+inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
 {
   SDL::SetPaletteColors(m_resource, colors, firstcolor);
 }

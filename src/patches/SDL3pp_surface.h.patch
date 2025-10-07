@@ -538,14 +538,6 @@
 <  * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates to
 ---
 >  * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
-2211c2365
-< inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio = false)
----
-> inline Surface Surface::LoadBMP(IOStreamParam src, bool closeio)
-2275c2429
-< inline void Surface::SaveBMP(IOStreamParam dst, bool closeio = false) const
----
-> inline void Surface::SaveBMP(IOStreamParam dst, bool closeio) const
 2345,2346c2499
 <  * @param enabled true to enable color key, false to disable color key.
 <  * @param key the transparent pixel.

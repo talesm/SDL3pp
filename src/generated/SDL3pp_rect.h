@@ -1147,9 +1147,8 @@ static inline bool GetRectEnclosingPoints(SpanRef<const PointRaw> points,
   return SDL_GetRectEnclosingPoints(points, clip, result);
 }
 
-inline Rect Rect::GetEnclosingPoints(
-  SpanRef<const PointRaw> points,
-  OptionalRef<const RectRaw> clip = std::nullopt)
+inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
+                                     OptionalRef<const RectRaw> clip)
 {
   return SDL::GetRectEnclosingPoints(points, clip);
 }
@@ -1411,9 +1410,8 @@ static inline bool GetRectEnclosingPointsFloat(SpanRef<const FPointRaw> points,
   return SDL_GetRectEnclosingPointsFloat(points, clip, result);
 }
 
-constexpr FRect FRect::GetEnclosingPoints(
-  SpanRef<const FPointRaw> points,
-  OptionalRef<const FRectRaw> clip = std::nullopt)
+constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
+                                          OptionalRef<const FRectRaw> clip)
 {
   return SDL::GetRectEnclosingPointsFloat(points, clip);
 }

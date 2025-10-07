@@ -1975,6 +1975,13 @@ function transformHierarchy(targetEntries, context) {
       });
       entry.name = makeMemberName(key, obj.template);
       entry.template = obj.template;
+      if (entry.parameters) entry.parameters = entry.parameters.map(p => {
+        if (typeof p === 'object') {
+          p = deepClone(p);
+          delete p.default;
+        }
+        return p;
+      });
       if (obj.hints) combineHints(entry, obj.hints);
       if (entry.static) addHints(entry, { static: true });
       delete entry.static;
