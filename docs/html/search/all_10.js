@@ -17,7 +17,7 @@ var searchData=
   ['open_14',['Open',['../group__CategoryIOStream.html#ga6ee8072f39f50f9a4056dd34e9b2879b',1,'SDL::IOStream']]],
   ['openaudiodevice_15',['OpenAudioDevice',['../group__CategoryAudio.html#ga5cd1ddb9c608a43126e7485550a3b5b5',1,'SDL']]],
   ['openaudiodevicestream_16',['openaudiodevicestream',['../group__CategoryAudio.html#ga9d5ade79899137a17fc6b3abd8f84b8d',1,'SDL::OpenAudioDeviceStream(AudioDeviceParam devid, OptionalRef&lt; const AudioSpec &gt; spec, AudioStreamCallback callback=nullptr, void *userdata=nullptr)'],['../group__CategoryAudio.html#ga49fcd65092faf045514f5ffb03ce4d7b',1,'SDL::OpenAudioDeviceStream(AudioDeviceParam devid, OptionalRef&lt; const AudioSpec &gt; spec, AudioStreamCB callback)']]],
-  ['opencamera_17',['OpenCamera',['../group__CategoryCamera.html#ga6e8bd48235785bc329c967c26db4d618',1,'SDL']]],
+  ['opencamera_17',['OpenCamera',['../group__CategoryCamera.html#ga6ca5ec8a9803dcc18f44ad6304e2e161',1,'SDL']]],
   ['openfilestorage_18',['OpenFileStorage',['../group__CategoryStorage.html#gaac19c62009d44f996c77551428dc8ba8',1,'SDL']]],
   ['openfont_19',['openfont',['../group__CategorySDLTTF.html#gaadfb6aea8d832a4d19697ecc274c9c79',1,'SDL::OpenFont(IOStreamParam src, float ptsize, bool closeio=false)'],['../group__CategorySDLTTF.html#gae4c927b8efe6af0820e2c2bd74d11c45',1,'SDL::OpenFont(StringParam file, float ptsize)']]],
   ['openfontwithproperties_20',['OpenFontWithProperties',['../group__CategorySDLTTF.html#ga7c61b399ae867f9319910b78b4fe35c3',1,'SDL']]],

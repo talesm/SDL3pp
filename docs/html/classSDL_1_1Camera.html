@@ -117,9 +117,9 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (cons
 <tr class="memitem:afd29e49ee3bcbe6ac705cd94f5c3477d" id="r_afd29e49ee3bcbe6ac705cd94f5c3477d"><td class="memItemLeft" align="right" valign="top"><a id="afd29e49ee3bcbe6ac705cd94f5c3477d" name="afd29e49ee3bcbe6ac705cd94f5c3477d"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (<a class="el" href="structSDL_1_1CameraRef.html">CameraRef</a> &amp;&amp;other)=delete</td></tr>
 <tr class="separator:afd29e49ee3bcbe6ac705cd94f5c3477d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aceb5f74fc2116643365d97bbd8790794" id="r_aceb5f74fc2116643365d97bbd8790794"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Camera.html#aceb5f74fc2116643365d97bbd8790794">Camera</a> (<a class="el" href="group__CategoryCamera.html#gaf338ff5b38c631a2ef26bd5724952027">CameraID</a> instance_id, const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &amp;spec)</td></tr>
-<tr class="memdesc:aceb5f74fc2116643365d97bbd8790794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a video recording device (a "camera").  <br /></td></tr>
-<tr class="separator:aceb5f74fc2116643365d97bbd8790794"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ff1458bdce37e032fcf7898e6882317" id="r_a7ff1458bdce37e032fcf7898e6882317"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Camera.html#a7ff1458bdce37e032fcf7898e6882317">Camera</a> (<a class="el" href="group__CategoryCamera.html#gaf338ff5b38c631a2ef26bd5724952027">CameraID</a> instance_id, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &gt; spec={})</td></tr>
+<tr class="memdesc:a7ff1458bdce37e032fcf7898e6882317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a video recording device (a "camera").  <br /></td></tr>
+<tr class="separator:a7ff1458bdce37e032fcf7898e6882317"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6b1e432874a010a1a0760600a6f3a9e" id="r_ad6b1e432874a010a1a0760600a6f3a9e"><td class="memItemLeft" align="right" valign="top"><a id="ad6b1e432874a010a1a0760600a6f3a9e" name="ad6b1e432874a010a1a0760600a6f3a9e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~Camera</b> ()</td></tr>
 <tr class="memdesc:ad6b1e432874a010a1a0760600a6f3a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -211,8 +211,8 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator CameraP
 
 </div>
 </div>
-<a id="aceb5f74fc2116643365d97bbd8790794" name="aceb5f74fc2116643365d97bbd8790794"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aceb5f74fc2116643365d97bbd8790794">&#9670;&#160;</a></span>Camera() <span class="overload">[2/2]</span></h2>
+<a id="a7ff1458bdce37e032fcf7898e6882317" name="a7ff1458bdce37e032fcf7898e6882317"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff1458bdce37e032fcf7898e6882317">&#9670;&#160;</a></span>Camera() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,8 +229,8 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator CameraP
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &amp;&#160;</td>
-          <td class="paramname"><em>spec</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &gt;&#160;</td>
+          <td class="paramname"><em>spec</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -252,11 +252,17 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator CameraP
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">instance_id</td><td>the camera device instance ID. </td></tr>
-    <tr><td class="paramname">spec</td><td>the desired format for data the device will provide. Can be nullptr. </td></tr>
+    <tr><td class="paramname">spec</td><td>the desired format for data the device will provide. Can be std::nullopt. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>an <a class="el" href="classSDL_1_1Camera.html" title="The opaque structure used to identify an opened SDL camera.">Camera</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>an <a class="el" href="classSDL_1_1Camera.html" title="The opaque structure used to identify an opened SDL camera.">Camera</a> object on success.. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryCamera.html#ga74e0497669f2bb0920df83336f64359f" title="Get a list of currently connected camera devices.">GetCameras</a> </dd>

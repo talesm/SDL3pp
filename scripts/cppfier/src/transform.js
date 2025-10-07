@@ -1048,12 +1048,16 @@ function expandTypes(sourceEntries, file, context) {
       let isCtor = false;
       if (typeof entry === "string") {
         if (entry === "ctor") {
-          ctors[sourceName] = {
+          const parameters = file.transform[sourceName]?.parameters;
+          /** @type {ApiEntryTransform} */
+          const ctor = {
             kind: "function",
             type: "",
             name: targetName,
             sourceName,
           };
+          if (parameters) ctor.parameters = parameters;
+          ctors[sourceName] = ctor;
           isCtor = true;
         }
       } else if (!Array.isArray(entry) && entry.name === "ctor") {

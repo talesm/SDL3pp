@@ -133,9 +133,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf8c7d8a302588c56ee9356520796a133" id="r_gaf8c7d8a302588c56ee9356520796a133"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryCamera.html#ga820304a9abb81d4e7bac0f1dc66efe09">CameraPosition</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryCamera.html#gaf8c7d8a302588c56ee9356520796a133">SDL::GetCameraPosition</a> (<a class="el" href="group__CategoryCamera.html#gaf338ff5b38c631a2ef26bd5724952027">CameraID</a> instance_id)</td></tr>
 <tr class="memdesc:gaf8c7d8a302588c56ee9356520796a133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of the camera in relation to the system.  <br /></td></tr>
 <tr class="separator:gaf8c7d8a302588c56ee9356520796a133"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6e8bd48235785bc329c967c26db4d618" id="r_ga6e8bd48235785bc329c967c26db4d618"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Camera.html">Camera</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryCamera.html#ga6e8bd48235785bc329c967c26db4d618">SDL::OpenCamera</a> (<a class="el" href="group__CategoryCamera.html#gaf338ff5b38c631a2ef26bd5724952027">CameraID</a> instance_id, const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &amp;spec)</td></tr>
-<tr class="memdesc:ga6e8bd48235785bc329c967c26db4d618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a video recording device (a "camera").  <br /></td></tr>
-<tr class="separator:ga6e8bd48235785bc329c967c26db4d618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6ca5ec8a9803dcc18f44ad6304e2e161" id="r_ga6ca5ec8a9803dcc18f44ad6304e2e161"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1Camera.html">Camera</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryCamera.html#ga6ca5ec8a9803dcc18f44ad6304e2e161">SDL::OpenCamera</a> (<a class="el" href="group__CategoryCamera.html#gaf338ff5b38c631a2ef26bd5724952027">CameraID</a> instance_id, <a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &gt; spec={})</td></tr>
+<tr class="memdesc:ga6ca5ec8a9803dcc18f44ad6304e2e161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a video recording device (a "camera").  <br /></td></tr>
+<tr class="separator:ga6ca5ec8a9803dcc18f44ad6304e2e161"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga49e608b3deea45b8e1f09e414e8ace53" id="r_ga49e608b3deea45b8e1f09e414e8ace53"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryCamera.html#ga49e608b3deea45b8e1f09e414e8ace53">SDL::GetCameraPermissionState</a> (<a class="el" href="structSDL_1_1CameraParam.html">CameraParam</a> camera)</td></tr>
 <tr class="memdesc:ga49e608b3deea45b8e1f09e414e8ace53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query if camera access has been approved by the user.  <br /></td></tr>
 <tr class="separator:ga49e608b3deea45b8e1f09e414e8ace53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -969,8 +969,8 @@ Camera gotchas</h2>
 
 </div>
 </div>
-<a id="ga6e8bd48235785bc329c967c26db4d618" name="ga6e8bd48235785bc329c967c26db4d618"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6e8bd48235785bc329c967c26db4d618">&#9670;&#160;</a></span>OpenCamera()</h2>
+<a id="ga6ca5ec8a9803dcc18f44ad6304e2e161" name="ga6ca5ec8a9803dcc18f44ad6304e2e161"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6ca5ec8a9803dcc18f44ad6304e2e161">&#9670;&#160;</a></span>OpenCamera()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -987,8 +987,8 @@ Camera gotchas</h2>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &amp;&#160;</td>
-          <td class="paramname"><em>spec</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const <a class="el" href="group__CategoryCamera.html#ga910be2342eed80fbe20d0780a4014c3e">CameraSpec</a> &gt;&#160;</td>
+          <td class="paramname"><em>spec</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1010,11 +1010,17 @@ Camera gotchas</h2>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">instance_id</td><td>the camera device instance ID. </td></tr>
-    <tr><td class="paramname">spec</td><td>the desired format for data the device will provide. Can be nullptr. </td></tr>
+    <tr><td class="paramname">spec</td><td>the desired format for data the device will provide. Can be std::nullopt. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>an <a class="el" href="classSDL_1_1Camera.html" title="The opaque structure used to identify an opened SDL camera.">Camera</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>an <a class="el" href="classSDL_1_1Camera.html" title="The opaque structure used to identify an opened SDL camera.">Camera</a> object on success. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryCamera.html#ga74e0497669f2bb0920df83336f64359f" title="Get a list of currently connected camera devices.">GetCameras</a> </dd>

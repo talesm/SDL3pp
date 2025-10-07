@@ -46228,9 +46228,9 @@ public:
    *
    * @param instance_id the camera device instance ID.
    * @param spec the desired format for data the device will provide. Can be
-   *             nullptr.
-   * @post an Camera object or nullptr on failure; call GetError() for
-   *          more information.
+   *             std::nullopt.
+   * @post an Camera object on success..
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -46239,8 +46239,8 @@ public:
    * @sa GetCameras
    * @sa Camera.GetFormat
    */
-  Camera(CameraID instance_id, const CameraSpec& spec)
-    : m_resource(SDL_OpenCamera(instance_id, &spec))
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {})
+    : m_resource(SDL_OpenCamera(instance_id, spec))
   {
   }
 
@@ -46674,9 +46674,9 @@ inline CameraPosition GetCameraPosition(CameraID instance_id)
  *
  * @param instance_id the camera device instance ID.
  * @param spec the desired format for data the device will provide. Can be
- *             nullptr.
- * @returns an Camera object or nullptr on failure; call GetError() for
- *          more information.
+ *             std::nullopt.
+ * @returns an Camera object on success.
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -46685,7 +46685,8 @@ inline CameraPosition GetCameraPosition(CameraID instance_id)
  * @sa GetCameras
  * @sa Camera.GetFormat
  */
-inline Camera OpenCamera(CameraID instance_id, const CameraSpec& spec)
+inline Camera OpenCamera(CameraID instance_id,
+                         OptionalRef<const CameraSpec> spec = {})
 {
   return Camera(instance_id, spec);
 }

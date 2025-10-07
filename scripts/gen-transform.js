@@ -825,7 +825,10 @@ const transform = {
         "SDL_GetCameraFormat": {
           type: "std::optional<CameraSpec>",
           parameters: [{}],
-        }
+        },
+        "SDL_OpenCamera": {
+          parameters: [{}, { type: "OptionalRef<const CameraSpec>", default: "{}" }]
+        },
       },
     },
     "SDL_clipboard.h": {
