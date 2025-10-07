@@ -80,7 +80,7 @@ export interface ApiType extends ApiEntry {
 
 export type ApiEntries = Dict<ApiEntry | ApiEntry[]>;
 
-export type ApiParameters = (string | ApiParameter)[];
+export type ApiParameters = ApiParameter[];
 
 export interface ApiParameter {
   name?: string;

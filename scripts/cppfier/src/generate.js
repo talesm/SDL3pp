@@ -312,7 +312,7 @@ function generateFile(targetFile, config) {
  */
 function generateCallParameters(parameters, replacements) {
   return parameters
-    ?.map(p => typeof p == "string" ? p : unwrap(p))
+    ?.map(p => unwrap(p))
     ?.join(", ") ?? "";
 
   /** @param {ApiParameter} p  */
@@ -346,7 +346,7 @@ function combineHints(entry) {
 
 /**
  * 
- * @param {(string|ApiParameter)[]} parameters 
+ * @param {ApiParameter[]} parameters 
  */
 function generateParameters(parameters) {
   return parameters.map(p => generateParameter(p)).join(', ');
@@ -354,12 +354,12 @@ function generateParameters(parameters) {
 
 /**
  * 
- * @param {string|ApiParameter} parameter
+ * @param {ApiParameter} parameter
  */
 function generateParameter(parameter) {
-  if (typeof parameter == "string") return parameter;
-  if (!parameter.default) return `${parameter.type} ${parameter.name}`;
-  return `${parameter.type} ${parameter.name} = ${parameter.default}`;
+  if (!parameter.type) return parameter.name ?? '';
+  if (!parameter.default) return `${parameter.type} ${parameter.name ?? ""}`;
+  return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }
 
 exports.generateApi = generateApi;

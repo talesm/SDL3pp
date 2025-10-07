@@ -378,7 +378,7 @@ function parseParams(params) {
       param = param.slice(0, defaultIndex).trimEnd();
     }
     const nameIndex = param.lastIndexOf(' ');
-    if (nameIndex == -1) return param;
+    if (nameIndex == -1) return { name: param, type: "" };
     let name = param.slice(nameIndex + 1).trim();
     let type = param.slice(0, nameIndex).trim();
     while (name.startsWith('*') || name.startsWith('&')) {

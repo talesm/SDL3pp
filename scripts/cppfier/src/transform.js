@@ -3,7 +3,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, EnumerationDefinition, QuickTransform, WrapperDefinition } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiSubEntryTransformLegacyMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, ApiEntryTransformMap, QuickTransform } from "./types"
  */
 
 /**
@@ -1805,7 +1805,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     if (targetEntry.static) return;
 
     /**@type {ApiParameters} */
-    const targetParameters = targetEntry.parameters ?? sourceEntry?.parameters?.map(p => (typeof p === 'string' ? p : {}));
+    const targetParameters = targetEntry.parameters ?? sourceEntry?.parameters?.map(() => ({}));
     if (!targetParameters) return;
 
     const needSaveParameters = !targetEntry.parameters;
@@ -2162,7 +2162,6 @@ function transformEntry(sourceEntry, context) {
  */
 function transformParameters(parameters, context) {
   return parameters.map(parameter => {
-    if (typeof parameter == "string") return parameter;
     let { name, type, default: defaultValue } = parameter;
     type = transformType(type, context.paramTypeMap);
     return { name, type, default: defaultValue };

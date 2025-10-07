@@ -1684,14 +1684,6 @@ public:
    */
   void RenderDebugText(FPoint p, StringParam str);
 
-  template<class... ARGS>
-  void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
-  {
-    static_assert(false, "Not implemented");
-  }
-
-  auto RenderDebugTextFormat();
-
   /**
    * Draw debug text to an Renderer.
    *
@@ -1716,10 +1708,10 @@ public:
    * @sa Renderer.RenderDebugText
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  void RenderDebugTextFormat(float x,
-                             float y,
-                             SDL_PRINTF_FORMAT_STRING const char* fmt,
-                             ...);
+  template<class... ARGS>
+  void RenderDebugTextFormat(const FPointRaw& p,
+                             std::string_view fmt,
+                             ARGS... args);
 
   /**
    * Create a texture for a rendering context.
@@ -1954,20 +1946,6 @@ public:
                                  Sint64 wait_semaphore,
                                  Sint64 signal_semaphore);
 };
-
-inline auto Renderer::RenderDebugTextFormat()
-  : m_resource(SDL::RenderDebugTextFormat())
-{
-}
-
-inline void Renderer::RenderDebugTextFormat(
-  float x,
-  float y,
-  SDL_PRINTF_FORMAT_STRING const char* fmt,
-  ...)
-{
-  SDL::RenderDebugTextFormat(m_resource, x, y, fmt, ...);
-}
 
 /// Semi-safe reference for Renderer.
 struct RendererRef : Renderer
@@ -6286,13 +6264,20 @@ inline void Renderer::RenderDebugText(FPoint p, StringParam str)
  * @sa Renderer.RenderDebugText
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
+template<class... ARGS>
 inline void RenderDebugTextFormat(RendererParam renderer,
-                                  float x,
-                                  float y,
-                                  SDL_PRINTF_FORMAT_STRING const char* fmt,
-                                  ...)
+                                  const FPointRaw& p,
+                                  std::string_view fmt,
+                                  ARGS... args)
 {
-  CheckError(SDL_RenderDebugTextFormat(renderer, x, y, fmt, ...));
+  CheckError(SDL_RenderDebugTextFormat(renderer, p, fmt, args));
+}
+
+inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
+                                            std::string_view fmt,
+                                            ARGS... args)
+{
+  SDL::RenderDebugTextFormat(m_resource, p, fmt, args);
 }
 
 /// @}

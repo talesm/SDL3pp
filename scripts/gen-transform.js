@@ -4545,9 +4545,6 @@ const transform = {
     },
     "SDL_render.h": {
       localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
-      ignoreEntries: [
-        "SDL_RenderDebugTextFormat"
-      ],
       namespacesMap: {
         "SDL_PROP_RENDERER_": "prop::Renderer",
         "SDL_PROP_TEXTURE_": "prop::Texture"
@@ -5127,9 +5124,7 @@ const transform = {
                 }
               ]
             },
-            "RenderDebugTextFormat": {
-              kind: "function",
-              type: "void",
+            "SDL_RenderDebugTextFormat": {
               template: [
                 {
                   "type": "class...",
@@ -5137,18 +5132,10 @@ const transform = {
                 }
               ],
               parameters: [
-                {
-                  "type": "FPoint",
-                  "name": "p"
-                },
-                {
-                  "type": "std::string_view",
-                  "name": "fmt"
-                },
-                {
-                  "type": "ARGS...",
-                  "name": "args"
-                }
+                {},
+                {},
+                { type: "std::string_view", name: "fmt" },
+                { type: "ARGS...", name: "args" }
               ]
             },
           }
@@ -9017,7 +9004,7 @@ const transform = {
                 "type": "SubStringIterator",
                 "constexpr": true,
                 "parameters": [
-                  "int"
+                  { type: "int" }
                 ]
               }
             ],
@@ -9033,7 +9020,7 @@ const transform = {
                 "type": "SubStringIterator",
                 "constexpr": true,
                 "parameters": [
-                  "int"
+                  { type: "int" }
                 ]
               }
             ]
