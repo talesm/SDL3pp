@@ -197,6 +197,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae8dc80e31984e56c3520422cdd8efd43" id="r_gae8dc80e31984e56c3520422cdd8efd43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#gae8dc80e31984e56c3520422cdd8efd43">SDL::Storage::EnumerateDirectory</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path, <a class="el" href="group__CategoryFilesystem.html#ga78c27b0025198c5c5a2299549b3ed150">EnumerateDirectoryCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:gae8dc80e31984e56c3520422cdd8efd43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate a directory in a storage container through a callback function.  <br /></td></tr>
 <tr class="separator:gae8dc80e31984e56c3520422cdd8efd43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac38e4c8c7685193278af07982bff2e0" id="r_gaac38e4c8c7685193278af07982bff2e0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structSDL_1_1Path.html">Path</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#gaac38e4c8c7685193278af07982bff2e0">SDL::Storage::EnumerateDirectory</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path)</td></tr>
+<tr class="memdesc:gaac38e4c8c7685193278af07982bff2e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate a directory in a storage container through a callback function.  <br /></td></tr>
+<tr class="separator:gaac38e4c8c7685193278af07982bff2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacd43e68e1409cc5e31675b045a20f8aa" id="r_gacd43e68e1409cc5e31675b045a20f8aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStorage.html#gacd43e68e1409cc5e31675b045a20f8aa">SDL::Storage::EnumerateDirectory</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> path, <a class="el" href="group__CategoryFilesystem.html#ga085e952ca08d5cf0df8c9238da16ab81">EnumerateDirectoryCB</a> callback)</td></tr>
 <tr class="memdesc:gacd43e68e1409cc5e31675b045a20f8aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate a directory in a storage container through a callback function.  <br /></td></tr>
 <tr class="separator:gacd43e68e1409cc5e31675b045a20f8aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -654,8 +657,52 @@ Notes on valid paths</h2>
 
 </div>
 </div>
+<a id="gaac38e4c8c7685193278af07982bff2e0" name="gaac38e4c8c7685193278af07982bff2e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaac38e4c8c7685193278af07982bff2e0">&#9670;&#160;</a></span>EnumerateDirectory() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structSDL_1_1Path.html">Path</a> &gt; SDL::Storage::EnumerateDirectory </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function provides every directory entry through an app-provided callback, called once for each directory entry, until all results have been provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.</p>
+<p>This will return false if there was a system problem in general, or if a callback returns ENUM_FAILURE. A successful return means a callback returned ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.</p>
+<p>If <code>path</code> is nullptr, this is treated as a request to enumerate the root of the storage container's tree. An empty string also works for this.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>the path of the directory to enumerate, or nullptr for the root. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>all the directory contents. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classSDL_1_1Error.html" title="An exception that returns GetError()">Error</a></td><td>on failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStorage.html#ga9a0e198a32dca67986c656e56d374e55" title="Checks if the storage container is ready to use.">Storage.Ready</a> </dd></dl>
+
+</div>
+</div>
 <a id="gae8dc80e31984e56c3520422cdd8efd43" name="gae8dc80e31984e56c3520422cdd8efd43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae8dc80e31984e56c3520422cdd8efd43">&#9670;&#160;</a></span>EnumerateDirectory() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8dc80e31984e56c3520422cdd8efd43">&#9670;&#160;</a></span>EnumerateDirectory() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -716,7 +763,7 @@ Notes on valid paths</h2>
 </div>
 </div>
 <a id="gacd43e68e1409cc5e31675b045a20f8aa" name="gacd43e68e1409cc5e31675b045a20f8aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacd43e68e1409cc5e31675b045a20f8aa">&#9670;&#160;</a></span>EnumerateDirectory() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd43e68e1409cc5e31675b045a20f8aa">&#9670;&#160;</a></span>EnumerateDirectory() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
