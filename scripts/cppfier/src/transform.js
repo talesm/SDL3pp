@@ -352,6 +352,22 @@ function isType(kind) {
 
 /**
  * 
+ * @param {Dict<ApiEntryTransform>}  entries
+ * @param {ApiEntryTransform}        entry 
+ * @param {string}              key 
+ */
+function insertOrLink(entries, entry, key) {
+  let currLink = entries[key];
+  if (!currLink) {
+    entries[key] = entry;
+    return;
+  }
+  while (currLink.link) currLink = currLink.link;
+  currLink.link = entry;
+}
+
+/**
+ * 
  * @param {Dict<ApiEntry>}    sourceEntries 
  * @param {ApiFileTransform}  file
  * @param {ApiContext}        context 
@@ -1361,14 +1377,14 @@ function expandTypes(sourceEntries, file, context) {
         const name = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
         if (blockedNames.has(name)) continue;
         const key = `${targetType}::${transformMemberName(sourceName, targetType, context)}`;
-        transformMap[key] = {
+        insertOrLink(transformMap, {
           ...transformEntry,
           after: sourceName,
           name: `${targetType}::${name}`,
           static: false,
           parameters: parameters.slice(1),
           hints: { delegate: `${context.namespace}::${sourceName}` }
-        };
+        }, key);
       }
     }
     for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -1481,22 +1497,10 @@ function transformEntries(sourceEntries, file, context) {
     const sourceName = targetEntry.sourceName;
     if (sourceName) context.addGlossary(sourceName, targetEntry);
     const targetDelta = transformMap[sourceName];
+    insertLinks(targetEntry, targetDelta?.link ?? targetEntry.link);
     if (targetDelta) {
-      for (let link = targetDelta.link; link;) {
-        const linkedEntry = deepClone(targetEntry);
-        const nextLink = link.link;
-        delete link.link;
-        if (link.kind || targetEntry.kind !== 'def') {
-          combineObject(linkedEntry, link);
-          if (linkedEntry.parameters) {
-            linkedEntry.parameters = linkedEntry.parameters.filter(p => typeof p === 'string' || (p.type && p.name));
-          }
-          insertEntryAndCheck(targetEntries, linkedEntry, context, file);
-        }
-        link = nextLink;
-      }
-      delete targetDelta.link;
       combineObject(targetEntry, targetDelta);
+      delete targetEntry.link;
       if (targetEntry.parameters) {
         targetEntry.parameters = targetEntry.parameters.filter(p => typeof p === 'string' || (p.type && p.name));
       }
@@ -1506,6 +1510,27 @@ function transformEntries(sourceEntries, file, context) {
   }
 
   return targetEntries;
+  /**
+   * 
+   * @param {ApiEntry} entry 
+   * @param {ApiEntryTransform} link 
+   */
+  function insertLinks(entry, link) {
+    if (!link) return;
+    insertLinks(entry, link.link);
+    delete link.link;
+
+    const linkedEntry = deepClone(entry);
+    if (link.kind || entry.kind !== 'def') {
+      combineObject(linkedEntry, link);
+      link = linkedEntry.link;;
+      delete linkedEntry.link;
+      if (linkedEntry.parameters) {
+        linkedEntry.parameters = linkedEntry.parameters.filter(p => typeof p === 'string' || (p.type && p.name));
+      }
+      insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+    }
+  }
 }
 
 /**
@@ -1563,7 +1588,8 @@ function makeSortedEntryArray(sourceEntries, file, context) {
 
     const targetEntry = {
       ...transformEntry(sourceEntry, context),
-      name: transformName(sourceName, context)
+      name: transformName(sourceName, context),
+      entries: undefined,
     };
     const targetDelta = transformEntries[sourceName];
     if (targetDelta) {
@@ -1585,8 +1611,11 @@ function makeSortedEntryArray(sourceEntries, file, context) {
         targetEntry.name = defPrefix + targetName;
       }
     }
+    if (targetDelta?.entries) {
+      targetEntry.entries = targetDelta.entries;
+      delete targetDelta.entries;
+    }
     addTransform(targetEntry);
-    if (targetDelta?.entries) targetDelta.entries = transformSubEntries(targetDelta);
 
     if (firstAppearance) addIncluded(includeAfter[targetName]);
     addIncluded(includeAfter[sourceName]);
@@ -1661,17 +1690,21 @@ function makeSortedEntryArray(sourceEntries, file, context) {
       const nameCandidate = transformName(key, context);
       if (!sourceEntry) {
         if (typeof entry === "string") {
-          insertEntry(entries,/** @type {ApiEntry} */({
-            kind: entry,
-            name: key,
-          }));
-          continue;
-        }
-        insertEntry(entries, /** @type {ApiEntry}*/(entry), key);
+          /** @type {ApiEntry} */
+          const newEntry = { kind: "function", name: nameCandidate };
+          if (entry === "ctor") {
+            newEntry.name = newEntry.type = type;
+          } else if (entry === "immutable") {
+            newEntry.immutable = true;
+          } else {
+            newEntry.kind = entry;
+          }
+          insertEntry(entries, newEntry);
+        } else insertEntry(entries, /** @type {ApiEntry}*/(entry), nameCandidate);
         continue;
       }
       const nameChange = makeRenameEntry(entry, nameCandidate, type);
-      if (context.blacklist.has(key)) addTransform(nameChange);
+      if (context.blacklist.has(key)) addTransform(/** @type {ApiEntry}*/(nameChange));
       if (!entries[nameChange.name]) {
         insertEntry(entries, { name: nameChange.name, kind: "plc" });
       }
@@ -1688,7 +1721,13 @@ function makeSortedEntryArray(sourceEntries, file, context) {
       file.transform[key] = nameChange;
       if (currLink) {
         currLink.name = currLinkName;
-        if (isCtor) addHints(currLink, { delegate: type });
+        if (isCtor) {
+          let l = currLink;
+          while (l) {
+            addHints(l, { delegate: type });
+            l = l.link;
+          }
+        }
         file.transform[key].link = currLink;
       }
     }
@@ -2048,7 +2087,7 @@ function makeRenameEntry(entry, name, typeName) {
   } else {
     newEntry = entry;
   }
-  return /** @type {ApiEntry} */ ({ ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) });
+  return /** @type {ApiEntryTransform} */ ({ ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) });
 }
 
 /**
@@ -2248,6 +2287,7 @@ function transformString(str, rules) {
  * @param {ApiContext} context 
  */
 function transformName(name, context) {
+  name = name.replace(/#.*$/, "");
   return context?.prefixToRemove ? name.replace(context.prefixToRemove, '') : name;
 }
 

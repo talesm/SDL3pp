@@ -5607,11 +5607,6 @@ inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
   return SDL::GetGPUTextEngineWinding(get());
 }
 
-inline Text TextEngine::CreateText(FontParam font, std::string_view text)
-{
-  return Text(m_resource, font, text);
-}
-
 /**
  * Create a text object from UTF-8 text and a text engine.
  *
@@ -5634,6 +5629,11 @@ inline Text CreateText(TextEngineParam engine,
                        std::string_view text)
 {
   return Text(engine, font, text);
+}
+
+inline Text TextEngine::CreateText(FontParam font, std::string_view text)
+{
+  return Text(m_resource, font, text);
 }
 
 /**

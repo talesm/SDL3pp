@@ -871,16 +871,12 @@
 <   CheckError(TTF_DrawSurfaceText(text, p, surface));
 ---
 >   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
-5380,5384d5294
-< inline void SurfaceTextEngine::Destroy()
+5406,5410d5320
+< inline void TextEngine::DestroySurface()
 < {
 <   DestroySurfaceTextEngine(release());
 < }
 < 
-5406c5316
-< inline void TextEngine::DestroySurface()
----
-> inline void SurfaceTextEngine::Destroy()
 5480,5483c5390,5391
 <  * @param x the x coordinate in pixels, positive from the left edge towards
 <  *          the right.
@@ -897,77 +893,69 @@
 <   CheckError(TTF_DrawRendererText(text, p));
 ---
 >   CheckError(TTF_DrawRendererText(text, p.x, p.y));
-5504,5508d5411
-< inline void RendererTextEngine::Destroy()
+5530,5534d5437
+< inline void TextEngine::DestroyRenderer()
 < {
 <   DestroyRendererTextEngine(release());
 < }
 < 
-5530c5433
-< inline void TextEngine::DestroyRenderer()
----
-> inline void RendererTextEngine::Destroy()
 5620c5523
 <  * @sa Text.Text
 ---
 >  * @sa GPUTextEngine.GPUTextEngine
-5632,5633d5534
-< inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
-< 
-5655,5660c5556
+5655,5656d5557
 < inline void TextEngine::DestroyGPU() { DestroyGPUTextEngine(release()); }
 < 
+5678c5579
 < inline void TextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-< {
+---
+> inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
+5680,5686c5581
 <   SDL::SetGPUTextEngineWinding(m_resource, winding);
 < }
----
-> inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
-5683,5689c5579
+< 
 < inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
 <                                          GPUTextEngineWinding winding)
 < {
 <   SDL::TextEngine::SetGPUWinding(engine, winding);
-< }
-< 
-< inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
----
-> inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-5691c5581
-<   return SDL::GetGPUTextEngineWinding(m_resource);
 ---
 >   SDL::SetGPUTextEngineWinding(get(), winding);
-5715,5716c5605
-< inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
-<   TextEngineParam engine) const
+5710c5605
+< inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
 ---
 > inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
-5718c5607
+5712,5718c5607
+<   return SDL::GetGPUTextEngineWinding(m_resource);
+< }
+< 
+< inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
+<   TextEngineParam engine) const
+< {
 <   return SDL::TextEngine::GetGPUWinding(engine);
 ---
 >   return SDL::GetGPUTextEngineWinding(get());
-5721,5723c5610
+5728,5729d5616
+<  * @param length the length of the text, in bytes, or 0 for null terminated
+<  *               text.
+5742,5743c5629
+<                        StringParam text,
+<                        size_t length)
+---
+>                        std::string_view text)
+5745c5631
+<   return Text(engine, font, std::move(text), length);
+---
+>   return Text(engine, font, text);
+5748,5750c5634
 < inline TextRef TextEngine::CreateText(FontParam font,
 <                                       StringParam text,
 <                                       size_t length)
 ---
 > inline Text TextEngine::CreateText(FontParam font, std::string_view text)
-5725c5612
+5752c5636
 <   return Text(m_resource, font, std::move(text), length);
 ---
 >   return Text(m_resource, font, text);
-5735,5736d5621
-<  * @param length the length of the text, in bytes, or 0 for null terminated
-<  *               text.
-5749,5750c5634
-<                        StringParam text,
-<                        size_t length)
----
->                        std::string_view text)
-5752c5636
-<   return Text(TTF_CreateText(engine, font, text, length));
----
->   return Text(engine, font, text);
 5769c5653
 <   return CheckError(TTF_GetTextProperties(text));
 ---

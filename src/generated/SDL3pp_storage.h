@@ -648,6 +648,35 @@ public:
    *
    * @sa Storage.Ready
    */
+  std::vector<Path> EnumerateDirectory(StringParam path);
+
+  /**
+   * Enumerate a directory in a storage container through a callback function.
+   *
+   * This function provides every directory entry through an app-provided
+   * callback, called once for each directory entry, until all results have been
+   * provided or the callback returns either ENUM_SUCCESS or
+   * ENUM_FAILURE.
+   *
+   * This will return false if there was a system problem in general, or if a
+   * callback returns ENUM_FAILURE. A successful return means a callback
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
+   * were enumerated.
+   *
+   * If `path` is nullptr, this is treated as a request to enumerate the root of
+   * the storage container's tree. An empty string also works for this.
+   *
+   * @param storage a storage container.
+   * @param path the path of the directory to enumerate, or nullptr for the
+   * root.
+   * @param callback a function that is called for each entry in the directory.
+   * @param userdata a pointer that is passed to `callback`.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Storage.Ready
+   */
   void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback);
 
   /**
@@ -1192,6 +1221,11 @@ inline void Storage::EnumerateDirectory(StringParam path,
 {
   SDL::EnumerateStorageDirectory(
     m_resource, std::move(path), callback, userdata);
+}
+
+inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+{
+  return SDL::EnumerateStorageDirectory #2(m_resource, std::move(path));
 }
 
 inline void Storage::EnumerateDirectory(StringParam path,

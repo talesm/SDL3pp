@@ -80,6 +80,7 @@ export interface ApiEntry extends ApiEntryBase {
   decl?: number;
   end?: number;
   entries?: ApiEntries;
+  link?: ApiEntry;
 }
 
 export interface ApiType extends ApiEntry {

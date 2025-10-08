@@ -3375,13 +3375,6 @@ inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
   SDL::GetCurrentRenderOutputSize(m_resource, w, h);
 }
 
-inline Texture Renderer::CreateTexture(PixelFormat format,
-                                       TextureAccess access,
-                                       const PointRaw& size)
-{
-  return Texture(m_resource, format, access, size);
-}
-
 /**
  * Create a texture for a rendering context.
  *
@@ -3410,12 +3403,14 @@ inline Texture CreateTexture(RendererParam renderer,
                              TextureAccess access,
                              const PointRaw& size)
 {
-  return Texture(SDL_CreateTexture(renderer, format, access, size));
+  return Texture(renderer, format, access, size);
 }
 
-inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
+inline Texture Renderer::CreateTexture(PixelFormat format,
+                                       TextureAccess access,
+                                       const PointRaw& size)
 {
-  return Texture(m_resource, surface);
+  return Texture(m_resource, format, access, size);
 }
 
 /**
@@ -3447,12 +3442,12 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
 inline Texture CreateTextureFromSurface(RendererParam renderer,
                                         SurfaceParam surface)
 {
-  return Texture(SDL_CreateTextureFromSurface(renderer, surface));
+  return Texture(renderer, surface);
 }
 
-inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
 {
-  return Texture(m_resource, props);
+  return Texture(m_resource, surface);
 }
 
 /**
@@ -3568,7 +3563,12 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
 inline Texture CreateTextureWithProperties(RendererParam renderer,
                                            PropertiesParam props)
 {
-  return Texture(SDL_CreateTextureWithProperties(renderer, props));
+  return Texture(renderer, props);
+}
+
+inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+{
+  return Texture(m_resource, props);
 }
 
 namespace prop::Texture {

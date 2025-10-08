@@ -5377,11 +5377,6 @@ inline void Text::DrawSurface(Point p, SurfaceParam surface) const
   SDL::DrawSurfaceText(m_resource, p, surface);
 }
 
-inline void SurfaceTextEngine::Destroy()
-{
-  DestroySurfaceTextEngine(release());
-}
-
 /**
  * Destroy a text engine created for drawing text on SDL surfaces.
  *
@@ -5401,6 +5396,11 @@ inline void SurfaceTextEngine::Destroy()
 inline void DestroySurfaceTextEngine(TextEngineRaw engine)
 {
   TTF_DestroySurfaceTextEngine(engine);
+}
+
+inline void SurfaceTextEngine::Destroy()
+{
+  DestroySurfaceTextEngine(release());
 }
 
 inline void TextEngine::DestroySurface()
@@ -5501,11 +5501,6 @@ inline void Text::DrawRenderer(FPoint p) const
   SDL::DrawRendererText(m_resource, p);
 }
 
-inline void RendererTextEngine::Destroy()
-{
-  DestroyRendererTextEngine(release());
-}
-
 /**
  * Destroy a text engine created for drawing text on an SDL renderer.
  *
@@ -5525,6 +5520,11 @@ inline void RendererTextEngine::Destroy()
 inline void DestroyRendererTextEngine(TextEngineRaw engine)
 {
   TTF_DestroyRendererTextEngine(engine);
+}
+
+inline void RendererTextEngine::Destroy()
+{
+  DestroyRendererTextEngine(release());
 }
 
 inline void TextEngine::DestroyRenderer()
@@ -5629,8 +5629,6 @@ inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
   return SDL::GetGPUTextDrawData(m_resource);
 }
 
-inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
-
 /**
  * Destroy a text engine created for drawing text with the SDL GPU API.
  *
@@ -5652,12 +5650,9 @@ inline void DestroyGPUTextEngine(TextEngineRaw engine)
   TTF_DestroyGPUTextEngine(engine);
 }
 
-inline void TextEngine::DestroyGPU() { DestroyGPUTextEngine(release()); }
+inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
 
-inline void TextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-{
-  SDL::SetGPUTextEngineWinding(m_resource, winding);
-}
+inline void TextEngine::DestroyGPU() { DestroyGPUTextEngine(release()); }
 
 /**
  * Sets the winding order of the vertices returned by Text.GetGPUDrawData
@@ -5680,15 +5675,15 @@ inline void SetGPUTextEngineWinding(TextEngineParam engine,
   TTF_SetGPUTextEngineWinding(engine, winding);
 }
 
+inline void TextEngine::SetGPUWinding(GPUTextEngineWinding winding)
+{
+  SDL::SetGPUTextEngineWinding(m_resource, winding);
+}
+
 inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
                                          GPUTextEngineWinding winding)
 {
   SDL::TextEngine::SetGPUWinding(engine, winding);
-}
-
-inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
-{
-  return SDL::GetGPUTextEngineWinding(m_resource);
 }
 
 /**
@@ -5712,17 +5707,15 @@ inline GPUTextEngineWinding GetGPUTextEngineWinding(TextEngineParam engine)
   return TTF_GetGPUTextEngineWinding(engine);
 }
 
+inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
+{
+  return SDL::GetGPUTextEngineWinding(m_resource);
+}
+
 inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
   TextEngineParam engine) const
 {
   return SDL::TextEngine::GetGPUWinding(engine);
-}
-
-inline TextRef TextEngine::CreateText(FontParam font,
-                                      StringParam text,
-                                      size_t length)
-{
-  return Text(m_resource, font, std::move(text), length);
 }
 
 /**
@@ -5749,7 +5742,14 @@ inline Text CreateText(TextEngineParam engine,
                        StringParam text,
                        size_t length)
 {
-  return Text(TTF_CreateText(engine, font, text, length));
+  return Text(engine, font, std::move(text), length);
+}
+
+inline TextRef TextEngine::CreateText(FontParam font,
+                                      StringParam text,
+                                      size_t length)
+{
+  return Text(m_resource, font, std::move(text), length);
 }
 
 /**

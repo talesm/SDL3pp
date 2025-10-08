@@ -701,15 +701,11 @@
 <   return CheckError(SDL_GetRendererProperties(renderer));
 ---
 >   return {CheckError(SDL_GetRendererProperties(renderer))};
-3393,3394c3633
+3386,3387c3626
 <  * @param w the width of the texture in pixels.
 <  * @param h the height of the texture in pixels.
 ---
 >  * @param size the width and height of the texture in pixels.
-3413c3652
-<   return Texture(SDL_CreateTexture(renderer, format, access, size));
----
->   return Texture(renderer, format, access, size);
 3796c4035
 <   return CheckError(SDL_GetTextureProperties(texture));
 ---
