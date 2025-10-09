@@ -1516,15 +1516,15 @@ public:
    *
    * @sa Surface.Blit
    */
-  void Blit9GridWithScale(SurfaceParam src,
-                          OptionalRef<const RectRaw> srcrect,
-                          int left_width,
-                          int right_width,
-                          int top_height,
-                          int bottom_height,
-                          float scale,
-                          SDL_ScaleMode scaleMode,
-                          OptionalRef<const RectRaw> dstrect);
+  void Blit9Grid(SurfaceParam src,
+                 OptionalRef<const RectRaw> srcrect,
+                 int left_width,
+                 int right_width,
+                 int top_height,
+                 int bottom_height,
+                 float scale,
+                 SDL_ScaleMode scaleMode,
+                 OptionalRef<const RectRaw> dstrect);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -3491,15 +3491,15 @@ inline void BlitSurface9Grid(SurfaceParam src,
   static_assert(false, "Not implemented");
 }
 
-inline void Surface::Blit9GridWithScale(SurfaceParam src,
-                                        OptionalRef<const RectRaw> srcrect,
-                                        int left_width,
-                                        int right_width,
-                                        int top_height,
-                                        int bottom_height,
-                                        float scale,
-                                        SDL_ScaleMode scaleMode,
-                                        OptionalRef<const RectRaw> dstrect)
+inline void Surface::Blit9Grid(SurfaceParam src,
+                               OptionalRef<const RectRaw> srcrect,
+                               int left_width,
+                               int right_width,
+                               int top_height,
+                               int bottom_height,
+                               float scale,
+                               SDL_ScaleMode scaleMode,
+                               OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurface9Grid(m_resource,
                         src,

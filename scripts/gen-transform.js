@@ -6572,7 +6572,6 @@ const transform = {
             },
             "SDL_BlitSurface9Grid": {
               kind: "function",
-              name: "Blit9GridWithScale",
               parameters: [
                 {
                 },
