@@ -212,7 +212,7 @@ Primary Selection</h2>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the data for the provided mime-type. Returning nullptr or setting the length to 0 will cause no data to be sent to the "receiver". It is up to the receiver to handle this. Essentially returning no data is more or less undefined behavior and may cause breakage in receiving applications.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the data for the provided mime-type. Returning nullptr or setting the length to 0 will cause zero length data to be sent to the "receiver", which should be able to handle this. The returned data will not be freed, so it needs to be retained and dealt with internally.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryClipboard.html#gaabff026da78b07b9d3a4f091e3a448e7" title="Offer clipboard data to the OS.">SetClipboardData</a> </dd></dl>
 
@@ -237,7 +237,7 @@ Primary Selection</h2>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the data for the provided mime-type. Returning nullptr or setting length to 0 will cause no data to be sent to the "receiver". It is up to the receiver to handle this. Essentially returning no data is more or less undefined behavior and may cause breakage in receiving applications.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the data for the provided mime-type. Returning nullptr or setting the length to 0 will cause zero length data to be sent to the "receiver", which should be able to handle this. The returned data will not be freed, so it needs to be retained and dealt with internally.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="Main include header for the SDL3pp library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryClipboard.html#gaabff026da78b07b9d3a4f091e3a448e7" title="Offer clipboard data to the OS.">SetClipboardData</a> </dd>
 <dd>
