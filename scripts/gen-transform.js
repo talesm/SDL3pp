@@ -8543,12 +8543,25 @@ const transform = {
           ],
         },
         "TTF_TextEngine": {
-          resource: { ref: false },
+          resource: {
+            ref: false,
+            enableAutoMethods: false,
+          },
           entries: {
             "Destroy": {
               kind: "function",
               type: "void",
               parameters: [],
+            },
+            "TTF_CreateText": {
+              type: "Text",
+              parameters: [
+                {},
+                {},
+                {
+                  type: "std::string_view"
+                }
+              ],
             }
           },
         },

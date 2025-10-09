@@ -2069,7 +2069,7 @@ struct SurfaceTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.DestroySurface
+   * @sa SurfaceTextEngine.Destroy
    * @sa Text.DrawSurface
    */
   SurfaceTextEngine()
@@ -2110,7 +2110,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.DestroyRenderer
+   * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
@@ -2140,7 +2140,7 @@ struct RendererTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa RendererTextEngine.RendererTextEngine
-   * @sa TextEngine.DestroyRenderer
+   * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
   RendererTextEngine(PropertiesParam props)
@@ -2184,7 +2184,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa GPUTextEngine.GPUTextEngine
    * @sa GPUTextEngine.Destroy
-   * @sa GPUTextEngine.GetGPUDrawData
+   * @sa Text.GetGPUDrawData
    */
   GPUTextEngine(GPUDeviceParam device)
     : TextEngine(TTF_CreateGPUTextEngine(device))
@@ -2212,7 +2212,7 @@ struct GPUTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa GPUTextEngine.GPUTextEngine
-   * @sa TextEngine.DestroyGPU
+   * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
   GPUTextEngine(PropertiesParam props)
@@ -5254,7 +5254,7 @@ public:
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.DestroySurface
+ * @sa SurfaceTextEngine.Destroy
  * @sa Text.DrawSurface
  */
 inline SurfaceTextEngine CreateSurfaceTextEngine()
@@ -5330,7 +5330,7 @@ inline void SurfaceTextEngine::Destroy()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.DestroyRenderer
+ * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  * @sa RendererTextEngine.RendererTextEngine
  */
@@ -5360,7 +5360,7 @@ inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa RendererTextEngine.RendererTextEngine
- * @sa TextEngine.DestroyRenderer
+ * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  */
 inline RendererTextEngine CreateRendererTextEngineWithProperties(
@@ -5449,7 +5449,7 @@ inline void RendererTextEngine::Destroy()
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa GPUTextEngine.GPUTextEngine
- * @sa TextEngine.DestroyGPU
+ * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
 inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
@@ -5478,7 +5478,7 @@ inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa GPUTextEngine.GPUTextEngine
- * @sa TextEngine.DestroyGPU
+ * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
 inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
