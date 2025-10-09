@@ -119,12 +119,8 @@
 619a662,663
 >    * @warning this is not typesafe! Prefer using print() and println()
 >    *
-635c679
-<   size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt)
----
->   size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
 637c681,688
-<     return SDL_IOprintf(m_resource, fmt);
+<     return SDL_IOprintf(m_resource, fmt, ...);
 ---
 >     va_list ap;
 >     size_t result;

@@ -132,10 +132,10 @@ export interface ApiFileTransform {
   enableException?: boolean;
 }
 
-export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
+export type ApiEntryTransformMap = Dict<ApiEntryTransform | QuickTransform>;
 
 export interface ApiEntryTransform extends ApiEntryBase {
-  entries?: ApiSubEntryTransformLegacyMap;
+  entries?: ApiEntryTransformMap,
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
@@ -242,8 +242,6 @@ export interface EnumerationDefinition {
 }
 
 export type QuickTransform = "immutable" | "ctor" | ApiEntryKind;
-
-export type ApiSubEntryTransformLegacyMap = Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>;
 
 export interface SignatureTransform {
   pattern: ApiParameter[];

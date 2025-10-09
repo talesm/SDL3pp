@@ -4546,6 +4546,7 @@ const transform = {
           entries: {
             "Renderer": {
               kind: "function",
+              type: "",
               parameters: [
                 {
                   "type": "WindowParam",

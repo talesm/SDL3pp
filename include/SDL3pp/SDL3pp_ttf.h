@@ -2034,7 +2034,7 @@ public:
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
 
-  /// Destroy resource. Pure virtual
+  /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
 
   /**

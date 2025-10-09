@@ -632,9 +632,9 @@ public:
    * @sa IOStream.vprintf
    * @sa IOStream.Write
    */
-  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt)
+  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
   {
-    return SDL_IOprintf(m_resource, fmt);
+    return SDL_IOprintf(m_resource, fmt, ...);
   }
 
   /**

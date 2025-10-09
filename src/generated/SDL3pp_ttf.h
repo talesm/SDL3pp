@@ -2010,6 +2010,7 @@ public:
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
 
+  /// frees up textEngine.
   void Destroy() { static_assert(false, "Not implemented"); }
 
   /**

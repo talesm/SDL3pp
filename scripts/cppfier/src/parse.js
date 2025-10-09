@@ -2,7 +2,7 @@ const { readLinesSync, system } = require("./utils");
 const { Tokenizer } = require("./tokenize.js");
 
 /**
- * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, SourceApi, FileTokenKind, SourceApiFile } from "./types"
+ * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, SourceApi, FileTokenKind, SourceApiFile, ApiEntryBase } from "./types"
  */
 
 /**
@@ -83,16 +83,18 @@ function parseContent(name, content, config) {
 /**
  * Insert entry into entries
  * 
- * @param {ApiEntries}          entries 
- * @param {ApiEntry|ApiEntry[]} entry 
- * @param {string}              defaultName
+ * @param {ApiEntries}                  entries 
+ * @param {ApiEntryBase|ApiEntryBase[]} entry 
+ * @param {string}                      defaultName
  */
 function insertEntry(entries, entry, defaultName = "") {
   if (Array.isArray(entry)) {
     entry.forEach(e => insertEntry(entries, e, defaultName));
     return entries;
   }
+  if (!entry.kind) entry.kind = "plc";
   if (!entry.name) entry.name = defaultName;
+  entry = /** @type {ApiEntry} */(entry);
   fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
   const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
