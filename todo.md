@@ -25,7 +25,7 @@ Things for a version 0.2
   - [ ] detect refcount as shared;
   - [x] Wrap structs with methods looking like *Destroy* function as resource;
   - [x] wrap others as wrappers;
-- [ ] Basic wrapping all missing API.
+- [x] Basic wrapping all missing API.
   - [x] SDL_pen.h
   - [x] SDL_sensor.h
   - [x] SDL_touch.h
@@ -37,7 +37,7 @@ Things for a version 0.2
   - [x] SDL_gamepad.h
   - [x] SDL_hidapi.h
   - [x] SDL_haptic.h
-  - [ ] SDL_gpu.h
+  - [x] SDL_gpu.h
 
 Backlog
 =======
