@@ -6,10 +6,6 @@ export interface Api {
   delegatedReplacements?: Dict<string>;
 }
 
-export interface SourceApi {
-  files: Dict<SourceApiFile>
-}
-
 export interface ApiFile {
   name: string;
   doc?: string;
@@ -17,10 +13,6 @@ export interface ApiFile {
   namespace?: string;
   includes?: string[];
   localIncludes?: string[];
-}
-
-export interface SourceApiFile extends ApiFile {
-  entries: Dict<ApiEntry>
   docBegin?: number;
   docEnd?: number;
   entriesBegin?: number;
@@ -81,13 +73,14 @@ export interface ApiEntry extends ApiEntryBase {
   end?: number;
   entries?: ApiEntries;
   link?: ApiEntry;
+  overload?: ApiEntry
 }
 
 export interface ApiType extends ApiEntry {
   kind: "struct" | "alias" | "ns"
 }
 
-export type ApiEntries = Dict<ApiEntry | ApiEntry[]>;
+export type ApiEntries = Dict<ApiEntry>;
 
 export type ApiParameters = ApiParameter[];
 

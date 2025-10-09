@@ -3,12 +3,12 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, QuickTransform, SourceApi } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, QuickTransform, ApiEntryTransformMap } from "./types"
  */
 
 /**
  * @typedef {object} TransformConfig
- * @prop {SourceApi}      sourceApi
+ * @prop {Api}            sourceApi
  * @prop {ApiTransform=}  transform
  */
 
@@ -96,7 +96,7 @@ function transformApi(config) {
 class ApiContext {
   /** 
    * @param {ApiTransform}  transform  
-   * @param {SourceApi}     source 
+   * @param {Api}           source 
    **/
   constructor(transform, source) {
     this.namespace = transform.namespace;
@@ -261,7 +261,7 @@ class ApiContext {
 
     const includeTarget = includeBefore[includeBeforeKey];
     if (Array.isArray(includeTarget)) return includeTarget;
-    return includeBefore[includeBeforeKey] = includeTarget ? [includeTarget] : [];
+    return includeBefore[includeBeforeKey] = [];
   }
 
   /**
@@ -273,7 +273,7 @@ class ApiContext {
 
     const includeTarget = includeAfter[includeAfterKey];
     if (Array.isArray(includeTarget)) return includeTarget;
-    return includeAfter[includeAfterKey] = includeTarget ? [includeTarget] : [];
+    return includeAfter[includeAfterKey] = [];
   }
 
   /**
@@ -306,30 +306,22 @@ class ApiContext {
 
   /**
    * Add to includeAfter field
-   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
-   * @param {string}                                        includeAfterKey 
+   * @param {string|ApiEntryTransform}  entryOrName 
+   * @param {string}                    includeAfterKey 
    */
   includeAfter(entryOrName, includeAfterKey) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
-    if (Array.isArray(entryOrName)) {
-      includeTarget.push(...entryOrName);
-    } else {
-      includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
-    }
+    includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
   }
 
   /**
    * Prepend to includeAfter field
-   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
-   * @param {string}                                        includeAfterKey 
+   * @param {string|ApiEntryTransform}  entryOrName 
+   * @param {string}                    includeAfterKey 
    */
   prependIncludeAfter(entryOrName, includeAfterKey) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
-    if (Array.isArray(entryOrName)) {
-      includeTarget.unshift(...entryOrName);
-    } else {
-      includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
-    }
+    includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
   }
 }
 
@@ -522,9 +514,7 @@ function expandTypes(sourceEntries, file, context) {
     /** @type {string[]} */
     const fields = [];
     if (isStruct) {
-      for (const e of Object.values(sourceEntry.entries)) {
-        if (!Array.isArray(e)) fields.push(e.name);
-      }
+      for (const e of Object.values(sourceEntry.entries)) fields.push(e.name);
 
       addHints(transform, {
         self: 'this',
@@ -688,7 +678,7 @@ function expandTypes(sourceEntries, file, context) {
         /** @type {ApiParameter[]} */
         const parameters = [];
         for (const attrib of Object.values(sourceEntry.entries)) {
-          if (Array.isArray(attrib) || attrib.kind !== "var") continue;
+          if (attrib.kind !== "var") continue;
           const name = attrib.name;
           const type = attrib.type;
           parameters.push({ type, name });
@@ -1039,21 +1029,11 @@ function expandTypes(sourceEntries, file, context) {
         system.warn(`${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`);
         continue;
       }
-      if (Array.isArray(entry)) {
-        entry.forEach(e => {
-          e.static = true;
-          e.type = targetName;
-          if (!e.name) e.name = transformMemberName(sourceName, targetName, context);
-          if (!e.sourceName && sourceEntries[sourceName]) e.sourceName = sourceName;
-          addHints(e, { wrapSelf: true });
-        });
-      } else {
-        entry.static = true;
-        entry.type = targetName;
-        if (!entry.name) entry.name = transformMemberName(sourceName, targetName, context);
-        if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
-        addHints(entry, { wrapSelf: true });
-      }
+      entry.static = true;
+      entry.type = targetName;
+      if (!entry.name) entry.name = transformMemberName(sourceName, targetName, context);
+      if (!entry.sourceName && sourceEntries[sourceName]) entry.sourceName = sourceName;
+      addHints(entry, { wrapSelf: true });
       ctors[sourceName] = entry;
       if (!ctorTransform) {
         file.transform[sourceName] = { type: targetName, hints: { wrapSelf: true } };
@@ -1080,7 +1060,7 @@ function expandTypes(sourceEntries, file, context) {
           ctors[sourceName] = ctor;
           isCtor = true;
         }
-      } else if (!Array.isArray(entry) && entry.name === "ctor") {
+      } else if (entry.name === "ctor") {
         entry.kind = "function";
         entry.type = "";
         entry.name = targetName;
@@ -1139,10 +1119,7 @@ function expandTypes(sourceEntries, file, context) {
       mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, targetName);
     }
 
-    for (const [key, subEntry] of Object.entries(subEntries)) {
-      if (Array.isArray(subEntry)) subEntry.forEach(s => checkIfProtoNeeded(key, s));
-      else checkIfProtoNeeded(key, subEntry);
-    }
+    for (const [key, subEntry] of Object.entries(subEntries)) checkIfProtoNeeded(key, subEntry);
 
     targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
     targetEntry.entries = {
@@ -1302,7 +1279,7 @@ function expandTypes(sourceEntries, file, context) {
     });
 
     context.includeBefore(referenceAliases, '__begin');
-    context.includeAfter(derivedEntries, targetName);
+    derivedEntries.forEach(e => context.includeAfter(e, targetName));
     delete targetEntry.resource;
 
     /**
@@ -1396,7 +1373,6 @@ function expandTypes(sourceEntries, file, context) {
     }
     for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
       if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
-      if (Array.isArray(sourceEntry)) continue;
       if (sourceEntry.kind !== "function") continue;
       const parameters = sourceEntry.parameters;
       if (!parameters?.length) continue;
@@ -1446,8 +1422,7 @@ function expandTypes(sourceEntries, file, context) {
     const newNames = {};
     if (!values?.length) {
       values = Object.values(sourceEntries)
-        .filter(e => !Array.isArray(e)
-          && e.kind === "def"
+        .filter(e => e.kind === "def"
           && !e.parameters
           && e.name.startsWith(prefix)
           && !transformMap[e.name]?.type
@@ -1588,7 +1563,6 @@ function makeSortedEntryArray(sourceEntries, file, context) {
   if (includeAfter.__begin) addIncluded(includeAfter.__begin);
 
   for (const sourceEntry of Object.values(sourceEntries)) {
-    if (Array.isArray(sourceEntry)) continue;
     const sourceName = sourceEntry.name;
     if (processedSourceNames.has(sourceName)) continue;
     processedSourceNames.add(sourceName);
@@ -1665,12 +1639,12 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     const currEntry = sortedEntries[transformEntry.name];
     const currKind = currEntry?.kind;
     const nextName = transformEntry.kind === 'forward' ? transformEntry.name + '#forward' : transformEntry.name;
-    const targetEntry = {
+    const targetEntry =  /** @type {ApiEntry} */({
       ...transformEntry,
       kind: transformEntry.kind ?? "plc",
       name: transformEntry.name ?? "",
       entries: undefined,
-    };
+    });
     if (transformEntry.entries) targetEntry.entries = transformSubEntries(transformEntry);
     if (!currKind) {
       sortedEntries[nextName] = targetEntry;
@@ -1695,6 +1669,16 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     const entries = {};
     const type = targetEntry.name;
     for (const [key, entry] of Object.entries(targetEntry.entries)) {
+      transformSubEntry(key, entry);
+    }
+    return entries;
+
+    /**
+     * 
+     * @param {string}                            key 
+     * @param {ApiEntryTransform|QuickTransform}  entry 
+     */
+    function transformSubEntry(key, entry) {
       const sourceEntry = context.source[key];
       const nameCandidate = transformName(key, context);
       if (!sourceEntry) {
@@ -1710,7 +1694,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
           }
           insertEntry(entries, newEntry);
         } else insertEntry(entries, /** @type {ApiEntry}*/(entry), nameCandidate);
-        continue;
+        return;
       }
       const nameChange = makeRenameEntry(entry, nameCandidate, type);
       if (context.blacklist.has(key)) addTransform(/** @type {ApiEntry}*/(nameChange));
@@ -1740,7 +1724,6 @@ function makeSortedEntryArray(sourceEntries, file, context) {
         file.transform[key].link = currLink;
       }
     }
-    return entries;
   }
 }
 
@@ -1811,11 +1794,10 @@ function expandNamespaces(sourceEntries, file, context) {
 
 /**
  * 
- * @param {ApiEntryBase|ApiEntryBase[]} entry 
- * @param {EntryHint}                   hints 
+ * @param {ApiEntryBase}  entry 
+ * @param {EntryHint}     hints 
  */
 function addHints(entry, hints) {
-  if (Array.isArray(entry)) return entry.forEach(e => addHints(e, { ...hints }));
   if (entry.hints) {
     combineObject(entry.hints, hints);
   } else {
@@ -1825,11 +1807,10 @@ function addHints(entry, hints) {
 
 /**
  * 
- * @param {ApiEntryBase|ApiEntryBase[]} entry 
- * @param {EntryHint}                   hints 
+ * @param {ApiEntryBase}  entry 
+ * @param {EntryHint}     hints 
  */
 function combineHints(entry, hints) {
-  if (Array.isArray(entry)) return entry.forEach(e => combineHints(e, hints));
   if (entry.hints) {
     entry.hints = { ...hints, ...entry.hints };
   } else {
@@ -1841,15 +1822,13 @@ function combineHints(entry, hints) {
  * 
  * @param {Dict<ApiEntry>}          sourceEntries 
  * @param {Dict<ApiEntryTransform>} transformEntries 
- * @param {Dict<ApiEntryTransform | ApiEntryBase[] | QuickTransform>} transformSubEntries 
+ * @param {ApiEntryTransformMap}    transformSubEntries 
  * @param {string}                  paramType 
  * @param {string}                  constParamType 
  * @param {string}                  resultType 
  */
 function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, paramType, constParamType, resultType) {
   for (const [sourceName, subEntry] of Object.entries(transformSubEntries)) {
-    if (Array.isArray(subEntry)) continue;
-
     const sourceEntry = sourceEntries[sourceName];
     if (!sourceEntry) continue;
     if (sourceEntry.kind !== 'function' && typeof subEntry !== 'string' && subEntry.kind !== 'function') continue;
@@ -2000,10 +1979,6 @@ function scanFreeFunction(entries, uniqueType, pointerType) {
  * @param {string=}           defaultName
  */
 function insertEntryAndCheck(entries, entry, context, file, defaultName) {
-  if (Array.isArray(entry)) {
-    entry.forEach(e => insertEntryAndCheck(entries, e, context, file, defaultName));
-    return;
-  }
   insertEntry(entries, entry, defaultName);
   if (entry.kind === 'ns' || entry.kind === "struct") {
     const currType = context.types[entry.name];
@@ -2027,19 +2002,24 @@ function transformHierarchy(targetEntries, context) {
     const path = key.split(/\.|::/);
     const obj = getTypeFromPath(path, context) ?? (isMove ? getTypeFromPath(key.split('.'), context) : null);
     if (!obj) continue;
-    const entry = targetEntries[key];
+    let entry = targetEntries[key];
     const typeName = obj.name;
     const targetName = path[path.length - 1];
-    if (Array.isArray(entry)) {
-      entry.forEach(e => prepareForTypeInsert(e, targetName, typeName));
-    } else prepareForTypeInsert(entry, targetName, typeName);
     if (isMove) {
       delete targetEntries[key];
-      insertEntry(obj.entries, entry);
-    } else if (Array.isArray(entry)) {
-      entry.forEach(e => insertCopyEntry(e));
+      while (entry) {
+        const nextEntry = entry.overload;
+        prepareForTypeInsert(entry, targetName, typeName);
+        insertEntry(obj.entries, { ...entry, overload: undefined });
+        entry = nextEntry;
+      }
     } else {
-      insertCopyEntry(entry);
+      while (entry) {
+        const nextEntry = entry.overload;
+        prepareForTypeInsert(entry, targetName, typeName);
+        insertCopyEntry(entry);
+        entry = nextEntry;
+      }
     }
 
     /**
@@ -2049,6 +2029,7 @@ function transformHierarchy(targetEntries, context) {
       insertEntry(obj.entries, {
         ...entry,
         proto: true,
+        overload: undefined
       });
       entry.name = makeMemberName(key, obj.template);
       if (obj.template) entry.template = obj.template;
@@ -2088,11 +2069,11 @@ function transformHierarchy(targetEntries, context) {
  */
 function getTypeFromPath(path, context) {
   let obj = context.types[path[0]];
-  if (!obj || Array.isArray(obj) || !obj.entries) return null;
+  if (!obj || !obj.entries) return null;
   let i = 1;
   for (; i < path.length - 1; i++) {
     const el = obj.entries[path[i]];
-    if (!el || Array.isArray(el) || !el.entries) {
+    if (!el || !el.entries) {
       return null;
     }
     obj = /**@type {ApiType} */(el);
@@ -2173,7 +2154,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   const parameters = entry.parameters;
   if (!parameters?.length) return;
   const parameter = parameters[0];
-  const type = typeof parameter !== "string" ? parameter.type : "";
+  const type = parameter.type ?? "";
   if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static) {
     parameters.shift();
     if (entry.doc) entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
@@ -2339,20 +2320,16 @@ function transformName(name, context) {
  */
 function transformEntriesDocRefs(entries, context) {
   for (const entry of Object.values(entries)) {
-    if (Array.isArray(entry)) {
-      entry.forEach(e => {
-        if (e.doc) {
-          if (!e.since) e.since = resolveVersionDoc(e.doc, context);
-          e.doc = resolveDocRefs(e.doc, context);
-        }
-      });
-    } else {
-      if (entry.doc) {
-        if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
-        entry.doc = resolveDocRefs(entry.doc, context);
-      }
-      if (entry.entries) transformEntriesDocRefs(entry.entries, context);
+    transformEntryDoc(entry);
+  }
+
+  function transformEntryDoc(entry) {
+    if (entry.doc) {
+      if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
+      entry.doc = resolveDocRefs(entry.doc, context);
     }
+    if (entry.entries) transformEntriesDocRefs(entry.entries, context);
+    if (entry.overload) transformEntryDoc(entry.overload);
   }
 }
 

@@ -2,7 +2,7 @@ const { readLinesSync, system } = require("./utils");
 const { Tokenizer } = require("./tokenize.js");
 
 /**
- * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, SourceApi, FileTokenKind, SourceApiFile, ApiEntryBase } from "./types"
+ * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, FileTokenKind, Api, ApiFile } from "./types"
  */
 
 /**
@@ -19,7 +19,7 @@ const { Tokenizer } = require("./tokenize.js");
 function parseApi(config) {
   const { baseDir, sources } = config;
 
-  /** @type {SourceApi} */
+  /** @type {Api} */
   const api = { files: {} };
   for (const name of sources) {
     system.log(`Reading file ${name}`);
@@ -60,7 +60,7 @@ function readContent(name, baseDirs) {
 function parseContent(name, content, config) {
   if (!config) config = {};
 
-  /** @type {SourceApiFile} */
+  /** @type {ApiFile} */
   const apiFile = {
     name,
     doc: '',
@@ -74,8 +74,8 @@ function parseContent(name, content, config) {
     apiFile.docEnd = parser.docEnd || apiFile.docBegin;
     apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin;
     apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
-    apiFile.namespace = parser.namespace || undefined;
   }
+  apiFile.namespace = parser.namespace || undefined;
   apiFile.doc = parser.doc;
   return apiFile;
 }
@@ -83,16 +83,24 @@ function parseContent(name, content, config) {
 /**
  * Insert entry into entries
  * 
- * @param {ApiEntries}                  entries 
- * @param {ApiEntryBase|ApiEntryBase[]} entry 
- * @param {string}                      defaultName
+ * @param {ApiEntries}          entries 
+ * @param {ApiEntry|ApiEntry[]} entry 
+ * @param {string}              defaultName
  */
 function insertEntry(entries, entry, defaultName = "") {
-  if (Array.isArray(entry)) {
-    entry.forEach(e => insertEntry(entries, e, defaultName));
-    return entries;
-  }
-  if (!entry.kind) entry.kind = "plc";
+  if (Array.isArray(entry)) entry.forEach(e => doInsertEntry(entries, e, defaultName));
+  else doInsertEntry(entries, entry, defaultName);
+  return entries;
+}
+
+/**
+ * Insert entry into entries
+ * 
+ * @param {ApiEntries}  entries 
+ * @param {ApiEntry}    entry 
+ * @param {string}      defaultName
+ */
+function doInsertEntry(entries, entry, defaultName) {
   if (!entry.name) entry.name = defaultName;
   entry = /** @type {ApiEntry} */(entry);
   fixEntry(entry);
@@ -100,10 +108,7 @@ function insertEntry(entries, entry, defaultName = "") {
   const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
   if (entries[key]) {
     const currEntry = entries[key];
-    if (Array.isArray(currEntry)) {
-      if (typeof entry.doc !== 'string' && currEntry[0].doc) entry.doc = currEntry[0].doc;
-      currEntry.push(entry);
-    } else if (currEntry.kind !== 'function') {
+    if (currEntry.kind !== 'function') {
       if (entry.doc || !currEntry.doc) {
         if (entry.kind === "def") {
           currEntry.doc = entry.doc;
@@ -112,8 +117,10 @@ function insertEntry(entries, entry, defaultName = "") {
         }
       }
     } else if (entry.kind === 'function') {
+      let e = currEntry;
+      while (e.overload) e = e.overload;
+      e.overload = entry;
       if (typeof entry.doc !== 'string' && currEntry.doc) entry.doc = currEntry.doc;
-      entries[key] = [currEntry, entry];
     }
   } else {
     entries[key] = entry;
