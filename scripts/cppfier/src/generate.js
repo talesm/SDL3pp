@@ -85,15 +85,13 @@ function generateFile(targetFile, config) {
 
     /** @type {string[]} */
     const result = [];
-    for (const name of Object.keys(entries)) {
-      const entry = entries[name];
-      if (Array.isArray(entry)) {
-        result.push(entry.map(e => generateEntry(e, prefix)).join("\n\n"));
-      } else {
-        result.push(generateEntry(entry, prefix));
-      }
-    }
+    Object.values(entries).forEach(entry => doGenerateEntries(entry));
     return result.join('\n\n') + '\n';
+
+    function doGenerateEntries(entry) {
+      result.push(generateEntry(entry, prefix));
+      if (entry.overload) doGenerateEntries(entry.overload);
+    }
   }
 
 
@@ -114,14 +112,11 @@ function generateFile(targetFile, config) {
   }
 
   /**
-   * @param {ApiEntry|ApiEntry[]} entry 
-   * @param {string=} prefix 
+   * @param {ApiEntry}  entry 
+   * @param {string=}   prefix 
    * @returns {string}
    */
   function generateEntry(entry, prefix) {
-    if (Array.isArray(entry)) {
-      return entry.map(e => generateEntry(e, prefix)).join('\n\n');
-    }
     prefix = prefix ?? '';
     const doc = generateDocString(entry.doc, prefix) + "\n";
     const template = generateTemplateSignature(entry.template, prefix);
@@ -312,7 +307,7 @@ function generateFile(targetFile, config) {
  */
 function generateCallParameters(parameters, replacements) {
   return parameters
-    ?.map(p => typeof p == "string" ? p : unwrap(p))
+    ?.map(p => unwrap(p))
     ?.join(", ") ?? "";
 
   /** @param {ApiParameter} p  */
@@ -332,21 +327,18 @@ function combineHints(entry) {
   const subEntries = entry.entries;
   if (!hints || !subEntries) return;
   for (const entry of Object.values(subEntries)) {
-    if (Array.isArray(entry)) {
-      entry.forEach(e => {
-        if (e.hints) e.hints = { ...hints, ...e.hints };
-        else e.hints = hints;
-      });
-    } else {
-      if (entry.hints) entry.hints = { ...hints, ...entry.hints };
-      else entry.hints = hints;
+    let e = entry;
+    while (e) {
+      if (e.hints) e.hints = { ...hints, ...e.hints };
+      else e.hints = hints;
+      e = e.overload;
     }
   }
 }
 
 /**
  * 
- * @param {(string|ApiParameter)[]} parameters 
+ * @param {ApiParameter[]} parameters 
  */
 function generateParameters(parameters) {
   return parameters.map(p => generateParameter(p)).join(', ');
@@ -354,12 +346,12 @@ function generateParameters(parameters) {
 
 /**
  * 
- * @param {string|ApiParameter} parameter
+ * @param {ApiParameter} parameter
  */
 function generateParameter(parameter) {
-  if (typeof parameter == "string") return parameter;
-  if (!parameter.default) return `${parameter.type} ${parameter.name}`;
-  return `${parameter.type} ${parameter.name} = ${parameter.default}`;
+  if (!parameter.type) return parameter.name ?? '';
+  if (!parameter.default) return `${parameter.type} ${parameter.name ?? ""}`;
+  return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }
 
 exports.generateApi = generateApi;

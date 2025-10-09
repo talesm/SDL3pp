@@ -1820,7 +1820,7 @@ public:
    * @sa Renderer.RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  void RenderDebugText(FPoint p, StringParam str);
+  void RenderDebugText(const FPointRaw& p, StringParam str);
 
   /**
    * Draw debug text to an Renderer.
@@ -1848,10 +1848,9 @@ public:
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
-  {
-    RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
-  }
+  void RenderDebugTextFormat(const FPointRaw& p,
+                             std::string_view fmt,
+                             ARGS... args);
 
   /**
    * Create a texture for a rendering context.
@@ -3616,13 +3615,6 @@ inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
   SDL::GetCurrentRenderOutputSize(m_resource, w, h);
 }
 
-inline Texture Renderer::CreateTexture(PixelFormat format,
-                                       TextureAccess access,
-                                       const PointRaw& size)
-{
-  return Texture(m_resource, format, access, size);
-}
-
 /**
  * Create a texture for a rendering context.
  *
@@ -3653,9 +3645,11 @@ inline Texture CreateTexture(RendererParam renderer,
   return Texture(renderer, format, access, size);
 }
 
-inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
+inline Texture Renderer::CreateTexture(PixelFormat format,
+                                       TextureAccess access,
+                                       const PointRaw& size)
 {
-  return Texture(m_resource, surface);
+  return Texture(m_resource, format, access, size);
 }
 
 /**
@@ -3687,12 +3681,12 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
 inline Texture CreateTextureFromSurface(RendererParam renderer,
                                         SurfaceParam surface)
 {
-  return Texture(SDL_CreateTextureFromSurface(renderer, surface));
+  return Texture(renderer, surface);
 }
 
-inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
 {
-  return Texture(m_resource, props);
+  return Texture(m_resource, surface);
 }
 
 /**
@@ -3808,7 +3802,12 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
 inline Texture CreateTextureWithProperties(RendererParam renderer,
                                            PropertiesParam props)
 {
-  return Texture(SDL_CreateTextureWithProperties(renderer, props));
+  return Texture(renderer, props);
+}
+
+inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+{
+  return Texture(m_resource, props);
 }
 
 namespace prop::Texture {
@@ -6477,12 +6476,14 @@ inline int Renderer::GetVSync() const
  * @sa Renderer.RenderDebugTextFormat
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
-inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
+inline void RenderDebugText(RendererParam renderer,
+                            const FPointRaw& p,
+                            StringParam str)
 {
   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
 }
 
-inline void Renderer::RenderDebugText(FPoint p, StringParam str)
+inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 {
   SDL::RenderDebugText(m_resource, p, std::move(str));
 }
@@ -6513,12 +6514,20 @@ inline void Renderer::RenderDebugText(FPoint p, StringParam str)
  */
 template<class... ARGS>
 inline void RenderDebugTextFormat(RendererParam renderer,
-                                  FPoint p,
+                                  const FPointRaw& p,
                                   std::string_view fmt,
                                   ARGS... args)
 {
   RenderDebugText(
     renderer, p, std::vformat(fmt, std::make_format_args(args...)));
+}
+
+template<class... ARGS>
+inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
+                                            std::string_view fmt,
+                                            ARGS... args)
+{
+  SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
 
 /// @}

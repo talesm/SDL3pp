@@ -757,19 +757,7 @@
 >   }
 > }
 > 
-4067,4069c4429,4431
-< inline AudioStreamRef AudioDevice::OpenStream(const AudioSpec& spec,
-<                                               AudioStreamCallback callback,
-<                                               void* userdata)
----
-> inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
->                                            AudioStreamCallback callback,
->                                            void* userdata)
-4077c4439
-<   return SDL::OpenAudioDeviceStream(m_resource, spec, callback);
----
->   return AudioStream(m_resource, spec, callback);
-4139,4141c4501,4503
+4126,4128c4488,4490
 <                                          const AudioSpec& spec,
 <                                          AudioStreamCallback callback,
 <                                          void* userdata)
@@ -777,7 +765,7 @@
 >                                          OptionalRef<const AudioSpec> spec,
 >                                          AudioStreamCallback callback = nullptr,
 >                                          void* userdata = nullptr)
-4188,4193c4550
+4175,4180c4537
 <  *                 playback, or receive new data for recording. Can be nullptr,
 <  *                 in which case the app will need to call
 <  *                 AudioStream.PutData or AudioStream.GetData as
@@ -786,6 +774,18 @@
 <  *                 Ignored if callback is nullptr.
 ---
 >  *                 playback, or receive new data for recording.
+4198,4200c4555,4557
+< inline AudioStreamRef AudioDevice::OpenStream(const AudioSpec& spec,
+<                                               AudioStreamCallback callback,
+<                                               void* userdata)
+---
+> inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
+>                                            AudioStreamCallback callback,
+>                                            void* userdata)
+4208c4565
+<   return SDL::OpenAudioDeviceStream(m_resource, spec, callback);
+---
+>   return AudioStream(m_resource, spec, callback);
 4213a4571
 >   : AudioStream(devid, spec)
 4215,4220c4573,4577
@@ -806,7 +806,7 @@
 <  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
 ---
 >  * ```cpp
->  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), &spec);
+>  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), spec);
 4334,4335c4691,4692
 <  * ```c
 <  * LoadWAV("sample.wav", &spec, &buf, &len);

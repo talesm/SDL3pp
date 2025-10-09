@@ -4426,19 +4426,6 @@ inline void DestroyAudioStream(AudioStreamRaw stream)
 
 inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
 
-inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCallback callback,
-                                           void* userdata)
-{
-  return AudioStream(m_resource, spec, callback, userdata);
-}
-
-inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCB callback)
-{
-  return AudioStream(m_resource, spec, callback);
-}
-
 /**
  * Convenience function for straightforward audio init for the common case.
  *
@@ -4565,6 +4552,19 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
   return AudioStream(devid, spec, callback);
 }
 
+inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
+                                           AudioStreamCallback callback,
+                                           void* userdata)
+{
+  return AudioStream(m_resource, spec, callback, userdata);
+}
+
+inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
+                                           AudioStreamCB callback)
+{
+  return AudioStream(m_resource, spec, callback);
+}
+
 inline AudioStream::AudioStream(AudioDeviceParam devid,
                                 OptionalRef<const AudioSpec> spec,
                                 AudioStreamCB callback)
@@ -4682,7 +4682,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
  * Example:
  *
  * ```cpp
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), &spec);
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a

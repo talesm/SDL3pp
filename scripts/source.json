@@ -3295,7 +3295,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_SetErrorV": {
@@ -17471,7 +17474,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_IOvprintf": {
@@ -21800,7 +21806,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogTrace": {
@@ -21817,7 +21826,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogVerbose": {
@@ -21834,7 +21846,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogDebug": {
@@ -21851,7 +21866,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogInfo": {
@@ -21868,7 +21886,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogWarn": {
@@ -21885,7 +21906,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogError": {
@@ -21902,7 +21926,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogCritical": {
@@ -21919,7 +21946,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogMessage": {
@@ -21940,7 +21970,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_LogMessageV": {
@@ -29424,7 +29457,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         }
       }
@@ -31226,7 +31262,10 @@
           "kind": "function",
           "type": "void *",
           "parameters": [
-            "size_t"
+            {
+              "name": "size_t",
+              "type": ""
+            }
           ]
         },
         "SDL_NOLONGLONG": {
@@ -33456,7 +33495,10 @@
               "name": "fmt",
               "type": "SDL_SCANF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_vsscanf": {
@@ -33497,7 +33539,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_swprintf": {
@@ -33518,7 +33563,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const wchar_t *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_vsnprintf": {
@@ -33583,7 +33631,10 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            "..."
+            {
+              "name": "...",
+              "type": ""
+            }
           ]
         },
         "SDL_vasprintf": {

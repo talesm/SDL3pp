@@ -67,39 +67,11 @@
 >    * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
 3854d3826
 <    * @param num_fences the number of fences in the fences array.
-4998c4970
-<   return CheckError(SDL_CreateGPUComputePipeline(device, &createinfo));
----
->   return GPUComputePipeline(device, createinfo);
-5039c5011
-<   return CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo));
----
->   return GPUGraphicsPipeline(device, createinfo);
-5079c5051
-<   return CheckError(SDL_CreateGPUSampler(device, &createinfo));
----
->   return GPUSampler(device, createinfo);
-5169c5141
-<   return CheckError(SDL_CreateGPUShader(device, &createinfo));
----
->   return GPUShader(device, createinfo);
-5242c5214
-<   return CheckError(SDL_CreateGPUTexture(device, &createinfo));
----
->   return GPUTexture(device, createinfo);
-5289,5290c5261
+5284,5285c5256
 <  * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
 <  * .
 ---
 >  * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
-5321c5292
-<   return CheckError(SDL_CreateGPUBuffer(device, &createinfo));
----
->   return GPUBuffer(device, createinfo);
-5367c5338
-<   return CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo));
----
->   return GPUTransferBuffer(device, createinfo);
 5698d5668
 <  * @param length the length of the data to write.
 5729d5698

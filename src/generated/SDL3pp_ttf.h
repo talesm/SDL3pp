@@ -2010,94 +2010,8 @@ public:
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
 
+  /// frees up textEngine.
   void Destroy() { static_assert(false, "Not implemented"); }
-
-  /**
-   * Destroy a text engine created for drawing text on SDL surfaces.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @param engine a TextEngine object created with
-   *               SurfaceTextEngine.SurfaceTextEngine().
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
-   */
-  void DestroySurface();
-
-  /**
-   * Destroy a text engine created for drawing text on an SDL renderer.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @param engine a TextEngine object created with
-   *               RendererTextEngine.RendererTextEngine().
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.RendererTextEngine
-   */
-  void DestroyRenderer();
-
-  /**
-   * Destroy a text engine created for drawing text with the SDL GPU API.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @param engine a TextEngine object created with
-   *               GPUTextEngine.GPUTextEngine().
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   */
-  void DestroyGPU();
-
-  /**
-   * Sets the winding order of the vertices returned by Text.GetGPUDrawData
-   * for a particular GPU text engine.
-   *
-   *               GPUTextEngine.GPUTextEngine().
-   * @param winding the new winding order option.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GetGPUWinding
-   */
-  void SetGPUWinding(GPUTextEngineWinding winding);
-
-  /**
-   * Get the winding order of the vertices returned by Text.GetGPUDrawData
-   * for a particular GPU text engine
-   *
-   *               GPUTextEngine.GPUTextEngine().
-   * @returns the winding order used by the GPU text engine or
-   *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.SetGPUWinding
-   */
-  GPUTextEngineWinding GetGPUWinding() const;
 
   /**
    * Create a text object from UTF-8 text and a text engine.
@@ -2117,7 +2031,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  TextRef CreateText(FontParam font, StringParam text, size_t length);
+  Text CreateText(FontParam font, std::string_view text);
 };
 
 struct SurfaceTextEngine : TextEngine
@@ -2132,7 +2046,7 @@ struct SurfaceTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.DestroySurface
+   * @sa SurfaceTextEngine.Destroy
    * @sa Text.DrawSurface
    */
   SurfaceTextEngine()
@@ -2175,7 +2089,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.DestroyRenderer
+   * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
@@ -2205,7 +2119,7 @@ struct RendererTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa RendererTextEngine.RendererTextEngine
-   * @sa TextEngine.DestroyRenderer
+   * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
   RendererTextEngine(PropertiesParam props)
@@ -2250,7 +2164,7 @@ struct GPUTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa GPUTextEngine.GPUTextEngine
-   * @sa TextEngine.DestroyGPU
+   * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
   GPUTextEngine(GPUDeviceParam device)
@@ -2279,7 +2193,7 @@ struct GPUTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa GPUTextEngine.GPUTextEngine
-   * @sa TextEngine.DestroyGPU
+   * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
   GPUTextEngine(PropertiesParam props)
@@ -5337,7 +5251,7 @@ public:
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.DestroySurface
+ * @sa SurfaceTextEngine.Destroy
  * @sa Text.DrawSurface
  */
 inline SurfaceTextEngine CreateSurfaceTextEngine()
@@ -5377,11 +5291,6 @@ inline void Text::DrawSurface(Point p, SurfaceParam surface) const
   SDL::DrawSurfaceText(m_resource, p, surface);
 }
 
-inline void SurfaceTextEngine::Destroy()
-{
-  DestroySurfaceTextEngine(release());
-}
-
 /**
  * Destroy a text engine created for drawing text on SDL surfaces.
  *
@@ -5403,7 +5312,7 @@ inline void DestroySurfaceTextEngine(TextEngineRaw engine)
   TTF_DestroySurfaceTextEngine(engine);
 }
 
-inline void TextEngine::DestroySurface()
+inline void SurfaceTextEngine::Destroy()
 {
   DestroySurfaceTextEngine(release());
 }
@@ -5420,7 +5329,7 @@ inline void TextEngine::DestroySurface()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.DestroyRenderer
+ * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  * @sa RendererTextEngine.RendererTextEngine
  */
@@ -5450,7 +5359,7 @@ inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa RendererTextEngine.RendererTextEngine
- * @sa TextEngine.DestroyRenderer
+ * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  */
 inline RendererTextEngine CreateRendererTextEngineWithProperties(
@@ -5501,11 +5410,6 @@ inline void Text::DrawRenderer(FPoint p) const
   SDL::DrawRendererText(m_resource, p);
 }
 
-inline void RendererTextEngine::Destroy()
-{
-  DestroyRendererTextEngine(release());
-}
-
 /**
  * Destroy a text engine created for drawing text on an SDL renderer.
  *
@@ -5527,7 +5431,7 @@ inline void DestroyRendererTextEngine(TextEngineRaw engine)
   TTF_DestroyRendererTextEngine(engine);
 }
 
-inline void TextEngine::DestroyRenderer()
+inline void RendererTextEngine::Destroy()
 {
   DestroyRendererTextEngine(release());
 }
@@ -5546,7 +5450,7 @@ inline void TextEngine::DestroyRenderer()
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa GPUTextEngine.GPUTextEngine
- * @sa TextEngine.DestroyGPU
+ * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
 inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
@@ -5575,7 +5479,7 @@ inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa GPUTextEngine.GPUTextEngine
- * @sa TextEngine.DestroyGPU
+ * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
 inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
@@ -5629,8 +5533,6 @@ inline GPUAtlasDrawSequence* Text::GetGPUDrawData() const
   return SDL::GetGPUTextDrawData(m_resource);
 }
 
-inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
-
 /**
  * Destroy a text engine created for drawing text with the SDL GPU API.
  *
@@ -5652,77 +5554,18 @@ inline void DestroyGPUTextEngine(TextEngineRaw engine)
   TTF_DestroyGPUTextEngine(engine);
 }
 
-inline void TextEngine::DestroyGPU() { DestroyGPUTextEngine(release()); }
-
-inline void TextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-{
-  SDL::SetGPUTextEngineWinding(m_resource, winding);
-}
-
-/**
- * Sets the winding order of the vertices returned by Text.GetGPUDrawData
- * for a particular GPU text engine.
- *
- * @param engine a TextEngine object created with
- *               GPUTextEngine.GPUTextEngine().
- * @param winding the new winding order option.
- *
- * @threadsafety This function should be called on the thread that created the
- *               engine.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa GPUTextEngine.GetGPUWinding
- */
-inline void SetGPUTextEngineWinding(TextEngineParam engine,
-                                    GPUTextEngineWinding winding)
-{
-  TTF_SetGPUTextEngineWinding(engine, winding);
-}
+inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
 
 inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
                                          GPUTextEngineWinding winding)
 {
-  SDL::TextEngine::SetGPUWinding(engine, winding);
-}
-
-inline GPUTextEngineWinding TextEngine::GetGPUWinding() const
-{
-  return SDL::GetGPUTextEngineWinding(m_resource);
-}
-
-/**
- * Get the winding order of the vertices returned by Text.GetGPUDrawData
- * for a particular GPU text engine
- *
- * @param engine a TextEngine object created with
- *               GPUTextEngine.GPUTextEngine().
- * @returns the winding order used by the GPU text engine or
- *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
- *
- * @threadsafety This function should be called on the thread that created the
- *               engine.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa GPUTextEngine.SetGPUWinding
- */
-inline GPUTextEngineWinding GetGPUTextEngineWinding(TextEngineParam engine)
-{
-  return TTF_GetGPUTextEngineWinding(engine);
+  SDL::SetGPUTextEngineWinding(engine, winding);
 }
 
 inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
   TextEngineParam engine) const
 {
-  return SDL::TextEngine::GetGPUWinding(engine);
-}
-
-inline TextRef TextEngine::CreateText(FontParam font,
-                                      StringParam text,
-                                      size_t length)
-{
-  return Text(m_resource, font, std::move(text), length);
+  return SDL::GetGPUTextEngineWinding(engine);
 }
 
 /**
@@ -5746,10 +5589,14 @@ inline TextRef TextEngine::CreateText(FontParam font,
  */
 inline Text CreateText(TextEngineParam engine,
                        FontParam font,
-                       StringParam text,
-                       size_t length)
+                       std::string_view text)
 {
-  return Text(TTF_CreateText(engine, font, text, length));
+  return Text(engine, font, text);
+}
+
+inline Text TextEngine::CreateText(FontParam font, std::string_view text)
+{
+  return Text(m_resource, font, text);
 }
 
 /**

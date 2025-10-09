@@ -173,32 +173,30 @@ const transform = {
             genCtor: false,
           },
           entries: {
-            "AtomicInt": [
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [{
-                  type: "int",
-                  name: "value"
-                }],
-                hints: {
-                  init: ["AtomicIntRaw(value)"],
-                }
-              },
-              {
-                kind: "function",
-                type: "",
-                proto: true,
-                parameters: [{
-                  type: "const AtomicInt &",
-                  name: "value"
-                }],
-                hints: {
-                  delete: true
-                }
+            "AtomicInt": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [{
+                type: "int",
+                name: "value"
+              }],
+              hints: {
+                init: ["AtomicIntRaw(value)"],
               }
-            ],
+            },
+            "AtomicInt#2": {
+              kind: "function",
+              type: "",
+              proto: true,
+              parameters: [{
+                type: "const AtomicInt &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
             "operator=": {
               kind: "function",
               type: "AtomicInt &",
@@ -235,33 +233,31 @@ const transform = {
             genCtor: false,
           },
           entries: {
-            "AtomicU32": [
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [{
-                  type: "Uint32",
-                  name: "value"
-                }],
-                hints: {
-                  init: ["m_value(value)"],
-                  changeAccess: "public",
-                }
-              },
-              {
-                kind: "function",
-                type: "",
-                proto: true,
-                parameters: [{
-                  type: "const AtomicU32 &",
-                  name: "value"
-                }],
-                hints: {
-                  delete: true
-                }
+            "AtomicU32": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [{
+                type: "Uint32",
+                name: "value"
+              }],
+              hints: {
+                init: ["m_value(value)"],
+                changeAccess: "public",
               }
-            ],
+            },
+            "AtomicU32#2": {
+              kind: "function",
+              type: "",
+              proto: true,
+              parameters: [{
+                type: "const AtomicU32 &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
             "operator=": {
               kind: "function",
               type: "AtomicU32 &",
@@ -294,33 +290,31 @@ const transform = {
               kind: "var",
               type: "T *",
             },
-            "AtomicPointer": [
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [{
-                  type: "T *",
-                  name: "value"
-                }],
-                hints: {
-                  init: ["m_value(value)"],
-                  changeAccess: "public",
-                }
-              },
-              {
-                kind: "function",
-                type: "",
-                proto: true,
-                parameters: [{
-                  type: "const AtomicPointer &",
-                  name: "value"
-                }],
-                hints: {
-                  delete: true
-                }
+            "AtomicPointer": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [{
+                type: "T *",
+                name: "value"
+              }],
+              hints: {
+                init: ["m_value(value)"],
+                changeAccess: "public",
               }
-            ],
+            },
+            "AtomicPointer#2": {
+              kind: "function",
+              type: "",
+              proto: true,
+              parameters: [{
+                type: "const AtomicPointer &",
+                name: "value"
+              }],
+              hints: {
+                delete: true
+              }
+            },
             "operator=": {
               kind: "function",
               type: "AtomicPointer &",
@@ -1130,18 +1124,19 @@ const transform = {
               kind: "var",
               type: "std::string"
             },
-            "Error": [{
+            "Error": {
               kind: "function",
               type: "",
               parameters: [],
               doc: "Default ctor.",
               hints: { init: ["m_message(SDL_GetError())"] }
-            }, {
+            },
+            "Error#2": {
               kind: "function",
               type: "",
               parameters: [{ type: "std::string", name: "message" }],
               hints: { init: ["m_message(std::move(message))"] }
-            }],
+            },
             "what": {
               kind: "function",
               type: "const char *",
@@ -1443,22 +1438,23 @@ const transform = {
           type: "StringResult",
           entries: {
             "StringResult::StringResult": "alias",
-            "operator+=": [{
+            "operator+=": {
               kind: "function",
               type: "Path &",
               parameters: [{
                 type: "std::string_view",
                 name: "other"
               }]
-            }, {
+            },
+            "operator+=#2": {
               kind: "function",
               type: "Path &",
               parameters: [{
                 type: "char",
                 name: "ch"
               }]
-            }],
-            "operator+": [{
+            },
+            "operator+": {
               kind: "function",
               type: "Path",
               immutable: true,
@@ -1466,7 +1462,8 @@ const transform = {
                 type: "std::string_view",
                 name: "other"
               }]
-            }, {
+            },
+            "operator+#2": {
               kind: "function",
               type: "Path",
               immutable: true,
@@ -1474,7 +1471,7 @@ const transform = {
                 type: "char",
                 name: "ch"
               }]
-            }],
+            },
             "operator/=": {
               kind: "function",
               type: "Path &",
@@ -4049,94 +4046,90 @@ const transform = {
                 }
               ]
             },
-            "FromCenter": [
-              {
-                kind: "function",
-                name: "FromCenter",
-                constexpr: true,
-                static: true,
-                type: "Rect",
-                parameters: [
-                  {
-                    name: "cx",
-                    type: "int"
-                  },
-                  {
-                    name: "cy",
-                    type: "int"
-                  },
-                  {
-                    name: "w",
-                    type: "int"
-                  },
-                  {
-                    name: "h",
-                    type: "int"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                name: "FromCenter",
-                constexpr: true,
-                static: true,
-                type: "Rect",
-                parameters: [
-                  {
-                    name: "center",
-                    type: "const Point &"
-                  },
-                  {
-                    name: "size",
-                    type: "const Point &"
-                  }
-                ]
-              }
-            ],
-            "FromCorners": [
-              {
-                kind: "function",
-                name: "FromCorners",
-                static: true,
-                constexpr: true,
-                type: "Rect",
-                parameters: [
-                  {
-                    name: "x1",
-                    type: "int"
-                  },
-                  {
-                    name: "y1",
-                    type: "int"
-                  },
-                  {
-                    name: "x2",
-                    type: "int"
-                  },
-                  {
-                    name: "y2",
-                    type: "int"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                name: "FromCorners",
-                constexpr: true,
-                static: true,
-                type: "Rect",
-                parameters: [
-                  {
-                    name: "p1",
-                    type: "const PointRaw &"
-                  },
-                  {
-                    name: "p2",
-                    type: "const PointRaw &"
-                  }
-                ]
-              }
-            ],
+            "FromCenter": {
+              kind: "function",
+              name: "FromCenter",
+              constexpr: true,
+              static: true,
+              type: "Rect",
+              parameters: [
+                {
+                  name: "cx",
+                  type: "int"
+                },
+                {
+                  name: "cy",
+                  type: "int"
+                },
+                {
+                  name: "w",
+                  type: "int"
+                },
+                {
+                  name: "h",
+                  type: "int"
+                }
+              ]
+            },
+            "FromCenter#2": {
+              kind: "function",
+              name: "FromCenter",
+              constexpr: true,
+              static: true,
+              type: "Rect",
+              parameters: [
+                {
+                  name: "center",
+                  type: "const Point &"
+                },
+                {
+                  name: "size",
+                  type: "const Point &"
+                }
+              ]
+            },
+            "FromCorners": {
+              kind: "function",
+              name: "FromCorners",
+              static: true,
+              constexpr: true,
+              type: "Rect",
+              parameters: [
+                {
+                  name: "x1",
+                  type: "int"
+                },
+                {
+                  name: "y1",
+                  type: "int"
+                },
+                {
+                  name: "x2",
+                  type: "int"
+                },
+                {
+                  name: "y2",
+                  type: "int"
+                }
+              ]
+            },
+            "FromCorners#2": {
+              kind: "function",
+              name: "FromCorners",
+              constexpr: true,
+              static: true,
+              type: "Rect",
+              parameters: [
+                {
+                  name: "p1",
+                  type: "const PointRaw &"
+                },
+                {
+                  name: "p2",
+                  type: "const PointRaw &"
+                }
+              ]
+            },
             "GetX2": "function",
             "SetX2": "function",
             "GetY2": "function",
@@ -4204,7 +4197,7 @@ const transform = {
                 type: "const RectRaw &"
               }]
             },
-            Contains: [{
+            "Contains": {
               kind: "function",
               type: "bool",
               constexpr: true,
@@ -4216,7 +4209,7 @@ const transform = {
                 }
               ],
             },
-            {
+            "Contains#2": {
               kind: "function",
               type: "bool",
               constexpr: true,
@@ -4227,7 +4220,7 @@ const transform = {
                   type: "const RectRaw &"
                 }
               ],
-            }],
+            },
             "SDL_HasRectIntersection": {
               kind: "function",
               constexpr: true,
@@ -4304,7 +4297,7 @@ const transform = {
                 }
               ]
             },
-            "FromCenter": [{
+            "FromCenter": {
               kind: "function",
               name: "FromCenter",
               type: "FRect",
@@ -4329,7 +4322,7 @@ const transform = {
                 }
               ]
             },
-            {
+            "FromCenter#2": {
               kind: "function",
               name: "FromCenter",
               type: "FRect",
@@ -4345,8 +4338,8 @@ const transform = {
                   type: "const FPointRaw &"
                 }
               ]
-            }],
-            "FromCorners": [{
+            },
+            "FromCorners": {
               kind: "function",
               name: "FromCorners",
               type: "FRect",
@@ -4371,7 +4364,7 @@ const transform = {
                 }
               ]
             },
-            {
+            "FromCorners#2": {
               kind: "function",
               name: "FromCorners",
               static: true,
@@ -4387,7 +4380,7 @@ const transform = {
                   type: "const FPointRaw &"
                 }
               ]
-            }],
+            },
             "GetX2": "function",
             "SetX2": "function",
             "GetY2": "function",
@@ -4442,28 +4435,26 @@ const transform = {
                 type: "const FRectRaw &"
               }]
             },
-            "Contains": [
-              {
-                kind: "function",
-                type: "bool",
-                parameters: [{
-                  name: "p",
-                  type: "const FPointRaw &"
-                }],
-                constexpr: true,
-                immutable: true
-              },
-              {
-                kind: "function",
-                type: "bool",
-                parameters: [{
-                  name: "other",
-                  type: "const FRectRaw &"
-                }],
-                constexpr: true,
-                immutable: true
-              }
-            ],
+            "Contains": {
+              kind: "function",
+              type: "bool",
+              parameters: [{
+                name: "p",
+                type: "const FPointRaw &"
+              }],
+              constexpr: true,
+              immutable: true
+            },
+            "Contains#2": {
+              kind: "function",
+              type: "bool",
+              parameters: [{
+                name: "other",
+                type: "const FRectRaw &"
+              }],
+              constexpr: true,
+              immutable: true
+            },
             "SDL_HasRectIntersectionFloat": {
               kind: "function",
               immutable: true,
@@ -4545,9 +4536,6 @@ const transform = {
     },
     "SDL_render.h": {
       localIncludes: ["SDL3pp_blendmode.h", "SDL3pp_events.h", "SDL3pp_pixels.h", "SDL3pp_video.h"],
-      ignoreEntries: [
-        "SDL_RenderDebugTextFormat"
-      ],
       namespacesMap: {
         "SDL_PROP_RENDERER_": "prop::Renderer",
         "SDL_PROP_TEXTURE_": "prop::Texture"
@@ -4558,6 +4546,7 @@ const transform = {
           entries: {
             "Renderer": {
               kind: "function",
+              type: "",
               parameters: [
                 {
                   "type": "WindowParam",
@@ -5115,21 +5104,12 @@ const transform = {
             },
             "SDL_RenderDebugText": {
               parameters: [
-                {
-                },
-                {
-                  "type": "FPoint",
-                  "name": "p"
-                },
-                {
-                  "type": "StringParam",
-                  "name": "str"
-                }
+                {},
+                {},
+                { type: "StringParam", name: "str" },
               ]
             },
-            "RenderDebugTextFormat": {
-              kind: "function",
-              type: "void",
+            "SDL_RenderDebugTextFormat": {
               template: [
                 {
                   "type": "class...",
@@ -5137,18 +5117,10 @@ const transform = {
                 }
               ],
               parameters: [
-                {
-                  "type": "FPoint",
-                  "name": "p"
-                },
-                {
-                  "type": "std::string_view",
-                  "name": "fmt"
-                },
-                {
-                  "type": "ARGS...",
-                  "name": "args"
-                }
+                {},
+                {},
+                { type: "std::string_view", name: "fmt" },
+                { type: "ARGS...", name: "args" }
               ]
             },
           }
@@ -5963,12 +5935,13 @@ const transform = {
               kind: "var",
               type: "Uint64"
             },
-            "Random": [{
+            "Random": {
               kind: "function",
               constexpr: true,
               type: "",
               parameters: []
-            }, {
+            },
+            "Random#2": {
               kind: "function",
               constexpr: true,
               explicit: true,
@@ -5977,7 +5950,7 @@ const transform = {
                 type: "Uint64",
                 name: "state"
               }]
-            }],
+            },
             "operator Uint64": {
               kind: "function",
               constexpr: true,
@@ -6599,7 +6572,6 @@ const transform = {
             },
             "SDL_BlitSurface9Grid": {
               kind: "function",
-              name: "Blit9GridWithScale",
               parameters: [
                 {
                 },
@@ -8570,12 +8542,25 @@ const transform = {
           ],
         },
         "TTF_TextEngine": {
-          resource: { ref: false },
+          resource: {
+            ref: false,
+            enableAutoMethods: false,
+          },
           entries: {
             "Destroy": {
               kind: "function",
               type: "void",
               parameters: [],
+            },
+            "TTF_CreateText": {
+              type: "Text",
+              parameters: [
+                {},
+                {},
+                {
+                  type: "std::string_view"
+                }
+              ],
             }
           },
         },
@@ -8952,26 +8937,24 @@ const transform = {
               "kind": "var",
               "type": "SubString"
             },
-            "SubStringIterator": [
-              {
-                "kind": "function",
-                "type": "",
-                "constexpr": true,
-                "parameters": [
-                  {
-                    "name": "text",
-                    "type": "TextRef"
-                  }
-                ]
-              },
-              {
-                kind: "function",
-                type: "",
-                constexpr: true,
-                parameters: [],
-                hints: { changeAccess: "public" }
-              }
-            ],
+            "SubStringIterator": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [
+                {
+                  "name": "text",
+                  "type": "TextRef"
+                }
+              ]
+            },
+            "SubStringIterator#2": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [],
+              hints: { changeAccess: "public" }
+            },
             "operator bool": {
               "kind": "function",
               "type": "",
@@ -9005,38 +8988,34 @@ const transform = {
                 }
               ]
             },
-            "operator++": [
-              {
-                "kind": "function",
-                "type": "SubStringIterator &",
-                "constexpr": true,
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "SubStringIterator",
-                "constexpr": true,
-                "parameters": [
-                  "int"
-                ]
-              }
-            ],
-            "operator--": [
-              {
-                "kind": "function",
-                "type": "SubStringIterator &",
-                "constexpr": true,
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "SubStringIterator",
-                "constexpr": true,
-                "parameters": [
-                  "int"
-                ]
-              }
-            ]
+            "operator++": {
+              kind: "function",
+              type: "SubStringIterator &",
+              constexpr: true,
+              parameters: []
+            },
+            "operator++#2": {
+              kind: "function",
+              type: "SubStringIterator",
+              constexpr: true,
+              parameters: [
+                { type: "int" }
+              ]
+            },
+            "operator--": {
+              kind: "function",
+              type: "SubStringIterator &",
+              constexpr: true,
+              parameters: []
+            },
+            "operator--#2": {
+              kind: "function",
+              type: "SubStringIterator",
+              constexpr: true,
+              parameters: [
+                { type: "int" }
+              ]
+            },
           },
           hints: { private: true },
         },

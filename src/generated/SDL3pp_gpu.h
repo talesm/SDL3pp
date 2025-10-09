@@ -4940,12 +4940,6 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-inline GPUComputePipeline GPUDevice::CreateComputePipeline(
-  const GPUComputePipelineCreateInfo& createinfo)
-{
-  return GPUComputePipeline(m_resource, createinfo);
-}
-
 /**
  * Creates a pipeline object to be used in a compute workflow.
  *
@@ -4995,7 +4989,13 @@ inline GPUComputePipeline CreateGPUComputePipeline(
   GPUDeviceParam device,
   const GPUComputePipelineCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUComputePipeline(device, &createinfo));
+  return GPUComputePipeline(device, createinfo);
+}
+
+inline GPUComputePipeline GPUDevice::CreateComputePipeline(
+  const GPUComputePipelineCreateInfo& createinfo)
+{
+  return GPUComputePipeline(m_resource, createinfo);
 }
 
 namespace prop::GPUComputePipeline {
@@ -5004,12 +5004,6 @@ constexpr auto CREATE_NAME_STRING =
   SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUComputePipeline
-
-inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
-  const GPUGraphicsPipelineCreateInfo& createinfo)
-{
-  return GPUGraphicsPipeline(m_resource, createinfo);
-}
 
 /**
  * Creates a pipeline object to be used in a graphics workflow.
@@ -5036,7 +5030,13 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   GPUDeviceParam device,
   const GPUGraphicsPipelineCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo));
+  return GPUGraphicsPipeline(device, createinfo);
+}
+
+inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
+  const GPUGraphicsPipelineCreateInfo& createinfo)
+{
+  return GPUGraphicsPipeline(m_resource, createinfo);
 }
 
 namespace prop::GPUGraphicsPipeline {
@@ -5045,12 +5045,6 @@ constexpr auto CREATE_NAME_STRING =
   SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUGraphicsPipeline
-
-inline GPUSampler GPUDevice::CreateSampler(
-  const GPUSamplerCreateInfo& createinfo)
-{
-  return GPUSampler(m_resource, createinfo);
-}
 
 /**
  * Creates a sampler object to be used when binding textures in a graphics
@@ -5076,7 +5070,13 @@ inline GPUSampler GPUDevice::CreateSampler(
 inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
                                    const GPUSamplerCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUSampler(device, &createinfo));
+  return GPUSampler(device, createinfo);
+}
+
+inline GPUSampler GPUDevice::CreateSampler(
+  const GPUSamplerCreateInfo& createinfo)
+{
+  return GPUSampler(m_resource, createinfo);
 }
 
 namespace prop::GPUSampler {
@@ -5084,11 +5084,6 @@ namespace prop::GPUSampler {
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUSampler
-
-inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
-{
-  return GPUShader(m_resource, createinfo);
-}
 
 /**
  * Creates a shader to be used when creating a graphics pipeline.
@@ -5166,7 +5161,12 @@ inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
 inline GPUShader CreateGPUShader(GPUDeviceParam device,
                                  const GPUShaderCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUShader(device, &createinfo));
+  return GPUShader(device, createinfo);
+}
+
+inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
+{
+  return GPUShader(m_resource, createinfo);
 }
 
 namespace prop::GPUShader {
@@ -5174,12 +5174,6 @@ namespace prop::GPUShader {
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUShader
-
-inline GPUTexture GPUDevice::CreateTexture(
-  const GPUTextureCreateInfo& createinfo)
-{
-  return GPUTexture(m_resource, createinfo);
-}
 
 /**
  * Creates a texture object to be used in graphics or compute workflows.
@@ -5239,7 +5233,13 @@ inline GPUTexture GPUDevice::CreateTexture(
 inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
                                    const GPUTextureCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUTexture(device, &createinfo));
+  return GPUTexture(device, createinfo);
+}
+
+inline GPUTexture GPUDevice::CreateTexture(
+  const GPUTextureCreateInfo& createinfo)
+{
+  return GPUTexture(m_resource, createinfo);
 }
 
 namespace prop::GPUTexture {
@@ -5265,11 +5265,6 @@ constexpr auto CREATE_D3D12_CLEAR_STENCIL_NUMBER =
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUTexture
-
-inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
-{
-  return GPUBuffer(m_resource, createinfo);
-}
 
 /**
  * Creates a buffer object to be used in graphics or compute workflows.
@@ -5318,7 +5313,12 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
 inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
                                  const GPUBufferCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUBuffer(device, &createinfo));
+  return GPUBuffer(device, createinfo);
+}
+
+inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
+{
+  return GPUBuffer(m_resource, createinfo);
 }
 
 namespace prop::GPUBuffer {
@@ -5326,12 +5326,6 @@ namespace prop::GPUBuffer {
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUBuffer
-
-inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
-  const GPUTransferBufferCreateInfo& createinfo)
-{
-  return GPUTransferBuffer(m_resource, createinfo);
-}
 
 /**
  * Creates a transfer buffer to be used when uploading to or downloading from
@@ -5364,7 +5358,13 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
   GPUDeviceParam device,
   const GPUTransferBufferCreateInfo& createinfo)
 {
-  return CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo));
+  return GPUTransferBuffer(device, createinfo);
+}
+
+inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
+  const GPUTransferBufferCreateInfo& createinfo)
+{
+  return GPUTransferBuffer(m_resource, createinfo);
 }
 
 namespace prop::GPUTransferBuffer {

@@ -586,6 +586,7 @@ inline void LogTrace(LogCategory category, std::string_view fmt, ARGS&&... args)
   SDL_LogTrace(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogTrace(m_category, fmt, args);
@@ -620,6 +621,7 @@ inline void LogVerbose(LogCategory category,
   SDL_LogVerbose(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogVerbose(m_category, fmt, args);
@@ -653,6 +655,7 @@ inline void LogDebug(LogCategory category, std::string_view fmt, ARGS&&... args)
   SDL_LogDebug(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogDebug(m_category, fmt, args);
@@ -686,6 +689,7 @@ inline void LogInfo(LogCategory category, std::string_view fmt, ARGS&&... args)
   SDL_LogInfo(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogInfo(m_category, fmt, args);
@@ -719,6 +723,7 @@ inline void LogWarn(LogCategory category, std::string_view fmt, ARGS&&... args)
   SDL_LogWarn(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogWarn(m_category, fmt, args);
@@ -752,6 +757,7 @@ inline void LogError(LogCategory category, std::string_view fmt, ARGS&&... args)
   SDL_LogError(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogError(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogError(m_category, fmt, args);
@@ -787,6 +793,7 @@ inline void LogCritical(LogCategory category,
   SDL_LogCritical(category, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
 {
   SDL::LogCritical(m_category, fmt, args);
@@ -824,6 +831,7 @@ inline void LogMessage(LogCategory category,
   SDL_LogMessage(category, priority, fmt, args);
 }
 
+template<class... ARGS>
 inline void LogCategory::LogMessage(LogPriority priority,
                                     std::string_view fmt,
                                     ARGS... args) const

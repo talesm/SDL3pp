@@ -37455,19 +37455,6 @@ inline void DestroyAudioStream(AudioStreamRaw stream)
 
 inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
 
-inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCallback callback,
-                                           void* userdata)
-{
-  return AudioStream(m_resource, spec, callback, userdata);
-}
-
-inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
-                                           AudioStreamCB callback)
-{
-  return AudioStream(m_resource, spec, callback);
-}
-
 /**
  * Convenience function for straightforward audio init for the common case.
  *
@@ -37594,6 +37581,19 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
   return AudioStream(devid, spec, callback);
 }
 
+inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
+                                           AudioStreamCallback callback,
+                                           void* userdata)
+{
+  return AudioStream(m_resource, spec, callback, userdata);
+}
+
+inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
+                                           AudioStreamCB callback)
+{
+  return AudioStream(m_resource, spec, callback);
+}
+
 inline AudioStream::AudioStream(AudioDeviceParam devid,
                                 OptionalRef<const AudioSpec> spec,
                                 AudioStreamCB callback)
@@ -37711,7 +37711,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
  * Example:
  *
  * ```cpp
- * LoadWAV(IOStream.FromFile("sample.wav", "rb"), &spec);
+ * LoadWAV(IOStream.FromFile("sample.wav", "rb"), spec);
  * ```
  *
  * Note that the LoadWAV function does this same thing for you, but in a
@@ -40397,6 +40397,33 @@ public:
    *
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
+   * @returns all the directory contents.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Storage.Ready
+   */
+  std::vector<Path> EnumerateDirectory(StringParam path);
+
+  /**
+   * Enumerate a directory in a storage container through a callback function.
+   *
+   * This function provides every directory entry through an app-provided
+   * callback, called once for each directory entry, until all results have been
+   * provided or the callback returns either ENUM_SUCCESS or
+   * ENUM_FAILURE.
+   *
+   * This will return false if there was a system problem in general, or if a
+   * callback returns ENUM_FAILURE. A successful return means a callback
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
+   * were enumerated.
+   *
+   * If `path` is nullptr, this is treated as a request to enumerate the root of
+   * the storage container's tree. An empty string also works for this.
+   *
+   * @param path the path of the directory to enumerate, or nullptr for the
+   * root.
    * @param callback a function that is called for each entry in the directory.
    * @throws Error on failure.
    *
@@ -40986,6 +41013,11 @@ inline void Storage::EnumerateDirectory(StringParam path,
 {
   SDL::EnumerateStorageDirectory(
     m_resource, std::move(path), callback, userdata);
+}
+
+inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
+{
+  return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
 }
 
 inline void Storage::EnumerateDirectory(StringParam path,
@@ -42747,15 +42779,15 @@ public:
                  int bottom_height,
                  OptionalRef<const RectRaw> dstrect)
   {
-    Blit9GridWithScale(src,
-                       srcrect,
-                       left_width,
-                       right_width,
-                       top_height,
-                       bottom_height,
-                       0.0,
-                       SDL_SCALEMODE_NEAREST,
-                       dstrect);
+    Blit9Grid(src,
+              srcrect,
+              left_width,
+              right_width,
+              top_height,
+              bottom_height,
+              0.0,
+              SDL_SCALEMODE_NEAREST,
+              dstrect);
   }
 
   /**
@@ -42791,15 +42823,15 @@ public:
    *
    * @sa Surface.Blit
    */
-  void Blit9GridWithScale(SurfaceParam src,
-                          OptionalRef<const RectRaw> srcrect,
-                          int left_width,
-                          int right_width,
-                          int top_height,
-                          int bottom_height,
-                          float scale,
-                          SDL_ScaleMode scaleMode,
-                          OptionalRef<const RectRaw> dstrect);
+  void Blit9Grid(SurfaceParam src,
+                 OptionalRef<const RectRaw> srcrect,
+                 int left_width,
+                 int right_width,
+                 int top_height,
+                 int bottom_height,
+                 float scale,
+                 SDL_ScaleMode scaleMode,
+                 OptionalRef<const RectRaw> dstrect);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -44868,15 +44900,15 @@ inline void BlitSurface9Grid(SurfaceParam src,
                    dstrect);
 }
 
-inline void Surface::Blit9GridWithScale(SurfaceParam src,
-                                        OptionalRef<const RectRaw> srcrect,
-                                        int left_width,
-                                        int right_width,
-                                        int top_height,
-                                        int bottom_height,
-                                        float scale,
-                                        SDL_ScaleMode scaleMode,
-                                        OptionalRef<const RectRaw> dstrect)
+inline void Surface::Blit9Grid(SurfaceParam src,
+                               OptionalRef<const RectRaw> srcrect,
+                               int left_width,
+                               int right_width,
+                               int top_height,
+                               int bottom_height,
+                               float scale,
+                               SDL_ScaleMode scaleMode,
+                               OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurface9Grid(src,
                         srcrect,
@@ -64641,12 +64673,6 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-inline GPUComputePipeline GPUDevice::CreateComputePipeline(
-  const GPUComputePipelineCreateInfo& createinfo)
-{
-  return GPUComputePipeline(m_resource, createinfo);
-}
-
 /**
  * Creates a pipeline object to be used in a compute workflow.
  *
@@ -64699,18 +64725,18 @@ inline GPUComputePipeline CreateGPUComputePipeline(
   return GPUComputePipeline(device, createinfo);
 }
 
+inline GPUComputePipeline GPUDevice::CreateComputePipeline(
+  const GPUComputePipelineCreateInfo& createinfo)
+{
+  return GPUComputePipeline(m_resource, createinfo);
+}
+
 namespace prop::GPUComputePipeline {
 
 constexpr auto CREATE_NAME_STRING =
   SDL_PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUComputePipeline
-
-inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
-  const GPUGraphicsPipelineCreateInfo& createinfo)
-{
-  return GPUGraphicsPipeline(m_resource, createinfo);
-}
 
 /**
  * Creates a pipeline object to be used in a graphics workflow.
@@ -64740,18 +64766,18 @@ inline GPUGraphicsPipeline CreateGPUGraphicsPipeline(
   return GPUGraphicsPipeline(device, createinfo);
 }
 
+inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
+  const GPUGraphicsPipelineCreateInfo& createinfo)
+{
+  return GPUGraphicsPipeline(m_resource, createinfo);
+}
+
 namespace prop::GPUGraphicsPipeline {
 
 constexpr auto CREATE_NAME_STRING =
   SDL_PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUGraphicsPipeline
-
-inline GPUSampler GPUDevice::CreateSampler(
-  const GPUSamplerCreateInfo& createinfo)
-{
-  return GPUSampler(m_resource, createinfo);
-}
 
 /**
  * Creates a sampler object to be used when binding textures in a graphics
@@ -64780,16 +64806,17 @@ inline GPUSampler CreateGPUSampler(GPUDeviceParam device,
   return GPUSampler(device, createinfo);
 }
 
+inline GPUSampler GPUDevice::CreateSampler(
+  const GPUSamplerCreateInfo& createinfo)
+{
+  return GPUSampler(m_resource, createinfo);
+}
+
 namespace prop::GPUSampler {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SAMPLER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUSampler
-
-inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
-{
-  return GPUShader(m_resource, createinfo);
-}
 
 /**
  * Creates a shader to be used when creating a graphics pipeline.
@@ -64870,17 +64897,16 @@ inline GPUShader CreateGPUShader(GPUDeviceParam device,
   return GPUShader(device, createinfo);
 }
 
+inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
+{
+  return GPUShader(m_resource, createinfo);
+}
+
 namespace prop::GPUShader {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUShader
-
-inline GPUTexture GPUDevice::CreateTexture(
-  const GPUTextureCreateInfo& createinfo)
-{
-  return GPUTexture(m_resource, createinfo);
-}
 
 /**
  * Creates a texture object to be used in graphics or compute workflows.
@@ -64943,6 +64969,12 @@ inline GPUTexture CreateGPUTexture(GPUDeviceParam device,
   return GPUTexture(device, createinfo);
 }
 
+inline GPUTexture GPUDevice::CreateTexture(
+  const GPUTextureCreateInfo& createinfo)
+{
+  return GPUTexture(m_resource, createinfo);
+}
+
 namespace prop::GPUTexture {
 
 constexpr auto CREATE_D3D12_CLEAR_R_FLOAT =
@@ -64966,11 +64998,6 @@ constexpr auto CREATE_D3D12_CLEAR_STENCIL_NUMBER =
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
 
 } // namespace prop::GPUTexture
-
-inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
-{
-  return GPUBuffer(m_resource, createinfo);
-}
 
 /**
  * Creates a buffer object to be used in graphics or compute workflows.
@@ -65021,17 +65048,16 @@ inline GPUBuffer CreateGPUBuffer(GPUDeviceParam device,
   return GPUBuffer(device, createinfo);
 }
 
+inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
+{
+  return GPUBuffer(m_resource, createinfo);
+}
+
 namespace prop::GPUBuffer {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
 
 } // namespace prop::GPUBuffer
-
-inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
-  const GPUTransferBufferCreateInfo& createinfo)
-{
-  return GPUTransferBuffer(m_resource, createinfo);
-}
 
 /**
  * Creates a transfer buffer to be used when uploading to or downloading from
@@ -65065,6 +65091,12 @@ inline GPUTransferBuffer CreateGPUTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(device, createinfo);
+}
+
+inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
+  const GPUTransferBufferCreateInfo& createinfo)
+{
+  return GPUTransferBuffer(m_resource, createinfo);
 }
 
 namespace prop::GPUTransferBuffer {
@@ -78251,7 +78283,7 @@ public:
    * @sa Renderer.RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  void RenderDebugText(FPoint p, StringParam str);
+  void RenderDebugText(const FPointRaw& p, StringParam str);
 
   /**
    * Draw debug text to an Renderer.
@@ -78279,10 +78311,9 @@ public:
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  void RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
-  {
-    RenderDebugText(p, std::vformat(fmt, std::make_format_args(args...)));
-  }
+  void RenderDebugTextFormat(const FPointRaw& p,
+                             std::string_view fmt,
+                             ARGS... args);
 
   /**
    * Create a texture for a rendering context.
@@ -80047,13 +80078,6 @@ inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
   SDL::GetCurrentRenderOutputSize(m_resource, w, h);
 }
 
-inline Texture Renderer::CreateTexture(PixelFormat format,
-                                       TextureAccess access,
-                                       const PointRaw& size)
-{
-  return Texture(m_resource, format, access, size);
-}
-
 /**
  * Create a texture for a rendering context.
  *
@@ -80084,9 +80108,11 @@ inline Texture CreateTexture(RendererParam renderer,
   return Texture(renderer, format, access, size);
 }
 
-inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
+inline Texture Renderer::CreateTexture(PixelFormat format,
+                                       TextureAccess access,
+                                       const PointRaw& size)
 {
-  return Texture(m_resource, surface);
+  return Texture(m_resource, format, access, size);
 }
 
 /**
@@ -80118,12 +80144,12 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
 inline Texture CreateTextureFromSurface(RendererParam renderer,
                                         SurfaceParam surface)
 {
-  return Texture(SDL_CreateTextureFromSurface(renderer, surface));
+  return Texture(renderer, surface);
 }
 
-inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
 {
-  return Texture(m_resource, props);
+  return Texture(m_resource, surface);
 }
 
 /**
@@ -80239,7 +80265,12 @@ inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
 inline Texture CreateTextureWithProperties(RendererParam renderer,
                                            PropertiesParam props)
 {
-  return Texture(SDL_CreateTextureWithProperties(renderer, props));
+  return Texture(renderer, props);
+}
+
+inline Texture Renderer::CreateTextureWithProperties(PropertiesParam props)
+{
+  return Texture(m_resource, props);
 }
 
 namespace prop::Texture {
@@ -82908,12 +82939,14 @@ inline int Renderer::GetVSync() const
  * @sa Renderer.RenderDebugTextFormat
  * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
-inline void RenderDebugText(RendererParam renderer, FPoint p, StringParam str)
+inline void RenderDebugText(RendererParam renderer,
+                            const FPointRaw& p,
+                            StringParam str)
 {
   CheckError(SDL_RenderDebugText(renderer, p.x, p.y, str));
 }
 
-inline void Renderer::RenderDebugText(FPoint p, StringParam str)
+inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 {
   SDL::RenderDebugText(m_resource, p, std::move(str));
 }
@@ -82944,12 +82977,20 @@ inline void Renderer::RenderDebugText(FPoint p, StringParam str)
  */
 template<class... ARGS>
 inline void RenderDebugTextFormat(RendererParam renderer,
-                                  FPoint p,
+                                  const FPointRaw& p,
                                   std::string_view fmt,
                                   ARGS... args)
 {
   RenderDebugText(
     renderer, p, std::vformat(fmt, std::make_format_args(args...)));
+}
+
+template<class... ARGS>
+inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
+                                            std::string_view fmt,
+                                            ARGS... args)
+{
+  SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
 
 /// @}
@@ -88834,7 +88875,7 @@ public:
   /// Converts to TextEngineParam
   constexpr operator TextEngineParam() const { return {m_resource}; }
 
-  /// Destroy resource. Pure virtual
+  /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
 
   /**
@@ -88869,7 +88910,7 @@ struct SurfaceTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.DestroySurface
+   * @sa SurfaceTextEngine.Destroy
    * @sa Text.DrawSurface
    */
   SurfaceTextEngine()
@@ -88910,7 +88951,7 @@ struct RendererTextEngine : TextEngine
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextEngine.DestroyRenderer
+   * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
@@ -88940,7 +88981,7 @@ struct RendererTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa RendererTextEngine.RendererTextEngine
-   * @sa TextEngine.DestroyRenderer
+   * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
   RendererTextEngine(PropertiesParam props)
@@ -88984,7 +89025,7 @@ struct GPUTextEngine : TextEngine
    *
    * @sa GPUTextEngine.GPUTextEngine
    * @sa GPUTextEngine.Destroy
-   * @sa GPUTextEngine.GetGPUDrawData
+   * @sa Text.GetGPUDrawData
    */
   GPUTextEngine(GPUDeviceParam device)
     : TextEngine(TTF_CreateGPUTextEngine(device))
@@ -89012,7 +89053,7 @@ struct GPUTextEngine : TextEngine
    * @since This function is available since SDL_ttf 3.0.0.
    *
    * @sa GPUTextEngine.GPUTextEngine
-   * @sa TextEngine.DestroyGPU
+   * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
   GPUTextEngine(PropertiesParam props)
@@ -92054,7 +92095,7 @@ public:
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.DestroySurface
+ * @sa SurfaceTextEngine.Destroy
  * @sa Text.DrawSurface
  */
 inline SurfaceTextEngine CreateSurfaceTextEngine()
@@ -92130,7 +92171,7 @@ inline void SurfaceTextEngine::Destroy()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextEngine.DestroyRenderer
+ * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  * @sa RendererTextEngine.RendererTextEngine
  */
@@ -92160,7 +92201,7 @@ inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa RendererTextEngine.RendererTextEngine
- * @sa TextEngine.DestroyRenderer
+ * @sa RendererTextEngine.Destroy
  * @sa Text.DrawRenderer
  */
 inline RendererTextEngine CreateRendererTextEngineWithProperties(
@@ -92249,7 +92290,7 @@ inline void RendererTextEngine::Destroy()
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa GPUTextEngine.GPUTextEngine
- * @sa TextEngine.DestroyGPU
+ * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
 inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
@@ -92278,7 +92319,7 @@ inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
  * @since This function is available since SDL_ttf 3.0.0.
  *
  * @sa GPUTextEngine.GPUTextEngine
- * @sa TextEngine.DestroyGPU
+ * @sa GPUTextEngine.Destroy
  * @sa Text.GetGPUDrawData
  */
 inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
@@ -92407,11 +92448,6 @@ inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
   return SDL::GetGPUTextEngineWinding(get());
 }
 
-inline Text TextEngine::CreateText(FontParam font, std::string_view text)
-{
-  return Text(m_resource, font, text);
-}
-
 /**
  * Create a text object from UTF-8 text and a text engine.
  *
@@ -92434,6 +92470,11 @@ inline Text CreateText(TextEngineParam engine,
                        std::string_view text)
 {
   return Text(engine, font, text);
+}
+
+inline Text TextEngine::CreateText(FontParam font, std::string_view text)
+{
+  return Text(m_resource, font, text);
 }
 
 /**
