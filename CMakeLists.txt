@@ -101,7 +101,7 @@ add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 
 # The documentation
 # check if Doxygen is installed
-find_package(Doxygen REQUIRED dot)
+find_package(Doxygen COMPONENTS dot)
 if (DOXYGEN_FOUND)
     # Main doc
     doxygen_add_docs(SDL3pp_doxygen
