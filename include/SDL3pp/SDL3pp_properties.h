@@ -137,6 +137,56 @@ using EnumeratePropertiesCB =
   std::function<void(PropertiesID props, const char* name)>;
 
 /**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_
+ * Properties.SetPointerPropertyWithCleanup if the function fails for any
+ * reason.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa Properties.SetPointerPropertyWithCleanup
+ */
+using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_
+ * Properties.SetPointerPropertyWithCleanup if the function fails for any
+ * reason.
+ *
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa Properties.SetPointerPropertyWithCleanup
+ * @sa CleanupPropertyCallback
+ */
+using CleanupPropertyCB = std::function<void(void*)>;
+
+/**
  * SDL properties ID
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -244,6 +294,23 @@ public:
   void Destroy();
 
   /**
+   * Copy a group of properties.
+   *
+   * Copy all the properties from one group of properties to another, with the
+   * exception of properties requiring cleanup (set using
+   * Properties.SetPointerPropertyWithCleanup()), which will not be copied. Any
+   * property that already exists on `dst` will be overwritten.
+   *
+   * @param dst the destination properties.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Copy(PropertiesParam dst);
+
+  /**
    * Lock a group of properties.
    *
    * Obtain a multi-threaded lock for these properties. Other threads will wait
@@ -278,6 +345,72 @@ public:
   void Unlock();
 
   /**
+   * Set a pointer property in a group of properties with a cleanup function
+   * that is called when the property is deleted.
+   *
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
+   *
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * Properties.SetNumberProperty, Properties.SetBooleanProperty, or
+   * Properties.SetStringProperty instead, as those functions will handle
+   * cleanup on your behalf. This function is only for more complex, custom
+   * data.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   * property.
+   * @param cleanup the function to call when this property is deleted, or
+   * nullptr if no cleanup is necessary.
+   * @param userdata a pointer that is passed to the cleanup function.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.GetPointerProperty
+   * @sa Properties.SetPointerProperty
+   * @sa CleanupPropertyCallback
+   */
+  void SetPointerPropertyWithCleanup(StringParam name,
+                                     void* value,
+                                     CleanupPropertyCallback cleanup,
+                                     void* userdata);
+
+  /**
+   * Set a pointer property in a group of properties with a cleanup function
+   * that is called when the property is deleted.
+   *
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
+   *
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * Properties.SetNumberProperty, Properties.SetBooleanProperty, or
+   * Properties.SetStringProperty instead, as those functions will handle
+   * cleanup on your behalf. This function is only for more complex, custom
+   * data.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or nullptr to delete the
+   * property.
+   * @param cleanup the function to call when this property is deleted, or
+   * nullptr if no cleanup is necessary.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.GetPointerProperty
+   * @sa Properties.SetPointerProperty
+   * @sa CleanupPropertyCallback
+   */
+  void SetPointerPropertyWithCleanup(StringParam name,
+                                     void* value,
+                                     CleanupPropertyCB cleanup);
+
+  /**
    * Set a pointer property in a group of properties.
    *
    * @param name the name of the property to modify.
@@ -294,7 +427,7 @@ public:
    * @sa Properties.SetBooleanProperty
    * @sa Properties.SetFloatProperty
    * @sa Properties.SetNumberProperty
-   * @sa SetPointerPropertyWithCleanup
+   * @sa Properties.SetPointerPropertyWithCleanup
    * @sa Properties.SetStringProperty
    */
   void SetPointerProperty(StringParam name, void* value);
@@ -375,7 +508,7 @@ public:
    *
    * @sa Properties.GetPropertyType
    */
-  bool HasProperty(StringParam name) const;
+  bool HasProperty(StringParam name);
 
   /**
    * Get the type of a property in a group of properties.
@@ -390,7 +523,7 @@ public:
    *
    * @sa Properties.HasProperty
    */
-  PropertyType GetPropertyType(StringParam name) const;
+  PropertyType GetPropertyType(StringParam name);
 
   /**
    * Get a pointer property from a group of properties.
@@ -422,7 +555,7 @@ public:
    * @sa Properties.HasProperty
    * @sa Properties.SetPointerProperty
    */
-  void* GetPointerProperty(StringParam name, void* default_value) const;
+  void* GetPointerProperty(StringParam name, void* default_value);
 
   /**
    * Get a string property from a group of properties.
@@ -445,8 +578,7 @@ public:
    * @sa Properties.HasProperty
    * @sa Properties.SetStringProperty
    */
-  const char* GetStringProperty(StringParam name,
-                                StringParam default_value) const;
+  const char* GetStringProperty(StringParam name, StringParam default_value);
 
   /**
    * Get a number property from a group of properties.
@@ -467,7 +599,7 @@ public:
    * @sa Properties.HasProperty
    * @sa Properties.SetNumberProperty
    */
-  Sint64 GetNumberProperty(StringParam name, Sint64 default_value) const;
+  Sint64 GetNumberProperty(StringParam name, Sint64 default_value);
 
   /**
    * Get a floating point property from a group of properties.
@@ -488,7 +620,7 @@ public:
    * @sa Properties.HasProperty
    * @sa Properties.SetFloatProperty
    */
-  float GetFloatProperty(StringParam name, float default_value) const;
+  float GetFloatProperty(StringParam name, float default_value);
 
   /**
    * Get a boolean property from a group of properties.
@@ -509,7 +641,7 @@ public:
    * @sa Properties.HasProperty
    * @sa Properties.SetBooleanProperty
    */
-  bool GetBooleanProperty(StringParam name, bool default_value) const;
+  bool GetBooleanProperty(StringParam name, bool default_value);
 
   /**
    * Clear a property from a group of properties.
@@ -521,22 +653,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void ClearProperty(StringParam name) const;
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Enumerate(EnumeratePropertiesCB callback) const;
+  void ClearProperty(StringParam name);
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -552,7 +669,22 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Enumerate(EnumeratePropertiesCallback callback, void* userdata) const;
+  void Enumerate(EnumeratePropertiesCallback callback, void* userdata);
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Enumerate(EnumeratePropertiesCB callback);
 
   /**
    * Returns the number of properties this has
@@ -561,7 +693,7 @@ public:
    *
    * @return Uint64
    */
-  Uint64 GetCount() const;
+  Uint64 GetCount();
 };
 
 /// Semi-safe reference for Properties.
@@ -628,7 +760,7 @@ inline Properties Properties::Create() { return SDL::CreateProperties(); }
  *
  * Copy all the properties from one group of properties to another, with the
  * exception of properties requiring cleanup (set using
- * SetPointerPropertyWithCleanup()), which will not be copied. Any
+ * Properties.SetPointerPropertyWithCleanup()), which will not be copied. Any
  * property that already exists on `dst` will be overwritten.
  *
  * @param src the properties to copy.
@@ -642,6 +774,11 @@ inline Properties Properties::Create() { return SDL::CreateProperties(); }
 inline void CopyProperties(PropertiesParam src, PropertiesParam dst)
 {
   CheckError(SDL_CopyProperties(src, dst));
+}
+
+inline void Properties::Copy(PropertiesParam dst)
+{
+  SDL::CopyProperties(m_resource, dst);
 }
 
 /**
@@ -689,54 +826,6 @@ inline void UnlockProperties(PropertiesParam props)
 }
 
 inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
-
-/**
- * A callback used to free resources when a property is deleted.
- *
- * This should release any resources associated with `value` that are no
- * longer needed.
- *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
- *
- * This callback will be called _during_ SetPointerPropertyWithCleanup if
- * the function fails for any reason.
- *
- * @param userdata an app-defined pointer passed to the callback.
- * @param value the pointer assigned to the property to clean up.
- *
- * @threadsafety This callback may fire without any locks held; if this is a
- *               concern, the app should provide its own locking.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetPointerPropertyWithCleanup
- */
-using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
-
-/**
- * A callback used to free resources when a property is deleted.
- *
- * This should release any resources associated with `value` that are no
- * longer needed.
- *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
- *
- * This callback will be called _during_ SetPointerPropertyWithCleanup if
- * the function fails for any reason.
- *
- * @param value the pointer assigned to the property to clean up.
- *
- * @threadsafety This callback may fire without any locks held; if this is a
- *               concern, the app should provide its own locking.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetPointerPropertyWithCleanup
- * @sa CleanupPropertyCallback
- */
-using CleanupPropertyCB = std::function<void(void*)>;
 
 /**
  * Set a pointer property in a group of properties with a cleanup function
@@ -818,6 +907,24 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
                                     Wrapper::Wrap(std::move(cleanup)));
 }
 
+inline void Properties::SetPointerPropertyWithCleanup(
+  StringParam name,
+  void* value,
+  CleanupPropertyCallback cleanup,
+  void* userdata)
+{
+  SDL::SetPointerPropertyWithCleanup(
+    m_resource, std::move(name), value, cleanup, userdata);
+}
+
+inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
+                                                      void* value,
+                                                      CleanupPropertyCB cleanup)
+{
+  SDL::SetPointerPropertyWithCleanup(
+    m_resource, std::move(name), value, cleanup);
+}
+
 /**
  * Set a pointer property in a group of properties.
  *
@@ -836,7 +943,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
  * @sa Properties.SetBooleanProperty
  * @sa Properties.SetFloatProperty
  * @sa Properties.SetNumberProperty
- * @sa SetPointerPropertyWithCleanup
+ * @sa Properties.SetPointerPropertyWithCleanup
  * @sa Properties.SetStringProperty
  */
 inline void SetPointerProperty(PropertiesParam props,
@@ -977,7 +1084,7 @@ inline bool HasProperty(PropertiesParam props, StringParam name)
   return SDL_HasProperty(props, name);
 }
 
-inline bool Properties::HasProperty(StringParam name) const
+inline bool Properties::HasProperty(StringParam name)
 {
   return SDL::HasProperty(m_resource, std::move(name));
 }
@@ -1001,7 +1108,7 @@ inline PropertyType GetPropertyType(PropertiesParam props, StringParam name)
   return SDL_GetPropertyType(props, name);
 }
 
-inline PropertyType Properties::GetPropertyType(StringParam name) const
+inline PropertyType Properties::GetPropertyType(StringParam name)
 {
   return SDL::GetPropertyType(m_resource, std::move(name));
 }
@@ -1045,7 +1152,7 @@ inline void* GetPointerProperty(PropertiesParam props,
 }
 
 inline void* Properties::GetPointerProperty(StringParam name,
-                                            void* default_value) const
+                                            void* default_value)
 {
   return SDL::GetPointerProperty(m_resource, std::move(name), default_value);
 }
@@ -1079,9 +1186,8 @@ inline const char* GetStringProperty(PropertiesParam props,
   return SDL_GetStringProperty(props, name, default_value);
 }
 
-inline const char* Properties::GetStringProperty(
-  StringParam name,
-  StringParam default_value) const
+inline const char* Properties::GetStringProperty(StringParam name,
+                                                 StringParam default_value)
 {
   return SDL::GetStringProperty(
     m_resource, std::move(name), std::move(default_value));
@@ -1115,7 +1221,7 @@ inline Sint64 GetNumberProperty(PropertiesParam props,
 }
 
 inline Sint64 Properties::GetNumberProperty(StringParam name,
-                                            Sint64 default_value) const
+                                            Sint64 default_value)
 {
   return SDL::GetNumberProperty(m_resource, std::move(name), default_value);
 }
@@ -1147,8 +1253,7 @@ inline float GetFloatProperty(PropertiesParam props,
   return SDL_GetFloatProperty(props, name, default_value);
 }
 
-inline float Properties::GetFloatProperty(StringParam name,
-                                          float default_value) const
+inline float Properties::GetFloatProperty(StringParam name, float default_value)
 {
   return SDL::GetFloatProperty(m_resource, std::move(name), default_value);
 }
@@ -1180,8 +1285,7 @@ inline bool GetBooleanProperty(PropertiesParam props,
   return SDL_GetBooleanProperty(props, name, default_value);
 }
 
-inline bool Properties::GetBooleanProperty(StringParam name,
-                                           bool default_value) const
+inline bool Properties::GetBooleanProperty(StringParam name, bool default_value)
 {
   return SDL::GetBooleanProperty(m_resource, std::move(name), default_value);
 }
@@ -1202,7 +1306,7 @@ inline void ClearProperty(PropertiesParam props, StringParam name)
   CheckError(SDL_ClearProperty(props, name));
 }
 
-inline void Properties::ClearProperty(StringParam name) const
+inline void Properties::ClearProperty(StringParam name)
 {
   SDL::ClearProperty(m_resource, std::move(name));
 }
@@ -1255,15 +1359,15 @@ inline void EnumerateProperties(PropertiesParam props,
     &callback);
 }
 
-/**
- * Returns the number of properties this has
- *
- * This uses Enumerate() internally, so might not be so fast
- */
 inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-                                  void* userdata) const
+                                  void* userdata)
 {
   SDL::EnumerateProperties(m_resource, callback, userdata);
+}
+
+inline void Properties::Enumerate(EnumeratePropertiesCB callback)
+{
+  SDL::EnumerateProperties(m_resource, callback);
 }
 
 /**
@@ -1281,9 +1385,9 @@ inline Uint64 CountProperties(PropertiesParam props)
   return count;
 }
 
-inline Uint64 Properties::GetCount() const
+inline Uint64 Properties::GetCount()
 {
-  return CountProperties(m_resource);
+  return SDL::CountProperties(m_resource);
 }
 
 /**

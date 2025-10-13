@@ -3851,45 +3851,10 @@ const transform = {
             ctors: ["SDL_CreateProperties"],
             free: "SDL_DestroyProperties",
             rawName: "PropertiesID",
-            enableAutoMethods: false,
           },
           entries: {
             "SDL_CreateProperties": {
               name: "Create",
-            },
-            "SDL_DestroyProperties": "function",
-            "SDL_LockProperties": "function",
-            "SDL_UnlockProperties": "function",
-            "SDL_SetPointerProperty": "function",
-            "SDL_SetStringProperty": "function",
-            "SDL_SetNumberProperty": "function",
-            "SDL_SetFloatProperty": "function",
-            "SDL_SetBooleanProperty": "function",
-            "SDL_HasProperty": "immutable",
-            "SDL_GetPropertyType": "immutable",
-            "SDL_GetPointerProperty": "immutable",
-            "SDL_GetStringProperty": "immutable",
-            "SDL_GetNumberProperty": "immutable",
-            "SDL_GetFloatProperty": "immutable",
-            "SDL_GetBooleanProperty": "immutable",
-            "SDL_ClearProperty": "immutable",
-            "Enumerate": {
-              kind: "function",
-              type: "void",
-              immutable: true,
-              proto: true,
-              parameters: [{
-                type: "EnumeratePropertiesCB",
-                name: "callback"
-              }]
-            },
-            "SDL_EnumerateProperties": "immutable",
-            "GetCount": {
-              kind: "function",
-              immutable: true,
-              type: "Uint64",
-              parameters: [],
-              proto: true,
             },
           },
         },
@@ -3905,6 +3870,11 @@ const transform = {
         "EnumeratePropertiesCB": {
           kind: "alias",
           type: "std::function<void(PropertiesID props, const char *name)>",
+          before: "SDL_PropertiesID",
+        },
+        "SDL_CleanupPropertyCallback": {
+          kind: "alias",
+          type: "SDL_EnumeratePropertiesCallback",
           before: "SDL_PropertiesID",
         },
         "SetPointerPropertyWithCleanup": {
@@ -3928,7 +3898,6 @@ const transform = {
             name: "cleanup"
           }]
         },
-        "SDL_EnumerateProperties": {},
         "EnumerateProperties": {
           kind: "function",
           type: "void",
@@ -3948,6 +3917,7 @@ const transform = {
             type: "PropertiesParam",
             name: "props"
           }],
+          hints: { methodName: "GetCount" },
         },
       }
     },

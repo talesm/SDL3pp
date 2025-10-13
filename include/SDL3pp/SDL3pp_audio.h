@@ -826,7 +826,7 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
  *
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
- * @sa AudioStreamCB
+ * @sa AudioStreamCallback
  */
 using AudioStreamCB = std::function<
   void(AudioStreamRef stream, int additional_amount, int total_amount)>;

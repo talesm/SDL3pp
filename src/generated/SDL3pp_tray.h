@@ -135,6 +135,18 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  */
 using TrayCallback = SDL_TrayCallback;
 
+/**
+ * A callback that is invoked when a tray entry is selected.
+ *
+ * @param userdata an optional pointer to pass extra data to the callback when
+ *                 it will be invoked.
+ * @param entry the tray entry that was selected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa TrayEntry.SetCallback
+ * @sa TrayCallback
+ */
 using TrayCB = std::function<void(TrayEntryRaw)>;
 
 /**

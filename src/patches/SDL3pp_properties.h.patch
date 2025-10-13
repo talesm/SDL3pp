@@ -11,49 +11,36 @@
 >  * can be created with the Properties.Create function and destroyed with the
 >  * Properties.Destroy function, but the Properties destructor probably will do
 >  * what you want to, automatically.
-118a120,135
-> /**
->  * A callback used to enumerate all the properties in a group of properties.
->  *
->  * This callback is called from Properties.Enumerate(), and is called once
->  * per property in the set.
->  *
->  * @param props the Properties that is being enumerated.
->  * @param name the next property name in the enumeration.
->  *
->  * @threadsafety Properties.Enumerate holds a lock on `props` during this
->  *               callback.
->  *
->  * @since This datatype is available since SDL 3.2.0.
->  *
->  * @sa Properties.Enumerate
->  */
-127a145,146
+125d125
+<  * @param userdata an app-defined pointer passed to the callback.
+135d134
+<  * @sa EnumeratePropertiesCallback
+163c162
+< using CleanupPropertyCallback = SDL_EnumeratePropertiesCallback;
+---
+> using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+178d176
+<  * @param userdata an app-defined pointer passed to the callback.
+196a195,196
 >  *
 >  * @sa Properties.Create
-167,168c186,187
+236,237c236,237
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-217d235
+286d285
 <    *
-507a526,538
->   /**
->    * Enumerate the properties contained in a group of properties.
->    *
->    * The callback function is called for each property in the group of
->    * properties. The properties are locked during enumeration.
->    *
->    * @param callback the function to call for each property.
->    * @throws Error on failure.
->    *
->    * @threadsafety It is safe to call this function from any thread.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-525a557,563
+395d393
+<    * @param props the properties to modify.
+401d398
+<    * @param userdata a pointer that is passed to the cleanup function.
+683d679
+<    * @param props the properties to query.
+685d680
+<    * @param userdata a pointer that is passed to `callback`.
+693a689,695
 >   /**
 >    * Returns the number of properties this has
 >    *
@@ -61,25 +48,23 @@
 >    *
 >    * @return Uint64
 >    */
-564c602
+732c734
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-572,573c610,611
+740,741c742,743
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-583c621
+751c753
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-691d728
-<  * @param userdata an app-defined pointer passed to the callback.
-761d797
+885d886
 <  * @param userdata a pointer that is passed to the cleanup function.
-777c813,818
+901c902,907
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -88,9 +73,9 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-1199d1239
+1338d1343
 <  * @param userdata a pointer that is passed to `callback`.
-1209c1249,1255
+1348c1353,1359
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -100,13 +85,7 @@
 >       f(props, name);
 >     },
 >     &callback);
-1211a1258,1262
-> /**
->  * Returns the number of properties this has
->  *
->  * This uses Enumerate() internally, so might not be so fast
->  */
-1217a1269,1276
+1361a1373,1380
 > /**
 >  * Returns the number of properties this has
 >  *
@@ -115,14 +94,9 @@
 >  * @param props
 >  * @return Uint64
 >  */
-1220c1279,1286
+1364c1383,1385
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;
 >   EnumerateProperties(props, [&](auto, const char*) { count++; });
 >   return count;
-> }
-> 
-> inline Uint64 Properties::GetCount() const
-> {
->   return CountProperties(m_resource);

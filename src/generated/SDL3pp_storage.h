@@ -1225,7 +1225,7 @@ inline void Storage::EnumerateDirectory(StringParam path,
 
 inline std::vector<Path> Storage::EnumerateDirectory(StringParam path)
 {
-  return SDL::EnumerateStorageDirectory #2(m_resource, std::move(path));
+  return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
 }
 
 inline void Storage::EnumerateDirectory(StringParam path,

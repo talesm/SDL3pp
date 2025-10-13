@@ -476,9 +476,11 @@ function expandTypes(sourceEntries, file, context) {
           name: callbackName,
           type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
           doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
-          ...(file.transform[callbackName] ?? {})
+          ...(file.transform[callbackName] ?? {}),
+          before: undefined,
+          after: undefined,
         };
-        context.prependIncludeAfter(callbackEntry, sourceName);
+        context.prependIncludeAfter(callbackEntry, name);
         break;
       }
     }
@@ -1284,7 +1286,7 @@ function expandTypes(sourceEntries, file, context) {
     const foundEntries = {};
     for (let [sourceName, transformEntry] of Object.entries(transformMap)) {
       if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
-      const sourceEntry = /** @type {ApiEntryTransform}*/(sourceEntries[sourceName]);
+      const sourceEntry = sourceEntries[sourceName];
       /** @type {ApiEntryTransform[]} */
       if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
       if (!transformEntry.parameters?.length) continue;
@@ -1310,18 +1312,19 @@ function expandTypes(sourceEntries, file, context) {
           ...transformEntry,
           immutable: m === 'immutable'
         };
-      } else {
-        const name = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
-        if (blockedNames.has(name)) continue;
-        const key = `${targetType}::${transformMemberName(sourceName, targetType, context)}`;
+      } else if (!sourceName.includes("::")) {
+        const methodName = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
+        if (blockedNames.has(methodName)) continue;
+        const name = `${targetType}::${methodName}`;
         insertOrLink(transformMap, {
           ...transformEntry,
           after: sourceName,
-          name: `${targetType}::${name}`,
+          name,
           static: false,
           parameters: parameters.slice(1),
-          hints: { delegate: `${context.namespace}::${sourceName}` }
-        }, key);
+          hints: { delegate: `${context.namespace}::${transformName(sourceName, context)}` }
+        }, name);
+        // if (methodName === "Enumerate") console.log(transformMap[name]);
       }
     }
     for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -1515,7 +1518,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
   if (includeBefore.__begin) addIncluded(includeBefore.__begin);
   if (includeAfter.__begin) addIncluded(includeAfter.__begin);
 
-  for (const sourceEntry of Object.values(sourceEntries)) {
+  for (const [key, sourceEntry] of Object.entries(sourceEntries)) {
     const sourceName = sourceEntry.name;
     if (processedSourceNames.has(sourceName)) continue;
     processedSourceNames.add(sourceName);
@@ -1536,6 +1539,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     const firstAppearance = !processedSourceNames.has(targetName);
     processedSourceNames.add(targetName);
 
+    if (key !== sourceName) addIncluded(includeBefore[key]);
     addIncluded(includeBefore[sourceName]);
     if (firstAppearance) addIncluded(includeBefore[targetName]);
 
@@ -1552,6 +1556,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     addTransform(targetEntry);
 
     if (firstAppearance) addIncluded(includeAfter[targetName]);
+    if (key !== sourceName) addIncluded(includeAfter[key]);
     addIncluded(includeAfter[sourceName]);
   }
 
@@ -1987,10 +1992,8 @@ function transformHierarchy(targetEntries, context) {
       entry.name = makeMemberName(key, obj.template);
       if (obj.template) entry.template = obj.template;
       if (entry.parameters) entry.parameters = entry.parameters.map(p => {
-        if (typeof p === 'object') {
-          p = deepClone(p);
-          delete p.default;
-        }
+        p = deepClone(p);
+        delete p.default;
         return p;
       });
       if (obj.hints) combineHints(entry, obj.hints);
@@ -2108,7 +2111,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   if (!parameters?.length) return;
   const parameter = parameters[0];
   const type = parameter.type ?? "";
-  if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static) {
+  if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static && entry.sourceName) {
     parameters.shift();
     if (entry.doc) entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
     if (type.startsWith("const ")) entry.immutable = true;

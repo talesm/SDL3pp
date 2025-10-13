@@ -241,10 +241,6 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-1228c1246
-<   return SDL::EnumerateStorageDirectory #2(m_resource, std::move(path));
----
->   return SDL::EnumerateStorageDirectory(m_resource, std::move(path));
 1311,1313c1329,1330
 <  * @param info a pointer filled in with information about the path, or nullptr
 <  * to check for the existence of a file.

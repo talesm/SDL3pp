@@ -1345,6 +1345,26 @@ inline void PushEvent(const Event& event)
  */
 using EventFilter = SDL_EventFilter;
 
+/**
+ * A function pointer used for callbacks that watch the event queue.
+ *
+ * @param userdata what was passed as `userdata` to SetEventFilter() or
+ *                 AddEventWatch, etc.
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to
+ *          disallow it. When used with AddEventWatch, the return value is
+ *          ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SetEventFilter
+ * @sa AddEventWatch
+ * @sa EventFilter
+ */
 using EventFilterCB = std::function<bool(const Event&)>;
 
 /// Handle returned by AddEventWatch()
