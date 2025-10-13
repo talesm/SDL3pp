@@ -1455,7 +1455,6 @@ public:
    * Destroying the returned stream with AudioStream.Destroy will also close
    * the audio device associated with this stream.
    *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
    * @param spec the audio stream's data format. Can be nullptr.
    * @param callback a callback where the app will provide new data for

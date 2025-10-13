@@ -547,7 +547,6 @@ public:
    * Storage.GetFileSize() to get this value. This behavior may be relaxed in
    * a future release.
    *
-   * @param storage a storage container to read from.
    * @param path the relative path of the file to read.
    * @param destination a client-provided buffer to read the file into.
    * @param length the length of the destination buffer.
@@ -637,7 +636,6 @@ public:
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
-   * @param storage a storage container.
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.
@@ -666,7 +664,6 @@ public:
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
-   * @param storage a storage container.
    * @param path the path of the directory to enumerate, or nullptr for the
    * root.
    * @param callback a function that is called for each entry in the directory.

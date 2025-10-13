@@ -392,7 +392,6 @@ public:
    * cleanup on your behalf. This function is only for more complex, custom
    * data.
    *
-   * @param props the properties to modify.
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
    * property.
@@ -680,7 +679,6 @@ public:
    * The callback function is called for each property in the group of
    * properties. The properties are locked during enumeration.
    *
-   * @param props the properties to query.
    * @param callback the function to call for each property.
    * @param userdata a pointer that is passed to `callback`.
    * @throws Error on failure.

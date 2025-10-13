@@ -2117,7 +2117,10 @@ function prepareForTypeInsert(entry, name, typeName) {
     if (type.startsWith("const ")) entry.immutable = true;
   } else if (entry.static !== false) {
     entry.static = !entry.immutable;
+  } else if (!entry.sourceName && entry.doc && entry.type) {
+    entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
   }
+
 }
 
 /** @param {string} typeName  */
