@@ -1,5 +1,0 @@
-<map id="SDL::SurfaceTextEngine" name="SDL::SurfaceTextEngine">
-<area shape="rect" id="Node000001" title="A surface based text engine." alt="" coords="5,79,180,104"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1TextEngine.html" title="A resource engine." alt="" coords="29,5,156,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
-</map>

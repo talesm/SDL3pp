@@ -1,5 +1,0 @@
-<map id="SDL::SharedObject" name="SDL::SharedObject">
-<area shape="rect" id="Node000001" title="An opaque datatype that represents a loaded shared object." alt="" coords="16,5,159,31"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SharedObjectRef.html" title="Semi&#45;safe reference for SharedObject." alt="" coords="5,79,169,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,44,90,79,85,79,85,44"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SDL::Condition" name="SDL::Condition">
-<area shape="rect" id="Node000001" title="A means to block multiple threads until a condition is satisfied." alt="" coords="16,5,133,31"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1ConditionRef.html" title="Semi&#45;safe reference for Condition." alt="" coords="5,79,144,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,44,77,79,72,79,72,44"/>
-</map>

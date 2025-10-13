@@ -1,5 +1,0 @@
-<map id="SDL::ThreadRef" name="SDL::ThreadRef">
-<area shape="rect" id="Node000001" title="Semi&#45;safe reference for Thread." alt="" coords="5,79,128,104"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Thread.html" title="The SDL thread object." alt="" coords="17,5,117,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,44,69,79,64,79,64,44"/>
-</map>
