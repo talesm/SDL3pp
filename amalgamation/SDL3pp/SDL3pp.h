@@ -7671,18 +7671,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(LogCategory category) const
-  {
-    return m_category == category.m_category;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(LogCategory category) const
-  {
-    return m_category <=> category.m_category;
-  }
-
   /**
    * Unwraps to the underlying LogCategory.
    *
@@ -9087,15 +9075,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const PixelFormat& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(PixelFormatRaw format) const
-  {
-    return operator==(PixelFormat(format));
-  }
-
   /**
    * Unwraps to the underlying PixelFormat.
    *
@@ -10349,15 +10328,6 @@ public:
                                                    matrix,
                                                    chroma)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const Colorspace& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(ColorspaceRaw cspace) const
-  {
-    return operator==(Colorspace(cspace));
   }
 
   /**
@@ -31057,18 +31027,6 @@ public:
    */
   Scancode(StringParam name);
 
-  /// Default comparison operator
-  constexpr bool operator==(ScancodeRaw scancode) const
-  {
-    return m_scancode == scancode;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(ScancodeRaw scancode) const
-  {
-    return m_scancode <=> scancode;
-  }
-
   /**
    * Unwraps to the underlying Scancode.
    *
@@ -33327,15 +33285,6 @@ public:
     : m_audioFormat(
         AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const AudioFormat& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(AudioFormatRaw audioFormat) const
-  {
-    return operator==(AudioFormat(audioFormat));
   }
 
   /**
@@ -38106,18 +38055,6 @@ public:
    * @sa Scancode.Scancode
    */
   Keycode(StringParam name);
-
-  /// Default comparison operator
-  constexpr bool operator==(KeycodeRaw keycode) const
-  {
-    return m_keycode == keycode;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(KeycodeRaw keycode) const
-  {
-    return m_keycode <=> keycode;
-  }
 
   /**
    * Unwraps to the underlying Keycode.
@@ -49261,15 +49198,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const TrayMenu& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(TrayMenuRaw trayMenu) const
-  {
-    return operator==(TrayMenu(trayMenu));
-  }
-
   /**
    * Unwraps to the underlying TrayMenu.
    *
@@ -50475,15 +50403,6 @@ public:
   constexpr Display(DisplayID displayID = {})
     : m_displayID(displayID)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const Display& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(DisplayID displayID) const
-  {
-    return operator==(Display(displayID));
   }
 
   /**
@@ -60225,15 +60144,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUBufferRaw gPUBuffer) const
-  {
-    return operator==(GPUBuffer(gPUBuffer));
-  }
-
   /**
    * Unwraps to the underlying GPUBuffer.
    *
@@ -60314,15 +60224,6 @@ public:
     : m_gPUTransferBuffer(
         CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUTransferBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUTransferBufferRaw gPUTransferBuffer) const
-  {
-    return operator==(GPUTransferBuffer(gPUTransferBuffer));
   }
 
   /**
@@ -60446,15 +60347,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUTexture& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUTextureRaw gPUTexture) const
-  {
-    return operator==(GPUTexture(gPUTexture));
-  }
-
   /**
    * Unwraps to the underlying GPUTexture.
    *
@@ -60528,15 +60420,6 @@ public:
   GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
     : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUSampler& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUSamplerRaw gPUSampler) const
-  {
-    return operator==(GPUSampler(gPUSampler));
   }
 
   /**
@@ -60658,15 +60541,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUShader& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUShaderRaw gPUShader) const
-  {
-    return operator==(GPUShader(gPUShader));
-  }
-
   /**
    * Unwraps to the underlying GPUShader.
    *
@@ -60763,15 +60637,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUComputePipeline& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUComputePipelineRaw gPUComputePipeline) const
-  {
-    return operator==(GPUComputePipeline(gPUComputePipeline));
-  }
-
   /**
    * Unwraps to the underlying GPUComputePipeline.
    *
@@ -60853,15 +60718,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUGraphicsPipeline& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUGraphicsPipelineRaw gPUGraphicsPipeline) const
-  {
-    return operator==(GPUGraphicsPipeline(gPUGraphicsPipeline));
-  }
-
   /**
    * Unwraps to the underlying GPUGraphicsPipeline.
    *
@@ -60941,15 +60797,6 @@ public:
   constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
     : m_gPURenderPass(gPURenderPass)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPURenderPass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPURenderPassRaw gPURenderPass) const
-  {
-    return operator==(GPURenderPass(gPURenderPass));
   }
 
   /**
@@ -61280,15 +61127,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUComputePass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUComputePassRaw gPUComputePass) const
-  {
-    return operator==(GPUComputePass(gPUComputePass));
-  }
-
   /**
    * Unwraps to the underlying GPUComputePass.
    *
@@ -61509,15 +61347,6 @@ public:
   constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
     : m_gPUCopyPass(gPUCopyPass)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUCopyPass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUCopyPassRaw gPUCopyPass) const
-  {
-    return operator==(GPUCopyPass(gPUCopyPass));
   }
 
   /**
@@ -61804,15 +61633,6 @@ public:
   constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
     : m_gPUCommandBuffer(gPUCommandBuffer)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUCommandBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUCommandBufferRaw gPUCommandBuffer) const
-  {
-    return operator==(GPUCommandBuffer(gPUCommandBuffer));
   }
 
   /**
@@ -67437,15 +67257,6 @@ public:
   constexpr JoystickID(JoystickIDRaw joystickID = {})
     : m_joystickID(joystickID)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const JoystickID& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(JoystickIDRaw joystickID) const
-  {
-    return operator==(JoystickID(joystickID));
   }
 
   /**

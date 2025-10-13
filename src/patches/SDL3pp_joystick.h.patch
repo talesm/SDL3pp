@@ -2,31 +2,31 @@
 <  * @defgroup CategoryJoystick Category Joystick
 ---
 >  * @defgroup CategoryJoystick Joystick Support
-305,306c305,306
+296,297c296,297
 <    * @returns a joystick identifier or nullptr on failure; call GetError() for
 <    *          more information.
 ---
 >    * @returns an Joystick on success.
 >    * @throws Error on failure.
-312c312
+303c303
 <   JoystickRef OpenJoystick();
 ---
 >   Joystick OpenJoystick();
-367a368,371
+358a359,362
 > /**
 >  * Represents tbe HatState for a Joystick.
 >  *
 >  */
-437,438c441
+428,429c432
 <    * @post a joystick identifier or nullptr on failure; call GetError() for
 <    *          more information.
 ---
 >    * @throws Error on failure.
-445c448
+436c439
 <     : m_resource(SDL_OpenJoystick(instance_id))
 ---
 >     : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
-578,581c581,582
+569,572c572,573
 <    * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
 <    *          with the origin in the upper left.
 <    * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
@@ -34,24 +34,24 @@
 ---
 >    * @param p the x, y coordinates of the finger on the touchpad, normalized 0
 >    *          to 1, with the origin in the upper left.
-1119,1122c1120
+1110,1113c1111
 < inline void LockJoysticks(void) SDL_ACQUIRE(SDL_joystick_lock)
 < {
 <   SDL_LockJoysticks(SDL_ACQUIRE(SDL_joystick_lock);
 < }
 ---
 > inline void LockJoysticks(void) { SDL_LockJoysticks(); }
-1129,1132c1127
+1120,1123c1118
 < inline void UnlockJoysticks(void) SDL_RELEASE(SDL_joystick_lock)
 < {
 <   SDL_UnlockJoysticks(SDL_RELEASE(SDL_joystick_lock);
 < }
 ---
 > inline void UnlockJoysticks(void) { SDL_UnlockJoysticks(); }
-1148,1149d1142
+1139,1140d1133
 <  * @param count a pointer filled in with the number of joysticks returned, may
 <  *              be nullptr.
-1159c1152,1157
+1150c1143,1148
 < inline OwnArray<JoystickID> GetJoysticks() { return SDL_GetJoysticks(); }
 ---
 > inline OwnArray<JoystickID> GetJoysticks()
@@ -60,28 +60,28 @@
 >   auto r = reinterpret_cast<JoystickID*>(SDL_GetJoysticks(&count));
 >   return OwnArray<JoystickID>(r, count);
 > }
-1363,1364c1361,1362
+1354,1355c1352,1353
 <  * @returns a joystick identifier or nullptr on failure; call GetError() for
 <  *          more information.
 ---
 >  * @returns an Joystick on success.
 >  * @throws Error on failure.
-1375,1378c1373
+1366,1369c1364
 < inline JoystickRef JoystickID::OpenJoystick()
 < {
 <   return SDL::Joystick.Joystick(m_joystickID);
 < }
 ---
 > inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
-1391c1386
+1382c1377
 <   return CheckError(SDL_GetJoystickFromID(instance_id));
 ---
 >   return {CheckError(SDL_GetJoystickFromID(instance_id))};
-1413c1408
+1404c1399
 <   return CheckError(SDL_GetJoystickFromPlayerIndex(player_index));
 ---
 >   return {CheckError(SDL_GetJoystickFromPlayerIndex(player_index))};
-1634,1637c1629,1630
+1625,1628c1620,1621
 <  * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
 <  *          with the origin in the upper left.
 <  * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
@@ -89,11 +89,11 @@
 ---
 >  * @param p the x, y coordinates of the finger on the touchpad, normalized 0 to
 >  *          1, with the origin in the upper left.
-1651c1644
+1642c1635
 <     joystick, touchpad, finger, down, p, pressure));
 ---
 >     joystick, touchpad, finger, down, p.x, p.y, pressure));
-1726c1719
+1717c1710
 <   return CheckError(SDL_GetJoystickProperties(joystick));
 ---
 >   return {CheckError(SDL_GetJoystickProperties(joystick))};

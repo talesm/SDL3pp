@@ -464,15 +464,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUBufferRaw gPUBuffer) const
-  {
-    return operator==(GPUBuffer(gPUBuffer));
-  }
-
   /**
    * Unwraps to the underlying GPUBuffer.
    *
@@ -553,15 +544,6 @@ public:
     : m_gPUTransferBuffer(
         CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUTransferBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUTransferBufferRaw gPUTransferBuffer) const
-  {
-    return operator==(GPUTransferBuffer(gPUTransferBuffer));
   }
 
   /**
@@ -685,15 +667,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUTexture& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUTextureRaw gPUTexture) const
-  {
-    return operator==(GPUTexture(gPUTexture));
-  }
-
   /**
    * Unwraps to the underlying GPUTexture.
    *
@@ -767,15 +740,6 @@ public:
   GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
     : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUSampler& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUSamplerRaw gPUSampler) const
-  {
-    return operator==(GPUSampler(gPUSampler));
   }
 
   /**
@@ -897,15 +861,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUShader& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUShaderRaw gPUShader) const
-  {
-    return operator==(GPUShader(gPUShader));
-  }
-
   /**
    * Unwraps to the underlying GPUShader.
    *
@@ -1002,15 +957,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUComputePipeline& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUComputePipelineRaw gPUComputePipeline) const
-  {
-    return operator==(GPUComputePipeline(gPUComputePipeline));
-  }
-
   /**
    * Unwraps to the underlying GPUComputePipeline.
    *
@@ -1092,15 +1038,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUGraphicsPipeline& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUGraphicsPipelineRaw gPUGraphicsPipeline) const
-  {
-    return operator==(GPUGraphicsPipeline(gPUGraphicsPipeline));
-  }
-
   /**
    * Unwraps to the underlying GPUGraphicsPipeline.
    *
@@ -1180,15 +1117,6 @@ public:
   constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
     : m_gPURenderPass(gPURenderPass)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPURenderPass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPURenderPassRaw gPURenderPass) const
-  {
-    return operator==(GPURenderPass(gPURenderPass));
   }
 
   /**
@@ -1519,15 +1447,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const GPUComputePass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUComputePassRaw gPUComputePass) const
-  {
-    return operator==(GPUComputePass(gPUComputePass));
-  }
-
   /**
    * Unwraps to the underlying GPUComputePass.
    *
@@ -1748,15 +1667,6 @@ public:
   constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
     : m_gPUCopyPass(gPUCopyPass)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUCopyPass& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUCopyPassRaw gPUCopyPass) const
-  {
-    return operator==(GPUCopyPass(gPUCopyPass));
   }
 
   /**
@@ -2043,15 +1953,6 @@ public:
   constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
     : m_gPUCommandBuffer(gPUCommandBuffer)
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const GPUCommandBuffer& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(GPUCommandBufferRaw gPUCommandBuffer) const
-  {
-    return operator==(GPUCommandBuffer(gPUCommandBuffer));
   }
 
   /**

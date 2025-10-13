@@ -146,18 +146,6 @@ public:
    */
   Keycode(StringParam name);
 
-  /// Default comparison operator
-  constexpr bool operator==(KeycodeRaw keycode) const
-  {
-    return m_keycode == keycode;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(KeycodeRaw keycode) const
-  {
-    return m_keycode <=> keycode;
-  }
-
   /**
    * Unwraps to the underlying Keycode.
    *

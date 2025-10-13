@@ -555,7 +555,7 @@ function expandTypes(sourceEntries, file, context) {
         changeAccess: isStruct ? undefined : 'public',
       }
     });
-    if (wrapper.ordered) {
+    if (wrapper.ordered && isStruct) {
       insertTransform(entries, {
         kind: "function",
         name: "operator==",
@@ -582,34 +582,7 @@ function expandTypes(sourceEntries, file, context) {
         doc: "Default comparison operator",
         hints: { body: `return ${attribute} <=> ${paramName};` }
       });
-    } else if (!isStruct) {
-      insertTransform(entries, {
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: `const ${targetType} &`,
-          name: "other",
-        }],
-        doc: "Default comparison operator",
-        hints: { default: true, }
-      });
-      insertTransform(entries, {
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: paramName,
-        }],
-        doc: "Compares with the underlying type",
-        hints: { body: `return operator==(${targetType}(${paramName}));`, }
-      });
-    } else if (wrapper.comparable) {
+    } else if (wrapper.comparable && isStruct) {
       const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
       insertTransform(entries, {
         kind: "function",

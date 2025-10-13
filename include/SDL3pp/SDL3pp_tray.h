@@ -386,15 +386,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const TrayMenu& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(TrayMenuRaw trayMenu) const
-  {
-    return operator==(TrayMenu(trayMenu));
-  }
-
   /**
    * Unwraps to the underlying TrayMenu.
    *

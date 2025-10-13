@@ -71,18 +71,6 @@ public:
    */
   Scancode(StringParam name);
 
-  /// Default comparison operator
-  constexpr bool operator==(ScancodeRaw scancode) const
-  {
-    return m_scancode == scancode;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(ScancodeRaw scancode) const
-  {
-    return m_scancode <=> scancode;
-  }
-
   /**
    * Unwraps to the underlying Scancode.
    *

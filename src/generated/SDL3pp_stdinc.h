@@ -386,15 +386,6 @@ public:
    */
   constexpr Time(std::chrono::nanoseconds time) {}
 
-  /// Default comparison operator
-  constexpr bool operator==(const Time& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(TimeRaw time) const
-  {
-    return operator==(Time(time));
-  }
-
   /**
    * Unwraps to the underlying Time.
    *

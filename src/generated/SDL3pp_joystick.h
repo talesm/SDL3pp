@@ -157,15 +157,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const JoystickID& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(JoystickIDRaw joystickID) const
-  {
-    return operator==(JoystickID(joystickID));
-  }
-
   /**
    * Unwraps to the underlying JoystickID.
    *

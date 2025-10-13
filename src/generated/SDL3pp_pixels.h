@@ -395,15 +395,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const PixelFormat& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(PixelFormatRaw format) const
-  {
-    return operator==(PixelFormat(format));
-  }
-
   /**
    * Unwraps to the underlying PixelFormat.
    *
@@ -1585,15 +1576,6 @@ public:
     : m_cspace(
         SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const Colorspace& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(ColorspaceRaw cspace) const
-  {
-    return operator==(Colorspace(cspace));
   }
 
   /**

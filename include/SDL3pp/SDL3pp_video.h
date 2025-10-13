@@ -183,15 +183,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const Display& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(DisplayID displayID) const
-  {
-    return operator==(Display(displayID));
-  }
-
   /**
    * Unwraps to the underlying Display.
    *

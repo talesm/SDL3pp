@@ -146,18 +146,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(LogCategory category) const
-  {
-    return m_category == category.m_category;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(LogCategory category) const
-  {
-    return m_category <=> category.m_category;
-  }
-
   /**
    * Unwraps to the underlying LogCategory.
    *

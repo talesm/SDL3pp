@@ -443,15 +443,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const PixelFormat& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(PixelFormatRaw format) const
-  {
-    return operator==(PixelFormat(format));
-  }
-
   /**
    * Unwraps to the underlying PixelFormat.
    *
@@ -1705,15 +1696,6 @@ public:
                                                    matrix,
                                                    chroma)))
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const Colorspace& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(ColorspaceRaw cspace) const
-  {
-    return operator==(Colorspace(cspace));
   }
 
   /**

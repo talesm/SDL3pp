@@ -295,15 +295,6 @@ public:
   {
   }
 
-  /// Default comparison operator
-  constexpr bool operator==(const AudioFormat& other) const = default;
-
-  /// Compares with the underlying type
-  constexpr bool operator==(AudioFormatRaw audioFormat) const
-  {
-    return operator==(AudioFormat(audioFormat));
-  }
-
   /**
    * Unwraps to the underlying AudioFormat.
    *

@@ -121,18 +121,6 @@ public:
    */
   constexpr explicit LogCategory(int category) {}
 
-  /// Default comparison operator
-  constexpr bool operator==(LogCategoryRaw category) const
-  {
-    return m_category == category;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(LogCategoryRaw category) const
-  {
-    return m_category <=> category;
-  }
-
   /**
    * Unwraps to the underlying LogCategory.
    *
