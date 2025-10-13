@@ -362,15 +362,15 @@
 1483c1602,1610
 <     static_assert(false, "Not implemented");
 ---
->     Blit9GridWithScale(src,
->                        srcrect,
->                        left_width,
->                        right_width,
->                        top_height,
->                        bottom_height,
->                        0.0,
->                        SDL_SCALEMODE_NEAREST,
->                        dstrect);
+>     Blit9Grid(src,
+>               srcrect,
+>               left_width,
+>               right_width,
+>               top_height,
+>               bottom_height,
+>               0.0,
+>               SDL_SCALEMODE_NEAREST,
+>               dstrect);
 1495a1623
 >    * @param src the SDL_Surface structure to be copied from.
 1506d1633
