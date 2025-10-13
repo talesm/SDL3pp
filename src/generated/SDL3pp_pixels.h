@@ -2026,6 +2026,36 @@ constexpr bool Colorspace::IsFullRange() const
   return SDL::IsColorspaceFullRange(m_cspace);
 }
 
+/// Comparison operator for Color.
+constexpr bool operator==(ColorRaw lhs, ColorRaw rhs)
+{
+  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// Comparison operator for FColor.
+constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs)
+{
+  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// Spaceship operator for Color.
+constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
+{
+  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
+  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
+  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
+  return lhs.a <=> rhs.a;
+}
+
+/// Spaceship operator for FColor.
+constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
+{
+  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
+  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
+  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
+  return lhs.a <=> rhs.a;
+}
+
 /**
  * A structure that represents a color as RGBA components.
  *
@@ -2060,12 +2090,6 @@ struct Color : ColorRaw
     : ColorRaw{r, g, b, a}
   {
   }
-
-  /// Default comparison operator
-  constexpr bool operator==(ColorRaw color) const { return m_color == color; }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(ColorRaw color) const { return m_color <=> color; }
 
   /**
    * Get the r.
@@ -2173,18 +2197,6 @@ struct FColor : FColorRaw
   constexpr FColor(float r, float g, float b, float a)
     : FColorRaw{r, g, b, a}
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(const FColorRaw& color) const
-  {
-    return m_color == color;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(const FColorRaw& color) const
-  {
-    return m_color <=> color;
   }
 
   /**

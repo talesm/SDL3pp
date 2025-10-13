@@ -555,61 +555,41 @@ function expandTypes(sourceEntries, file, context) {
         changeAccess: isStruct ? undefined : 'public',
       }
     });
-    if (wrapper.ordered && isStruct) {
-      insertTransform(entries, {
+    if (isStruct && wrapper.ordered || wrapper.comparable) {
+      const body = 'return ' + fields.map(f => `lhs.${f} == rhs.${f}`).join(' && ') + ';';
+      context.includeBefore({
+        before: sourceType,
         kind: "function",
         name: "operator==",
         type: "bool",
         constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: paramName,
-        }],
-        doc: "Default comparison operator",
-        hints: { body: `return ${attribute} == ${paramName};` }
-      });
-      insertTransform(entries, {
-        kind: "function",
-        name: "operator<=>",
-        type: "auto",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: paramName,
-        }],
-        doc: "Default comparison operator",
-        hints: { body: `return ${attribute} <=> ${paramName};` }
-      });
-    } else if (wrapper.comparable && isStruct) {
-      const body = 'return ' + fields.map(f => `${f} == other.${f}`).join(' && ') + ';';
-      insertTransform(entries, {
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: constParamType,
-          name: "other",
-        }],
-        doc: "Compares with the underlying type",
+        parameters: [
+          { type: constParamType, name: "lhs" },
+          { type: constParamType, name: "rhs" },
+        ],
+        doc: `Comparison operator for ${targetType}.`,
         hints: { body },
-      });
-      insertTransform(entries, {
-        kind: "function",
-        name: "operator==",
-        type: "bool",
-        constexpr,
-        immutable: true,
-        parameters: [{
-          type: `const ${targetType} &`,
-          name: "other",
-        }],
-        doc: "Compares with the underlying type",
-        hints: { body: `return *this == (${constParamType})(other);` },
-      });
+      }, sourceType);
+      if (wrapper.ordered) {
+        const lastField = fields.length - 1;
+        const body = fields.map((f, i) => {
+          if (i == lastField) return `return lhs.${f} <=> rhs.${f}`;
+          return `if (lhs.${f} != rhs.${f}) return lhs.${f} <=> rhs.${f}`;
+        }).join(';\n') + ';';
+        context.includeBefore({
+          before: sourceType,
+          kind: "function",
+          name: "operator<=>",
+          type: "auto",
+          constexpr,
+          parameters: [
+            { type: constParamType, name: "lhs" },
+            { type: constParamType, name: "rhs" },
+          ],
+          doc: `Spaceship operator for ${targetType}.`,
+          hints: { body },
+        }, sourceType);
+      }
     }
     if (wrapper.nullable) insertTransform(entries, {
       kind: "function",

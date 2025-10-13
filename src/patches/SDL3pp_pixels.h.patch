@@ -187,14 +187,14 @@
 <    * @sa PixelFormat.GetBitsPerPixel
 ---
 >    * @sa GetBitsPerPixel
-505c542
+505,508c542
 <    * A macro to determine if an PixelFormat is an indexed format.
----
->    * Determine if this is an indexed format.
-507,510d543
+<    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
-<    *
+---
+>    * Determine if this is an indexed format.
+510d543
 <    * @param format an PixelFormat to check.
 513c546
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -204,14 +204,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-520c553
+520,523c553
 <    * A macro to determine if an PixelFormat is a packed format.
----
->    * Determine if this is a packed format.
-522,525d554
+<    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
-<    *
+---
+>    * Determine if this is a packed format.
+525d554
 <    * @param format an PixelFormat to check.
 528c557
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -221,14 +221,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-535,538c564
+535c564
 <    * A macro to determine if an PixelFormat is an array format.
-<    *
-<    * Note that this macro double-evaluates its parameter, so do not use
-<    * expressions with side-effects here.
 ---
 >    * Determine if this is an array format.
-540d565
+537,540d565
+<    * Note that this macro double-evaluates its parameter, so do not use
+<    * expressions with side-effects here.
+<    *
 <    * @param format an PixelFormat to check.
 543c568
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -238,14 +238,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-550,553c575
+550c575
 <    * A macro to determine if an PixelFormat is a 10-bit format.
-<    *
-<    * Note that this macro double-evaluates its parameter, so do not use
-<    * expressions with side-effects here.
 ---
 >    * Determine if this is a 10-bit format.
-555d576
+552,555d576
+<    * Note that this macro double-evaluates its parameter, so do not use
+<    * expressions with side-effects here.
+<    *
 <    * @param format an PixelFormat to check.
 558c579
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -590,15 +590,15 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-1661,1665c1775
+1661,1662c1775
 <    * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
 <    * coefficients.
-<    *
-<    * Note that this macro double-evaluates its parameter, so do not use
-<    * expressions with side-effects here.
 ---
 >    * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
-1667d1776
+1664,1667d1776
+<    * Note that this macro double-evaluates its parameter, so do not use
+<    * expressions with side-effects here.
+<    *
 <    * @param cspace an Colorspace to check.
 1670c1779
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -668,11 +668,11 @@
 1763a1868,1869
 > /// @}
 > 
-2037a2144,2146
+2067a2174,2176
 >  *
 >  * @cat wrap-extending-struct
 >  * @sa FColor
-2054,2057c2163,2166
+2084,2087c2193,2196
 <    * @param r the value for r.
 <    * @param g the value for g.
 <    * @param b the value for b.
@@ -682,95 +682,75 @@
 >    * @param g the value for channel g.
 >    * @param b the value for channel b.
 >    * @param a the value for channel a.
-2059c2168
+2089c2198
 <   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 ---
 >   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
-2065c2174,2177
-<   constexpr bool operator==(ColorRaw color) const { return m_color == color; }
----
->   constexpr bool operator==(ColorRaw other) const
->   {
->     return r == other.r && g == other.g && b == other.b && a == other.a;
->   }
-2068c2180,2189
-<   constexpr auto operator<=>(ColorRaw color) const { return m_color <=> color; }
----
->   constexpr auto operator<=>(ColorRaw other) const
->   {
->     auto c = r <=> other.r;
->     if (c != std::strong_ordering::equal) return c;
->     c = g <=> other.g;
->     if (c != std::strong_ordering::equal) return c;
->     c = b <=> other.b;
->     if (c != std::strong_ordering::equal) return c;
->     return a <=> other.a;
->   }
-2071c2192
+2095c2204
 <    * Get the r.
 ---
 >    * Get the red component from the color.
-2073c2194
+2097c2206
 <    * @returns current r value.
 ---
 >    * @returns The red component from the color.
-2078c2199
+2102c2211
 <    * Set the r.
 ---
 >    * Set the red component from the color.
-2080c2201
+2104c2213
 <    * @param newR the new r value.
 ---
 >    * @param newR New red component value.
-2090c2211,2213
+2114c2223,2225
 <    * Get the g.
 ---
 >    * Get the green component from the color.
 >    *
 >    * @returns The green component from the color.
-2092d2214
+2116d2226
 <    * @returns current g value.
-2097c2219
+2121c2231
 <    * Set the g.
 ---
 >    * Set the green component from the color.
-2099c2221
+2123c2233
 <    * @param newG the new g value.
 ---
 >    * @param newG New green component value.
-2109c2231,2233
+2133c2243,2245
 <    * Get the b.
 ---
 >    * Get the blue component from the color.
 >    *
 >    * @returns The blue component from the color.
-2111d2234
+2135d2246
 <    * @returns current b value.
-2116c2239
+2140c2251
 <    * Set the b.
 ---
 >    * Set the blue component from the color.
-2118c2241
+2142c2253
 <    * @param newB the new b value.
 ---
 >    * @param newB New blue component value.
-2128c2251,2253
+2152c2263,2265
 <    * Get the a.
 ---
 >    * Get the alpha component from the color.
 >    *
 >    * @returns The alpha component from the color.
-2130d2254
+2154d2266
 <    * @returns current a value.
-2135c2259
+2159c2271
 <    * Set the a.
 ---
 >    * Set the alpha component from the color.
-2137c2261
+2161c2273
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2144a2269,2326
+2168a2281,2338
 > 
 >   /**
 >    * Map an RGBA quadruple to a pixel value for a given pixel format.
@@ -829,144 +809,122 @@
 >   static Color Get(Uint32 pixel,
 >                    const PixelFormatDetails& format,
 >                    PaletteConstParam palette);
-2151a2334,2337
+2175a2346,2349
 >  *
 >  * @cat wrap-extending-struct
 >  *
 >  * @sa Color
-2173c2359
+2197c2371
 <   constexpr FColor(float r, float g, float b, float a)
 ---
 >   constexpr FColor(float r, float g, float b, float a = 1)
-2179c2365
-<   constexpr bool operator==(const FColorRaw& color) const
----
->   constexpr bool operator==(FColorRaw other) const
-2181c2367
-<     return m_color == color;
----
->     return r == other.r && g == other.g && b == other.b && a == other.a;
-2185c2371
-<   constexpr auto operator<=>(const FColorRaw& color) const
----
->   constexpr auto operator<=>(FColorRaw other) const
-2187c2373,2379
-<     return m_color <=> color;
----
->     auto c = r <=> other.r;
->     if (c != std::strong_ordering::equivalent) return c;
->     c = g <=> other.g;
->     if (c != std::strong_ordering::equivalent) return c;
->     c = b <=> other.b;
->     if (c != std::strong_ordering::equivalent) return c;
->     return a <=> other.a;
-2191c2383
+2203c2377
 <    * Get the r.
 ---
 >    * Get the red component from the color.
-2193c2385
+2205c2379
 <    * @returns current r value.
 ---
 >    * @returns The red component from the color.
-2198c2390
+2210c2384
 <    * Set the r.
 ---
 >    * Set the red component from the color.
-2200c2392
+2212c2386
 <    * @param newR the new r value.
 ---
 >    * @param newR New red component value.
-2210c2402,2404
+2222c2396,2398
 <    * Get the g.
 ---
 >    * Get the green component from the color.
 >    *
 >    * @returns The green component from the color.
-2212d2405
+2224d2399
 <    * @returns current g value.
-2217c2410
+2229c2404
 <    * Set the g.
 ---
 >    * Set the green component from the color.
-2219c2412
+2231c2406
 <    * @param newG the new g value.
 ---
 >    * @param newG New green component value.
-2229c2422,2424
+2241c2416,2418
 <    * Get the b.
 ---
 >    * Get the blue component from the color.
 >    *
 >    * @returns The blue component from the color.
-2231d2425
+2243d2419
 <    * @returns current b value.
-2236c2430
+2248c2424
 <    * Set the b.
 ---
 >    * Set the blue component from the color.
-2238c2432
+2250c2426
 <    * @param newB the new b value.
 ---
 >    * @param newB New blue component value.
-2248c2442,2444
+2260c2436,2438
 <    * Get the a.
 ---
 >    * Get the alpha component from the color.
 >    *
 >    * @returns The alpha component from the color.
-2250d2445
+2262d2439
 <    * @returns current a value.
-2255c2450
+2267c2444
 <    * Set the a.
 ---
 >    * Set the alpha component from the color.
-2257c2452
+2269c2446
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2389c2584,2585
+2401c2578,2579
 <   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
 ---
 >   /// Returns number of colors in the palette.
 >   constexpr int GetSize() const { return m_resource->ncolors; }
-2390a2587
+2402a2581
 >   /// Access specific pallete index
-2393c2590
+2405c2584
 <     static_assert(false, "Not implemented");
 ---
 >     return m_resource->colors[index];
-2401d2597
+2413d2591
 <    * @param ncolors the number of entries to modify.
-2407a2604,2605
+2419a2598,2599
 >    *
 >    * @sa Palette.Palette
-2516c2714
+2528c2708
 <  * @returns a pointer to a PixelFormatDetails structure or nullptr on
 ---
 >  * @returns a PixelFormatDetails structure or nullptr on
-2525c2723
+2537c2717
 <   return SDL_GetPixelFormatDetails(format);
 ---
 >   return *SDL_GetPixelFormatDetails(format);
-2558d2755
+2570d2749
 <  * @param ncolors the number of entries to modify.
-2570c2767,2768
+2582c2761,2762
 <   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2660,2663c2858
+2672,2675c2852
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
 ---
 >  * @param c the color components of the pixel in the range 0-255.
-2680c2875
+2692c2869
 <   return SDL_MapRGBA(&format, palette, c);
 ---
 >   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
-2760a2956,2982
+2772a2950,2976
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const

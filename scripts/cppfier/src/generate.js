@@ -200,7 +200,6 @@ function generateFile(targetFile, config) {
     const maybeDelegatedTo = hint?.delegate ?? entry.sourceName;
     const delegatedTo = maybeDelegatedTo === entry.name ? ("::" + maybeDelegatedTo) : maybeDelegatedTo;
     if (!delegatedTo) {
-      if (/operator(==|<=>)/.test(entry.name)) return " = default;";
       if (entry.proto) return ";";
       if (entry.type === "" && !entry.name.startsWith("operator")) return "{}";
       return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;

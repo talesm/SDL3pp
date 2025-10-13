@@ -39,6 +39,30 @@ struct Rect;
 // Forward decl
 struct FRect;
 
+/// Comparison operator for Point.
+constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+/// Comparison operator for FPoint.
+constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+/// Comparison operator for Rect.
+constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+{
+  return SDL_RectsEqual(&lhs, &rhs);
+}
+
+/// Comparison operator for FRect.
+constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+{
+  return SDL_RectsEqualFloat(&lhs, &rhs);
+}
+
 /**
  * The structure that defines a point (using integers).
  *
@@ -83,18 +107,6 @@ struct Point : PointRaw
   constexpr explicit Point(const FPointRaw& p)
     : SDL_Point{int(p.x), int(p.y)}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const PointRaw& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const Point& other) const
-  {
-    return *this == (const PointRaw&)(other);
   }
 
   /**
@@ -511,18 +523,6 @@ struct FPoint : FPointRaw
   constexpr FPoint(float x, float y)
     : FPointRaw{x, y}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FPointRaw& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FPoint& other) const
-  {
-    return *this == (const FPointRaw&)(other);
   }
 
   /**

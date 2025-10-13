@@ -39,6 +39,30 @@ struct Rect;
 // Forward decl
 struct FRect;
 
+/// Comparison operator for Point.
+constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+/// Comparison operator for FPoint.
+constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+/// Comparison operator for Rect.
+constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.w == rhs.w && lhs.h == rhs.h;
+}
+
+/// Comparison operator for FRect.
+constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.w == rhs.w && lhs.h == rhs.h;
+}
+
 /**
  * The structure that defines a point (using integers).
  *
@@ -76,18 +100,6 @@ struct Point : PointRaw
    * @param p the value to be wrapped
    */
   constexpr explicit Point(const FPointRaw& p) {}
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const PointRaw& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const Point& other) const
-  {
-    return *this == (const PointRaw&)(other);
-  }
 
   /**
    * Check if valid.
@@ -186,18 +198,6 @@ struct FPoint : FPointRaw
   constexpr FPoint(float x, float y)
     : FPointRaw{x, y}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FPointRaw& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FPoint& other) const
-  {
-    return *this == (const FPointRaw&)(other);
   }
 
   /**
@@ -312,18 +312,6 @@ struct Rect : RectRaw
    * @param r the value to be wrapped
    */
   Rect(const PointRaw& corner, const PointRaw& size) {}
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const RectRaw& other) const
-  {
-    return x == other.x && y == other.y && w == other.w && h == other.h;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const Rect& other) const
-  {
-    return *this == (const RectRaw&)(other);
-  }
 
   ///@sa Empty()
   constexpr explicit operator bool() const
@@ -649,18 +637,6 @@ struct FRect : FRectRaw
    * @param r the value to be wrapped
    */
   constexpr FRect(const FPointRaw& corner, const FPointRaw& size) {}
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRectRaw& other) const
-  {
-    return x == other.x && y == other.y && w == other.w && h == other.h;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRect& other) const
-  {
-    return *this == (const FRectRaw&)(other);
-  }
 
   ///@sa Empty()
   constexpr explicit operator bool() const

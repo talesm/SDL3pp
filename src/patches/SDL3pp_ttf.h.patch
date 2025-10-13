@@ -689,29 +689,31 @@
 >  * Iterator for substrings
 >  *
 >  */
-5204c5186,5190
+5204,5211c5186,5188
 <   constexpr SubStringIterator(TextRef text) {}
----
->   constexpr SubStringIterator(TextRef text)
->     : m_text(text)
->     , m_subString(0)
->   {
->   }
-5207,5211c5193,5195
+< 
+< public:
 <   constexpr SubStringIterator() {}
 < 
 <   constexpr operator bool() const { static_assert(false, "Not implemented"); }
 < 
 <   constexpr const SubString& operator*() const
 ---
+>   constexpr SubStringIterator(TextRef text)
+>     : m_text(text)
+>     , m_subString(0)
+5213d5189
+<     static_assert(false, "Not implemented");
+5216c5192,5195
+<   constexpr const SubString* operator->() const
+---
+> public:
 >   /// Default constructor.
 >   constexpr SubStringIterator()
 >     : SubStringIterator(TextRef{})
-5213d5196
+5218d5196
 <     static_assert(false, "Not implemented");
-5216c5199,5209
-<   constexpr const SubString* operator->() const
----
+5220a5199,5208
 >   /// True if pointing to valid SubString.
 >   constexpr operator bool() const { return bool(m_text); }
 > 
@@ -722,48 +724,44 @@
 >   constexpr const SubString* operator->() const { return &m_subString; }
 > 
 >   /// Comparison.
->   constexpr bool operator==(const SubStringIterator& other) const
-5218c5211
+5223c5211
 <     static_assert(false, "Not implemented");
 ---
 >     return m_subString.offset == other.m_subString.offset;
-5221,5222c5214
-<   constexpr bool operator==(const SubStringIterator& other) const = default;
-< 
----
+5225a5214
 >   /// Increment operator.
-5225c5217,5218
+5228c5217,5218
 <     static_assert(false, "Not implemented");
 ---
 >     m_text.GetNextSubString(m_subString, &m_subString);
 >     return *this;
-5227a5221
+5230a5221
 >   /// Increment operator.
-5230c5224,5226
+5233c5224,5226
 <     static_assert(false, "Not implemented");
 ---
 >     auto curr = *this;
 >     m_text.GetNextSubString(m_subString, &m_subString);
 >     return curr;
-5232a5229
+5235a5229
 >   /// Decrement operator.
-5235c5232,5233
+5238c5232,5233
 <     static_assert(false, "Not implemented");
 ---
 >     m_text.GetPreviousSubString(m_subString, &m_subString);
 >     return *this;
-5237a5236
+5240a5236
 >   /// Decrement operator.
-5240c5239,5241
+5243c5239,5241
 <     static_assert(false, "Not implemented");
 ---
 >     auto curr = *this;
 >     m_text.GetPreviousSubString(m_subString, &m_subString);
 >     return curr;
-5241a5243,5244
+5244a5243,5244
 > 
 >   friend class Text;
-5269,5272c5272,5273
+5272,5275c5272,5273
 <  * @param x the x coordinate in pixels, positive from the left edge towards
 <  *          the right.
 <  * @param y the y coordinate in pixels, positive from the top edge towards the
@@ -771,11 +769,11 @@
 ---
 >  * @param p the (x, y) coordinate in pixels, positive from the left edge
 >  *          towards the right and from the top edge towards the bottom.
-5286c5287
+5289c5287
 <   CheckError(TTF_DrawSurfaceText(text, p, surface));
 ---
 >   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
-5389,5392c5390,5391
+5392,5395c5390,5391
 <  * @param x the x coordinate in pixels, positive from the left edge towards
 <  *          the right.
 <  * @param y the y coordinate in pixels, positive from the top edge towards the
@@ -783,19 +781,19 @@
 ---
 >  * @param p the (x, y) coordinate in pixels, positive from the left edge
 >  *          towards the right and from the top edge towards the bottom.
-5401c5400
+5404c5400
 <  * @sa Text.Text
 ---
 >  * @sa GPUTextEngine.GPUTextEngine
-5405c5404
+5408c5404
 <   CheckError(TTF_DrawRendererText(text, p));
 ---
 >   CheckError(TTF_DrawRendererText(text, p.x, p.y));
-5524c5523
+5527c5523
 <  * @sa Text.Text
 ---
 >  * @sa GPUTextEngine.GPUTextEngine
-5559,5560c5558,5574
+5562,5563c5558,5574
 < inline void GPUTextEngine::SetGPUWinding(TextEngineParam engine,
 <                                          GPUTextEngineWinding winding)
 ---
@@ -816,16 +814,16 @@
 >  */
 > inline void SetGPUTextEngineWinding(TextEngineParam engine,
 >                                     GPUTextEngineWinding winding)
-5562c5576
+5565c5576
 <   SDL::SetGPUTextEngineWinding(engine, winding);
 ---
 >   TTF_SetGPUTextEngineWinding(engine, winding);
-5565,5566c5579
+5568,5569c5579
 < inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding(
 <   TextEngineParam engine) const
 ---
 > inline void GPUTextEngine::SetGPUWinding(GPUTextEngineWinding winding)
-5568c5581,5607
+5571c5581,5607
 <   return SDL::GetGPUTextEngineWinding(engine);
 ---
 >   SDL::SetGPUTextEngineWinding(get(), winding);
@@ -855,18 +853,18 @@
 > inline GPUTextEngineWinding GPUTextEngine::GetGPUWinding() const
 > {
 >   return SDL::GetGPUTextEngineWinding(get());
-5578,5579d5616
+5581,5582d5616
 <  * @param length the length of the text, in bytes, or 0 for null terminated
 <  *               text.
-5616c5653
+5619c5653
 <   return CheckError(TTF_GetTextProperties(text));
 ---
 >   return {CheckError(TTF_GetTextProperties(text))};
-5721c5758
+5724c5758
 <   return CheckError(TTF_GetTextFont(text));
 ---
 >   return {CheckError(TTF_GetTextFont(text))};
-5780,5783c5817,5818
+5783,5786c5817,5818
 <  * @param script an
 <  *               [ISO 15924
 <  * code](https://unicode.org/iso15924/iso15924-codes.html)
@@ -874,29 +872,29 @@
 ---
 >  * @param script an [ISO 15924
 >  *               code](https://unicode.org/iso15924/iso15924-codes.html).
-5831,5834c5866
+5834,5837c5866
 <  * @param r the red color value in the range of 0-255.
 <  * @param g the green color value in the range of 0-255.
 <  * @param b the blue color value in the range of 0-255.
 <  * @param a the alpha value in the range of 0-255.
 ---
 >  * @param c the color value in the range of 0-255.
-5847c5879
+5850c5879
 <   CheckError(TTF_SetTextColor(text, c));
 ---
 >   CheckError(TTF_SetTextColor(text, c.r, c.g, c.b, c.a));
-5858,5861c5890
+5861,5864c5890
 <  * @param r the red color value, normally in the range of 0-1.
 <  * @param g the green color value, normally in the range of 0-1.
 <  * @param b the blue color value, normally in the range of 0-1.
 <  * @param a the alpha value in the range of 0-1.
 ---
 >  * @param c the color value, normally in the range of 0-1.
-5874c5903
+5877c5903
 <   CheckError(TTF_SetTextColorFloat(text, c));
 ---
 >   CheckError(TTF_SetTextColorFloat(text, c.r, c.g, c.b, c.a));
-5913,5920c5942
+5916,5923c5942
 <  * @param r a pointer filled in with the red color value in the range of
 <  *          0-255, may be nullptr.
 <  * @param g a pointer filled in with the green color value in the range of
@@ -907,17 +905,17 @@
 <  *          may be nullptr.
 ---
 >  * @return The color in the range of 0-255 on success.
-5933c5955,5957
+5936c5955,5957
 <   static_assert(false, "Not implemented");
 ---
 >   Color c;
 >   GetTextColor(text, &c.r, &c.g, &c.b, &c.a);
 >   return c;
-5941c5965
+5944c5965
 < inline Color Text::GetColor() { return SDL::GetTextColor(m_resource); }
 ---
 > inline Color Text::GetColor() const { return SDL::GetTextColor(m_resource); }
-5978,5985c6002
+5981,5988c6002
 <  * @param r a pointer filled in with the red color value, normally in the
 <  *          range of 0-1, may be nullptr.
 <  * @param g a pointer filled in with the green color value, normally in the
@@ -928,26 +926,26 @@
 <  *          be nullptr.
 ---
 >  * @return The color in the range of 0-1 on success.
-5998c6015,6017
+6001c6015,6017
 <   static_assert(false, "Not implemented");
 ---
 >   FColor c;
 >   GetTextColorFloat(text, &c.r, &c.g, &c.b, &c.a);
 >   return c;
-6006c6025
+6009c6025
 < inline FColor Text::GetColorFloat()
 ---
 > inline FColor Text::GetColorFloat() const
-6020,6021c6039
+6023,6024c6039
 <  * @param x the x offset of the upper left corner of this text in pixels.
 <  * @param y the y offset of the upper left corner of this text in pixels.
 ---
 >  * @param p the x, y offset of the upper left corner of this text in pixels.
-6032c6050
+6035c6050
 <   return TTF_SetTextPosition(text, p);
 ---
 >   return TTF_SetTextPosition(text, p.x, p.y);
-6065,6068c6083,6086
+6068,6071c6083,6086
 <  * @param x a pointer filled in with the x offset of the upper left corner of
 <  *          this text in pixels, may be nullptr.
 <  * @param y a pointer filled in with the y offset of the upper left corner of
@@ -957,53 +955,53 @@
 >  *          pixels on success.
 >  * @throws Error on failure.
 >  *
-6079c6097,6099
+6082c6097,6099
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   CheckError(GetTextPosition(text, &p.x, &p.y));
 >   return p;
-6087c6107,6110
+6090c6107,6110
 < inline Point Text::GetPosition() { return SDL::GetTextPosition(m_resource); }
 ---
 > inline Point Text::GetPosition() const
 > {
 >   return SDL::GetTextPosition(m_resource);
 > }
-6120,6121c6143,6144
+6123,6124c6143,6144
 <  * @param wrap_width a pointer filled in with the maximum width in pixels or 0
 <  *                   if the text is being wrapped on newline characters.
 ---
 >  * @returns maximum width in pixels or 0 if the text is being wrapped on newline
 >  *          characters.
-6133c6156,6158
+6136c6156,6158
 <   return CheckError(TTF_GetTextWrapWidth(text));
 ---
 >   int w;
 >   CheckError(TTF_GetTextWrapWidth(text, &w));
 >   return w;
-6204,6205d6228
+6207,6208d6228
 <  * @param length the length of the text, in bytes, or 0 for null terminated
 <  *               text.
-6219c6242
+6222c6242
 <   CheckError(TTF_SetTextString(text, string));
 ---
 >   CheckError(TTF_SetTextString(text, string.data(), string.size()));
-6238,6239d6260
+6241,6242d6260
 <  * @param length the length of the text, in bytes, or 0 for null terminated
 <  *               text.
-6255c6276
+6258c6276
 <   CheckError(TTF_InsertTextString(text, offset, string));
 ---
 >   CheckError(TTF_InsertTextString(text, offset, string.data(), string.size()));
-6270,6271d6290
+6273,6274d6290
 <  * @param length the length of the text, in bytes, or 0 for null terminated
 <  *               text.
-6285c6304
+6288c6304
 <   CheckError(TTF_AppendTextString(text, string));
 ---
 >   CheckError(TTF_AppendTextString(text, string.data(), string.size()));
-6356,6359c6375,6376
+6359,6362c6375,6376
 <  * @param w a pointer filled in with the width of the text, in pixels, may be
 <  *          nullptr.
 <  * @param h a pointer filled in with the height of the text, in pixels, may be
@@ -1011,39 +1009,39 @@
 ---
 >  * @returns Point containing the size on x and y axis on success or
 >  *          std::nullopt on failure; call GetError() for more information.
-6369c6386,6388
+6372c6386,6388
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   GetTextSize(text, &p.x, &p.y);
 >   return p;
-6377c6396
+6380c6396
 < inline Point Text::GetSize() { return SDL::GetTextSize(m_resource); }
 ---
 > inline Point Text::GetSize() const { return SDL::GetTextSize(m_resource); }
-6448,6449d6466
+6451,6452d6466
 <  * @param count a pointer filled in with the number of substrings returned,
 <  *              may be nullptr.
-6463c6480,6482
+6466c6480,6482
 <   return TTF_GetTextSubStringsForRange(text, offset, length);
 ---
 >   int count = 0;
 >   auto data = TTF_GetTextSubStringsForRange(text, offset, length, &count);
 >   return OwnArray<SubString*>{data, size_t(count)};
-6478,6480c6497
+6481,6483c6497
 <  * @param x the x coordinate relative to the left side of the text, may be
 <  *          outside the bounds of the text area.
 <  * @param y the y coordinate relative to the top side of the text, may be
 ---
 >  * @param p the coordinates relative to the top-left side of the text, may be
-6495c6512
+6498c6512
 <   CheckError(TTF_GetTextSubStringForPoint(text, p, substring));
 ---
 >   CheckError(TTF_GetTextSubStringForPoint(text, p.x, p.y, substring));
-6591c6608
+6594c6608
 <  * @sa Text.Text
 ---
 >  * @sa RendererTextEngine.RendererTextEngine
-6625a6643,6644
+6628a6643,6644
 > 
 > #endif // defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)

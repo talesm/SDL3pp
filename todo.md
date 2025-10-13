@@ -3,7 +3,7 @@ Todo for next version
 
 - [x] Remove generated docs from repository
   - [x] use actions to generate and upload;
-- [ ] Fix comparisons for wrappers (the ones using extending);
+- [x] Fix comparisons for wrappers (the ones using extending);
 - [ ] Review older files to ensure class and freestanding functions are in sync;
 - [ ] Review and simplify older transformations:
   - [ ] SDL_audio.h

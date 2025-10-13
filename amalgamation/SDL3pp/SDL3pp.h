@@ -10764,6 +10764,36 @@ constexpr bool Colorspace::IsFullRange() const
   return SDL::IsColorspaceFullRange(m_cspace);
 }
 
+/// Comparison operator for Color.
+constexpr bool operator==(ColorRaw lhs, ColorRaw rhs)
+{
+  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// Comparison operator for FColor.
+constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs)
+{
+  return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
+}
+
+/// Spaceship operator for Color.
+constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
+{
+  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
+  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
+  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
+  return lhs.a <=> rhs.a;
+}
+
+/// Spaceship operator for FColor.
+constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
+{
+  if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
+  if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
+  if (lhs.b != rhs.b) return lhs.b <=> rhs.b;
+  return lhs.a <=> rhs.a;
+}
+
 /**
  * A structure that represents a color as RGBA components.
  *
@@ -10800,24 +10830,6 @@ struct Color : ColorRaw
   constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
     : ColorRaw{r, g, b, a}
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(ColorRaw other) const
-  {
-    return r == other.r && g == other.g && b == other.b && a == other.a;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(ColorRaw other) const
-  {
-    auto c = r <=> other.r;
-    if (c != std::strong_ordering::equal) return c;
-    c = g <=> other.g;
-    if (c != std::strong_ordering::equal) return c;
-    c = b <=> other.b;
-    if (c != std::strong_ordering::equal) return c;
-    return a <=> other.a;
   }
 
   /**
@@ -10991,24 +11003,6 @@ struct FColor : FColorRaw
   constexpr FColor(float r, float g, float b, float a = 1)
     : FColorRaw{r, g, b, a}
   {
-  }
-
-  /// Default comparison operator
-  constexpr bool operator==(FColorRaw other) const
-  {
-    return r == other.r && g == other.g && b == other.b && a == other.a;
-  }
-
-  /// Default comparison operator
-  constexpr auto operator<=>(FColorRaw other) const
-  {
-    auto c = r <=> other.r;
-    if (c != std::strong_ordering::equivalent) return c;
-    c = g <=> other.g;
-    if (c != std::strong_ordering::equivalent) return c;
-    c = b <=> other.b;
-    if (c != std::strong_ordering::equivalent) return c;
-    return a <=> other.a;
   }
 
   /**
@@ -28386,6 +28380,30 @@ struct Rect;
 // Forward decl
 struct FRect;
 
+/// Comparison operator for Point.
+constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+/// Comparison operator for FPoint.
+constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+/// Comparison operator for Rect.
+constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+{
+  return SDL_RectsEqual(&lhs, &rhs);
+}
+
+/// Comparison operator for FRect.
+constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+{
+  return SDL_RectsEqualFloat(&lhs, &rhs);
+}
+
 /**
  * The structure that defines a point (using integers).
  *
@@ -28430,18 +28448,6 @@ struct Point : PointRaw
   constexpr explicit Point(const FPointRaw& p)
     : SDL_Point{int(p.x), int(p.y)}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const PointRaw& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const Point& other) const
-  {
-    return *this == (const PointRaw&)(other);
   }
 
   /**
@@ -28858,18 +28864,6 @@ struct FPoint : FPointRaw
   constexpr FPoint(float x, float y)
     : FPointRaw{x, y}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FPointRaw& other) const
-  {
-    return x == other.x && y == other.y;
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FPoint& other) const
-  {
-    return *this == (const FPointRaw&)(other);
   }
 
   /**

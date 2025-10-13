@@ -5218,7 +5218,10 @@ public:
     static_assert(false, "Not implemented");
   }
 
-  constexpr bool operator==(const SubStringIterator& other) const = default;
+  constexpr bool operator==(const SubStringIterator& other) const
+  {
+    static_assert(false, "Not implemented");
+  }
 
   constexpr SubStringIterator& operator++()
   {
