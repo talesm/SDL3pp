@@ -4470,8 +4470,7 @@ const transform = {
           }
         },
         "SDL_GetRectEnclosingPoints": {
-          type: "bool",
-          static: true,
+          type: "Rect",
           parameters: [
             {
               type: "SpanRef<const PointRaw>",
@@ -4479,17 +4478,14 @@ const transform = {
             },
             {
               type: "OptionalRef<const RectRaw>",
-              name: "clip"
-            },
-            {
-              type: "RectRaw *",
-              name: "result"
+              name: "clip",
+              default: "std::nullopt"
             }
-          ]
+          ],
         },
         "SDL_GetRectEnclosingPointsFloat": {
-          type: "bool",
-          static: true,
+          type: "FRect",
+          constexpr: true,
           parameters: [
             {
               type: "SpanRef<const FPointRaw>",
@@ -4497,13 +4493,10 @@ const transform = {
             },
             {
               type: "OptionalRef<const FRectRaw>",
-              name: "clip"
-            },
-            {
-              type: "FRectRaw *",
-              name: "result"
+              name: "clip",
+              default: "std::nullopt"
             }
-          ]
+          ],
         },
       },
     },

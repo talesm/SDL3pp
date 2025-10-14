@@ -1119,11 +1119,11 @@ constexpr Rect Rect::GetUnion(const RectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPoints(SpanRef<const PointRaw> points,
-                                          OptionalRef<const RectRaw> clip,
-                                          RectRaw* result)
+inline Rect GetRectEnclosingPoints(
+  SpanRef<const PointRaw> points,
+  OptionalRef<const RectRaw> clip = std::nullopt)
 {
-  return SDL_GetRectEnclosingPoints(points, clip, result);
+  return SDL_GetRectEnclosingPoints(points, clip);
 }
 
 inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
@@ -1382,11 +1382,11 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-static inline bool GetRectEnclosingPointsFloat(SpanRef<const FPointRaw> points,
-                                               OptionalRef<const FRectRaw> clip,
-                                               FRectRaw* result)
+constexpr FRect GetRectEnclosingPointsFloat(
+  SpanRef<const FPointRaw> points,
+  OptionalRef<const FRectRaw> clip = std::nullopt)
 {
-  return SDL_GetRectEnclosingPointsFloat(points, clip, result);
+  return SDL_GetRectEnclosingPointsFloat(points, clip);
 }
 
 constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,

@@ -8,7 +8,7 @@ Todo for next version
   - [ ] SDL_audio.h
   - [z] SDL_pixels.h
   - [x] SDL_properties.h
-  - [ ] SDL_rect.h
+  - [x] SDL_rect.h
   - [ ] SDL_render.h
   - [ ] SDL_surface.h
   - [ ] SDL_video.h
@@ -16,7 +16,7 @@ Todo for next version
   - [ ] SDL_audio.h
   - [z] SDL_pixels.h
   - [x] SDL_properties.h
-  - [ ] SDL_rect.h
+  - [x] SDL_rect.h
   - [ ] SDL_render.h
   - [ ] SDL_surface.h
   - [ ] SDL_video.h
