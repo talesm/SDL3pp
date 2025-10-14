@@ -2,21 +2,21 @@
 <  * @defgroup CategoryFilesystem Category Filesystem
 ---
 >  * @defgroup CategoryFilesystem Filesystem Access
-35a36,39
+38a39,42
 > /**
 >  * Convenience representation of a path under SDL
 >  *
 >  */
-37a42
+40a45
 >   /// Use parent ctors
-39a45
+42a48
 >   /// Append
-42c48,49
+45c51,52
 <     static_assert(false, "Not implemented");
 ---
 >     StringResult::operator+=(other);
 >     return *this;
-45c52,57
+48c55,60
 <   Path& operator+=(char ch) { static_assert(false, "Not implemented"); }
 ---
 >   /// Append
@@ -25,15 +25,15 @@
 >     StringResult::operator+=(ch);
 >     return *this;
 >   }
-46a59
+49a62
 >   /// Append
-49c62,64
+52c65,67
 <     static_assert(false, "Not implemented");
 ---
 >     Path result(*this);
 >     result += other;
 >     return result;
-52c67,73
+55c70,76
 <   Path operator+(char ch) const { static_assert(false, "Not implemented"); }
 ---
 >   /// Append
@@ -43,26 +43,26 @@
 >     result += ch;
 >     return result;
 >   }
-53a75
+56a78
 >   /// Append path component.
-56c78,79
+59c81,82
 <     static_assert(false, "Not implemented");
 ---
 >     if (!empty() && back() != '/' && back() != '\\') this->operator+=('/');
 >     return this->operator+=(other);
-58a82
+61a85
 >   /// Append path component.
-61c85,87
+64c88,90
 <     static_assert(false, "Not implemented");
 ---
 >     Path result(*this);
 >     result /= other;
 >     return result;
-161c187
+164c190
 <   return SDL_GetPrefPath(org, app);
 ---
 >   return Path{SDL_GetPrefPath(org, app)};
-173,185c199,211
+176,188c202,214
 <  * |             | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
 <  * | | ----------- | ------- | --------- | ---- | ---------- | ----- |
 <  * ---------- | | HOME        | X       | X         |      | X          | X | X
@@ -90,15 +90,15 @@
 >  * SCREENSHOTS | Vista+  |           |      |            |       |
 >  * TEMPLATES   | X       | X         |      | X          |       |
 >  * VIDEOS      | X       | X*        |      | X          |       |
-337c363
+340c366
 <   constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
 ---
 >   constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
-430d455
+433d458
 <  * @param userdata an app-controlled pointer that is passed to the callback.
-485d509
+488d512
 <  * @param userdata a pointer that is passed to `callback`.
-492c516,522
+495c519,525
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateDirectory(
@@ -108,7 +108,7 @@
 >       return cb(dirname, fname);
 >     },
 >     &callback);
-496,506c526
+499,509c529
 <  * Enumerate a directory through a callback function.
 <  *
 <  * This function provides every directory entry through an app-provided
@@ -122,13 +122,13 @@
 <  * were enumerated.
 ---
 >  * Enumerate a directory.
-509,511c529
+512,514c532
 <  * @param callback a function that is called for each entry in the directory.
 <  * @param userdata a pointer that is passed to `callback`.
 <  * @throws Error on failure.
 ---
 >  * @returns all the directory contents.
-517c535,540
+520c538,543
 <   static_assert(false, "Not implemented");
 ---
 >   std::vector<Path> r;
@@ -137,35 +137,35 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-523c546
+526c549
 <  * Directories that are not empty will fail; this function will not recursely
 ---
 >  * Directories that are not empty will fail; this function will not recursively
-604,605c627
+607,608c630
 <  * @param info a pointer filled in with information about the path, or nullptr
 <  * to check for the existence of a file.
 ---
 >  * @returns the information about the path on success.
-612c634,636
+615c637,639
 <   return CheckError(SDL_GetPathInfo(path));
 ---
 >   PathInfo info;
 >   CheckError(SDL_GetPathInfo(path, &info));
 >   return info;
-636,637d659
+639,640d662
 <  * @param count on return, will be set to the number of items in the returned
 <  *              array. Can be nullptr.
-647c669
+650c672
 <                                      GlobFlags flags)
 ---
 >                                      GlobFlags flags = 0)
-649c671,673
+652c674,676
 <   return CheckError(SDL_GlobDirectory(path, pattern, flags));
 ---
 >   int count;
 >   auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
 >   return OwnArray<char*>{data, size_t(count)};
-671c695
+674c698
 < inline Path GetCurrentDirectory() { return SDL_GetCurrentDirectory(); }
 ---
 > inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }

@@ -23,6 +23,9 @@ namespace SDL {
 /// Alias to raw representation for Keycode.
 using KeycodeRaw = SDL_Keycode;
 
+// Forward decl
+struct Keycode;
+
 /**
  * Valid key modifiers (possibly OR'd together).
  *

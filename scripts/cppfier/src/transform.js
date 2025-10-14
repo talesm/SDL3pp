@@ -513,6 +513,11 @@ function expandTypes(sourceEntries, file, context) {
       doc: `Alias to raw representation for ${targetType}.`,
     }, '__begin');
 
+    context.includeBefore({
+      name: targetType,
+      kind: 'forward',
+    }, '__begin');
+
     /** @type {string[]} */
     const fields = [];
     if (isStruct) {

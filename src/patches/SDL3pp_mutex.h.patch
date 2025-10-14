@@ -2,112 +2,112 @@
 <  * @defgroup CategoryMutex Category Mutex
 ---
 >  * @defgroup CategoryMutex Thread Synchronization Primitives
-196,198d195
+199,201d198
 <   /// Default ctor
 <   constexpr Mutex() = default;
 < 
-429,432c426
+432,435c429
 < inline void LockMutex(SDL_Mutex* mutex) SDL_ACQUIRE(mutex)
 < {
 <   SDL_LockMutex(SDL_ACQUIRE(mutex);
 < }
 ---
 > inline void LockMutex(MutexParam mutex) { SDL_LockMutex(mutex); }
-455c449
+458c452
 < inline void TryLockMutex(SDL_Mutex* mutex) SDL_TRY_ACQUIRE()
 ---
 > inline void TryLockMutex(MutexParam mutex)
-457c451
+460c454
 <   CheckError(SDL_TryLockMutex(SDL_TRY_ACQUIRE());
 ---
 >   CheckError(SDL_TryLockMutex(mutex));
-479,482c473
+482,485c476
 < inline void UnlockMutex(SDL_Mutex* mutex) SDL_RELEASE(mutex)
 < {
 <   SDL_UnlockMutex(SDL_RELEASE(mutex);
 < }
 ---
 > inline void UnlockMutex(MutexParam mutex) { SDL_UnlockMutex(mutex); }
-530,532d520
+533,535d523
 <   /// Default ctor
 <   constexpr RWLock() = default;
 < 
-898c886
+901c889
 < inline void LockRWLockForReading(SDL_RWLock* rwlock) SDL_ACQUIRE_SHARED(rwlock)
 ---
 > inline void LockRWLockForReading(RWLockParam rwlock)
-900c888
+903c891
 <   SDL_LockRWLockForReading(SDL_ACQUIRE_SHARED(rwlock);
 ---
 >   SDL_LockRWLockForReading(rwlock);
-934c922
+937c925
 < inline void LockRWLockForWriting(SDL_RWLock* rwlock) SDL_ACQUIRE(rwlock)
 ---
 > inline void LockRWLockForWriting(RWLockParam rwlock)
-936c924
+939c927
 <   SDL_LockRWLockForWriting(SDL_ACQUIRE(rwlock);
 ---
 >   SDL_LockRWLockForWriting(rwlock);
-964c952
+967c955
 < inline void TryLockRWLockForReading(SDL_RWLock* rwlock) SDL_TRY_ACQUIRE_SHARED()
 ---
 > inline void TryLockRWLockForReading(RWLockParam rwlock)
-966c954
+969c957
 <   CheckError(SDL_TryLockRWLockForReading(SDL_TRY_ACQUIRE_SHARED());
 ---
 >   CheckError(SDL_TryLockRWLockForReading(rwlock));
-1002c990
+1005c993
 < inline void TryLockRWLockForWriting(SDL_RWLock* rwlock) SDL_TRY_ACQUIRE()
 ---
 > inline void TryLockRWLockForWriting(RWLockParam rwlock)
-1004c992
+1007c995
 <   CheckError(SDL_TryLockRWLockForWriting(SDL_TRY_ACQUIRE());
 ---
 >   CheckError(SDL_TryLockRWLockForWriting(rwlock));
-1035,1038c1023
+1038,1041c1026
 < inline void UnlockRWLock(SDL_RWLock* rwlock) SDL_RELEASE_GENERIC(rwlock)
 < {
 <   SDL_UnlockRWLock(SDL_RELEASE_GENERIC(rwlock);
 < }
 ---
 > inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
-1227,1228c1212,1213
+1230,1231c1215,1216
 <    * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
 <    *                  indefinitely.
 ---
 >    * @param timeout the length of the timeout, in milliseconds, or -1 to wait
 >    *                indefinitely.
-1383,1384c1368,1369
+1386,1387c1371,1372
 <  * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
 <  *                  indefinitely.
 ---
 >  * @param timeout the length of the timeout, in milliseconds, or -1 to wait
 >  *                indefinitely.
-1396c1381
+1399c1384
 <   return SDL_WaitSemaphoreTimeout(sem, timeout);
 ---
 >   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
-1457,1459d1441
+1460,1462d1444
 <   /// Default ctor
 <   constexpr Condition() = default;
 < 
-1616,1617c1598,1599
+1619,1620c1601,1602
 <    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
 <    *                  indefinitely.
 ---
 >    * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
 >    *                indefinitely.
-1774,1775c1756,1757
+1777,1778c1759,1760
 <  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
 <  *                  indefinitely.
 ---
 >  * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
 >  *                indefinitely.
-1791c1773
+1794c1776
 <   return SDL_WaitConditionTimeout(cond, mutex, timeout);
 ---
 >   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
-1824,1825c1806,1807
+1827,1828c1809,1810
 <  * ```c
 <  *    static SDL_AtomicInitState init;
 ---

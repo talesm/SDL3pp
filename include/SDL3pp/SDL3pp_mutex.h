@@ -174,6 +174,9 @@ struct ConditionParam
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
 
+// Forward decl
+struct InitState;
+
 /**
  * A means to serialize access to a resource between threads.
  *

@@ -2,19 +2,19 @@
 <  * @defgroup CategoryTouch Category Touch
 ---
 >  * @defgroup CategoryTouch Touch Support
-121c121
+124c124
 <   constexpr explicit operator bool() const { return *this != FingerRaw{}; }
 ---
 >   constexpr explicit operator bool() const { return id != 0; }
-221,222d220
+224,225d223
 <  * @param count a pointer filled in with the number of devices returned, may
 <  *              be nullptr.
-224,225c222
+227,228c225
 <  *          GetError() for more information. This should be freed with
 <  *          free() when it is no longer needed.
 ---
 >  *          GetError() for more information.
-229c226,231
+232c229,234
 < inline OwnArray<TouchID> GetTouchDevices() { return SDL_GetTouchDevices(); }
 ---
 > inline OwnArray<TouchID> GetTouchDevices()
@@ -23,16 +23,16 @@
 >   auto data = SDL_GetTouchDevices(&count);
 >   return OwnArray<TouchID>(data, size_t(count));
 > }
-262,263d263
+265,266d266
 <  * @param count a pointer filled in with the number of fingers returned, can
 <  *              be nullptr.
-265,267c265
+268,270c268
 <  *          call GetError() for more information. This is a single
 <  *          allocation that should be freed with free() when it is no
 <  *          longer needed.
 ---
 >  *          call GetError() for more information.
-273c271,273
+276c274,276
 <   return SDL_GetTouchFingers(touchID);
 ---
 >   int count = 0;

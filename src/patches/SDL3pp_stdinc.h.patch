@@ -2,17 +2,17 @@
 <  * @defgroup CategoryStdinc Category Stdinc
 ---
 >  * @defgroup CategoryStdinc Standard Library Functionality
-84c84
+87c87
 < using IConvRaw = SDL_iconv_t*;
 ---
 > using IConvRaw = SDL_iconv_t;
-115a116,117
+118a119,120
 > #ifdef SDL3PP_DOC
 > 
-149a152,153
+152a155,156
 > #endif // SDL3PP_DOC
 > 
-156,160c160
+159,163c163
 <  * This macro looks like it double-evaluates the argument, but it does so
 <  * inside of `sizeof`, so there are no side-effects here, as expressions do
 <  * not actually run any code in these cases.
@@ -20,17 +20,17 @@
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This function is available since SDL 3.2.0.
-165c165
+168c168
 <   return SDL_arraysize((&array)[N]);
 ---
 >   return SDL_arraysize(array);
-167a168,169
+170a171,172
 > #ifdef SDL3PP_DOC
 > 
-183a186,187
+186a189,190
 > #endif // SDL3PP_DOC
 > 
-187,190c191,194
+190,193c194,197
 <  * @param A the first ASCII character.
 <  * @param B the second ASCII character.
 <  * @param C the third ASCII character.
@@ -40,97 +40,97 @@
 >  * @param b the second ASCII character.
 >  * @param c the third ASCII character.
 >  * @param d the fourth ASCII character.
-196c200
+199c203
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This function is available since SDL 3.2.0.
-202a207,208
+205a210,211
 > #ifdef SDL3PP_DOC
 > 
-235a242,244
+238a245,247
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-237a247
+240a250
 > /// Min representable value
-239a250,251
+242a253,254
 > #ifdef SDL3PP_DOC
 > 
-246a259,261
+249a262,264
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-248a264
+251a267
 > /// Min representable value
-250a267,268
+253a270,271
 > #ifdef SDL3PP_DOC
 > 
-257a276,278
+260a279,281
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-259a281
+262a284
 > /// Min representable value
-261a284,285
+264a287,288
 > #ifdef SDL3PP_DOC
 > 
-268a293,295
+271a296,298
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-270a298
+273a301
 > /// Min representable value
-272a301,302
+275a304,305
 > #ifdef SDL3PP_DOC
 > 
-279a310,312
+282a313,315
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-281a315
+284a318
 > /// Min representable value
-283a318,319
+286a321,322
 > #ifdef SDL3PP_DOC
 > 
-290a327,329
+293a330,332
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-292a332
+295a335
 > /// Min representable value
-294a335,336
+297a338,339
 > #ifdef SDL3PP_DOC
 > 
-303a346,348
+306a349,351
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-305a351
+308a354
 > /// Min representable value
-307a354,355
+310a357,358
 > #ifdef SDL3PP_DOC
 > 
-316a365,367
+319a368,370
 > #endif // SDL3PP_DOC
 > 
 > /// Max representable value
-318a370
+321a373
 > /// Min representable value
-331,334c383
+334,337c386
 < constexpr float ToSeconds(Seconds duration)
 < {
 <   static_assert(false, "Not implemented");
 < }
 ---
 > constexpr float ToSeconds(Seconds duration) { return duration.count(); }
-337,340c386
+340,343c389
 < constexpr Seconds FromSeconds(float duration)
 < {
 <   static_assert(false, "Not implemented");
 < }
 ---
 > constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
-342,346c388,389
+345,349c391,392
 < /// Converts a time duration to seconds (float).
 < constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
 < {
@@ -139,7 +139,7 @@
 ---
 > /// Converts a time duration to nanoseconds (Sint64);
 > constexpr Sint64 ToNS(Nanoseconds duration) { return duration.count(); }
-348,352c391,392
+351,355c394,395
 < /// Converts a float to seconds representation.
 < constexpr Nanoseconds FromNS(Sint64 duration)
 < {
@@ -148,22 +148,22 @@
 ---
 > /// Converts a Sint64 to nanoseconds representation.
 > constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
-362c402
+365c405
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This type is available since SDL 3.2.0.
-369c409
+372c412
 <   TimeRaw m_time;
 ---
 >   Nanoseconds m_time;
-371a412,413
+374a415,416
 >   constexpr Time() = default;
 > 
-377c419
+380c422
 <   constexpr Time(TimeRaw time = {})
 ---
 >   constexpr explicit Time(TimeRaw time)
-387,394c429,432
+390,397c432,435
 <   constexpr Time(std::chrono::nanoseconds time) {}
 < 
 <   /**
@@ -177,94 +177,94 @@
 >     : m_time(time)
 >   {
 >   }
-396c434,435
+399c437,438
 <   constexpr operator std::chrono::nanoseconds() const
 ---
 >   /// True if not zero
 >   constexpr explicit operator bool() const
-398c437
+401c440
 <     static_assert(false, "Not implemented");
 ---
 >     return m_time != std::chrono::nanoseconds{};
-400a440,442
+403a443,445
 >   /// Converts to nanoseconds period
 >   constexpr operator std::chrono::nanoseconds() const { return m_time; }
 > 
-409c451
+412c454
 <   Time Current();
 ---
 >   static Time Current();
-410a453
+413a456
 >   /// Create from a nanoseconds Sint64.
-413c456
+416c459
 <     static_assert(false, "Not implemented");
 ---
 >     return Time{std::chrono::nanoseconds{time}};
-416c459,460
+419c462,463
 <   constexpr Sint64 ToNS() const { static_assert(false, "Not implemented"); }
 ---
 >   /// Converts to nanoseconds Sint64
 >   constexpr Sint64 ToNS() const { return m_time.count(); }
-423,424c467,468
+426,427c470,471
 <    * @param S the number of seconds to convert.
 <    * @returns S, expressed in nanoseconds.
 ---
 >    * @param time the number of seconds to convert.
 >    * @returns the converted Time.
-426c470
+429c473
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-428c472
+431c475
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-435,436c479
+438,439c482
 <    * This performs a division, so the results can be dramatically different if
 <    * `NS` is an integer or floating point value.
 ---
 >    * This only converts whole numbers, not fractional seconds.
-438,439c481
+441,442c484
 <    * @param NS the number of nanoseconds to convert.
 <    * @returns NS, expressed in seconds.
 ---
 >    * @returns Posix time (in seconds).
-441c483
+444c486
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-443c485
+446c488
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-478c520
+481c523
 <   constexpr float ToSeconds() const { static_assert(false, "Not implemented"); }
 ---
 >   constexpr float ToSeconds() const { return Seconds(m_time).count(); }
-481c523
+484c526
 <   static constexpr Time Time.FromSeconds(float interval)
 ---
 >   static constexpr Time FromSeconds(float interval)
-483c525,526
+486c528,529
 <     static_assert(false, "Not implemented");
 ---
 >     return std::chrono::duration_cast<std::chrono::nanoseconds>(
 >       Seconds(interval));
-485a529
+488a532
 >   /// Increment time
-488c532,533
+491c535,536
 <     static_assert(false, "Not implemented");
 ---
 >     m_time += interval;
 >     return *this;
-490a536
+493a539
 >   /// Decrement
-493c539,540
+496c542,543
 <     static_assert(false, "Not implemented");
 ---
 >     m_time -= interval;
 >     return *this;
-497c544,548
+500c547,551
 < constexpr Time MAX_TIME = SDL_MAX_TIME;
 ---
 > /// Max allowed time representation
@@ -272,28 +272,28 @@
 > 
 > /// Min allowed time representation
 > constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
-499c550
+502c553
 < constexpr Time MIN_TIME = SDL_MIN_TIME;
 ---
 > #ifdef SDL3PP_DOC
-519c570
+522c573
 <  * ```c
 ---
 >  * ```cpp
-533c584
+536c587
 <  * ```c
 ---
 >  * ```cpp
-554a606,607
+557a609,610
 > #endif // SDL3PP_DOC
 > 
-896a950,951
+899a953,954
 >  * @cat resource
 >  *
-904,905d958
+907,908d961
 <  *
 <  * @cat resource
-1034,1036c1087,1090
+1037,1039c1090,1093
 <    *          the form "variable=value" or nullptr on failure; call GetError()
 <    *          for more information. This is a single allocation that should be
 <    *          freed with free() when it is no longer needed.
@@ -302,7 +302,7 @@
 >    *          auto-deleted, use FreeWrapper.release() if you want to manage
 >    *          manually.
 >    * @throws Error on failure
-1050c1104,1116
+1053c1107,1119
 <   Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -318,33 +318,33 @@
 >     for (auto& var : GetVariables()) count += 1;
 >     return count;
 >   }
-1217c1283
+1220c1286
 <   return SDL_GetEnvironmentVariables(env);
 ---
 >   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
-1353,1354c1419
+1356,1357c1422
 <  * @returns 0 on success.
 <  * @throws Error on failure.
 ---
 >  * @returns 0 on success, -1 on error.
-1365c1430
+1368c1433
 <   return CheckError(SDL_setenv_unsafe(name, value, overwrite));
 ---
 >   return SDL_setenv_unsafe(name, value, overwrite);
-1372,1373c1437
+1375,1376c1440
 <  * @returns 0 on success.
 <  * @throws Error on failure.
 ---
 >  * @returns 0 on success, -1 on error.
-1384c1448
+1387c1451
 <   return CheckError(SDL_unsetenv_unsafe(name));
 ---
 >   return SDL_unsetenv_unsafe(name);
-1533d1596
+1536d1599
 <  * @param userdata the `userdata` pointer passed to the sort function.
-1652d1714
+1655d1717
 <  * @param userdata a pointer to pass to the compare function.
-1663c1725,1733
+1666c1728,1736
 <   static_assert(false, "Not implemented");
 ---
 >   return qsort_r(
@@ -356,9 +356,9 @@
 >       return cb(a, b);
 >     },
 >     &compare);
-1779d1848
+1782d1851
 <  * @param userdata a pointer to pass to the compare function.
-1796c1865,1874
+1799c1868,1877
 <   static_assert(false, "Not implemented");
 ---
 >   return bsearch_r(
@@ -371,79 +371,79 @@
 >       return cb(a, b);
 >     },
 >     &compare);
-1865c1943
+1868c1946
 <  * @threadsafety It is safe to call this macro from any thread.
 ---
 >  * @threadsafety It is safe to call this function from any thread.
-1867c1945
+1870c1948
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This function is available since SDL 3.2.0.
-1878c1956
+1881c1959
 <  * This is a helper macro that might be more clear than writing out the
 ---
 >  * This is a helper function that might be more clear than writing out the
-1887c1965
+1890c1968
 <  * @threadsafety It is safe to call this macro from any thread.
 ---
 >  * @threadsafety It is safe to call this function from any thread.
-1889c1967
+1892c1970
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This function is available since SDL 3.2.0.
-1903c1981
+1906c1984
 <  * This macro will produce incorrect results if `b` is less than `a`.
 ---
 >  * This function will produce incorrect results if `b` is less than `a`.
-1905c1983
+1908c1986
 <  * This is a helper macro that might be more clear than writing out the
 ---
 >  * This is a helper function that might be more clear than writing out the
-1915c1993
+1918c1996
 <  * @threadsafety It is safe to call this macro from any thread.
 ---
 >  * @threadsafety It is safe to call this function from any thread.
-1917c1995
+1920c1998
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This function is available since SDL 3.2.0.
-2257a2336
+2260a2339
 > #ifdef SDL_SLOW_MEMCPY
-2258a2338,2340
+2261a2341,2343
 > #else
 >   return ::memcpy(dst, src, len);
 > #endif // SDL_SLOW_MEMCPY
-2260a2343,2344
+2263a2346,2347
 > #ifdef SDL3PP_DOC
 > 
-2290a2375,2376
+2293a2378,2379
 > #endif // SDL3PP_DOC
 > 
-2309a2396
+2312a2399
 > #ifdef SDL_SLOW_MEMMOVE
-2310a2398,2400
+2313a2401,2403
 > #else
 >   return ::memmove(dst, src, len);
 > #endif // SDL_SLOW_MEMMOVE
-2332a2423
+2335a2426
 > #ifdef SDL_SLOW_MEMSET
-2333a2425,2427
+2336a2428,2430
 > #else
 >   return ::memset(dst, c, len);
 > #endif // SDL_SLOW_MEMSET
-2415c2509
+2418c2512
 <  * @threadsafety It is safe to call this macro from any thread.
 ---
 >  * @threadsafety It is safe to call this function from any thread.
-2417c2511
+2420c2514
 <  * @since This macro is available since SDL 3.2.0.
 ---
 >  * @since This function is available since SDL 3.2.0.
-2425c2519
+2428c2522
 <   SDL_zeroa((&x)[N]);
 ---
 >   SDL_zeroa(x);
-3842c3936,3941
+3845c3939,3944
 <   return SDL_sscanf(text, fmt, ...);
 ---
 >   int rc;
@@ -452,7 +452,7 @@
 >   rc = SDL_vsscanf(text, fmt, ap);
 >   va_end(ap);
 >   return rc;
-3905c4004,4011
+3908c4007,4014
 <   return SDL_snprintf(text, maxlen, fmt, ...);
 ---
 >   va_list ap;
@@ -463,7 +463,7 @@
 >   va_end(ap);
 > 
 >   return result;
-3945c4051,4058
+3948c4054,4061
 <   return SDL_swprintf(text, maxlen, fmt, ...);
 ---
 >   va_list ap;
@@ -474,7 +474,7 @@
 >   va_end(ap);
 > 
 >   return result;
-4030c4143,4150
+4033c4146,4153
 <   return SDL_asprintf(strp, fmt, ...);
 ---
 >   va_list ap;
@@ -485,11 +485,11 @@
 >   va_end(ap);
 > 
 >   return result;
-4137c4257
+4140c4260
 <  * You likely want to use rand() to get a psuedo-random number instead.
 ---
 >  * You likely want to use rand() to get a pseudo-random number instead.
-4157c4277,4287
+4160c4280,4290
 < struct Random
 ---
 > /**
@@ -503,7 +503,7 @@
 >  * @sa wrap-state
 >  */
 > class Random
-4161c4291,4295
+4164c4294,4298
 <   constexpr Random() {}
 ---
 > public:
@@ -511,7 +511,7 @@
 >     : m_state(0)
 >   {
 >   }
-4163c4297,4303
+4166c4300,4306
 <   constexpr explicit Random(Uint64 state) {}
 ---
 >   /**
@@ -521,142 +521,142 @@
 >     : m_state(state)
 >   {
 >   }
-4165c4305,4306
+4168c4308,4309
 <   constexpr operator Uint64() { static_assert(false, "Not implemented"); }
 ---
 >   /// Convert to the underlying type
 >   constexpr operator Uint64() { return m_state; }
-4174c4315
+4177c4318
 <    * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
 ---
 >    * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
-4178c4319
+4181c4322
 <    * you should use: (Sint32)Random.rand_bits(state)
 ---
 >    * you should use: (Sint32)state.rand_bits()
-4186,4187d4326
+4189,4190d4329
 <    * @param state a pointer to the current random number state, this may not be
 <    *              nullptr.
-4191c4330
+4194c4333
 <    * @threadsafety This function is thread-safe, as long as the state pointer
 ---
 >    * @threadsafety This function is thread-safe, as long as this object
-4200c4339
+4203c4342
 <   Sint32 rand(Sint32 n);
 ---
 >   Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
-4214,4215d4352
+4217,4218d4355
 <    * @param state a pointer to the current random number state, this may not be
 <    *              nullptr.
-4218c4355
+4221c4358
 <    * @threadsafety This function is thread-safe, as long as the state pointer
 ---
 >    * @threadsafety This function is thread-safe, as long as this object
-4227c4364
+4230c4367
 <   float randf();
 ---
 >   float randf() { return SDL_randf_r(&m_state); }
-4232c4369
+4235c4372
 <    * You likely want to use Random.rand() to get a psuedo-random number instead.
 ---
 >    * You likely want to use Random.rand() to get a pseudo-random number instead.
-4240,4241d4376
+4243,4244d4379
 <    * @param state a pointer to the current random number state, this may not be
 <    *              nullptr.
-4244c4379
+4247c4382
 <    * @threadsafety This function is thread-safe, as long as the state pointer
 ---
 >    * @threadsafety This function is thread-safe, as long as this object
-4252c4387
+4255c4390
 <   Uint32 rand_bits();
 ---
 >   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
-4290,4291d4424
+4293,4294d4427
 < inline Sint32 Random::rand(Sint32 n) { return SDL::rand_r(n); }
 < 
-4319,4320d4451
+4322,4323d4454
 < inline float Random::randf() { return SDL::randf_r(); }
 < 
-4346,4347d4476
+4349,4350d4479
 < inline Uint32 Random::rand_bits() { return SDL::rand_bits_r(); }
 < 
-4580d4708
+4583d4711
 <  * @sa atan2
-5642,5643d5769
+5645,5646d5772
 <  * @sa IConv.open
 <  *
-5644a5771,5773
+5647a5774,5776
 >  *
 >  * @sa IConv.open
 >  * @sa IConv
-5685,5686c5814
+5688,5689c5817
 <    * @returns a handle that must be freed with IConv.close, or
 <    *          SDL_ICONV_ERROR on failure.
 ---
 >    * @post a valid handle or falsy on failure.
-5694c5822,5825
+5697c5825,5828
 <   static IConv open(StringParam tocode, StringParam fromcode);
 ---
 >   IConv(StringParam tocode, StringParam fromcode)
 >     : m_resource(SDL_iconv_open(tocode, fromcode))
 >   {
 >   }
-5724c5855,5858
+5727c5858,5861
 <   constexpr explicit operator bool() const { return !!m_resource; }
 ---
 >   constexpr explicit operator bool() const
 >   {
 >     return m_resource != IConvRaw(SDL_ICONV_ERROR);
 >   }
-5732d5865
+5735d5868
 <    * @param cd The character set conversion handle.
-5764d5896
+5767d5899
 <    *           IConv.open().
-5830,5834d5961
+5833,5837d5964
 < inline IConv IConv::open(StringParam tocode, StringParam fromcode)
 < {
 <   return SDL::iconv_open(std::move(tocode), std::move(fromcode));
 < }
 < 
-5889c6016
+5892c6019
 < inline size_t iconv(IConv cd,
 ---
 > inline size_t iconv(IConvRaw cd,
-5905a6033,6034
+5908a6036,6037
 > #ifdef SDL3PP_DOC
 > 
-5907c6036
+5910c6039
 < #define SDL_ICONV_ERROR (size_t) - 1
 ---
 > #define SDL_ICONV_ERROR (size_t)-1
-5910c6039
+5913c6042
 < #define SDL_ICONV_E2BIG (size_t) - 2
 ---
 > #define SDL_ICONV_E2BIG (size_t)-2
-5913c6042
+5916c6045
 < #define SDL_ICONV_EILSEQ (size_t) - 3
 ---
 > #define SDL_ICONV_EILSEQ (size_t)-3
-5916c6045,6047
+5919c6048,6050
 < #define SDL_ICONV_EINVAL (size_t) - 4
 ---
 > #define SDL_ICONV_EINVAL (size_t)-4
 > 
 > #endif // SDL3PP_DOC
-5927,5929d6057
+5930,5932d6060
 <  * The returned string is owned by the caller, and should be passed to
 <  * free when no longer needed.
 <  *
-5948c6076
+5951c6079
 <   return SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft);
 ---
 >   return OwnPtr<char>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};
-5950a6079,6080
+5953a6082,6083
 > #ifdef SDL3PP_DOC
 > 
-6011a6142,6143
+6014a6145,6146
 > #endif // SDL3PP_DOC
 > 
-6073a6206,6207
+6076a6209,6210
 > 
 > inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }

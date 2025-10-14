@@ -7587,6 +7587,9 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
 /// Alias to raw representation for LogCategory.
 using LogCategoryRaw = SDL_LogCategory;
 
+// Forward decl
+struct LogCategory;
+
 /**
  * @name LogPriorities
  *
@@ -8703,14 +8706,26 @@ inline void ResetLogOutputFunction()
 /// Alias to raw representation for PixelFormat.
 using PixelFormatRaw = SDL_PixelFormat;
 
+// Forward decl
+struct PixelFormat;
+
 /// Alias to raw representation for Colorspace.
 using ColorspaceRaw = SDL_Colorspace;
+
+// Forward decl
+struct Colorspace;
 
 /// Alias to raw representation for Color.
 using ColorRaw = SDL_Color;
 
+// Forward decl
+struct Color;
+
 /// Alias to raw representation for FColor.
 using FColorRaw = SDL_FColor;
+
+// Forward decl
+struct FColor;
 
 // Forward decl
 struct Palette;
@@ -8777,9 +8792,6 @@ struct PaletteConstParam
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
 };
-
-// Forward decl
-struct Color;
 
 /**
  * Details about the format of a pixel.
@@ -13045,6 +13057,9 @@ inline void Properties::Destroy() { DestroyProperties(release()); }
 
 /// Alias to raw representation for Time.
 using TimeRaw = SDL_Time;
+
+// Forward decl
+struct Time;
 
 // Forward decl
 struct Environment;
@@ -20511,8 +20526,14 @@ inline void LoadFileAsync(StringParam file,
 /// Alias to raw representation for AtomicInt.
 using AtomicIntRaw = SDL_AtomicInt;
 
+// Forward decl
+struct AtomicInt;
+
 /// Alias to raw representation for AtomicU32.
 using AtomicU32Raw = SDL_AtomicU32;
+
+// Forward decl
+struct AtomicU32;
 
 /**
  * Insert a memory release barrier (function version).
@@ -22288,6 +22309,9 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 /// Alias to raw representation for PathInfo.
 using PathInfoRaw = SDL_PathInfo;
 
+// Forward decl
+struct PathInfo;
+
 /**
  * Convenience representation of a path under SDL
  *
@@ -22964,6 +22988,9 @@ inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
 
 /// Alias to raw representation for GUID.
 using GUIDRaw = SDL_GUID;
+
+// Forward decl
+struct GUID;
 
 /**
  * An GUID is a 128-bit identifier for an input device that identifies
@@ -28469,20 +28496,23 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
 /// Alias to raw representation for Point.
 using PointRaw = SDL_Point;
 
+// Forward decl
+struct Point;
+
 /// Alias to raw representation for FPoint.
 using FPointRaw = SDL_FPoint;
-
-/// Alias to raw representation for Rect.
-using RectRaw = SDL_Rect;
-
-/// Alias to raw representation for FRect.
-using FRectRaw = SDL_FRect;
 
 // Forward decl
 struct FPoint;
 
+/// Alias to raw representation for Rect.
+using RectRaw = SDL_Rect;
+
 // Forward decl
 struct Rect;
+
+/// Alias to raw representation for FRect.
+using FRectRaw = SDL_FRect;
 
 // Forward decl
 struct FRect;
@@ -31080,6 +31110,9 @@ constexpr Rect::operator FRect() const
 using ScancodeRaw = SDL_Scancode;
 
 // Forward decl
+struct Scancode;
+
+// Forward decl
 struct Keycode;
 
 /**
@@ -32373,6 +32406,9 @@ inline void UpdateSensors() { SDL_UpdateSensors(); }
 /// Alias to raw representation for DateTime.
 using DateTimeRaw = SDL_DateTime;
 
+// Forward decl
+struct DateTime;
+
 /**
  * A structure holding a calendar date and time broken down into its
  * components.
@@ -33206,6 +33242,9 @@ inline void RemoveTimer(TimerID id)
 
 /// Alias to raw representation for AudioFormat.
 using AudioFormatRaw = SDL_AudioFormat;
+
+// Forward decl
+struct AudioFormat;
 
 // Forward decl
 struct AudioDevice;
@@ -38014,6 +38053,9 @@ inline int AudioFormat::GetSilenceValue() const
 
 /// Alias to raw representation for Keycode.
 using KeycodeRaw = SDL_Keycode;
+
+// Forward decl
+struct Keycode;
 
 /**
  * Valid key modifiers (possibly OR'd together).
@@ -47093,6 +47135,9 @@ struct ConditionParam
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
 
+// Forward decl
+struct InitState;
+
 /**
  * A means to serialize access to a resource between threads.
  *
@@ -48975,6 +49020,9 @@ struct TrayMenu;
 using TrayMenuRaw = SDL_TrayMenu*;
 
 // Forward decl
+struct TrayMenu;
+
+// Forward decl
 struct TrayEntry;
 
 /// Alias to raw representation for TrayEntry.
@@ -50362,6 +50410,9 @@ inline void TrayEntry::SetCallback(TrayCB callback)
 
 /// Alias to raw representation for Display.
 using DisplayID = SDL_DisplayID;
+
+// Forward decl
+struct Display;
 
 // Forward decl
 struct Window;
@@ -60117,35 +60168,68 @@ struct GPUDeviceParam
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
 
+// Forward decl
+struct GPUBuffer;
+
 /// Alias to raw representation for GPUTransferBuffer.
 using GPUTransferBufferRaw = SDL_GPUTransferBuffer*;
+
+// Forward decl
+struct GPUTransferBuffer;
 
 /// Alias to raw representation for GPUTexture.
 using GPUTextureRaw = SDL_GPUTexture*;
 
+// Forward decl
+struct GPUTexture;
+
 /// Alias to raw representation for GPUSampler.
 using GPUSamplerRaw = SDL_GPUSampler*;
+
+// Forward decl
+struct GPUSampler;
 
 /// Alias to raw representation for GPUShader.
 using GPUShaderRaw = SDL_GPUShader*;
 
+// Forward decl
+struct GPUShader;
+
 /// Alias to raw representation for GPUComputePipeline.
 using GPUComputePipelineRaw = SDL_GPUComputePipeline*;
+
+// Forward decl
+struct GPUComputePipeline;
 
 /// Alias to raw representation for GPUGraphicsPipeline.
 using GPUGraphicsPipelineRaw = SDL_GPUGraphicsPipeline*;
 
+// Forward decl
+struct GPUGraphicsPipeline;
+
 /// Alias to raw representation for GPUCommandBuffer.
 using GPUCommandBufferRaw = SDL_GPUCommandBuffer*;
+
+// Forward decl
+struct GPUCommandBuffer;
 
 /// Alias to raw representation for GPURenderPass.
 using GPURenderPassRaw = SDL_GPURenderPass*;
 
+// Forward decl
+struct GPURenderPass;
+
 /// Alias to raw representation for GPUComputePass.
 using GPUComputePassRaw = SDL_GPUComputePass*;
 
+// Forward decl
+struct GPUComputePass;
+
 /// Alias to raw representation for GPUCopyPass.
 using GPUCopyPassRaw = SDL_GPUCopyPass*;
+
+// Forward decl
+struct GPUCopyPass;
 
 /**
  * A structure specifying the parameters of a buffer.
@@ -67288,6 +67372,9 @@ struct JoystickParam
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
 
+// Forward decl
+struct JoystickID;
+
 /**
  * An enum of some common joystick types.
  *
@@ -70084,6 +70171,9 @@ inline bool Window::IsScreenKeyboardShown() const
 
 /// Alias to raw representation for MessageBox.
 using MessageBoxRaw = SDL_MessageBoxData;
+
+// Forward decl
+struct MessageBox;
 
 /**
  * @name MessageBoxFlags
@@ -83972,6 +84062,9 @@ inline bool GetGDKDefaultUser(XUserHandle* outUserHandle)
 
 /// Alias to raw representation for Finger.
 using FingerRaw = SDL_Finger;
+
+// Forward decl
+struct Finger;
 
 /**
  * A unique ID for a touch device.

@@ -23,6 +23,9 @@ namespace SDL {
 using ScancodeRaw = SDL_Scancode;
 
 // Forward decl
+struct Scancode;
+
+// Forward decl
 struct Keycode;
 
 /**

@@ -42,6 +42,9 @@ namespace SDL {
 using TimeRaw = SDL_Time;
 
 // Forward decl
+struct Time;
+
+// Forward decl
 struct Environment;
 
 /// Alias to raw representation for Environment.

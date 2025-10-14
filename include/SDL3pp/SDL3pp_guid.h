@@ -20,6 +20,9 @@ namespace SDL {
 /// Alias to raw representation for GUID.
 using GUIDRaw = SDL_GUID;
 
+// Forward decl
+struct GUID;
+
 /**
  * An GUID is a 128-bit identifier for an input device that identifies
  * that device across runs of SDL programs on the same platform.

@@ -71,14 +71,26 @@ namespace SDL {
 /// Alias to raw representation for PixelFormat.
 using PixelFormatRaw = SDL_PixelFormat;
 
+// Forward decl
+struct PixelFormat;
+
 /// Alias to raw representation for Colorspace.
 using ColorspaceRaw = SDL_Colorspace;
+
+// Forward decl
+struct Colorspace;
 
 /// Alias to raw representation for Color.
 using ColorRaw = SDL_Color;
 
+// Forward decl
+struct Color;
+
 /// Alias to raw representation for FColor.
 using FColorRaw = SDL_FColor;
+
+// Forward decl
+struct FColor;
 
 // Forward decl
 struct Palette;
@@ -145,9 +157,6 @@ struct PaletteConstParam
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
 };
-
-// Forward decl
-struct Color;
 
 /**
  * Details about the format of a pixel.

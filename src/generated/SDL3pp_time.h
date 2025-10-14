@@ -25,6 +25,9 @@ namespace SDL {
 /// Alias to raw representation for DateTime.
 using DateTimeRaw = SDL_DateTime;
 
+// Forward decl
+struct DateTime;
+
 /**
  * A structure holding a calendar date and time broken down into its
  * components.

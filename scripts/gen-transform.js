@@ -3296,7 +3296,6 @@ const transform = {
     "SDL_pixels.h": {
       localIncludes: ["SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
       transform: {
-        "Color": { kind: "forward" },
         "SDL_PixelFormatDetails": {
           kind: "alias",
           type: "SDL_PixelFormatDetails",
@@ -3931,9 +3930,6 @@ const transform = {
     "SDL_rect.h": {
       localIncludes: ['SDL3pp_error.h', 'SDL3pp_optionalRef.h', 'SDL3pp_spanRef.h', 'SDL3pp_stdinc.h'],
       transform: {
-        "FPoint": { kind: 'forward' },
-        "Rect": { kind: 'forward' },
-        "FRect": { kind: 'forward' },
         "SDL_Point": {
           wrapper: {
             attribute: "p",

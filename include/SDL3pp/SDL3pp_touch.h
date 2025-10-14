@@ -30,6 +30,9 @@ namespace SDL {
 /// Alias to raw representation for Finger.
 using FingerRaw = SDL_Finger;
 
+// Forward decl
+struct Finger;
+
 /**
  * A unique ID for a touch device.
  *

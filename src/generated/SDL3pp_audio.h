@@ -120,6 +120,9 @@ namespace SDL {
 using AudioFormatRaw = SDL_AudioFormat;
 
 // Forward decl
+struct AudioFormat;
+
+// Forward decl
 struct AudioDevice;
 
 /// Alias to raw representation for AudioDevice.

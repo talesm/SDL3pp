@@ -336,35 +336,68 @@ struct GPUDeviceParam
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
 
+// Forward decl
+struct GPUBuffer;
+
 /// Alias to raw representation for GPUTransferBuffer.
 using GPUTransferBufferRaw = SDL_GPUTransferBuffer*;
+
+// Forward decl
+struct GPUTransferBuffer;
 
 /// Alias to raw representation for GPUTexture.
 using GPUTextureRaw = SDL_GPUTexture*;
 
+// Forward decl
+struct GPUTexture;
+
 /// Alias to raw representation for GPUSampler.
 using GPUSamplerRaw = SDL_GPUSampler*;
+
+// Forward decl
+struct GPUSampler;
 
 /// Alias to raw representation for GPUShader.
 using GPUShaderRaw = SDL_GPUShader*;
 
+// Forward decl
+struct GPUShader;
+
 /// Alias to raw representation for GPUComputePipeline.
 using GPUComputePipelineRaw = SDL_GPUComputePipeline*;
+
+// Forward decl
+struct GPUComputePipeline;
 
 /// Alias to raw representation for GPUGraphicsPipeline.
 using GPUGraphicsPipelineRaw = SDL_GPUGraphicsPipeline*;
 
+// Forward decl
+struct GPUGraphicsPipeline;
+
 /// Alias to raw representation for GPUCommandBuffer.
 using GPUCommandBufferRaw = SDL_GPUCommandBuffer*;
+
+// Forward decl
+struct GPUCommandBuffer;
 
 /// Alias to raw representation for GPURenderPass.
 using GPURenderPassRaw = SDL_GPURenderPass*;
 
+// Forward decl
+struct GPURenderPass;
+
 /// Alias to raw representation for GPUComputePass.
 using GPUComputePassRaw = SDL_GPUComputePass*;
 
+// Forward decl
+struct GPUComputePass;
+
 /// Alias to raw representation for GPUCopyPass.
 using GPUCopyPassRaw = SDL_GPUCopyPass*;
+
+// Forward decl
+struct GPUCopyPass;
 
 /**
  * A structure specifying the parameters of a buffer.

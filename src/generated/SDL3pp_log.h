@@ -62,6 +62,9 @@ namespace SDL {
 /// Alias to raw representation for LogCategory.
 using LogCategoryRaw = SDL_LogCategory;
 
+// Forward decl
+struct LogCategory;
+
 /**
  * The predefined log priorities
  *

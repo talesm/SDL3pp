@@ -29,6 +29,9 @@ namespace SDL {
 /// Alias to raw representation for MessageBox.
 using MessageBoxRaw = SDL_MessageBoxData;
 
+// Forward decl
+struct MessageBox;
+
 /**
  * Message box flags.
  *

@@ -33,6 +33,9 @@ namespace SDL {
 /// Alias to raw representation for PathInfo.
 using PathInfoRaw = SDL_PathInfo;
 
+// Forward decl
+struct PathInfo;
+
 /**
  * Convenience representation of a path under SDL
  *

@@ -39,8 +39,14 @@ namespace SDL {
 /// Alias to raw representation for AtomicInt.
 using AtomicIntRaw = SDL_AtomicInt;
 
+// Forward decl
+struct AtomicInt;
+
 /// Alias to raw representation for AtomicU32.
 using AtomicU32Raw = SDL_AtomicU32;
+
+// Forward decl
+struct AtomicU32;
 
 /**
  * Insert a memory release barrier (function version).

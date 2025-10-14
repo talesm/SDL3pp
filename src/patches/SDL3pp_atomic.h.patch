@@ -2,31 +2,31 @@
 <  * @defgroup CategoryAtomic Category Atomic
 ---
 >  * @defgroup CategoryAtomic Atomic Operations
-84a85,86
+90a91,92
 > #ifdef SDL3PP_DOC
 > 
-182a185,186
+188a191,192
 > #endif // SDL3PP_DOC
 > 
-211a216,220
+217a222,226
 >   /**
 >    * Wraps AtomicInt.
 >    *
 >    * @param value the value for value.
 >    */
-300d308
+306d314
 <    * @param a a pointer to an AtomicInt to increment.
-316d323
+322d329
 <    * @param a a pointer to an AtomicInt to decrement.
-441c448
+447c454
 < inline bool AtomicIncRef(const AtomicIntRaw& a) { return SDL_AtomicIncRef(a); }
 ---
 > inline bool AtomicIncRef(AtomicIntRaw* a) { return SDL_AtomicIncRef(a); }
-460c467
+466c473
 < inline bool AtomicDecRef(const AtomicIntRaw& a) { return SDL_AtomicDecRef(a); }
 ---
 > inline bool AtomicDecRef(AtomicIntRaw* a) { return SDL_AtomicDecRef(a); }
-492c499,503
+498c505,509
 < public:
 ---
 >   /**
@@ -34,27 +34,27 @@
 >    *
 >    * @param value the value to be wrapped
 >    */
-494c505
+500c511
 <     : m_value(value)
 ---
 >     : AtomicU32Raw(value)
-562a574
+568a580
 >   /// Construcst from T
-578d589
+584d595
 <    * @param a a pointer to a pointer.
-599d609
+605d615
 <    * @param a a pointer to a pointer.
-618d627
+624d633
 <    * @param a a pointer to a pointer.
-708c717
+714c723
 <   return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
 ---
 >   return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
-714c723
+720c729
 <   return SDL::SetAtomicPointer(&m_value, v);
 ---
 >   return SDL_SetAtomicPointer(&m_value, v);
-720c729
+726c735
 <   return SDL::GetAtomicPointer(&m_value);
 ---
 >   return SDL_GetAtomicPointer(&m_value);

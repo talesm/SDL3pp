@@ -85,6 +85,9 @@ struct JoystickParam
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
 
+// Forward decl
+struct JoystickID;
+
 /**
  * An enum of some common joystick types.
  *

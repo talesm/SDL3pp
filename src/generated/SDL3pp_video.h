@@ -41,6 +41,9 @@ namespace SDL {
 using DisplayID = SDL_DisplayID;
 
 // Forward decl
+struct Display;
+
+// Forward decl
 struct Window;
 
 /// Alias to raw representation for Window.
