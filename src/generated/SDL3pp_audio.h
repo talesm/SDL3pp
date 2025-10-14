@@ -195,15 +195,6 @@ struct AudioStreamParam
 };
 
 /**
- * Format specifier for audio data.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa AudioFormat
- */
-using AudioSpec = SDL_AudioSpec;
-
-/**
  * Mask of bits in an AudioFormat that contains the format bit size.
  *
  * Generally one should use AudioFormat.GetBitSize instead of this macro
@@ -240,6 +231,15 @@ using AudioSpec = SDL_AudioSpec;
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_AUDIO_MASK_SIGNED (1u << 15)
+
+/**
+ * Format specifier for audio data.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa AudioFormat
+ */
+using AudioSpec = SDL_AudioSpec;
 
 /**
  * Audio format.
@@ -1306,8 +1306,6 @@ public:
    */
   void BindAudioStream(AudioStreamParam stream);
 
-  void SetPostmixCallback(AudioPostmixCB callback);
-
   /**
    * Set a callback that fires when data is about to be fed to an audio device.
    *
@@ -1359,6 +1357,58 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void SetPostmixCallback(AudioPostmixCallback callback, void* userdata);
+
+  /**
+   * Set a callback that fires when data is about to be fed to an audio device.
+   *
+   * This is useful for accessing the final mix, perhaps for writing a
+   * visualizer or applying a final effect to the audio data before playback.
+   *
+   * The buffer is the final mix of all bound audio streams on an opened device;
+   * this callback will fire regularly for any device that is both opened and
+   * unpaused. If there is no new data to mix, either because no streams are
+   * bound to the device or all the streams are empty, this callback will still
+   * fire with the entire buffer set to silence.
+   *
+   * This callback is allowed to make changes to the data; the contents of the
+   * buffer after this call is what is ultimately passed along to the hardware.
+   *
+   * The callback is always provided the data in float format (values from -1.0f
+   * to 1.0f), but the number of channels or sample rate may be different than
+   * the format the app requested when opening the device; SDL might have had to
+   * manage a conversion behind the scenes, or the playback might have jumped to
+   * new physical hardware when a system default changed, etc. These details may
+   * change between calls. Accordingly, the size of the buffer might change
+   * between calls as well.
+   *
+   * This callback can run at any time, and from any thread; if you need to
+   * serialize access to your app's data, you should provide and use a mutex or
+   * other synchronization device.
+   *
+   * All of this to say: there are specific needs this callback can fulfill, but
+   * it is not the simplest interface. Apps should generally provide audio in
+   * their preferred format through an AudioStream and let SDL handle the
+   * difference.
+   *
+   * This function is extremely time-sensitive; the callback should do the least
+   * amount of work possible and return as quickly as it can. The longer the
+   * callback runs, the higher the risk of audio dropouts or other problems.
+   *
+   * This function will block until the audio device is in between iterations,
+   * so any existing callback that might be running will finish before this
+   * function sets the new callback and returns.
+   *
+   * Setting a nullptr callback function disables any previously-set callback.
+   *
+   * @param callback a callback function to be called. Can be nullptr.
+   * @param userdata app-controlled pointer passed to callback. Can be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetPostmixCallback(AudioPostmixCB callback);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -2339,8 +2389,6 @@ public:
    */
   void Unlock();
 
-  void SetGetCallback(AudioStreamCB callback);
-
   /**
    * Set a callback that runs when data is requested from an audio stream.
    *
@@ -2385,7 +2433,49 @@ public:
    */
   void SetGetCallback(AudioStreamCallback callback, void* userdata);
 
-  void SetPutCallback(AudioStreamCB callback);
+  /**
+   * Set a callback that runs when data is requested from an audio stream.
+   *
+   * This callback is called _before_ data is obtained from the stream, giving
+   * the callback the chance to add more on-demand.
+   *
+   * The callback can (optionally) call AudioStream.PutData() to add more
+   * audio to the stream during this call; if needed, the request that triggered
+   * this callback will obtain the new data immediately.
+   *
+   * The callback's `additional_amount` argument is roughly how many bytes of
+   * _unconverted_ data (in the stream's input format) is needed by the caller,
+   * although this may overestimate a little for safety. This takes into account
+   * how much is already in the stream and only asks for any extra necessary to
+   * resolve the request, which means the callback may be asked for zero bytes,
+   * and a different amount on each call.
+   *
+   * The callback is not required to supply exact amounts; it is allowed to
+   * supply too much or too little or none at all. The caller will get what's
+   * available, up to the amount they requested, regardless of this callback's
+   * outcome.
+   *
+   * Clearing or flushing an audio stream does not call this callback.
+   *
+   * This function obtains the stream's lock, which means any existing callback
+   * (get or put) in progress will finish running before setting the new
+   * callback.
+   *
+   * Setting a nullptr function turns off the callback.
+   *
+   * @param callback the new callback function to call when data is requested
+   *                 from the stream.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.SetPutCallback
+   */
+  void SetGetCallback(AudioStreamCB callback);
 
   /**
    * Set a callback that runs when data is added to an audio stream.
@@ -2433,6 +2523,53 @@ public:
    * @sa AudioStream.SetGetCallback
    */
   void SetPutCallback(AudioStreamCallback callback, void* userdata);
+
+  /**
+   * Set a callback that runs when data is added to an audio stream.
+   *
+   * This callback is called _after_ the data is added to the stream, giving the
+   * callback the chance to obtain it immediately.
+   *
+   * The callback can (optionally) call AudioStream.GetData() to obtain audio
+   * from the stream during this call.
+   *
+   * The callback's `additional_amount` argument is how many bytes of
+   * _converted_ data (in the stream's output format) was provided by the
+   * caller, although this may underestimate a little for safety. This value
+   * might be less than what is currently available in the stream, if data was
+   * already there, and might be less than the caller provided if the stream
+   * needs to keep a buffer to aid in resampling. Which means the callback may
+   * be provided with zero bytes, and a different amount on each call.
+   *
+   * The callback may call AudioStream.GetAvailable to see the total amount
+   * currently available to read from the stream, instead of the total provided
+   * by the current call.
+   *
+   * The callback is not required to obtain all data. It is allowed to read less
+   * or none at all. Anything not read now simply remains in the stream for
+   * later access.
+   *
+   * Clearing or flushing an audio stream does not call this callback.
+   *
+   * This function obtains the stream's lock, which means any existing callback
+   * (get or put) in progress will finish running before setting the new
+   * callback.
+   *
+   * Setting a nullptr function turns off the callback.
+   *
+   * @param callback the new callback function to call when data is added to the
+   *                 stream.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.SetGetCallback
+   */
+  void SetPutCallback(AudioStreamCB callback);
 
   /**
    * Unbind a single audio stream from its audio device.
@@ -4043,10 +4180,64 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
   CheckError(SDL_SetAudioStreamGetCallback(stream, callback, userdata));
 }
 
+/**
+ * Set a callback that runs when data is requested from an audio stream.
+ *
+ * This callback is called _before_ data is obtained from the stream, giving
+ * the callback the chance to add more on-demand.
+ *
+ * The callback can (optionally) call AudioStream.PutData() to add more
+ * audio to the stream during this call; if needed, the request that triggered
+ * this callback will obtain the new data immediately.
+ *
+ * The callback's `additional_amount` argument is roughly how many bytes of
+ * _unconverted_ data (in the stream's input format) is needed by the caller,
+ * although this may overestimate a little for safety. This takes into account
+ * how much is already in the stream and only asks for any extra necessary to
+ * resolve the request, which means the callback may be asked for zero bytes,
+ * and a different amount on each call.
+ *
+ * The callback is not required to supply exact amounts; it is allowed to
+ * supply too much or too little or none at all. The caller will get what's
+ * available, up to the amount they requested, regardless of this callback's
+ * outcome.
+ *
+ * Clearing or flushing an audio stream does not call this callback.
+ *
+ * This function obtains the stream's lock, which means any existing callback
+ * (get or put) in progress will finish running before setting the new
+ * callback.
+ *
+ * Setting a nullptr function turns off the callback.
+ *
+ * @param stream the audio stream to set the new callback on.
+ * @param callback the new callback function to call when data is requested
+ *                 from the stream.
+ * @param userdata an opaque pointer provided to the callback for its own
+ *                 personal use.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AudioStream.SetPutCallback
+ */
+inline void SetAudioStreamGetCallback(AudioStreamParam stream,
+                                      AudioStreamCB callback)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
   SDL::SetAudioStreamGetCallback(m_resource, callback, userdata);
+}
+
+inline void AudioStream::SetGetCallback(AudioStreamCB callback)
+{
+  SDL::SetAudioStreamGetCallback(m_resource, callback);
 }
 
 /**
@@ -4102,10 +4293,67 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
   CheckError(SDL_SetAudioStreamPutCallback(stream, callback, userdata));
 }
 
+/**
+ * Set a callback that runs when data is added to an audio stream.
+ *
+ * This callback is called _after_ the data is added to the stream, giving the
+ * callback the chance to obtain it immediately.
+ *
+ * The callback can (optionally) call AudioStream.GetData() to obtain audio
+ * from the stream during this call.
+ *
+ * The callback's `additional_amount` argument is how many bytes of
+ * _converted_ data (in the stream's output format) was provided by the
+ * caller, although this may underestimate a little for safety. This value
+ * might be less than what is currently available in the stream, if data was
+ * already there, and might be less than the caller provided if the stream
+ * needs to keep a buffer to aid in resampling. Which means the callback may
+ * be provided with zero bytes, and a different amount on each call.
+ *
+ * The callback may call AudioStream.GetAvailable to see the total amount
+ * currently available to read from the stream, instead of the total provided
+ * by the current call.
+ *
+ * The callback is not required to obtain all data. It is allowed to read less
+ * or none at all. Anything not read now simply remains in the stream for
+ * later access.
+ *
+ * Clearing or flushing an audio stream does not call this callback.
+ *
+ * This function obtains the stream's lock, which means any existing callback
+ * (get or put) in progress will finish running before setting the new
+ * callback.
+ *
+ * Setting a nullptr function turns off the callback.
+ *
+ * @param stream the audio stream to set the new callback on.
+ * @param callback the new callback function to call when data is added to the
+ *                 stream.
+ * @param userdata an opaque pointer provided to the callback for its own
+ *                 personal use.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AudioStream.SetGetCallback
+ */
+inline void SetAudioStreamPutCallback(AudioStreamParam stream,
+                                      AudioStreamCB callback)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
                                         void* userdata)
 {
   SDL::SetAudioStreamPutCallback(m_resource, callback, userdata);
+}
+
+inline void AudioStream::SetPutCallback(AudioStreamCB callback)
+{
+  SDL::SetAudioStreamPutCallback(m_resource, callback);
 }
 
 /**
@@ -4342,10 +4590,72 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
   CheckError(SDL_SetAudioPostmixCallback(devid, callback, userdata));
 }
 
+/**
+ * Set a callback that fires when data is about to be fed to an audio device.
+ *
+ * This is useful for accessing the final mix, perhaps for writing a
+ * visualizer or applying a final effect to the audio data before playback.
+ *
+ * The buffer is the final mix of all bound audio streams on an opened device;
+ * this callback will fire regularly for any device that is both opened and
+ * unpaused. If there is no new data to mix, either because no streams are
+ * bound to the device or all the streams are empty, this callback will still
+ * fire with the entire buffer set to silence.
+ *
+ * This callback is allowed to make changes to the data; the contents of the
+ * buffer after this call is what is ultimately passed along to the hardware.
+ *
+ * The callback is always provided the data in float format (values from -1.0f
+ * to 1.0f), but the number of channels or sample rate may be different than
+ * the format the app requested when opening the device; SDL might have had to
+ * manage a conversion behind the scenes, or the playback might have jumped to
+ * new physical hardware when a system default changed, etc. These details may
+ * change between calls. Accordingly, the size of the buffer might change
+ * between calls as well.
+ *
+ * This callback can run at any time, and from any thread; if you need to
+ * serialize access to your app's data, you should provide and use a mutex or
+ * other synchronization device.
+ *
+ * All of this to say: there are specific needs this callback can fulfill, but
+ * it is not the simplest interface. Apps should generally provide audio in
+ * their preferred format through an AudioStream and let SDL handle the
+ * difference.
+ *
+ * This function is extremely time-sensitive; the callback should do the least
+ * amount of work possible and return as quickly as it can. The longer the
+ * callback runs, the higher the risk of audio dropouts or other problems.
+ *
+ * This function will block until the audio device is in between iterations,
+ * so any existing callback that might be running will finish before this
+ * function sets the new callback and returns.
+ *
+ * Setting a nullptr callback function disables any previously-set callback.
+ *
+ * @param devid the ID of an opened audio device.
+ * @param callback a callback function to be called. Can be nullptr.
+ * @param userdata app-controlled pointer passed to callback. Can be nullptr.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetAudioPostmixCallback(AudioDeviceParam devid,
+                                    AudioPostmixCB callback)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
                                             void* userdata)
 {
   SDL::SetAudioPostmixCallback(m_resource, callback, userdata);
+}
+
+inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
+{
+  SDL::SetAudioPostmixCallback(m_resource, callback);
 }
 
 /**

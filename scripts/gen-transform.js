@@ -353,7 +353,7 @@ const transform = {
     "SDL_audio.h": {
       localIncludes: ["SDL3pp_iostream.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
       transform: {
-        "SDL_AudioSpec": { after: "__begin" },
+        "SDL_AudioSpec": { before: "AudioFormat" },
         "SDL_AudioFormat": {
           before: "SDL_DEFINE_AUDIO_FORMAT",
           wrapper: true,
@@ -443,9 +443,7 @@ const transform = {
         },
         "SDL_AudioPostmixCallback": { before: "SDL_AudioDeviceID" },
         "AudioPostmixCB": {
-          kind: "alias",
           type: "std::function<void(const AudioSpec &spec, std::span<float> buffer)>",
-          before: "SDL_AudioDeviceID",
         },
         "SDL_AudioDeviceID": {
           name: "AudioDevice",
@@ -504,25 +502,27 @@ const transform = {
             "SDL_BindAudioStream": {
               proto: true
             },
-            "SetPostmixCallback": {
-              kind: "function",
-              proto: true,
-              type: "void",
-              parameters: [{
-                type: "AudioPostmixCB",
-                name: "callback"
-              }]
-            },
             "SDL_SetAudioPostmixCallback": {
               name: "SetPostmixCallback"
             },
           }
         },
+        "SetAudioPostmixCallback": {
+          after: "SDL_SetAudioPostmixCallback",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "AudioDeviceParam",
+            name: "devid"
+          }, {
+            type: "AudioPostmixCB",
+            name: "callback"
+          }],
+          hints: { methodName: "SetPostmixCallback" }
+        },
         "SDL_AudioStreamCallback": { before: "SDL_AudioDeviceID" },
         "AudioStreamCB": {
-          kind: "alias",
           type: "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>",
-          before: "SDL_AudioDeviceID"
         },
         "SDL_AudioStream": {
           resource: true,
@@ -626,33 +626,11 @@ const transform = {
             "SDL_AudioStreamDevicePaused": "immutable",
             "SDL_LockAudioStream": "function",
             "SDL_UnlockAudioStream": "function",
-            "SetGetCallback": {
-              kind: "function",
-              type: "void",
-              proto: true,
-              parameters: [{
-                name: "callback",
-                type: "AudioStreamCB"
-              }],
-            },
             "SDL_SetAudioStreamGetCallback": "function",
-            "SetPutCallback": {
-              kind: "function",
-              type: "void",
-              proto: true,
-              parameters: [{
-                name: "callback",
-                type: "AudioStreamCB"
-              }],
-            },
             "SDL_SetAudioStreamPutCallback": "function",
             "SDL_UnbindAudioStream": "function",
             "SDL_GetAudioStreamDevice": "immutable",
           }
-        },
-        "SDL_OpenAudioDeviceStream": {
-          type: "AudioStream",
-          hints: { delegate: "AudioStream" }
         },
         "OpenAudioDeviceStream": {
           after: "SDL_OpenAudioDeviceStream",
@@ -691,6 +669,26 @@ const transform = {
               type: "AudioStreamCB"
             }
           ],
+        },
+        "SetAudioStreamGetCallback": {
+          after: "SDL_SetAudioStreamGetCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "stream", type: "AudioStreamParam" },
+            { name: "callback", type: "AudioStreamCB" },
+          ],
+          hints: { methodName: "SetGetCallback" },
+        },
+        "SetAudioStreamPutCallback": {
+          after: "SDL_SetAudioStreamPutCallback",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "stream", type: "AudioStreamParam" },
+            { name: "callback", type: "AudioStreamCB" },
+          ],
+          hints: { methodName: "SetPutCallback" },
         },
         "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK": {
           kind: "var",
