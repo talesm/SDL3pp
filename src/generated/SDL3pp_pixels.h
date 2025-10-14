@@ -2398,9 +2398,14 @@ public:
    */
   void Destroy();
 
-  constexpr int GetSize() const { static_assert(false, "Not implemented"); }
+  constexpr const ColorRaw* data() const
+  {
+    static_assert(false, "Not implemented");
+  }
 
-  constexpr Color operator[](int index) const
+  constexpr int size() const { static_assert(false, "Not implemented"); }
+
+  constexpr ColorRaw operator[](int index) const
   {
     static_assert(false, "Not implemented");
   }

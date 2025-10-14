@@ -2575,11 +2575,14 @@ public:
    */
   void Destroy();
 
+  /// Access specific pallete colors
+  constexpr const ColorRaw* data() const { return m_resource->colors; }
+
   /// Returns number of colors in the palette.
-  constexpr int GetSize() const { return m_resource->ncolors; }
+  constexpr int size() const { return m_resource->ncolors; }
 
   /// Access specific pallete index
-  constexpr Color operator[](int index) const
+  constexpr ColorRaw operator[](int index) const
   {
     return m_resource->colors[index];
   }

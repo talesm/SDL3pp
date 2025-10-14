@@ -238,14 +238,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-550c575
+550,553c575
 <    * A macro to determine if an PixelFormat is a 10-bit format.
----
->    * Determine if this is a 10-bit format.
-552,555d576
+<    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
-<    *
+---
+>    * Determine if this is a 10-bit format.
+555d576
 <    * @param format an PixelFormat to check.
 558c579
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -272,14 +272,14 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-580,583c597
+580c597
 <    * A macro to determine if an PixelFormat has an alpha channel.
-<    *
-<    * Note that this macro double-evaluates its parameter, so do not use
-<    * expressions with side-effects here.
 ---
 >    * Determine if this has an alpha channel.
-585d598
+582,585d598
+<    * Note that this macro double-evaluates its parameter, so do not use
+<    * expressions with side-effects here.
+<    *
 <    * @param format an PixelFormat to check.
 588c601
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -590,15 +590,15 @@
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-1661,1662c1775
+1661,1665c1775
 <    * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
 <    * coefficients.
----
->    * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
-1664,1667d1776
+<    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
-<    *
+---
+>    * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
+1667d1776
 <    * @param cspace an Colorspace to check.
 1670c1779
 <    * @threadsafety It is safe to call this macro from any thread.
@@ -882,49 +882,57 @@
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2401c2578,2579
-<   constexpr int GetSize() const { static_assert(false, "Not implemented"); }
+2401,2404c2578,2579
+<   constexpr const ColorRaw* data() const
+<   {
+<     static_assert(false, "Not implemented");
+<   }
+---
+>   /// Access specific pallete colors
+>   constexpr const ColorRaw* data() const { return m_resource->colors; }
+2406c2581,2582
+<   constexpr int size() const { static_assert(false, "Not implemented"); }
 ---
 >   /// Returns number of colors in the palette.
->   constexpr int GetSize() const { return m_resource->ncolors; }
-2402a2581
+>   constexpr int size() const { return m_resource->ncolors; }
+2407a2584
 >   /// Access specific pallete index
-2405c2584
+2410c2587
 <     static_assert(false, "Not implemented");
 ---
 >     return m_resource->colors[index];
-2413d2591
+2418d2594
 <    * @param ncolors the number of entries to modify.
-2419a2598,2599
+2424a2601,2602
 >    *
 >    * @sa Palette.Palette
-2528c2708
+2533c2711
 <  * @returns a pointer to a PixelFormatDetails structure or nullptr on
 ---
 >  * @returns a PixelFormatDetails structure or nullptr on
-2537c2717
+2542c2720
 <   return SDL_GetPixelFormatDetails(format);
 ---
 >   return *SDL_GetPixelFormatDetails(format);
-2570d2749
+2575d2752
 <  * @param ncolors the number of entries to modify.
-2582c2761,2762
+2587c2764,2765
 <   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2672,2675c2852
+2677,2680c2855
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
 ---
 >  * @param c the color components of the pixel in the range 0-255.
-2692c2869
+2697c2872
 <   return SDL_MapRGBA(&format, palette, c);
 ---
 >   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
-2772a2950,2976
+2777a2953,2979
 > 
 > inline Uint32 Color::Map(const PixelFormatDetails& format,
 >                          PaletteConstParam palette = nullptr) const

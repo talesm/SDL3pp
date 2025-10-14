@@ -3759,7 +3759,14 @@ const transform = {
           },
           entries: {
             "SDL_CreatePalette": "ctor",
-            "GetSize": {
+            "data": {
+              kind: "function",
+              type: "const ColorRaw *",
+              immutable: true,
+              constexpr: true,
+              parameters: []
+            },
+            "size": {
               kind: "function",
               type: "int",
               immutable: true,
@@ -3768,7 +3775,7 @@ const transform = {
             },
             "operator[]": {
               kind: "function",
-              type: "Color",
+              type: "ColorRaw",
               immutable: true,
               constexpr: true,
               parameters: [

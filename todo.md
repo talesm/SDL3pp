@@ -6,7 +6,7 @@ Todo for next version
 - [x] Fix comparisons for wrappers (the ones using extending);
 - [ ] Review older files to ensure class and freestanding functions are in sync;
   - [ ] SDL_audio.h
-  - [ ] SDL_pixels.h
+  - [z] SDL_pixels.h
   - [x] SDL_properties.h
   - [ ] SDL_rect.h
   - [ ] SDL_render.h
@@ -14,7 +14,7 @@ Todo for next version
   - [ ] SDL_video.h
 - [ ] Review and simplify older transformations:
   - [ ] SDL_audio.h
-  - [ ] SDL_pixels.h
+  - [z] SDL_pixels.h
   - [x] SDL_properties.h
   - [ ] SDL_rect.h
   - [ ] SDL_render.h
