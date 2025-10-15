@@ -1277,7 +1277,7 @@ struct Rect : RectRaw
    *
    * @sa Rect.HasIntersection
    */
-  constexpr std::optional<Rect> GetIntersection(const RectRaw& other) const;
+  constexpr Rect GetIntersection(const RectRaw& other) const;
 
   /**
    * Calculate the union of two rectangles.
@@ -2161,14 +2161,13 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @sa Rect.HasIntersection
  */
-constexpr std::optional<Rect> GetRectIntersection(const RectRaw& A,
-                                                  const RectRaw& B)
+constexpr Rect GetRectIntersection(const RectRaw& A, const RectRaw& B)
 {
   if (Rect result; SDL_GetRectIntersection(&A, &B, &result)) return result;
   return {};
 }
 
-constexpr std::optional<Rect> Rect::GetIntersection(const RectRaw& other) const
+constexpr Rect Rect::GetIntersection(const RectRaw& other) const
 {
   return SDL::GetRectIntersection(*this, other);
 }

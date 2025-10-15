@@ -4208,7 +4208,7 @@ const transform = {
             },
             "SDL_GetRectIntersection": {
               kind: "function",
-              type: "std::optional<Rect>",
+              type: "Rect",
               constexpr: true,
               immutable: true,
               parameters: [{
@@ -6113,46 +6113,14 @@ const transform = {
             enableConstParam: true,
           },
           entries: {
-            "SDL_CreateSurface": {
-              name: "ctor",
-              parameters: [
-                {
-                  name: "size",
-                  type: "const PointRaw &"
-                },
-                {
-                  name: "format",
-                  type: "PixelFormat"
-                }
-              ]
-            },
-            "SDL_CreateSurfaceFrom": {
-              name: "ctor",
-              parameters: [
-                {
-                  name: "size",
-                  type: "const PointRaw &"
-                },
-                {
-                  name: "format",
-                  type: "PixelFormat"
-                },
-                {
-                  name: "pixels",
-                  type: "void *"
-                },
-                {
-                  name: "pitch",
-                  type: "int"
-                }
-              ]
-            },
+            "SDL_CreateSurface": "ctor",
+            "SDL_CreateSurfaceFrom": "ctor",
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",
-            "SDL_CreateSurfacePalette": { type: "Palette" },
+            "SDL_CreateSurfacePalette": "function",
             "SDL_SetSurfacePalette": "function",
-            "SDL_GetSurfacePalette": { immutable: true, type: "Palette" },
+            "SDL_GetSurfacePalette": "immutable",
             "SDL_AddSurfaceAlternateImage": "function",
             "SDL_SurfaceHasAlternateImages": "immutable",
             "SDL_GetSurfaceImages": {
