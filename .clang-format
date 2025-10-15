@@ -2,25 +2,27 @@ BasedOnStyle: Mozilla
 BinPackParameters: false
 Cpp11BracedListStyle: true
 IncludeCategories:
-  - Regex: '^("|<)catch\.hpp'
+  - Regex: '^("|<)doctest\.h'
     Priority: 0
   - Regex: '^(<[a-z0-9_]*>)'
     Priority: 1
-  - Regex: '^<.*'
+  - Regex: '^<SDL_.*'
     Priority: 2
-  - Regex: '.*'
+  - Regex: '^<.*'
     Priority: 3
+  - Regex: '.*'
+    Priority: 4
 IndentCaseLabels: false
 
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: 'true'
+AlwaysBreakTemplateDeclarations: true
 
-AllowShortBlocksOnASingleLine: 'true'
-AllowShortCaseLabelsOnASingleLine: 'true'
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLambdasOnASingleLine: All
-AllowShortLoopsOnASingleLine: 'true'
+AllowShortLoopsOnASingleLine: true
 
