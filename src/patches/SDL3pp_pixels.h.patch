@@ -71,238 +71,238 @@
 ---
 >     : m_format(PixelFormatRaw(
 >         SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-415c463
+441c489
 <    * A macro to retrieve the flags of an PixelFormat.
 ---
 >    * Retrieve the flags of an PixelFormat.
-417c465
+443c491
 <    * This macro is generally not needed directly by an app, which should use
 ---
 >    * This function is generally not needed directly by an app, which should use
-420d467
+446d493
 <    * @param format an PixelFormat to check.
-423c470
+449c496
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-425c472
+451c498
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-430,432c477
+456,458c503
 <    * A macro to retrieve the type of an PixelFormat.
 <    *
 <    * This is usually a value from the PixelType enumeration.
 ---
 >    * Retrieve the type.
-434,435c479
+460,461c505
 <    * @param format an PixelFormat to check.
 <    * @returns the type of `format`.
 ---
 >    * @returns the type as PixelType.
-437c481
+463c507
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-439c483
+465c509
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-444c488
+470c514
 <    * A macro to retrieve the order of an PixelFormat.
 ---
 >    * Retrieve the order.
-449,450c493
+475,476c519
 <    * @param format an PixelFormat to check.
 <    * @returns the order of `format`.
 ---
 >    * @returns the order.
-452c495
+478c521
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-454c497
+480c523
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-459c502
+485c528
 <    * A macro to retrieve the layout of an PixelFormat.
 ---
 >    * Retrieve the layout.
-464,465c507
+490,491c533
 <    * @param format an PixelFormat to check.
 <    * @returns the layout of `format`.
 ---
 >    * @returns the layout
-467c509
+493c535
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-469c511
+495c537
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-474,477c516
+500,503c542
 <    * A macro to determine an PixelFormat's bits per pixel.
 <    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 ---
 >    * Determine this's bits per pixel.
-482,483c521
+508,509c547
 <    * @param format an PixelFormat to check.
 <    * @returns the bits-per-pixel of `format`.
 ---
 >    * @returns the bits-per-pixel.
-485c523
+511c549
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-487c525
+513c551
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-489c527
+515c553
 <    * @sa PixelFormat.GetBytesPerPixel
 ---
 >    * @sa GetBytesPerPixel
-494c532
+520c558
 <    * A macro to determine an PixelFormat's bytes per pixel.
 ---
 >    * Determine this's bytes per pixel.
-502,503c540
+528,529c566
 <    * @param format an PixelFormat to check.
 <    * @returns the bytes-per-pixel of `format`.
 ---
 >    * @return the bytes-per-pixel.
-505c542
+531c568
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-507c544
+533c570
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-509c546
+535c572
 <    * @sa PixelFormat.GetBitsPerPixel
 ---
 >    * @sa GetBitsPerPixel
-514c551
+540c577
 <    * A macro to determine if an PixelFormat is an indexed format.
 ---
 >    * Determine if this is an indexed format.
-516,519d552
+542,545d578
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 <    *
 <    * @param format an PixelFormat to check.
-522c555
+548c581
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-524c557
+550c583
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-529,532c562
+555,558c588
 <    * A macro to determine if an PixelFormat is a packed format.
 <    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is a packed format.
-534d563
+560d589
 <    * @param format an PixelFormat to check.
-537c566
+563c592
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-539c568
+565c594
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-544c573
+570c599
 <    * A macro to determine if an PixelFormat is an array format.
 ---
 >    * Determine if this is an array format.
-546,549d574
+572,575d600
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 <    *
 <    * @param format an PixelFormat to check.
-552c577
+578c603
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-554c579
+580c605
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-559,562c584
+585,588c610
 <    * A macro to determine if an PixelFormat is a 10-bit format.
 <    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is a 10-bit format.
-564d585
+590d611
 <    * @param format an PixelFormat to check.
-567c588
+593c614
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-569c590
+595c616
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-574,577c595
+600,603c621
 <    * A macro to determine if an PixelFormat is a floating point format.
 <    *
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is a floating point format.
-579d596
+605d622
 <    * @param format an PixelFormat to check.
-582c599
+608c625
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-584c601
+610c627
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-589c606
+615c632
 <    * A macro to determine if an PixelFormat has an alpha channel.
 ---
 >    * Determine if this has an alpha channel.
-591,594d607
+617,620d633
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 <    *
 <    * @param format an PixelFormat to check.
-597c610
+623c636
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-599c612
+625c638
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-604c617
+630c643
 <    * A macro to determine if an PixelFormat is a "FourCC" format.
 ---
 >    * Determine if this is a "FourCC" format.
-608,611d620
+634,637d646
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 <    *
 <    * @param format an PixelFormat to check.
-614c623
+640c649
 <    * @threadsafety It is safe to call this macro from any thread.
 ---
 >    * @threadsafety It is safe to call this function from any thread.
-616c625
+642c651
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.

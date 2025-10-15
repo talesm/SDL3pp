@@ -9095,6 +9095,32 @@ public:
   constexpr operator PixelFormatRaw() const { return m_format; }
 
   /**
+   * Convert a bpp value and RGBA masks to an enumerated pixel format.
+   *
+   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't
+   * possible.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask the red mask for the format.
+   * @param Gmask the green mask for the format.
+   * @param Bmask the blue mask for the format.
+   * @param Amask the alpha mask for the format.
+   * @returns the PixelFormat value corresponding to the format masks, or
+   *          PIXELFORMAT_UNKNOWN if there isn't a match.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.GetMasks
+   */
+  static PixelFormat ForMasks(int bpp,
+                              Uint32 Rmask,
+                              Uint32 Gmask,
+                              Uint32 Bmask,
+                              Uint32 Amask);
+
+  /**
    * Retrieve the flags of an PixelFormat.
    *
    * This function is generally not needed directly by an app, which should use
@@ -9294,32 +9320,6 @@ public:
                 Uint32* Gmask,
                 Uint32* Bmask,
                 Uint32* Amask) const;
-
-  /**
-   * Convert a bpp value and RGBA masks to an enumerated pixel format.
-   *
-   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't
-   * possible.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask the red mask for the format.
-   * @param Gmask the green mask for the format.
-   * @param Bmask the blue mask for the format.
-   * @param Amask the alpha mask for the format.
-   * @returns the PixelFormat value corresponding to the format masks, or
-   *          PIXELFORMAT_UNKNOWN if there isn't a match.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PixelFormat.GetMasks
-   */
-  static PixelFormat ForMasks(int bpp,
-                              Uint32 Rmask,
-                              Uint32 Gmask,
-                              Uint32 Bmask,
-                              Uint32 Amask);
 
   /**
    * Create an PixelFormatDetails structure corresponding to a pixel format.

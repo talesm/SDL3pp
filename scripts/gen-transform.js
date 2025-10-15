@@ -3356,6 +3356,11 @@ const transform = {
                 }
               ]
             },
+            "SDL_GetPixelFormatForMasks": {
+              kind: "function",
+              name: "ForMasks",
+              static: true,
+            },
             "SDL_PIXELFLAG": {
               kind: "function",
               name: "GetFlags",
@@ -3459,16 +3464,6 @@ const transform = {
               "type": "bool",
               "immutable": true,
               "constexpr": true
-            },
-            "SDL_GetPixelFormatName": "immutable",
-            "SDL_GetMasksForPixelFormat": {
-              "kind": "function",
-              "immutable": true,
-              "name": "GetMasks"
-            },
-            "SDL_GetPixelFormatForMasks": {
-              "kind": "function",
-              "name": "ForMasks"
             },
           }
         },
@@ -3764,6 +3759,15 @@ const transform = {
               default: "0"
             }
           ]
+        },
+        "SDL_GetPixelFormatName": {
+          hints: { methodImmutable: true },
+        },
+        "SDL_GetMasksForPixelFormat": {
+          hints: {
+            methodName: "GetMasks",
+            methodImmutable: true,
+          },
         },
         "SDL_GetPixelFormatDetails": {
           hints: {
