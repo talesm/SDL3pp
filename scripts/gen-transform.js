@@ -3470,7 +3470,6 @@ const transform = {
               "kind": "function",
               "name": "ForMasks"
             },
-            "SDL_GetPixelFormatDetails": "immutable",
           }
         },
         "SDL_PIXELFORMAT_MJPG": {
@@ -3765,6 +3764,20 @@ const transform = {
               default: "0"
             }
           ]
+        },
+        "SDL_GetPixelFormatDetails": {
+          hints: {
+            methodImmutable: true,
+            mayFail: true,
+          },
+        },
+        "PixelFormat.operator const PixelFormatDetails &": {
+          kind: "function",
+          type: "",
+          parameters: [],
+          immutable: true,
+          doc: "Same as GetDetails()",
+          hints: { delegate: "GetDetails" },
         },
         "MapRGBA": {
           before: "SDL_MapRGBA",

@@ -694,6 +694,7 @@ function expandTypes(sourceEntries, file, context) {
     if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
     const detectedMethods = detectMethods(sourceType, targetType, rawType, `const ${rawType}`, blockedNames);
     mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
+    mirrorMethods(sourceEntries, file.transform, detectedMethods, paramType, constParamType, targetType);
     transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
     if (type !== sourceType) {
       context.addParamType(type, targetType);
@@ -1315,7 +1316,7 @@ function expandTypes(sourceEntries, file, context) {
       if (sourceEntry) {
         foundEntries[sourceName] = {
           ...transformEntry,
-          immutable: m === 'immutable'
+          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable,
         };
       } else if (!sourceName.includes("::")) {
         const methodName = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
@@ -1346,10 +1347,12 @@ function expandTypes(sourceEntries, file, context) {
         /** @type {ApiEntryTransform} */
         const e = {
           ...deepClone(transformEntry),
-          immutable: m === 'immutable' || undefined,
+          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable,
         };
         e.name = transformEntry.hints?.methodName ?? undefined;
         foundEntries[sourceName] = e;
+      } else if (transformEntry?.hints?.methodImmutable) {
+        foundEntries[sourceName] = "immutable";
       } else {
         foundEntries[sourceName] = m;
       }

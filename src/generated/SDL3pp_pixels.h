@@ -693,6 +693,9 @@ public:
    */
   const PixelFormatDetails& GetDetails() const;
 
+  /// Same as GetDetails()
+  operator const PixelFormatDetails&() const { return GetDetails(); }
+
   Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
 
   Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
@@ -2555,7 +2558,7 @@ inline PixelFormat PixelFormat::ForMasks(int bpp,
  */
 inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
 {
-  return SDL_GetPixelFormatDetails(format);
+  return CheckError(SDL_GetPixelFormatDetails(format));
 }
 
 inline const PixelFormatDetails& PixelFormat::GetDetails() const

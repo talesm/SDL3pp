@@ -693,14 +693,17 @@ public:
    * allocated), and hence should not be modified, especially the palette. Weird
    * errors such as `Blit combination not supported` may occur.
    *
-   * @returns a PixelFormatDetails structure or nullptr on
-   *          failure; call GetError() for more information.
+   * @returns a PixelFormatDetails structure on success
+   * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
   const PixelFormatDetails& GetDetails() const;
+
+  /// Same as GetDetails()
+  operator const PixelFormatDetails&() const { return GetDetails(); }
 
   /**
    * Map an RGBA quadruple to a pixel value for a given pixel format.
@@ -2717,8 +2720,8 @@ inline PixelFormat PixelFormat::ForMasks(int bpp,
  * errors such as `Blit combination not supported` may occur.
  *
  * @param format one of the PixelFormat values.
- * @returns a PixelFormatDetails structure or nullptr on
- *          failure; call GetError() for more information.
+ * @returns a PixelFormatDetails structure on success
+ * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2726,7 +2729,7 @@ inline PixelFormat PixelFormat::ForMasks(int bpp,
  */
 inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
 {
-  return *SDL_GetPixelFormatDetails(format);
+  return *CheckError(SDL_GetPixelFormatDetails(format));
 }
 
 inline const PixelFormatDetails& PixelFormat::GetDetails() const
