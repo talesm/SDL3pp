@@ -14578,25 +14578,25 @@
               "type": ""
             },
             "SDL_HID_API_BUS_USB": {
-              "doc": "[object Object]",
+              "doc": "USB bus\n       Specifications:",
               "name": "SDL_HID_API_BUS_USB",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_BLUETOOTH": {
-              "doc": "[object Object]",
+              "doc": "Bluetooth or Bluetooth LE bus\n       Specifications:\n       https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/\n       https://www.bluetooth.com/specifications/specs/hid-service-1-0/",
               "name": "SDL_HID_API_BUS_BLUETOOTH",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_I2C": {
-              "doc": "[object Object]",
+              "doc": "I2C bus\n       Specifications:",
               "name": "SDL_HID_API_BUS_I2C",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_SPI": {
-              "doc": "[object Object]",
+              "doc": "SPI bus\n       Specifications:",
               "name": "SDL_HID_API_BUS_SPI",
               "kind": "var",
               "type": ""
@@ -22358,6 +22358,12 @@
           "name": "SDL_MessageBoxColor",
           "kind": "struct",
           "entries": {
+            "r, g, b": {
+              "doc": "",
+              "name": "r, g, b",
+              "kind": "var",
+              "type": "Uint8"
+            },
             "r": {
               "doc": "",
               "name": "r",
@@ -22414,7 +22420,7 @@
               "type": ""
             },
             "SDL_MESSAGEBOX_COLOR_COUNT": {
-              "doc": "[object Object]",
+              "doc": "Size of the colors array of SDL_MessageBoxColorScheme.",
               "name": "SDL_MESSAGEBOX_COLOR_COUNT",
               "kind": "var",
               "type": ""
@@ -24173,143 +24179,209 @@
           "doc": "A macro for defining custom FourCC pixel formats.\n\nFor example, defining SDL_PIXELFORMAT_YV12 looks like this:\n\n```c\nSDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')\n```\n\n\\param A the first character of the FourCC code.\n\\param B the second character of the FourCC code.\n\\param C the third character of the FourCC code.\n\\param D the fourth character of the FourCC code.\n\\returns a format value in the style of SDL_PixelFormat.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_DEFINE_PIXELFOURCC",
           "kind": "def",
+          "value": "SDL_FOURCC(A, B, C, D)",
           "parameters": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ],
-          "value": "SDL_FOURCC(A, B, C, D)"
+            {
+              "name": "A",
+              "type": ""
+            },
+            {
+              "name": "B",
+              "type": ""
+            },
+            {
+              "name": "C",
+              "type": ""
+            },
+            {
+              "name": "D",
+              "type": ""
+            }
+          ]
         },
         "SDL_DEFINE_PIXELFORMAT": {
           "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nSDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA, SDL_PACKEDLAYOUT_8888, 32, 4)\n```\n\n\\param type the type of the new format, probably a SDL_PixelType value.\n\\param order the order of the new format, probably a SDL_BitmapOrder,\n             SDL_PackedOrder, or SDL_ArrayOrder value.\n\\param layout the layout of the new format, probably an SDL_PackedLayout\n              value or zero.\n\\param bits the number of bits per pixel of the new format.\n\\param bytes the number of bytes per pixel of the new format.\n\\returns a format value in the style of SDL_PixelFormat.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_DEFINE_PIXELFORMAT",
           "kind": "def",
+          "value": "    ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | \\\n     ((bits) << 8) | ((bytes) << 0))",
           "parameters": [
-            "type",
-            "order",
-            "layout",
-            "bits",
-            "bytes"
-          ],
-          "value": "    ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | \\\n     ((bits) << 8) | ((bytes) << 0))"
+            {
+              "name": "type",
+              "type": ""
+            },
+            {
+              "name": "order",
+              "type": ""
+            },
+            {
+              "name": "layout",
+              "type": ""
+            },
+            {
+              "name": "bits",
+              "type": ""
+            },
+            {
+              "name": "bytes",
+              "type": ""
+            }
+          ]
         },
         "SDL_PIXELFLAG": {
           "doc": "A macro to retrieve the flags of an SDL_PixelFormat.\n\nThis macro is generally not needed directly by an app, which should use\nspecific tests, like SDL_ISPIXELFORMAT_FOURCC, instead.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the flags of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_PIXELFLAG",
           "kind": "def",
+          "value": "(((format) >> 28) & 0x0F)",
           "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 28) & 0x0F)"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_PIXELTYPE": {
           "doc": "A macro to retrieve the type of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_PixelType enumeration.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the type of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_PIXELTYPE",
           "kind": "def",
+          "value": "(((format) >> 24) & 0x0F)",
           "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 24) & 0x0F)"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_PIXELORDER": {
           "doc": "A macro to retrieve the order of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_BitmapOrder, SDL_PackedOrder, or\nSDL_ArrayOrder enumerations, depending on the format type.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the order of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_PIXELORDER",
           "kind": "def",
+          "value": "(((format) >> 20) & 0x0F)",
           "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 20) & 0x0F)"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_PIXELLAYOUT": {
           "doc": "A macro to retrieve the layout of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_PackedLayout enumeration, or zero if a\nlayout doesn't make sense for the format type.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the layout of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_PIXELLAYOUT",
           "kind": "def",
+          "value": "(((format) >> 16) & 0x0F)",
           "parameters": [
-            "format"
-          ],
-          "value": "(((format) >> 16) & 0x0F)"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_BITSPERPIXEL": {
           "doc": "A macro to determine an SDL_PixelFormat's bits per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats will report zero here, as it rarely makes sense to measure\nthem per-pixel.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the bits-per-pixel of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_BYTESPERPIXEL",
           "name": "SDL_BITSPERPIXEL",
           "kind": "def",
+          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))",
           "parameters": [
-            "format"
-          ],
-          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? 0 : (((format) >> 8) & 0xFF))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_BYTESPERPIXEL": {
           "doc": "A macro to determine an SDL_PixelFormat's bytes per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats do their best here, but many of them don't have a meaningful\nmeasurement of bytes per pixel.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the bytes-per-pixel of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_BITSPERPIXEL",
           "name": "SDL_BYTESPERPIXEL",
           "kind": "def",
+          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? \\\n        ((((format) == SDL_PIXELFORMAT_YUY2) || \\\n          ((format) == SDL_PIXELFORMAT_UYVY) || \\\n          ((format) == SDL_PIXELFORMAT_YVYU) || \\\n          ((format) == SDL_PIXELFORMAT_P010)) ? 2 : 1) : (((format) >> 0) & 0xFF))",
           "parameters": [
-            "format"
-          ],
-          "value": "    (SDL_ISPIXELFORMAT_FOURCC(format) ? \\\n        ((((format) == SDL_PIXELFORMAT_YUY2) || \\\n          ((format) == SDL_PIXELFORMAT_UYVY) || \\\n          ((format) == SDL_PIXELFORMAT_YVYU) || \\\n          ((format) == SDL_PIXELFORMAT_P010)) ? 2 : 1) : (((format) >> 0) & 0xFF))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_INDEXED": {
           "doc": "A macro to determine if an SDL_PixelFormat is an indexed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is indexed, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_INDEXED",
           "kind": "def",
+          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))",
           "parameters": [
-            "format"
-          ],
-          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX1) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX2) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX4) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_INDEX8)))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_PACKED": {
           "doc": "A macro to determine if an SDL_PixelFormat is a packed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is packed, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_PACKED",
           "kind": "def",
+          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))",
           "parameters": [
-            "format"
-          ],
-          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32)))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_ARRAY": {
           "doc": "A macro to determine if an SDL_PixelFormat is an array format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is an array, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_ARRAY",
           "kind": "def",
+          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
           "parameters": [
-            "format"
-          ],
-          "value": "    (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n     ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU8) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYU32) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n      (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_10BIT": {
           "doc": "A macro to determine if an SDL_PixelFormat is a 10-bit format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is 10-bit, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_10BIT",
           "kind": "def",
+          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) && \\\n        (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))",
           "parameters": [
-            "format"
-          ],
-          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_PACKED32) && \\\n        (SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_2101010)))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_FLOAT": {
           "doc": "A macro to determine if an SDL_PixelFormat is a floating point format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is 10-bit, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_FLOAT",
           "kind": "def",
+          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n        (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))",
           "parameters": [
-            "format"
-          ],
-          "value": "      (!SDL_ISPIXELFORMAT_FOURCC(format) && \\\n       ((SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF16) || \\\n        (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_ALPHA": {
           "doc": "A macro to determine if an SDL_PixelFormat has an alpha channel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format has alpha, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_ALPHA",
           "kind": "def",
+          "value": "    ((SDL_ISPIXELFORMAT_PACKED(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) || \\\n     (SDL_ISPIXELFORMAT_ARRAY(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))",
           "parameters": [
-            "format"
-          ],
-          "value": "    ((SDL_ISPIXELFORMAT_PACKED(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_BGRA))) || \\\n     (SDL_ISPIXELFORMAT_ARRAY(format) && \\\n      ((SDL_PIXELORDER(format) == SDL_ARRAYORDER_ARGB) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_RGBA) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_ABGR) || \\\n       (SDL_PIXELORDER(format) == SDL_ARRAYORDER_BGRA))))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISPIXELFORMAT_FOURCC": {
           "doc": "A macro to determine if an SDL_PixelFormat is a \"FourCC\" format.\n\nThis covers custom and other unusual formats.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format has alpha, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISPIXELFORMAT_FOURCC",
           "kind": "def",
+          "value": "    /* The flag is set to 1 because 0x1? is not in the printable ASCII range */ \\\n    ((format) && (SDL_PIXELFLAG(format) != 1))",
           "parameters": [
-            "format"
-          ],
-          "value": "    /* The flag is set to 1 because 0x1? is not in the printable ASCII range */ \\\n    ((format) && (SDL_PIXELFLAG(format) != 1))"
+            {
+              "name": "format",
+              "type": ""
+            }
+          ]
         },
         "SDL_PixelFormat": {
           "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes (alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n\\since This enum is available since SDL 3.2.0.",
@@ -25150,114 +25222,165 @@
           "doc": "A macro for defining custom SDL_Colorspace formats.\n\nFor example, defining SDL_COLORSPACE_SRGB looks like this:\n\n```c\nSDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_RGB,\n                      SDL_COLOR_RANGE_FULL,\n                      SDL_COLOR_PRIMARIES_BT709,\n                      SDL_TRANSFER_CHARACTERISTICS_SRGB,\n                      SDL_MATRIX_COEFFICIENTS_IDENTITY,\n                      SDL_CHROMA_LOCATION_NONE)\n```\n\n\\param type the type of the new format, probably an SDL_ColorType value.\n\\param range the range of the new format, probably a SDL_ColorRange value.\n\\param primaries the primaries of the new format, probably an\n                 SDL_ColorPrimaries value.\n\\param transfer the transfer characteristics of the new format, probably an\n                SDL_TransferCharacteristics value.\n\\param matrix the matrix coefficients of the new format, probably an\n              SDL_MatrixCoefficients value.\n\\param chroma the chroma sample location of the new format, probably an\n              SDL_ChromaLocation value.\n\\returns a format value in the style of SDL_Colorspace.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_DEFINE_COLORSPACE",
           "kind": "def",
+          "value": "    (((Uint32)(type) << 28) | ((Uint32)(range) << 24) | ((Uint32)(chroma) << 20) | \\\n    ((Uint32)(primaries) << 10) | ((Uint32)(transfer) << 5) | ((Uint32)(matrix) << 0))",
           "parameters": [
-            "type",
-            "range",
-            "primaries",
-            "transfer",
-            "matrix",
-            "chroma"
-          ],
-          "value": "    (((Uint32)(type) << 28) | ((Uint32)(range) << 24) | ((Uint32)(chroma) << 20) | \\\n    ((Uint32)(primaries) << 10) | ((Uint32)(transfer) << 5) | ((Uint32)(matrix) << 0))"
+            {
+              "name": "type",
+              "type": ""
+            },
+            {
+              "name": "range",
+              "type": ""
+            },
+            {
+              "name": "primaries",
+              "type": ""
+            },
+            {
+              "name": "transfer",
+              "type": ""
+            },
+            {
+              "name": "matrix",
+              "type": ""
+            },
+            {
+              "name": "chroma",
+              "type": ""
+            }
+          ]
         },
         "SDL_COLORSPACETYPE": {
           "doc": "A macro to retrieve the type of an SDL_Colorspace.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns the SDL_ColorType for `cspace`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_COLORSPACETYPE",
           "kind": "def",
+          "value": "(SDL_ColorType)(((cspace) >> 28) & 0x0F)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_ColorType)(((cspace) >> 28) & 0x0F)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_COLORSPACERANGE": {
           "doc": "A macro to retrieve the range of an SDL_Colorspace.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns the SDL_ColorRange of `cspace`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_COLORSPACERANGE",
           "kind": "def",
+          "value": "(SDL_ColorRange)(((cspace) >> 24) & 0x0F)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_ColorRange)(((cspace) >> 24) & 0x0F)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_COLORSPACECHROMA": {
           "doc": "A macro to retrieve the chroma sample location of an SDL_Colorspace.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns the SDL_ChromaLocation of `cspace`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_COLORSPACECHROMA",
           "kind": "def",
+          "value": "(SDL_ChromaLocation)(((cspace) >> 20) & 0x0F)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_ChromaLocation)(((cspace) >> 20) & 0x0F)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_COLORSPACEPRIMARIES": {
           "doc": "A macro to retrieve the primaries of an SDL_Colorspace.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns the SDL_ColorPrimaries of `cspace`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_COLORSPACEPRIMARIES",
           "kind": "def",
+          "value": "(SDL_ColorPrimaries)(((cspace) >> 10) & 0x1F)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_ColorPrimaries)(((cspace) >> 10) & 0x1F)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_COLORSPACETRANSFER": {
           "doc": "A macro to retrieve the transfer characteristics of an SDL_Colorspace.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns the SDL_TransferCharacteristics of `cspace`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_COLORSPACETRANSFER",
           "kind": "def",
+          "value": "(SDL_TransferCharacteristics)(((cspace) >> 5) & 0x1F)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_TransferCharacteristics)(((cspace) >> 5) & 0x1F)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_COLORSPACEMATRIX": {
           "doc": "A macro to retrieve the matrix coefficients of an SDL_Colorspace.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns the SDL_MatrixCoefficients of `cspace`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_COLORSPACEMATRIX",
           "kind": "def",
+          "value": "(SDL_MatrixCoefficients)((cspace) & 0x1F)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_MatrixCoefficients)((cspace) & 0x1F)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISCOLORSPACE_MATRIX_BT601": {
           "doc": "A macro to determine if an SDL_Colorspace uses BT601 (or BT470BG) matrix\ncoefficients.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns true if BT601 or BT470BG, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISCOLORSPACE_MATRIX_BT601",
           "kind": "def",
+          "value": "(SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT601 || SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT470BG)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT601 || SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT470BG)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISCOLORSPACE_MATRIX_BT709": {
           "doc": "A macro to determine if an SDL_Colorspace uses BT709 matrix coefficients.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns true if BT709, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISCOLORSPACE_MATRIX_BT709",
           "kind": "def",
+          "value": "(SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT709)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT709)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISCOLORSPACE_MATRIX_BT2020_NCL": {
           "doc": "A macro to determine if an SDL_Colorspace uses BT2020_NCL matrix\ncoefficients.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns true if BT2020_NCL, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISCOLORSPACE_MATRIX_BT2020_NCL",
           "kind": "def",
+          "value": "(SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT2020_NCL)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_COLORSPACEMATRIX(cspace) == SDL_MATRIX_COEFFICIENTS_BT2020_NCL)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISCOLORSPACE_LIMITED_RANGE": {
           "doc": "A macro to determine if an SDL_Colorspace has a limited range.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns true if limited range, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISCOLORSPACE_LIMITED_RANGE",
           "kind": "def",
+          "value": "(SDL_COLORSPACERANGE(cspace) != SDL_COLOR_RANGE_FULL)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_COLORSPACERANGE(cspace) != SDL_COLOR_RANGE_FULL)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_ISCOLORSPACE_FULL_RANGE": {
           "doc": "A macro to determine if an SDL_Colorspace has a full range.\n\n\\param cspace an SDL_Colorspace to check.\n\\returns true if full range, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_ISCOLORSPACE_FULL_RANGE",
           "kind": "def",
+          "value": "(SDL_COLORSPACERANGE(cspace) == SDL_COLOR_RANGE_FULL)",
           "parameters": [
-            "cspace"
-          ],
-          "value": "(SDL_COLORSPACERANGE(cspace) == SDL_COLOR_RANGE_FULL)"
+            {
+              "name": "cspace",
+              "type": ""
+            }
+          ]
         },
         "SDL_Colorspace": {
           "doc": "Colorspace definitions.\n\nSince similar colorspaces may vary in their details (matrix, transfer\nfunction, etc.), this is not an exhaustive list, but rather a\nrepresentative sample of the kinds of colorspaces supported in SDL.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_ColorPrimaries\n\\sa SDL_ColorRange\n\\sa SDL_ColorType\n\\sa SDL_MatrixCoefficients\n\\sa SDL_TransferCharacteristics",
@@ -25277,13 +25400,13 @@
               "type": ""
             },
             "SDL_COLORSPACE_SRGB_LINEAR": {
-              "doc": "[object Object]",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709",
               "name": "SDL_COLORSPACE_SRGB_LINEAR",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_HDR10": {
-              "doc": "[object Object]",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020",
               "name": "SDL_COLORSPACE_HDR10",
               "kind": "var",
               "type": ""

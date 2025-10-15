@@ -118,7 +118,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
             const briefDoc = value.briefdescription?.[0]?.para?.join("\n\n") ?? "";
             const detailDoc = value.detaileddescription?.[0]?.para?.join("\n\n") ?? "";
             entry.entries[name] = {
-              doc: (briefDoc + " " + detailDoc).trim(),
+              doc: (briefDoc !== "[object Object]") ? (briefDoc + " " + detailDoc).trim() : undefined,
               name,
               kind: "var",
               type: ""

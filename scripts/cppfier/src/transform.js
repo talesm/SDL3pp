@@ -1330,7 +1330,6 @@ function expandTypes(sourceEntries, file, context) {
           parameters: parameters.slice(1),
           hints: { delegate: `${context.namespace}::${transformName(sourceName, context)}` }
         }, name);
-        // if (methodName === "Enumerate") console.log(transformMap[name]);
       }
     }
     for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -1842,7 +1841,9 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
       switch (typeof sourceParam0) {
         case 'object':
           const selfParam = { name: sourceParam0.name };
-          if (sourceParam0.type?.includes(resultType)) {
+          if (!sourceParam0.type) {
+            selfParam.type = targetEntry.immutable ? constParamType : paramType;
+          } else if (sourceParam0.type.includes(resultType)) {
             if (!sourceParam0.type.startsWith("const ") && targetEntry.immutable) selfParam.type = constParamType;
           }
           targetParameters.unshift(selfParam);
@@ -1858,7 +1859,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     } else if (typeof sourceParam0 !== 'object' || typeof targetParam0 !== "object") {
       return;
     } else if (!targetParam0.name || targetParam0.name == sourceParam0.name) {
-      if (sourceParam0.type?.includes(resultType)) {
+      if (sourceParam0.type?.includes(resultType) || sourceParam0.type === "") {
         targetParam0.type = (targetEntry.immutable || sourceParam0.type.startsWith('const ')) ? constParamType : paramType;
         parametersChanged = true;
       }

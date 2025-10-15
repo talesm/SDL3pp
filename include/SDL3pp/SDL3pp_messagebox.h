@@ -126,8 +126,8 @@ constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_SELECTED =
   SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED; ///< BUTTON_SELECTED
 
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_COUNT =
-  SDL_MESSAGEBOX_COLOR_COUNT; ///< Count
-
+  SDL_MESSAGEBOX_COLOR_COUNT; ///< Size of the colors array of
+                              ///< MessageBoxColorScheme.
 /// @}
 
 /**

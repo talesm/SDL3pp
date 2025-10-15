@@ -10479,11 +10479,11 @@ constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
 constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
-constexpr Colorspace COLORSPACE_SRGB_LINEAR =
-  SDL_COLORSPACE_SRGB_LINEAR; ///< [object Object]
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
+constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
 
-constexpr Colorspace COLORSPACE_HDR10 =
-  SDL_COLORSPACE_HDR10; ///< [object Object]
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
+constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
 
 /// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
 constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
@@ -23259,17 +23259,36 @@ using hid_bus_type = SDL_hid_bus_type;
 constexpr hid_bus_type HID_API_BUS_UNKNOWN =
   SDL_HID_API_BUS_UNKNOWN; ///< Unknown bus type.
 
-constexpr hid_bus_type HID_API_BUS_USB =
-  SDL_HID_API_BUS_USB; ///< [object Object]
+/**
+ * USB bus Specifications:
+ *
+ * * https://usb.org/hid
+ */
+constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
 
-constexpr hid_bus_type HID_API_BUS_BLUETOOTH =
-  SDL_HID_API_BUS_BLUETOOTH; ///< [object Object]
+/**
+ * Bluetooth or Bluetooth LE bus Specifications:
+ *
+ * * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+ * * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+ * * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
+ */
+constexpr hid_bus_type HID_API_BUS_BLUETOOTH = SDL_HID_API_BUS_BLUETOOTH;
 
-constexpr hid_bus_type HID_API_BUS_I2C =
-  SDL_HID_API_BUS_I2C; ///< [object Object]
+/**
+ * I2C bus Specifications:
+ *
+ * * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
+ */
+constexpr hid_bus_type HID_API_BUS_I2C = SDL_HID_API_BUS_I2C;
 
-constexpr hid_bus_type HID_API_BUS_SPI =
-  SDL_HID_API_BUS_SPI; ///< [object Object]
+/**
+ * SPI bus
+ * Specifications:
+ *
+ * * https://www.microsoft.com/download/details.aspx?id=103325
+ */
+constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 
 /**
  * Information about a connected HID device
@@ -70525,8 +70544,8 @@ constexpr MessageBoxColorType MESSAGEBOX_COLOR_BUTTON_SELECTED =
   SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED; ///< BUTTON_SELECTED
 
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_COUNT =
-  SDL_MESSAGEBOX_COLOR_COUNT; ///< Count
-
+  SDL_MESSAGEBOX_COLOR_COUNT; ///< Size of the colors array of
+                              ///< MessageBoxColorScheme.
 /// @}
 
 /**

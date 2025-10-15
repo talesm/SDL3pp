@@ -85,17 +85,31 @@ using hid_bus_type = SDL_hid_bus_type;
 constexpr hid_bus_type HID_API_BUS_UNKNOWN =
   SDL_HID_API_BUS_UNKNOWN; ///< Unknown bus type.
 
-constexpr hid_bus_type HID_API_BUS_USB =
-  SDL_HID_API_BUS_USB; ///< [object Object]
+/**
+ * USB bus
+ *        Specifications:
+ */
+constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
 
-constexpr hid_bus_type HID_API_BUS_BLUETOOTH =
-  SDL_HID_API_BUS_BLUETOOTH; ///< [object Object]
+/**
+ * Bluetooth or Bluetooth LE bus
+ *        Specifications:
+ *        https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+ *        https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+ */
+constexpr hid_bus_type HID_API_BUS_BLUETOOTH = SDL_HID_API_BUS_BLUETOOTH;
 
-constexpr hid_bus_type HID_API_BUS_I2C =
-  SDL_HID_API_BUS_I2C; ///< [object Object]
+/**
+ * I2C bus
+ *        Specifications:
+ */
+constexpr hid_bus_type HID_API_BUS_I2C = SDL_HID_API_BUS_I2C;
 
-constexpr hid_bus_type HID_API_BUS_SPI =
-  SDL_HID_API_BUS_SPI; ///< [object Object]
+/**
+ * SPI bus
+ *        Specifications:
+ */
+constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 
 /**
  * Information about a connected HID device
