@@ -9355,7 +9355,7 @@ public:
    * format the return value can be assigned to a Uint16, and similarly a Uint8
    * for an 8-bpp format).
    *
-   * @param color the color components of the pixel in the range 0-255.
+   * @param c the color components of the pixel in the range 0-255.
    * @param palette an optional palette for indexed formats, may be NULL.
    * @returns a pixel value.
    *
@@ -9369,7 +9369,7 @@ public:
    * @sa MapRGBA()
    * @sa Surface.MapColor()
    */
-  Uint32 Map(Color color, PaletteConstParam palette) const;
+  Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -9395,7 +9395,7 @@ public:
    * @sa GetRGBA()
    * @sa Map()
    */
-  Color Get(Uint32 pixel, PaletteConstParam palette) const;
+  Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
 };
 
 constexpr PixelFormat PIXELFORMAT_UNKNOWN =
@@ -10963,7 +10963,7 @@ struct Color : ColorRaw
    * (100% opaque).
    *
    * @param pixel a pixel value.
-   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+   * @param format a pointer to PixelFormatDetails describing the pixel
    *               format.
    * @param palette an optional palette for indexed formats, may be NULL.
    * @returns a color value.
@@ -11463,7 +11463,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  *
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
- * @sa MapRGBA
+ * @sa MapColor
  * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
@@ -11495,8 +11495,11 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
  *
  * @param format a pointer to PixelFormatDetails describing the pixel
  *               format.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @param a the alpha component of the pixel in the range 0-255.
  * @param palette an optional palette for indexed formats, may be nullptr.
- * @param c the color components of the pixel in the range 0-255.
  * @returns a pixel value.
  *
  * @threadsafety It is safe to call this function from any thread, as long as
@@ -11510,10 +11513,65 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
  * @sa Surface.MapRGBA
  */
 inline Uint32 MapRGBA(const PixelFormatDetails& format,
-                      PaletteConstParam palette,
-                      ColorRaw c)
+                      Uint8 r,
+                      Uint8 g,
+                      Uint8 b,
+                      Uint8 a,
+                      PaletteConstParam palette = {})
+{
+  return SDL_MapRGBA(&format, palette, r, g, b, a);
+}
+
+/**
+ * Map an RGBA quadruple to a pixel value for a given pixel format.
+ *
+ * This function maps the RGBA color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGBA color value for
+ * the given pixel format.
+ *
+ * If the specified pixel format has no alpha component the alpha value will
+ * be ignored (as it will be in formats with a palette).
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to PixelFormatDetails describing the pixel
+ *               format.
+ * @param c the color components of the pixel in the range 0-255.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGBA
+ * @sa MapRGB
+ * @sa Surface.MapRGBA
+ */
+inline Uint32 MapColor(const PixelFormatDetails& format,
+                       ColorRaw c,
+                       PaletteConstParam palette = {})
 {
   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
+}
+
+inline Uint32 Color::Map(const PixelFormatDetails& format,
+                         PaletteConstParam palette) const
+{
+  return MapColor(format, *this, palette);
+}
+
+inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
+{
+  return MapColor(GetDetails(), c, palette);
 }
 
 /**
@@ -11540,7 +11598,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  * @sa PixelFormat.GetDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa MapRGBA
+ * @sa MapColor
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails& format,
@@ -11580,7 +11638,7 @@ inline void GetRGB(Uint32 pixel,
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
  * @sa MapRGB
- * @sa MapRGBA
+ * @sa MapColor
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails& format,
@@ -11593,34 +11651,55 @@ inline void GetRGBA(Uint32 pixel,
   SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
 }
 
-/// @}
-
-inline Uint32 Color::Map(const PixelFormatDetails& format,
-                         PaletteConstParam palette = nullptr) const
-{
-  return MapRGBA(format, palette, {r, g, b, a});
-}
-
-inline Color Color::Get(Uint32 pixel,
-                        const PixelFormatDetails& format,
-                        PaletteConstParam palette = nullptr)
+/**
+ * Get RGBA values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component
+ * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+ * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * If the surface has no alpha component, the alpha will be returned as 0xff
+ * (100% opaque).
+ *
+ * @param pixel a pixel value.
+ * @param format a pointer to PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be nullptr.
+ * @returns a color value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails
+ * @sa GetRGB
+ * @sa MapRGB
+ * @sa MapRGBA
+ */
+inline Color GetColor(Uint32 pixel,
+                      const PixelFormatDetails& format,
+                      PaletteConstParam palette = {})
 {
   Color c;
   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
   return c;
 }
 
-inline Uint32 PixelFormat::Map(Color color,
-                               PaletteConstParam palette = nullptr) const
+inline Color Color::Get(Uint32 pixel,
+                        const PixelFormatDetails& format,
+                        PaletteConstParam palette)
 {
-  return color.Map(GetDetails(), palette);
+  return GetColor(pixel, format, palette);
 }
 
-inline Color PixelFormat::Get(Uint32 pixel,
-                              PaletteConstParam palette = nullptr) const
+inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
 {
-  return Color::Get(pixel, GetDetails(), palette);
+  return GetColor(pixel, GetDetails(), palette);
 }
+
+/// @}
 
 /**
  * @defgroup CategoryProperties Object Properties
@@ -42639,7 +42718,7 @@ public:
    * Perform a fast fill of a rectangle with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by MapRGB() or MapRGBA(). If the color value contains an
+   * generated by MapColor(). If the color value contains an
    * alpha component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
@@ -42664,7 +42743,7 @@ public:
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by MapRGB() or MapRGBA(). If the color value contains an
+   * generated by MapColor(). If the color value contains an
    * alpha component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
@@ -43249,7 +43328,7 @@ public:
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * Like MapRGBA, this uses the entire 0..255 range when converting color
+   * Like MapColor, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
@@ -44577,7 +44656,7 @@ inline void Surface::Clear(const FColorRaw& color)
  * Perform a fast fill of a rectangle with a specific color.
  *
  * `color` should be a pixel of the format used by the surface, and can be
- * generated by MapRGB() or MapRGBA(). If the color value contains an
+ * generated by MapColor(). If the color value contains an
  * alpha component then the destination is simply filled with that alpha
  * information, no blending takes place.
  *
@@ -44613,7 +44692,7 @@ inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
  * Perform a fast fill of a set of rectangles with a specific color.
  *
  * `color` should be a pixel of the format used by the surface, and can be
- * generated by MapRGB() or MapRGBA(). If the color value contains an
+ * generated by MapColor(). If the color value contains an
  * alpha component then the destination is simply filled with that alpha
  * information, no blending takes place.
  *
@@ -45348,7 +45427,7 @@ inline void Surface::ReadPixelFloat(const PointRaw& p,
  * This function prioritizes correctness over speed: it is suitable for unit
  * tests, but is not intended for use in a game engine.
  *
- * Like MapRGBA, this uses the entire 0..255 range when converting color
+ * Like MapColor, this uses the entire 0..255 range when converting color
  * components from pixel formats with less than 8 bits per RGB component.
  *
  * @param surface the surface to write.

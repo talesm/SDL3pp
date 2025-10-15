@@ -3471,38 +3471,6 @@ const transform = {
               "name": "ForMasks"
             },
             "SDL_GetPixelFormatDetails": "immutable",
-            "Map": {
-              kind: "function",
-              type: "Uint32",
-              immutable: true,
-              proto: true,
-              parameters: [
-                {
-                  "type": "Color",
-                  "name": "color"
-                },
-                {
-                  "type": "PaletteConstParam",
-                  "name": "palette"
-                }
-              ]
-            },
-            "Get": {
-              kind: "function",
-              type: "Color",
-              immutable: true,
-              proto: true,
-              parameters: [
-                {
-                  "type": "Uint32",
-                  "name": "pixel"
-                },
-                {
-                  "type": "PaletteConstParam",
-                  "name": "palette"
-                }
-              ]
-            }
           }
         },
         "SDL_PIXELFORMAT_MJPG": {
@@ -3797,7 +3765,75 @@ const transform = {
               default: "0"
             }
           ]
-        }
+        },
+        "MapRGBA": {
+          before: "SDL_MapRGBA",
+          kind: "function",
+          type: "Uint32",
+          parameters: [
+            { type: "const PixelFormatDetails &", name: "format" },
+            { type: "Uint8", name: "r" },
+            { type: "Uint8", name: "g" },
+            { type: "Uint8", name: "b" },
+            { type: "Uint8", name: "a" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ]
+        },
+        "SDL_MapRGBA": {
+          name: "MapColor",
+          parameters: [
+            { type: "const PixelFormatDetails &", name: "format" },
+            { type: "ColorRaw", name: "c" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ]
+        },
+        "Color::Map": {
+          kind: "function",
+          type: "Uint32",
+          immutable: true,
+          parameters: [
+            { type: "const PixelFormatDetails &", name: "format" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ]
+        },
+        "PixelFormat::Map": {
+          kind: "function",
+          type: "Uint32",
+          immutable: true,
+          parameters: [
+            { type: "ColorRaw", name: "c" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ]
+        },
+        "GetColor": {
+          after: "SDL_GetRGBA",
+          kind: "function",
+          type: "Color",
+          parameters: [
+            { type: "Uint32", name: "pixel" },
+            { type: "const PixelFormatDetails &", name: "format" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ],
+        },
+        "Color::Get": {
+          kind: "function",
+          type: "Color",
+          static: true,
+          parameters: [
+            { type: "Uint32", name: "pixel" },
+            { type: "const PixelFormatDetails &", name: "format" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ],
+        },
+        "PixelFormat::Get": {
+          kind: "function",
+          type: "Color",
+          immutable: true,
+          parameters: [
+            { type: "Uint32", name: "pixel" },
+            { type: "PaletteConstParam", name: "palette", default: "{}" },
+          ],
+        },
       }
     },
     "SDL_process.h": {

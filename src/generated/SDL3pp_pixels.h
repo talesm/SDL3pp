@@ -693,9 +693,9 @@ public:
    */
   const PixelFormatDetails& GetDetails() const;
 
-  Uint32 Map(Color color, PaletteConstParam palette) const;
+  Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
 
-  Color Get(Uint32 pixel, PaletteConstParam palette) const;
+  Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
 };
 
 constexpr PixelFormat PIXELFORMAT_UNKNOWN =
@@ -2175,6 +2175,13 @@ struct Color : ColorRaw
     a = newA;
     return *this;
   }
+
+  Uint32 Map(const PixelFormatDetails& format,
+             PaletteConstParam palette = {}) const;
+
+  static Color Get(Uint32 pixel,
+                   const PixelFormatDetails& format,
+                   PaletteConstParam palette = {});
 };
 
 /**
@@ -2650,7 +2657,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  *
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
- * @sa MapRGBA
+ * @sa MapColor
  * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
@@ -2660,6 +2667,16 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
                      Uint8 b)
 {
   return SDL_MapRGB(&format, palette, r, g, b);
+}
+
+inline Uint32 MapRGBA(const PixelFormatDetails& format,
+                      Uint8 r,
+                      Uint8 g,
+                      Uint8 b,
+                      Uint8 a,
+                      PaletteConstParam palette = {})
+{
+  static_assert(false, "Not implemented");
 }
 
 /**
@@ -2699,11 +2716,22 @@ inline Uint32 MapRGB(const PixelFormatDetails& format,
  * @sa MapRGB
  * @sa Surface.MapRGBA
  */
-inline Uint32 MapRGBA(const PixelFormatDetails& format,
-                      PaletteConstParam palette,
-                      ColorRaw c)
+inline Uint32 MapColor(const PixelFormatDetails& format,
+                       ColorRaw c,
+                       PaletteConstParam palette = {})
 {
-  return SDL_MapRGBA(&format, palette, c);
+  return SDL_MapRGBA(&format, c, palette);
+}
+
+inline Uint32 Color::Map(const PixelFormatDetails& format,
+                         PaletteConstParam palette) const
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
+{
+  static_assert(false, "Not implemented");
 }
 
 /**
@@ -2730,7 +2758,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  * @sa PixelFormat.GetDetails
  * @sa GetRGBA
  * @sa MapRGB
- * @sa MapRGBA
+ * @sa MapColor
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails& format,
@@ -2770,7 +2798,7 @@ inline void GetRGB(Uint32 pixel,
  * @sa PixelFormat.GetDetails
  * @sa GetRGB
  * @sa MapRGB
- * @sa MapRGBA
+ * @sa MapColor
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails& format,
@@ -2781,6 +2809,25 @@ inline void GetRGBA(Uint32 pixel,
                     Uint8* a)
 {
   SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
+}
+
+inline Color GetColor(Uint32 pixel,
+                      const PixelFormatDetails& format,
+                      PaletteConstParam palette = {})
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Color Color::Get(Uint32 pixel,
+                        const PixelFormatDetails& format,
+                        PaletteConstParam palette)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
+{
+  static_assert(false, "Not implemented");
 }
 
 /// @}
