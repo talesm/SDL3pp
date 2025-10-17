@@ -1312,7 +1312,7 @@ function expandTypes(sourceEntries, file, context) {
       if (sourceEntry) {
         foundEntries[sourceName] = {
           ...deepClone(transformEntry),
-          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable || transformEntry.immutable,
+          immutable: m === 'immutable' || transformEntry.immutable,
           name: transformEntry.hints?.methodName ?? undefined,
         };
         delete transformEntry.immutable;
@@ -1345,13 +1345,14 @@ function expandTypes(sourceEntries, file, context) {
         /** @type {ApiEntryTransform} */
         const e = {
           ...deepClone(transformEntry),
-          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable || transformEntry.immutable,
+          immutable: m === 'immutable' || transformEntry.immutable,
         };
         e.name = transformEntry.hints?.methodName ?? undefined;
         foundEntries[sourceName] = e;
         delete transformEntry.immutable;
-      } else if (transformEntry?.hints?.methodImmutable) {
+      } else if (transformEntry?.immutable) {
         foundEntries[sourceName] = "immutable";
+        delete transformEntry.immutable;
       } else {
         foundEntries[sourceName] = m;
       }

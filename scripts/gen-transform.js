@@ -3713,19 +3713,15 @@ const transform = {
           ]
         },
         "SDL_GetPixelFormatName": {
-          hints: { methodImmutable: true },
+          immutable: true,
         },
         "SDL_GetMasksForPixelFormat": {
-          hints: {
-            methodName: "GetMasks",
-            methodImmutable: true,
-          },
+          immutable: true,
+          hints: { methodName: "GetMasks" },
         },
         "SDL_GetPixelFormatDetails": {
-          hints: {
-            methodImmutable: true,
-            mayFail: true,
-          },
+          immutable: true,
+          hints: { mayFail: true },
         },
         "PixelFormat.operator const PixelFormatDetails &": {
           kind: "function",

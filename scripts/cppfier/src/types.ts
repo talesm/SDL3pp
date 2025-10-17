@@ -55,7 +55,6 @@ export interface EntryHint {
   changeAccess?: 'public' | 'private';
   delegate?: string;
   methodName?: string;
-  methodImmutable?: boolean;
 }
 
 export interface VersionTag {
