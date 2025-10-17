@@ -1303,10 +1303,6 @@ function expandTypes(sourceEntries, file, context) {
         continue;
       }
       const param0 = parameters[0];
-      if (typeof param0 === 'string') {
-        blockedNames.add(sourceName);
-        continue;
-      }
       if (!param0.type) continue;
       const m = paramMatchesVariants(param0, [paramType, `${paramType} *`], [constParamType, `${constParamType} &`]);
       if (!m) {
@@ -1315,21 +1311,24 @@ function expandTypes(sourceEntries, file, context) {
       }
       if (sourceEntry) {
         foundEntries[sourceName] = {
-          ...transformEntry,
-          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable,
+          ...deepClone(transformEntry),
+          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable || transformEntry.immutable,
+          name: transformEntry.hints?.methodName ?? undefined,
         };
+        delete transformEntry.immutable;
       } else if (!sourceName.includes("::")) {
         const methodName = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
         if (blockedNames.has(methodName)) continue;
         const name = `${targetType}::${methodName}`;
         insertOrLink(transformMap, {
-          ...transformEntry,
+          ...deepClone(transformEntry),
           after: sourceName,
           name,
           static: false,
           parameters: parameters.slice(1),
           hints: { delegate: `${context.namespace}::${transformName(sourceName, context)}` }
         }, name);
+        delete transformEntry.immutable;
       }
     }
     for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -1346,10 +1345,11 @@ function expandTypes(sourceEntries, file, context) {
         /** @type {ApiEntryTransform} */
         const e = {
           ...deepClone(transformEntry),
-          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable,
+          immutable: m === 'immutable' || transformEntry.hints?.methodImmutable || transformEntry.immutable,
         };
         e.name = transformEntry.hints?.methodName ?? undefined;
         foundEntries[sourceName] = e;
+        delete transformEntry.immutable;
       } else if (transformEntry?.hints?.methodImmutable) {
         foundEntries[sourceName] = "immutable";
       } else {

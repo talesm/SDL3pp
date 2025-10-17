@@ -443,7 +443,6 @@ public:
    * This macro is generally not needed directly by an app, which should use
    * specific tests, like PixelFormat.IsFourCC, instead.
    *
-   * @param format an PixelFormat to check.
    * @returns the flags of `format`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -457,7 +456,6 @@ public:
    *
    * This is usually a value from the PixelType enumeration.
    *
-   * @param format an PixelFormat to check.
    * @returns the type of `format`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -472,7 +470,6 @@ public:
    * This is usually a value from the BitmapOrder, PackedOrder, or
    * ArrayOrder enumerations, depending on the format type.
    *
-   * @param format an PixelFormat to check.
    * @returns the order of `format`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -487,7 +484,6 @@ public:
    * This is usually a value from the PackedLayout enumeration, or zero if a
    * layout doesn't make sense for the format type.
    *
-   * @param format an PixelFormat to check.
    * @returns the layout of `format`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -505,7 +501,6 @@ public:
    * FourCC formats will report zero here, as it rarely makes sense to measure
    * them per-pixel.
    *
-   * @param format an PixelFormat to check.
    * @returns the bits-per-pixel of `format`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -525,7 +520,6 @@ public:
    * FourCC formats do their best here, but many of them don't have a meaningful
    * measurement of bytes per pixel.
    *
-   * @param format an PixelFormat to check.
    * @returns the bytes-per-pixel of `format`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -542,7 +536,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format is indexed, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -557,7 +550,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format is packed, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -572,7 +564,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format is an array, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -587,7 +578,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format is 10-bit, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -602,7 +592,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format is 10-bit, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -617,7 +606,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format has alpha, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -634,7 +622,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param format an PixelFormat to check.
    * @returns true if the format has alpha, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1600,7 +1587,6 @@ public:
   /**
    * A macro to retrieve the type of an Colorspace.
    *
-   * @param cspace an Colorspace to check.
    * @returns the ColorType for `cspace`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1612,7 +1598,6 @@ public:
   /**
    * A macro to retrieve the range of an Colorspace.
    *
-   * @param cspace an Colorspace to check.
    * @returns the ColorRange of `cspace`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1624,7 +1609,6 @@ public:
   /**
    * A macro to retrieve the chroma sample location of an Colorspace.
    *
-   * @param cspace an Colorspace to check.
    * @returns the ChromaLocation of `cspace`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1636,7 +1620,6 @@ public:
   /**
    * A macro to retrieve the primaries of an Colorspace.
    *
-   * @param cspace an Colorspace to check.
    * @returns the ColorPrimaries of `cspace`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1648,7 +1631,6 @@ public:
   /**
    * A macro to retrieve the transfer characteristics of an Colorspace.
    *
-   * @param cspace an Colorspace to check.
    * @returns the TransferCharacteristics of `cspace`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1660,7 +1642,6 @@ public:
   /**
    * A macro to retrieve the matrix coefficients of an Colorspace.
    *
-   * @param cspace an Colorspace to check.
    * @returns the MatrixCoefficients of `cspace`.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1676,7 +1657,6 @@ public:
    * Note that this macro double-evaluates its parameter, so do not use
    * expressions with side-effects here.
    *
-   * @param cspace an Colorspace to check.
    * @returns true if BT601 or BT470BG, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1688,7 +1668,6 @@ public:
   /**
    * A macro to determine if an Colorspace uses BT709 matrix coefficients.
    *
-   * @param cspace an Colorspace to check.
    * @returns true if BT709, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1701,7 +1680,6 @@ public:
    * A macro to determine if an Colorspace uses BT2020_NCL matrix
    * coefficients.
    *
-   * @param cspace an Colorspace to check.
    * @returns true if BT2020_NCL, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1713,7 +1691,6 @@ public:
   /**
    * A macro to determine if an Colorspace has a limited range.
    *
-   * @param cspace an Colorspace to check.
    * @returns true if limited range, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
@@ -1725,7 +1702,6 @@ public:
   /**
    * A macro to determine if an Colorspace has a full range.
    *
-   * @param cspace an Colorspace to check.
    * @returns true if full range, false otherwise.
    *
    * @threadsafety It is safe to call this macro from any thread.
