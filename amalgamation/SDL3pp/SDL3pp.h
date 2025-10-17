@@ -33547,7 +33547,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr Uint16 GetBitSize();
+  constexpr Uint16 GetBitSize() const;
 
   /**
    * Retrieve the size, in bytes, from an AudioFormat.
@@ -33560,7 +33560,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr Uint16 GetByteSize();
+  constexpr Uint16 GetByteSize() const;
 
   /**
    * Determine if an AudioFormat represents floating point data.
@@ -33573,7 +33573,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsFloat();
+  constexpr bool IsFloat() const;
 
   /**
    * Determine if an AudioFormat represents bigendian data.
@@ -33586,7 +33586,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsBigEndian();
+  constexpr bool IsBigEndian() const;
 
   /**
    * Determine if an AudioFormat represents littleendian data.
@@ -33599,7 +33599,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsLittleEndian();
+  constexpr bool IsLittleEndian() const;
 
   /**
    * Determine if an AudioFormat represents signed data.
@@ -33612,7 +33612,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsSigned();
+  constexpr bool IsSigned() const;
 
   /**
    * Determine if an AudioFormat represents integer data.
@@ -33625,7 +33625,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsInt();
+  constexpr bool IsInt() const;
 
   /**
    * Determine if an AudioFormat represents unsigned data.
@@ -33638,7 +33638,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool IsUnsigned();
+  constexpr bool IsUnsigned() const;
 
   /**
    * Get the human readable name of an audio format.
@@ -33747,14 +33747,11 @@ constexpr AudioFormat DEFINE_AUDIO_FORMAT(bool sign,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr Uint16 AUDIO_BITSIZE(AudioFormatRaw x)
-{
-  return SDL_AUDIO_BITSIZE(x);
-}
+constexpr Uint16 AudioBitSize(AudioFormatRaw x) { return SDL_AUDIO_BITSIZE(x); }
 
-constexpr Uint16 AudioFormat::GetBitSize()
+constexpr Uint16 AudioFormat::GetBitSize() const
 {
-  return SDL::AUDIO_BITSIZE(m_audioFormat);
+  return SDL::AudioBitSize(m_audioFormat);
 }
 
 /**
@@ -33769,14 +33766,14 @@ constexpr Uint16 AudioFormat::GetBitSize()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr Uint16 AUDIO_BYTESIZE(AudioFormatRaw x)
+constexpr Uint16 AudioByteSize(AudioFormatRaw x)
 {
   return SDL_AUDIO_BYTESIZE(x);
 }
 
-constexpr Uint16 AudioFormat::GetByteSize()
+constexpr Uint16 AudioFormat::GetByteSize() const
 {
-  return SDL::AUDIO_BYTESIZE(m_audioFormat);
+  return SDL::AudioByteSize(m_audioFormat);
 }
 
 /**
@@ -33791,11 +33788,11 @@ constexpr Uint16 AudioFormat::GetByteSize()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool AUDIO_ISFLOAT(AudioFormatRaw x) { return SDL_AUDIO_ISFLOAT(x); }
+constexpr bool IsAudioFloat(AudioFormatRaw x) { return SDL_AUDIO_ISFLOAT(x); }
 
-constexpr bool AudioFormat::IsFloat()
+constexpr bool AudioFormat::IsFloat() const
 {
-  return SDL::AUDIO_ISFLOAT(m_audioFormat);
+  return SDL::IsAudioFloat(m_audioFormat);
 }
 
 /**
@@ -33810,14 +33807,14 @@ constexpr bool AudioFormat::IsFloat()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool AUDIO_ISBIGENDIAN(AudioFormatRaw x)
+constexpr bool IsAudioBigENDIAN(AudioFormatRaw x)
 {
   return SDL_AUDIO_ISBIGENDIAN(x);
 }
 
-constexpr bool AudioFormat::IsBigEndian()
+constexpr bool AudioFormat::IsBigEndian() const
 {
-  return SDL::AUDIO_ISBIGENDIAN(m_audioFormat);
+  return SDL::IsAudioBigENDIAN(m_audioFormat);
 }
 
 /**
@@ -33832,14 +33829,14 @@ constexpr bool AudioFormat::IsBigEndian()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool AUDIO_ISLITTLEENDIAN(AudioFormatRaw x)
+constexpr bool IsAudioLittleEndian(AudioFormatRaw x)
 {
   return SDL_AUDIO_ISLITTLEENDIAN(x);
 }
 
-constexpr bool AudioFormat::IsLittleEndian()
+constexpr bool AudioFormat::IsLittleEndian() const
 {
-  return SDL::AUDIO_ISLITTLEENDIAN(m_audioFormat);
+  return SDL::IsAudioLittleEndian(m_audioFormat);
 }
 
 /**
@@ -33854,14 +33851,11 @@ constexpr bool AudioFormat::IsLittleEndian()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool AUDIO_ISSIGNED(AudioFormatRaw x)
-{
-  return SDL_AUDIO_ISSIGNED(x);
-}
+constexpr bool IsAudioSigned(AudioFormatRaw x) { return SDL_AUDIO_ISSIGNED(x); }
 
-constexpr bool AudioFormat::IsSigned()
+constexpr bool AudioFormat::IsSigned() const
 {
-  return SDL::AUDIO_ISSIGNED(m_audioFormat);
+  return SDL::IsAudioSigned(m_audioFormat);
 }
 
 /**
@@ -33876,9 +33870,12 @@ constexpr bool AudioFormat::IsSigned()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool AUDIO_ISINT(AudioFormatRaw x) { return SDL_AUDIO_ISINT(x); }
+constexpr bool IsAudioInt(AudioFormatRaw x) { return SDL_AUDIO_ISINT(x); }
 
-constexpr bool AudioFormat::IsInt() { return SDL::AUDIO_ISINT(m_audioFormat); }
+constexpr bool AudioFormat::IsInt() const
+{
+  return SDL::IsAudioInt(m_audioFormat);
+}
 
 /**
  * Determine if an AudioFormat represents unsigned data.
@@ -33892,14 +33889,14 @@ constexpr bool AudioFormat::IsInt() { return SDL::AUDIO_ISINT(m_audioFormat); }
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool AUDIO_ISUNSIGNED(AudioFormatRaw x)
+constexpr bool IsAudioUnsigned(AudioFormatRaw x)
 {
   return SDL_AUDIO_ISUNSIGNED(x);
 }
 
-constexpr bool AudioFormat::IsUnsigned()
+constexpr bool AudioFormat::IsUnsigned() const
 {
-  return SDL::AUDIO_ISUNSIGNED(m_audioFormat);
+  return SDL::IsAudioUnsigned(m_audioFormat);
 }
 
 /**

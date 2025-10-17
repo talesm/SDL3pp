@@ -370,76 +370,87 @@ const transform = {
                 { type: "Uint16", name: "size" },
               ]
             },
-            "SDL_AUDIO_BITSIZE": {
-              kind: "function",
-              name: "GetBitSize",
-              constexpr: true,
-              type: "Uint16",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_BYTESIZE": {
-              kind: "function",
-              name: "GetByteSize",
-              constexpr: true,
-              type: "Uint16",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_ISFLOAT": {
-              kind: "function",
-              name: "IsFloat",
-              constexpr: true,
-              type: "bool",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_ISBIGENDIAN": {
-              kind: "function",
-              name: "IsBigEndian",
-              constexpr: true,
-              type: "bool",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_ISLITTLEENDIAN": {
-              kind: "function",
-              name: "IsLittleEndian",
-              constexpr: true,
-              type: "bool",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_ISSIGNED": {
-              kind: "function",
-              name: "IsSigned",
-              constexpr: true,
-              type: "bool",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_ISINT": {
-              kind: "function",
-              name: "IsInt",
-              constexpr: true,
-              type: "bool",
-              static: false,
-              parameters: []
-            },
-            "SDL_AUDIO_ISUNSIGNED": {
-              kind: "function",
-              name: "IsUnsigned",
-              constexpr: true,
-              type: "bool",
-              static: false,
-              parameters: []
-            },
-            "SDL_GetAudioFormatName": "immutable",
-            "SDL_GetSilenceValueForFormat": {
-              immutable: true,
-              name: "GetSilenceValue",
-            },
           }
+        },
+        "SDL_DEFINE_AUDIO_FORMAT": {
+          // name: "DefineAudioFormat",
+        },
+        "SDL_AUDIO_BITSIZE": {
+          kind: "function",
+          name: "AudioBitSize",
+          constexpr: true,
+          immutable: true,
+          type: "Uint16",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "GetBitSize" },
+        },
+        "SDL_AUDIO_BYTESIZE": {
+          kind: "function",
+          name: "AudioByteSize",
+          constexpr: true,
+          immutable: true,
+          type: "Uint16",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "GetByteSize" },
+        },
+        "SDL_AUDIO_ISFLOAT": {
+          kind: "function",
+          name: "IsAudioFloat",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "IsFloat" },
+        },
+        "SDL_AUDIO_ISBIGENDIAN": {
+          kind: "function",
+          name: "IsAudioBigENDIAN",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "IsBigEndian" },
+        },
+        "SDL_AUDIO_ISLITTLEENDIAN": {
+          kind: "function",
+          name: "IsAudioLittleEndian",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "IsLittleEndian" },
+        },
+        "SDL_AUDIO_ISSIGNED": {
+          kind: "function",
+          name: "IsAudioSigned",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "IsSigned" },
+        },
+        "SDL_AUDIO_ISINT": {
+          kind: "function",
+          name: "IsAudioInt",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "IsInt" },
+        },
+        "SDL_AUDIO_ISUNSIGNED": {
+          kind: "function",
+          name: "IsAudioUnsigned",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          hints: { methodName: "IsUnsigned" },
+        },
+        "SDL_GetAudioFormatName": { immutable: true },
+        "SDL_GetSilenceValueForFormat": {
+          immutable: true,
+          hints: { methodName: "GetSilenceValue" },
         },
         "SDL_AudioPostmixCallback": { before: "SDL_AudioDeviceID" },
         "AudioPostmixCB": {
