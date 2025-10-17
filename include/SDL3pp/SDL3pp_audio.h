@@ -501,10 +501,10 @@ constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr AudioFormat DEFINE_AUDIO_FORMAT(bool sign,
-                                          bool bigendian,
-                                          bool flt,
-                                          Uint16 size)
+constexpr AudioFormat DefineAudioFormat(bool sign,
+                                        bool bigendian,
+                                        bool flt,
+                                        Uint16 size)
 {
   return AudioFormat(sign, bigendian, flt, size);
 }

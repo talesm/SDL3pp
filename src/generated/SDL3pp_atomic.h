@@ -444,7 +444,7 @@ inline int AtomicInt::Add(int v) { return SDL::AddAtomicInt(this, v); }
  *
  * @sa AtomicInt.AtomicDecRef
  */
-inline bool AtomicIncRef(const AtomicIntRaw& a) { return SDL_AtomicIncRef(a); }
+inline bool AtomicIncRef(AtomicIntRaw* a) { return SDL_AtomicIncRef(a); }
 
 inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(this); }
 
@@ -463,7 +463,7 @@ inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(this); }
  *
  * @sa AtomicInt.AtomicIncRef
  */
-inline bool AtomicDecRef(const AtomicIntRaw& a) { return SDL_AtomicDecRef(a); }
+inline bool AtomicDecRef(AtomicIntRaw* a) { return SDL_AtomicDecRef(a); }
 
 inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(this); }
 

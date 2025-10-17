@@ -373,7 +373,7 @@ const transform = {
           }
         },
         "SDL_DEFINE_AUDIO_FORMAT": {
-          // name: "DefineAudioFormat",
+          name: "DefineAudioFormat",
         },
         "SDL_AUDIO_BITSIZE": {
           kind: "function",
@@ -381,7 +381,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "Uint16",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "GetBitSize" },
         },
         "SDL_AUDIO_BYTESIZE": {
@@ -390,7 +390,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "Uint16",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "GetByteSize" },
         },
         "SDL_AUDIO_ISFLOAT": {
@@ -399,7 +399,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "IsFloat" },
         },
         "SDL_AUDIO_ISBIGENDIAN": {
@@ -408,7 +408,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "IsBigEndian" },
         },
         "SDL_AUDIO_ISLITTLEENDIAN": {
@@ -417,7 +417,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "IsLittleEndian" },
         },
         "SDL_AUDIO_ISSIGNED": {
@@ -426,7 +426,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "IsSigned" },
         },
         "SDL_AUDIO_ISINT": {
@@ -435,7 +435,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "IsInt" },
         },
         "SDL_AUDIO_ISUNSIGNED": {
@@ -444,7 +444,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ name: "x", type: "AudioFormatRaw" }],
+          parameters: [{ type: "AudioFormatRaw" }],
           hints: { methodName: "IsUnsigned" },
         },
         "SDL_GetAudioFormatName": { immutable: true },

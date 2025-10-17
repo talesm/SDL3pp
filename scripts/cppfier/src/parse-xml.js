@@ -102,10 +102,10 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
       };
       switch (kind) {
         case "define": {
-          const params = member.param;
+          const params = member.param?.map(p => p.defname?.[0]);
           if (params?.length) {
-            entry.parameters = params.map(p => p.defname?.[0]);
-            if (entry.parameters.length === 1 && !entry.parameters[0]) entry.parameters.pop();
+            if (params.length === 1 && !params[0]) params.pop();
+            entry.parameters = params.map(p => ({ name: p, type: "" }));
           }
           entry.value = member.initializer?.join("\n");
           break;

@@ -176,7 +176,7 @@ function generateFile(targetFile, config) {
     const sourceName = entry.sourceName != entry.name ? entry.sourceName : undefined;
     if (!entry.parameters) return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
 
-    const parameters = `(${entry.parameters.join(", ")})`;
+    const parameters = `(${entry.parameters.map(p => p.name).join(", ")})`;
     const body = sourceName ? `${entry.sourceName}${parameters}` : entry.value;
     return `#define ${entry.name}${parameters} ${body ?? ""}`;
   }

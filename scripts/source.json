@@ -496,7 +496,10 @@
           "name": "SDL_AtomicIncRef",
           "kind": "def",
           "parameters": [
-            "a"
+            {
+              "name": "a",
+              "type": ""
+            }
           ],
           "value": "SDL_AddAtomicInt(a, 1)"
         },
@@ -505,7 +508,10 @@
           "name": "SDL_AtomicDecRef",
           "kind": "def",
           "parameters": [
-            "a"
+            {
+              "name": "a",
+              "type": ""
+            }
           ],
           "value": "(SDL_AddAtomicInt(a, -1) == 1)"
         },
@@ -653,10 +659,22 @@
           "name": "SDL_DEFINE_AUDIO_FORMAT",
           "kind": "def",
           "parameters": [
-            "signed",
-            "bigendian",
-            "flt",
-            "size"
+            {
+              "name": "signed",
+              "type": ""
+            },
+            {
+              "name": "bigendian",
+              "type": ""
+            },
+            {
+              "name": "flt",
+              "type": ""
+            },
+            {
+              "name": "size",
+              "type": ""
+            }
           ],
           "value": "    (((Uint16)(signed) << 15) | ((Uint16)(bigendian) << 12) | ((Uint16)(flt) << 8) | ((size) & SDL_AUDIO_MASK_BITSIZE))"
         },
@@ -744,7 +762,10 @@
           "name": "SDL_AUDIO_BITSIZE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "((x) & SDL_AUDIO_MASK_BITSIZE)"
         },
@@ -753,7 +774,10 @@
           "name": "SDL_AUDIO_BYTESIZE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "(SDL_AUDIO_BITSIZE(x) / 8)"
         },
@@ -762,7 +786,10 @@
           "name": "SDL_AUDIO_ISFLOAT",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "((x) & SDL_AUDIO_MASK_FLOAT)"
         },
@@ -771,7 +798,10 @@
           "name": "SDL_AUDIO_ISBIGENDIAN",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "((x) & SDL_AUDIO_MASK_BIG_ENDIAN)"
         },
@@ -780,7 +810,10 @@
           "name": "SDL_AUDIO_ISLITTLEENDIAN",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "(!SDL_AUDIO_ISBIGENDIAN(x))"
         },
@@ -789,7 +822,10 @@
           "name": "SDL_AUDIO_ISSIGNED",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "((x) & SDL_AUDIO_MASK_SIGNED)"
         },
@@ -798,7 +834,10 @@
           "name": "SDL_AUDIO_ISINT",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "(!SDL_AUDIO_ISFLOAT(x))"
         },
@@ -807,7 +846,10 @@
           "name": "SDL_AUDIO_ISUNSIGNED",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "(!SDL_AUDIO_ISSIGNED(x))"
         },
@@ -859,7 +901,10 @@
           "name": "SDL_AUDIO_FRAMESIZE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "(SDL_AUDIO_BYTESIZE((x).format) * (x).channels)"
         },
@@ -1831,7 +1876,10 @@
           "name": "SDL_disabled_assert",
           "kind": "def",
           "parameters": [
-            "condition"
+            {
+              "name": "condition",
+              "type": ""
+            }
           ],
           "value": "    do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)"
         },
@@ -1957,7 +2005,10 @@
           "name": "SDL_enabled_assert",
           "kind": "def",
           "parameters": [
-            "condition"
+            {
+              "name": "condition",
+              "type": ""
+            }
           ],
           "value": "[object Object]"
         },
@@ -1966,7 +2017,10 @@
           "name": "SDL_assert",
           "kind": "def",
           "parameters": [
-            "condition"
+            {
+              "name": "condition",
+              "type": ""
+            }
           ],
           "value": "if (assertion_enabled && (condition)) { trigger_assertion; }"
         },
@@ -1975,7 +2029,10 @@
           "name": "SDL_assert_release",
           "kind": "def",
           "parameters": [
-            "condition"
+            {
+              "name": "condition",
+              "type": ""
+            }
           ],
           "value": "SDL_disabled_assert(condition)"
         },
@@ -1984,7 +2041,10 @@
           "name": "SDL_assert_paranoid",
           "kind": "def",
           "parameters": [
-            "condition"
+            {
+              "name": "condition",
+              "type": ""
+            }
           ],
           "value": "SDL_disabled_assert(condition)"
         },
@@ -1993,7 +2053,10 @@
           "name": "SDL_assert_always",
           "kind": "def",
           "parameters": [
-            "condition"
+            {
+              "name": "condition",
+              "type": ""
+            }
           ],
           "value": "SDL_enabled_assert(condition)"
         },
@@ -3212,7 +3275,10 @@
           "name": "SDL_Swap16LE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3221,7 +3287,10 @@
           "name": "SDL_Swap32LE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3230,7 +3299,10 @@
           "name": "SDL_Swap64LE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3239,7 +3311,10 @@
           "name": "SDL_SwapFloatLE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3248,7 +3323,10 @@
           "name": "SDL_Swap16BE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3257,7 +3335,10 @@
           "name": "SDL_Swap32BE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3266,7 +3347,10 @@
           "name": "SDL_Swap64BE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         },
@@ -3275,7 +3359,10 @@
           "name": "SDL_SwapFloatBE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SwapOnlyIfNecessary(x)"
         }
@@ -3350,7 +3437,10 @@
           "name": "SDL_InvalidParamError",
           "kind": "def",
           "parameters": [
-            "param"
+            {
+              "name": "param",
+              "type": ""
+            }
           ],
           "value": "SDL_SetError(\"Parameter '%s' is invalid\", (param))"
         }
@@ -17094,7 +17184,10 @@
           "name": "SDL_TARGETING",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "__attribute__((target(x)))"
         }
@@ -19796,7 +19889,10 @@
           "name": "SDL_SCANCODE_TO_KEYCODE",
           "kind": "def",
           "parameters": [
-            "X"
+            {
+              "name": "X",
+              "type": ""
+            }
           ],
           "value": "(X | SDLK_SCANCODE_MASK)"
         },
@@ -22806,7 +22902,10 @@
           "name": "SDL_BUTTON_MASK",
           "kind": "def",
           "parameters": [
-            "X"
+            {
+              "name": "X",
+              "type": ""
+            }
           ],
           "value": "(1u << ((X)-1))"
         },
@@ -23136,7 +23235,10 @@
           "name": "SDL_THREAD_ANNOTATION_ATTRIBUTE__",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "__attribute__((x))"
         },
@@ -23145,7 +23247,10 @@
           "name": "SDL_CAPABILITY",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(capability(x))"
         },
@@ -23160,7 +23265,10 @@
           "name": "SDL_GUARDED_BY",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))"
         },
@@ -23169,7 +23277,10 @@
           "name": "SDL_PT_GUARDED_BY",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))"
         },
@@ -23178,7 +23289,10 @@
           "name": "SDL_ACQUIRED_BEFORE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_before(x))"
         },
@@ -23187,7 +23301,10 @@
           "name": "SDL_ACQUIRED_AFTER",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_after(x))"
         },
@@ -23196,7 +23313,10 @@
           "name": "SDL_REQUIRES",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_capability(x))"
         },
@@ -23205,7 +23325,10 @@
           "name": "SDL_REQUIRES_SHARED",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_shared_capability(x))"
         },
@@ -23214,7 +23337,10 @@
           "name": "SDL_ACQUIRE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_capability(x))"
         },
@@ -23223,7 +23349,10 @@
           "name": "SDL_ACQUIRE_SHARED",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_shared_capability(x))"
         },
@@ -23232,7 +23361,10 @@
           "name": "SDL_RELEASE",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_capability(x))"
         },
@@ -23241,7 +23373,10 @@
           "name": "SDL_RELEASE_SHARED",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_shared_capability(x))"
         },
@@ -23250,7 +23385,10 @@
           "name": "SDL_RELEASE_GENERIC",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_generic_capability(x))"
         },
@@ -23259,8 +23397,14 @@
           "name": "SDL_TRY_ACQUIRE",
           "kind": "def",
           "parameters": [
-            "x",
-            "y"
+            {
+              "name": "x",
+              "type": ""
+            },
+            {
+              "name": "y",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_capability(x, y))"
         },
@@ -23269,8 +23413,14 @@
           "name": "SDL_TRY_ACQUIRE_SHARED",
           "kind": "def",
           "parameters": [
-            "x",
-            "y"
+            {
+              "name": "x",
+              "type": ""
+            },
+            {
+              "name": "y",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_shared_capability(x, y))"
         },
@@ -23279,7 +23429,10 @@
           "name": "SDL_EXCLUDES",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(locks_excluded(x))"
         },
@@ -23288,7 +23441,10 @@
           "name": "SDL_ASSERT_CAPABILITY",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(x))"
         },
@@ -23297,7 +23453,10 @@
           "name": "SDL_ASSERT_SHARED_CAPABILITY",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(x))"
         },
@@ -23306,7 +23465,10 @@
           "name": "SDL_RETURN_CAPABILITY",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(lock_returned(x))"
         },
@@ -31408,7 +31570,10 @@
           "name": "SDL_arraysize",
           "kind": "def",
           "parameters": [
-            "array"
+            {
+              "name": "array",
+              "type": ""
+            }
           ],
           "value": "(sizeof(array)/sizeof(array[0]))"
         },
@@ -31417,7 +31582,10 @@
           "name": "SDL_STRINGIFY_ARG",
           "kind": "def",
           "parameters": [
-            "arg"
+            {
+              "name": "arg",
+              "type": ""
+            }
           ],
           "value": "#arg"
         },
@@ -31426,8 +31594,14 @@
           "name": "SDL_reinterpret_cast",
           "kind": "def",
           "parameters": [
-            "type",
-            "expression"
+            {
+              "name": "type",
+              "type": ""
+            },
+            {
+              "name": "expression",
+              "type": ""
+            }
           ],
           "value": "reinterpret_cast<type>(expression)  /* or `((type)(expression))` in C */"
         },
@@ -31436,8 +31610,14 @@
           "name": "SDL_static_cast",
           "kind": "def",
           "parameters": [
-            "type",
-            "expression"
+            {
+              "name": "type",
+              "type": ""
+            },
+            {
+              "name": "expression",
+              "type": ""
+            }
           ],
           "value": "static_cast<type>(expression)  /* or `((type)(expression))` in C */"
         },
@@ -31446,8 +31626,14 @@
           "name": "SDL_const_cast",
           "kind": "def",
           "parameters": [
-            "type",
-            "expression"
+            {
+              "name": "type",
+              "type": ""
+            },
+            {
+              "name": "expression",
+              "type": ""
+            }
           ],
           "value": "const_cast<type>(expression)  /* or `((type)(expression))` in C */"
         },
@@ -31456,10 +31642,22 @@
           "name": "SDL_FOURCC",
           "kind": "def",
           "parameters": [
-            "A",
-            "B",
-            "C",
-            "D"
+            {
+              "name": "A",
+              "type": ""
+            },
+            {
+              "name": "B",
+              "type": ""
+            },
+            {
+              "name": "C",
+              "type": ""
+            },
+            {
+              "name": "D",
+              "type": ""
+            }
           ],
           "value": "    ((SDL_static_cast(Uint32, SDL_static_cast(Uint8, (A))) << 0) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (B))) << 8) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (C))) << 16) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (D))) << 24))"
         },
@@ -31468,7 +31666,10 @@
           "name": "SDL_SINT64_C",
           "kind": "def",
           "parameters": [
-            "c"
+            {
+              "name": "c",
+              "type": ""
+            }
           ],
           "value": "c ## LL  /* or whatever the current compiler uses. */"
         },
@@ -31477,7 +31678,10 @@
           "name": "SDL_UINT64_C",
           "kind": "def",
           "parameters": [
-            "c"
+            {
+              "name": "c",
+              "type": ""
+            }
           ],
           "value": "c ## ULL /* or whatever the current compiler uses. */"
         },
@@ -31732,7 +31936,10 @@
           "name": "SDL_IN_BYTECAP",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "_In_bytecount_(x)"
         },
@@ -31741,7 +31948,10 @@
           "name": "SDL_INOUT_Z_CAP",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "_Inout_z_cap_(x)"
         },
@@ -31750,7 +31960,10 @@
           "name": "SDL_OUT_Z_CAP",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "_Out_z_cap_(x)"
         },
@@ -31759,7 +31972,10 @@
           "name": "SDL_OUT_CAP",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "_Out_cap_(x)"
         },
@@ -31768,7 +31984,10 @@
           "name": "SDL_OUT_BYTECAP",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "_Out_bytecap_(x)"
         },
@@ -31777,7 +31996,10 @@
           "name": "SDL_OUT_Z_BYTECAP",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "_Out_z_bytecap_(x)"
         },
@@ -31798,7 +32020,10 @@
           "name": "SDL_PRINTF_VARARG_FUNC",
           "kind": "def",
           "parameters": [
-            "fmtargnumber"
+            {
+              "name": "fmtargnumber",
+              "type": ""
+            }
           ],
           "value": "__attribute__ (( format( __printf__, fmtargnumber, fmtargnumber+1 )))"
         },
@@ -31807,7 +32032,10 @@
           "name": "SDL_PRINTF_VARARG_FUNCV",
           "kind": "def",
           "parameters": [
-            "fmtargnumber"
+            {
+              "name": "fmtargnumber",
+              "type": ""
+            }
           ],
           "value": "__attribute__(( format( __printf__, fmtargnumber, 0 )))"
         },
@@ -31816,7 +32044,10 @@
           "name": "SDL_SCANF_VARARG_FUNC",
           "kind": "def",
           "parameters": [
-            "fmtargnumber"
+            {
+              "name": "fmtargnumber",
+              "type": ""
+            }
           ],
           "value": "__attribute__ (( format( __scanf__, fmtargnumber, fmtargnumber+1 )))"
         },
@@ -31825,7 +32056,10 @@
           "name": "SDL_SCANF_VARARG_FUNCV",
           "kind": "def",
           "parameters": [
-            "fmtargnumber"
+            {
+              "name": "fmtargnumber",
+              "type": ""
+            }
           ],
           "value": "__attribute__(( format( __scanf__, fmtargnumber, 0 )))"
         },
@@ -31834,7 +32068,10 @@
           "name": "SDL_WPRINTF_VARARG_FUNC",
           "kind": "def",
           "parameters": [
-            "fmtargnumber"
+            {
+              "name": "fmtargnumber",
+              "type": ""
+            }
           ],
           "value": "/* __attribute__ (( format( __wprintf__, fmtargnumber, fmtargnumber+1 ))) */"
         },
@@ -31843,7 +32080,10 @@
           "name": "SDL_WPRINTF_VARARG_FUNCV",
           "kind": "def",
           "parameters": [
-            "fmtargnumber"
+            {
+              "name": "fmtargnumber",
+              "type": ""
+            }
           ],
           "value": "/* __attribute__ (( format( __wprintf__, fmtargnumber, 0 ))) */"
         },
@@ -31852,7 +32092,10 @@
           "name": "SDL_INIT_INTERFACE",
           "kind": "def",
           "parameters": [
-            "iface"
+            {
+              "name": "iface",
+              "type": ""
+            }
           ],
           "value": "    do {                                        \\\n        SDL_zerop(iface);                       \\\n        (iface)->version = sizeof(*(iface));    \\\n    } while (0)"
         },
@@ -31861,8 +32104,14 @@
           "name": "SDL_stack_alloc",
           "kind": "def",
           "parameters": [
-            "type",
-            "count"
+            {
+              "name": "type",
+              "type": ""
+            },
+            {
+              "name": "count",
+              "type": ""
+            }
           ],
           "value": "(type*)alloca(sizeof(type)*(count))"
         },
@@ -31871,7 +32120,10 @@
           "name": "SDL_stack_free",
           "kind": "def",
           "parameters": [
-            "data"
+            {
+              "name": "data",
+              "type": ""
+            }
           ]
         },
         "SDL_malloc": {
@@ -32419,8 +32671,14 @@
           "name": "SDL_min",
           "kind": "def",
           "parameters": [
-            "x",
-            "y"
+            {
+              "name": "x",
+              "type": ""
+            },
+            {
+              "name": "y",
+              "type": ""
+            }
           ],
           "value": "(((x) < (y)) ? (x) : (y))"
         },
@@ -32429,8 +32687,14 @@
           "name": "SDL_max",
           "kind": "def",
           "parameters": [
-            "x",
-            "y"
+            {
+              "name": "x",
+              "type": ""
+            },
+            {
+              "name": "y",
+              "type": ""
+            }
           ],
           "value": "(((x) > (y)) ? (x) : (y))"
         },
@@ -32439,9 +32703,18 @@
           "name": "SDL_clamp",
           "kind": "def",
           "parameters": [
-            "x",
-            "a",
-            "b"
+            {
+              "name": "x",
+              "type": ""
+            },
+            {
+              "name": "a",
+              "type": ""
+            },
+            {
+              "name": "b",
+              "type": ""
+            }
           ],
           "value": "(((x) < (a)) ? (a) : (((x) > (b)) ? (b) : (x)))"
         },
@@ -32698,8 +32971,14 @@
           "name": "SDL_copyp",
           "kind": "def",
           "parameters": [
-            "dst",
-            "src"
+            {
+              "name": "dst",
+              "type": ""
+            },
+            {
+              "name": "src",
+              "type": ""
+            }
           ],
           "value": "    { SDL_COMPILE_TIME_ASSERT(SDL_copyp, sizeof (*(dst)) == sizeof (*(src))); }             \\\n    SDL_memcpy((dst), (src), sizeof(*(src)))"
         },
@@ -32768,7 +33047,10 @@
           "name": "SDL_zero",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SDL_memset(&(x), 0, sizeof((x)))"
         },
@@ -32777,7 +33059,10 @@
           "name": "SDL_zerop",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SDL_memset((x), 0, sizeof(*(x)))"
         },
@@ -32786,7 +33071,10 @@
           "name": "SDL_zeroa",
           "kind": "def",
           "parameters": [
-            "x"
+            {
+              "name": "x",
+              "type": ""
+            }
           ],
           "value": "SDL_memset((x), 0, sizeof((x)))"
         },
@@ -34609,7 +34897,10 @@
           "name": "SDL_iconv_utf8_locale",
           "kind": "def",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": ""
+            }
           ],
           "value": "SDL_iconv_string(\"\", \"UTF-8\", S, SDL_strlen(S)+1)"
         },
@@ -34618,7 +34909,10 @@
           "name": "SDL_iconv_utf8_ucs2",
           "kind": "def",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": ""
+            }
           ],
           "value": "(Uint16 *)SDL_iconv_string(\"UCS-2\", \"UTF-8\", S, SDL_strlen(S)+1)"
         },
@@ -34627,7 +34921,10 @@
           "name": "SDL_iconv_utf8_ucs4",
           "kind": "def",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": ""
+            }
           ],
           "value": "(Uint32 *)SDL_iconv_string(\"UCS-4\", \"UTF-8\", S, SDL_strlen(S)+1)"
         },
@@ -34636,7 +34933,10 @@
           "name": "SDL_iconv_wchar_utf8",
           "kind": "def",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": ""
+            }
           ],
           "value": "SDL_iconv_string(\"UTF-8\", \"WCHAR_T\", (char *)S, (SDL_wcslen(S)+1)*sizeof(wchar_t))"
         },
@@ -35119,7 +35419,10 @@
           "name": "SDL_MUSTLOCK",
           "kind": "def",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": ""
+            }
           ],
           "value": "(((S)->flags & SDL_SURFACE_LOCK_NEEDED) == SDL_SURFACE_LOCK_NEEDED)"
         },
@@ -37066,7 +37369,10 @@
           "name": "SDL_SECONDS_TO_NS",
           "kind": "def",
           "parameters": [
-            "S"
+            {
+              "name": "S",
+              "type": ""
+            }
           ],
           "value": "(((Uint64)(S)) * SDL_NS_PER_SECOND)"
         },
@@ -37075,7 +37381,10 @@
           "name": "SDL_NS_TO_SECONDS",
           "kind": "def",
           "parameters": [
-            "NS"
+            {
+              "name": "NS",
+              "type": ""
+            }
           ],
           "value": "((NS) / SDL_NS_PER_SECOND)"
         },
@@ -37084,7 +37393,10 @@
           "name": "SDL_MS_TO_NS",
           "kind": "def",
           "parameters": [
-            "MS"
+            {
+              "name": "MS",
+              "type": ""
+            }
           ],
           "value": "(((Uint64)(MS)) * SDL_NS_PER_MS)"
         },
@@ -37093,7 +37405,10 @@
           "name": "SDL_NS_TO_MS",
           "kind": "def",
           "parameters": [
-            "NS"
+            {
+              "name": "NS",
+              "type": ""
+            }
           ],
           "value": "((NS) / SDL_NS_PER_MS)"
         },
@@ -37102,7 +37417,10 @@
           "name": "SDL_US_TO_NS",
           "kind": "def",
           "parameters": [
-            "US"
+            {
+              "name": "US",
+              "type": ""
+            }
           ],
           "value": "(((Uint64)(US)) * SDL_NS_PER_US)"
         },
@@ -37111,7 +37429,10 @@
           "name": "SDL_NS_TO_US",
           "kind": "def",
           "parameters": [
-            "NS"
+            {
+              "name": "NS",
+              "type": ""
+            }
           ],
           "value": "((NS) / SDL_NS_PER_US)"
         },
@@ -38399,9 +38720,18 @@
           "name": "SDL_VERSIONNUM",
           "kind": "def",
           "parameters": [
-            "major",
-            "minor",
-            "patch"
+            {
+              "name": "major",
+              "type": ""
+            },
+            {
+              "name": "minor",
+              "type": ""
+            },
+            {
+              "name": "patch",
+              "type": ""
+            }
           ],
           "value": "    ((major) * 1000000 + (minor) * 1000 + (patch))"
         },
@@ -38410,7 +38740,10 @@
           "name": "SDL_VERSIONNUM_MAJOR",
           "kind": "def",
           "parameters": [
-            "version"
+            {
+              "name": "version",
+              "type": ""
+            }
           ],
           "value": "((version) / 1000000)"
         },
@@ -38419,7 +38752,10 @@
           "name": "SDL_VERSIONNUM_MINOR",
           "kind": "def",
           "parameters": [
-            "version"
+            {
+              "name": "version",
+              "type": ""
+            }
           ],
           "value": "(((version) / 1000) % 1000)"
         },
@@ -38428,7 +38764,10 @@
           "name": "SDL_VERSIONNUM_MICRO",
           "kind": "def",
           "parameters": [
-            "version"
+            {
+              "name": "version",
+              "type": ""
+            }
           ],
           "value": "((version) % 1000)"
         },
@@ -38443,9 +38782,18 @@
           "name": "SDL_VERSION_ATLEAST",
           "kind": "def",
           "parameters": [
-            "X",
-            "Y",
-            "Z"
+            {
+              "name": "X",
+              "type": ""
+            },
+            {
+              "name": "Y",
+              "type": ""
+            },
+            {
+              "name": "Z",
+              "type": ""
+            }
           ],
           "value": "    (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))"
         },
@@ -38789,7 +39137,10 @@
           "name": "SDL_WINDOWPOS_UNDEFINED_DISPLAY",
           "kind": "def",
           "parameters": [
-            "X"
+            {
+              "name": "X",
+              "type": ""
+            }
           ],
           "value": "(SDL_WINDOWPOS_UNDEFINED_MASK|(X))"
         },
@@ -38804,7 +39155,10 @@
           "name": "SDL_WINDOWPOS_ISUNDEFINED",
           "kind": "def",
           "parameters": [
-            "X"
+            {
+              "name": "X",
+              "type": ""
+            }
           ],
           "value": "(((X)&0xFFFF0000) == SDL_WINDOWPOS_UNDEFINED_MASK)"
         },
@@ -38819,7 +39173,10 @@
           "name": "SDL_WINDOWPOS_CENTERED_DISPLAY",
           "kind": "def",
           "parameters": [
-            "X"
+            {
+              "name": "X",
+              "type": ""
+            }
           ],
           "value": "(SDL_WINDOWPOS_CENTERED_MASK|(X))"
         },
@@ -38834,7 +39191,10 @@
           "name": "SDL_WINDOWPOS_ISCENTERED",
           "kind": "def",
           "parameters": [
-            "X"
+            {
+              "name": "X",
+              "type": ""
+            }
           ],
           "value": "            (((X)&0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)"
         },
@@ -41272,7 +41632,10 @@
           "name": "VK_DEFINE_HANDLE",
           "kind": "def",
           "parameters": [
-            "object"
+            {
+              "name": "object",
+              "type": ""
+            }
           ],
           "value": "typedef struct object##_T* object;"
         },
@@ -41281,7 +41644,10 @@
           "name": "VK_DEFINE_NON_DISPATCHABLE_HANDLE",
           "kind": "def",
           "parameters": [
-            "object"
+            {
+              "name": "object",
+              "type": ""
+            }
           ],
           "value": "typedef uint64_t object;"
         },
@@ -41422,9 +41788,18 @@
           "name": "SDL_IMAGE_VERSION_ATLEAST",
           "kind": "def",
           "parameters": [
-            "X",
-            "Y",
-            "Z"
+            {
+              "name": "X",
+              "type": ""
+            },
+            {
+              "name": "Y",
+              "type": ""
+            },
+            {
+              "name": "Z",
+              "type": ""
+            }
           ],
           "value": "    ((SDL_IMAGE_MAJOR_VERSION >= X) && \\\n     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION >= Y) && \\\n     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION > Y || SDL_IMAGE_MICRO_VERSION >= Z))"
         },
@@ -42311,9 +42686,18 @@
           "name": "SDL_TTF_VERSION_ATLEAST",
           "kind": "def",
           "parameters": [
-            "X",
-            "Y",
-            "Z"
+            {
+              "name": "X",
+              "type": ""
+            },
+            {
+              "name": "Y",
+              "type": ""
+            },
+            {
+              "name": "Z",
+              "type": ""
+            }
           ],
           "value": "    ((SDL_TTF_MAJOR_VERSION >= X) && \\\n     (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION >= Y) && \\\n     (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION > Y || SDL_TTF_MICRO_VERSION >= Z))"
         },

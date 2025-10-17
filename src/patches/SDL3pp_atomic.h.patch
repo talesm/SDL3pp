@@ -18,14 +18,6 @@
 <    * @param a a pointer to an AtomicInt to increment.
 322d329
 <    * @param a a pointer to an AtomicInt to decrement.
-447c454
-< inline bool AtomicIncRef(const AtomicIntRaw& a) { return SDL_AtomicIncRef(a); }
----
-> inline bool AtomicIncRef(AtomicIntRaw* a) { return SDL_AtomicIncRef(a); }
-466c473
-< inline bool AtomicDecRef(const AtomicIntRaw& a) { return SDL_AtomicDecRef(a); }
----
-> inline bool AtomicDecRef(AtomicIntRaw* a) { return SDL_AtomicDecRef(a); }
 498c505,509
 < public:
 ---
