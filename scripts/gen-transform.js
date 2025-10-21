@@ -6199,11 +6199,6 @@ const transform = {
               name: "LoadBMP",
               parameters: [{}, { default: "false" }]
             },
-            "SDL_SaveBMP_IO": {
-              name: "SaveBMP",
-              immutable: true,
-              parameters: [{}, {}, { default: "false" }]
-            },
             "SDL_SaveBMP": "immutable",
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
@@ -6548,6 +6543,9 @@ const transform = {
         },
         "SDL_SaveBMP_IO": {
           name: "SaveBMP",
+          immutable: true,
+          parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
+          hints: { methodName: "SaveBMP" },
         },
         "ClearSurfaceColorKey": {
           after: "SDL_SetSurfaceColorKey",
