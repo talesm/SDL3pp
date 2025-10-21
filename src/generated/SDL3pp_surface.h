@@ -127,9 +127,7 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK(S); }
-
-constexpr bool Surface::MustLock() const { return SDL::MUSTLOCK(m_resource); }
+constexpr bool MustLock(SurfaceConstParam S) const { return SDL_MUSTLOCK(S); }
 
 /**
  * The scaling mode.
@@ -700,7 +698,7 @@ public:
    *
    * @since This macro is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const;
+  constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
 
   /**
    * Set up a surface for directly accessing the pixels.
@@ -843,7 +841,7 @@ public:
    */
   void SetColorKey(std::optional<Uint32> key);
 
-  void ClearColorKey() { static_assert(false, "Not implemented"); }
+  void ClearColorKey();
 
   /**
    * Returns whether the surface has a color key.
@@ -956,9 +954,9 @@ public:
    */
   Uint8 GetAlphaMod() const;
 
-  void SetMod(Color color) { static_assert(false, "Not implemented"); }
+  void SetMod(Color color);
 
-  Color GetMod() const { static_assert(false, "Not implemented"); }
+  Color GetMod() const;
 
   /**
    * Set the blend mode used for blit operations.
@@ -1014,7 +1012,7 @@ public:
    */
   bool SetClipRect(OptionalRef<const RectRaw> rect);
 
-  void ResetClipRect() { static_assert(false, "Not implemented"); }
+  void ResetClipRect();
 
   /**
    * Get the clipping rectangle for a surface.
@@ -1177,9 +1175,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Clear(const FColorRaw& color);
+  void Clear(const FColorRaw& c);
 
-  void Fill(Uint32 color) { static_assert(false, "Not implemented"); }
+  void Fill(Uint32 color);
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -1589,11 +1587,6 @@ public:
    */
   Uint32 MapRGBA(ColorRaw c) const;
 
-  Color ReadPixel(const PointRaw& p) const
-  {
-    static_assert(false, "Not implemented");
-  }
-
   /**
    * Retrieves a single pixel from a surface.
    *
@@ -1625,10 +1618,32 @@ public:
                  Uint8* b,
                  Uint8* a) const;
 
-  FColor ReadPixelFloat(const PointRaw& p) const
-  {
-    static_assert(false, "Not implemented");
-  }
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param x the horizontal coordinate, 0 <= x < width.
+   * @param y the vertical coordinate, 0 <= y < height.
+   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+   * ignore this channel.
+   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Color ReadPixel(const PointRaw& p) const;
 
   /**
    * Retrieves a single pixel from a surface.
@@ -1657,6 +1672,30 @@ public:
                       float* g,
                       float* b,
                       float* a) const;
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param x the horizontal coordinate, 0 <= x < width.
+   * @param y the vertical coordinate, 0 <= y < height.
+   * @param r a pointer filled in with the red channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param g a pointer filled in with the green channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param b a pointer filled in with the blue channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param a a pointer filled in with the alpha channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  FColor ReadPixelFloat(const PointRaw& p) const;
 
   /**
    * Writes a single pixel to a surface.
@@ -1701,17 +1740,17 @@ public:
    */
   void WritePixelFloat(const PointRaw& p, const FColorRaw& c);
 
-  int GetWidth() const { static_assert(false, "Not implemented"); }
+  constexpr int GetWidth() const;
 
-  int GetHeight() const { static_assert(false, "Not implemented"); }
+  constexpr int GetHeight() const;
 
-  Point GetSize() const { static_assert(false, "Not implemented"); }
+  constexpr Point GetSize() const;
 
-  int GetPitch() const { static_assert(false, "Not implemented"); }
+  constexpr int GetPitch() const;
 
-  PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
+  constexpr PixelFormat GetFormat() const;
 
-  void* GetPixels() const { static_assert(false, "Not implemented"); }
+  constexpr void* GetPixels() const;
 };
 
 /**
@@ -2364,6 +2403,13 @@ inline void Surface::SetColorKey(std::optional<Uint32> key)
   SDL::SetSurfaceColorKey(m_resource, key);
 }
 
+inline void ClearSurfaceColorKey(SurfaceParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(m_resource); }
+
 /**
  * Returns whether the surface has a color key.
  *
@@ -2532,6 +2578,23 @@ inline Uint8 Surface::GetAlphaMod() const
   return SDL::GetSurfaceAlphaMod(m_resource);
 }
 
+inline void SetSurfaceMod(SurfaceParam surface, Color color)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Surface::SetMod(Color color)
+{
+  SDL::SetSurfaceMod(m_resource, color);
+}
+
+inline Color GetSurfaceMod(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
+
 /**
  * Set the blend mode used for blit operations.
  *
@@ -2613,6 +2676,13 @@ inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   return SDL::SetSurfaceClipRect(m_resource, rect);
 }
+
+inline void ResetSurfaceClipRect(SurfaceParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
 
 /**
  * Get the clipping rectangle for a surface.
@@ -2968,14 +3038,14 @@ inline void Surface::PremultiplyAlpha(bool linear)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClearSurface(SurfaceParam surface, const FColorRaw& color)
+inline void ClearSurface(SurfaceParam surface, const FColorRaw& c)
 {
-  CheckError(SDL_ClearSurface(surface, color));
+  CheckError(SDL_ClearSurface(surface, c));
 }
 
-inline void Surface::Clear(const FColorRaw& color)
+inline void Surface::Clear(const FColorRaw& c)
 {
-  SDL::ClearSurface(m_resource, color);
+  SDL::ClearSurface(m_resource, c);
 }
 
 /**
@@ -3013,6 +3083,13 @@ inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
 {
   SDL::FillSurfaceRect(m_resource, rect, color);
 }
+
+inline void FillSurface(SurfaceParam dst, Uint32 color)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -3633,6 +3710,37 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like GetRGBA, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param surface the surface to read.
+ * @param x the horizontal coordinate, 0 <= x < width.
+ * @param y the vertical coordinate, 0 <= y < height.
+ * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+ * ignore this channel.
+ * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Color ReadSurfacePixel(SurfaceConstParam surface, const PointRaw& p)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* r,
                                Uint8* g,
@@ -3640,6 +3748,11 @@ inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* a) const
 {
   SDL::ReadSurfacePixel(m_resource, p, r, g, b, a);
+}
+
+inline Color Surface::ReadPixel(const PointRaw& p) const
+{
+  return SDL::ReadSurfacePixel(m_resource, p);
 }
 
 /**
@@ -3675,6 +3788,35 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param surface the surface to read.
+ * @param x the horizontal coordinate, 0 <= x < width.
+ * @param y the vertical coordinate, 0 <= y < height.
+ * @param r a pointer filled in with the red channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param g a pointer filled in with the green channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param b a pointer filled in with the blue channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param a a pointer filled in with the alpha channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline FColor ReadSurfacePixelFloat(SurfaceConstParam surface,
+                                    const PointRaw& p)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* r,
                                     float* g,
@@ -3682,6 +3824,11 @@ inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* a) const
 {
   SDL::ReadSurfacePixelFloat(m_resource, p, r, g, b, a);
+}
+
+inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
+{
+  return SDL::ReadSurfacePixelFloat(m_resource, p);
 }
 
 /**
@@ -3747,6 +3894,66 @@ inline void WriteSurfacePixelFloat(SurfaceParam surface,
 inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
   SDL::WriteSurfacePixelFloat(m_resource, p, c);
+}
+
+constexpr int GetSurfaceWidth(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+constexpr int Surface::GetWidth() const
+{
+  return SDL::GetSurfaceWidth(m_resource);
+}
+
+constexpr int GetSurfaceHeight(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+constexpr int Surface::GetHeight() const
+{
+  return SDL::GetSurfaceHeight(m_resource);
+}
+
+constexpr Point GetSurfaceSize(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+constexpr Point Surface::GetSize() const
+{
+  return SDL::GetSurfaceSize(m_resource);
+}
+
+constexpr int GetSurfacePitch(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+constexpr int Surface::GetPitch() const
+{
+  return SDL::GetSurfacePitch(m_resource);
+}
+
+constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+constexpr PixelFormat Surface::GetFormat() const
+{
+  return SDL::GetSurfaceFormat(m_resource);
+}
+
+constexpr void* GetSurfacePixels(SurfaceConstParam surface)
+{
+  static_assert(false, "Not implemented");
+}
+
+constexpr void* Surface::GetPixels() const
+{
+  return SDL::GetSurfacePixels(m_resource);
 }
 
 /// @}

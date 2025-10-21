@@ -41659,7 +41659,7 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
+constexpr bool MustLock(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
 
 /**
  * The scaling mode.
@@ -42209,7 +42209,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr bool MustLock() const { return SDL::MUSTLOCK(m_resource); }
+  constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
 
   /**
    * Set up a surface for directly accessing the pixels.
@@ -42360,7 +42360,7 @@ public:
    *
    * @throws Error on failure.
    */
-  void ClearColorKey() { SetColorKey(std::nullopt); }
+  void ClearColorKey();
 
   /**
    * Returns whether the surface has a color key.
@@ -42484,11 +42484,7 @@ public:
    * @param color the color to be multiplied in blit operations
    * @throws Error on failure.
    */
-  void SetMod(Color color)
-  {
-    SetColorMod(color.r, color.g, color.b);
-    SetAlphaMod(color.a);
-  }
+  void SetMod(Color color);
 
   /**
    * Get the additional color and alpha value multiplied into blit
@@ -42497,13 +42493,7 @@ public:
    * @returns a Color containing RGBA value on success or std::nullopt on
    * failure; call GetError() for more information.
    */
-  Color GetMod() const
-  {
-    Color c;
-    GetColorMod(&c.r, &c.g, &c.b);
-    c.a = GetAlphaMod();
-    return c;
-  }
+  Color GetMod() const;
 
   /**
    * Set the blend mode used for blit operations.
@@ -42565,7 +42555,7 @@ public:
    *
    * @sa SetClipRect()
    */
-  void ResetClipRect() { SDL_SetSurfaceClipRect(m_resource, nullptr); }
+  void ResetClipRect();
 
   /**
    * Get the clipping rectangle for a surface.
@@ -42712,14 +42702,14 @@ public:
    * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
-   * @param color the color components of the pixel, normally in the range 0-1.
+   * @param c the color components of the pixel, normally in the range 0-1.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Clear(const FColorRaw& color);
+  void Clear(const FColorRaw& c);
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -42731,7 +42721,7 @@ public:
    * @param color the color to fill with.
    * @throws Error on failure.
    */
-  void Fill(Uint32 color) { FillRect({}, color); }
+  void Fill(Uint32 color);
 
   /**
    * Perform a fast fill of a rectangle with a specific color.
@@ -43246,26 +43236,6 @@ public:
   Uint32 MapRGBA(ColorRaw c) const;
 
   /**
-   * This function prioritizes correctness over speed: it is suitable for
-   * unit tests, but is not intended for use in a game engine.
-   *
-   * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
-   * components from pixel formats with less than 8 bits per RGB component.
-   *
-   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-   * @returns color on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function is not thread safe.
-   */
-  Color ReadPixel(const PointRaw& p) const
-  {
-    Color c;
-    ReadPixel(p, &c.r, &c.g, &c.b, &c.a);
-    return c;
-  }
-
-  /**
    * Retrieves a single pixel from a surface.
    *
    * This function prioritizes correctness over speed: it is suitable for unit
@@ -43306,13 +43276,10 @@ public:
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  FColor ReadPixelFloat(const PointRaw& p) const
-  {
-    FColor c;
-    ReadPixelFloat(p, &c.r, &c.g, &c.b, &c.a);
-    return c;
-  }
+  Color ReadPixel(const PointRaw& p) const;
 
   /**
    * Retrieves a single pixel from a surface.
@@ -43340,6 +43307,22 @@ public:
                       float* g,
                       float* b,
                       float* a) const;
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  FColor ReadPixelFloat(const PointRaw& p) const;
 
   /**
    * Writes a single pixel to a surface.
@@ -43379,32 +43362,32 @@ public:
   /**
    * Get the width in pixels.
    */
-  constexpr int GetWidth() const { return m_resource->w; }
+  constexpr int GetWidth() const;
 
   /**
    * Get the height in pixels.
    */
-  constexpr int GetHeight() const { return m_resource->h; }
+  constexpr int GetHeight() const;
 
   /**
    * Get the size in pixels.
    */
-  constexpr Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+  constexpr Point GetSize() const;
 
   /**
    * Get pitch in bytes.
    */
-  constexpr int GetPitch() const { return m_resource->pitch; }
+  constexpr int GetPitch() const;
 
   /**
    * Get the pixel format.
    */
-  constexpr PixelFormat GetFormat() const { return m_resource->format; }
+  constexpr PixelFormat GetFormat() const;
 
   /**
    * Get the pixels.
    */
-  constexpr void* GetPixels() const { return m_resource->pixels; }
+  constexpr void* GetPixels() const;
 };
 
 /**
@@ -44050,6 +44033,23 @@ inline void Surface::SetColorKey(std::optional<Uint32> key)
 }
 
 /**
+ * Unset the color key (transparent pixel) in a surface.
+ *
+ * The color key defines a pixel value that will be treated as transparent in
+ * a blit. For example, one can use this to specify that cyan pixels should be
+ * considered transparent, and therefore not rendered.
+ *
+ * @param surface the Surface structure to update.
+ * @throws Error on failure.
+ */
+inline void ClearSurfaceColorKey(SurfaceParam surface)
+{
+  SetSurfaceColorKey(surface, std::nullopt);
+}
+
+inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(m_resource); }
+
+/**
  * Returns whether the surface has a color key.
  *
  * It is safe to pass a nullptr `surface` here; it will return false.
@@ -44221,6 +44221,47 @@ inline Uint8 Surface::GetAlphaMod() const
 }
 
 /**
+ * Set an additional color and alpha value multiplied into blit
+ * operations.
+ *
+ * When this surface is blitted, during the blit operation each source color
+ * channel is modulated by the appropriate color value according to the
+ * following formula:
+ *
+ * `srcC = srcC * (color / 255)`
+ * `srcA = srcA * (alpha / 255)`
+ *
+ * @param surface the Surface structure to query.
+ * @param color the color to be multiplied in blit operations
+ * @throws Error on failure.
+ */
+inline void SetSurfaceMod(SurfaceParam surface, Color color)
+{
+  SetSurfaceColorMod(surface, color.r, color.g, color.b);
+  SetSurfaceAlphaMod(surface, color.a);
+}
+
+inline void Surface::SetMod(Color color) { SetSurfaceMod(m_resource, color); }
+
+/**
+ * Get the additional color and alpha value multiplied into blit
+ * operations.
+ *
+ * @param surface the Surface structure to query.
+ * @returns a Color containing RGBA value on success or std::nullopt on
+ * failure; call GetError() for more information.
+ */
+inline Color GetSurfaceMod(SurfaceConstParam surface)
+{
+  Color c;
+  GetSurfaceColorMod(surface, &c.r, &c.g, &c.b);
+  c.a = GetSurfaceAlphaMod(surface);
+  return c;
+}
+
+inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
+
+/**
  * Set the blend mode used for blit operations.
  *
  * To copy a surface to another surface (or texture) without blending with the
@@ -44303,6 +44344,18 @@ inline bool Surface::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   return SDL::SetSurfaceClipRect(m_resource, rect);
 }
+
+/**
+ * Disable the clipping rectangle for a surface.
+ *
+ * @sa SetSurfaceClipRect()
+ */
+inline void ResetSurfaceClipRect(SurfaceParam surface)
+{
+  SetSurfaceClipRect(surface, std::nullopt);
+}
+
+inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
 
 /**
  * Get the clipping rectangle for a surface.
@@ -44654,21 +44707,21 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * otherwise the color is assumed to be in the colorspace of the suface.
  *
  * @param surface the Surface to clear.
- * @param color the color components of the pixel, normally in the range 0-1.
+ * @param c the color components of the pixel, normally in the range 0-1.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClearSurface(SurfaceParam surface, const FColorRaw& color)
+inline void ClearSurface(SurfaceParam surface, const FColorRaw& c)
 {
-  CheckError(SDL_ClearSurface(surface, color.r, color.g, color.b, color.a));
+  CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
 }
 
-inline void Surface::Clear(const FColorRaw& color)
+inline void Surface::Clear(const FColorRaw& c)
 {
-  SDL::ClearSurface(m_resource, color);
+  SDL::ClearSurface(m_resource, c);
 }
 
 /**
@@ -44706,6 +44759,24 @@ inline void Surface::FillRect(OptionalRef<const RectRaw> rect, Uint32 color)
 {
   SDL::FillSurfaceRect(m_resource, rect, color);
 }
+
+/**
+ * Perform a fast fill of a rectangle with a specific color.
+ *
+ * If there is a clip rectangle set on the destination (set via
+ * Surface.SetClipRect()), then this function will fill based on the
+ * intersection of the clip rectangle and `rect`.
+ *
+ * @param dst the Surface structure that is the drawing target.
+ * @param color the color to fill with.
+ * @throws Error on failure.
+ */
+inline void FillSurface(SurfaceParam dst, Uint32 color)
+{
+  FillSurfaceRect(dst, std::nullopt, color);
+}
+
+inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
 
 /**
  * Perform a fast fill of a set of rectangles with a specific color.
@@ -45390,6 +45461,31 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like GetRGBA, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param surface the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @returns color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Color ReadSurfacePixel(SurfaceConstParam surface, const PointRaw& p)
+{
+  Color c;
+  ReadSurfacePixel(surface, p, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
 inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* r,
                                Uint8* g,
@@ -45397,6 +45493,11 @@ inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* a) const
 {
   SDL::ReadSurfacePixel(m_resource, p, r, g, b, a);
+}
+
+inline Color Surface::ReadPixel(const PointRaw& p) const
+{
+  return SDL::ReadSurfacePixel(m_resource, p);
 }
 
 /**
@@ -45431,6 +45532,29 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param surface the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @returns color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline FColor ReadSurfacePixelFloat(SurfaceConstParam surface,
+                                    const PointRaw& p)
+{
+  FColor c;
+  ReadSurfacePixelFloat(surface, p, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
 inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* r,
                                     float* g,
@@ -45438,6 +45562,11 @@ inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* a) const
 {
   SDL::ReadSurfacePixelFloat(m_resource, p, r, g, b, a);
+}
+
+inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
+{
+  return SDL::ReadSurfacePixelFloat(m_resource, p);
 }
 
 /**
@@ -45495,6 +45624,84 @@ inline void WriteSurfacePixelFloat(SurfaceParam surface,
 inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
   SDL::WriteSurfacePixelFloat(m_resource, p, c);
+}
+
+/**
+ * Get the width in pixels.
+ */
+constexpr int GetSurfaceWidth(SurfaceConstParam surface)
+{
+  return surface.value->w;
+}
+
+constexpr int Surface::GetWidth() const
+{
+  return SDL::GetSurfaceWidth(m_resource);
+}
+
+/**
+ * Get the height in pixels.
+ */
+constexpr int GetSurfaceHeight(SurfaceConstParam surface)
+{
+  return surface.value->h;
+}
+
+constexpr int Surface::GetHeight() const
+{
+  return SDL::GetSurfaceHeight(m_resource);
+}
+
+/**
+ * Get the size in pixels.
+ */
+constexpr Point GetSurfaceSize(SurfaceConstParam surface)
+{
+  return Point(surface.value->w, surface.value->h);
+}
+
+constexpr Point Surface::GetSize() const
+{
+  return SDL::GetSurfaceSize(m_resource);
+}
+
+/**
+ * Get pitch in bytes.
+ */
+constexpr int GetSurfacePitch(SurfaceConstParam surface)
+{
+  return surface.value->pitch;
+}
+
+constexpr int Surface::GetPitch() const
+{
+  return SDL::GetSurfacePitch(m_resource);
+}
+
+/**
+ * Get the pixel format.
+ */
+constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
+{
+  return surface.value->format;
+}
+
+constexpr PixelFormat Surface::GetFormat() const
+{
+  return SDL::GetSurfaceFormat(m_resource);
+}
+
+/**
+ * Get the pixels.
+ */
+constexpr void* GetSurfacePixels(SurfaceConstParam surface)
+{
+  return surface.value->pixels;
+}
+
+constexpr void* Surface::GetPixels() const
+{
+  return SDL::GetSurfacePixels(m_resource);
 }
 
 /// @}

@@ -6118,6 +6118,48 @@ const transform = {
         "SDL_PROP_SURFACE_": "prop::Surface"
       },
       transform: {
+        "SDL_SurfaceFlags": {
+          enum: {
+            values: [
+              "SDL_SURFACE_PREALLOCATED",
+              "SDL_SURFACE_LOCK_NEEDED",
+              "SDL_SURFACE_LOCKED",
+              "SDL_SURFACE_SIMD_ALIGNED"
+            ]
+          }
+        },
+        "SDL_SCALEMODE_INVALID": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 10,
+          }
+        },
+        "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 6,
+          }
+        },
+        "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 6,
+          }
+        },
+        "SDL_MUSTLOCK": {
+          kind: "function",
+          name: "MustLock",
+          constexpr: true,
+          immutable: true,
+          type: "bool",
+          parameters: [{ type: "SurfaceConstParam" }],
+        },
         "SDL_Surface": {
           resource: {
             shared: 'refcount',
@@ -6136,7 +6178,6 @@ const transform = {
             "SDL_AddSurfaceAlternateImage": "function",
             "SDL_SurfaceHasAlternateImages": "immutable",
             "SDL_GetSurfaceImages": {
-              kind: "function",
               immutable: true,
               type: "OwnArray<SurfaceRaw>",
               parameters: []
@@ -6148,19 +6189,15 @@ const transform = {
               constexpr: true,
               immutable: true,
               type: "bool",
-              parameters: []
+              parameters: [],
+              proto: false,
+              hints: { delegate: "SDL::MustLock" },
             },
             "SDL_LockSurface": "function",
             "SDL_UnlockSurface": "function",
             "SDL_LoadBMP_IO": {
               name: "LoadBMP",
-              type: "Surface",
-              static: true,
               parameters: [{}, { default: "false" }]
-            },
-            "SDL_LoadBMP": {
-              type: "Surface",
-              static: true,
             },
             "SDL_SaveBMP_IO": {
               name: "SaveBMP",
@@ -6171,7 +6208,6 @@ const transform = {
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
             "SDL_SetSurfaceColorKey": {
-              kind: "function",
               parameters: [
                 {},
                 {
@@ -6180,11 +6216,7 @@ const transform = {
                 }
               ]
             },
-            "ClearColorKey": {
-              kind: "function",
-              type: "void",
-              parameters: []
-            },
+            "ClearColorKey": "plc",
             "SDL_SurfaceHasColorKey": "immutable",
             "SDL_GetSurfaceColorKey": {
               immutable: true,
@@ -6195,47 +6227,26 @@ const transform = {
             "SDL_GetSurfaceColorMod": "immutable",
             "SDL_SetSurfaceAlphaMod": "function",
             "SDL_GetSurfaceAlphaMod": {
-              kind: "function",
               immutable: true,
               type: "Uint8",
               parameters: [{}]
             },
-            "SetMod": {
-              kind: "function",
-              type: "void",
-              parameters: [{
-                type: "Color",
-                name: "color"
-              }]
-            },
-            "GetMod": {
-              kind: "function",
-              immutable: true,
-              type: "Color",
-              parameters: []
-            },
+            "SetMod": "plc",
+            "GetMod": "plc",
             "SDL_SetSurfaceBlendMode": "function",
             "SDL_GetSurfaceBlendMode": {
-              kind: "function",
               immutable: true,
               type: "BlendMode",
               parameters: [{}]
             },
             "SDL_SetSurfaceClipRect": {
-              kind: "function",
-              static: false,
               parameters: [
                 {},
                 { type: "OptionalRef<const RectRaw>" },
               ]
             },
-            "ResetClipRect": {
-              kind: "function",
-              type: "void",
-              parameters: []
-            },
+            "ResetClipRect": "plc",
             "SDL_GetSurfaceClipRect": {
-              kind: "function",
               immutable: true,
               type: "Rect",
               parameters: [{}]
@@ -6259,25 +6270,8 @@ const transform = {
               immutable: true
             },
             "SDL_PremultiplySurfaceAlpha": "function",
-            "SDL_ClearSurface": {
-              parameters: [
-                {},
-                {
-                  type: "const FColorRaw &",
-                  name: "color"
-                }
-              ]
-            },
-            "Fill": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  type: "Uint32",
-                  name: "color"
-                }
-              ]
-            },
+            "SDL_ClearSurface": "function",
+            "Fill": "plc",
             "SDL_FillSurfaceRect": {
               parameters: [
                 {},
@@ -6292,7 +6286,6 @@ const transform = {
               ]
             },
             "SDL_FillSurfaceRects": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6307,7 +6300,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurface": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6344,7 +6336,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurfaceUnchecked": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6363,7 +6354,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurfaceScaled": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6386,7 +6376,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurfaceUncheckedScaled": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6409,7 +6398,6 @@ const transform = {
               ]
             },
             "SDL_StretchSurface": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6432,8 +6420,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurfaceTiled": {
-              kind: "function",
-              name: "BlitTiled",
               parameters: [
                 {
                 },
@@ -6452,8 +6438,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurfaceTiledWithScale": {
-              kind: "function",
-              name: "BlitTiledWithScale",
               parameters: [
                 {
                 },
@@ -6515,7 +6499,6 @@ const transform = {
               ]
             },
             "SDL_BlitSurface9Grid": {
-              kind: "function",
               parameters: [
                 {
                 },
@@ -6557,191 +6540,52 @@ const transform = {
                 }
               ]
             },
-            "SDL_MapSurfaceRGB": {
-              kind: "function",
-              immutable: true
-            },
-            "SDL_MapSurfaceRGBA": {
-              kind: "function",
-              immutable: true
-            },
-            "ReadPixel": {
-              kind: "function",
-              name: "ReadPixel",
-              immutable: true,
-              type: "Color",
-              parameters: [
-                {
-                  type: "const PointRaw &",
-                  name: "p"
-                },
-              ]
-            },
-            "ReadPixelFloat": {
-              kind: "function",
-              immutable: true,
-              type: "FColor",
-              parameters: [
-                {
-                  type: "const PointRaw &",
-                  name: "p"
-                },
-              ]
-            },
-            "SDL_ReadSurfacePixel": {
-              immutable: true,
-              parameters: [
-                {},
-                {
-                  type: "const PointRaw &",
-                  name: "p"
-                },
-                {
-                  type: "Uint8 *",
-                  name: "r"
-                },
-                {
-                  type: "Uint8 *",
-                  name: "g"
-                },
-                {
-                  type: "Uint8 *",
-                  name: "b"
-                },
-                {
-                  type: "Uint8 *",
-                  name: "a"
-                }
-              ]
-            },
-            "SDL_ReadSurfacePixelFloat": {
-              immutable: true,
-              parameters: [
-                {},
-                {
-                  type: "const PointRaw &",
-                  name: "p"
-                },
-                {
-                  type: "float *",
-                  name: "r"
-                },
-                {
-                  type: "float *",
-                  name: "g"
-                },
-                {
-                  type: "float *",
-                  name: "b"
-                },
-                {
-                  type: "float *",
-                  name: "a"
-                }
-              ]
-            },
-            "SDL_WriteSurfacePixel": {
-              kind: "function",
-              parameters: [
-                {},
-                {
-                  type: "const PointRaw &",
-                  name: "p"
-                },
-                {
-                  type: "ColorRaw",
-                  name: "c"
-                }
-              ]
-            },
-            "SDL_WriteSurfacePixelFloat": {
-              kind: "function",
-              parameters: [
-                {},
-                {
-                  type: "const PointRaw &",
-                  name: "p"
-                },
-                {
-                  type: "const FColorRaw &",
-                  name: "c"
-                }
-              ]
-            },
-            "GetWidth": {
-              kind: "function",
-              immutable: true,
-              type: "int",
-              parameters: []
-            },
-            "GetHeight": {
-              kind: "function",
-              immutable: true,
-              type: "int",
-              parameters: []
-            },
-            "GetSize": {
-              kind: "function",
-              immutable: true,
-              type: "Point",
-              parameters: []
-            },
-            "GetPitch": {
-              kind: "function",
-              type: "int",
-              immutable: true,
-              parameters: []
-            },
-            "GetFormat": {
-              kind: "function",
-              immutable: true,
-              type: "PixelFormat",
-              parameters: []
-            },
-            "GetPixels": {
-              kind: "function",
-              immutable: true,
-              type: "void *",
-              parameters: []
-            }
           }
         },
-        "SDL_SurfaceFlags": {
-          enum: {
-            values: [
-              "SDL_SURFACE_PREALLOCATED",
-              "SDL_SURFACE_LOCK_NEEDED",
-              "SDL_SURFACE_LOCKED",
-              "SDL_SURFACE_SIMD_ALIGNED"
-            ]
-          }
+        "SDL_LoadBMP_IO": {
+          name: "LoadBMP",
+          parameters: [{}, { default: "false" }]
         },
-        "SDL_SCALEMODE_INVALID": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 10,
-          }
+        "SDL_SaveBMP_IO": {
+          name: "SaveBMP",
         },
-        "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 6,
-          }
+        "ClearSurfaceColorKey": {
+          after: "SDL_SetSurfaceColorKey",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "SurfaceParam", name: "surface" }]
         },
-        "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 6,
-          }
+        "SetSurfaceMod": {
+          after: "SDL_GetSurfaceAlphaMod",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "SurfaceParam", name: "surface" },
+            { type: "Color", name: "color" },
+          ]
+        },
+        "GetSurfaceMod": {
+          kind: "function",
+          type: "Color",
+          immutable: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+        },
+        "ResetSurfaceClipRect": {
+          after: "SDL_SetSurfaceClipRect",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "SurfaceParam", name: "surface" }],
+        },
+        "FillSurface": {
+          after: "SDL_FillSurfaceRect",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "SurfaceParam", name: "dst" },
+            { type: "Uint32", name: "color" },
+          ]
         },
         "SDL_BlitSurface": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6780,7 +6624,6 @@ const transform = {
           }]
         },
         "SDL_BlitSurfaceUnchecked": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6799,7 +6642,6 @@ const transform = {
           }]
         },
         "SDL_BlitSurfaceScaled": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6822,7 +6664,6 @@ const transform = {
           }]
         },
         "SDL_BlitSurfaceUncheckedScaled": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6845,7 +6686,6 @@ const transform = {
           }]
         },
         "SDL_StretchSurface": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6868,7 +6708,6 @@ const transform = {
           }]
         },
         "SDL_BlitSurfaceTiled": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6887,7 +6726,6 @@ const transform = {
           }]
         },
         "SDL_BlitSurfaceTiledWithScale": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6914,7 +6752,6 @@ const transform = {
           }]
         },
         "SDL_BlitSurface9Grid": {
-          kind: "function",
           parameters: [{
             type: "SurfaceParam",
             name: "src"
@@ -6992,13 +6829,78 @@ const transform = {
             name: "dstrect"
           }]
         },
-        "SDL_LoadBMP_IO": {
-          name: "LoadBMP",
-          parameters: [{}, { default: "false" }]
+        "SDL_MapSurfaceRGB": {
+          immutable: true
         },
-        "SDL_SaveBMP_IO": {
-          name: "SaveBMP",
-          parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
+        "SDL_MapSurfaceRGBA": {
+          immutable: true
+        },
+        "SDL_ReadSurfacePixel": {
+          immutable: true,
+        },
+        "ReadSurfacePixel": {
+          kind: "function",
+          immutable: true,
+          type: "Color",
+          parameters: [
+            { type: "SurfaceConstParam", name: "surface" },
+            { type: "const PointRaw &", name: "p" },
+          ]
+        },
+        "SDL_ReadSurfacePixelFloat": {
+          immutable: true,
+        },
+        "ReadSurfacePixelFloat": {
+          kind: "function",
+          immutable: true,
+          type: "FColor",
+          parameters: [
+            { type: "SurfaceConstParam", name: "surface" },
+            { type: "const PointRaw &", name: "p" },
+          ]
+        },
+        "GetSurfaceWidth": {
+          after: "SDL_WriteSurfacePixelFloat",
+          kind: "function",
+          immutable: true,
+          type: "int",
+          constexpr: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+        },
+        "GetSurfaceHeight": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          constexpr: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+        },
+        "GetSurfaceSize": {
+          kind: "function",
+          immutable: true,
+          type: "Point",
+          constexpr: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+        },
+        "GetSurfacePitch": {
+          kind: "function",
+          type: "int",
+          immutable: true,
+          constexpr: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+        },
+        "GetSurfaceFormat": {
+          kind: "function",
+          immutable: true,
+          type: "PixelFormat",
+          constexpr: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+        },
+        "GetSurfacePixels": {
+          kind: "function",
+          immutable: true,
+          type: "void *",
+          constexpr: true,
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
         },
       }
     },

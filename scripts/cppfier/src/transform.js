@@ -691,7 +691,7 @@ function expandTypes(sourceEntries, file, context) {
     }
     const blockedNames = new Set(Object.keys(entries));
     blockedNames.add(targetType);
-    if (transform.entries) Object.keys(transform.entries).forEach(k => blockedNames.add(k));
+    if (transform.entries) createBlockedNames(transform.entries).forEach(k => blockedNames.add(k));
     const detectedMethods = detectMethods(sourceType, targetType, rawType, `const ${rawType}`, blockedNames);
     mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
     mirrorMethods(sourceEntries, file.transform, detectedMethods, paramType, constParamType, targetType);
@@ -702,6 +702,19 @@ function expandTypes(sourceEntries, file, context) {
     }
 
     delete transform.wrapper;
+  }
+
+  /** @param {ApiEntryTransformMap=} entries  */
+  function createBlockedNames(entries) {
+    /** @type {Set<string>} */
+    const result = new Set();
+
+    if (!entries) entries = {};
+    for (const [k, v] of Object.entries(entries)) {
+      if (v === "plc") continue;
+      result.add(k);
+    }
+    return result;
   }
 
   /**
@@ -1070,7 +1083,7 @@ function expandTypes(sourceEntries, file, context) {
       };
     }
     if (resourceEntry.enableAutoMethods !== false) {
-      const blockedNames = new Set(Object.keys(subEntries));
+      const blockedNames = createBlockedNames(subEntries);
       blockedNames.add(targetName);
       Object.keys(ctors).forEach(k => blockedNames.add(k));
       const detectedMethods = detectMethods(sourceName, targetName, paramType, constParamType, blockedNames);
@@ -1349,9 +1362,17 @@ function expandTypes(sourceEntries, file, context) {
         };
         e.name = transformEntry.hints?.methodName ?? undefined;
         foundEntries[sourceName] = e;
+        if (transformEntry.immutable && !transformEntry.parameters && (!constParamType.startsWith("const ") || constParamType.endsWith("*"))) {
+          transformEntry.parameters = sourceEntry.parameters.map(_ => ({}));
+          transformEntry.parameters[0].type = constParamType;
+        }
         delete transformEntry.immutable;
       } else if (transformEntry?.immutable) {
         foundEntries[sourceName] = "immutable";
+        if (transformEntry.immutable && !transformEntry.parameters && (!constParamType.startsWith("const ") || constParamType.endsWith("*"))) {
+          transformEntry.parameters = sourceEntry.parameters.map(_ => ({}));
+          transformEntry.parameters[0].type = constParamType;
+        }
         delete transformEntry.immutable;
       } else {
         foundEntries[sourceName] = m;
@@ -1659,7 +1680,14 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             newEntry.kind = entry;
           }
           insertEntry(entries, newEntry);
-        } else insertEntry(entries, /** @type {ApiEntry}*/(entry), nameCandidate);
+        } else if (entry.hints?.delegate) {
+          context.includeAfter({ ...entry, name: `${type}::${nameCandidate}` }, entry.hints.delegate);
+          if (!entries[nameCandidate]) {
+            insertEntry(entries, { name: nameCandidate, kind: "plc" });
+          }
+        } else {
+          insertEntry(entries, /** @type {ApiEntry}*/(entry), nameCandidate);
+        }
         return;
       }
       const nameChange = makeRenameEntry(entry, nameCandidate, type);

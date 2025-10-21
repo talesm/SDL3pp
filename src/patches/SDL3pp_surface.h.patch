@@ -6,72 +6,70 @@
 <   /// Constructs from const SurfaceRaw
 ---
 >   /// Constructs from SurfaceRaw
-130,132c130
-< constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK(S); }
-< 
-< constexpr bool Surface::MustLock() const { return SDL::MUSTLOCK(m_resource); }
+130c130
+< constexpr bool MustLock(SurfaceConstParam S) const { return SDL_MUSTLOCK(S); }
 ---
-> constexpr bool MUSTLOCK(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
-190a189,190
+> constexpr bool MustLock(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
+188a189,190
 >  * @cat resource
 >  *
-193,194d192
+191,192d192
 <  *
 <  * @cat resource
-230,231c228
+228,229c228
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.
 ---
 >    * @param size the width and height of the surface.
-233,234c230
+231,232c230
 <    * @post the new Surface structure that is created or nullptr on failure;
 <    *          call GetError() for more information.
 ---
 >    * @throws Error on failure.
-244c240
+242c240
 <     : m_resource(SDL_CreateSurface(size, format))
 ---
 >     : m_resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
-261,262c257
+259,260c257
 <    * @param width the width of the surface.
 <    * @param height the height of the surface.
 ---
 >    * @param size the width and height of the surface.
-266,267c261
+264,265c261
 <    * @post the new Surface structure that is created or nullptr on failure;
 <    *          call GetError() for more information.
 ---
 >    * @throws Error on failure.
-277c271,272
+275c271,272
 <     : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
 ---
 >     : m_resource(CheckError(
 >         SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
-310,314d304
+308,312d304
 <    * When done with the returned surface, the app should dispose of it with a
 <    * call to
 <    * [Surface.Destroy](https://wiki.libsdl.org/SDL3/Surface.Destroy)
 <    * ().
 <    *
-364,366d353
+362,364d353
 <    * When done with the returned surface, the app should dispose of it with a
 <    * call to Surface.Destroy().
 <    *
-378c365
+376c365
 <   Surface(IOStreamParam src, bool closeio);
 ---
 >   Surface(IOStreamParam src, bool closeio = false);
-525,526c512
+523,524c512
 <    * @param colorspace an Colorspace value describing the surface
 <    *                   colorspace.
 ---
 >    * @param colorspace a Colorspace value describing the surface colorspace.
-625,626c611
+623,624c611
 <    * @param image a pointer to an alternate Surface to associate with this
 <    *              surface.
 ---
 >    * @param image an alternate Surface to associate with this surface.
-660,666d644
+658,664d644
 <    * Freeing the array of surfaces does not affect the surfaces in the array.
 <    * They are still referenced by the surface being queried and will be cleaned
 <    * up normally.
@@ -79,20 +77,16 @@
 <    * @param surface the Surface structure to query.
 <    * @param count a pointer filled in with the number of surface pointers
 <    *              returned, may be nullptr.
-668,669c646
+666,667c646
 <    *          failure; call GetError() for more information. This should be
 <    *          freed with free() when it is no longer needed.
 ---
 >    *          failure; call GetError() for more information.
-701c678
+699c678
 <    * @since This macro is available since SDL 3.2.0.
 ---
 >    * @since This function is available since SDL 3.2.0.
-703c680
-<   constexpr bool MustLock() const;
----
->   constexpr bool MustLock() const { return SDL::MUSTLOCK(m_resource); }
-713,715c690,692
+711,713c690,692
 <    * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
 <    * to 0, then you can read and write to the surface at any time, and the pixel
 <    * format of the surface will not change.
@@ -100,14 +94,12 @@
 >    * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
 >    * false, then you can read and write to the surface at any time, and the
 >    * pixel format of the surface will not change.
-832,833c809
+830,831c809
 <    * @param enabled true to enable color key, false to disable color key.
 <    * @param key the transparent pixel.
 ---
 >    * @param key the transparent pixel or std::nullopt to disable it.
-846c822,831
-<   void ClearColorKey() { static_assert(false, "Not implemented"); }
----
+843a822,830
 >   /**
 >    * Unset the color key (transparent pixel) in a surface.
 >    *
@@ -117,19 +109,16 @@
 >    *
 >    * @throws Error on failure.
 >    */
->   void ClearColorKey() { SetColorKey(std::nullopt); }
-851,852d835
+849,850d835
 <    * It is safe to pass a nullptr `surface` here; it will return false.
 <    *
-872c855
+870c855
 <    * @param key a pointer filled in with the transparent pixel.
 ---
 >    * @returns the transparent pixel or nullopt if none.
-947d929
+945d929
 <    * @param alpha a pointer filled in with the current alpha value.
-959c941,959
-<   void SetMod(Color color) { static_assert(false, "Not implemented"); }
----
+956a941,954
 >   /**
 >    * Set an additional color and alpha value multiplied into blit
 >    * operations.
@@ -144,14 +133,7 @@
 >    * @param color the color to be multiplied in blit operations
 >    * @throws Error on failure.
 >    */
->   void SetMod(Color color)
->   {
->     SetColorMod(color.r, color.g, color.b);
->     SetAlphaMod(color.a);
->   }
-961c961,974
-<   Color GetMod() const { static_assert(false, "Not implemented"); }
----
+958a957,963
 >   /**
 >    * Get the additional color and alpha value multiplied into blit
 >    * operations.
@@ -159,59 +141,47 @@
 >    * @returns a Color containing RGBA value on success or std::nullopt on
 >    * failure; call GetError() for more information.
 >    */
->   Color GetMod() const
->   {
->     Color c;
->     GetColorMod(&c.r, &c.g, &c.b);
->     c.a = GetAlphaMod();
->     return c;
->   }
-984c997
+982c987
 <    * @param blendMode a pointer filled in with the current BlendMode.
 ---
 >    * @returns the current BlendMode.
-1012a1026
+1010a1016
 >    * @sa Surface.ResetClipRect()
-1017c1031,1036
-<   void ResetClipRect() { static_assert(false, "Not implemented"); }
----
+1014a1021,1025
 >   /**
 >    * Disable the clipping rectangle for a surface.
 >    *
 >    * @sa SetClipRect()
 >    */
->   void ResetClipRect() { SDL_SetSurfaceClipRect(m_resource, nullptr); }
-1025,1027c1044,1045
+1023,1025c1034,1035
 <    *                clipped.
 <    * @param rect an Rect structure filled in with the clipping rectangle for
 <    *             the surface.
 ---
 >    * @returns the Rect structure filled in with the clipping rectangle for the
 >    *          surface on success.
-1056,1057d1073
+1054,1055d1063
 <    * The returned surface should be freed with Surface.Destroy().
 <    *
-1073,1076c1089
+1071,1074c1079
 <    * The returned surface should be freed with Surface.Destroy().
 <    *
 <    * @param width the width of the new surface.
 <    * @param height the height of the new surface.
 ---
 >    * @param size the width and height of the new surface.
-1168c1181
+1166c1171
 <    * otherwise the color is assumed to be in the colorspace of the suface.
 ---
 >    * otherwise the color is assumed to be in the colorspace of the surface.
-1170,1173c1183
+1168,1171c1173
 <    * @param r the red component of the pixel, normally in the range 0-1.
 <    * @param g the green component of the pixel, normally in the range 0-1.
 <    * @param b the blue component of the pixel, normally in the range 0-1.
 <    * @param a the alpha component of the pixel, normally in the range 0-1.
 ---
->    * @param color the color components of the pixel, normally in the range 0-1.
-1182c1192,1202
-<   void Fill(Uint32 color) { static_assert(false, "Not implemented"); }
----
+>    * @param c the color components of the pixel, normally in the range 0-1.
+1179a1182,1191
 >   /**
 >    * Perform a fast fill of a rectangle with a specific color.
 >    *
@@ -222,22 +192,21 @@
 >    * @param color the color to fill with.
 >    * @throws Error on failure.
 >    */
->   void Fill(Uint32 color) { FillRect({}, color); }
-1188c1208
+1186c1198
 <    * generated by MapRGB() or MapColor(). If the color value contains an
 ---
 >    * generated by MapColor(). If the color value contains an
-1213c1233
+1211c1223
 <    * generated by MapRGB() or MapColor(). If the color value contains an
 ---
 >    * generated by MapColor(). If the color value contains an
-1222d1241
+1220d1231
 <    * @param count the number of rectangles in the array.
-1285a1305
+1283a1295
 >    * @param src the SurfaceRaw structure to be copied from.
-1288d1307
+1286d1297
 <    * @param dst the Surface structure that is the blit target.
-1306a1326,1395
+1304a1316,1385
 >   /**
 >    * Performs a fast blit from the source surface to the destination surface
 >    * with clipping.
@@ -308,35 +277,35 @@
 >    * @sa Surface.Blit
 >    * @sa Surface.BlitScaled
 >    */
-1311c1400
+1309c1390
 <     static_assert(false, "Not implemented");
 ---
 >     Blit(src, srcrect, Rect{dstpos, {}});
-1319a1409
+1317a1399
 >    * @param src the Surface structure to be copied from.
-1322d1411
+1320d1401
 <    * @param dst the Surface structure that is the blit target.
-1341a1431
+1339a1421
 >    * @param src the Surface structure to be copied from.
-1344d1433
+1342d1423
 <    * @param dst the Surface structure that is the blit target.
-1368a1458
+1366a1448
 >    * @param src the Surface structure to be copied from.
-1371d1460
+1369d1450
 <    * @param dst the Surface structure that is the blit target.
-1393a1483
+1391a1473
 >    * @param src the Surface structure to be copied from.
-1396d1485
+1394d1475
 <    * @param dst the Surface structure that is the blit target.
-1423a1513
+1421a1503
 >    * @param src the SDL_Surface structure to be copied from.
-1426d1515
+1424d1505
 <    * @param dst the Surface structure that is the blit target.
-1449a1539
+1447a1529
 >    * @param src the SDL_Surface structure to be copied from.
-1456d1545
+1454d1535
 <    * @param dst the Surface structure that is the blit target.
-1474a1564,1593
+1472a1554,1583
 >   /**
 >    * Perform a scaled blit using the 9-grid algorithm to a destination surface,
 >    * which may be of a different format.
@@ -367,7 +336,7 @@
 >    *
 >    * @sa Surface.Blit
 >    */
-1483c1602,1610
+1481c1592,1600
 <     static_assert(false, "Not implemented");
 ---
 >     Blit9Grid(src,
@@ -379,67 +348,59 @@
 >               0.0,
 >               SDL_SCALEMODE_NEAREST,
 >               dstrect);
-1495a1623
+1493a1613
 >    * @param src the SDL_Surface structure to be copied from.
-1506d1633
+1504d1623
 <    * @param dst the Surface structure that is the blit target.
-1578,1581c1705
+1576,1579c1695
 <    * @param r the red component of the pixel in the range 0-255.
 <    * @param g the green component of the pixel in the range 0-255.
 <    * @param b the blue component of the pixel in the range 0-255.
 <    * @param a the alpha component of the pixel in the range 0-255.
 ---
 >    * @param c the color components of the pixel in the range 0-255.
-1591a1716,1728
->   /**
->    * This function prioritizes correctness over speed: it is suitable for
->    * unit tests, but is not intended for use in a game engine.
->    *
->    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
->    * components from pixel formats with less than 8 bits per RGB component.
->    *
->    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
->    * @returns color on success.
->    * @throws Error on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    */
-1594c1731,1733
-<     static_assert(false, "Not implemented");
----
->     Color c;
->     ReadPixel(p, &c.r, &c.g, &c.b, &c.a);
->     return c;
-1606,1607c1745
+1599,1600c1715
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-1627a1766,1777
->   /**
->    * Retrieves a single pixel from a surface.
->    *
->    * This function prioritizes correctness over speed: it is suitable for unit
->    * tests, but is not intended for use in a game engine.
->    *
+1627,1639c1742,1743
+<    * Like GetRGBA, this uses the entire 0..255 range when converting color
+<    * components from pixel formats with less than 8 bits per RGB component.
+<    *
+<    * @param x the horizontal coordinate, 0 <= x < width.
+<    * @param y the vertical coordinate, 0 <= y < height.
+<    * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+<    * ignore this channel.
+<    * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+<    *          ignore this channel.
+<    * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+<    *          ignore this channel.
+<    * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+<    *          ignore this channel.
+---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
 >    * @returns color on success.
->    * @throws Error on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    */
-1630c1780,1782
-<     static_assert(false, "Not implemented");
----
->     FColor c;
->     ReadPixelFloat(p, &c.r, &c.g, &c.b, &c.a);
->     return c;
-1639,1640c1791
+1654,1655c1758
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-1670,1675c1821,1822
+1682,1691c1785,1786
+<    * @param x the horizontal coordinate, 0 <= x < width.
+<    * @param y the vertical coordinate, 0 <= y < height.
+<    * @param r a pointer filled in with the red channel, normally in the range
+<    *          0-1, or nullptr to ignore this channel.
+<    * @param g a pointer filled in with the green channel, normally in the range
+<    *          0-1, or nullptr to ignore this channel.
+<    * @param b a pointer filled in with the blue channel, normally in the range
+<    *          0-1, or nullptr to ignore this channel.
+<    * @param a a pointer filled in with the alpha channel, normally in the range
+<    *          0-1, or nullptr to ignore this channel.
+---
+>    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+>    * @returns color on success.
+1709,1714c1804,1805
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 <    * @param r the red channel value, 0-255.
@@ -449,7 +410,7 @@
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
 >    * @param c the color values, 0-255.
-1690,1695c1837,1838
+1729,1734c1820,1821
 <    * @param x the horizontal coordinate, 0 <= x < width.
 <    * @param y the vertical coordinate, 0 <= y < height.
 <    * @param r the red channel value, normally in the range 0-1.
@@ -459,161 +420,212 @@
 ---
 >    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
 >    * @param c the color values, normally in the range 0-1.
-1704c1847,1850
-<   int GetWidth() const { static_assert(false, "Not implemented"); }
----
+1742a1830,1832
 >   /**
 >    * Get the width in pixels.
 >    */
->   constexpr int GetWidth() const { return m_resource->w; }
-1706c1852,1855
-<   int GetHeight() const { static_assert(false, "Not implemented"); }
----
+1744a1835,1837
 >   /**
 >    * Get the height in pixels.
 >    */
->   constexpr int GetHeight() const { return m_resource->h; }
-1708c1857,1860
-<   Point GetSize() const { static_assert(false, "Not implemented"); }
----
+1746a1840,1842
 >   /**
 >    * Get the size in pixels.
 >    */
->   constexpr Point GetSize() const { return Point(GetWidth(), GetHeight()); }
-1710c1862,1865
-<   int GetPitch() const { static_assert(false, "Not implemented"); }
----
+1748a1845,1847
 >   /**
 >    * Get pitch in bytes.
 >    */
->   constexpr int GetPitch() const { return m_resource->pitch; }
-1712c1867,1870
-<   PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
----
+1750a1850,1852
 >   /**
 >    * Get the pixel format.
 >    */
->   constexpr PixelFormat GetFormat() const { return m_resource->format; }
-1714c1872,1875
-<   void* GetPixels() const { static_assert(false, "Not implemented"); }
----
+1752a1855,1857
 >   /**
 >    * Get the pixels.
 >    */
->   constexpr void* GetPixels() const { return m_resource->pixels; }
-1722,1723c1883
+1761,1762c1866
 <  * @param width the width of the surface.
 <  * @param height the height of the surface.
 ---
 >  * @param size the width and height of the surface.
-1753,1754c1913
+1792,1793c1896
 <  * @param width the width of the surface.
 <  * @param height the height of the surface.
 ---
 >  * @param size the width and height of the surface.
-1828c1987
+1867c1970
 <   return CheckError(SDL_GetSurfaceProperties(surface));
 ---
 >   return {CheckError(SDL_GetSurfaceProperties(surface))};
-1849,1852d2007
+1888,1891d1990
 < #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 < 
 < #if SDL_VERSION_ATLEAST(3, 2, 6)
 < 
-1942c2097
+1981c2080
 <   return CheckError(SDL_CreateSurfacePalette(surface));
 ---
 >   return Palette::Borrow(CheckError(SDL_CreateSurfacePalette(surface)));
-1991c2146
+2030c2129
 <   return SDL_GetSurfacePalette(surface);
 ---
 >   return Palette::Borrow(SDL_GetSurfacePalette(surface));
-2068,2069d2222
+2107,2108d2205
 <  * @param count a pointer filled in with the number of surface pointers
 <  *              returned, may be nullptr.
-2071,2072c2224
+2110,2111c2207
 <  *          failure; call GetError() for more information. This should be
 <  *          freed with free() when it is no longer needed.
 ---
 >  *          failure; call GetError() for more information.
-2084c2236,2238
+2123c2219,2221
 <   return SDL_GetSurfaceImages(surface);
 ---
 >   int count = 0;
 >   auto data = SDL_GetSurfaceImages(surface, &count);
 >   return OwnArray<SurfaceRaw>(CheckError(data), count);
-2126c2280
+2165c2263
 <  * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates to
 ---
 >  * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
-2345,2346c2499
+2384,2385c2482
 <  * @param enabled true to enable color key, false to disable color key.
 <  * @param key the transparent pixel.
 ---
 >  * @param key the transparent pixel or std::nullopt to disable it.
-2359c2512
+2398c2495
 <   CheckError(SDL_SetSurfaceColorKey(surface, key));
 ---
 >   CheckError(SDL_SetSurfaceColorKey(surface, key.has_value(), key.value_or(0)));
-2401c2554
+2405a2503,2512
+> /**
+>  * Unset the color key (transparent pixel) in a surface.
+>  *
+>  * The color key defines a pixel value that will be treated as transparent in
+>  * a blit. For example, one can use this to specify that cyan pixels should be
+>  * considered transparent, and therefore not rendered.
+>  *
+>  * @param surface the Surface structure to update.
+>  * @throws Error on failure.
+>  */
+2408c2515
+<   static_assert(false, "Not implemented");
+---
+>   SetSurfaceColorKey(surface, std::nullopt);
+2447c2554
 <  * @param key a pointer filled in with the transparent pixel.
 ---
 >  * @returns the transparent pixel or nullopt if none.
-2413c2566,2567
+2459c2566,2567
 <   return CheckError(SDL_GetSurfaceColorKey(surface));
 ---
 >   if (Uint32 key; SDL_GetSurfaceColorKey(surface, &key)) return key;
 >   return std::nullopt;
-2515c2669
+2561c2669
 <  * @param alpha a pointer filled in with the current alpha value.
 ---
 >  * @returns the current alpha value.
-2527c2681,2683
+2573c2681,2683
 <   return CheckError(SDL_GetSurfaceAlphaMod(surface));
 ---
 >   Uint8 alpha;
 >   CheckError(SDL_GetSurfaceAlphaMod(surface, &alpha));
 >   return alpha;
-2566c2722
+2580a2691,2705
+> /**
+>  * Set an additional color and alpha value multiplied into blit
+>  * operations.
+>  *
+>  * When this surface is blitted, during the blit operation each source color
+>  * channel is modulated by the appropriate color value according to the
+>  * following formula:
+>  *
+>  * `srcC = srcC * (color / 255)`
+>  * `srcA = srcA * (alpha / 255)`
+>  *
+>  * @param surface the Surface structure to query.
+>  * @param color the color to be multiplied in blit operations
+>  * @throws Error on failure.
+>  */
+2583c2708,2709
+<   static_assert(false, "Not implemented");
+---
+>   SetSurfaceColorMod(surface, color.r, color.g, color.b);
+>   SetSurfaceAlphaMod(surface, color.a);
+2586,2589c2712
+< inline void Surface::SetMod(Color color)
+< {
+<   SDL::SetSurfaceMod(m_resource, color);
+< }
+---
+> inline void Surface::SetMod(Color color) { SetSurfaceMod(m_resource, color); }
+2590a2714,2721
+> /**
+>  * Get the additional color and alpha value multiplied into blit
+>  * operations.
+>  *
+>  * @param surface the Surface structure to query.
+>  * @returns a Color containing RGBA value on success or std::nullopt on
+>  * failure; call GetError() for more information.
+>  */
+2593c2724,2727
+<   static_assert(false, "Not implemented");
+---
+>   Color c;
+>   GetSurfaceColorMod(surface, &c.r, &c.g, &c.b);
+>   c.a = GetSurfaceAlphaMod(surface);
+>   return c;
+2629c2763
 <  * @param blendMode a pointer filled in with the current BlendMode.
 ---
 >  * @returns the current BlendMode.
-2577c2733,2735
+2640c2774,2776
 <   return CheckError(SDL_GetSurfaceBlendMode(surface));
 ---
 >   BlendMode blendmode;
 >   CheckError(SDL_GetSurfaceBlendMode(surface, &blendmode));
 >   return blendmode;
-2625,2626c2783,2784
+2679a2816,2820
+> /**
+>  * Disable the clipping rectangle for a surface.
+>  *
+>  * @sa SetSurfaceClipRect()
+>  */
+2682c2823
+<   static_assert(false, "Not implemented");
+---
+>   SetSurfaceClipRect(surface, std::nullopt);
+2695,2696c2836,2837
 <  * @param rect an Rect structure filled in with the clipping rectangle for
 <  *             the surface.
 ---
 >  * @returns the Rect structure filled in with the clipping rectangle for the
 >  *          surface.
-2637c2795,2797
+2707c2848,2850
 <   return CheckError(SDL_GetSurfaceClipRect(surface));
 ---
 >   Rect r;
 >   CheckError(SDL_GetSurfaceClipRect(surface, &r));
 >   return r;
-2683c2843
+2753c2896
 <   return SDL_DuplicateSurface(surface);
 ---
 >   return Surface(SDL_DuplicateSurface(surface));
-2698,2699c2858
+2768,2769c2911
 <  * @param width the width of the new surface.
 <  * @param height the height of the new surface.
 ---
 >  * @param size the width and height of the surface.
-2714c2873
+2784c2926
 <   return SDL_ScaleSurface(surface, size, scaleMode);
 ---
 >   return Surface(SDL_ScaleSurface(surface, size.x, size.y, scaleMode));
-2750c2909
+2820c2962
 <   return SDL_ConvertSurface(surface, format);
 ---
 >   return Surface(SDL_ConvertSurface(surface, format));
-2758,2766d2916
+2828,2836d2969
 < inline Surface Surface::Convert(PixelFormat format,
 <                                 PaletteParam palette,
 <                                 Colorspace colorspace,
@@ -623,7 +635,7 @@
 <     m_resource, format, palette, colorspace, props);
 < }
 < 
-2800,2801c2950,2960
+2870,2871c3003,3013
 <   return SDL_ConvertSurfaceAndColorspace(
 <     surface, format, palette, colorspace, props);
 ---
@@ -638,31 +650,31 @@
 > {
 >   return SDL::ConvertSurfaceAndColorspace(
 >     m_resource, format, palette, colorspace, props);
-2807,2808c2966
+2877,2878c3019
 <  * @param width the width of the block to copy, in pixels.
 <  * @param height the height of the block to copy, in pixels.
 ---
 >  * @param size the width and height of the surface.
-2834c2992
+2904c3045
 <     size, src_format, src, src_pitch, dst_format, dst, dst_pitch));
 ---
 >     size.x, size.y, src_format, src, src_pitch, dst_format, dst, dst_pitch));
-2841,2842c2999
+2911,2912c3052
 <  * @param width the width of the block to copy, in pixels.
 <  * @param height the height of the block to copy, in pixels.
 ---
 >  * @param size the width and height  of the block to copy, in pixels.
-2879c3036,3037
+2949c3089,3090
 <   CheckError(SDL_ConvertPixelsAndColorspace(size,
 ---
 >   CheckError(SDL_ConvertPixelsAndColorspace(size.x,
 >                                             size.y,
-2897,2898c3055
+2967,2968c3108
 <  * @param width the width of the block to convert, in pixels.
 <  * @param height the height of the block to convert, in pixels.
 ---
 >  * @param size the width and height of the surface.
-2924,2925c3081,3089
+2994,2995c3134,3142
 <   CheckError(SDL_PremultiplyAlpha(
 <     size, src_format, src, src_pitch, dst_format, dst, dst_pitch, linear));
 ---
@@ -675,36 +687,52 @@
 >                                   dst,
 >                                   dst_pitch,
 >                                   linear));
-2961,2964c3125
+3031,3034c3178
 <  * @param r the red component of the pixel, normally in the range 0-1.
 <  * @param g the green component of the pixel, normally in the range 0-1.
 <  * @param b the blue component of the pixel, normally in the range 0-1.
 <  * @param a the alpha component of the pixel, normally in the range 0-1.
 ---
->  * @param color the color components of the pixel, normally in the range 0-1.
-2973c3134
-<   CheckError(SDL_ClearSurface(surface, color));
+>  * @param c the color components of the pixel, normally in the range 0-1.
+3043c3187
+<   CheckError(SDL_ClearSurface(surface, c));
 ---
->   CheckError(SDL_ClearSurface(surface, color.r, color.g, color.b, color.a));
-2985c3146
+>   CheckError(SDL_ClearSurface(surface, c.r, c.g, c.b, c.a));
+3055c3199
 <  * generated by MapRGB() or MapColor(). If the color value contains an
 ---
 >  * generated by MapColor(). If the color value contains an
-3021c3182
+3086a3231,3241
+> /**
+>  * Perform a fast fill of a rectangle with a specific color.
+>  *
+>  * If there is a clip rectangle set on the destination (set via
+>  * Surface.SetClipRect()), then this function will fill based on the
+>  * intersection of the clip rectangle and `rect`.
+>  *
+>  * @param dst the Surface structure that is the drawing target.
+>  * @param color the color to fill with.
+>  * @throws Error on failure.
+>  */
+3089c3244
+<   static_assert(false, "Not implemented");
+---
+>   FillSurfaceRect(dst, std::nullopt, color);
+3098c3253
 <  * generated by MapRGB() or MapColor(). If the color value contains an
 ---
 >  * generated by MapColor(). If the color value contains an
-3031d3191
+3108d3262
 <  * @param count the number of rectangles in the array.
-3045c3205
+3122c3276
 <   CheckError(SDL_FillSurfaceRects(dst, rects, color));
 ---
 >   CheckError(SDL_FillSurfaceRects(dst, rects.data(), rects.size(), color));
-3135c3295
+3212c3366
 <   SDL::BlitSurface(m_resource, src, srcrect, dstrect);
 ---
 >   SDL::BlitSurface(src, srcrect, m_resource, dstrect);
-3137a3298,3364
+3214a3369,3435
 > /**
 >  * Performs a fast blit from the source surface to the destination surface
 >  * with clipping.
@@ -772,52 +800,52 @@
 >  *
 >  * @sa Surface.BlitSurface
 >  */
-3143c3370
+3220c3441
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface(src, srcrect, dst, SDL_Rect{dstpos.x, dstpos.y});
-3172c3399
+3249c3470
 <   CheckError(SDL_BlitSurfaceUnchecked(src, srcrect, dst, dstrect));
 ---
 >   CheckError(SDL_BlitSurfaceUnchecked(src, &srcrect, dst, &dstrect));
-3179c3406
+3256c3477
 <   SDL::BlitSurfaceUnchecked(m_resource, src, srcrect, dstrect);
 ---
 >   SDL::BlitSurfaceUnchecked(src, srcrect, m_resource, dstrect);
-3217c3444
+3294c3515
 <   SDL::BlitSurfaceScaled(m_resource, src, srcrect, dstrect, scaleMode);
 ---
 >   SDL::BlitSurfaceScaled(src, srcrect, m_resource, dstrect, scaleMode);
-3249c3476
+3326c3547
 <     SDL_BlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode));
 ---
 >     SDL_BlitSurfaceUncheckedScaled(src, &srcrect, dst, &dstrect, scaleMode));
-3257c3484
+3334c3555
 <   SDL::BlitSurfaceUncheckedScaled(m_resource, src, srcrect, dstrect, scaleMode);
 ---
 >   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
-3291,3294d3517
+3368,3371d3588
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-3300c3523
+3377c3594
 <   SDL::StretchSurface(m_resource, src, srcrect, dstrect, scaleMode);
 ---
 >   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
-3340c3563
+3417c3634
 <   SDL::BlitSurfaceTiled(m_resource, src, srcrect, dstrect);
 ---
 >   SDL::BlitSurfaceTiled(src, srcrect, m_resource, dstrect);
-3388c3611
+3465c3682
 <     m_resource, src, srcrect, scale, scaleMode, dstrect);
 ---
 >     src, srcrect, scale, scaleMode, m_resource, dstrect);
-3466,3468d3688
+3543,3545d3759
 <  * @param scale the scale used to transform the corner of `srcrect` into the
 <  *              corner of `dstrect`, or 0.0f for an unscaled blit.
 <  * @param scaleMode scale algorithm to be used.
-3491c3711,3720
+3568c3782,3791
 <   static_assert(false, "Not implemented");
 ---
 >   BlitSurface9Grid(src,
@@ -830,43 +858,83 @@
 >                    SDL_SCALEMODE_NEAREST,
 >                    dst,
 >                    dstrect);
-3504,3505c3733
+3581,3582c3804
 <   SDL::BlitSurface9Grid(m_resource,
 <                         src,
 ---
 >   SDL::BlitSurface9Grid(src,
-3512a3741
+3589a3812
 >                         m_resource,
-3578,3581c3807
+3655,3658c3878
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
 ---
 >  * @param c the color components of the pixel in the range 0-255.
-3592c3818
+3669c3889
 <   return SDL_MapSurfaceRGBA(surface, c);
 ---
 >   return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
-3610,3611c3836
+3687,3688c3907
 <  * @param x the horizontal coordinate, 0 <= x < width.
 <  * @param y the vertical coordinate, 0 <= y < height.
 ---
 >  * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-3633c3858
+3710c3929
 <   CheckError(SDL_ReadSurfacePixel(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixel(surface, p.x, p.y, r, g, b, a));
-3652,3653c3877
+3723,3732c3942,3943
+<  * @param x the horizontal coordinate, 0 <= x < width.
+<  * @param y the vertical coordinate, 0 <= y < height.
+<  * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+<  * ignore this channel.
+<  * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+<  *          ignore this channel.
+<  * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+<  *          ignore this channel.
+<  * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+<  *          ignore this channel.
+---
+>  * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+>  * @returns color on success.
+3741c3952,3954
+<   static_assert(false, "Not implemented");
+---
+>   Color c;
+>   ReadSurfacePixel(surface, p, &c.r, &c.g, &c.b, &c.a);
+>   return c;
+3765,3766c3978
 <  * @param x the horizontal coordinate, 0 <= x < width.
 <  * @param y the vertical coordinate, 0 <= y < height.
 ---
 >  * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-3675c3899
+3788c4000
 <   CheckError(SDL_ReadSurfacePixelFloat(surface, p, r, g, b, a));
 ---
 >   CheckError(SDL_ReadSurfacePixelFloat(surface, p.x, p.y, r, g, b, a));
-3697,3702c3921,3922
+3798,3807c4010,4011
+<  * @param x the horizontal coordinate, 0 <= x < width.
+<  * @param y the vertical coordinate, 0 <= y < height.
+<  * @param r a pointer filled in with the red channel, normally in the range
+<  *          0-1, or nullptr to ignore this channel.
+<  * @param g a pointer filled in with the green channel, normally in the range
+<  *          0-1, or nullptr to ignore this channel.
+<  * @param b a pointer filled in with the blue channel, normally in the range
+<  *          0-1, or nullptr to ignore this channel.
+<  * @param a a pointer filled in with the alpha channel, normally in the range
+<  *          0-1, or nullptr to ignore this channel.
+---
+>  * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+>  * @returns color on success.
+3817c4021,4023
+<   static_assert(false, "Not implemented");
+---
+>   FColor c;
+>   ReadSurfacePixelFloat(surface, p, &c.r, &c.g, &c.b, &c.a);
+>   return c;
+3844,3849c4050,4051
 <  * @param x the horizontal coordinate, 0 <= x < width.
 <  * @param y the vertical coordinate, 0 <= y < height.
 <  * @param r the red channel value, 0-255.
@@ -876,11 +944,11 @@
 ---
 >  * @param p the coordinates, 0 <= x < width, 0 <= y < height.
 >  * @param c the color channels value, 0-255.
-3713c3933
+3860c4062
 <   CheckError(SDL_WriteSurfacePixel(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3728,3733c3948,3949
+3875,3880c4077,4078
 <  * @param x the horizontal coordinate, 0 <= x < width.
 <  * @param y the vertical coordinate, 0 <= y < height.
 <  * @param r the red channel value, normally in the range 0-1.
@@ -890,7 +958,55 @@
 ---
 >  * @param p the coordinates, 0 <= x < width, 0 <= y < height.
 >  * @param c the color channels values, normally in the range 0-1.
-3744c3960
+3891c4089
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
+3898a4097,4099
+> /**
+>  * Get the width in pixels.
+>  */
+3901c4102
+<   static_assert(false, "Not implemented");
+---
+>   return surface.value->w;
+3908a4110,4112
+> /**
+>  * Get the height in pixels.
+>  */
+3911c4115
+<   static_assert(false, "Not implemented");
+---
+>   return surface.value->h;
+3918a4123,4125
+> /**
+>  * Get the size in pixels.
+>  */
+3921c4128
+<   static_assert(false, "Not implemented");
+---
+>   return Point(surface.value->w, surface.value->h);
+3928a4136,4138
+> /**
+>  * Get pitch in bytes.
+>  */
+3931c4141
+<   static_assert(false, "Not implemented");
+---
+>   return surface.value->pitch;
+3938a4149,4151
+> /**
+>  * Get the pixel format.
+>  */
+3941c4154
+<   static_assert(false, "Not implemented");
+---
+>   return surface.value->format;
+3948a4162,4164
+> /**
+>  * Get the pixels.
+>  */
+3951c4167
+<   static_assert(false, "Not implemented");
+---
+>   return surface.value->pixels;
