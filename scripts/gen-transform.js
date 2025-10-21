@@ -3734,7 +3734,7 @@ const transform = {
           immutable: true,
           hints: { mayFail: true },
         },
-        "PixelFormat.operator const PixelFormatDetails &": {
+        "PixelFormat::operator const PixelFormatDetails &": {
           kind: "function",
           type: "",
           parameters: [],
@@ -6458,83 +6458,6 @@ const transform = {
                 }
               ]
             },
-            "Blit9Grid": {
-              kind: "function",
-              name: "Blit9Grid",
-              type: "void",
-              parameters: [
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "int",
-                  name: "left_width"
-                },
-                {
-                  type: "int",
-                  name: "right_width"
-                },
-                {
-                  type: "int",
-                  name: "top_height"
-                },
-                {
-                  type: "int",
-                  name: "bottom_height"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "dstrect"
-                }
-              ]
-            },
-            "SDL_BlitSurface9Grid": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "int",
-                  name: "left_width"
-                },
-                {
-                  type: "int",
-                  name: "right_width"
-                },
-                {
-                  type: "int",
-                  name: "top_height"
-                },
-                {
-                  type: "int",
-                  name: "bottom_height"
-                },
-                {
-                  type: "float",
-                  name: "scale"
-                },
-                {
-                  type: "SDL_ScaleMode",
-                  name: "scaleMode"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "dstrect"
-                }
-              ]
-            },
           }
         },
         "SDL_LoadBMP_IO": {
@@ -6749,6 +6672,48 @@ const transform = {
             name: "dstrect"
           }]
         },
+        "Surface::SDL_BlitSurface9Grid": {
+          parameters: [{
+          },
+          {
+            type: "SurfaceParam",
+            name: "src"
+          },
+          {
+            type: "OptionalRef<const RectRaw>",
+            name: "srcrect"
+          },
+          {
+            type: "int",
+            name: "left_width"
+          },
+          {
+            type: "int",
+            name: "right_width"
+          },
+          {
+            type: "int",
+            name: "top_height"
+          },
+          {
+            type: "int",
+            name: "bottom_height"
+          },
+          {
+            type: "OptionalRef<const RectRaw>",
+            name: "dstrect"
+          },
+          {
+            type: "float",
+            name: "scale",
+            default: "1",
+          },
+          {
+            type: "SDL_ScaleMode",
+            name: "scaleMode",
+            default: "SCALEMODE_NEAREST",
+          }]
+        },
         "SDL_BlitSurface9Grid": {
           parameters: [{
             type: "SurfaceParam",
@@ -6775,56 +6740,22 @@ const transform = {
             name: "bottom_height"
           },
           {
+            type: "SurfaceParam",
+            name: "dst"
+          },
+          {
+            type: "OptionalRef<const RectRaw>",
+            name: "dstrect"
+          },
+          {
             type: "float",
-            name: "scale"
+            name: "scale",
+            default: "1",
           },
           {
             type: "SDL_ScaleMode",
-            name: "scaleMode"
-          },
-          {
-            type: "SurfaceParam",
-            name: "dst"
-          },
-          {
-            type: "OptionalRef<const RectRaw>",
-            name: "dstrect"
-          }]
-        },
-        "BlitSurface9Grid": {
-          kind: "function",
-          type: "void",
-          parameters: [{
-            type: "SurfaceParam",
-            name: "src"
-          },
-          {
-            type: "OptionalRef<const RectRaw>",
-            name: "srcrect"
-          },
-          {
-            type: "int",
-            name: "left_width"
-          },
-          {
-            type: "int",
-            name: "right_width"
-          },
-          {
-            type: "int",
-            name: "top_height"
-          },
-          {
-            type: "int",
-            name: "bottom_height"
-          },
-          {
-            type: "SurfaceParam",
-            name: "dst"
-          },
-          {
-            type: "OptionalRef<const RectRaw>",
-            name: "dstrect"
+            name: "scaleMode",
+            default: "SCALEMODE_NEAREST",
           }]
         },
         "SDL_MapSurfaceRGB": {

@@ -1689,7 +1689,7 @@
 >   SDL_RectToFRect(&rect, &frect);
 >   return frect;
 949c2041
-< constexpr Rect::operator SDL_FRect() const : RectRaw(SDL::RectToFRect()) {}
+< constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(); }
 ---
 > constexpr Rect::operator SDL_FRect() const { return RectToFRect(*this); }
 972c2064

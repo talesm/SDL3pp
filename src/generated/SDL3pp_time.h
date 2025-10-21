@@ -381,7 +381,7 @@ inline Time DateTimeToTime(const DateTimeRaw& dt)
   return CheckError(SDL_DateTimeToTime(dt));
 }
 
-inline DateTime::operator Time() const : DateTimeRaw(SDL::DateTimeToTime()) {}
+inline DateTime::operator Time() const { return SDL::DateTimeToTime(); }
 
 inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
 {

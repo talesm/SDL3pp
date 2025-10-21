@@ -879,14 +879,14 @@
 <   return CheckError(SDL_GetPixelFormatDetails(format));
 ---
 >   return *CheckError(SDL_GetPixelFormatDetails(format));
-2570d2764
+2575d2769
 <  * @param ncolors the number of entries to modify.
-2582c2776,2777
+2587c2781,2782
 <   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2650a2846,2882
+2655a2851,2887
 > /**
 >  * Map an RGBA quadruple to a pixel value for a given pixel format.
 >  *
@@ -924,30 +924,30 @@
 >  * @sa MapRGB
 >  * @sa Surface.MapRGBA
 >  */
-2658c2890
+2663c2895
 <   static_assert(false, "Not implemented");
 ---
 >   return SDL_MapRGBA(&format, palette, r, g, b, a);
-2680a2913
+2685a2918
 >  * @param c the color components of the pixel in the range 0-255.
-2682,2685d2914
+2687,2690d2919
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
-2702c2931
+2707c2936
 <   return SDL_MapRGBA(&format, c, palette);
 ---
 >   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
-2708c2937
-<   static_assert(false, "Not implemented");
----
->   return MapColor(format, *this, palette);
 2713c2942
 <   static_assert(false, "Not implemented");
 ---
+>   return MapColor(format, *this, palette);
+2718c2947
+<   static_assert(false, "Not implemented");
+---
 >   return MapColor(GetDetails(), c, palette);
-2792a3022,3048
+2797a3027,3053
 > /**
 >  * Get RGBA values from a pixel in the specified format.
 >  *
@@ -975,17 +975,17 @@
 >  * @sa MapRGB
 >  * @sa MapRGBA
 >  */
-2797c3053,3055
+2802c3058,3060
 <   static_assert(false, "Not implemented");
 ---
 >   Color c;
 >   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
 >   return c;
-2804c3062
+2809c3067
 <   static_assert(false, "Not implemented");
 ---
 >   return GetColor(pixel, format, palette);
-2809c3067
+2814c3072
 <   static_assert(false, "Not implemented");
 ---
 >   return GetColor(pixel, GetDetails(), palette);

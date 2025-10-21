@@ -681,7 +681,7 @@ public:
   const PixelFormatDetails& GetDetails() const;
 
   /// Same as GetDetails()
-  operator const PixelFormatDetails&() const { return GetDetails(); }
+  operator const PixelFormatDetails&() const;
 
   Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
 
@@ -2540,6 +2540,11 @@ inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
 inline const PixelFormatDetails& PixelFormat::GetDetails() const
 {
   return SDL::GetPixelFormatDetails(m_format);
+}
+
+inline PixelFormat::operator const PixelFormatDetails&() const
+{
+  return GetDetails();
 }
 
 /**

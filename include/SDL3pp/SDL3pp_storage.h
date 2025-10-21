@@ -549,6 +549,27 @@ public:
   std::string ReadFile(StringParam path);
 
   /**
+   * Synchronously read a file from a storage container into a client-provided
+   * buffer.
+   *
+   * The value of `length` must match the length of the file exactly; call
+   * Storage.GetFileSize() to get this value. This behavior may be relaxed
+   * in a future release.
+   *
+   * @param path the relative path of the file to read.
+   * @returns the content if the file was read or empty string on failure; call
+   *          GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Storage.GetFileSize
+   * @sa Storage.Ready
+   * @sa Storage.WriteFile
+   */
+  template<class T>
+  std::vector<T> ReadFileAs(StringParam path);
+
+  /**
    * Synchronously write a file from client memory into a storage container.
    *
    * @param path the relative path of the file to write.
@@ -758,27 +779,6 @@ public:
   OwnArray<char*> GlobDirectory(StringParam path,
                                 StringParam pattern,
                                 GlobFlags flags);
-
-  /**
-   * Synchronously read a file from a storage container into a client-provided
-   * buffer.
-   *
-   * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed
-   * in a future release.
-   *
-   * @param path the relative path of the file to read.
-   * @returns the content if the file was read or empty string on failure; call
-   *          GetError() for more information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Storage.GetFileSize
-   * @sa Storage.Ready
-   * @sa Storage.WriteFile
-   */
-  template<class T>
-  std::vector<T> ReadFileAs(StringParam path);
 };
 
 /// Semi-safe reference for Storage.

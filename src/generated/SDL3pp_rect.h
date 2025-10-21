@@ -946,7 +946,7 @@ constexpr Rect RectToFRect(const RectRaw& rect)
   return SDL_RectToFRect(rect);
 }
 
-constexpr Rect::operator SDL_FRect() const : RectRaw(SDL::RectToFRect()) {}
+constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(); }
 
 /**
  * Determine whether a point resides inside a rectangle.

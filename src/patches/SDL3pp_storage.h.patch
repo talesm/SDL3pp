@@ -87,30 +87,7 @@
 551,552d539
 <    * @param destination a client-provided buffer to read the file into.
 <    * @param length the length of the destination buffer.
-569,571c556
-<    * @param length the length of the source buffer.
-<    * @returns true if the file was written or false on failure; call
-<    *          GetError() for more information.
----
->    * @throws Error on failure.
-641,642c626
-<    * @param callback a function that is called for each entry in the directory.
-<    * @param userdata a pointer that is passed to `callback`.
----
->    * @returns all the directory contents.
-670d653
-<    * @param userdata a pointer that is passed to `callback`.
-721,723c704,705
-<    * @param info a pointer filled in with information about the path, or nullptr
-<    * to check for the existence of a file.
-<    * @throws Error on failure.
----
->    * @returns the info on success or false if the file doesn't exist, or another
->    *          failure; call GetError() for more information.
-768,769d749
-<    * @param count on return, will be set to the number of items in the returned
-<    *              array. Can be nullptr.
-781a762,779
+563a551,568
 >   /**
 >    * Synchronously read a file from a storage container into a client-provided
 >    * buffer.
@@ -129,6 +106,29 @@
 >    * @sa Storage.Ready
 >    * @sa Storage.WriteFile
 >    */
+572,574c577
+<    * @param length the length of the source buffer.
+<    * @returns true if the file was written or false on failure; call
+<    *          GetError() for more information.
+---
+>    * @throws Error on failure.
+644,645c647
+<    * @param callback a function that is called for each entry in the directory.
+<    * @param userdata a pointer that is passed to `callback`.
+---
+>    * @returns all the directory contents.
+673d674
+<    * @param userdata a pointer that is passed to `callback`.
+724,726c725,726
+<    * @param info a pointer filled in with information about the path, or nullptr
+<    * to check for the existence of a file.
+<    * @throws Error on failure.
+---
+>    * @returns the info on success or false if the file doesn't exist, or another
+>    *          failure; call GetError() for more information.
+771,772d770
+<    * @param count on return, will be set to the number of items in the returned
+<    *              array. Can be nullptr.
 969,970c967
 <  * @param length a pointer to be filled with the file's length.
 <  * @returns true if the file could be queried or false on failure; call

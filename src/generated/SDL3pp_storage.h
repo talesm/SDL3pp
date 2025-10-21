@@ -561,6 +561,9 @@ public:
    */
   std::string ReadFile(StringParam path);
 
+  template<class T>
+  std::vector<T> ReadFileAs(StringParam path);
+
   /**
    * Synchronously write a file from client memory into a storage container.
    *
@@ -778,9 +781,6 @@ public:
   OwnArray<char*> GlobDirectory(StringParam path,
                                 StringParam pattern,
                                 GlobFlags flags);
-
-  template<class T>
-  std::vector<T> ReadFileAs(StringParam path);
 };
 
 /// Semi-safe reference for Storage.

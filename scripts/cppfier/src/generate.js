@@ -212,7 +212,7 @@ function generateFile(targetFile, config) {
     const paramStr = selfStrPrefix + generateCallParameters(entry.parameters, paramReplacements);
     const internalCallStr = `${delegatedTo}(${paramStr})`;
     const callStr = wrapFailCheck(internalCallStr);
-    if (!entry.type && !entry.name.startsWith("operator")) {
+    if (!entry.type && !entry.name.includes("operator")) {
       const superStr = hint?.super ?? hint?.self ?? "T";
       return `\n${prefix}  : ${superStr}(${callStr})\n${prefix}{}`;
     }

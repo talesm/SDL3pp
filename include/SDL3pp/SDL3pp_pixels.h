@@ -703,7 +703,7 @@ public:
   const PixelFormatDetails& GetDetails() const;
 
   /// Same as GetDetails()
-  operator const PixelFormatDetails&() const { return GetDetails(); }
+  operator const PixelFormatDetails&() const;
 
   /**
    * Map an RGBA quadruple to a pixel value for a given pixel format.
@@ -2735,6 +2735,11 @@ inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
 inline const PixelFormatDetails& PixelFormat::GetDetails() const
 {
   return SDL::GetPixelFormatDetails(m_format);
+}
+
+inline PixelFormat::operator const PixelFormatDetails&() const
+{
+  return GetDetails();
 }
 
 /**

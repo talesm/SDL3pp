@@ -1571,59 +1571,10 @@ public:
    *                      `srcrect`.
    * @param dstrect the Rect structure representing the target rectangle in
    *                the destination surface, or nullptr to fill the entire
-   * surface.
-   * @throws Error on failure.
-   *
-   * @threadsafety Only one thread should be using the `src` and `dst` surfaces
-   *               at any given time.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.Blit
-   */
-  void Blit9Grid(SurfaceParam src,
-                 OptionalRef<const RectRaw> srcrect,
-                 int left_width,
-                 int right_width,
-                 int top_height,
-                 int bottom_height,
-                 OptionalRef<const RectRaw> dstrect)
-  {
-    Blit9Grid(src,
-              srcrect,
-              left_width,
-              right_width,
-              top_height,
-              bottom_height,
-              0.0,
-              SDL_SCALEMODE_NEAREST,
-              dstrect);
-  }
-
-  /**
-   * Perform a scaled blit using the 9-grid algorithm to a destination surface,
-   * which may be of a different format.
-   *
-   * The pixels in the source surface are split into a 3x3 grid, using the
-   * different corner sizes for each corner, and the sides and center making up
-   * the remaining pixels. The corners are then scaled using `scale` and fit
-   * into the corners of the destination rectangle. The sides and center are
-   * then stretched into place to cover the remaining destination rectangle.
-   *
-   * @param src the SDL_Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be used
-   *                for the 9-grid, or nullptr to use the entire surface.
-   * @param left_width the width, in pixels, of the left corners in `srcrect`.
-   * @param right_width the width, in pixels, of the right corners in `srcrect`.
-   * @param top_height the height, in pixels, of the top corners in `srcrect`.
-   * @param bottom_height the height, in pixels, of the bottom corners in
-   *                      `srcrect`.
+   *                surface.
    * @param scale the scale used to transform the corner of `srcrect` into the
    *              corner of `dstrect`, or 0.0f for an unscaled blit.
    * @param scaleMode scale algorithm to be used.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, or nullptr to fill the entire
-   * surface.
    * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -1639,9 +1590,9 @@ public:
                  int right_width,
                  int top_height,
                  int bottom_height,
-                 float scale,
-                 SDL_ScaleMode scaleMode,
-                 OptionalRef<const RectRaw> dstrect);
+                 OptionalRef<const RectRaw> dstrect,
+                 float scale = 1,
+                 SDL_ScaleMode scaleMode = SCALEMODE_NEAREST);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -3700,13 +3651,13 @@ inline void Surface::BlitTiledWithScale(SurfaceParam src,
  * @param top_height the height, in pixels, of the top corners in `srcrect`.
  * @param bottom_height the height, in pixels, of the bottom corners in
  *                      `srcrect`.
- * @param scale the scale used to transform the corner of `srcrect` into the
- *              corner of `dstrect`, or 0.0f for an unscaled blit.
- * @param scaleMode scale algorithm to be used.
  * @param dst the Surface structure that is the blit target.
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface, or nullptr to fill the entire
- * surface.
+ *                surface.
+ * @param scale the scale used to transform the corner of `srcrect` into the
+ *              corner of `dstrect`, or 0.0f for an unscaled blit.
+ * @param scaleMode scale algorithm to be used.
  * @throws Error on failure.
  *
  * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -3722,10 +3673,10 @@ inline void BlitSurface9Grid(SurfaceParam src,
                              int right_width,
                              int top_height,
                              int bottom_height,
-                             float scale,
-                             SDL_ScaleMode scaleMode,
                              SurfaceParam dst,
-                             OptionalRef<const RectRaw> dstrect)
+                             OptionalRef<const RectRaw> dstrect,
+                             float scale = 1,
+                             SDL_ScaleMode scaleMode = SCALEMODE_NEAREST)
 {
   CheckError(SDL_BlitSurface9Grid(src,
                                   srcrect,
@@ -3739,67 +3690,15 @@ inline void BlitSurface9Grid(SurfaceParam src,
                                   dstrect));
 }
 
-/**
- * Perform a scaled blit using the 9-grid algorithm to a destination surface,
- * which may be of a different format.
- *
- * The pixels in the source surface are split into a 3x3 grid, using the
- * different corner sizes for each corner, and the sides and center making up
- * the remaining pixels. The corners are then scaled using `scale` and fit
- * into the corners of the destination rectangle. The sides and center are
- * then stretched into place to cover the remaining destination rectangle.
- *
- * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be used
- *                for the 9-grid, or nullptr to use the entire surface.
- * @param left_width the width, in pixels, of the left corners in `srcrect`.
- * @param right_width the width, in pixels, of the right corners in `srcrect`.
- * @param top_height the height, in pixels, of the top corners in `srcrect`.
- * @param bottom_height the height, in pixels, of the bottom corners in
- *                      `srcrect`.
- * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, or nullptr to fill the entire
- * surface.
- * @throws Error on failure.
- *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Surface.Blit
- */
-inline void BlitSurface9Grid(SurfaceParam src,
-                             OptionalRef<const RectRaw> srcrect,
-                             int left_width,
-                             int right_width,
-                             int top_height,
-                             int bottom_height,
-                             SurfaceParam dst,
-                             OptionalRef<const RectRaw> dstrect)
-{
-  BlitSurface9Grid(src,
-                   srcrect,
-                   left_width,
-                   right_width,
-                   top_height,
-                   bottom_height,
-                   0.0,
-                   SDL_SCALEMODE_NEAREST,
-                   dst,
-                   dstrect);
-}
-
 inline void Surface::Blit9Grid(SurfaceParam src,
                                OptionalRef<const RectRaw> srcrect,
                                int left_width,
                                int right_width,
                                int top_height,
                                int bottom_height,
+                               OptionalRef<const RectRaw> dstrect,
                                float scale,
-                               SDL_ScaleMode scaleMode,
-                               OptionalRef<const RectRaw> dstrect)
+                               SDL_ScaleMode scaleMode)
 {
   SDL::BlitSurface9Grid(src,
                         srcrect,
@@ -3807,10 +3706,10 @@ inline void Surface::Blit9Grid(SurfaceParam src,
                         right_width,
                         top_height,
                         bottom_height,
-                        scale,
-                        scaleMode,
                         m_resource,
-                        dstrect);
+                        dstrect,
+                        scale,
+                        scaleMode);
 }
 
 /**

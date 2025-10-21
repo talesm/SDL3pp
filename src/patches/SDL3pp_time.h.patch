@@ -45,7 +45,7 @@
 >   CheckError(SDL_DateTimeToTime(&dt, &t));
 >   return Time::FromNS(t);
 384c393
-< inline DateTime::operator Time() const : DateTimeRaw(SDL::DateTimeToTime()) {}
+< inline DateTime::operator Time() const { return SDL::DateTimeToTime(); }
 ---
 > inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
 388c397

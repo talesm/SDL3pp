@@ -1303,35 +1303,49 @@ function expandTypes(sourceEntries, file, context) {
   function detectMethods(sourceType, targetType, paramType, constParamType, blockedNames) {
     /** @type {Dict<ApiEntryTransform|QuickTransform>} */
     const foundEntries = {};
+    const prefix = `${targetType}::`;
+    let lastKey = "__begin";
+    /** @type {Map<string, string[]>} */
+    const placeAfter = new Map();
     for (let [sourceName, transformEntry] of Object.entries(transformMap)) {
-      if (blockedNames.has(sourceName) || foundEntries[sourceName]) continue;
+      const hasPrefix = sourceName.startsWith(prefix);
+      if (hasPrefix) sourceName = sourceName.slice(prefix.length);
+      if (blockedNames.has(sourceName)) continue;
       const sourceEntry = sourceEntries[sourceName];
+      if (sourceEntry && !hasPrefix) lastKey = sourceName;
       /** @type {ApiEntryTransform[]} */
       if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
-      if (!transformEntry.parameters?.length) continue;
       const parameters = transformEntry.parameters;
-      if (!parameters) continue;
-      if (parameters.length === 0) {
-        blockedNames.add(sourceName);
-        continue;
+      let param0 = parameters?.[0];
+      if (!param0?.type) {
+        if (!hasPrefix) continue;
+        param0 = { type: transformEntry.immutable ? constParamType : paramType, name: param0?.name };
       }
-      const param0 = parameters[0];
-      if (!param0.type) continue;
       const m = paramMatchesVariants(param0, [paramType, `${paramType} *`], [constParamType, `${constParamType} &`]);
-      if (!m) {
+      if (!m && !hasPrefix) {
         blockedNames.add(sourceName);
         continue;
       }
       if (sourceEntry) {
+        if (hasPrefix) {
+          delete transformMap[prefix + sourceName];
+          blockedNames.add(sourceName);
+        }
         foundEntries[sourceName] = {
           ...deepClone(transformEntry),
           immutable: m === 'immutable' || transformEntry.immutable,
           name: transformEntry.hints?.methodName ?? undefined,
         };
         delete transformEntry.immutable;
+      } else if (hasPrefix) {
+        if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(sourceName);
+        else placeAfter.set(lastKey, [sourceName]);
       } else if (!sourceName.includes("::")) {
         const methodName = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
         if (blockedNames.has(methodName)) continue;
+        if (transformEntry.after) lastKey = transformEntry.after;
+        if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(methodName);
+        else placeAfter.set(lastKey, [methodName]);
         const name = `${targetType}::${methodName}`;
         insertOrLink(transformMap, {
           ...deepClone(transformEntry),
@@ -1379,7 +1393,17 @@ function expandTypes(sourceEntries, file, context) {
       }
       if (!transformEntry) transformMap[sourceName] = {};
     }
-    return foundEntries;
+    /** @type {Dict<ApiEntryTransform|QuickTransform>} */
+    const orderedEntries = {};
+    placeAfter.get("__begin")?.forEach(sKey => orderedEntries[sKey] = "plc");
+    Object.keys(sourceEntries).forEach(key => {
+      const value = foundEntries[key];
+      if (value) orderedEntries[key] = value;
+      placeAfter.get(key)?.forEach(sKey => {
+        if (!orderedEntries[sKey]) orderedEntries[sKey] = "plc";
+      });
+    });
+    return orderedEntries;
   }
 
   /**
