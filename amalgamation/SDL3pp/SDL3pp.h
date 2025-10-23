@@ -77179,7 +77179,6 @@ struct TextureConstParam
 
   /// Constructs from const TextureRaw
   constexpr TextureConstParam(const TextureRaw value)
-
     : value(value)
   {
   }
@@ -77545,87 +77544,6 @@ public:
   const char* GetName() const;
 
   /**
-   * Get the output size in pixels of a rendering context.
-   *
-   * This returns the true output size in pixels, ignoring any render targets or
-   * logical size and presentation.
-   *
-   * @returns Point on success.
-   * @throws Error on failure.
-   */
-  Point GetOutputSize() const
-  {
-    Point p;
-    GetOutputSize(&p.x, &p.y);
-    return p;
-  }
-
-  /**
-   * Get the output size in pixels of a rendering context.
-   *
-   * This returns the true output size in pixels, ignoring any render targets or
-   * logical size and presentation.
-   *
-   * For the output size of the current rendering target, with logical size
-   * adjustments, use Renderer.GetCurrentOutputSize() instead.
-   *
-   * @param w a pointer filled in with the width in pixels.
-   * @param h a pointer filled in with the height in pixels.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetCurrentOutputSize
-   */
-  void GetOutputSize(int* w, int* h) const;
-
-  /**
-   * Get the current output size in pixels of a rendering context.
-   *
-   * If a rendering target is active, this will return the size of the rendering
-   * target in pixels, otherwise if a logical size is set, it will return the
-   * logical size, otherwise it will return the value of GetOutputSize().
-   *
-   * @returns the size on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetOutputSize()
-   */
-  Point GetCurrentOutputSize() const
-  {
-    Point p;
-    GetCurrentOutputSize(&p.x, &p.y);
-    return p;
-  }
-
-  /**
-   * Get the current output size in pixels of a rendering context.
-   *
-   * If a rendering target is active, this will return the size of the rendering
-   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
-   *
-   * Rendering target or not, the output will be adjusted by the current logical
-   * presentation state, dictated by Renderer.SetLogicalPresentation().
-   *
-   * @param w a pointer filled in with the current width.
-   * @param h a pointer filled in with the current height.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetOutputSize
-   */
-  void GetCurrentOutputSize(int* w, int* h) const;
-
-  /**
    * Get the properties associated with a renderer.
    *
    * The following read-only properties are provided by SDL:
@@ -77711,20 +77629,247 @@ public:
   PropertiesRef GetProperties() const;
 
   /**
-   * Set target texture back to window
+   * Get the output size in pixels of a rendering context.
    *
-   * This is equivalent to SetTarget(nullptr)
+   * This returns the true output size in pixels, ignoring any render targets or
+   * logical size and presentation.
    *
+   * For the output size of the current rendering target, with logical size
+   * adjustments, use Renderer.GetCurrentOutputSize() instead.
+   *
+   * @param w a pointer filled in with the width in pixels.
+   * @param h a pointer filled in with the height in pixels.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SetTarget(nullptr)
-   * @sa GetTarget()
+   * @sa Renderer.GetCurrentOutputSize
    */
-  void ResetTarget() { SetTarget(nullptr); }
+  void GetOutputSize(int* w, int* h) const;
+
+  /**
+   * Get the output size in pixels of a rendering context.
+   *
+   * This returns the true output size in pixels, ignoring any render targets or
+   * logical size and presentation.
+   *
+   * For the output size of the current rendering target, with logical size
+   * adjustments, use Renderer.GetCurrentOutputSize() instead.
+   *
+   * @returns Point on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetCurrentOutputSize
+   */
+  Point GetOutputSize() const;
+
+  /**
+   * Get the current output size in pixels of a rendering context.
+   *
+   * If a rendering target is active, this will return the size of the rendering
+   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+   *
+   * Rendering target or not, the output will be adjusted by the current logical
+   * presentation state, dictated by Renderer.SetLogicalPresentation().
+   *
+   * @param w a pointer filled in with the current width.
+   * @param h a pointer filled in with the current height.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetOutputSize
+   */
+  void GetCurrentOutputSize(int* w, int* h) const;
+
+  /**
+   * Get the current output size in pixels of a rendering context.
+   *
+   * If a rendering target is active, this will return the size of the rendering
+   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+   *
+   * Rendering target or not, the output will be adjusted by the current logical
+   * presentation state, dictated by Renderer.SetLogicalPresentation().
+   *
+   * @returns the size on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetOutputSize
+   */
+  Point GetCurrentOutputSize() const;
+
+  /**
+   * Create a texture for a rendering context.
+   *
+   * The contents of a texture when first created are not defined.
+   *
+   * @param format one of the enumerated values in PixelFormat.
+   * @param access one of the enumerated values in TextureAccess.
+   * @param size the width and height of the texture in pixels.
+   * @returns the created texture or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   * @sa Texture.Destroy
+   * @sa Texture.GetSize
+   * @sa Texture.Update
+   */
+  Texture CreateTexture(PixelFormat format,
+                        TextureAccess access,
+                        const PointRaw& size);
+
+  /**
+   * Create a texture from an existing surface.
+   *
+   * The surface is not modified or freed by this function.
+   *
+   * The TextureAccess hint for the created texture is
+   * `TEXTUREACCESS_STATIC`.
+   *
+   * The pixel format of the created texture may be different from the pixel
+   * format of the surface, and can be queried using the
+   * prop::Texture.FORMAT_NUMBER property.
+   *
+   * @param surface the Surface structure containing pixel data used to fill
+   *                the texture.
+   * @returns the created texture or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   * @sa Texture.Destroy
+   */
+  Texture CreateTextureFromSurface(SurfaceParam surface);
+
+  /**
+   * Create a texture for a rendering context with the specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
+   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
+   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
+   *   YUV textures.
+   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
+   *   PixelFormat, defaults to the best RGBA format for the renderer
+   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
+   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
+   *   pixels, required
+   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
+   *   pixels, required
+   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
+   *   point textures, this defines the value of 100% diffuse white, with higher
+   *   values being displayed in the High Dynamic Range headroom. This defaults
+   *   to 100 for HDR10 textures and 1.0 for floating point textures.
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
+   *   point textures, this defines the maximum dynamic range used by the
+   *   content, in terms of the SDR white point. This would be equivalent to
+   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
+   *   If this is defined, any values outside the range supported by the display
+   *   will be scaled into the available HDR headroom, otherwise they are
+   *   clipped.
+   *
+   * With the direct3d11 renderer:
+   *
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the direct3d12 renderer:
+   *
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the metal renderer:
+   *
+   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
+   *   associated with the texture, if you want to create a texture from an
+   *   existing pixel buffer.
+   *
+   * With the opengl renderer:
+   *
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the opengles2 renderer:
+   *
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
+   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
+   *   associated with the U plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
+   *   associated with the V plane of a YUV texture, if you want to wrap an
+   *   existing texture.
+   *
+   * With the vulkan renderer:
+   *
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
+   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
+   *   you want to wrap an existing texture.
+   *
+   * @param props the properties to use.
+   * @returns the created texture or nullptr on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Create
+   * @sa Texture.Texture
+   * @sa Texture.Texture
+   * @sa Texture.Destroy
+   * @sa Texture.GetSize
+   * @sa Texture.Update
+   */
+  Texture CreateTextureWithProperties(PropertiesParam props);
 
   /**
    * Set a texture as the current rendering target.
@@ -77750,6 +77895,22 @@ public:
    * @sa Renderer.GetTarget
    */
   void SetTarget(TextureParam texture);
+
+  /**
+   * Set target texture back to window
+   *
+   * This is equivalent to SetTarget(nullptr)
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetTarget(nullptr)
+   * @sa GetTarget()
+   */
+  void ResetTarget();
 
   /**
    * Get the current render target.
@@ -77827,28 +77988,6 @@ public:
    * This function gets the width and height of the logical rendering output, or
    * the output size in pixels if a logical resolution is not enabled.
    *
-   * @param size a Point to be filled with the width and height.
-   * @param mode the presentation mode used.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetLogicalPresentation
-   */
-  void GetLogicalPresentation(PointRaw* size, RendererLogicalPresentation* mode)
-  {
-    if (!size) return GetLogicalPresentation(nullptr, nullptr, mode);
-    return GetLogicalPresentation(&size->x, &size->y, mode);
-  }
-
-  /**
-   * Get device independent resolution and presentation mode for rendering.
-   *
-   * This function gets the width and height of the logical rendering output, or
-   * the output size in pixels if a logical resolution is not enabled.
-   *
    * Each render target has its own logical presentation state. This function
    * gets the state for the current render target.
    *
@@ -77866,6 +78005,25 @@ public:
   void GetLogicalPresentation(int* w,
                               int* h,
                               RendererLogicalPresentation* mode) const;
+
+  /**
+   * Get device independent resolution and presentation mode for rendering.
+   *
+   * This function gets the width and height of the logical rendering output, or
+   * the output size in pixels if a logical resolution is not enabled.
+   *
+   * @param size a Point to be filled with the width and height.
+   * @param mode the presentation mode used.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetLogicalPresentation
+   */
+  void GetLogicalPresentation(PointRaw* size,
+                              RendererLogicalPresentation* mode);
 
   /**
    * Get the final presentation rectangle for rendering.
@@ -77971,23 +78129,6 @@ public:
   void ConvertEventToRenderCoordinates(Event* event) const;
 
   /**
-   * Reset the drawing area for rendering to the entire target
-   *
-   * This is equivalent to `SetViewport(std::nullopt)`
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetViewport()
-   * @sa SetViewport()
-   * @sa ViewportSet()
-   */
-  void ResetViewport() { SetViewport(std::nullopt); }
-
-  /**
    * Set the drawing area for rendering on the current target.
    *
    * Drawing will clip to this area (separately from any clipping done with
@@ -78011,6 +78152,23 @@ public:
    * @sa Renderer.IsViewportSet
    */
   void SetViewport(OptionalRef<const RectRaw> rect);
+
+  /**
+   * Reset the drawing area for rendering to the entire target
+   *
+   * This is equivalent to `SetViewport(std::nullopt)`
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetViewport()
+   * @sa SetViewport()
+   * @sa ViewportSet()
+   */
+  void ResetViewport();
 
   /**
    * Get the drawing area for the current target.
@@ -78049,7 +78207,7 @@ public:
    * @sa Renderer.GetViewport
    * @sa Renderer.SetViewport
    */
-  bool IsViewportSet() const;
+  bool ViewportSet() const;
 
   /**
    * Get the safe area for rendering within the current viewport.
@@ -78071,23 +78229,6 @@ public:
   Rect GetSafeArea() const;
 
   /**
-   * Reset the clip rectangle for rendering to the entire render target
-   *
-   * This is equivalent to `SetClipRect(std::nullopt)`
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetClipRect()
-   * @sa SetClipRect()
-   * @sa ClipEnabled()
-   */
-  void ResetClipRect() { SetClipRect({}); }
-
-  /**
    * Set the clip rectangle for rendering on the specified target.
    *
    * Each render target has its own clip rectangle. This function sets the
@@ -78106,6 +78247,23 @@ public:
    * @sa Renderer.IsClipEnabled
    */
   void SetClipRect(OptionalRef<const RectRaw> rect);
+
+  /**
+   * Reset the clip rectangle for rendering to the entire render target
+   *
+   * This is equivalent to `SetClipRect(std::nullopt)`
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetClipRect()
+   * @sa SetClipRect()
+   * @sa ClipEnabled()
+   */
+  void ResetClipRect();
 
   /**
    * Get the clip rectangle for the current target.
@@ -78175,28 +78333,6 @@ public:
    * Each render target has its own scale. This function gets the scale for the
    * current render target.
    *
-   * @returns the scaling factors on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetScale
-   */
-  FPoint GetScale() const
-  {
-    FPoint p;
-    GetScale(&p.x, &p.y);
-    return p;
-  }
-
-  /**
-   * Get the drawing scale for the current target.
-   *
-   * Each render target has its own scale. This function gets the scale for the
-   * current render target.
-   *
    * @param scaleX a pointer filled in with the horizontal scaling factor.
    * @param scaleY a pointer filled in with the vertical scaling factor.
    * @throws Error on failure.
@@ -78208,6 +78344,23 @@ public:
    * @sa Renderer.SetScale
    */
   void GetScale(float* scaleX, float* scaleY) const;
+
+  /**
+   * Get the drawing scale for the current target.
+   *
+   * Each render target has its own scale. This function gets the scale for the
+   * current render target.
+   *
+   * @returns the scaling factors on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetScale
+   */
+  FPoint GetScale() const;
 
   /**
    * Set the color used for drawing operations.
@@ -78248,26 +78401,6 @@ public:
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @returns the color channel values used to draw on the rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetDrawColor(SDL_FColor*)
-   * @sa SetDrawColor()
-   */
-  Color GetDrawColor() const
-  {
-    Color c;
-    GetDrawColor(&c.r, &c.g, &c.b, &c.a);
-    return c;
-  }
-
-  /**
-   * Get the color used for drawing operations (Rect, Line and Clear).
-   *
    * @param r a pointer filled in with the red value used to draw on the
    *          rendering target.
    * @param g a pointer filled in with the green value used to draw on the
@@ -78290,7 +78423,7 @@ public:
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @returns the color on success.
+   * @returns the color channel values used to draw on the rendering target.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -78300,12 +78433,7 @@ public:
    * @sa GetDrawColor(SDL_FColor*)
    * @sa SetDrawColor()
    */
-  FColor GetDrawColorFloat() const
-  {
-    FColor c;
-    GetDrawColorFloat(&c.r, &c.g, &c.b, &c.a);
-    return c;
-  }
+  Color GetDrawColor() const;
 
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
@@ -78328,6 +78456,21 @@ public:
    * @sa Renderer.GetDrawColor
    */
   void GetDrawColorFloat(float* r, float* g, float* b, float* a) const;
+
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @returns the color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetDrawColor(SDL_FColor*)
+   * @sa SetDrawColor()
+   */
+  FColor GetDrawColorFloat() const;
 
   /**
    * Set the color scale used for render operations.
@@ -78848,6 +78991,75 @@ public:
   void Flush();
 
   /**
+   * Get the CAMetalLayer associated with the given Metal renderer.
+   *
+   * This function returns `void *`, so SDL doesn't have to include Metal's
+   * headers, but it can be safely cast to a `CAMetalLayer *`.
+   *
+   * @returns a `CAMetalLayer *` on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetRenderMetalCommandEncoder
+   */
+  void* GetRenderMetalLayer();
+
+  /**
+   * Get the Metal command encoder for the current frame.
+   *
+   * This function returns `void *`, so SDL doesn't have to include Metal's
+   * headers, but it can be safely cast to an `id<MTLRenderCommandEncoder>`.
+   *
+   * This will return nullptr if Metal refuses to give SDL a drawable to render
+   * to, which might happen if the window is hidden/minimized/offscreen. This
+   * doesn't apply to command encoders for render targets, just the window's
+   * backbuffer. Check your return values!
+   *
+   * @returns an `id<MTLRenderCommandEncoder>` on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetRenderMetalLayer
+   */
+  void* GetRenderMetalCommandEncoder();
+
+  /**
+   * Add a set of synchronization semaphores for the current frame.
+   *
+   * The Vulkan renderer will wait for `wait_semaphore` before submitting
+   * rendering commands and signal `signal_semaphore` after rendering commands
+   * are complete for this frame.
+   *
+   * This should be called each frame that you want semaphore synchronization.
+   * The Vulkan renderer may have multiple frames in flight on the GPU, so you
+   * should have multiple semaphores that are used for synchronization. Querying
+   * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
+   * maximum number of semaphores you'll need.
+   *
+   * @param wait_stage_mask the VkPipelineStageFlags for the wait.
+   * @param wait_semaphore a VkSempahore to wait on before rendering the current
+   *                       frame, or 0 if not needed.
+   * @param signal_semaphore a VkSempahore that SDL will signal when rendering
+   *                         for the current frame is complete, or 0 if not
+   *                         needed.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is **NOT** safe to call this function from two threads at
+   *               once.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
+                                 Sint64 wait_semaphore,
+                                 Sint64 signal_semaphore);
+
+  /**
    * Toggle VSync of the given renderer.
    *
    * When a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.
@@ -78952,238 +79164,6 @@ public:
   void RenderDebugTextFormat(const FPointRaw& p,
                              std::string_view fmt,
                              ARGS... args);
-
-  /**
-   * Create a texture for a rendering context.
-   *
-   * The contents of a texture when first created are not defined.
-   *
-   * @param format one of the enumerated values in PixelFormat.
-   * @param access one of the enumerated values in TextureAccess.
-   * @param size the width and height of the texture in pixels.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa Texture.Destroy
-   * @sa Texture.GetSize
-   * @sa Texture.Update
-   */
-  Texture CreateTexture(PixelFormat format,
-                        TextureAccess access,
-                        const PointRaw& size);
-
-  /**
-   * Create a texture from an existing surface.
-   *
-   * The surface is not modified or freed by this function.
-   *
-   * The TextureAccess hint for the created texture is
-   * `TEXTUREACCESS_STATIC`.
-   *
-   * The pixel format of the created texture may be different from the pixel
-   * format of the surface, and can be queried using the
-   * prop::Texture.FORMAT_NUMBER property.
-   *
-   * @param surface the Surface structure containing pixel data used to fill
-   *                the texture.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa Texture.Destroy
-   */
-  Texture CreateTextureFromSurface(SurfaceParam surface);
-
-  /**
-   * Create a texture for a rendering context with the specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
-   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
-   *   YUV textures.
-   * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
-   *   PixelFormat, defaults to the best RGBA format for the renderer
-   * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
-   *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
-   *   pixels, required
-   * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the value of 100% diffuse white, with higher
-   *   values being displayed in the High Dynamic Range headroom. This defaults
-   *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the maximum dynamic range used by the
-   *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
-   *   If this is defined, any values outside the range supported by the display
-   *   will be scaled into the available HDR headroom, otherwise they are
-   *   clipped.
-   *
-   * With the direct3d11 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the direct3d12 renderer:
-   *
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the metal renderer:
-   *
-   * - `prop::Texture.CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef
-   *   associated with the texture, if you want to create a texture from an
-   *   existing pixel buffer.
-   *
-   * With the opengl renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the opengles2 renderer:
-   *
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture, if you want to wrap an existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `prop::Texture.CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   *
-   * With the vulkan renderer:
-   *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
-   *
-   * @param props the properties to use.
-   * @returns the created texture or nullptr on failure; call GetError() for
-   *          more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Create
-   * @sa Texture.Texture
-   * @sa Texture.Texture
-   * @sa Texture.Destroy
-   * @sa Texture.GetSize
-   * @sa Texture.Update
-   */
-  Texture CreateTextureWithProperties(PropertiesParam props);
-
-  /**
-   * Get the CAMetalLayer associated with the given Metal renderer.
-   *
-   * This function returns `void *`, so SDL doesn't have to include Metal's
-   * headers, but it can be safely cast to a `CAMetalLayer *`.
-   *
-   * @returns a `CAMetalLayer *` on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetRenderMetalCommandEncoder
-   */
-  void* GetRenderMetalLayer();
-
-  /**
-   * Get the Metal command encoder for the current frame.
-   *
-   * This function returns `void *`, so SDL doesn't have to include Metal's
-   * headers, but it can be safely cast to an `id<MTLRenderCommandEncoder>`.
-   *
-   * This will return nullptr if Metal refuses to give SDL a drawable to render
-   * to, which might happen if the window is hidden/minimized/offscreen. This
-   * doesn't apply to command encoders for render targets, just the window's
-   * backbuffer. Check your return values!
-   *
-   * @returns an `id<MTLRenderCommandEncoder>` on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetRenderMetalLayer
-   */
-  void* GetRenderMetalCommandEncoder();
-
-  /**
-   * Add a set of synchronization semaphores for the current frame.
-   *
-   * The Vulkan renderer will wait for `wait_semaphore` before submitting
-   * rendering commands and signal `signal_semaphore` after rendering commands
-   * are complete for this frame.
-   *
-   * This should be called each frame that you want semaphore synchronization.
-   * The Vulkan renderer may have multiple frames in flight on the GPU, so you
-   * should have multiple semaphores that are used for synchronization. Querying
-   * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
-   * maximum number of semaphores you'll need.
-   *
-   * @param wait_stage_mask the VkPipelineStageFlags for the wait.
-   * @param wait_semaphore a VkSempahore to wait on before rendering the current
-   *                       frame, or 0 if not needed.
-   * @param signal_semaphore a VkSempahore that SDL will signal when rendering
-   *                         for the current frame is complete, or 0 if not
-   *                         needed.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is **NOT** safe to call this function from two threads at
-   *               once.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
-                                 Sint64 wait_semaphore,
-                                 Sint64 signal_semaphore);
 };
 
 /// Semi-safe reference for Renderer.
@@ -80684,9 +80664,40 @@ inline void GetRenderOutputSize(RendererParam renderer, int* w, int* h)
   CheckError(SDL_GetRenderOutputSize(renderer, w, h));
 }
 
+/**
+ * Get the output size in pixels of a rendering context.
+ *
+ * This returns the true output size in pixels, ignoring any render targets or
+ * logical size and presentation.
+ *
+ * For the output size of the current rendering target, with logical size
+ * adjustments, use Renderer.GetCurrentOutputSize() instead.
+ *
+ * @param renderer the rendering context.
+ * @returns the size on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetCurrentOutputSize
+ */
+inline Point GetRenderOutputSize(RendererParam renderer)
+{
+  Point p;
+  GetRenderOutputSize(renderer, &p.x, &p.y);
+  return p;
+}
+
 inline void Renderer::GetOutputSize(int* w, int* h) const
 {
   SDL::GetRenderOutputSize(m_resource, w, h);
+}
+
+inline Point Renderer::GetOutputSize() const
+{
+  return SDL::GetRenderOutputSize(m_resource);
 }
 
 /**
@@ -80714,9 +80725,40 @@ inline void GetCurrentRenderOutputSize(RendererParam renderer, int* w, int* h)
   CheckError(SDL_GetCurrentRenderOutputSize(renderer, w, h));
 }
 
+/**
+ * Get the current output size in pixels of a rendering context.
+ *
+ * If a rendering target is active, this will return the size of the rendering
+ * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+ *
+ * Rendering target or not, the output will be adjusted by the current logical
+ * presentation state, dictated by Renderer.SetLogicalPresentation().
+ *
+ * @param renderer the rendering context.
+ * @returns the size on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetOutputSize
+ */
+inline Point GetCurrentRenderOutputSize(RendererParam renderer)
+{
+  Point p;
+  GetCurrentRenderOutputSize(renderer, &p.x, &p.y);
+  return p;
+}
+
 inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
 {
   SDL::GetCurrentRenderOutputSize(m_resource, w, h);
+}
+
+inline Point Renderer::GetCurrentOutputSize() const
+{
+  return SDL::GetCurrentRenderOutputSize(m_resource);
 }
 
 /**
@@ -82049,6 +82091,28 @@ inline void Renderer::SetTarget(TextureParam texture)
 }
 
 /**
+ * Set target texture back to window
+ *
+ * This is equivalent to SetTarget(nullptr)
+ *
+ * @param renderer the rendering context.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetTarget(nullptr)
+ * @sa GetTarget()
+ */
+inline void ResetRenderTarget(RendererParam renderer)
+{
+  SetRenderTarget(renderer, nullptr);
+}
+
+inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
+
+/**
  * Get the current render target.
  *
  * The default render target is the window for which the renderer was created,
@@ -82168,12 +82232,48 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
   CheckError(SDL_GetRenderLogicalPresentation(renderer, w, h, mode));
 }
 
+/**
+ * Get device independent resolution and presentation mode for rendering.
+ *
+ * This function gets the width and height of the logical rendering output, or
+ * the output size in pixels if a logical resolution is not enabled.
+ *
+ * Each render target has its own logical presentation state. This function
+ * gets the state for the current render target.
+ *
+ * @param renderer the rendering context.
+ * @param size a Point to be filled with the width and height.
+ * @param mode the presentation mode used.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.SetLogicalPresentation
+ */
+inline void GetRenderLogicalPresentation(RendererParam renderer,
+                                         PointRaw* size,
+                                         RendererLogicalPresentation* mode)
+{
+  if (size) {
+    return GetRenderLogicalPresentation(renderer, &size->x, &size->y, mode);
+  }
+  return GetRenderLogicalPresentation(renderer, nullptr, nullptr, mode);
+}
+
 inline void Renderer::GetLogicalPresentation(
   int* w,
   int* h,
   RendererLogicalPresentation* mode) const
 {
   SDL::GetRenderLogicalPresentation(m_resource, w, h, mode);
+}
+
+inline void Renderer::GetLogicalPresentation(PointRaw* size,
+                                             RendererLogicalPresentation* mode)
+{
+  SDL::GetRenderLogicalPresentation(m_resource, size, mode);
 }
 
 /**
@@ -82349,7 +82449,7 @@ inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.GetViewport
- * @sa Renderer.IsViewportSet
+ * @sa Renderer.ViewportSet
  */
 inline void SetRenderViewport(RendererParam renderer,
                               OptionalRef<const RectRaw> rect)
@@ -82361,6 +82461,29 @@ inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
 {
   SDL::SetRenderViewport(m_resource, rect);
 }
+
+/**
+ * Reset the drawing area for rendering to the entire target
+ *
+ * This is equivalent to `SetViewport(std::nullopt)`
+ *
+ * @param renderer the rendering context.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetViewport()
+ * @sa SetViewport()
+ * @sa ViewportSet()
+ */
+inline void ResetRenderViewport(RendererParam renderer)
+{
+  SetRenderViewport(renderer, std::nullopt);
+}
+
+inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
 
 /**
  * Get the drawing area for the current target.
@@ -82416,7 +82539,7 @@ inline bool RenderViewportSet(RendererParam renderer)
   return SDL_RenderViewportSet(renderer);
 }
 
-inline bool Renderer::IsViewportSet() const
+inline bool Renderer::ViewportSet() const
 {
   return SDL::RenderViewportSet(m_resource);
 }
@@ -82479,6 +82602,29 @@ inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   SDL::SetRenderClipRect(m_resource, rect);
 }
+
+/**
+ * Reset the clip rectangle for rendering to the entire render target
+ *
+ * This is equivalent to `SetClipRect(std::nullopt)`
+ *
+ * @param renderer the rendering context.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetClipRect()
+ * @sa SetClipRect()
+ * @sa ClipEnabled()
+ */
+inline void ResetRenderClipRect(RendererParam renderer)
+{
+  SetRenderClipRect(renderer, std::nullopt);
+}
+
+inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
 
 /**
  * Get the clip rectangle for the current target.
@@ -82593,9 +82739,36 @@ inline void GetRenderScale(RendererParam renderer, float* scaleX, float* scaleY)
   CheckError(SDL_GetRenderScale(renderer, scaleX, scaleY));
 }
 
+/**
+ * Get the drawing scale for the current target.
+ *
+ * Each render target has its own scale. This function gets the scale for the
+ * current render target.
+ *
+ * @returns the scaling factors on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.SetScale
+ */
+inline FPoint GetRenderScale(RendererParam renderer)
+{
+  FPoint p;
+  GetRenderScale(renderer, &p.x, &p.y);
+  return p;
+}
+
 inline void Renderer::GetScale(float* scaleX, float* scaleY) const
 {
   SDL::GetRenderScale(m_resource, scaleX, scaleY);
+}
+
+inline FPoint Renderer::GetScale() const
+{
+  return SDL::GetRenderScale(m_resource);
 }
 
 /**
@@ -82682,9 +82855,35 @@ inline void GetRenderDrawColor(RendererParam renderer,
   CheckError(SDL_GetRenderDrawColor(renderer, r, g, b, a));
 }
 
+/**
+ * Get the color used for drawing operations (Rect, Line and Clear).
+ *
+ * @param renderer the rendering context.
+ * @returns the color channel values used to draw on the rendering target.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetDrawColorFloat
+ * @sa Renderer.SetDrawColor
+ */
+inline Color GetRenderDrawColor(RendererParam renderer)
+{
+  Color c;
+  GetRenderDrawColor(renderer, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
 inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
   SDL::GetRenderDrawColor(m_resource, r, g, b, a);
+}
+
+inline Color Renderer::GetDrawColor() const
+{
+  return SDL::GetRenderDrawColor(m_resource);
 }
 
 /**
@@ -82717,12 +82916,38 @@ inline void GetRenderDrawColorFloat(RendererParam renderer,
   CheckError(SDL_GetRenderDrawColorFloat(renderer, r, g, b, a));
 }
 
+/**
+ * Get the color used for drawing operations (Rect, Line and Clear).
+ *
+ * @param renderer the rendering context.
+ * @returns the color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.SetDrawColorFloat
+ * @sa Renderer.GetDrawColor
+ */
+inline FColor GetRenderDrawColorFloat(RendererParam renderer)
+{
+  FColor c;
+  GetRenderDrawColorFloat(renderer, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
 inline void Renderer::GetDrawColorFloat(float* r,
                                         float* g,
                                         float* b,
                                         float* a) const
 {
   SDL::GetRenderDrawColorFloat(m_resource, r, g, b, a);
+}
+
+inline FColor Renderer::GetDrawColorFloat() const
+{
+  return SDL::GetRenderDrawColorFloat(m_resource);
 }
 
 /**

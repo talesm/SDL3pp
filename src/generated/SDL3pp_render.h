@@ -449,55 +449,6 @@ public:
    */
   const char* GetName() const;
 
-  Point GetOutputSize() const { static_assert(false, "Not implemented"); }
-
-  /**
-   * Get the output size in pixels of a rendering context.
-   *
-   * This returns the true output size in pixels, ignoring any render targets or
-   * logical size and presentation.
-   *
-   * For the output size of the current rendering target, with logical size
-   * adjustments, use Renderer.GetCurrentOutputSize() instead.
-   *
-   * @param w a pointer filled in with the width in pixels.
-   * @param h a pointer filled in with the height in pixels.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetCurrentOutputSize
-   */
-  void GetOutputSize(int* w, int* h) const;
-
-  Point GetCurrentOutputSize() const
-  {
-    static_assert(false, "Not implemented");
-  }
-
-  /**
-   * Get the current output size in pixels of a rendering context.
-   *
-   * If a rendering target is active, this will return the size of the rendering
-   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
-   *
-   * Rendering target or not, the output will be adjusted by the current logical
-   * presentation state, dictated by Renderer.SetLogicalPresentation().
-   *
-   * @param w a pointer filled in with the current width.
-   * @param h a pointer filled in with the current height.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetOutputSize
-   */
-  void GetCurrentOutputSize(int* w, int* h) const;
-
   /**
    * Get the properties associated with a renderer.
    *
@@ -583,1174 +534,91 @@ public:
    */
   PropertiesRef GetProperties() const;
 
-  void ResetTarget() { static_assert(false, "Not implemented"); }
-
   /**
-   * Set a texture as the current rendering target.
+   * Get the output size in pixels of a rendering context.
    *
-   * The default render target is the window for which the renderer was created.
-   * To stop rendering to a texture and render to the window again, call this
-   * function with a nullptr `texture`.
+   * This returns the true output size in pixels, ignoring any render targets or
+   * logical size and presentation.
    *
-   * Viewport, cliprect, scale, and logical presentation are unique to each
-   * render target. Get and set functions for these states apply to the current
-   * render target set by this function, and those states persist on each target
-   * when the current render target changes.
+   * For the output size of the current rendering target, with logical size
+   * adjustments, use Renderer.GetCurrentOutputSize() instead.
    *
-   * @param texture the targeted texture, which must be created with the
-   *                `TEXTUREACCESS_TARGET` flag, or nullptr to render to the
-   *                window instead of a texture.
+   * @param w a pointer filled in with the width in pixels.
+   * @param h a pointer filled in with the height in pixels.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.GetTarget
+   * @sa Renderer.GetCurrentOutputSize
    */
-  void SetTarget(TextureParam texture);
+  void GetOutputSize(int* w, int* h) const;
 
   /**
-   * Get the current render target.
+   * Get the output size in pixels of a rendering context.
    *
-   * The default render target is the window for which the renderer was created,
-   * and is reported a nullptr here.
+   * This returns the true output size in pixels, ignoring any render targets or
+   * logical size and presentation.
    *
-   * @returns the current render target or nullptr for the default render
-   * target.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetTarget
-   */
-  Texture GetTarget() const;
-
-  /**
-   * Set a device-independent resolution and presentation mode for rendering.
-   *
-   * This function sets the width and height of the logical rendering output.
-   * The renderer will act as if the current render target is always the
-   * requested dimensions, scaling to the actual resolution as necessary.
-   *
-   * This can be useful for games that expect a fixed size, but would like to
-   * scale the output to whatever is available, regardless of how a user resizes
-   * a window, or if the display is high DPI.
-   *
-   * Logical presentation can be used with both render target textures and the
-   * renderer's window; the state is unique to each render target, and this
-   * function sets the state for the current render target. It might be useful
-   * to draw to a texture that matches the window dimensions with logical
-   * presentation enabled, and then draw that texture across the entire window
-   * with logical presentation disabled. Be careful not to render both with
-   * logical presentation enabled, however, as this could produce
-   * double-letterboxing, etc.
-   *
-   * You can disable logical coordinates by setting the mode to
-   * LOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel
-   * resolution of the render target; it is safe to toggle logical presentation
-   * during the rendering of a frame: perhaps most of the rendering is done to
-   * specific dimensions but to make fonts look sharp, the app turns off logical
-   * presentation while drawing text, for example.
-   *
-   * For the renderer's window, letterboxing is drawn into the framebuffer if
-   * logical presentation is enabled during Renderer.Present; be sure to
-   * reenable it before presenting if you were toggling it, otherwise the
-   * letterbox areas might have artifacts from previous frames (or artifacts
-   * from external overlays, etc). Letterboxing is never drawn into texture
-   * render targets; be sure to call Renderer.RenderClear() before drawing into
-   * the texture so the letterboxing areas are cleared, if appropriate.
-   *
-   * You can convert coordinates in an event into rendering coordinates using
-   * Renderer.ConvertEventToRenderCoordinates().
-   *
-   * @param w the width of the logical resolution.
-   * @param h the height of the logical resolution.
-   * @param mode the presentation mode used.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.ConvertEventToRenderCoordinates
-   * @sa Renderer.GetLogicalPresentation
-   * @sa Renderer.GetLogicalPresentationRect
-   */
-  void SetLogicalPresentation(const PointRaw& size,
-                              RendererLogicalPresentation mode);
-
-  void GetLogicalPresentation(PointRaw* size, RendererLogicalPresentation* mode)
-  {
-    static_assert(false, "Not implemented");
-  }
-
-  /**
-   * Get device independent resolution and presentation mode for rendering.
-   *
-   * This function gets the width and height of the logical rendering output, or
-   * the output size in pixels if a logical resolution is not enabled.
-   *
-   * Each render target has its own logical presentation state. This function
-   * gets the state for the current render target.
-   *
-   * @param w an int to be filled with the width.
-   * @param h an int to be filled with the height.
-   * @param mode the presentation mode used.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetLogicalPresentation
-   */
-  void GetLogicalPresentation(int* w,
-                              int* h,
-                              RendererLogicalPresentation* mode) const;
-
-  /**
-   * Get the final presentation rectangle for rendering.
-   *
-   * This function returns the calculated rectangle used for logical
-   * presentation, based on the presentation mode and output size. If logical
-   * presentation is disabled, it will fill the rectangle with the output size,
-   * in pixels.
-   *
-   * Each render target has its own logical presentation state. This function
-   * gets the rectangle for the current render target.
-   *
-   * @param rect a pointer filled in with the final presentation rectangle, may
-   *             be nullptr.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetLogicalPresentation
-   */
-  FRect GetLogicalPresentationRect() const;
-
-  /**
-   * Get a point in render coordinates when given a point in window coordinates.
-   *
-   * This takes into account several states:
-   *
-   * - The window dimensions.
-   * - The logical presentation settings (Renderer.SetLogicalPresentation)
-   * - The scale (Renderer.SetScale)
-   * - The viewport (Renderer.SetViewport)
-   *
-   * @param window_x the x coordinate in window coordinates.
-   * @param window_y the y coordinate in window coordinates.
-   * @param x a pointer filled with the x coordinate in render coordinates.
-   * @param y a pointer filled with the y coordinate in render coordinates.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetLogicalPresentation
-   * @sa Renderer.SetScale
-   */
-  FPoint RenderCoordinatesFromWindow(const FPointRaw& window_coord) const;
-
-  /**
-   * Get a point in window coordinates when given a point in render coordinates.
-   *
-   * This takes into account several states:
-   *
-   * - The window dimensions.
-   * - The logical presentation settings (Renderer.SetLogicalPresentation)
-   * - The scale (Renderer.SetScale)
-   * - The viewport (Renderer.SetViewport)
-   *
-   * @param x the x coordinate in render coordinates.
-   * @param y the y coordinate in render coordinates.
-   * @param window_x a pointer filled with the x coordinate in window
-   *                 coordinates.
-   * @param window_y a pointer filled with the y coordinate in window
-   *                 coordinates.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetLogicalPresentation
-   * @sa Renderer.SetScale
-   * @sa Renderer.SetViewport
-   */
-  FPoint RenderCoordinatesToWindow(const FPointRaw& coord) const;
-
-  /**
-   * Convert the coordinates in an event to render coordinates.
-   *
-   * This takes into account several states:
-   *
-   * - The window dimensions.
-   * - The logical presentation settings (Renderer.SetLogicalPresentation)
-   * - The scale (Renderer.SetScale)
-   * - The viewport (Renderer.SetViewport)
-   *
-   * Various event types are converted with this function: mouse, touch, pen,
-   * etc.
-   *
-   * Touch coordinates are converted from normalized coordinates in the window
-   * to non-normalized rendering coordinates.
-   *
-   * Relative mouse coordinates (xrel and yrel event fields) are _also_
-   * converted. Applications that do not want these fields converted should use
-   * Renderer.RenderCoordinatesFromWindow() on the specific event fields instead
-   * of converting the entire event structure.
-   *
-   * Once converted, coordinates may be outside the rendering area.
-   *
-   * @param event the event to modify.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderCoordinatesFromWindow
-   */
-  void ConvertEventToRenderCoordinates(Event* event) const;
-
-  void ResetViewport() { static_assert(false, "Not implemented"); }
-
-  /**
-   * Set the drawing area for rendering on the current target.
-   *
-   * Drawing will clip to this area (separately from any clipping done with
-   * Renderer.SetClipRect), and the top left of the area will become coordinate
-   * (0, 0) for future drawing commands.
-   *
-   * The area's width and height must be >= 0.
-   *
-   * Each render target has its own viewport. This function sets the viewport
-   * for the current render target.
-   *
-   * @param rect the Rect structure representing the drawing area, or nullptr
-   *             to set the viewport to the entire target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetViewport
-   * @sa Renderer.IsViewportSet
-   */
-  void SetViewport(OptionalRef<const RectRaw> rect);
-
-  /**
-   * Get the drawing area for the current target.
-   *
-   * Each render target has its own viewport. This function gets the viewport
-   * for the current render target.
-   *
-   * @param rect an Rect structure filled in with the current drawing area.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.IsViewportSet
-   * @sa Renderer.SetViewport
-   */
-  Rect GetViewport() const;
-
-  /**
-   * Return whether an explicit rectangle was set as the viewport.
-   *
-   * This is useful if you're saving and restoring the viewport and want to know
-   * whether you should restore a specific rectangle or nullptr.
-   *
-   * Each render target has its own viewport. This function checks the viewport
-   * for the current render target.
-   *
-   * @returns true if the viewport was set to a specific rectangle, or false if
-   *          it was set to nullptr (the entire target).
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetViewport
-   * @sa Renderer.SetViewport
-   */
-  bool IsViewportSet() const;
-
-  /**
-   * Get the safe area for rendering within the current viewport.
-   *
-   * Some devices have portions of the screen which are partially obscured or
-   * not interactive, possibly due to on-screen controls, curved edges, camera
-   * notches, TV overscan, etc. This function provides the area of the current
-   * viewport which is safe to have interactible content. You should continue
-   * rendering into the rest of the render target, but it should not contain
-   * visually important or interactible content.
-   *
-   * @param rect a pointer filled in with the area that is safe for interactive
-   *             content.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Rect GetSafeArea() const;
-
-  void ResetClipRect() { static_assert(false, "Not implemented"); }
-
-  /**
-   * Set the clip rectangle for rendering on the specified target.
-   *
-   * Each render target has its own clip rectangle. This function sets the
-   * cliprect for the current render target.
-   *
-   * @param rect an Rect structure representing the clip area, relative to
-   *             the viewport, or nullptr to disable clipping.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetClipRect
-   * @sa Renderer.IsClipEnabled
-   */
-  void SetClipRect(OptionalRef<const RectRaw> rect);
-
-  /**
-   * Get the clip rectangle for the current target.
-   *
-   * Each render target has its own clip rectangle. This function gets the
-   * cliprect for the current render target.
-   *
-   * @param rect an Rect structure filled in with the current clipping area
-   *             or an empty rectangle if clipping is disabled.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.IsClipEnabled
-   * @sa Renderer.SetClipRect
-   */
-  Rect GetClipRect() const;
-
-  /**
-   * Get whether clipping is enabled on the given render target.
-   *
-   * Each render target has its own clip rectangle. This function checks the
-   * cliprect for the current render target.
-   *
-   * @returns true if clipping is enabled or false if not; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetClipRect
-   * @sa Renderer.SetClipRect
-   */
-  bool IsClipEnabled() const;
-
-  /**
-   * Set the drawing scale for rendering on the current target.
-   *
-   * The drawing coordinates are scaled by the x/y scaling factors before they
-   * are used by the renderer. This allows resolution independent drawing with a
-   * single coordinate system.
-   *
-   * If this results in scaling or subpixel drawing by the rendering backend, it
-   * will be handled using the appropriate quality hints. For best results use
-   * integer scaling factors.
-   *
-   * Each render target has its own scale. This function sets the scale for the
-   * current render target.
-   *
-   * @param scaleX the horizontal scaling factor.
-   * @param scaleY the vertical scaling factor.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetScale
-   */
-  void SetScale(const FPointRaw& scale);
-
-  FPoint GetScale() const { static_assert(false, "Not implemented"); }
-
-  /**
-   * Get the drawing scale for the current target.
-   *
-   * Each render target has its own scale. This function gets the scale for the
-   * current render target.
-   *
-   * @param scaleX a pointer filled in with the horizontal scaling factor.
-   * @param scaleY a pointer filled in with the vertical scaling factor.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetScale
-   */
-  void GetScale(float* scaleX, float* scaleY) const;
-
-  /**
-   * Set the color used for drawing operations.
-   *
-   * Set the color for drawing or filling rectangles, lines, and points, and for
-   * Renderer.RenderClear().
-   *
-   * @param r the red value used to draw on the rendering target.
-   * @param g the green value used to draw on the rendering target.
-   * @param b the blue value used to draw on the rendering target.
-   * @param a the alpha value used to draw on the rendering target; usually
-   *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
-   *          specify how the alpha channel is used.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetDrawColor
-   * @sa Renderer.SetDrawColorFloat
-   */
-  void SetDrawColor(ColorRaw c);
-
-  /**
-   * Set the color used for drawing operations (Rect, Line and Clear).
-   *
-   * Set the color for drawing or filling rectangles, lines, and points, and for
-   * Renderer.RenderClear().
-   *
-   * @param r the red value used to draw on the rendering target.
-   * @param g the green value used to draw on the rendering target.
-   * @param b the blue value used to draw on the rendering target.
-   * @param a the alpha value used to draw on the rendering target. Use
-   *          Renderer.SetDrawBlendMode to specify how the alpha channel is
-   *          used.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetDrawColorFloat
-   * @sa Renderer.SetDrawColor
-   */
-  void SetDrawColorFloat(const FColorRaw& c);
-
-  Color GetDrawColor() const { static_assert(false, "Not implemented"); }
-
-  /**
-   * Get the color used for drawing operations (Rect, Line and Clear).
-   *
-   * @param r a pointer filled in with the red value used to draw on the
-   *          rendering target.
-   * @param g a pointer filled in with the green value used to draw on the
-   *          rendering target.
-   * @param b a pointer filled in with the blue value used to draw on the
-   *          rendering target.
-   * @param a a pointer filled in with the alpha value used to draw on the
-   *          rendering target; usually `ALPHA_OPAQUE` (255).
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetDrawColorFloat
-   * @sa Renderer.SetDrawColor
-   */
-  void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const;
-
-  FColor GetDrawColorFloat() const { static_assert(false, "Not implemented"); }
-
-  /**
-   * Get the color used for drawing operations (Rect, Line and Clear).
-   *
-   * @param r a pointer filled in with the red value used to draw on the
-   *          rendering target.
-   * @param g a pointer filled in with the green value used to draw on the
-   *          rendering target.
-   * @param b a pointer filled in with the blue value used to draw on the
-   *          rendering target.
-   * @param a a pointer filled in with the alpha value used to draw on the
-   *          rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetDrawColorFloat
-   * @sa Renderer.GetDrawColor
-   */
-  void GetDrawColorFloat(float* r, float* g, float* b, float* a) const;
-
-  /**
-   * Set the color scale used for render operations.
-   *
-   * The color scale is an additional scale multiplied into the pixel color
-   * value while rendering. This can be used to adjust the brightness of colors
-   * during HDR rendering, or changing HDR video brightness when playing on an
-   * SDR display.
-   *
-   * The color scale does not affect the alpha channel, only the color
-   * brightness.
-   *
-   * @param scale the color scale value.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetColorScale
-   */
-  void SetColorScale(float scale);
-
-  /**
-   * Get the color scale used for render operations.
-   *
-   * @param scale a pointer filled in with the current color scale value.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetColorScale
-   */
-  float GetColorScale() const;
-
-  /**
-   * Set the blend mode used for drawing operations (Fill and Line).
-   *
-   * If the blend mode is not supported, the closest supported mode is chosen.
-   *
-   * @param blendMode the BlendMode to use for blending.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetDrawBlendMode
-   */
-  void SetDrawBlendMode(BlendMode blendMode);
-
-  /**
-   * Get the blend mode used for drawing operations.
-   *
-   * @param blendMode a pointer filled in with the current BlendMode.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetDrawBlendMode
-   */
-  BlendMode GetDrawBlendMode() const;
-
-  /**
-   * Clear the current rendering target with the drawing color.
-   *
-   * This function clears the entire rendering target, ignoring the viewport and
-   * the clip rectangle. Note, that clearing will also set/fill all pixels of
-   * the rendering target to current renderer draw color, so make sure to invoke
-   * Renderer.SetDrawColor() when needed.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetDrawColor
-   */
-  void RenderClear();
-
-  /**
-   * Draw a point on the current rendering target at subpixel precision.
-   *
-   * @param x the x coordinate of the point.
-   * @param y the y coordinate of the point.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderPoints
-   */
-  void RenderPoint(const FPointRaw& p);
-
-  /**
-   * Draw multiple points on the current rendering target at subpixel precision.
-   *
-   * @param renderer the renderer which should draw multiple points.
-   * @param points the points to draw.
-   * @param count the number of points to draw.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderPoint
-   */
-  void RenderPoints(SpanRef<const FPointRaw> points);
-
-  /**
-   * Draw a line on the current rendering target at subpixel precision.
-   *
-   * @param renderer the renderer which should draw a line.
-   * @param x1 the x coordinate of the start point.
-   * @param y1 the y coordinate of the start point.
-   * @param x2 the x coordinate of the end point.
-   * @param y2 the y coordinate of the end point.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderLines
-   */
-  void RenderLine(const FPointRaw& p1, const FPointRaw& p2);
-
-  /**
-   * Draw a series of connected lines on the current rendering target at
-   * subpixel precision.
-   *
-   * @param renderer the renderer which should draw multiple lines.
-   * @param points the points along the lines.
-   * @param count the number of points, drawing count-1 lines.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderLine
-   */
-  void RenderLines(SpanRef<const FPointRaw> points);
-
-  /**
-   * Draw a rectangle on the current rendering target at subpixel precision.
-   *
-   * @param renderer the renderer which should draw a rectangle.
-   * @param rect a pointer to the destination rectangle, or nullptr to outline
-   * the entire rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderRects
-   */
-  void RenderRect(OptionalRef<const FRectRaw> rect);
-
-  /**
-   * Draw some number of rectangles on the current rendering target at subpixel
-   * precision.
-   *
-   * @param renderer the renderer which should draw multiple rectangles.
-   * @param rects a pointer to an array of destination rectangles.
-   * @param count the number of rectangles.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderRect
-   */
-  void RenderRects(SpanRef<const FRectRaw> rects);
-
-  /**
-   * Fill a rectangle on the current rendering target with the drawing color at
-   * subpixel precision.
-   *
-   * @param renderer the renderer which should fill a rectangle.
-   * @param rect a pointer to the destination rectangle, or nullptr for the
-   * entire rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderFillRects
-   */
-  void RenderFillRect(OptionalRef<const FRectRaw> rect);
-
-  /**
-   * Fill some number of rectangles on the current rendering target with the
-   * drawing color at subpixel precision.
-   *
-   * @param renderer the renderer which should fill multiple rectangles.
-   * @param rects a pointer to an array of destination rectangles.
-   * @param count the number of rectangles.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderFillRect
-   */
-  void RenderFillRects(SpanRef<const FRectRaw> rects);
-
-  /**
-   * Copy a portion of the texture to the current rendering target at subpixel
-   * precision.
-   *
-   * @param renderer the renderer which should copy parts of a texture.
-   * @param texture the source texture.
-   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
-   *                texture.
-   * @param dstrect a pointer to the destination rectangle, or nullptr for the
-   *                entire rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderTextureRotated
-   * @sa Renderer.RenderTextureTiled
-   */
-  void RenderTexture(TextureParam texture,
-                     OptionalRef<const FRectRaw> srcrect,
-                     OptionalRef<const FRectRaw> dstrect);
-
-  /**
-   * Copy a portion of the source texture to the current rendering target, with
-   * rotation and flipping, at subpixel precision.
-   *
-   * @param renderer the renderer which should copy parts of a texture.
-   * @param texture the source texture.
-   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
-   *                texture.
-   * @param dstrect a pointer to the destination rectangle, or nullptr for the
-   *                entire rendering target.
-   * @param angle an angle in degrees that indicates the rotation that will be
-   *              applied to dstrect, rotating it in a clockwise direction.
-   * @param center a pointer to a point indicating the point around which
-   *               dstrect will be rotated (if nullptr, rotation will be done
-   *               around dstrect.w/2, dstrect.h/2).
-   * @param flip an FlipMode value stating which flipping actions should be
-   *             performed on the texture.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderTexture
-   */
-  void RenderTextureRotated(TextureParam texture,
-                            OptionalRef<const FRectRaw> srcrect,
-                            OptionalRef<const FRectRaw> dstrect,
-                            double angle,
-                            OptionalRef<const FPointRaw> center,
-                            FlipMode flip);
-
-  /**
-   * Copy a portion of the source texture to the current rendering target, with
-   * affine transform, at subpixel precision.
-   *
-   * @param renderer the renderer which should copy parts of a texture.
-   * @param texture the source texture.
-   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
-   *                texture.
-   * @param origin a pointer to a point indicating where the top-left corner of
-   *               srcrect should be mapped to, or nullptr for the rendering
-   *               target's origin.
-   * @param right a pointer to a point indicating where the top-right corner of
-   *              srcrect should be mapped to, or nullptr for the rendering
-   *              target's top-right corner.
-   * @param down a pointer to a point indicating where the bottom-left corner of
-   *             srcrect should be mapped to, or nullptr for the rendering
-   * target's bottom-left corner.
-   * @throws Error on failure.
-   *
-   * @threadsafety You may only call this function from the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderTexture
-   */
-  void RenderTextureAffine(TextureParam texture,
-                           OptionalRef<const FRectRaw> srcrect,
-                           OptionalRef<const FPointRaw> origin,
-                           OptionalRef<const FPointRaw> right,
-                           OptionalRef<const FPointRaw> down);
-
-  /**
-   * Tile a portion of the texture to the current rendering target at subpixel
-   * precision.
-   *
-   * The pixels in `srcrect` will be repeated as many times as needed to
-   * completely fill `dstrect`.
-   *
-   * @param renderer the renderer which should copy parts of a texture.
-   * @param texture the source texture.
-   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
-   *                texture.
-   * @param scale the scale used to transform srcrect into the destination
-   *              rectangle, e.g. a 32x32 texture with a scale of 2 would fill
-   *              64x64 tiles.
-   * @param dstrect a pointer to the destination rectangle, or nullptr for the
-   *                entire rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderTexture
-   */
-  void RenderTextureTiled(TextureParam texture,
-                          OptionalRef<const FRectRaw> srcrect,
-                          float scale,
-                          OptionalRef<const FRectRaw> dstrect);
-
-  /**
-   * Perform a scaled copy using the 9-grid algorithm to the current rendering
-   * target at subpixel precision.
-   *
-   * The pixels in the texture are split into a 3x3 grid, using the different
-   * corner sizes for each corner, and the sides and center making up the
-   * remaining pixels. The corners are then scaled using `scale` and fit into
-   * the corners of the destination rectangle. The sides and center are then
-   * stretched into place to cover the remaining destination rectangle.
-   *
-   * @param renderer the renderer which should copy parts of a texture.
-   * @param texture the source texture.
-   * @param srcrect the Rect structure representing the rectangle to be used
-   *                for the 9-grid, or nullptr to use the entire texture.
-   * @param left_width the width, in pixels, of the left corners in `srcrect`.
-   * @param right_width the width, in pixels, of the right corners in `srcrect`.
-   * @param top_height the height, in pixels, of the top corners in `srcrect`.
-   * @param bottom_height the height, in pixels, of the bottom corners in
-   *                      `srcrect`.
-   * @param scale the scale used to transform the corner of `srcrect` into the
-   *              corner of `dstrect`, or 0.0f for an unscaled copy.
-   * @param dstrect a pointer to the destination rectangle, or nullptr for the
-   *                entire rendering target.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderTexture
-   */
-  void RenderTexture9Grid(TextureParam texture,
-                          OptionalRef<const FRectRaw> srcrect,
-                          float left_width,
-                          float right_width,
-                          float top_height,
-                          float bottom_height,
-                          float scale,
-                          OptionalRef<const FRectRaw> dstrect);
-
-  /**
-   * Render a list of triangles, optionally using a texture and indices into the
-   * vertex array Color and alpha modulation is done per vertex
-   * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+   * For the output size of the current rendering target, with logical size
+   * adjustments, use Renderer.GetCurrentOutputSize() instead.
    *
    * @param renderer the rendering context.
-   * @param texture (optional) The SDL texture to use.
-   * @param vertices vertices.
-   * @param num_vertices number of vertices.
-   * @param indices (optional) An array of integer indices into the 'vertices'
-   *                array, if nullptr all vertices will be rendered in
-   * sequential order.
-   * @param num_indices number of indices.
+   * @param w a pointer filled in with the width in pixels.
+   * @param h a pointer filled in with the height in pixels.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderGeometryRaw
+   * @sa Renderer.GetCurrentOutputSize
    */
-  void RenderGeometry(TextureParam texture,
-                      std::span<const Vertex> vertices,
-                      std::span<const int> indices);
+  Point GetOutputSize() const;
 
   /**
-   * Render a list of triangles, optionally using a texture and indices into the
-   * vertex arrays Color and alpha modulation is done per vertex
-   * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+   * Get the current output size in pixels of a rendering context.
    *
-   * @param texture (optional) The SDL texture to use.
-   * @param xy vertex positions.
-   * @param xy_stride byte size to move from one element to the next element.
-   * @param color vertex colors (as FColor).
-   * @param color_stride byte size to move from one element to the next element.
-   * @param uv vertex normalized texture coordinates.
-   * @param uv_stride byte size to move from one element to the next element.
-   * @param num_vertices number of vertices.
-   * @param indices (optional) An array of indices into the 'vertices' arrays,
-   *                if nullptr all vertices will be rendered in sequential
-   * order.
-   * @param num_indices number of indices.
-   * @param size_indices index size: 1 (byte), 2 (short), 4 (int).
+   * If a rendering target is active, this will return the size of the rendering
+   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+   *
+   * Rendering target or not, the output will be adjusted by the current logical
+   * presentation state, dictated by Renderer.SetLogicalPresentation().
+   *
+   * @param w a pointer filled in with the current width.
+   * @param h a pointer filled in with the current height.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.RenderGeometry
+   * @sa Renderer.GetOutputSize
    */
-  void RenderGeometryRaw(TextureParam texture,
-                         const float* xy,
-                         int xy_stride,
-                         const FColor* color,
-                         int color_stride,
-                         const float* uv,
-                         int uv_stride,
-                         int num_vertices,
-                         const void* indices,
-                         int num_indices,
-                         int size_indices);
+  void GetCurrentOutputSize(int* w, int* h) const;
 
   /**
-   * Read pixels from the current rendering target.
+   * Get the current output size in pixels of a rendering context.
    *
-   * The returned surface contains pixels inside the desired area clipped to the
-   * current viewport, and should be freed with Surface.Destroy().
+   * If a rendering target is active, this will return the size of the rendering
+   * target in pixels, otherwise return the value of Renderer.GetOutputSize().
    *
-   * Note that this returns the actual pixels on the screen, so if you are using
-   * logical presentation you should use Renderer.GetLogicalPresentationRect()
-   * to get the area containing your content.
-   *
-   * **WARNING**: This is a very slow operation, and should not be used
-   * frequently. If you're using this on the main rendering target, it should be
-   * called after rendering and before Renderer.Present().
+   * Rendering target or not, the output will be adjusted by the current logical
+   * presentation state, dictated by Renderer.SetLogicalPresentation().
    *
    * @param renderer the rendering context.
-   * @param rect an Rect structure representing the area to read, which will
-   *             be clipped to the current viewport, or nullptr for the entire
-   *             viewport.
-   * @returns a new Surface on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Surface ReadPixels(OptionalRef<const RectRaw> rect = {}) const;
-
-  /**
-   * Update the screen with any rendering performed since the previous call.
-   *
-   * SDL's rendering functions operate on a backbuffer; that is, calling a
-   * rendering function such as Renderer.RenderLine() does not directly put a
-   * line on the screen, but rather updates the backbuffer. As such, you compose
-   * your entire scene and *present* the composed backbuffer to the screen as a
-   * complete picture.
-   *
-   * Therefore, when using SDL's rendering API, one does all drawing intended
-   * for the frame, and then calls this function once per frame to present the
-   * final drawing to the user.
-   *
-   * The backbuffer should be considered invalidated after each present; do not
-   * assume that previous contents will exist between frames. You are strongly
-   * encouraged to call Renderer.RenderClear() to initialize the backbuffer
-   * before starting each new frame's drawing, even if you plan to overwrite
-   * every pixel.
-   *
-   * Please note, that in case of rendering to a texture - there is **no need**
-   * to call `Renderer.Present` after drawing needed objects to a texture, and
-   * should not be done; you are only required to change back the rendering
-   * target to default via `Renderer.SetTarget(renderer, nullptr)` afterwards,
-   * as textures by themselves do not have a concept of backbuffers. Calling
-   * Renderer.Present while rendering to a texture will still update the screen
-   * with any current drawing that has been done _to the window itself_.
-   *
+   * @param w a pointer filled in with the current width.
+   * @param h a pointer filled in with the current height.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.Renderer
-   * @sa Renderer.RenderClear
-   * @sa Renderer.RenderFillRect
-   * @sa Renderer.RenderFillRects
-   * @sa Renderer.RenderLine
-   * @sa Renderer.RenderLines
-   * @sa Renderer.RenderPoint
-   * @sa Renderer.RenderPoints
-   * @sa Renderer.RenderRect
-   * @sa Renderer.RenderRects
-   * @sa Renderer.SetDrawBlendMode
-   * @sa Renderer.SetDrawColor
+   * @sa Renderer.GetOutputSize
    */
-  void Present();
-
-  /**
-   * Force the rendering context to flush any pending commands and state.
-   *
-   * You do not need to (and in fact, shouldn't) call this function unless you
-   * are planning to call into OpenGL/Direct3D/Metal/whatever directly, in
-   * addition to using an Renderer.
-   *
-   * This is for a very-specific case: if you are using SDL's render API, and
-   * you plan to make OpenGL/D3D/whatever calls in addition to SDL render API
-   * calls. If this applies, you should call this function between calls to
-   * SDL's render API and the low-level API you're using in cooperation.
-   *
-   * In all other cases, you can ignore this function.
-   *
-   * This call makes SDL flush any pending rendering work it was queueing up to
-   * do later in a single batch, and marks any internal cached state as invalid,
-   * so it'll prepare all its state again later, from scratch.
-   *
-   * This means you do not need to save state in your rendering code to protect
-   * the SDL renderer. However, there lots of arbitrary pieces of Direct3D and
-   * OpenGL state that can confuse things; you should use your best judgment and
-   * be prepared to make changes if specific state needs to be protected.
-   *
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Flush();
-
-  /**
-   * Toggle VSync of the given renderer.
-   *
-   * When a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.
-   *
-   * The `vsync` parameter can be 1 to synchronize present with every vertical
-   * refresh, 2 to synchronize present with every second vertical refresh, etc.,
-   * SDL_RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
-   * SDL_RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
-   * every driver, so you should check the return value to see whether the
-   * requested setting is supported.
-   *
-   * @param vsync the vertical refresh sync interval.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetVSync
-   */
-  void SetVSync(int vsync);
-
-  /**
-   * Get VSync of the given renderer.
-   *
-   * @param renderer the renderer to toggle.
-   * @param vsync an int filled with the current vertical refresh sync interval.
-   *              See Renderer.SetVSync() for the meaning of the value.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.SetVSync
-   */
-  int GetVSync() const;
-
-  /**
-   * Draw debug text to an Renderer.
-   *
-   * This function will render a string of text to an Renderer. Note that
-   * this is a convenience function for debugging, with severe limitations, and
-   * not intended to be used for production apps and games.
-   *
-   * Among these limitations:
-   *
-   * - It accepts UTF-8 strings, but will only renders ASCII characters.
-   * - It has a single, tiny size (8x8 pixels). One can use logical presentation
-   *   or scaling to adjust it, but it will be blurry.
-   * - It uses a simple, hardcoded bitmap font. It does not allow different font
-   *   selections and it does not support truetype, for proper scaling.
-   * - It does no word-wrapping and does not treat newline characters as a line
-   *   break. If the text goes out of the window, it's gone.
-   *
-   * For serious text rendering, there are several good options, such as
-   * SDL_ttf, stb_truetype, or other external libraries.
-   *
-   * On first use, this will create an internal texture for rendering glyphs.
-   * This texture will live until the renderer is destroyed.
-   *
-   * The text is drawn in the color specified by Renderer.SetDrawColor().
-   *
-   * @param x the x coordinate where the top-left corner of the text will draw.
-   * @param y the y coordinate where the top-left corner of the text will draw.
-   * @param str the string to render.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderDebugTextFormat
-   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
-   */
-  void RenderDebugText(const FPointRaw& p, StringParam str);
-
-  /**
-   * Draw debug text to an Renderer.
-   *
-   * This function will render a printf()-style format string to a renderer.
-   * Note that this is a convenience function for debugging, with severe
-   * limitations, and is not intended to be used for production apps and games.
-   *
-   * For the full list of limitations and other useful information, see
-   * Renderer.RenderDebugText.
-   *
-   * @param x the x coordinate where the top-left corner of the text will draw.
-   * @param y the y coordinate where the top-left corner of the text will draw.
-   * @param fmt the format string to draw.
-   * @param ... additional parameters matching % tokens in the `fmt` string, if
-   *            any.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.RenderDebugText
-   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
-   */
-  template<class... ARGS>
-  void RenderDebugTextFormat(const FPointRaw& p,
-                             std::string_view fmt,
-                             ARGS... args);
+  Point GetCurrentOutputSize() const;
 
   /**
    * Create a texture for a rendering context.
@@ -1917,6 +785,1131 @@ public:
   Texture CreateTextureWithProperties(PropertiesParam props);
 
   /**
+   * Set a texture as the current rendering target.
+   *
+   * The default render target is the window for which the renderer was created.
+   * To stop rendering to a texture and render to the window again, call this
+   * function with a nullptr `texture`.
+   *
+   * Viewport, cliprect, scale, and logical presentation are unique to each
+   * render target. Get and set functions for these states apply to the current
+   * render target set by this function, and those states persist on each target
+   * when the current render target changes.
+   *
+   * @param texture the targeted texture, which must be created with the
+   *                `TEXTUREACCESS_TARGET` flag, or nullptr to render to the
+   *                window instead of a texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetTarget
+   */
+  void SetTarget(TextureParam texture);
+
+  void ResetTarget();
+
+  /**
+   * Get the current render target.
+   *
+   * The default render target is the window for which the renderer was created,
+   * and is reported a nullptr here.
+   *
+   * @returns the current render target or nullptr for the default render
+   * target.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetTarget
+   */
+  Texture GetTarget() const;
+
+  /**
+   * Set a device-independent resolution and presentation mode for rendering.
+   *
+   * This function sets the width and height of the logical rendering output.
+   * The renderer will act as if the current render target is always the
+   * requested dimensions, scaling to the actual resolution as necessary.
+   *
+   * This can be useful for games that expect a fixed size, but would like to
+   * scale the output to whatever is available, regardless of how a user resizes
+   * a window, or if the display is high DPI.
+   *
+   * Logical presentation can be used with both render target textures and the
+   * renderer's window; the state is unique to each render target, and this
+   * function sets the state for the current render target. It might be useful
+   * to draw to a texture that matches the window dimensions with logical
+   * presentation enabled, and then draw that texture across the entire window
+   * with logical presentation disabled. Be careful not to render both with
+   * logical presentation enabled, however, as this could produce
+   * double-letterboxing, etc.
+   *
+   * You can disable logical coordinates by setting the mode to
+   * LOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel
+   * resolution of the render target; it is safe to toggle logical presentation
+   * during the rendering of a frame: perhaps most of the rendering is done to
+   * specific dimensions but to make fonts look sharp, the app turns off logical
+   * presentation while drawing text, for example.
+   *
+   * For the renderer's window, letterboxing is drawn into the framebuffer if
+   * logical presentation is enabled during Renderer.Present; be sure to
+   * reenable it before presenting if you were toggling it, otherwise the
+   * letterbox areas might have artifacts from previous frames (or artifacts
+   * from external overlays, etc). Letterboxing is never drawn into texture
+   * render targets; be sure to call Renderer.RenderClear() before drawing into
+   * the texture so the letterboxing areas are cleared, if appropriate.
+   *
+   * You can convert coordinates in an event into rendering coordinates using
+   * Renderer.ConvertEventToRenderCoordinates().
+   *
+   * @param w the width of the logical resolution.
+   * @param h the height of the logical resolution.
+   * @param mode the presentation mode used.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.ConvertEventToRenderCoordinates
+   * @sa Renderer.GetLogicalPresentation
+   * @sa Renderer.GetLogicalPresentationRect
+   */
+  void SetLogicalPresentation(const PointRaw& size,
+                              RendererLogicalPresentation mode);
+
+  /**
+   * Get device independent resolution and presentation mode for rendering.
+   *
+   * This function gets the width and height of the logical rendering output, or
+   * the output size in pixels if a logical resolution is not enabled.
+   *
+   * Each render target has its own logical presentation state. This function
+   * gets the state for the current render target.
+   *
+   * @param w an int to be filled with the width.
+   * @param h an int to be filled with the height.
+   * @param mode the presentation mode used.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetLogicalPresentation
+   */
+  void GetLogicalPresentation(int* w,
+                              int* h,
+                              RendererLogicalPresentation* mode) const;
+
+  /**
+   * Get device independent resolution and presentation mode for rendering.
+   *
+   * This function gets the width and height of the logical rendering output, or
+   * the output size in pixels if a logical resolution is not enabled.
+   *
+   * Each render target has its own logical presentation state. This function
+   * gets the state for the current render target.
+   *
+   * @param w an int to be filled with the width.
+   * @param h an int to be filled with the height.
+   * @param mode the presentation mode used.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetLogicalPresentation
+   */
+  void GetLogicalPresentation(PointRaw* size,
+                              RendererLogicalPresentation* mode);
+
+  /**
+   * Get the final presentation rectangle for rendering.
+   *
+   * This function returns the calculated rectangle used for logical
+   * presentation, based on the presentation mode and output size. If logical
+   * presentation is disabled, it will fill the rectangle with the output size,
+   * in pixels.
+   *
+   * Each render target has its own logical presentation state. This function
+   * gets the rectangle for the current render target.
+   *
+   * @param rect a pointer filled in with the final presentation rectangle, may
+   *             be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetLogicalPresentation
+   */
+  FRect GetLogicalPresentationRect() const;
+
+  /**
+   * Get a point in render coordinates when given a point in window coordinates.
+   *
+   * This takes into account several states:
+   *
+   * - The window dimensions.
+   * - The logical presentation settings (Renderer.SetLogicalPresentation)
+   * - The scale (Renderer.SetScale)
+   * - The viewport (Renderer.SetViewport)
+   *
+   * @param window_x the x coordinate in window coordinates.
+   * @param window_y the y coordinate in window coordinates.
+   * @param x a pointer filled with the x coordinate in render coordinates.
+   * @param y a pointer filled with the y coordinate in render coordinates.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetLogicalPresentation
+   * @sa Renderer.SetScale
+   */
+  FPoint RenderCoordinatesFromWindow(const FPointRaw& window_coord) const;
+
+  /**
+   * Get a point in window coordinates when given a point in render coordinates.
+   *
+   * This takes into account several states:
+   *
+   * - The window dimensions.
+   * - The logical presentation settings (Renderer.SetLogicalPresentation)
+   * - The scale (Renderer.SetScale)
+   * - The viewport (Renderer.SetViewport)
+   *
+   * @param x the x coordinate in render coordinates.
+   * @param y the y coordinate in render coordinates.
+   * @param window_x a pointer filled with the x coordinate in window
+   *                 coordinates.
+   * @param window_y a pointer filled with the y coordinate in window
+   *                 coordinates.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetLogicalPresentation
+   * @sa Renderer.SetScale
+   * @sa Renderer.SetViewport
+   */
+  FPoint RenderCoordinatesToWindow(const FPointRaw& coord) const;
+
+  /**
+   * Convert the coordinates in an event to render coordinates.
+   *
+   * This takes into account several states:
+   *
+   * - The window dimensions.
+   * - The logical presentation settings (Renderer.SetLogicalPresentation)
+   * - The scale (Renderer.SetScale)
+   * - The viewport (Renderer.SetViewport)
+   *
+   * Various event types are converted with this function: mouse, touch, pen,
+   * etc.
+   *
+   * Touch coordinates are converted from normalized coordinates in the window
+   * to non-normalized rendering coordinates.
+   *
+   * Relative mouse coordinates (xrel and yrel event fields) are _also_
+   * converted. Applications that do not want these fields converted should use
+   * Renderer.RenderCoordinatesFromWindow() on the specific event fields instead
+   * of converting the entire event structure.
+   *
+   * Once converted, coordinates may be outside the rendering area.
+   *
+   * @param event the event to modify.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderCoordinatesFromWindow
+   */
+  void ConvertEventToRenderCoordinates(Event* event) const;
+
+  /**
+   * Set the drawing area for rendering on the current target.
+   *
+   * Drawing will clip to this area (separately from any clipping done with
+   * Renderer.SetClipRect), and the top left of the area will become coordinate
+   * (0, 0) for future drawing commands.
+   *
+   * The area's width and height must be >= 0.
+   *
+   * Each render target has its own viewport. This function sets the viewport
+   * for the current render target.
+   *
+   * @param rect the Rect structure representing the drawing area, or nullptr
+   *             to set the viewport to the entire target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetViewport
+   * @sa Renderer.ViewportSet
+   */
+  void SetViewport(OptionalRef<const RectRaw> rect);
+
+  void ResetViewport();
+
+  /**
+   * Get the drawing area for the current target.
+   *
+   * Each render target has its own viewport. This function gets the viewport
+   * for the current render target.
+   *
+   * @param rect an Rect structure filled in with the current drawing area.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.ViewportSet
+   * @sa Renderer.SetViewport
+   */
+  Rect GetViewport() const;
+
+  /**
+   * Return whether an explicit rectangle was set as the viewport.
+   *
+   * This is useful if you're saving and restoring the viewport and want to know
+   * whether you should restore a specific rectangle or nullptr.
+   *
+   * Each render target has its own viewport. This function checks the viewport
+   * for the current render target.
+   *
+   * @returns true if the viewport was set to a specific rectangle, or false if
+   *          it was set to nullptr (the entire target).
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetViewport
+   * @sa Renderer.SetViewport
+   */
+  bool ViewportSet() const;
+
+  /**
+   * Get the safe area for rendering within the current viewport.
+   *
+   * Some devices have portions of the screen which are partially obscured or
+   * not interactive, possibly due to on-screen controls, curved edges, camera
+   * notches, TV overscan, etc. This function provides the area of the current
+   * viewport which is safe to have interactible content. You should continue
+   * rendering into the rest of the render target, but it should not contain
+   * visually important or interactible content.
+   *
+   * @param rect a pointer filled in with the area that is safe for interactive
+   *             content.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Rect GetSafeArea() const;
+
+  /**
+   * Set the clip rectangle for rendering on the specified target.
+   *
+   * Each render target has its own clip rectangle. This function sets the
+   * cliprect for the current render target.
+   *
+   * @param rect an Rect structure representing the clip area, relative to
+   *             the viewport, or nullptr to disable clipping.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetClipRect
+   * @sa Renderer.IsClipEnabled
+   */
+  void SetClipRect(OptionalRef<const RectRaw> rect);
+
+  void ResetClipRect();
+
+  /**
+   * Get the clip rectangle for the current target.
+   *
+   * Each render target has its own clip rectangle. This function gets the
+   * cliprect for the current render target.
+   *
+   * @param rect an Rect structure filled in with the current clipping area
+   *             or an empty rectangle if clipping is disabled.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.IsClipEnabled
+   * @sa Renderer.SetClipRect
+   */
+  Rect GetClipRect() const;
+
+  /**
+   * Get whether clipping is enabled on the given render target.
+   *
+   * Each render target has its own clip rectangle. This function checks the
+   * cliprect for the current render target.
+   *
+   * @returns true if clipping is enabled or false if not; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetClipRect
+   * @sa Renderer.SetClipRect
+   */
+  bool IsClipEnabled() const;
+
+  /**
+   * Set the drawing scale for rendering on the current target.
+   *
+   * The drawing coordinates are scaled by the x/y scaling factors before they
+   * are used by the renderer. This allows resolution independent drawing with a
+   * single coordinate system.
+   *
+   * If this results in scaling or subpixel drawing by the rendering backend, it
+   * will be handled using the appropriate quality hints. For best results use
+   * integer scaling factors.
+   *
+   * Each render target has its own scale. This function sets the scale for the
+   * current render target.
+   *
+   * @param scaleX the horizontal scaling factor.
+   * @param scaleY the vertical scaling factor.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetScale
+   */
+  void SetScale(const FPointRaw& scale);
+
+  /**
+   * Get the drawing scale for the current target.
+   *
+   * Each render target has its own scale. This function gets the scale for the
+   * current render target.
+   *
+   * @param scaleX a pointer filled in with the horizontal scaling factor.
+   * @param scaleY a pointer filled in with the vertical scaling factor.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetScale
+   */
+  void GetScale(float* scaleX, float* scaleY) const;
+
+  /**
+   * Get the drawing scale for the current target.
+   *
+   * Each render target has its own scale. This function gets the scale for the
+   * current render target.
+   *
+   * @param renderer the rendering context.
+   * @param scaleX a pointer filled in with the horizontal scaling factor.
+   * @param scaleY a pointer filled in with the vertical scaling factor.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetScale
+   */
+  FPoint GetScale() const;
+
+  /**
+   * Set the color used for drawing operations.
+   *
+   * Set the color for drawing or filling rectangles, lines, and points, and for
+   * Renderer.RenderClear().
+   *
+   * @param r the red value used to draw on the rendering target.
+   * @param g the green value used to draw on the rendering target.
+   * @param b the blue value used to draw on the rendering target.
+   * @param a the alpha value used to draw on the rendering target; usually
+   *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
+   *          specify how the alpha channel is used.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetDrawColor
+   * @sa Renderer.SetDrawColorFloat
+   */
+  void SetDrawColor(ColorRaw c);
+
+  /**
+   * Set the color used for drawing operations (Rect, Line and Clear).
+   *
+   * Set the color for drawing or filling rectangles, lines, and points, and for
+   * Renderer.RenderClear().
+   *
+   * @param r the red value used to draw on the rendering target.
+   * @param g the green value used to draw on the rendering target.
+   * @param b the blue value used to draw on the rendering target.
+   * @param a the alpha value used to draw on the rendering target. Use
+   *          Renderer.SetDrawBlendMode to specify how the alpha channel is
+   *          used.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetDrawColorFloat
+   * @sa Renderer.SetDrawColor
+   */
+  void SetDrawColorFloat(const FColorRaw& c);
+
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @param r a pointer filled in with the red value used to draw on the
+   *          rendering target.
+   * @param g a pointer filled in with the green value used to draw on the
+   *          rendering target.
+   * @param b a pointer filled in with the blue value used to draw on the
+   *          rendering target.
+   * @param a a pointer filled in with the alpha value used to draw on the
+   *          rendering target; usually `ALPHA_OPAQUE` (255).
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetDrawColorFloat
+   * @sa Renderer.SetDrawColor
+   */
+  void GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const;
+
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @param renderer the rendering context.
+   * @param r a pointer filled in with the red value used to draw on the
+   *          rendering target.
+   * @param g a pointer filled in with the green value used to draw on the
+   *          rendering target.
+   * @param b a pointer filled in with the blue value used to draw on the
+   *          rendering target.
+   * @param a a pointer filled in with the alpha value used to draw on the
+   *          rendering target; usually `ALPHA_OPAQUE` (255).
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetDrawColorFloat
+   * @sa Renderer.SetDrawColor
+   */
+  Color GetDrawColor() const;
+
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @param r a pointer filled in with the red value used to draw on the
+   *          rendering target.
+   * @param g a pointer filled in with the green value used to draw on the
+   *          rendering target.
+   * @param b a pointer filled in with the blue value used to draw on the
+   *          rendering target.
+   * @param a a pointer filled in with the alpha value used to draw on the
+   *          rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetDrawColorFloat
+   * @sa Renderer.GetDrawColor
+   */
+  void GetDrawColorFloat(float* r, float* g, float* b, float* a) const;
+
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @param renderer the rendering context.
+   * @param r a pointer filled in with the red value used to draw on the
+   *          rendering target.
+   * @param g a pointer filled in with the green value used to draw on the
+   *          rendering target.
+   * @param b a pointer filled in with the blue value used to draw on the
+   *          rendering target.
+   * @param a a pointer filled in with the alpha value used to draw on the
+   *          rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetDrawColorFloat
+   * @sa Renderer.GetDrawColor
+   */
+  FColor GetDrawColorFloat() const;
+
+  /**
+   * Set the color scale used for render operations.
+   *
+   * The color scale is an additional scale multiplied into the pixel color
+   * value while rendering. This can be used to adjust the brightness of colors
+   * during HDR rendering, or changing HDR video brightness when playing on an
+   * SDR display.
+   *
+   * The color scale does not affect the alpha channel, only the color
+   * brightness.
+   *
+   * @param scale the color scale value.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetColorScale
+   */
+  void SetColorScale(float scale);
+
+  /**
+   * Get the color scale used for render operations.
+   *
+   * @param scale a pointer filled in with the current color scale value.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetColorScale
+   */
+  float GetColorScale() const;
+
+  /**
+   * Set the blend mode used for drawing operations (Fill and Line).
+   *
+   * If the blend mode is not supported, the closest supported mode is chosen.
+   *
+   * @param blendMode the BlendMode to use for blending.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetDrawBlendMode
+   */
+  void SetDrawBlendMode(BlendMode blendMode);
+
+  /**
+   * Get the blend mode used for drawing operations.
+   *
+   * @param blendMode a pointer filled in with the current BlendMode.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetDrawBlendMode
+   */
+  BlendMode GetDrawBlendMode() const;
+
+  /**
+   * Clear the current rendering target with the drawing color.
+   *
+   * This function clears the entire rendering target, ignoring the viewport and
+   * the clip rectangle. Note, that clearing will also set/fill all pixels of
+   * the rendering target to current renderer draw color, so make sure to invoke
+   * Renderer.SetDrawColor() when needed.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetDrawColor
+   */
+  void RenderClear();
+
+  /**
+   * Draw a point on the current rendering target at subpixel precision.
+   *
+   * @param x the x coordinate of the point.
+   * @param y the y coordinate of the point.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderPoints
+   */
+  void RenderPoint(const FPointRaw& p);
+
+  /**
+   * Draw multiple points on the current rendering target at subpixel precision.
+   *
+   * @param points the points to draw.
+   * @param count the number of points to draw.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderPoint
+   */
+  void RenderPoints(SpanRef<const FPointRaw> points);
+
+  /**
+   * Draw a line on the current rendering target at subpixel precision.
+   *
+   * @param x1 the x coordinate of the start point.
+   * @param y1 the y coordinate of the start point.
+   * @param x2 the x coordinate of the end point.
+   * @param y2 the y coordinate of the end point.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderLines
+   */
+  void RenderLine(const FPointRaw& p1, const FPointRaw& p2);
+
+  /**
+   * Draw a series of connected lines on the current rendering target at
+   * subpixel precision.
+   *
+   * @param points the points along the lines.
+   * @param count the number of points, drawing count-1 lines.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderLine
+   */
+  void RenderLines(SpanRef<const FPointRaw> points);
+
+  /**
+   * Draw a rectangle on the current rendering target at subpixel precision.
+   *
+   * @param rect a pointer to the destination rectangle, or nullptr to outline
+   * the entire rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderRects
+   */
+  void RenderRect(OptionalRef<const FRectRaw> rect);
+
+  /**
+   * Draw some number of rectangles on the current rendering target at subpixel
+   * precision.
+   *
+   * @param rects a pointer to an array of destination rectangles.
+   * @param count the number of rectangles.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderRect
+   */
+  void RenderRects(SpanRef<const FRectRaw> rects);
+
+  /**
+   * Fill a rectangle on the current rendering target with the drawing color at
+   * subpixel precision.
+   *
+   * @param rect a pointer to the destination rectangle, or nullptr for the
+   * entire rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderFillRects
+   */
+  void RenderFillRect(OptionalRef<const FRectRaw> rect);
+
+  /**
+   * Fill some number of rectangles on the current rendering target with the
+   * drawing color at subpixel precision.
+   *
+   * @param rects a pointer to an array of destination rectangles.
+   * @param count the number of rectangles.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderFillRect
+   */
+  void RenderFillRects(SpanRef<const FRectRaw> rects);
+
+  /**
+   * Copy a portion of the texture to the current rendering target at subpixel
+   * precision.
+   *
+   * @param texture the source texture.
+   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
+   *                texture.
+   * @param dstrect a pointer to the destination rectangle, or nullptr for the
+   *                entire rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderTextureRotated
+   * @sa Renderer.RenderTextureTiled
+   */
+  void RenderTexture(TextureParam texture,
+                     OptionalRef<const FRectRaw> srcrect,
+                     OptionalRef<const FRectRaw> dstrect);
+
+  /**
+   * Copy a portion of the source texture to the current rendering target, with
+   * rotation and flipping, at subpixel precision.
+   *
+   * @param texture the source texture.
+   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
+   *                texture.
+   * @param dstrect a pointer to the destination rectangle, or nullptr for the
+   *                entire rendering target.
+   * @param angle an angle in degrees that indicates the rotation that will be
+   *              applied to dstrect, rotating it in a clockwise direction.
+   * @param center a pointer to a point indicating the point around which
+   *               dstrect will be rotated (if nullptr, rotation will be done
+   *               around dstrect.w/2, dstrect.h/2).
+   * @param flip an FlipMode value stating which flipping actions should be
+   *             performed on the texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderTexture
+   */
+  void RenderTextureRotated(TextureParam texture,
+                            OptionalRef<const FRectRaw> srcrect,
+                            OptionalRef<const FRectRaw> dstrect,
+                            double angle,
+                            OptionalRef<const FPointRaw> center,
+                            FlipMode flip);
+
+  /**
+   * Copy a portion of the source texture to the current rendering target, with
+   * affine transform, at subpixel precision.
+   *
+   * @param texture the source texture.
+   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
+   *                texture.
+   * @param origin a pointer to a point indicating where the top-left corner of
+   *               srcrect should be mapped to, or nullptr for the rendering
+   *               target's origin.
+   * @param right a pointer to a point indicating where the top-right corner of
+   *              srcrect should be mapped to, or nullptr for the rendering
+   *              target's top-right corner.
+   * @param down a pointer to a point indicating where the bottom-left corner of
+   *             srcrect should be mapped to, or nullptr for the rendering
+   * target's bottom-left corner.
+   * @throws Error on failure.
+   *
+   * @threadsafety You may only call this function from the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderTexture
+   */
+  void RenderTextureAffine(TextureParam texture,
+                           OptionalRef<const FRectRaw> srcrect,
+                           OptionalRef<const FPointRaw> origin,
+                           OptionalRef<const FPointRaw> right,
+                           OptionalRef<const FPointRaw> down);
+
+  /**
+   * Tile a portion of the texture to the current rendering target at subpixel
+   * precision.
+   *
+   * The pixels in `srcrect` will be repeated as many times as needed to
+   * completely fill `dstrect`.
+   *
+   * @param texture the source texture.
+   * @param srcrect a pointer to the source rectangle, or nullptr for the entire
+   *                texture.
+   * @param scale the scale used to transform srcrect into the destination
+   *              rectangle, e.g. a 32x32 texture with a scale of 2 would fill
+   *              64x64 tiles.
+   * @param dstrect a pointer to the destination rectangle, or nullptr for the
+   *                entire rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderTexture
+   */
+  void RenderTextureTiled(TextureParam texture,
+                          OptionalRef<const FRectRaw> srcrect,
+                          float scale,
+                          OptionalRef<const FRectRaw> dstrect);
+
+  /**
+   * Perform a scaled copy using the 9-grid algorithm to the current rendering
+   * target at subpixel precision.
+   *
+   * The pixels in the texture are split into a 3x3 grid, using the different
+   * corner sizes for each corner, and the sides and center making up the
+   * remaining pixels. The corners are then scaled using `scale` and fit into
+   * the corners of the destination rectangle. The sides and center are then
+   * stretched into place to cover the remaining destination rectangle.
+   *
+   * @param texture the source texture.
+   * @param srcrect the Rect structure representing the rectangle to be used
+   *                for the 9-grid, or nullptr to use the entire texture.
+   * @param left_width the width, in pixels, of the left corners in `srcrect`.
+   * @param right_width the width, in pixels, of the right corners in `srcrect`.
+   * @param top_height the height, in pixels, of the top corners in `srcrect`.
+   * @param bottom_height the height, in pixels, of the bottom corners in
+   *                      `srcrect`.
+   * @param scale the scale used to transform the corner of `srcrect` into the
+   *              corner of `dstrect`, or 0.0f for an unscaled copy.
+   * @param dstrect a pointer to the destination rectangle, or nullptr for the
+   *                entire rendering target.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderTexture
+   */
+  void RenderTexture9Grid(TextureParam texture,
+                          OptionalRef<const FRectRaw> srcrect,
+                          float left_width,
+                          float right_width,
+                          float top_height,
+                          float bottom_height,
+                          float scale,
+                          OptionalRef<const FRectRaw> dstrect);
+
+  /**
+   * Render a list of triangles, optionally using a texture and indices into the
+   * vertex array Color and alpha modulation is done per vertex
+   * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+   *
+   * @param texture (optional) The SDL texture to use.
+   * @param vertices vertices.
+   * @param num_vertices number of vertices.
+   * @param indices (optional) An array of integer indices into the 'vertices'
+   *                array, if nullptr all vertices will be rendered in
+   * sequential order.
+   * @param num_indices number of indices.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderGeometryRaw
+   */
+  void RenderGeometry(TextureParam texture,
+                      std::span<const Vertex> vertices,
+                      std::span<const int> indices);
+
+  /**
+   * Render a list of triangles, optionally using a texture and indices into the
+   * vertex arrays Color and alpha modulation is done per vertex
+   * (Texture.SetColorMod and Texture.SetAlphaMod are ignored).
+   *
+   * @param texture (optional) The SDL texture to use.
+   * @param xy vertex positions.
+   * @param xy_stride byte size to move from one element to the next element.
+   * @param color vertex colors (as FColor).
+   * @param color_stride byte size to move from one element to the next element.
+   * @param uv vertex normalized texture coordinates.
+   * @param uv_stride byte size to move from one element to the next element.
+   * @param num_vertices number of vertices.
+   * @param indices (optional) An array of indices into the 'vertices' arrays,
+   *                if nullptr all vertices will be rendered in sequential
+   * order.
+   * @param num_indices number of indices.
+   * @param size_indices index size: 1 (byte), 2 (short), 4 (int).
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderGeometry
+   */
+  void RenderGeometryRaw(TextureParam texture,
+                         const float* xy,
+                         int xy_stride,
+                         const FColor* color,
+                         int color_stride,
+                         const float* uv,
+                         int uv_stride,
+                         int num_vertices,
+                         const void* indices,
+                         int num_indices,
+                         int size_indices);
+
+  /**
+   * Read pixels from the current rendering target.
+   *
+   * The returned surface contains pixels inside the desired area clipped to the
+   * current viewport, and should be freed with Surface.Destroy().
+   *
+   * Note that this returns the actual pixels on the screen, so if you are using
+   * logical presentation you should use Renderer.GetLogicalPresentationRect()
+   * to get the area containing your content.
+   *
+   * **WARNING**: This is a very slow operation, and should not be used
+   * frequently. If you're using this on the main rendering target, it should be
+   * called after rendering and before Renderer.Present().
+   *
+   * @param rect an Rect structure representing the area to read, which will
+   *             be clipped to the current viewport, or nullptr for the entire
+   *             viewport.
+   * @returns a new Surface on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Surface ReadPixels(OptionalRef<const RectRaw> rect = {}) const;
+
+  /**
+   * Update the screen with any rendering performed since the previous call.
+   *
+   * SDL's rendering functions operate on a backbuffer; that is, calling a
+   * rendering function such as Renderer.RenderLine() does not directly put a
+   * line on the screen, but rather updates the backbuffer. As such, you compose
+   * your entire scene and *present* the composed backbuffer to the screen as a
+   * complete picture.
+   *
+   * Therefore, when using SDL's rendering API, one does all drawing intended
+   * for the frame, and then calls this function once per frame to present the
+   * final drawing to the user.
+   *
+   * The backbuffer should be considered invalidated after each present; do not
+   * assume that previous contents will exist between frames. You are strongly
+   * encouraged to call Renderer.RenderClear() to initialize the backbuffer
+   * before starting each new frame's drawing, even if you plan to overwrite
+   * every pixel.
+   *
+   * Please note, that in case of rendering to a texture - there is **no need**
+   * to call `Renderer.Present` after drawing needed objects to a texture, and
+   * should not be done; you are only required to change back the rendering
+   * target to default via `Renderer.SetTarget(renderer, nullptr)` afterwards,
+   * as textures by themselves do not have a concept of backbuffers. Calling
+   * Renderer.Present while rendering to a texture will still update the screen
+   * with any current drawing that has been done _to the window itself_.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.Renderer
+   * @sa Renderer.RenderClear
+   * @sa Renderer.RenderFillRect
+   * @sa Renderer.RenderFillRects
+   * @sa Renderer.RenderLine
+   * @sa Renderer.RenderLines
+   * @sa Renderer.RenderPoint
+   * @sa Renderer.RenderPoints
+   * @sa Renderer.RenderRect
+   * @sa Renderer.RenderRects
+   * @sa Renderer.SetDrawBlendMode
+   * @sa Renderer.SetDrawColor
+   */
+  void Present();
+
+  /**
+   * Force the rendering context to flush any pending commands and state.
+   *
+   * You do not need to (and in fact, shouldn't) call this function unless you
+   * are planning to call into OpenGL/Direct3D/Metal/whatever directly, in
+   * addition to using an Renderer.
+   *
+   * This is for a very-specific case: if you are using SDL's render API, and
+   * you plan to make OpenGL/D3D/whatever calls in addition to SDL render API
+   * calls. If this applies, you should call this function between calls to
+   * SDL's render API and the low-level API you're using in cooperation.
+   *
+   * In all other cases, you can ignore this function.
+   *
+   * This call makes SDL flush any pending rendering work it was queueing up to
+   * do later in a single batch, and marks any internal cached state as invalid,
+   * so it'll prepare all its state again later, from scratch.
+   *
+   * This means you do not need to save state in your rendering code to protect
+   * the SDL renderer. However, there lots of arbitrary pieces of Direct3D and
+   * OpenGL state that can confuse things; you should use your best judgment and
+   * be prepared to make changes if specific state needs to be protected.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Flush();
+
+  /**
    * Get the CAMetalLayer associated with the given Metal renderer.
    *
    * This function returns `void *`, so SDL doesn't have to include Metal's
@@ -1984,6 +1977,112 @@ public:
   void AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
                                  Sint64 wait_semaphore,
                                  Sint64 signal_semaphore);
+
+  /**
+   * Toggle VSync of the given renderer.
+   *
+   * When a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.
+   *
+   * The `vsync` parameter can be 1 to synchronize present with every vertical
+   * refresh, 2 to synchronize present with every second vertical refresh, etc.,
+   * SDL_RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
+   * SDL_RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
+   * every driver, so you should check the return value to see whether the
+   * requested setting is supported.
+   *
+   * @param vsync the vertical refresh sync interval.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetVSync
+   */
+  void SetVSync(int vsync);
+
+  /**
+   * Get VSync of the given renderer.
+   *
+   * @param vsync an int filled with the current vertical refresh sync interval.
+   *              See Renderer.SetVSync() for the meaning of the value.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.SetVSync
+   */
+  int GetVSync() const;
+
+  /**
+   * Draw debug text to an Renderer.
+   *
+   * This function will render a string of text to an Renderer. Note that
+   * this is a convenience function for debugging, with severe limitations, and
+   * not intended to be used for production apps and games.
+   *
+   * Among these limitations:
+   *
+   * - It accepts UTF-8 strings, but will only renders ASCII characters.
+   * - It has a single, tiny size (8x8 pixels). One can use logical presentation
+   *   or scaling to adjust it, but it will be blurry.
+   * - It uses a simple, hardcoded bitmap font. It does not allow different font
+   *   selections and it does not support truetype, for proper scaling.
+   * - It does no word-wrapping and does not treat newline characters as a line
+   *   break. If the text goes out of the window, it's gone.
+   *
+   * For serious text rendering, there are several good options, such as
+   * SDL_ttf, stb_truetype, or other external libraries.
+   *
+   * On first use, this will create an internal texture for rendering glyphs.
+   * This texture will live until the renderer is destroyed.
+   *
+   * The text is drawn in the color specified by Renderer.SetDrawColor().
+   *
+   * @param x the x coordinate where the top-left corner of the text will draw.
+   * @param y the y coordinate where the top-left corner of the text will draw.
+   * @param str the string to render.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderDebugTextFormat
+   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+   */
+  void RenderDebugText(const FPointRaw& p, StringParam str);
+
+  /**
+   * Draw debug text to an Renderer.
+   *
+   * This function will render a printf()-style format string to a renderer.
+   * Note that this is a convenience function for debugging, with severe
+   * limitations, and is not intended to be used for production apps and games.
+   *
+   * For the full list of limitations and other useful information, see
+   * Renderer.RenderDebugText.
+   *
+   * @param x the x coordinate where the top-left corner of the text will draw.
+   * @param y the y coordinate where the top-left corner of the text will draw.
+   * @param fmt the format string to draw.
+   * @param ... additional parameters matching % tokens in the `fmt` string, if
+   *            any.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.RenderDebugText
+   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+   */
+  template<class... ARGS>
+  void RenderDebugTextFormat(const FPointRaw& p,
+                             std::string_view fmt,
+                             ARGS... args);
 };
 
 /// Semi-safe reference for Renderer.
@@ -3432,9 +3531,39 @@ inline void GetRenderOutputSize(RendererParam renderer, int* w, int* h)
   CheckError(SDL_GetRenderOutputSize(renderer, w, h));
 }
 
+/**
+ * Get the output size in pixels of a rendering context.
+ *
+ * This returns the true output size in pixels, ignoring any render targets or
+ * logical size and presentation.
+ *
+ * For the output size of the current rendering target, with logical size
+ * adjustments, use Renderer.GetCurrentOutputSize() instead.
+ *
+ * @param renderer the rendering context.
+ * @param w a pointer filled in with the width in pixels.
+ * @param h a pointer filled in with the height in pixels.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetCurrentOutputSize
+ */
+inline Point GetRenderOutputSize(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Renderer::GetOutputSize(int* w, int* h) const
 {
   SDL::GetRenderOutputSize(m_resource, w, h);
+}
+
+inline Point Renderer::GetOutputSize() const
+{
+  return SDL::GetRenderOutputSize(m_resource);
 }
 
 /**
@@ -3462,9 +3591,39 @@ inline void GetCurrentRenderOutputSize(RendererParam renderer, int* w, int* h)
   CheckError(SDL_GetCurrentRenderOutputSize(renderer, w, h));
 }
 
+/**
+ * Get the current output size in pixels of a rendering context.
+ *
+ * If a rendering target is active, this will return the size of the rendering
+ * target in pixels, otherwise return the value of Renderer.GetOutputSize().
+ *
+ * Rendering target or not, the output will be adjusted by the current logical
+ * presentation state, dictated by Renderer.SetLogicalPresentation().
+ *
+ * @param renderer the rendering context.
+ * @param w a pointer filled in with the current width.
+ * @param h a pointer filled in with the current height.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetOutputSize
+ */
+inline Point GetCurrentRenderOutputSize(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
 {
   SDL::GetCurrentRenderOutputSize(m_resource, w, h);
+}
+
+inline Point Renderer::GetCurrentOutputSize() const
+{
+  return SDL::GetCurrentRenderOutputSize(m_resource);
 }
 
 /**
@@ -4720,6 +4879,13 @@ inline void Renderer::SetTarget(TextureParam texture)
   SDL::SetRenderTarget(m_resource, texture);
 }
 
+inline void ResetRenderTarget(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
+
 /**
  * Get the current render target.
  *
@@ -4839,12 +5005,46 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
   CheckError(SDL_GetRenderLogicalPresentation(renderer, w, h, mode));
 }
 
+/**
+ * Get device independent resolution and presentation mode for rendering.
+ *
+ * This function gets the width and height of the logical rendering output, or
+ * the output size in pixels if a logical resolution is not enabled.
+ *
+ * Each render target has its own logical presentation state. This function
+ * gets the state for the current render target.
+ *
+ * @param renderer the rendering context.
+ * @param w an int to be filled with the width.
+ * @param h an int to be filled with the height.
+ * @param mode the presentation mode used.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.SetLogicalPresentation
+ */
+inline void GetRenderLogicalPresentation(RendererParam renderer,
+                                         PointRaw* size,
+                                         RendererLogicalPresentation* mode)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Renderer::GetLogicalPresentation(
   int* w,
   int* h,
   RendererLogicalPresentation* mode) const
 {
   SDL::GetRenderLogicalPresentation(m_resource, w, h, mode);
+}
+
+inline void Renderer::GetLogicalPresentation(PointRaw* size,
+                                             RendererLogicalPresentation* mode)
+{
+  SDL::GetRenderLogicalPresentation(m_resource, size, mode);
 }
 
 /**
@@ -5019,7 +5219,7 @@ inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.GetViewport
- * @sa Renderer.IsViewportSet
+ * @sa Renderer.ViewportSet
  */
 inline void SetRenderViewport(RendererParam renderer,
                               OptionalRef<const RectRaw> rect)
@@ -5031,6 +5231,13 @@ inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
 {
   SDL::SetRenderViewport(m_resource, rect);
 }
+
+inline void ResetRenderViewport(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
 
 /**
  * Get the drawing area for the current target.
@@ -5046,7 +5253,7 @@ inline void Renderer::SetViewport(OptionalRef<const RectRaw> rect)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.IsViewportSet
+ * @sa Renderer.ViewportSet
  * @sa Renderer.SetViewport
  */
 inline Rect GetRenderViewport(RendererParam renderer)
@@ -5084,7 +5291,7 @@ inline bool RenderViewportSet(RendererParam renderer)
   return SDL_RenderViewportSet(renderer);
 }
 
-inline bool Renderer::IsViewportSet() const
+inline bool Renderer::ViewportSet() const
 {
   return SDL::RenderViewportSet(m_resource);
 }
@@ -5146,6 +5353,13 @@ inline void Renderer::SetClipRect(OptionalRef<const RectRaw> rect)
 {
   SDL::SetRenderClipRect(m_resource, rect);
 }
+
+inline void ResetRenderClipRect(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
 
 /**
  * Get the clip rectangle for the current target.
@@ -5259,9 +5473,36 @@ inline void GetRenderScale(RendererParam renderer, float* scaleX, float* scaleY)
   CheckError(SDL_GetRenderScale(renderer, scaleX, scaleY));
 }
 
+/**
+ * Get the drawing scale for the current target.
+ *
+ * Each render target has its own scale. This function gets the scale for the
+ * current render target.
+ *
+ * @param renderer the rendering context.
+ * @param scaleX a pointer filled in with the horizontal scaling factor.
+ * @param scaleY a pointer filled in with the vertical scaling factor.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.SetScale
+ */
+inline FPoint GetRenderScale(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Renderer::GetScale(float* scaleX, float* scaleY) const
 {
   SDL::GetRenderScale(m_resource, scaleX, scaleY);
+}
+
+inline FPoint Renderer::GetScale() const
+{
+  return SDL::GetRenderScale(m_resource);
 }
 
 /**
@@ -5358,9 +5599,40 @@ inline void GetRenderDrawColor(RendererParam renderer,
   CheckError(SDL_GetRenderDrawColor(renderer, r, g, b, a));
 }
 
+/**
+ * Get the color used for drawing operations (Rect, Line and Clear).
+ *
+ * @param renderer the rendering context.
+ * @param r a pointer filled in with the red value used to draw on the
+ *          rendering target.
+ * @param g a pointer filled in with the green value used to draw on the
+ *          rendering target.
+ * @param b a pointer filled in with the blue value used to draw on the
+ *          rendering target.
+ * @param a a pointer filled in with the alpha value used to draw on the
+ *          rendering target; usually `ALPHA_OPAQUE` (255).
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetDrawColorFloat
+ * @sa Renderer.SetDrawColor
+ */
+inline Color GetRenderDrawColor(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
 {
   SDL::GetRenderDrawColor(m_resource, r, g, b, a);
+}
+
+inline Color Renderer::GetDrawColor() const
+{
+  return SDL::GetRenderDrawColor(m_resource);
 }
 
 /**
@@ -5393,12 +5665,43 @@ inline void GetRenderDrawColorFloat(RendererParam renderer,
   CheckError(SDL_GetRenderDrawColorFloat(renderer, r, g, b, a));
 }
 
+/**
+ * Get the color used for drawing operations (Rect, Line and Clear).
+ *
+ * @param renderer the rendering context.
+ * @param r a pointer filled in with the red value used to draw on the
+ *          rendering target.
+ * @param g a pointer filled in with the green value used to draw on the
+ *          rendering target.
+ * @param b a pointer filled in with the blue value used to draw on the
+ *          rendering target.
+ * @param a a pointer filled in with the alpha value used to draw on the
+ *          rendering target.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.SetDrawColorFloat
+ * @sa Renderer.GetDrawColor
+ */
+inline FColor GetRenderDrawColorFloat(RendererParam renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Renderer::GetDrawColorFloat(float* r,
                                         float* g,
                                         float* b,
                                         float* a) const
 {
   SDL::GetRenderDrawColorFloat(m_resource, r, g, b, a);
+}
+
+inline FColor Renderer::GetDrawColorFloat() const
+{
+  return SDL::GetRenderDrawColorFloat(m_resource);
 }
 
 /**

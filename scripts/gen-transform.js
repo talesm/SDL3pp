@@ -4532,572 +4532,6 @@ const transform = {
             "SDL_CreateRenderer": "ctor",
             "SDL_CreateRendererWithProperties": "ctor",
             "SDL_CreateSoftwareRenderer": "ctor",
-            "SDL_GetRenderWindow": {
-              "kind": "function",
-              "name": "GetWindow"
-            },
-            "SDL_GetRendererName": "immutable",
-            "GetOutputSize": {
-              "kind": "function",
-              "type": "Point",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_GetRenderOutputSize": {
-              "kind": "function",
-              "name": "GetOutputSize",
-              "immutable": true
-            },
-            "GetCurrentOutputSize": {
-              "kind": "function",
-              "type": "Point",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_GetCurrentRenderOutputSize": {
-              "kind": "function",
-              "name": "GetCurrentOutputSize",
-              "immutable": true
-            },
-            "SDL_GetRendererProperties": "immutable",
-            "ResetTarget": {
-              "kind": "function",
-              "type": "void",
-              "parameters": []
-            },
-            "SDL_SetRenderTarget": { name: "SetTarget" },
-            "SDL_GetRenderTarget": {
-              name: "GetTarget",
-              immutable: true,
-              proto: true,
-              hints: { delegate: "GetRenderTarget" },
-            },
-            "SDL_SetRenderLogicalPresentation": {
-              name: "SetLogicalPresentation",
-              parameters: [
-                {},
-                {
-                  type: "const PointRaw &",
-                  name: "size"
-                },
-                {
-                  name: "mode",
-                  type: "RendererLogicalPresentation"
-                }
-              ]
-            },
-            "GetLogicalPresentation": {
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "type": "PointRaw *",
-                  "name": "size"
-                },
-                {
-                  "name": "mode",
-                  "type": "RendererLogicalPresentation *"
-                }
-              ]
-            },
-            "SDL_GetRenderLogicalPresentation": {
-              "name": "GetLogicalPresentation",
-              "immutable": true
-            },
-            "SDL_GetRenderLogicalPresentationRect": {
-              "immutable": true,
-              "name": "GetLogicalPresentationRect",
-              "type": "FRect",
-              "parameters": [{}]
-            },
-            "SDL_RenderCoordinatesFromWindow": {
-              "kind": "function",
-              "type": "FPoint",
-              "immutable": true,
-              "parameters": [
-                {},
-                {
-                  "type": "const FPointRaw &",
-                  "name": "window_coord"
-                }
-              ]
-            },
-            "SDL_RenderCoordinatesToWindow": {
-              "kind": "function",
-              "type": "FPoint",
-              "immutable": true,
-              "parameters": [
-                {},
-                {
-                  "type": "const FPointRaw &",
-                  "name": "coord"
-                }
-              ]
-            },
-            "SDL_ConvertEventToRenderCoordinates": "immutable",
-            "ResetViewport": {
-              "kind": "function",
-              "type": "void",
-              "parameters": []
-            },
-            "SDL_SetRenderViewport": {
-              "name": "SetViewport",
-              "parameters": [
-                {},
-                {
-                  "type": "OptionalRef<const RectRaw>",
-                  "name": "rect"
-                }
-              ]
-            },
-            "SDL_GetRenderViewport": {
-              "name": "GetViewport",
-              "immutable": true,
-              "type": "Rect",
-              "parameters": [{}]
-            },
-            "SDL_RenderViewportSet": {
-              "immutable": true,
-              "name": "IsViewportSet"
-            },
-            "SDL_GetRenderSafeArea": {
-              "name": "GetSafeArea",
-              "immutable": true,
-              "type": "Rect",
-              "parameters": [{}]
-            },
-            "ResetClipRect": {
-              "kind": "function",
-              "type": "void",
-              "parameters": []
-            },
-            "SDL_SetRenderClipRect": {
-              "name": "SetClipRect",
-              "parameters": [
-                {},
-                {
-                  "type": "OptionalRef<const RectRaw>",
-                  "name": "rect"
-                }
-              ]
-            },
-            "SDL_GetRenderClipRect": {
-              "name": "GetClipRect",
-              "immutable": true,
-              "type": "Rect",
-              "parameters": [{}]
-            },
-            "SDL_RenderClipEnabled": {
-              "immutable": true,
-              "name": "IsClipEnabled"
-            },
-            "SDL_SetRenderScale": {
-              name: "SetScale",
-              parameters: [
-                {},
-                {
-                  type: "const FPointRaw &",
-                  name: "scale"
-                }
-              ]
-            },
-            "GetScale": {
-              "kind": "function",
-              "immutable": true,
-              "type": "FPoint",
-              "parameters": []
-            },
-            "SDL_GetRenderScale": {
-              "name": "GetScale",
-              "immutable": true
-            },
-            "SDL_SetRenderDrawColor": {
-              "name": "SetDrawColor",
-              "parameters": [
-                {},
-                {
-                  "type": "ColorRaw",
-                  "name": "c"
-                }
-              ]
-            },
-            "SDL_SetRenderDrawColorFloat": {
-              "name": "SetDrawColorFloat",
-              "parameters": [
-                {},
-                {
-                  "type": "const FColorRaw &",
-                  "name": "c"
-                }
-              ]
-            },
-            "GetDrawColor": {
-              kind: "function",
-              immutable: true,
-              type: "Color",
-              parameters: []
-            },
-            "GetDrawColorFloat": {
-              kind: "function",
-              immutable: true,
-              type: "FColor",
-              parameters: []
-            },
-            "SDL_GetRenderDrawColor": {
-              "immutable": true,
-              "name": "GetDrawColor"
-            },
-            "SDL_GetRenderDrawColorFloat": {
-              "immutable": true,
-              "name": "GetDrawColorFloat"
-            },
-            "SDL_SetRenderColorScale": {
-              "name": "SetColorScale"
-            },
-            "SDL_GetRenderColorScale": {
-              "name": "GetColorScale",
-              "immutable": true,
-              "type": "float",
-              "parameters": [{}]
-            },
-            "SDL_SetRenderDrawBlendMode": {
-              "name": "SetDrawBlendMode"
-            },
-            "SDL_GetRenderDrawBlendMode": {
-              "name": "GetDrawBlendMode",
-              "immutable": true,
-              "type": "BlendMode",
-              "parameters": [{}]
-            },
-            "SDL_RenderClear": "function",
-            "SDL_RenderPoint": {
-              "parameters": [
-                {},
-                {
-                  "type": "const FPointRaw &",
-                  "name": "p"
-                }
-              ]
-            },
-            "SDL_RenderPoints": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "SpanRef<const FPointRaw>",
-                  "name": "points"
-                }
-              ]
-            },
-            "SDL_RenderLine": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "const FPointRaw &",
-                  "name": "p1"
-                },
-                {
-                  "type": "const FPointRaw &",
-                  "name": "p2"
-                }
-              ]
-            },
-            "SDL_RenderLines": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "SpanRef<const FPointRaw>",
-                  "name": "points"
-                }
-              ]
-            },
-            "SDL_RenderRect": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "OptionalRef<const FRectRaw>",
-                  "name": "rect"
-                }
-              ]
-            },
-            "SDL_RenderRects": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "SpanRef<const FRectRaw>",
-                  "name": "rects"
-                }
-              ]
-            },
-            "SDL_RenderFillRect": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "OptionalRef<const FRectRaw>",
-                  "name": "rect"
-                }
-              ]
-            },
-            "SDL_RenderFillRects": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "SpanRef<const FRectRaw>",
-                  "name": "rects"
-                }
-              ]
-            },
-            "SDL_RenderTexture": {
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                },
-                {
-                  "name": "dstrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                }
-              ]
-            },
-            "SDL_RenderTextureRotated": {
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                },
-                {
-                  "name": "dstrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                },
-                {
-                  "name": "angle",
-                  "type": "double"
-                },
-                {
-                  "name": "center",
-                  "type": "OptionalRef<const FPointRaw>"
-                },
-                {
-                  "name": "flip",
-                  "type": "FlipMode",
-                }
-              ]
-            },
-            "SDL_RenderTextureAffine": {
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                },
-                {
-                  "name": "origin",
-                  "type": "OptionalRef<const FPointRaw>"
-                },
-                {
-                  "name": "right",
-                  "type": "OptionalRef<const FPointRaw>"
-                },
-                {
-                  "name": "down",
-                  "type": "OptionalRef<const FPointRaw>"
-                }
-              ]
-            },
-            "SDL_RenderTextureTiled": {
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                },
-                {
-                  "name": "scale",
-                  "type": "float"
-                },
-                {
-                  "name": "dstrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                }
-              ]
-            },
-            "SDL_RenderTexture9Grid": {
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                },
-                {
-                  "name": "left_width",
-                  "type": "float"
-                },
-                {
-                  "name": "right_width",
-                  "type": "float"
-                },
-                {
-                  "name": "top_height",
-                  "type": "float"
-                },
-                {
-                  "name": "bottom_height",
-                  "type": "float"
-                },
-                {
-                  "name": "scale",
-                  "type": "float"
-                },
-                {
-                  "name": "dstrect",
-                  "type": "OptionalRef<const FRectRaw>"
-                }
-              ]
-            },
-            "SDL_RenderGeometry": {
-              static: false,
-              proto: true,
-              parameters: [
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "vertices",
-                  "type": "std::span<const Vertex>"
-                },
-                {
-                  "name": "indices",
-                  "type": "std::span<const int>",
-                }
-              ]
-            },
-            "SDL_RenderGeometryRaw": {
-              static: false,
-              proto: true,
-              parameters: [
-                {},
-                {
-                  "name": "texture",
-                  "type": "TextureParam"
-                },
-                {
-                  "name": "xy",
-                  "type": "const float *"
-                },
-                {
-                  "name": "xy_stride",
-                  "type": "int"
-                },
-                {
-                  "name": "color",
-                  "type": "const FColor *"
-                },
-                {
-                  "name": "color_stride",
-                  "type": "int"
-                },
-                {
-                  "name": "uv",
-                  "type": "const float *"
-                },
-                {
-                  "name": "uv_stride",
-                  "type": "int"
-                },
-                {
-                  "name": "num_vertices",
-                  "type": "int"
-                },
-                {
-                  "name": "indices",
-                  "type": "const void *"
-                },
-                {
-                  "name": "num_indices",
-                  "type": "int"
-                },
-                {
-                  "name": "size_indices",
-                  "type": "int"
-                }
-              ]
-            },
-            "SDL_RenderReadPixels": {
-              name: "ReadPixels",
-              immutable: true,
-              type: "Surface",
-              parameters: [
-                {
-                  name: "rect",
-                  type: "OptionalRef<const RectRaw>",
-                  default: "{}",
-                }
-              ]
-            },
-            "SDL_RenderPresent": {
-              "kind": "function",
-              "name": "Present"
-            },
-            "SDL_FlushRenderer": "function",
-            "SDL_SetRenderVSync": {
-              "kind": "function",
-              "name": "SetVSync"
-            },
-            "SDL_GetRenderVSync": {
-              kind: "function",
-              name: "GetVSync",
-              type: "int",
-              immutable: true,
-              parameters: []
-            },
-            "SDL_RenderDebugText": {
-              parameters: [
-                {},
-                {},
-                { type: "StringParam", name: "str" },
-              ]
-            },
-            "SDL_RenderDebugTextFormat": {
-              template: [
-                {
-                  "type": "class...",
-                  "name": "ARGS"
-                }
-              ],
-              parameters: [
-                {},
-                {},
-                { type: "std::string_view", name: "fmt" },
-                { type: "ARGS...", name: "args" }
-              ]
-            },
           }
         },
         "SDL_CreateWindowAndRenderer": {
@@ -5119,6 +4553,536 @@ const transform = {
           name: "Window::GetRenderer",
           immutable: true,
         },
+        "SDL_GetRenderWindow": {
+          kind: "function",
+          hints: { methodName: "GetWindow" }
+        },
+        "SDL_GetRendererName": { immutable: true },
+        "SDL_GetRenderOutputSize": {
+          immutable: true,
+          hints: { methodName: "GetOutputSize" },
+        },
+        "GetRenderOutputSize": {
+          kind: "function",
+          type: "Point",
+          immutable: true,
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "GetOutputSize" },
+        },
+        "SDL_GetCurrentRenderOutputSize": {
+          immutable: true,
+          hints: { methodName: "GetCurrentOutputSize" },
+        },
+        "GetCurrentRenderOutputSize": {
+          kind: "function",
+          type: "Point",
+          immutable: true,
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "GetCurrentOutputSize" },
+        },
+        "SDL_GetRendererProperties": { immutable: true },
+        "SDL_SetRenderTarget": { hints: { methodName: "SetTarget" } },
+        "ResetRenderTarget": {
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "ResetTarget" },
+        },
+        "SDL_GetRenderTarget": {
+          immutable: true,
+          hints: { methodName: "GetTarget" },
+        },
+        "SDL_SetRenderLogicalPresentation": {
+          parameters: [
+            {},
+            { type: "const PointRaw &", name: "size" },
+            { name: "mode", type: "RendererLogicalPresentation" },
+          ],
+          hints: { methodName: "SetLogicalPresentation" },
+        },
+        "SDL_GetRenderLogicalPresentation": {
+          immutable: true,
+          hints: { methodName: "GetLogicalPresentation" },
+        },
+        "GetRenderLogicalPresentation": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "RendererParam", name: "renderer" },
+            { type: "PointRaw *", name: "size" },
+            { name: "mode", type: "RendererLogicalPresentation *" },
+          ],
+          hints: { methodName: "GetLogicalPresentation" },
+        },
+        "SDL_GetRenderLogicalPresentationRect": {
+          immutable: true,
+          type: "FRect",
+          parameters: [{}],
+          hints: { methodName: "GetLogicalPresentationRect" },
+        },
+        "SDL_RenderCoordinatesFromWindow": {
+          type: "FPoint",
+          immutable: true,
+          parameters: [
+            {},
+            { type: "const FPointRaw &", name: "window_coord" },
+          ]
+        },
+        "SDL_RenderCoordinatesToWindow": {
+          type: "FPoint",
+          immutable: true,
+          parameters: [
+            {},
+            { type: "const FPointRaw &", name: "coord" },
+          ]
+        },
+        "SDL_ConvertEventToRenderCoordinates": { immutable: true },
+        "SDL_SetRenderViewport": {
+          parameters: [
+            {},
+            { type: "OptionalRef<const RectRaw>", name: "rect" },
+          ],
+          hints: { methodName: "SetViewport" },
+        },
+        "ResetRenderViewport": {
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "ResetViewport" },
+        },
+        "SDL_GetRenderViewport": {
+          immutable: true,
+          type: "Rect",
+          parameters: [{}],
+          hints: { methodName: "GetViewport" },
+        },
+        "SDL_RenderViewportSet": {
+          immutable: true,
+          hints: { methodName: "ViewportSet" },
+        },
+        "SDL_GetRenderSafeArea": {
+          immutable: true,
+          type: "Rect",
+          parameters: [{}],
+          hints: { methodName: "GetSafeArea" },
+        },
+        "SDL_SetRenderClipRect": {
+          parameters: [
+            {},
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "rect"
+            }
+          ],
+          hints: { methodName: "SetClipRect" },
+        },
+        "ResetRenderClipRect": {
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "ResetClipRect" },
+        },
+        "SDL_GetRenderClipRect": {
+          immutable: true,
+          type: "Rect",
+          parameters: [{}],
+          hints: { methodName: "GetClipRect" },
+        },
+        "SDL_RenderClipEnabled": {
+          immutable: true,
+          hints: { methodName: "IsClipEnabled" },
+        },
+        "SDL_SetRenderScale": {
+          parameters: [
+            {},
+            {
+              type: "const FPointRaw &",
+              name: "scale"
+            }
+          ],
+          hints: { methodName: "SetScale" },
+        },
+        "SDL_GetRenderScale": {
+          immutable: true,
+          hints: { methodName: "GetScale" },
+        },
+        "GetRenderScale": {
+          kind: "function",
+          immutable: true,
+          type: "FPoint",
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "GetScale" },
+        },
+        "SDL_SetRenderDrawColor": {
+          parameters: [
+            {},
+            {
+              type: "ColorRaw",
+              name: "c"
+            }
+          ],
+          hints: { methodName: "SetDrawColor" },
+        },
+        "SDL_SetRenderDrawColorFloat": {
+          parameters: [
+            {},
+            {
+              type: "const FColorRaw &",
+              name: "c"
+            }
+          ],
+          hints: { methodName: "SetDrawColorFloat" },
+        },
+        "SDL_GetRenderDrawColor": {
+          immutable: true,
+          hints: { methodName: "GetDrawColor" },
+        },
+        "GetRenderDrawColor": {
+          kind: "function",
+          immutable: true,
+          type: "Color",
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "GetDrawColor" },
+        },
+        "SDL_GetRenderDrawColorFloat": {
+          immutable: true,
+          hints: { methodName: "GetDrawColorFloat" },
+        },
+        "GetRenderDrawColorFloat": {
+          kind: "function",
+          immutable: true,
+          type: "FColor",
+          parameters: [{ type: "RendererParam", name: "renderer" }],
+          hints: { methodName: "GetDrawColorFloat" },
+        },
+        "SDL_SetRenderColorScale": { hints: { methodName: "SetColorScale" } },
+        "SDL_GetRenderColorScale": {
+          immutable: true,
+          type: "float",
+          parameters: [{}],
+          hints: { methodName: "GetColorScale" },
+        },
+        "SDL_SetRenderDrawBlendMode": { hints: { methodName: "SetDrawBlendMode" } },
+        "SDL_GetRenderDrawBlendMode": {
+          immutable: true,
+          type: "BlendMode",
+          parameters: [{}],
+          hints: { methodName: "GetDrawBlendMode" },
+        },
+        "SDL_RenderPoint": {
+          parameters: [
+            {},
+            {
+              "type": "const FPointRaw &",
+              "name": "p"
+            }
+          ]
+        },
+        "SDL_RenderPoints": {
+          parameters: [
+            {},
+            {
+              "type": "SpanRef<const FPointRaw>",
+              "name": "points"
+            }
+          ]
+        },
+        "SDL_RenderLine": {
+          parameters: [
+            {},
+            {
+              "type": "const FPointRaw &",
+              "name": "p1"
+            },
+            {
+              "type": "const FPointRaw &",
+              "name": "p2"
+            }
+          ]
+        },
+        "SDL_RenderLines": {
+          parameters: [
+            {},
+            {
+              "type": "SpanRef<const FPointRaw>",
+              "name": "points"
+            }
+          ]
+        },
+        "SDL_RenderRect": {
+          parameters: [
+            {},
+            {
+              "type": "OptionalRef<const FRectRaw>",
+              "name": "rect"
+            }
+          ]
+        },
+        "SDL_RenderRects": {
+          parameters: [
+            {},
+            {
+              "type": "SpanRef<const FRectRaw>",
+              "name": "rects"
+            }
+          ]
+        },
+        "SDL_RenderFillRect": {
+          parameters: [
+            {},
+            {
+              "type": "OptionalRef<const FRectRaw>",
+              "name": "rect"
+            }
+          ]
+        },
+        "SDL_RenderFillRects": {
+          parameters: [
+            {},
+            {
+              "type": "SpanRef<const FRectRaw>",
+              "name": "rects"
+            }
+          ]
+        },
+        "SDL_RenderTexture": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const FRectRaw>"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const FRectRaw>"
+            }
+          ]
+        },
+        "SDL_RenderTextureRotated": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const FRectRaw>"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const FRectRaw>"
+            },
+            {
+              "name": "angle",
+              "type": "double"
+            },
+            {
+              "name": "center",
+              "type": "OptionalRef<const FPointRaw>"
+            },
+            {
+              "name": "flip",
+              "type": "FlipMode",
+            }
+          ]
+        },
+        "SDL_RenderTextureAffine": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const FRectRaw>"
+            },
+            {
+              "name": "origin",
+              "type": "OptionalRef<const FPointRaw>"
+            },
+            {
+              "name": "right",
+              "type": "OptionalRef<const FPointRaw>"
+            },
+            {
+              "name": "down",
+              "type": "OptionalRef<const FPointRaw>"
+            }
+          ]
+        },
+        "SDL_RenderTextureTiled": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const FRectRaw>"
+            },
+            {
+              "name": "scale",
+              "type": "float"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const FRectRaw>"
+            }
+          ]
+        },
+        "SDL_RenderTexture9Grid": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "srcrect",
+              "type": "OptionalRef<const FRectRaw>"
+            },
+            {
+              "name": "left_width",
+              "type": "float"
+            },
+            {
+              "name": "right_width",
+              "type": "float"
+            },
+            {
+              "name": "top_height",
+              "type": "float"
+            },
+            {
+              "name": "bottom_height",
+              "type": "float"
+            },
+            {
+              "name": "scale",
+              "type": "float"
+            },
+            {
+              "name": "dstrect",
+              "type": "OptionalRef<const FRectRaw>"
+            }
+          ]
+        },
+        "SDL_RenderGeometry": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "vertices",
+              "type": "std::span<const Vertex>"
+            },
+            {
+              "name": "indices",
+              "type": "std::span<const int>",
+            }
+          ]
+        },
+        "SDL_RenderGeometryRaw": {
+          parameters: [
+            {},
+            {
+              "name": "texture",
+              "type": "TextureParam"
+            },
+            {
+              "name": "xy",
+              "type": "const float *"
+            },
+            {
+              "name": "xy_stride",
+              "type": "int"
+            },
+            {
+              "name": "color",
+              "type": "const FColor *"
+            },
+            {
+              "name": "color_stride",
+              "type": "int"
+            },
+            {
+              "name": "uv",
+              "type": "const float *"
+            },
+            {
+              "name": "uv_stride",
+              "type": "int"
+            },
+            {
+              "name": "num_vertices",
+              "type": "int"
+            },
+            {
+              "name": "indices",
+              "type": "const void *"
+            },
+            {
+              "name": "num_indices",
+              "type": "int"
+            },
+            {
+              "name": "size_indices",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_RenderReadPixels": {
+          immutable: true,
+          type: "Surface",
+          parameters: [
+            {},
+            {
+              name: "rect",
+              type: "OptionalRef<const RectRaw>",
+              default: "{}",
+            }
+          ],
+          hints: { methodName: "ReadPixels" }
+        },
+        "SDL_RenderPresent": { hints: { methodName: "Present" } },
+        "SDL_SetRenderVSync": { hints: { methodName: "SetVSync" } },
+        "SDL_GetRenderVSync": {
+          type: "int",
+          immutable: true,
+          parameters: [{}],
+          hints: { methodName: "GetVSync" },
+        },
+        "SDL_RenderDebugText": {
+          parameters: [
+            {},
+            {},
+            { type: "StringParam", name: "str" },
+          ]
+        },
+        "SDL_RenderDebugTextFormat": {
+          template: [
+            {
+              "type": "class...",
+              "name": "ARGS"
+            }
+          ],
+          parameters: [
+            {},
+            {},
+            { type: "std::string_view", name: "fmt" },
+            { type: "ARGS...", name: "args" }
+          ]
+        },
+
         "SDL_Texture": {
           resource: {
             shared: "refcount",

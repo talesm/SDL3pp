@@ -9,7 +9,7 @@ Todo for next version
   - [x] SDL_pixels.h
   - [x] SDL_properties.h
   - [x] SDL_rect.h
-  - [ ] SDL_render.h
+  - [x] SDL_render.h
   - [x] SDL_surface.h
   - [x] SDL_video.h
   - [x] SDL_image.h
@@ -18,7 +18,7 @@ Todo for next version
   - [x] SDL_pixels.h
   - [x] SDL_properties.h
   - [x] SDL_rect.h
-  - [ ] SDL_render.h
+  - [x] SDL_render.h
   - [x] SDL_surface.h
   - [x] SDL_video.h
   - [x] SDL_image.h
