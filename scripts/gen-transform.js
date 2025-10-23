@@ -7256,74 +7256,63 @@ const transform = {
             rawName: "DisplayID",
           },
           entries: {
-            "SDL_GetDisplays": {
-              kind: "function",
-              name: "GetAll",
-              type: "OwnArray<DisplayID>",
-              parameters: [],
-              static: true,
-            },
-            "SDL_GetPrimaryDisplay": {
-              kind: "function",
-              name: "GetPrimary",
-              static: true,
-            },
-            "SDL_GetDisplayProperties": "immutable",
-            "SDL_GetDisplayName": "immutable",
-            "SDL_GetDisplayBounds": {
-              "kind": "function",
-              "type": "Rect",
-              "parameters": [],
-              "immutable": true
-            },
-            "SDL_GetDisplayUsableBounds": {
-              "kind": "function",
-              "type": "Rect",
-              "parameters": [],
-              "immutable": true
-            },
-            "SDL_GetNaturalDisplayOrientation": {
-              "kind": "function",
-              "immutable": true,
-              "name": "GetNaturalOrientation"
-            },
-            "SDL_GetCurrentDisplayOrientation": {
-              "kind": "function",
-              "immutable": true,
-              "name": "GetCurrentOrientation"
-            },
-            "SDL_GetDisplayContentScale": "immutable",
-            "SDL_GetFullscreenDisplayModes": {
-              "kind": "function",
-              "name": "GetFullscreenModes",
-              "immutable": true,
-              "type": "OwnArray<DisplayMode *>",
-              "parameters": []
-            },
-            "SDL_GetClosestFullscreenDisplayMode": {
-              "kind": "function",
-              "immutable": true,
-              "type": "DisplayMode",
-              "parameters": [
-                {},
-                {},
-                {},
-                {}
-              ]
-            },
-            "SDL_GetDesktopDisplayMode": {
-              "kind": "function",
-              "name": "GetDesktopMode",
-              "immutable": true
-            },
-            "SDL_GetCurrentDisplayMode": {
-              "kind": "function",
-              "name": "GetCurrentMode",
-              "immutable": true
-            },
+            "SDL_GetPrimaryDisplay": { static: true },
             "SDL_GetDisplayForPoint": "function",
-            "SDL_GetDisplayForRect": "function"
+            "SDL_GetDisplayForRect": "function",
           }
+        },
+        "SDL_GetDisplays": {
+          kind: "function",
+          type: "OwnArray<DisplayID>",
+          parameters: [],
+        },
+        "SDL_GetDisplayProperties": { immutable: true },
+        "SDL_GetDisplayName": { immutable: true },
+        "SDL_GetDisplayBounds": {
+          kind: "function",
+          type: "Rect",
+          parameters: [{}],
+          immutable: true
+        },
+        "SDL_GetDisplayUsableBounds": {
+          kind: "function",
+          type: "Rect",
+          parameters: [{}],
+          immutable: true
+        },
+        "SDL_GetNaturalDisplayOrientation": {
+          kind: "function",
+          immutable: true,
+        },
+        "SDL_GetCurrentDisplayOrientation": {
+          kind: "function",
+          immutable: true,
+        },
+        "SDL_GetDisplayContentScale": { immutable: true },
+        "SDL_GetFullscreenDisplayModes": {
+          kind: "function",
+          immutable: true,
+          type: "OwnArray<DisplayMode *>",
+          parameters: [{}]
+        },
+        "SDL_GetClosestFullscreenDisplayMode": {
+          kind: "function",
+          immutable: true,
+          type: "DisplayMode",
+          parameters: [
+            {},
+            {},
+            {},
+            {}
+          ],
+        },
+        "SDL_GetDesktopDisplayMode": {
+          kind: "function",
+          immutable: true,
+        },
+        "SDL_GetCurrentDisplayMode": {
+          kind: "function",
+          immutable: true,
         },
         "SDL_WindowFlags": {
           before: "SDL_Window",

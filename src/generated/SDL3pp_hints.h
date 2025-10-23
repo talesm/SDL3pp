@@ -3286,7 +3286,7 @@ namespace SDL {
  *
  * When this hint is set, displays with matching name strings will be
  * prioritized in the list of displays, as exposed by calling
- * Display.GetAll(), with the first listed becoming the primary display. The
+ * GetDisplays(), with the first listed becoming the primary display. The
  * naming convention can vary depending on the environment, but it is usually
  * a connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1',etc...).
  *

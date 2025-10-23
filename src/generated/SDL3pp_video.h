@@ -194,21 +194,6 @@ public:
   constexpr operator DisplayID() const { return m_displayID; }
 
   /**
-   * Get a list of currently connected displays.
-   *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be nullptr.
-   * @returns a 0 terminated array of display instance IDs or nullptr on
-   * failure; call GetError() for more information. This should be freed with
-   * free() when it is no longer needed.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static OwnArray<DisplayID> GetAll();
-
-  /**
    * Return the primary display.
    *
    * @returns the instance ID of the primary display on success.
@@ -218,9 +203,42 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   static Display GetPrimary();
+
+  /**
+   * Get the display containing a point.
+   *
+   * @param point the point to query.
+   * @returns the instance ID of the display containing the point or 0 on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Display.GetBounds
+   * @sa GetDisplays
+   */
+  static Display GetForPoint(const PointRaw& point);
+
+  /**
+   * Get the display primarily containing a rect.
+   *
+   * @param rect the rect to query.
+   * @returns the instance ID of the display entirely containing the rect or
+   *          closest to the center of the rect on success or 0 on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Display.GetBounds
+   * @sa GetDisplays
+   */
+  static Display GetForRect(const RectRaw& rect);
 
   /**
    * Get the properties associated with a display.
@@ -259,7 +277,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   const char* GetName() const;
 
@@ -269,7 +287,6 @@ public:
    * The primary display is often located at (0,0), but may be placed at a
    * different location depending on monitor layout.
    *
-   * @param displayID the instance ID of the display to query.
    * @param rect the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
@@ -278,7 +295,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Display.GetUsableBounds
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   Rect GetBounds() const;
 
@@ -294,7 +311,6 @@ public:
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
-   * @param displayID the instance ID of the display to query.
    * @param rect the Rect structure filled in with the display bounds.
    * @throws Error on failure.
    *
@@ -303,7 +319,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Display.GetBounds
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   Rect GetUsableBounds() const;
 
@@ -317,7 +333,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   DisplayOrientation GetNaturalOrientation() const;
 
@@ -331,7 +347,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   DisplayOrientation GetCurrentOrientation() const;
 
@@ -357,7 +373,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Window.GetDisplayScale
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   float GetContentScale() const;
 
@@ -373,7 +389,6 @@ public:
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param displayID the instance ID of the display to query.
    * @param count a pointer filled in with the number of display modes returned,
    *              may be nullptr.
    * @returns a nullptr terminated array of display mode pointers or nullptr on
@@ -385,7 +400,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   OwnArray<DisplayMode*> GetFullscreenModes() const;
 
@@ -413,7 +428,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Display.GetAll
+   * @sa GetDisplays
    * @sa Display.GetFullscreenModes
    */
   DisplayMode GetClosestFullscreenMode(const PointRaw& size,
@@ -436,7 +451,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Display.GetCurrentMode
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   const DisplayMode& GetDesktopMode() const;
 
@@ -456,42 +471,9 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Display.GetDesktopMode
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   const DisplayMode& GetCurrentMode() const;
-
-  /**
-   * Get the display containing a point.
-   *
-   * @param point the point to query.
-   * @returns the instance ID of the display containing the point or 0 on
-   *          failure; call GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Display.GetBounds
-   * @sa Display.GetAll
-   */
-  static Display GetForPoint(const PointRaw& point);
-
-  /**
-   * Get the display primarily containing a rect.
-   *
-   * @param rect the rect to query.
-   * @returns the instance ID of the display entirely containing the rect or
-   *          closest to the center of the rect on success or 0 on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Display.GetBounds
-   * @sa Display.GetAll
-   */
-  static Display GetForRect(const RectRaw& rect);
 };
 
 /**
@@ -1138,7 +1120,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Display.GetBounds
-   * @sa Display.GetAll
+   * @sa GetDisplays
    */
   Display GetDisplay() const;
 
@@ -3497,8 +3479,6 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  */
 inline OwnArray<DisplayID> GetDisplays() { return SDL_GetDisplays(); }
 
-inline OwnArray<DisplayID> Display::GetAll() { return SDL::GetDisplays(); }
-
 /**
  * Return the primary display.
  *
@@ -3509,7 +3489,7 @@ inline OwnArray<DisplayID> Display::GetAll() { return SDL::GetDisplays(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline Display GetPrimaryDisplay()
 {
@@ -3574,7 +3554,7 @@ constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline const char* GetDisplayName(DisplayID displayID)
 {
@@ -3601,9 +3581,9 @@ inline const char* Display::GetName() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetUsableBounds
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
-inline Rect GetDisplayBounds(DisplayID displayID)
+inline Rect GetDisplayBounds(Display displayID)
 {
   return CheckError(SDL_GetDisplayBounds(displayID));
 }
@@ -3634,9 +3614,9 @@ inline Rect Display::GetBounds() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetBounds
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
-inline Rect GetDisplayUsableBounds(DisplayID displayID)
+inline Rect GetDisplayUsableBounds(Display displayID)
 {
   return CheckError(SDL_GetDisplayUsableBounds(displayID));
 }
@@ -3657,7 +3637,7 @@ inline Rect Display::GetUsableBounds() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID)
 {
@@ -3680,7 +3660,7 @@ inline DisplayOrientation Display::GetNaturalOrientation() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID)
 {
@@ -3715,7 +3695,7 @@ inline DisplayOrientation Display::GetCurrentOrientation() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Window.GetDisplayScale
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline float GetDisplayContentScale(DisplayID displayID)
 {
@@ -3751,9 +3731,9 @@ inline float Display::GetContentScale() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
-inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(DisplayID displayID)
+inline OwnArray<DisplayMode*> GetFullscreenDisplayModes(Display displayID)
 {
   return SDL_GetFullscreenDisplayModes(displayID);
 }
@@ -3788,11 +3768,11 @@ inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Display.GetAll
+ * @sa GetDisplays
  * @sa Display.GetFullscreenModes
  */
 inline DisplayMode GetClosestFullscreenDisplayMode(
-  DisplayID displayID,
+  Display displayID,
   const PointRaw& size,
   float refresh_rate,
   bool include_high_density_modes)
@@ -3827,7 +3807,7 @@ inline DisplayMode Display::GetClosestFullscreenMode(
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetCurrentMode
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline const DisplayMode& GetDesktopDisplayMode(DisplayID displayID)
 {
@@ -3856,7 +3836,7 @@ inline const DisplayMode& Display::GetDesktopMode() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetDesktopMode
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline const DisplayMode& GetCurrentDisplayMode(DisplayID displayID)
 {
@@ -3880,7 +3860,7 @@ inline const DisplayMode& Display::GetCurrentMode() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetBounds
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline Display GetDisplayForPoint(const PointRaw& point)
 {
@@ -3905,7 +3885,7 @@ inline Display Display::GetForPoint(const PointRaw& point)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetBounds
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline Display GetDisplayForRect(const RectRaw& rect)
 {
@@ -3930,7 +3910,7 @@ inline Display Display::GetForRect(const RectRaw& rect)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Display.GetBounds
- * @sa Display.GetAll
+ * @sa GetDisplays
  */
 inline Display GetDisplayForWindow(WindowParam window)
 {
