@@ -2481,13 +2481,44 @@ public:
    */
   RendererRef GetRenderer() const;
 
-  void SetMod(Color c) { static_assert(false, "Not implemented"); }
+  /**
+   * Get the size of a texture, as floating point values.
+   *
+   * @param w a pointer filled in with the width of the texture in pixels. This
+   *          argument can be nullptr if you don't need this information.
+   * @param h a pointer filled in with the height of the texture in pixels. This
+   *          argument can be nullptr if you don't need this information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void GetSize(float* w, float* h) const;
 
-  void SetModFloat(FColor c) { static_assert(false, "Not implemented"); }
+  /**
+   * Get the size of a texture, as floating point values.
+   *
+   * @param texture the texture to query.
+   * @param w a pointer filled in with the width of the texture in pixels. This
+   *          argument can be nullptr if you don't need this information.
+   * @param h a pointer filled in with the height of the texture in pixels. This
+   *          argument can be nullptr if you don't need this information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Point GetSize() const;
 
-  Color GetMod() const { static_assert(false, "Not implemented"); }
+  FPoint GetSizeFloat() const;
 
-  FColor GetModFloat() const { static_assert(false, "Not implemented"); }
+  int GetWidth() const;
+
+  int GetHeight() const;
+
+  PixelFormat GetFormat() const;
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -2659,6 +2690,14 @@ public:
    */
   float GetAlphaModFloat() const;
 
+  void SetMod(Color c);
+
+  void SetModFloat(FColor c);
+
+  Color GetMod() const;
+
+  FColor GetModFloat() const;
+
   /**
    * Set the blend mode for a texture, used by Renderer.RenderTexture().
    *
@@ -2753,6 +2792,39 @@ public:
    * @sa Texture.UpdateYUV
    */
   void Update(OptionalRef<const RectRaw> rect, const void* pixels, int pitch);
+
+  /**
+   * Update the given texture rectangle with new pixel data.
+   *
+   * The pixel data must be in the pixel format of the texture, which can be
+   * queried using the prop::Texture.FORMAT_NUMBER property.
+   *
+   * This is a fairly slow function, intended for use with static textures that
+   * do not change often.
+   *
+   * If the texture is intended to be updated often, it is preferred to create
+   * the texture as streaming and use the locking functions referenced below.
+   * While this function will work with streaming textures, for optimization
+   * reasons you may not get the pixels back if you lock the texture afterward.
+   *
+   * @param rect an Rect structure representing the area to update, or nullptr
+   *             to update the entire texture.
+   * @param pixels the raw pixel data in the format of the texture.
+   * @param pitch the number of bytes in a row of pixel data, including padding
+   *              between lines.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   * @sa Texture.Unlock
+   * @sa Texture.UpdateNV
+   * @sa Texture.UpdateYUV
+   */
+  void Update(SurfaceConstParam surface,
+              OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
    * Update a rectangle within a planar YV12 or IYUV texture with new pixel
@@ -2902,31 +2974,6 @@ public:
    * @sa Texture.Lock
    */
   void Unlock();
-
-  int GetWidth() const { static_assert(false, "Not implemented"); }
-
-  int GetHeight() const { static_assert(false, "Not implemented"); }
-
-  Point GetSize() const { static_assert(false, "Not implemented"); }
-
-  /**
-   * Get the size of a texture, as floating point values.
-   *
-   * @param w a pointer filled in with the width of the texture in pixels. This
-   *          argument can be nullptr if you don't need this information.
-   * @param h a pointer filled in with the height of the texture in pixels. This
-   *          argument can be nullptr if you don't need this information.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void GetSize(float* w, float* h) const;
-
-  FPoint GetSizeFloat() const { static_assert(false, "Not implemented"); }
-
-  PixelFormat GetFormat() const { static_assert(false, "Not implemented"); }
 };
 
 /**
@@ -3886,9 +3933,73 @@ inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
   CheckError(SDL_GetTextureSize(texture, w, h));
 }
 
+/**
+ * Get the size of a texture, as floating point values.
+ *
+ * @param texture the texture to query.
+ * @param w a pointer filled in with the width of the texture in pixels. This
+ *          argument can be nullptr if you don't need this information.
+ * @param h a pointer filled in with the height of the texture in pixels. This
+ *          argument can be nullptr if you don't need this information.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Point GetTextureSize(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Texture::GetSize(float* w, float* h) const
 {
   SDL::GetTextureSize(m_resource, w, h);
+}
+
+inline Point Texture::GetSize() const
+{
+  return SDL::GetTextureSize(m_resource);
+}
+
+inline FPoint GetTextureSizeFloat(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline FPoint Texture::GetSizeFloat() const
+{
+  return SDL::GetTextureSizeFloat(m_resource);
+}
+
+inline int GetTextureWidth(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline int Texture::GetWidth() const
+{
+  return SDL::GetTextureWidth(m_resource);
+}
+
+inline int GetTextureHeight(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline int Texture::GetHeight() const
+{
+  return SDL::GetTextureHeight(m_resource);
+}
+
+inline PixelFormat GetTextureFormat(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline PixelFormat Texture::GetFormat() const
+{
+  return SDL::GetTextureFormat(m_resource);
 }
 
 /**
@@ -4142,6 +4253,40 @@ inline float Texture::GetAlphaModFloat() const
   return SDL::GetTextureAlphaModFloat(m_resource);
 }
 
+inline void SetTextureMod(TextureParam texture, Color c)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Texture::SetMod(Color c) { SDL::SetTextureMod(m_resource, c); }
+
+inline void SetTextureModFloat(TextureParam texture, FColor c)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline void Texture::SetModFloat(FColor c)
+{
+  SDL::SetTextureModFloat(m_resource, c);
+}
+
+inline Color GetTextureMod(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Color Texture::GetMod() const { return SDL::GetTextureMod(m_resource); }
+
+inline FColor GetTextureModFloat(TextureConstParam texture)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline FColor Texture::GetModFloat() const
+{
+  return SDL::GetTextureModFloat(m_resource);
+}
+
 /**
  * Set the blend mode for a texture, used by Renderer.RenderTexture().
  *
@@ -4280,11 +4425,55 @@ inline void UpdateTexture(TextureParam texture,
   CheckError(SDL_UpdateTexture(texture, rect, pixels, pitch));
 }
 
+/**
+ * Update the given texture rectangle with new pixel data.
+ *
+ * The pixel data must be in the pixel format of the texture, which can be
+ * queried using the prop::Texture.FORMAT_NUMBER property.
+ *
+ * This is a fairly slow function, intended for use with static textures that
+ * do not change often.
+ *
+ * If the texture is intended to be updated often, it is preferred to create
+ * the texture as streaming and use the locking functions referenced below.
+ * While this function will work with streaming textures, for optimization
+ * reasons you may not get the pixels back if you lock the texture afterward.
+ *
+ * @param texture the texture to update.
+ * @param rect an Rect structure representing the area to update, or nullptr
+ *             to update the entire texture.
+ * @param pixels the raw pixel data in the format of the texture.
+ * @param pitch the number of bytes in a row of pixel data, including padding
+ *              between lines.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Texture.Lock
+ * @sa Texture.Unlock
+ * @sa Texture.UpdateNV
+ * @sa Texture.UpdateYUV
+ */
+inline void UpdateTexture(TextureParam texture,
+                          SurfaceConstParam surface,
+                          OptionalRef<const RectRaw> rect = std::nullopt)
+{
+  static_assert(false, "Not implemented");
+}
+
 inline void Texture::Update(OptionalRef<const RectRaw> rect,
                             const void* pixels,
                             int pitch)
 {
   SDL::UpdateTexture(m_resource, rect, pixels, pitch);
+}
+
+inline void Texture::Update(SurfaceConstParam surface,
+                            OptionalRef<const RectRaw> rect)
+{
+  SDL::UpdateTexture(m_resource, surface, rect);
 }
 
 /**

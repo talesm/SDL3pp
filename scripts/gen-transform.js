@@ -5100,192 +5100,6 @@ const transform = {
             },
           }
         },
-        "SDL_Texture": {
-          resource: {
-            shared: "refcount",
-          },
-          entries: {
-            "SDL_CreateTexture": "ctor",
-            "SDL_CreateTextureFromSurface": "ctor",
-            "SDL_CreateTextureWithProperties": "ctor",
-            "SDL_GetTextureProperties": "immutable",
-            "SDL_GetRendererFromTexture": {
-              "name": "GetRenderer",
-              "immutable": true
-            },
-            "SetMod": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  "type": "Color",
-                  "name": "c"
-                }
-              ]
-            },
-            "SetModFloat": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  "type": "FColor",
-                  "name": "c"
-                }
-              ]
-            },
-            "GetMod": {
-              kind: "function",
-              type: "Color",
-              immutable: true,
-              parameters: []
-            },
-            "GetModFloat": {
-              kind: "function",
-              type: "FColor",
-              immutable: true,
-              parameters: []
-            },
-            "SDL_SetTextureColorMod": "function",
-            "SDL_SetTextureColorModFloat": "function",
-            "SDL_GetTextureColorMod": "immutable",
-            "SDL_GetTextureColorModFloat": "immutable",
-            "SDL_SetTextureAlphaMod": "function",
-            "SDL_SetTextureAlphaModFloat": "function",
-            "SDL_GetTextureAlphaMod": {
-              immutable: true,
-              type: "Uint8",
-              parameters: [{}],
-            },
-            "SDL_GetTextureAlphaModFloat": {
-              immutable: true,
-              type: "float",
-              parameters: [{}],
-            },
-            "SDL_SetTextureBlendMode": "function",
-            "SDL_GetTextureBlendMode": {
-              "kind": "function",
-              "immutable": true,
-              "type": "BlendMode",
-              "parameters": [{}]
-            },
-            "SDL_SetTextureScaleMode": "function",
-            "SDL_GetTextureScaleMode": {
-              "kind": "function",
-              "immutable": true,
-              "type": "ScaleMode",
-              "parameters": [{}]
-            },
-            "SDL_UpdateTexture": {
-              "name": "Update",
-              "parameters": [
-                {},
-                {
-                  "type": "OptionalRef<const RectRaw>"
-                },
-                {},
-                {}
-              ]
-            },
-            "SDL_UpdateYUVTexture": {
-              "name": "UpdateYUV",
-              "parameters": [
-                {},
-                {
-                  "name": "rect",
-                  "type": "OptionalRef<const RectRaw>"
-                },
-                {
-                  "name": "Yplane",
-                  "type": "const Uint8 *"
-                },
-                {
-                  "name": "Ypitch",
-                  "type": "int"
-                },
-                {
-                  "name": "Uplane",
-                  "type": "const Uint8 *"
-                },
-                {
-                  "name": "Upitch",
-                  "type": "int"
-                },
-                {
-                  "name": "Vplane",
-                  "type": "const Uint8 *"
-                },
-                {
-                  "name": "Vpitch",
-                  "type": "int"
-                }
-              ]
-            },
-            "SDL_UpdateNVTexture": {
-              "name": "UpdateNV",
-              "parameters": [
-                {},
-                {
-                  "type": "OptionalRef<const RectRaw>"
-                },
-                {
-                  "name": "Yplane",
-                  "type": "const Uint8 *"
-                },
-                {
-                  "name": "Ypitch",
-                  "type": "int"
-                },
-                {
-                  "name": "UVplane",
-                  "type": "const Uint8 *"
-                },
-                {
-                  "name": "UVpitch",
-                  "type": "int"
-                }
-              ]
-            },
-            "SDL_LockTexture": {
-              parameters: [{}, { type: "OptionalRef<const SDL_Rect>" }, {}, {}]
-            },
-            "SDL_LockTextureToSurface": {
-              parameters: [{}, { type: "OptionalRef<const SDL_Rect>", default: "std::nullopt" }],
-              type: "Surface",
-            },
-            "SDL_UnlockTexture": "function",
-            "GetWidth": {
-              "kind": "function",
-              "immutable": true,
-              "type": "int",
-              "parameters": []
-            },
-            "GetHeight": {
-              "kind": "function",
-              "immutable": true,
-              "type": "int",
-              "parameters": []
-            },
-            "GetSize": {
-              "kind": "function",
-              "immutable": true,
-              "type": "Point",
-              "parameters": []
-            },
-            "GetSizeFloat": {
-              "kind": "function",
-              "immutable": true,
-              "type": "FPoint",
-              "parameters": []
-            },
-            "SDL_GetTextureSize": "immutable",
-            "GetFormat": {
-              "kind": "function",
-              "immutable": true,
-              "type": "PixelFormat",
-              "parameters": []
-            },
-          }
-        },
         "SDL_CreateWindowAndRenderer": {
           type: "std::pair<Window, Renderer>",
           parameters: [
@@ -5304,6 +5118,144 @@ const transform = {
         "SDL_GetRenderer": {
           name: "Window::GetRenderer",
           immutable: true,
+        },
+        "SDL_Texture": {
+          resource: {
+            shared: "refcount",
+          },
+          entries: {
+            "SDL_CreateTexture": "ctor",
+            "SDL_CreateTextureFromSurface": "ctor",
+            "SDL_CreateTextureWithProperties": "ctor",
+          }
+        },
+        "SDL_GetTextureProperties": { parameters: [{ type: "TextureConstParam" }] },
+        "SDL_GetRendererFromTexture": {
+          parameters: [{ type: "TextureConstParam" }],
+          hints: { methodName: "GetRenderer" },
+        },
+        "SDL_GetTextureSize": { parameters: [{ type: "TextureConstParam" }, {}, {}] },
+        "GetTextureSize": {
+          kind: "function",
+          immutable: true,
+          type: "Point",
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "GetTextureSizeFloat": {
+          kind: "function",
+          immutable: true,
+          type: "FPoint",
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "GetTextureWidth": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "GetTextureHeight": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "GetTextureFormat": {
+          kind: "function",
+          immutable: true,
+          type: "PixelFormat",
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "SDL_GetTextureColorMod": { parameters: [{ type: "TextureConstParam" }, {}, {}, {}] },
+        "SDL_GetTextureColorModFloat": { parameters: [{ type: "TextureConstParam" }, {}, {}, {}] },
+        "SDL_GetTextureAlphaMod": {
+          type: "Uint8",
+          parameters: [{ type: "TextureConstParam" }],
+        },
+        "SDL_GetTextureAlphaModFloat": {
+          type: "float",
+          parameters: [{ type: "TextureConstParam" }],
+        },
+        "SetTextureMod": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "TextureParam", name: "texture" },
+            { type: "Color", name: "c" },
+          ]
+        },
+        "SetTextureModFloat": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "TextureParam", name: "texture" },
+            { type: "FColor", name: "c" },
+          ]
+        },
+        "GetTextureMod": {
+          kind: "function",
+          type: "Color",
+          immutable: true,
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "GetTextureModFloat": {
+          kind: "function",
+          type: "FColor",
+          immutable: true,
+          parameters: [{ type: "TextureConstParam", name: "texture" }]
+        },
+        "SDL_GetTextureBlendMode": {
+          type: "BlendMode",
+          parameters: [{ type: "TextureConstParam" }]
+        },
+        "SDL_GetTextureScaleMode": {
+          type: "ScaleMode",
+          parameters: [{ type: "TextureConstParam" }]
+        },
+        "SDL_UpdateTexture": {
+          parameters: [
+            {},
+            { type: "OptionalRef<const RectRaw>" },
+            {},
+            {}
+          ]
+        },
+        "UpdateTexture": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "TextureParam", name: "texture" },
+            { type: "SurfaceConstParam", name: "surface" },
+            { type: "OptionalRef<const RectRaw>", name: "rect", default: "std::nullopt" },
+          ]
+        },
+        "SDL_UpdateYUVTexture": {
+          parameters: [
+            {},
+            { name: "rect", type: "OptionalRef<const RectRaw>" },
+            { name: "Yplane", type: "const Uint8 *" },
+            { name: "Ypitch", type: "int" },
+            { name: "Uplane", type: "const Uint8 *" },
+            { name: "Upitch", type: "int" },
+            { name: "Vplane", type: "const Uint8 *" },
+            { name: "Vpitch", type: "int" },
+          ]
+        },
+        "SDL_UpdateNVTexture": {
+          parameters: [
+            {},
+            { type: "OptionalRef<const RectRaw>" },
+            { name: "Yplane", type: "const Uint8 *" },
+            { name: "Ypitch", type: "int" },
+            { name: "UVplane", type: "const Uint8 *" },
+            { name: "UVpitch", type: "int" },
+          ]
+        },
+        "SDL_LockTexture": {
+          parameters: [{}, { type: "OptionalRef<const SDL_Rect>" }, {}, {}]
+        },
+        "SDL_LockTextureToSurface": {
+          parameters: [{}, { type: "OptionalRef<const SDL_Rect>", default: "std::nullopt" }],
+          type: "Surface",
         },
       }
     },

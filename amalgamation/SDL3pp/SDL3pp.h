@@ -79672,102 +79672,34 @@ public:
   RendererRef GetRenderer() const;
 
   /**
-   * Set an additional color and alpha values multiplied into render copy
-   * operations.
+   * Get the size of a texture, as floating point values.
    *
-   * When this texture is rendered, during the copy operation each source color
-   * and alpha channels are modulated by the appropriate color value according
-   * to the following formula:
-   *
-   *      srcC = srcC * (color / 255)
-   *      srcA = srcA * (alpha / 255)
-   *
-   * Color and alpha modulation is not always supported by the renderer; it will
-   * return false if either modulation is not supported.
-   *
-   * @param c the color and alpha channel values multiplied into copy
-   *          operations.
+   * @param w a pointer filled in with the width of the texture in pixels. This
+   *          argument can be nullptr if you don't need this information.
+   * @param h a pointer filled in with the height of the texture in pixels. This
+   *          argument can be nullptr if you don't need this information.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void SetMod(Color c)
-  {
-    SetColorMod(c.r, c.g, c.b);
-    SetAlphaMod(c.a);
-  }
+  void GetSize(float* w, float* h) const;
 
-  /**
-   * Set an additional color and alpha values multiplied into render copy
-   * operations.
-   *
-   * When this texture is rendered, during the copy operation each source color
-   * and alpha channels are modulated by the appropriate color value according
-   * to the following formula:
-   *
-   *      srcC = srcC * (color / 255)
-   *      srcA = srcA * (alpha / 255)
-   *
-   * Color and alpha modulation is not always supported by the renderer; it will
-   * return false if either modulation is not supported.
-   *
-   * @param c the color and alpha channel values multiplied into copy
-   *          operations.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void SetModFloat(FColor c)
-  {
-    SetColorMod(c.r, c.g, c.b);
-    SetAlphaMod(c.a);
-  }
+  /// Get the size of a texture.
+  Point GetSize() const;
 
-  /**
-   * Get the additional color value multiplied into render copy operations.
-   *
-   * @returns the color channels (0-1) on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetAlphaMod()
-   * @sa SetColorMod()
-   */
-  Color GetMod() const
-  {
-    Color c;
-    GetColorMod(&c.r, &c.g, &c.b);
-    c.a = GetAlphaMod();
-    return c;
-  }
+  /// Get the size of a texture, as floating point values.
+  FPoint GetSizeFloat() const;
 
-  /**
-   * Get the additional color value multiplied into render copy operations.
-   *
-   * @returns the color channels (0-1) on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetAlphaMod()
-   * @sa SetColorMod()
-   */
-  FColor GetModFloat() const
-  {
-    FColor c;
-    GetColorModFloat(&c.r, &c.g, &c.b);
-    c.a = GetAlphaModFloat();
-    return c;
-  }
+  /// Get the width in pixels.
+  int GetWidth() const;
+
+  /// Get the height in pixels.
+  int GetHeight() const;
+
+  /// Get the pixel format.
+  PixelFormat GetFormat() const;
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -79940,6 +79872,84 @@ public:
   float GetAlphaModFloat() const;
 
   /**
+   * Set an additional color and alpha values multiplied into render copy
+   * operations.
+   *
+   * When this texture is rendered, during the copy operation each source color
+   * and alpha channels are modulated by the appropriate color value according
+   * to the following formula:
+   *
+   *      srcC = srcC * (color / 255)
+   *      srcA = srcA * (alpha / 255)
+   *
+   * Color and alpha modulation is not always supported by the renderer; it will
+   * return false if either modulation is not supported.
+   *
+   * @param c the color and alpha channel values multiplied into copy
+   *          operations.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetMod(Color c);
+
+  /**
+   * Set an additional color and alpha values multiplied into render copy
+   * operations.
+   *
+   * When this texture is rendered, during the copy operation each source color
+   * and alpha channels are modulated by the appropriate color value according
+   * to the following formula:
+   *
+   *      srcC = srcC * (color / 255)
+   *      srcA = srcA * (alpha / 255)
+   *
+   * Color and alpha modulation is not always supported by the renderer; it will
+   * return false if either modulation is not supported.
+   *
+   * @param c the color and alpha channel values multiplied into copy
+   *          operations.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void SetModFloat(FColor c);
+
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @returns the color channels (0-1) on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
+  Color GetMod() const;
+
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @returns the color channels (0-1) on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
+  FColor GetModFloat() const;
+
+  /**
    * Set the blend mode for a texture, used by Renderer.RenderTexture().
    *
    * If the blend mode is not supported, the closest supported mode is chosen
@@ -80033,6 +80043,38 @@ public:
    * @sa Texture.UpdateYUV
    */
   void Update(OptionalRef<const RectRaw> rect, const void* pixels, int pitch);
+
+  /**
+   * Update the given texture rectangle with new pixel data.
+   *
+   * The pixel data must be in the pixel format of the texture, which can be
+   * queried using the prop::Texture.FORMAT_NUMBER property.
+   *
+   * This is a fairly slow function, intended for use with static textures that
+   * do not change often.
+   *
+   * If the texture is intended to be updated often, it is preferred to create
+   * the texture as streaming and use the locking functions referenced below.
+   * While this function will work with streaming textures, for optimization
+   * reasons you may not get the pixels back if you lock the texture afterward.
+   *
+   * @param surface the surface containing pixel data in the format of the
+   *                texture.
+   * @param rect an Rect structure representing the area to update, or
+   *             std::nullopt to update the entire texture.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   * @sa Texture.Unlock
+   * @sa Texture.UpdateNV
+   * @sa Texture.UpdateYUV
+   */
+  void Update(SurfaceConstParam surface,
+              OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
    * Update a rectangle within a planar YV12 or IYUV texture with new pixel
@@ -80182,51 +80224,6 @@ public:
    * @sa Texture.Lock
    */
   void Unlock();
-
-  /**
-   * Get the width in pixels.
-   */
-  int GetWidth() const { return m_resource->w; }
-
-  /**
-   * Get the height in pixels.
-   */
-  int GetHeight() const { return m_resource->h; }
-
-  /**
-   * Get the size in pixels.
-   */
-  Point GetSize() const { return Point(GetWidth(), GetHeight()); }
-
-  /**
-   * Get the size of a texture, as floating point values.
-   *
-   * @param w a pointer filled in with the width of the texture in pixels. This
-   *          argument can be nullptr if you don't need this information.
-   * @param h a pointer filled in with the height of the texture in pixels. This
-   *          argument can be nullptr if you don't need this information.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void GetSize(float* w, float* h) const;
-
-  /**
-   * Get the size in pixels.
-   */
-  FPoint GetSizeFloat() const
-  {
-    FPoint p;
-    GetSize(&p.x, &p.y);
-    return p;
-  }
-
-  /**
-   * Get the pixel format.
-   */
-  PixelFormat GetFormat() const { return m_resource->format; }
 };
 
 /**
@@ -81187,9 +81184,60 @@ inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
   CheckError(SDL_GetTextureSize(texture, w, h));
 }
 
+/// Get the size of a texture.
+inline Point GetTextureSize(TextureConstParam texture)
+{
+  return Point(texture->w, texture->h);
+}
+
 inline void Texture::GetSize(float* w, float* h) const
 {
   SDL::GetTextureSize(m_resource, w, h);
+}
+
+inline Point Texture::GetSize() const
+{
+  return SDL::GetTextureSize(m_resource);
+}
+
+/// Get the size of a texture, as floating point values.
+inline FPoint GetTextureSizeFloat(TextureConstParam texture)
+{
+  FPoint p;
+  GetTextureSize(texture, &p.x, &p.y);
+  return p;
+}
+
+inline FPoint Texture::GetSizeFloat() const
+{
+  return SDL::GetTextureSizeFloat(m_resource);
+}
+
+/// Get the width in pixels.
+inline int GetTextureWidth(TextureConstParam texture) { return texture->w; }
+
+inline int Texture::GetWidth() const
+{
+  return SDL::GetTextureWidth(m_resource);
+}
+
+/// Get the height in pixels.
+inline int GetTextureHeight(TextureConstParam texture) { return texture->h; }
+
+inline int Texture::GetHeight() const
+{
+  return SDL::GetTextureHeight(m_resource);
+}
+
+/// Get the pixel format.
+inline PixelFormat GetTextureFormat(TextureConstParam texture)
+{
+  return texture->format;
+}
+
+inline PixelFormat Texture::GetFormat() const
+{
+  return SDL::GetTextureFormat(m_resource);
 }
 
 /**
@@ -81448,6 +81496,122 @@ inline float Texture::GetAlphaModFloat() const
 }
 
 /**
+ * Set an additional color and alpha values multiplied into render copy
+ * operations.
+ *
+ * When this texture is rendered, during the copy operation each source color
+ * and alpha channels are modulated by the appropriate color value according
+ * to the following formula:
+ *
+ *      srcC = srcC * (color / 255)
+ *      srcA = srcA * (alpha / 255)
+ *
+ * Color and alpha modulation is not always supported by the renderer; it will
+ * return false if either modulation is not supported.
+ *
+ * @param texture the texture to update.
+ * @param c the color and alpha channel values multiplied into copy
+ *          operations.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetTextureMod(TextureParam texture, Color c)
+{
+  SetTextureColorMod(texture, c.r, c.g, c.b);
+  SetTextureAlphaMod(texture, c.a);
+}
+
+inline void Texture::SetMod(Color c) { SDL::SetTextureMod(m_resource, c); }
+
+/**
+ * Set an additional color and alpha values multiplied into render copy
+ * operations.
+ *
+ * When this texture is rendered, during the copy operation each source color
+ * and alpha channels are modulated by the appropriate color value according
+ * to the following formula:
+ *
+ *      srcC = srcC * (color / 255)
+ *      srcA = srcA * (alpha / 255)
+ *
+ * Color and alpha modulation is not always supported by the renderer; it will
+ * return false if either modulation is not supported.
+ *
+ * @param texture the texture to update.
+ * @param c the color and alpha channel values multiplied into copy
+ *          operations.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void SetTextureModFloat(TextureParam texture, FColor c)
+{
+  SetTextureColorModFloat(texture, c.r, c.g, c.b);
+  SetTextureAlphaModFloat(texture, c.a);
+}
+
+inline void Texture::SetModFloat(FColor c)
+{
+  SDL::SetTextureModFloat(m_resource, c);
+}
+
+/**
+ * Get the additional color value multiplied into render copy operations.
+ *
+ * @param texture the texture to query.
+ * @returns the color channels (0-1) on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAlphaMod()
+ * @sa SetColorMod()
+ */
+inline Color GetTextureMod(TextureConstParam texture)
+{
+  Color c;
+  GetTextureColorMod(texture, &c.r, &c.g, &c.b);
+  c.a = GetTextureAlphaMod(texture);
+  return c;
+}
+
+inline Color Texture::GetMod() const { return SDL::GetTextureMod(m_resource); }
+
+/**
+ * Get the additional color value multiplied into render copy operations.
+ *
+ * @param texture the texture to query.
+ * @returns the color channels (0-1) on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAlphaMod()
+ * @sa SetColorMod()
+ */
+inline FColor GetTextureModFloat(TextureConstParam texture)
+{
+  FColor c;
+  GetTextureColorModFloat(texture, &c.r, &c.g, &c.b);
+  c.a = GetTextureAlphaModFloat(texture);
+  return c;
+}
+
+inline FColor Texture::GetModFloat() const
+{
+  return SDL::GetTextureModFloat(m_resource);
+}
+
+/**
  * Set the blend mode for a texture, used by Renderer.RenderTexture().
  *
  * If the blend mode is not supported, the closest supported mode is chosen
@@ -81589,11 +81753,54 @@ inline void UpdateTexture(TextureParam texture,
   CheckError(SDL_UpdateTexture(texture, rect, pixels, pitch));
 }
 
+/**
+ * Update the given texture rectangle with new pixel data.
+ *
+ * The pixel data must be in the pixel format of the texture, which can be
+ * queried using the prop::Texture.FORMAT_NUMBER property.
+ *
+ * This is a fairly slow function, intended for use with static textures that
+ * do not change often.
+ *
+ * If the texture is intended to be updated often, it is preferred to create
+ * the texture as streaming and use the locking functions referenced below.
+ * While this function will work with streaming textures, for optimization
+ * reasons you may not get the pixels back if you lock the texture afterward.
+ *
+ * @param texture the texture to update.
+ * @param surface the surface containing pixel data in the format of the
+ *                texture.
+ * @param rect an Rect structure representing the area to update, or
+ *             std::nullopt to update the entire texture.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Texture.Lock
+ * @sa Texture.Unlock
+ * @sa Texture.UpdateNV
+ * @sa Texture.UpdateYUV
+ */
+inline void UpdateTexture(TextureParam texture,
+                          SurfaceConstParam surface,
+                          OptionalRef<const RectRaw> rect = std::nullopt)
+{
+  UpdateTexture(texture, rect, surface->pixels, surface->pitch);
+}
+
 inline void Texture::Update(OptionalRef<const RectRaw> rect,
                             const void* pixels,
                             int pitch)
 {
   SDL::UpdateTexture(m_resource, rect, pixels, pitch);
+}
+
+inline void Texture::Update(SurfaceConstParam surface,
+                            OptionalRef<const RectRaw> rect)
+{
+  SDL::UpdateTexture(m_resource, surface, rect);
 }
 
 /**
