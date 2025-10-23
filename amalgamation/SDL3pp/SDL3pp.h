@@ -51471,6 +51471,13 @@ using HitTestCB =
   std::function<HitTestResult(WindowRaw window, const Point& area)>;
 
 /**
+ * Opaque type for an EGL surface.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using EGLSurface = SDL_EGLSurface;
+
+/**
  * The struct used as an opaque handle to a window.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -51875,6 +51882,38 @@ public:
   void Destroy();
 
   /**
+   * Get a window from a stored ID.
+   *
+   * The numeric ID is what WindowEvent references, and is necessary to map
+   * these events to specific Window objects.
+   *
+   * @param id the ID of the window.
+   * @returns the window associated with `id` or nullptr if it doesn't exist;
+   * call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.GetID
+   */
+  static WindowRef FromID(WindowID id);
+
+  /**
+   * Get the window that currently has an input grab enabled.
+   *
+   * @returns the window if input is grabbed or nullptr otherwise.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetMouseGrab
+   * @sa Window.SetKeyboardGrab
+   */
+  static WindowRef GetGrabbed();
+
+  /**
    * Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
@@ -52071,7 +52110,7 @@ public:
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
    * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
-   *   renderbuffer object. It must be bound when GL_SwapWindow is called.
+   *   renderbuffer object. It must be bound when Window.GL_Swap is called.
    * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
    *   view's resolve framebuffer, when MSAA is used.
    *
@@ -52227,38 +52266,6 @@ public:
   void SetIcon(SurfaceParam icon);
 
   /**
-   * @brief Request the window's position and size to be set.
-   *
-   * @param rect the rect containing the new coordinates
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @sa WindowRef.SetPosition()
-   * @sa WindowRef.SetSize()
-   */
-  void SetRect(Rect rect)
-  {
-    SetPosition(rect.GetTopLeft());
-    SetSize(rect.GetSize());
-  }
-
-  /**
-   * Get the position and client size of a window.
-   *
-   * This is the current position of the window as last reported by the
-   * windowing system.
-   *
-   * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use Window.GetSizeInPixels()
-   * or RendererRef.GetOutputSize() to get the real client area size in pixels.
-   *
-   * @return Rect with the position and size
-   * @throws Error on failure.
-   */
-  Rect GetRect() const { return Rect{GetPosition(), GetSize()}; }
-
-  /**
    * Request that the window's position be set.
    *
    * If the window is in an exclusive fullscreen or maximized state, this
@@ -52301,29 +52308,6 @@ public:
    * This is the current position of the window as last reported by the
    * windowing system.
    *
-   * @returns the position on success.
-   * @throws Error on failure.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetPosition()
-   * @sa SetPosition(int *, int *)
-   */
-  Point GetPosition() const
-  {
-    Point p;
-    GetPosition(&p.x, &p.y);
-    return p;
-  }
-
-  /**
-   * Get the position of a window.
-   *
-   * This is the current position of the window as last reported by the
-   * windowing system.
-   *
    * If you do not need the value for one of the positions a nullptr may be
    * passed in the `x` or `y` parameter.
    *
@@ -52340,6 +52324,27 @@ public:
    * @sa Window.SetPosition
    */
   void GetPosition(int* x, int* y) const;
+
+  /**
+   * Get the position of a window.
+   *
+   * This is the current position of the window as last reported by the
+   * windowing system.
+   *
+   * If you do not need the value for one of the positions a nullptr may be
+   * passed in the `x` or `y` parameter.
+   *
+   * @returns the position on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.SetPosition
+   * @sa SetPosition(int *, int *)
+   */
+  Point GetPosition() const;
 
   /**
    * Request that the size of a window's client area be set.
@@ -52362,7 +52367,7 @@ public:
    * content area to remain within the usable desktop bounds). Additionally, as
    * this is just a request, it can be denied by the windowing system.
    *
-   * @param p the width and height of the window, must be > 0.
+   * @param size the width and height of the window, must be > 0.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -52373,33 +52378,7 @@ public:
    * @sa Window.SetFullscreenMode
    * @sa Window.Sync
    */
-  void SetSize(const PointRaw& p);
-
-  /**
-   * Get the size of a window's client area.
-   *
-   * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use GetSizeInPixels()
-   * or Renderer.GetOutputSize() to get the real client area size in pixels.
-   *
-   * @returns a point with width and height on success or std::nullopt on
-   * failure; call GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Renderer.GetOutputSize()
-   * @sa GetSizeInPixels()
-   * @sa SetSize()
-   * @sa GetSize(int *, int *)
-   */
-  Point GetSize() const
-  {
-    Point p;
-    GetSize(&p.x, &p.y);
-    return p;
-  }
+  void SetSize(const PointRaw& size);
 
   /**
    * Get the size of a window's client area.
@@ -52421,6 +52400,55 @@ public:
    * @sa Window.SetSize
    */
   void GetSize(int* w, int* h) const;
+
+  /**
+   * Get the size of a window's client area.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use Window.GetSizeInPixels()
+   * or Renderer.GetOutputSize() to get the real client area size in pixels.
+   *
+   * @returns a point with width and height on success
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetOutputSize
+   * @sa Window.GetSizeInPixels
+   * @sa Window.SetSize
+   * @sa GetSize(int *, int *)
+   */
+  Point GetSize() const;
+
+  /**
+   * @brief Request the window's position and size to be set.
+   *
+   * @param rect the rect containing the new coordinates
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa WindowRef.SetPosition()
+   * @sa WindowRef.SetSize()
+   */
+  void SetRect(Rect rect);
+
+  /**
+   * Get the position and client size of a window.
+   *
+   * This is the current position of the window as last reported by the
+   * windowing system.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use Window.GetSizeInPixels()
+   * or RendererRef.GetOutputSize() to get the real client area size in pixels.
+   *
+   * @return Rect with the position and size
+   * @throws Error on failure.
+   */
+  Rect GetRect() const;
 
   /**
    * Get the safe area for this window.
@@ -52534,26 +52562,6 @@ public:
   /**
    * Get the size of a window's client area, in pixels.
    *
-   * @returns the size on success or std::nullopt on failure; call GetError()
-   * for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetSize()
-   * @sa GetSizeInPixels(int*, int*)
-   */
-  Point GetSizeInPixels() const
-  {
-    Point p;
-    GetSizeInPixels(&p.x, &p.y);
-    return p;
-  }
-
-  /**
-   * Get the size of a window's client area, in pixels.
-   *
    * @param w a pointer to variable for storing the width in pixels, may be
    *          nullptr.
    * @param h a pointer to variable for storing the height in pixels, may be
@@ -52566,8 +52574,26 @@ public:
    *
    * @sa Window.Window
    * @sa Window.GetSize
+   * @sa GetSizeInPixels()
    */
   void GetSizeInPixels(int* w, int* h) const;
+
+  /**
+   * Get the size of a window's client area, in pixels.
+   *
+   * @returns the size on success or std::nullopt on failure; call GetError()
+   * for more information.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Window.Window
+   * @sa Window.GetSize
+   * @sa GetSizeInPixels(int*, int*)
+   */
+  Point GetSizeInPixels() const;
 
   /**
    * Set the minimum size of a window's client area.
@@ -53291,24 +53317,14 @@ public:
    * devoid of allocations, etc.
    *
    * @param callback the function to call when doing a hit-test.
+   * @param callback_data an app-defined void pointer passed to **callback**.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
-   *
-   * @cat listener-callback
    */
-  void SetHitTest(HitTestCB callback)
-  {
-    using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-    void* cbHandle = Wrapper::Wrap(m_resource, std::move(callback));
-    SetHitTest(
-      [](SDL_Window* win, const SDL_Point* area, void* data) {
-        return Wrapper::Call(data, win, Point(*area));
-      },
-      cbHandle);
-  }
+  void SetHitTest(HitTest callback, void* callback_data);
 
   /**
    * Provide a callback that decides if a window region has special properties.
@@ -53343,14 +53359,15 @@ public:
    * devoid of allocations, etc.
    *
    * @param callback the function to call when doing a hit-test.
-   * @param callback_data an app-defined void pointer passed to **callback**.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @cat listener-callback
    */
-  void SetHitTest(HitTest callback, void* callback_data);
+  void SetHitTest(HitTestCB callback);
 
   /**
    * Set the shape of a transparent window.
@@ -53391,36 +53408,73 @@ public:
   void Flash(FlashOperation operation);
 
   /**
-   * Get a window from a stored ID.
+   * Create an OpenGL context for an OpenGL window, and make it current.
    *
-   * The numeric ID is what WindowEvent references, and is necessary to map
-   * these events to specific Window objects.
+   * Windows users new to OpenGL should note that, for historical reasons, GL
+   * functions added after OpenGL version 1.1 are not available by default.
+   * Those functions must be loaded at run-time, either with an OpenGL
+   * extension-handling library or with GL_GetProcAddress() and its related
+   * functions.
    *
-   * @param id the ID of the window.
-   * @returns the window associated with `id` or nullptr if it doesn't exist;
-   * call GetError() for more information.
+   * GLContext is opaque to the application.
+   *
+   * @returns the OpenGL context associated with `window` or nullptr on failure;
+   *          call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.GetID
+   * @sa GLContext.Destroy
+   * @sa GLContext.MakeCurrent
    */
-  static WindowRef FromID(WindowID id);
+  GLContext CreateGLContext();
 
   /**
-   * Get the window that currently has an input grab enabled.
+   * Set up an OpenGL context for rendering into an OpenGL window.
    *
-   * @returns the window if input is grabbed or nullptr otherwise.
+   * The context must have been created with a compatible window.
+   *
+   * @param context the OpenGL context to associate with the window.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Window.SetMouseGrab
-   * @sa Window.SetKeyboardGrab
+   * @sa GLContext.GLContext
    */
-  static WindowRef GetGrabbed();
+  void MakeCurrent(GLContext context);
+
+  /**
+   * Get the EGL surface associated with the window.
+   *
+   * @returns the EGLSurface pointer associated with the window, or nullptr on
+   *          failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  EGLSurface GetEGLSurface();
+
+  /**
+   * Update a window with OpenGL rendering.
+   *
+   * This is used with double-buffered OpenGL contexts, which are the default.
+   *
+   * On macOS, make sure you bind 0 to the draw framebuffer before swapping the
+   * window, otherwise nothing will happen. If you aren't using
+   * glBindFramebuffer(), this is the default and you won't have to do anything
+   * extra.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void GL_Swap();
 
   /**
    * Start accepting Unicode text input events in a window.
@@ -53931,13 +53985,6 @@ using EGLDisplay = SDL_EGLDisplay;
  * @since This datatype is available since SDL 3.2.0.
  */
 using EGLConfig = SDL_EGLConfig;
-
-/**
- * Opaque type for an EGL surface.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using EGLSurface = SDL_EGLSurface;
 
 /**
  * An EGL attribute, used when creating an EGL context.
@@ -55598,7 +55645,7 @@ inline WindowRef Window::GetParent() const
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
  * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
- *   renderbuffer object. It must be bound when GL_SwapWindow is called.
+ *   renderbuffer object. It must be bound when Window.GL_Swap is called.
  * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
  *   view's resolve framebuffer, when MSAA is used.
  *
@@ -55871,9 +55918,40 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
   CheckError(SDL_GetWindowPosition(window, x, y));
 }
 
+/**
+ * Get the position of a window.
+ *
+ * This is the current position of the window as last reported by the
+ * windowing system.
+ *
+ * If you do not need the value for one of the positions a nullptr may be passed
+ * in the `x` or `y` parameter.
+ *
+ * @param window the window to query.
+ * @returns the position on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
+ */
+inline Point GetWindowPosition(WindowParam window)
+{
+  Point p;
+  GetWindowPosition(window, &p.x, &p.y);
+  return p;
+}
+
 inline void Window::GetPosition(int* x, int* y) const
 {
   SDL::GetWindowPosition(m_resource, x, y);
+}
+
+inline Point Window::GetPosition() const
+{
+  return SDL::GetWindowPosition(m_resource);
 }
 
 /**
@@ -55898,7 +55976,7 @@ inline void Window::GetPosition(int* x, int* y) const
  * this is just a request, it can be denied by the windowing system.
  *
  * @param window the window to change.
- * @param p the width and height of the window, must be > 0.
+ * @param size the width and height of the window, must be > 0.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -55909,14 +55987,14 @@ inline void Window::GetPosition(int* x, int* y) const
  * @sa Window.SetFullscreenMode
  * @sa Window.Sync
  */
-inline void SetWindowSize(WindowParam window, const PointRaw& p)
+inline void SetWindowSize(WindowParam window, const PointRaw& size)
 {
-  CheckError(SDL_SetWindowSize(window, p.x, p.y));
+  CheckError(SDL_SetWindowSize(window, size.x, size.y));
 }
 
-inline void Window::SetSize(const PointRaw& p)
+inline void Window::SetSize(const PointRaw& size)
 {
-  SDL::SetWindowSize(m_resource, p);
+  SDL::SetWindowSize(m_resource, size);
 }
 
 /**
@@ -55944,10 +56022,79 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowSize(window, w, h));
 }
 
+/**
+ * Get the size of a window's client area.
+ *
+ * The window pixel size may differ from its window coordinate size if the
+ * window is on a high pixel density display. Use Window.GetSizeInPixels()
+ * or Renderer.GetOutputSize() to get the real client area size in pixels.
+ *
+ * @param window the window to query the width and height from.
+ * @returns a point with width and height on success
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.GetOutputSize
+ * @sa Window.GetSizeInPixels
+ * @sa Window.SetSize
+ */
+inline Point GetWindowSize(WindowParam window)
+{
+  Point p;
+  GetWindowSize(window, &p.x, &p.y);
+  return p;
+}
+
 inline void Window::GetSize(int* w, int* h) const
 {
   SDL::GetWindowSize(m_resource, w, h);
 }
+
+inline Point Window::GetSize() const { return SDL::GetWindowSize(m_resource); }
+
+/**
+ * @brief Request the window's position and size to be set.
+ *
+ * @param window the window to query the width and height from.
+ * @param rect the rect containing the new coordinates
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa WindowRef.SetPosition()
+ * @sa WindowRef.SetSize()
+ */
+inline void SetWindowRect(WindowParam window, Rect rect)
+{
+  SetWindowPosition(window, rect.GetTopLeft());
+  SetWindowSize(window, rect.GetSize());
+}
+
+inline void Window::SetRect(Rect rect) { SDL::SetWindowRect(m_resource, rect); }
+
+/**
+ * Get the position and client size of a window.
+ *
+ * This is the current position of the window as last reported by the
+ * windowing system.
+ *
+ * The window pixel size may differ from its window coordinate size if the
+ * window is on a high pixel density display. Use Window.GetSizeInPixels()
+ * or RendererRef.GetOutputSize() to get the real client area size in pixels.
+ *
+ * @param window the window to query the width and height from.
+ * @return Rect with the position and size
+ * @throws Error on failure.
+ */
+inline Rect GetWindowRect(WindowParam window)
+{
+  return Rect{GetWindowPosition(window), GetWindowSize(window)};
+}
+
+inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
 
 /**
  * Get the safe area for this window.
@@ -56129,9 +56276,36 @@ inline void GetWindowSizeInPixels(WindowParam window, int* w, int* h)
   CheckError(SDL_GetWindowSizeInPixels(window, w, h));
 }
 
+/**
+ * Get the size of a window's client area, in pixels.
+ *
+ * @param window the window from which the drawable size should be queried.
+ * @returns the size on success or std::nullopt on failure; call GetError()
+ * for more information.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window.Window
+ * @sa Window.GetSize
+ */
+inline Point GetWindowSizeInPixels(WindowParam window)
+{
+  Point p;
+  GetWindowSizeInPixels(window, &p.x, &p.y);
+  return p;
+}
+
 inline void Window::GetSizeInPixels(int* w, int* h) const
 {
   SDL::GetWindowSizeInPixels(m_resource, w, h);
+}
+
+inline Point Window::GetSizeInPixels() const
+{
+  return SDL::GetWindowSizeInPixels(m_resource);
 }
 
 /**
@@ -57170,6 +57344,8 @@ inline void SetWindowHitTest(WindowParam window,
                              HitTest callback,
                              void* callback_data)
 {
+  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
+  Wrapper::erase(window);
   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
 }
 
@@ -57223,6 +57399,16 @@ inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
       return Wrapper::Call(data, win, Point(*area));
     },
     cbHandle);
+}
+
+inline void Window::SetHitTest(HitTest callback, void* callback_data)
+{
+  SDL::SetWindowHitTest(m_resource, callback, callback_data);
+}
+
+inline void Window::SetHitTest(HitTestCB callback)
+{
+  SDL::SetWindowHitTest(m_resource, callback);
 }
 
 /**
@@ -57301,7 +57487,12 @@ inline void Window::Flash(FlashOperation operation)
  * @sa Window.Window
  * @sa Window.Window
  */
-inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
+inline void DestroyWindow(WindowRaw window)
+{
+  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
+  Wrapper::erase(window);
+  SDL_DestroyWindow(window);
+}
 
 inline void Window::Destroy() { DestroyWindow(release()); }
 
@@ -57584,6 +57775,8 @@ inline GLContext GL_CreateContext(WindowParam window)
   return GLContext(window);
 }
 
+inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
+
 /**
  * Set up an OpenGL context for rendering into an OpenGL window.
  *
@@ -57602,6 +57795,11 @@ inline GLContext GL_CreateContext(WindowParam window)
 inline void GL_MakeCurrent(WindowParam window, GLContext context)
 {
   CheckError(SDL_GL_MakeCurrent(window, context.get()));
+}
+
+inline void Window::MakeCurrent(GLContext context)
+{
+  SDL::GL_MakeCurrent(m_resource, context);
 }
 
 inline void GLContext::MakeCurrent(WindowParam window)
@@ -57679,6 +57877,11 @@ inline EGLConfig EGL_GetCurrentConfig() { return SDL_EGL_GetCurrentConfig(); }
 inline EGLSurface EGL_GetWindowSurface(WindowParam window)
 {
   return SDL_EGL_GetWindowSurface(window);
+}
+
+inline EGLSurface Window::GetEGLSurface()
+{
+  return SDL::EGL_GetWindowSurface(m_resource);
 }
 
 /**
@@ -57790,6 +57993,8 @@ inline void GL_SwapWindow(WindowParam window)
 {
   CheckError(SDL_GL_SwapWindow(window));
 }
+
+inline void Window::GL_Swap() { SDL::GL_SwapWindow(m_resource); }
 
 /**
  * Delete an OpenGL context.

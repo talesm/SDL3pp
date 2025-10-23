@@ -7327,10 +7327,10 @@ const transform = {
           type: "HitTest",
           doc: "@sa HitTest"
         },
+        "SDL_EGLSurface": { before: "SDL_Window" },
         "SDL_Window": {
           resource: {
             free: "SDL_DestroyWindow",
-            enableAutoMethods: false,
           },
           entries: {
             "SDL_CreateWindow": {
@@ -7376,196 +7376,6 @@ const transform = {
               ]
             },
             "SDL_CreateWindowWithProperties": "ctor",
-            "SDL_GetDisplayForWindow": {
-              "kind": "function",
-              "name": "GetDisplay",
-              "immutable": true
-            },
-            "SDL_GetWindowPixelDensity": "immutable",
-            "SDL_GetWindowDisplayScale": "immutable",
-            "SDL_SetWindowFullscreenMode": {
-              "kind": "function",
-              "parameters": [
-                {},
-                {
-                  "type": "OptionalRef<const DisplayMode>"
-                }
-              ]
-            },
-            "SDL_GetWindowFullscreenMode": "immutable",
-            "SDL_GetWindowICCProfile": {
-              kind: "function",
-              immutable: true,
-              type: "OwnPtr<void>",
-              parameters: [{}]
-            },
-            "SDL_GetWindowPixelFormat": "immutable",
-            "SDL_GetWindowID": "immutable",
-            "SDL_GetWindowParent": "immutable",
-            "SDL_GetWindowProperties": "immutable",
-            "SDL_GetWindowFlags": "immutable",
-            "SDL_SetWindowTitle": "function",
-            "SDL_GetWindowTitle": "immutable",
-            "SDL_SetWindowIcon": "function",
-            "SetRect": {
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "type": "Rect",
-                  "name": "rect"
-                }
-              ]
-            },
-            "GetRect": {
-              "kind": "function",
-              "type": "Rect",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_SetWindowPosition": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "const PointRaw &",
-                  "name": "p"
-                }
-              ]
-            },
-            "GetPosition": {
-              "kind": "function",
-              "type": "Point",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_GetWindowPosition": "immutable",
-            "SDL_SetWindowSize": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "const PointRaw &",
-                  "name": "p"
-                }
-              ]
-            },
-            "GetSize": {
-              "kind": "function",
-              "type": "Point",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_GetWindowSize": "immutable",
-            "SDL_GetWindowSafeArea": {
-              "kind": "function",
-              "type": "Rect",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_SetWindowAspectRatio": "function",
-            "SDL_GetWindowAspectRatio": "immutable",
-            "SDL_GetWindowBordersSize": "immutable",
-            "GetSizeInPixels": {
-              "kind": "function",
-              "type": "Point",
-              "immutable": true,
-              "parameters": []
-            },
-            "SDL_GetWindowSizeInPixels": "immutable",
-            "SDL_SetWindowMinimumSize": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "const PointRaw &",
-                  "name": "p"
-                }
-              ]
-            },
-            "SDL_GetWindowMinimumSize": "immutable",
-            "SDL_SetWindowMaximumSize": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "const PointRaw &",
-                  "name": "p"
-                }
-              ]
-            },
-            "SDL_GetWindowMaximumSize": "immutable",
-            "SDL_SetWindowBordered": "function",
-            "SDL_SetWindowResizable": "function",
-            "SDL_SetWindowAlwaysOnTop": "function",
-            "SDL_ShowWindow": "function",
-            "SDL_HideWindow": "function",
-            "SDL_RaiseWindow": "function",
-            "SDL_MaximizeWindow": "function",
-            "SDL_MinimizeWindow": "function",
-            "SDL_RestoreWindow": "function",
-            "SDL_SetWindowFullscreen": "function",
-            "SDL_SyncWindow": "function",
-            "SDL_WindowHasSurface": "immutable",
-            "SDL_GetWindowSurface": "function",
-            "SDL_SetWindowSurfaceVSync": "function",
-            "SDL_GetWindowSurfaceVSync": {
-              "immutable": true,
-              "type": "int",
-              "parameters": []
-            },
-            "SDL_UpdateWindowSurface": {
-              "kind": "function",
-              "name": "UpdateSurface"
-            },
-            "SDL_UpdateWindowSurfaceRects": {
-              "kind": "function",
-              "name": "UpdateSurfaceRects",
-              "parameters": [
-                {},
-                {
-                  "type": "SpanRef<const RectRaw>"
-                }
-              ]
-            },
-            "SDL_DestroyWindowSurface": "function",
-            "SDL_SetWindowKeyboardGrab": "function",
-            "SDL_SetWindowMouseGrab": "function",
-            "SDL_GetWindowKeyboardGrab": "immutable",
-            "SDL_GetWindowMouseGrab": "immutable",
-            "SDL_SetWindowMouseRect": "function",
-            "SDL_GetWindowMouseRect": {
-              immutable: true,
-              type: "const RectRaw *"
-            },
-            "SDL_SetWindowOpacity": "function",
-            "SDL_GetWindowOpacity": "immutable",
-            "SDL_SetWindowParent": {
-              parameters: [
-                {},
-                { type: "WindowParam" }
-              ]
-            },
-            "SDL_SetWindowModal": "function",
-            "SDL_SetWindowFocusable": "function",
-            "SDL_ShowWindowSystemMenu": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "const PointRaw &",
-                  "name": "p"
-                }
-              ]
-            },
-            "SetHitTest": {
-              "kind": "function",
-              "type": "void",
-              "parameters": [
-                {
-                  "name": "callback",
-                  "type": "HitTestCB"
-                }
-              ]
-            },
-            "SDL_SetWindowHitTest": "function",
-            "SDL_SetWindowShape": "function",
-            "SDL_FlashWindow": "function",
             "SDL_GetWindowFromID": {
               name: "FromID",
               static: true,
@@ -7581,7 +7391,100 @@ const transform = {
           type: "OwnArray<WindowRef>",
           parameters: []
         },
-
+        "SDL_GetDisplayForWindow": {
+          immutable: true,
+          hints: { methodName: "GetDisplay" },
+        },
+        "SDL_GetWindowPixelDensity": { immutable: true },
+        "SDL_GetWindowDisplayScale": { immutable: true },
+        "SDL_SetWindowFullscreenMode": { parameters: [{}, { type: "OptionalRef<const DisplayMode>" }] },
+        "SDL_GetWindowFullscreenMode": { immutable: true },
+        "SDL_GetWindowICCProfile": {
+          kind: "function",
+          immutable: true,
+          type: "OwnPtr<void>",
+          parameters: [{}]
+        },
+        "SDL_GetWindowPixelFormat": { immutable: true },
+        "SDL_GetWindowID": { immutable: true },
+        "SDL_GetWindowParent": { immutable: true },
+        "SDL_GetWindowProperties": { immutable: true },
+        "SDL_GetWindowFlags": { immutable: true },
+        "SDL_GetWindowTitle": { immutable: true },
+        "SDL_GetWindowPosition": { immutable: true },
+        "GetWindowPosition": {
+          kind: "function",
+          type: "Point",
+          immutable: true,
+          parameters: [{ type: "WindowParam", name: "window" }]
+        },
+        "SDL_GetWindowSize": { immutable: true },
+        "GetWindowSize": {
+          kind: "function",
+          type: "Point",
+          immutable: true,
+          parameters: [{ type: "WindowParam", name: "window" }]
+        },
+        "SetWindowRect": {
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "WindowParam", name: "window" },
+            { type: "Rect", name: "rect" },
+          ]
+        },
+        "GetWindowRect": {
+          kind: "function",
+          type: "Rect",
+          immutable: true,
+          parameters: [{ type: "WindowParam", name: "window" }]
+        },
+        "SDL_GetWindowSafeArea": {
+          type: "Rect",
+          immutable: true,
+          parameters: [{}]
+        },
+        "SDL_GetWindowAspectRatio": { immutable: true },
+        "SDL_GetWindowBordersSize": { immutable: true },
+        "SDL_GetWindowSizeInPixels": { immutable: true },
+        "GetWindowSizeInPixels": {
+          kind: "function",
+          type: "Point",
+          immutable: true,
+          parameters: [{ type: "WindowParam", name: "window" }]
+        },
+        "SDL_SetWindowMinimumSize": { parameters: [{}, { type: "const PointRaw &", name: "p" }] },
+        "SDL_GetWindowMinimumSize": { immutable: true },
+        "SDL_SetWindowMaximumSize": { parameters: [{}, { type: "const PointRaw &", name: "p" }] },
+        "SDL_GetWindowMaximumSize": { immutable: true },
+        "SDL_WindowHasSurface": { immutable: true },
+        "SDL_GetWindowSurfaceVSync": {
+          immutable: true,
+          type: "int",
+          parameters: [{}]
+        },
+        "SDL_UpdateWindowSurfaceRects": {
+          parameters: [
+            {},
+            { type: "SpanRef<const RectRaw>" },
+          ]
+        },
+        "SDL_GetWindowKeyboardGrab": { immutable: true },
+        "SDL_GetWindowMouseGrab": { immutable: true },
+        "SDL_GetWindowMouseRect": {
+          immutable: true,
+          type: "const RectRaw *"
+        },
+        "SDL_GetWindowOpacity": { immutable: true },
+        "SetWindowHitTest": {
+          after: "SDL_SetWindowHitTest",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { name: "window", type: "WindowParam" },
+            { name: "callback", type: "HitTestCB" },
+          ]
+        },
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
           kind: 'var',
           type: 'int',
@@ -7633,14 +7536,9 @@ const transform = {
           entries: {
             "SDL_GL_CreateContext": { name: "ctor" },
             "SDL_GL_MakeCurrent": {
-              "name": "MakeCurrent",
-              "static": false,
-              "parameters": [
-                {
-                  "type": "WindowParam",
-                  "name": "window"
-                }
-              ]
+              name: "MakeCurrent",
+              static: false,
+              parameters: [{ type: "WindowParam", name: "window" }]
             },
             "SDL_GL_DestroyContext": {
               name: "Destroy",
@@ -7648,8 +7546,15 @@ const transform = {
             },
           }
         },
+        "SDL_GL_CreateContext": {
+          hints: { methodName: "CreateGLContext" }
+        },
         "SDL_GL_MakeCurrent": {
           parameters: [{}, {}],
+          hints: { methodName: "MakeCurrent" }
+        },
+        "SDL_EGL_GetWindowSurface": {
+          hints: { methodName: "GetEGLSurface" }
         },
       }
     },

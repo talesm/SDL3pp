@@ -1369,7 +1369,7 @@ function expandTypes(sourceEntries, file, context) {
       const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`], [`const ${sourceType}`, `const ${sourceType} *`]);
       if (!m) continue;
       const transformEntry = /** @type {ApiEntryTransform}*/(transformMap[sourceName]);
-      if (transformEntry?.name || transformEntry?.parameters || transformEntry?.hints?.methodName) {
+      if (transformEntry?.name || transformEntry?.parameters || transformEntry?.type || transformEntry?.hints?.methodName) {
         /** @type {ApiEntryTransform} */
         const e = {
           ...deepClone(transformEntry),

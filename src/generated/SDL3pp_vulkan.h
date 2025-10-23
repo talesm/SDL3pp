@@ -22,7 +22,7 @@ namespace SDL {
  *
  * Unlike OpenGL, most of the details of "context" creation and window buffer
  * swapping are handled by the Vulkan API directly, so SDL doesn't provide
- * Vulkan equivalents of GL_SwapWindow(), etc; they aren't necessary.
+ * Vulkan equivalents of Window.GL_Swap(), etc; they aren't necessary.
  *
  * @{
  */

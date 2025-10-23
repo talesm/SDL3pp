@@ -303,7 +303,7 @@ public:
    *
    * @sa Joystick.Close
    */
-  JoystickRef OpenJoystick();
+  Joystick OpenJoystick();
 
   /**
    * Get the Joystick associated with an instance ID, if it has been opened.
@@ -1366,7 +1366,7 @@ inline Joystick OpenJoystick(JoystickID instance_id)
   return Joystick(instance_id);
 }
 
-inline JoystickRef JoystickID::OpenJoystick()
+inline Joystick JoystickID::OpenJoystick()
 {
   return SDL::Joystick.Joystick(m_joystickID);
 }

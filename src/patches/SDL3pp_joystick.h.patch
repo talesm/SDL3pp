@@ -8,10 +8,6 @@
 ---
 >    * @returns an Joystick on success.
 >    * @throws Error on failure.
-306c306
-<   JoystickRef OpenJoystick();
----
->   Joystick OpenJoystick();
 361a362,365
 > /**
 >  * Represents tbe HatState for a Joystick.
@@ -67,7 +63,7 @@
 >  * @returns an Joystick on success.
 >  * @throws Error on failure.
 1369,1372c1367
-< inline JoystickRef JoystickID::OpenJoystick()
+< inline Joystick JoystickID::OpenJoystick()
 < {
 <   return SDL::Joystick.Joystick(m_joystickID);
 < }
