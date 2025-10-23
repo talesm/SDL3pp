@@ -123,6 +123,9 @@ struct PaletteParam
 
   /// Converts to underlying PaletteRaw
   constexpr operator PaletteRaw() const { return value; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /// Safely wrap Palette for non owning const parameters
@@ -156,6 +159,9 @@ struct PaletteConstParam
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /**
@@ -2540,6 +2546,12 @@ public:
     }
     return {};
   }
+
+  /// member access to underlying PaletteRaw.
+  constexpr const PaletteRaw operator->() const { return m_resource; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr PaletteRaw operator->() { return m_resource; }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }

@@ -124,6 +124,45 @@ struct TextParam
 
   /// Converts to underlying TextRaw
   constexpr operator TextRaw() const { return value; }
+
+  /// member access to underlying TextRaw.
+  constexpr auto operator->() { return value; }
+};
+
+/// Safely wrap Text for non owning const parameters
+struct TextConstParam
+{
+  const TextRaw value; ///< parameter's const TextRaw
+
+  /// Constructs from const TextRaw
+  constexpr TextConstParam(const TextRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs from TextParam
+  constexpr TextConstParam(TextParam value)
+    : value(value.value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr TextConstParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextConstParam& other) const = default;
+
+  /// Converts to underlying const TextRaw
+  constexpr operator const TextRaw() const { return value; }
+
+  /// member access to underlying TextRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
@@ -4334,6 +4373,12 @@ public:
   {
   }
 
+  /// member access to underlying TextRaw.
+  constexpr const TextRaw operator->() const { return m_resource; }
+
+  /// member access to underlying TextRaw.
+  constexpr TextRaw operator->() { return m_resource; }
+
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }
 
@@ -5284,7 +5329,7 @@ inline SurfaceTextEngine CreateSurfaceTextEngine()
  * @sa SurfaceTextEngine.SurfaceTextEngine
  * @sa Text.Text
  */
-inline void DrawSurfaceText(TextParam text, Point p, SurfaceParam surface)
+inline void DrawSurfaceText(TextConstParam text, Point p, SurfaceParam surface)
 {
   CheckError(TTF_DrawSurfaceText(text, p, surface));
 }
@@ -5403,7 +5448,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @sa RendererTextEngine.RendererTextEngine
  * @sa Text.Text
  */
-inline void DrawRendererText(TextParam text, FPoint p)
+inline void DrawRendererText(TextConstParam text, FPoint p)
 {
   CheckError(TTF_DrawRendererText(text, p));
 }
@@ -5526,7 +5571,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @sa GPUTextEngine.GPUTextEngine
  * @sa Text.Text
  */
-inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextParam text)
+inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstParam text)
 {
   return TTF_GetGPUTextDrawData(text);
 }
@@ -5614,7 +5659,7 @@ inline Text TextEngine::CreateText(FontParam font, std::string_view text)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline PropertiesRef GetTextProperties(TextParam text)
+inline PropertiesRef GetTextProperties(TextConstParam text)
 {
   return CheckError(TTF_GetTextProperties(text));
 }
@@ -5664,7 +5709,7 @@ inline void Text::SetEngine(TextEngineParam engine)
  *
  * @sa Text.SetEngine
  */
-inline TextEngineParam GetTextEngine(TextParam text)
+inline TextEngineParam GetTextEngine(TextConstParam text)
 {
   return CheckError(TTF_GetTextEngine(text));
 }
@@ -5719,7 +5764,7 @@ inline bool Text::SetFont(FontParam font)
  *
  * @sa Text.SetFont
  */
-inline FontRef GetTextFont(TextParam text)
+inline FontRef GetTextFont(TextConstParam text)
 {
   return CheckError(TTF_GetTextFont(text));
 }
@@ -5764,7 +5809,7 @@ inline void Text::SetDirection(Direction direction)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Direction GetTextDirection(TextParam text)
+inline Direction GetTextDirection(TextConstParam text)
 {
   return TTF_GetTextDirection(text);
 }
@@ -5821,7 +5866,10 @@ inline void Text::SetScript(Uint32 script)
  *
  * @sa TagToString
  */
-inline Uint32 GetTextScript(TextParam text) { return TTF_GetTextScript(text); }
+inline Uint32 GetTextScript(TextConstParam text)
+{
+  return TTF_GetTextScript(text);
+}
 
 inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
 
@@ -5904,7 +5952,11 @@ inline void Text::SetColorFloat(FColor c)
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline void GetTextColor(TextParam text, Uint8* r, Uint8* g, Uint8* b, Uint8* a)
+inline void GetTextColor(TextConstParam text,
+                         Uint8* r,
+                         Uint8* g,
+                         Uint8* b,
+                         Uint8* a)
 {
   CheckError(TTF_GetTextColor(text, r, g, b, a));
 }
@@ -5965,7 +6017,7 @@ inline Color Text::GetColor() { return SDL::GetTextColor(m_resource); }
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline void GetTextColorFloat(TextParam text,
+inline void GetTextColorFloat(TextConstParam text,
                               float* r,
                               float* g,
                               float* b,
@@ -6056,7 +6108,7 @@ inline bool Text::SetPosition(Point p)
  *
  * @sa Text.SetPosition
  */
-inline bool GetTextPosition(TextParam text, int* x, int* y)
+inline bool GetTextPosition(TextConstParam text, int* x, int* y)
 {
   return TTF_GetTextPosition(text, x, y);
 }
@@ -6131,7 +6183,7 @@ inline void Text::SetWrapWidth(int wrap_width)
  *
  * @sa Text.SetWrapWidth
  */
-inline int GetTextWrapWidth(TextParam text)
+inline int GetTextWrapWidth(TextConstParam text)
 {
   return CheckError(TTF_GetTextWrapWidth(text));
 }
@@ -6187,7 +6239,7 @@ inline void Text::SetWrapWhitespaceVisible(bool visible)
  *
  * @sa Text.SetWrapWhitespaceVisible
  */
-inline bool TextWrapWhitespaceVisible(TextParam text)
+inline bool TextWrapWhitespaceVisible(TextConstParam text)
 {
   return TTF_TextWrapWhitespaceVisible(text);
 }
@@ -6344,7 +6396,7 @@ inline void Text::DeleteString(int offset, int length)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSize(TextParam text, int* w, int* h)
+inline void GetTextSize(TextConstParam text, int* w, int* h)
 {
   CheckError(TTF_GetTextSize(text, w, h));
 }
@@ -6399,7 +6451,9 @@ inline Point Text::GetSize() { return SDL::GetTextSize(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubString(TextParam text, int offset, SubString* substring)
+inline void GetTextSubString(TextConstParam text,
+                             int offset,
+                             SubString* substring)
 {
   CheckError(TTF_GetTextSubString(text, offset, substring));
 }
@@ -6429,7 +6483,7 @@ inline void Text::GetSubString(int offset, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubStringForLine(TextParam text,
+inline void GetTextSubStringForLine(TextConstParam text,
                                     int line,
                                     SubString* substring)
 {
@@ -6459,7 +6513,7 @@ inline void Text::GetSubStringForLine(int line, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline OwnArray<SubString*> GetTextSubStringsForRange(TextParam text,
+inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstParam text,
                                                       int offset,
                                                       int length)
 {
@@ -6491,7 +6545,7 @@ inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubStringForPoint(TextParam text,
+inline void GetTextSubStringForPoint(TextConstParam text,
                                      Point p,
                                      SubString* substring)
 {
@@ -6520,7 +6574,7 @@ inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetPreviousTextSubString(TextParam text,
+inline void GetPreviousTextSubString(TextConstParam text,
                                      const SubString& substring,
                                      SubString* previous)
 {
@@ -6549,7 +6603,7 @@ inline void Text::GetPreviousSubString(const SubString& substring,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetNextTextSubString(TextParam text,
+inline void GetNextTextSubString(TextConstParam text,
                                  const SubString& substring,
                                  SubString* next)
 {

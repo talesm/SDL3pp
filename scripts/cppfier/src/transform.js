@@ -730,7 +730,9 @@ function expandTypes(sourceEntries, file, context) {
     const rawName = resourceEntry.rawName || `${targetName}Raw`;
     const constRawName = `const ${rawName}`;
     const paramType = `${targetName}Param`;
-    const constParamType = resourceEntry.enableConstParam ? `${targetName}ConstParam` : paramType;
+    const enableMemberAccess = resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
+    const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
+    const constParamType = enableConstParam ? `${targetName}ConstParam` : paramType;
     if (!targetEntry.kind) targetEntry.kind = 'struct';
     const hasShared = !!resourceEntry.shared;
     const hasScoped = resourceEntry.owning === false;
@@ -757,6 +759,19 @@ function expandTypes(sourceEntries, file, context) {
     });
     if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
     if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
+
+    /** @type {ApiEntryTransformMap} */
+    const memberAccess = {};
+    if (enableMemberAccess) {
+      memberAccess["operator->"] = {
+        doc: `member access to underlying ${rawName}.`,
+        kind: "function",
+        constexpr: true,
+        type: "auto",
+        parameters: [],
+        hints: { body: "return value;" },
+      };
+    }
 
     referenceAliases.push({
       name: paramType,
@@ -815,10 +830,11 @@ function expandTypes(sourceEntries, file, context) {
           type: '',
           parameters: [],
           hints: { body: 'return value;' }
-        }
+        },
+        ...memberAccess,
       },
     });
-    if (resourceEntry.enableConstParam) {
+    if (enableConstParam) {
       referenceAliases.push({
         name: constParamType,
         kind: 'struct',
@@ -885,7 +901,8 @@ function expandTypes(sourceEntries, file, context) {
             type: '',
             parameters: [],
             hints: { body: 'return value;' }
-          }
+          },
+          ...memberAccess,
         },
       });
     }
@@ -894,7 +911,7 @@ function expandTypes(sourceEntries, file, context) {
       context.addParamType(constPointerType, `const ${targetName} &`);
     } else {
       context.addParamType(pointerType, paramType);
-      context.addParamType(constPointerType, resourceEntry.enableConstParam ? constParamType : paramType);
+      context.addParamType(constPointerType, enableConstParam ? constParamType : paramType);
     }
 
     if (hasRef) {
@@ -1094,6 +1111,25 @@ function expandTypes(sourceEntries, file, context) {
     }
 
     for (const [key, subEntry] of Object.entries(subEntries)) checkIfProtoNeeded(key, subEntry);
+
+    if (enableMemberAccess) {
+      ctors["operator->"] = {
+        doc: `member access to underlying ${rawName}.`,
+        kind: "function",
+        constexpr: true,
+        immutable: true,
+        type: constRawName,
+        parameters: [],
+        hints: { body: "return m_resource;" },
+      };
+      ctors["operator->#2"] = {
+        kind: "function",
+        constexpr: true,
+        type: rawName,
+        parameters: [],
+        hints: { body: "return m_resource;" },
+      };
+    }
 
     targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
     targetEntry.entries = {

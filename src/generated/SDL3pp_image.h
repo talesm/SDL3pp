@@ -54,6 +54,45 @@ struct AnimationParam
 
   /// Converts to underlying AnimationRaw
   constexpr operator AnimationRaw() const { return value; }
+
+  /// member access to underlying AnimationRaw.
+  constexpr auto operator->() { return value; }
+};
+
+/// Safely wrap Animation for non owning const parameters
+struct AnimationConstParam
+{
+  const AnimationRaw value; ///< parameter's const AnimationRaw
+
+  /// Constructs from const AnimationRaw
+  constexpr AnimationConstParam(const AnimationRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs from AnimationParam
+  constexpr AnimationConstParam(AnimationParam value)
+    : value(value.value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr AnimationConstParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AnimationConstParam& other) const = default;
+
+  /// Converts to underlying const AnimationRaw
+  constexpr operator const AnimationRaw() const { return value; }
+
+  /// member access to underlying AnimationRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
@@ -2141,6 +2180,12 @@ public:
     : m_resource(IMG_LoadAnimation_IO(src, closeio))
   {
   }
+
+  /// member access to underlying AnimationRaw.
+  constexpr const AnimationRaw operator->() const { return m_resource; }
+
+  /// member access to underlying AnimationRaw.
+  constexpr AnimationRaw operator->() { return m_resource; }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }

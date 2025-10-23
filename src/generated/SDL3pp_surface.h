@@ -66,6 +66,9 @@ struct SurfaceParam
 
   /// Converts to underlying SurfaceRaw
   constexpr operator SurfaceRaw() const { return value; }
+
+  /// member access to underlying SurfaceRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /// Safely wrap Surface for non owning const parameters
@@ -99,6 +102,9 @@ struct SurfaceConstParam
 
   /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
+
+  /// member access to underlying SurfaceRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /**
@@ -432,6 +438,12 @@ public:
    * @sa Surface.SaveBMP
    */
   static Surface LoadBMP(StringParam file);
+
+  /// member access to underlying SurfaceRaw.
+  constexpr const SurfaceRaw operator->() const { return m_resource; }
+
+  /// member access to underlying SurfaceRaw.
+  constexpr SurfaceRaw operator->() { return m_resource; }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }

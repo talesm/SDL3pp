@@ -8758,6 +8758,9 @@ struct PaletteParam
 
   /// Converts to underlying PaletteRaw
   constexpr operator PaletteRaw() const { return value; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /// Safely wrap Palette for non owning const parameters
@@ -8791,6 +8794,9 @@ struct PaletteConstParam
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /**
@@ -11175,6 +11181,12 @@ public:
     }
     return {};
   }
+
+  /// member access to underlying PaletteRaw.
+  constexpr const PaletteRaw operator->() const { return m_resource; }
+
+  /// member access to underlying PaletteRaw.
+  constexpr PaletteRaw operator->() { return m_resource; }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
@@ -41603,6 +41615,9 @@ struct SurfaceParam
 
   /// Converts to underlying SurfaceRaw
   constexpr operator SurfaceRaw() const { return value; }
+
+  /// member access to underlying SurfaceRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /// Safely wrap Surface for non owning const parameters
@@ -41636,6 +41651,9 @@ struct SurfaceConstParam
 
   /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
+
+  /// member access to underlying SurfaceRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /**
@@ -41958,6 +41976,12 @@ public:
    * @sa Surface.SaveBMP
    */
   static Surface LoadBMP(StringParam file);
+
+  /// member access to underlying SurfaceRaw.
+  constexpr const SurfaceRaw operator->() const { return m_resource; }
+
+  /// member access to underlying SurfaceRaw.
+  constexpr SurfaceRaw operator->() { return m_resource; }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
@@ -77149,6 +77173,46 @@ struct TextureParam
 
   /// Converts to underlying TextureRaw
   constexpr operator TextureRaw() const { return value; }
+
+  /// member access to underlying TextureRaw.
+  constexpr auto operator->() { return value; }
+};
+
+/// Safely wrap Texture for non owning const parameters
+struct TextureConstParam
+{
+  const TextureRaw value; ///< parameter's const TextureRaw
+
+  /// Constructs from const TextureRaw
+  constexpr TextureConstParam(const TextureRaw value)
+
+    : value(value)
+  {
+  }
+
+  /// Constructs from TextureParam
+  constexpr TextureConstParam(TextureParam value)
+    : value(value.value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr TextureConstParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextureConstParam& other) const = default;
+
+  /// Converts to underlying const TextureRaw
+  constexpr operator const TextureRaw() const { return value; }
+
+  /// member access to underlying TextureRaw.
+  constexpr auto operator->() { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -79459,6 +79523,12 @@ public:
     return {};
   }
 
+  /// member access to underlying TextureRaw.
+  constexpr const TextureRaw operator->() const { return m_resource; }
+
+  /// member access to underlying TextureRaw.
+  constexpr TextureRaw operator->() { return m_resource; }
+
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
@@ -81073,7 +81143,7 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetTextureProperties(TextureParam texture)
+inline PropertiesRef GetTextureProperties(TextureConstParam texture)
 {
   return {CheckError(SDL_GetTextureProperties(texture))};
 }
@@ -81094,7 +81164,7 @@ inline PropertiesRef Texture::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline RendererRef GetRendererFromTexture(TextureParam texture)
+inline RendererRef GetRendererFromTexture(TextureConstParam texture)
 {
   return {SDL_GetRendererFromTexture(texture)};
 }
@@ -81118,7 +81188,7 @@ inline RendererRef Texture::GetRenderer() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetTextureSize(TextureParam texture, float* w, float* h)
+inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
 {
   CheckError(SDL_GetTextureSize(texture, w, h));
 }
@@ -81220,7 +81290,7 @@ inline void Texture::SetColorModFloat(float r, float g, float b)
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetColorMod
  */
-inline void GetTextureColorMod(TextureParam texture,
+inline void GetTextureColorMod(TextureConstParam texture,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b)
@@ -81250,7 +81320,7 @@ inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @sa Texture.GetColorMod
  * @sa Texture.SetColorModFloat
  */
-inline void GetTextureColorModFloat(TextureParam texture,
+inline void GetTextureColorModFloat(TextureConstParam texture,
                                     float* r,
                                     float* g,
                                     float* b)
@@ -81344,7 +81414,7 @@ inline void Texture::SetAlphaModFloat(float alpha)
  * @sa Texture.GetColorMod
  * @sa Texture.SetAlphaMod
  */
-inline Uint8 GetTextureAlphaMod(TextureParam texture)
+inline Uint8 GetTextureAlphaMod(TextureConstParam texture)
 {
   Uint8 alpha;
   CheckError(SDL_GetTextureAlphaMod(texture, &alpha));
@@ -81371,7 +81441,7 @@ inline Uint8 Texture::GetAlphaMod() const
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetAlphaModFloat
  */
-inline float GetTextureAlphaModFloat(TextureParam texture)
+inline float GetTextureAlphaModFloat(TextureConstParam texture)
 {
   float alpha;
   CheckError(SDL_GetTextureAlphaModFloat(texture, &alpha));
@@ -81422,7 +81492,7 @@ inline void Texture::SetBlendMode(BlendMode blendMode)
  *
  * @sa Texture.SetBlendMode
  */
-inline BlendMode GetTextureBlendMode(TextureParam texture)
+inline BlendMode GetTextureBlendMode(TextureConstParam texture)
 {
   BlendMode blendMode;
   CheckError(SDL_GetTextureBlendMode(texture, &blendMode));
@@ -81474,7 +81544,7 @@ inline void Texture::SetScaleMode(ScaleMode scaleMode)
  *
  * @sa Texture.SetScaleMode
  */
-inline ScaleMode GetTextureScaleMode(TextureParam texture)
+inline ScaleMode GetTextureScaleMode(TextureConstParam texture)
 {
   ScaleMode scaleMode;
   CheckError(SDL_GetTextureScaleMode(texture, &scaleMode));
@@ -85069,6 +85139,45 @@ struct AnimationParam
 
   /// Converts to underlying AnimationRaw
   constexpr operator AnimationRaw() const { return value; }
+
+  /// member access to underlying AnimationRaw.
+  constexpr auto operator->() { return value; }
+};
+
+/// Safely wrap Animation for non owning const parameters
+struct AnimationConstParam
+{
+  const AnimationRaw value; ///< parameter's const AnimationRaw
+
+  /// Constructs from const AnimationRaw
+  constexpr AnimationConstParam(const AnimationRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs from AnimationParam
+  constexpr AnimationConstParam(AnimationParam value)
+    : value(value.value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr AnimationConstParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const AnimationConstParam& other) const = default;
+
+  /// Converts to underlying const AnimationRaw
+  constexpr operator const AnimationRaw() const { return value; }
+
+  /// member access to underlying AnimationRaw.
+  constexpr auto operator->() { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -87183,6 +87292,12 @@ public:
   {
   }
 
+  /// member access to underlying AnimationRaw.
+  constexpr const AnimationRaw operator->() const { return m_resource; }
+
+  /// member access to underlying AnimationRaw.
+  constexpr AnimationRaw operator->() { return m_resource; }
+
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
@@ -87556,6 +87671,45 @@ struct TextParam
 
   /// Converts to underlying TextRaw
   constexpr operator TextRaw() const { return value; }
+
+  /// member access to underlying TextRaw.
+  constexpr auto operator->() { return value; }
+};
+
+/// Safely wrap Text for non owning const parameters
+struct TextConstParam
+{
+  const TextRaw value; ///< parameter's const TextRaw
+
+  /// Constructs from const TextRaw
+  constexpr TextConstParam(const TextRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs from TextParam
+  constexpr TextConstParam(TextParam value)
+    : value(value.value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr TextConstParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextConstParam& other) const = default;
+
+  /// Converts to underlying const TextRaw
+  constexpr operator const TextRaw() const { return value; }
+
+  /// member access to underlying TextRaw.
+  constexpr auto operator->() { return value; }
 };
 
 #ifdef SDL3PP_DOC
@@ -91748,6 +91902,12 @@ public:
   {
   }
 
+  /// member access to underlying TextRaw.
+  constexpr const TextRaw operator->() const { return m_resource; }
+
+  /// member access to underlying TextRaw.
+  constexpr TextRaw operator->() { return m_resource; }
+
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }
 
@@ -92706,7 +92866,7 @@ inline SurfaceTextEngine CreateSurfaceTextEngine()
  * @sa SurfaceTextEngine.SurfaceTextEngine
  * @sa Text.Text
  */
-inline void DrawSurfaceText(TextParam text, Point p, SurfaceParam surface)
+inline void DrawSurfaceText(TextConstParam text, Point p, SurfaceParam surface)
 {
   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
 }
@@ -92823,7 +92983,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @sa RendererTextEngine.RendererTextEngine
  * @sa GPUTextEngine.GPUTextEngine
  */
-inline void DrawRendererText(TextParam text, FPoint p)
+inline void DrawRendererText(TextConstParam text, FPoint p)
 {
   CheckError(TTF_DrawRendererText(text, p.x, p.y));
 }
@@ -92946,7 +93106,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @sa GPUTextEngine.GPUTextEngine
  * @sa GPUTextEngine.GPUTextEngine
  */
-inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextParam text)
+inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstParam text)
 {
   return TTF_GetGPUTextDrawData(text);
 }
@@ -93072,7 +93232,7 @@ inline Text TextEngine::CreateText(FontParam font, std::string_view text)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline PropertiesRef GetTextProperties(TextParam text)
+inline PropertiesRef GetTextProperties(TextConstParam text)
 {
   return {CheckError(TTF_GetTextProperties(text))};
 }
@@ -93122,7 +93282,7 @@ inline void Text::SetEngine(TextEngineParam engine)
  *
  * @sa Text.SetEngine
  */
-inline TextEngineParam GetTextEngine(TextParam text)
+inline TextEngineParam GetTextEngine(TextConstParam text)
 {
   return CheckError(TTF_GetTextEngine(text));
 }
@@ -93177,7 +93337,7 @@ inline bool Text::SetFont(FontParam font)
  *
  * @sa Text.SetFont
  */
-inline FontRef GetTextFont(TextParam text)
+inline FontRef GetTextFont(TextConstParam text)
 {
   return {CheckError(TTF_GetTextFont(text))};
 }
@@ -93222,7 +93382,7 @@ inline void Text::SetDirection(Direction direction)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Direction GetTextDirection(TextParam text)
+inline Direction GetTextDirection(TextConstParam text)
 {
   return TTF_GetTextDirection(text);
 }
@@ -93277,7 +93437,10 @@ inline void Text::SetScript(Uint32 script)
  *
  * @sa TagToString
  */
-inline Uint32 GetTextScript(TextParam text) { return TTF_GetTextScript(text); }
+inline Uint32 GetTextScript(TextConstParam text)
+{
+  return TTF_GetTextScript(text);
+}
 
 inline Uint32 Text::GetScript() const { return SDL::GetTextScript(m_resource); }
 
@@ -93354,7 +93517,11 @@ inline void Text::SetColorFloat(FColor c)
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline void GetTextColor(TextParam text, Uint8* r, Uint8* g, Uint8* b, Uint8* a)
+inline void GetTextColor(TextConstParam text,
+                         Uint8* r,
+                         Uint8* g,
+                         Uint8* b,
+                         Uint8* a)
 {
   CheckError(TTF_GetTextColor(text, r, g, b, a));
 }
@@ -93410,7 +93577,7 @@ inline Color Text::GetColor() const { return SDL::GetTextColor(m_resource); }
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline void GetTextColorFloat(TextParam text,
+inline void GetTextColorFloat(TextConstParam text,
                               float* r,
                               float* g,
                               float* b,
@@ -93495,7 +93662,7 @@ inline bool Text::SetPosition(Point p)
  *
  * @sa Text.SetPosition
  */
-inline bool GetTextPosition(TextParam text, int* x, int* y)
+inline bool GetTextPosition(TextConstParam text, int* x, int* y)
 {
   return TTF_GetTextPosition(text, x, y);
 }
@@ -93575,7 +93742,7 @@ inline void Text::SetWrapWidth(int wrap_width)
  *
  * @sa Text.SetWrapWidth
  */
-inline int GetTextWrapWidth(TextParam text)
+inline int GetTextWrapWidth(TextConstParam text)
 {
   int w;
   CheckError(TTF_GetTextWrapWidth(text, &w));
@@ -93633,7 +93800,7 @@ inline void Text::SetWrapWhitespaceVisible(bool visible)
  *
  * @sa Text.SetWrapWhitespaceVisible
  */
-inline bool TextWrapWhitespaceVisible(TextParam text)
+inline bool TextWrapWhitespaceVisible(TextConstParam text)
 {
   return TTF_TextWrapWhitespaceVisible(text);
 }
@@ -93784,7 +93951,7 @@ inline void Text::DeleteString(int offset, int length)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSize(TextParam text, int* w, int* h)
+inline void GetTextSize(TextConstParam text, int* w, int* h)
 {
   CheckError(TTF_GetTextSize(text, w, h));
 }
@@ -93839,7 +94006,9 @@ inline Point Text::GetSize() const { return SDL::GetTextSize(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubString(TextParam text, int offset, SubString* substring)
+inline void GetTextSubString(TextConstParam text,
+                             int offset,
+                             SubString* substring)
 {
   CheckError(TTF_GetTextSubString(text, offset, substring));
 }
@@ -93869,7 +94038,7 @@ inline void Text::GetSubString(int offset, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubStringForLine(TextParam text,
+inline void GetTextSubStringForLine(TextConstParam text,
                                     int line,
                                     SubString* substring)
 {
@@ -93897,7 +94066,7 @@ inline void Text::GetSubStringForLine(int line, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline OwnArray<SubString*> GetTextSubStringsForRange(TextParam text,
+inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstParam text,
                                                       int offset,
                                                       int length)
 {
@@ -93929,7 +94098,7 @@ inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubStringForPoint(TextParam text,
+inline void GetTextSubStringForPoint(TextConstParam text,
                                      Point p,
                                      SubString* substring)
 {
@@ -93958,7 +94127,7 @@ inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetPreviousTextSubString(TextParam text,
+inline void GetPreviousTextSubString(TextConstParam text,
                                      const SubString& substring,
                                      SubString* previous)
 {
@@ -93987,7 +94156,7 @@ inline void Text::GetPreviousSubString(const SubString& substring,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetNextTextSubString(TextParam text,
+inline void GetNextTextSubString(TextConstParam text,
                                  const SubString& substring,
                                  SubString* next)
 {

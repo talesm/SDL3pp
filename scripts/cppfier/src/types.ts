@@ -168,7 +168,14 @@ export interface ResourceDefinition {
   enableAutoMethods?: boolean;
 
   /**
-   * Enable const parameters
+   * If true allow member access with `->` arrow.
+   * 
+   * Default true for non-opaque structs
+   */
+  enableMemberAccess?: boolean
+
+  /**
+   * Enable const parameters, defaults true if enableMemberAccess is true
    */
   enableConstParam?: boolean
 

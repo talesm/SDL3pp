@@ -106,6 +106,45 @@ struct TextureParam
 
   /// Converts to underlying TextureRaw
   constexpr operator TextureRaw() const { return value; }
+
+  /// member access to underlying TextureRaw.
+  constexpr auto operator->() { return value; }
+};
+
+/// Safely wrap Texture for non owning const parameters
+struct TextureConstParam
+{
+  const TextureRaw value; ///< parameter's const TextureRaw
+
+  /// Constructs from const TextureRaw
+  constexpr TextureConstParam(const TextureRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs from TextureParam
+  constexpr TextureConstParam(TextureParam value)
+    : value(value.value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr TextureConstParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextureConstParam& other) const = default;
+
+  /// Converts to underlying const TextureRaw
+  constexpr operator const TextureRaw() const { return value; }
+
+  /// member access to underlying TextureRaw.
+  constexpr auto operator->() { return value; }
 };
 
 /**
@@ -2288,6 +2327,12 @@ public:
     return {};
   }
 
+  /// member access to underlying TextureRaw.
+  constexpr const TextureRaw operator->() const { return m_resource; }
+
+  /// member access to underlying TextureRaw.
+  constexpr TextureRaw operator->() { return m_resource; }
+
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
@@ -3791,7 +3836,7 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetTextureProperties(TextureParam texture)
+inline PropertiesRef GetTextureProperties(TextureConstParam texture)
 {
   return CheckError(SDL_GetTextureProperties(texture));
 }
@@ -3812,7 +3857,7 @@ inline PropertiesRef Texture::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline RendererRef GetRendererFromTexture(TextureParam texture)
+inline RendererRef GetRendererFromTexture(TextureConstParam texture)
 {
   return SDL_GetRendererFromTexture(texture);
 }
@@ -3836,7 +3881,7 @@ inline RendererRef Texture::GetRenderer() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetTextureSize(TextureParam texture, float* w, float* h)
+inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
 {
   CheckError(SDL_GetTextureSize(texture, w, h));
 }
@@ -3938,7 +3983,7 @@ inline void Texture::SetColorModFloat(float r, float g, float b)
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetColorMod
  */
-inline void GetTextureColorMod(TextureParam texture,
+inline void GetTextureColorMod(TextureConstParam texture,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b)
@@ -3968,7 +4013,7 @@ inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @sa Texture.GetColorMod
  * @sa Texture.SetColorModFloat
  */
-inline void GetTextureColorModFloat(TextureParam texture,
+inline void GetTextureColorModFloat(TextureConstParam texture,
                                     float* r,
                                     float* g,
                                     float* b)
@@ -4062,7 +4107,7 @@ inline void Texture::SetAlphaModFloat(float alpha)
  * @sa Texture.GetColorMod
  * @sa Texture.SetAlphaMod
  */
-inline Uint8 GetTextureAlphaMod(TextureParam texture)
+inline Uint8 GetTextureAlphaMod(TextureConstParam texture)
 {
   return CheckError(SDL_GetTextureAlphaMod(texture));
 }
@@ -4087,7 +4132,7 @@ inline Uint8 Texture::GetAlphaMod() const
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetAlphaModFloat
  */
-inline float GetTextureAlphaModFloat(TextureParam texture)
+inline float GetTextureAlphaModFloat(TextureConstParam texture)
 {
   return CheckError(SDL_GetTextureAlphaModFloat(texture));
 }
@@ -4136,7 +4181,7 @@ inline void Texture::SetBlendMode(BlendMode blendMode)
  *
  * @sa Texture.SetBlendMode
  */
-inline BlendMode GetTextureBlendMode(TextureParam texture)
+inline BlendMode GetTextureBlendMode(TextureConstParam texture)
 {
   return CheckError(SDL_GetTextureBlendMode(texture));
 }
@@ -4186,7 +4231,7 @@ inline void Texture::SetScaleMode(ScaleMode scaleMode)
  *
  * @sa Texture.SetScaleMode
  */
-inline ScaleMode GetTextureScaleMode(TextureParam texture)
+inline ScaleMode GetTextureScaleMode(TextureConstParam texture)
 {
   return CheckError(SDL_GetTextureScaleMode(texture));
 }

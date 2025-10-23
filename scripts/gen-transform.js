@@ -3677,7 +3677,6 @@ const transform = {
         "SDL_Palette": {
           resource: {
             shared: 'refcount',
-            enableConstParam: true,
           },
           entries: {
             "SDL_CreatePalette": "ctor",
@@ -6164,7 +6163,6 @@ const transform = {
           resource: {
             shared: 'refcount',
             ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP"],
-            enableConstParam: true,
           },
           entries: {
             "SDL_CreateSurface": "ctor",
@@ -8187,6 +8185,7 @@ const transform = {
           resource: {
             ref: false,
             enableAutoMethods: false,
+            enableMemberAccess: false,
           },
           entries: {
             "Destroy": {
