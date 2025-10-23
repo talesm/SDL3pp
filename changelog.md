@@ -1,6 +1,33 @@
 Changelog
 =========
 
+## Version 0.3
+
+This version reviews the API and add missing free-standing functions. 
+Also does a general clean up on the code.
+
+- Remove generated docs from repository
+  - use actions to generate and upload;
+- Fix comparisons for wrappers (the ones using extending);
+- Review older files to ensure class and freestanding functions are in sync;
+  - SDL_audio.h
+  - SDL_pixels.h
+  - SDL_properties.h
+  - SDL_rect.h
+  - SDL_render.h
+  - SDL_surface.h
+  - SDL_video.h
+  - SDL_image.h
+- Review and simplify older transformations:
+  - SDL_audio.h
+  - SDL_pixels.h
+  - SDL_properties.h
+  - SDL_rect.h
+  - SDL_render.h
+  - SDL_surface.h
+  - SDL_video.h
+  - SDL_image.h
+
 ## Version 0.2.1
 
 Small bufix + examples

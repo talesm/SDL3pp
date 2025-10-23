@@ -1110,8 +1110,6 @@ function expandTypes(sourceEntries, file, context) {
       mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, targetName);
     }
 
-    for (const [key, subEntry] of Object.entries(subEntries)) checkIfProtoNeeded(key, subEntry);
-
     if (enableMemberAccess) {
       ctors["operator->"] = {
         doc: `member access to underlying ${rawName}.`,
@@ -1291,42 +1289,7 @@ function expandTypes(sourceEntries, file, context) {
     context.includeBefore(referenceAliases, '__begin');
     derivedEntries.forEach(e => context.includeAfter(e, targetName));
     delete targetEntry.resource;
-
-    /**
-     * 
-     * @param {string} key 
-     * @param {ApiEntryTransform|QuickTransform} subEntry 
-     */
-    function checkIfProtoNeeded(key, subEntry) {
-      const source = /** @type {ApiEntry}*/(sourceEntries[key]);
-      if (typeof subEntry !== 'string' && typeof subEntry.type !== "undefined") {
-        if (subEntry.kind !== 'function' && source.kind !== 'function') return;
-        if (protoNeeded(subEntry.type)) {
-          subEntry.proto = true;
-          return;
-        }
-      } else if (source) {
-        if (source.kind !== 'function') return;
-        const type = context.returnTypeMap[source.type];
-        if (!protoNeeded(type)) return;
-        if (subEntry === "function") {
-          subEntries[key] = { proto: true };
-        } else if (subEntry === "immutable") {
-          subEntries[key] = { proto: true, immutable: true };
-        } else if (subEntry === "ctor") {
-          subEntries[key] = { proto: true, name: "ctor" };
-        } else if (typeof subEntry === 'string') {
-          return;
-        } else {
-          subEntry.proto = true;
-        }
-      }
-      function protoNeeded(type) {
-        return type === scopedName || type === refName;
-      }
-    }
   }
-
 
   /**
    * 
