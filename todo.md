@@ -10,7 +10,7 @@ Todo for next version
   - [x] SDL_properties.h
   - [x] SDL_rect.h
   - [ ] SDL_render.h
-  - [ ] SDL_surface.h
+  - [x] SDL_surface.h
   - [ ] SDL_video.h
 - [ ] Review and simplify older transformations:
   - [x] SDL_audio.h
@@ -18,8 +18,14 @@ Todo for next version
   - [x] SDL_properties.h
   - [x] SDL_rect.h
   - [ ] SDL_render.h
-  - [ ] SDL_surface.h
+  - [x] SDL_surface.h
   - [ ] SDL_video.h
+- [ ] All SDL_*ID representing devices must have uniform interface
+  - [ ] MouseID
+  - [ ] JoystickID
+  - [ ] DisplayID
+  - [ ] AudioDeviceID
+  - [ ] ...
 
 Backlog
 =======
