@@ -2234,17 +2234,17 @@ public:
    */
   void Free();
 
-  int GetWidth() const { static_assert(false, "Not implemented"); }
+  int GetWidth() const;
 
-  int GetHeight() const { static_assert(false, "Not implemented"); }
+  int GetHeight() const;
 
-  Point GetSize() const { static_assert(false, "Not implemented"); }
+  Point GetSize() const;
 
-  int GetCount() const { static_assert(false, "Not implemented"); }
+  int GetCount() const;
 
-  Surface GetFrame(int index) const { static_assert(false, "Not implemented"); }
+  Surface GetFrame(int index) const;
 
-  int GetDelay(int index) const { static_assert(false, "Not implemented"); }
+  int GetDelay(int index) const;
 };
 
 /// Semi-safe reference for Animation.
@@ -2271,6 +2271,66 @@ struct AnimationRef : Animation
   /// Destructor
   ~AnimationRef() { release(); }
 };
+
+inline int GetAnimationWidth(AnimationConstParam anim)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline int Animation::GetWidth() const
+{
+  return SDL::GetAnimationWidth(m_resource);
+}
+
+inline int GetAnimationHeight(AnimationConstParam anim)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline int Animation::GetHeight() const
+{
+  return SDL::GetAnimationHeight(m_resource);
+}
+
+inline Point GetAnimationSize(AnimationConstParam anim)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Point Animation::GetSize() const
+{
+  return SDL::GetAnimationSize(m_resource);
+}
+
+inline int GetAnimationCount(AnimationConstParam anim)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline int Animation::GetCount() const
+{
+  return SDL::GetAnimationCount(m_resource);
+}
+
+inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline Surface Animation::GetFrame(int index) const
+{
+  return SDL::GetAnimationFrame(m_resource, index);
+}
+
+inline int GetAnimationDelay(AnimationConstParam anim, int index)
+{
+  static_assert(false, "Not implemented");
+}
+
+inline int Animation::GetDelay(int index) const
+{
+  return SDL::GetAnimationDelay(m_resource, index);
+}
 
 /**
  * Load an animation from a file.

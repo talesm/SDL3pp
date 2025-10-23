@@ -12,6 +12,7 @@ Todo for next version
   - [ ] SDL_render.h
   - [x] SDL_surface.h
   - [x] SDL_video.h
+  - [x] SDL_image.h
 - [ ] Review and simplify older transformations:
   - [x] SDL_audio.h
   - [x] SDL_pixels.h
@@ -20,6 +21,7 @@ Todo for next version
   - [ ] SDL_render.h
   - [x] SDL_surface.h
   - [x] SDL_video.h
+  - [x] SDL_image.h
 - [ ] All SDL_*ID representing devices must have uniform interface
   - [ ] MouseID
   - [ ] JoystickID

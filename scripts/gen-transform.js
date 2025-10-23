@@ -7589,53 +7589,49 @@ const transform = {
           entries: {
             "IMG_LoadAnimation": "ctor",
             "IMG_LoadAnimation_IO": { name: "ctor" },
-            "GetWidth": {
-              kind: "function",
-              immutable: true,
-              type: "int",
-              parameters: []
-            },
-            "GetHeight": {
-              kind: "function",
-              immutable: true,
-              type: "int",
-              parameters: []
-            },
-            "GetSize": {
-              kind: "function",
-              immutable: true,
-              type: "Point",
-              parameters: []
-            },
-            "GetCount": {
-              kind: "function",
-              immutable: true,
-              type: "int",
-              parameters: []
-            },
-            "GetFrame": {
-              kind: "function",
-              type: "Surface",
-              immutable: true,
-              parameters: [
-                {
-                  "type": "int",
-                  "name": "index"
-                }
-              ]
-            },
-            "GetDelay": {
-              kind: "function",
-              type: "int",
-              immutable: true,
-              parameters: [
-                {
-                  "type": "int",
-                  "name": "index"
-                }
-              ]
-            }
           }
+        },
+        "GetAnimationWidth": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationHeight": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationSize": {
+          kind: "function",
+          immutable: true,
+          type: "Point",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationCount": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationFrame": {
+          kind: "function",
+          type: "Surface",
+          immutable: true,
+          parameters: [
+            { type: "AnimationConstParam", name: "anim" },
+            { type: "int", name: "index" },
+          ]
+        },
+        "GetAnimationDelay": {
+          kind: "function",
+          type: "int",
+          immutable: true,
+          parameters: [
+            { type: "AnimationConstParam", name: "anim" },
+            { type: "int", name: "index" },
+          ]
         },
         "IMG_LoadAnimation": { type: "Animation" },
         "IMG_LoadAnimation_IO": {

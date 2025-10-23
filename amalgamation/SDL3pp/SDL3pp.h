@@ -87347,36 +87347,36 @@ public:
   /**
    * Get the width in pixels.
    */
-  int GetWidth() const { return get()->w; }
+  int GetWidth() const;
 
   /**
    * Get the height in pixels.
    */
-  int GetHeight() const { return get()->h; }
+  int GetHeight() const;
 
   /**
    * Get the size in pixels.
    */
-  Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+  Point GetSize() const;
 
   /**
    * Return the number of frames.
    */
-  int GetCount() const { return m_resource->count; }
+  int GetCount() const;
 
   /**
    * Return the frame image under given index.
    *
    * @param index the index to get frame, within [0, GetCount() - 1]
    */
-  SurfaceRaw GetFrame(int index) const { return m_resource->frames[index]; }
+  Surface GetFrame(int index) const;
 
   /**
    * Return the frame delay under given index.
    *
    * @param index the index to get frame, within [0, GetCount() - 1]
    */
-  int GetDelay(int index) const { return m_resource->delays[index]; }
+  int GetDelay(int index) const;
 };
 
 /// Semi-safe reference for Animation.
@@ -87403,6 +87403,57 @@ struct AnimationRef : Animation
   /// Destructor
   ~AnimationRef() { release(); }
 };
+
+inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
+
+inline int Animation::GetWidth() const
+{
+  return SDL::GetAnimationWidth(m_resource);
+}
+
+inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
+
+inline int Animation::GetHeight() const
+{
+  return SDL::GetAnimationHeight(m_resource);
+}
+
+inline Point GetAnimationSize(AnimationConstParam anim)
+{
+  return {anim->w, anim->h};
+}
+
+inline Point Animation::GetSize() const
+{
+  return SDL::GetAnimationSize(m_resource);
+}
+
+inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
+
+inline int Animation::GetCount() const
+{
+  return SDL::GetAnimationCount(m_resource);
+}
+
+inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+{
+  return Surface::Borrow(anim->frames[index]);
+}
+
+inline Surface Animation::GetFrame(int index) const
+{
+  return SDL::GetAnimationFrame(m_resource, index);
+}
+
+inline int GetAnimationDelay(AnimationConstParam anim, int index)
+{
+  return anim->delays[index];
+}
+
+inline int Animation::GetDelay(int index) const
+{
+  return SDL::GetAnimationDelay(m_resource, index);
+}
 
 /**
  * Load an animation from a file.
