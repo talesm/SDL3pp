@@ -4012,10 +4012,7 @@ inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 /**
  * Get the width in pixels.
  */
-constexpr int GetSurfaceWidth(SurfaceConstParam surface)
-{
-  return surface.value->w;
-}
+constexpr int GetSurfaceWidth(SurfaceConstParam surface) { return surface->w; }
 
 constexpr int Surface::GetWidth() const
 {
@@ -4025,10 +4022,7 @@ constexpr int Surface::GetWidth() const
 /**
  * Get the height in pixels.
  */
-constexpr int GetSurfaceHeight(SurfaceConstParam surface)
-{
-  return surface.value->h;
-}
+constexpr int GetSurfaceHeight(SurfaceConstParam surface) { return surface->h; }
 
 constexpr int Surface::GetHeight() const
 {
@@ -4040,7 +4034,7 @@ constexpr int Surface::GetHeight() const
  */
 constexpr Point GetSurfaceSize(SurfaceConstParam surface)
 {
-  return Point(surface.value->w, surface.value->h);
+  return Point(surface->w, surface->h);
 }
 
 constexpr Point Surface::GetSize() const
@@ -4053,7 +4047,7 @@ constexpr Point Surface::GetSize() const
  */
 constexpr int GetSurfacePitch(SurfaceConstParam surface)
 {
-  return surface.value->pitch;
+  return surface->pitch;
 }
 
 constexpr int Surface::GetPitch() const
@@ -4066,7 +4060,7 @@ constexpr int Surface::GetPitch() const
  */
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
 {
-  return surface.value->format;
+  return surface->format;
 }
 
 constexpr PixelFormat Surface::GetFormat() const
@@ -4079,7 +4073,7 @@ constexpr PixelFormat Surface::GetFormat() const
  */
 constexpr void* GetSurfacePixels(SurfaceConstParam surface)
 {
-  return surface.value->pixels;
+  return surface->pixels;
 }
 
 constexpr void* Surface::GetPixels() const

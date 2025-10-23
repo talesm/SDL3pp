@@ -928,51 +928,55 @@
 <   CheckError(SDL_WriteSurfacePixelFloat(surface, p, c));
 ---
 >   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
-3856a4012,4014
+3857,3860c4012,4015
+< constexpr int GetSurfaceWidth(SurfaceConstParam surface)
+< {
+<   static_assert(false, "Not implemented");
+< }
+---
 > /**
 >  * Get the width in pixels.
 >  */
-3859c4017
+> constexpr int GetSurfaceWidth(SurfaceConstParam surface) { return surface->w; }
+3867,3870c4022,4025
+< constexpr int GetSurfaceHeight(SurfaceConstParam surface)
+< {
 <   static_assert(false, "Not implemented");
+< }
 ---
->   return surface.value->w;
-3866a4025,4027
 > /**
 >  * Get the height in pixels.
 >  */
-3869c4030
-<   static_assert(false, "Not implemented");
----
->   return surface.value->h;
-3876a4038,4040
+> constexpr int GetSurfaceHeight(SurfaceConstParam surface) { return surface->h; }
+3876a4032,4034
 > /**
 >  * Get the size in pixels.
 >  */
-3879c4043
+3879c4037
 <   static_assert(false, "Not implemented");
 ---
->   return Point(surface.value->w, surface.value->h);
-3886a4051,4053
+>   return Point(surface->w, surface->h);
+3886a4045,4047
 > /**
 >  * Get pitch in bytes.
 >  */
-3889c4056
+3889c4050
 <   static_assert(false, "Not implemented");
 ---
->   return surface.value->pitch;
-3896a4064,4066
+>   return surface->pitch;
+3896a4058,4060
 > /**
 >  * Get the pixel format.
 >  */
-3899c4069
+3899c4063
 <   static_assert(false, "Not implemented");
 ---
->   return surface.value->format;
-3906a4077,4079
+>   return surface->format;
+3906a4071,4073
 > /**
 >  * Get the pixels.
 >  */
-3909c4082
+3909c4076
 <   static_assert(false, "Not implemented");
 ---
->   return surface.value->pixels;
+>   return surface->pixels;
