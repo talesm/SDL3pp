@@ -320,103 +320,114 @@
 >   Animation(IOStreamParam src, bool closeio = false)
 2232d2265
 <    * @sa Animation.Animation
-2236a2270,2272
->   /**
->    * Get the width in pixels.
->    */
-2238a2275,2277
->   /**
->    * Get the height in pixels.
->    */
-2240a2280,2282
->   /**
->    * Get the size in pixels.
->    */
-2242a2285,2287
->   /**
->    * Return the number of frames.
->    */
-2244a2290,2294
+2236a2270
+>   /// Get the width in pixels.
+2238a2273
+>   /// Get the height in pixels.
+2240a2276
+>   /// Get the size in pixels.
+2242a2279
+>   /// Return the number of frames.
+2244a2282,2286
 >   /**
 >    * Return the frame image under given index.
 >    *
 >    * @param index the index to get frame, within [0, GetCount() - 1]
 >    */
-2246a2297,2301
+2246a2289,2293
 >   /**
 >    * Return the frame delay under given index.
 >    *
 >    * @param index the index to get frame, within [0, GetCount() - 1]
 >    */
-2275,2278c2330
+2275,2278c2322,2323
 < inline int GetAnimationWidth(AnimationConstParam anim)
 < {
 <   static_assert(false, "Not implemented");
 < }
 ---
+> /// Get the width in pixels.
 > inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
-2285,2288c2337
+2285,2288c2330,2331
 < inline int GetAnimationHeight(AnimationConstParam anim)
 < {
 <   static_assert(false, "Not implemented");
 < }
 ---
+> /// Get the height in pixels.
 > inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
-2297c2346
+2294a2338
+> /// Get the size in pixels.
+2297c2341
 <   static_assert(false, "Not implemented");
 ---
 >   return {anim->w, anim->h};
-2305,2308c2354
+2305,2308c2349,2350
 < inline int GetAnimationCount(AnimationConstParam anim)
 < {
 <   static_assert(false, "Not implemented");
 < }
 ---
+> /// Return the number of frames.
 > inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
-2317c2363
+2314a2357,2362
+> /**
+>  * Return the frame image under given index.
+>  *
+>  * @param anim Animation to dispose of.
+>  * @param index the index to get frame, within [0, GetCount() - 1]
+>  */
+2317c2365
 <   static_assert(false, "Not implemented");
 ---
 >   return Surface::Borrow(anim->frames[index]);
-2327c2373
+2324a2373,2378
+> /**
+>  * Return the frame delay under given index.
+>  *
+>  * @param anim Animation to dispose of.
+>  * @param index the index to get frame, within [0, GetCount() - 1]
+>  */
+2327c2381
 <   static_assert(false, "Not implemented");
 ---
 >   return anim->delays[index];
-2372c2418
+2372c2426
 < inline Animation LoadAnimation(IOStreamParam src, bool closeio)
 ---
 > inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
-2393a2440
+2393a2448
 >  * @param type a filename extension that represent this data ("GIF", etc).
-2396d2442
+2396d2450
 <  * @param type a filename extension that represent this data ("GIF", etc).
-2402d2447
+2402d2455
 <  * @sa Animation.Animation
-2409c2454
+2409c2462
 <   return IMG_LoadAnimationTyped_IO(src, type, closeio);
 ---
 >   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
-2422d2466
+2422d2474
 <  * @sa Animation.Animation
-2443d2486
+2443d2494
 <  * @sa Animation.Animation
-2447c2490
+2447c2498
 < inline AnimationRef LoadGIFAnimation(IOStreamParam src)
 ---
 > inline Animation LoadGIFAnimation(IOStreamParam src)
-2449c2492
+2449c2500
 <   return IMG_LoadGIFAnimation_IO(src);
 ---
 >   return Animation(IMG_LoadGIFAnimation_IO(src));
-2466d2508
+2466d2516
 <  * @sa Animation.Animation
-2470c2512
+2470c2520
 < inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
 ---
 > inline Animation LoadWEBPAnimation(IOStreamParam src)
-2472c2514
+2472c2522
 <   return IMG_LoadWEBPAnimation_IO(src);
 ---
 >   return Animation{IMG_LoadWEBPAnimation_IO(src)};
-2477a2520,2521
+2477a2528,2529
 > 
 > #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)

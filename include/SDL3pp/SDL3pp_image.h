@@ -2267,24 +2267,16 @@ public:
    */
   void Free();
 
-  /**
-   * Get the width in pixels.
-   */
+  /// Get the width in pixels.
   int GetWidth() const;
 
-  /**
-   * Get the height in pixels.
-   */
+  /// Get the height in pixels.
   int GetHeight() const;
 
-  /**
-   * Get the size in pixels.
-   */
+  /// Get the size in pixels.
   Point GetSize() const;
 
-  /**
-   * Return the number of frames.
-   */
+  /// Return the number of frames.
   int GetCount() const;
 
   /**
@@ -2327,6 +2319,7 @@ struct AnimationRef : Animation
   ~AnimationRef() { release(); }
 };
 
+/// Get the width in pixels.
 inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
 
 inline int Animation::GetWidth() const
@@ -2334,6 +2327,7 @@ inline int Animation::GetWidth() const
   return SDL::GetAnimationWidth(m_resource);
 }
 
+/// Get the height in pixels.
 inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
 
 inline int Animation::GetHeight() const
@@ -2341,6 +2335,7 @@ inline int Animation::GetHeight() const
   return SDL::GetAnimationHeight(m_resource);
 }
 
+/// Get the size in pixels.
 inline Point GetAnimationSize(AnimationConstParam anim)
 {
   return {anim->w, anim->h};
@@ -2351,6 +2346,7 @@ inline Point Animation::GetSize() const
   return SDL::GetAnimationSize(m_resource);
 }
 
+/// Return the number of frames.
 inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
 
 inline int Animation::GetCount() const
@@ -2358,6 +2354,12 @@ inline int Animation::GetCount() const
   return SDL::GetAnimationCount(m_resource);
 }
 
+/**
+ * Return the frame image under given index.
+ *
+ * @param anim Animation to dispose of.
+ * @param index the index to get frame, within [0, GetCount() - 1]
+ */
 inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
 {
   return Surface::Borrow(anim->frames[index]);
@@ -2368,6 +2370,12 @@ inline Surface Animation::GetFrame(int index) const
   return SDL::GetAnimationFrame(m_resource, index);
 }
 
+/**
+ * Return the frame delay under given index.
+ *
+ * @param anim Animation to dispose of.
+ * @param index the index to get frame, within [0, GetCount() - 1]
+ */
 inline int GetAnimationDelay(AnimationConstParam anim, int index)
 {
   return anim->delays[index];

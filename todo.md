@@ -4,7 +4,7 @@ Todo for next version
 - [x] Remove generated docs from repository
   - [x] use actions to generate and upload;
 - [x] Fix comparisons for wrappers (the ones using extending);
-- [ ] Review older files to ensure class and freestanding functions are in sync;
+- [x] Review older files to ensure class and freestanding functions are in sync;
   - [x] SDL_audio.h
   - [x] SDL_pixels.h
   - [x] SDL_properties.h
@@ -13,7 +13,7 @@ Todo for next version
   - [x] SDL_surface.h
   - [x] SDL_video.h
   - [x] SDL_image.h
-- [ ] Review and simplify older transformations:
+- [x] Review and simplify older transformations:
   - [x] SDL_audio.h
   - [x] SDL_pixels.h
   - [x] SDL_properties.h
