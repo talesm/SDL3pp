@@ -482,6 +482,13 @@ public:
   void Destroy();
 
   /**
+   * Evaluates to true if the surface needs to be locked before access.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
+
+  /**
    * Get the properties associated with a surface.
    *
    * The following properties are understood by SDL:
@@ -659,7 +666,6 @@ public:
    * They are still referenced by the surface being queried and will be cleaned
    * up normally.
    *
-   * @param surface the Surface structure to query.
    * @param count a pointer filled in with the number of surface pointers
    *              returned, may be nullptr.
    * @returns a nullptr terminated array of Surface pointers or nullptr on
@@ -692,13 +698,6 @@ public:
    * @sa Surface.HasAlternateImages
    */
   void RemoveAlternateImages();
-
-  /**
-   * Evaluates to true if the surface needs to be locked before access.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
 
   /**
    * Set up a surface for directly accessing the pixels.
@@ -1177,8 +1176,6 @@ public:
    */
   void Clear(const FColorRaw& c);
 
-  void Fill(Uint32 color);
-
   /**
    * Perform a fast fill of a rectangle with a specific color.
    *
@@ -1203,6 +1200,8 @@ public:
    * @sa Surface.FillRects
    */
   void FillRect(OptionalRef<const RectRaw> rect, Uint32 color);
+
+  void Fill(Uint32 color);
 
   /**
    * Perform a fast fill of a set of rectangles with a specific color.
@@ -1304,10 +1303,7 @@ public:
 
   void BlitAt(SurfaceParam src,
               OptionalRef<const RectRaw> srcrect,
-              const PointRaw& dstpos)
-  {
-    static_assert(false, "Not implemented");
-  }
+              const PointRaw& dstpos);
 
   /**
    * Perform low-level surface blitting only.
@@ -3199,6 +3195,13 @@ inline void Surface::Blit(SurfaceParam src,
                           OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurface(m_resource, src, srcrect, dstrect);
+}
+
+inline void Surface::BlitAt(SurfaceParam src,
+                            OptionalRef<const RectRaw> srcrect,
+                            const PointRaw& dstpos)
+{
+  static_assert(false, "Not implemented");
 }
 
 inline void BlitSurfaceAt(SurfaceParam src,

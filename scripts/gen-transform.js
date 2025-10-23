@@ -6169,20 +6169,10 @@ const transform = {
           entries: {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
-            "SDL_GetSurfaceProperties": "immutable",
-            "SDL_SetSurfaceColorspace": "function",
-            "SDL_GetSurfaceColorspace": "immutable",
-            "SDL_CreateSurfacePalette": "function",
-            "SDL_SetSurfacePalette": "function",
-            "SDL_GetSurfacePalette": "immutable",
-            "SDL_AddSurfaceAlternateImage": "function",
-            "SDL_SurfaceHasAlternateImages": "immutable",
-            "SDL_GetSurfaceImages": {
-              immutable: true,
-              type: "OwnArray<SurfaceRaw>",
-              parameters: []
+            "SDL_LoadBMP_IO": {
+              name: "LoadBMP",
+              parameters: [{}, { default: "false" }]
             },
-            "SDL_RemoveSurfaceAlternateImages": "function",
             "SDL_MUSTLOCK": {
               kind: "function",
               name: "MustLock",
@@ -6193,272 +6183,15 @@ const transform = {
               proto: false,
               hints: { delegate: "SDL::MustLock" },
             },
-            "SDL_LockSurface": "function",
-            "SDL_UnlockSurface": "function",
-            "SDL_LoadBMP_IO": {
-              name: "LoadBMP",
-              parameters: [{}, { default: "false" }]
-            },
-            "SDL_SaveBMP": "immutable",
-            "SDL_SetSurfaceRLE": "function",
-            "SDL_SurfaceHasRLE": "immutable",
-            "SDL_SetSurfaceColorKey": {
-              parameters: [
-                {},
-                {
-                  type: "std::optional<Uint32>",
-                  name: "key"
-                }
-              ]
-            },
-            "ClearColorKey": "plc",
-            "SDL_SurfaceHasColorKey": "immutable",
-            "SDL_GetSurfaceColorKey": {
-              immutable: true,
-              type: "std::optional<Uint32>",
-              parameters: [{}],
-            },
-            "SDL_SetSurfaceColorMod": "function",
-            "SDL_GetSurfaceColorMod": "immutable",
-            "SDL_SetSurfaceAlphaMod": "function",
-            "SDL_GetSurfaceAlphaMod": {
-              immutable: true,
-              type: "Uint8",
-              parameters: [{}]
-            },
-            "SetMod": "plc",
-            "GetMod": "plc",
-            "SDL_SetSurfaceBlendMode": "function",
-            "SDL_GetSurfaceBlendMode": {
-              immutable: true,
-              type: "BlendMode",
-              parameters: [{}]
-            },
-            "SDL_SetSurfaceClipRect": {
-              parameters: [
-                {},
-                { type: "OptionalRef<const RectRaw>" },
-              ]
-            },
-            "ResetClipRect": "plc",
-            "SDL_GetSurfaceClipRect": {
-              immutable: true,
-              type: "Rect",
-              parameters: [{}]
-            },
-            "SDL_FlipSurface": "function",
-            "SDL_DuplicateSurface": {
-              type: "Surface",
-              immutable: true
-            },
-            "SDL_ScaleSurface": {
-              type: "Surface",
-              immutable: true
-            },
-            "SDL_ConvertSurface": {
-              type: "Surface",
-              immutable: true
-            },
-            "SDL_ConvertSurfaceAndColorspace": {
-              type: "Surface",
-              name: "Convert",
-              immutable: true
-            },
-            "SDL_PremultiplySurfaceAlpha": "function",
-            "SDL_ClearSurface": "function",
-            "Fill": "plc",
-            "SDL_FillSurfaceRect": {
-              parameters: [
-                {},
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "rect"
-                },
-                {
-                  type: "Uint32",
-                  name: "color"
-                }
-              ]
-            },
-            "SDL_FillSurfaceRects": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SpanRef<const RectRaw>",
-                  name: "rects"
-                },
-                {
-                  type: "Uint32",
-                  name: "color"
-                }
-              ]
-            },
-            "SDL_BlitSurface": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "dstrect"
-                }
-              ]
-            },
-            "BlitAt": {
-              kind: "function",
-              type: "void",
-              parameters: [
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "const PointRaw &",
-                  name: "dstpos"
-                }
-              ]
-            },
-            "SDL_BlitSurfaceUnchecked": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "const RectRaw &",
-                  name: "srcrect"
-                },
-                {
-                  type: "const RectRaw &",
-                  name: "dstrect"
-                }
-              ]
-            },
-            "SDL_BlitSurfaceScaled": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "dstrect"
-                },
-                {
-                  type: "ScaleMode",
-                  name: "scaleMode"
-                }
-              ]
-            },
-            "SDL_BlitSurfaceUncheckedScaled": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "const RectRaw &",
-                  name: "srcrect"
-                },
-                {
-                  type: "const RectRaw &",
-                  name: "dstrect"
-                },
-                {
-                  type: "ScaleMode",
-                  name: "scaleMode"
-                }
-              ]
-            },
-            "SDL_StretchSurface": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "OptionalRef<RectRaw>",
-                  name: "dstrect"
-                },
-                {
-                  type: "ScaleMode",
-                  name: "scaleMode"
-                }
-              ]
-            },
-            "SDL_BlitSurfaceTiled": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "dstrect"
-                }
-              ]
-            },
-            "SDL_BlitSurfaceTiledWithScale": {
-              parameters: [
-                {
-                },
-                {
-                  type: "SurfaceParam",
-                  name: "src"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "srcrect"
-                },
-                {
-                  type: "float",
-                  name: "scale"
-                },
-                {
-                  type: "SDL_ScaleMode",
-                  name: "scaleMode"
-                },
-                {
-                  type: "OptionalRef<const RectRaw>",
-                  name: "dstrect"
-                }
-              ]
-            },
           }
+        },
+        "SDL_GetSurfaceProperties": { immutable: true },
+        "SDL_GetSurfaceColorspace": { immutable: true },
+        "SDL_GetSurfacePalette": { immutable: true },
+        "SDL_SurfaceHasAlternateImages": { immutable: true },
+        "SDL_GetSurfaceImages": {
+          type: "OwnArray<SurfaceRaw>",
+          parameters: [{ type: "SurfaceConstParam" }]
         },
         "SDL_LoadBMP_IO": {
           name: "LoadBMP",
@@ -6466,9 +6199,19 @@ const transform = {
         },
         "SDL_SaveBMP_IO": {
           name: "SaveBMP",
-          immutable: true,
           parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
           hints: { methodName: "SaveBMP" },
+        },
+        "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstParam" }, {}] },
+        "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstParam" }] },
+        "SDL_SetSurfaceColorKey": {
+          parameters: [
+            {},
+            {
+              type: "std::optional<Uint32>",
+              name: "key"
+            }
+          ]
         },
         "ClearSurfaceColorKey": {
           after: "SDL_SetSurfaceColorKey",
@@ -6476,8 +6219,17 @@ const transform = {
           type: "void",
           parameters: [{ type: "SurfaceParam", name: "surface" }]
         },
+        "SDL_SurfaceHasColorKey": { parameters: [{ type: "SurfaceConstParam" }] },
+        "SDL_GetSurfaceColorKey": {
+          type: "std::optional<Uint32>",
+          parameters: [{ type: "SurfaceConstParam" }],
+        },
+        "SDL_GetSurfaceColorMod": { parameters: [{ type: "SurfaceConstParam" }, {}, {}, {}] },
+        "SDL_GetSurfaceAlphaMod": {
+          type: "Uint8",
+          parameters: [{ type: "SurfaceConstParam" }]
+        },
         "SetSurfaceMod": {
-          after: "SDL_GetSurfaceAlphaMod",
           kind: "function",
           type: "void",
           parameters: [
@@ -6491,19 +6243,93 @@ const transform = {
           immutable: true,
           parameters: [{ type: "SurfaceConstParam", name: "surface" }]
         },
+        "SDL_GetSurfaceBlendMode": {
+          type: "BlendMode",
+          parameters: [{ type: "SurfaceConstParam" }]
+        },
+        "SDL_SetSurfaceClipRect": {
+          parameters: [
+            {},
+            { type: "OptionalRef<const RectRaw>" },
+          ]
+        },
         "ResetSurfaceClipRect": {
-          after: "SDL_SetSurfaceClipRect",
           kind: "function",
           type: "void",
           parameters: [{ type: "SurfaceParam", name: "surface" }],
         },
+        "SDL_GetSurfaceClipRect": {
+          type: "Rect",
+          parameters: [{ type: "SurfaceConstParam" }]
+        },
+        "SDL_DuplicateSurface": {
+          type: "Surface",
+          immutable: true
+        },
+        "SDL_ScaleSurface": {
+          type: "Surface",
+          immutable: true
+        },
+        "SDL_ConvertSurface": {
+          type: "Surface",
+          immutable: true
+        },
+        "SDL_ConvertSurfaceAndColorspace": {
+          type: "Surface",
+          immutable: true,
+          hints: { methodName: "Convert" },
+        },
+        "SDL_FillSurfaceRect": {
+          parameters: [
+            {},
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "rect"
+            },
+            {
+              type: "Uint32",
+              name: "color"
+            }
+          ]
+        },
         "FillSurface": {
-          after: "SDL_FillSurfaceRect",
           kind: "function",
           type: "void",
           parameters: [
             { type: "SurfaceParam", name: "dst" },
             { type: "Uint32", name: "color" },
+          ]
+        },
+        "SDL_FillSurfaceRects": {
+          parameters: [
+            {
+            },
+            {
+              type: "SpanRef<const RectRaw>",
+              name: "rects"
+            },
+            {
+              type: "Uint32",
+              name: "color"
+            }
+          ]
+        },
+        "Surface::SDL_BlitSurface": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "srcrect"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "dstrect"
+            }
           ]
         },
         "SDL_BlitSurface": {
@@ -6523,6 +6349,25 @@ const transform = {
             type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
+        },
+        "Surface::BlitAt": {
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "srcrect"
+            },
+            {
+              type: "const PointRaw &",
+              name: "dstpos"
+            }
+          ]
         },
         "BlitSurfaceAt": {
           kind: "function",
@@ -6544,6 +6389,24 @@ const transform = {
             name: "dstpos"
           }]
         },
+        "Surface::SDL_BlitSurfaceUnchecked": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "const RectRaw &",
+              name: "srcrect"
+            },
+            {
+              type: "const RectRaw &",
+              name: "dstrect"
+            }
+          ]
+        },
         "SDL_BlitSurfaceUnchecked": {
           parameters: [{
             type: "SurfaceParam",
@@ -6561,6 +6424,28 @@ const transform = {
             type: "const RectRaw &",
             name: "dstrect"
           }]
+        },
+        "Surface::SDL_BlitSurfaceScaled": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "srcrect"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "dstrect"
+            },
+            {
+              type: "ScaleMode",
+              name: "scaleMode"
+            }
+          ]
         },
         "SDL_BlitSurfaceScaled": {
           parameters: [{
@@ -6584,6 +6469,28 @@ const transform = {
             name: "scaleMode"
           }]
         },
+        "Surface::SDL_BlitSurfaceUncheckedScaled": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "const RectRaw &",
+              name: "srcrect"
+            },
+            {
+              type: "const RectRaw &",
+              name: "dstrect"
+            },
+            {
+              type: "ScaleMode",
+              name: "scaleMode"
+            }
+          ]
+        },
         "SDL_BlitSurfaceUncheckedScaled": {
           parameters: [{
             type: "SurfaceParam",
@@ -6605,6 +6512,28 @@ const transform = {
             type: "ScaleMode",
             name: "scaleMode"
           }]
+        },
+        "Surface::SDL_StretchSurface": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "OptionalRef<RectRaw>",
+              name: "srcrect"
+            },
+            {
+              type: "OptionalRef<RectRaw>",
+              name: "dstrect"
+            },
+            {
+              type: "ScaleMode",
+              name: "scaleMode"
+            }
+          ]
         },
         "SDL_StretchSurface": {
           parameters: [{
@@ -6628,6 +6557,24 @@ const transform = {
             name: "scaleMode"
           }]
         },
+        "Surface::SDL_BlitSurfaceTiled": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "srcrect"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "dstrect"
+            }
+          ]
+        },
         "SDL_BlitSurfaceTiled": {
           parameters: [{
             type: "SurfaceParam",
@@ -6645,6 +6592,32 @@ const transform = {
             type: "OptionalRef<const RectRaw>",
             name: "dstrect"
           }]
+        },
+        "Surface::SDL_BlitSurfaceTiledWithScale": {
+          parameters: [
+            {
+            },
+            {
+              type: "SurfaceParam",
+              name: "src"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "srcrect"
+            },
+            {
+              type: "float",
+              name: "scale"
+            },
+            {
+              type: "SDL_ScaleMode",
+              name: "scaleMode"
+            },
+            {
+              type: "OptionalRef<const RectRaw>",
+              name: "dstrect"
+            }
+          ]
         },
         "SDL_BlitSurfaceTiledWithScale": {
           parameters: [{

@@ -1312,7 +1312,7 @@ function expandTypes(sourceEntries, file, context) {
       if (hasPrefix) sourceName = sourceName.slice(prefix.length);
       if (blockedNames.has(sourceName)) continue;
       const sourceEntry = sourceEntries[sourceName];
-      if (sourceEntry && !hasPrefix) lastKey = sourceName;
+      if (sourceEntry) lastKey = sourceName;
       /** @type {ApiEntryTransform[]} */
       if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
       const parameters = transformEntry.parameters;
@@ -1340,6 +1340,7 @@ function expandTypes(sourceEntries, file, context) {
       } else if (hasPrefix) {
         if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(sourceName);
         else placeAfter.set(lastKey, [sourceName]);
+        blockedNames.add(sourceName);
       } else if (!sourceName.includes("::")) {
         const methodName = transformMemberName(transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName, targetType, context);
         if (blockedNames.has(methodName)) continue;
