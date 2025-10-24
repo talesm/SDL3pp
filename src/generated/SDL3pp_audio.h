@@ -202,7 +202,7 @@ struct AudioStreamParam
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_BITSIZE (0xFFu)
+constexpr Uint32 AUDIO_MASK_BITSIZE = SDL_AUDIO_MASK_BITSIZE;
 
 /**
  * Mask of bits in an AudioFormat that contain the floating point flag.
@@ -211,7 +211,7 @@ struct AudioStreamParam
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_FLOAT (1u << 8)
+constexpr Uint32 AUDIO_MASK_FLOAT = SDL_AUDIO_MASK_FLOAT;
 
 /**
  * Mask of bits in an AudioFormat that contain the bigendian flag.
@@ -221,7 +221,7 @@ struct AudioStreamParam
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_BIG_ENDIAN (1u << 12)
+constexpr Uint32 AUDIO_MASK_BIG_ENDIAN = SDL_AUDIO_MASK_BIG_ENDIAN;
 
 /**
  * Mask of bits in an AudioFormat that contain the signed data flag.
@@ -230,7 +230,7 @@ struct AudioStreamParam
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_SIGNED (1u << 15)
+constexpr Uint32 AUDIO_MASK_SIGNED = SDL_AUDIO_MASK_SIGNED;
 
 /**
  * Format specifier for audio data.

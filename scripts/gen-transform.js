@@ -354,6 +354,10 @@ const transform = {
       localIncludes: ["SDL3pp_iostream.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
       transform: {
         "SDL_AudioSpec": { before: "AudioFormat" },
+        "SDL_AUDIO_MASK_BITSIZE": { kind: "var", type: "Uint32", constexpr: true },
+        "SDL_AUDIO_MASK_FLOAT": { kind: "var", type: "Uint32", constexpr: true },
+        "SDL_AUDIO_MASK_BIG_ENDIAN": { kind: "var", type: "Uint32", constexpr: true },
+        "SDL_AUDIO_MASK_SIGNED": { kind: "var", type: "Uint32", constexpr: true },
         "SDL_AudioFormat": {
           before: "SDL_DEFINE_AUDIO_FORMAT",
           wrapper: true,

@@ -33437,47 +33437,45 @@ struct AudioStreamParam
   constexpr operator AudioStreamRaw() const { return value; }
 };
 
-#ifdef SDL3PP_DOC
-
 /**
  * Mask of bits in an AudioFormat that contains the format bit size.
  *
- * Generally one should use AudioFormat.GetBitSize instead of this macro
+ * Generally one should use AudioFormat.GetBitSize instead of this constant
  * directly.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_BITSIZE (0xFFu)
+constexpr Uint32 AUDIO_MASK_BITSIZE = SDL_AUDIO_MASK_BITSIZE;
 
 /**
  * Mask of bits in an AudioFormat that contain the floating point flag.
  *
- * Generally one should use AudioFormat.IsFloat instead of this macro directly.
+ * Generally one should use AudioFormat.IsFloat instead of this constant
+ * directly.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_FLOAT (1u << 8)
+constexpr Uint32 AUDIO_MASK_FLOAT = SDL_AUDIO_MASK_FLOAT;
 
 /**
  * Mask of bits in an AudioFormat that contain the bigendian flag.
  *
  * Generally one should use AudioFormat.IsBigEndian or
- * AudioFormat.IsLittleEndian instead of this macro directly.
+ * AudioFormat.IsLittleEndian instead of this constant directly.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_BIG_ENDIAN (1u << 12)
+constexpr Uint32 AUDIO_MASK_BIG_ENDIAN = SDL_AUDIO_MASK_BIG_ENDIAN;
 
 /**
  * Mask of bits in an AudioFormat that contain the signed data flag.
  *
- * Generally one should use AudioFormat.IsSigned instead of this macro directly.
+ * Generally one should use AudioFormat.IsSigned instead of this constant
+ * directly.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_AUDIO_MASK_SIGNED (1u << 15)
-
-#endif // SDL3PP_DOC
+constexpr Uint32 AUDIO_MASK_SIGNED = SDL_AUDIO_MASK_SIGNED;
 
 /**
  * Format specifier for audio data.
