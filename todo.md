@@ -40,7 +40,7 @@ Todo for next version
   - [x] SDL_WINDOWPOS_CENTERED_DISPLAY (function)
   - [x] SDL_WINDOWPOS_CENTERED (int)
   - [x] SDL_WINDOWPOS_ISCENTERED (function)
-- [ ] Fix constants not properly guarded by SDL_VERSION_ATLEAST()
+- [x] Fix constants not properly guarded by SDL_VERSION_ATLEAST()
 
 
 Backlog

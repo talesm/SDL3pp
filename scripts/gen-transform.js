@@ -1818,6 +1818,14 @@ const transform = {
         "SDL_ReleaseGPUFence": { hints: { methodName: "ReleaseFence" } },
         "SDL_GPUTextureSupportsFormat": { hints: { methodName: "TextureSupportsFormat" } },
         "SDL_GPUTextureSupportsSampleCount": { hints: { methodName: "TextureSupportsSampleCount" } },
+        "SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 12,
+          }
+        }
       }
     },
     "SDL_guid.h": {
@@ -6055,7 +6063,7 @@ const transform = {
       },
     },
     "SDL_sensor.h": {
-      localIncludes: ["SDL3pp_error.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
+      localIncludes: ["SDL3pp_error.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h", "SDL3pp_version.h"],
       transform: {
         "SDL_SensorID": { kind: "alias", before: "SDL_Sensor" },
         "SDL_SensorType": { before: "SDL_Sensor" },
@@ -6067,6 +6075,14 @@ const transform = {
           kind: "var",
           type: "float",
           constexpr: true,
+        },
+        "SDL_SENSOR_COUNT": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 22,
+          }
         },
       }
     },
@@ -7324,6 +7340,14 @@ const transform = {
           doc: "@sa HitTest"
         },
         "SDL_EGLSurface": { before: "SDL_Window" },
+        "SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN": {
+          since: {
+            tag: "SDL",
+            major: 3,
+            minor: 2,
+            patch: 18,
+          }
+        },
         "SDL_Window": {
           resource: {
             free: "SDL_DestroyWindow",
@@ -7847,6 +7871,9 @@ const transform = {
           enum: "TTF_IMAGE_",
           before: "TTF_Font",
         },
+        "TTF_PROP_FONT_CREATE_EXISTING_FONT_POINTER": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        },
         "TTF_Font": {
           resource: true,
           entries: {
@@ -8167,16 +8194,46 @@ const transform = {
             },
           }
         },
-        "TTF_FONT_WEIGHT_THIN": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_EXTRA_LIGHT": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_LIGHT": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_NORMAL": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_MEDIUM": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_SEMI_BOLD": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_BOLD": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_EXTRA_BOLD": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_BLACK": { kind: "var", type: "int", constexpr: true },
-        "TTF_FONT_WEIGHT_EXTRA_BLACK": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_THIN": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_EXTRA_LIGHT": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_LIGHT": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_NORMAL": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_MEDIUM": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_SEMI_BOLD": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_BOLD": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_EXTRA_BOLD": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_BLACK": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
+        "TTF_FONT_WEIGHT_EXTRA_BLACK": {
+          kind: "var", type: "int", constexpr: true,
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
         "TTF_OpenFontIO": {
           name: "OpenFont",
           parameters: [
@@ -8309,6 +8366,18 @@ const transform = {
             name: "DestroyGPUTextEngine",
             parameters: [{ type: "TextEngineRaw" }],
           }
+        },
+        "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        },
+        "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        },
+        "TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        },
+        "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
         },
         "TTF_Text": {
           resource: true,

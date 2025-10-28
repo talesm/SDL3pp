@@ -2459,8 +2459,12 @@ constexpr auto CREATE_HORIZONTAL_DPI_NUMBER =
 constexpr auto CREATE_VERTICAL_DPI_NUMBER =
   TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
 
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+
 constexpr auto CREATE_EXISTING_FONT_POINTER =
   TTF_PROP_FONT_CREATE_EXISTING_FONT_POINTER;
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
 constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
 
@@ -2989,8 +2993,6 @@ inline int GetFontWeight(FontParam font) { return TTF_GetFontWeight(font); }
 
 inline int Font::GetWeight() const { return SDL::GetFontWeight(m_resource); }
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
-
 constexpr int FONT_WEIGHT_THIN =
   TTF_FONT_WEIGHT_THIN; ///< Thin (100) named font weight value
 
@@ -3020,6 +3022,8 @@ constexpr int FONT_WEIGHT_BLACK =
 
 constexpr int FONT_WEIGHT_EXTRA_BLACK =
   TTF_FONT_WEIGHT_EXTRA_BLACK; ///< ExtraBlack (950) named font weight value
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 /**
  * Set a font's current wrap alignment option.
@@ -5416,11 +5420,15 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
 
 namespace prop::RendererTextEngine {
 
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+
 constexpr auto RENDERER_POINTER =
   TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER;
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
   TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
 } // namespace prop::RendererTextEngine
 
@@ -5533,10 +5541,14 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
 
 namespace prop::GpuTextEngine {
 
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+
 constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER;
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
   TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
 } // namespace prop::GpuTextEngine
 
