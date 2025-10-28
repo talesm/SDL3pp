@@ -654,9 +654,9 @@
 5953a6082,6083
 > #ifdef SDL3PP_DOC
 > 
-6014a6145,6146
+6018a6149,6150
 > #endif // SDL3PP_DOC
 > 
-6076a6209,6210
+6080a6213,6214
 > 
 > inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }

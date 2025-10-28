@@ -34914,7 +34914,7 @@
               "type": ""
             }
           ],
-          "value": "(Uint16 *)SDL_iconv_string(\"UCS-2\", \"UTF-8\", S, SDL_strlen(S)+1)"
+          "value": "SDL_reinterpret_cast(Uint16 *, SDL_iconv_string(\"UCS-2\", \"UTF-8\", S, SDL_strlen(S)+1))"
         },
         "SDL_iconv_utf8_ucs4": {
           "doc": "Convert a UTF-8 string to UCS-4.\n\nThis is a helper macro that might be more clear than calling\nSDL_iconv_string directly. However, it double-evaluates its parameter, so\ndo not use an expression with side-effects here.\n\n\\param S the string to convert.\n\\returns a new string, converted to the new encoding, or NULL on error.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -34926,7 +34926,7 @@
               "type": ""
             }
           ],
-          "value": "(Uint32 *)SDL_iconv_string(\"UCS-4\", \"UTF-8\", S, SDL_strlen(S)+1)"
+          "value": "SDL_reinterpret_cast(Uint32 *, SDL_iconv_string(\"UCS-4\", \"UTF-8\", S, SDL_strlen(S)+1))"
         },
         "SDL_iconv_wchar_utf8": {
           "doc": "Convert a wchar_t string to UTF-8.\n\nThis is a helper macro that might be more clear than calling\nSDL_iconv_string directly. However, it double-evaluates its parameter, so\ndo not use an expression with side-effects here.\n\n\\param S the string to convert.\n\\returns a new string, converted to the new encoding, or NULL on error.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -34938,7 +34938,7 @@
               "type": ""
             }
           ],
-          "value": "SDL_iconv_string(\"UTF-8\", \"WCHAR_T\", (char *)S, (SDL_wcslen(S)+1)*sizeof(wchar_t))"
+          "value": "SDL_iconv_string(\"UTF-8\", \"WCHAR_T\", SDL_reinterpret_cast(const char *, S), (SDL_wcslen(S)+1)*sizeof(wchar_t))"
         },
         "SDL_size_mul_check_overflow": {
           "doc": "Multiply two integers, checking for overflow.\n\nIf `a * b` would overflow, return false.\n\nOtherwise store `a * b` via ret and return true.\n\n\\param a the multiplicand.\n\\param b the multiplier.\n\\param ret on non-overflow output, stores the multiplication result, may\n           not be NULL.\n\\returns false on overflow, true if result is multiplied without overflow.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",

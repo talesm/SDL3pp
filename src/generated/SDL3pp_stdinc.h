@@ -5979,7 +5979,8 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_iconv_utf8_ucs2(S)                                                 \
-  (Uint16*)SDL_iconv_string("UCS-2", "UTF-8", S, SDL_strlen(S) + 1)
+  SDL_reinterpret_cast(                                                        \
+    Uint16*, SDL_iconv_string("UCS-2", "UTF-8", S, SDL_strlen(S) + 1))
 
 /**
  * Convert a UTF-8 string to UCS-4.
@@ -5994,7 +5995,8 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_iconv_utf8_ucs4(S)                                                 \
-  (Uint32*)SDL_iconv_string("UCS-4", "UTF-8", S, SDL_strlen(S) + 1)
+  SDL_reinterpret_cast(                                                        \
+    Uint32*, SDL_iconv_string("UCS-4", "UTF-8", S, SDL_strlen(S) + 1))
 
 /**
  * Convert a wchar_t string to UTF-8.
@@ -6009,8 +6011,10 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_iconv_wchar_utf8(S)                                                \
-  SDL_iconv_string(                                                            \
-    "UTF-8", "WCHAR_T", (char*)S, (SDL_wcslen(S) + 1) * sizeof(wchar_t))
+  SDL_iconv_string("UTF-8",                                                    \
+                   "WCHAR_T",                                                  \
+                   SDL_reinterpret_cast(const char*, S),                       \
+                   (SDL_wcslen(S) + 1) * sizeof(wchar_t))
 
 /**
  * Multiply two integers, checking for overflow.
