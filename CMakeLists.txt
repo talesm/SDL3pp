@@ -20,8 +20,6 @@ else ()
     endif ()
 endif ()
 
-set(CMAKE_CXX_STANDARD 23)
-
 set(SDL3PP_ORIGINAL_INCLUDE_DIRS 
     ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/
     ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/
@@ -85,9 +83,12 @@ file(GLOB_RECURSE SDL3pp_lib_HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 
+set(SDL3PP_COMPILE_FEATURES cxx_std_23)
+
 # The SDL3pp library
 add_library(SDL3pp INTERFACE)
 add_library(SDL3pp::SDL3pp ALIAS SDL3pp)
+target_compile_features(SDL3pp INTERFACE ${SDL3PP_COMPILE_FEATURES})
 target_link_libraries(SDL3pp INTERFACE ${SDL3PP_DEPENDENCIES})
 target_sources(SDL3pp
     PUBLIC
@@ -110,6 +111,7 @@ file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include
 
 add_library(SDL3pp_amalgamated INTERFACE)
 add_library(SDL3pp::SDL3pp_amalgamated ALIAS SDL3pp_amalgamated)
+target_compile_features(SDL3pp_amalgamated INTERFACE ${SDL3PP_COMPILE_FEATURES})
 target_sources(SDL3pp_amalgamated
    PUBLIC
        FILE_SET sdl3pp_headers
