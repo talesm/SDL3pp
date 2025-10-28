@@ -51772,11 +51772,11 @@ public:
    *   with Vulkan rendering
    * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
    * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
-   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
    *   relative to the parent for windows with the "tooltip" or "menu" property
    *   set.
    * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
-   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
    *   relative to the parent for windows with the "tooltip" or "menu" property
    *   set.
    *
@@ -52309,8 +52309,8 @@ public:
    * Additionally, as this is just a request, it can be denied by the windowing
    * system.
    *
-   * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
-   *          `SDL_WINDOWPOS_UNDEFINED`.
+   * @param p the coordinates of the window, or `WINDOWPOS_CENTERED` or
+   *          `WINDOWPOS_UNDEFINED`.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -53765,91 +53765,97 @@ struct WindowRef : Window
   ~WindowRef() { release(); }
 };
 
-#ifdef SDL3PP_DOC
-
 /**
- * A magic value used with SDL_WINDOWPOS_UNDEFINED.
+ * A magic value used with WINDOWPOS_UNDEFINED.
  *
  * Generally this macro isn't used directly, but rather through
- * SDL_WINDOWPOS_UNDEFINED or SDL_WINDOWPOS_UNDEFINED_DISPLAY.
+ * WINDOWPOS_UNDEFINED or WINDOWPOS_UNDEFINED_DISPLAY.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u
+constexpr int WINDOWPOS_UNDEFINED_MASK = SDL_WINDOWPOS_UNDEFINED_MASK;
 
 /**
  * Used to indicate that you don't care what the window position is.
  *
- * If you _really_ don't care, SDL_WINDOWPOS_UNDEFINED is the same, but always
+ * If you _really_ don't care, WINDOWPOS_UNDEFINED is the same, but always
  * uses the primary display instead of specifying one.
  *
  * @param X the Display of the display to use.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_UNDEFINED_DISPLAY(X) (SDL_WINDOWPOS_UNDEFINED_MASK | (X))
+constexpr int WINDOWPOS_UNDEFINED_DISPLAY(int X)
+{
+  return SDL_WINDOWPOS_UNDEFINED_DISPLAY(X);
+}
 
 /**
  * Used to indicate that you don't care what the window position/display is.
  *
  * This always uses the primary display.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
+constexpr int WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED;
 
 /**
  * A macro to test if the window position is marked as "undefined."
  *
  * @param X the window position value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_ISUNDEFINED(X)                                           \
-  (((X) & 0xFFFF0000) == SDL_WINDOWPOS_UNDEFINED_MASK)
+constexpr bool WINDOWPOS_ISUNDEFINED(int X)
+{
+  return SDL_WINDOWPOS_ISUNDEFINED(X);
+}
 
 /**
- * A magic value used with SDL_WINDOWPOS_CENTERED.
+ * A magic value used with WINDOWPOS_CENTERED.
  *
  * Generally this macro isn't used directly, but rather through
- * SDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_CENTERED_DISPLAY.
+ * WINDOWPOS_CENTERED or WINDOWPOS_CENTERED_DISPLAY.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_CENTERED_MASK 0x2FFF0000u
+constexpr int WINDOWPOS_CENTERED_MASK = SDL_WINDOWPOS_CENTERED_MASK;
 
 /**
  * Used to indicate that the window position should be centered.
  *
- * SDL_WINDOWPOS_CENTERED is the same, but always uses the primary display
+ * WINDOWPOS_CENTERED is the same, but always uses the primary display
  * instead of specifying one.
  *
  * @param X the Display of the display to use.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_CENTERED_DISPLAY(X) (SDL_WINDOWPOS_CENTERED_MASK | (X))
+constexpr int WINDOWPOS_CENTERED_DISPLAY(int X)
+{
+  return SDL_WINDOWPOS_CENTERED_DISPLAY(X);
+}
 
 /**
  * Used to indicate that the window position should be centered.
  *
  * This always uses the primary display.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_CENTERED SDL_WINDOWPOS_CENTERED_DISPLAY(0)
+constexpr int WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED;
 
 /**
  * A macro to test if the window position is marked as "centered."
  *
  * @param X the window position value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_WINDOWPOS_ISCENTERED(X)                                            \
-  (((X) & 0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)
-
-#endif // SDL3PP_DOC
+constexpr bool WINDOWPOS_ISCENTERED(int X)
+{
+  return SDL_WINDOWPOS_ISCENTERED(X);
+}
 
 /**
  * An opaque handle to an OpenGL context.
@@ -55298,11 +55304,11 @@ inline Window CreatePopupWindow(WindowParam parent,
  *   with Vulkan rendering
  * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
  * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
- *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+ *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
  *   relative to the parent for windows with the "tooltip" or "menu" property
  *   set.
  * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
- *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+ *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
  *   relative to the parent for windows with the "tooltip" or "menu" property
  *   set.
  *
@@ -55890,8 +55896,8 @@ inline void Window::SetIcon(SurfaceParam icon)
  * system.
  *
  * @param window the window to reposition.
- * @param p the coordinates of the window, or `SDL_WINDOWPOS_CENTERED` or
- *          `SDL_WINDOWPOS_UNDEFINED`.
+ * @param p the coordinates of the window, or `WINDOWPOS_CENTERED` or
+ *          `WINDOWPOS_UNDEFINED`.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.

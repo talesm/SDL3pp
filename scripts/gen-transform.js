@@ -7169,6 +7169,34 @@ const transform = {
       },
       transform: {
         "RendererRef": { kind: "forward" },
+        "SDL_WINDOWPOS_UNDEFINED_MASK": { kind: "var", type: "int", constexpr: true },
+        "SDL_WINDOWPOS_UNDEFINED_DISPLAY": {
+          kind: "function",
+          constexpr: true,
+          type: "int",
+          parameters: [{ type: "int" }],
+        },
+        "SDL_WINDOWPOS_UNDEFINED": { kind: "var", type: "int", constexpr: true },
+        "SDL_WINDOWPOS_ISUNDEFINED": {
+          kind: "function",
+          constexpr: true,
+          type: "bool",
+          parameters: [{ type: "int" }],
+        },
+        "SDL_WINDOWPOS_CENTERED_MASK": { kind: "var", type: "int", constexpr: true },
+        "SDL_WINDOWPOS_CENTERED_DISPLAY": {
+          kind: "function",
+          constexpr: true,
+          type: "int",
+          parameters: [{ type: "int" }],
+        },
+        "SDL_WINDOWPOS_CENTERED": { kind: "var", type: "int", constexpr: true },
+        "SDL_WINDOWPOS_ISCENTERED": {
+          kind: "function",
+          constexpr: true,
+          type: "bool",
+          parameters: [{ type: "int" }],
+        },
         "SDL_DisplayOrientation": { before: "SDL_DisplayID" },
         "SDL_DisplayMode": { before: "SDL_DisplayID" },
         "SDL_DisplayID": {
