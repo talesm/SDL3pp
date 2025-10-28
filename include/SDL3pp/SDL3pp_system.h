@@ -26,6 +26,9 @@ namespace SDL {
  * Platform specific functions for Windows
  */
 #if defined(SDL_PLATFORM_WINDOWS) || defined(SDL3PP_DOC)
+
+using MSG = ::MSG;
+
 /**
  * A callback to be used with SetWindowsMessageHook.
  *
@@ -156,6 +159,8 @@ inline void GetDXGIOutputInfo(Display displayID,
 }
 
 #endif // defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
+
+using XEvent = ::XEvent;
 
 /**
  * A callback to be used with SetX11EventHook.
@@ -1012,6 +1017,10 @@ inline void OnApplicationDidChangeStatusBarOrientation()
 #endif // defined(SDL_PLATFORM_IOS)
 
 #if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
+
+using XTaskQueueHandle = ::XTaskQueueHandle;
+
+using XUserHandle = ::XUserHandle;
 
 /**
  * Gets a reference to the global async task queue handle for GDK,

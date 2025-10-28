@@ -234,7 +234,7 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Sint8 = Sint8;
+using Sint8 = ::Sint8;
 
 constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
 
@@ -245,7 +245,7 @@ constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Uint8 = Uint8;
+using Uint8 = ::Uint8;
 
 constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
 
@@ -256,7 +256,7 @@ constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Sint16 = Sint16;
+using Sint16 = ::Sint16;
 
 constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
 
@@ -267,7 +267,7 @@ constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Uint16 = Uint16;
+using Uint16 = ::Uint16;
 
 constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
 
@@ -278,7 +278,7 @@ constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Sint32 = Sint32;
+using Sint32 = ::Sint32;
 
 constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
 
@@ -289,7 +289,7 @@ constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Uint32 = Uint32;
+using Uint32 = ::Uint32;
 
 constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
 
@@ -302,7 +302,7 @@ constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
  *
  * @sa SDL_SINT64_C
  */
-using Sint64 = Sint64;
+using Sint64 = ::Sint64;
 
 constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
 
@@ -315,7 +315,7 @@ constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
  *
  * @sa SDL_UINT64_C
  */
-using Uint64 = Uint64;
+using Uint64 = ::Uint64;
 
 constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
 

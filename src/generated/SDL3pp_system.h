@@ -20,7 +20,7 @@ namespace SDL {
  * @{
  */
 
-using MSG = MSG;
+using MSG = ::MSG;
 
 /**
  * A callback to be used with SetWindowsMessageHook.
@@ -147,7 +147,7 @@ inline void GetDXGIOutputInfo(Display displayID,
   CheckError(SDL_GetDXGIOutputInfo(displayID, adapterIndex, outputIndex));
 }
 
-using XEvent = XEvent;
+using XEvent = ::XEvent;
 
 /**
  * A callback to be used with SetX11EventHook.
@@ -963,9 +963,9 @@ inline void OnApplicationDidChangeStatusBarOrientation()
   SDL_OnApplicationDidChangeStatusBarOrientation();
 }
 
-using XTaskQueueHandle = XTaskQueueHandle;
+using XTaskQueueHandle = ::XTaskQueueHandle;
 
-using XUserHandle = XUserHandle;
+using XUserHandle = ::XUserHandle;
 
 /**
  * Gets a reference to the global async task queue handle for GDK,

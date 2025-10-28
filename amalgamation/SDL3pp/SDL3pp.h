@@ -13351,14 +13351,14 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  */
 #define SDL_UINT64_C(c) c##ULL /* or whatever the current compiler uses. */
 
+#endif // SDL3PP_DOC
+
 /**
  * A signed 8-bit integer type.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Sint8 = Sint8;
-
-#endif // SDL3PP_DOC
+using Sint8 = ::Sint8;
 
 /// Max representable value
 constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
@@ -13366,16 +13366,12 @@ constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
 /// Min representable value
 constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
 
-#ifdef SDL3PP_DOC
-
 /**
  * An unsigned 8-bit integer type.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Uint8 = Uint8;
-
-#endif // SDL3PP_DOC
+using Uint8 = ::Uint8;
 
 /// Max representable value
 constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
@@ -13383,16 +13379,12 @@ constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
 /// Min representable value
 constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
 
-#ifdef SDL3PP_DOC
-
 /**
  * A signed 16-bit integer type.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Sint16 = Sint16;
-
-#endif // SDL3PP_DOC
+using Sint16 = ::Sint16;
 
 /// Max representable value
 constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
@@ -13400,16 +13392,12 @@ constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
 /// Min representable value
 constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
 
-#ifdef SDL3PP_DOC
-
 /**
  * An unsigned 16-bit integer type.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Uint16 = Uint16;
-
-#endif // SDL3PP_DOC
+using Uint16 = ::Uint16;
 
 /// Max representable value
 constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
@@ -13417,16 +13405,12 @@ constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
 /// Min representable value
 constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
 
-#ifdef SDL3PP_DOC
-
 /**
  * A signed 32-bit integer type.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Sint32 = Sint32;
-
-#endif // SDL3PP_DOC
+using Sint32 = ::Sint32;
 
 /// Max representable value
 constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
@@ -13434,24 +13418,18 @@ constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
 /// Min representable value
 constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
 
-#ifdef SDL3PP_DOC
-
 /**
  * An unsigned 32-bit integer type.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-using Uint32 = Uint32;
-
-#endif // SDL3PP_DOC
+using Uint32 = ::Uint32;
 
 /// Max representable value
 constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
 
 /// Min representable value
 constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
-
-#ifdef SDL3PP_DOC
 
 /**
  * A signed 64-bit integer type.
@@ -13460,17 +13438,13 @@ constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
  *
  * @sa SDL_SINT64_C
  */
-using Sint64 = Sint64;
-
-#endif // SDL3PP_DOC
+using Sint64 = ::Sint64;
 
 /// Max representable value
 constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
 
 /// Min representable value
 constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
-
-#ifdef SDL3PP_DOC
 
 /**
  * An unsigned 64-bit integer type.
@@ -13479,9 +13453,7 @@ constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
  *
  * @sa SDL_UINT64_C
  */
-using Uint64 = Uint64;
-
-#endif // SDL3PP_DOC
+using Uint64 = ::Uint64;
 
 /// Max representable value
 constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
@@ -84094,6 +84066,9 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
  * Platform specific functions for Windows
  */
 #if defined(SDL_PLATFORM_WINDOWS) || defined(SDL3PP_DOC)
+
+using MSG = ::MSG;
+
 /**
  * A callback to be used with SetWindowsMessageHook.
  *
@@ -84224,6 +84199,8 @@ inline void GetDXGIOutputInfo(Display displayID,
 }
 
 #endif // defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
+
+using XEvent = ::XEvent;
 
 /**
  * A callback to be used with SetX11EventHook.
@@ -85080,6 +85057,10 @@ inline void OnApplicationDidChangeStatusBarOrientation()
 #endif // defined(SDL_PLATFORM_IOS)
 
 #if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
+
+using XTaskQueueHandle = ::XTaskQueueHandle;
+
+using XUserHandle = ::XUserHandle;
 
 /**
  * Gets a reference to the global async task queue handle for GDK,

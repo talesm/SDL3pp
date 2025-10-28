@@ -1,6 +1,7 @@
 Todo for next version
 ====================
 
+- [x] Make install script (contrib from @brccabral)
 - [ ] Review macros that could be constexpr function or constant.
   - [x] SDL_AUDIO_MASK_BITSIZE
   - [x] SDL_AUDIO_MASK_FLOAT
@@ -10,7 +11,6 @@ Todo for next version
   - [x] SDL_RENDERER_VSYNC_DISABLED (int)
   - [x] SDL_RENDERER_VSYNC_ADAPTIVE (int)
   - [x] SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE (int)
-  - [ ] SDL_SIZE_MAX (size_t)
   - [ ] SDL_FLT_EPSILON (float)
   - [ ] SDL_INIT_INTERFACE (template with concept...)
   - [ ] SDL_copyp (template with static_assert())
@@ -40,6 +40,8 @@ Todo for next version
   - [x] SDL_WINDOWPOS_CENTERED_DISPLAY (function)
   - [x] SDL_WINDOWPOS_CENTERED (int)
   - [x] SDL_WINDOWPOS_ISCENTERED (function)
+- [ ] Fix constants not properly guarded by SDL_VERSION_ATLEAST()
+
 
 Backlog
 =======

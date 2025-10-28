@@ -131,7 +131,8 @@ function generateFile(targetFile, config) {
       switch (entry.kind) {
         case "alias":
           if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
-          return `${doc}${template}${prefix}using ${entry.name} = ${entry.type};`;
+          const target = entry.name === entry.type ? `::${entry.type}` : entry.type;
+          return `${doc}${template}${prefix}using ${entry.name} = ${target};`;
         case "def":
           return doc + generateDef(entry);
         case "forward":
