@@ -1,63 +1,63 @@
-Todo for some stability
-=======================
+Todo for next version
+====================
 
-Things for a version 0.1
-
-- [x] C++ helpers and shims to better express the API intent:
-  - [x] Implement [resource management](https://talesm.github.io/SDL3pp/group__CategoryObjectWrapper.html);
-  - [x] Implement [helper](https://talesm.github.io/SDL3pp/classSDL_1_1StringParam.html)
-    to transform `std::string`, `std::string_view` into `const char *`;
-  - [x] Implement [helpers](https://talesm.github.io/SDL3pp/group__CategoryCallbackWrapper.html)
-    to use C++ lambdas and function objects as [callbacks](https://talesm.github.io/SDL3pp/callback.html)
-    on SDL;
-  - [x] Wrap [RAII interface to SDL allocated pointers](https://talesm.github.io/SDL3pp/group__CategoryOwnPtr.html)
-    returned by some SDL APIs;
-  - [x] Implement [Optional reference-like type](https://talesm.github.io/SDL3pp/classSDL_1_1OptionalRef.html)
-    for simulating an `std::optional<T&>`;
-  - [x] Implement [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
-    compatible with our empty-derived structs we use to add methods to things
-    like SDL_Rect.
-- [ ] Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
-  - [x] Basics;
-  - [ ] Video;
-  - [ ] Event handling:
-    - [x] Event handling;
-    - [ ] Keyboard support, keycodes and scancodes;
-    - [ ] Mouse support.
-  - [ ] Audio;
-  - [ ] Time;
-  - [ ] File I/O;
-    - [ ] Filesystem Access;
-    - [x] I/O Streams.
-  - [ ] Platform and CPU Information;
-  - [ ] Additional Functionality;
-- [x] Satellites libraries:
-  - [x] SDL_image;
-  - [x] SDL_ttf;
+- [ ] Review macros that could be constexpr function or constant.
+  - [x] SDL_AUDIO_MASK_BITSIZE
+  - [x] SDL_AUDIO_MASK_FLOAT
+  - [x] SDL_AUDIO_MASK_BIG_ENDIAN
+  - [x] SDL_AUDIO_MASK_SIGNED
+  - [ ] SDL_SOFTWARE_RENDERER (const char*)
+  - [ ] SDL_RENDERER_VSYNC_DISABLED (int)
+  - [ ] SDL_RENDERER_VSYNC_ADAPTIVE (int)
+  - [ ] SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE (int)
+  - [ ] SDL_SIZE_MAX (size_t)
+  - [ ] SDL_FLT_EPSILON (float)
+  - [ ] SDL_INIT_INTERFACE (template with concept...)
+  - [ ] SDL_copyp (template with static_assert())
+  - [ ] SDL_ICONV_ERROR (size_t)
+  - [ ] SDL_ICONV_E2BIG (size_t)
+  - [ ] SDL_ICONV_EILSEQ (size_t)
+  - [ ] SDL_ICONV_EINVAL (size_t)
+  - [ ] SDL_iconv_utf8_locale (template function)
+  - [ ] SDL_iconv_utf8_ucs2 (template function)
+  - [ ] SDL_iconv_utf8_ucs4 (template function)
+  - [ ] SDL_iconv_wchar_utf8 (template function)
+  - [ ] FontWeight enum:
+    - [ ] TTF_FONT_WEIGHT_THIN
+    - [ ] TTF_FONT_WEIGHT_EXTRA_LIGHT
+    - [ ] TTF_FONT_WEIGHT_LIGHT
+    - [ ] TTF_FONT_WEIGHT_NORMAL
+    - [ ] TTF_FONT_WEIGHT_MEDIUM
+    - [ ] TTF_FONT_WEIGHT_SEMI_BOLD
+    - [ ] TTF_FONT_WEIGHT_BOLD
+    - [ ] TTF_FONT_WEIGHT_EXTRA_BOLD
+    - [ ] TTF_FONT_WEIGHT_BLACK
+    - [ ] TTF_FONT_WEIGHT_EXTRA_BLACK
+  - [ ] SDL_WINDOWPOS_UNDEFINED_MASK (int)
+  - [ ] SDL_WINDOWPOS_UNDEFINED_DISPLAY (function)
+  - [ ] SDL_WINDOWPOS_UNDEFINED (int)
+  - [ ] SDL_WINDOWPOS_ISUNDEFINED (function)
+  - [ ] SDL_WINDOWPOS_CENTERED_MASK (int)
+  - [ ] SDL_WINDOWPOS_CENTERED_DISPLAY (function)
+  - [ ] SDL_WINDOWPOS_CENTERED (int)
+  - [ ] SDL_WINDOWPOS_ISCENTERED (function)
 
 Backlog
 =======
 
-- [ ] Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
-  - [ ] Event handling:
-    - [ ] Joystick support;
-    - [ ] Gamepad support;
-    - [ ] Touch support;
-    - [ ] Pen support;
-    - [ ] Sensors;
-    - [ ] HIDAPI.
-  - [ ] GPU;
-  - [ ] Threads;
-  - [ ] File I/O;
-    - [ ] Storage Abstraction;
-    - [ ] Async I/O.
+- [ ] All SDL_*ID representing devices must have uniform interface
+  - [ ] MouseID
+  - [ ] JoystickID
+  - [ ] DisplayID
+  - [ ] AudioDeviceID
+  - [ ] ...
+- [ ] Recognize refcount as shared;
 - [ ] Satellites libraries:
   - [ ] SDL_mixer;
   - [ ] SDL_net
   - [ ] SDL_gfx??
-  - [ ] SDL_rtf??
 
 Think about
 ===========
 
-- Model shared_ptr and weak ptr on resources
+- Build and test on github

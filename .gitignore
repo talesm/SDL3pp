@@ -3,3 +3,4 @@ build
 scripts/transform.json
 scripts/current.json
 scripts/source_xml.json
+scripts/transform-legacy.json

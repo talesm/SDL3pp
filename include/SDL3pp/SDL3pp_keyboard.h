@@ -10,7 +10,6 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategoryKeyboard Keyboard Support
  *
  * SDL keyboard management.
@@ -102,7 +101,7 @@ inline const char* GetKeyboardNameForID(KeyboardID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
+inline WindowRef GetKeyboardFocus() { return {SDL_GetKeyboardFocus()}; }
 
 /**
  * Get a snapshot of the current state of the keyboard.
@@ -190,245 +189,49 @@ inline Keymod GetModState() { return SDL_GetModState(); }
  */
 inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
 
-/**
- * Get the key code corresponding to the given scancode according to the
- * current keyboard layout.
- *
- * If you want to get the keycode as it would be delivered in key events,
- * including options specified in SDL_HINT_KEYCODE_OPTIONS, then you should
- * pass `key_event` as true. Otherwise this function simply translates the
- * scancode based on the given modifier state.
- *
- * @param scancode the desired Scancode to query.
- * @param modstate the modifier state to use when translating the scancode to
- *                 a keycode.
- * @param key_event true if the keycode will be used in key events.
- * @post the Keycode that corresponds to the given Scancode.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.GetName
- * @sa Keycode.GetScancode
- */
 inline Keycode::Keycode(Scancode scancode, Keymod modstate, bool key_event)
-  : Keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
+  : m_keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
 {
 }
 
-/**
- * Get a key code from a human-readable name.
- *
- * @param name the human-readable key name.
- * @post a valid key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
- *       GetError() for more information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Keycode.GetName
- * @sa Scancode.Scancode
- */
 inline Keycode::Keycode(StringParam name)
-  : Keycode(SDL_GetKeyFromName(name))
+  : m_keycode(SDL_GetKeyFromName(name))
 {
 }
 
-/**
- * Get the scancode corresponding to the given key code according to the
- * current keyboard layout.
- *
- * Note that there may be multiple scancode+modifier states that can generate
- * this keycode, this will just return the first one found.
- *
- * @param modstate a pointer to the modifier state that would be used when the
- *                 scancode generates this key, may be nullptr.
- * @returns the Scancode that corresponds to the given Keycode.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Scancode.GetName
- */
 inline Scancode Keycode::GetScancode(Keymod* modstate) const
 {
   return SDL_GetScancodeFromKey(m_keycode, modstate);
 }
 
-/**
- * Set a human-readable name for a scancode.
- *
- * @param name the name to use for the scancode, encoded as UTF-8. The string
- *             is not copied, so the pointer given to this function must stay
- *             valid while SDL is being used.
- * @throws Error on failure.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Scancode.GetName
- */
 inline void Scancode::SetName(StringParam name)
 {
   CheckError(SDL_SetScancodeName(m_scancode, name));
 }
 
-/**
- * Get a human-readable name for a scancode.
- *
- * **Warning**: The returned name is by design not stable across platforms,
- * e.g. the name for `SCANCODE_LGUI` is "Left GUI" under Linux but "Left
- * Windows" under Microsoft Windows, and some scancodes like
- * `SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even
- * scancodes that share names, e.g. `SCANCODE_RETURN` and
- * `SCANCODE_RETURN2` (both called "Return"). This function is therefore
- * unsuitable for creating a stable cross-platform two-way mapping between
- * strings and scancodes.
- *
- * @returns a pointer to the name for the scancode. If the scancode doesn't
- *          have a name this function returns an empty string ("").
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.GetScancode
- * @sa Scancode.Scancode
- * @sa Scancode.SetName
- */
 inline const char* Scancode::GetName() const
 {
   return SDL_GetScancodeName(m_scancode);
 }
 
-/**
- * Get a scancode from a human-readable name.
- *
- * @param name the human-readable scancode name.
- * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't
- *          recognized; call GetError() for more information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Keycode.GetScancode
- * @sa Scancode.GetName
- */
 inline Scancode::Scancode(StringParam name)
-  : Scancode(SDL_GetScancodeFromName(name))
+  : m_scancode(SDL_GetScancodeFromName(name))
 {
 }
 
-/**
- * Get a human-readable name for a key.
- *
- * If the key doesn't have a name, this function returns an empty string ("").
- *
- * Letters will be presented in their uppercase form, if applicable.
- *
- * @returns a UTF-8 encoded string of the key name.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Keycode.Keycode
- * @sa Keycode.Keycode
- * @sa Keycode.GetScancode
- */
 inline const char* Keycode::GetName() const
 {
   return SDL_GetKeyName(m_keycode);
 }
 
-/**
- * Start accepting Unicode text input events in a window.
- *
- * This function will enable text input (EVENT_TEXT_INPUT and
- * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowRef.StopTextInput().
- *
- * Text input events are not received by default.
- *
- * On some platforms using this function shows the screen keyboard and/or
- * activates an IME, which can prevent some key press events from being passed
- * through.
- *
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.SetTextInputArea
- * @sa WindowRef.StartTextInput
- * @sa WindowRef.StopTextInput
- * @sa WindowRef.IsTextInputActive
- */
-inline void WindowRef::StartTextInput()
+inline void Window::StartTextInput()
 {
-  return CheckError(SDL_StartTextInput(get()));
+  CheckError(SDL_StartTextInput(m_resource));
 }
 
-/**
- * Start accepting Unicode text input events in a window, with properties
- * describing the input.
- *
- * This function will enable text input (EVENT_TEXT_INPUT and
- * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowRef.StopTextInput().
- *
- * Text input events are not received by default.
- *
- * On some platforms using this function shows the screen keyboard and/or
- * activates an IME, which can prevent some key press events from being passed
- * through.
- *
- * These are the supported properties:
- *
- * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
- *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
- * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
- *   that describes how text should be capitalized, defaults to
- *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
- *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
- *   addresses, usernames, and passwords.
- * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
- *   and auto correction, defaults to true.
- * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
- *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
- *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
- *   is "1".
- *
- * On Android you can directly specify the input type:
- *
- * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
- *   use, overriding other properties. This is documented at
- *   https://developer.android.com/reference/android/text/InputType
- *
- * @param props the properties to use.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.SetTextInputArea
- * @sa WindowRef.StartTextInput
- * @sa WindowRef.StopTextInput
- * @sa WindowRef.IsTextInputActive
- */
-inline void WindowRef::StartTextInput(PropertiesRef props)
+inline void Window::StartTextInput(PropertiesParam props)
 {
-  CheckError(SDL_StartTextInputWithProperties(get(), props.get()));
+  CheckError(SDL_StartTextInputWithProperties(m_resource, props));
 }
 
 /**
@@ -440,7 +243,7 @@ inline void WindowRef::StartTextInput(PropertiesRef props)
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa WindowRef.StartTextInput
+ * @sa Window.StartTextInput
  */
 using TextInputType = SDL_TextInputType;
 
@@ -484,7 +287,7 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa WindowRef.StartTextInput
+ * @sa Window.StartTextInput
  */
 using Capitalization = SDL_Capitalization;
 
@@ -516,99 +319,29 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
 
 } // namespace prop::TextInput
 
-/**
- * Check whether or not Unicode text input events are enabled for a window.
- *
- * @returns true if text input events are enabled else false.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.StartTextInput
- */
-inline bool WindowRef::IsTextInputActive() const
+inline bool Window::IsTextInputActive() const
 {
-  return SDL_TextInputActive(get());
+  return SDL_TextInputActive(m_resource);
 }
 
-/**
- * Stop receiving any text input events in a window.
- *
- * If WindowRef.StartTextInput() showed the screen keyboard, this function will
- * hide it.
- *
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.StartTextInput
- */
-inline void WindowRef::StopTextInput() { CheckError(SDL_StopTextInput(get())); }
-
-/**
- * Dismiss the composition window/IME without disabling the subsystem.
- *
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.StartTextInput
- * @sa WindowRef.StopTextInput
- */
-inline void WindowRef::ClearComposition()
+inline void Window::StopTextInput()
 {
-  CheckError(SDL_ClearComposition(get()));
+  CheckError(SDL_StopTextInput(m_resource));
 }
 
-/**
- * Set the area used to type Unicode text input.
- *
- * Native input methods may place a window with word suggestions near the
- * cursor, without covering the text being entered.
- *
- * @param rect the Rect representing the text input area, in window
- *             coordinates, or nullptr to clear it.
- * @param cursor the offset of the current cursor location relative to
- *               `rect->x`, in window coordinates.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.GetTextInputArea
- * @sa WindowRef.StartTextInput
- */
-inline void WindowRef::SetTextInputArea(const SDL_Rect& rect, int cursor)
+inline void Window::ClearComposition()
 {
-  CheckError(SDL_SetTextInputArea(get(), &rect, cursor));
+  CheckError(SDL_ClearComposition(m_resource));
 }
 
-/**
- * Get the area used to type Unicode text input.
- *
- * This returns the values previously set by WindowRef.SetTextInputArea().
- *
- * @param rect a pointer to an Rect filled in with the text input area,
- *             may be nullptr.
- * @param cursor a pointer to the offset of the current cursor location
- *               relative to `rect->x`, may be nullptr.
- * @throws Error on failure.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowRef.SetTextInputArea
- */
-inline void WindowRef::GetTextInputArea(Rect* rect, int* cursor)
+inline void Window::SetTextInputArea(const RectRaw& rect, int cursor)
 {
-  CheckError(SDL_GetTextInputArea(get(), rect, cursor));
+  CheckError(SDL_SetTextInputArea(m_resource, &rect, cursor));
+}
+
+inline void Window::GetTextInputArea(RectRaw* rect, int* cursor)
+{
+  CheckError(SDL_GetTextInputArea(m_resource, rect, cursor));
 }
 
 /**
@@ -621,31 +354,21 @@ inline void WindowRef::GetTextInputArea(Rect* rect, int* cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowRef.StartTextInput
- * @sa WindowRef.IsScreenKeyboardShown
+ * @sa Window.StartTextInput
+ * @sa Window.IsScreenKeyboardShown
  */
 inline bool HasScreenKeyboardSupport()
 {
   return SDL_HasScreenKeyboardSupport();
 }
 
-/**
- * Check whether the screen keyboard is shown for given window.
- *
- * @returns true if screen keyboard is shown or false if not.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa HasScreenKeyboardSupport
- */
-inline bool WindowRef::IsScreenKeyboardShown() const
+inline bool Window::IsScreenKeyboardShown() const
 {
-  return SDL_ScreenKeyboardShown(get());
+  return SDL_ScreenKeyboardShown(m_resource);
 }
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_KEYBOARD_H_ */

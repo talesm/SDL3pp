@@ -2,9 +2,9 @@
 #define SDL3PP_BLENDMODE_H_
 
 #include <SDL3/SDL_blendmode.h>
-#include "SDL3pp_stdinc.h"
 
 namespace SDL {
+
 /**
  * @defgroup CategoryBlendmode Blend modes
  *
@@ -43,26 +43,18 @@ constexpr BlendMode BLENDMODE_NONE =
  */
 constexpr BlendMode BLENDMODE_BLEND = SDL_BLENDMODE_BLEND;
 
-/**
- * pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
- */
+/// pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
 constexpr BlendMode BLENDMODE_BLEND_PREMULTIPLIED =
   SDL_BLENDMODE_BLEND_PREMULTIPLIED;
 
-/**
- * additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
- */
+/// additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_ADD = SDL_BLENDMODE_ADD;
 
-/**
- * pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
- */
+/// pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_ADD_PREMULTIPLIED =
   SDL_BLENDMODE_ADD_PREMULTIPLIED;
 
-/**
- * color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
- */
+/// color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
 constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
 
 /**
@@ -85,25 +77,17 @@ using BlendOperation = SDL_BlendOperation;
 constexpr BlendOperation BLENDOPERATION_ADD =
   SDL_BLENDOPERATION_ADD; ///< dst + src: supported by all renderers
 
-/**
- * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
 
-/**
- * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
   SDL_BLENDOPERATION_REV_SUBTRACT;
 
-/**
- * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
 
-/**
- * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
+/// max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
 
 /**
@@ -149,7 +133,7 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
 /**
  * Compose a custom blend mode for renderers.
  *
- * The functions RendererRef.SetDrawBlendMode and TextureRef.SetBlendMode accept
+ * The functions Renderer.SetDrawBlendMode and Texture.SetBlendMode accept
  * the BlendMode returned by this function if the renderer supports it.
  *
  * A blend mode controls how the pixels from a drawing operation (source) get
@@ -175,16 +159,17 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  * - `max(src, dst)`
  *
  * The red, green, and blue components are always multiplied with the first,
- * second, and third components of the BlendFactor, respectively. The fourth
- * component is not used.
+ * second, and third components of the BlendFactor, respectively. The
+ * fourth component is not used.
  *
  * The alpha component is always multiplied with the fourth component of the
- * BlendFactor. The other components are not used in the alpha calculation.
+ * BlendFactor. The other components are not used in the alpha
+ * calculation.
  *
  * Support for these blend modes varies for each renderer. To check if a
- * specific BlendMode is supported, create a renderer and pass it to either
- * RendererRef.SetDrawBlendMode or TextureRef.SetBlendMode. They will return
- * with an error if the blend mode is not supported.
+ * specific BlendMode is supported, create a renderer and pass it to
+ * either Renderer.SetDrawBlendMode or Texture.SetBlendMode. They will
+ * return with an error if the blend mode is not supported.
  *
  * This list describes the support of custom blend modes for each renderer.
  * All renderers support the four blend modes listed in the BlendMode
@@ -227,10 +212,10 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa RendererRef.SetDrawBlendMode
- * @sa RendererRef.GetDrawBlendMode
- * @sa TextureRef.SetBlendMode
- * @sa TextureRef.GetBlendMode
+ * @sa Renderer.SetDrawBlendMode
+ * @sa Renderer.GetDrawBlendMode
+ * @sa Texture.SetBlendMode
+ * @sa Texture.GetBlendMode
  */
 inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                         BlendFactor dstColorFactor,
@@ -246,7 +231,8 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                     dstAlphaFactor,
                                     alphaOperation);
 }
-/** @} */
+
+/// @}
 
 } // namespace SDL
 

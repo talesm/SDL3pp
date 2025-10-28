@@ -2,7 +2,8 @@
 #define SDL3PP_ASSERT_H_
 
 #include <SDL3/SDL_assert.h>
-#include "SDL3pp_stdinc.h"
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_strings.h"
 
 namespace SDL {
 
@@ -459,7 +460,7 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  * This callback may fire from any thread, but it runs wrapped in a mutex, so
  * it will only fire from one thread at a time.
  *
- * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
  * @param handler the SDL_AssertionHandler function to call when an assertion
  *                fails.
@@ -586,9 +587,9 @@ inline AssertionHandlerCB GetAssertionHandler()
  *
  * @sa ResetAssertionReport
  */
-inline const AssertData* GetAssertionReport()
+inline const AssertData& GetAssertionReport()
 {
-  return SDL_GetAssertionReport();
+  return *SDL_GetAssertionReport();
 }
 
 /**

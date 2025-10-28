@@ -3,8 +3,6 @@
 
 #include <exception>
 #include <format>
-#include <string>
-#include <string_view>
 #include <SDL3/SDL_error.h>
 #include "SDL3pp_strings.h"
 
@@ -168,25 +166,19 @@ class Error : public std::exception
   std::string m_message;
 
 public:
-  /**
-   * Default ctor.
-   */
+  /// Default ctor.
   Error()
     : m_message(SDL_GetError())
   {
   }
 
-  /**
-   * Constructs from string
-   */
+  /// Default ctor.
   Error(std::string message)
     : m_message(std::move(message))
   {
   }
 
-  /**
-   * Returns the explanatory string.
-   */
+  /// Returns the explanatory string.
   constexpr const char* what() const noexcept { return m_message.c_str(); }
 
   /**
@@ -238,6 +230,21 @@ constexpr T CheckError(T result, T invalidValue)
 {
   if (result == invalidValue) throw Error();
   return result;
+}
+
+/**
+ * Check and throw if returned value from SDL is an error.
+ *
+ * This should be called only for things that may set SetError(). If the result
+ * parameter is equals to invalidValue it will throw Error.
+ *
+ * @param result       the result returned
+ * @param validValue the value that if equal to result indicates this is valid.
+ */
+template<class T>
+constexpr void CheckErrorIfNot(T result, T validValue)
+{
+  if (result != validValue) throw Error();
 }
 
 /**
@@ -295,7 +302,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 #endif // SDL3PP_DOC
 
-/** @} */
+/// @}
 
 } // namespace SDL
 

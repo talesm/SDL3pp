@@ -8,7 +8,6 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategoryMouse Mouse Support
  *
  * Any GUI application has to deal with the mouse, and SDL provides functions
@@ -22,14 +21,14 @@ namespace SDL {
  * For certain games, it's useful to disassociate the mouse cursor from mouse
  * input. An FPS, for example, would not want the player's motion to stop as
  * the mouse hits the edge of the window. For these scenarios, use
- * WindowRef.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
+ * Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
  * to the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
- * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
- * let the system manage the cursor, if possible, using SetCursor() with a
- * custom image made through Cursor.CreateColor(), or perhaps just a specific
- * system cursor from Cursor.CreateSystem().
+ * cursor can use HideCursor() and ShowCursor(). It might be more
+ * efficient to let the system manage the cursor, if possible, using
+ * Cursor.Set() with a custom image made through Cursor.Cursor(),
+ * or perhaps just a specific system cursor from Cursor.Cursor().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
@@ -40,39 +39,49 @@ namespace SDL {
  * mouse device for touch and pen input, which often can make a desktop
  * application work on a touchscreen phone without any code changes. Apps that
  * care about touch/pen separately from mouse input should filter out events
- * with a `which` field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID.
+ * with a `which` field of TOUCH_MOUSEID/PEN_MOUSEID.
  *
  * @{
  */
 
 // Forward decl
-struct CursorRef;
-
-// Forward decl
 struct Cursor;
 
-/**
- * Handle to a shared cursor.
- *
- * @cat resource
- *
- * @sa CursorRef
- * @sa Cursor
- */
-using CursorShared = ResourceShared<Cursor>;
+/// Alias to raw representation for Cursor.
+using CursorRaw = SDL_Cursor*;
+
+// Forward decl
+struct CursorRef;
+
+/// Safely wrap Cursor for non owning parameters
+struct CursorParam
+{
+  CursorRaw value; ///< parameter's CursorRaw
+
+  /// Constructs from CursorRaw
+  constexpr CursorParam(CursorRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr CursorParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const CursorParam& other) const = default;
+
+  /// Converts to underlying CursorRaw
+  constexpr operator CursorRaw() const { return value; }
+};
 
 /**
- * Weak handle to a shared cursor.
- *
- * @cat resource
- *
- * @sa CursorShared
- * @sa CursorRef
- */
-using CursorWeak = ResourceWeak<Cursor>;
-
-/**
- * Cursor types for Cursor.CreateSystem().
+ * Cursor types for Cursor.Cursor().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -84,17 +93,13 @@ constexpr SystemCursor SYSTEM_CURSOR_DEFAULT =
 constexpr SystemCursor SYSTEM_CURSOR_TEXT =
   SDL_SYSTEM_CURSOR_TEXT; ///< Text selection.  Usually an I-beam.
 
-/**
- * Wait.  Usually an hourglass or watch or spinning ball.
- */
+/// Wait.  Usually an hourglass or watch or spinning ball.
 constexpr SystemCursor SYSTEM_CURSOR_WAIT = SDL_SYSTEM_CURSOR_WAIT;
 
 constexpr SystemCursor SYSTEM_CURSOR_CROSSHAIR =
   SDL_SYSTEM_CURSOR_CROSSHAIR; ///< Crosshair.
 
-/**
- * Program is busy but still interactive.  Usually it's WAIT with an arrow.
- */
+/// Program is busy but still interactive.  Usually it's WAIT with an arrow.
 constexpr SystemCursor SYSTEM_CURSOR_PROGRESS = SDL_SYSTEM_CURSOR_PROGRESS;
 
 constexpr SystemCursor SYSTEM_CURSOR_NWSE_RESIZE =
@@ -111,20 +116,14 @@ constexpr SystemCursor SYSTEM_CURSOR_EW_RESIZE =
 constexpr SystemCursor SYSTEM_CURSOR_NS_RESIZE =
   SDL_SYSTEM_CURSOR_NS_RESIZE; ///< Double arrow pointing north and south.
 
-/**
- * Four pointed arrow pointing north, south, east, and west.
- */
+/// Four pointed arrow pointing north, south, east, and west.
 constexpr SystemCursor SYSTEM_CURSOR_MOVE = SDL_SYSTEM_CURSOR_MOVE;
 
-/**
- * Not permitted.  Usually a slashed circle or crossbones.
- */
+/// Not permitted.  Usually a slashed circle or crossbones.
 constexpr SystemCursor SYSTEM_CURSOR_NOT_ALLOWED =
   SDL_SYSTEM_CURSOR_NOT_ALLOWED;
 
-/**
- * Pointer that indicates a link.  Usually a pointing hand.
- */
+/// Pointer that indicates a link.  Usually a pointing hand.
 constexpr SystemCursor SYSTEM_CURSOR_POINTER = SDL_SYSTEM_CURSOR_POINTER;
 
 /**
@@ -179,41 +178,39 @@ using MouseID = SDL_MouseID;
  * @since This struct is available since SDL 3.2.0.
  *
  * @cat resource
- *
- * @sa Cursor
  */
-struct CursorRef : Resource<SDL_Cursor*>
+class Cursor
 {
-  using Resource::Resource;
-  /**
-   * Free a previously-created cursor.
-   *
-   * Use this function to free cursor resources created with Cursor.Create(),
-   * Cursor.CreateColor() or Cursor.CreateSystem().
-   *
-   * @param resource the cursor to free.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Cursor.CreateColor
-   * @sa Cursor.Create
-   * @sa Cursor.CreateSystem
-   */
-  static void reset(SDL_Cursor* resource) { SDL_DestroyCursor(resource); }
-};
+  CursorRaw m_resource = nullptr;
 
-/**
- * Handle to an owned cursor
- *
- * @cat resource
- *
- * @sa CursorRef
- */
-struct Cursor : ResourceUnique<CursorRef>
-{
-  using ResourceUnique::ResourceUnique;
+public:
+  /// Default ctor
+  constexpr Cursor() = default;
+
+  /**
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit Cursor(const CursorRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr Cursor(const Cursor& other) = delete;
+
+  /// Move constructor
+  constexpr Cursor(Cursor&& other)
+    : Cursor(other.release())
+  {
+  }
+
+  constexpr Cursor(const CursorRef& other) = delete;
+
+  constexpr Cursor(CursorRef&& other) = delete;
 
   /**
    * Create a cursor using the specified bitmap data and mask (in MSB format).
@@ -229,12 +226,14 @@ struct Cursor : ResourceUnique<CursorRef>
    * - data=0, mask=0: transparent
    * - data=1, mask=0: inverted color if possible, black if not.
    *
+   * Cursors created with this function must be freed with Cursor.Destroy().
+   *
    * If you want to have a color cursor, or create your cursor from an
-   * SurfaceRef, you should use Cursor.CreateColor(). Alternately, you can
+   * Surface, you should use Cursor.Cursor(). Alternately, you can
    * hide the cursor and draw your own as part of your game's rendering, but it
    * will be bound to the framerate.
    *
-   * Also, Cursor.CreateSystem() is available, which provides several
+   * Also, Cursor.Cursor() is available, which provides several
    * readily-available system cursors to pick from.
    *
    * @param data the color value for each pixel of the cursor.
@@ -242,25 +241,25 @@ struct Cursor : ResourceUnique<CursorRef>
    * @param size the width and height of the cursor.
    * @param hot the x position of the cursor hot spot, from the top-left, in the
    *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
-   * @returns a new cursor with the specified parameters on success.
+   * @post a new cursor with the specified parameters on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.CreateColor
-   * @sa Cursor.CreateSystem
+   * @sa Cursor.Cursor
+   * @sa Cursor.Cursor
    * @sa Cursor.Destroy
-   * @sa SetCursor
+   * @sa Cursor.Set
    */
-  static Cursor Create(const Uint8* data,
-                       const Uint8* mask,
-                       const SDL_Point& size,
-                       const SDL_Point& hot)
+  Cursor(const Uint8* data,
+         const Uint8* mask,
+         const PointRaw& size,
+         const PointRaw& hot)
+    : m_resource(
+        CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
   {
-    return Cursor(
-      CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)));
   }
 
   /**
@@ -276,31 +275,30 @@ struct Cursor : ResourceUnique<CursorRef>
    * appropriate size and be used instead, if available. Otherwise, the closest
    * smaller image will be upscaled and be used instead.
    *
-   * @param surface an SurfaceRef structure representing the cursor image.
-   * @param hot the x position of the cursor hot spot.
-   * @returns the new cursor on success.
+   * @param surface an Surface structure representing the cursor image.
+   * @param hot the x, y position of the cursor hot spot.
+   * @post the new cursor on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.Create
-   * @sa Cursor.CreateSystem
+   * @sa Cursor.Cursor
+   * @sa Cursor.Cursor
    * @sa Cursor.Destroy
-   * @sa SetCursor
+   * @sa Cursor.Set
    */
-  static Cursor CreateColor(SurfaceRef surface, const SDL_Point& hot)
+  Cursor(SurfaceParam surface, const PointRaw& hot)
+    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
   {
-    return Cursor(
-      CheckError(SDL_CreateColorCursor(surface.get(), hot.x, hot.y)));
   }
 
   /**
    * Create a system cursor.
    *
    * @param id an SystemCursor enum value.
-   * @returns a cursor on success.
+   * @post a cursor on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -309,58 +307,117 @@ struct Cursor : ResourceUnique<CursorRef>
    *
    * @sa Cursor.Destroy
    */
-  static Cursor CreateSystem(SystemCursor id)
+  Cursor(SystemCursor id)
+    : m_resource(CheckError(SDL_CreateSystemCursor(id)))
   {
-    return Cursor(CheckError(SDL_CreateSystemCursor(id)));
   }
+
+  /// Destructor
+  ~Cursor() { SDL_DestroyCursor(m_resource); }
+
+  /// Assignment operator.
+  Cursor& operator=(Cursor other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying CursorRaw.
+  constexpr CursorRaw get() const { return m_resource; }
+
+  /// Retrieves underlying CursorRaw and clear this.
+  constexpr CursorRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const Cursor& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to CursorParam
+  constexpr operator CursorParam() const { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
+   *
+   * Use this function to free cursor resources created with Cursor.Cursor(),
+   * Cursor.Cursor() or Cursor.Cursor().
    *
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Cursor.CreateColor
-   * @sa Cursor.Create
-   * @sa Cursor.CreateSystem
+   * @sa Cursor.Cursor
+   * @sa Cursor.Cursor
+   * @sa Cursor.Cursor
    */
-  void Destroy() { reset(); }
-  /**
-   * Move this cursor into a CursorShared.
-   */
-  CursorShared share();
+  void Destroy();
 
+  /**
+   * Set the active cursor.
+   *
+   * This function sets the currently active cursor to the specified one. If the
+   * cursor is currently visible, the change will be immediately represented on
+   * the display. Cursor.Set(nullptr) can be used to force cursor redraw, if
+   * this is desired for any reason.
+   *
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetCursor
+   */
+  void Set();
 };
 
-
-inline CursorShared Cursor::share()
+/// Semi-safe reference for Cursor.
+struct CursorRef : Cursor
 {
-  return CursorShared(std::move(*this));
-}
-
-/**
- * Unsafe Handle to cursor
- *
- * Must call manually reset() to free.
- *
- * @cat resource
- *
- * @sa CursorRef
- */
-struct CursorUnsafe : ResourceUnsafe<CursorRef>
-{
-  using ResourceUnsafe::ResourceUnsafe;
-
   /**
-   * Constructs CursorUnsafe from Cursor.
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw or Cursor.
+   *
+   * This does not takes ownership!
    */
-  constexpr explicit CursorUnsafe(Cursor&& other)
-    : CursorUnsafe(other.release())
+  CursorRef(CursorParam resource)
+    : Cursor(resource.value)
   {
   }
+
+  /// Copy constructor.
+  CursorRef(const CursorRef& other)
+    : Cursor(other.get())
+  {
+  }
+
+  /// Destructor
+  ~CursorRef() { release(); }
 };
+
+/**
+ * Scroll direction types for the Scroll event
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using MouseWheelDirection = SDL_MouseWheelDirection;
+
+constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
+  SDL_MOUSEWHEEL_NORMAL; ///< The scroll direction is normal.
+
+constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
+  SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural.
 
 /**
  * Represents a button index.
@@ -379,19 +436,6 @@ constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
 constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
 
 /**
- * Scroll direction types for the Scroll event
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using MouseWheelDirection = SDL_MouseWheelDirection;
-
-constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
-  SDL_MOUSEWHEEL_NORMAL; ///< The scroll direction is normal.
-
-constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
-  SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural.
-
-/**
  * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
  *
  * - Button 1: Left mouse button
@@ -408,31 +452,21 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
  */
 using MouseButtonFlags = Uint32;
 
-/**
- * Convert a button index to a button mask
- *
- * @param button
- * @return constexpr MouseButtonFlags
- */
+constexpr MouseButtonFlags BUTTON_LMASK = SDL_BUTTON_LMASK; ///< LMASK
+
+constexpr MouseButtonFlags BUTTON_MMASK = SDL_BUTTON_MMASK; ///< MMASK
+
+constexpr MouseButtonFlags BUTTON_RMASK = SDL_BUTTON_RMASK; ///< RMASK
+
+constexpr MouseButtonFlags BUTTON_X1MASK = SDL_BUTTON_X1MASK; ///< X1MASK
+
+constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
+
+/** Returns mask for button */
 constexpr MouseButtonFlags ButtonMask(MouseButton button)
 {
   return SDL_BUTTON_MASK(button);
 }
-
-constexpr MouseButtonFlags BUTTON_LMASK =
-  SDL_BUTTON_LMASK; ///< Left button mask
-
-constexpr MouseButtonFlags BUTTON_MMASK =
-  SDL_BUTTON_MMASK; ///< Middle button mask
-
-constexpr MouseButtonFlags BUTTON_RMASK =
-  SDL_BUTTON_RMASK; ///< Right button mask
-
-constexpr MouseButtonFlags BUTTON_X1MASK =
-  SDL_BUTTON_X1MASK; ///< X1 button mask
-
-constexpr MouseButtonFlags BUTTON_X2MASK =
-  SDL_BUTTON_X2MASK; ///< X2 button mask
 
 /**
  * Return whether a mouse is currently connected.
@@ -478,8 +512,8 @@ inline OwnArray<MouseID> GetMice()
  * This function returns "" if the mouse doesn't have a name.
  *
  * @param instance_id the mouse instance ID.
- * @returns the name of the selected mouse.
- * @throws Error on failure.
+ * @returns the name of the selected mouse, or nullptr on failure; call
+ *          GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -489,7 +523,7 @@ inline OwnArray<MouseID> GetMice()
  */
 inline const char* GetMouseNameForID(MouseID instance_id)
 {
-  return CheckError(SDL_GetMouseNameForID(instance_id));
+  return SDL_GetMouseNameForID(instance_id);
 }
 
 /**
@@ -501,7 +535,7 @@ inline const char* GetMouseNameForID(MouseID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
+inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
 
 /**
  * Query SDL's cache for the synchronous mouse button state and the
@@ -518,7 +552,7 @@ inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
  *
  * In Relative Mode, the SDL-cursor's position usually contradicts the
  * platform-cursor's position as manually calculated from
- * GetGlobalMouseState() and WindowRef.GetPosition.
+ * GetGlobalMouseState() and Window.GetPosition.
  *
  * @param x a pointer to receive the SDL-cursor's x-position from the focused
  *          window's top left corner, can be nullptr if unused.
@@ -552,7 +586,7 @@ inline MouseButtonFlags GetMouseState(float* x, float* y)
  *
  * In Relative Mode, the platform-cursor's position usually contradicts the
  * SDL-cursor's position as manually calculated from GetMouseState() and
- * WindowRef.GetPosition.
+ * Window.GetPosition.
  *
  * This function can be useful if you need to track the mouse outside of a
  * specific window and CaptureMouse() doesn't fit your needs. For example,
@@ -617,29 +651,9 @@ inline MouseButtonFlags GetRelativeMouseState(float* x, float* y)
   return SDL_GetRelativeMouseState(x, y);
 }
 
-/**
- * Move the mouse cursor to the given position within the window.
- *
- * This function generates a mouse motion event if relative mode is not
- * enabled. If relative mode is enabled, you can force mouse events for the
- * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
- *
- * Note that this function will appear to succeed, but not actually move the
- * mouse when used over Microsoft Remote Desktop.
- *
- *               mouse focus.
- * @param x the x coordinate within the window.
- * @param y the y coordinate within the window.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WarpMouse
- */
-inline void WindowRef::WarpMouse(float x, float y)
+inline void Window::WarpMouse(const FPointRaw& p)
 {
-  SDL_WarpMouseInWindow(get(), x, y);
+  SDL_WarpMouseInWindow(m_resource, p.x, p.y);
 }
 
 /**
@@ -653,19 +667,18 @@ inline void WindowRef::WarpMouse(float x, float y)
  * Note that this function will appear to succeed, but not actually move the
  * mouse when used over Microsoft Remote Desktop.
  *
- * @param x the x coordinate.
- * @param y the y coordinate.
+ * @param p the x, y coordinates;
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowRef.WarpMouse
+ * @sa Window.WarpMouse
  */
-inline void WarpMouse(float x, float y)
+inline void WarpMouse(const FPointRaw& p)
 {
-  CheckError(SDL_WarpMouseGlobal(x, y));
+  CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
 /**
@@ -677,9 +690,9 @@ inline void WarpMouse(float x, float y)
  * the window.
  *
  * If you'd like to keep the mouse position fixed while in relative mode you
- * can use WindowRef.SetMouseRect(). If you'd like the cursor to be at a
+ * can use Window.SetMouseRect(). If you'd like the cursor to be at a
  * specific location when relative mode ends, you should use
- * WindowRef.WarpMouse() before disabling relative mode.
+ * Window.WarpMouse() before disabling relative mode.
  *
  * This function will flush any pending mouse motion for this window.
  *
@@ -690,11 +703,11 @@ inline void WarpMouse(float x, float y)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowRef.GetRelativeMouseMode
+ * @sa Window.GetRelativeMouseMode
  */
-inline void WindowRef::SetRelativeMouseMode(bool enabled)
+inline void Window::SetRelativeMouseMode(bool enabled)
 {
-  CheckError(SDL_SetWindowRelativeMouseMode(get(), enabled));
+  CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
 }
 
 /**
@@ -706,11 +719,11 @@ inline void WindowRef::SetRelativeMouseMode(bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowRef.SetRelativeMouseMode
+ * @sa Window.SetRelativeMouseMode
  */
-inline bool WindowRef::GetRelativeMouseMode() const
+inline bool Window::GetRelativeMouseMode() const
 {
-  return SDL_GetWindowRelativeMouseMode(get());
+  return SDL_GetWindowRelativeMouseMode(m_resource);
 }
 
 /**
@@ -728,7 +741,7 @@ inline bool WindowRef::GetRelativeMouseMode() const
  * mouse while the user is dragging something, until the user releases a mouse
  * button. It is not recommended that you capture the mouse for long periods
  * of time, such as the entire time your app is running. For that, you should
- * probably use WindowRef.SetRelativeMouseMode() or WindowRef.SetMouseGrab(),
+ * probably use Window.SetRelativeMouseMode() or Window.SetMouseGrab(),
  * depending on your goals.
  *
  * While captured, mouse events still report coordinates relative to the
@@ -764,11 +777,107 @@ inline void CaptureMouse(bool enabled)
 }
 
 /**
+ * Create a cursor using the specified bitmap data and mask (in MSB format).
+ *
+ * `mask` has to be in MSB (Most Significant Bit) format.
+ *
+ * The cursor width (`w`) must be a multiple of 8 bits.
+ *
+ * The cursor is created in black and white according to the following:
+ *
+ * - data=0, mask=1: white
+ * - data=1, mask=1: black
+ * - data=0, mask=0: transparent
+ * - data=1, mask=0: inverted color if possible, black if not.
+ *
+ * Cursors created with this function must be freed with Cursor.Destroy().
+ *
+ * If you want to have a color cursor, or create your cursor from an
+ * Surface, you should use Cursor.Cursor(). Alternately, you can
+ * hide the cursor and draw your own as part of your game's rendering, but it
+ * will be bound to the framerate.
+ *
+ * Also, Cursor.Cursor() is available, which provides several
+ * readily-available system cursors to pick from.
+ *
+ * @param data the color value for each pixel of the cursor.
+ * @param mask the mask value for each pixel of the cursor.
+ * @param size the width and height of the cursor.
+ * @param hot the x position of the cursor hot spot, from the top-left, in the
+ *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
+ * @returns a new cursor with the specified parameters on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Destroy
+ * @sa Cursor.Set
+ */
+inline Cursor CreateCursor(const Uint8* data,
+                           const Uint8* mask,
+                           const PointRaw& size,
+                           const PointRaw& hot)
+{
+  return Cursor(data, mask, size, hot);
+}
+
+/**
+ * Create a color cursor.
+ *
+ * If this function is passed a surface with alternate representations, the
+ * surface will be interpreted as the content to be used for 100% display
+ * scale, and the alternate representations will be used for high DPI
+ * situations. For example, if the original surface is 32x32, then on a 2x
+ * macOS display or 200% display scale on Windows, a 64x64 version of the
+ * image will be used, if available. If a matching version of the image isn't
+ * available, the closest larger size image will be downscaled to the
+ * appropriate size and be used instead, if available. Otherwise, the closest
+ * smaller image will be upscaled and be used instead.
+ *
+ * @param surface an Surface structure representing the cursor image.
+ * @param hot the position of the cursor hot spot.
+ * @returns the new cursor on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Destroy
+ * @sa Cursor.Set
+ */
+inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
+{
+  return Cursor(surface, hot);
+}
+
+/**
+ * Create a system cursor.
+ *
+ * @param id an SystemCursor enum value.
+ * @returns a cursor on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Cursor.Destroy
+ */
+inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
+
+/**
  * Set the active cursor.
  *
  * This function sets the currently active cursor to the specified one. If the
  * cursor is currently visible, the change will be immediately represented on
- * the display. SetCursor(nullptr) can be used to force cursor redraw, if
+ * the display. Cursor.Set(nullptr) can be used to force cursor redraw, if
  * this is desired for any reason.
  *
  * @param cursor a cursor to make active.
@@ -780,10 +889,9 @@ inline void CaptureMouse(bool enabled)
  *
  * @sa GetCursor
  */
-inline void SetCursor(CursorRef cursor)
-{
-  CheckError(SDL_SetCursor(cursor.get()));
-}
+inline void SetCursor(CursorParam cursor) { CheckError(SDL_SetCursor(cursor)); }
+
+inline void Cursor::Set() { SDL::SetCursor(m_resource); }
 
 /**
  * Get the active cursor.
@@ -797,9 +905,9 @@ inline void SetCursor(CursorRef cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetCursor
+ * @sa Cursor.Set
  */
-inline CursorRef GetCursor() { return SDL_GetCursor(); }
+inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
 
 /**
  * Get the default cursor.
@@ -816,8 +924,28 @@ inline CursorRef GetCursor() { return SDL_GetCursor(); }
  */
 inline CursorRef GetDefaultCursor()
 {
-  return CheckError(SDL_GetDefaultCursor());
+  return {CheckError(SDL_GetDefaultCursor())};
 }
+
+/**
+ * Free a previously-created cursor.
+ *
+ * Use this function to free cursor resources created with Cursor.Cursor(),
+ * Cursor.Cursor() or Cursor.Cursor().
+ *
+ * @param cursor the cursor to free.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ */
+inline void DestroyCursor(CursorRaw cursor) { SDL_DestroyCursor(cursor); }
+
+inline void Cursor::Destroy() { DestroyCursor(release()); }
 
 /**
  * Show the cursor.
@@ -863,6 +991,7 @@ inline void HideCursor() { CheckError(SDL_HideCursor()); }
 inline bool CursorVisible() { return SDL_CursorVisible(); }
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_MOUSE_H_ */

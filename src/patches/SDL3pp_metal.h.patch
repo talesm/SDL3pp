@@ -1,0 +1,20 @@
+10c10
+<  * @defgroup CategoryMetal Category Metal
+---
+>  * @defgroup CategoryMetal Metal Support
+112c112
+<    * @sa MetalView.Metal_DestroyView
+---
+>    * @sa MetalView.Destroy
+164c164
+<   void Metal_DestroyView();
+---
+>   void Destroy();
+216c216
+<  * @sa MetalView.Metal_DestroyView
+---
+>  * @sa MetalView.Destroy
+241c241
+< inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
+---
+> inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }

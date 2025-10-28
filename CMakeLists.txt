@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.27)
-project(SDL3pp DESCRIPTION "A slim C++ wrapper for SDL3" VERSION 1.0.0)
+project(SDL3pp 
+    VERSION 0.3.0
+    DESCRIPTION "A slim C++ wrapper for SDL3" 
+    HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
+)
 
 include(GNUInstallDirs)
 
@@ -62,20 +66,23 @@ endif(SDL3PP_DISABLE_STRING_PARAM)
 
 file(GLOB_RECURSE SDL3pp_lib_HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
-
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
-
-# The amalgamation header
-set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/dist" CACHE FILEPATH "Amalgamation output directory")
-set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
-set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
-file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
-
 
 # The SDL3pp library
 add_library(SDL3pp INTERFACE)
 add_library(SDL3pp::SDL3pp ALIAS SDL3pp)
 target_link_libraries(SDL3pp INTERFACE ${SDL3PP_DEPENDENCIES})
+
+# The amalgamation header
+set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation" CACHE FILEPATH "Amalgamation output directory")
+set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
+set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
+set(SDL3PP_AMALGAMATION_VULKAN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_vulkan.h")
+file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
+
+add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN} ${SDL3PP_AMALGAMATION_VULKAN})
+target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_DIR})
+target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 
 option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
 
@@ -108,13 +115,18 @@ else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
-    COMMAND node scripts/amalgamate ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
+    COMMAND node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
     DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.js
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
     COMMAND cp include/SDL3pp/SDL3pp_main.h ${SDL3PP_AMALGAMATION_MAIN}
-    DEPENDS include/SDL3pp/SDL3pp_main.h
+    DEPENDS "include/SDL3pp/SDL3pp_main.h"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
+    COMMAND cp include/SDL3pp/SDL3pp_vulkan.h ${SDL3PP_AMALGAMATION_VULKAN}
+    DEPENDS "include/SDL3pp/SDL3pp_vulkan.h"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -138,7 +150,7 @@ endif ()
 
 # The documentation
 # check if Doxygen is installed
-find_package(Doxygen REQUIRED dot)
+find_package(Doxygen COMPONENTS dot)
 if (DOXYGEN_FOUND)
     # Main doc
     doxygen_add_docs(SDL3pp_doxygen
@@ -227,46 +239,60 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
+set(TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform.json)
+set(TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target.json)
+set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
+file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/src/*.js)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json
     COMMAND node scripts/cppfier xml scripts/config-source.json ${SDL3PP_PARSE_DIR_PARAMS}
-    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json SDL3pp_SdlXml SDL3pp_SdlImageXml SDL3pp_SdlTtfXml
+    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json SDL3pp_SdlXml SDL3pp_SdlImageXml SDL3pp_SdlTtfXml ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
     COMMAND node scripts/gen-source
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source_xml.json ${PROJECT_SOURCE_DIR}/scripts/gen-source.js
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source_xml.json ${PROJECT_SOURCE_DIR}/scripts/gen-source.js ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-# Current SDL3pp state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/current.json
-    COMMAND node scripts/cppfier parse scripts/config-target.json
-    DEPENDS ${SDL3PP_WRAPPED_HEADERS} scripts/config-target.json
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/transform.json
-    COMMAND node scripts/gen-transform ${PROJECT_SOURCE_DIR}/scripts/transform.json
+# Generate the transform
+add_custom_command(OUTPUT ${TRANSFORM_JSON}
+    COMMAND node scripts/gen-transform ${TRANSFORM_JSON}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 # Target SDL3pp state
-add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
-    COMMAND node scripts/cppfier transform scripts/config-target.json
+add_custom_command(OUTPUT ${TARGET_JSON}
+    COMMAND node scripts/cppfier transform ${CONFIG_TARGET}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
-            ${PROJECT_SOURCE_DIR}/scripts/config-target.json 
-            ${PROJECT_SOURCE_DIR}/scripts/transform.json 
+            ${CONFIG_TARGET} 
+            ${TRANSFORM_JSON}
+            ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-# Merge source and current towards target
-add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/cppfier update scripts/config-target.json
+# Generate sources
+add_custom_target(SDL3pp_generate
+    COMMAND mkdir -p ${PROJECT_SOURCE_DIR}/src/generated/
+    COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
+    COMMAND scripts/applyFormat.sh ${CONFIG_TARGET}
+    DEPENDS ${CONFIG_TARGET} ${TARGET_JSON}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json ${PROJECT_SOURCE_DIR}/scripts/current.json
+)
+
+# Apply patches
+add_custom_target(SDL3pp_refresh
+    COMMAND scripts/applyPatches.sh
+    DEPENDS SDL3pp_generate
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
+# Apply patches
+add_custom_target(SDL3pp_check_all
+    COMMAND echo "Everything ran!"
+    DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp_lib
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 

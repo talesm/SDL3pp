@@ -7,6 +7,8 @@
       "ES2024"
     ],
     "resolveJsonModule": true,
-    "checkJs": true
+    "moduleResolution": "node",
+    "checkJs": true,
+    "target": "es2015"
   }
 }

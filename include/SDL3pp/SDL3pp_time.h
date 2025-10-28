@@ -22,21 +22,27 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for DateTime.
+using DateTimeRaw = SDL_DateTime;
+
+// Forward decl
+struct DateTime;
+
 /**
  * A structure holding a calendar date and time broken down into its
  * components.
  *
  * @since This struct is available since SDL 3.2.0.
  */
-struct DateTime : SDL_DateTime
+struct DateTime : DateTimeRaw
 {
   /**
    * Wraps DateTime.
    *
    * @param dateTime the value to be wrapped
    */
-  constexpr DateTime(const SDL_DateTime& dateTime = {})
-    : SDL_DateTime(dateTime)
+  constexpr DateTime(const DateTimeRaw& dateTime = {})
+    : DateTimeRaw(dateTime)
   {
   }
 
@@ -62,15 +68,15 @@ struct DateTime : SDL_DateTime
                      int nanosecond,
                      int day_of_week,
                      int utc_offset)
-    : SDL_DateTime{year,
-                   month,
-                   day,
-                   hour,
-                   minute,
-                   second,
-                   nanosecond,
-                   day_of_week,
-                   utc_offset}
+    : DateTimeRaw{year,
+                  month,
+                  day,
+                  hour,
+                  minute,
+                  second,
+                  nanosecond,
+                  day_of_week,
+                  utc_offset}
   {
   }
 
@@ -284,12 +290,7 @@ struct DateTime : SDL_DateTime
    *
    * @since This function is available since SDL 3.2.0.
    */
-  operator Time() const
-  {
-    SDL_Time t;
-    CheckError(SDL_DateTimeToTime(this, &t));
-    return Time::FromNS(t);
-  }
+  operator Time() const;
 };
 
 /**
@@ -345,14 +346,6 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
   CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
 }
 
-/**
- * Gets the current value of the system realtime clock in nanoseconds since
- * Jan 1, 1970 in Universal Coordinated Time (UTC).
- *
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline Time Time::Current()
 {
   SDL_Time t;
@@ -361,36 +354,49 @@ inline Time Time::Current()
 }
 
 /**
- * Converts an SDL time into a Windows FILETIME (100-nanosecond intervals
- * since January 1, 1601).
+ * Converts an Time in nanoseconds since the epoch to a calendar time in
+ * the DateTime format.
  *
- * This function fills in the two 32-bit values of the FILETIME structure.
- *
- * @param dwLowDateTime a pointer filled in with the low portion of the
- *                      Windows FILETIME value.
- * @param dwHighDateTime a pointer filled in with the high portion of the
- *                       Windows FILETIME value.
+ * @param ticks the Time to be converted.
+ * @param localTime the resulting DateTime will be expressed in local time
+ *                  if true, otherwise it will be in Universal Coordinated
+ *                  Time (UTC).
+ * @returns the resulting DateTime.
+ * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
  */
+inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
+{
+  return DateTime(ticks, localTime);
+}
+
+/**
+ * Converts a calendar time to an Time in nanoseconds since the epoch.
+ *
+ * This function ignores the day_of_week member of the DateTime struct, so
+ * it may remain unset.
+ *
+ * @param dt the source DateTime.
+ * @returns the resulting Time.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Time DateTimeToTime(const DateTimeRaw& dt)
+{
+  SDL_Time t;
+  CheckError(SDL_DateTimeToTime(&dt, &t));
+  return Time::FromNS(t);
+}
+
+inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
+
 inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
 {
   SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
 }
 
-/**
- * Converts a Windows FILETIME (100-nanosecond intervals since January 1,
- * 1601) to an SDL time.
- *
- * This function takes the two 32-bit values of the FILETIME structure as
- * parameters.
- *
- * @param dwLowDateTime the low portion of the Windows FILETIME value.
- * @param dwHighDateTime the high portion of the Windows FILETIME value.
- * @returns the converted SDL time.
- *
- * @since This function is available since SDL 3.2.0.
- */
 inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
 {
   return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));

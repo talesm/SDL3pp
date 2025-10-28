@@ -42,10 +42,17 @@ constexpr SDL::Nanoseconds cursorHalfPeriod = 500ms;
 
 struct Main
 {
-  SDL::SDL init{SDL::INIT_VIDEO};
+  SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Template", "1.0", "com.example.template");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main(args);
+    return SDL::APP_CONTINUE;
+  }
+
   SDL::Point windowSz = {1024, 800};
-  SDL::Window window = SDL::Window::Create("examples/demo/template", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  SDL::Window window{"examples/demo/template", windowSz};
+  SDL::Renderer renderer{window};
   SDL::FPoint charSz{16, 16};
   SDL::FPoint spacingSz{charSz / 2};
   SDL::Texture charTable{makeCharTable()};
@@ -83,14 +90,14 @@ struct Main
   {
     setupFrame();
 
-    renderer->SetDrawColor(colors::background);
-    renderer->RenderClear();
+    renderer.SetDrawColor(colors::background);
+    renderer.RenderClear();
 
     renderLabels();
     renderAscii();
     renderHex();
 
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 
@@ -109,7 +116,7 @@ struct Main
       if (event.button.button == SDL::BUTTON_LEFT) {
         SDL::FPoint p{event.button.x, event.button.y};
         if (p.x >= scrollBarX && p.x < scrollBarX + scrollBarW) {
-          if (p.IsInRect(barRect)) {
+          if (p.InRect(barRect)) {
             clickPos = p;
             clickMode = ClickMode::SCROLL_BAR;
           } else if (p.y > barRect.y) {
@@ -413,17 +420,17 @@ struct Main
   void renderLabels()
   {
     // Title backgrounds
-    renderer->SetDrawColor(colors::title_background);
-    renderer->RenderFillRect(SDL::FRect{0.f, 0.f, scrollBarX, headerH});
-    renderer->RenderFillRect(
+    renderer.SetDrawColor(colors::title_background);
+    renderer.RenderFillRect(SDL::FRect{0.f, 0.f, scrollBarX, headerH});
+    renderer.RenderFillRect(
       SDL::FRect{0.f, headerH, addressAreaW, windowSz.y - headerH});
 
     // Scrollbar
-    renderer->SetDrawColor(colors::placeholder_text);
-    renderer->RenderFillRect(
+    renderer.SetDrawColor(colors::placeholder_text);
+    renderer.RenderFillRect(
       SDL::FRect{scrollBarX, 0, scrollBarW, float(windowSz.y)});
-    renderer->SetDrawColor(colors::title_background);
-    renderer->RenderFillRect(barRect);
+    renderer.SetDrawColor(colors::title_background);
+    renderer.RenderFillRect(barRect);
 
     // Filters
     setTextColor(colors::placeholder_text);
@@ -445,24 +452,24 @@ struct Main
     }
 
     // Mirror cursor
-    renderer->SetDrawColor(colors::mirror_cursor);
-    renderer->RenderFillRect(SDL::FRect{hexAreaX,
-                                        headerH + cursor.y * charSz.y,
-                                        hexAreaW - spacingSz.x / 2,
-                                        charSz.y});
-    renderer->RenderFillRect(
+    renderer.SetDrawColor(colors::mirror_cursor);
+    renderer.RenderFillRect(SDL::FRect{hexAreaX,
+                                       headerH + cursor.y * charSz.y,
+                                       hexAreaW - spacingSz.x / 2,
+                                       charSz.y});
+    renderer.RenderFillRect(
       SDL::FRect{hexAreaX + cursor.x * (charSz.x * 2 + spacingSz.x),
                  headerH,
                  charSz.x * 2 + spacingSz.x / 2,
                  float(windowSz.y)});
-    renderer->RenderFillRect(SDL::FRect{asciiAreaX + cursor.x * charSz.x,
-                                        headerH + cursor.y * charSz.y,
-                                        charSz.x,
-                                        charSz.y});
+    renderer.RenderFillRect(SDL::FRect{asciiAreaX + cursor.x * charSz.x,
+                                       headerH + cursor.y * charSz.y,
+                                       charSz.x,
+                                       charSz.y});
 
     // Cursor
     if (cursorShown) {
-      renderer->SetDrawColor(colors::cursor);
+      renderer.SetDrawColor(colors::cursor);
       SDL::FRect cursorRect{
         hexAreaX + cursor.x * (charSz.x * 2 + spacingSz.x),
         headerH + cursor.y * charSz.y + charSz.y - 4,
@@ -470,7 +477,7 @@ struct Main
         4,
       };
       if (cursorOnRight) cursorRect.x += charSz.x;
-      renderer->RenderFillRect(cursorRect);
+      renderer.RenderFillRect(cursorRect);
     }
   }
 
@@ -549,7 +556,7 @@ struct Main
     return buffer;
   }
 
-  void setTextColor(SDL::Color c) { charTable->SetMod(c); }
+  void setTextColor(SDL::Color c) { charTable.SetMod(c); }
 
   void putString(SDL::FPoint p, std::string_view v)
   {
@@ -565,7 +572,7 @@ struct Main
   {
     SDL_assert_paranoid(ch >= 32 && ch < 127);
     SDL::Point srcPos = {SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * (ch - 32), 0};
-    renderer->RenderTexture(charTable, SDL::FRect{srcPos, sourceCharSz}, r);
+    renderer.RenderTexture(charTable, SDL::FRect{srcPos, sourceCharSz}, r);
   }
 
   SDL::Texture makeCharTable()
@@ -574,21 +581,21 @@ struct Main
     for (int i = 32; i < 127; i++) asciiChars[i - 32] = i;
     asciiChars[127 - 32] = 0;
 
-    auto surface = SDL::Surface::Create(
-      SDL::Point{SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * (127 - 32),
-                 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE},
-      SDL::PIXELFORMAT_RGBA32);
-    SDL::Renderer buffer{SDL::Renderer::CreateSoftware(surface)};
-    buffer->SetDrawColor(SDL::Color{}); // Transparent
-    buffer->RenderClear();
-    buffer->SetDrawColor(SDL::Color{255, 255, 255}); // White
-    buffer->RenderDebugText({0, 0}, asciiChars);
-    buffer->Present();
+    auto surface =
+      SDL::Surface(SDL::Point{SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * (127 - 32),
+                              SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE},
+                   SDL::PIXELFORMAT_RGBA32);
+    SDL::Renderer buffer{SDL::Renderer(surface)};
+    buffer.SetDrawColor(SDL::Color{}); // Transparent
+    buffer.RenderClear();
+    buffer.SetDrawColor(SDL::Color{255, 255, 255}); // White
+    buffer.RenderDebugText({0, 0}, asciiChars);
+    buffer.Present();
 
-    SDL::Texture texture = SDL::Texture::CreateFromSurface(renderer, surface);
-    texture->SetScaleMode(SDL::SCALEMODE_NEAREST);
+    SDL::Texture texture{renderer, surface};
+    texture.SetScaleMode(SDL::SCALEMODE_NEAREST);
     return texture;
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main, "Example Template", "1.0", "com.example.template")
+SDL3PP_DEFINE_CALLBACKS(Main)

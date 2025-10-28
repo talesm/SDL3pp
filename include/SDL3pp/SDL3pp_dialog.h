@@ -9,10 +9,7 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategoryDialog File Dialogs
- *
- * File dialog support.
  *
  * SDL offers file dialogs, to let users select files with native GUI
  * interfaces. There are "open" dialogs, "save" dialogs, and folder selection
@@ -56,7 +53,7 @@ using DialogFileFilter = SDL_DialogFileFilter;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- *   the dialog.
+ * the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -83,7 +80,6 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * @sa ShowSaveFileDialog
  * @sa ShowOpenFolderDialog
  * @sa ShowFileDialogWithProperties
- * @sa DialogFileCB
  */
 using DialogFileCallback = SDL_DialogFileCallback;
 
@@ -112,8 +108,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * using IOStream.FromFile() with appropriate modes. This applies both to open
  * and save file dialog.
  *
+ * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
- * @param filter index of the selected filter.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -153,13 +149,13 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be empty. Not all platforms support
+ * @param filters a list of filters, may be nullptr. Not all platforms support
  *                this option, and platforms that do support it may allow the
  *                user to ignore the filters. If non-nullptr, it must remain
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- *                         option.
+ * option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -177,14 +173,14 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               WindowParam window,
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
 {
   SDL_ShowOpenFileDialog(callback,
                          userdata,
-                         window.get(),
+                         window,
                          filters.data(),
                          filters.size(),
                          default_location,
@@ -222,7 +218,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- *                         option.
+ * option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -239,7 +235,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               WindowParam window,
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {},
                                bool allow_many = false)
@@ -247,7 +243,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowOpenFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
-                     std::move(window),
+                     window,
                      filters,
                      std::move(default_location),
                      allow_many);
@@ -280,13 +276,13 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be empty. Not all platforms support
+ * @param filters a list of filters, may be nullptr. Not all platforms support
  *                this option, and platforms that do support it may allow the
  *                user to ignore the filters. If non-nullptr, it must remain
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- *                         option.
+ * option.
  *
  * @threadsafety This function should be called only from the main thread. The
  *               callback may be invoked from the same thread or from a
@@ -302,13 +298,13 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowRef window = {},
+                               WindowParam window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
   SDL_ShowSaveFileDialog(callback,
                          userdata,
-                         window.get(),
+                         window,
                          filters.data(),
                          filters.size(),
                          default_location);
@@ -345,7 +341,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- *                         option.
+ * option.
  *
  * @threadsafety This function should be called only from the main thread. The
  *               callback may be invoked from the same thread or from a
@@ -360,14 +356,14 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowRef window = {},
+                               WindowParam window = {},
                                std::span<const DialogFileFilter> filters = {},
                                StringParam default_location = {})
 {
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowSaveFileDialog(&Wrapper::CallOnce,
                      Wrapper::Wrap(std::move(callback)),
-                     std::move(window),
+                     window,
                      filters,
                      std::move(default_location));
 }
@@ -401,7 +397,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  *               Not all platforms support this option.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- *                         option.
+ * option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -418,12 +414,12 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowRef window,
+                                 WindowParam window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
   SDL_ShowOpenFolderDialog(
-    callback, userdata, window.get(), default_location, allow_many);
+    callback, userdata, window, default_location, allow_many);
 }
 
 /**
@@ -453,7 +449,7 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  *               Not all platforms support this option.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- *                         option.
+ * option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -469,7 +465,7 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowRef window = {},
+                                 WindowParam window = {},
                                  StringParam default_location = {},
                                  bool allow_many = false)
 {
@@ -552,9 +548,9 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesRef props)
+                                         PropertiesParam props)
 {
-  SDL_ShowFileDialogWithProperties(type, callback, userdata, props.get());
+  SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
 }
 
 /**
@@ -562,23 +558,23 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
  *   DialogFileFilter structs, which will be used as filters for
  *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
  *   If non-nullptr, the array of filters must remain valid at least until the
  *   callback is invoked.
- * - `SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER`: the number of filters in the
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
  *   array of filters, if it exists.
- * - `SDL_PROP_FILE_DIALOG_WINDOW_POINTER`: the window that the dialog should
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
  *   be modal for.
- * - `SDL_PROP_FILE_DIALOG_LOCATION_STRING`: the default folder or file to
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
  *   start the dialog at.
- * - `SDL_PROP_FILE_DIALOG_MANY_BOOLEAN`: true to allow the user to select
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
  *   more than one entry.
- * - `SDL_PROP_FILE_DIALOG_TITLE_STRING`: the title for the dialog.
- * - `SDL_PROP_FILE_DIALOG_ACCEPT_STRING`: the label that the accept button
+ * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
  *   should have.
- * - `SDL_PROP_FILE_DIALOG_CANCEL_STRING`: the label that the cancel button
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
  *   should have.
  *
  * Note that each platform may or may not support any of the properties.
@@ -604,9 +600,8 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  */
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCB callback,
-                                         PropertiesRef props)
+                                         PropertiesID props)
 {
-
   using Wrapper = CallbackWrapper<DialogFileCB>;
   ShowFileDialogWithProperties(
     type, &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), props);
@@ -633,6 +628,7 @@ constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
 } // namespace prop::FileDialog
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_DIALOG_H_ */

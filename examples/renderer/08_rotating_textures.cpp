@@ -15,17 +15,26 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window =
-    SDL::Window::Create("examples/renderer/rotating-textures", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  // Init library
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata("Example Renderer Rotating Textures",
+                        "1.0",
+                        "com.example.renderer-rotating-textures");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+
+  SDL::Window window{"examples/renderer/rotating-textures", windowSz};
+  SDL::Renderer renderer{window};
 
   /* Textures are pixel data that we upload to the video hardware for fast
     drawing. Lots of 2D engines refer to these as "sprites." We'll do a static
     texture (upload once, draw many times) with data from a bitmap file. */
-  SDL::Texture texture{SDL::Texture::Load(
-    renderer,
-    std::format("{}../assets/sample.bmp", SDL::GetBasePath()))};
+  SDL::Texture texture{
+    SDL::Texture(renderer,
+                 std::format("{}../assets/sample.bmp", SDL::GetBasePath()))};
 
   SDL::AppResult Iterate()
   {
@@ -35,24 +44,21 @@ struct Main
     const float rotation = SDL::fmod(now, 2.f) * 360.0f;
 
     // as you can see, rendering draws over what was drawn before it.
-    renderer->SetDrawColor(SDL::Color{0, 0, 0}); // black
-    renderer->RenderClear();                     // start with a blank canvas.
+    renderer.SetDrawColor(SDL::Color{0, 0, 0}); // black
+    renderer.RenderClear();                     // start with a blank canvas.
 
     // Center this one, and draw it with some rotation so it spins!
-    SDL::FRect dst_rect = {(windowSz - texture->GetSize()) / 2.f,
-                           texture->GetSize()};
+    SDL::FRect dst_rect = {(windowSz - texture.GetSize()) / 2.f,
+                           texture.GetSize()};
 
     // rotate it around the center of the texture; you can rotate it from a
     // different point, too!
-    SDL::FPoint center = texture->GetSize() / 2.f;
-    renderer->RenderTextureRotated(texture, {}, dst_rect, rotation, center);
+    SDL::FPoint center = texture.GetSize() / 2.f;
+    renderer.RenderTextureRotated(texture, {}, dst_rect, rotation, center);
 
-    renderer->Present();      // put it all on the screen!
+    renderer.Present();       // put it all on the screen!
     return SDL::APP_CONTINUE; // carry on with the program!
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Renderer Rotating Textures",
-                        "1.0",
-                        "com.example.renderer-rotating-textures")
+SDL3PP_DEFINE_CALLBACKS(Main)

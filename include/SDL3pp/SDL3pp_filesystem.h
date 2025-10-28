@@ -7,7 +7,6 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategoryFilesystem Filesystem Access
  *
  * SDL offers an API for examining and manipulating the system's filesystem.
@@ -30,6 +29,12 @@ namespace SDL {
  *
  * @{
  */
+
+/// Alias to raw representation for PathInfo.
+using PathInfoRaw = SDL_PathInfo;
+
+// Forward decl
+struct PathInfo;
 
 /**
  * Convenience representation of a path under SDL
@@ -238,9 +243,7 @@ constexpr Folder FOLDER_DESKTOP = SDL_FOLDER_DESKTOP;
  */
 constexpr Folder FOLDER_DOCUMENTS = SDL_FOLDER_DOCUMENTS;
 
-/**
- * Standard folder for user files downloaded from the internet.
- */
+/// Standard folder for user files downloaded from the internet.
 constexpr Folder FOLDER_DOWNLOADS = SDL_FOLDER_DOWNLOADS;
 
 /**
@@ -248,14 +251,10 @@ constexpr Folder FOLDER_DOWNLOADS = SDL_FOLDER_DOWNLOADS;
  */
 constexpr Folder FOLDER_MUSIC = SDL_FOLDER_MUSIC;
 
-/**
- * Image files that can be displayed using a standard viewer (png, jpg...).
- */
+/// Image files that can be displayed using a standard viewer (png, jpg...).
 constexpr Folder FOLDER_PICTURES = SDL_FOLDER_PICTURES;
 
-/**
- * Files that are meant to be shared with other users on the same computer.
- */
+/// Files that are meant to be shared with other users on the same computer.
 constexpr Folder FOLDER_PUBLICSHARE = SDL_FOLDER_PUBLICSHARE;
 
 constexpr Folder FOLDER_SAVEDGAMES =
@@ -276,9 +275,7 @@ constexpr Folder FOLDER_TEMPLATES = SDL_FOLDER_TEMPLATES;
  */
 constexpr Folder FOLDER_VIDEOS = SDL_FOLDER_VIDEOS;
 
-/**
- * Total number of types in this enum, not a folder type by itself.
- */
+/// Total number of types in this enum, not a folder type by itself.
 constexpr Folder FOLDER_COUNT = SDL_FOLDER_COUNT;
 
 /**
@@ -340,17 +337,17 @@ constexpr PathType PATHTYPE_OTHER = SDL_PATHTYPE_OTHER;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GetPathInfo
- * @sa StorageRef.GetPathInfo
+ * @sa Storage.GetPathInfo
  */
-struct PathInfo : SDL_PathInfo
+struct PathInfo : PathInfoRaw
 {
   /**
    * Wraps PathInfo.
    *
    * @param pathInfo the value to be wrapped
    */
-  constexpr PathInfo(const SDL_PathInfo& pathInfo = {})
-    : SDL_PathInfo(pathInfo)
+  constexpr PathInfo(const PathInfoRaw& pathInfo = {})
+    : PathInfoRaw(pathInfo)
   {
   }
 
@@ -375,7 +372,7 @@ struct PathInfo : SDL_PathInfo
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GlobDirectory
- * @sa StorageRef.GlobDirectory
+ * @sa Storage.GlobDirectory
  */
 using GlobFlags = Uint32;
 
@@ -412,14 +409,10 @@ using EnumerationResult = SDL_EnumerationResult;
 constexpr EnumerationResult ENUM_CONTINUE =
   SDL_ENUM_CONTINUE; ///< Value that requests that enumeration continue.
 
-/**
- * Value that requests that enumeration stop, successfully.
- */
+/// Value that requests that enumeration stop, successfully.
 constexpr EnumerationResult ENUM_SUCCESS = SDL_ENUM_SUCCESS;
 
-/**
- * Value that requests that enumeration stop, as a failure.
- */
+/// Value that requests that enumeration stop, as a failure.
 constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
 
 /**
@@ -705,6 +698,7 @@ inline OwnArray<char*> GlobDirectory(StringParam path,
 inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_FILESYSTEM_H_ */

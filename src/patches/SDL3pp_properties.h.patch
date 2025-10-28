@@ -1,0 +1,98 @@
+12c12
+<  * @defgroup CategoryProperties Category Properties
+---
+>  * @defgroup CategoryProperties Object Properties
+17,19c17,20
+<  * All properties are part of a property group (Properties). A property
+<  * group can be created with the Properties.Create function and destroyed
+<  * with the Properties.Destroy function.
+---
+>  * All properties are part of a property group (Properties). A property group
+>  * can be created with the Properties.Create function and destroyed with the
+>  * Properties.Destroy function, but the Properties destructor probably will do
+>  * what you want to, automatically.
+125d125
+<  * @param userdata an app-defined pointer passed to the callback.
+135d134
+<  * @sa EnumeratePropertiesCallback
+163c162
+< using CleanupPropertyCallback = SDL_EnumeratePropertiesCallback;
+---
+> using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+178d176
+<  * @param userdata an app-defined pointer passed to the callback.
+196a195,196
+>  *
+>  * @sa Properties.Create
+236,237c236,237
+<    * @returns an ID for a new group of properties, or 0 on failure; call
+<    *          GetError() for more information.
+---
+>    * @returns a valid ID for a new group of properties on success;
+>    * @throws Error on failure.
+286d285
+<    *
+400d398
+<    * @param userdata a pointer that is passed to the cleanup function.
+683d680
+<    * @param userdata a pointer that is passed to `callback`.
+691a689,695
+>   /**
+>    * Returns the number of properties this has
+>    *
+>    * This uses EnumerateProperties() internally, so might not be so fast
+>    *
+>    * @return Uint64
+>    */
+730c734
+<   return CheckError(SDL_GetGlobalProperties());
+---
+>   return {CheckError(SDL_GetGlobalProperties())};
+738,739c742,743
+<  * @returns an ID for a new group of properties, or 0 on failure; call
+<  *          GetError() for more information.
+---
+>  * @returns a valid ID for a new group of properties on success;
+>  * @throws Error on failure.
+749c753
+<   return Properties(SDL_CreateProperties());
+---
+>   return Properties(CheckError(SDL_CreateProperties()));
+883d886
+<  * @param userdata a pointer that is passed to the cleanup function.
+899c902,907
+<   static_assert(false, "Not implemented");
+---
+>   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
+>   SDL_SetPointerPropertyWithCleanup(props,
+>                                     std::move(name),
+>                                     value,
+>                                     &Wrapper::CallOnce,
+>                                     Wrapper::Wrap(std::move(cleanup)));
+1336d1343
+<  * @param userdata a pointer that is passed to `callback`.
+1346c1353,1359
+<   static_assert(false, "Not implemented");
+---
+>   return EnumerateProperties(
+>     props,
+>     [](void* userdata, PropertiesID props, const char* name) {
+>       auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+>       f(props, name);
+>     },
+>     &callback);
+1359a1373,1380
+> /**
+>  * Returns the number of properties this has
+>  *
+>  * This uses EnumerateProperties() internally, so might not be so fast
+>  *
+>  * @param props
+>  * @return Uint64
+>  */
+1362c1383,1385
+<   static_assert(false, "Not implemented");
+---
+>   Uint64 count = 0;
+>   EnumerateProperties(props, [&](auto, const char*) { count++; });
+>   return count;

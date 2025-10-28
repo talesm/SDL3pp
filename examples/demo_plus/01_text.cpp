@@ -210,33 +210,39 @@ public:
 
 struct Main
 {
-
-  SDL::SDL init{SDL::INIT_VIDEO};
-  SDL::Window window = SDL::Window::Create("examples/demo/textedit", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata(
+      "Example Demo text edit", "1.0", "com.example.demo.plus.text-edit");
+    SDL::Init(SDL::INIT_VIDEO);
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+  SDL::Window window{"examples/demo/textedit", windowSz};
+  SDL::Renderer renderer{window};
   Text text;
   SDL::Point cursor{0, 0};
   bool replaceMode = false;
 
-  Main() { window->StartTextInput(); }
+  Main() { window.StartTextInput(); }
 
   SDL::AppResult Iterate()
   {
-    renderer->SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
-    renderer->RenderClear();
+    renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
+    renderer.RenderClear();
 
-    renderer->SetDrawColor(SDL::Color{0, 0, 0});
-    renderer->RenderRect(SDL::FRect(cursor * SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
-                                    {SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
-                                     SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE}));
+    renderer.SetDrawColor(SDL::Color{0, 0, 0});
+    renderer.RenderRect(SDL::FRect(cursor * SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
+                                   {SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,
+                                    SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE}));
 
     for (int i = 0; i < textMaxSz.y; i++) {
       std::string row = text.getRow(i);
-      renderer->RenderDebugText(
+      renderer.RenderDebugText(
         {0, float(i * SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)}, row);
     }
 
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 
@@ -311,7 +317,4 @@ struct Main
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example Demo text edit",
-                        "1.0",
-                        "com.example.demo.plus.text-edit")
+SDL3PP_DEFINE_CALLBACKS(Main)

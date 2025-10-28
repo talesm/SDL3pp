@@ -1,0 +1,433 @@
+4d3
+< #include <SDL3/SDL_image.h>
+10a10,18
+> #if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+>   __has_include(<SDL3_image/SDL_image.h>)
+> #define SDL3PP_ENABLE_IMAGE
+> #endif
+> 
+> #if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
+> 
+> #include <SDL3_image/SDL_image.h>
+> 
+14c22
+<  * @defgroup CategorySDLImage Category SDLImage
+---
+>  * @defgroup CategorySDLImage Load images from several formats
+98,99c106,113
+< /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
+< #define SDL_IMAGE_MAJOR_VERSION 3
+---
+> #ifdef SDL3PP_DOC
+> 
+> /**
+>  * @name Image version
+>  * @{
+>  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
+>  */
+> #define SDL_IMAGE_MAJOR_VERSION
+101c115
+< #define SDL_IMAGE_MINOR_VERSION 2
+---
+> #define SDL_IMAGE_MINOR_VERSION
+103c117
+< #define SDL_IMAGE_MICRO_VERSION 5
+---
+> #define SDL_IMAGE_MICRO_VERSION
+105c119,123
+< /// This is the version number macro for the current SDL_image version.
+---
+> /// @}
+> 
+> /**
+>  * This is the version number macro for the current SDL_image version.
+>  */
+118a137,138
+> #endif // SDL3PP_DOC
+> 
+128c148
+< inline int Version();
+---
+> inline int Version() { return IMG_Version(); }
+132,133d151
+< inline int IMG::Version() { return SDL::Version(); }
+< 
+178,180d195
+<  * When done with the returned surface, the app should dispose of it with a
+<  * call to Surface.Destroy().
+<  *
+182,183d196
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+185a199,200
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
+198c213
+<   return IMG_LoadTyped_IO(src, type, closeio);
+---
+>   return Surface(IMG_LoadTyped_IO(src, closeio, type));
+230,234d244
+<  * When done with the returned surface, the app should dispose of it with a
+<  * call to
+<  * [Surface.Destroy](https://wiki.libsdl.org/SDL3/Surface.Destroy)
+<  * ().
+<  *
+244c254
+< inline Surface LoadSurface(StringParam file) { return IMG_Load(file); }
+---
+> inline Surface LoadSurface(StringParam file) { return Surface(IMG_Load(file)); }
+284,286d293
+<  * When done with the returned surface, the app should dispose of it with a
+<  * call to Surface.Destroy().
+<  *
+298c305
+< inline Surface LoadSurface(IOStreamParam src, bool closeio)
+---
+> inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
+300c307
+<   return IMG_Load_IO(src, closeio);
+---
+>   return Surface(IMG_Load_IO(src, closeio));
+334,336d340
+<  * When done with the returned texture, the app should dispose of it with a
+<  * call to Texture.Destroy().
+<  *
+348c352
+<   return IMG_LoadTexture(renderer, file);
+---
+>   return Texture(IMG_LoadTexture(renderer, file));
+381,383d384
+<  * When done with the returned texture, the app should dispose of it with a
+<  * call to Texture.Destroy().
+<  *
+398c399
+<                            bool closeio)
+---
+>                            bool closeio = false)
+400c401
+<   return IMG_LoadTexture_IO(renderer, src, closeio);
+---
+>   return Texture(IMG_LoadTexture_IO(renderer, src, closeio));
+449,451d449
+<  * When done with the returned texture, the app should dispose of it with a
+<  * call to Texture.Destroy().
+<  *
+454,455d451
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+457a454,455
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
+463d460
+<  * @sa Texture.Texture
+471c468
+<   return IMG_LoadTextureTyped_IO(renderer, src, type, closeio);
+---
+>   return Texture(IMG_LoadTextureTyped_IO(renderer, src, closeio, type));
+1281c1278,1281
+< inline Surface LoadAVIF(IOStreamParam src) { return IMG_LoadAVIF_IO(src); }
+---
+> inline Surface LoadAVIF(IOStreamParam src)
+> {
+>   return Surface(IMG_LoadAVIF_IO(src));
+> }
+1315c1315,1318
+< inline Surface LoadICO(IOStreamParam src) { return IMG_LoadICO_IO(src); }
+---
+> inline Surface LoadICO(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadICO_IO(src)};
+> }
+1349c1352,1355
+< inline Surface LoadCUR(IOStreamParam src) { return IMG_LoadCUR_IO(src); }
+---
+> inline Surface LoadCUR(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadCUR_IO(src)};
+> }
+1383c1389,1392
+< inline Surface LoadBMP(IOStreamParam src) { return IMG_LoadBMP_IO(src); }
+---
+> inline Surface LoadBMP(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadBMP_IO(src)};
+> }
+1417c1426,1429
+< inline Surface LoadGIF(IOStreamParam src) { return IMG_LoadGIF_IO(src); }
+---
+> inline Surface LoadGIF(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadGIF_IO(src)};
+> }
+1451c1463,1466
+< inline Surface LoadJPG(IOStreamParam src) { return IMG_LoadJPG_IO(src); }
+---
+> inline Surface LoadJPG(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadJPG_IO(src)};
+> }
+1485c1500,1503
+< inline Surface LoadJXL(IOStreamParam src) { return IMG_LoadJXL_IO(src); }
+---
+> inline Surface LoadJXL(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadJXL_IO(src)};
+> }
+1519c1537,1540
+< inline Surface LoadLBM(IOStreamParam src) { return IMG_LoadLBM_IO(src); }
+---
+> inline Surface LoadLBM(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadLBM_IO(src)};
+> }
+1553c1574,1577
+< inline Surface LoadPCX(IOStreamParam src) { return IMG_LoadPCX_IO(src); }
+---
+> inline Surface LoadPCX(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadPCX_IO(src)};
+> }
+1587c1611,1614
+< inline Surface LoadPNG(IOStreamParam src) { return IMG_LoadPNG_IO(src); }
+---
+> inline Surface LoadPNG(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadPNG_IO(src)};
+> }
+1621c1648,1651
+< inline Surface LoadPNM(IOStreamParam src) { return IMG_LoadPNM_IO(src); }
+---
+> inline Surface LoadPNM(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadPNM_IO(src)};
+> }
+1655c1685,1688
+< inline Surface LoadSVG(IOStreamParam src) { return IMG_LoadSVG_IO(src); }
+---
+> inline Surface LoadSVG(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadSVG_IO(src)};
+> }
+1689c1722,1725
+< inline Surface LoadQOI(IOStreamParam src) { return IMG_LoadQOI_IO(src); }
+---
+> inline Surface LoadQOI(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadQOI_IO(src)};
+> }
+1723c1759,1762
+< inline Surface LoadTGA(IOStreamParam src) { return IMG_LoadTGA_IO(src); }
+---
+> inline Surface LoadTGA(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadTGA_IO(src)};
+> }
+1757c1796,1799
+< inline Surface LoadTIF(IOStreamParam src) { return IMG_LoadTIF_IO(src); }
+---
+> inline Surface LoadTIF(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadTIF_IO(src)};
+> }
+1791c1833,1836
+< inline Surface LoadXCF(IOStreamParam src) { return IMG_LoadXCF_IO(src); }
+---
+> inline Surface LoadXCF(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadXCF_IO(src)};
+> }
+1825c1870,1873
+< inline Surface LoadXPM(IOStreamParam src) { return IMG_LoadXPM_IO(src); }
+---
+> inline Surface LoadXPM(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadXPM_IO(src)};
+> }
+1859c1907
+< inline Surface LoadXV(IOStreamParam src) { return IMG_LoadXV_IO(src); }
+---
+> inline Surface LoadXV(IOStreamParam src) { return Surface{IMG_LoadXV_IO(src)}; }
+1893c1941,1944
+< inline Surface LoadWEBP(IOStreamParam src) { return IMG_LoadWEBP_IO(src); }
+---
+> inline Surface LoadWEBP(IOStreamParam src)
+> {
+>   return Surface{IMG_LoadWEBP_IO(src)};
+> }
+1904,1906d1954
+<  * When done with the returned surface, the app should dispose of it with a
+<  * call to Surface.Destroy().
+<  *
+1908,1909c1956
+<  * @param width desired width of the generated surface, in pixels.
+<  * @param height desired height of the generated surface, in pixels.
+---
+>  * @param size desired width and height of the generated surface, in pixels.
+1916c1963
+<   return IMG_LoadSizedSVG_IO(src, size);
+---
+>   return Surface(IMG_LoadSizedSVG_IO(src, size.x, size.y));
+1926,1928d1972
+<  * When done with the returned surface, the app should dispose of it with a
+<  * call to Surface.Destroy().
+<  *
+1938c1982
+<   return IMG_ReadXPMFromArray(xpm);
+---
+>   return Surface{IMG_ReadXPMFromArray(xpm)};
+1960c2004
+<   return IMG_ReadXPMFromArrayToRGB888(xpm);
+---
+>   return Surface{IMG_ReadXPMFromArrayToRGB888(xpm)};
+1975,1976d2018
+<  *
+<  * @sa SaveAVIF
+1993,1994d2034
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+1996a2037,2038
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
+2000,2001d2041
+<  *
+<  * @sa SaveAVIF
+2008c2048
+<   CheckError(IMG_SaveAVIF_IO(surface, dst, quality, closeio));
+---
+>   CheckError(IMG_SaveAVIF_IO(surface, dst, closeio, quality));
+2044,2045d2083
+<  *
+<  * @sa SavePNG
+2066,2067d2103
+<  *
+<  * @sa SaveJPG
+2084,2085d2119
+<  * @param closeio true to close/free the IOStream before returning, false
+<  *                to leave it open.
+2087a2122,2123
+>  * @param closeio true to close/free the IOStream before returning, false
+>  *                to leave it open.
+2091,2092d2126
+<  *
+<  * @sa SaveJPG
+2099c2133
+<   CheckError(IMG_SaveJPG_IO(surface, dst, quality, closeio));
+---
+>   CheckError(IMG_SaveJPG_IO(surface, dst, closeio, quality));
+2179c2213
+<   Animation(IOStreamParam src, bool closeio)
+---
+>   Animation(IOStreamParam src, bool closeio = false)
+2232d2265
+<    * @sa Animation.Animation
+2236a2270
+>   /// Get the width in pixels.
+2238a2273
+>   /// Get the height in pixels.
+2240a2276
+>   /// Get the size in pixels.
+2242a2279
+>   /// Return the number of frames.
+2244a2282,2286
+>   /**
+>    * Return the frame image under given index.
+>    *
+>    * @param index the index to get frame, within [0, GetCount() - 1]
+>    */
+2246a2289,2293
+>   /**
+>    * Return the frame delay under given index.
+>    *
+>    * @param index the index to get frame, within [0, GetCount() - 1]
+>    */
+2275,2278c2322,2323
+< inline int GetAnimationWidth(AnimationConstParam anim)
+< {
+<   static_assert(false, "Not implemented");
+< }
+---
+> /// Get the width in pixels.
+> inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
+2285,2288c2330,2331
+< inline int GetAnimationHeight(AnimationConstParam anim)
+< {
+<   static_assert(false, "Not implemented");
+< }
+---
+> /// Get the height in pixels.
+> inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
+2294a2338
+> /// Get the size in pixels.
+2297c2341
+<   static_assert(false, "Not implemented");
+---
+>   return {anim->w, anim->h};
+2305,2308c2349,2350
+< inline int GetAnimationCount(AnimationConstParam anim)
+< {
+<   static_assert(false, "Not implemented");
+< }
+---
+> /// Return the number of frames.
+> inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
+2314a2357,2362
+> /**
+>  * Return the frame image under given index.
+>  *
+>  * @param anim Animation to dispose of.
+>  * @param index the index to get frame, within [0, GetCount() - 1]
+>  */
+2317c2365
+<   static_assert(false, "Not implemented");
+---
+>   return Surface::Borrow(anim->frames[index]);
+2324a2373,2378
+> /**
+>  * Return the frame delay under given index.
+>  *
+>  * @param anim Animation to dispose of.
+>  * @param index the index to get frame, within [0, GetCount() - 1]
+>  */
+2327c2381
+<   static_assert(false, "Not implemented");
+---
+>   return anim->delays[index];
+2372c2426
+< inline Animation LoadAnimation(IOStreamParam src, bool closeio)
+---
+> inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
+2393a2448
+>  * @param type a filename extension that represent this data ("GIF", etc).
+2396d2450
+<  * @param type a filename extension that represent this data ("GIF", etc).
+2402d2455
+<  * @sa Animation.Animation
+2409c2462
+<   return IMG_LoadAnimationTyped_IO(src, type, closeio);
+---
+>   return Animation(IMG_LoadAnimationTyped_IO(src, closeio, type));
+2422d2474
+<  * @sa Animation.Animation
+2443d2494
+<  * @sa Animation.Animation
+2447c2498
+< inline AnimationRef LoadGIFAnimation(IOStreamParam src)
+---
+> inline Animation LoadGIFAnimation(IOStreamParam src)
+2449c2500
+<   return IMG_LoadGIFAnimation_IO(src);
+---
+>   return Animation(IMG_LoadGIFAnimation_IO(src));
+2466d2516
+<  * @sa Animation.Animation
+2470c2520
+< inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
+---
+> inline Animation LoadWEBPAnimation(IOStreamParam src)
+2472c2522
+<   return IMG_LoadWEBPAnimation_IO(src);
+---
+>   return Animation{IMG_LoadWEBPAnimation_IO(src)};
+2477a2528,2529
+> 
+> #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)

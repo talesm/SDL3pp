@@ -27,15 +27,15 @@ Category                 | Header
 @ref CategoryRect        | SDL3pp_rect.h
 @ref CategorySurface     | SDL3pp_surface.h
 @ref CategoryClipboard   | SDL3pp_clipboard.h
-Vulkan Support           | SDL3pp_vulkan.h
-Metal Support            | SDL3pp_metal.h
-Camera Support           | SDL3pp_camera.h
+@ref CategoryVulkan      | SDL3pp_vulkan.h
+@ref CategoryMetal       | SDL3pp_metal.h
+@ref CategoryCamera      | SDL3pp_camera.h
 
 ## Force Feedback ("Haptic")
 
-Category                | Header
------------------------ | -----------------
-Force Feedback Support  | SDL3pp_haptic.h
+Category            | Header
+------------------- | -----------------
+@ref CategoryHaptic | SDL3pp_haptic.h
 
 ## Audio
 
@@ -45,9 +45,9 @@ Category            | Header
 
 ## GPU
 
-Category                      | Header
------------------------------ | -----------------
-3D Rendering and GPU Compute  | SDL3pp_gpu.h
+Category         | Header
+---------------- | ---------------
+@ref CategoryGPU | SDL3pp_gpu.h
 
 ## Input Events
 
@@ -58,12 +58,12 @@ Category                 | Header
 @ref CategoryKeycode     | SDL3pp_keycode.h
 @ref CategoryScancode    | SDL3pp_scancode.h
 @ref CategoryMouse       | SDL3pp_mouse.h
-Joystick Support         | SDL3pp_joystick.h
-Gamepad Support          | SDL3pp_gamepad.h
-Touch Support            | SDL3pp_touch.h
-Pen Support              | SDL3pp_pen.h
-Sensors                  | SDL3pp_sensor.h
-HIDAPI                   | SDL3pp_hidapi.h
+@ref CategoryJoystick    | SDL3pp_joystick.h
+@ref CategoryGamepad     | SDL3pp_gamepad.h
+@ref CategoryTouch       | SDL3pp_touch.h
+@ref CategoryPen         | SDL3pp_pen.h
+@ref CategorySensor      | SDL3pp_sensor.h
+@ref CategoryHIDAPI      | SDL3pp_hidapi.h
 
 ## Threads
 
@@ -91,7 +91,7 @@ Category                 | Header
 @ref CategoryFilesystem  | SDL3pp_filesystem.h
 @ref CategoryStorage     | SDL3pp_storage.h
 @ref CategoryIOStream    | SDL3pp_iostream.h
-Async I/O                | SDL3pp_asyncio.h
+@ref CategoryAsyncIO     | SDL3pp_asyncio.h
 
 ## Platform and CPU Information
 
@@ -131,7 +131,6 @@ Category               | Header
 Category                                            | Header
 --------------------------------------------------- | ------------------------
 @ref CategoryCallbackWrapper                        | SDL3pp_callbackWrapper.h
-[Resource wrapper](#SDL::Resource)                  | SDL3pp_resource.h
 [Optional references](#SDL::OptionalRef)            | SDL3pp_optionalRef.h
 @ref CategoryOwnPtr                                 | SDL3pp_ownPtr.h
 [Span-like for derived structs](#SDL::SpanRef)      | SDL3pp_spanRef.h
@@ -164,9 +163,16 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryRect
 @addtogroup CategorySurface
 @addtogroup CategoryClipboard
+@addtogroup CategoryVulkan
+@addtogroup CategoryMetal
+@addtogroup CategoryCamera
 @}
 
+@addtogroup CategoryHaptic
+
 @addtogroup CategoryAudio
+
+@addtogroup CategoryGPU
 
 @defgroup CategoriesEvents Input Events
 @{
@@ -175,6 +181,12 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryKeycode
 @addtogroup CategoryScancode
 @addtogroup CategoryMouse
+@addtogroup CategoryJoystick
+@addtogroup CategoryGamepad
+@addtogroup CategoryTouch
+@addtogroup CategoryPen
+@addtogroup CategorySensor
+@addtogroup CategoryHIDAPI
 @}
 
 @defgroup CategoriesThreads Threads
@@ -200,6 +212,7 @@ thread facilities.
 @addtogroup CategoryFilesystem
 @addtogroup CategoryStorage
 @addtogroup CategoryIOStream
+@addtogroup CategoryAsyncIO
 @}
 
 @defgroup CategoriesPlatformAndCpuInformation Platform and CPU Information

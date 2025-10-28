@@ -33,11 +33,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Build doxygen
+        uses: mattnotmitt/doxygen-action@v1.9.5
+        with:
+          working-directory: './'
+          doxyfile-path: './docs/Doxyfile'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './docs/html'
+          path: './build/html'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

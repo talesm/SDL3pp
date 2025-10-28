@@ -7,9 +7,18 @@ struct Main
 {
   static constexpr SDL::Point windowSz = {640, 480};
 
-  SDL::SDL init{SDL::INIT_VIDEO, SDL::INIT_TTF};
-  SDL::Window window = SDL::Window::Create("Test", windowSz);
-  SDL::Renderer renderer = SDL::Renderer::Create(window);
+  static SDL::AppResult Init(Main** m, SDL::AppArgs args)
+  {
+    SDL::SetAppMetadata(
+      "Example TTF Showfont", "1.0", "com.example.ttf-showfont");
+    SDL::Init(SDL::INIT_VIDEO);
+    SDL::TTF::Init();
+    *m = new Main();
+    return SDL::APP_CONTINUE;
+  }
+
+  SDL::Window window{"Test", windowSz};
+  SDL::Renderer renderer{window};
   SDL::Font font;
   std::string testString = "the quick brown fox jumps over the lazy dog\n"
                            "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\n"
@@ -23,12 +32,12 @@ struct Main
 
   SDL::AppResult Iterate()
   {
-    renderer->SetDrawColor(SDL::FColor{.75f, .75f, .75f, 1.f});
-    renderer->RenderClear();
+    renderer.SetDrawColorFloat(SDL::FColor{.75f, .75f, .75f, 1.f});
+    renderer.RenderClear();
 
-    if (testTexture) renderer->RenderTexture(testTexture, {}, testRect);
+    if (testTexture) renderer.RenderTexture(testTexture, {}, testRect);
 
-    renderer->Present();
+    renderer.Present();
     return SDL::APP_CONTINUE;
   }
 
@@ -41,14 +50,14 @@ struct Main
       case SDL::KEYCODE_COMMA:
         if (ptSize > 1) {
           --ptSize;
-          if (font) font->SetSize(ptSize);
+          if (font) font.SetSize(ptSize);
           refreshText();
         }
         break;
       case SDL::KEYCODE_PERIOD:
         if (ptSize < 50) {
           ++ptSize;
-          if (font) font->SetSize(ptSize);
+          if (font) font.SetSize(ptSize);
           refreshText();
         }
         break;
@@ -61,7 +70,7 @@ struct Main
       break;
     }
     case SDL::EVENT_DROP_FILE:
-      font = SDL::Font::Open(ev.drop.data, ptSize);
+      font = SDL::Font(ev.drop.data, ptSize);
       refreshText();
       break;
     default: break;
@@ -76,21 +85,18 @@ struct Main
     switch (testQuality) {
     case 0:
       surface =
-        font->RenderText_Solid_Wrapped(testString, testColor, windowSz.x);
+        font.RenderText_Solid_Wrapped(testString, testColor, windowSz.x);
       break;
     case 1:
       surface =
-        font->RenderText_Blended_Wrapped(testString, testColor, windowSz.x);
+        font.RenderText_Blended_Wrapped(testString, testColor, windowSz.x);
       break;
     default: break;
     }
-    testTexture = SDL::Texture::CreateFromSurface(renderer, surface);
-    testRect.w = testTexture->GetWidth();
-    testRect.h = testTexture->GetHeight();
+    testTexture = SDL::Texture(renderer, surface);
+    testRect.w = testTexture.GetWidth();
+    testRect.h = testTexture.GetHeight();
   }
 };
 
-SDL3PP_DEFINE_CALLBACKS(Main,
-                        "Example TTF Showfont",
-                        "1.0",
-                        "com.example.ttf-showfont")
+SDL3PP_DEFINE_CALLBACKS(Main)

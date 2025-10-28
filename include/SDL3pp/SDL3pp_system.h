@@ -9,7 +9,6 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategorySystem Platform-specific Functionality
  *
  * Platform-specific SDL API functions. These are functions that deal with
@@ -355,7 +354,7 @@ using iOSAnimationCB = std::function<void()>;
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowRef window,
+inline void SetiOSAnimationCallback(WindowParam window,
                                     int interval,
                                     iOSAnimationCallback callback,
                                     void* callbackParam)
@@ -399,7 +398,7 @@ inline void SetiOSAnimationCallback(WindowRef window,
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowRef window,
+inline void SetiOSAnimationCallback(WindowParam window,
                                     int interval,
                                     iOSAnimationCB callback)
 {
@@ -880,7 +879,7 @@ inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -897,7 +896,7 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -917,7 +916,7 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -937,7 +936,7 @@ inline void OnApplicationWillEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -957,7 +956,7 @@ inline void OnApplicationDidEnterBackground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -977,7 +976,7 @@ inline void OnApplicationWillEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -999,7 +998,7 @@ inline void OnApplicationDidEnterForeground()
  * event, but since it doesn't do anything iOS-specific internally, it is
  * available on all platforms, in case it might be useful for some specific
  * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Create!
+ * code will handle all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1052,6 +1051,7 @@ inline bool GetGDKDefaultUser(XUserHandle* outUserHandle)
 #endif // defined(SDL_PLATFORM_GDK)
 
 /// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_SYSTEM_H_ */

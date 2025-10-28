@@ -2,7 +2,7 @@ const { readLinesSync, system } = require("./utils");
 const { Tokenizer } = require("./tokenize.js");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiFile, ApiParameters, FileTokenKind } from "./types"
+ * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, FileTokenKind, Api, ApiFile } from "./types"
  */
 
 /**
@@ -74,8 +74,8 @@ function parseContent(name, content, config) {
     apiFile.docEnd = parser.docEnd || apiFile.docBegin;
     apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin;
     apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
-    apiFile.namespace = parser.namespace || undefined;
   }
+  apiFile.namespace = parser.namespace || undefined;
   apiFile.doc = parser.doc;
   return apiFile;
 }
@@ -88,19 +88,27 @@ function parseContent(name, content, config) {
  * @param {string}              defaultName
  */
 function insertEntry(entries, entry, defaultName = "") {
-  if (Array.isArray(entry)) {
-    entry.forEach(e => insertEntry(entries, e, defaultName));
-    return entries;
-  }
+  if (Array.isArray(entry)) entry.forEach(e => doInsertEntry(entries, e, defaultName));
+  else doInsertEntry(entries, entry, defaultName);
+  return entries;
+}
+
+/**
+ * Insert entry into entries
+ * 
+ * @param {ApiEntries}  entries 
+ * @param {ApiEntry}    entry 
+ * @param {string}      defaultName
+ */
+function doInsertEntry(entries, entry, defaultName) {
   if (!entry.name) entry.name = defaultName;
+  entry = /** @type {ApiEntry} */(entry);
   fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
   const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
   if (entries[key]) {
     const currEntry = entries[key];
-    if (Array.isArray(currEntry)) {
-      currEntry.push(entry);
-    } else if (currEntry.kind != 'function') {
+    if (currEntry.kind !== 'function') {
       if (entry.doc || !currEntry.doc) {
         if (entry.kind === "def") {
           currEntry.doc = entry.doc;
@@ -108,8 +116,11 @@ function insertEntry(entries, entry, defaultName = "") {
           entries[key] = entry;
         }
       }
-    } else if (entry.kind == 'function') {
-      entries[key] = [currEntry, entry];
+    } else if (entry.kind === 'function') {
+      let e = currEntry;
+      while (e.overload) e = e.overload;
+      e.overload = entry;
+      if (typeof entry.doc !== 'string' && currEntry.doc) entry.doc = currEntry.doc;
     }
   } else {
     entries[key] = entry;
@@ -122,7 +133,6 @@ function insertEntry(entries, entry, defaultName = "") {
  * @param {ApiEntry} entry 
  */
 function fixEntry(entry) {
-  if (typeof entry.doc != "string") entry.doc = "";
   if (entry.entries) {
     for (const subEntry of Object.values(entry.entries)) {
       if (Array.isArray(subEntry)) {
@@ -134,6 +144,7 @@ function fixEntry(entry) {
   } else if (entry.kind == "struct") {
     entry.entries = {};
   }
+  if (!entry.kind) entry.kind = 'plc';
 }
 
 /**
@@ -376,7 +387,7 @@ function parseParams(params) {
       param = param.slice(0, defaultIndex).trimEnd();
     }
     const nameIndex = param.lastIndexOf(' ');
-    if (nameIndex == -1) return param;
+    if (nameIndex == -1) return { name: param, type: "" };
     let name = param.slice(nameIndex + 1).trim();
     let type = param.slice(0, nameIndex).trim();
     while (name.startsWith('*') || name.startsWith('&')) {

@@ -1,0 +1,176 @@
+12c12
+<  * @defgroup CategoryError Category Error
+---
+>  * @defgroup CategoryError Error Handling
+22,23c22
+<  * other apps to consume. These strings are set by calling
+<  * SetErrorUnformatted().
+---
+>  * other apps to consume. These strings are set by calling SetError().
+28c27
+<  * ```c
+---
+>  * ```cpp
+30,31c29
+<  *    return SetErrorUnformatted("The thing broke in this specific way: %d",
+<  * errcode);
+---
+>  *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
+36c34
+<  * is known to call SetErrorUnformatted(), so errors simply propagate through.
+---
+>  * is known to call SetError(), so errors simply propagate through.
+51c49
+<  *     return SetErrorUnformatted("This operation has failed: %d", error_code);
+---
+>  *     return SDL::SetError("This operation has failed: {}", error_code);
+55,57c53
+<  * @param fmt a printf()-style message format string.
+<  * @param ... additional parameters matching % tokens in the `fmt` string, if
+<  *            any.
+---
+>  * @param message the error message
+66c62
+<  * @sa SDL_SetErrorV
+---
+>  * @sa SetError
+70c66
+<   return SDL_SetError(message);
+---
+>   return SDL_SetError("%s", static_cast<const char*>(message));
+72a69,102
+> /**
+>  * Set the SDL error message for the current thread.
+>  *
+>  * Calling this function will replace any previous error message that was set.
+>  *
+>  * This function always returns false, since SDL frequently uses false to
+>  * signify a failing result, leading to this idiom:
+>  *
+>  * ```c
+>  * if (error_code) {
+>  *     return SetError("This operation has failed: {}", error_code);
+>  * }
+>  * ```
+>  *
+>  * @tparam ARGS the formatting parameters
+>  * @param fmt a
+>  * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+>  * style message format string
+>  * @param args additional parameters matching the `{}` tokens in the format
+>  * string, if any.
+>  * @returns false.
+>  *
+>  * @threadsafety It is safe to call this function from any thread.
+>  *
+>  * @since This function is available since SDL 3.2.0.
+>  *
+>  * @cat formatted-string
+>  *
+>  * @sa formatted-string
+>  * @sa ClearError
+>  * @sa GetError
+>  * @sa SetError
+>  * @return false
+>  */
+76c106,107
+<   static_assert(false, "Not implemented");
+---
+>   return SetError(
+>     std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+129c160,164
+< struct Error : std::exception
+---
+> /**
+>  * An exception that returns GetError()
+>  *
+>  */
+> class Error : public std::exception
+132a168
+> public:
+146c182
+<   const char* what() const { return GetError(); }
+---
+>   constexpr const char* what() const noexcept { return m_message.c_str(); }
+148,151c184,187
+<   constexpr const std::string& str() const
+<   {
+<     static_assert(false, "Not implemented");
+<   }
+---
+>   /**
+>    * Returns the explanatory string.
+>    */
+>   constexpr const std::string& str() const noexcept { return m_message; }
+153a190,197
+> /**
+>  * Check and throw if returned value from SDL is an error.
+>  *
+>  * This should be called only for things that may set SetError(). If the
+>  * parameter is false it will throw Error.
+>  *
+>  * @param result the result returned
+>  */
+156c200
+<   static_assert(false, "Not implemented");
+---
+>   if (!result) throw Error();
+158a203,210
+> /**
+>  * Check and throw if returned value from SDL is an error.
+>  *
+>  * This should be called only for things that may set SetError(). If the
+>  * parameter is false it will throw Error.
+>  *
+>  * @param result the result returned
+>  */
+162c214,215
+<   static_assert(false, "Not implemented");
+---
+>   if (!result) throw Error();
+>   return result;
+164a218,227
+> /**
+>  * Check and throw if returned value from SDL is an error.
+>  *
+>  * This should be called only for things that may set SetError(). If the result
+>  * parameter is equals to invalidValue it will throw Error.
+>  *
+>  * @param result       the result returned
+>  * @param invalidValue the value that if equal to result indicates this is
+>  *                     invalid.
+>  */
+168c231,247
+<   static_assert(false, "Not implemented");
+---
+>   if (result == invalidValue) throw Error();
+>   return result;
+> }
+> 
+> /**
+>  * Check and throw if returned value from SDL is an error.
+>  *
+>  * This should be called only for things that may set SetError(). If the result
+>  * parameter is equals to invalidValue it will throw Error.
+>  *
+>  * @param result       the result returned
+>  * @param validValue the value that if equal to result indicates this is valid.
+>  */
+> template<class T>
+> constexpr void CheckErrorIfNot(T result, T validValue)
+> {
+>   if (result != validValue) throw Error();
+184a264,265
+> #ifdef SDL3PP_DOC
+> 
+188c269
+<  * This simply calls SetErrorUnformatted() with a standardized error string, for
+---
+>  * This simply calls SetError() with a standardized error string, for
+200c281
+<  * This simply calls SetErrorUnformatted() with a standardized error string, for
+---
+>  * This simply calls SetError() with a standardized error string, for
+220a302,303
+> 
+> #endif // SDL3PP_DOC

@@ -1,0 +1,106 @@
+11c11
+<  * @defgroup CategoryMessagebox Category Messagebox
+---
+>  * @defgroup CategoryMessagebox Message Boxes
+35a36,40
+>  * @name MessageBoxFlags
+>  * @{
+>  */
+> 
+> /**
+58a64,70
+> /// @}
+> 
+> /**
+>  * @name MessageBoxButtonFlags
+>  * @{
+>  */
+> 
+73a86,87
+> /// @}
+> 
+88a103,107
+>  * @name MessageBoxColorTypes
+>  * @{
+>  */
+> 
+> /**
+111a131
+> /// @}
+144d163
+<    * @param numbuttons the value for numbuttons.
+148,149c167,168
+<   constexpr MessageBox(SDL_MessageBoxFlags flags,
+<                        SDL_Window* window,
+---
+>   constexpr MessageBox(MessageBoxFlags flags,
+>                        WindowRef window,
+152,154c171,172
+<                        int numbuttons,
+<                        SDL_MessageBoxButtonData buttons,
+<                        SDL_MessageBoxColorScheme colorScheme)
+---
+>                        std::span<const MessageBoxButtonData> buttons,
+>                        OptionalRef<const MessageBoxColorScheme> colorScheme)
+156c174
+<                     window,
+---
+>                     window.get(),
+159,160c177,178
+<                     numbuttons,
+<                     buttons,
+---
+>                     int(buttons.size()),
+>                     buttons.data(),
+166,172d183
+<    * Check if valid.
+<    *
+<    * @returns True if valid state, false otherwise.
+<    */
+<   constexpr explicit operator bool() const { return *this != MessageBoxRaw{}; }
+< 
+<   /**
+270c281
+<    * @returns current buttons value.
+---
+>    * @returns current buttons.
+272c283,287
+<   constexpr SDL_MessageBoxButtonData GetButtons() const { return buttons; }
+---
+>   constexpr std::span<const MessageBoxButtonData> GetButtons() const
+>   {
+>     if (numbuttons == 0) return {};
+>     return std::span(buttons, size_t(numbuttons));
+>   }
+280c295,296
+<   constexpr MessageBox& SetButtons(SDL_MessageBoxButtonData newButtons)
+---
+>   constexpr MessageBox& SetButtons(
+>     std::span<const MessageBoxButtonData> newButtons)
+282c298,304
+<     buttons = newButtons;
+---
+>     if (newButtons.empty()) {
+>       numbuttons = 0;
+>       buttons = nullptr;
+>     } else {
+>       numbuttons = newButtons.size();
+>       buttons = newButtons.data();
+>     }
+291c313
+<   constexpr SDL_MessageBoxColorScheme GetColorScheme() const
+---
+>   constexpr const MessageBoxColorScheme* GetColorScheme() const
+302c324,325
+<   constexpr MessageBox& SetColorScheme(SDL_MessageBoxColorScheme newColorScheme)
+---
+>   constexpr MessageBox& SetColorScheme(
+>     OptionalRef<const MessageBoxColorScheme> newColorScheme)
+378c401
+<   CheckError(SDL_ShowMessageBox(messageboxdata, buttonid));
+---
+>   CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
+383c406
+<   SDL::ShowMessageBox(this, buttonid);
+---
+>   SDL::ShowMessageBox(*this, buttonid);

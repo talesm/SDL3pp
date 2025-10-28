@@ -1,8 +1,6 @@
 #ifndef SDL3PP_EVENTS_H_
 #define SDL3PP_EVENTS_H_
 
-#include <atomic>
-#include <chrono>
 #include <SDL3/SDL_events.h>
 #include "SDL3pp_stdinc.h"
 #include "SDL3pp_video.h"
@@ -20,11 +18,12 @@ namespace SDL {
  * coming and going, the system changing in some way, etc.
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
- * examine any events that have occurred since the last time and process or
- * ignore them. This is generally done by calling PollEvent() in a loop until it
- * returns false (or, if using the main callbacks, events are provided one at a
- * time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in
- * this scenario, the app does not call PollEvent() at all).
+ * examine any events that have occured since the last time and process or
+ * ignore them. This is generally done by calling PollEvent() in a loop
+ * until it returns false (or, if using the main callbacks, events are
+ * provided one at a time in calls to SDL_AppEvent() before the next call to
+ * SDL_AppIterate(); in this scenario, the app does not call PollEvent()
+ * at all).
  *
  * There is other forms of control, too: PeepEvents() has more
  * functionality at the cost of more complexity, and WaitEvent() can block
@@ -32,8 +31,8 @@ namespace SDL {
  * for certain types of programs on low-power hardware. One may also call
  * AddEventWatch() to set a callback when new events arrive.
  *
- * The app is free to generate their own events, too: PushEvent() allows the
- * app to put events onto the queue for later retrieval; RegisterEvents()
+ * The app is free to generate their own events, too: PushEvent allows the
+ * app to put events onto the queue for later retrieval; RegisterEvents
  * can guarantee that these events have a type that isn't in use by other
  * parts of the system.
  *
@@ -41,19 +40,18 @@ namespace SDL {
  */
 
 /**
- * The types of events that can be delivered.
- *
- * @since This enum is available since SDL 3.2.0.
- * @sa EventTypes
- */
-using EventType = SDL_EventType;
-
-/**
  * @defgroup EventTypes Event Types
  *
  * Event types for Event.
  * @{
  */
+
+/**
+ * The types of events that can be delivered.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using EventType = SDL_EventType;
 
 constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST; ///< Unused (do not remove)
 
@@ -155,15 +153,11 @@ constexpr EventType EVENT_WINDOW_MOVED =
 constexpr EventType EVENT_WINDOW_RESIZED =
   SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
 
-/**
- * The pixel size of the window has changed to data1xdata2.
- */
+/// The pixel size of the window has changed to data1xdata2.
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
-/**
- * The pixel size of a Metal view associated with the window has changed.
- */
+/// The pixel size of a Metal view associated with the window has changed.
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
@@ -173,9 +167,7 @@ constexpr EventType EVENT_WINDOW_MINIMIZED =
 constexpr EventType EVENT_WINDOW_MAXIMIZED =
   SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
 
-/**
- * Window has been restored to normal size and position.
- */
+/// Window has been restored to normal size and position.
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
 constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
@@ -190,9 +182,7 @@ constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
 constexpr EventType EVENT_WINDOW_FOCUS_LOST =
   SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
 
-/**
- * The window manager requests that the window be closed.
- */
+/// The window manager requests that the window be closed.
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
@@ -200,9 +190,7 @@ constexpr EventType EVENT_WINDOW_HIT_TEST =
   SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
                              ///< HITTEST_NORMAL.
 
-/**
- * The ICC profile of the window's display has changed.
- */
+/// The ICC profile of the window's display has changed.
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
@@ -374,9 +362,7 @@ constexpr EventType EVENT_DROP_TEXT =
 constexpr EventType EVENT_DROP_BEGIN =
   SDL_EVENT_DROP_BEGIN; ///< A new set of drops is beginning (NULL filename)
 
-/**
- * Current set of drops is now complete (NULL filename)
- */
+/// Current set of drops is now complete (NULL filename)
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
 constexpr EventType EVENT_DROP_POSITION =
@@ -388,9 +374,7 @@ constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
 constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
   SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
 
-/**
- * An audio device's format has been changed by the system.
- */
+/// An audio device's format has been changed by the system.
 constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
@@ -407,9 +391,7 @@ constexpr EventType EVENT_PEN_PROXIMITY_OUT =
 constexpr EventType EVENT_PEN_DOWN =
   SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
 
-/**
- * Pressure-sensitive pen stopped touching drawing surface.
- */
+/// Pressure-sensitive pen stopped touching drawing surface.
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
 constexpr EventType EVENT_PEN_BUTTON_DOWN =
@@ -430,25 +412,17 @@ constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
   SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
 
-/**
- * A camera device has been approved for use by the user.
- */
+/// A camera device has been approved for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
   SDL_EVENT_CAMERA_DEVICE_APPROVED;
 
-/**
- * A camera device has been denied for use by the user.
- */
+/// A camera device has been denied for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
-/**
- * The render targets have been reset and their contents need to be updated.
- */
+/// The render targets have been reset and their contents need to be updated.
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
-/**
- * The device has been reset and all textures need to be recreated.
- */
+/// The device has been reset and all textures need to be recreated.
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
 constexpr EventType EVENT_RENDER_DEVICE_LOST =
@@ -472,9 +446,7 @@ constexpr EventType EVENT_POLL_SENTINEL =
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
-/**
- * This last event is only for bounding internal arrays.
- */
+/// This last event is only for bounding internal arrays.
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
 constexpr EventType EVENT_ENUM_PADDING =
@@ -548,12 +520,12 @@ using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
  * Keyboard text input event structure (event.text.*)
  *
  * This event will never be delivered unless text input is enabled by calling
- * WindowRef.StartTextInput(). Text input is disabled by default!
+ * Window.StartTextInput(). Text input is disabled by default!
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa WindowRef.StartTextInput
- * @sa WindowRef.StopTextInput
+ * @sa Window.StartTextInput
+ * @sa Window.StopTextInput
  */
 using TextInputEvent = SDL_TextInputEvent;
 
@@ -617,7 +589,7 @@ using JoyButtonEvent = SDL_JoyButtonEvent;
  * Joystick device event structure (event.jdevice.*)
  *
  * SDL will send JOYSTICK_ADDED events for devices that are already plugged in
- * during InitSubSystem.
+ * during Init.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -653,7 +625,7 @@ using GamepadButtonEvent = SDL_GamepadButtonEvent;
  * and an GamepadDeviceEvent.
  *
  * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged
- * in during InitSubSystem() and are recognized as gamepads. It will also send
+ * in during Init() and are recognized as gamepads. It will also send
  * events for joysticks that get gamepad mappings at runtime.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -741,7 +713,7 @@ using PenProximityEvent = SDL_PenProximityEvent;
  * Depending on the hardware, you may get motion events when the pen is not
  * touching a tablet, for tracking a pen even when it isn't drawing. You
  * should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check
- * `pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is "drawing" when
+ * `pen_state & PEN_INPUT_DOWN` to decide if a pen is "drawing" when
  * dealing with pen motion.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -837,21 +809,21 @@ using Event = SDL_Event;
  * This function updates the event queue and internal input device state.
  *
  * PumpEvents() gathers all the pending input information from devices and
- * places it in the event queue. Without calls to PumpEvents() no events would
- * ever be placed on the queue. Often the need for calls to PumpEvents() is
- * hidden from the user since PollEvent() and WaitEvent() implicitly call
- * PumpEvents(). However, if you are not polling or waiting for events (e.g. you
- * are filtering them), then you must call PumpEvents() to force an event queue
- * update.
+ * places it in the event queue. Without calls to PumpEvents() no events
+ * would ever be placed on the queue. Often the need for calls to
+ * PumpEvents() is hidden from the user since PollEvent() and
+ * WaitEvent() implicitly call PumpEvents(). However, if you are not
+ * polling or waiting for events (e.g. you are filtering them), then you must
+ * call PumpEvents() to force an event queue update.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa WaitEvent()
+ * @sa PollEvent
+ * @sa WaitEvent
  */
-inline void PumpEvents() { return SDL_PumpEvents(); }
+inline void PumpEvents() { SDL_PumpEvents(); }
 
 /**
  * @name EventActions
@@ -869,14 +841,10 @@ using EventAction = SDL_EventAction;
 constexpr EventAction ADDEVENT =
   SDL_ADDEVENT; ///< Add events to the back of the queue.
 
-/**
- * Check but don't remove events from the queue front.
- */
+/// Check but don't remove events from the queue front.
 constexpr EventAction PEEKEVENT = SDL_PEEKEVENT;
 
-/**
- * Retrieve/remove events from the front of the queue.
- */
+/// Retrieve/remove events from the front of the queue.
 constexpr EventAction GETEVENT = SDL_GETEVENT;
 
 /// @}
@@ -921,9 +889,9 @@ constexpr EventAction GETEVENT = SDL_GETEVENT;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PumpEvents()
- * @sa PushEvent()
+ * @sa PollEvent
+ * @sa PumpEvents
+ * @sa PushEvent
  */
 inline int PeepEvents(Event* events,
                       int numevents,
@@ -937,7 +905,8 @@ inline int PeepEvents(Event* events,
 /**
  * Check for the existence of a certain event type in the event queue.
  *
- * If you need to check for a range of event types, use HasEvents() instead.
+ * If you need to check for a range of event types, use HasEvents()
+ * instead.
  *
  * @param type the type of event to be queried; see EventType for details.
  * @returns true if events matching `type` are present, or false if events
@@ -947,7 +916,7 @@ inline int PeepEvents(Event* events,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasEvents()
+ * @sa HasEvents
  */
 inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
 
@@ -967,7 +936,7 @@ inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa HasEvent()
+ * @sa HasEvents
  */
 inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 {
@@ -977,19 +946,20 @@ inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 /**
  * Clear events of a specific type from the event queue.
  *
- * This will unconditionally remove any events from the queue that match `type`.
- * If you need to remove a range of event types, use FlushEvents() instead.
+ * This will unconditionally remove any events from the queue that match
+ * `type`. If you need to remove a range of event types, use FlushEvents()
+ * instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make sure
- * that all pending OS events are flushed, you can call PumpEvents() on the main
- * thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make
+ * sure that all pending OS events are flushed, you can call PumpEvents()
+ * on the main thread immediately before the flush call.
  *
  * If you have user events with custom data that needs to be freed, you should
- * use PeepEvents() to remove and clean up those events before calling this
- * function.
+ * use PeepEvents() to remove and clean up those events before calling
+ * this function.
  *
  * @param type the type of event to be cleared; see EventType for details.
  *
@@ -997,9 +967,9 @@ inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa FlushEvents()
+ * @sa FlushEvents
  */
-inline void FlushEvent(Uint32 type) { return SDL_FlushEvent(type); }
+inline void FlushEvent(Uint32 type) { SDL_FlushEvent(type); }
 
 /**
  * Clear events of a range of types from the event queue.
@@ -1011,9 +981,9 @@ inline void FlushEvent(Uint32 type) { return SDL_FlushEvent(type); }
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make sure
- * that all pending OS events are flushed, you can call PumpEvents() on the main
- * thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make
+ * sure that all pending OS events are flushed, you can call PumpEvents()
+ * on the main thread immediately before the flush call.
  *
  * @param minType the low end of event type to be cleared, inclusive; see
  *                EventType for details.
@@ -1024,24 +994,24 @@ inline void FlushEvent(Uint32 type) { return SDL_FlushEvent(type); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa FlushEvent()
+ * @sa FlushEvent
  */
 inline void FlushEvents(Uint32 minType = EVENT_FIRST,
                         Uint32 maxType = EVENT_LAST)
 {
-  return SDL_FlushEvents(minType, maxType);
+  SDL_FlushEvents(minType, maxType);
 }
 
 /**
  * Poll for currently pending events.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
- * stored in the Event structure pointed to by `event`. The true returned refers
- * to this event, immediately stored in the SDL Event structure -- not an event
+ * stored in the Event structure pointed to by `event`. The 1 returned refers to
+ * this event, immediately stored in the SDL Event structure -- not an event
  * to follow.
  *
- * If `event` is nullptr, it simply returns true if there is an event in the
- * queue, but will not remove it from the queue.
+ * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
+ * but will not remove it from the queue.
  *
  * As this function may implicitly call PumpEvents(), you can only call
  * this function in the thread that set the video mode.
@@ -1053,7 +1023,7 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * The common practice is to fully process the event queue once every frame,
  * usually as a first step before updating the game's state:
  *
- * ```c
+ * ```cpp
  * while (game_is_still_running) {
  *     SDL::Event event;
  *     while (SDL::PollEvent(&event)) {  // poll until all events are handled!
@@ -1064,17 +1034,17 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * }
  * ```
  *
- * @param event the Event structure to be filled with the next event from the
- *              queue, or nullptr.
+ * @param event the Event structure to be filled with the next event from
+ *              the queue, or nullptr.
  * @returns true if this got an event or false if there are none available.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PushEvent()
- * @sa WaitEvent()
- * @sa WaitEventTimeout()
+ * @sa PushEvent
+ * @sa WaitEvent
+ * @sa WaitEventTimeout
  */
 inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
 
@@ -1095,8 +1065,7 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *
  * ```c
  * while (game_is_still_running) {
- *     while (auto event = SDL::PollEvent()) {  // poll until all events are
- * handled!
+ *     while (auto event = SDL::PollEvent()) {
  *         // decide what to do with this event.
  *     }
  *
@@ -1111,9 +1080,9 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PushEvent()
- * @sa WaitEvent()
- * @sa WaitEventTimeout()
+ * @sa PushEvent
+ * @sa WaitEvent
+ * @sa WaitEventTimeout
  */
 inline std::optional<Event> PollEvent()
 {
@@ -1159,9 +1128,9 @@ inline void WaitEvent(Event* event) { CheckError(SDL_WaitEvent(event)); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEventTimeout()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEventTimeout
  */
 inline Event WaitEvent()
 {
@@ -1177,14 +1146,14 @@ inline Event WaitEvent()
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event from the
- *              queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event
+ *              from the queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns true if this got an event or false if the timeout elapsed without
@@ -1194,9 +1163,9 @@ inline Event WaitEvent()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEvent()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEvent
  */
 inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
 {
@@ -1207,8 +1176,8 @@ inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
  * Wait until the specified timeout (in milliseconds) for the next available
  * event.
  *
- * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
@@ -1222,9 +1191,9 @@ inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEvent()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEvent
  */
 inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
 {
@@ -1233,22 +1202,22 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
 }
 
 /**
- * Wait until the specified timeout (with milliseconds precision) for the next
- * available event.
+ * Wait until the specified timeout (in milliseconds) for the next available
+ * event.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event from the
- * queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event
+ *              from the queue, or nullptr.
  * @param timeoutDuration the duration to wait for the next available event,
- * with millisecond precision
+ *                        with millisecond precision
  * @returns true if this got an event or false if the timeout elapsed without
  *          any events available.
  *
@@ -1256,27 +1225,28 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEvent()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEvent
  */
 inline bool WaitEventTimeout(Event* event,
                              std::chrono::milliseconds timeoutDuration)
 {
   return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
 }
+
 /**
  * Wait until the specified timeout (with milliseconds precision) for the next
  * available event.
  *
- * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
  * @param timeoutDuration the duration to wait for the next available event,
- * with millisecond precision.
+ *                        with millisecond precision.
  * @returns the Event if this got an event or std::nullopt if the timeout
  * elapsed without any events available.
  *
@@ -1284,9 +1254,9 @@ inline bool WaitEventTimeout(Event* event,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PollEvent()
- * @sa PushEvent()
- * @sa WaitEvent()
+ * @sa PollEvent
+ * @sa PushEvent
+ * @sa WaitEvent
  */
 inline std::optional<Event> WaitEventTimeout(
   std::chrono::milliseconds timeoutDuration)
@@ -1366,10 +1336,10 @@ inline void PushEvent(const Event& event)
  * A function pointer used for callbacks that watch the event queue.
  *
  * @param userdata what was passed as `userdata` to SetEventFilter() or
- *                 AddEventWatch(), etc.
+ *                 AddEventWatch, etc.
  * @param event the event that triggered the callback.
  * @returns true to permit event to be added to the queue, and false to
- *          disallow it. When used with AddEventWatch(), the return value is
+ *          disallow it. When used with AddEventWatch, the return value is
  *          ignored.
  *
  * @threadsafety SDL may call this callback at any time from any thread; the
@@ -1378,8 +1348,8 @@ inline void PushEvent(const Event& event)
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SetEventFilter()
- * @sa AddEventWatch()
+ * @sa SetEventFilter
+ * @sa AddEventWatch
  */
 using EventFilter = SDL_EventFilter;
 
@@ -1439,8 +1409,9 @@ struct EventWatchHandle : CallbackHandle
  * Note: Disabled events never make it to the event filter function; see
  * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through the
- * event filter, but events pushed onto the queue with PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through
+ * the event filter, but events pushed onto the queue with PeepEvents() do
+ * not.
  *
  * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -1449,11 +1420,11 @@ struct EventWatchHandle : CallbackHandle
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddEventWatch()
- * @sa SetEventEnabled()
- * @sa GetEventFilter()
- * @sa PeepEvents()
- * @sa PushEvent()
+ * @sa AddEventWatch
+ * @sa SetEventEnabled
+ * @sa GetEventFilter
+ * @sa PeepEvents
+ * @sa PushEvent
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
@@ -1466,7 +1437,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * event queue.
  *
  * If you just want to see events without modifying them or preventing them
- * from being queued, you should use SDL_AddEventWatch() instead.
+ * from being queued, you should use AddEventWatch() instead.
  *
  * If the filter function returns true when called, then the event will be
  * added to the internal queue. If it returns false, then the event will be
@@ -1481,10 +1452,10 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * application at the next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
- * SDL_SetEventEnabled().
+ * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
- * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
+ * Note: Events pushed onto the queue with PushEvent() get passed through
+ * the event filter, but events pushed onto the queue with PeepEvents() do
  * not.
  *
  * @param filter an EventFilterCB function to call when an event happens.
@@ -1496,11 +1467,11 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * @cat listener-callback
  *
  * @sa listener-callback
- * @sa AddEventWatch()
- * @sa SetEventEnabled()
- * @sa GetEventFilter()
- * @sa PeepEvents()
- * @sa PushEvent()
+ * @sa AddEventWatch
+ * @sa SetEventEnabled
+ * @sa GetEventFilter
+ * @sa PeepEvents
+ * @sa PushEvent
  */
 inline void SetEventFilter(EventFilterCB filter = {})
 {
@@ -1550,7 +1521,7 @@ inline void GetEventFilter(EventFilter* filter, void** userdata)
  * @cat listener-callback
  *
  * @sa listener-callback
- * @sa SetEventFilter()
+ * @sa SetEventFilter
  */
 inline EventFilterCB GetEventFilter()
 {
@@ -1640,8 +1611,8 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * @cat listener-callback
  *
  * @sa listener-callback
- * @sa RemoveEventWatch()
- * @sa SetEventFilter()
+ * @sa RemoveEventWatch
+ * @sa SetEventFilter
  */
 inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 {
@@ -1657,8 +1628,8 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 /**
  * Remove an event watch callback added with AddEventWatch().
  *
- * This function takes the same input as AddEventWatch() to identify and delete
- * the corresponding callback.
+ * This function takes the same input as AddEventWatch() to identify and
+ * delete the corresponding callback.
  *
  * @param filter the function originally passed to AddEventWatch().
  * @param userdata the pointer originally passed to AddEventWatch().
@@ -1667,7 +1638,7 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddEventWatch()
+ * @sa AddEventWatch
  */
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
@@ -1675,8 +1646,7 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
 }
 
 /**
- * Remove an event watch callback added with
- * SDL_AddEventWatch(EventFilterCB).
+ * Remove an event watch callback added with AddEventWatch().
  *
  * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
  *
@@ -1699,9 +1669,9 @@ inline void RemoveEventWatch(EventWatchHandle handle)
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SetEventFilter() for more information. Unlike SetEventFilter(), this
- * function does not change the filter permanently, it only uses the supplied
- * filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(),
+ * this function does not change the filter permanently, it only uses the
+ * supplied filter until this function returns.
  *
  * @param filter the EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -1710,8 +1680,8 @@ inline void RemoveEventWatch(EventWatchHandle handle)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetEventFilter()
- * @sa SetEventFilter()
+ * @sa GetEventFilter
+ * @sa SetEventFilter
  */
 inline void FilterEvents(EventFilter filter, void* userdata)
 {
@@ -1722,9 +1692,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SetEventFilter() for more information. Unlike SetEventFilter(), this
- * function does not change the filter permanently, it only uses the supplied
- * filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(),
+ * this function does not change the filter permanently, it only uses the
+ * supplied filter until this function returns.
  *
  * @param filter the EventFilter function to call when an event happens.
  *
@@ -1735,8 +1705,8 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  * @cat immediate-callback
  *
  * @sa immediate-callback
- * @sa GetEventFilter()
- * @sa SetEventFilter()
+ * @sa GetEventFilter
+ * @sa SetEventFilter
  */
 inline void FilterEvents(EventFilterCB filter)
 {
@@ -1747,6 +1717,7 @@ inline void FilterEvents(EventFilterCB filter)
     },
     &filter);
 }
+
 /**
  * Set the state of processing events by type.
  *
@@ -1757,11 +1728,11 @@ inline void FilterEvents(EventFilterCB filter)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa EventEnabled()
+ * @sa EventEnabled
  */
 inline void SetEventEnabled(Uint32 type, bool enabled)
 {
-  return SDL_SetEventEnabled(type, enabled);
+  SDL_SetEventEnabled(type, enabled);
 }
 
 /**
@@ -1774,7 +1745,7 @@ inline void SetEventEnabled(Uint32 type, bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetEventEnabled()
+ * @sa SetEventEnabled
  */
 inline bool EventEnabled(Uint32 type) { return SDL_EventEnabled(type); }
 
@@ -1790,7 +1761,7 @@ inline bool EventEnabled(Uint32 type) { return SDL_EventEnabled(type); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PushEvent()
+ * @sa PushEvent
  */
 inline Uint32 RegisterEvents(int numevents)
 {
@@ -1814,7 +1785,7 @@ inline Uint32 RegisterEvents(int numevents)
  */
 inline WindowRef GetWindowFromEvent(const Event& event)
 {
-  return CheckError(SDL_GetWindowFromEvent(&event));
+  return {CheckError(SDL_GetWindowFromEvent(&event))};
 }
 
 /// @}

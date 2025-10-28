@@ -1,5 +1,0 @@
-<map id="SDL::RWLockRef" name="SDL::RWLockRef">
-<area shape="rect" id="Node000001" title="A mutex that allows read&#45;only threads to run in parallel." alt="" coords="18,93,147,119"/>
-<area shape="rect" id="Node000002" href="$classSDL_1_1Resource.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
-</map>

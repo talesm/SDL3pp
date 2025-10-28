@@ -1,11 +1,7 @@
 #ifndef SDL3PP_TIMER_H_
 #define SDL3PP_TIMER_H_
 
-#include <chrono>
-#include <functional>
 #include <SDL3/SDL_timer.h>
-#include "SDL3pp_callbackWrapper.h"
-#include "SDL3pp_error.h"
 #include "SDL3pp_stdinc.h"
 
 namespace SDL {
@@ -16,48 +12,26 @@ namespace SDL {
  * SDL provides time management functionality. It is useful for dealing with
  * (usually) small durations of time.
  *
- * This is not to be confused with _calendar time_ management, which is provided
- * by [CategoryTime](#CategoryTime).
+ * This is not to be confused with _calendar time_ management, which is
+ * provided by [CategoryTime](#CategoryTime).
  *
- * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
- * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
- * after a certain amount of time has elasped (SDL_AddTimer(), etc).
+ * This category covers measuring time elapsed (SDL_GetTicks(),
+ * GetPerformanceCounter()), putting a thread to sleep for a certain
+ * amount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing
+ * a callback function after a certain amount of time has elasped
+ * (SDL_AddTimer(), etc).
  *
  * @{
  */
 
-/**
- * Convert seconds to nanoseconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @param time the number of seconds to convert.
- * @returns the converted Time.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
 constexpr Time Time::FromPosix(Sint64 time)
 {
   return Time::FromNS(SDL_SECONDS_TO_NS(time));
 }
 
-/**
- * Convert nanoseconds to seconds.
- *
- * This only converts whole numbers, not fractional seconds.
- *
- * @returns Posix time (in seconds).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
 constexpr Sint64 Time::ToPosix() const
 {
-  return SDL_NS_TO_SECONDS(m_value.count());
+  return SDL_NS_TO_SECONDS(m_time.count());
 }
 
 /**
@@ -149,6 +123,7 @@ inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
   SDL_DelayPrecise(duration.count());
 }
+
 /**
  * Definition of the timer ID type.
  *
@@ -255,7 +230,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * Call a callback function at a future time.
  *
  * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
+ * supplied parameter from the AddTimer() call and should return the
  * next timer interval. If the value returned from the callback is 0, the
  * timer is canceled and will be removed.
  *
@@ -268,7 +243,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * iteration.
  *
  * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * time with GetTicks() or GetPerformanceCounter() in case your
  * callback needs to adjust for variances.
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to

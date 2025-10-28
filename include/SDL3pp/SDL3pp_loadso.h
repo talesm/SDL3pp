@@ -7,17 +7,16 @@
 namespace SDL {
 
 /**
- *
  * @defgroup CategorySharedObject Shared Object/DLL Management
  *
  * System-dependent library loading routines.
  *
- * Shared objects are code that is programmatically loadable at runtime. Windows
- * calls these "DLLs", Linux calls them "shared libraries", etc.
+ * Shared objects are code that is programmatically loadable at runtime.
+ * Windows calls these "DLLs", Linux calls them "shared libraries", etc.
  *
- * To use them, build such a library, then call SharedObject.Load() on it. Once
- * loaded, you can use SharedObjectRef.LoadFunction() on that object to find the
- * address of its exported symbols. When done with the object, call
+ * To use them, build such a library, then call SharedObject.SharedObject() on
+ * it. Once loaded, you can use SharedObject.LoadFunction() on that object to
+ * find the address of its exported symbols. When done with the object, call
  * SharedObject.Unload() to dispose of it.
  *
  * Some things to keep in mind:
@@ -33,55 +32,160 @@ namespace SDL {
  *   the application. If it does and it conflicts with symbols in your code or
  *   other shared libraries, you will not get the results you expect. :)
  * - Once a library is unloaded, all pointers into it obtained through
- *   SharedObjectRef.LoadFunction() become invalid, even if the library is later
- *   reloaded. Don't unload a library if you plan to use these pointers in the
- *   future. Notably: beware of giving one of these pointers to atexit(), since
- *   it may call that pointer after the library unloads.
+ *   SharedObject.LoadFunction() become invalid, even if the library is later
+ * reloaded. Don't unload a library if you plan to use these pointers in the
+ * future. Notably: beware of giving one of these pointers to atexit(), since it
+ * may call that pointer after the library unloads.
  *
  * @{
  */
 
 // Forward decl
-struct SharedObjectRef;
-
-// Forward decl
 struct SharedObject;
 
-/**
- * Handle to a shared sharedObject.
- *
- * @cat resource
- *
- * @sa SharedObjectRef
- * @sa SharedObject
- */
-using SharedObjectShared = ResourceShared<SharedObject>;
+/// Alias to raw representation for SharedObject.
+using SharedObjectRaw = SDL_SharedObject*;
 
-/**
- * Weak handle to a shared sharedObject.
- *
- * @cat resource
- *
- * @sa SharedObjectShared
- * @sa SharedObjectRef
- */
-using SharedObjectWeak = ResourceWeak<SharedObject>;
+// Forward decl
+struct SharedObjectRef;
+
+/// Safely wrap SharedObject for non owning parameters
+struct SharedObjectParam
+{
+  SharedObjectRaw value; ///< parameter's SharedObjectRaw
+
+  /// Constructs from SharedObjectRaw
+  constexpr SharedObjectParam(SharedObjectRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr SharedObjectParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const SharedObjectParam& other) const = default;
+
+  /// Converts to underlying SharedObjectRaw
+  constexpr operator SharedObjectRaw() const { return value; }
+};
 
 /**
  * An opaque datatype that represents a loaded shared object.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @cat resource
- *
- * @sa SharedObject.Load
- * @sa SharedObjectRef.LoadFunction
+ * @sa SharedObject.SharedObject
+ * @sa SharedObject.LoadFunction
  * @sa SharedObject.Unload
- * @sa SharedObject
+ *
+ * @cat resource
  */
-struct SharedObjectRef : Resource<SDL_SharedObject*>
+class SharedObject
 {
-  using Resource::Resource;
+  SharedObjectRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr SharedObject() = default;
+
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit SharedObject(const SharedObjectRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr SharedObject(const SharedObject& other) = delete;
+
+  /// Move constructor
+  constexpr SharedObject(SharedObject&& other)
+    : SharedObject(other.release())
+  {
+  }
+
+  constexpr SharedObject(const SharedObjectRef& other) = delete;
+
+  constexpr SharedObject(SharedObjectRef&& other) = delete;
+
+  /**
+   * Dynamically load a shared object.
+   *
+   * @param sofile a system-dependent name of the object file.
+   * @post an opaque pointer to the object handle or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObject.LoadFunction
+   * @sa SharedObject.Unload
+   */
+  SharedObject(StringParam sofile)
+    : m_resource(SDL_LoadObject(sofile))
+  {
+  }
+
+  /// Destructor
+  ~SharedObject() { SDL_UnloadObject(m_resource); }
+
+  /// Assignment operator.
+  SharedObject& operator=(SharedObject other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying SharedObjectRaw.
+  constexpr SharedObjectRaw get() const { return m_resource; }
+
+  /// Retrieves underlying SharedObjectRaw and clear this.
+  constexpr SharedObjectRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const SharedObject& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to SharedObjectParam
+  constexpr operator SharedObjectParam() const { return {m_resource}; }
+
+  /**
+   * Unload a shared object from memory.
+   *
+   * Note that any pointers from this object looked up through
+   * SharedObject.LoadFunction() will no longer be valid.
+   *
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SharedObject.SharedObject
+   */
+  void Unload();
 
   /**
    * Look up the address of the named function in a shared object.
@@ -107,108 +211,110 @@ struct SharedObjectRef : Resource<SDL_SharedObject*>
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SharedObject.Load
+   * @sa SharedObject.SharedObject
    */
-  FunctionPointer LoadFunction(StringParam name)
+  FunctionPointer LoadFunction(StringParam name);
+};
+
+/// Semi-safe reference for SharedObject.
+struct SharedObjectRef : SharedObject
+{
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw or SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  SharedObjectRef(SharedObjectParam resource)
+    : SharedObject(resource.value)
   {
-    return SDL_LoadFunction(get(), name);
   }
 
-  /**
-   * Unload a shared object from memory.
-   *
-   * Note that any pointers from this object looked up through
-   * SharedObjectRef.LoadFunction() will no longer be valid.
-   *
-   * @param resource a valid shared object handle returned.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObject.Load
-   */
-  static void reset(SDL_SharedObject* resource) { SDL_UnloadObject(resource); }
+  /// Copy constructor.
+  SharedObjectRef(const SharedObjectRef& other)
+    : SharedObject(other.get())
+  {
+  }
+
+  /// Destructor
+  ~SharedObjectRef() { release(); }
 };
 
 /**
- * Handle to an owned sharedObject
+ * Dynamically load a shared object.
  *
- * @cat resource
+ * @param sofile a system-dependent name of the object file.
+ * @returns an opaque pointer to the object handle or nullptr on failure; call
+ *          GetError() for more information.
  *
- * @sa SharedObjectRef
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.LoadFunction
+ * @sa SharedObject.Unload
  */
-struct SharedObject : ResourceUnique<SharedObjectRef>
+inline SharedObject LoadObject(StringParam sofile)
 {
-  using ResourceUnique::ResourceUnique;
-
-  /**
-   * Dynamically load a shared object.
-   *
-   * @param sofile a system-dependent name of the object file.
-   * @returns an opaque pointer to the object handle or nullptr on failure; call
-   *          GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObjectRef.LoadFunction
-   * @sa SharedObject.Unload
-   */
-  static SharedObject Load(StringParam sofile)
-  {
-    return SharedObject(SDL_LoadObject(sofile));
-  }
-
-  /**
-   * Unload a shared object from memory.
-   *
-   * Note that any pointers from this object looked up through
-   * SharedObjectRef.LoadFunction() will no longer be valid.
-   *
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SharedObject.Load
-   */
-  void Unload() { reset(); }
-  /**
-   * Move this sharedObject into a SharedObjectShared.
-   */
-  SharedObjectShared share();
-
-};
-
-
-inline SharedObjectShared SharedObject::share()
-{
-  return SharedObjectShared(std::move(*this));
+  return SharedObject(std::move(sofile));
 }
 
 /**
- * Unsafe Handle to sharedObject
+ * Look up the address of the named function in a shared object.
  *
- * Must call manually reset() to free.
+ * This function pointer is no longer valid after calling SharedObject.Unload().
  *
- * @cat resource
+ * This function can only look up C function names. Other languages may have
+ * name mangling and intrinsic language support that varies from compiler to
+ * compiler.
  *
- * @sa SharedObjectRef
+ * Make sure you declare your function pointers with the same calling
+ * convention as the actual library function. Your code will crash
+ * mysteriously if you do not do this.
+ *
+ * If the requested function doesn't exist, nullptr is returned.
+ *
+ * @param handle a valid shared object handle returned by
+ * SharedObject.SharedObject().
+ * @param name the name of the function to look up.
+ * @returns a pointer to the function or nullptr on failure; call GetError()
+ *          for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.SharedObject
  */
-struct SharedObjectUnsafe : ResourceUnsafe<SharedObjectRef>
+inline FunctionPointer LoadFunction(SharedObjectParam handle, StringParam name)
 {
-  using ResourceUnsafe::ResourceUnsafe;
+  return SDL_LoadFunction(handle, name);
+}
 
-  /**
-   * Constructs SharedObjectUnsafe from SharedObject.
-   */
-  constexpr explicit SharedObjectUnsafe(SharedObject&& other)
-    : SharedObjectUnsafe(other.release())
-  {
-  }
-};
+inline FunctionPointer SharedObject::LoadFunction(StringParam name)
+{
+  return SDL::LoadFunction(m_resource, std::move(name));
+}
+
+/**
+ * Unload a shared object from memory.
+ *
+ * Note that any pointers from this object looked up through
+ * SharedObject.LoadFunction() will no longer be valid.
+ *
+ * @param handle a valid shared object handle returned by
+ * SharedObject.SharedObject().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SharedObject.SharedObject
+ */
+inline void UnloadObject(SharedObjectRaw handle) { SDL_UnloadObject(handle); }
+
+inline void SharedObject::Unload() { UnloadObject(release()); }
 
 /// @}
 

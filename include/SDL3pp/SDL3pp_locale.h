@@ -5,6 +5,7 @@
 #include "SDL3pp_stdinc.h"
 
 namespace SDL {
+
 /**
  * @defgroup CategoryLocale Locale Info
  *

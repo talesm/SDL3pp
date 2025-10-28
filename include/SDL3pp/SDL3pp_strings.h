@@ -235,11 +235,12 @@ struct StringResult : OwnArray<char>
  *
  * Source byte stream, tipically used as source where bytes are copied from.
  */
-struct SourceBytes
+class SourceBytes
 {
-  const void* data;  ///< The data copied from
-  size_t size_bytes; ///< The size in bytes
+  const void* m_data;  ///< The data copied from
+  size_t m_size_bytes; ///< The size in bytes
 
+public:
   /// Default ctor
   constexpr SourceBytes() = default;
 
@@ -290,9 +291,28 @@ struct SourceBytes
    *
    */
   constexpr SourceBytes(const void* data, size_t size_bytes)
-    : data(size_bytes > 0 ? data : nullptr)
-    , size_bytes(data != nullptr ? size_bytes : 0)
+    : m_data(size_bytes > 0 ? data : nullptr)
+    , m_size_bytes(data != nullptr ? size_bytes : 0)
   {
+  }
+
+  /// Retrieves contained size
+  constexpr size_t size() const { return m_size_bytes; }
+
+  /// Retrieves contained size in bytes
+  constexpr size_t size_bytes() const { return m_size_bytes; }
+
+  /// Retrieves contained data
+  constexpr const char* data() const
+  {
+    return static_cast<const char*>(m_data);
+  }
+
+  /// Retrieves contained data
+  template<class T>
+  constexpr const T* data_as() const
+  {
+    return static_cast<const T*>(m_data);
   }
 };
 
@@ -301,11 +321,12 @@ struct SourceBytes
  *
  * Target byte stream, tipically used as target where bytes are copied to.
  */
-struct TargetBytes
+class TargetBytes
 {
-  void* data;        ///< The address to have data copied to it
-  size_t size_bytes; ///< The size in bytes
+  void* m_data = nullptr;  ///< The address to have data copied to it
+  size_t m_size_bytes = 0; ///< The size in bytes
 
+public:
   /// Default ctor
   constexpr TargetBytes() = default;
 
@@ -314,6 +335,18 @@ struct TargetBytes
     : TargetBytes()
   {
   }
+
+  /// Copy constructor
+  constexpr TargetBytes(const TargetBytes& other) = default;
+
+  /// Move constructor
+  constexpr TargetBytes(TargetBytes&& other) = default;
+
+  /// Copy assignment
+  constexpr TargetBytes& operator=(const TargetBytes& other) = default;
+
+  /// Move assignment
+  constexpr TargetBytes& operator=(TargetBytes&& other) = default;
 
   /// Just to have better error message
   template<class T, size_t N>
@@ -363,9 +396,25 @@ struct TargetBytes
    *
    */
   constexpr TargetBytes(void* data, size_t size_bytes)
-    : data(size_bytes > 0 ? data : nullptr)
-    , size_bytes(data != nullptr ? size_bytes : 0)
+    : m_data(size_bytes > 0 ? data : nullptr)
+    , m_size_bytes(data != nullptr ? size_bytes : 0)
   {
+  }
+
+  /// Retrieves contained size
+  constexpr size_t size() const { return m_size_bytes; }
+
+  /// Retrieves contained size in bytes
+  constexpr size_t size_bytes() const { return m_size_bytes; }
+
+  /// Retrieves contained data
+  constexpr char* data() const { return static_cast<char*>(m_data); }
+
+  /// Retrieves contained data
+  template<class T>
+  constexpr T* data_as() const
+  {
+    return static_cast<T*>(m_data);
   }
 };
 

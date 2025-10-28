@@ -17,9 +17,15 @@ namespace SDL {
  * @{
  */
 
+/// Alias to raw representation for GUID.
+using GUIDRaw = SDL_GUID;
+
+// Forward decl
+struct GUID;
+
 /**
- * An GUID is a 128-bit identifier for an input device that identifies that
- * device across runs of SDL programs on the same platform.
+ * An GUID is a 128-bit identifier for an input device that identifies
+ * that device across runs of SDL programs on the same platform.
  *
  * If the device is detached and then re-attached to a different port, or if
  * the base system is rebooted, the device should still report the same GUID.
@@ -33,21 +39,16 @@ namespace SDL {
  * GUIDs on different operating systems).
  *
  * @since This struct is available since SDL 3.2.0.
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
  */
-struct GUID : SDL_GUID
+struct GUID : GUIDRaw
 {
-  constexpr GUID()
-    : SDL_GUID({0})
-  {
-  }
-
-  /// Constructor from underling type
-  constexpr GUID(SDL_GUID guid)
-    : SDL_GUID(guid)
+  /**
+   * Wraps GUID.
+   *
+   * @param gUID the value to be wrapped
+   */
+  constexpr GUID(const GUIDRaw& gUID = {})
+    : GUIDRaw(gUID)
   {
   }
 
@@ -59,6 +60,7 @@ struct GUID : SDL_GUID
    * will not be useful.
    *
    * @param pchGUID string containing an ASCII representation of a GUID.
+   * @post a GUID structure.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -67,14 +69,14 @@ struct GUID : SDL_GUID
    * @sa GUID.ToString
    */
   GUID(StringParam pchGUID)
-    : SDL_GUID(SDL_StringToGUID(pchGUID))
+    : GUIDRaw(SDL_StringToGUID(pchGUID))
   {
   }
 
   /**
    * Get an ASCII string representation for a given GUID.
    *
-   * @returns pszGUID the ASCII string representation for
+   * @return ASCII string.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -82,51 +84,49 @@ struct GUID : SDL_GUID
    *
    * @sa GUID.GUID
    */
-  std::string ToString() const
-  {
-    std::string result(32, ' ');
-    SDL_GUIDToString(*this, result.data(), 33);
-    return result;
-  }
+  std::string ToString() const;
 };
 
 /**
- * Get an ASCII string representation for a given SDL_GUID.
+ * Get an ASCII string representation for a given GUID.
  *
- * @param guid the SDL_GUID you wish to convert to string.
- * @param pszGUID buffer in which to write the ASCII string.
- * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+ * @param guid the GUID you wish to convert to string.
+ * @return ASCII string.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_StringToGUID
+ * @sa GUID.GUID
  */
-inline void GUIDToString(SDL_GUID guid, char* pszGUID, int cbGUID)
+inline std::string GUIDToString(const GUIDRaw& guid)
 {
-  return SDL_GUIDToString(guid, pszGUID, cbGUID);
+  std::string result(32, ' ');
+  SDL_GUIDToString(guid, result.data(), 33);
+  return result;
 }
 
+inline std::string GUID::ToString() const { return SDL::GUIDToString(*this); }
+
 /**
- * Convert a GUID string into a SDL_GUID structure.
+ * Convert a GUID string into a GUID structure.
  *
  * Performs no error checking. If this function is given a string containing
  * an invalid GUID, the function will silently succeed, but the GUID generated
  * will not be useful.
  *
  * @param pchGUID string containing an ASCII representation of a GUID.
- * @returns a SDL_GUID structure.
+ * @returns a GUID structure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GUIDToString
+ * @sa GUID.ToString
  */
-inline SDL_GUID StringToGUID(StringParam pchGUID)
+inline GUID StringToGUID(StringParam pchGUID)
 {
-  return SDL_StringToGUID(pchGUID);
+  return GUID(std::move(pchGUID));
 }
 
 /// @}

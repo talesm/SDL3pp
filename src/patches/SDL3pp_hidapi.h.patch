@@ -1,0 +1,203 @@
+12c12
+<  * @defgroup CategoryHIDAPI Category HIDAPI
+---
+>  * @defgroup CategoryHIDAPI HIDAPI
+89,90c89,91
+<  * USB bus
+<  *        Specifications:
+---
+>  * USB bus Specifications:
+>  *
+>  * * https://usb.org/hid
+95,98c96,100
+<  * Bluetooth or Bluetooth LE bus
+<  *        Specifications:
+<  *        https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+<  *        https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+---
+>  * Bluetooth or Bluetooth LE bus Specifications:
+>  *
+>  * * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+>  * * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+>  * * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
+103,104c105,107
+<  * I2C bus
+<  *        Specifications:
+---
+>  * I2C bus Specifications:
+>  *
+>  * * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
+110c113,115
+<  *        Specifications:
+---
+>  * Specifications:
+>  *
+>  * * https://www.microsoft.com/download/details.aspx?id=103325
+172d176
+<    * @post a pointer to a HidDevice object on success.
+191d194
+<    * @post a pointer to a HidDevice object on success.
+237,238c240
+<    * @returns 0 on success or a negative error code on failure; call
+<    *          GetError() for more information.
+---
+>    * @throws Error on failure.
+262d263
+<    * @param length the length in bytes of the data to send.
+278,281c279
+<    * @param length the number of bytes to read. For devices with multiple
+<    *               reports, make sure to read an extra byte for the report
+<    *               number.
+<    * @param milliseconds timeout in milliseconds or -1 for blocking wait.
+---
+>    * @param timeout timeout in milliseconds
+298,300d295
+<    * @param length the number of bytes to read. For devices with multiple
+<    *               reports, make sure to read an extra byte for the report
+<    *               number.
+320,322c315,316
+<    * @param nonblock enable or not the nonblocking reads - 1 to enable
+<    *                 nonblocking - 0 to disable nonblocking.
+<    * @returns 0 on success.
+---
+>    * @param nonblock enable or not the nonblocking reads - true to enable
+>    *                 nonblocking - false to disable nonblocking.
+344,345d337
+<    * @param length the length in bytes of the data to send, including the report
+<    *               number.
+365,366d356
+<    * @param length the number of bytes to read, including an extra byte for the
+<    *               report ID. The buffer can be longer than the actual report.
+387,388d376
+<    * @param length the number of bytes to read, including an extra byte for the
+<    *               report ID. The buffer can be longer than the actual report.
+402d389
+<    * @returns 0 on success.
+414d400
+<    * @returns 0 on success.
+426d411
+<    * @returns 0 on success.
+439d423
+<    * @returns 0 on success.
+449,451c433,436
+<    * @returns a pointer to the hid_device_info for this hid_device or nullptr
+<    *          on failure; call GetError() for more information. This struct
+<    *          is valid until the device is closed with HidDevice.close().
+---
+>    * @returns a pointer to the hid_device_info for this hid_device on success.
+>    *          This struct is valid until the device is closed with
+>    *          HidDevice.close().
+>    * @throws Error on failure.
+464d448
+<    * @param buf_size the size of the buffer in bytes.
+509d492
+<  * @returns 0 on success.
+524d506
+<  * @returns 0 on success.
+575,577c557,559
+<  *          information about the HID devices attached to the system, or nullptr
+<  *          in the case of failure. Free this linked list by calling
+<  *          hid_free_enumeration().
+---
+>  *          information about the HID devices attached to the system on success.
+>  *          Free this linked list by calling hid_free_enumeration().
+>  * @throws Error on failure.
+615c597
+<  * @returns a pointer to a HidDevice object on success.
+---
+>  * @returns a HidDevice object on success.
+634c616
+<  * @returns a pointer to a HidDevice object on success.
+---
+>  * @returns a HidDevice object on success.
+663d644
+<  * @param length the length in bytes of the data to send.
+671c652
+<   return SDL_hid_write(dev, data.data(), data.size_bytes());
+---
+>   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
+688,691c669
+<  * @param length the number of bytes to read. For devices with multiple
+<  *               reports, make sure to read an extra byte for the report
+<  *               number.
+<  * @param milliseconds timeout in milliseconds or -1 for blocking wait.
+---
+>  * @param timeout timeout in milliseconds
+702c680,681
+<   return SDL_hid_read_timeout(dev, data.data(), data.size_bytes(), timeout);
+---
+>   return SDL_hid_read_timeout(
+>     dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+719,721d697
+<  * @param length the number of bytes to read. For devices with multiple
+<  *               reports, make sure to read an extra byte for the report
+<  *               number.
+731c707
+<   return SDL_hid_read(dev, data.data(), data.size_bytes());
+---
+>   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
+749,751c725,726
+<  * @param nonblock enable or not the nonblocking reads - 1 to enable
+<  *                 nonblocking - 0 to disable nonblocking.
+<  * @returns 0 on success.
+---
+>  * @param nonblock enable or not the nonblocking reads - true to enable
+>  *                 nonblocking - false to disable nonblocking.
+782,783d756
+<  * @param length the length in bytes of the data to send, including the report
+<  *               number.
+791c764,765
+<   return SDL_hid_send_feature_report(dev, data.data(), data.size_bytes());
+---
+>   return SDL_hid_send_feature_report(
+>     dev, data.data_as<Uint8>(), data.size_bytes());
+812,813d785
+<  * @param length the number of bytes to read, including an extra byte for the
+<  *               report ID. The buffer can be longer than the actual report.
+822c794,795
+<   return SDL_hid_get_feature_report(dev, data.data(), data.size_bytes());
+---
+>   return SDL_hid_get_feature_report(
+>     dev, data.data_as<Uint8>(), data.size_bytes());
+843,844d815
+<  * @param length the number of bytes to read, including an extra byte for the
+<  *               report ID. The buffer can be longer than the actual report.
+853c824,825
+<   return SDL_hid_get_input_report(dev, data.data(), data.size_bytes());
+---
+>   return SDL_hid_get_input_report(
+>     dev, data.data_as<Uint8>(), data.size_bytes());
+865d836
+<  * @returns 0 on success.
+870c841
+< inline int hid_close(HidDeviceRaw dev)
+---
+> inline void hid_close(HidDeviceRaw dev)
+872c843
+<   return CheckError(SDL_hid_close(dev));
+---
+>   CheckErrorIfNot(SDL_hid_close(dev), 0);
+883d853
+<  * @returns 0 on success.
+906d875
+<  * @returns 0 on success.
+929d897
+<  * @returns 0 on success.
+953d920
+<  * @returns 0 on success.
+978,980c945,948
+<  * @returns a pointer to the hid_device_info for this hid_device or nullptr
+<  *          on failure; call GetError() for more information. This struct
+<  *          is valid until the device is closed with HidDevice.close().
+---
+>  * @returns a pointer to the hid_device_info for this hid_device on success.
+>  *          This struct is valid until the device is closed with
+>  *          HidDevice.close().
+>  * @throws Error on failure.
+1002d969
+<  * @param buf_size the size of the buffer in bytes.
+1010c977,978
+<   return SDL_hid_get_report_descriptor(dev, buf.data(), buf.size_bytes());
+---
+>   return SDL_hid_get_report_descriptor(
+>     dev, buf.data_as<Uint8>(), buf.size_bytes());

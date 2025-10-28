@@ -1,0 +1,147 @@
+12c12
+<  * @defgroup CategoryHaptic Category Haptic
+---
+>  * @defgroup CategoryHaptic Force Feedback Support
+142a143,151
+> /**
+>  * @name Haptic effects
+>  * @{
+>  */
+> 
+> /**
+>  * Haptic effects flag constants
+>  *
+>  */
+150c159
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+161c170
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+172c181
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+183c192
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+194c203
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+205c214
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+216c225
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+228c237
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+240c249
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+252c261
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+264c273
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+275c284
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+284c293
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+291c300
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+298c307
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+307c316
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+316c325
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+327c336
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+338c347
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+349c358
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+355a365,372
+> /// @}
+> 
+> /**
+>  * @name Direction encodings
+>  * @{
+>  */
+> 
+> /// Direction encoding
+361c378
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+370c387
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+379c396
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+391c408
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+396a414,415
+> /// @}
+> 
+400c419
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This constant is available since SDL 3.2.0.
+1262,1263d1280
+<  * @param count a pointer filled in with the number of haptic devices
+<  *              returned, may be nullptr.
+1265,1266c1282
+<  *          failure; call GetError() for more information. This should be
+<  *          freed with free() when it is no longer needed.
+---
+>  *          failure; call GetError() for more information.
+1272c1288,1293
+< inline OwnArray<HapticID> GetHaptics() { return SDL_GetHaptics(); }
+---
+> inline OwnArray<HapticID> GetHaptics()
+> {
+>   int count;
+>   auto data = SDL_GetHaptics(&count);
+>   return OwnArray<HapticID>{data};
+> }
+1330c1351
+<   return CheckError(SDL_GetHapticFromID(instance_id));
+---
+>   return {CheckError(SDL_GetHapticFromID(instance_id))};

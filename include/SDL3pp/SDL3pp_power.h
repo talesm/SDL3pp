@@ -5,6 +5,7 @@
 #include "SDL3pp_stdinc.h"
 
 namespace SDL {
+
 /**
  * @defgroup CategoryPower Power Management Status
  *
@@ -83,8 +84,8 @@ constexpr PowerState POWERSTATE_CHARGED =
  *                left, between 0 and 100, or nullptr to ignore. This will be
  *                filled in with -1 we can't determine a value or there is no
  *                battery.
- * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
- *          GetError() for more information.
+ * @returns the current battery state or `POWERSTATE_ERROR` on failure;
+ *          call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  */

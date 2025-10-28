@@ -2,7 +2,9 @@
 #define SDL3PP_HINTS_H_
 
 #include <SDL3/SDL_hints.h>
-#include "SDL3pp_stdinc.h"
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_strings.h"
 
 namespace SDL {
 
@@ -101,10 +103,11 @@ namespace SDL {
  * A variable to control whether we trap the Android back button to handle it
  * manually.
  *
- * This is necessary for the right mouse button to work on some Android devices,
- * or to be able to trap the back button for use in your code reliably. If this
- * hint is true, the back button will show up as an EVENT_KEY_DOWN /
- * EVENT_KEY_UP pair with a keycode of SCANCODE_AC_BACK.
+ * This is necessary for the right mouse button to work on some Android
+ * devices, or to be able to trap the back button for use in your code
+ * reliably. If this hint is true, the back button will show up as an
+ * EVENT_KEY_DOWN / EVENT_KEY_UP pair with a keycode of
+ * SCANCODE_AC_BACK.
  *
  * The variable can be set to the following values:
  *
@@ -290,7 +293,7 @@ namespace SDL {
  * show up in a system control panel that lets the user adjust the volume on
  * specific audio streams instead of using one giant master volume slider.
  * Note that this is unrelated to the icon used by the windowing system, which
- * may be set with WindowRef.SetIcon (or via desktop file on Wayland).
+ * may be set with Window.SetIcon (or via desktop file on Wayland).
  *
  * Setting this to "" or leaving it unset will have SDL use a reasonable
  * default, "applications-games", which is likely to be installed. See
@@ -511,8 +514,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": You'll call SDL_UpdateJoysticks() manually.
- * - "1": SDL will automatically call SDL_UpdateJoysticks(). (default)
+ * - "0": You'll call UpdateJoysticks() manually.
+ * - "1": SDL will automatically call UpdateJoysticks(). (default)
  *
  * This hint can be set anytime.
  *
@@ -526,8 +529,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": You'll call SDL_UpdateSensors() manually.
- * - "1": SDL will automatically call SDL_UpdateSensors(). (default)
+ * - "0": You'll call UpdateSensors() manually.
+ * - "1": SDL will automatically call UpdateSensors(). (default)
  *
  * This hint can be set anytime.
  *
@@ -568,7 +571,7 @@ namespace SDL {
  *
  * The default value is unset, in which case SDL will try to figure out the
  * best camera backend on your behalf. This hint needs to be set before
- * InitSubSystem() is called to be useful.
+ * Init() is called to be useful.
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -578,7 +581,7 @@ namespace SDL {
  * A variable that limits what CPU features are available.
  *
  * By default, SDL marks all features the current CPU supports as available.
- * This hint allows to limit these to a subset.
+ * This hint allows the enabled features to be limited to a subset.
  *
  * When the hint is unset, or empty, SDL will enable all detected CPU
  * features.
@@ -734,7 +737,7 @@ namespace SDL {
  * - "0": Do not show the on-screen keyboard.
  * - "1": Show the on-screen keyboard, if available.
  *
- * This hint must be set before WindowRef.StartTextInput() is called
+ * This hint must be set before Window.StartTextInput() is called
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -816,7 +819,7 @@ namespace SDL {
  * - "X": Enable 3D acceleration, using X where X is one of the valid
  *   rendering drivers. (e.g. "direct3d", "opengl", etc.)
  *
- * This hint should be set before calling WindowRef.GetSurface()
+ * This hint should be set before calling Window.GetSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -829,7 +832,7 @@ namespace SDL {
  * data, see SDL_gamepad.h
  *
  * You can update mappings after SDL is initialized with
- * SDL_GetGamepadMappingForGUID() and SDL_AddGamepadMapping()
+ * GetGamepadMappingForGUID() and AddGamepadMapping()
  *
  * This hint should be set before SDL is initialized.
  *
@@ -845,7 +848,7 @@ namespace SDL {
  * SDL_gamepad.h
  *
  * You can update mappings after SDL is initialized with
- * SDL_GetGamepadMappingForGUID() and SDL_AddGamepadMapping()
+ * GetGamepadMappingForGUID() and AddGamepadMapping()
  *
  * This hint should be set before SDL is initialized.
  *
@@ -944,7 +947,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowRef.StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -956,7 +959,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowRef.StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -971,7 +974,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowRef.StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -987,7 +990,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowRef.StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -998,7 +1001,7 @@ namespace SDL {
  *
  * This hint is available only if SDL_GDK_TEXTINPUT defined.
  *
- * This hint should be set before calling WindowRef.StartTextInput()
+ * This hint should be set before calling Window.StartTextInput()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -1069,13 +1072,13 @@ namespace SDL {
 #define SDL_HINT_GPU_DRIVER "SDL_GPU_DRIVER"
 
 /**
- * A variable to control whether SDL_hid_enumerate() enumerates all HID
+ * A variable to control whether hid_enumerate() enumerates all HID
  * devices or only controllers.
  *
  * The variable can be set to the following values:
  *
- * - "0": SDL_hid_enumerate() will enumerate all HID devices.
- * - "1": SDL_hid_enumerate() will only enumerate controllers. (default)
+ * - "0": hid_enumerate() will enumerate all HID devices.
+ * - "1": hid_enumerate() will only enumerate controllers. (default)
  *
  * By default SDL will only enumerate controllers, to reduce risk of hanging
  * or crashing on devices with bad drivers and avoiding macOS keyboard capture
@@ -1089,7 +1092,7 @@ namespace SDL {
   "SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS"
 
 /**
- * A variable containing a list of devices to ignore in SDL_hid_enumerate().
+ * A variable containing a list of devices to ignore in hid_enumerate().
  *
  * The format of the string is a comma separated list of USB VID/PID pairs in
  * hexadecimal form, e.g.
@@ -2134,8 +2137,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": WGI is not used.
- * - "1": WGI is used. (default)
+ * - "0": WGI is not used. (default)
+ * - "1": WGI is used.
  *
  * This hint should be set before SDL is initialized.
  *
@@ -2339,7 +2342,7 @@ namespace SDL {
  *   (default)
  * - "1": The application may remain in the background when launched.
  *
- * This hint needs to be set before InitSubSystem().
+ * This hint needs to be set before Init().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -2419,7 +2422,7 @@ namespace SDL {
  * - "0": The mouse wheel events will have no momentum. (default)
  * - "1": The mouse wheel events will have momentum.
  *
- * This hint needs to be set before InitSubSystem().
+ * This hint needs to be set before Init().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -2494,7 +2497,7 @@ namespace SDL {
  * This should be an integer corresponding to the SystemCursor enum. The
  * default value is zero (SYSTEM_CURSOR_DEFAULT).
  *
- * This hint needs to be set before InitSubSystem().
+ * This hint needs to be set before Init().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3164,7 +3167,7 @@ namespace SDL {
  * - "1": Force THREAD_PRIORITY_TIME_CRITICAL to a realtime scheduling
  *   policy
  *
- * This hint should be set before calling ThreadRef.SetCurrentPriority()
+ * This hint should be set before calling Thread.SetCurrentPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3173,9 +3176,9 @@ namespace SDL {
 
 /**
  * A string specifying additional information to use with
- * ThreadRef.SetCurrentPriority.
+ * Thread.SetCurrentPriority.
  *
- * By default ThreadRef.SetCurrentPriority will make appropriate system
+ * By default Thread.SetCurrentPriority will make appropriate system
  * changes in order to apply a thread priority. For example on systems using
  * pthreads the scheduler policy is changed automatically to a policy that
  * works well with a given priority. Code which has specific requirements can
@@ -3186,9 +3189,9 @@ namespace SDL {
  *
  * On Linux, the kernel may send SIGKILL to realtime tasks which exceed the
  * distro configured execution budget for rtkit. This budget can be queried
- * through RLIMIT_RTTIME after calling ThreadRef.SetCurrentPriority().
+ * through RLIMIT_RTTIME after calling Thread.SetCurrentPriority().
  *
- * This hint should be set before calling ThreadRef.SetCurrentPriority()
+ * This hint should be set before calling Thread.SetCurrentPriority()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3285,7 +3288,7 @@ namespace SDL {
  *
  * When this hint is set, displays with matching name strings will be
  * prioritized in the list of displays, as exposed by calling
- * Display.GetAll(), with the first listed becoming the primary display. The
+ * GetDisplays(), with the first listed becoming the primary display. The
  * naming convention can vary depending on the environment, but it is usually
  * a connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1',etc...).
  *
@@ -3418,7 +3421,7 @@ namespace SDL {
  * - "1": The menu will be accessible when the window is in a fullscreen
  *   space.
  * - "auto": The menu will be hidden if fullscreen mode was toggled on
- *   programmatically via `WindowRef.SetFullscreen()`, and accessible if
+ *   programmatically via `Window.SetFullscreen()`, and accessible if
  *   fullscreen was entered via the "fullscreen" button on the window title
  *   bar. (default)
  *
@@ -3471,7 +3474,7 @@ namespace SDL {
  * return of the requesting function. Setting this hint will cause such
  * operations to block after every call until the pending operation has
  * completed. Setting this to '1' is the equivalent of calling
- * WindowRef.Sync() after every function call.
+ * Window.Sync() after every function call.
  *
  * Be aware that amount of time spent blocking while waiting for window
  * operations to complete can be quite lengthy, as animations may have to
@@ -3845,11 +3848,11 @@ namespace SDL {
 #define SDL_HINT_VITA_TOUCH_MOUSE_DEVICE "SDL_VITA_TOUCH_MOUSE_DEVICE"
 
 /**
- * A variable overriding the display index used in SDL_Vulkan_CreateSurface()
+ * A variable overriding the display index used in Vulkan_CreateSurface()
  *
  * The display index starts at 0, which is the default.
  *
- * This hint should be set before calling SDL_Vulkan_CreateSurface()
+ * This hint should be set before calling Vulkan_CreateSurface()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3859,7 +3862,7 @@ namespace SDL {
  * Specify the Vulkan library to load.
  *
  * This hint should be set before creating a Vulkan window or calling
- * SDL_Vulkan_LoadLibrary().
+ * Vulkan_LoadLibrary().
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3891,7 +3894,7 @@ namespace SDL {
  *   samples is zero.
  * - "ignore" - Ignore fact chunk entirely. (default)
  *
- * This hint should be set before calling LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3903,7 +3906,7 @@ namespace SDL {
  * This sets an upper bound on the number of chunks in a WAVE file to avoid
  * wasting time on malformed or corrupt WAVE files. This defaults to "10000".
  *
- * This hint should be set before calling LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3931,7 +3934,7 @@ namespace SDL {
  * - "ignore" - Ignore the RIFF chunk size and always search up to 4 GiB.
  * - "maximum" - Search for chunks until the end of file. (not recommended)
  *
- * This hint should be set before calling LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3951,7 +3954,7 @@ namespace SDL {
  * - "dropframe" - Decode until the first incomplete sample frame.
  * - "dropblock" - Decode until the first incomplete block. (default)
  *
- * This hint should be set before calling LoadWAV()
+ * This hint should be set before calling LoadWAV() or LoadWAV()
  *
  * @since This hint is available since SDL 3.2.0.
  */
@@ -3959,13 +3962,13 @@ namespace SDL {
 
 /**
  * A variable controlling whether the window is activated when the
- * WindowRef.Raise function is called.
+ * Window.Raise function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the WindowRef.Raise function is
+ * - "0": The window is not activated when the Window.Raise function is
  *   called.
- * - "1": The window is activated when the WindowRef.Raise function is called.
+ * - "1": The window is activated when the Window.Raise function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -3976,13 +3979,13 @@ namespace SDL {
 
 /**
  * A variable controlling whether the window is activated when the
- * WindowRef.Show function is called.
+ * Window.Show function is called.
  *
  * The variable can be set to the following values:
  *
- * - "0": The window is not activated when the WindowRef.Show function is
+ * - "0": The window is not activated when the Window.Show function is
  *   called.
- * - "1": The window is activated when the WindowRef.Show function is called.
+ * - "1": The window is activated when the Window.Show function is called.
  *   (default)
  *
  * This hint can be set anytime.
@@ -4230,12 +4233,13 @@ namespace SDL {
 /**
  * A variable specifying the type of an X11 window.
  *
- * During Window.Create, SDL uses the _NET_WM_WINDOW_TYPE X11 property to report
- * to the window manager the type of window it wants to create. This might be
- * set to various things if WINDOW_TOOLTIP or WINDOW_POPUP_MENU, etc, were
- * specified. For "normal" windows that haven't set a specific type, this hint
- * can be used to specify a custom type. For example, a dock window might set
- * this to "_NET_WM_WINDOW_TYPE_DOCK".
+ * During Window.Window, SDL uses the _NET_WM_WINDOW_TYPE X11 property to
+ * report to the window manager the type of window it wants to create. This
+ * might be set to various things if WINDOW_TOOLTIP or
+ * WINDOW_POPUP_MENU, etc, were specified. For "normal" windows that
+ * haven't set a specific type, this hint can be used to specify a custom
+ * type. For example, a dock window might set this to
+ * "_NET_WM_WINDOW_TYPE_DOCK".
  *
  * This hint should be set before creating a window.
  *
@@ -4506,9 +4510,7 @@ using HintCallback = SDL_HintCallback;
  */
 using HintCB = std::function<void(const char*, const char*, const char*)>;
 
-/**
- * Handle returned by AddHintCallback()
- */
+/// Handle returned by AddHintCallback()
 struct HintCallbackHandle : CallbackHandle
 {
   using CallbackHandle::CallbackHandle;
