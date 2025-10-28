@@ -7,10 +7,17 @@ project(SDL3pp
 
 include(GNUInstallDirs)
 
-find_package(SDL3 QUIET)
-if (NOT TARGET SDL3::SDL3)
+option(SDL3PP_FORCE_BUNDLED "Disable compilation of SDL_Image" OFF)
+
+if (SDL3PP_FORCE_BUNDLED)
     set(SDL_INSTALL ON) # passed to external/SDL
     add_subdirectory(external/SDL)
+else ()
+    find_package(SDL3 QUIET)
+    if (NOT TARGET SDL3::SDL3)
+        set(SDL_INSTALL ON) # passed to external/SDL
+        add_subdirectory(external/SDL)
+    endif ()
 endif ()
 
 set(CMAKE_CXX_STANDARD 23)
@@ -34,11 +41,16 @@ option(SDL3PP_DISABLE_IMAGE "Disable compilation of SDL_Image" OFF)
 if(SDL3PP_DISABLE_IMAGE)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_IMAGE")
 else(SDL3PP_DISABLE_IMAGE)
-    find_package(SDL3_image QUIET)
-    set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
-    if (NOT TARGET SDL3_image::SDL3_image)
+    if (SDL3PP_FORCE_BUNDLED)
         set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
         add_subdirectory(external/SDL_image)
+    else ()
+        find_package(SDL3_image QUIET)
+        set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
+        if (NOT TARGET SDL3_image::SDL3_image)
+            set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
+            add_subdirectory(external/SDL_image)
+        endif ()
     endif ()
     set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
 endif(SDL3PP_DISABLE_IMAGE)
@@ -48,11 +60,16 @@ option(SDL3PP_DISABLE_TTF "Disable compilation of SDL_TTF" OFF)
 if(SDL3PP_DISABLE_TTF)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_TTF")
 else(SDL3PP_DISABLE_TTF)
-    find_package(SDL3_ttf QUIET)
-    set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
-    if (NOT TARGET SDL3_ttf::SDL3_ttf)
+    if (SDL3PP_FORCE_BUNDLED)
         set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
         add_subdirectory(external/SDL_ttf)
+    else ()
+        find_package(SDL3_ttf QUIET)
+        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
+        if (NOT TARGET SDL3_ttf::SDL3_ttf)
+            set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
+            add_subdirectory(external/SDL_ttf)
+        endif ()
     endif ()
     set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
 endif(SDL3PP_DISABLE_TTF)
