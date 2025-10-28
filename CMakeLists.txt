@@ -140,11 +140,12 @@ endif ()
 option(BUILD_TESTING "Build the tests" ON)
 if (BUILD_TESTING)
     add_library(test_main OBJECT test/doctest.cpp)
+    target_include_directories(test_main INTERFACE test/)
     enable_testing()
 
     file(GLOB unitTestSources CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
     add_executable(SDL3pp_unitTests ${unitTestSources})
-    target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
+    target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
     add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 endif ()
 
@@ -292,7 +293,7 @@ add_custom_target(SDL3pp_refresh
 # Apply patches
 add_custom_target(SDL3pp_check_all
     COMMAND echo "Everything ran!"
-    DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp_lib
+    DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
