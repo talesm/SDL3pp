@@ -89,6 +89,17 @@ file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/
 add_library(SDL3pp INTERFACE)
 add_library(SDL3pp::SDL3pp ALIAS SDL3pp)
 target_link_libraries(SDL3pp INTERFACE ${SDL3PP_DEPENDENCIES})
+target_sources(SDL3pp
+    PUBLIC
+        FILE_SET sdl3pp_headers
+        TYPE HEADERS
+        BASE_DIRS ${PROJECT_SOURCE_DIR}/include
+        FILES ${SDL3pp_lib_HEADERS}
+)
+target_include_directories(SDL3pp INTERFACE
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 # The amalgamation header
 set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation" CACHE FILEPATH "Amalgamation output directory")
@@ -97,39 +108,23 @@ set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
 set(SDL3PP_AMALGAMATION_VULKAN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_vulkan.h")
 file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
 
-add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN} ${SDL3PP_AMALGAMATION_VULKAN})
-target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_DIR})
+add_library(SDL3pp_amalgamated INTERFACE)
+add_library(SDL3pp::SDL3pp_amalgamated ALIAS SDL3pp_amalgamated)
+target_sources(SDL3pp_amalgamated
+   PUBLIC
+       FILE_SET sdl3pp_headers
+       TYPE HEADERS
+       BASE_DIRS ${SDL3PP_AMALGAMATION_DIR}
+       FILES
+           ${SDL3PP_AMALGAMATION_FILENAME}
+           ${SDL3PP_AMALGAMATION_MAIN}
+)
+target_include_directories(SDL3pp_amalgamated INTERFACE
+    $<BUILD_INTERFACE:${SDL3PP_AMALGAMATION_DIR}>
+    $<INSTALL_INTERFACE:include>
+)
 target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 
-option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
-
-if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-    target_sources(SDL3pp
-       PUBLIC
-           FILE_SET sdl3pp_headers
-           TYPE HEADERS
-           BASE_DIRS ${SDL3PP_AMALGAMATION_DIR}
-           FILES
-               ${SDL3PP_AMALGAMATION_FILENAME}
-               ${SDL3PP_AMALGAMATION_MAIN}
-    )
-    target_include_directories(SDL3pp INTERFACE
-        $<BUILD_INTERFACE:${SDL3PP_AMALGAMATION_DIR}>
-        $<INSTALL_INTERFACE:include>
-    )
-else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-    target_sources(SDL3pp
-        PUBLIC
-           FILE_SET sdl3pp_headers
-           TYPE HEADERS
-           BASE_DIRS ${PROJECT_SOURCE_DIR}/include
-           FILES ${SDL3pp_lib_HEADERS}
-    )
-    target_include_directories(SDL3pp INTERFACE
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
-    )
-endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
     COMMAND node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
@@ -149,7 +144,13 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 
 # Examples
 option(BUILD_EXAMPLES "Build the examples" ON)
+option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
 if (BUILD_EXAMPLES)
+    if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
+        add_library(SDL3pp_ExampleBase ALIAS SDL3pp_amalgamated)
+    else ()
+        add_library(SDL3pp_ExampleBase ALIAS SDL3pp)
+    endif()
     add_subdirectory(examples)
 endif ()
 

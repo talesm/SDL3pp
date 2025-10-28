@@ -12,5 +12,5 @@ foreach(exampleSrc ${exampleSources})
     string(REPLACE "/" "_" exampleName ${exampleName})
 
     add_executable(example_${exampleName} WIN32 ${exampleSrc})
-    target_link_libraries(example_${exampleName} PRIVATE SDL3pp)
+    target_link_libraries(example_${exampleName} PRIVATE SDL3pp_ExampleBase)
 endforeach(exampleSrc ${exampleSources})
