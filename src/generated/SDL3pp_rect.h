@@ -856,10 +856,10 @@ struct FRect : FRectRaw
    * epsilon.
    *
    * Rectangles are considered equal if both are not nullptr and each of their
-   * x, y, width and height are within SDL_FLT_EPSILON of each other. This is
-   * often a reasonable way to compare two floating point rectangles and deal
-   * with the slight precision variations in floating point calculations that
-   * tend to pop up.
+   * x, y, width and height are within FLT_EPSILON of each other. This is often
+   * a reasonable way to compare two floating point rectangles and deal with the
+   * slight precision variations in floating point calculations that tend to pop
+   * up.
    *
    * Note that this is a forced-inline function in a header, and not a public
    * API function available in the SDL library (which is to say, the code is
@@ -1262,7 +1262,7 @@ constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
  * epsilon.
  *
  * Rectangles are considered equal if both are not nullptr and each of their x,
- * y, width and height are within SDL_FLT_EPSILON of each other. This is often
+ * y, width and height are within FLT_EPSILON of each other. This is often
  * a reasonable way to compare two floating point rectangles and deal with the
  * slight precision variations in floating point calculations that tend to pop
  * up.

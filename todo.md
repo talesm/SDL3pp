@@ -2,7 +2,7 @@ Todo for next version
 ====================
 
 - [x] Make install script (contrib from @brccabral)
-- [ ] Review macros that could be constexpr function or constant.
+- [x] Review macros that could be constexpr function or constant.
   - [x] SDL_AUDIO_MASK_BITSIZE
   - [x] SDL_AUDIO_MASK_FLOAT
   - [x] SDL_AUDIO_MASK_BIG_ENDIAN
@@ -11,17 +11,17 @@ Todo for next version
   - [x] SDL_RENDERER_VSYNC_DISABLED (int)
   - [x] SDL_RENDERER_VSYNC_ADAPTIVE (int)
   - [x] SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE (int)
-  - [ ] SDL_FLT_EPSILON (float)
-  - [ ] SDL_INIT_INTERFACE (template with concept...)
-  - [ ] SDL_copyp (template with static_assert())
-  - [ ] SDL_ICONV_ERROR (size_t)
-  - [ ] SDL_ICONV_E2BIG (size_t)
-  - [ ] SDL_ICONV_EILSEQ (size_t)
-  - [ ] SDL_ICONV_EINVAL (size_t)
-  - [ ] SDL_iconv_utf8_locale (template function)
-  - [ ] SDL_iconv_utf8_ucs2 (template function)
-  - [ ] SDL_iconv_utf8_ucs4 (template function)
-  - [ ] SDL_iconv_wchar_utf8 (template function)
+  - [x] SDL_FLT_EPSILON (float)
+  - [x] SDL_INIT_INTERFACE (template with concept...)
+  - [x] SDL_copyp (template with static_assert())
+  - [x] SDL_ICONV_ERROR (size_t)
+  - [x] SDL_ICONV_E2BIG (size_t)
+  - [x] SDL_ICONV_EILSEQ (size_t)
+  - [x] SDL_ICONV_EINVAL (size_t)
+  - [x] SDL_iconv_utf8_locale (template function)
+  - [x] SDL_iconv_utf8_ucs2 (template function)
+  - [x] SDL_iconv_utf8_ucs4 (template function)
+  - [x] SDL_iconv_wchar_utf8 (template function)
   - [x] TTF_FONT_WEIGHT_THIN
   - [x] TTF_FONT_WEIGHT_EXTRA_LIGHT
   - [x] TTF_FONT_WEIGHT_LIGHT

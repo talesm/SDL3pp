@@ -27,6 +27,7 @@ namespace SDL {
  */
 #if defined(SDL_PLATFORM_WINDOWS) || defined(SDL3PP_DOC)
 
+/// MSG
 using MSG = ::MSG;
 
 /**
@@ -160,6 +161,7 @@ inline void GetDXGIOutputInfo(Display displayID,
 
 #endif // defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
 
+/// this is defined in Xlib's headers, just need a simple declaration here
 using XEvent = ::XEvent;
 
 /**
@@ -1018,8 +1020,10 @@ inline void OnApplicationDidChangeStatusBarOrientation()
 
 #if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
 
+/// XTaskQueueHandle
 using XTaskQueueHandle = ::XTaskQueueHandle;
 
+/// XUserHandle
 using XUserHandle = ::XUserHandle;
 
 /**

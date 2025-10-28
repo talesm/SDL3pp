@@ -658,20 +658,20 @@
 ---
 >    * @param corner the top-left corner
 >    * @param size the size
-317c869,875
+317c869,872
 <   Rect(const PointRaw& corner, const PointRaw& size) {}
 ---
 >   constexpr Rect(const PointRaw& corner, const PointRaw& size)
 >     : Rect{corner.x, corner.y, size.x, size.y}
 >   {
 >   }
-> 
->   /// Compares with the underlying type
->   constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
-319,320c877,878
+319,320c874,878
 <   ///@sa Empty()
 <   constexpr explicit operator bool() const
 ---
+>   /// Compares with the underlying type
+>   constexpr bool operator==(const RectRaw& other) const { return Equal(other); }
+> 
 >   /// Compares with the underlying type
 >   constexpr bool operator==(const Rect& other) const
 322c880
@@ -1853,18 +1853,6 @@
 <   return SDL::RectsEqualEpsilon(this, other, epsilon);
 ---
 >   return SDL::RectsEqualEpsilon(*this, other, epsilon);
-1264,1268c2358,2362
-<  * Rectangles are considered equal if both are not nullptr and each of their x,
-<  * y, width and height are within SDL_FLT_EPSILON of each other. This is often
-<  * a reasonable way to compare two floating point rectangles and deal with the
-<  * slight precision variations in floating point calculations that tend to pop
-<  * up.
----
->  * Rectangles are considered equal if both are not nullptr and each of their
->  * x, y, width and height are within SDL_FLT_EPSILON of each other. This is
->  * often a reasonable way to compare two floating point rectangles and deal
->  * with the slight precision variations in floating point calculations that
->  * tend to pop up.
 1285c2379
 < constexpr bool RectsEqualFloat(const FRectRaw& self, const FRectRaw& other)
 ---

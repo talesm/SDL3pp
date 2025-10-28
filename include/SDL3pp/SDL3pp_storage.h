@@ -272,11 +272,11 @@ struct StorageParam
  * It is not usually necessary to do this; SDL provides standard
  * implementations for many things you might expect to do with an Storage.
  *
- * This structure should be initialized using SDL_INIT_INTERFACE()
+ * This structure should be initialized using InitInterface()
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_INIT_INTERFACE
+ * @sa InitInterface
  */
 using StorageInterface = SDL_StorageInterface;
 
@@ -412,7 +412,7 @@ public:
    * it around after this call.
    *
    * @param iface the interface that implements this storage, initialized using
-   *              SDL_INIT_INTERFACE().
+   *              InitInterface().
    * @param userdata the pointer that will be passed to the interface functions.
    * @post a storage container on success.
    * @throws Error on failure.
@@ -422,7 +422,7 @@ public:
    * @sa Storage.Close
    * @sa Storage.GetFileSize
    * @sa Storage.GetSpaceRemaining
-   * @sa SDL_INIT_INTERFACE
+   * @sa InitInterface
    * @sa Storage.ReadFile
    * @sa Storage.Ready
    * @sa Storage.WriteFile
@@ -896,7 +896,7 @@ inline Storage OpenFileStorage(StringParam path)
  * it around after this call.
  *
  * @param iface the interface that implements this storage, initialized using
- *              SDL_INIT_INTERFACE().
+ *              InitInterface().
  * @param userdata the pointer that will be passed to the interface functions.
  * @returns a storage container on success.
  * @throws Error on failure.
@@ -906,7 +906,7 @@ inline Storage OpenFileStorage(StringParam path)
  * @sa Storage.Close
  * @sa Storage.GetFileSize
  * @sa Storage.GetSpaceRemaining
- * @sa SDL_INIT_INTERFACE
+ * @sa InitInterface
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  * @sa Storage.WriteFile

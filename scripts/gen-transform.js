@@ -5314,12 +5314,10 @@ const transform = {
         "SDL_iconv_t": {
           name: "IConv",
           resource: {
-            // type: "SDL_iconv_data_t",
             free: "SDL_iconv_close",
-            ctors: ["SDL_iconv_open"],
           },
           entries: {
-            "SDL_iconv_open": { name: "open" },
+            "SDL_iconv_open": { name: "ctor" },
             "SDL_iconv": "function",
             "SDL_iconv_close": {
               name: "close",
@@ -5327,6 +5325,34 @@ const transform = {
               parameters: [],
             },
           }
+        },
+        "SDL_ICONV_ERROR": { kind: "var", constexpr: true, type: "size_t" },
+        "SDL_ICONV_E2BIG": { kind: "var", constexpr: true, type: "size_t" },
+        "SDL_ICONV_EILSEQ": { kind: "var", constexpr: true, type: "size_t" },
+        "SDL_ICONV_EINVAL": { kind: "var", constexpr: true, type: "size_t" },
+        "SDL_iconv_string": {
+          type: "OwnArray<char>",
+          parameters: [{}, {}, { type: "SourceBytes" }]
+        },
+        "SDL_iconv_utf8_locale": {
+          kind: "function",
+          type: "OwnArray<char>",
+          parameters: [{ type: "std::string_view" }],
+        },
+        "SDL_iconv_utf8_ucs2": {
+          kind: "function",
+          type: "OwnArray<Uint16>",
+          parameters: [{ type: "std::string_view" }],
+        },
+        "SDL_iconv_utf8_ucs4": {
+          kind: "function",
+          type: "OwnArray<Uint32>",
+          parameters: [{ type: "std::string_view" }],
+        },
+        "SDL_iconv_wchar_utf8": {
+          kind: "function",
+          type: "OwnArray<char>",
+          parameters: [{ type: "std::wstring_view" }],
         },
         "CompareCallback_rCB": { name: "CompareCB" },
         "Seconds": {
@@ -5490,6 +5516,19 @@ const transform = {
           "type": "Time",
           "constexpr": true
         },
+        "SDL_FLT_EPSILON": {
+          kind: "var",
+          type: "float",
+          constexpr: true,
+        },
+        "SDL_INIT_INTERFACE": {
+          kind: "function",
+          name: "InitInterface",
+          constexpr: true,
+          type: "void",
+          template: [{ type: "Interface", name: "I" }],
+          parameters: [{ type: "I*" }],
+        },
         "SDL_MAX_SINT8": {
           "kind": "var",
           "type": "Sint8",
@@ -5618,8 +5657,15 @@ const transform = {
         "SDL_GetEnvironment": {
           "type": "EnvironmentRaw"
         },
-        "SDL_iconv_string": {
-          "type": "OwnPtr<char>"
+        "SDL_copyp": {
+          kind: "function",
+          constexpr: true,
+          template: [
+            { type: "typename", name: "T" },
+            { type: "typename", name: "U" },
+          ],
+          type: "T*",
+          parameters: [{ type: "T *" }, { type: "const U *" }],
         },
         "SDL_zero": {
           "kind": "function",

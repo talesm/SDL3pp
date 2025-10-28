@@ -107,11 +107,11 @@ constexpr IOWhence IO_SEEK_END =
  * already offers several common types of I/O streams, via functions like
  * IOStream.FromFile() and IOStream.FromMem().
  *
- * This structure should be initialized using SDL_INIT_INTERFACE()
+ * This structure should be initialized using InitInterface()
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_INIT_INTERFACE
+ * @sa InitInterface
  */
 using IOStreamInterface = SDL_IOStreamInterface;
 
@@ -369,7 +369,7 @@ public:
    * it around after this call.
    *
    * @param iface the interface that implements this IOStream, initialized
-   *              using SDL_INIT_INTERFACE().
+   *              using InitInterface().
    * @param userdata the pointer that will be passed to the interface functions.
    * @returns a pointer to the allocated memory on success.
    * @throws Error on failure.
@@ -379,7 +379,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IOStream.Close
-   * @sa SDL_INIT_INTERFACE
+   * @sa InitInterface
    * @sa IOStream.FromConstMem
    * @sa IOStream.FromFile
    * @sa IOStream.FromMem
@@ -1595,7 +1595,7 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
  * it around after this call.
  *
  * @param iface the interface that implements this IOStream, initialized
- *              using SDL_INIT_INTERFACE().
+ *              using InitInterface().
  * @param userdata the pointer that will be passed to the interface functions.
  * @returns a pointer to the allocated memory on success.
  * @throws Error on failure.
@@ -1605,7 +1605,7 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IOStream.Close
- * @sa SDL_INIT_INTERFACE
+ * @sa InitInterface
  * @sa IOStream.FromConstMem
  * @sa IOStream.FromFile
  * @sa IOStream.FromMem

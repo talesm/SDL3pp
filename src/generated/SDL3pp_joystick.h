@@ -1428,13 +1428,13 @@ using VirtualJoystickSensorDesc = SDL_VirtualJoystickSensorDesc;
 /**
  * The structure that describes a virtual joystick.
  *
- * This structure should be initialized using SDL_INIT_INTERFACE(). All
+ * This structure should be initialized using InitInterface(). All
  * elements of this structure are optional.
  *
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa AttachVirtualJoystick
- * @sa SDL_INIT_INTERFACE
+ * @sa InitInterface
  * @sa VirtualJoystickSensorDesc
  * @sa VirtualJoystickTouchpadDesc
  */
@@ -1443,7 +1443,7 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
 /**
  * Attach a new virtual joystick.
  *
- * @param desc joystick description, initialized using SDL_INIT_INTERFACE().
+ * @param desc joystick description, initialized using InitInterface().
  * @returns the joystick instance ID, or 0 on failure; call GetError() for
  *          more information.
  *

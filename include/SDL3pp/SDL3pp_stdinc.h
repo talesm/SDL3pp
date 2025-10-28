@@ -522,17 +522,23 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 /// Min allowed time representation
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
-#ifdef SDL3PP_DOC
-
 /**
  * Epsilon constant, used for comparing floating-point numbers.
  *
  * Equals by default to platform-defined `FLT_EPSILON`, or
  * `1.1920928955078125e-07F` if that's not available.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_FLT_EPSILON 1.1920928955078125e-07F /* 0x0.000002p0 */
+constexpr float FLT_EPSILON = SDL_FLT_EPSILON;
+
+/**
+ * Concept of interface
+ *
+ * @tparam I the interface type
+ */
+template<class I>
+concept Interface = requires(I* iface) { (iface)->version = sizeof(I); };
 
 /**
  * A macro to initialize an SDL interface.
@@ -545,7 +551,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * ```cpp
  * IOStreamInterface iface;
  *
- * SDL_INIT_INTERFACE(&iface);
+ * InitInterface(&iface);
  *
  * // Fill in the interface function pointers with your implementation
  * iface.seek = ...
@@ -564,21 +570,19 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * stream = IOStream.Open(&iface, nullptr);
  * ```
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa IOStreamInterface
  * @sa StorageInterface
  * @sa VirtualJoystickDesc
  */
-#define SDL_INIT_INTERFACE(iface)                                              \
-  do {                                                                         \
-    SDL_zerop(iface);                                                          \
-    (iface)->version = sizeof(*(iface));                                       \
-  } while (0)
-
-#endif // SDL3PP_DOC
+template<Interface I>
+constexpr void InitInterface(I* iface)
+{
+  SDL_INIT_INTERFACE(iface);
+}
 
 /**
  * Allocate uninitialized memory.
@@ -2315,8 +2319,6 @@ inline void* memcpy(void* dst, const void* src, size_t len)
 #endif // SDL_SLOW_MEMCPY
 }
 
-#ifdef SDL3PP_DOC
-
 /**
  * A macro to copy memory between objects, with basic type checking.
  *
@@ -2341,13 +2343,12 @@ inline void* memcpy(void* dst, const void* src, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  */
-#define SDL_copyp(dst, src)                                                    \
-  {                                                                            \
-    SDL_COMPILE_TIME_ASSERT(SDL_copyp, sizeof(*(dst)) == sizeof(*(src)));      \
-  }                                                                            \
-  SDL_memcpy((dst), (src), sizeof(*(src)))
-
-#endif // SDL3PP_DOC
+template<typename T, typename U>
+constexpr T* copyp(T* dst, const U* src)
+{
+  SDL_copyp(dst, src);
+  return dst;
+}
 
 /**
  * Copy memory ranges that might overlap.
@@ -5744,8 +5745,7 @@ inline float tan(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa IConv.open
- * @sa IConv
+ * @sa IConv.IConv
  */
 class IConv
 {
@@ -5843,7 +5843,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
-   * @sa IConv.open
+   * @sa IConv.IConv
    * @sa iconv_string
    */
   int close();
@@ -5853,9 +5853,9 @@ public:
    * a buffer.
    *
    * It returns the number of successful conversions on success. On error,
-   * SDL_ICONV_E2BIG is returned when the output buffer is too small, or
-   * SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,
-   * or SDL_ICONV_EINVAL is returned when an incomplete input sequence is
+   * ICONV_E2BIG is returned when the output buffer is too small, or
+   * ICONV_EILSEQ is returned when an invalid input sequence is encountered,
+   * or ICONV_EINVAL is returned when an incomplete input sequence is
    * encountered.
    *
    * On exit:
@@ -5879,7 +5879,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa IConv.open
+   * @sa IConv.IConv
    * @sa IConv.close
    * @sa iconv_string
    */
@@ -5921,7 +5921,7 @@ struct IConvRef : IConv
  * @param tocode The target character encoding, must not be nullptr.
  * @param fromcode The source character encoding, must not be nullptr.
  * @returns a handle that must be freed with IConv.close, or
- *          SDL_ICONV_ERROR on failure.
+ *          ICONV_ERROR on failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -5931,7 +5931,7 @@ struct IConvRef : IConv
  */
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
-  return IConv(SDL_iconv_open(tocode, fromcode));
+  return IConv(std::move(tocode), std::move(fromcode));
 }
 
 /**
@@ -5944,7 +5944,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.iconv
- * @sa IConv.open
+ * @sa IConv.IConv
  * @sa iconv_string
  */
 inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
@@ -5956,9 +5956,9 @@ inline int IConv::close() { return iconv_close(release()); }
  * a buffer.
  *
  * It returns the number of successful conversions on success. On error,
- * SDL_ICONV_E2BIG is returned when the output buffer is too small, or
- * SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,
- * or SDL_ICONV_EINVAL is returned when an incomplete input sequence is
+ * ICONV_E2BIG is returned when the output buffer is too small, or
+ * ICONV_EILSEQ is returned when an invalid input sequence is encountered,
+ * or ICONV_EINVAL is returned when an incomplete input sequence is
  * encountered.
  *
  * On exit:
@@ -5973,7 +5973,7 @@ inline int IConv::close() { return iconv_close(release()); }
  *   buffer.
  *
  * @param cd The character set conversion context, created in
- *           IConv.open().
+ *           IConv.IConv().
  * @param inbuf Address of variable that points to the first character of the
  *              input sequence.
  * @param inbytesleft The number of bytes in the input buffer.
@@ -5984,7 +5984,7 @@ inline int IConv::close() { return iconv_close(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.open
+ * @sa IConv.IConv
  * @sa IConv.close
  * @sa iconv_string
  */
@@ -6005,21 +6005,17 @@ inline size_t IConv::iconv(const char** inbuf,
   return SDL::iconv(m_resource, inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
-#ifdef SDL3PP_DOC
+constexpr size_t ICONV_ERROR =
+  SDL_ICONV_ERROR; ///< Generic error. Check GetError()?
 
-/// Generic error. Check GetError()?
-#define SDL_ICONV_ERROR (size_t)-1
+constexpr size_t ICONV_E2BIG =
+  SDL_ICONV_E2BIG; ///< Output buffer was too small.
 
-/// Output buffer was too small.
-#define SDL_ICONV_E2BIG (size_t)-2
+constexpr size_t ICONV_EILSEQ =
+  SDL_ICONV_EILSEQ; ///< Invalid input sequence was encountered.
 
-/// Invalid input sequence was encountered.
-#define SDL_ICONV_EILSEQ (size_t)-3
-
-/// Incomplete input sequence was encountered.
-#define SDL_ICONV_EINVAL (size_t)-4
-
-#endif // SDL3PP_DOC
+constexpr size_t ICONV_EINVAL =
+  SDL_ICONV_EINVAL; ///< Incomplete input sequence was encountered.
 
 /**
  * Helper function to convert a string's encoding in one call.
@@ -6034,24 +6030,21 @@ inline size_t IConv::iconv(const char** inbuf,
  *               "UTF-8", "UCS-4", etc.
  * @param fromcode the character encoding of data in `inbuf`.
  * @param inbuf the string to convert to a different encoding.
- * @param inbytesleft the size of the input string _in bytes_.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa IConv.open
+ * @sa IConv.IConv
  * @sa IConv.close
  * @sa IConv.iconv
  */
-inline OwnPtr<char> iconv_string(StringParam tocode,
-                                 StringParam fromcode,
-                                 StringParam inbuf,
-                                 size_t inbytesleft)
+inline OwnArray<char> iconv_string(StringParam tocode,
+                                   StringParam fromcode,
+                                   SourceBytes inbuf)
 {
-  return OwnPtr<char>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};
+  return OwnArray<char>{
+    SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes())};
 }
-
-#ifdef SDL3PP_DOC
 
 /**
  * Convert a UTF-8 string to the current locale's character encoding.
@@ -6065,8 +6058,10 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  *
  * @since This function is available since SDL 3.2.0.
  */
-#define SDL_iconv_utf8_locale(S)                                               \
-  SDL_iconv_string("", "UTF-8", S, SDL_strlen(S) + 1)
+inline OwnArray<char> iconv_utf8_locale(std::string_view S)
+{
+  return iconv_string("", "UTF-8", S);
+}
 
 /**
  * Convert a UTF-8 string to UCS-2.
@@ -6078,11 +6073,13 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_iconv_utf8_ucs2(S)                                                 \
-  SDL_reinterpret_cast(                                                        \
-    Uint16*, SDL_iconv_string("UCS-2", "UTF-8", S, SDL_strlen(S) + 1))
+inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
+{
+  auto data = SDL_iconv_string("UCS-2", "UTF-8", S.data(), S.size());
+  return OwnArray<Uint16>(reinterpret_cast<Uint16*>(data));
+}
 
 /**
  * Convert a UTF-8 string to UCS-4.
@@ -6096,9 +6093,11 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  *
  * @since This function is available since SDL 3.2.0.
  */
-#define SDL_iconv_utf8_ucs4(S)                                                 \
-  SDL_reinterpret_cast(                                                        \
-    Uint32*, SDL_iconv_string("UCS-4", "UTF-8", S, SDL_strlen(S) + 1))
+inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
+{
+  auto data = SDL_iconv_string("UCS-4", "UTF-8", S.data(), S.size());
+  return OwnArray<Uint32>(reinterpret_cast<Uint32*>(data));
+}
 
 /**
  * Convert a wchar_t string to UTF-8.
@@ -6110,15 +6109,12 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_iconv_wchar_utf8(S)                                                \
-  SDL_iconv_string("UTF-8",                                                    \
-                   "WCHAR_T",                                                  \
-                   SDL_reinterpret_cast(const char*, S),                       \
-                   (SDL_wcslen(S) + 1) * sizeof(wchar_t))
-
-#endif // SDL3PP_DOC
+inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
+{
+  return iconv_string("UTF-8", "WCHAR_T", S);
+}
 
 /**
  * Multiply two integers, checking for overflow.
