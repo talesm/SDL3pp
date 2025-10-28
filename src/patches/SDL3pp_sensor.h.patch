@@ -1,16 +1,16 @@
-12c12
+13c13
 <  * @defgroup CategorySensor Category Sensor
 ---
 >  * @defgroup CategorySensor Sensors
-349,350d348
+354,355d353
 <  * @param count a pointer filled in with the number of sensors returned, may
 <  *              be nullptr.
-352,353c350
+357,358c355
 <  *          call GetError() for more information. This should be freed
 <  *          with free() when it is no longer needed.
 ---
 >  *          call GetError() for more information.
-357c354,359
+362c359,364
 < inline OwnArray<SensorID> GetSensors() { return SDL_GetSensors(); }
 ---
 > inline OwnArray<SensorID> GetSensors()
@@ -19,11 +19,11 @@
 >   auto data = SDL_GetSensors(&count);
 >   return OwnArray<SensorID>(data, size_t(count));
 > }
-428c430
+433c435
 <   return SDL_GetSensorFromID(instance_id);
 ---
 >   return {SDL_GetSensorFromID(instance_id)};
-442c444
+447c449
 <   return CheckError(SDL_GetSensorProperties(sensor));
 ---
 >   return {CheckError(SDL_GetSensorProperties(sensor))};

@@ -5,6 +5,7 @@
 #include "SDL3pp_error.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -146,7 +147,11 @@ constexpr SensorType SENSOR_ACCEL_R =
 constexpr SensorType SENSOR_GYRO_R =
   SDL_SENSOR_GYRO_R; ///< Gyroscope for right Joy-Con controller.
 
+#if SDL_VERSION_ATLEAST(3, 2, 22)
+
 constexpr SensorType SENSOR_COUNT = SDL_SENSOR_COUNT; ///< SENSOR_COUNT
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 22)
 
 /**
  * The opaque structure used to identify an opened SDL sensor.
