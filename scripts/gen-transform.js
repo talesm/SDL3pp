@@ -8121,6 +8121,16 @@ const transform = {
             },
           }
         },
+        "TTF_FONT_WEIGHT_THIN": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_EXTRA_LIGHT": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_LIGHT": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_NORMAL": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_MEDIUM": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_SEMI_BOLD": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_BOLD": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_EXTRA_BOLD": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_BLACK": { kind: "var", type: "int", constexpr: true },
+        "TTF_FONT_WEIGHT_EXTRA_BLACK": { kind: "var", type: "int", constexpr: true },
         "TTF_OpenFontIO": {
           name: "OpenFont",
           parameters: [

@@ -2991,35 +2991,35 @@ inline int Font::GetWeight() const { return SDL::GetFontWeight(m_resource); }
 
 #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-/// Thin (100) named font weight value
-#define SDL_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
+constexpr int FONT_WEIGHT_THIN =
+  TTF_FONT_WEIGHT_THIN; ///< Thin (100) named font weight value
 
-/// ExtraLight (200) named font weight value
-#define SDL_FONT_WEIGHT_EXTRA_LIGHT TTF_FONT_WEIGHT_EXTRA_LIGHT
+constexpr int FONT_WEIGHT_EXTRA_LIGHT =
+  TTF_FONT_WEIGHT_EXTRA_LIGHT; ///< ExtraLight (200) named font weight value
 
-/// Light (300) named font weight value
-#define SDL_FONT_WEIGHT_LIGHT TTF_FONT_WEIGHT_LIGHT
+constexpr int FONT_WEIGHT_LIGHT =
+  TTF_FONT_WEIGHT_LIGHT; ///< Light (300) named font weight value
 
-/// Normal (400) named font weight value
-#define SDL_FONT_WEIGHT_NORMAL TTF_FONT_WEIGHT_NORMAL
+constexpr int FONT_WEIGHT_NORMAL =
+  TTF_FONT_WEIGHT_NORMAL; ///< Normal (400) named font weight value
 
-/// Medium (500) named font weight value
-#define SDL_FONT_WEIGHT_MEDIUM TTF_FONT_WEIGHT_MEDIUM
+constexpr int FONT_WEIGHT_MEDIUM =
+  TTF_FONT_WEIGHT_MEDIUM; ///< Medium (500) named font weight value
 
-/// SemiBold (600) named font weight value
-#define SDL_FONT_WEIGHT_SEMI_BOLD TTF_FONT_WEIGHT_SEMI_BOLD
+constexpr int FONT_WEIGHT_SEMI_BOLD =
+  TTF_FONT_WEIGHT_SEMI_BOLD; ///< SemiBold (600) named font weight value
 
-/// Bold (700) named font weight value
-#define SDL_FONT_WEIGHT_BOLD TTF_FONT_WEIGHT_BOLD
+constexpr int FONT_WEIGHT_BOLD =
+  TTF_FONT_WEIGHT_BOLD; ///< Bold (700) named font weight value
 
-/// ExtraBold (800) named font weight value
-#define SDL_FONT_WEIGHT_EXTRA_BOLD TTF_FONT_WEIGHT_EXTRA_BOLD
+constexpr int FONT_WEIGHT_EXTRA_BOLD =
+  TTF_FONT_WEIGHT_EXTRA_BOLD; ///< ExtraBold (800) named font weight value
 
-/// Black (900) named font weight value
-#define SDL_FONT_WEIGHT_BLACK TTF_FONT_WEIGHT_BLACK
+constexpr int FONT_WEIGHT_BLACK =
+  TTF_FONT_WEIGHT_BLACK; ///< Black (900) named font weight value
 
-/// ExtraBlack (950) named font weight value
-#define SDL_FONT_WEIGHT_EXTRA_BLACK TTF_FONT_WEIGHT_EXTRA_BLACK
+constexpr int FONT_WEIGHT_EXTRA_BLACK =
+  TTF_FONT_WEIGHT_EXTRA_BLACK; ///< ExtraBlack (950) named font weight value
 
 /**
  * Set a font's current wrap alignment option.

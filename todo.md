@@ -22,17 +22,16 @@ Todo for next version
   - [ ] SDL_iconv_utf8_ucs2 (template function)
   - [ ] SDL_iconv_utf8_ucs4 (template function)
   - [ ] SDL_iconv_wchar_utf8 (template function)
-  - [ ] FontWeight enum:
-    - [ ] TTF_FONT_WEIGHT_THIN
-    - [ ] TTF_FONT_WEIGHT_EXTRA_LIGHT
-    - [ ] TTF_FONT_WEIGHT_LIGHT
-    - [ ] TTF_FONT_WEIGHT_NORMAL
-    - [ ] TTF_FONT_WEIGHT_MEDIUM
-    - [ ] TTF_FONT_WEIGHT_SEMI_BOLD
-    - [ ] TTF_FONT_WEIGHT_BOLD
-    - [ ] TTF_FONT_WEIGHT_EXTRA_BOLD
-    - [ ] TTF_FONT_WEIGHT_BLACK
-    - [ ] TTF_FONT_WEIGHT_EXTRA_BLACK
+  - [x] TTF_FONT_WEIGHT_THIN
+  - [x] TTF_FONT_WEIGHT_EXTRA_LIGHT
+  - [x] TTF_FONT_WEIGHT_LIGHT
+  - [x] TTF_FONT_WEIGHT_NORMAL
+  - [x] TTF_FONT_WEIGHT_MEDIUM
+  - [x] TTF_FONT_WEIGHT_SEMI_BOLD
+  - [x] TTF_FONT_WEIGHT_BOLD
+  - [x] TTF_FONT_WEIGHT_EXTRA_BOLD
+  - [x] TTF_FONT_WEIGHT_BLACK
+  - [x] TTF_FONT_WEIGHT_EXTRA_BLACK
   - [x] SDL_WINDOWPOS_UNDEFINED_MASK (int)
   - [x] SDL_WINDOWPOS_UNDEFINED_DISPLAY (function)
   - [x] SDL_WINDOWPOS_UNDEFINED (int)
