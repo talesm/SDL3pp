@@ -1,6 +1,9 @@
-.vscode
+.vscode/
+.idea/
 build
 scripts/transform.json
 scripts/current.json
 scripts/source_xml.json
 scripts/transform-legacy.json
+/cmake-build-debug/
+/cmake-build-release/
