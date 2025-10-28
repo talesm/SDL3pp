@@ -77210,16 +77210,12 @@ struct TextureConstParam
   constexpr auto operator->() { return value; }
 };
 
-#ifdef SDL3PP_DOC
-
 /**
  * The name of the software renderer.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
-#define SDL_SOFTWARE_RENDERER "software"
-
-#endif // SDL3PP_DOC
+constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
 
 /**
  * Vertex structure.
@@ -79064,12 +79060,12 @@ public:
   /**
    * Toggle VSync of the given renderer.
    *
-   * When a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.
+   * When a renderer is created, vsync defaults to RENDERER_VSYNC_DISABLED.
    *
    * The `vsync` parameter can be 1 to synchronize present with every vertical
    * refresh, 2 to synchronize present with every second vertical refresh, etc.,
-   * SDL_RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
-   * SDL_RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
+   * RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
+   * RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
    * every driver, so you should check the return value to see whether the
    * requested setting is supported.
    *
@@ -79133,7 +79129,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderDebugTextFormat
-   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+   * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   void RenderDebugText(const FPointRaw& p, StringParam str);
 
@@ -79160,7 +79156,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderDebugText
-   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+   * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
   void RenderDebugTextFormat(const FPointRaw& p,
@@ -83908,12 +83904,12 @@ inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
 /**
  * Toggle VSync of the given renderer.
  *
- * When a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.
+ * When a renderer is created, vsync defaults to RENDERER_VSYNC_DISABLED.
  *
  * The `vsync` parameter can be 1 to synchronize present with every vertical
  * refresh, 2 to synchronize present with every second vertical refresh, etc.,
- * SDL_RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
- * SDL_RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
+ * RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
+ * RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
  * every driver, so you should check the return value to see whether the
  * requested setting is supported.
  *
@@ -83938,10 +83934,10 @@ inline void Renderer::SetVSync(int vsync)
 }
 
 /// Constant for disabling renderer vsync
-#define SDL_RENDERER_VSYNC_DISABLED 0
+constexpr int RENDERER_VSYNC_DISABLED = SDL_RENDERER_VSYNC_DISABLED;
 
 /// Constant for enabling asaptive renderer vsync
-#define SDL_RENDERER_VSYNC_ADAPTIVE (-1)
+constexpr int RENDERER_VSYNC_ADAPTIVE = SDL_RENDERER_VSYNC_ADAPTIVE;
 
 /**
  * Get VSync of the given renderer.
@@ -83974,11 +83970,12 @@ inline int Renderer::GetVSync() const
  *
  * The font is monospaced and square, so this applies to all characters.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderDebugText
  */
-#define SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE 8
+constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
+  SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
 
 /**
  * Draw debug text to an Renderer.
@@ -84015,7 +84012,7 @@ inline int Renderer::GetVSync() const
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderDebugTextFormat
- * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+ * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
 inline void RenderDebugText(RendererParam renderer,
                             const FPointRaw& p,
@@ -84051,7 +84048,7 @@ inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderDebugText
- * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+ * @sa DEBUG_TEXT_FONT_CHARACTER_SIZE
  */
 template<class... ARGS>
 inline void RenderDebugTextFormat(RendererParam renderer,

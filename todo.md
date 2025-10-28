@@ -6,10 +6,10 @@ Todo for next version
   - [x] SDL_AUDIO_MASK_FLOAT
   - [x] SDL_AUDIO_MASK_BIG_ENDIAN
   - [x] SDL_AUDIO_MASK_SIGNED
-  - [ ] SDL_SOFTWARE_RENDERER (const char*)
-  - [ ] SDL_RENDERER_VSYNC_DISABLED (int)
-  - [ ] SDL_RENDERER_VSYNC_ADAPTIVE (int)
-  - [ ] SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE (int)
+  - [x] SDL_SOFTWARE_RENDERER (const char*)
+  - [x] SDL_RENDERER_VSYNC_DISABLED (int)
+  - [x] SDL_RENDERER_VSYNC_ADAPTIVE (int)
+  - [x] SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE (int)
   - [ ] SDL_SIZE_MAX (size_t)
   - [ ] SDL_FLT_EPSILON (float)
   - [ ] SDL_INIT_INTERFACE (template with concept...)

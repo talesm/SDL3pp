@@ -4520,6 +4520,10 @@ const transform = {
         "SDL_PROP_TEXTURE_": "prop::Texture"
       },
       transform: {
+        "SDL_SOFTWARE_RENDERER": { kind: "var", constexpr: true, },
+        "SDL_RENDERER_VSYNC_DISABLED": { kind: "var", constexpr: true, type: "int" },
+        "SDL_RENDERER_VSYNC_ADAPTIVE": { kind: "var", constexpr: true, type: "int" },
+        "SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE": { kind: "var", constexpr: true, type: "int" },
         "SDL_Renderer": {
           resource: true,
           entries: {
