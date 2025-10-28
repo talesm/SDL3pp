@@ -6,36 +6,20 @@
 <  * Generally one should use AudioFormat.GetBitSize instead of this macro
 ---
 >  * Generally one should use AudioFormat.GetBitSize instead of this constant
-203c203
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This constant is available since SDL 3.2.0.
 210c210,211
 <  * Generally one should use AudioFormat.IsFloat instead of this macro directly.
 ---
 >  * Generally one should use AudioFormat.IsFloat instead of this constant
 >  * directly.
-212c213
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This constant is available since SDL 3.2.0.
 220c221
 <  * AudioFormat.IsLittleEndian instead of this macro directly.
 ---
 >  * AudioFormat.IsLittleEndian instead of this constant directly.
-222c223
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This constant is available since SDL 3.2.0.
 229c230,231
 <  * Generally one should use AudioFormat.IsSigned instead of this macro directly.
 ---
 >  * Generally one should use AudioFormat.IsSigned instead of this constant
 >  * directly.
-231c233
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This constant is available since SDL 3.2.0.
 286c288
 <    * @param signed 1 for signed data, 0 for unsigned data.
 ---
@@ -45,70 +29,6 @@
 ---
 >     : m_audioFormat(
 >         AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
-315c318
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread
-317c320
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-328c331
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-330c333
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-341c344
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-343c346
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-354c357
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-356c359
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-367c370
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-369c372
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-380c383
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-382c385
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-393c396
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-395c398
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
-406c409
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-408c411
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 439a443,449
 > // Unfortunate name clash with SDL_oldnames.h
 > #undef AUDIO_U8

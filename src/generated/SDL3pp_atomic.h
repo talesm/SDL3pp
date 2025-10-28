@@ -306,9 +306,9 @@ struct AtomicInt : AtomicIntRaw
    * @param a a pointer to an AtomicInt to increment.
    * @returns the previous value of the atomic variable.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    *
    * @sa AtomicInt.AtomicDecRef
    */
@@ -323,9 +323,9 @@ struct AtomicInt : AtomicIntRaw
    * @returns true if the variable reached zero after decrementing, false
    *          otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    *
    * @sa AtomicInt.AtomicIncRef
    */
@@ -438,9 +438,9 @@ inline int AtomicInt::Add(int v) { return SDL::AddAtomicInt(this, v); }
  * @param a a pointer to an AtomicInt to increment.
  * @returns the previous value of the atomic variable.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa AtomicInt.AtomicDecRef
  */
@@ -457,9 +457,9 @@ inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(this); }
  * @returns true if the variable reached zero after decrementing, false
  *          otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa AtomicInt.AtomicIncRef
  */

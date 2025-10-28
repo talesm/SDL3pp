@@ -199,9 +199,9 @@ inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  * @param x the value to swap, in littleendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint16 Swap16LE(Uint16 x) { return SDL_Swap16LE(x); }
 
@@ -215,9 +215,9 @@ constexpr Uint16 Swap16LE(Uint16 x) { return SDL_Swap16LE(x); }
  * @param x the value to swap, in littleendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint32 Swap32LE(Uint32 x) { return SDL_Swap32LE(x); }
 
@@ -231,9 +231,9 @@ constexpr Uint32 Swap32LE(Uint32 x) { return SDL_Swap32LE(x); }
  * @param x the value to swap, in littleendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint64 Swap64LE(Uint64 x) { return SDL_Swap64LE(x); }
 
@@ -247,9 +247,9 @@ constexpr Uint64 Swap64LE(Uint64 x) { return SDL_Swap64LE(x); }
  * @param x the value to swap, in littleendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
 
@@ -263,9 +263,9 @@ constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
  * @param x the value to swap, in bigendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
 
@@ -279,9 +279,9 @@ constexpr Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
  * @param x the value to swap, in bigendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
 
@@ -295,9 +295,9 @@ constexpr Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
  * @param x the value to swap, in bigendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
 
@@ -311,9 +311,9 @@ constexpr Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
  * @param x the value to swap, in bigendian byte order.
  * @returns `x` in native byte order.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
 

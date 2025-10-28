@@ -42,14 +42,14 @@ using PenID = SDL_PenID;
 /**
  * The MouseID for mouse events simulated with pen input.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr MouseID PEN_MOUSEID = SDL_PEN_MOUSEID;
 
 /**
  * The TouchID for touch events simulated with pen input.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr TouchID PEN_TOUCHID = SDL_PEN_TOUCHID;
 

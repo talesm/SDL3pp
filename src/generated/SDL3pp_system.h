@@ -515,7 +515,7 @@ inline void SendAndroidBackButton() { SDL_SendAndroidBackButton(); }
  * See the official Android developer guide for more information:
  * http://developer.android.com/guide/topics/data/data-storage.html
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr Uint32 ANDROID_EXTERNAL_STORAGE_READ =
   SDL_ANDROID_EXTERNAL_STORAGE_READ;
@@ -524,7 +524,7 @@ constexpr Uint32 ANDROID_EXTERNAL_STORAGE_READ =
  * See the official Android developer guide for more information:
  * http://developer.android.com/guide/topics/data/data-storage.html
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr Uint32 ANDROID_EXTERNAL_STORAGE_WRITE =
   SDL_ANDROID_EXTERNAL_STORAGE_WRITE;

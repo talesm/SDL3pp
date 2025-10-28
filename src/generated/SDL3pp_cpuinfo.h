@@ -31,7 +31,7 @@ namespace SDL {
  * processors have a 128 byte cache line. We use the larger value to be
  * generally safe.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr int CACHELINE_SIZE = SDL_CACHELINE_SIZE;
 

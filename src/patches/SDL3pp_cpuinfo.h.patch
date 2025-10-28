@@ -2,7 +2,3 @@
 <  * @defgroup CategoryCPUInfo Category CPUInfo
 ---
 >  * @defgroup CategoryCPUInfo CPU Feature Detection
-34c34
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This constant is available since SDL 3.2.0.

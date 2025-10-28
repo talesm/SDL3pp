@@ -291,9 +291,9 @@ public:
    * @param size number of bits per sample.
    * @post a format value in the style of AudioFormat.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size)
     : m_audioFormat(
@@ -315,7 +315,7 @@ public:
    *
    * @returns data size in bits.
    *
-   * @threadsafety It is safe to call this function from any thread
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -495,9 +495,9 @@ constexpr AudioFormat AUDIO_F32 = SDL_AUDIO_F32; ///< AUDIO_F32
  * @param size number of bits per sample.
  * @returns a format value in the style of AudioFormat.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr AudioFormat DefineAudioFormat(bool sign,
                                         bool bigendian,
@@ -515,9 +515,9 @@ constexpr AudioFormat DefineAudioFormat(bool sign,
  * @param x an AudioFormat value.
  * @returns data size in bits.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint16 AudioBitSize(AudioFormatRaw x) { return SDL_AUDIO_BITSIZE(x); }
 
@@ -534,9 +534,9 @@ constexpr Uint16 AudioFormat::GetBitSize() const
  * @param x an AudioFormat value.
  * @returns data size in bytes.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint16 AudioByteSize(AudioFormatRaw x)
 {
@@ -556,9 +556,9 @@ constexpr Uint16 AudioFormat::GetByteSize() const
  * @param x an AudioFormat value.
  * @returns non-zero if format is floating point, zero otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsAudioFloat(AudioFormatRaw x) { return SDL_AUDIO_ISFLOAT(x); }
 
@@ -575,9 +575,9 @@ constexpr bool AudioFormat::IsFloat() const
  * @param x an AudioFormat value.
  * @returns non-zero if format is bigendian, zero otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsAudioBigENDIAN(AudioFormatRaw x)
 {
@@ -597,9 +597,9 @@ constexpr bool AudioFormat::IsBigEndian() const
  * @param x an AudioFormat value.
  * @returns non-zero if format is littleendian, zero otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsAudioLittleEndian(AudioFormatRaw x)
 {
@@ -619,9 +619,9 @@ constexpr bool AudioFormat::IsLittleEndian() const
  * @param x an AudioFormat value.
  * @returns non-zero if format is signed, zero otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsAudioSigned(AudioFormatRaw x) { return SDL_AUDIO_ISSIGNED(x); }
 
@@ -638,9 +638,9 @@ constexpr bool AudioFormat::IsSigned() const
  * @param x an AudioFormat value.
  * @returns non-zero if format is integer, zero otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsAudioInt(AudioFormatRaw x) { return SDL_AUDIO_ISINT(x); }
 
@@ -657,9 +657,9 @@ constexpr bool AudioFormat::IsInt() const
  * @param x an AudioFormat value.
  * @returns non-zero if format is unsigned, zero otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsAudioUnsigned(AudioFormatRaw x)
 {
@@ -1541,7 +1541,7 @@ struct AudioDeviceRef : AudioDevice
  * to signify the app just wants the system to choose a default device instead
  * of the app providing a specific one.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_PLAYBACK =
   SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK;
@@ -1553,7 +1553,7 @@ constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_PLAYBACK =
  * to signify the app just wants the system to choose a default device instead
  * of the app providing a specific one.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_RECORDING =
   SDL_AUDIO_DEVICE_DEFAULT_RECORDING;
@@ -1567,9 +1567,9 @@ constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_RECORDING =
  * @param x an AudioSpec to query.
  * @returns the number of bytes used per sample frame.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr int AudioFrameSize(const AudioSpec& x)
 {

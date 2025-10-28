@@ -2,10 +2,6 @@
 <  * @defgroup CategorySensor Category Sensor
 ---
 >  * @defgroup CategorySensor Sensors
-342c342
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This constant is available since SDL 3.2.0.
 349,350d348
 <  * @param count a pointer filled in with the number of sensors returned, may
 <  *              be nullptr.

@@ -1084,7 +1084,7 @@ struct JoystickRef : Joystick
 /**
  * The largest value an Joystick's axis can report.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa JOYSTICK_AXIS_MIN
  */
@@ -1095,7 +1095,7 @@ constexpr int JOYSTICK_AXIS_MAX = SDL_JOYSTICK_AXIS_MAX;
  *
  * This is a negative number!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa JOYSTICK_AXIS_MAX
  */

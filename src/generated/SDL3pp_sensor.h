@@ -339,7 +339,7 @@ struct SensorRef : Sensor
  * rest will have an value of STANDARD_GRAVITY away from the center of the
  * earth, which is a positive Y value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr float STANDARD_GRAVITY = SDL_STANDARD_GRAVITY;
 

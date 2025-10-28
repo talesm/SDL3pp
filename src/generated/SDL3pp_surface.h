@@ -131,7 +131,7 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
 /**
  * Evaluates to true if the surface needs to be locked before access.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool MustLock(SurfaceConstParam S) const { return SDL_MUSTLOCK(S); }
 
@@ -496,7 +496,7 @@ public:
   /**
    * Evaluates to true if the surface needs to be locked before access.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool MustLock() const { return SDL::MustLock(m_resource); }
 

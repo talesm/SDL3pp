@@ -174,7 +174,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
 /**
  * A fully opaque 8-bit alpha value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa ALPHA_TRANSPARENT
  */
@@ -183,7 +183,7 @@ constexpr Uint8 ALPHA_OPAQUE = SDL_ALPHA_OPAQUE;
 /**
  * A fully opaque floating point alpha value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa ALPHA_TRANSPARENT_FLOAT
  */
@@ -192,7 +192,7 @@ constexpr float ALPHA_OPAQUE_FLOAT = SDL_ALPHA_OPAQUE_FLOAT;
 /**
  * A fully transparent 8-bit alpha value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa ALPHA_OPAQUE
  */
@@ -201,7 +201,7 @@ constexpr Uint8 ALPHA_TRANSPARENT = SDL_ALPHA_TRANSPARENT;
 /**
  * A fully transparent floating point alpha value.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa ALPHA_OPAQUE_FLOAT
  */
@@ -397,9 +397,9 @@ public:
    * @param bytes the number of bytes per pixel of the new format.
    * @post a format value in the style of PixelFormat.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr PixelFormat(PixelType type,
                         int order,
@@ -451,9 +451,9 @@ public:
    *
    * @returns the flags of `format`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr Uint8 GetFlags() const;
 
@@ -464,9 +464,9 @@ public:
    *
    * @returns the type of `format`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr PixelType GetType() const;
 
@@ -478,9 +478,9 @@ public:
    *
    * @returns the order of `format`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr int GetOrder() const;
 
@@ -492,9 +492,9 @@ public:
    *
    * @returns the layout of `format`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr PackedLayout GetLayout() const;
 
@@ -509,9 +509,9 @@ public:
    *
    * @returns the bits-per-pixel of `format`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    *
    * @sa PixelFormat.GetBytesPerPixel
    */
@@ -528,9 +528,9 @@ public:
    *
    * @returns the bytes-per-pixel of `format`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    *
    * @sa PixelFormat.GetBitsPerPixel
    */
@@ -544,9 +544,9 @@ public:
    *
    * @returns true if the format is indexed, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsIndexed() const;
 
@@ -558,9 +558,9 @@ public:
    *
    * @returns true if the format is packed, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsPacked() const;
 
@@ -572,9 +572,9 @@ public:
    *
    * @returns true if the format is an array, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsArray() const;
 
@@ -586,9 +586,9 @@ public:
    *
    * @returns true if the format is 10-bit, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool Is10Bit() const;
 
@@ -600,9 +600,9 @@ public:
    *
    * @returns true if the format is 10-bit, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsFloat() const;
 
@@ -614,9 +614,9 @@ public:
    *
    * @returns true if the format has alpha, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsAlpha() const;
 
@@ -630,9 +630,9 @@ public:
    *
    * @returns true if the format has alpha, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsFourCC() const;
 
@@ -911,9 +911,9 @@ constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32; ///< XBGR32
  * @param D the fourth character of the FourCC code.
  * @returns a format value in the style of PixelFormat.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
 {
@@ -939,9 +939,9 @@ constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
  * @param bytes the number of bytes per pixel of the new format.
  * @returns a format value in the style of PixelFormat.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr PixelFormat DefinePixelFormat(PixelType type,
                                         int order,
@@ -961,9 +961,9 @@ constexpr PixelFormat DefinePixelFormat(PixelType type,
  * @param format an PixelFormat to check.
  * @returns the flags of `format`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint8 PixelFormatFlags(PixelFormatRaw format)
 {
@@ -983,9 +983,9 @@ constexpr Uint8 PixelFormat::GetFlags() const
  * @param format an PixelFormat to check.
  * @returns the type of `format`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr PixelType PixelFormatType(PixelFormatRaw format)
 {
@@ -1006,9 +1006,9 @@ constexpr PixelType PixelFormat::GetType() const
  * @param format an PixelFormat to check.
  * @returns the order of `format`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr int PixelFormatOrder(PixelFormatRaw format)
 {
@@ -1029,9 +1029,9 @@ constexpr int PixelFormat::GetOrder() const
  * @param format an PixelFormat to check.
  * @returns the layout of `format`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr PackedLayout PixelFormatLayout(PixelFormatRaw format)
 {
@@ -1055,9 +1055,9 @@ constexpr PackedLayout PixelFormat::GetLayout() const
  * @param format an PixelFormat to check.
  * @returns the bits-per-pixel of `format`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa PixelFormat.GetBytesPerPixel
  */
@@ -1083,9 +1083,9 @@ constexpr int PixelFormat::GetBitsPerPixel() const
  * @param format an PixelFormat to check.
  * @returns the bytes-per-pixel of `format`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa PixelFormat.GetBitsPerPixel
  */
@@ -1108,9 +1108,9 @@ constexpr int PixelFormat::GetBytesPerPixel() const
  * @param format an PixelFormat to check.
  * @returns true if the format is indexed, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormatIndexed(PixelFormatRaw format)
 {
@@ -1131,9 +1131,9 @@ constexpr bool PixelFormat::IsIndexed() const
  * @param format an PixelFormat to check.
  * @returns true if the format is packed, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormatPacked(PixelFormatRaw format)
 {
@@ -1154,9 +1154,9 @@ constexpr bool PixelFormat::IsPacked() const
  * @param format an PixelFormat to check.
  * @returns true if the format is an array, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormatArray(PixelFormatRaw format)
 {
@@ -1177,9 +1177,9 @@ constexpr bool PixelFormat::IsArray() const
  * @param format an PixelFormat to check.
  * @returns true if the format is 10-bit, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormat10Bit(PixelFormatRaw format)
 {
@@ -1200,9 +1200,9 @@ constexpr bool PixelFormat::Is10Bit() const
  * @param format an PixelFormat to check.
  * @returns true if the format is 10-bit, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormatFloat(PixelFormatRaw format)
 {
@@ -1223,9 +1223,9 @@ constexpr bool PixelFormat::IsFloat() const
  * @param format an PixelFormat to check.
  * @returns true if the format has alpha, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormatAlpha(PixelFormatRaw format)
 {
@@ -1248,9 +1248,9 @@ constexpr bool PixelFormat::IsAlpha() const
  * @param format an PixelFormat to check.
  * @returns true if the format has alpha, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsPixelFormatFourCC(PixelFormatRaw format)
 {
@@ -1568,9 +1568,9 @@ public:
    *               ChromaLocation value.
    * @post a format value in the style of Colorspace.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr Colorspace(ColorType type,
                        ColorRange range,
@@ -1595,9 +1595,9 @@ public:
    *
    * @returns the ColorType for `cspace`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr ColorType GetType() const;
 
@@ -1606,9 +1606,9 @@ public:
    *
    * @returns the ColorRange of `cspace`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr ColorRange GetRange() const;
 
@@ -1617,9 +1617,9 @@ public:
    *
    * @returns the ChromaLocation of `cspace`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr ChromaLocation GetChroma() const;
 
@@ -1628,9 +1628,9 @@ public:
    *
    * @returns the ColorPrimaries of `cspace`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr ColorPrimaries GetPrimaries() const;
 
@@ -1639,9 +1639,9 @@ public:
    *
    * @returns the TransferCharacteristics of `cspace`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr TransferCharacteristics GetTransfer() const;
 
@@ -1650,9 +1650,9 @@ public:
    *
    * @returns the MatrixCoefficients of `cspace`.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr MatrixCoefficients GetMatrix() const;
 
@@ -1665,9 +1665,9 @@ public:
    *
    * @returns true if BT601 or BT470BG, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsMatrixBT601() const;
 
@@ -1676,9 +1676,9 @@ public:
    *
    * @returns true if BT709, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsMatrixBT709() const;
 
@@ -1688,9 +1688,9 @@ public:
    *
    * @returns true if BT2020_NCL, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsMatrixBT2020_NCL() const;
 
@@ -1699,9 +1699,9 @@ public:
    *
    * @returns true if limited range, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsLimitedRange() const;
 
@@ -1710,9 +1710,9 @@ public:
    *
    * @returns true if full range, false otherwise.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsFullRange() const;
 };
@@ -1781,9 +1781,9 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *               ChromaLocation value.
  * @returns a format value in the style of Colorspace.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Colorspace DefineColorspace(ColorType type,
                                       ColorRange range,
@@ -1801,9 +1801,9 @@ constexpr Colorspace DefineColorspace(ColorType type,
  * @param cspace an Colorspace to check.
  * @returns the ColorType for `cspace`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr ColorType ColorspaceType(ColorspaceRaw cspace)
 {
@@ -1821,9 +1821,9 @@ constexpr ColorType Colorspace::GetType() const
  * @param cspace an Colorspace to check.
  * @returns the ColorRange of `cspace`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr ColorRange ColorspaceRange(ColorspaceRaw cspace)
 {
@@ -1841,9 +1841,9 @@ constexpr ColorRange Colorspace::GetRange() const
  * @param cspace an Colorspace to check.
  * @returns the ChromaLocation of `cspace`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr ChromaLocation ColorspaceChroma(ColorspaceRaw cspace)
 {
@@ -1861,9 +1861,9 @@ constexpr ChromaLocation Colorspace::GetChroma() const
  * @param cspace an Colorspace to check.
  * @returns the ColorPrimaries of `cspace`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr ColorPrimaries ColorspacePrimaries(ColorspaceRaw cspace)
 {
@@ -1881,9 +1881,9 @@ constexpr ColorPrimaries Colorspace::GetPrimaries() const
  * @param cspace an Colorspace to check.
  * @returns the TransferCharacteristics of `cspace`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr TransferCharacteristics ColorspaceTransfer(ColorspaceRaw cspace)
 {
@@ -1901,9 +1901,9 @@ constexpr TransferCharacteristics Colorspace::GetTransfer() const
  * @param cspace an Colorspace to check.
  * @returns the MatrixCoefficients of `cspace`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr MatrixCoefficients ColorspaceMatrix(ColorspaceRaw cspace)
 {
@@ -1925,9 +1925,9 @@ constexpr MatrixCoefficients Colorspace::GetMatrix() const
  * @param cspace an Colorspace to check.
  * @returns true if BT601 or BT470BG, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsColorspaceMatrixBT601(ColorspaceRaw cspace)
 {
@@ -1945,9 +1945,9 @@ constexpr bool Colorspace::IsMatrixBT601() const
  * @param cspace an Colorspace to check.
  * @returns true if BT709, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsColorspaceMatrixBT709(ColorspaceRaw cspace)
 {
@@ -1966,9 +1966,9 @@ constexpr bool Colorspace::IsMatrixBT709() const
  * @param cspace an Colorspace to check.
  * @returns true if BT2020_NCL, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsColorspaceMatrixBT2020_NCL(ColorspaceRaw cspace)
 {
@@ -1986,9 +1986,9 @@ constexpr bool Colorspace::IsMatrixBT2020_NCL() const
  * @param cspace an Colorspace to check.
  * @returns true if limited range, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsColorspaceLimitedRange(ColorspaceRaw cspace)
 {
@@ -2006,9 +2006,9 @@ constexpr bool Colorspace::IsLimitedRange() const
  * @param cspace an Colorspace to check.
  * @returns true if full range, false otherwise.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr bool IsColorspaceFullRange(ColorspaceRaw cspace)
 {

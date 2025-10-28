@@ -198,7 +198,7 @@ constexpr std::size_t arraysize(const T (&array)[N])
  * @returns the four characters converted into a Uint32, one character
  *          per-byte.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1956,7 +1956,7 @@ constexpr T min(T x, U y)
 /**
  * Return the greater of two values.
  *
- * This is a helper function that might be more clear than writing out the
+ * This is a helper macro that might be more clear than writing out the
  * comparisons directly, and works with any type that can be compared with the
  * `>` operator. However, it double-evaluates both its parameters, so do not
  * use expressions with side-effects here.
@@ -2463,9 +2463,9 @@ inline void* memset4(void* dst, Uint32 val, size_t dwords)
  *
  * @param x the object to clear.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa zerop
  * @sa zeroa
@@ -2486,9 +2486,9 @@ inline void zero(T& x)
  *
  * @param x a pointer to the object to clear.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
  * @sa zeroa
@@ -3796,7 +3796,7 @@ inline char* strpbrk(StringParam str, StringParam breakset)
  *
  * This tends to render as something like a question mark in most places.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa StepBackUTF8
  * @sa StepUTF8
@@ -4480,7 +4480,7 @@ inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
 /**
  * The value of Pi, as a double-precision floating point literal.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa PI_F
  */
@@ -4489,7 +4489,7 @@ constexpr double PI_D = SDL_PI_D;
 /**
  * The value of Pi, as a single-precision floating point literal.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa PI_D
  */
@@ -6091,7 +6091,7 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 #define SDL_iconv_utf8_locale(S)                                               \
   SDL_iconv_string("", "UTF-8", S, SDL_strlen(S) + 1)
@@ -6122,7 +6122,7 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 #define SDL_iconv_utf8_ucs4(S)                                                 \
   SDL_reinterpret_cast(                                                        \

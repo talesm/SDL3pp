@@ -160,7 +160,7 @@ struct IConvParam
  * inside of `sizeof`, so there are no side-effects here, as expressions do
  * not actually run any code in these cases.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 template<class T, std::size_t N>
 constexpr std::size_t arraysize(const T (&array)[N])
@@ -194,9 +194,9 @@ constexpr std::size_t arraysize(const T (&array)[N])
  * @returns the four characters converted into a Uint32, one character
  *          per-byte.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
 {
@@ -426,9 +426,9 @@ public:
    * @param S the number of seconds to convert.
    * @returns S, expressed in nanoseconds.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   static constexpr Time FromPosix(Sint64 time);
 
@@ -441,9 +441,9 @@ public:
    * @param NS the number of nanoseconds to convert.
    * @returns NS, expressed in seconds.
    *
-   * @threadsafety It is safe to call this macro from any thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @since This macro is available since SDL 3.2.0.
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr Sint64 ToPosix() const;
 
@@ -1865,9 +1865,9 @@ inline float abs(float x) { return SDL_fabsf(x); }
  * @param y the second value to compare.
  * @returns the lesser of `x` and `y`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 template<class T, class U>
 constexpr T min(T x, U y)
@@ -1887,9 +1887,9 @@ constexpr T min(T x, U y)
  * @param y the second value to compare.
  * @returns the lesser of `x` and `y`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 template<class T, class U>
 constexpr T max(T x, U y)
@@ -1915,9 +1915,9 @@ constexpr T max(T x, U y)
  * @param b the high end value.
  * @returns x, clamped between a and b.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
 template<class T, class U, class V>
 constexpr T clamp(T x, U a, V b)
@@ -2369,9 +2369,9 @@ inline void* memset4(void* dst, Uint32 val, size_t dwords)
  *
  * @param x the object to clear.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa zerop
  * @sa zeroa
@@ -2392,9 +2392,9 @@ inline void zero(T& x)
  *
  * @param x a pointer to the object to clear.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
  * @sa zeroa
@@ -2415,9 +2415,9 @@ inline void zerop(T* x)
  *
  * @param x an array to clear.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
  * @sa zeroa
@@ -3702,7 +3702,7 @@ inline char* strpbrk(StringParam str, StringParam breakset)
  *
  * This tends to render as something like a question mark in most places.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa StepBackUTF8
  * @sa StepUTF8
@@ -4351,7 +4351,7 @@ inline Uint32 Random::rand_bits() { return SDL::rand_bits_r(); }
 /**
  * The value of Pi, as a double-precision floating point literal.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa PI_F
  */
@@ -4360,7 +4360,7 @@ constexpr double PI_D = SDL_PI_D;
 /**
  * The value of Pi, as a single-precision floating point literal.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa PI_D
  */

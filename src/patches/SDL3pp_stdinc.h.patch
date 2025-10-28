@@ -12,14 +12,11 @@
 152a155,156
 > #endif // SDL3PP_DOC
 > 
-159,163c163
+159,162d162
 <  * This macro looks like it double-evaluates the argument, but it does so
 <  * inside of `sizeof`, so there are no side-effects here, as expressions do
 <  * not actually run any code in these cases.
 <  *
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 168c168
 <   return SDL_arraysize((&array)[N]);
 ---
@@ -40,10 +37,6 @@
 >  * @param b the second ASCII character.
 >  * @param c the third ASCII character.
 >  * @param d the fourth ASCII character.
-199c203
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 205a210,211
 > #ifdef SDL3PP_DOC
 > 
@@ -211,14 +204,6 @@
 ---
 >    * @param time the number of seconds to convert.
 >    * @returns the converted Time.
-429c473
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-431c475
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 438,439c482
 <    * This performs a division, so the results can be dramatically different if
 <    * `NS` is an integer or floating point value.
@@ -229,14 +214,6 @@
 <    * @returns NS, expressed in seconds.
 ---
 >    * @returns Posix time (in seconds).
-444c486
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-446c488
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 481c523
 <   constexpr float ToSeconds() const { static_assert(false, "Not implemented"); }
 ---
@@ -371,26 +348,6 @@
 >       return cb(a, b);
 >     },
 >     &compare);
-1868c1946
-<  * @threadsafety It is safe to call this macro from any thread.
----
->  * @threadsafety It is safe to call this function from any thread.
-1870c1948
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
-1881c1959
-<  * This is a helper macro that might be more clear than writing out the
----
->  * This is a helper function that might be more clear than writing out the
-1890c1968
-<  * @threadsafety It is safe to call this macro from any thread.
----
->  * @threadsafety It is safe to call this function from any thread.
-1892c1970
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 1906c1984
 <  * This macro will produce incorrect results if `b` is less than `a`.
 ---
@@ -399,14 +356,6 @@
 <  * This is a helper macro that might be more clear than writing out the
 ---
 >  * This is a helper function that might be more clear than writing out the
-1918c1996
-<  * @threadsafety It is safe to call this macro from any thread.
----
->  * @threadsafety It is safe to call this function from any thread.
-1920c1998
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 2260a2339
 > #ifdef SDL_SLOW_MEMCPY
 2261a2341,2343
@@ -431,14 +380,6 @@
 > #else
 >   return ::memset(dst, c, len);
 > #endif // SDL_SLOW_MEMSET
-2418c2512
-<  * @threadsafety It is safe to call this macro from any thread.
----
->  * @threadsafety It is safe to call this function from any thread.
-2420c2514
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 2428c2522
 <   SDL_zeroa((&x)[N]);
 ---
@@ -654,6 +595,14 @@
 5953a6082,6083
 > #ifdef SDL3PP_DOC
 > 
+5964c6094
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This function is available since SDL 3.2.0.
+5995c6125
+<  * @since This macro is available since SDL 3.2.0.
+---
+>  * @since This function is available since SDL 3.2.0.
 6018a6149,6150
 > #endif // SDL3PP_DOC
 > 

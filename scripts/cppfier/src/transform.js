@@ -1585,6 +1585,16 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     if (targetDelta) {
       targetEntry.name = targetDelta.name ?? targetEntry.name;
       targetEntry.kind = targetDelta.kind ?? targetEntry.kind;
+      if (targetEntry.kind !== sourceEntry.kind && sourceEntry.kind === "def") {
+        let replacement = "constant";
+        if (typeof targetDelta.type === 'undefined') targetEntry.type = "auto";
+        if (targetEntry.kind === "function") replacement = "function";
+        if (typeof targetDelta.doc === 'undefined' && targetEntry.doc) {
+          targetEntry.doc = targetEntry.doc
+            .replace(/^@since This macro is available/m, `@since This ${replacement} is available`)
+            .replace(/^@threadsafety It is safe to call this macro/m, `@threadsafety It is safe to call this ${replacement}`);
+        }
+      }
     } else if (context.blacklist.has(sourceName)) {
       continue;
     }

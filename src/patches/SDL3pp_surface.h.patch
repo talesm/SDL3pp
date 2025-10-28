@@ -59,10 +59,6 @@
 <   Surface(IOStreamParam src, bool closeio);
 ---
 >   Surface(IOStreamParam src, bool closeio = false);
-499c488
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 542,543c531
 <    * @param colorspace an Colorspace value describing the surface
 <    *                   colorspace.

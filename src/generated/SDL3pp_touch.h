@@ -203,14 +203,14 @@ struct Finger : FingerRaw
 /**
  * The MouseID for mouse events simulated with touch input.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr MouseID TOUCH_MOUSEID = SDL_TOUCH_MOUSEID;
 
 /**
  * The TouchID for touch events simulated with mouse input.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr TouchID MOUSE_TOUCHID = SDL_MOUSE_TOUCHID;
 

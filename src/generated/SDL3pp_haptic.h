@@ -147,7 +147,7 @@ using HapticEffectType = Uint32;
  *
  * Constant haptic effect.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticCondition
  */
@@ -158,7 +158,7 @@ constexpr HapticEffectType HAPTIC_CONSTANT = SDL_HAPTIC_CONSTANT;
  *
  * Periodic haptic effect that simulates sine waves.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticPeriodic
  */
@@ -169,7 +169,7 @@ constexpr HapticEffectType HAPTIC_SINE = SDL_HAPTIC_SINE;
  *
  * Periodic haptic effect that simulates square waves.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticPeriodic
  */
@@ -180,7 +180,7 @@ constexpr HapticEffectType HAPTIC_SQUARE = SDL_HAPTIC_SQUARE;
  *
  * Periodic haptic effect that simulates triangular waves.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticPeriodic
  */
@@ -191,7 +191,7 @@ constexpr HapticEffectType HAPTIC_TRIANGLE = SDL_HAPTIC_TRIANGLE;
  *
  * Periodic haptic effect that simulates saw tooth up waves.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticPeriodic
  */
@@ -202,7 +202,7 @@ constexpr HapticEffectType HAPTIC_SAWTOOTHUP = SDL_HAPTIC_SAWTOOTHUP;
  *
  * Periodic haptic effect that simulates saw tooth down waves.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticPeriodic
  */
@@ -213,7 +213,7 @@ constexpr HapticEffectType HAPTIC_SAWTOOTHDOWN = SDL_HAPTIC_SAWTOOTHDOWN;
  *
  * Ramp haptic effect.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticRamp
  */
@@ -225,7 +225,7 @@ constexpr HapticEffectType HAPTIC_RAMP = SDL_HAPTIC_RAMP;
  * Condition haptic effect that simulates a spring. Effect is based on the
  * axes position.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticCondition
  */
@@ -237,7 +237,7 @@ constexpr HapticEffectType HAPTIC_SPRING = SDL_HAPTIC_SPRING;
  * Condition haptic effect that simulates dampening. Effect is based on the
  * axes velocity.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticCondition
  */
@@ -249,7 +249,7 @@ constexpr HapticEffectType HAPTIC_DAMPER = SDL_HAPTIC_DAMPER;
  * Condition haptic effect that simulates inertia. Effect is based on the axes
  * acceleration.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticCondition
  */
@@ -261,7 +261,7 @@ constexpr HapticEffectType HAPTIC_INERTIA = SDL_HAPTIC_INERTIA;
  * Condition haptic effect that simulates friction. Effect is based on the
  * axes movement.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticCondition
  */
@@ -272,7 +272,7 @@ constexpr HapticEffectType HAPTIC_FRICTION = SDL_HAPTIC_FRICTION;
  *
  * Haptic effect for direct control over high/low frequency motors.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticLeftRight
  */
@@ -281,21 +281,21 @@ constexpr HapticEffectType HAPTIC_LEFTRIGHT = SDL_HAPTIC_LEFTRIGHT;
 /**
  * Reserved for future use.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr HapticEffectType HAPTIC_RESERVED1 = SDL_HAPTIC_RESERVED1;
 
 /**
  * Reserved for future use.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr HapticEffectType HAPTIC_RESERVED2 = SDL_HAPTIC_RESERVED2;
 
 /**
  * Reserved for future use.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr HapticEffectType HAPTIC_RESERVED3 = SDL_HAPTIC_RESERVED3;
 
@@ -304,7 +304,7 @@ constexpr HapticEffectType HAPTIC_RESERVED3 = SDL_HAPTIC_RESERVED3;
  *
  * User defined custom haptic effect.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr HapticEffectType HAPTIC_CUSTOM = SDL_HAPTIC_CUSTOM;
 
@@ -313,7 +313,7 @@ constexpr HapticEffectType HAPTIC_CUSTOM = SDL_HAPTIC_CUSTOM;
  *
  * Device supports setting the global gain.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa Haptic.SetGain
  */
@@ -324,7 +324,7 @@ constexpr HapticEffectType HAPTIC_GAIN = SDL_HAPTIC_GAIN;
  *
  * Device supports setting autocenter.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa Haptic.SetAutocenter
  */
@@ -335,7 +335,7 @@ constexpr HapticEffectType HAPTIC_AUTOCENTER = SDL_HAPTIC_AUTOCENTER;
  *
  * Device supports querying effect status.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa Haptic.GetEffectStatus
  */
@@ -346,7 +346,7 @@ constexpr HapticEffectType HAPTIC_STATUS = SDL_HAPTIC_STATUS;
  *
  * Devices supports being paused.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa Haptic.Pause
  * @sa Haptic.Resume
@@ -358,7 +358,7 @@ using HapticDirectionType = Uint8;
 /**
  * Uses polar coordinates for the direction.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticDirection
  */
@@ -367,7 +367,7 @@ constexpr HapticDirectionType HAPTIC_POLAR = SDL_HAPTIC_POLAR;
 /**
  * Uses cartesian coordinates for the direction.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticDirection
  */
@@ -376,7 +376,7 @@ constexpr HapticDirectionType HAPTIC_CARTESIAN = SDL_HAPTIC_CARTESIAN;
 /**
  * Uses spherical coordinates for the direction.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticDirection
  */
@@ -388,7 +388,7 @@ constexpr HapticDirectionType HAPTIC_SPHERICAL = SDL_HAPTIC_SPHERICAL;
  * This provides better compatibility across platforms and devices as SDL will
  * guess the correct axis.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa HapticDirection
  */
@@ -397,7 +397,7 @@ constexpr HapticDirectionType HAPTIC_STEERING_AXIS = SDL_HAPTIC_STEERING_AXIS;
 /**
  * Used to play a device an infinite number of times.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa Haptic.RunEffect
  */

@@ -79,14 +79,6 @@
 <    * This macro is generally not needed directly by an app, which should use
 ---
 >    * This function is generally not needed directly by an app, which should use
-454c502
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-456c504
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 461,463c509
 <    * A macro to retrieve the type of an PixelFormat.
 <    *
@@ -97,14 +89,6 @@
 <    * @returns the type of `format`.
 ---
 >    * @returns the type as PixelType.
-467c513
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-469c515
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 474c520
 <    * A macro to retrieve the order of an PixelFormat.
 ---
@@ -113,14 +97,6 @@
 <    * @returns the order of `format`.
 ---
 >    * @returns the order.
-481c527
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-483c529
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 488c534
 <    * A macro to retrieve the layout of an PixelFormat.
 ---
@@ -129,14 +105,6 @@
 <    * @returns the layout of `format`.
 ---
 >    * @returns the layout
-495c541
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-497c543
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 502,505c548
 <    * A macro to determine an PixelFormat's bits per pixel.
 <    *
@@ -148,14 +116,6 @@
 <    * @returns the bits-per-pixel of `format`.
 ---
 >    * @returns the bits-per-pixel.
-512c555
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-514c557
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 516c559
 <    * @sa PixelFormat.GetBytesPerPixel
 ---
@@ -168,14 +128,6 @@
 <    * @returns the bytes-per-pixel of `format`.
 ---
 >    * @return the bytes-per-pixel.
-531c574
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-533c576
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 535c578
 <    * @sa PixelFormat.GetBitsPerPixel
 ---
@@ -187,14 +139,6 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is an indexed format.
-547c587
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-549c589
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 554,557c594
 <    * A macro to determine if an PixelFormat is a packed format.
 <    *
@@ -202,14 +146,6 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is a packed format.
-561c598
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-563c600
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 568,571c605
 <    * A macro to determine if an PixelFormat is an array format.
 <    *
@@ -217,14 +153,6 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is an array format.
-575c609
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-577c611
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 582,585c616
 <    * A macro to determine if an PixelFormat is a 10-bit format.
 <    *
@@ -232,14 +160,6 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is a 10-bit format.
-589c620
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-591c622
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 596,599c627
 <    * A macro to determine if an PixelFormat is a floating point format.
 <    *
@@ -247,14 +167,6 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if this is a floating point format.
-603c631
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-605c633
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 610,613c638
 <    * A macro to determine if an PixelFormat has an alpha channel.
 <    *
@@ -262,14 +174,6 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if this has an alpha channel.
-617c642
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-619c644
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 624c649
 <    * A macro to determine if an PixelFormat is a "FourCC" format.
 ---
@@ -278,14 +182,6 @@
 <    * Note that this macro double-evaluates its parameter, so do not use
 <    * expressions with side-effects here.
 <    *
-633c655
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-635c657
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 680,681c702,703
 <    * @returns a pointer to a PixelFormatDetails structure or nullptr on
 <    *          failure; call GetError() for more information.
@@ -361,14 +257,6 @@
 <  * ```c
 ---
 >  * ```cpp
-914c994
-<  * @threadsafety It is safe to call this macro from any thread.
----
->  * @threadsafety It is safe to call this function from any thread.
-916c996
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 956c1036
 <  * A macro to retrieve the flags of an PixelFormat.
 ---
@@ -377,14 +265,6 @@
 <  * This macro is generally not needed directly by an app, which should use
 ---
 >  * This function is generally not needed directly by an app, which should use
-964c1044
-<  * @threadsafety It is safe to call this macro from any thread.
----
->  * @threadsafety It is safe to call this function from any thread.
-966c1046
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This function is available since SDL 3.2.0.
 992c1072
 <   return SDL_PIXELTYPE(format);
 ---
@@ -492,74 +372,26 @@
 <    * A macro to retrieve the type of an Colorspace.
 ---
 >    * Retrieve the type of a Colorspace.
-1598c1731
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1600c1733
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1605c1738
 <    * A macro to retrieve the range of an Colorspace.
 ---
 >    * Retrieve the range of a Colorspace.
-1609c1742
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1611c1744
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1616c1749
 <    * A macro to retrieve the chroma sample location of an Colorspace.
 ---
 >    * Retrieve the chroma sample location of an Colorspace.
-1620c1753
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1622c1755
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1627c1760
 <    * A macro to retrieve the primaries of an Colorspace.
 ---
 >    * Retrieve the primaries of an Colorspace.
-1631c1764
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1633c1766
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1638c1771
 <    * A macro to retrieve the transfer characteristics of an Colorspace.
 ---
 >    * Retrieve the transfer characteristics of an Colorspace.
-1642c1775
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1644c1777
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1649c1782
 <    * A macro to retrieve the matrix coefficients of an Colorspace.
 ---
 >    * Retrieve the matrix coefficients of an Colorspace.
-1653c1786
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1655c1788
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1660,1664c1793
 <    * A macro to determine if an Colorspace uses BT601 (or BT470BG) matrix
 <    * coefficients.
@@ -568,63 +400,23 @@
 <    * expressions with side-effects here.
 ---
 >    * Determine if a Colorspace uses BT601 (or BT470BG) matrix coefficients.
-1668c1797
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1670c1799
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1675c1804
 <    * A macro to determine if an Colorspace uses BT709 matrix coefficients.
 ---
 >    * Determine if an Colorspace uses BT709 matrix coefficients.
-1679c1808
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1681c1810
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1686,1687c1815
 <    * A macro to determine if an Colorspace uses BT2020_NCL matrix
 <    * coefficients.
 ---
 >    * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
-1691c1819
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1693c1821
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1698c1826
 <    * A macro to determine if an Colorspace has a limited range.
 ---
 >    * A function to determine if an Colorspace has a limited range.
-1702c1830
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1704c1832
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1709c1837
 <    * A macro to determine if an Colorspace has a full range.
 ---
 >    * A function to determine if an Colorspace has a full range.
-1713c1841
-<    * @threadsafety It is safe to call this macro from any thread.
----
->    * @threadsafety It is safe to call this function from any thread.
-1715c1843
-<    * @since This macro is available since SDL 3.2.0.
----
->    * @since This function is available since SDL 3.2.0.
 1757a1886,1887
 > /// @}
 > 
