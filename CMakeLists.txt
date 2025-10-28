@@ -5,7 +5,13 @@ project(SDL3pp
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
 
-add_subdirectory(external/SDL)
+include(GNUInstallDirs)
+
+find_package(SDL3 QUIET)
+if (NOT TARGET SDL3::SDL3)
+    set(SDL_INSTALL ON) # passed to external/SDL
+    add_subdirectory(external/SDL)
+endif ()
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -28,7 +34,12 @@ option(SDL3PP_DISABLE_IMAGE "Disable compilation of SDL_Image" OFF)
 if(SDL3PP_DISABLE_IMAGE)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_IMAGE")
 else(SDL3PP_DISABLE_IMAGE)
-    add_subdirectory(external/SDL_image)
+    find_package(SDL3_image QUIET)
+    set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
+    if (NOT TARGET SDL3_image::SDL3_image)
+        set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
+        add_subdirectory(external/SDL_image)
+    endif ()
     set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
 endif(SDL3PP_DISABLE_IMAGE)
 
@@ -37,7 +48,12 @@ option(SDL3PP_DISABLE_TTF "Disable compilation of SDL_TTF" OFF)
 if(SDL3PP_DISABLE_TTF)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_TTF")
 else(SDL3PP_DISABLE_TTF)
-    add_subdirectory(external/SDL_ttf)
+    find_package(SDL3_ttf QUIET)
+    set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
+    if (NOT TARGET SDL3_ttf::SDL3_ttf)
+        set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
+        add_subdirectory(external/SDL_ttf)
+    endif ()
     set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
 endif(SDL3PP_DISABLE_TTF)
 
@@ -48,12 +64,14 @@ if(SDL3PP_DISABLE_STRING_PARAM)
 endif(SDL3PP_DISABLE_STRING_PARAM)
 
 
-# The SDL3pp library
-add_library(SDL3pp_lib INTERFACE)
-target_include_directories(SDL3pp_lib INTERFACE include)
-target_link_libraries(SDL3pp_lib INTERFACE ${SDL3PP_DEPENDENCIES})
+file(GLOB_RECURSE SDL3pp_lib_HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
+
+# The SDL3pp library
+add_library(SDL3pp INTERFACE)
+add_library(SDL3pp::SDL3pp ALIAS SDL3pp)
+target_link_libraries(SDL3pp INTERFACE ${SDL3PP_DEPENDENCIES})
 
 # The amalgamation header
 set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation" CACHE FILEPATH "Amalgamation output directory")
@@ -69,9 +87,31 @@ target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
 
 if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-    add_library(SDL3pp ALIAS SDL3pp_amalgamated)
+    target_sources(SDL3pp
+       PUBLIC
+           FILE_SET sdl3pp_headers
+           TYPE HEADERS
+           BASE_DIRS ${SDL3PP_AMALGAMATION_DIR}
+           FILES
+               ${SDL3PP_AMALGAMATION_FILENAME}
+               ${SDL3PP_AMALGAMATION_MAIN}
+    )
+    target_include_directories(SDL3pp INTERFACE
+        $<BUILD_INTERFACE:${SDL3PP_AMALGAMATION_DIR}>
+        $<INSTALL_INTERFACE:include>
+    )
 else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
-    add_library(SDL3pp ALIAS SDL3pp_lib)
+    target_sources(SDL3pp
+        PUBLIC
+           FILE_SET sdl3pp_headers
+           TYPE HEADERS
+           BASE_DIRS ${PROJECT_SOURCE_DIR}/include
+           FILES ${SDL3pp_lib_HEADERS}
+    )
+    target_include_directories(SDL3pp INTERFACE
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+    )
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
@@ -91,17 +131,22 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 )
 
 # Examples
-add_subdirectory(examples)
+option(BUILD_EXAMPLES "Build the examples" ON)
+if (BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif ()
 
 # Unit tests
-add_library(test_main OBJECT test/doctest.cpp test/doctest.h)
-target_include_directories(test_main INTERFACE test/)
-enable_testing()
+option(BUILD_TESTING "Build the tests" ON)
+if (BUILD_TESTING)
+    add_library(test_main OBJECT test/doctest.cpp)
+    enable_testing()
 
-file(GLOB UNITTEST CONFIGURE_DEPENDS test/SDL3pp*.cpp)
-add_executable(SDL3pp_unitTests ${UNITTEST})
-target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
-add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
+    file(GLOB unitTestSources CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
+    add_executable(SDL3pp_unitTests ${unitTestSources})
+    target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp_lib test_main)
+    add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
+endif ()
 
 # The documentation
 # check if Doxygen is installed
@@ -249,4 +294,34 @@ add_custom_target(SDL3pp_check_all
     COMMAND echo "Everything ran!"
     DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp_lib
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
+#########################
+##      Install        ##
+#########################
+
+install(TARGETS SDL3pp
+    EXPORT SDL3ppTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILE_SET sdl3pp_headers DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(EXPORT SDL3ppTargets
+    FILE SDL3ppTargets.cmake
+    NAMESPACE SDL3pp::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SDL3pp
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/SDL3ppConfigVersion.cmake"
+    COMPATIBILITY SameMajorVersion
+)
+configure_file("${PROJECT_SOURCE_DIR}/cmake/SDL3ppConfig.cmake.in" SDL3ppConfig.cmake @ONLY)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/SDL3ppConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/SDL3ppConfig.cmake"
+    DESTINATION lib/cmake/SDL3pp
 )
