@@ -22,55 +22,55 @@
 > #undef KMOD_SCROLL
 > #undef KMOD_SHIFT
 > 
-158a178
+160a180
 >   /// Has Extended flag.
-160a181
+162a183
 >   /// Has Scancode flag.
-205c226
+207c228
 < constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\r'
 ---
 > constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
-207c228
+209c230
 < constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\x1B'
 ---
 > constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
-209c230
+211c232
 < constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\b'
 ---
 > constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
-211c232
+213c234
 < constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\t'
 ---
 > constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
-281c302
+283c304
 < constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
 ---
 > constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
-351c372
+353c374
 < constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\x7F'
 ---
 > constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
-353c374
+355c376
 < constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\xB1'
 ---
 > constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
-862c883
+864c885
 < constexpr bool SDLK_EXTENDED_MASK() { return ::SDLK_EXTENDED_MASK(); }
 ---
 > constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
-866c887
+868c889
 <   return SDL::SDLK_EXTENDED_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_EXTENDED_MASK;
-869c890
+871c892
 < constexpr bool SDLK_SCANCODE_MASK() { return ::SDLK_SCANCODE_MASK(); }
 ---
 > constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
-873c894
+875c896
 <   return SDL::SDLK_SCANCODE_MASK(m_keycode);
 ---
 >   return m_keycode & SDLK_SCANCODE_MASK;
-875a897,902
+877a899,904
 > /**
 >  * Transform scancode to keycode
 >  *

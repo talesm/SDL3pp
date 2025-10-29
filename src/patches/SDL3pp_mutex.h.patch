@@ -110,7 +110,7 @@
 >   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
 1828,1829c1809,1810
 <  * ```c
-<  *    static SDL_AtomicInitState init;
+<  *    static InitState init;
 ---
 >  * ```cpp
 >  *    static SDL::InitState init;

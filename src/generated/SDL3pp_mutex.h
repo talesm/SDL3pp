@@ -1826,7 +1826,7 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
  * Here is an example of using this:
  *
  * ```c
- *    static SDL_AtomicInitState init;
+ *    static InitState init;
  *
  *    bool InitSystem(void)
  *    {

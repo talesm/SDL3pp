@@ -374,7 +374,7 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  * and Time.FromPosix(), and between Windows FILETIME values with
  * Time.ToWindows() and Time.FromWindows().
  *
- * @since This type is available since SDL 3.2.0.
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @sa MAX_SINT64
  * @sa MIN_SINT64
@@ -1939,7 +1939,7 @@ constexpr T min(T x, U y)
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
- * @returns the lesser of `x` and `y`.
+ * @returns the greater of `x` and `y`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -4726,7 +4726,7 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4754,7 +4754,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4954,7 +4954,7 @@ inline float exp(float x) { return SDL_expf(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4982,7 +4982,7 @@ inline double floor(double x) { return SDL_floor(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`

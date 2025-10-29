@@ -1445,6 +1445,7 @@ function expandTypes(sourceEntries, file, context) {
     }
     const after = transform.after;
     if (after) context.includeAfter(targetName, after);
+    const since = transform.since ?? resolveVersionDoc(sourceEntry.doc ?? "", context);
 
     for (const value of values) {
       const valueSource = sourceEntries[value];
@@ -1457,6 +1458,7 @@ function expandTypes(sourceEntries, file, context) {
         constexpr: true,
         type: valueType,
         after: targetName,
+        since,
       };
       combineObject(valueTarget, valueTransform || {});
       if (typeof valueTarget.doc !== "string") {
@@ -2369,7 +2371,7 @@ function transformEntriesDocRefs(entries, context) {
  * @param {ApiContext} context 
  */
 function resolveVersionDoc(doc, context) {
-  const m = /^@since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
+  const m = /^[@\\]since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
   if (!m) return undefined;
   /** @type {VersionTag} */
   const version = {

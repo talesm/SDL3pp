@@ -174,6 +174,8 @@ public:
    * - "w": Create an empty file for writing. If a file with the same name
    *   already exists its content is erased and the file is treated as a new
    *   empty file.
+   * - "wx": Create an empty file for writing. If a file with the same name
+   *   already exists, the call fails.
    * - "a": Append to a file. Writing operations append data at the end of the
    *   file. The file is created if it does not exist.
    * - "r+": Open a file for update both reading and writing. The file must
@@ -181,6 +183,8 @@ public:
    * - "w+": Create an empty file for both reading and writing. If a file with
    *   the same name already exists its content is erased and the file is
    *   treated as a new empty file.
+   * - "w+x": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists, the call fails.
    * - "a+": Open a file for reading and appending. All writing operations are
    *   performed at the end of the file, protecting the previous content to be
    *   overwritten. You can reposition (fseek, rewind) the internal pointer to
@@ -231,7 +235,7 @@ public:
    * @returns a pointer to the IOStream structure that is created or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -252,8 +256,7 @@ public:
    * certain size, for both read and write access.
    *
    * This memory buffer is not copied by the IOStream; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
+   * provide must remain valid until you close the stream.
    *
    * If you need to make sure the IOStream never writes to the memory
    * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
@@ -265,6 +268,13 @@ public:
    *   was passed to this function.
    * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
+   *   a non-nullptr value it will be interpreted as a function of free_func
+   *   type and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
    *
    * @param mem a pointer to a buffer to feed an IOStream stream.
    * @param size the buffer size, in bytes.
@@ -296,8 +306,7 @@ public:
    * without writing to the memory buffer.
    *
    * This memory buffer is not copied by the IOStream; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
+   * provide must remain valid until you close the stream.
    *
    * If you need to write to a memory buffer, you should use IOStream.FromMem()
    * with a writable buffer of memory instead.
@@ -308,6 +317,13 @@ public:
    *   was passed to this function.
    * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
+   *   a non-nullptr value it will be interpreted as a function of free_func
+   *   type and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
    *
    * @param mem a pointer to a read-only buffer to feed an IOStream stream.
    * @param size the buffer size, in bytes.
@@ -443,7 +459,7 @@ public:
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -457,7 +473,7 @@ public:
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -476,7 +492,7 @@ public:
    *
    * @returns an IOStatus enum with the current state.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -488,7 +504,7 @@ public:
    * @returns the size of the data stream in the IOStream on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -514,7 +530,7 @@ public:
    * @returns the final offset in the data stream after the seek or -1 on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -533,7 +549,7 @@ public:
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -557,12 +573,16 @@ public:
    * the stream is not at EOF, IOStream.GetStatus() will return a different
    * error value and GetError() will offer a human-readable message.
    *
+   * A request for zero bytes on a valid stream will return zero immediately
+   * without accessing the stream, so the stream status (EOF, err, etc) will not
+   * change.
+   *
    * @param ptr a pointer to a buffer to read data into.
    * @param size the number of bytes to read from the data source.
    * @returns the number of bytes read, or 0 on end of file or other failure;
    *          call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -585,12 +605,16 @@ public:
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
+   * A request for zero bytes on a valid stream will return zero immediately
+   * without accessing the stream, so the stream status (EOF, err, etc) will not
+   * change.
+   *
    * @param ptr a pointer to a buffer containing data to write.
    * @param size the number of bytes to write.
    * @returns the number of bytes written, which will be less than `size` on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -625,7 +649,7 @@ public:
    * @returns the number of bytes written or 0 on failure; call GetError()
    *          for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -647,7 +671,7 @@ public:
    * @returns the number of bytes written or 0 on failure; call GetError()
    *          for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -665,7 +689,7 @@ public:
    *
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -690,7 +714,7 @@ public:
    * @returns the data or nullptr on failure; call GetError() for more
    *          information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -715,7 +739,7 @@ public:
    * even in the case of an error.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -736,7 +760,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -754,7 +778,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -776,7 +800,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -798,7 +822,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -820,7 +844,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -842,7 +866,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -864,7 +888,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -886,7 +910,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -908,7 +932,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -930,7 +954,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -952,7 +976,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -974,7 +998,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -996,7 +1020,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1018,7 +1042,7 @@ public:
    * @param value a pointer filled in with the data read.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1094,7 +1118,7 @@ public:
    * @param value the byte value to write.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1106,7 +1130,7 @@ public:
    * @param value the byte value to write.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1123,7 +1147,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1140,7 +1164,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1156,7 +1180,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1172,7 +1196,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1189,7 +1213,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1206,7 +1230,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1222,7 +1246,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1238,7 +1262,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1255,7 +1279,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1272,7 +1296,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1288,7 +1312,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1304,7 +1328,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1350,6 +1374,8 @@ struct IOStreamRef : IOStream
  * - "w": Create an empty file for writing. If a file with the same name
  *   already exists its content is erased and the file is treated as a new
  *   empty file.
+ * - "wx": Create an empty file for writing. If a file with the same name
+ *   already exists, the call fails.
  * - "a": Append to a file. Writing operations append data at the end of the
  *   file. The file is created if it does not exist.
  * - "r+": Open a file for update both reading and writing. The file must
@@ -1357,6 +1383,8 @@ struct IOStreamRef : IOStream
  * - "w+": Create an empty file for both reading and writing. If a file with
  *   the same name already exists its content is erased and the file is
  *   treated as a new empty file.
+ * - "w+x": Create an empty file for both reading and writing. If a file with
+ *   the same name already exists, the call fails.
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
@@ -1407,7 +1435,7 @@ struct IOStreamRef : IOStream
  * @returns a pointer to the IOStream structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1445,6 +1473,13 @@ constexpr auto MEMORY_POINTER = SDL_PROP_IOSTREAM_MEMORY_POINTER;
 
 constexpr auto MEMORY_SIZE_NUMBER = SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto MEMORY_FREE_FUNC_POINTER =
+  SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto DYNAMIC_MEMORY_POINTER =
   SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER;
 
@@ -1461,8 +1496,7 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * certain size, for both read and write access.
  *
  * This memory buffer is not copied by the IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * provide must remain valid until you close the stream.
  *
  * If you need to make sure the IOStream never writes to the memory
  * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
@@ -1474,6 +1508,13 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  *   was passed to this function.
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
+ *   a non-nullptr value it will be interpreted as a function of free_func
+ *   type and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a pointer to a buffer to feed an IOStream stream.
  * @param size the buffer size, in bytes.
@@ -1513,8 +1554,7 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * without writing to the memory buffer.
  *
  * This memory buffer is not copied by the IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * provide must remain valid until you close the stream.
  *
  * If you need to write to a memory buffer, you should use IOStream.FromMem()
  * with a writable buffer of memory instead.
@@ -1525,6 +1565,13 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  *   was passed to this function.
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
  *   that was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
+ *   a non-nullptr value it will be interpreted as a function of free_func
+ *   type and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a pointer to a read-only buffer to feed an IOStream stream.
  * @param size the buffer size, in bytes.
@@ -1644,7 +1691,7 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  * @param context IOStream structure to close.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1661,7 +1708,7 @@ inline void IOStream::Close() { CloseIO(release()); }
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1689,7 +1736,7 @@ inline PropertiesRef IOStream::GetProperties() const
  * @param context the IOStream to query.
  * @returns an IOStatus enum with the current state.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1710,7 +1757,7 @@ inline IOStatus IOStream::GetStatus() const
  * @returns the size of the data stream in the IOStream on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1742,7 +1789,7 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
  * @returns the final offset in the data stream after the seek or -1 on
  *          failure; call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1770,7 +1817,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  * @returns the current offset in the stream, or -1 if the information can not
  *          be determined.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1791,13 +1838,17 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  * the stream is not at EOF, IOStream.GetStatus() will return a different error
  * value and GetError() will offer a human-readable message.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an IOStream structure.
  * @param ptr a pointer to a buffer to read data into.
  * @param size the number of bytes to read from the data source.
  * @returns the number of bytes read, or 0 on end of file or other failure;
  *          call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1828,13 +1879,17 @@ inline size_t IOStream::Read(TargetBytes buf)
  * recoverable, such as a non-blocking write that can simply be retried later,
  * or a fatal error.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an IOStream structure.
  * @param ptr a pointer to a buffer containing data to write.
  * @param size the number of bytes to write.
  * @returns the number of bytes written, which will be less than `size` on
  *          failure; call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1866,7 +1921,7 @@ inline size_t IOStream::Write(SourceBytes buf)
  * @returns the number of bytes written or 0 on failure; call GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1890,7 +1945,7 @@ inline size_t IOprintf(IOStreamParam context,
  * @returns the number of bytes written or 0 on failure; call GetError()
  *          for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1920,7 +1975,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  * @param context IOStream structure to flush.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1948,7 +2003,7 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1974,7 +2029,7 @@ inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2002,7 +2057,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * even in the case of an error.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2023,7 +2078,7 @@ inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
  * @param datasize the number of bytes to be written.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2052,7 +2107,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2072,7 +2127,7 @@ inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2096,7 +2151,7 @@ inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2123,7 +2178,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2150,7 +2205,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2177,7 +2232,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2204,7 +2259,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2231,7 +2286,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2258,7 +2313,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2285,7 +2340,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2312,7 +2367,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2339,7 +2394,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2366,7 +2421,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2393,7 +2448,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
  * @param value a pointer filled in with the data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2411,7 +2466,7 @@ inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
  * @param value the byte value to write.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2429,7 +2484,7 @@ inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
  * @param value the byte value to write.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2452,7 +2507,7 @@ inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2478,7 +2533,7 @@ inline void IOStream::WriteU16LE(Uint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2503,7 +2558,7 @@ inline void IOStream::WriteS16LE(Sint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2528,7 +2583,7 @@ inline void IOStream::WriteU16BE(Uint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2554,7 +2609,7 @@ inline void IOStream::WriteS16BE(Sint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2580,7 +2635,7 @@ inline void IOStream::WriteU32LE(Uint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2605,7 +2660,7 @@ inline void IOStream::WriteS32LE(Sint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2630,7 +2685,7 @@ inline void IOStream::WriteU32BE(Uint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2656,7 +2711,7 @@ inline void IOStream::WriteS32BE(Sint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2682,7 +2737,7 @@ inline void IOStream::WriteU64LE(Uint64 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2707,7 +2762,7 @@ inline void IOStream::WriteS64LE(Sint64 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2732,7 +2787,7 @@ inline void IOStream::WriteU64BE(Uint64 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */

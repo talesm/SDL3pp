@@ -16,9 +16,18 @@ namespace SDL {
  * handling, e.g., for input and drawing tablets or suitably equipped mobile /
  * tablet devices.
  *
- * To get started with pens, simply handle SDL_EVENT_PEN_* events. When a pen
- * starts providing input, SDL will assign it a unique PenID, which will
- * remain for the life of the process, as long as the pen stays connected.
+ * To get started with pens, simply handle pen events:
+ *
+ * - EVENT_PEN_PROXIMITY_IN, EVENT_PEN_PROXIMITY_OUT
+ *   (PenProximityEvent)
+ * - EVENT_PEN_DOWN, EVENT_PEN_UP (PenTouchEvent)
+ * - EVENT_PEN_MOTION (PenMotionEvent)
+ * - EVENT_PEN_BUTTON_DOWN, EVENT_PEN_BUTTON_UP (PenButtonEvent)
+ * - EVENT_PEN_AXIS (PenAxisEvent)
+ *
+ * When a pen starts providing input, SDL will assign it a unique PenID,
+ * which will remain for the life of the process, as long as the pen stays
+ * connected.
  *
  * Pens may provide more than simple touch input; they might have other axes,
  * such as pressure, tilt, rotation, etc.
@@ -128,6 +137,79 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
  * future releases!
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * An enum that describes the type of a pen device.
+ *
+ * A "direct" device is a pen that touches a graphic display (like an Apple
+ * Pencil on an iPad's screen). "Indirect" devices touch an external tablet
+ * surface that is connected to the machine but is not a display (like a
+ * lower-end Wacom tablet connected over USB).
+ *
+ * Apps may use this information to decide if they should draw a cursor; if
+ * the pen is touching the screen directly, a cursor doesn't make sense and
+ * can be in the way, but becomes necessary for indirect devices to know where
+ * on the display they are interacting.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ */
+using PenDeviceType = SDL_PenDeviceType;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_INVALID =
+  SDL_PEN_DEVICE_TYPE_INVALID; ///< Not a valid pen device.
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_UNKNOWN =
+  SDL_PEN_DEVICE_TYPE_UNKNOWN; ///< Don't know specifics of this pen.
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_DIRECT =
+  SDL_PEN_DEVICE_TYPE_DIRECT; ///< Pen touches display.
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
+  SDL_PEN_DEVICE_TYPE_INDIRECT; ///< Pen touches something that isn't the
+                                ///< display.
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Get the device type of the given pen.
+ *
+ * Many platforms do not supply this information, so an app must always be
+ * prepared to get an PEN_DEVICE_TYPE_UNKNOWN result.
+ *
+ * @param instance_id the pen instance ID.
+ * @returns the device type of the given pen, or PEN_DEVICE_TYPE_INVALID
+ *          on failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PenDeviceType GetPenDeviceType(PenID instance_id)
+{
+  return SDL_GetPenDeviceType(instance_id);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 

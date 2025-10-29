@@ -5,17 +5,17 @@
 53a54,55
 > #ifdef SDL3PP_DOC
 > 
-129c131
+154c156
 <  * do { SomethingOnce(); } while (SDL_nullptr_WHILE_LOOP_CONDITION (0));
 ---
 >  * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
-154a157,158
+179a182,183
 > #endif // SDL3PP_DOC
 > 
-218a223,224
+243a248,249
 > #ifdef SDL3PP_DOC
 > 
-250c256,270
+275c281,295
 < #define SDL_enabled_assert(condition) [object Object]
 ---
 > #define SDL_enabled_assert(condition)                                          \
@@ -33,41 +33,41 @@
 >       break; /* not retrying. */                                               \
 >     }                                                                          \
 >   } while (SDL_NULL_WHILE_LOOP_CONDITION)
-369a390,391
+394a415,416
 > #endif // SDL3PP_DOC
 > 
-371c393
+396c418
 <  * A callback that fires when an SDL assertion fails.
 ---
 >  * A @ref callback that fires when an SDL assertion fails.
-390d411
+415d436
 <  * @param userdata what was passed as `userdata` to SetAssertionHandler().
-427c448,449
+452c473,474
 <   SDL_SetAssertionHandler(handler, userdata);
 ---
 >   UniqueCallbackWrapper<AssertionHandlerCB>::erase();
 >   return SDL_SetAssertionHandler(handler, userdata);
-443,445c465,466
+468,470c490,491
 <  * @param handler the AssertionHandler function to call when an assertion
 <  *                fails or nullptr for the default handler.
 <  * @param userdata a pointer that is passed to `handler`.
 ---
 >  * @param handler the SDL_AssertionHandler function to call when an assertion
 >  *                fails.
-455c476,478
+480c501,503
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
 >   SetAssertionHandler(&Wrapper::CallSuffixed,
 >                       Wrapper::Wrap(std::move(handler)));
-457d479
+482d504
 < 
-466,467c488
+491,492c513
 <  * @returns the default AssertionHandler that is called when an assert
 <  *          triggers.
 ---
 >  * @returns the default AssertionHandler that is called when an assert triggers.
-484,486c505,507
+509,511c530,532
 <  * triggered. This is either the value last passed to
 <  * SetAssertionHandler(), or if no application-specified function is set,
 <  * is equivalent to calling GetDefaultAssertionHandler().
@@ -75,23 +75,23 @@
 >  * triggered. This is either the value last passed to SetAssertionHandler(), or
 >  * if no application-specified function is set, is equivalent to calling
 >  * GetDefaultAssertionHandler().
-513,514c534,535
+538,539c559,560
 <  * SetAssertionHandler(), or if no application-specified function is set,
 <  * is equivalent to calling GetDefaultAssertionHandler().
 ---
 >  * SDL_SetAssertionHandler(), or if no application-specified function is set,
 >  * is equivalent to calling SDL_GetDefaultAssertionHandler().
-517c538
+542c563
 <  * "userdata" pointer that was passed to SetAssertionHandler(). This value
 ---
 >  * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
-521,523c542
+546,548c567
 <  * @param puserdata pointer which is filled with the "userdata" pointer that
 <  *                  was passed to SetAssertionHandler().
 <  * @returns the AssertionHandler that is called when an assert triggers.
 ---
 >  * @returns the AssertionHandlerCB that is called when an assert triggers.
-533c552,556
+558c577,581
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
@@ -99,11 +99,11 @@
 >   auto cb = GetAssertionHandler(&userdata);
 >   if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
 >   return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-544c567
+569c592
 <  * ```c
 ---
 >  * ```cpp
-569c592
+594c617
 <   return SDL_GetAssertionReport();
 ---
 >   return *SDL_GetAssertionReport();

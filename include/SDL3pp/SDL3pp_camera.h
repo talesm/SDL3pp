@@ -139,6 +139,38 @@ constexpr CameraPosition CAMERA_POSITION_FRONT_FACING =
 constexpr CameraPosition CAMERA_POSITION_BACK_FACING =
   SDL_CAMERA_POSITION_BACK_FACING; ///< CAMERA_POSITION_BACK_FACING
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/**
+ * The current state of a request for camera access.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ *
+ * @sa Camera.GetPermissionState
+ */
+using CameraPermissionState = SDL_CameraPermissionState;
+
+constexpr CameraPermissionState CAMERA_PERMISSION_STATE_DENIED =
+  SDL_CAMERA_PERMISSION_STATE_DENIED; ///< CAMERA_PERMISSION_STATE_DENIED
+
+constexpr CameraPermissionState CAMERA_PERMISSION_STATE_PENDING =
+  SDL_CAMERA_PERMISSION_STATE_PENDING; ///< CAMERA_PERMISSION_STATE_PENDING
+
+constexpr CameraPermissionState CAMERA_PERMISSION_STATE_APPROVED =
+  SDL_CAMERA_PERMISSION_STATE_APPROVED; ///< CAMERA_PERMISSION_STATE_APPROVED
+#else
+
+/**
+ * The current state of a request for camera access.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ *
+ * @sa Camera.GetPermissionState
+ */
+using CameraPermissionState = int;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 /**
  * The opaque structure used to identify an opened SDL camera.
  *
@@ -285,8 +317,9 @@ public:
    * on others the approval might be implicit and not alert the user at all.
    *
    * This function can be used to check the status of that approval. It will
-   * return 0 if still waiting for user response, 1 if the camera is approved
-   * for use, and -1 if the user denied access.
+   * return CAMERA_PERMISSION_STATE_PENDING if waiting for user response,
+   * CAMERA_PERMISSION_STATE_APPROVED if the camera is approved for use, and
+   * CAMERA_PERMISSION_STATE_DENIED if the user denied access.
    *
    * Instead of polling with this function, you can wait for a
    * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event
@@ -296,8 +329,9 @@ public:
    * If a camera is declined, there's nothing to be done but call
    * Camera.Close() to dispose of it.
    *
-   * @returns -1 if user denied access to the camera, 1 if user approved access,
-   *          0 if no decision has been made yet.
+   * @returns an CameraPermissionState value indicating if access is
+   *          granted, or `CAMERA_PERMISSION_STATE_PENDING` if the decision
+   *          is still pending.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -306,7 +340,7 @@ public:
    * @sa Camera.Camera
    * @sa Camera.Close
    */
-  int GetPermissionState();
+  CameraPermissionState GetPermissionState();
 
   /**
    * Get the instance ID of an opened camera.
@@ -685,8 +719,9 @@ inline Camera OpenCamera(CameraID instance_id,
  * on others the approval might be implicit and not alert the user at all.
  *
  * This function can be used to check the status of that approval. It will
- * return 0 if still waiting for user response, 1 if the camera is approved
- * for use, and -1 if the user denied access.
+ * return CAMERA_PERMISSION_STATE_PENDING if waiting for user response,
+ * CAMERA_PERMISSION_STATE_APPROVED if the camera is approved for use, and
+ * CAMERA_PERMISSION_STATE_DENIED if the user denied access.
  *
  * Instead of polling with this function, you can wait for a
  * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event
@@ -697,8 +732,9 @@ inline Camera OpenCamera(CameraID instance_id,
  * Camera.Close() to dispose of it.
  *
  * @param camera the opened camera device to query.
- * @returns -1 if user denied access to the camera, 1 if user approved access,
- *          0 if no decision has been made yet.
+ * @returns an CameraPermissionState value indicating if access is
+ *          granted, or `CAMERA_PERMISSION_STATE_PENDING` if the decision
+ *          is still pending.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -707,12 +743,12 @@ inline Camera OpenCamera(CameraID instance_id,
  * @sa Camera.Camera
  * @sa Camera.Close
  */
-inline int GetCameraPermissionState(CameraParam camera)
+inline CameraPermissionState GetCameraPermissionState(CameraParam camera)
 {
   return SDL_GetCameraPermissionState(camera);
 }
 
-inline int Camera::GetPermissionState()
+inline CameraPermissionState Camera::GetPermissionState()
 {
   return SDL::GetCameraPermissionState(m_resource);
 }

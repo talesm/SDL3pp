@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_atomic.h>
 #include "SDL3pp_stdinc.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -558,6 +559,27 @@ public:
    * @sa AtomicU32.Set
    */
   Uint32 Get();
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Add to an atomic variable.
+   *
+   * This function also acts as a full memory barrier.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param v the desired value to add or subtract.
+   * @returns the previous value of the atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  Uint32 Add(int v);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
 template<class T>
@@ -707,6 +729,37 @@ inline Uint32 AtomicU32::Set(Uint32 v) { return SDL::SetAtomicU32(this, v); }
 inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
 
 inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(this); }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Add to an atomic variable.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicU32 variable to be modified.
+ * @param v the desired value to add or subtract.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline Uint32 AddAtomicU32(AtomicU32Raw* a, int v)
+{
+  return SDL_AddAtomicU32(a, v);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 template<class T>
 inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)

@@ -10,11 +10,11 @@
 ---
 > #define SDL_MAJOR_VERSION
 33c35
-< #define SDL_MINOR_VERSION 2
+< #define SDL_MINOR_VERSION 3
 ---
 > #define SDL_MINOR_VERSION
 42c44
-< #define SDL_MICRO_VERSION 25
+< #define SDL_MICRO_VERSION 2
 ---
 > #define SDL_MICRO_VERSION
 106a109,110

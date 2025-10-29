@@ -111,6 +111,8 @@ constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
  * unicode code point.
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_HINT_KEYCODE_OPTIONS
  */
 class Keycode
 {

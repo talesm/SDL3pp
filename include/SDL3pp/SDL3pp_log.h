@@ -259,7 +259,6 @@ public:
    * @sa LogCategory.LogInfo
    * @sa LogCategory.LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
    * @sa LogCategory.LogVerbose
    * @sa LogCategory.LogWarn
    */
@@ -563,6 +562,9 @@ inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
  * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
  * "WARNING: ".
  *
+ * This function makes a copy of its string argument, **prefix**, so it is not
+ * necessary to keep the value of **prefix** alive after the call returns.
+ *
  * @param priority the LogPriority to modify.
  * @param prefix the prefix to use for that log priority, or nullptr to use no
  *               prefix.
@@ -625,7 +627,6 @@ inline void LogUnformatted(LogCategory category,
  * @sa LogCategory.LogError
  * @sa LogCategory.LogInfo
  * @sa LogCategory.LogMessage
- * @sa LogCategory.LogTrace
  * @sa LogCategory.LogVerbose
  * @sa LogCategory.LogWarn
  */

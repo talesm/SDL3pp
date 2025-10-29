@@ -333,6 +333,10 @@ public:
   /**
    * Opens up a read-only container for the application's filesystem.
    *
+   * By default, Storage.Storage uses the generic storage implementation.
+   * When the path override is not provided, the generic implementation will use
+   * the output of GetBasePath as the base path.
+   *
    * @param override a path to override the backend's default title root.
    * @param props a property list that may contain backend-specific information.
    * @post a title storage container on success.
@@ -810,6 +814,10 @@ struct StorageRef : Storage
 
 /**
  * Opens up a read-only container for the application's filesystem.
+ *
+ * By default, Storage.Storage uses the generic storage implementation.
+ * When the path override is not provided, the generic implementation will use
+ * the output of GetBasePath as the base path.
  *
  * @param override a path to override the backend's default title root.
  * @param props a property list that may contain backend-specific information.

@@ -42,7 +42,7 @@ namespace SDL {
  *
  * For more information, see:
  *
- * https://wiki.libsdl.org/SDL3/README/main-functions
+ * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @{
  */
@@ -57,7 +57,7 @@ namespace SDL {
  * proper entry point for the platform, and all the other magic details
  * needed, like manually calling SetMainReady.
  *
- * Please see [README/main-functions](README/main-functions), (or
+ * Please see [README-main-functions](README-main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
  * explanation.
  *
@@ -74,7 +74,7 @@ namespace SDL {
  * SDL_AppQuit. The app should not provide a `main` function in this case, and
  * doing so will likely cause the build to fail.
  *
- * Please see [README/main-functions](README/main-functions), (or
+ * Please see [README-main-functions](README-main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
  * explanation.
  *

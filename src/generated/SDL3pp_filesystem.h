@@ -100,6 +100,8 @@ struct Path : StringResult
  *          doesn't implement this functionality, call GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetPrefPath
@@ -145,6 +147,12 @@ inline const char* GetBasePath() { return SDL_GetBasePath(); }
  * - ...only use letters, numbers, and spaces. Avoid punctuation like "Game
  *   Name 2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.
  *
+ * Due to historical mistakes, `org` is allowed to be nullptr or "". In such
+ * cases, SDL will omit the org subdirectory, including on platforms where it
+ * shouldn't, and including on platforms where this would make your app fail
+ * certification for an app store. New apps should definitely specify a real
+ * string for `org`.
+ *
  * The returned path is guaranteed to end with a path separator ('\\' on
  * Windows, '/' on most other platforms).
  *
@@ -154,6 +162,8 @@ inline const char* GetBasePath() { return SDL_GetBasePath(); }
  *          notation. nullptr if there's a problem (creating directory failed,
  *          etc.). This should be freed with free() when it is no longer
  *          needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -273,6 +283,8 @@ constexpr Folder FOLDER_COUNT = SDL_FOLDER_COUNT;
  * @returns either a null-terminated C string containing the full path to the
  *          folder, or nullptr if an error happened.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetUserFolder(Folder folder)
@@ -363,6 +375,8 @@ constexpr GlobFlags GLOB_CASEINSENSITIVE =
  *
  * @param path the path of the directory to create.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -461,6 +475,8 @@ using EnumerateDirectoryCB =
  * @param userdata a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void EnumerateDirectory(StringParam path,
@@ -488,6 +504,8 @@ inline void EnumerateDirectory(StringParam path,
  * @param userdata a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
@@ -513,6 +531,8 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
  * @param userdata a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline std::vector<Path> EnumerateDirectory(StringParam path)
@@ -529,6 +549,8 @@ inline std::vector<Path> EnumerateDirectory(StringParam path)
  * @param path the path to remove from the filesystem.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
@@ -536,7 +558,7 @@ inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
 /**
  * Rename a file or directory.
  *
- * If the file at `newpath` already exists, it will replaced.
+ * If the file at `newpath` already exists, it will be replaced.
  *
  * Note that this will not copy files across filesystems/drives/volumes, as
  * that is a much more complicated (and possibly time-consuming) operation.
@@ -550,6 +572,8 @@ inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
  * @param oldpath the old path.
  * @param newpath the new path.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -593,6 +617,10 @@ inline void RenamePath(StringParam oldpath, StringParam newpath)
  * @param newpath the new path.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread, but this
+ *               operation is not atomic, so the app might need to protect
+ *               access to specific paths from other threads if appropriate.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void CopyFile(StringParam oldpath, StringParam newpath)
@@ -608,6 +636,8 @@ inline void CopyFile(StringParam oldpath, StringParam newpath)
  * to check for the existence of a file.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PathInfo GetPathInfo(StringParam path)
@@ -619,10 +649,10 @@ inline PathInfo GetPathInfo(StringParam path)
  * Enumerate a directory tree, filtered by pattern, and return a list.
  *
  * Files are filtered out if they don't match the string in `pattern`, which
- * may contain wildcard characters '\*' (match everything) and '?' (match one
+ * may contain wildcard characters `*` (match everything) and `?` (match one
  * character). If pattern is nullptr, no filtering is done and all results are
  * returned. Subdirectories are permitted, and are specified with a path
- * separator of '/'. Wildcard characters '\*' and '?' never match a path
+ * separator of `/`. Wildcard characters `*` and `?` never match a path
  * separator.
  *
  * `flags` may be set to GLOB_CASEINSENSITIVE to make the pattern matching
@@ -668,6 +698,8 @@ inline OwnArray<char*> GlobDirectory(StringParam path,
  * @returns a UTF-8 string of the current working directory in
  *          platform-dependent notation. nullptr if there's a problem. This
  *          should be freed with free() when it is no longer needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

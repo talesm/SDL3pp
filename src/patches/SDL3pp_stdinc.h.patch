@@ -107,10 +107,6 @@
 ---
 > /// Converts a Sint64 to nanoseconds representation.
 > constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
-365c377
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This type is available since SDL 3.2.0.
 372c384
 <   TimeRaw m_time;
 ---

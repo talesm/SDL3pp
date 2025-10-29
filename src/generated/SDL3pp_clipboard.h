@@ -195,8 +195,8 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
 using ClipboardDataCallback = SDL_ClipboardDataCallback;
 
 /**
- * Callback function that will be called when the clipboard is cleared, or when
- * new data is set.
+ * Callback function that will be called when the clipboard is cleared, or
+ * when new data is set.
  *
  * @param userdata a pointer to the provided user data.
  *
@@ -207,8 +207,8 @@ using ClipboardDataCallback = SDL_ClipboardDataCallback;
 using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
 
 /**
- * Callback function that will be called when the clipboard is cleared, or when
- * new data is set.
+ * Callback function that will be called when the clipboard is cleared, or
+ * when new data is set.
  *
  * @param userdata a pointer to the provided user data.
  *
@@ -236,8 +236,8 @@ using ClipboardCleanupCB = std::function<void()>;
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered. SDL copies the
- * given list.
+ * @param mime_types a list of mime-types that are being offered. SDL copies
+ *                   the given list.
  * @param num_mime_types the number of mime-types in the mime_types list.
  * @throws Error on failure.
  *
@@ -274,8 +274,8 @@ inline void SetClipboardData(ClipboardDataCallback callback,
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered. SDL copies the
- * given list.
+ * @param mime_types a list of mime-types that are being offered. SDL copies
+ *                   the given list.
  * @param num_mime_types the number of mime-types in the mime_types list.
  * @throws Error on failure.
  *

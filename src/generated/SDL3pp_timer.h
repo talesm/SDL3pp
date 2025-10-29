@@ -18,7 +18,7 @@ namespace SDL {
  * This category covers measuring time elapsed (SDL_GetTicks(),
  * GetPerformanceCounter()), putting a thread to sleep for a certain
  * amount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing
- * a callback function after a certain amount of time has elasped
+ * a callback function after a certain amount of time has elapsed
  * (SDL_AddTimer(), etc).
  *
  * There are also useful macros to convert between time units, like

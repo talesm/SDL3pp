@@ -95,7 +95,7 @@ constexpr InitFlags INIT_CAMERA =
  *
  * See
  * [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * SDL3](https://wiki.libsdl.org/SDL3/README-main-functions#main-callbacks-in-sdl3)
  * for complete details.
  *
  * @since This enum is available since SDL 3.2.0.

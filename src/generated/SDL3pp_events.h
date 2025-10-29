@@ -18,7 +18,7 @@ namespace SDL {
  * coming and going, the system changing in some way, etc.
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
- * examine any events that have occured since the last time and process or
+ * examine any events that have occurred since the last time and process or
  * ignore them. This is generally done by calling PollEvent() in a loop
  * until it returns false (or, if using the main callbacks, events are
  * provided one at a time in calls to SDL_AppEvent() before the next call to
@@ -122,6 +122,14 @@ constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
                                            ///< scale.
 
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_DISPLAY_USABLE_BOUNDS_CHANGED =
+  SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED; ///< Display has changed usable
+                                           ///< bounds.
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
 
@@ -136,7 +144,8 @@ constexpr EventType EVENT_WINDOW_HIDDEN =
 
 /**
  * Window has been exposed and should be redrawn, and can be redrawn directly
- * from event watchers for this event.
+ * from event watchers for this event.  data1 is 1 for live-resize expose
+ * events, 0 otherwise.
  */
 constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
 
@@ -251,6 +260,20 @@ constexpr EventType EVENT_KEYBOARD_REMOVED =
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
   SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates.
 
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
+  SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown.
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
+  SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden.
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
 constexpr EventType EVENT_MOUSE_MOTION =
   SDL_EVENT_MOUSE_MOTION; ///< Mouse moved.
 
@@ -343,8 +366,29 @@ constexpr EventType EVENT_FINGER_MOTION =
 constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_PINCH_BEGIN =
+  SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started.
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_PINCH_UPDATE =
+  SDL_EVENT_PINCH_UPDATE; ///< Pinch gesture updated.
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_PINCH_END =
+  SDL_EVENT_PINCH_END; ///< Pinch gesture ended.
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
 constexpr EventType EVENT_CLIPBOARD_UPDATE =
-  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard or primary selection changed.
+  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard changed.
 
 constexpr EventType EVENT_DROP_FILE =
   SDL_EVENT_DROP_FILE; ///< The system requests a file open.
@@ -642,6 +686,10 @@ using GamepadSensorEvent = SDL_GamepadSensorEvent;
 /**
  * Audio device event structure (event.adevice.*)
  *
+ * Note that SDL will send a EVENT_AUDIO_DEVICE_ADDED event for every
+ * device it discovers during initialization. After that, this event will only
+ * arrive when a device is hotplugged during the program's run.
+ *
  * @since This struct is available since SDL 3.2.0.
  */
 using AudioDeviceEvent = SDL_AudioDeviceEvent;
@@ -681,8 +729,11 @@ using RenderEvent = SDL_RenderEvent;
  */
 using TouchFingerEvent = SDL_TouchFingerEvent;
 
+/// Pinch event structure (event.pinch.*)
+using PinchFingerEvent = SDL_PinchFingerEvent;
+
 /**
- * Pressure-sensitive pen proximity event structure (event.pmotion.*)
+ * Pressure-sensitive pen proximity event structure (event.pproximity.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
  * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's
@@ -877,8 +928,8 @@ constexpr EventAction GETEVENT = SDL_GETEVENT;
 inline int PeepEvents(Event* events,
                       int numevents,
                       EventAction action,
-                      Uint32 minType,
-                      Uint32 maxType)
+                      Uint32 minType = EVENT_FIRST,
+                      Uint32 maxType = EVENT_LAST)
 {
   return SDL_PeepEvents(events, numevents, action, minType, maxType);
 }
@@ -919,7 +970,7 @@ inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
  *
  * @sa HasEvents
  */
-inline bool HasEvents(Uint32 minType, Uint32 maxType)
+inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 {
   return SDL_HasEvents(minType, maxType);
 }
@@ -977,7 +1028,8 @@ inline void FlushEvent(Uint32 type) { SDL_FlushEvent(type); }
  *
  * @sa FlushEvent
  */
-inline void FlushEvents(Uint32 minType, Uint32 maxType)
+inline void FlushEvents(Uint32 minType = EVENT_FIRST,
+                        Uint32 maxType = EVENT_LAST)
 {
   SDL_FlushEvents(minType, maxType);
 }
@@ -1013,6 +1065,13 @@ inline void FlushEvents(Uint32 minType, Uint32 maxType)
  *     // update game state, draw the current frame
  * }
  * ```
+ *
+ * Note that Windows (and possibly other platforms) has a quirk about how it
+ * handles events while dragging/resizing a window, which can cause this
+ * function to block for significant amounts of time. Technical explanations
+ * and solutions are discussed on the wiki:
+ *
+ * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
  *
  * @param event the Event structure to be filled with the next event from
  *              the queue, or nullptr.
@@ -1059,6 +1118,13 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *     // update game state, draw the current frame
  * }
  * ```
+ *
+ * Note that Windows (and possibly other platforms) has a quirk about how it
+ * handles events while dragging/resizing a window, which can cause this
+ * function to block for significant amounts of time. Technical explanations
+ * and solutions are discussed on the wiki:
+ *
+ * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
  *
  * @param event the Event structure to be filled with the next event from
  *              the queue, or nullptr.
@@ -1386,7 +1452,10 @@ struct EventWatchHandle : CallbackHandle
  * allows selective filtering of dynamically arriving events.
  *
  * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * as it may run in a different thread! The exception is handling of
+ * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the
+ * main thread and you are expected to redraw your window in response to this
+ * event.
  *
  * On platforms that support it, if the quit event is generated by an
  * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
@@ -1399,7 +1468,7 @@ struct EventWatchHandle : CallbackHandle
  * the event filter, but events pushed onto the queue with PeepEvents() do
  * not.
  *
- * @param filter an EventFilter function to call when an event happens.
+ * @param filter a function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1430,7 +1499,10 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * allows selective filtering of dynamically arriving events.
  *
  * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * as it may run in a different thread! The exception is handling of
+ * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the
+ * main thread and you are expected to redraw your window in response to this
+ * event.
  *
  * On platforms that support it, if the quit event is generated by an
  * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
@@ -1443,7 +1515,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * the event filter, but events pushed onto the queue with PeepEvents() do
  * not.
  *
- * @param filter an EventFilter function to call when an event happens.
+ * @param filter a function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1733,6 +1805,86 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 {
   return CheckError(SDL_GetWindowFromEvent(&event));
 }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Generate an English description of an event.
+ *
+ * This will fill `buf` with a null-terminated string that might look
+ * something like this:
+ *
+ * ```
+ * EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99
+ * y=139.09 xrel=52 yrel=6)
+ * ```
+ *
+ * The exact format of the string is not guaranteed; it is intended for
+ * logging purposes, to be read by a human, and not parsed by a computer.
+ *
+ * The returned value follows the same rules as snprintf(): `buf` will
+ * always be nullptr-terminated (unless `buflen` is zero), and will be truncated
+ * if `buflen` is too small. The return code is the number of bytes needed for
+ * the complete string, not counting the nullptr-terminator, whether the string
+ * was truncated or not. Unlike snprintf(), though, this function never
+ * returns -1.
+ *
+ * @param event an event to describe. May be nullptr.
+ * @param buf the buffer to fill with the description string. May be nullptr.
+ * @param buflen the maximum bytes that can be written to `buf`.
+ * @returns number of bytes needed for the full string, not counting the
+ *          null-terminator byte.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline int GetEventDescription(const Event& event, TargetBytes buf)
+{
+  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Generate an English description of an event.
+ *
+ * This will fill `buf` with a null-terminated string that might look
+ * something like this:
+ *
+ * ```
+ * EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99
+ * y=139.09 xrel=52 yrel=6)
+ * ```
+ *
+ * The exact format of the string is not guaranteed; it is intended for
+ * logging purposes, to be read by a human, and not parsed by a computer.
+ *
+ * The returned value follows the same rules as snprintf(): `buf` will
+ * always be nullptr-terminated (unless `buflen` is zero), and will be truncated
+ * if `buflen` is too small. The return code is the number of bytes needed for
+ * the complete string, not counting the nullptr-terminator, whether the string
+ * was truncated or not. Unlike snprintf(), though, this function never
+ * returns -1.
+ *
+ * @param event an event to describe. May be nullptr.
+ * @param buf the buffer to fill with the description string. May be nullptr.
+ * @param buflen the maximum bytes that can be written to `buf`.
+ * @returns number of bytes needed for the full string, not counting the
+ *          null-terminator byte.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline std::string GetEventDescription(const Event& event)
+{
+  static_assert(false, "Not implemented");
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 

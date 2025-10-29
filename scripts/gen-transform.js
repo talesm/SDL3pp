@@ -91,7 +91,7 @@ const transform = {
   },
   files: {
     "SDL_assert.h": {
-      localIncludes: ['SDL3pp_callbackWrapper.h', 'SDL3pp_strings.h'],
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_strings.h"],
       ignoreEntries: [
         "__debugbreak"
       ],
@@ -155,7 +155,7 @@ const transform = {
       }
     },
     "SDL_atomic.h": {
-      localIncludes: ["SDL3pp_stdinc.h"],
+      localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_version.h"],
       ignoreEntries: [
         "SDL_SpinLock",
         "SDL_TryLockSpinlock",
@@ -352,6 +352,9 @@ const transform = {
     },
     "SDL_audio.h": {
       localIncludes: ["SDL3pp_iostream.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
+      namespacesMap: {
+        "SDL_PROP_AUDIOSTREAM": "prop::AudioStream",
+      },
       transform: {
         "SDL_AudioSpec": { before: "AudioFormat" },
         "SDL_AUDIO_MASK_BITSIZE": { kind: "var", type: "Uint32", constexpr: true },
@@ -810,6 +813,9 @@ const transform = {
               type: "const AudioSpec &"
             }
           ]
+        },
+        "SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         }
       }
     },
@@ -825,6 +831,10 @@ const transform = {
       transform: {
         "SDL_CameraSpec": { before: "SDL_Camera" },
         "SDL_CameraPosition": { before: "SDL_Camera" },
+        "SDL_CameraPermissionState": {
+          before: "SDL_Camera",
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
         "SDL_GetCameras": {
           type: "OwnArray<CameraID>",
           parameters: [],
@@ -910,7 +920,7 @@ const transform = {
       }
     },
     "SDL_cpuinfo.h": {
-      localIncludes: ["SDL3pp_stdinc.h"],
+      localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_version.h"],
       transform: {
         "SDL_CACHELINE_SIZE": {
           kind: "var",
@@ -1441,6 +1451,35 @@ const transform = {
           parameters: [{ type: "const Event &" }]
         },
         "SDL_Event": { wrapper: false },
+        "SDL_PeepEvents": { parameters: [{}, {}, {}, { default: "EVENT_FIRST" }, { default: "EVENT_LAST" }] },
+        "SDL_HasEvents": { parameters: [{ default: "EVENT_FIRST" }, { default: "EVENT_LAST" }] },
+        "SDL_FlushEvents": { parameters: [{ default: "EVENT_FIRST" }, { default: "EVENT_LAST" }] },
+        "SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+        },
+        "SDL_EVENT_SCREEN_KEYBOARD_SHOWN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+        },
+        "SDL_EVENT_SCREEN_KEYBOARD_HIDDEN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+        },
+        "SDL_EVENT_PINCH_BEGIN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+        },
+        "SDL_EVENT_PINCH_UPDATE": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+        },
+        "SDL_EVENT_PINCH_END": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+        },
+        "SDL_GetEventDescription": {
+          parameters: [{}, { type: "TargetBytes" }]
+        },
+        "GetEventDescription": {
+          kind: "function",
+          parameters: [{ type: "const Event &event" }],
+          type: "std::string",
+        },
       }
     },
     "SDL_filesystem.h": {
@@ -1599,6 +1638,7 @@ const transform = {
           type: "OwnArray<JoystickID>",
           parameters: [],
         },
+        "SDL_GAMEPAD_TYPE_GAMECUBE": { since: { tag: "SDL", major: 3, minor: 3, patch: 2 } },
       },
     },
     "SDL_gpu.h": {
@@ -1818,14 +1858,36 @@ const transform = {
         "SDL_ReleaseGPUFence": { hints: { methodName: "ReleaseFence" } },
         "SDL_GPUTextureSupportsFormat": { hints: { methodName: "TextureSupportsFormat" } },
         "SDL_GPUTextureSupportsSampleCount": { hints: { methodName: "TextureSupportsSampleCount" } },
-        "SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 12,
-          }
-        }
+        "SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 2, patch: 12, }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_NAME_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+        },
       }
     },
     "SDL_guid.h": {
@@ -1909,11 +1971,8 @@ const transform = {
     "SDL_haptic.h": {
       localIncludes: ["SDL3pp_error.h", "SDL3pp_joystick.h", "SDL3pp_stdinc.h"],
       transform: {
-        "HapticEffectType": {
-          before: "SDL_Haptic",
-          kind: "alias",
-          type: "Uint32",
-        },
+        "SDL_HapticEffectID": { before: "SDL_Haptic", wrapper: false, },
+        "SDL_HapticEffectType": { after: "HapticEffectID", },
         "SDL_HAPTIC_CONSTANT": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
         "SDL_HAPTIC_SINE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
         "SDL_HAPTIC_SQUARE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
@@ -1934,11 +1993,7 @@ const transform = {
         "SDL_HAPTIC_AUTOCENTER": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
         "SDL_HAPTIC_STATUS": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
         "SDL_HAPTIC_PAUSE": { after: "HapticEffectType", kind: "var", type: "HapticEffectType", constexpr: true },
-        "HapticDirectionType": {
-          before: "SDL_Haptic",
-          kind: "alias",
-          type: "Uint8",
-        },
+        "SDL_HapticDirectionType": { before: "SDL_Haptic", },
         "SDL_HAPTIC_POLAR": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
         "SDL_HAPTIC_CARTESIAN": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
         "SDL_HAPTIC_SPHERICAL": { after: "HapticDirectionType", kind: "var", type: "HapticDirectionType", constexpr: true },
@@ -1951,7 +2006,7 @@ const transform = {
         "SDL_HapticRamp": { before: "SDL_Haptic" },
         "SDL_HapticLeftRight": { before: "SDL_Haptic" },
         "SDL_HapticCustom": { before: "SDL_Haptic" },
-        "SDL_HapticEffect": { before: "SDL_Haptic" },
+        "SDL_HapticEffect": { before: "SDL_Haptic", wrapper: false },
         "SDL_HapticID": { before: "SDL_Haptic" },
         "SDL_Haptic": {
           resource: {
@@ -1980,6 +2035,9 @@ const transform = {
     },
     "SDL_hidapi.h": {
       localIncludes: ["SDL3pp_error.h", "SDL3pp_properties.h", "SDL3pp_stdinc.h"],
+      namespacesMap: {
+        "SDL_PROP_HIDAPI_": "prop::Hidapi",
+      },
       transform: {
         "SDL_hid_init": {
           type: "void",
@@ -2077,6 +2135,7 @@ const transform = {
           parameters: [{}, { type: "TargetBytes" }],
           hints: { methodName: "get_report_descriptor" }
         },
+        "SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER": { since: { tag: "SDL", major: 3, minor: 3, patch: 2 } }
       },
     },
     "SDL_hints.h": {
@@ -2447,6 +2506,7 @@ const transform = {
             { name: "closeio", type: "bool", default: "true" }
           ]
         },
+        "SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER": { since: { tag: "SDL", major: 3, minor: 3, patch: 2 } },
       }
     },
     "SDL_keyboard.h": {
@@ -3126,6 +3186,20 @@ const transform = {
             "SDL_CreateSystemCursor": "ctor",
           }
         },
+        "SDL_CreateCursor": {
+          parameters: [
+            { type: "const Uint8 *" },
+            { type: "const Uint8 *" },
+            { type: "const PointRaw &", name: "size" },
+            { type: "const PointRaw &", name: "hot" },
+          ],
+        },
+        "SDL_CreateColorCursor": {
+          parameters: [
+            {},
+            { type: "const PointRaw &", name: "hot" },
+          ],
+        },
         "SDL_BUTTON_MASK": {
           kind: "function",
           name: "ButtonMask",
@@ -3311,6 +3385,9 @@ const transform = {
         },
         "SDL_PenInputFlags": {
           enum: "SDL_PEN_INPUT_",
+        },
+        "SDL_PenDeviceType": {
+          enum: "SDL_PEN_DEVICE_TYPE_",
         }
       }
     },
@@ -3863,14 +3940,20 @@ const transform = {
             "SDL_KillProcess": "function",
             "SDL_WaitProcess": "function",
           }
-        }
+        },
+        "SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_PROCESS_CREATE_CMDLINE_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
       },
       namespacesMap: {
         "SDL_PROP_PROCESS_": "prop::process"
       }
     },
     "SDL_properties.h": {
-      localIncludes: ['SDL3pp_callbackWrapper.h', 'SDL3pp_error.h', 'SDL3pp_strings.h'],
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_strings.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PropertiesID": {
           name: "Properties",
@@ -3885,6 +3968,7 @@ const transform = {
             },
           },
         },
+        "SDL_PROP_NAME_STRING": { kind: "var" },
         "SDL_PropertyType": {
           enum: "SDL_PROPERTY_TYPE_",
           before: "SDL_PropertiesID",
@@ -4529,9 +4613,13 @@ const transform = {
       },
       transform: {
         "SDL_SOFTWARE_RENDERER": { kind: "var", constexpr: true, },
+        "SDL_GPU_RENDERER": { kind: "var", constexpr: true, },
         "SDL_RENDERER_VSYNC_DISABLED": { kind: "var", constexpr: true, type: "int" },
         "SDL_RENDERER_VSYNC_ADAPTIVE": { kind: "var", constexpr: true, type: "int" },
         "SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE": { kind: "var", constexpr: true, type: "int" },
+        "SDL_GPURenderStateCreateInfo": {
+          before: "Renderer",
+        },
         "SDL_Renderer": {
           resource: true,
           entries: {
@@ -5236,6 +5324,48 @@ const transform = {
         "SDL_LockTextureToSurface": {
           parameters: [{}, { type: "OptionalRef<const SDL_Rect>", default: "std::nullopt" }],
           type: "Surface",
+        },
+        "SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
       }
     },
@@ -6114,28 +6244,19 @@ const transform = {
           }
         },
         "SDL_SCALEMODE_INVALID": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 10,
-          }
+          since: { tag: "SDL", major: 3, minor: 2, patch: 10 },
+        },
+        "SDL_SCALEMODE_PIXELART": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_FLIP_HORIZONTAL_AND_VERTICAL": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
         "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 6,
-          }
+          since: { tag: "SDL", major: 3, minor: 2, patch: 6 },
         },
         "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 6,
-          }
+          since: { tag: "SDL", major: 3, minor: 2, patch: 6 },
         },
         "SDL_MUSTLOCK": {
           kind: "function",
@@ -6148,13 +6269,17 @@ const transform = {
         "SDL_Surface": {
           resource: {
             shared: 'refcount',
-            ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP"],
+            ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP", "SDL_LoadPNG_IO", "SDL_LoadPNG"],
           },
           entries: {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
             "SDL_LoadBMP_IO": {
               name: "LoadBMP",
+              parameters: [{}, { default: "false" }]
+            },
+            "SDL_LoadPNG_IO": {
+              name: "LoadPNG",
               parameters: [{}, { default: "false" }]
             },
             "SDL_MUSTLOCK": {
@@ -6187,6 +6312,16 @@ const transform = {
           hints: { methodName: "SaveBMP" },
         },
         "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstParam" }, {}] },
+        "SDL_LoadPNG_IO": {
+          name: "LoadPNG",
+          parameters: [{}, { default: "false" }]
+        },
+        "SDL_SavePNG_IO": {
+          name: "SavePNG",
+          parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
+          hints: { methodName: "SavePNG" },
+        },
+        "SDL_SavePNG": { parameters: [{ type: "SurfaceConstParam" }, {}] },
         "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstParam" }] },
         "SDL_SetSurfaceColorKey": {
           parameters: [
@@ -7340,13 +7475,9 @@ const transform = {
           doc: "@sa HitTest"
         },
         "SDL_EGLSurface": { before: "SDL_Window" },
-        "SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN": {
-          since: {
-            tag: "SDL",
-            major: 3,
-            minor: 2,
-            patch: 18,
-          }
+        "SDL_ProgressState": {
+          before: "SDL_Window",
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
         "SDL_Window": {
           resource: {
@@ -7575,6 +7706,33 @@ const transform = {
         },
         "SDL_EGL_GetWindowSurface": {
           hints: { methodName: "GetEGLSurface" }
+        },
+        "SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 2, patch: 18 },
+        },
+        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
       }
     },

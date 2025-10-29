@@ -2,7 +2,11 @@
 <  * @defgroup CategoryThread Category Thread
 ---
 >  * @defgroup CategoryThread Thread Management
-137a138,144
+27c27
+<  * mechanisms are handled by the functions in SDL_mutex.h.
+---
+>  * mechanisms are handled by the functions in SDL3pp_mutex.h.
+138a139,145
 > /**
 >  * The function passed to Thread.Thread() as the new thread's entry point.
 >  *

@@ -25,12 +25,16 @@ namespace SDL {
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, Surface.LoadBMP(). SDL itself does not
- * provide loaders for various other file formats, but there are several
- * excellent external libraries that do, including its own satellite library,
- * SDL_image:
+ * There is also a simple .bmp loader, Surface.LoadBMP(), and a simple .png
+ * loader, Surface.LoadPNG(). SDL itself does not provide loaders for other file
+ * formats, but there are several excellent external libraries that do,
+ * including its own satellite library,
+ * [SDL_image](https://wiki.libsdl.org/SDL3_image)
+ * .
  *
- * https://github.com/libsdl-org/SDL_image
+ * In general these functions are thread-safe in that they can be called on
+ * different threads with different surfaces. You should not try to modify any
+ * surface from two threads simultaneously.
  *
  * @{
  */
@@ -154,6 +158,16 @@ constexpr ScaleMode SCALEMODE_NEAREST =
 constexpr ScaleMode SCALEMODE_LINEAR =
   SDL_SCALEMODE_LINEAR; ///< linear filtering
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/**
+ * nearest pixel sampling with improved scaling for pixel art, available since
+ * SDL 3.4.0
+ */
+constexpr ScaleMode SCALEMODE_PIXELART = SDL_SCALEMODE_PIXELART;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 /**
  * The flip mode.
  *
@@ -166,6 +180,14 @@ constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE; ///< Do not flip.
 constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL; ///< flip horizontally
 
 constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/// flip horizontally and vertically (not a diagonal flip)
+constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
+  SDL_FLIP_HORIZONTAL_AND_VERTICAL;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 /**
  * A collection of pixels used in software blitting.
@@ -439,6 +461,56 @@ public:
    */
   static Surface LoadBMP(StringParam file);
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Load a PNG image from a seekable SDL data stream.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param src the data stream for the surface.
+   * @param closeio if true, calls IOStream.Close() on `src` before returning,
+   * even in the case of an error.
+   * @returns a pointer to a new Surface structure or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  static Surface LoadPNG(IOStreamParam src, bool closeio = false);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Load a PNG image from a file.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so
+   * will result in a memory leak.
+   *
+   * @param file the PNG file to load.
+   * @returns a pointer to a new Surface structure or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  static Surface LoadPNG(StringParam file);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
   /// member access to underlying SurfaceRaw.
   constexpr const SurfaceRaw operator->() const { return m_resource; }
 
@@ -543,7 +615,8 @@ public:
    *                   colorspace.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -561,7 +634,8 @@ public:
    * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
    *          the surface is nullptr.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -589,7 +663,8 @@ public:
    * @returns a new Palette structure on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -600,12 +675,16 @@ public:
   /**
    * Set the palette used by a surface.
    *
+   * Setting the palette keeps an internal reference to the palette, which can
+   * be safely destroyed afterwards.
+   *
    * A single palette can be shared with many surfaces.
    *
    * @param palette the Palette structure to use.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -643,7 +722,8 @@ public:
    *              surface.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -684,7 +764,8 @@ public:
    *          failure; call GetError() for more information. This should be
    *          freed with free() when it is no longer needed.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -701,7 +782,8 @@ public:
    * destroying them if this is the last reference to them.
    *
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -725,9 +807,10 @@ public:
    *
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe. The locking referred to by
-   *               this function is making the pixels available for direct
-   *               access, not thread-safe locking.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces. The locking referred to by this function
+   *               is making the pixels available for direct access, not
+   *               thread-safe locking.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -764,7 +847,8 @@ public:
    * even in the case of an error.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -774,7 +858,7 @@ public:
   void SaveBMP(IOStreamParam dst, bool closeio = false) const;
 
   /**
-   * Save a surface to a file.
+   * Save a surface to a file in BMP format.
    *
    * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
    * BMP directly. Other RGB formats with 8-bit or higher get converted to a
@@ -785,7 +869,8 @@ public:
    * @param file a file to save to.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -793,6 +878,48 @@ public:
    * @sa Surface.SaveBMP
    */
   void SaveBMP(StringParam file) const;
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Save a surface to a seekable SDL data stream in PNG format.
+   *
+   * @param dst a data stream to save to.
+   * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+   * even in the case of an error.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  void SavePNG(IOStreamParam dst, bool closeio = false) const;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Save a surface to a file in PNG format.
+   *
+   * @param file a file to save to.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  void SavePNG(StringParam file) const;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -803,7 +930,8 @@ public:
    * @param enabled true to enable RLE acceleration, false to disable it.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -842,7 +970,8 @@ public:
    * @param key the transparent pixel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -904,7 +1033,8 @@ public:
    * @param b the blue color value multiplied into blit operations.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -921,7 +1051,8 @@ public:
    * @param b a pointer filled in with the current blue color value.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -941,7 +1072,8 @@ public:
    * @param alpha the alpha value multiplied into blit operations.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -979,7 +1111,8 @@ public:
    * @param blendMode the BlendMode to use for blit blending.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1015,7 +1148,8 @@ public:
    * @returns true if the rectangle intersects the surface, otherwise false and
    *          blits will be completely clipped.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1036,7 +1170,8 @@ public:
    *             the surface.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1050,11 +1185,36 @@ public:
    * @param flip the direction to flip.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
   void Flip(FlipMode flip);
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Return a copy of a surface rotated clockwise a number of degrees.
+   *
+   * The angle of rotation can be negative for counter-clockwise rotation.
+   *
+   * When the rotation isn't a multiple of 90 degrees, the resulting surface is
+   * larger than the original, with the background filled in with the colorkey,
+   * if available, or RGBA 255/255/255/0 if not.
+   *
+   * @param angle the rotation angle, in degrees.
+   * @returns a rotated copy of the surface or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  Surface Rotate(float angle);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -1067,7 +1227,8 @@ public:
    * @returns a copy of the surface or nullptr on failure; call GetError() for
    *          more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1087,7 +1248,8 @@ public:
    * @returns a copy of the surface or nullptr on failure; call GetError() for
    *          more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1113,7 +1275,8 @@ public:
    * @returns the new Surface structure that is created or nullptr on failure;
    *          call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1141,7 +1304,8 @@ public:
    * @returns the new Surface structure that is created or nullptr on failure;
    *          call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1162,7 +1326,8 @@ public:
    *               multiplication, false to do multiplication in sRGB space.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1182,7 +1347,8 @@ public:
    * @param a the alpha component of the pixel, normally in the range 0-1.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1205,7 +1371,8 @@ public:
    * @param color the color to fill with.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1232,7 +1399,8 @@ public:
    * @param color the color to fill with.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1544,7 +1712,8 @@ public:
    * @param b the blue component of the pixel in the range 0-255.
    * @returns a pixel value.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1576,7 +1745,8 @@ public:
    * @param a the alpha component of the pixel in the range 0-255.
    * @returns a pixel value.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1605,7 +1775,8 @@ public:
    *          ignore this channel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1636,7 +1807,8 @@ public:
    *          ignore this channel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1660,7 +1832,8 @@ public:
    *          0-1, or nullptr to ignore this channel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1688,7 +1861,8 @@ public:
    *          0-1, or nullptr to ignore this channel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1711,7 +1885,8 @@ public:
    * @param a the alpha channel value, 0-255.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1731,7 +1906,8 @@ public:
    * @param a the alpha channel value, normally in the range 0-1.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1903,7 +2079,8 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  *                   colorspace.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1930,7 +2107,8 @@ inline void Surface::SetColorspace(Colorspace colorspace)
  * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
  *          the surface is nullptr.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1967,7 +2145,8 @@ inline Colorspace Surface::GetColorspace() const
  * @returns a new Palette structure on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1986,13 +2165,17 @@ inline Palette Surface::CreatePalette()
 /**
  * Set the palette used by a surface.
  *
+ * Setting the palette keeps an internal reference to the palette, which can
+ * be safely destroyed afterwards.
+ *
  * A single palette can be shared with many surfaces.
  *
  * @param surface the Surface structure to update.
  * @param palette the Palette structure to use.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2048,7 +2231,8 @@ inline Palette Surface::GetPalette() const
  *              surface.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2107,7 +2291,8 @@ inline bool Surface::HasAlternateImages() const
  *          failure; call GetError() for more information. This should be
  *          freed with free() when it is no longer needed.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2133,7 +2318,8 @@ inline OwnArray<SurfaceRaw> Surface::GetImages() const
  *
  * @param surface the Surface structure to update.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2166,9 +2352,10 @@ inline void Surface::RemoveAlternateImages()
  * @param surface the Surface structure to be locked.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe. The locking referred to by
- *               this function is making the pixels available for direct
- *               access, not thread-safe locking.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces. The locking referred to by this function
+ *               is making the pixels available for direct access, not
+ *               thread-safe locking.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2269,7 +2456,8 @@ inline Surface Surface::LoadBMP(StringParam file)
  * even in the case of an error.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2284,7 +2472,7 @@ inline void SaveBMP(SurfaceConstParam surface,
 }
 
 /**
- * Save a surface to a file.
+ * Save a surface to a file in BMP format.
  *
  * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
  * BMP directly. Other RGB formats with 8-bit or higher get converted to a
@@ -2296,7 +2484,8 @@ inline void SaveBMP(SurfaceConstParam surface,
  * @param file a file to save to.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2318,6 +2507,147 @@ inline void Surface::SaveBMP(StringParam file) const
   SDL::SaveBMP(m_resource, std::move(file));
 }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Load a PNG image from a seekable SDL data stream.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ * even in the case of an error.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
+{
+  return Surface(SDL_LoadPNG_IO(src, closeio));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Load a PNG image from a file.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so
+ * will result in a memory leak.
+ *
+ * @param file the PNG file to load.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline Surface Surface::LoadPNG(IOStreamParam src, bool closeio)
+{
+  return SDL::LoadPNG(src, closeio);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline Surface Surface::LoadPNG(StringParam file)
+{
+  return SDL::LoadPNG(std::move(file));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Save a surface to a seekable SDL data stream in PNG format.
+ *
+ * @param surface the Surface structure containing the image to be saved.
+ * @param dst a data stream to save to.
+ * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+ * even in the case of an error.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline void SavePNG(SurfaceConstParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
+{
+  CheckError(SDL_SavePNG_IO(surface, dst, closeio));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Save a surface to a file in PNG format.
+ *
+ * @param surface the Surface structure containing the image to be saved.
+ * @param file a file to save to.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline void SavePNG(SurfaceConstParam surface, StringParam file)
+{
+  CheckError(SDL_SavePNG(surface, file));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline void Surface::SavePNG(IOStreamParam dst, bool closeio) const
+{
+  SDL::SavePNG(m_resource, dst, closeio);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline void Surface::SavePNG(StringParam file) const
+{
+  SDL::SavePNG(m_resource, std::move(file));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Set the RLE acceleration hint for a surface.
  *
@@ -2328,7 +2658,8 @@ inline void Surface::SaveBMP(StringParam file) const
  * @param enabled true to enable RLE acceleration, false to disable it.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2382,7 +2713,8 @@ inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
  * @param key the transparent pixel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2476,7 +2808,8 @@ inline std::optional<Uint32> Surface::GetColorKey() const
  * @param b the blue color value multiplied into blit operations.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2502,7 +2835,8 @@ inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
  * @param b a pointer filled in with the current blue color value.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2534,7 +2868,8 @@ inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @param alpha the alpha value multiplied into blit operations.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2603,7 +2938,8 @@ inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
  * @param blendMode the BlendMode to use for blit blending.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2657,7 +2993,8 @@ inline BlendMode Surface::GetBlendMode() const
  * @returns true if the rectangle intersects the surface, otherwise false and
  *          blits will be completely clipped.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2693,7 +3030,8 @@ inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
  *             the surface.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2716,7 +3054,8 @@ inline Rect Surface::GetClipRect() const
  * @param flip the direction to flip.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2726,6 +3065,43 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 }
 
 inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Return a copy of a surface rotated clockwise a number of degrees.
+ *
+ * The angle of rotation can be negative for counter-clockwise rotation.
+ *
+ * When the rotation isn't a multiple of 90 degrees, the resulting surface is
+ * larger than the original, with the background filled in with the colorkey,
+ * if available, or RGBA 255/255/255/0 if not.
+ *
+ * @param surface the surface to rotate.
+ * @param angle the rotation angle, in degrees.
+ * @returns a rotated copy of the surface or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline Surface RotateSurface(SurfaceParam surface, float angle)
+{
+  return SDL_RotateSurface(surface, angle);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline Surface Surface::Rotate(float angle)
+{
+  return SDL::RotateSurface(m_resource, angle);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -2739,7 +3115,8 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  * @returns a copy of the surface or nullptr on failure; call GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2768,7 +3145,8 @@ inline Surface Surface::Duplicate() const
  * @returns a copy of the surface or nullptr on failure; call GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2805,7 +3183,8 @@ inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
  * @returns the new Surface structure that is created or nullptr on failure;
  *          call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2851,7 +3230,8 @@ inline Surface Surface::Convert(PixelFormat format,
  * @returns the new Surface structure that is created or nullptr on failure;
  *          call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -3002,7 +3382,8 @@ inline void PremultiplyAlpha(const PointRaw& size,
  *               multiplication, false to do multiplication in sRGB space.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3031,7 +3412,8 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * @param a the alpha component of the pixel, normally in the range 0-1.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3063,7 +3445,8 @@ inline void Surface::Clear(const FColorRaw& c)
  * @param color the color to fill with.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -3106,7 +3489,8 @@ inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
  * @param color the color to fill with.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -3572,7 +3956,8 @@ inline void Surface::Blit9Grid(SurfaceParam src,
  * @param b the blue component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -3616,7 +4001,8 @@ inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
  * @param a the alpha component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -3654,7 +4040,8 @@ inline Uint32 Surface::MapRGBA(ColorRaw c) const
  *          ignore this channel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3690,7 +4077,8 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
  *          ignore this channel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3732,7 +4120,8 @@ inline Color Surface::ReadPixel(const PointRaw& p) const
  *          0-1, or nullptr to ignore this channel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3765,7 +4154,8 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
  *          0-1, or nullptr to ignore this channel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3807,7 +4197,8 @@ inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
  * @param a the alpha channel value, 0-255.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -3838,7 +4229,8 @@ inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
  * @param a the alpha channel value, normally in the range 0-1.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with
+ *               different surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
