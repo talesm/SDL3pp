@@ -58641,7 +58641,7 @@ constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
 /// @}
 
 /**
- * @defgroup CategoryEvents Category Events
+ * @defgroup CategoryEvents Event Handling
  *
  * Event queue management.
  *

@@ -1,3 +1,7 @@
+11c11
+<  * @defgroup CategoryEvents Category Events
+---
+>  * @defgroup CategoryEvents Event Handling
 42a43,49
 >  * @defgroup EventTypes Event Types
 >  *
