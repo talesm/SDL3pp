@@ -3,23 +3,23 @@ SDL3pp {#mainpage}
 
 A "port" of SDL3 in C++.
 
-This basically wrap SDL3 naturally OO looking concepts into proper 
-C++ classes and objects, trying to as straightforward as possible.
-It was inspired on [SDL2pp](https://github.com/libSDL2pp/libSDL2pp), 
-with the addition of flexible memory management and wrappers for 
-string and callbacks.
+This basically wrap SDL3 naturally OO looking concepts into proper C++ classes
+and objects, trying to as straightforward as possible. It was inspired on
+[SDL2pp](https://github.com/libSDL2pp/libSDL2pp), with the addition of flexible
+memory management and wrappers for string and callbacks.
 
 ## Quick start / TLDR
 
-- Download [the single header](https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/amalgamation/SDL3pp/SDL3pp.h) and add to your project;
+- Download [the latest release](https://github.com/talesm/SDL3pp/releases);
+- [Build](#building) instructions; 
+- [Installation](#installing) instructions;
 - See [API reference](#ApiByCategory);
-- See [Examples directory](https://github.com/talesm/SDL3pp/tree/main/examples).
+- See [Example](#example) and
+  [Examples directory](https://github.com/talesm/SDL3pp/tree/main/examples).
 
 ## Goals
 
-- Be header only, we are mostly wrapping thing here;
-  - We even have a 
-    [the single header to just put in your project](https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/amalgamation/SDL3pp/SDL3pp.h)
+- Be header only, we are only wrapping SDL here;
 - Mostly wrap the naturally OO-looking API into actual OO C++ constructs;
   - Also add little quick improvements like using vocabulary types to better 
     fit C++ idioms;
@@ -58,4 +58,26 @@ cmake -S . -B build
 cmake --build build
 ```
 
-Installing is not supported yet, but hopefully will be in the future.
+## Installing
+
+There are a few ways to install SDL3pp:
+
+### Copy into project
+
+The most basic way is to copy the contents of
+[amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/) directly
+to your project.
+
+### System installation:
+
+After [build](#building), you can install on you system with cmake:
+
+```sh
+cmake --install build
+```
+
+Alteratively can move into a custom location with:
+
+```sh
+cmake --install build --install-prefix <directory>
+```

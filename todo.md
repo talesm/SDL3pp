@@ -46,7 +46,12 @@ Todo for next version
 Backlog
 =======
 
-- [ ] All SDL_*ID representing devices must have uniform interface
+- [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
+  several APIS;
+- [ ] Generate archive with the includes only;
+- [ ] Generate archive with the amalgamation only;
+- [ ] Support to vcpkg;
+- [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] MouseID
   - [ ] JoystickID
   - [ ] DisplayID

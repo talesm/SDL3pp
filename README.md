@@ -3,30 +3,33 @@ SDL3pp
 
 A "port" of SDL3 in C++.
 
-This basically wrap SDL3 naturally OO looking concepts into proper 
-C++ classes and objects, trying to as straightforward as possible.
-It was inspired on [SDL2pp](https://github.com/libSDL2pp/libSDL2pp), 
-with the addition of flexible memory management and wrappers for 
-string and callbacks.
+This basically wrap SDL3 naturally OO looking concepts into proper C++ classes
+and objects, trying to as straightforward as possible. It was inspired on
+[SDL2pp](https://github.com/libSDL2pp/libSDL2pp), with the addition of flexible
+memory management and wrappers for string and callbacks.
 
 ## Quick start / TLDR
 
-- Download [the single header](./amalgamation/SDL3pp/SDL3pp.h) and add to your project;
+- Download [the single header](./amalgamation/SDL3pp/) and add to your project;
+- Alternatively, download
+  [the latest release](https://github.com/talesm/SDL3pp/releases) then follow:
+- [Build](#building) instructions; 
+- [Installation](#installing) instructions;
 - See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
-- See [Examples directory](./examples/).
+- See [Example](#example) and [Examples directory](./examples/).
+
 
 ## Goals
 
-- Be header only, we are mostly wrapping thing here;
-  - We even have a 
-    [the single header to just put in your project](./amalgamation/SDL3pp/SDL3pp.h)
+- Be header only, we are only wrapping SDL here;
 - Mostly wrap the naturally OO-looking API into actual OO C++ constructs;
-  - Also add little quick improvements like using vocabulary types to better 
-    fit C++ idioms;
-  - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) for more details;
+  - Also add little quick improvements like using vocabulary types to better fit
+    C++ idioms;
+  - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html)
+    for more details;
 - Put everything into a `SDL` namespace instead of prefixes;
-  - For uniformity we also wrap non OO entities at lower priority (like 
-    aliases, functions, constants, etc);
+  - For uniformity we also wrap non OO entities at lower priority (like aliases,
+    functions, constants, etc) into SDL namespace;
 - Interfaces should accept both C structs and the C++ wraps, so you can adapt a
   codebase gradually or just choose to use only what you deem necessary.
 - Flexible, while we use [RAII](https://en.cppreference.com/w/cpp/language/raii)
@@ -43,7 +46,7 @@ string and callbacks.
     to understand the rationally behind some design patterns and choices we use.
 - See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
   for some examples;
-- See our roadmap-like [todo](todo.md).
+- See our roadmap-ish [todo](todo.md).
 
 ## Example
 
@@ -95,4 +98,26 @@ cmake -S . -B build
 cmake --build build
 ```
 
-Installing is not supported yet, but hopefully will be in the future.
+## Installing
+
+There are a few ways to install SDL3pp:
+
+### Copy into project
+
+The most basic way is to copy the contents of
+[amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/) directly
+to your project.
+
+### System installation:
+
+After [build](#building), you can install on you system with cmake:
+
+```sh
+cmake --install build
+```
+
+Alteratively can move into a custom location with:
+
+```sh
+cmake --install build --install-prefix <directory>
+```

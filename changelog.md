@@ -1,6 +1,59 @@
 Changelog
 =========
 
+## Version 0.3.1
+
+This version reviews install script, adds functions as constants for macros and
+fix errors with retro-compatibility:
+
+- Make install script (contrib from @brccabral);
+- Fix constants not properly guarded by SDL_VERSION_ATLEAST();
+- Review macros that could be constexpr function or constant.
+  - SDL_audio.h macros turned constexpr constants: 
+    - SDL_AUDIO_MASK_BITSIZE;
+    - SDL_AUDIO_MASK_FLOAT;
+    - SDL_AUDIO_MASK_BIG_ENDIAN;
+    - SDL_AUDIO_MASK_SIGNED;
+  - SDL_render.h macros turned constexpr constants
+    - SDL_SOFTWARE_RENDERER;
+    - SDL_RENDERER_VSYNC_DISABLED;
+    - SDL_RENDERER_VSYNC_ADAPTIVE;
+    - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE;
+  - SDL_stdinc.h macros turned constexpr constants:
+    - SDL_FLT_EPSILON;
+    - SDL_ICONV_ERROR;
+    - SDL_ICONV_E2BIG;
+    - SDL_ICONV_EILSEQ;
+    - SDL_ICONV_EINVAL;
+  - SDL_stdinc.h macros turned functions:
+    - SDL_INIT_INTERFACE (Renamed as InitInterface);
+    - SDL_copyp;
+    - SDL_iconv_utf8_locale;
+    - SDL_iconv_utf8_ucs2;
+    - SDL_iconv_utf8_ucs4;
+    - SDL_iconv_wchar_utf8;
+  - SDL_ttf.h macros turned constexpr constants:
+    - TTF_FONT_WEIGHT_THIN;
+    - TTF_FONT_WEIGHT_EXTRA_LIGHT;
+    - TTF_FONT_WEIGHT_LIGHT;
+    - TTF_FONT_WEIGHT_NORMAL;
+    - TTF_FONT_WEIGHT_MEDIUM;
+    - TTF_FONT_WEIGHT_SEMI_BOLD;
+    - TTF_FONT_WEIGHT_BOLD;
+    - TTF_FONT_WEIGHT_EXTRA_BOLD;
+    - TTF_FONT_WEIGHT_BLACK;
+    - TTF_FONT_WEIGHT_EXTRA_BLACK;
+  - SDL_video.h macros turned constexpr constants:
+    - SDL_WINDOWPOS_UNDEFINED_MASK;
+    - SDL_WINDOWPOS_UNDEFINED;
+    - SDL_WINDOWPOS_CENTERED_MASK;
+    - SDL_WINDOWPOS_CENTERED;
+  - SDL_video.h macros turned constexpr functions:
+    - SDL_WINDOWPOS_UNDEFINED_DISPLAY;
+    - SDL_WINDOWPOS_ISUNDEFINED;
+    - SDL_WINDOWPOS_CENTERED_DISPLAY;
+    - SDL_WINDOWPOS_ISCENTERED.
+
 ## Version 0.3
 
 This version reviews the API and add missing free-standing functions. 
