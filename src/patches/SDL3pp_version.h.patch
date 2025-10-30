@@ -14,7 +14,7 @@
 ---
 > #define SDL_MINOR_VERSION
 42c44
-< #define SDL_MICRO_VERSION 25
+< #define SDL_MICRO_VERSION 27
 ---
 > #define SDL_MICRO_VERSION
 106a109,110
