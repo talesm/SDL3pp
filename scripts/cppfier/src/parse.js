@@ -1,5 +1,5 @@
-const { readLinesSync, system } = require("./utils");
-const { Tokenizer } = require("./tokenize.js");
+import { readLinesSync, system } from "./utils.js";
+import { Tokenizer } from "./tokenize.js";
 
 /**
  * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, FileTokenKind, Api, ApiFile } from "./types"
@@ -413,9 +413,15 @@ function normalizeType(typeString) {
     .replace(/\s\s+/g, " ");
 }
 
-exports.parseApi = parseApi;
-exports.parseContent = parseContent;
-exports.insertEntry = insertEntry;
-exports.readContent = readContent;
-exports.parseParams = parseParams;
-exports.removeEntryLineNumbers = removeEntryLineNumbers;
+const _parseApi = parseApi;
+export { _parseApi as parseApi };
+const _parseContent = parseContent;
+export { _parseContent as parseContent };
+const _insertEntry = insertEntry;
+export { _insertEntry as insertEntry };
+const _readContent = readContent;
+export { _readContent as readContent };
+const _parseParams = parseParams;
+export { _parseParams as parseParams };
+const _removeEntryLineNumbers = removeEntryLineNumbers;
+export { _removeEntryLineNumbers as removeEntryLineNumbers };

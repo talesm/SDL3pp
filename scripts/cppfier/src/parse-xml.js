@@ -1,8 +1,8 @@
-const { parseStringPromise } = require("xml2js");
-const { system } = require("./utils");
-const { existsSync } = require("fs");
-const { readFile } = require("fs/promises");
-const { readContent, parseParams } = require("./parse");
+import { parseStringPromise } from "xml2js";
+import { system } from "./utils.js";
+import { existsSync } from "fs";
+import { readFile } from "fs/promises";
+import { readContent, parseParams } from "./parse";
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile } from "./types"
@@ -313,5 +313,7 @@ function normalizeType(typeString) {
     .replace(/([*&])\s+(&*)/g, "$1$2").trim();
 }
 
-exports.parseXmlApi = parseXmlApi;
-exports.parseXmlFile = parseXmlFile;
+const _parseXmlApi = parseXmlApi;
+export { _parseXmlApi as parseXmlApi };
+const _parseXmlFile = parseXmlFile;
+export { _parseXmlFile as parseXmlFile };

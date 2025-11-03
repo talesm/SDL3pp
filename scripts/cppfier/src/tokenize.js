@@ -1,4 +1,4 @@
-const { system } = require("./utils");
+import { system } from "./utils.js";
 /**
  * @import {FileToken, VersionTag} from "./types"
  */
@@ -409,5 +409,7 @@ function hasIgnoredPrefix(line) {
   return false;
 }
 
-exports.Tokenizer = Tokenizer;
-exports.tokenize = tokenize;
+const _Tokenizer = Tokenizer;
+export { _Tokenizer as Tokenizer };
+const _tokenize = tokenize;
+export { _tokenize as tokenize };

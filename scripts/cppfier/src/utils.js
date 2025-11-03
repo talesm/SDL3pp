@@ -1,4 +1,4 @@
-const { readFileSync, writeFileSync } = require("node:fs");
+import { readFileSync, writeFileSync } from "node:fs";
 /** @import {PathOrFileDescriptor} from "node:fs" */
 
 /**
@@ -125,12 +125,21 @@ function deepClone(obj) {
   return /** @type {T} */(result);
 }
 
-exports.readLinesSync = readLinesSync;
-exports.writeLinesSync = writeLinesSync;
-exports.readJSONSync = readJSONSync;
-exports.writeJSONSync = writeJSONSync;
-exports.combineArray = combineArray;
-exports.combineObject = combineObject;
-exports.looksLikeFreeFunction = looksLikeFreeFunction;
-exports.deepClone = deepClone;
-exports.system = system;
+const _readLinesSync = readLinesSync;
+export { _readLinesSync as readLinesSync };
+const _writeLinesSync = writeLinesSync;
+export { _writeLinesSync as writeLinesSync };
+const _readJSONSync = readJSONSync;
+export { _readJSONSync as readJSONSync };
+const _writeJSONSync = writeJSONSync;
+export { _writeJSONSync as writeJSONSync };
+const _combineArray = combineArray;
+export { _combineArray as combineArray };
+const _combineObject = combineObject;
+export { _combineObject as combineObject };
+const _looksLikeFreeFunction = looksLikeFreeFunction;
+export { _looksLikeFreeFunction as looksLikeFreeFunction };
+const _deepClone = deepClone;
+export { _deepClone as deepClone };
+const _system = system;
+export { _system as system };

@@ -1,6 +1,6 @@
-const { generateCallParameters } = require("./generate");
-const { insertEntry } = require("./parse");
-const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
+import { generateCallParameters } from "./generate";
+import { insertEntry } from "./parse";
+import { system, combineObject, looksLikeFreeFunction, deepClone } from "./utils";
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, QuickTransform, ApiEntryTransformMap } from "./types"
@@ -2391,5 +2391,6 @@ function resolveDocRefs(doc, context) {
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
 
-exports.transformApi = transformApi;
+const _transformApi = transformApi;
+export { _transformApi as transformApi };
 

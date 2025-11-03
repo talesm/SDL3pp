@@ -1,5 +1,5 @@
-const { system, writeLinesSync } = require("./utils.js");
-const { existsSync, mkdirSync } = require("fs");
+import { system, writeLinesSync } from "./utils.js";
+import { existsSync, mkdirSync } from "fs";
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters, Dict } from "./types.js"
  */
@@ -354,6 +354,9 @@ function generateParameter(parameter) {
   return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }
 
-exports.generateApi = generateApi;
-exports.generateCallParameters = generateCallParameters;
-exports.combineHints = combineHints;
+const _generateApi = generateApi;
+export { _generateApi as generateApi };
+const _generateCallParameters = generateCallParameters;
+export { _generateCallParameters as generateCallParameters };
+const _combineHints = combineHints;
+export { _combineHints as combineHints };

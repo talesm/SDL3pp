@@ -1,8 +1,8 @@
-const { generateApi } = require("./generate.js");
-const { parseXmlApi } = require("./parse-xml.js");
-const { parseApi } = require("./parse.js");
-const { transformApi } = require("./transform.js");
-const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
+import { generateApi } from "./generate.js";
+import { parseXmlApi } from "./parse-xml.js";
+import { parseApi } from "./parse.js";
+import { transformApi } from "./transform.js";
+import { readJSONSync, system, writeJSONSync, writeLinesSync } from "./utils.js";
 /**
  * @import {Api, ApiTransform} from "./types"
  */

@@ -1,9 +1,7 @@
 {
   "include": [
     "src/*.js",
-    "tests/*.js",
     "src/*.ts",
-    "tests/*.ts",
   ],
   "compilerOptions": {
     "lib": [
@@ -11,5 +9,9 @@
     ],
     "resolveJsonModule": true,
     "checkJs": true,
-  }
+    "module": "node16",
+    "outDir": "dist/",
+    "target": "es2020",
+    "moduleResolution": "node16"
+  },
 }
