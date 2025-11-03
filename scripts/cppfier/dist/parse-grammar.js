@@ -7,7 +7,7 @@ const ParseTreeWalker_1 = require("antlr4ts/tree/ParseTreeWalker");
 const fs_1 = require("fs");
 class ProgListener {
     constructor(name) {
-        this.api = { name };
+        this.api = { name, doc: undefined, entries: {} };
     }
     // Assuming a parser rule with name: `functionDeclaration`
     enterProg(ctx) {
@@ -15,6 +15,24 @@ class ProgListener {
         if (doc)
             this.api.doc = parseDoc(doc.text);
     }
+    enterDirective(ctx) {
+        const directive = ctx.DIRECTIVE().text;
+        const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
+        if (!m)
+            return;
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = m[1];
+        const parameters = m[2]?.split(/,\s*/)?.map(p => ({ type: "", name: p }));
+        const value = directive.slice(m[0].length).trim();
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'def',
+            parameters,
+            value,
+        };
+    }
+    ;
     // other enterX functions...
     visitTerminal(/*@NotNull*/ node) { }
 }

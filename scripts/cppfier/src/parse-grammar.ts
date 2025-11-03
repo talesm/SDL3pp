@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { CHeaderParser, DocContext, ProgContext } from './grammar/CHeaderParser';
+import { CHeaderParser, DirectiveContext, DocContext, ProgContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -12,7 +12,7 @@ class ProgListener implements CHeaderListener {
   public api: ApiFile;
 
   constructor(name: string) {
-    this.api = { name };
+    this.api = { name, doc: undefined, entries: {} };
   }
 
   // Assuming a parser rule with name: `functionDeclaration`
@@ -20,6 +20,23 @@ class ProgListener implements CHeaderListener {
     const doc = ctx.doc();
     if (doc) this.api.doc = parseDoc(doc.text);
   }
+
+  enterDirective(ctx: DirectiveContext) {
+    const directive = ctx.DIRECTIVE().text;
+    const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
+    if (!m) return;
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = m[1];
+    const parameters = m[2]?.split(/,\s*/)?.map(p => ({ type: "", name: p }));
+    const value = directive.slice(m[0].length).trim();
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'def',
+      parameters,
+      value,
+    };
+  };
 
   // other enterX functions...
   visitTerminal(/*@NotNull*/ node: TerminalNode) { }
