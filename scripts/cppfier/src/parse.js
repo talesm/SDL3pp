@@ -16,7 +16,7 @@ import { Tokenizer } from "./tokenize.js";
  * @param {ParseConfig} config
  * 
  */
-function parseApi(config) {
+export function parseApi(config) {
   const { baseDir, sources } = config;
 
   /** @type {Api} */
@@ -34,7 +34,7 @@ function parseApi(config) {
  * @param {string} name 
  * @param {string[]} baseDirs 
  */
-function readContent(name, baseDirs) {
+export function readContent(name, baseDirs) {
   for (const baseDir of baseDirs) {
     try {
       const content = readLinesSync(baseDir + name);
@@ -57,7 +57,7 @@ function readContent(name, baseDirs) {
  * @param {string[]} content 
  * @param {ParseContentConfig=} config 
  */
-function parseContent(name, content, config) {
+export function parseContent(name, content, config) {
   if (!config) config = {};
 
   /** @type {ApiFile} */
@@ -87,7 +87,7 @@ function parseContent(name, content, config) {
  * @param {ApiEntry|ApiEntry[]} entry 
  * @param {string}              defaultName
  */
-function insertEntry(entries, entry, defaultName = "") {
+export function insertEntry(entries, entry, defaultName = "") {
   if (Array.isArray(entry)) entry.forEach(e => doInsertEntry(entries, e, defaultName));
   else doInsertEntry(entries, entry, defaultName);
   return entries;
@@ -363,7 +363,7 @@ class ContentParser {
  * Remove line numbers from entry
  * @param {ApiEntry} entry 
  */
-function removeEntryLineNumbers(entry) {
+export function removeEntryLineNumbers(entry) {
   delete entry.decl;
   delete entry.begin;
   delete entry.end;
@@ -374,7 +374,7 @@ function removeEntryLineNumbers(entry) {
  * @param {string} params 
  * @returns {ApiParameters}
  */
-function parseParams(params) {
+export function parseParams(params) {
   if (!params?.length || params == 'void') {
     return [];
   }
@@ -412,16 +412,3 @@ function normalizeType(typeString) {
     .replace(/\s+([>)\]])/g, "$1")
     .replace(/\s\s+/g, " ");
 }
-
-const _parseApi = parseApi;
-export { _parseApi as parseApi };
-const _parseContent = parseContent;
-export { _parseContent as parseContent };
-const _insertEntry = insertEntry;
-export { _insertEntry as insertEntry };
-const _readContent = readContent;
-export { _readContent as readContent };
-const _parseParams = parseParams;
-export { _parseParams as parseParams };
-const _removeEntryLineNumbers = removeEntryLineNumbers;
-export { _removeEntryLineNumbers as removeEntryLineNumbers };

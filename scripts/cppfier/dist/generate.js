@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.combineHints = exports.generateCallParameters = exports.generateApi = void 0;
+exports.generateApi = generateApi;
+exports.generateCallParameters = generateCallParameters;
+exports.combineHints = combineHints;
 const utils_js_1 = require("./utils.js");
 const fs_1 = require("fs");
 /**
@@ -344,9 +346,3 @@ function generateParameter(parameter) {
         return `${parameter.type} ${parameter.name ?? ""}`;
     return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }
-const _generateApi = generateApi;
-exports.generateApi = _generateApi;
-const _generateCallParameters = generateCallParameters;
-exports.generateCallParameters = _generateCallParameters;
-const _combineHints = combineHints;
-exports.combineHints = _combineHints;

@@ -17,7 +17,7 @@ import { system, combineObject, looksLikeFreeFunction, deepClone } from "./utils
  * 
  * @param {TransformConfig} config the rules to apply into source
  */
-function transformApi(config) {
+export function transformApi(config) {
   const source = config.sourceApi;
   const transform = config.transform ?? { namespace: "SDL" };
   const sourceIncludePrefix = transform.sourceIncludePrefix ?? '';
@@ -2390,7 +2390,3 @@ function resolveDocRefs(doc, context) {
   if (!doc) return "";
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
-
-const _transformApi = transformApi;
-export { _transformApi as transformApi };
-

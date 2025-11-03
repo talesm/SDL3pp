@@ -14,7 +14,7 @@ import { existsSync, mkdirSync } from "fs";
  * Generate api headers from config
  * @param {GenerateApiConfig} config 
  */
-function generateApi(config) {
+export function generateApi(config) {
   const { api, baseDir } = config;
   const files = Object.keys(api.files);
   if (!existsSync(baseDir)) {
@@ -305,7 +305,7 @@ function generateFile(targetFile, config) {
  * @param {ApiParameters} parameters 
  * @param {Dict<string>}  replacements 
  */
-function generateCallParameters(parameters, replacements) {
+export function generateCallParameters(parameters, replacements) {
   return parameters
     ?.map(p => unwrap(p))
     ?.join(", ") ?? "";
@@ -322,7 +322,7 @@ function generateCallParameters(parameters, replacements) {
  * 
  * @param {ApiEntry} entry 
  */
-function combineHints(entry) {
+export function combineHints(entry) {
   const hints = entry.hints;
   const subEntries = entry.entries;
   if (!hints || !subEntries) return;
@@ -353,10 +353,3 @@ function generateParameter(parameter) {
   if (!parameter.default) return `${parameter.type} ${parameter.name ?? ""}`;
   return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }
-
-const _generateApi = generateApi;
-export { _generateApi as generateApi };
-const _generateCallParameters = generateCallParameters;
-export { _generateCallParameters as generateCallParameters };
-const _combineHints = combineHints;
-export { _combineHints as combineHints };

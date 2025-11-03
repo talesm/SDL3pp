@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeEntryLineNumbers = exports.parseParams = exports.readContent = exports.insertEntry = exports.parseContent = exports.parseApi = void 0;
+exports.parseApi = parseApi;
+exports.readContent = readContent;
+exports.parseContent = parseContent;
+exports.insertEntry = insertEntry;
+exports.removeEntryLineNumbers = removeEntryLineNumbers;
+exports.parseParams = parseParams;
 const utils_js_1 = require("./utils.js");
 const tokenize_js_1 = require("./tokenize.js");
 /**
@@ -434,15 +439,3 @@ function normalizeType(typeString) {
         .replace(/\s+([>)\]])/g, "$1")
         .replace(/\s\s+/g, " ");
 }
-const _parseApi = parseApi;
-exports.parseApi = _parseApi;
-const _parseContent = parseContent;
-exports.parseContent = _parseContent;
-const _insertEntry = insertEntry;
-exports.insertEntry = _insertEntry;
-const _readContent = readContent;
-exports.readContent = _readContent;
-const _parseParams = parseParams;
-exports.parseParams = _parseParams;
-const _removeEntryLineNumbers = removeEntryLineNumbers;
-exports.removeEntryLineNumbers = _removeEntryLineNumbers;

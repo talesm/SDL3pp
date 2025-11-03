@@ -18,7 +18,7 @@ import { readContent, parseParams } from "./parse";
 /**
  * @param {ParseXmlConfig} config 
  */
-async function parseXmlApi(config) {
+export async function parseXmlApi(config) {
   const { sources } = config;
   /** @type {Api} */
   const api = { files: {} };
@@ -40,7 +40,7 @@ async function parseXmlApi(config) {
  * @param {string} name 
  * @param {ParseXmlFileConfig} config 
  */
-async function parseXmlFile(name, config = {}) {
+export async function parseXmlFile(name, config = {}) {
   const xmlDirs = config?.xmlDir ?? ["./"];
   const mangledName = name.replace(/_/g, '__').replace(/\./g, '_8') + ".xml";
 
@@ -312,8 +312,3 @@ function normalizeType(typeString) {
     .replace(/(\w+)\s+(\w+)/g, "$1 $2")
     .replace(/([*&])\s+(&*)/g, "$1$2").trim();
 }
-
-const _parseXmlApi = parseXmlApi;
-export { _parseXmlApi as parseXmlApi };
-const _parseXmlFile = parseXmlFile;
-export { _parseXmlFile as parseXmlFile };

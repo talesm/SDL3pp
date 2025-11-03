@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tokenize = exports.Tokenizer = void 0;
+exports.Tokenizer = void 0;
+exports.tokenize = tokenize;
 const utils_js_1 = require("./utils.js");
 /**
  * @import {FileToken, VersionTag} from "./types"
@@ -402,6 +403,7 @@ class Tokenizer {
         }
     }
 }
+exports.Tokenizer = Tokenizer;
 /**
  *
  * @param {string[]} lines
@@ -443,7 +445,3 @@ function hasIgnoredPrefix(line) {
     }
     return false;
 }
-const _Tokenizer = Tokenizer;
-exports.Tokenizer = _Tokenizer;
-const _tokenize = tokenize;
-exports.tokenize = _tokenize;

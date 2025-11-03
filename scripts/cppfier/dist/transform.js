@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.transformApi = void 0;
+exports.transformApi = transformApi;
 const generate_1 = require("./generate");
 const parse_1 = require("./parse");
 const utils_1 = require("./utils");
@@ -2421,5 +2421,3 @@ function resolveDocRefs(doc, context) {
         return "";
     return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
-const _transformApi = transformApi;
-exports.transformApi = _transformApi;

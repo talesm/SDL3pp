@@ -1,15 +1,3 @@
-export type ParseXmlConfig = {
-    xmlDir: string[];
-    baseDir: string[];
-    sources: string[];
-};
-export type ParseXmlFileConfig = {
-    xmlDir?: string[] | undefined;
-    baseDir?: string[] | undefined;
-};
-export type ParseXmlContentConfig = {
-    baseDir?: string[] | undefined;
-};
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile } from "./types"
  */
@@ -22,7 +10,7 @@ export type ParseXmlContentConfig = {
 /**
  * @param {ParseXmlConfig} config
  */
-declare function _parseXmlApi(config: ParseXmlConfig): Promise<Api>;
+export function parseXmlApi(config: ParseXmlConfig): Promise<Api>;
 /**
  * @typedef {object} ParseXmlFileConfig
  * @prop {string[]=} xmlDir
@@ -33,7 +21,18 @@ declare function _parseXmlApi(config: ParseXmlConfig): Promise<Api>;
  * @param {string} name
  * @param {ParseXmlFileConfig} config
  */
-declare function _parseXmlFile(name: string, config?: ParseXmlFileConfig): Promise<ApiFile>;
+export function parseXmlFile(name: string, config?: ParseXmlFileConfig): Promise<ApiFile>;
+export type ParseXmlConfig = {
+    xmlDir: string[];
+    baseDir: string[];
+    sources: string[];
+};
+export type ParseXmlFileConfig = {
+    xmlDir?: string[] | undefined;
+    baseDir?: string[] | undefined;
+};
+export type ParseXmlContentConfig = {
+    baseDir?: string[] | undefined;
+};
 import type { Api } from "./types";
 import type { ApiFile } from "./types";
-export { _parseXmlApi as parseXmlApi, _parseXmlFile as parseXmlFile };

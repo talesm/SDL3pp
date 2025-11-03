@@ -1,8 +1,3 @@
-export { _transformApi as transformApi };
-export type TransformConfig = {
-    sourceApi: Api;
-    transform?: ApiTransform | undefined;
-};
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, QuickTransform, ApiEntryTransformMap } from "./types"
  */
@@ -16,6 +11,10 @@ export type TransformConfig = {
  *
  * @param {TransformConfig} config the rules to apply into source
  */
-declare function _transformApi(config: TransformConfig): Api;
+export function transformApi(config: TransformConfig): Api;
+export type TransformConfig = {
+    sourceApi: Api;
+    transform?: ApiTransform | undefined;
+};
 import type { Api } from "./types";
 import type { ApiTransform } from "./types";

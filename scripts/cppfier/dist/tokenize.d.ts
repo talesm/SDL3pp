@@ -1,10 +1,9 @@
-declare const _Tokenizer: typeof Tokenizer;
 /**
  *
  * @param {string[]} lines
  */
-declare function _tokenize(lines: string[]): FileToken[];
-declare class Tokenizer {
+export function tokenize(lines: string[]): FileToken[];
+export class Tokenizer {
     /** @param {string[]} lines */
     constructor(lines: string[]);
     lines: string[];
@@ -39,4 +38,3 @@ declare class Tokenizer {
 }
 import type { FileToken } from "./types";
 import type { VersionTag } from "./types";
-export { _Tokenizer as Tokenizer, _tokenize as tokenize };

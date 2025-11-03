@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseXmlFile = exports.parseXmlApi = void 0;
+exports.parseXmlApi = parseXmlApi;
+exports.parseXmlFile = parseXmlFile;
 const xml2js_1 = require("xml2js");
 const utils_js_1 = require("./utils.js");
 const fs_1 = require("fs");
@@ -311,7 +312,3 @@ function normalizeType(typeString) {
         .replace(/(\w+)\s+(\w+)/g, "$1 $2")
         .replace(/([*&])\s+(&*)/g, "$1$2").trim();
 }
-const _parseXmlApi = parseXmlApi;
-exports.parseXmlApi = _parseXmlApi;
-const _parseXmlFile = parseXmlFile;
-exports.parseXmlFile = _parseXmlFile;

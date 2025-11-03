@@ -32,7 +32,7 @@ const spaceRegex = /^\s+/;
 const endCommentRegex = /\*\//;
 const continueCommentRegex = /^\s*\*\s?/;
 
-class Tokenizer {
+export class Tokenizer {
   /** @param {string[]} lines */
   constructor(lines) {
     this.lines = lines;
@@ -373,7 +373,7 @@ class Tokenizer {
  * 
  * @param {string[]} lines
  */
-function tokenize(lines) {
+export function tokenize(lines) {
   /** @type {FileToken[]} */
   const result = [];
   const tokenizer = new Tokenizer(lines);
@@ -408,8 +408,3 @@ function hasIgnoredPrefix(line) {
   }
   return false;
 }
-
-const _Tokenizer = Tokenizer;
-export { _Tokenizer as Tokenizer };
-const _tokenize = tokenize;
-export { _tokenize as tokenize };
