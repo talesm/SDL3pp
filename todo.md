@@ -3,12 +3,12 @@ Todo for next version
 
 Replace parse and parse-xml for a antlr parser, convert to typescript
 
-- [ ] Convert to typescript:
-  - [ ] Install typescript;
-  - [ ] Convert generate to ts;
-  - [ ] Convert transform to ts;
-  - [ ] create tsconfig to generate index.js, including the js files;
-  - [ ] Update CMake to only look for index.js;
+- [x] Convert to typescript:
+  - [x] Install typescript;
+  - [x] Convert utils to ts;
+  - [x] Convert generate to ts;
+  - [x] Convert transform to ts;
+  - [x] Update CMake to only look for dist/*.js;
 - [ ] Make antlr parser:
   - [ ] Create command `parse-new` to use it;
   - [ ] Create restricted grammar for C, enough to parse SDL library;

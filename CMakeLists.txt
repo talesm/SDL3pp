@@ -247,7 +247,7 @@ endif (DOXYGEN_FOUND)
 set(TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform.json)
 set(TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target.json)
 set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
-file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/src/*.js)
+file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/dist/*.js)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source_xml.json

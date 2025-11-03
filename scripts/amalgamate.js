@@ -1,5 +1,5 @@
-const { readFileSync, writeSync, openSync, closeSync, constants } = require("fs");
-const { chdir, cwd } = require("process");
+import { readFileSync, writeSync, openSync, closeSync } from "fs";
+import { chdir } from "process";
 
 /** @param {string[]} args  */
 function main(args) {
