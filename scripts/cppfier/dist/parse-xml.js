@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseXmlFile = exports.parseXmlApi = void 0;
 const xml2js_1 = require("xml2js");
-const utils_1 = require("./utils");
+const utils_js_1 = require("./utils.js");
 const fs_1 = require("fs");
 const promises_1 = require("fs/promises");
 const parse_1 = require("./parse");
@@ -23,7 +23,7 @@ async function parseXmlApi(config) {
     /** @type {Api} */
     const api = { files: {} };
     for (const name of sources) {
-        utils_1.system.log(`Reading file ${name}`);
+        utils_js_1.system.log(`Reading file ${name}`);
         api.files[name] = await parseXmlFile(name, config);
     }
     return api;
@@ -67,7 +67,7 @@ const nameBlacklist = new Set([
  * @returns
  */
 async function parseXmlContent(name, xmlContent, xmlDir, config) {
-    utils_1.system.log(`Reading ${name}`);
+    utils_js_1.system.log(`Reading ${name}`);
     const xmlObj = await (0, xml2js_1.parseStringPromise)(xmlContent);
     const sourceContent = (0, parse_1.readContent)(name, config.baseDir ?? []);
     /** @type {ApiFile} */
@@ -143,7 +143,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
                                 entry.decl = +location.line;
                             }
                             else {
-                                utils_1.system.warn(`At ${stringLocation(location)}: could not parse type from ${name}`, type);
+                                utils_js_1.system.warn(`At ${stringLocation(location)}: could not parse type from ${name}`, type);
                             }
                         }
                         else {
@@ -178,7 +178,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
                     break;
                 }
                 default:
-                    utils_1.system.warn(`Error at ${stringLocation(location)}: Unknown kind for ${name} (${kind})`);
+                    utils_js_1.system.warn(`Error at ${stringLocation(location)}: Unknown kind for ${name} (${kind})`);
                     continue;
             }
             entriesArray.push(entry);

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tokenize = exports.Tokenizer = void 0;
-const utils_1 = require("./utils");
+const utils_js_1 = require("./utils.js");
 /**
  * @import {FileToken, VersionTag} from "./types"
  */
@@ -241,7 +241,7 @@ class Tokenizer {
             const member = line.replaceAll(ignoreInSignature, "").trimStart();
             m = /^(([\w*&:<>,\[\]]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%/*]{1,2})|[\w*&~:<>]+)(\s*\()?/.exec(member);
             if (!m) {
-                utils_1.system.warn(`Unknown token at line ${this.lineCount}: ${member}`);
+                utils_js_1.system.warn(`Unknown token at line ${this.lineCount}: ${member}`);
                 return this.next();
             }
             let name = m[3];
@@ -310,7 +310,7 @@ class Tokenizer {
         this.extendToNextStart();
         token.end = this.lineCount + 1;
         if (checkTokenTooLarge(token)) {
-            utils_1.system.warn(`Warning: Token at ${token.begin} seems very large ${token.name ?? token.value} (${token.end - token.begin} lines)`);
+            utils_js_1.system.warn(`Warning: Token at ${token.begin} seems very large ${token.name ?? token.value} (${token.end - token.begin} lines)`);
         }
         return token;
     }

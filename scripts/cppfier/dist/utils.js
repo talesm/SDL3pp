@@ -1,42 +1,49 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.system = exports.deepClone = exports.looksLikeFreeFunction = exports.combineObject = exports.combineArray = exports.writeJSONSync = exports.readJSONSync = exports.writeLinesSync = exports.readLinesSync = void 0;
+exports.system = void 0;
+exports.readLinesSync = readLinesSync;
+exports.writeLinesSync = writeLinesSync;
+exports.readJSONSync = readJSONSync;
+exports.writeJSONSync = writeJSONSync;
+exports.combineArray = combineArray;
+exports.combineObject = combineObject;
+exports.looksLikeFreeFunction = looksLikeFreeFunction;
+exports.deepClone = deepClone;
 const node_fs_1 = require("node:fs");
-/** @import {PathOrFileDescriptor} from "node:fs" */
 /**
  * Read a file as an array of lines
- * @param {PathOrFileDescriptor} path
+ * @param path
  */
 function readLinesSync(path) {
     return (0, node_fs_1.readFileSync)(path, "utf8").split(/\r?\n/);
 }
 /**
  * Write an array of lines to a file
- * @param {PathOrFileDescriptor} path
- * @param {string[]} data
+ * @param path
+ * @param data
  */
 function writeLinesSync(path, data) {
     return (0, node_fs_1.writeFileSync)(path, data.join('\n').trim() + "\n");
 }
 /**
  * Read a file as a JSON
- * @param {PathOrFileDescriptor} path
+ * @param path
  */
 function readJSONSync(path) {
     return JSON.parse((0, node_fs_1.readFileSync)(path, "utf8"));
 }
 /**
  * Write an array of lines to a file
- * @param {PathOrFileDescriptor} path
- * @param {any} data
+ * @param path
+ * @param data
  */
 function writeJSONSync(path, data) {
     return (0, node_fs_1.writeFileSync)(path, JSON.stringify(data, null, 2) + "\n");
 }
 /**
  * Combine source into target
- * @param {any[]} target
- * @param {any}   source
+ * @param target
+ * @param source
  * @returns
  */
 function combineArray(target, source) {
@@ -63,8 +70,8 @@ function combineArray(target, source) {
 }
 /**
  *
- * @param {{[key:string]: any}} target
- * @param {any}                 source
+ * @param target
+ * @param source
  * @returns
  */
 function combineObject(target, source) {
@@ -86,21 +93,21 @@ function combineObject(target, source) {
 }
 /**
  * Returns true if this seems like a free() function
- * @param {string} name
+ * @param name
  */
 function looksLikeFreeFunction(name) {
     return /^[A-Z]+_([Dd]estroy|[Cc]lose|[Ff]ree)[A-Z]/.test(name)
         || /_([Dd]estroy|[Cc]lose|[Ff]ree)$/.test(name);
 }
-var system = {
+exports.system = {
     silent: true,
     stopOnWarn: true,
     log(...data) {
-        if (!system.silent)
+        if (!exports.system.silent)
             console.log(...data);
     },
     warn(...data) {
-        if (!system.silent)
+        if (!exports.system.silent)
             console.warn(...data);
         if (this.stopOnWarn) {
             let message = "Stopped on warning";
@@ -120,31 +127,13 @@ function deepClone(obj) {
     if (typeof obj !== "object" || obj === null)
         return obj;
     if (Array.isArray(obj))
-        return /** @type {T} */ (obj.map(el => deepClone(el)));
+        return (obj.map(el => deepClone(el)));
     // @ts-ignore
     if (typeof obj?.clone === "function")
-        return /** @type {T} */ (obj.clone());
+        return (obj.clone());
     const result = {};
     for (const [key, value] of Object.entries(obj)) {
         result[key] = deepClone(value);
     }
-    return /** @type {T} */ (result);
+    return (result);
 }
-const _readLinesSync = readLinesSync;
-exports.readLinesSync = _readLinesSync;
-const _writeLinesSync = writeLinesSync;
-exports.writeLinesSync = _writeLinesSync;
-const _readJSONSync = readJSONSync;
-exports.readJSONSync = _readJSONSync;
-const _writeJSONSync = writeJSONSync;
-exports.writeJSONSync = _writeJSONSync;
-const _combineArray = combineArray;
-exports.combineArray = _combineArray;
-const _combineObject = combineObject;
-exports.combineObject = _combineObject;
-const _looksLikeFreeFunction = looksLikeFreeFunction;
-exports.looksLikeFreeFunction = _looksLikeFreeFunction;
-const _deepClone = deepClone;
-exports.deepClone = _deepClone;
-const _system = system;
-exports.system = _system;

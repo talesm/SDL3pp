@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeEntryLineNumbers = exports.parseParams = exports.readContent = exports.insertEntry = exports.parseContent = exports.parseApi = void 0;
-const utils_1 = require("./utils");
+const utils_js_1 = require("./utils.js");
 const tokenize_js_1 = require("./tokenize.js");
 /**
  * @import { ApiEntries, ApiEntry, ApiEntryKind, ApiParameters, FileTokenKind, Api, ApiFile } from "./types"
@@ -21,7 +21,7 @@ function parseApi(config) {
     /** @type {Api} */
     const api = { files: {} };
     for (const name of sources) {
-        utils_1.system.log(`Reading file ${name}`);
+        utils_js_1.system.log(`Reading file ${name}`);
         const content = readContent(name, baseDir);
         api.files[name] = parseContent(name, content, config);
     }
@@ -35,11 +35,11 @@ function parseApi(config) {
 function readContent(name, baseDirs) {
     for (const baseDir of baseDirs) {
         try {
-            const content = (0, utils_1.readLinesSync)(baseDir + name);
+            const content = (0, utils_js_1.readLinesSync)(baseDir + name);
             return content;
         }
         catch (err) {
-            utils_1.system.log(`${name} not found at ${baseDir}, looking at next one`);
+            utils_js_1.system.log(`${name} not found at ${baseDir}, looking at next one`);
         }
     }
     throw new Error("File not found: " + name);
