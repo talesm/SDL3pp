@@ -1,20 +1,17 @@
-const { system, writeLinesSync } = require("./utils.js");
-const { existsSync, mkdirSync } = require("fs");
-/**
- * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters, Dict } from "./types.js"
- */
+import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters, Dict } from "./types.js";
+import { system, writeLinesSync } from "./utils.js";
+import { existsSync, mkdirSync } from "fs";
 
-/**
- * @typedef {object} GenerateApiConfig
- * @prop {Api}      api
- * @prop {string}   baseDir
- */
+export interface GenerateApiConfig {
+  api?: Api;
+  baseDir?: string;
+}
 
 /**
  * Generate api headers from config
  * @param {GenerateApiConfig} config 
  */
-function generateApi(config) {
+export function generateApi(config) {
   const { api, baseDir } = config;
   const files = Object.keys(api.files);
   if (!existsSync(baseDir)) {
@@ -44,18 +41,17 @@ function generateApi(config) {
   }
 }
 
-/**
- * @typedef {object} GenerateApiFileConfig
- * @prop {Dict<string>=}  paramReplacements
- * @prop {Dict<string>=}  delegatedReplacements
- */
+export interface GenerateApiFileConfig {
+  paramReplacements?: Dict<string>;
+  delegatedReplacements?: Dict<string>;
+}
 
 /**
  * 
  * @param {ApiFile} targetFile 
  * @param {GenerateApiFileConfig} config 
  */
-function generateFile(targetFile, config) {
+function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   const targetName = targetFile.name;
   const guardName = targetName.toUpperCase().replace('.', '_') + '_';
   const namespace = "SDL";
@@ -75,16 +71,11 @@ function generateFile(targetFile, config) {
     generatedEntries,
     `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`
   ];
-  /**
-   * 
-   * @param {ApiEntries}  entries 
-   * @param {string}      prefix
-   */
-  function generateEntries(entries, prefix) {
+
+  function generateEntries(entries: ApiEntries, prefix: string) {
     if (!prefix) prefix = '';
 
-    /** @type {string[]} */
-    const result = [];
+    const result: string[] = [];
     Object.values(entries).forEach(entry => doGenerateEntries(entry));
     return result.join('\n\n') + '\n';
 
@@ -100,7 +91,7 @@ function generateFile(targetFile, config) {
    * @param {string}  docStr 
    * @param {string=} prefix 
    */
-  function generateDocString(docStr, prefix) {
+  function generateDocString(docStr: string, prefix?: string) {
     if (!docStr) return '';
     prefix = prefix ?? '';
     const docLines = docStr.split('\n');
@@ -111,12 +102,7 @@ function generateFile(targetFile, config) {
     return `\n${prefix}/**\n${docStr}\n${prefix} */`;
   }
 
-  /**
-   * @param {ApiEntry}  entry 
-   * @param {string=}   prefix 
-   * @returns {string}
-   */
-  function generateEntry(entry, prefix) {
+  function generateEntry(entry: ApiEntry, prefix?: string) {
     prefix = prefix ?? '';
     const doc = generateDocString(entry.doc, prefix) + "\n";
     const template = generateTemplateSignature(entry.template, prefix);
@@ -126,8 +112,7 @@ function generateFile(targetFile, config) {
     const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
     return `${accessMod}#if ${versionStr}\n\n${doGenerate(entry)}\n\n#endif // ${versionStr}`;
 
-    /** @param {ApiEntry} entry  */
-    function doGenerate(entry) {
+    function doGenerate(entry: ApiEntry) {
       switch (entry.kind) {
         case "alias":
           if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
@@ -157,23 +142,14 @@ function generateFile(targetFile, config) {
     }
   }
 
-
-  /**
-   * @param {ApiEntry} entry 
-   * @param {string}   prefix
-   */
-  function generateVar(entry, prefix) {
+  function generateVar(entry: ApiEntry, prefix: string) {
     let value = '';
     if (entry.hints?.body) value = ` = ${entry.hints?.body}`;
     else if (entry.sourceName) value = ` = ${entry.sourceName}`;
     return generateDeclPrefix(entry, prefix) + value + ';';
   }
 
-  /**
-   * 
-   * @param {ApiEntry}  entry 
-   */
-  function generateDef(entry) {
+  function generateDef(entry: ApiEntry) {
     const sourceName = entry.sourceName != entry.name ? entry.sourceName : undefined;
     if (!entry.parameters) return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
 
@@ -182,11 +158,7 @@ function generateFile(targetFile, config) {
     return `#define ${entry.name}${parameters} ${body ?? ""}`;
   }
 
-  /**
-   * @param {ApiEntry} entry 
-   * @param {string}   prefix
-   */
-  function generateBody(entry, prefix) {
+  function generateBody(entry: ApiEntry, prefix: string) {
     const hint = entry.hints;
     if (hint?.delete) return " = delete;";
     if (hint?.default) return " = default;";
@@ -206,8 +178,7 @@ function generateFile(targetFile, config) {
       return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
     }
     if (entry.proto) return ";";
-    /** @type {Dict<string>} */
-    const paramReplacements = hint?.delegate ? config.delegatedReplacements : config.paramReplacements;
+    const paramReplacements: Dict<string> = hint?.delegate ? config.delegatedReplacements : config.paramReplacements;
     const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
     const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
     const paramStr = selfStrPrefix + generateCallParameters(entry.parameters, paramReplacements);
@@ -223,19 +194,14 @@ function generateFile(targetFile, config) {
     const returnStr = entry.type === "void" ? "" : "return ";
     return `\n${prefix}{\n${prefix}  ${returnStr}${callStr};\n${prefix}}`;
 
-    /** @param {string} source  */
-    function wrapFailCheck(source) {
+    function wrapFailCheck(source: string) {
       if (!hint?.mayFail || hint?.delegate) return source;
       if (typeof hint.mayFail === 'string') return `CheckErrorIfNot(${internalCallStr}, ${hint.mayFail})`;
       return `CheckError(${internalCallStr})`;
     }
   }
 
-  /**
-   * @param {ApiEntry} entry 
-   * @param {string} prefix 
-   */
-  function generateFunction(entry, prefix) {
+  function generateFunction(entry: ApiEntry, prefix: string) {
     const reference = entry.reference ? "&".repeat(entry.reference) : "";
     const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
     const parameters = generateParameters(entry.parameters ?? []);
@@ -243,33 +209,20 @@ function generateFile(targetFile, config) {
     return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}${body}`;
   }
 
-  /**
-   * @param {ApiEntry} entry 
-   * @param {string} prefix 
-   */
-  function generateDeclPrefix(entry, prefix) {
+  function generateDeclPrefix(entry: ApiEntry, prefix: string) {
     const staticStr = entry.static ? "static " : "";
     const explicitStr = entry.explicit ? "explicit " : "";
     const specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
     return `${prefix}${staticStr}${specifier}${explicitStr}${entry.type ?? "auto"} ${entry.name}`;
   }
 
-  /**
-   * 
-   * @param {ApiEntry} entry 
-   */
-  function generateNS(entry) {
+  function generateNS(entry: ApiEntry) {
     const name = entry.name;
     const subEntries = generateEntries(entry.entries ?? {}, "");
     return `namespace ${name} {\n\n${subEntries}\n\n} // namespace ${name}\n`;
   }
 
-  /**
-   * 
-   * @param {ApiEntry} entry 
-   * @param {string} prefix 
-   */
-  function generateStruct(entry, prefix) {
+  function generateStruct(entry: ApiEntry, prefix: string) {
     const signature = generateStructSignature(entry, prefix);
     const parent = entry.type ? ` : ${entry.type}` : "";
     const subEntries = entry.entries ?? {};
@@ -278,34 +231,20 @@ function generateFile(targetFile, config) {
     return `${signature}${parent}\n${prefix}{${subEntriesStr}\n${prefix}};`;
   }
 
-  /**
-   * 
-   * @param {ApiEntry} entry 
-   * @param {string} prefix 
-   */
-  function generateStructSignature(entry, prefix) {
+  function generateStructSignature(entry: ApiEntry, prefix: string) {
     if (entry.hints?.private) {
       return `${prefix}class ${entry.name}`;
     }
     return `${prefix}struct ${entry.name}`;
   }
 
-  /**
-   * 
-   * @param {ApiParameters} template 
-   * @param {string}        prefix 
-   */
-  function generateTemplateSignature(template, prefix) {
+  function generateTemplateSignature(template: ApiParameters, prefix: string) {
     return !template ? "" : `${prefix}template<${generateParameters(template)}>\n`;
   }
 }
 
 
-/**
- * @param {ApiParameters} parameters 
- * @param {Dict<string>}  replacements 
- */
-function generateCallParameters(parameters, replacements) {
+export function generateCallParameters(parameters: ApiParameters, replacements: Dict<string>) {
   return parameters
     ?.map(p => unwrap(p))
     ?.join(", ") ?? "";
@@ -318,11 +257,7 @@ function generateCallParameters(parameters, replacements) {
   }
 }
 
-/**
- * 
- * @param {ApiEntry} entry 
- */
-function combineHints(entry) {
+export function combineHints(entry: ApiEntry) {
   const hints = entry.hints;
   const subEntries = entry.entries;
   if (!hints || !subEntries) return;
@@ -336,24 +271,12 @@ function combineHints(entry) {
   }
 }
 
-/**
- * 
- * @param {ApiParameter[]} parameters 
- */
-function generateParameters(parameters) {
+function generateParameters(parameters: ApiParameter[]) {
   return parameters.map(p => generateParameter(p)).join(', ');
 }
 
-/**
- * 
- * @param {ApiParameter} parameter
- */
-function generateParameter(parameter) {
+function generateParameter(parameter: ApiParameter) {
   if (!parameter.type) return parameter.name ?? '';
   if (!parameter.default) return `${parameter.type} ${parameter.name ?? ""}`;
   return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }
-
-exports.generateApi = generateApi;
-exports.generateCallParameters = generateCallParameters;
-exports.combineHints = combineHints;

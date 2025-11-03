@@ -1,4 +1,4 @@
-const { system } = require("./utils");
+import { system } from "./utils.js";
 /**
  * @import {FileToken, VersionTag} from "./types"
  */
@@ -32,7 +32,7 @@ const spaceRegex = /^\s+/;
 const endCommentRegex = /\*\//;
 const continueCommentRegex = /^\s*\*\s?/;
 
-class Tokenizer {
+export class Tokenizer {
   /** @param {string[]} lines */
   constructor(lines) {
     this.lines = lines;
@@ -373,7 +373,7 @@ class Tokenizer {
  * 
  * @param {string[]} lines
  */
-function tokenize(lines) {
+export function tokenize(lines) {
   /** @type {FileToken[]} */
   const result = [];
   const tokenizer = new Tokenizer(lines);
@@ -408,6 +408,3 @@ function hasIgnoredPrefix(line) {
   }
   return false;
 }
-
-exports.Tokenizer = Tokenizer;
-exports.tokenize = tokenize;

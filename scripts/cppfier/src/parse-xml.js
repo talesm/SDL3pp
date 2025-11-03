@@ -1,8 +1,8 @@
-const { parseStringPromise } = require("xml2js");
-const { system } = require("./utils");
-const { existsSync } = require("fs");
-const { readFile } = require("fs/promises");
-const { readContent, parseParams } = require("./parse");
+import { parseStringPromise } from "xml2js";
+import { system } from "./utils.js";
+import { existsSync } from "fs";
+import { readFile } from "fs/promises";
+import { readContent, parseParams } from "./parse";
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile } from "./types"
@@ -18,7 +18,7 @@ const { readContent, parseParams } = require("./parse");
 /**
  * @param {ParseXmlConfig} config 
  */
-async function parseXmlApi(config) {
+export async function parseXmlApi(config) {
   const { sources } = config;
   /** @type {Api} */
   const api = { files: {} };
@@ -40,7 +40,7 @@ async function parseXmlApi(config) {
  * @param {string} name 
  * @param {ParseXmlFileConfig} config 
  */
-async function parseXmlFile(name, config = {}) {
+export async function parseXmlFile(name, config = {}) {
   const xmlDirs = config?.xmlDir ?? ["./"];
   const mangledName = name.replace(/_/g, '__').replace(/\./g, '_8') + ".xml";
 
@@ -312,6 +312,3 @@ function normalizeType(typeString) {
     .replace(/(\w+)\s+(\w+)/g, "$1 $2")
     .replace(/([*&])\s+(&*)/g, "$1$2").trim();
 }
-
-exports.parseXmlApi = parseXmlApi;
-exports.parseXmlFile = parseXmlFile;

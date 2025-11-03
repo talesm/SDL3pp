@@ -1,47 +1,47 @@
-const { readFileSync, writeFileSync } = require("node:fs");
-/** @import {PathOrFileDescriptor} from "node:fs" */
+import { readFileSync, writeFileSync, PathOrFileDescriptor } from "node:fs";
 
 /**
  * Read a file as an array of lines
- * @param {PathOrFileDescriptor} path 
+ * @param path 
  */
-function readLinesSync(path) {
+
+export function readLinesSync(path: PathOrFileDescriptor) {
   return readFileSync(path, "utf8").split(/\r?\n/);
 }
 
 /**
  * Write an array of lines to a file
- * @param {PathOrFileDescriptor} path 
- * @param {string[]} data 
+ * @param path 
+ * @param data 
  */
-function writeLinesSync(path, data) {
+export function writeLinesSync(path: PathOrFileDescriptor, data: string[]) {
   return writeFileSync(path, data.join('\n').trim() + "\n");
 }
 
 /**
  * Read a file as a JSON
- * @param {PathOrFileDescriptor} path 
+ * @param path 
  */
-function readJSONSync(path) {
+export function readJSONSync(path: PathOrFileDescriptor) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
 /**
  * Write an array of lines to a file
- * @param {PathOrFileDescriptor} path 
- * @param {any} data 
+ * @param path 
+ * @param data 
  */
-function writeJSONSync(path, data) {
+export function writeJSONSync(path: PathOrFileDescriptor, data: any) {
   return writeFileSync(path, JSON.stringify(data, null, 2) + "\n");
 }
 
 /**
  * Combine source into target
- * @param {any[]} target 
- * @param {any}   source 
+ * @param target 
+ * @param source 
  * @returns 
  */
-function combineArray(target, source) {
+export function combineArray(target: any[], source: any) {
   if (Array.isArray(source)) {
     if (source.length < target.length) {
       target.length = source.length;
@@ -62,11 +62,11 @@ function combineArray(target, source) {
 
 /**
  * 
- * @param {{[key:string]: any}} target 
- * @param {any}                 source 
+ * @param target 
+ * @param source 
  * @returns 
  */
-function combineObject(target, source) {
+export function combineObject(target: { [key: string]: any; }, source: any) {
   if (!source || typeof source !== "object") return target;
   for (const [k, v] of Object.entries(source)) {
     const targetValue = target[k];
@@ -83,14 +83,14 @@ function combineObject(target, source) {
 
 /**
  * Returns true if this seems like a free() function
- * @param {string} name 
+ * @param name 
  */
-function looksLikeFreeFunction(name) {
+export function looksLikeFreeFunction(name: string) {
   return /^[A-Z]+_([Dd]estroy|[Cc]lose|[Ff]ree)[A-Z]/.test(name)
     || /_([Dd]estroy|[Cc]lose|[Ff]ree)$/.test(name);
 }
 
-var system = {
+export const system = {
   silent: true,
   stopOnWarn: true,
 
@@ -113,24 +113,14 @@ var system = {
  * @param {T} obj the object to bee cloned
  * @returns {T}
  */
-function deepClone(obj) {
+export function deepClone<T>(obj: T): T {
   if (typeof obj !== "object" || obj === null) return obj;
-  if (Array.isArray(obj)) return /** @type {T} */(obj.map(el => deepClone(el)));
+  if (Array.isArray(obj)) return <T>(obj.map(el => deepClone(el)));
   // @ts-ignore
-  if (typeof obj?.clone === "function") return /** @type {T} */(obj.clone());
+  if (typeof obj?.clone === "function") return <T>(obj.clone());
   const result = {};
   for (const [key, value] of Object.entries(obj)) {
     result[key] = deepClone(value);
   }
-  return /** @type {T} */(result);
+  return <T>(result);
 }
-
-exports.readLinesSync = readLinesSync;
-exports.writeLinesSync = writeLinesSync;
-exports.readJSONSync = readJSONSync;
-exports.writeJSONSync = writeJSONSync;
-exports.combineArray = combineArray;
-exports.combineObject = combineObject;
-exports.looksLikeFreeFunction = looksLikeFreeFunction;
-exports.deepClone = deepClone;
-exports.system = system;

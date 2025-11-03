@@ -1,32 +1,26 @@
-const { generateCallParameters } = require("./generate");
-const { insertEntry } = require("./parse");
-const { system, combineObject, looksLikeFreeFunction, deepClone } = require("./utils");
+import { generateCallParameters } from "./generate";
+import { insertEntry } from "./parse";
+import { Api, ApiEntries, ApiEntry, ApiEntryBase, ApiEntryKind, ApiEntryTransform, ApiEntryTransformMap, ApiFile, ApiFileTransform, ApiParameter, ApiParameters, ApiTransform, ApiType, Dict, EntryHint, QuickTransform, ReplacementRule, SignatureTransform, StringMap, VersionTag } from "./types";
+import { system, combineObject, looksLikeFreeFunction, deepClone } from "./utils";
 
-/**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, QuickTransform, ApiEntryTransformMap } from "./types"
- */
-
-/**
- * @typedef {object} TransformConfig
- * @prop {Api}            sourceApi
- * @prop {ApiTransform=}  transform
- */
+export interface TransformConfig {
+  sourceApi: Api;
+  transform: ApiTransform;
+}
 
 /**
  * Transform the Api
  * 
- * @param {TransformConfig} config the rules to apply into source
+ * @param config the rules to apply into source
  */
-function transformApi(config) {
+export function transformApi(config: TransformConfig) {
   const source = config.sourceApi;
   const transform = config.transform ?? { namespace: "SDL" };
   const sourceIncludePrefix = transform.sourceIncludePrefix ?? '';
 
-  /** @type {ApiContext} */
   const context = new ApiContext(transform, source);
 
-  /** @type {ApiFile[]} */
-  const files = [];
+  const files: ApiFile[] = [];
   const fileTransformMap = transform.files ?? {};
 
   // Ensure fileTransformMap is full
@@ -94,42 +88,53 @@ function transformApi(config) {
 }
 
 class ApiContext {
-  /** 
-   * @param {ApiTransform}  transform  
-   * @param {Api}           source 
-   **/
-  constructor(transform, source) {
+  namespace: string;
+  source: Dict<ApiEntry>;
+  blacklist: Set<string>;
+  definitionPrefix: string;
+  enableException: boolean;
+  paramReplacements: any;
+  delegatedReplacements: any;
+  minVersions: Dict<VersionTag>;
+  includeBeforeMap: Dict<Dict<ApiEntryTransform[]>>;
+  includeAfterMap: Dict<Dict<ApiEntryTransform[]>>;
+  file: string;
+  currentIncludeBefore: Dict<ApiEntryTransform[]>;
+  currentIncludeAfter: Dict<ApiEntryTransform[]>;
+  paramTypeMap: StringMap;
+  returnTypeMap: StringMap;
+  nameMap: StringMap;
+  glossary: Dict<ApiEntry>;
+  prefixToRemove: RegExp;
+  referenceCandidate: RegExp;
+  renameRules: ReplacementRule[];
+  docRules: ReplacementRule[];
+  signatureRules: SignatureTransform[];
+  types: Dict<ApiType>;
+
+  constructor(transform: ApiTransform, source: Api) {
     this.namespace = transform.namespace;
 
-    /** @type {Dict<ApiEntry>} */
     this.source = Object.fromEntries(Object.values(source.files)
       .flatMap(f => Object.entries(/** @type {Dict<ApiEntry>} */(f.entries) ?? {})));
 
-    /** @type {Set<string>} */
     this.blacklist = new Set();
 
     this.minVersions = transform.minVersions ?? {};
 
-    /** @type {Dict<Dict<ApiEntryTransform[]>>} */
     this.includeBeforeMap = {};
-    /** @type {Dict<Dict<ApiEntryTransform[]>>} */
     this.includeAfterMap = {};
     this.file = '';
 
-    /** @type {Dict<ApiEntryTransform[]>} */
     this.currentIncludeBefore = null;
-    /** @type {Dict<ApiEntryTransform[]>} */
     this.currentIncludeAfter = null;
 
-    /** @type {StringMap} */
     this.paramTypeMap = {};
     Object.assign(this.paramTypeMap, transform.paramTypeMap ?? {});
 
-    /** @type {StringMap} */
     this.returnTypeMap = {};
     Object.assign(this.returnTypeMap, transform.returnTypeMap ?? {});
 
-    /** @type {StringMap} */
     this.nameMap = {};
 
     /** 
@@ -157,7 +162,6 @@ class ApiContext {
 
     this.signatureRules = transform.signatureRules ?? [];
 
-    /** @type {Dict<ApiType>} */
     this.types = {};
 
     this.enableException = false;
@@ -166,46 +170,24 @@ class ApiContext {
     this.delegatedReplacements = transform.delegatedReplacements ?? {};
   }
 
-  /**
-   * 
-   * @param {string} sourceName 
-   * @param {ApiEntry} entry 
-   */
-  addGlossary(sourceName, entry) {
+  addGlossary(sourceName: string, entry: ApiEntry) {
     this.glossary[sourceName] = deepClone(entry);
   }
 
-  /**
-   * 
-   * @param {string} sourceName 
-   * @returns {ApiEntry|undefined}
-   */
-  checkGlossary(sourceName) {
+  checkGlossary(sourceName: string) {
     const entry = this.glossary[sourceName];
     if (entry) return deepClone(entry);
   }
 
-  /**
-   * @param {string} originalType 
-   * @param {string} targetType 
-   */
-  addName(originalType, targetType) {
+  addName(originalType: string, targetType: string) {
     if (!this.nameMap[originalType]) this.nameMap[originalType] = targetType;
   }
 
-  /**
-   * @param {string} nameCandidate 
-   * @returns 
-   */
-  getName(nameCandidate) {
+  getName(nameCandidate: string) {
     return this.nameMap[nameCandidate] || nameCandidate;
   }
 
-  /**
-   * @param {string} originalType 
-   * @param {string} targetType 
-   */
-  addParamType(originalType, targetType) {
+  addParamType(originalType: string, targetType: string) {
     if (!this.paramTypeMap[originalType]) {
       this.paramTypeMap[originalType] = targetType;
       return true;
@@ -213,16 +195,11 @@ class ApiContext {
     return false;
   }
 
-  /**
-   * @param {string} originalType 
-   * @param {string} targetType 
-   */
-  addReturnType(originalType, targetType) {
+  addReturnType(originalType: string, targetType: string) {
     if (!this.returnTypeMap[originalType]) this.returnTypeMap[originalType] = targetType;
   }
 
-  /** @param {VersionTag} version  */
-  isAfterMinVersion(version) {
+  isAfterMinVersion(version: VersionTag) {
     const tag = this.minVersions[version.tag];
     if (!tag) return false;
     if (version.major > tag.major) return true;
@@ -233,11 +210,7 @@ class ApiContext {
     /* if (version.patch <= tag.patch)*/ return false;
   }
 
-  /**
-   * 
-   * @param {string} file 
-   */
-  setFile(file) {
+  setFile(file: string) {
     const includeBefore = this.includeBeforeMap[file];
     if (!includeBefore) {
       this.currentIncludeBefore = this.includeBeforeMap[file] = {};
@@ -252,11 +225,7 @@ class ApiContext {
     }
   }
 
-  /**
-   * 
-   * @param {string}  includeBeforeKey 
-   */
-  getOrCreateIncludeBefore(includeBeforeKey) {
+  getOrCreateIncludeBefore(includeBeforeKey: string) {
     const includeBefore = this.currentIncludeBefore;
 
     const includeTarget = includeBefore[includeBeforeKey];
@@ -264,11 +233,7 @@ class ApiContext {
     return includeBefore[includeBeforeKey] = [];
   }
 
-  /**
-   * 
-   * @param {string}  includeAfterKey 
-   */
-  getOrCreateIncludeAfter(includeAfterKey) {
+  getOrCreateIncludeAfter(includeAfterKey: string) {
     const includeAfter = this.currentIncludeAfter;
 
     const includeTarget = includeAfter[includeAfterKey];
@@ -278,10 +243,8 @@ class ApiContext {
 
   /**
    * Add to includeBefore field
-   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
-   * @param {string}                                        includeBeforeKey 
    */
-  includeBefore(entryOrName, includeBeforeKey) {
+  includeBefore(entryOrName: string | ApiEntryTransform | ApiEntryTransform[], includeBeforeKey: string) {
     const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.push(...entryOrName);
@@ -292,10 +255,8 @@ class ApiContext {
 
   /**
    * Prepend to includeBefore field
-   * @param {string|ApiEntryTransform|ApiEntryTransform[]}  entryOrName 
-   * @param {string}                                        includeBeforeKey 
    */
-  prependIncludeBefore(entryOrName, includeBeforeKey) {
+  prependIncludeBefore(entryOrName: string | ApiEntryTransform | ApiEntryTransform[], includeBeforeKey: string) {
     const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.unshift(...entryOrName);
@@ -306,30 +267,22 @@ class ApiContext {
 
   /**
    * Add to includeAfter field
-   * @param {string|ApiEntryTransform}  entryOrName 
-   * @param {string}                    includeAfterKey 
    */
-  includeAfter(entryOrName, includeAfterKey) {
+  includeAfter(entryOrName: string | ApiEntryTransform, includeAfterKey: string) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
   }
 
   /**
    * Prepend to includeAfter field
-   * @param {string|ApiEntryTransform}  entryOrName 
-   * @param {string}                    includeAfterKey 
    */
-  prependIncludeAfter(entryOrName, includeAfterKey) {
+  prependIncludeAfter(entryOrName: string | ApiEntryTransform, includeAfterKey: string) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
   }
 }
 
-/**
- * 
- * @param {ApiEntryKind} kind 
- */
-function isType(kind) {
+function isType(kind: ApiEntryKind) {
   switch (kind) {
     case "alias":
     case "callback":
@@ -342,13 +295,7 @@ function isType(kind) {
   }
 }
 
-/**
- * 
- * @param {Dict<ApiEntryTransform>}  entries
- * @param {ApiEntryTransform}        entry 
- * @param {string}              key 
- */
-function insertOrLink(entries, entry, key) {
+function insertOrLink(entries: Dict<ApiEntryTransform>, entry: ApiEntryTransform, key: string) {
   let currLink = entries[key];
   if (!currLink) {
     entries[key] = entry;
@@ -358,13 +305,7 @@ function insertOrLink(entries, entry, key) {
   currLink.link = entry;
 }
 
-/**
- * 
- * @param {Dict<ApiEntry>}    sourceEntries 
- * @param {ApiFileTransform}  file
- * @param {ApiContext}        context 
- */
-function expandTypes(sourceEntries, file, context) {
+function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, context: ApiContext) {
   expandNamespaces(sourceEntries, file, context);
 
   const transformMap = file.transform ?? {};
@@ -447,7 +388,7 @@ function expandTypes(sourceEntries, file, context) {
     }
   }
 
-  function getOrCreateDelta(sourceName) {
+  function getOrCreateDelta(sourceName): ApiEntryTransform {
     const targetDelta = transformMap[sourceName];
     const name = transformName(sourceName, context);
     if (!targetDelta) return transformMap[sourceName] = { name };
@@ -455,13 +396,7 @@ function expandTypes(sourceEntries, file, context) {
     return targetDelta;
   }
 
-  /**
-   * 
-   * @param {string}    sourceName 
-   * @param {ApiEntry}  sourceEntry 
-   * @param {string}    name 
-   */
-  function expandCallback(sourceName, sourceEntry, name) {
+  function expandCallback(sourceName: string, sourceEntry: ApiEntry, name: string) {
     const parameters = sourceEntry.parameters;
     delete sourceEntry.parameters;
     for (let i = 0; i < parameters.length; i++) {
@@ -470,8 +405,7 @@ function expandTypes(sourceEntries, file, context) {
         const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
         const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
         typeParams.splice(i, 1);
-        /** @type {ApiEntryTransform}  */
-        const callbackEntry = {
+        const callbackEntry: ApiEntryTransform = {
           kind: "alias",
           name: callbackName,
           type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
@@ -486,14 +420,7 @@ function expandTypes(sourceEntries, file, context) {
     }
   }
 
-  /**
-   * 
-   * @param {string}            sourceType 
-   * @param {ApiEntry}          sourceEntry 
-   * @param {string}            targetType 
-   * @param {ApiEntryTransform} transform
-   */
-  function expandWrapper(sourceType, sourceEntry, targetType, transform) {
+  function expandWrapper(sourceType: string, sourceEntry: ApiEntry, targetType: string, transform: ApiEntryTransform) {
     const wrapper = transform.wrapper === true ? {} : transform.wrapper;
     if (!wrapper) return;
     const isStruct = sourceEntry.kind === "struct" && !transform.type;
@@ -518,8 +445,7 @@ function expandTypes(sourceEntries, file, context) {
       kind: 'forward',
     }, '__begin');
 
-    /** @type {string[]} */
-    const fields = [];
+    const fields: string[] = [];
     if (isStruct) {
       for (const e of Object.values(sourceEntry.entries)) fields.push(e.name);
 
@@ -532,8 +458,7 @@ function expandTypes(sourceEntries, file, context) {
       });
     }
 
-    /** @type {Dict<ApiEntryTransform>} */
-    const entries = {};
+    const entries: Dict<ApiEntryTransform> = {};
 
     if (!isStruct) {
       insertTransform(entries, {
@@ -635,8 +560,7 @@ function expandTypes(sourceEntries, file, context) {
       transform.hints.super = rawType;
 
       if (wrapper.genMembers !== false) {
-        /** @type {ApiParameter[]} */
-        const parameters = [];
+        const parameters: ApiParameter[] = [];
         for (const attrib of Object.values(sourceEntry.entries)) {
           if (attrib.kind !== "var") continue;
           const name = attrib.name;
@@ -704,10 +628,8 @@ function expandTypes(sourceEntries, file, context) {
     delete transform.wrapper;
   }
 
-  /** @param {ApiEntryTransformMap=} entries  */
-  function createBlockedNames(entries) {
-    /** @type {Set<string>} */
-    const result = new Set();
+  function createBlockedNames(entries?: ApiEntryTransformMap) {
+    const result = new Set<string>();
 
     if (!entries) entries = {};
     for (const [k, v] of Object.entries(entries)) {
@@ -717,14 +639,7 @@ function expandTypes(sourceEntries, file, context) {
     return result;
   }
 
-  /**
-   * 
-   * @param {string}            sourceName 
-   * @param {ApiEntry}          sourceEntry 
-   * @param {string}            targetName 
-   * @param {ApiEntryTransform} targetEntry
-   */
-  function expandResource(sourceName, sourceEntry, targetName, targetEntry) {
+  function expandResource(sourceName: string, sourceEntry: ApiEntry, targetName: string, targetEntry: ApiEntryTransform) {
     const resourceEntry = getResourceDefinition(targetEntry) ?? {};
 
     const rawName = resourceEntry.rawName || `${targetName}Raw`;
@@ -748,8 +663,8 @@ function expandTypes(sourceEntries, file, context) {
     const title = targetName[0].toLowerCase() + targetName.slice(1);
     if (sourceEntry.type && !targetEntry.type) targetEntry.type = '';
     context.addName(sourceName, targetName);
-    /** @type {ApiEntryTransform[]} */
-    const referenceAliases = [];
+
+    const referenceAliases: ApiEntryTransform[] = [];
     referenceAliases.push({ name: targetName, kind: "forward" });
     referenceAliases.push({
       name: rawName,
@@ -760,8 +675,7 @@ function expandTypes(sourceEntries, file, context) {
     if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
     if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
 
-    /** @type {ApiEntryTransformMap} */
-    const memberAccess = {};
+    const memberAccess: ApiEntryTransformMap = {};
     if (enableMemberAccess) {
       memberAccess["operator->"] = {
         doc: `member access to underlying ${rawName}.`,
@@ -925,8 +839,7 @@ function expandTypes(sourceEntries, file, context) {
 
     const ownershipDisclaimer = hasScoped ? "" : "\n\nThis assumes the ownership, call release() if you need to take back.";
 
-    /** @type {Dict<ApiEntryTransform>} */
-    const ctors = {
+    const ctors: Dict<ApiEntryTransform> = {
       [targetName]: {
         kind: "function",
         type: "",
@@ -964,8 +877,7 @@ function expandTypes(sourceEntries, file, context) {
       }
     };
     if (hasShared) {
-      /** @type {EntryHint} */
-      const copyCtorHints = {};
+      const copyCtorHints: EntryHint = {};
       ctors[`${targetName}#3`].hints = copyCtorHints;
       if (resourceEntry.shared !== true) {
         copyCtorHints.init = ["m_resource(other.m_resource)"];
@@ -1040,8 +952,7 @@ function expandTypes(sourceEntries, file, context) {
       if (typeof entry === "string") {
         if (entry === "ctor") {
           const parameters = file.transform[sourceName]?.parameters;
-          /** @type {ApiEntryTransform} */
-          const ctor = {
+          const ctor: ApiEntryTransform = {
             kind: "function",
             type: "",
             name: targetName,
@@ -1070,15 +981,15 @@ function expandTypes(sourceEntries, file, context) {
       }
     }
 
-    let freeFunction = /** @type {ApiEntry} */(sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, targetName, pointerType);
+    let freeFunction: ApiEntry = (sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, targetName, pointerType);
     if (freeFunction) {
       const sourceName = freeFunction.name;
       freeFunction = transformEntry(freeFunction, context);
-      const freeTransformEntry = /** @type {ApiEntryTransform} */(subEntries[sourceName]) ?? {};
+      const freeTransformEntry = <ApiEntryTransform>(subEntries[sourceName]) ?? {};
       combineObject(freeFunction, freeTransformEntry);
       freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), targetName);
       freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
-      const fileLevelEntry = file.transform[sourceName] ?? { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
+      const fileLevelEntry: ApiEntryTransform = file.transform[sourceName] ?? { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
       file.transform[sourceName] = fileLevelEntry;
       const fileLevelName = fileLevelEntry.name ?? transformName(sourceName, context);
       if (!freeFunction.hints?.body) {
@@ -1214,8 +1125,7 @@ function expandTypes(sourceEntries, file, context) {
       private: true,
     });
 
-    /** @type {ApiEntryTransform[]} */
-    const derivedEntries = [];
+    const derivedEntries: ApiEntryTransform[] = [];
 
     if (hasRef) derivedEntries.push({
       kind: 'struct',
@@ -1291,28 +1201,17 @@ function expandTypes(sourceEntries, file, context) {
     delete targetEntry.resource;
   }
 
-  /**
-   * 
-   * @param {string}                  sourceType 
-   * @param {string}                  targetType 
-   * @param {string}                  paramType 
-   * @param {string}                  constParamType 
-   * @param {Set<string>}             blockedNames 
-   */
-  function detectMethods(sourceType, targetType, paramType, constParamType, blockedNames) {
-    /** @type {Dict<ApiEntryTransform|QuickTransform>} */
-    const foundEntries = {};
+  function detectMethods(sourceType: string, targetType: string, paramType: string, constParamType: string, blockedNames: Set<string>) {
+    const foundEntries: Dict<ApiEntryTransform | QuickTransform> = {};
     const prefix = `${targetType}::`;
     let lastKey = "__begin";
-    /** @type {Map<string, string[]>} */
-    const placeAfter = new Map();
+    const placeAfter = new Map<string, string[]>();
     for (let [sourceName, transformEntry] of Object.entries(transformMap)) {
       const hasPrefix = sourceName.startsWith(prefix);
       if (hasPrefix) sourceName = sourceName.slice(prefix.length);
       if (blockedNames.has(sourceName)) continue;
       const sourceEntry = sourceEntries[sourceName];
       if (sourceEntry) lastKey = sourceName;
-      /** @type {ApiEntryTransform[]} */
       if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function')) continue;
       const parameters = transformEntry.parameters;
       let param0 = parameters?.[0];
@@ -1367,10 +1266,9 @@ function expandTypes(sourceEntries, file, context) {
       if (typeof param0 === 'string') continue;
       const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`], [`const ${sourceType}`, `const ${sourceType} *`]);
       if (!m) continue;
-      const transformEntry = /** @type {ApiEntryTransform}*/(transformMap[sourceName]);
+      const transformEntry = transformMap[sourceName];
       if (transformEntry?.name || transformEntry?.parameters || transformEntry?.type || transformEntry?.hints?.methodName) {
-        /** @type {ApiEntryTransform} */
-        const e = {
+        const e: ApiEntryTransform = {
           ...deepClone(transformEntry),
           immutable: m === 'immutable' || transformEntry.immutable,
         };
@@ -1393,8 +1291,7 @@ function expandTypes(sourceEntries, file, context) {
       }
       if (!transformEntry) transformMap[sourceName] = {};
     }
-    /** @type {Dict<ApiEntryTransform|QuickTransform>} */
-    const orderedEntries = {};
+    const orderedEntries: Dict<ApiEntryTransform | QuickTransform> = {};
     placeAfter.get("__begin")?.forEach(sKey => orderedEntries[sKey] = "plc");
     Object.keys(sourceEntries).forEach(key => {
       const value = foundEntries[key];
@@ -1406,14 +1303,7 @@ function expandTypes(sourceEntries, file, context) {
     return orderedEntries;
   }
 
-  /**
-   * 
-   * @param {string}                sourceName 
-   * @param {ApiEntry}              sourceEntry 
-   * @param {string}                targetName 
-   * @param {ApiEntryTransform}     transform
-   */
-  function expandEnumeration(sourceName, sourceEntry, targetName, transform) {
+  function expandEnumeration(sourceName: string, sourceEntry: ApiEntry, targetName: string, transform: ApiEntryTransform) {
     const definition = getEnumDefinition(transform) ?? {};
     const valueType = definition.valueType ?? targetName;
     if (!transform.kind && !transform.type) {
@@ -1427,8 +1317,7 @@ function expandTypes(sourceEntries, file, context) {
 
     let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
     const prefix = definition.prefix ?? (sourceName.toUpperCase() + "_");
-    /** @type {StringMap} */
-    const newNames = {};
+    const newNames: StringMap = {};
     if (!values?.length) {
       values = Object.values(sourceEntries)
         .filter(e => e.kind === "def"
@@ -1436,7 +1325,7 @@ function expandTypes(sourceEntries, file, context) {
           && e.name.startsWith(prefix)
           && !transformMap[e.name]?.type
         )
-        .map(e => /** @type {ApiEntry}*/(e).name);
+        .map(e => e.name);
       const newPrefix = definition.newPrefix;
       if (newPrefix) {
         const oldPrefixLen = prefix.length;
@@ -1451,8 +1340,7 @@ function expandTypes(sourceEntries, file, context) {
       const valueSource = sourceEntries[value];
       const valueTransform = file.transform[value];
       delete file.transform[value];
-      /** @type {ApiEntryTransform & ApiEntry} */
-      const valueTarget = {
+      const valueTarget: ApiEntryTransform & ApiEntry = {
         kind: "var",
         name: newNames[value] ?? transformName(value, context),
         constexpr: true,
@@ -1462,7 +1350,6 @@ function expandTypes(sourceEntries, file, context) {
       };
       combineObject(valueTarget, valueTransform || {});
       if (typeof valueTarget.doc !== "string") {
-        // @ts-ignore
         const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
         valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
       }
@@ -1474,15 +1361,8 @@ function expandTypes(sourceEntries, file, context) {
   }
 }
 
-/**
- * 
- * @param {Dict<ApiEntry>}    sourceEntries 
- * @param {ApiFileTransform}  file
- * @param {ApiContext}        context 
- */
-function transformEntries(sourceEntries, file, context) {
-  /** @type {ApiEntries} */
-  const targetEntries = {};
+function transformEntries(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, context: ApiContext) {
+  const targetEntries: ApiEntries = {};
   const transformMap = file.transform;
 
   const sortedEntries = makeSortedEntryArray(sourceEntries, file, context);
@@ -1503,12 +1383,8 @@ function transformEntries(sourceEntries, file, context) {
   }
 
   return targetEntries;
-  /**
-   * 
-   * @param {ApiEntry} entry 
-   * @param {ApiEntryTransform} link 
-   */
-  function insertLinks(entry, link) {
+
+  function insertLinks(entry: ApiEntry, link: ApiEntryTransform) {
     if (!link) return;
     insertLinks(entry, link.link);
     delete link.link;
@@ -1526,13 +1402,7 @@ function transformEntries(sourceEntries, file, context) {
   }
 }
 
-/**
- * 
- * @param {Dict<ApiEntry>}    sourceEntries 
- * @param {ApiFileTransform}  file,
- * @param {ApiContext}        context 
- */
-function makeSortedEntryArray(sourceEntries, file, context) {
+function makeSortedEntryArray(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, context: ApiContext) {
   const transformEntries = file.transform ?? {};
 
   let lastSourceName = "__begin";
@@ -1560,15 +1430,13 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     delete transformEntry.after;
   }
 
-  /** @type {Dict<ApiEntry>} */
-  const sortedEntries = {};
-  /** @type {Dict<number>} */
-  const countInstance = {};
+  const sortedEntries: Dict<ApiEntry> = {};
+  const countInstance: Dict<number> = {};
 
   const defPrefix = file.definitionPrefix;
   const includeBefore = context.currentIncludeBefore;
   const includeAfter = context.currentIncludeAfter;
-  const processedSourceNames = new Set();
+  const processedSourceNames = new Set<string>();
 
   if (includeBefore.__begin) addIncluded(includeBefore.__begin);
   if (includeAfter.__begin) addIncluded(includeAfter.__begin);
@@ -1630,11 +1498,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
 
   return Object.values(sortedEntries);
 
-  /**
-   * 
-   * @param {ApiEntryTransform[]=} transformEntries 
-   */
-  function addIncluded(transformEntries) {
+  function addIncluded(transformEntries?: ApiEntryTransform[]) {
     if (!transformEntries) return;
     for (let i = 0; i < transformEntries.length; i++) {
       const transformEntry = transformEntries[i];
@@ -1654,15 +1518,11 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     }
   }
 
-  /**
-   * 
-   * @param {ApiEntryTransform} transformEntry 
-   */
-  function addTransform(transformEntry) {
+  function addTransform(transformEntry: ApiEntryTransform) {
     const currEntry = sortedEntries[transformEntry.name];
     const currKind = currEntry?.kind;
     const nextName = transformEntry.kind === 'forward' ? transformEntry.name + '#forward' : transformEntry.name;
-    const targetEntry =  /** @type {ApiEntry} */({
+    const targetEntry = <ApiEntry>({
       ...transformEntry,
       kind: transformEntry.kind ?? "plc",
       name: transformEntry.name ?? "",
@@ -1684,10 +1544,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     combineObject(currEntry, targetEntry);
   }
 
-  /**
-   * @param {ApiEntryTransform} targetEntry the entry we are inserting from
-   */
-  function transformSubEntries(targetEntry) {
+  function transformSubEntries(targetEntry: ApiEntryTransform) {
     /** @type {ApiEntries} */
     const entries = {};
     const type = targetEntry.name;
@@ -1696,18 +1553,12 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     }
     return entries;
 
-    /**
-     * 
-     * @param {string}                            key 
-     * @param {ApiEntryTransform|QuickTransform}  entry 
-     */
-    function transformSubEntry(key, entry) {
+    function transformSubEntry(key: string, entry: ApiEntryTransform | QuickTransform) {
       const sourceEntry = context.source[key];
       const nameCandidate = transformName(key, context);
       if (!sourceEntry) {
         if (typeof entry === "string") {
-          /** @type {ApiEntry} */
-          const newEntry = { kind: "function", name: nameCandidate };
+          const newEntry: ApiEntry = { kind: "function", name: nameCandidate };
           if (entry === "ctor") {
             newEntry.name = newEntry.type = type;
           } else if (entry === "immutable") {
@@ -1722,12 +1573,12 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             insertEntry(entries, { name: nameCandidate, kind: "plc" });
           }
         } else {
-          insertEntry(entries, /** @type {ApiEntry}*/(entry), nameCandidate);
+          insertEntry(entries, <ApiEntry>entry, nameCandidate);
         }
         return;
       }
       const nameChange = makeRenameEntry(entry, nameCandidate, type);
-      if (context.blacklist.has(key)) addTransform(/** @type {ApiEntry}*/(nameChange));
+      if (context.blacklist.has(key)) addTransform(nameChange);
       if (!entries[nameChange.name]) {
         insertEntry(entries, { name: nameChange.name, kind: "plc" });
       }
@@ -1757,13 +1608,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
   }
 }
 
-/**
- * 
- * @param {Dict<ApiEntryTransform>} entries 
- * @param {ApiEntryTransform}       transformEntry 
- * @param {string}                  defaultName
- */
-function insertTransform(entries, transformEntry, defaultName = undefined) {
+function insertTransform(entries: Dict<ApiEntryTransform>, transformEntry: ApiEntryTransform, defaultName: string = undefined) {
   if (defaultName) transformEntry.name = transformEntry.name ?? defaultName;
   const currEntry = entries[transformEntry.name];
   const currKind = currEntry?.kind;
@@ -1782,25 +1627,14 @@ function insertTransform(entries, transformEntry, defaultName = undefined) {
   combineObject(currEntry, transformEntry);
 }
 
-/**
- * 
- * @param {ApiParameter[]} parameters 
- */
-function makeSignatureSuffix(parameters) {
+function makeSignatureSuffix(parameters: ApiParameter[]) {
   return parameters.map(p => p.type ?? "_").join(",");
 }
 
-/**
- * 
- * @param {Dict<ApiEntry>}    sourceEntries 
- * @param {ApiFileTransform}  file,
- * @param {ApiContext}        context 
- */
-function expandNamespaces(sourceEntries, file, context) {
+function expandNamespaces(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, context: ApiContext) {
   const namespacesMap = file.namespacesMap ?? {};
   for (const [prefix, nsName] of Object.entries(namespacesMap)) {
-    /** @type {Dict<ApiEntryTransform>} */
-    const nsEntries = {};
+    const nsEntries: Dict<ApiEntryTransform> = {};
     const sourceEntriesListed = Object.entries(sourceEntries)
       .filter(([key]) => key.startsWith(prefix));
     for (const [key, entry] of sourceEntriesListed) {
@@ -1822,12 +1656,7 @@ function expandNamespaces(sourceEntries, file, context) {
   }
 }
 
-/**
- * 
- * @param {ApiEntryBase}  entry 
- * @param {EntryHint}     hints 
- */
-function addHints(entry, hints) {
+function addHints(entry: ApiEntryBase, hints: EntryHint) {
   if (entry.hints) {
     combineObject(entry.hints, hints);
   } else {
@@ -1840,7 +1669,7 @@ function addHints(entry, hints) {
  * @param {ApiEntryBase}  entry 
  * @param {EntryHint}     hints 
  */
-function combineHints(entry, hints) {
+function combineHints(entry: ApiEntryBase, hints: EntryHint) {
   if (entry.hints) {
     entry.hints = { ...hints, ...entry.hints };
   } else {
@@ -1848,16 +1677,13 @@ function combineHints(entry, hints) {
   }
 }
 
-/**
- * 
- * @param {Dict<ApiEntry>}          sourceEntries 
- * @param {Dict<ApiEntryTransform>} transformEntries 
- * @param {ApiEntryTransformMap}    transformSubEntries 
- * @param {string}                  paramType 
- * @param {string}                  constParamType 
- * @param {string}                  resultType 
- */
-function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, paramType, constParamType, resultType) {
+function mirrorMethods(
+  sourceEntries: Dict<ApiEntry>,
+  transformEntries: Dict<ApiEntryTransform>,
+  transformSubEntries: ApiEntryTransformMap,
+  paramType: string,
+  constParamType: string,
+  resultType: string) {
   for (const [sourceName, subEntry] of Object.entries(transformSubEntries)) {
     const sourceEntry = sourceEntries[sourceName];
     if (!sourceEntry) continue;
@@ -1865,8 +1691,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
 
     const transformEntry = transformEntries[sourceName];
     if (transformEntry?.type || transformEntry?.parameters) continue;
-    /** @type {ApiEntryTransform} */
-    let targetEntry;
+    let targetEntry: ApiEntryTransform;
     if (typeof subEntry === 'string') {
       targetEntry = {};
       if (subEntry === 'immutable') targetEntry.immutable = true;
@@ -1885,16 +1710,10 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     transformEntries[sourceName] = targetEntry;
   }
 
-  /**
-   * 
-   * @param {ApiEntry}          sourceEntry
-   * @param {ApiEntryTransform} targetEntry
-   */
-  function mirrorParameters(sourceEntry, targetEntry) {
+  function mirrorParameters(sourceEntry: ApiEntry, targetEntry: ApiEntryTransform) {
     if (targetEntry.static) return;
 
-    /**@type {ApiParameters} */
-    const targetParameters = targetEntry.parameters ?? sourceEntry?.parameters?.map(() => ({}));
+    const targetParameters: ApiParameters = targetEntry.parameters ?? sourceEntry?.parameters?.map(() => ({}));
     if (!targetParameters) return;
 
     const needSaveParameters = !targetEntry.parameters;
@@ -1905,7 +1724,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
     if (!targetParam0 || typeof targetParam0 === "string" || targetParam0.type) {
       switch (typeof sourceParam0) {
         case 'object':
-          const selfParam = { name: sourceParam0.name };
+          const selfParam: ApiParameter = { name: sourceParam0.name };
           if (!sourceParam0.type) {
             selfParam.type = targetEntry.immutable ? constParamType : paramType;
           } else if (sourceParam0.type.includes(resultType)) {
@@ -1934,13 +1753,7 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
 }
 
 
-/**
- * 
- * @param {ApiParameter}  param0 
- * @param {string[]}      variants 
- * @param {string[]}      constVariants 
- */
-function paramMatchesVariants(param0, variants, constVariants) {
+function paramMatchesVariants(param0: ApiParameter, variants: string[], constVariants: string[]) {
   for (const variant of variants) {
     if (param0.type === variant) return 'function';
   }
@@ -1950,12 +1763,7 @@ function paramMatchesVariants(param0, variants, constVariants) {
   return false;
 }
 
-
-/**
- * 
- * @param {ApiEntryTransform} entry 
- */
-function getResourceDefinition(entry) {
+function getResourceDefinition(entry: ApiEntryTransform) {
   const resourceDef = entry.resource;
   switch (typeof resourceDef) {
     case "string": return { shared: resourceDef };
@@ -1965,11 +1773,7 @@ function getResourceDefinition(entry) {
   }
 }
 
-/**
- * 
- * @param {ApiEntryTransform} entry 
- */
-function getEnumDefinition(entry) {
+function getEnumDefinition(entry: ApiEntryTransform) {
   const enumDef = entry.enum;
   switch (typeof enumDef) {
     case "string": return { prefix: enumDef };
@@ -1979,15 +1783,8 @@ function getEnumDefinition(entry) {
   }
 }
 
-/**
- * 
- * @param {Dict<ApiEntry>}  entries 
- * @param {string}          uniqueType 
- * @param {string}          pointerType
- */
-function scanFreeFunction(entries, uniqueType, pointerType) {
-  /** @type {ApiEntry[]} */
-  const candidates = [];
+function scanFreeFunction(entries: Dict<ApiEntry>, uniqueType: string, pointerType: string) {
+  const candidates: ApiEntry[] = [];
   for (const sourceName of Object.keys(entries)) {
     if (looksLikeFreeFunction(sourceName)) {
       const sourceEntry = entries[sourceName];
@@ -2003,31 +1800,23 @@ function scanFreeFunction(entries, uniqueType, pointerType) {
 
 /**
  * Insert entry into entries
- * 
- * @param {ApiEntries}        entries 
- * @param {ApiEntry}          entry 
- * @param {ApiContext}        context 
- * @param {ApiFileTransform}  file
- * @param {string=}           defaultName
  */
-function insertEntryAndCheck(entries, entry, context, file, defaultName) {
+function insertEntryAndCheck(entries: ApiEntries, entry: ApiEntry, context: ApiContext, file: ApiFileTransform, defaultName?: string) {
   insertEntry(entries, entry, defaultName);
   if (entry.kind === 'ns' || entry.kind === "struct") {
     const currType = context.types[entry.name];
     if (currType) {
       if (currType.kind !== "ns" && entry.kind !== "ns") system.warn(`Duplicate type definition ${entry.name}`);
     } else {
-      context.types[entry.name] = /**@type {ApiType}*/(entry);
+      context.types[entry.name] = <ApiType>(entry);
     }
   }
 }
 
 /**
  * Fix hierarchy, executing any pending movements
- * @param {ApiEntries} targetEntries the entries to fix hierarchy
- * @param {ApiContext} context the context
  */
-function transformHierarchy(targetEntries, context) {
+function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
   for (const key of Object.keys(targetEntries)) {
     if (!key.includes(".") && !key.includes("::")) continue;
     const isMove = key.includes(".");
@@ -2054,10 +1843,7 @@ function transformHierarchy(targetEntries, context) {
       }
     }
 
-    /**
-     * @param {ApiEntry} entry 
-     */
-    function insertCopyEntry(entry) {
+    function insertCopyEntry(entry: ApiEntry) {
       insertEntry(obj.entries, {
         ...entry,
         proto: true,
@@ -2079,12 +1865,7 @@ function transformHierarchy(targetEntries, context) {
     }
   }
 
-  /**
-   * 
-   * @param {string}        key 
-   * @param {ApiParameters} template 
-   */
-  function makeMemberName(key, template) {
+  function makeMemberName(key: string, template: ApiParameters) {
     if (!template) return key;
     const lastSeparator = key.lastIndexOf('::');
     const args = generateCallParameters(template, {});
@@ -2094,10 +1875,8 @@ function transformHierarchy(targetEntries, context) {
 
 /**
  * Get element from path
- * @param {string[]}    path 
- * @param {ApiContext}  context 
  */
-function getTypeFromPath(path, context) {
+function getTypeFromPath(path: string[], context: ApiContext) {
   let obj = context.types[path[0]];
   if (!obj || !obj.entries) return null;
   let i = 1;
@@ -2106,27 +1885,23 @@ function getTypeFromPath(path, context) {
     if (!el || !el.entries) {
       return null;
     }
-    obj = /**@type {ApiType} */(el);
+    obj = <ApiType>(el);
   }
   return obj;
 }
 
 /**
  * Validate and report entries
- * @param {ApiEntries} targetEntries
  */
-function validateEntries(targetEntries) {
+function validateEntries(targetEntries: ApiEntries) {
   // Do nothing for now
 }
 
 /**
  * Marshal name of member functions
- * @param {ApiEntryTransform|string} entry 
- * @param {string}          name 
- * @param {string}          typeName 
  */
-function makeRenameEntry(entry, name, typeName) {
-  let newEntry = {};
+function makeRenameEntry(entry: ApiEntryTransform | string, name: string, typeName: string): ApiEntryTransform {
+  let newEntry: ApiEntryTransform = {};
   if (entry === "placeholder") {
     newEntry = {};
   } else if (entry === "ctor") {
@@ -2134,31 +1909,20 @@ function makeRenameEntry(entry, name, typeName) {
   } else if (entry === "immutable") {
     newEntry = { kind: "function", immutable: true };
   } else if (typeof entry !== "object") {
-    newEntry = { kind: /** @type {ApiEntryKind} */(entry) };
+    newEntry = { kind: <ApiEntryKind>(entry) };
   } else if (entry.name === "ctor") {
     newEntry = { ...entry, kind: "function", name: typeName, type: "", proto: false };
   } else {
     newEntry = entry;
   }
-  return /** @type {ApiEntryTransform} */ ({ ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) });
+  return { ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) };
 }
 
-/**
- * 
- * @param {string}     name 
- * @param {string}     typeName 
- * @param {ApiContext} context
- */
-function transformMemberName(name, typeName, context) {
+function transformMemberName(name: string, typeName: string, context: ApiContext) {
   return makeNaturalName(transformName(name, context), typeName);
 }
 
-/**
- * 
- * @param {string} name 
- * @param {string} typeName 
- */
-function makeNaturalName(name, typeName) {
+function makeNaturalName(name: string, typeName: string) {
   typeName = normalizeTypeName(typeName);
   if (!typeName.startsWith("F")) return name.replace(new RegExp(typeName), "");
   const replaceRegexp = new RegExp("F?" + typeName.slice(1));
@@ -2169,11 +1933,8 @@ function makeNaturalName(name, typeName) {
 
 /**
  * Prepare function to become class or instance function
- * @param {ApiEntry} entry 
- * @param {string} name 
- * @param {string} typeName 
  */
-function prepareForTypeInsert(entry, name, typeName) {
+function prepareForTypeInsert(entry: ApiEntry, name: string, typeName: string) {
   entry.name = name;
   if (name === typeName) {
     if (entry.doc) entry.doc = entry.doc.replace(/@returns?/, "@post");
@@ -2197,8 +1958,7 @@ function prepareForTypeInsert(entry, name, typeName) {
 
 }
 
-/** @param {string} typeName  */
-function normalizeTypeName(typeName) {
+function normalizeTypeName(typeName: string) {
   if (typeName.endsWith("Ref")) return typeName.slice(0, typeName.length - 3);
   return typeName;
 }
@@ -2208,9 +1968,8 @@ function normalizeTypeName(typeName) {
  * @param {ApiEntry}    sourceEntry 
  * @param {ApiContext}  context 
  */
-function transformEntry(sourceEntry, context) {
-  /** @type {ApiEntry} */
-  const targetEntry = { ...sourceEntry };
+function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
+  const targetEntry: ApiEntry = { ...sourceEntry };
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc, context);
   }
@@ -2245,13 +2004,7 @@ function transformEntry(sourceEntry, context) {
   return targetEntry;
 }
 
-/**
- * 
- * @param {ApiParameters} parameters
- * @param {ApiContext} context 
- * @returns {ApiParameters}
- */
-function transformParameters(parameters, context) {
+function transformParameters(parameters: ApiParameters, context: ApiContext): ApiParameters {
   return parameters.map(parameter => {
     let { name, type, default: defaultValue } = parameter;
     type = transformType(type, context.paramTypeMap);
@@ -2259,12 +2012,7 @@ function transformParameters(parameters, context) {
   });
 }
 
-/**
- * 
- * @param {ApiEntry}    targetEntry 
- * @param {ApiContext}  context 
- */
-function checkSignatureRules(targetEntry, context) {
+function checkSignatureRules(targetEntry: ApiEntry, context: ApiContext) {
   const parameters = /** @type {ApiParameter[]}*/(targetEntry.parameters);
   if (parameters.some(p => typeof p === "string")) return;
   for (const signatureRule of context.signatureRules) {
@@ -2288,75 +2036,47 @@ function checkSignatureRules(targetEntry, context) {
   }
 }
 
-/**
- * 
- * @param {string} type 
- * @param {{[sourceType: string]: string}} typeMap 
- */
-function transformType(type, typeMap) {
+function transformType(type: string, typeMap: StringMap) {
   return typeMap[type] ?? type;
 }
 
-/**
- * 
- * @param {string}      docStr 
- * @param {ApiContext}  context 
- */
-function transformFileDoc(docStr, context) {
+function transformFileDoc(docStr: string, context: ApiContext) {
   if (!docStr) return "";
   docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
 }
 
-/** 
- * @param {string}      docStr
- * @param {ApiContext}  context   
- **/
-function transformDoc(docStr, context) {
+function transformDoc(docStr: string, context: ApiContext) {
   return transformString(docStr, context.docRules)
     .replace(/\\(\w+)/g, '@$1')
     .replaceAll("NULL", "nullptr");
 }
 
-/**
- * 
- * @param {string} name 
- * @param {ApiContext} context 
- */
-function transformIncludeName(name, context) {
+function transformIncludeName(name: string, context: ApiContext) {
   return transformString(name, context.renameRules);
 }
 
 /**
  * 
- * @param {string} str the string to apply to
- * @param {ReplacementRule[]} rules the replacements to apply
+ * @param str the string to apply to
+ * @param rules the replacements to apply
  */
-function transformString(str, rules) {
+function transformString(str: string, rules: ReplacementRule[]) {
   rules.forEach(rule => str = str.replace(rule.pattern, rule.replacement));
   return str;
 }
 
-/**
- * 
- * @param {string} name 
- * @param {ApiContext} context 
- */
-function transformName(name, context) {
+function transformName(name: string, context: ApiContext) {
   name = name.replace(/#.*$/, "");
   return context?.prefixToRemove ? name.replace(context.prefixToRemove, '') : name;
 }
 
-/**
- * @param {ApiEntries} entries 
- * @param {ApiContext} context 
- */
-function transformEntriesDocRefs(entries, context) {
+function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
   for (const entry of Object.values(entries)) {
     transformEntryDoc(entry);
   }
 
-  function transformEntryDoc(entry) {
+  function transformEntryDoc(entry: ApiEntry) {
     if (entry.doc) {
       if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
       entry.doc = resolveDocRefs(entry.doc, context);
@@ -2366,15 +2086,10 @@ function transformEntriesDocRefs(entries, context) {
   }
 }
 
-/** 
- * @param {string} doc  
- * @param {ApiContext} context 
- */
-function resolveVersionDoc(doc, context) {
+function resolveVersionDoc(doc: string, context: ApiContext) {
   const m = /^[@\\]since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
   if (!m) return undefined;
-  /** @type {VersionTag} */
-  const version = {
+  const version: VersionTag = {
     tag: m[1].toUpperCase(),
     major: +m[2],
     minor: +m[3],
@@ -2383,15 +2098,7 @@ function resolveVersionDoc(doc, context) {
   if (context.isAfterMinVersion(version)) return version;
 }
 
-/**
- * 
- * @param {string}     doc 
- * @param {ApiContext} context 
- */
-function resolveDocRefs(doc, context) {
+function resolveDocRefs(doc: string, context: ApiContext) {
   if (!doc) return "";
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
-
-exports.transformApi = transformApi;
-
