@@ -7,3 +7,6 @@ scripts/source_xml.json
 scripts/transform-legacy.json
 /cmake-build-debug/
 /cmake-build-release/
+.antlr/
+*.tokens
+*.interp
