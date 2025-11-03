@@ -1,27 +1,25 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { CHeaderParser, ProgContext } from './grammar/CHeaderParser';
+import { CHeaderParser, DocContext, ProgContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
-import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
+import { readFileSync } from "fs";
+import { ApiFile } from './types';
 
-// Create the lexer and parser
-let lexer = new CHeaderLexer(CharStreams.fromString('1+1\n'));
-let tokenStream = new CommonTokenStream(lexer);
-let parser = new CHeaderParser(tokenStream);
-
-// Parse the input, where `compilationUnit` is whatever entry point you defined
-let tree = parser.prog();
 
 class ProgListener implements CHeaderListener {
-  // Assuming a parser rule with name: `functionDeclaration`
-  enterProg(context: ProgContext) {
-    console.log(`Function start line number ${context._start.line}`);
-    // ...
+  public api: ApiFile;
+
+  constructor(name: string) {
+    this.api = { name };
   }
 
-  exitProg(context: ProgContext) { }
+  // Assuming a parser rule with name: `functionDeclaration`
+  enterProg(ctx: ProgContext) {
+    const doc = ctx.doc();
+    if (doc) this.api.doc = parseDoc(doc.text);
+  }
 
   // other enterX functions...
   visitTerminal(/*@NotNull*/ node: TerminalNode) { }
@@ -30,7 +28,45 @@ class ProgListener implements CHeaderListener {
   // exitEveryRule(/*@NotNull*/ ctx: ParserRuleContext) {};
 }
 
-// Create the listener
-const listener: ParseTreeListener = new ProgListener();
-// Use the entry point for listeners
-ParseTreeWalker.DEFAULT.walk(listener, tree);
+
+function parseContent(name: string, content: string) {
+  // Create the lexer and parser
+  let lexer = new CHeaderLexer(CharStreams.fromString(content, name));
+  let tokenStream = new CommonTokenStream(lexer);
+  let parser = new CHeaderParser(tokenStream);
+
+  // Parse the input, where `compilationUnit` is whatever entry point you defined
+  let tree = parser.prog();
+
+  // Create the listener
+  const listener = new ProgListener(name);
+  // Use the entry point for listeners
+  ParseTreeWalker.DEFAULT.walk(listener, tree);
+  return listener.api;
+}
+function parseDoc(text: string): string {
+  if (text.startsWith('/**<')) {
+    return text.slice(4, text.length - 2)
+      .replaceAll(/^[ \t]*\*[ \t]?/mg, '')
+      .trim();
+  }
+  if (text.startsWith('/**')) {
+    return text.slice(3, text.length - 2)
+      .replaceAll(/^[ \t]*\*[ \t]?/mg, '')
+      .trim();
+  }
+  if (text.startsWith('///<')) {
+    text.slice(4)
+      .replaceAll(/^[ \t]\/\/\/[ \t]?/mg, '')
+      .trim();
+  }
+  if (text.startsWith('///')) {
+    text.slice(3)
+      .replaceAll(/^[ \t]\/\/\/[ \t]?/mg, '')
+      .trim();
+  }
+  return text;
+}
+
+const file = readFileSync("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
+console.log(parseContent("SDL_version.h", file));

@@ -2,22 +2,36 @@ import { ATN } from "antlr4ts/atn/ATN";
 import { FailedPredicateException } from "antlr4ts/FailedPredicateException";
 import { Parser } from "antlr4ts/Parser";
 import { ParserRuleContext } from "antlr4ts/ParserRuleContext";
-import { RuleContext } from "antlr4ts/RuleContext";
 import { TerminalNode } from "antlr4ts/tree/TerminalNode";
 import { TokenStream } from "antlr4ts/TokenStream";
 import { Vocabulary } from "antlr4ts/Vocabulary";
 import { CHeaderListener } from "./CHeaderListener";
 export declare class CHeaderParser extends Parser {
-    static readonly T__0 = 1;
-    static readonly T__1 = 2;
-    static readonly T__2 = 3;
-    static readonly T__3 = 4;
-    static readonly T__4 = 5;
-    static readonly T__5 = 6;
-    static readonly NEWLINE = 7;
-    static readonly INT = 8;
+    static readonly WS = 1;
+    static readonly LONG_COMMENT = 2;
+    static readonly SHORT_COMMENT = 3;
+    static readonly LONG_DOC = 4;
+    static readonly SHORT_DOC = 5;
+    static readonly DIRECTIVE = 6;
+    static readonly EXTERN = 7;
+    static readonly VOID = 8;
+    static readonly SDL_NOISE = 9;
+    static readonly CURLY_B = 10;
+    static readonly CURLY_E = 11;
+    static readonly ROUND_B = 12;
+    static readonly ROUND_E = 13;
+    static readonly SEMI = 14;
+    static readonly STAR = 15;
+    static readonly STRING = 16;
+    static readonly ID = 17;
     static readonly RULE_prog = 0;
-    static readonly RULE_expr = 1;
+    static readonly RULE_stm = 1;
+    static readonly RULE_externC = 2;
+    static readonly RULE_directive = 3;
+    static readonly RULE_functionDecl = 4;
+    static readonly RULE_type = 5;
+    static readonly RULE_signature = 6;
+    static readonly RULE_doc = 7;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -29,26 +43,91 @@ export declare class CHeaderParser extends Parser {
     protected createFailedPredicateException(predicate?: string, message?: string): FailedPredicateException;
     constructor(input: TokenStream);
     prog(): ProgContext;
-    expr(): ExprContext;
-    expr(_p: number): ExprContext;
-    sempred(_localctx: RuleContext, ruleIndex: number, predIndex: number): boolean;
-    private expr_sempred;
+    stm(): StmContext;
+    externC(): ExternCContext;
+    directive(): DirectiveContext;
+    functionDecl(): FunctionDeclContext;
+    type(): TypeContext;
+    signature(): SignatureContext;
+    doc(): DocContext;
     static readonly _serializedATN: string;
     static __ATN: ATN;
     static get _ATN(): ATN;
 }
 export declare class ProgContext extends ParserRuleContext {
-    expr(): ExprContext;
     EOF(): TerminalNode;
+    doc(): DocContext | undefined;
+    stm(): StmContext[];
+    stm(i: number): StmContext;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
     exitRule(listener: CHeaderListener): void;
 }
-export declare class ExprContext extends ParserRuleContext {
-    expr(): ExprContext[];
-    expr(i: number): ExprContext;
-    INT(): TerminalNode | undefined;
+export declare class StmContext extends ParserRuleContext {
+    directive(): DirectiveContext | undefined;
+    externC(): ExternCContext | undefined;
+    functionDecl(): FunctionDeclContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class ExternCContext extends ParserRuleContext {
+    EXTERN(): TerminalNode;
+    STRING(): TerminalNode;
+    CURLY_B(): TerminalNode;
+    CURLY_E(): TerminalNode;
+    stm(): StmContext[];
+    stm(i: number): StmContext;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class DirectiveContext extends ParserRuleContext {
+    DIRECTIVE(): TerminalNode;
+    doc(): DocContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class FunctionDeclContext extends ParserRuleContext {
+    EXTERN(): TerminalNode;
+    type(): TypeContext;
+    ID(): TerminalNode;
+    signature(): SignatureContext;
+    SEMI(): TerminalNode;
+    doc(): DocContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class TypeContext extends ParserRuleContext {
+    VOID(): TerminalNode | undefined;
+    STAR(): TerminalNode[];
+    STAR(i: number): TerminalNode;
+    ID(): TerminalNode[];
+    ID(i: number): TerminalNode;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class SignatureContext extends ParserRuleContext {
+    ROUND_B(): TerminalNode;
+    VOID(): TerminalNode;
+    ROUND_E(): TerminalNode;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class DocContext extends ParserRuleContext {
+    SHORT_DOC(): TerminalNode | undefined;
+    LONG_DOC(): TerminalNode | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
