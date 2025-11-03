@@ -1,7 +1,7 @@
-const { writeJSONSync, combineObject } = require("./cppfier/src/utils");
-const { parseApi } = require("./cppfier/src/parse");
-const sourceConfig = require("./config-source.json");
-const sourceXml = require("./source_xml.json");
+import { writeJSONSync, combineObject } from "./cppfier/dist/utils.js";
+import { parseApi } from "./cppfier/dist/parse.js";
+import sourceConfig from "./config-source.json" with {type: "json"};
+import sourceXml from "./source_xml.json" with {type: "json"};
 
 const api = parseApi({
   ...sourceConfig,

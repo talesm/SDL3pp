@@ -1,7 +1,7 @@
-const { writeJSONSync } = require("./cppfier/src/utils");
+const { writeJSONSync } = require("./cppfier/dist/utils");
 
 /**
- * @import {ApiTransform} from "./cppfier/src/types"
+ * @import {ApiTransform} from "./cppfier/dist/types"
  */
 
 /** @type {ApiTransform} */
