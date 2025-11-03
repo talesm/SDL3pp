@@ -5,8 +5,8 @@ Replace parse and parse-xml for a antlr parser, convert to typescript
 
 - [ ] Convert to typescript:
   - [x] Install typescript;
-  - [ ] Convert utils to ts;
-  - [ ] Convert generate to ts;
+  - [x] Convert utils to ts;
+  - [x] Convert generate to ts;
   - [ ] Convert transform to ts;
   - [x] Update CMake to only look for dist/*.js;
 - [ ] Make antlr parser:
