@@ -1,47 +1,18 @@
 Todo for next version
 ====================
 
-- [x] Make install script (contrib from @brccabral)
-- [x] Review macros that could be constexpr function or constant.
-  - [x] SDL_AUDIO_MASK_BITSIZE
-  - [x] SDL_AUDIO_MASK_FLOAT
-  - [x] SDL_AUDIO_MASK_BIG_ENDIAN
-  - [x] SDL_AUDIO_MASK_SIGNED
-  - [x] SDL_SOFTWARE_RENDERER (const char*)
-  - [x] SDL_RENDERER_VSYNC_DISABLED (int)
-  - [x] SDL_RENDERER_VSYNC_ADAPTIVE (int)
-  - [x] SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE (int)
-  - [x] SDL_FLT_EPSILON (float)
-  - [x] SDL_INIT_INTERFACE (template with concept...)
-  - [x] SDL_copyp (template with static_assert())
-  - [x] SDL_ICONV_ERROR (size_t)
-  - [x] SDL_ICONV_E2BIG (size_t)
-  - [x] SDL_ICONV_EILSEQ (size_t)
-  - [x] SDL_ICONV_EINVAL (size_t)
-  - [x] SDL_iconv_utf8_locale (template function)
-  - [x] SDL_iconv_utf8_ucs2 (template function)
-  - [x] SDL_iconv_utf8_ucs4 (template function)
-  - [x] SDL_iconv_wchar_utf8 (template function)
-  - [x] TTF_FONT_WEIGHT_THIN
-  - [x] TTF_FONT_WEIGHT_EXTRA_LIGHT
-  - [x] TTF_FONT_WEIGHT_LIGHT
-  - [x] TTF_FONT_WEIGHT_NORMAL
-  - [x] TTF_FONT_WEIGHT_MEDIUM
-  - [x] TTF_FONT_WEIGHT_SEMI_BOLD
-  - [x] TTF_FONT_WEIGHT_BOLD
-  - [x] TTF_FONT_WEIGHT_EXTRA_BOLD
-  - [x] TTF_FONT_WEIGHT_BLACK
-  - [x] TTF_FONT_WEIGHT_EXTRA_BLACK
-  - [x] SDL_WINDOWPOS_UNDEFINED_MASK (int)
-  - [x] SDL_WINDOWPOS_UNDEFINED_DISPLAY (function)
-  - [x] SDL_WINDOWPOS_UNDEFINED (int)
-  - [x] SDL_WINDOWPOS_ISUNDEFINED (function)
-  - [x] SDL_WINDOWPOS_CENTERED_MASK (int)
-  - [x] SDL_WINDOWPOS_CENTERED_DISPLAY (function)
-  - [x] SDL_WINDOWPOS_CENTERED (int)
-  - [x] SDL_WINDOWPOS_ISCENTERED (function)
-- [x] Fix constants not properly guarded by SDL_VERSION_ATLEAST()
+Replace parse and parse-xml for a antlr parser, convert to typescript
 
+- [ ] Convert to typescript:
+  - [ ] Install typescript;
+  - [ ] Convert generate to ts;
+  - [ ] Convert transform to ts;
+  - [ ] create tsconfig to generate index.js, including the js files;
+  - [ ] Update CMake to only look for index.js;
+- [ ] Make antlr parser:
+  - [ ] Create command `parse-new` to use it;
+  - [ ] Create restricted grammar for C, enough to parse SDL library;
+  - [ ] Achieve parity with current `parse` and `parse-xml` and remove them.
 
 Backlog
 =======
