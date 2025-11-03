@@ -1334,6 +1334,7 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
     }
     const after = transform.after;
     if (after) context.includeAfter(targetName, after);
+    const since = transform.since ?? resolveVersionDoc(sourceEntry.doc ?? "", context);
 
     for (const value of values) {
       const valueSource = sourceEntries[value];
@@ -1345,6 +1346,7 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
         constexpr: true,
         type: valueType,
         after: targetName,
+        since,
       };
       combineObject(valueTarget, valueTransform || {});
       if (typeof valueTarget.doc !== "string") {
@@ -2085,7 +2087,7 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
 }
 
 function resolveVersionDoc(doc: string, context: ApiContext) {
-  const m = /^@since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
+  const m = /^[@\\]since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
   if (!m) return undefined;
   const version: VersionTag = {
     tag: m[1].toUpperCase(),
