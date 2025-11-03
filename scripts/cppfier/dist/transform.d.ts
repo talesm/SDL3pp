@@ -1,20 +1,15 @@
-/**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType, VersionTag, ApiEntryBase, EntryHint, QuickTransform, ApiEntryTransformMap } from "./types"
- */
-/**
- * @typedef {object} TransformConfig
- * @prop {Api}            sourceApi
- * @prop {ApiTransform=}  transform
- */
+import { Api, ApiTransform } from "./types";
+export interface TransformConfig {
+    sourceApi: Api;
+    transform: ApiTransform;
+}
 /**
  * Transform the Api
  *
- * @param {TransformConfig} config the rules to apply into source
+ * @param config the rules to apply into source
  */
-export function transformApi(config: TransformConfig): Api;
-export type TransformConfig = {
-    sourceApi: Api;
-    transform?: ApiTransform | undefined;
+export declare function transformApi(config: TransformConfig): {
+    files: {};
+    paramReplacements: any;
+    delegatedReplacements: any;
 };
-import type { Api } from "./types";
-import type { ApiTransform } from "./types";

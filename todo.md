@@ -3,11 +3,11 @@ Todo for next version
 
 Replace parse and parse-xml for a antlr parser, convert to typescript
 
-- [ ] Convert to typescript:
+- [x] Convert to typescript:
   - [x] Install typescript;
   - [x] Convert utils to ts;
   - [x] Convert generate to ts;
-  - [ ] Convert transform to ts;
+  - [x] Convert transform to ts;
   - [x] Update CMake to only look for dist/*.js;
 - [ ] Make antlr parser:
   - [ ] Create command `parse-new` to use it;
