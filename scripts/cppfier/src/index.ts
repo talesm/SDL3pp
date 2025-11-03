@@ -3,15 +3,13 @@ import { parseXmlApi } from "./parse-xml.js";
 import { parseApi } from "./parse.js";
 import { transformApi } from "./transform.js";
 import { readJSONSync, system, writeJSONSync, writeLinesSync } from "./utils.js";
-/**
- * @import {Api, ApiTransform} from "./types"
- */
+import { Api, ApiTransform, Dict } from "./types";
 
 /**
  * Process the main
- * @param {string[]} args the arguments
+ * @param args the arguments
  */
-function main(args) {
+function main(args: string[]) {
   system.silent = false;
   system.stopOnWarn = false;
 
@@ -57,37 +55,32 @@ const guideDoc = [
 
 /**
  * Prints error with a guide
- * @param {string} message 
- * @param {string[]} parameters 
  */
-function printErrorWithGuide(message, ...parameters) {
+function printErrorWithGuide(message: string, ...parameters: string[]) {
   return printError(message, ...parameters, "", ...guideDoc);
 }
 
 /**
  * Prints error
- * @param {string} message 
- * @param {string[]} parameters 
  */
-function printError(message, ...parameters) {
+function printError(message: string, ...parameters: string[]) {
   return printLog(`Error: ${message}`, ...parameters);
 }
 
 /**
  * Scan files
- * @param {string[]} args the arguments
+ * @param args the arguments
  */
-function parse(args) {
+function parse(args: string[]) {
   if (args?.length == 0) {
     return help(["parse"]);
   }
   const config = {
-    /** @type {string[]} */
-    sources: [],
+    sources: <string[]>[],
     outputFile: "",
-    /** @type {*} */
-    api: null,
+    api: <any>null,
     baseDir: [],
+    storeLineNumbers: false,
   };
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
@@ -140,9 +133,9 @@ function parse(args) {
 
 /**
  * Scan files
- * @param {string[]} args the arguments
+ * @param args the arguments
  */
-async function parseXML(args) {
+async function parseXML(args: string[]) {
   if (args?.length == 0) {
     return help(["xml"]);
   }
@@ -154,6 +147,7 @@ async function parseXML(args) {
     api: null,
     xmlDir: [],
     baseDir: [],
+    storeLineNumbers: false,
   };
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
@@ -206,12 +200,7 @@ async function parseXML(args) {
   writeJSONSync(config.outputFile || 1, api);
 }
 
-/**
- * 
- * @param {{[key: string]: any}} destiny 
- * @param  {{[key: string]: any}} source
- */
-function mergeInto(destiny, source) {
+function mergeInto(destiny: Dict<any>, source: Dict<any>) {
   for (const [key, value] of Object.entries(source)) {
     const prevValue = destiny[key];
     if (Array.isArray(prevValue)) {
@@ -233,10 +222,9 @@ function mergeInto(destiny, source) {
 }
 
 /**
- * 
- * @param {string[]} args 
+ * Generate
  */
-function generate(args) {
+function generate(args: string[]) {
   if (args?.length == 0) {
     return help(["generate"]);
   }
@@ -299,22 +287,20 @@ function generate(args) {
 }
 
 /**
- * Scan files
- * @param {string[]} args the arguments
+ * Transform files
+ * @param args the arguments
  */
-function transform(args) {
+function transform(args: string[]) {
   if (args?.length == 0) {
     return help(["transform"]);
   }
   const config = {
-    /** @type {Api} */
-    sourceApi: null,
-    /** @type {ApiTransform} */
-    transform: null,
+    sourceApi: <Api>null,
+    transform: <ApiTransform>null,
     api: "",
     baseDir: "",
-    /** @type {string[]} */
-    sources: [],
+    sources: <string[]>[],
+    storeLineNumbers: false,
   };
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
@@ -379,12 +365,7 @@ function transform(args) {
   writeJSONSync(config.api || 1, api);
 }
 
-/**
- * 
- * @param {{[key: string]: any}} destiny 
- * @param  {{[key: string]: any}} source 
- */
-function mergeTransformInto(destiny, source) {
+function mergeTransformInto(destiny: Dict<any>, source: Dict<any>) {
   if (typeof source.sourceApi == "string") {
     source.sourceApi = readJSONSync(source.sourceApi);
   }
@@ -394,8 +375,7 @@ function mergeTransformInto(destiny, source) {
   mergeInto(destiny, source);
 }
 
-/** @param {string[]} [args=[]]  */
-function help(args = []) {
+function help(args: string[] = []) {
   switch (args[0]) {
     case "parse":
       printLog(
@@ -414,12 +394,7 @@ function help(args = []) {
   }
 }
 
-/**
- * 
- * @param {string} prefix 
- * @param {string} parameters 
- */
-function wrapUsageText(prefix, parameters = "") {
+function wrapUsageText(prefix: string, parameters: string = "") {
   const wordRegex = /([^\[<\s]|\[[^\]]+\]|<[^>]+>)+/;
   let margin = prefix.length;
   if (margin > 40) {
@@ -428,15 +403,21 @@ function wrapUsageText(prefix, parameters = "") {
   return wrapText(prefix + parameters, { margin, wordRegex });
 }
 
+interface WrapTextConfig {
+  /** the left margin, defaults to 0 */
+  margin?: number;
+  /** the word definition, defaults to /[^\s]+/ */
+  wordRegex?: RegExp;
+  /** the number of columns, default to 80 */
+  columns?: number;
+}
+
 /**
  * Format text int 80 columns
- * @param {string} text the text to wrap
- * @param {object} config
- * @param {number=} config.margin     the left margin, defaults to 0
- * @param {RegExp=} config.wordRegex  the word definition, defaults to /[^\s]+/
- * @param {number=} config.columns    the number of columns, default to 80
+ * @param text   the text to wrap
+ * @param config
  */
-function wrapText(text, config = {}) {
+function wrapText(text: string, config: WrapTextConfig = {}) {
   const margin = config.margin ?? 0;
   const wordRegex = config.wordRegex ?? /[^\s]+/;
   const columns = config.columns ?? 80;
@@ -466,10 +447,10 @@ function wrapText(text, config = {}) {
 /**
  * Print into error/log out
  * 
- * @param {string} message the message line
- * @param  {...string} parameters optionally more message lines
+ * @param message the message line
+ * @param parameters optionally more message lines
  */
-function printLog(message, ...parameters) {
+function printLog(message: string, ...parameters: string[]) {
   writeLinesSync(2, [message, ...parameters]);
 }
 

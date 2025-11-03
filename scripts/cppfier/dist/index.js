@@ -6,11 +6,8 @@ const parse_js_1 = require("./parse.js");
 const transform_js_1 = require("./transform.js");
 const utils_js_1 = require("./utils.js");
 /**
- * @import {Api, ApiTransform} from "./types"
- */
-/**
  * Process the main
- * @param {string[]} args the arguments
+ * @param args the arguments
  */
 function main(args) {
     utils_js_1.system.silent = false;
@@ -54,35 +51,30 @@ const guideDoc = [
 ];
 /**
  * Prints error with a guide
- * @param {string} message
- * @param {string[]} parameters
  */
 function printErrorWithGuide(message, ...parameters) {
     return printError(message, ...parameters, "", ...guideDoc);
 }
 /**
  * Prints error
- * @param {string} message
- * @param {string[]} parameters
  */
 function printError(message, ...parameters) {
     return printLog(`Error: ${message}`, ...parameters);
 }
 /**
  * Scan files
- * @param {string[]} args the arguments
+ * @param args the arguments
  */
 function parse(args) {
     if (args?.length == 0) {
         return help(["parse"]);
     }
     const config = {
-        /** @type {string[]} */
         sources: [],
         outputFile: "",
-        /** @type {*} */
         api: null,
         baseDir: [],
+        storeLineNumbers: false,
     };
     let printConfig = false;
     for (let i = 0; i < args.length; i++) {
@@ -147,7 +139,7 @@ function parse(args) {
 }
 /**
  * Scan files
- * @param {string[]} args the arguments
+ * @param args the arguments
  */
 async function parseXML(args) {
     if (args?.length == 0) {
@@ -161,6 +153,7 @@ async function parseXML(args) {
         api: null,
         xmlDir: [],
         baseDir: [],
+        storeLineNumbers: false,
     };
     let printConfig = false;
     for (let i = 0; i < args.length; i++) {
@@ -227,11 +220,6 @@ async function parseXML(args) {
     const api = await (0, parse_xml_js_1.parseXmlApi)(config);
     (0, utils_js_1.writeJSONSync)(config.outputFile || 1, api);
 }
-/**
- *
- * @param {{[key: string]: any}} destiny
- * @param  {{[key: string]: any}} source
- */
 function mergeInto(destiny, source) {
     for (const [key, value] of Object.entries(source)) {
         const prevValue = destiny[key];
@@ -258,8 +246,7 @@ function mergeInto(destiny, source) {
     }
 }
 /**
- *
- * @param {string[]} args
+ * Generate
  */
 function generate(args) {
     if (args?.length == 0) {
@@ -330,22 +317,20 @@ function generate(args) {
     (0, generate_js_1.generateApi)(config);
 }
 /**
- * Scan files
- * @param {string[]} args the arguments
+ * Transform files
+ * @param args the arguments
  */
 function transform(args) {
     if (args?.length == 0) {
         return help(["transform"]);
     }
     const config = {
-        /** @type {Api} */
         sourceApi: null,
-        /** @type {ApiTransform} */
         transform: null,
         api: "",
         baseDir: "",
-        /** @type {string[]} */
         sources: [],
+        storeLineNumbers: false,
     };
     let printConfig = false;
     for (let i = 0; i < args.length; i++) {
@@ -423,11 +408,6 @@ function transform(args) {
     const api = (0, transform_js_1.transformApi)(config);
     (0, utils_js_1.writeJSONSync)(config.api || 1, api);
 }
-/**
- *
- * @param {{[key: string]: any}} destiny
- * @param  {{[key: string]: any}} source
- */
 function mergeTransformInto(destiny, source) {
     if (typeof source.sourceApi == "string") {
         source.sourceApi = (0, utils_js_1.readJSONSync)(source.sourceApi);
@@ -437,7 +417,6 @@ function mergeTransformInto(destiny, source) {
     }
     mergeInto(destiny, source);
 }
-/** @param {string[]} [args=[]]  */
 function help(args = []) {
     switch (args[0]) {
         case "parse":
@@ -448,11 +427,6 @@ function help(args = []) {
             break;
     }
 }
-/**
- *
- * @param {string} prefix
- * @param {string} parameters
- */
 function wrapUsageText(prefix, parameters = "") {
     const wordRegex = /([^\[<\s]|\[[^\]]+\]|<[^>]+>)+/;
     let margin = prefix.length;
@@ -463,11 +437,8 @@ function wrapUsageText(prefix, parameters = "") {
 }
 /**
  * Format text int 80 columns
- * @param {string} text the text to wrap
- * @param {object} config
- * @param {number=} config.margin     the left margin, defaults to 0
- * @param {RegExp=} config.wordRegex  the word definition, defaults to /[^\s]+/
- * @param {number=} config.columns    the number of columns, default to 80
+ * @param text   the text to wrap
+ * @param config
  */
 function wrapText(text, config = {}) {
     const margin = config.margin ?? 0;
@@ -499,8 +470,8 @@ function wrapText(text, config = {}) {
 /**
  * Print into error/log out
  *
- * @param {string} message the message line
- * @param  {...string} parameters optionally more message lines
+ * @param message the message line
+ * @param parameters optionally more message lines
  */
 function printLog(message, ...parameters) {
     (0, utils_js_1.writeLinesSync)(2, [message, ...parameters]);
