@@ -2982,7 +2982,7 @@
             },
             {
               "name": "filelist",
-              "type": "const char *const *"
+              "type": "const char * const *"
             },
             {
               "name": "filter",
