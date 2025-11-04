@@ -38,7 +38,15 @@ word:
 	| NUMBER
 	| STRING
 	| DEFINE;
-punct: COLON | SEMI | COMMA | DOT | STAR | EQ | PUNCT_EXTRA;
+punct:
+	COLON
+	| SEMI
+	| COMMA
+	| DOT
+	| STAR
+	| EQ
+	| ELLIPSIS
+	| PUNCT_EXTRA;
 
 enumBody: CURLY_B enumItem* CURLY_E;
 enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
@@ -50,9 +58,10 @@ structItem:
 id: ID;
 type: (typeEl)+;
 typeEl: (VOID | ID | CONST) STAR*;
-signature: ROUND_B (type (COMMA type)*)? ROUND_E;
+signature:
+	ROUND_B (type (COMMA type)*)? (COMMA ELLIPSIS)? ROUND_E attribute?;
 
-attribute: ATTRIBUTE group;
+attribute: (ATTRIBUTE | SDL_VARARG_ATTRIB) group;
 
 doc: SHORT_DOC | LONG_DOC;
 trailingDoc: TRAILING_DOC;
@@ -94,6 +103,7 @@ STRUCT: 'struct';
 TYPEDEF: 'typedef';
 UNION: 'union';
 VOID: 'void';
+SDL_VARARG_ATTRIB: 'SDL_' [A-Z0-9_]+ '_VARARG_FUNC' 'V'?;
 
 CURLY_B: '{';
 CURLY_E: '}';
@@ -107,6 +117,7 @@ COMMA: ',';
 DOT: '.';
 STAR: '*';
 EQ: '=';
+ELLIPSIS: '...';
 PUNCT_EXTRA: [<>&|!=%/+-];
 
 STRING: '"' (~'"' | '\\"')* '"';

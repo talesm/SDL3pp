@@ -207,7 +207,7 @@ function extractSignature(ctx) {
     const paramsText = params.map(param => extractType(param));
     if (paramsText.length === 1 && paramsText[0] === "void")
         return [];
-    return paramsText.map(paramText => {
+    const paramsArray = paramsText.map(paramText => {
         const i = paramText.lastIndexOf(' ');
         if (i === -1)
             return { name: paramText, type: "" };
@@ -216,6 +216,9 @@ function extractSignature(ctx) {
             type: paramText.slice(0, i),
         };
     });
+    if (ctx.ELLIPSIS())
+        paramsArray.push({ name: "...", type: "" });
+    return paramsArray;
 }
 function extractEnumItems(ctx) {
     const entries = {};
