@@ -30,8 +30,9 @@ export declare class CHeaderParser extends Parser {
     static readonly RULE_directive = 3;
     static readonly RULE_functionDecl = 4;
     static readonly RULE_type = 5;
-    static readonly RULE_signature = 6;
-    static readonly RULE_doc = 7;
+    static readonly RULE_typeEl = 6;
+    static readonly RULE_signature = 7;
+    static readonly RULE_doc = 8;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -48,6 +49,7 @@ export declare class CHeaderParser extends Parser {
     directive(): DirectiveContext;
     functionDecl(): FunctionDeclContext;
     type(): TypeContext;
+    typeEl(): TypeElContext;
     signature(): SignatureContext;
     doc(): DocContext;
     static readonly _serializedATN: string;
@@ -106,11 +108,18 @@ export declare class FunctionDeclContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class TypeContext extends ParserRuleContext {
+    typeEl(): TypeElContext[];
+    typeEl(i: number): TypeElContext;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class TypeElContext extends ParserRuleContext {
     VOID(): TerminalNode | undefined;
+    ID(): TerminalNode | undefined;
     STAR(): TerminalNode[];
     STAR(i: number): TerminalNode;
-    ID(): TerminalNode[];
-    ID(i: number): TerminalNode;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;

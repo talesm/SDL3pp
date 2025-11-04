@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { CHeaderParser, DirectiveContext, DocContext, ProgContext } from './grammar/CHeaderParser';
+import { CHeaderParser, DirectiveContext, DocContext, FunctionDeclContext, ProgContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -36,7 +36,20 @@ class ProgListener implements CHeaderListener {
       parameters,
       value,
     };
-  };
+  }
+
+  enterFunctionDecl(ctx: FunctionDeclContext) {
+    const type = extractType(ctx.type());
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = ctx.ID().text;
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'function',
+      type,
+      parameters: [],
+    };
+  }
 
   // other enterX functions...
   visitTerminal(/*@NotNull*/ node: TerminalNode) { }
@@ -87,3 +100,18 @@ function parseDoc(text: string): string {
 
 const file = readFileSync("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
 console.log(parseContent("SDL_version.h", file));
+
+export function normalizeType(typeString: string) {
+  if (!typeString) return "";
+  return typeString
+    .replace(/(\w+)\s*([&*])/g, "$1 $2")
+    .replace(/([*&])\s+(&*)/g, "$1$2")
+    .replace(/([<(\[])\s+/g, "$1")
+    .replace(/\s+([>)\]])/g, "$1")
+    .replace(/\s\s+/g, " ");
+}
+
+function extractType(ctx: TypeContext): string {
+  return normalizeType(ctx.typeEl().map(el => el.text).join(" "));
+}
+

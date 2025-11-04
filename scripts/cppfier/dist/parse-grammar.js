@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.normalizeType = normalizeType;
 const antlr4ts_1 = require("antlr4ts");
 const CHeaderParser_1 = require("./grammar/CHeaderParser");
 const CHeaderLexer_1 = require("./grammar/CHeaderLexer");
@@ -32,7 +33,18 @@ class ProgListener {
             value,
         };
     }
-    ;
+    enterFunctionDecl(ctx) {
+        const type = extractType(ctx.type());
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.ID().text;
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'function',
+            type,
+            parameters: [],
+        };
+    }
     // other enterX functions...
     visitTerminal(/*@NotNull*/ node) { }
 }
@@ -74,3 +86,16 @@ function parseDoc(text) {
 }
 const file = (0, fs_1.readFileSync)("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
 console.log(parseContent("SDL_version.h", file));
+function normalizeType(typeString) {
+    if (!typeString)
+        return "";
+    return typeString
+        .replace(/(\w+)\s*([&*])/g, "$1 $2")
+        .replace(/([*&])\s+(&*)/g, "$1$2")
+        .replace(/([<(\[])\s+/g, "$1")
+        .replace(/\s+([>)\]])/g, "$1")
+        .replace(/\s\s+/g, " ");
+}
+function extractType(ctx) {
+    return normalizeType(ctx.typeEl().map(el => el.text).join(" "));
+}

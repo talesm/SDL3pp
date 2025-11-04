@@ -6,7 +6,8 @@ externC: EXTERN STRING CURLY_B (stm)* CURLY_E;
 directive: doc? DIRECTIVE;
 functionDecl: doc? EXTERN type ID signature SEMI;
 
-type: VOID STAR* | (ID STAR*)+;
+type: (typeEl)+;
+typeEl: (VOID | ID) STAR*;
 signature: ROUND_B VOID ROUND_E;
 
 doc: SHORT_DOC | LONG_DOC;

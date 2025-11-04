@@ -9,6 +9,7 @@ import { ExternCContext } from "./CHeaderParser";
 import { DirectiveContext } from "./CHeaderParser";
 import { FunctionDeclContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
+import { TypeElContext } from "./CHeaderParser";
 import { SignatureContext } from "./CHeaderParser";
 import { DocContext } from "./CHeaderParser";
 
@@ -83,6 +84,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitType?: (ctx: TypeContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.typeEl`.
+	 * @param ctx the parse tree
+	 */
+	enterTypeEl?: (ctx: TypeElContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.typeEl`.
+	 * @param ctx the parse tree
+	 */
+	exitTypeEl?: (ctx: TypeElContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.signature`.
