@@ -30,6 +30,44 @@
         }
       }
     },
+    "SDL_blendmode.h": {
+      "name": "SDL_blendmode.h",
+      "doc": "# CategoryBlendmode\n\nBlend modes decide how two colors will mix together. There are both\nstandard modes for basic needs and a means to create custom modes,\ndictating what sort of math to do on what color components.",
+      "entries": {
+        "SDL_ComposeCustomBlendMode": {
+          "doc": "Compose a custom blend mode for renderers.\n\nThe functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept\nthe SDL_BlendMode returned by this function if the renderer supports it.\n\nA blend mode controls how the pixels from a drawing operation (source) get\ncombined with the pixels from the render target (destination). First, the\ncomponents of the source and destination pixels get multiplied with their\nblend factors. Then, the blend operation takes the two products and\ncalculates the result that will get stored in the render target.\n\nExpressed in pseudocode, it would look like this:\n\n```c\ndstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);\ndstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);\n```\n\nWhere the functions `colorOperation(src, dst)` and `alphaOperation(src,\ndst)` can return one of the following:\n\n- `src + dst`\n- `src - dst`\n- `dst - src`\n- `min(src, dst)`\n- `max(src, dst)`\n\nThe red, green, and blue components are always multiplied with the first,\nsecond, and third components of the SDL_BlendFactor, respectively. The\nfourth component is not used.\n\nThe alpha component is always multiplied with the fourth component of the\nSDL_BlendFactor. The other components are not used in the alpha\ncalculation.\n\nSupport for these blend modes varies for each renderer. To check if a\nspecific SDL_BlendMode is supported, create a renderer and pass it to\neither SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will\nreturn with an error if the blend mode is not supported.\n\nThis list describes the support of custom blend modes for each renderer.\nAll renderers support the four blend modes listed in the SDL_BlendMode\nenumeration.\n\n- **direct3d**: Supports all operations with all factors. However, some\n  factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and\n  `SDL_BLENDOPERATION_MAXIMUM`.\n- **direct3d11**: Same as Direct3D 9.\n- **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all\n  factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.\n- **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,\n  `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`\n  operations with all factors.\n- **psp**: No custom blend mode support.\n- **software**: No custom blend mode support.\n\nSome renderers do not provide an alpha component for the default render\ntarget. The `SDL_BLENDFACTOR_DST_ALPHA` and\n`SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this\ncase.\n\n\\param srcColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the source pixels.\n\\param dstColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the destination pixels.\n\\param colorOperation the SDL_BlendOperation used to combine the red,\n                      green, and blue components of the source and\n                      destination pixels.\n\\param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the source pixels.\n\\param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the destination pixels.\n\\param alphaOperation the SDL_BlendOperation used to combine the alpha\n                      component of the source and destination pixels.\n\\returns an SDL_BlendMode that represents the chosen factors and\n         operations.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetRenderDrawBlendMode\n\\sa SDL_GetRenderDrawBlendMode\n\\sa SDL_SetTextureBlendMode\n\\sa SDL_GetTextureBlendMode",
+          "name": "SDL_ComposeCustomBlendMode",
+          "kind": "function",
+          "type": "SDL_BlendMode",
+          "parameters": [
+            {
+              "name": "srcColorFactor",
+              "type": "SDL_BlendFactor"
+            },
+            {
+              "name": "dstColorFactor",
+              "type": "SDL_BlendFactor"
+            },
+            {
+              "name": "colorOperation",
+              "type": "SDL_BlendOperation"
+            },
+            {
+              "name": "srcAlphaFactor",
+              "type": "SDL_BlendFactor"
+            },
+            {
+              "name": "dstAlphaFactor",
+              "type": "SDL_BlendFactor"
+            },
+            {
+              "name": "alphaOperation",
+              "type": "SDL_BlendOperation"
+            }
+          ]
+        }
+      }
+    },
     "SDL_endian.h": {
       "name": "SDL_endian.h",
       "doc": "# CategoryEndian\n\nFunctions converting endian-specific values to different byte orders.\n\nThese functions either unconditionally swap byte order (SDL_Swap16,\nSDL_Swap32, SDL_Swap64, SDL_SwapFloat), or they swap to/from the system's\nnative byte order (SDL_Swap16LE, SDL_Swap16BE, SDL_Swap32LE, SDL_Swap32BE,\nSDL_Swap32LE, SDL_Swap32BE, SDL_SwapFloatLE, SDL_SwapFloatBE). In the\nlatter case, the functionality is provided by macros that become no-ops if\na swap isn't necessary: on an x86 (littleendian) processor, SDL_Swap32LE\ndoes nothing, but SDL_Swap32BE reverses the bytes of the data. On a PowerPC\nprocessor (bigendian), the macros behavior is reversed.\n\nThe swap routines are inline functions, and attempt to use compiler\nintrinsics, inline assembly, and other magic to make byteswapping\nefficient.",

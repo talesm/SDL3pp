@@ -1,13 +1,20 @@
 grammar CHeader;
 prog: doc? (decl)* EOF;
-decl: directive | externC | functionDecl | functionDef | doc;
+decl:
+	directive
+	| externC
+	| functionDecl
+	| functionDef
+	| aliasDef
+	| doc;
 
 externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
 directive: doc? DIRECTIVE;
 functionDecl: doc? EXTERN type attribute? ID signature SEMI;
 functionDef: doc? inline type attribute? ID signature block;
-inline: SDL_INLINE | STATIC INLINE;
+aliasDef: TYPEDEF type ID;
 
+inline: SDL_INLINE | STATIC INLINE;
 block: CURLY_B stm* CURLY_E;
 group: ROUND_B stm* ROUND_E;
 indexing: SQUARE_B stm* SQUARE_E;
@@ -15,9 +22,10 @@ stm: block | group | indexing | word | punct;
 word: ID | VOID | STATIC | NUMBER | STRING | DIRECTIVE;
 punct: COLON | SEMI | COMMA | DOT | STAR | PUNCT_EXTRA;
 
+id: ID;
 type: (typeEl)+;
 typeEl: (VOID | ID) STAR*;
-signature: ROUND_B (type) ROUND_E;
+signature: ROUND_B (type (COMMA type)*)? ROUND_E;
 
 attribute: ATTRIBUTE group;
 
@@ -32,13 +40,14 @@ SHORT_DOC: '///' .*? '\n';
 
 DIRECTIVE: '#' (~'\n' | '\\\n')* '\n';
 
-EXTERN: 'extern';
-VOID: 'void';
 ATTRIBUTE: '__attribute__';
-SDL_NOISE: ('SDL_DECLSPEC' | 'SDLCALL') -> skip;
-STATIC: 'static';
+EXTERN: 'extern';
 INLINE: '__inline__';
+SDL_NOISE: ('SDL_DECLSPEC' | 'SDLCALL') -> skip;
 SDL_INLINE: 'SDL_FORCE_INLINE';
+STATIC: 'static';
+TYPEDEF: 'typedef';
+VOID: 'void';
 
 CURLY_B: '{';
 CURLY_E: '}';

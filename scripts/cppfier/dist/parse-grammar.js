@@ -150,17 +150,19 @@ function extractType(ctx) {
     return normalizeType(ctx.typeEl().map(el => el.text).join(" "));
 }
 function extractSignature(ctx) {
-    const param = ctx.type();
-    if (!param)
+    const params = ctx.type();
+    if (params?.length == 0)
         return [];
-    const paramText = extractType(param);
-    if (paramText === "void")
+    const paramsText = params.map(param => extractType(param));
+    if (paramsText.length === 1 && paramsText[0] === "void")
         return [];
-    const i = paramText.lastIndexOf(' ');
-    if (i === -1)
-        return [{ name: paramText, type: "" }];
-    return [{
+    return paramsText.map(paramText => {
+        const i = paramText.lastIndexOf(' ');
+        if (i === -1)
+            return { name: paramText, type: "" };
+        return {
             name: paramText.slice(i + 1),
             type: paramText.slice(0, i),
-        }];
+        };
+    });
 }

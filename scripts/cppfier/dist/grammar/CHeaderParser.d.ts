@@ -13,46 +13,49 @@ export declare class CHeaderParser extends Parser {
     static readonly LONG_DOC = 4;
     static readonly SHORT_DOC = 5;
     static readonly DIRECTIVE = 6;
-    static readonly EXTERN = 7;
-    static readonly VOID = 8;
-    static readonly ATTRIBUTE = 9;
+    static readonly ATTRIBUTE = 7;
+    static readonly EXTERN = 8;
+    static readonly INLINE = 9;
     static readonly SDL_NOISE = 10;
-    static readonly STATIC = 11;
-    static readonly INLINE = 12;
-    static readonly SDL_INLINE = 13;
-    static readonly CURLY_B = 14;
-    static readonly CURLY_E = 15;
-    static readonly ROUND_B = 16;
-    static readonly ROUND_E = 17;
-    static readonly SQUARE_B = 18;
-    static readonly SQUARE_E = 19;
-    static readonly COLON = 20;
-    static readonly SEMI = 21;
-    static readonly COMMA = 22;
-    static readonly DOT = 23;
-    static readonly STAR = 24;
-    static readonly PUNCT_EXTRA = 25;
-    static readonly STRING = 26;
-    static readonly ID = 27;
-    static readonly NUMBER = 28;
+    static readonly SDL_INLINE = 11;
+    static readonly STATIC = 12;
+    static readonly TYPEDEF = 13;
+    static readonly VOID = 14;
+    static readonly CURLY_B = 15;
+    static readonly CURLY_E = 16;
+    static readonly ROUND_B = 17;
+    static readonly ROUND_E = 18;
+    static readonly SQUARE_B = 19;
+    static readonly SQUARE_E = 20;
+    static readonly COLON = 21;
+    static readonly SEMI = 22;
+    static readonly COMMA = 23;
+    static readonly DOT = 24;
+    static readonly STAR = 25;
+    static readonly PUNCT_EXTRA = 26;
+    static readonly STRING = 27;
+    static readonly ID = 28;
+    static readonly NUMBER = 29;
     static readonly RULE_prog = 0;
     static readonly RULE_decl = 1;
     static readonly RULE_externC = 2;
     static readonly RULE_directive = 3;
     static readonly RULE_functionDecl = 4;
     static readonly RULE_functionDef = 5;
-    static readonly RULE_inline = 6;
-    static readonly RULE_block = 7;
-    static readonly RULE_group = 8;
-    static readonly RULE_indexing = 9;
-    static readonly RULE_stm = 10;
-    static readonly RULE_word = 11;
-    static readonly RULE_punct = 12;
-    static readonly RULE_type = 13;
-    static readonly RULE_typeEl = 14;
-    static readonly RULE_signature = 15;
-    static readonly RULE_attribute = 16;
-    static readonly RULE_doc = 17;
+    static readonly RULE_aliasDef = 6;
+    static readonly RULE_inline = 7;
+    static readonly RULE_block = 8;
+    static readonly RULE_group = 9;
+    static readonly RULE_indexing = 10;
+    static readonly RULE_stm = 11;
+    static readonly RULE_word = 12;
+    static readonly RULE_punct = 13;
+    static readonly RULE_id = 14;
+    static readonly RULE_type = 15;
+    static readonly RULE_typeEl = 16;
+    static readonly RULE_signature = 17;
+    static readonly RULE_attribute = 18;
+    static readonly RULE_doc = 19;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -69,6 +72,7 @@ export declare class CHeaderParser extends Parser {
     directive(): DirectiveContext;
     functionDecl(): FunctionDeclContext;
     functionDef(): FunctionDefContext;
+    aliasDef(): AliasDefContext;
     inline(): InlineContext;
     block(): BlockContext;
     group(): GroupContext;
@@ -76,6 +80,7 @@ export declare class CHeaderParser extends Parser {
     stm(): StmContext;
     word(): WordContext;
     punct(): PunctContext;
+    id(): IdContext;
     type(): TypeContext;
     typeEl(): TypeElContext;
     signature(): SignatureContext;
@@ -100,6 +105,7 @@ export declare class DeclContext extends ParserRuleContext {
     externC(): ExternCContext | undefined;
     functionDecl(): FunctionDeclContext | undefined;
     functionDef(): FunctionDefContext | undefined;
+    aliasDef(): AliasDefContext | undefined;
     doc(): DocContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
@@ -147,6 +153,15 @@ export declare class FunctionDefContext extends ParserRuleContext {
     block(): BlockContext;
     doc(): DocContext | undefined;
     attribute(): AttributeContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class AliasDefContext extends ParserRuleContext {
+    TYPEDEF(): TerminalNode;
+    type(): TypeContext;
+    ID(): TerminalNode;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
@@ -226,6 +241,13 @@ export declare class PunctContext extends ParserRuleContext {
     enterRule(listener: CHeaderListener): void;
     exitRule(listener: CHeaderListener): void;
 }
+export declare class IdContext extends ParserRuleContext {
+    ID(): TerminalNode;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
 export declare class TypeContext extends ParserRuleContext {
     typeEl(): TypeElContext[];
     typeEl(i: number): TypeElContext;
@@ -247,7 +269,10 @@ export declare class TypeElContext extends ParserRuleContext {
 export declare class SignatureContext extends ParserRuleContext {
     ROUND_B(): TerminalNode;
     ROUND_E(): TerminalNode;
-    type(): TypeContext | undefined;
+    type(): TypeContext[];
+    type(i: number): TypeContext;
+    COMMA(): TerminalNode[];
+    COMMA(i: number): TerminalNode;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;

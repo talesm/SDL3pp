@@ -162,15 +162,17 @@ function extractType(ctx: TypeContext): string {
 }
 
 function extractSignature(ctx: SignatureContext): ApiParameters {
-  const param = ctx.type();
-  if (!param) return [];
-  const paramText = extractType(param);
-  if (paramText === "void") return [];
-  const i = paramText.lastIndexOf(' ');
-  if (i === -1) return [{ name: paramText, type: "" }];
-  return [{
-    name: paramText.slice(i + 1),
-    type: paramText.slice(0, i),
-  }];
+  const params = ctx.type();
+  if (params?.length == 0) return [];
+  const paramsText = params.map(param => extractType(param));
+  if (paramsText.length === 1 && paramsText[0] === "void") return [];
+  return paramsText.map(paramText => {
+    const i = paramText.lastIndexOf(' ');
+    if (i === -1) return { name: paramText, type: "" };
+    return {
+      name: paramText.slice(i + 1),
+      type: paramText.slice(0, i),
+    };
+  });
 }
 

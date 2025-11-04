@@ -9,6 +9,7 @@ import { ExternCContext } from "./CHeaderParser";
 import { DirectiveContext } from "./CHeaderParser";
 import { FunctionDeclContext } from "./CHeaderParser";
 import { FunctionDefContext } from "./CHeaderParser";
+import { AliasDefContext } from "./CHeaderParser";
 import { InlineContext } from "./CHeaderParser";
 import { BlockContext } from "./CHeaderParser";
 import { GroupContext } from "./CHeaderParser";
@@ -16,6 +17,7 @@ import { IndexingContext } from "./CHeaderParser";
 import { StmContext } from "./CHeaderParser";
 import { WordContext } from "./CHeaderParser";
 import { PunctContext } from "./CHeaderParser";
+import { IdContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
 import { TypeElContext } from "./CHeaderParser";
 import { SignatureContext } from "./CHeaderParser";
@@ -95,6 +97,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitFunctionDef?: (ctx: FunctionDefContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `CHeaderParser.aliasDef`.
+	 * @param ctx the parse tree
+	 */
+	enterAliasDef?: (ctx: AliasDefContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.aliasDef`.
+	 * @param ctx the parse tree
+	 */
+	exitAliasDef?: (ctx: AliasDefContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `CHeaderParser.inline`.
 	 * @param ctx the parse tree
 	 */
@@ -170,6 +183,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitPunct?: (ctx: PunctContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.id`.
+	 * @param ctx the parse tree
+	 */
+	enterId?: (ctx: IdContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.id`.
+	 * @param ctx the parse tree
+	 */
+	exitId?: (ctx: IdContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.type`.
