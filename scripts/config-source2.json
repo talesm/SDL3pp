@@ -1,5 +1,7 @@
 {
   "sources": [
+    "SDL_asyncio.h",
+    "SDL_audio.h",
     "SDL_bits.h",
     "SDL_blendmode.h",
     "SDL_endian.h",

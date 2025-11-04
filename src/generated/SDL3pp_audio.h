@@ -438,27 +438,27 @@ public:
 };
 
 constexpr AudioFormat AUDIO_UNKNOWN =
-  SDL_AUDIO_UNKNOWN; ///< Unspecified audio format.
+  SDL_AUDIO_UNKNOWN; ///< Unspecified audio format
 
-constexpr AudioFormat AUDIO_U8 = SDL_AUDIO_U8; ///< Unsigned 8-bit samples.
+constexpr AudioFormat AUDIO_U8 = SDL_AUDIO_U8; ///< Unsigned 8-bit samples
 
-constexpr AudioFormat AUDIO_S8 = SDL_AUDIO_S8; ///< Signed 8-bit samples.
+constexpr AudioFormat AUDIO_S8 = SDL_AUDIO_S8; ///< Signed 8-bit samples
 
-constexpr AudioFormat AUDIO_S16LE = SDL_AUDIO_S16LE; ///< Signed 16-bit samples.
+constexpr AudioFormat AUDIO_S16LE = SDL_AUDIO_S16LE; ///< Signed 16-bit samples
 
 constexpr AudioFormat AUDIO_S16BE =
-  SDL_AUDIO_S16BE; ///< As above, but big-endian byte order.
+  SDL_AUDIO_S16BE; ///< As above, but big-endian byte order
 
 constexpr AudioFormat AUDIO_S32LE = SDL_AUDIO_S32LE; ///< 32-bit integer samples
 
 constexpr AudioFormat AUDIO_S32BE =
-  SDL_AUDIO_S32BE; ///< As above, but big-endian byte order.
+  SDL_AUDIO_S32BE; ///< As above, but big-endian byte order
 
 constexpr AudioFormat AUDIO_F32LE =
   SDL_AUDIO_F32LE; ///< 32-bit floating point samples
 
 constexpr AudioFormat AUDIO_F32BE =
-  SDL_AUDIO_F32BE; ///< As above, but big-endian byte order.
+  SDL_AUDIO_F32BE; ///< As above, but big-endian byte order
 
 constexpr AudioFormat AUDIO_S16 = SDL_AUDIO_S16; ///< AUDIO_S16
 

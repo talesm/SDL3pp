@@ -676,7 +676,7 @@
               "type": ""
             }
           ],
-          "value": "    (((Uint16)(signed) << 15) | ((Uint16)(bigendian) << 12) | ((Uint16)(flt) << 8) | ((size) & SDL_AUDIO_MASK_BITSIZE))"
+          "value": "\\\n    (((Uint16)(signed) << 15) | ((Uint16)(bigendian) << 12) | ((Uint16)(flt) << 8) | ((size) & SDL_AUDIO_MASK_BITSIZE))"
         },
         "SDL_AudioFormat": {
           "doc": "Audio format.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_AUDIO_BITSIZE\n\\sa SDL_AUDIO_BYTESIZE\n\\sa SDL_AUDIO_ISINT\n\\sa SDL_AUDIO_ISFLOAT\n\\sa SDL_AUDIO_ISBIGENDIAN\n\\sa SDL_AUDIO_ISLITTLEENDIAN\n\\sa SDL_AUDIO_ISSIGNED\n\\sa SDL_AUDIO_ISUNSIGNED",
@@ -684,31 +684,31 @@
           "kind": "enum",
           "entries": {
             "SDL_AUDIO_UNKNOWN": {
-              "doc": "Unspecified audio format.",
+              "doc": "Unspecified audio format",
               "name": "SDL_AUDIO_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_AUDIO_U8": {
-              "doc": "Unsigned 8-bit samples.",
+              "doc": "Unsigned 8-bit samples",
               "name": "SDL_AUDIO_U8",
               "kind": "var",
               "type": ""
             },
             "SDL_AUDIO_S8": {
-              "doc": "Signed 8-bit samples.",
+              "doc": "Signed 8-bit samples",
               "name": "SDL_AUDIO_S8",
               "kind": "var",
               "type": ""
             },
             "SDL_AUDIO_S16LE": {
-              "doc": "Signed 16-bit samples.",
+              "doc": "Signed 16-bit samples",
               "name": "SDL_AUDIO_S16LE",
               "kind": "var",
               "type": ""
             },
             "SDL_AUDIO_S16BE": {
-              "doc": "As above, but big-endian byte order.",
+              "doc": "As above, but big-endian byte order",
               "name": "SDL_AUDIO_S16BE",
               "kind": "var",
               "type": ""
@@ -720,7 +720,7 @@
               "type": ""
             },
             "SDL_AUDIO_S32BE": {
-              "doc": "As above, but big-endian byte order.",
+              "doc": "As above, but big-endian byte order",
               "name": "SDL_AUDIO_S32BE",
               "kind": "var",
               "type": ""
@@ -732,7 +732,7 @@
               "type": ""
             },
             "SDL_AUDIO_F32BE": {
-              "doc": "As above, but big-endian byte order.",
+              "doc": "As above, but big-endian byte order",
               "name": "SDL_AUDIO_F32BE",
               "kind": "var",
               "type": ""
@@ -1140,7 +1140,7 @@
             },
             {
               "name": "streams",
-              "type": "SDL_AudioStream *const *"
+              "type": "SDL_AudioStream * const *"
             },
             {
               "name": "num_streams",
@@ -1172,7 +1172,7 @@
           "parameters": [
             {
               "name": "streams",
-              "type": "SDL_AudioStream *const *"
+              "type": "SDL_AudioStream * const *"
             },
             {
               "name": "num_streams",
