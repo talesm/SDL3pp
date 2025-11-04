@@ -36813,7 +36813,7 @@
           "doc": "A callback to be used with SDL_SetWindowsMessageHook.\n\nThis callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing a message directly from the Windows event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to\n                SDL_SetWindowsMessageHook.\n\\param msg a pointer to a Win32 event structure to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              Windows event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetWindowsMessageHook\n\\sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
           "name": "SDL_WindowsMessageHook",
           "kind": "callback",
-          "type": "bool ",
+          "type": "bool",
           "parameters": [
             {
               "name": "userdata",
@@ -36951,7 +36951,7 @@
           "doc": "The prototype for an Apple iOS animation callback.\n\nThis datatype is only useful on Apple iOS.\n\nAfter passing a function pointer of this type to\nSDL_SetiOSAnimationCallback, the system will call that function pointer at\na regular interval.\n\n\\param userdata what was passed as `callbackParam` to\n                SDL_SetiOSAnimationCallback as `callbackParam`.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetiOSAnimationCallback",
           "name": "SDL_iOSAnimationCallback",
           "kind": "callback",
-          "type": "void ",
+          "type": "void",
           "parameters": [
             {
               "name": "userdata",
@@ -37081,7 +37081,7 @@
           "doc": "Callback that presents a response from a SDL_RequestAndroidPermission call.\n\n\\param userdata an app-controlled pointer that is passed to the callback.\n\\param permission the Android-specific permission name that was requested.\n\\param granted true if permission is granted, false if denied.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_RequestAndroidPermission",
           "name": "SDL_RequestAndroidPermissionCallback",
           "kind": "callback",
-          "type": "void ",
+          "type": "void",
           "parameters": [
             {
               "name": "userdata",

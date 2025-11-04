@@ -4,6 +4,7 @@
     "SDL_blendmode.h",
     "SDL_endian.h",
     "SDL_misc.h",
+    "SDL_system.h",
     "SDL_version.h"
   ],
   "baseDir": [

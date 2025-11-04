@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CHeaderParser, DirectiveContext, DocContext, EnumBodyContext, EnumDefContext, EnumItemContext, EnumItemLastContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, DocContext, EnumBodyContext, EnumDefContext, EnumItemContext, EnumItemLastContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -100,7 +100,7 @@ class ProgListener implements CHeaderListener {
   }
 
   enterAliasDef(ctx: AliasDefContext) {
-    const type = extractType(ctx.type());
+    const type = extractType(ctx.type()).replace(/^struct\s+/, "");
     const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
     if (this.api.entries[name]?.doc) return;
@@ -121,6 +121,20 @@ class ProgListener implements CHeaderListener {
       name,
       kind: 'enum',
       entries: extractEnumItems(ctx.enumBody()),
+    };
+  }
+
+  enterCallbackDef(ctx: CallbackDefContext) {
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = ctx.id().text;
+    if (this.api.entries[name]?.doc) return;
+    const type = extractType(ctx.type());
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'callback',
+      type,
+      parameters: extractSignature(ctx.signature()),
     };
   }
 

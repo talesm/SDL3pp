@@ -7,6 +7,7 @@ decl:
 	| functionDef
 	| aliasDef
 	| enumDef
+	| callbackDef
 	| doc;
 
 externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
@@ -15,6 +16,8 @@ functionDecl: doc? EXTERN type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF type id SEMI;
 enumDef: doc? TYPEDEF ENUM id enumBody id SEMI;
+callbackDef:
+	doc? TYPEDEF type ROUND_B STAR id ROUND_E signature SEMI;
 
 inline: SDL_INLINE | STATIC INLINE;
 block: CURLY_B stm* CURLY_E;

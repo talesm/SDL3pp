@@ -7,7 +7,7 @@ import { parseApi as parseApiNew } from "./cppfier/dist/parse-grammar.js";
 
 const api = parseApi({
   ...sourceConfig,
-  sources: ["SDL_system.h", "SDL_hidapi.h", "SDL_pixels.h", "SDL_messagebox.h"]
+  sources: ["SDL_hidapi.h", "SDL_pixels.h", "SDL_messagebox.h"]
 });
 for (const [key, file] of Object.entries(api.files)) {
   for (const entry of Object.values(file.entries)) {

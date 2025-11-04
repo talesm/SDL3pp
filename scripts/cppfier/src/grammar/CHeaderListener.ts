@@ -11,6 +11,7 @@ import { FunctionDeclContext } from "./CHeaderParser";
 import { FunctionDefContext } from "./CHeaderParser";
 import { AliasDefContext } from "./CHeaderParser";
 import { EnumDefContext } from "./CHeaderParser";
+import { CallbackDefContext } from "./CHeaderParser";
 import { InlineContext } from "./CHeaderParser";
 import { BlockContext } from "./CHeaderParser";
 import { GroupContext } from "./CHeaderParser";
@@ -122,6 +123,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitEnumDef?: (ctx: EnumDefContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.callbackDef`.
+	 * @param ctx the parse tree
+	 */
+	enterCallbackDef?: (ctx: CallbackDefContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.callbackDef`.
+	 * @param ctx the parse tree
+	 */
+	exitCallbackDef?: (ctx: CallbackDefContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.inline`.

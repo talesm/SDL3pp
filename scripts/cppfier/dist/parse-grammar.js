@@ -95,7 +95,7 @@ class ProgListener {
         };
     }
     enterAliasDef(ctx) {
-        const type = extractType(ctx.type());
+        const type = extractType(ctx.type()).replace(/^struct\s+/, "");
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
         if (this.api.entries[name]?.doc)
@@ -117,6 +117,20 @@ class ProgListener {
             name,
             kind: 'enum',
             entries: extractEnumItems(ctx.enumBody()),
+        };
+    }
+    enterCallbackDef(ctx) {
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.id().text;
+        if (this.api.entries[name]?.doc)
+            return;
+        const type = extractType(ctx.type());
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'callback',
+            type,
+            parameters: extractSignature(ctx.signature()),
         };
     }
     // other enterX functions...
