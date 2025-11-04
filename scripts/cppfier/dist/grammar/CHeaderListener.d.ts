@@ -7,6 +7,7 @@ import { FunctionDeclContext } from "./CHeaderParser";
 import { FunctionDefContext } from "./CHeaderParser";
 import { AliasDefContext } from "./CHeaderParser";
 import { EnumDefContext } from "./CHeaderParser";
+import { StructDefContext } from "./CHeaderParser";
 import { CallbackDefContext } from "./CHeaderParser";
 import { InlineContext } from "./CHeaderParser";
 import { BlockContext } from "./CHeaderParser";
@@ -18,6 +19,8 @@ import { PunctContext } from "./CHeaderParser";
 import { EnumBodyContext } from "./CHeaderParser";
 import { EnumItemContext } from "./CHeaderParser";
 import { EnumItemLastContext } from "./CHeaderParser";
+import { StructBodyContext } from "./CHeaderParser";
+import { StructItemContext } from "./CHeaderParser";
 import { IdContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
 import { TypeElContext } from "./CHeaderParser";
@@ -110,6 +113,16 @@ export interface CHeaderListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     exitEnumDef?: (ctx: EnumDefContext) => void;
+    /**
+     * Enter a parse tree produced by `CHeaderParser.structDef`.
+     * @param ctx the parse tree
+     */
+    enterStructDef?: (ctx: StructDefContext) => void;
+    /**
+     * Exit a parse tree produced by `CHeaderParser.structDef`.
+     * @param ctx the parse tree
+     */
+    exitStructDef?: (ctx: StructDefContext) => void;
     /**
      * Enter a parse tree produced by `CHeaderParser.callbackDef`.
      * @param ctx the parse tree
@@ -220,6 +233,26 @@ export interface CHeaderListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     exitEnumItemLast?: (ctx: EnumItemLastContext) => void;
+    /**
+     * Enter a parse tree produced by `CHeaderParser.structBody`.
+     * @param ctx the parse tree
+     */
+    enterStructBody?: (ctx: StructBodyContext) => void;
+    /**
+     * Exit a parse tree produced by `CHeaderParser.structBody`.
+     * @param ctx the parse tree
+     */
+    exitStructBody?: (ctx: StructBodyContext) => void;
+    /**
+     * Enter a parse tree produced by `CHeaderParser.structItem`.
+     * @param ctx the parse tree
+     */
+    enterStructItem?: (ctx: StructItemContext) => void;
+    /**
+     * Exit a parse tree produced by `CHeaderParser.structItem`.
+     * @param ctx the parse tree
+     */
+    exitStructItem?: (ctx: StructItemContext) => void;
     /**
      * Enter a parse tree produced by `CHeaderParser.id`.
      * @param ctx the parse tree

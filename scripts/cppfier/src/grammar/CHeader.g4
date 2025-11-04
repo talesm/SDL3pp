@@ -7,6 +7,7 @@ decl:
 	| functionDef
 	| aliasDef
 	| enumDef
+	| structDef
 	| callbackDef
 	| doc;
 
@@ -14,8 +15,9 @@ externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
 directive: doc? DIRECTIVE;
 functionDecl: doc? EXTERN type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
-aliasDef: doc? TYPEDEF type id SEMI;
+aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
 enumDef: doc? TYPEDEF ENUM id enumBody id SEMI;
+structDef: doc? TYPEDEF STRUCT id structBody id SEMI;
 callbackDef:
 	doc? TYPEDEF type ROUND_B STAR id ROUND_E signature SEMI;
 
@@ -24,12 +26,25 @@ block: CURLY_B stm* CURLY_E;
 group: ROUND_B stm* ROUND_E;
 indexing: SQUARE_B stm* SQUARE_E;
 stm: block | group | indexing | word | punct;
-word: ID | VOID | STATIC | NUMBER | STRING | DIRECTIVE;
+word:
+	ID
+	| VOID
+	| STATIC
+	| ENUM
+	| STRUCT
+	| UNION
+	| NUMBER
+	| STRING
+	| DIRECTIVE;
 punct: COLON | SEMI | COMMA | DOT | STAR | EQ | PUNCT_EXTRA;
 
 enumBody: CURLY_B (enumItem)* enumItemLast CURLY_E;
 enumItem: doc? id (EQ NUMBER)? COMMA trailingDoc?;
 enumItemLast: doc? id (EQ NUMBER)? COMMA? trailingDoc?;
+
+structBody: CURLY_B structItem* CURLY_E;
+structItem:
+	doc? type id (COMMA id)* indexing* SEMI trailingDoc?;
 
 id: ID;
 type: (typeEl)+;
@@ -58,7 +73,9 @@ INLINE: '__inline__';
 SDL_NOISE: ('SDL_DECLSPEC' | 'SDLCALL') -> skip;
 SDL_INLINE: 'SDL_FORCE_INLINE';
 STATIC: 'static';
+STRUCT: 'struct';
 TYPEDEF: 'typedef';
+UNION: 'union';
 VOID: 'void';
 
 CURLY_B: '{';

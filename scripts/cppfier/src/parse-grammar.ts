@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, DocContext, EnumBodyContext, EnumDefContext, EnumItemContext, EnumItemLastContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, DocContext, EnumBodyContext, EnumDefContext, EnumItemContext, EnumItemLastContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, StructBodyContext, StructDefContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -124,6 +124,18 @@ class ProgListener implements CHeaderListener {
     };
   }
 
+  enterStructDef(ctx: StructDefContext) {
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = ctx.id(1).text;
+    if (this.api.entries[name]?.doc) return;
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'struct',
+      entries: extractStructItems(ctx.structBody()),
+    };
+  }
+
   enterCallbackDef(ctx: CallbackDefContext) {
     const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
@@ -230,5 +242,22 @@ function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
       type: "",
     };
   }
+}
+
+function extractStructItems(ctx: StructBodyContext): ApiEntries {
+  const entries: ApiEntries = {};
+  for (const item of ctx.structItem()) {
+    const type = extractType(item.type());
+    const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+    for (const name of item.id().map(id => id.text)) {
+      entries[name] = {
+        doc,
+        name,
+        kind: 'var',
+        type,
+      };
+    }
+  }
+  return entries;
 }
 

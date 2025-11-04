@@ -1,13 +1,15 @@
-import { writeJSONSync, combineObject } from "./cppfier/dist/utils.js";
+import { writeJSONSync, combineObject, system } from "./cppfier/dist/utils.js";
 import { parseApi } from "./cppfier/dist/parse.js";
 import sourceConfig from "./config-source.json" with {type: "json"};
 import sourceConfig2 from "./config-source2.json" with {type: "json"};
 import sourceXml from "./source_xml.json" with {type: "json"};
 import { parseApi as parseApiNew } from "./cppfier/dist/parse-grammar.js";
 
+system.silent = false;
+
 const api = parseApi({
   ...sourceConfig,
-  sources: ["SDL_hidapi.h", "SDL_pixels.h", "SDL_messagebox.h"]
+  sources: ["SDL_hidapi.h", "SDL_pixels.h"]
 });
 for (const [key, file] of Object.entries(api.files)) {
   for (const entry of Object.values(file.entries)) {

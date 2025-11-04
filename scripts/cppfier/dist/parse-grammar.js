@@ -119,6 +119,18 @@ class ProgListener {
             entries: extractEnumItems(ctx.enumBody()),
         };
     }
+    enterStructDef(ctx) {
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.id(1).text;
+        if (this.api.entries[name]?.doc)
+            return;
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'struct',
+            entries: extractStructItems(ctx.structBody()),
+        };
+    }
     enterCallbackDef(ctx) {
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
@@ -217,4 +229,20 @@ function extractEnumItems(ctx) {
             type: "",
         };
     }
+}
+function extractStructItems(ctx) {
+    const entries = {};
+    for (const item of ctx.structItem()) {
+        const type = extractType(item.type());
+        const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+        for (const name of item.id().map(id => id.text)) {
+            entries[name] = {
+                doc,
+                name,
+                kind: 'var',
+                type,
+            };
+        }
+    }
+    return entries;
 }

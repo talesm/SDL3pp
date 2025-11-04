@@ -191,17 +191,12 @@ inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
+inline float SwapFloat(float x) { return SDL_SwapFloat(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
  *
  * If this is running on a littleendian system, `x` is returned unchanged.
-<<<<<<<
-=======
- * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
- * in most cases.
->>>>>>>
  *
  * This macro never references `x` more than once, avoiding side effects.
  *
@@ -217,21 +212,12 @@ constexpr Uint16 Swap16LE(Uint16 x) { return SDL_Swap16LE(x); }
 /**
  * Swap a 32-bit value from littleendian to native byte order.
  *
-<<<<<<<
-=======
-constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
->>>>>>>
  * If this is running on a littleendian system, `x` is returned unchanged.
  *
  * This macro never references `x` more than once, avoiding side effects.
  *
  * @param x the value to swap, in littleendian byte order.
  * @returns `x` in native byte order.
-<<<<<<<
-=======
- * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
- * in most cases.
->>>>>>>
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -247,21 +233,12 @@ constexpr Uint32 Swap32LE(Uint32 x) { return SDL_Swap32LE(x); }
  * This macro never references `x` more than once, avoiding side effects.
  *
  * @param x the value to swap, in littleendian byte order.
-<<<<<<<
-=======
-constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
->>>>>>>
  * @returns `x` in native byte order.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-<<<<<<<
-=======
- * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
- * in most cases.
->>>>>>>
 constexpr Uint64 Swap64LE(Uint64 x) { return SDL_Swap64LE(x); }
 
 /**
@@ -277,10 +254,6 @@ constexpr Uint64 Swap64LE(Uint64 x) { return SDL_Swap64LE(x); }
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
-<<<<<<<
-=======
-constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
->>>>>>>
  */
 constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
 

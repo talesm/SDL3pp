@@ -22430,12 +22430,6 @@
           "name": "SDL_MessageBoxColor",
           "kind": "struct",
           "entries": {
-            "r, g, b": {
-              "doc": "",
-              "name": "r, g, b",
-              "kind": "var",
-              "type": "Uint8"
-            },
             "r": {
               "doc": "",
               "name": "r",
@@ -22551,13 +22545,13 @@
               "doc": "",
               "name": "buttons",
               "kind": "var",
-              "type": "SDL_MessageBoxButtonData"
+              "type": "const SDL_MessageBoxButtonData *"
             },
             "colorScheme": {
               "doc": "SDL_MessageBoxColorScheme, can be NULL to use system settings",
               "name": "colorScheme",
               "kind": "var",
-              "type": "SDL_MessageBoxColorScheme"
+              "type": "const SDL_MessageBoxColorScheme *"
             }
           }
         },
@@ -36877,7 +36871,7 @@
           "doc": "",
           "name": "XEvent",
           "kind": "alias",
-          "type": "union _XEvent"
+          "type": "_XEvent"
         },
         "SDL_X11EventHook": {
           "doc": "A callback to be used with SDL_SetX11EventHook.\n\nThis callback may modify the event, and should return true if the event\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing an event directly from the X11 event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to SDL_SetX11EventHook.\n\\param xevent a pointer to an Xlib XEvent union to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              X11 event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetX11EventHook",
