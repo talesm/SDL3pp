@@ -96,6 +96,7 @@ class ProgListener implements CHeaderListener {
       kind: 'function',
       type,
       parameters: extractSignature(ctx.signature()),
+      constexpr: true,
     };
   }
 

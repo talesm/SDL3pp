@@ -92,6 +92,7 @@ class ProgListener {
             kind: 'function',
             type,
             parameters: extractSignature(ctx.signature()),
+            constexpr: true,
         };
     }
     enterAliasDef(ctx) {

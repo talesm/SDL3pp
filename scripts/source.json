@@ -2141,7 +2141,8 @@
               "name": "x",
               "type": "Uint32"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_HasExactlyOneBitSet32": {
           "doc": "Determine if a unsigned 32-bit value has exactly one bit set.\n\nIf there are no bits set (`x` is zero), or more than one bit set, this\nreturns false. If any one bit is exclusively set, this returns true.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the 32-bit value to examine.\n\\returns true if exactly one bit is set in `x`, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -2153,7 +2154,8 @@
               "name": "x",
               "type": "Uint32"
             }
-          ]
+          ],
+          "constexpr": true
         }
       }
     },
@@ -3208,7 +3210,8 @@
               "name": "x",
               "type": "Uint16"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_Swap32": {
           "doc": "Byte-swap an unsigned 32-bit number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE\ninstead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns `x`, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -3220,7 +3223,8 @@
               "name": "x",
               "type": "Uint32"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_Swap64": {
           "doc": "Byte-swap an unsigned 64-bit number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE\ninstead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns `x`, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -3232,7 +3236,8 @@
               "name": "x",
               "type": "Uint64"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_SwapFloat": {
           "doc": "Byte-swap a floating point number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_SwapFloatLE or\nSDL_SwapFloatBE instead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns x, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -3244,7 +3249,8 @@
               "name": "x",
               "type": "float"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_Swap16LE": {
           "doc": "Swap a 16-bit value from littleendian to native byte order.\n\nIf this is running on a littleendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in littleendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",

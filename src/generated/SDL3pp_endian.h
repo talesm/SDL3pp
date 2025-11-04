@@ -124,7 +124,7 @@ namespace SDL {
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
+constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
 
 /**
  * Byte-swap an unsigned 32-bit number.
@@ -145,7 +145,7 @@ inline Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
+constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
 
 /**
  * Byte-swap an unsigned 64-bit number.
@@ -166,7 +166,7 @@ inline Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
 
 /**
  * Byte-swap a floating point number.
@@ -187,7 +187,7 @@ inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline float SwapFloat(float x) { return SDL_SwapFloat(x); }
+constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
