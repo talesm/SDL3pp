@@ -10,6 +10,7 @@ import { DirectiveContext } from "./CHeaderParser";
 import { FunctionDeclContext } from "./CHeaderParser";
 import { FunctionDefContext } from "./CHeaderParser";
 import { AliasDefContext } from "./CHeaderParser";
+import { EnumDefContext } from "./CHeaderParser";
 import { InlineContext } from "./CHeaderParser";
 import { BlockContext } from "./CHeaderParser";
 import { GroupContext } from "./CHeaderParser";
@@ -17,12 +18,16 @@ import { IndexingContext } from "./CHeaderParser";
 import { StmContext } from "./CHeaderParser";
 import { WordContext } from "./CHeaderParser";
 import { PunctContext } from "./CHeaderParser";
+import { EnumBodyContext } from "./CHeaderParser";
+import { EnumItemContext } from "./CHeaderParser";
+import { EnumItemLastContext } from "./CHeaderParser";
 import { IdContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
 import { TypeElContext } from "./CHeaderParser";
 import { SignatureContext } from "./CHeaderParser";
 import { AttributeContext } from "./CHeaderParser";
 import { DocContext } from "./CHeaderParser";
+import { TrailingDocContext } from "./CHeaderParser";
 
 
 /**
@@ -108,6 +113,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitAliasDef?: (ctx: AliasDefContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `CHeaderParser.enumDef`.
+	 * @param ctx the parse tree
+	 */
+	enterEnumDef?: (ctx: EnumDefContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.enumDef`.
+	 * @param ctx the parse tree
+	 */
+	exitEnumDef?: (ctx: EnumDefContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `CHeaderParser.inline`.
 	 * @param ctx the parse tree
 	 */
@@ -185,6 +201,39 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitPunct?: (ctx: PunctContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `CHeaderParser.enumBody`.
+	 * @param ctx the parse tree
+	 */
+	enterEnumBody?: (ctx: EnumBodyContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.enumBody`.
+	 * @param ctx the parse tree
+	 */
+	exitEnumBody?: (ctx: EnumBodyContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.enumItem`.
+	 * @param ctx the parse tree
+	 */
+	enterEnumItem?: (ctx: EnumItemContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.enumItem`.
+	 * @param ctx the parse tree
+	 */
+	exitEnumItem?: (ctx: EnumItemContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.enumItemLast`.
+	 * @param ctx the parse tree
+	 */
+	enterEnumItemLast?: (ctx: EnumItemLastContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.enumItemLast`.
+	 * @param ctx the parse tree
+	 */
+	exitEnumItemLast?: (ctx: EnumItemLastContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `CHeaderParser.id`.
 	 * @param ctx the parse tree
 	 */
@@ -249,5 +298,16 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitDoc?: (ctx: DocContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.trailingDoc`.
+	 * @param ctx the parse tree
+	 */
+	enterTrailingDoc?: (ctx: TrailingDocContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.trailingDoc`.
+	 * @param ctx the parse tree
+	 */
+	exitTrailingDoc?: (ctx: TrailingDocContext) => void;
 }
 

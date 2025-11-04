@@ -66,7 +66,7 @@ class ProgListener {
         if (type.startsWith('__inline'))
             return;
         const doc = parseDoc(ctx.doc()?.text ?? '');
-        const name = ctx.ID().text;
+        const name = ctx.id().text;
         if (name.startsWith('_'))
             return;
         if (this.api.entries[name]?.doc)
@@ -82,7 +82,7 @@ class ProgListener {
     enterFunctionDef(ctx) {
         const type = extractType(ctx.type());
         const doc = parseDoc(ctx.doc()?.text ?? '');
-        const name = ctx.ID().text;
+        const name = ctx.id().text;
         if (name.startsWith('_'))
             return;
         if (this.api.entries[name]?.doc)
@@ -96,6 +96,19 @@ class ProgListener {
         };
     }
     ;
+    enterAliasDef(ctx) {
+        const type = extractType(ctx.type());
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.id().text;
+        if (this.api.entries[name]?.doc)
+            return;
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'alias',
+            type,
+        };
+    }
     // other enterX functions...
     visitTerminal(/*@NotNull*/ node) { }
 }

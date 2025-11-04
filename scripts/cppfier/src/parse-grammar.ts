@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { CHeaderParser, DirectiveContext, DocContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CHeaderParser, DirectiveContext, DocContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -72,7 +72,7 @@ class ProgListener implements CHeaderListener {
     const type = extractType(ctx.type());
     if (type.startsWith('__inline')) return;
     const doc = parseDoc(ctx.doc()?.text ?? '');
-    const name = ctx.ID().text;
+    const name = ctx.id().text;
     if (name.startsWith('_')) return;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
@@ -87,7 +87,7 @@ class ProgListener implements CHeaderListener {
   enterFunctionDef(ctx: FunctionDefContext) {
     const type = extractType(ctx.type());
     const doc = parseDoc(ctx.doc()?.text ?? '');
-    const name = ctx.ID().text;
+    const name = ctx.id().text;
     if (name.startsWith('_')) return;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
@@ -98,6 +98,19 @@ class ProgListener implements CHeaderListener {
       parameters: extractSignature(ctx.signature()),
     };
   };
+
+  enterAliasDef(ctx: AliasDefContext) {
+    const type = extractType(ctx.type());
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = ctx.id().text;
+    if (this.api.entries[name]?.doc) return;
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'alias',
+      type,
+    };
+  }
 
   // other enterX functions...
   visitTerminal(/*@NotNull*/ node: TerminalNode) { }
