@@ -13,7 +13,7 @@ decl:
 
 externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
 directive: doc? DEFINE;
-functionDecl: doc? EXTERN type attribute? id signature SEMI;
+functionDecl: doc? EXTERN? type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
 enumDef: doc? TYPEDEF ENUM id enumBody id SEMI;

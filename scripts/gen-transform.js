@@ -161,6 +161,8 @@ const transform = {
         "SDL_TryLockSpinlock",
         "SDL_LockSpinlock",
         "SDL_UnlockSpinlock",
+        "SDL_KernelMemoryBarrierFunc",
+        "SDL_MEMORY_BARRIER_USES_FUNCTION",
       ],
       transform: {
         "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease", after: "__begin" },

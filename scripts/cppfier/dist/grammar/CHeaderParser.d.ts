@@ -160,12 +160,12 @@ export declare class DirectiveContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class FunctionDeclContext extends ParserRuleContext {
-    EXTERN(): TerminalNode;
     type(): TypeContext;
     id(): IdContext;
     signature(): SignatureContext;
     SEMI(): TerminalNode;
     doc(): DocContext | undefined;
+    EXTERN(): TerminalNode | undefined;
     attribute(): AttributeContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;

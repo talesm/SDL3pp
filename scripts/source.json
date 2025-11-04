@@ -407,6 +407,19 @@
           "parameters": [],
           "value": "SDL_MemoryBarrierAcquireFunction()"
         },
+        "SDL_KernelMemoryBarrierFunc": {
+          "doc": "",
+          "name": "SDL_KernelMemoryBarrierFunc",
+          "kind": "callback",
+          "type": "void",
+          "parameters": []
+        },
+        "SDL_MEMORY_BARRIER_USES_FUNCTION": {
+          "doc": "",
+          "name": "SDL_MEMORY_BARRIER_USES_FUNCTION",
+          "kind": "def",
+          "value": ""
+        },
         "SDL_CPUPauseInstruction": {
           "doc": "A macro to insert a CPU-specific \"pause\" instruction into the program.\n\nThis can be useful in busy-wait loops, as it serves as a hint to the CPU as\nto the program's intent; some CPUs can use this to do more efficient\nprocessing. On some platforms, this doesn't do anything, so using this\nmacro might just be a harmless no-op.\n\nNote that if you are busy-waiting, there are often more-efficient\napproaches with other synchronization primitives: mutexes, semaphores,\ncondition variables, etc.\n\n\\threadsafety This macro is safe to use from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_CPUPauseInstruction",
@@ -420,7 +433,7 @@
           "kind": "struct",
           "entries": {
             "value": {
-              "doc": "A type representing an atomic integer value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicInt all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicInt, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicInt\n\\sa SDL_GetAtomicInt\n\\sa SDL_SetAtomicInt\n\\sa SDL_AddAtomicInt",
+              "doc": "",
               "name": "value",
               "kind": "var",
               "type": "int"
@@ -521,7 +534,7 @@
           "kind": "struct",
           "entries": {
             "value": {
-              "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicU32 all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicU32, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicU32\n\\sa SDL_GetAtomicU32\n\\sa SDL_SetAtomicU32",
+              "doc": "",
               "name": "value",
               "kind": "var",
               "type": "Uint32"
