@@ -63,6 +63,8 @@ class ProgListener {
     }
     enterFunctionDecl(ctx) {
         const type = extractType(ctx.type());
+        if (type.startsWith('__inline'))
+            return;
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.ID().text;
         if (this.api.entries[name]?.doc)
@@ -129,14 +131,13 @@ function parseDoc(text) {
     }
     return text;
 }
-// const file = readFileSync("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
-// console.log(parseContent("SDL_version.h", file));
 function normalizeType(typeString) {
     if (!typeString)
         return "";
     return typeString
         .replace(/(\w+)\s*([&*])/g, "$1 $2")
-        .replace(/([*&])\s+(&*)/g, "$1$2")
+        .replace(/([&*])\s*(\w+)/g, "$1 $2")
+        .replace(/([*&])\s+[*&]/g, "$1$2")
         .replace(/([<(\[])\s+/g, "$1")
         .replace(/\s+([>)\]])/g, "$1")
         .replace(/\s\s+/g, " ");
@@ -145,11 +146,17 @@ function extractType(ctx) {
     return normalizeType(ctx.typeEl().map(el => el.text).join(" "));
 }
 function extractSignature(ctx) {
-    const el = ctx.signatureEl();
-    if (!el)
+    const param = ctx.type();
+    if (!param)
         return [];
+    const paramText = extractType(param);
+    if (paramText === "void")
+        return [];
+    const i = paramText.lastIndexOf(' ');
+    if (i === -1)
+        return [{ name: paramText, type: "" }];
     return [{
-            name: el.ID().text,
-            type: extractType(el.type()),
+            name: paramText.slice(i + 1),
+            type: paramText.slice(0, i),
         }];
 }

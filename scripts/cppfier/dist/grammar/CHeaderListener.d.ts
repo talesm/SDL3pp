@@ -8,7 +8,6 @@ import { FunctionDefContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
 import { TypeElContext } from "./CHeaderParser";
 import { SignatureContext } from "./CHeaderParser";
-import { SignatureElContext } from "./CHeaderParser";
 import { DocContext } from "./CHeaderParser";
 /**
  * This interface defines a complete listener for a parse tree produced by
@@ -105,16 +104,6 @@ export interface CHeaderListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     exitSignature?: (ctx: SignatureContext) => void;
-    /**
-     * Enter a parse tree produced by `CHeaderParser.signatureEl`.
-     * @param ctx the parse tree
-     */
-    enterSignatureEl?: (ctx: SignatureElContext) => void;
-    /**
-     * Exit a parse tree produced by `CHeaderParser.signatureEl`.
-     * @param ctx the parse tree
-     */
-    exitSignatureEl?: (ctx: SignatureElContext) => void;
     /**
      * Enter a parse tree produced by `CHeaderParser.doc`.
      * @param ctx the parse tree

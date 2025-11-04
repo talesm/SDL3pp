@@ -9,8 +9,7 @@ functionDef: doc? INLINE type ID signature CURLY_B;
 
 type: (typeEl)+;
 typeEl: (VOID | ID) STAR*;
-signature: ROUND_B (VOID | signatureEl) ROUND_E;
-signatureEl: type ID;
+signature: ROUND_B (type) ROUND_E;
 
 doc: SHORT_DOC | LONG_DOC;
 
