@@ -5,8 +5,35 @@ import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 import { readFileSync } from "fs";
-import { ApiFile } from './types';
+import { Api, ApiFile } from './types';
+import { system } from './utils';
 
+export interface ParseConfig {
+  baseDir: string[];
+  sources: string[];
+}
+
+export function parseApi({ baseDir, sources }: ParseConfig) {
+  const api: Api = { files: {} };
+
+  for (const name of sources) {
+    system.log(`Reading file ${name}`);
+    const content = readContent(name, baseDir);
+    api.files[name] = parseContent(name, content);
+  }
+  return api;
+}
+
+function readContent(name: string, baseDirs: string[]) {
+  for (const baseDir of baseDirs) {
+    try {
+      return readFileSync(baseDir + name, "utf-8");
+    } catch (err) {
+      system.log(`${name} not found at ${baseDir}, looking at next one`);
+    }
+  }
+  throw new Error("File not found: " + name);
+}
 
 class ProgListener implements CHeaderListener {
   public api: ApiFile;
@@ -27,7 +54,8 @@ class ProgListener implements CHeaderListener {
     if (!m) return;
     const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = m[1];
-    const parameters = m[2]?.split(/,\s*/)?.map(p => ({ type: "", name: p }));
+    if (name.endsWith("_h_")) return;
+    const parameters = m[2]?.split(/,\s*/)?.map(p => ({ name: p, type: "" }));
     const value = directive.slice(m[0].length).trim();
     this.api.entries[name] = {
       doc,
@@ -98,8 +126,8 @@ function parseDoc(text: string): string {
   return text;
 }
 
-const file = readFileSync("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
-console.log(parseContent("SDL_version.h", file));
+// const file = readFileSync("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
+// console.log(parseContent("SDL_version.h", file));
 
 export function normalizeType(typeString: string) {
   if (!typeString) return "";

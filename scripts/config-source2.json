@@ -1,0 +1,11 @@
+{
+  "sources": [
+    "SDL_version.h"
+  ],
+  "baseDir": [
+    "external/SDL/include/SDL3/",
+    "external/SDL_image/include/SDL3_image/",
+    "external/SDL_ttf/include/SDL3_ttf/"
+  ],
+  "outputFile": "scripts/source2.json"
+}

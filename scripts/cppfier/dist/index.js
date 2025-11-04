@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const generate_js_1 = require("./generate.js");
 const parse_xml_js_1 = require("./parse-xml.js");
 const parse_js_1 = require("./parse.js");
+const parse_grammar_1 = require("./parse-grammar");
 const transform_js_1 = require("./transform.js");
 const utils_js_1 = require("./utils.js");
 /**
@@ -20,6 +21,9 @@ function main(args) {
     switch (command) {
         case "parse":
             parse(args);
+            break;
+        case "parse-new":
+            parseNew(args);
             break;
         case "xml":
             parseXML(args);
@@ -135,6 +139,78 @@ function parse(args) {
     if (printConfig)
         (0, utils_js_1.writeJSONSync)(config.outputFile ? 1 : 2, config);
     const api = (0, parse_js_1.parseApi)(config);
+    (0, utils_js_1.writeJSONSync)(config.outputFile || 1, api);
+}
+/**
+ * Scan files
+ * @param args the arguments
+ */
+function parseNew(args) {
+    if (args?.length == 0) {
+        return help(["parse"]);
+    }
+    const config = {
+        sources: [],
+        outputFile: "",
+        api: null,
+        baseDir: [],
+        storeLineNumbers: false,
+    };
+    let printConfig = false;
+    for (let i = 0; i < args.length; i++) {
+        const arg = args[i];
+        if (arg == "--") {
+            config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+            break;
+        }
+        if (!arg.startsWith('-')) {
+            if (arg.endsWith(".json")) {
+                mergeInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", '/')));
+            }
+            else
+                config.sources.push(arg.replaceAll("\\", '/'));
+            continue;
+        }
+        switch (arg) {
+            case '--outputFile':
+            case '-o':
+                config.outputFile = args[++i].replaceAll("\\", '/');
+                break;
+            case '--baseDir':
+            case '-d':
+                config.baseDir.push(args[++i].replaceAll("\\", '/'));
+                break;
+            case '--config':
+            case '-c':
+                mergeInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/')));
+                break;
+            case '--print-config':
+                printConfig = true;
+                break;
+            default:
+                throw new Error(`Invalid option ${arg}`);
+        }
+    }
+    if (!config.baseDir?.length && config.sources.length && config.sources[0].includes('/')) {
+        let baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
+        for (let i = 1; i < config.sources.length; i++) {
+            const file = config.sources[i];
+            while (!file.startsWith(baseDir)) {
+                const pos = baseDir.lastIndexOf('/');
+                baseDir = baseDir.slice(0, pos + 1);
+            }
+        }
+        if (baseDir) {
+            config.baseDir = [baseDir];
+            const baseDirLen = baseDir.length;
+            config.sources = config.sources.map(file => file.startsWith(baseDir) ? file.slice(baseDirLen) : file);
+        }
+    }
+    if (!config.outputFile && typeof config.api == "string")
+        config.outputFile = config.api;
+    if (printConfig)
+        (0, utils_js_1.writeJSONSync)(config.outputFile ? 1 : 2, config);
+    const api = (0, parse_grammar_1.parseApi)(config);
     (0, utils_js_1.writeJSONSync)(config.outputFile || 1, api);
 }
 /**

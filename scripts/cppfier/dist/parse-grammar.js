@@ -1,11 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseApi = parseApi;
 exports.normalizeType = normalizeType;
 const antlr4ts_1 = require("antlr4ts");
 const CHeaderParser_1 = require("./grammar/CHeaderParser");
 const CHeaderLexer_1 = require("./grammar/CHeaderLexer");
 const ParseTreeWalker_1 = require("antlr4ts/tree/ParseTreeWalker");
 const fs_1 = require("fs");
+const utils_1 = require("./utils");
+function parseApi({ baseDir, sources }) {
+    const api = { files: {} };
+    for (const name of sources) {
+        utils_1.system.log(`Reading file ${name}`);
+        const content = readContent(name, baseDir);
+        api.files[name] = parseContent(name, content);
+    }
+    return api;
+}
+function readContent(name, baseDirs) {
+    for (const baseDir of baseDirs) {
+        try {
+            return (0, fs_1.readFileSync)(baseDir + name, "utf-8");
+        }
+        catch (err) {
+            utils_1.system.log(`${name} not found at ${baseDir}, looking at next one`);
+        }
+    }
+    throw new Error("File not found: " + name);
+}
 class ProgListener {
     constructor(name) {
         this.api = { name, doc: undefined, entries: {} };
@@ -23,7 +45,9 @@ class ProgListener {
             return;
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = m[1];
-        const parameters = m[2]?.split(/,\s*/)?.map(p => ({ type: "", name: p }));
+        if (name.endsWith("_h_"))
+            return;
+        const parameters = m[2]?.split(/,\s*/)?.map(p => ({ name: p, type: "" }));
         const value = directive.slice(m[0].length).trim();
         this.api.entries[name] = {
             doc,
@@ -84,8 +108,8 @@ function parseDoc(text) {
     }
     return text;
 }
-const file = (0, fs_1.readFileSync)("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
-console.log(parseContent("SDL_version.h", file));
+// const file = readFileSync("/home/talesm/dev/SDL3/SDL3pp/external/SDL/include/SDL3/SDL_version.h", 'utf-8');
+// console.log(parseContent("SDL_version.h", file));
 function normalizeType(typeString) {
     if (!typeString)
         return "";
