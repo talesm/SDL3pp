@@ -6419,19 +6419,19 @@
           "kind": "enum",
           "entries": {
             "SDL_FOLDER_HOME": {
-              "doc": "The folder which contains all of the current user's data, preferences, and documents.  It usually contains most of the other folders. If a requested folder does not exist, the home folder can be considered a safe fallback to store a user's documents.",
+              "doc": "The folder which contains all of the current user's data, preferences, and documents. It usually contains most of the other folders. If a requested folder does not exist, the home folder can be considered a safe fallback to store a user's documents.",
               "name": "SDL_FOLDER_HOME",
               "kind": "var",
               "type": ""
             },
             "SDL_FOLDER_DESKTOP": {
-              "doc": "The folder of files that are displayed on the desktop.  Note that the existence of a desktop folder does not guarantee that the system does show icons on its desktop; certain GNU/Linux distros with a graphical environment may not have desktop icons.",
+              "doc": "The folder of files that are displayed on the desktop. Note that the existence of a desktop folder does not guarantee that the system does show icons on its desktop; certain GNU/Linux distros with a graphical environment may not have desktop icons.",
               "name": "SDL_FOLDER_DESKTOP",
               "kind": "var",
               "type": ""
             },
             "SDL_FOLDER_DOCUMENTS": {
-              "doc": "User document files, possibly application-specific.  This is a good place to save a user's projects.",
+              "doc": "User document files, possibly application-specific. This is a good place to save a user's projects.",
               "name": "SDL_FOLDER_DOCUMENTS",
               "kind": "var",
               "type": ""

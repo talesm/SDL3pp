@@ -223,14 +223,14 @@ using Folder = SDL_Folder;
 
 /**
  * The folder which contains all of the current user's data, preferences, and
- * documents.  It usually contains most of the other folders. If a requested
+ * documents. It usually contains most of the other folders. If a requested
  * folder does not exist, the home folder can be considered a safe fallback to
  * store a user's documents.
  */
 constexpr Folder FOLDER_HOME = SDL_FOLDER_HOME;
 
 /**
- * The folder of files that are displayed on the desktop.  Note that the
+ * The folder of files that are displayed on the desktop. Note that the
  * existence of a desktop folder does not guarantee that the system does show
  * icons on its desktop; certain GNU/Linux distros with a graphical environment
  * may not have desktop icons.
@@ -238,7 +238,7 @@ constexpr Folder FOLDER_HOME = SDL_FOLDER_HOME;
 constexpr Folder FOLDER_DESKTOP = SDL_FOLDER_DESKTOP;
 
 /**
- * User document files, possibly application-specific.  This is a good place to
+ * User document files, possibly application-specific. This is a good place to
  * save a user's projects.
  */
 constexpr Folder FOLDER_DOCUMENTS = SDL_FOLDER_DOCUMENTS;

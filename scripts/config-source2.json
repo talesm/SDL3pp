@@ -13,6 +13,7 @@
     "SDL_endian.h",
     "SDL_error.h",
     "SDL_events.h",
+    "SDL_filesystem.h",
     "SDL_hidapi.h",
     "SDL_messagebox.h",
     "SDL_misc.h",
