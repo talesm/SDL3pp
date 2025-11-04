@@ -39,7 +39,7 @@ class ProgListener {
             this.api.doc = parseDoc(doc.text);
     }
     enterDirective(ctx) {
-        const directive = ctx.DIRECTIVE().text;
+        const directive = ctx.DEFINE().text;
         const docIndex = directive.indexOf('/**<');
         const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
         const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
@@ -218,18 +218,16 @@ function extractSignature(ctx) {
 }
 function extractEnumItems(ctx) {
     const entries = {};
-    ctx.enumItem().forEach(item => addEnumItem(item));
-    addEnumItem(ctx.enumItemLast());
-    return entries;
-    function addEnumItem(ctx) {
-        const name = ctx.id().text;
+    for (const item of ctx.enumItem()) {
+        const name = item.id().text;
         entries[name] = {
-            doc: parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? ''),
+            doc: parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? ''),
             name,
             kind: "var",
             type: "",
         };
     }
+    return entries;
 }
 function extractStructItems(ctx) {
     const entries = {};

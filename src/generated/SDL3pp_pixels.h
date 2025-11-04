@@ -848,10 +848,10 @@ constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
   SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
 
 constexpr PixelFormat PIXELFORMAT_YV12 =
-  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
+  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U  (3 planes)
 
 constexpr PixelFormat PIXELFORMAT_IYUV =
-  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
+  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V  (3 planes)
 
 constexpr PixelFormat PIXELFORMAT_YUY2 =
   SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
@@ -863,20 +863,20 @@ constexpr PixelFormat PIXELFORMAT_YVYU =
   SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
 
 constexpr PixelFormat PIXELFORMAT_NV12 =
-  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
+  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved  (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_NV21 =
-  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
+  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved  (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_P010 =
-  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
+  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved  (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
-  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
+  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
@@ -1289,12 +1289,11 @@ constexpr ColorRange COLOR_RANGE_UNKNOWN =
   SDL_COLOR_RANGE_UNKNOWN; ///< COLOR_RANGE_UNKNOWN
 
 /**
- * Narrow range, e.g.  16-235 for 8-bit RGB and luma, and 16-240 for 8-bit
- * chroma
+ * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
  */
 constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
 
-/// Full range, e.g.  0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+/// Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
 constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
 
 /**
@@ -1309,22 +1308,22 @@ constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN =
   SDL_COLOR_PRIMARIES_UNKNOWN; ///< COLOR_PRIMARIES_UNKNOWN
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT709 =
-  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6.
+  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6
 
 constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
   SDL_COLOR_PRIMARIES_UNSPECIFIED; ///< COLOR_PRIMARIES_UNSPECIFIED
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT470M =
-  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M.
+  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
   SDL_COLOR_PRIMARIES_BT470BG; ///< ITU-R BT.470-6 System B, G / ITU-R BT.601-7
-                               ///< 625.
+                               ///< 625
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
-  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M.
+  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M
 
-/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
+/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
   SDL_COLOR_PRIMARIES_SMPTE240;
 
@@ -1333,19 +1332,19 @@ constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
                                     ///< Illuminant C)
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 =
-  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0.
+  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0
 
 constexpr ColorPrimaries COLOR_PRIMARIES_XYZ =
-  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1.
+  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1
 
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
-  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2.
+  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2
 
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
-  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3.
+  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3
 
 constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 =
-  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech.  3213-E
+  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech. 3213-E
 
 constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
   SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
@@ -1363,24 +1362,24 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
   SDL_TRANSFER_CHARACTERISTICS_UNKNOWN; ///< TRANSFER_CHARACTERISTICS_UNKNOWN
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
-  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec.  ITU-R BT.709-6 / ITU-R BT1361
+  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec. ITU-R BT.709-6 / ITU-R BT1361
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
   SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
 
-/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
+/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
   SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G.
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
   SDL_TRANSFER_CHARACTERISTICS_BT601; ///< SMPTE ST 170M / ITU-R BT.601-7 525 or
-                                      ///< 625.
+                                      ///< 625
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M.
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
   SDL_TRANSFER_CHARACTERISTICS_LINEAR; ///< TRANSFER_CHARACTERISTICS_LINEAR
@@ -1392,28 +1391,26 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
   SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10; ///< TRANSFER_CHARACTERISTICS_LOG100_SQRT10
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
-  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4.
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
-  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut.
+  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
   SDL_TRANSFER_CHARACTERISTICS_SRGB; ///< IEC 61966-2-1 (sRGB or sYCC)
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit
-                                             ///< system.
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit system
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit
-                                             ///< system.
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit system
 
-/// SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
-  SDL_TRANSFER_CHARACTERISTICS_PQ;
+  SDL_TRANSFER_CHARACTERISTICS_PQ; ///< SMPTE ST 2084 for 10-, 12-, 14- and
+                                   ///< 16-bit systems
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1.
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
   SDL_TRANSFER_CHARACTERISTICS_HLG; ///< ARIB STD-B67, known as "hybrid
@@ -1435,39 +1432,39 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
   SDL_MATRIX_COEFFICIENTS_IDENTITY; ///< MATRIX_COEFFICIENTS_IDENTITY
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
-  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6.
+  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
   SDL_MATRIX_COEFFICIENTS_UNSPECIFIED; ///< MATRIX_COEFFICIENTS_UNSPECIFIED
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
-  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47.
+  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47
 
 /**
  * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
- * MATRIX_COEFFICIENTS_BT601.
+ * MATRIX_COEFFICIENTS_BT601
  */
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
   SDL_MATRIX_COEFFICIENTS_BT470BG;
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
-  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525.
+  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M.
+  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
   SDL_MATRIX_COEFFICIENTS_YCGCO; ///< MATRIX_COEFFICIENTS_YCGCO
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
   SDL_MATRIX_COEFFICIENTS_BT2020_NCL; ///< ITU-R BT.2020-2 non-constant
-                                      ///< luminance.
+                                      ///< luminance
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance.
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085.
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
   SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL
@@ -1476,7 +1473,7 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
   SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
-  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP.
+  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
   SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
@@ -1489,18 +1486,18 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
 using ChromaLocation = SDL_ChromaLocation;
 
 constexpr ChromaLocation CHROMA_LOCATION_NONE =
-  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling.
+  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling
 
 /**
  * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
- * of the 2x2 square.  In other words, they have the same horizontal location as
+ * of the 2x2 square. In other words, they have the same horizontal location as
  * the top-left pixel, but is shifted one-half pixel down vertically.
  */
 constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
 
 /**
  * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
- * square.  In other words, they are offset one-half pixel to the right and
+ * square. In other words, they are offset one-half pixel to the right and
  * one-half pixel down compared to the top-left pixel.
  */
 constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
@@ -1719,7 +1716,7 @@ public:
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
-/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
 constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
@@ -1728,31 +1725,31 @@ constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
 constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
 constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
 constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
 constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
 constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
 constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
 constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
 constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
-/// The default colorspace for RGB surfaces if no colorspace is specified.
+/// The default colorspace for RGB surfaces if no colorspace is specified
 constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
-/// The default colorspace for YUV surfaces if no colorspace is specified.
+/// The default colorspace for YUV surfaces if no colorspace is specified
 constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /**

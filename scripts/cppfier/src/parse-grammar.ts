@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, DocContext, EnumBodyContext, EnumDefContext, EnumItemContext, EnumItemLastContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, StructBodyContext, StructDefContext, TypeContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, StructBodyContext, StructDefContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -49,7 +49,7 @@ class ProgListener implements CHeaderListener {
   }
 
   enterDirective(ctx: DirectiveContext) {
-    const directive = ctx.DIRECTIVE().text;
+    const directive = ctx.DEFINE().text;
     const docIndex = directive.indexOf('/**<');
     const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
     const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
@@ -230,19 +230,16 @@ function extractSignature(ctx: SignatureContext): ApiParameters {
 
 function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
   const entries: ApiEntries = {};
-  ctx.enumItem().forEach(item => addEnumItem(item));
-  addEnumItem(ctx.enumItemLast());
-  return entries;
-
-  function addEnumItem(ctx: EnumItemContext | EnumItemLastContext) {
-    const name = ctx.id().text;
+  for (const item of ctx.enumItem()) {
+    const name = item.id().text;
     entries[name] = {
-      doc: parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? ''),
+      doc: parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? ''),
       name,
       kind: "var",
       type: "",
     };
   }
+  return entries;
 }
 
 function extractStructItems(ctx: StructBodyContext): ApiEntries {

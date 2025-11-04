@@ -5,6 +5,7 @@
     "SDL_endian.h",
     "SDL_messagebox.h",
     "SDL_misc.h",
+    "SDL_pixels.h",
     "SDL_system.h",
     "SDL_version.h"
   ],

@@ -12,7 +12,7 @@ decl:
 	| doc;
 
 externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
-directive: doc? DIRECTIVE;
+directive: doc? DEFINE;
 functionDecl: doc? EXTERN type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
@@ -25,7 +25,8 @@ inline: SDL_INLINE | STATIC INLINE;
 block: CURLY_B stm* CURLY_E;
 group: ROUND_B stm* ROUND_E;
 indexing: SQUARE_B stm* SQUARE_E;
-stm: block | group | indexing | word | punct;
+stm: block | indexing | expr | punct;
+expr: group | word;
 word:
 	ID
 	| VOID
@@ -35,12 +36,11 @@ word:
 	| UNION
 	| NUMBER
 	| STRING
-	| DIRECTIVE;
+	| DEFINE;
 punct: COLON | SEMI | COMMA | DOT | STAR | EQ | PUNCT_EXTRA;
 
-enumBody: CURLY_B (enumItem)* enumItemLast CURLY_E;
-enumItem: doc? id (EQ NUMBER)? COMMA trailingDoc?;
-enumItemLast: doc? id (EQ NUMBER)? COMMA? trailingDoc?;
+enumBody: CURLY_B enumItem* CURLY_E;
+enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
 
 structBody: CURLY_B structItem* CURLY_E;
 structItem:
@@ -64,7 +64,22 @@ TRAILING_DOC: '/**<' .*? '*/';
 LONG_DOC: '/**' .*? '*/';
 SHORT_DOC: '///' .*? '\n';
 
-DIRECTIVE: '#' (~'\n' | '\\\n')* '\n';
+DEFINE: '#' ' '* 'define' (~'\n' | '\\\n')* '\n';
+DIRECTIVE:
+	(
+		'#' ' '* (
+			'elif'
+			| 'else'
+			| 'endif'
+			| 'error'
+			| 'if'
+			| 'ifdef'
+			| 'ifndef'
+			| 'include'
+			| 'pragma'
+			| 'undef'
+		) (~'\n' | '\\\n')* '\n'
+	) -> skip;
 
 ATTRIBUTE: '__attribute__';
 ENUM: 'enum';
@@ -94,4 +109,4 @@ PUNCT_EXTRA: [<>&|!=%/+-];
 
 STRING: '"' (~'"' | '\\"')* '"';
 ID: [A-Za-z_][A-Za-z0-9_]*;
-NUMBER: '0' | [1-9][0-9]* | '0x' [0-9A-Fa-f]+;
+NUMBER: ('0' | [1-9][0-9]* | '0x' [0-9A-Fa-f]+) [ul]*;

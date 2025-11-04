@@ -13,34 +13,35 @@ export declare class CHeaderParser extends Parser {
     static readonly TRAILING_DOC = 4;
     static readonly LONG_DOC = 5;
     static readonly SHORT_DOC = 6;
-    static readonly DIRECTIVE = 7;
-    static readonly ATTRIBUTE = 8;
-    static readonly ENUM = 9;
-    static readonly EXTERN = 10;
-    static readonly INLINE = 11;
-    static readonly SDL_NOISE = 12;
-    static readonly SDL_INLINE = 13;
-    static readonly STATIC = 14;
-    static readonly STRUCT = 15;
-    static readonly TYPEDEF = 16;
-    static readonly UNION = 17;
-    static readonly VOID = 18;
-    static readonly CURLY_B = 19;
-    static readonly CURLY_E = 20;
-    static readonly ROUND_B = 21;
-    static readonly ROUND_E = 22;
-    static readonly SQUARE_B = 23;
-    static readonly SQUARE_E = 24;
-    static readonly COLON = 25;
-    static readonly SEMI = 26;
-    static readonly COMMA = 27;
-    static readonly DOT = 28;
-    static readonly STAR = 29;
-    static readonly EQ = 30;
-    static readonly PUNCT_EXTRA = 31;
-    static readonly STRING = 32;
-    static readonly ID = 33;
-    static readonly NUMBER = 34;
+    static readonly DEFINE = 7;
+    static readonly DIRECTIVE = 8;
+    static readonly ATTRIBUTE = 9;
+    static readonly ENUM = 10;
+    static readonly EXTERN = 11;
+    static readonly INLINE = 12;
+    static readonly SDL_NOISE = 13;
+    static readonly SDL_INLINE = 14;
+    static readonly STATIC = 15;
+    static readonly STRUCT = 16;
+    static readonly TYPEDEF = 17;
+    static readonly UNION = 18;
+    static readonly VOID = 19;
+    static readonly CURLY_B = 20;
+    static readonly CURLY_E = 21;
+    static readonly ROUND_B = 22;
+    static readonly ROUND_E = 23;
+    static readonly SQUARE_B = 24;
+    static readonly SQUARE_E = 25;
+    static readonly COLON = 26;
+    static readonly SEMI = 27;
+    static readonly COMMA = 28;
+    static readonly DOT = 29;
+    static readonly STAR = 30;
+    static readonly EQ = 31;
+    static readonly PUNCT_EXTRA = 32;
+    static readonly STRING = 33;
+    static readonly ID = 34;
+    static readonly NUMBER = 35;
     static readonly RULE_prog = 0;
     static readonly RULE_decl = 1;
     static readonly RULE_externC = 2;
@@ -56,11 +57,11 @@ export declare class CHeaderParser extends Parser {
     static readonly RULE_group = 12;
     static readonly RULE_indexing = 13;
     static readonly RULE_stm = 14;
-    static readonly RULE_word = 15;
-    static readonly RULE_punct = 16;
-    static readonly RULE_enumBody = 17;
-    static readonly RULE_enumItem = 18;
-    static readonly RULE_enumItemLast = 19;
+    static readonly RULE_expr = 15;
+    static readonly RULE_word = 16;
+    static readonly RULE_punct = 17;
+    static readonly RULE_enumBody = 18;
+    static readonly RULE_enumItem = 19;
     static readonly RULE_structBody = 20;
     static readonly RULE_structItem = 21;
     static readonly RULE_id = 22;
@@ -95,11 +96,11 @@ export declare class CHeaderParser extends Parser {
     group(): GroupContext;
     indexing(): IndexingContext;
     stm(): StmContext;
+    expr(): ExprContext;
     word(): WordContext;
     punct(): PunctContext;
     enumBody(): EnumBodyContext;
     enumItem(): EnumItemContext;
-    enumItemLast(): EnumItemLastContext;
     structBody(): StructBodyContext;
     structItem(): StructItemContext;
     id(): IdContext;
@@ -151,7 +152,7 @@ export declare class ExternCContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class DirectiveContext extends ParserRuleContext {
-    DIRECTIVE(): TerminalNode;
+    DEFINE(): TerminalNode;
     doc(): DocContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
@@ -279,10 +280,17 @@ export declare class IndexingContext extends ParserRuleContext {
 }
 export declare class StmContext extends ParserRuleContext {
     block(): BlockContext | undefined;
-    group(): GroupContext | undefined;
     indexing(): IndexingContext | undefined;
-    word(): WordContext | undefined;
+    expr(): ExprContext | undefined;
     punct(): PunctContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class ExprContext extends ParserRuleContext {
+    group(): GroupContext | undefined;
+    word(): WordContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
@@ -297,7 +305,7 @@ export declare class WordContext extends ParserRuleContext {
     UNION(): TerminalNode | undefined;
     NUMBER(): TerminalNode | undefined;
     STRING(): TerminalNode | undefined;
-    DIRECTIVE(): TerminalNode | undefined;
+    DEFINE(): TerminalNode | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
@@ -318,7 +326,6 @@ export declare class PunctContext extends ParserRuleContext {
 }
 export declare class EnumBodyContext extends ParserRuleContext {
     CURLY_B(): TerminalNode;
-    enumItemLast(): EnumItemLastContext;
     CURLY_E(): TerminalNode;
     enumItem(): EnumItemContext[];
     enumItem(i: number): EnumItemContext;
@@ -329,21 +336,9 @@ export declare class EnumBodyContext extends ParserRuleContext {
 }
 export declare class EnumItemContext extends ParserRuleContext {
     id(): IdContext;
-    COMMA(): TerminalNode;
     doc(): DocContext | undefined;
     EQ(): TerminalNode | undefined;
-    NUMBER(): TerminalNode | undefined;
-    trailingDoc(): TrailingDocContext | undefined;
-    constructor(parent: ParserRuleContext | undefined, invokingState: number);
-    get ruleIndex(): number;
-    enterRule(listener: CHeaderListener): void;
-    exitRule(listener: CHeaderListener): void;
-}
-export declare class EnumItemLastContext extends ParserRuleContext {
-    id(): IdContext;
-    doc(): DocContext | undefined;
-    EQ(): TerminalNode | undefined;
-    NUMBER(): TerminalNode | undefined;
+    expr(): ExprContext | undefined;
     COMMA(): TerminalNode | undefined;
     trailingDoc(): TrailingDocContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);

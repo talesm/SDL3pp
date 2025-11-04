@@ -18,11 +18,11 @@ import { BlockContext } from "./CHeaderParser";
 import { GroupContext } from "./CHeaderParser";
 import { IndexingContext } from "./CHeaderParser";
 import { StmContext } from "./CHeaderParser";
+import { ExprContext } from "./CHeaderParser";
 import { WordContext } from "./CHeaderParser";
 import { PunctContext } from "./CHeaderParser";
 import { EnumBodyContext } from "./CHeaderParser";
 import { EnumItemContext } from "./CHeaderParser";
-import { EnumItemLastContext } from "./CHeaderParser";
 import { StructBodyContext } from "./CHeaderParser";
 import { StructItemContext } from "./CHeaderParser";
 import { IdContext } from "./CHeaderParser";
@@ -205,6 +205,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitStm?: (ctx: StmContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `CHeaderParser.expr`.
+	 * @param ctx the parse tree
+	 */
+	enterExpr?: (ctx: ExprContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.expr`.
+	 * @param ctx the parse tree
+	 */
+	exitExpr?: (ctx: ExprContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `CHeaderParser.word`.
 	 * @param ctx the parse tree
 	 */
@@ -247,17 +258,6 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitEnumItem?: (ctx: EnumItemContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `CHeaderParser.enumItemLast`.
-	 * @param ctx the parse tree
-	 */
-	enterEnumItemLast?: (ctx: EnumItemLastContext) => void;
-	/**
-	 * Exit a parse tree produced by `CHeaderParser.enumItemLast`.
-	 * @param ctx the parse tree
-	 */
-	exitEnumItemLast?: (ctx: EnumItemLastContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.structBody`.

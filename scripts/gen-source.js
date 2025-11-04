@@ -9,7 +9,7 @@ system.silent = false;
 
 const api = parseApi({
   ...sourceConfig,
-  sources: ["SDL_hidapi.h", "SDL_pixels.h"]
+  sources: ["SDL_hidapi.h"]
 });
 for (const [key, file] of Object.entries(api.files)) {
   for (const entry of Object.values(file.entries)) {
