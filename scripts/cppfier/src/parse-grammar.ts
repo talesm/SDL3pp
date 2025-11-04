@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, StructBodyContext, StructDefContext, TypeContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, StructBodyContext, StructDefContext, TypeContext, UnionDefContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -111,6 +111,17 @@ class ProgListener implements CHeaderListener {
       name,
       kind: 'alias',
       type: isStruct ? `struct ${type}` : type,
+    };
+  }
+
+  enterUnionDef(ctx: UnionDefContext) {
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = ctx.id(1).text;
+    if (this.api.entries[name]?.doc) return;
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'union',
     };
   }
 

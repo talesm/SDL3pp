@@ -6,9 +6,11 @@ decl:
 	| functionDecl
 	| functionDef
 	| aliasDef
+	| unionDef
 	| enumDef
 	| structDef
 	| callbackDef
+	| compileTimeAssert
 	| doc;
 
 externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
@@ -16,16 +18,18 @@ directive: doc? DEFINE;
 functionDecl: doc? EXTERN? type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
+unionDef: doc? TYPEDEF UNION id block id SEMI;
 enumDef: doc? TYPEDEF ENUM id enumBody id SEMI;
 structDef: doc? TYPEDEF STRUCT id structBody id SEMI;
 callbackDef:
 	doc? TYPEDEF type ROUND_B STAR id ROUND_E signature SEMI;
+compileTimeAssert: SDL_COMPILE_TIME_ASSERT group SEMI;
 
 inline: SDL_INLINE | STATIC INLINE;
 block: CURLY_B stm* CURLY_E;
 group: ROUND_B stm* ROUND_E;
 indexing: SQUARE_B stm* SQUARE_E;
-stm: block | indexing | expr | punct;
+stm: block | indexing | expr | punct | doc | trailingDoc;
 expr: group | word;
 word:
 	ID
@@ -37,7 +41,8 @@ word:
 	| UNION
 	| NUMBER
 	| STRING
-	| DEFINE;
+	| DEFINE
+	| SDL_COMPILE_TIME_ASSERT;
 punct:
 	COLON
 	| SEMI
@@ -104,6 +109,7 @@ TYPEDEF: 'typedef';
 UNION: 'union';
 VOID: 'void';
 SDL_VARARG_ATTRIB: 'SDL_' [A-Z0-9_]+ '_VARARG_FUNC' 'V'?;
+SDL_COMPILE_TIME_ASSERT: 'SDL_COMPILE_TIME_ASSERT';
 
 CURLY_B: '{';
 CURLY_E: '}';

@@ -10,9 +10,11 @@ import { DirectiveContext } from "./CHeaderParser";
 import { FunctionDeclContext } from "./CHeaderParser";
 import { FunctionDefContext } from "./CHeaderParser";
 import { AliasDefContext } from "./CHeaderParser";
+import { UnionDefContext } from "./CHeaderParser";
 import { EnumDefContext } from "./CHeaderParser";
 import { StructDefContext } from "./CHeaderParser";
 import { CallbackDefContext } from "./CHeaderParser";
+import { CompileTimeAssertContext } from "./CHeaderParser";
 import { InlineContext } from "./CHeaderParser";
 import { BlockContext } from "./CHeaderParser";
 import { GroupContext } from "./CHeaderParser";
@@ -117,6 +119,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitAliasDef?: (ctx: AliasDefContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `CHeaderParser.unionDef`.
+	 * @param ctx the parse tree
+	 */
+	enterUnionDef?: (ctx: UnionDefContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.unionDef`.
+	 * @param ctx the parse tree
+	 */
+	exitUnionDef?: (ctx: UnionDefContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `CHeaderParser.enumDef`.
 	 * @param ctx the parse tree
 	 */
@@ -148,6 +161,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitCallbackDef?: (ctx: CallbackDefContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.compileTimeAssert`.
+	 * @param ctx the parse tree
+	 */
+	enterCompileTimeAssert?: (ctx: CompileTimeAssertContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.compileTimeAssert`.
+	 * @param ctx the parse tree
+	 */
+	exitCompileTimeAssert?: (ctx: CompileTimeAssertContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.inline`.

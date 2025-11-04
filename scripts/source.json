@@ -3457,43 +3457,43 @@
               "type": ""
             },
             "SDL_EVENT_QUIT": {
-              "doc": "User-requested quit.",
+              "doc": "User-requested quit",
               "name": "SDL_EVENT_QUIT",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_TERMINATING": {
-              "doc": "The application is being terminated by the OS.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillTerminate() Called on Android in onDestroy()",
+              "doc": "The application is being terminated by the OS. This event must be handled in a callback set with SDL_AddEventWatch().\n                                     Called on iOS in applicationWillTerminate()\n                                     Called on Android in onDestroy()",
               "name": "SDL_EVENT_TERMINATING",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_LOW_MEMORY": {
-              "doc": "The application is low on memory, free memory if possible.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()",
+              "doc": "The application is low on memory, free memory if possible. This event must be handled in a callback set with SDL_AddEventWatch().\n                                     Called on iOS in applicationDidReceiveMemoryWarning()\n                                     Called on Android in onTrimMemory()",
               "name": "SDL_EVENT_LOW_MEMORY",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WILL_ENTER_BACKGROUND": {
-              "doc": "The application is about to enter the background.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillResignActive() Called on Android in onPause()",
+              "doc": "The application is about to enter the background. This event must be handled in a callback set with SDL_AddEventWatch().\n                                     Called on iOS in applicationWillResignActive()\n                                     Called on Android in onPause()",
               "name": "SDL_EVENT_WILL_ENTER_BACKGROUND",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DID_ENTER_BACKGROUND": {
-              "doc": "The application did enter the background and may not get CPU for some time.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidEnterBackground() Called on Android in onPause()",
+              "doc": "The application did enter the background and may not get CPU for some time. This event must be handled in a callback set with SDL_AddEventWatch().\n                                     Called on iOS in applicationDidEnterBackground()\n                                     Called on Android in onPause()",
               "name": "SDL_EVENT_DID_ENTER_BACKGROUND",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WILL_ENTER_FOREGROUND": {
-              "doc": "The application is about to enter the foreground.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillEnterForeground() Called on Android in onResume()",
+              "doc": "The application is about to enter the foreground. This event must be handled in a callback set with SDL_AddEventWatch().\n                                     Called on iOS in applicationWillEnterForeground()\n                                     Called on Android in onResume()",
               "name": "SDL_EVENT_WILL_ENTER_FOREGROUND",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DID_ENTER_FOREGROUND": {
-              "doc": "The application is now interactive.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive() Called on Android in onResume()",
+              "doc": "The application is now interactive. This event must be handled in a callback set with SDL_AddEventWatch().\n                                     Called on iOS in applicationDidBecomeActive()\n                                     Called on Android in onResume()",
               "name": "SDL_EVENT_DID_ENTER_FOREGROUND",
               "kind": "var",
               "type": ""
@@ -3505,49 +3505,49 @@
               "type": ""
             },
             "SDL_EVENT_SYSTEM_THEME_CHANGED": {
-              "doc": "The system theme changed.",
+              "doc": "The system theme changed",
               "name": "SDL_EVENT_SYSTEM_THEME_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_ORIENTATION": {
-              "doc": "Display orientation has changed to data1.",
+              "doc": "Display orientation has changed to data1",
               "name": "SDL_EVENT_DISPLAY_ORIENTATION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_ADDED": {
-              "doc": "Display has been added to the system.",
+              "doc": "Display has been added to the system",
               "name": "SDL_EVENT_DISPLAY_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_REMOVED": {
-              "doc": "Display has been removed from the system.",
+              "doc": "Display has been removed from the system",
               "name": "SDL_EVENT_DISPLAY_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_MOVED": {
-              "doc": "Display has changed position.",
+              "doc": "Display has changed position",
               "name": "SDL_EVENT_DISPLAY_MOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED": {
-              "doc": "Display has changed desktop mode.",
+              "doc": "Display has changed desktop mode",
               "name": "SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED": {
-              "doc": "Display has changed current mode.",
+              "doc": "Display has changed current mode",
               "name": "SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED": {
-              "doc": "Display has changed content scale.",
+              "doc": "Display has changed content scale",
               "name": "SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED",
               "kind": "var",
               "type": ""
@@ -3565,151 +3565,151 @@
               "type": ""
             },
             "SDL_EVENT_WINDOW_SHOWN": {
-              "doc": "Window has been shown.",
+              "doc": "Window has been shown",
               "name": "SDL_EVENT_WINDOW_SHOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_HIDDEN": {
-              "doc": "Window has been hidden.",
+              "doc": "Window has been hidden",
               "name": "SDL_EVENT_WINDOW_HIDDEN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_EXPOSED": {
-              "doc": "Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event.",
+              "doc": "Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event",
               "name": "SDL_EVENT_WINDOW_EXPOSED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MOVED": {
-              "doc": "Window has been moved to data1, data2.",
+              "doc": "Window has been moved to data1, data2",
               "name": "SDL_EVENT_WINDOW_MOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_RESIZED": {
-              "doc": "Window has been resized to data1xdata2.",
+              "doc": "Window has been resized to data1xdata2",
               "name": "SDL_EVENT_WINDOW_RESIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED": {
-              "doc": "The pixel size of the window has changed to data1xdata2.",
+              "doc": "The pixel size of the window has changed to data1xdata2",
               "name": "SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_METAL_VIEW_RESIZED": {
-              "doc": "The pixel size of a Metal view associated with the window has changed.",
+              "doc": "The pixel size of a Metal view associated with the window has changed",
               "name": "SDL_EVENT_WINDOW_METAL_VIEW_RESIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MINIMIZED": {
-              "doc": "Window has been minimized.",
+              "doc": "Window has been minimized",
               "name": "SDL_EVENT_WINDOW_MINIMIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MAXIMIZED": {
-              "doc": "Window has been maximized.",
+              "doc": "Window has been maximized",
               "name": "SDL_EVENT_WINDOW_MAXIMIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_RESTORED": {
-              "doc": "Window has been restored to normal size and position.",
+              "doc": "Window has been restored to normal size and position",
               "name": "SDL_EVENT_WINDOW_RESTORED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MOUSE_ENTER": {
-              "doc": "Window has gained mouse focus.",
+              "doc": "Window has gained mouse focus",
               "name": "SDL_EVENT_WINDOW_MOUSE_ENTER",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MOUSE_LEAVE": {
-              "doc": "Window has lost mouse focus.",
+              "doc": "Window has lost mouse focus",
               "name": "SDL_EVENT_WINDOW_MOUSE_LEAVE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_FOCUS_GAINED": {
-              "doc": "Window has gained keyboard focus.",
+              "doc": "Window has gained keyboard focus",
               "name": "SDL_EVENT_WINDOW_FOCUS_GAINED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_FOCUS_LOST": {
-              "doc": "Window has lost keyboard focus.",
+              "doc": "Window has lost keyboard focus",
               "name": "SDL_EVENT_WINDOW_FOCUS_LOST",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_CLOSE_REQUESTED": {
-              "doc": "The window manager requests that the window be closed.",
+              "doc": "The window manager requests that the window be closed",
               "name": "SDL_EVENT_WINDOW_CLOSE_REQUESTED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_HIT_TEST": {
-              "doc": "Window had a hit test that wasn't SDL_HITTEST_NORMAL.",
+              "doc": "Window had a hit test that wasn't SDL_HITTEST_NORMAL",
               "name": "SDL_EVENT_WINDOW_HIT_TEST",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_ICCPROF_CHANGED": {
-              "doc": "The ICC profile of the window's display has changed.",
+              "doc": "The ICC profile of the window's display has changed",
               "name": "SDL_EVENT_WINDOW_ICCPROF_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_DISPLAY_CHANGED": {
-              "doc": "Window has been moved to display data1.",
+              "doc": "Window has been moved to display data1",
               "name": "SDL_EVENT_WINDOW_DISPLAY_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED": {
-              "doc": "Window display scale has been changed.",
+              "doc": "Window display scale has been changed",
               "name": "SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_SAFE_AREA_CHANGED": {
-              "doc": "The window safe area has been changed.",
+              "doc": "The window safe area has been changed",
               "name": "SDL_EVENT_WINDOW_SAFE_AREA_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_OCCLUDED": {
-              "doc": "The window has been occluded.",
+              "doc": "The window has been occluded",
               "name": "SDL_EVENT_WINDOW_OCCLUDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_ENTER_FULLSCREEN": {
-              "doc": "The window has entered fullscreen mode.",
+              "doc": "The window has entered fullscreen mode",
               "name": "SDL_EVENT_WINDOW_ENTER_FULLSCREEN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_LEAVE_FULLSCREEN": {
-              "doc": "The window has left fullscreen mode.",
+              "doc": "The window has left fullscreen mode",
               "name": "SDL_EVENT_WINDOW_LEAVE_FULLSCREEN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_DESTROYED": {
-              "doc": "The window with the associated ID is being or has been destroyed.  If this message is being handled in an event watcher, the window handle is still valid and can still be used to retrieve any properties associated with the window. Otherwise, the handle has already been destroyed and all resources associated with it are invalid",
+              "doc": "The window with the associated ID is being or has been destroyed. If this message is being handled\n                                             in an event watcher, the window handle is still valid and can still be used to retrieve any properties\n                                             associated with the window. Otherwise, the handle has already been destroyed and all resources\n                                             associated with it are invalid",
               "name": "SDL_EVENT_WINDOW_DESTROYED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_HDR_STATE_CHANGED": {
-              "doc": "Window HDR properties have changed.",
+              "doc": "Window HDR properties have changed",
               "name": "SDL_EVENT_WINDOW_HDR_STATE_CHANGED",
               "kind": "var",
               "type": ""
@@ -3727,13 +3727,13 @@
               "type": ""
             },
             "SDL_EVENT_KEY_DOWN": {
-              "doc": "Key pressed.",
+              "doc": "Key pressed",
               "name": "SDL_EVENT_KEY_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEY_UP": {
-              "doc": "Key released.",
+              "doc": "Key released",
               "name": "SDL_EVENT_KEY_UP",
               "kind": "var",
               "type": ""
@@ -3745,193 +3745,193 @@
               "type": ""
             },
             "SDL_EVENT_TEXT_INPUT": {
-              "doc": "Keyboard text input.",
+              "doc": "Keyboard text input",
               "name": "SDL_EVENT_TEXT_INPUT",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEYMAP_CHANGED": {
-              "doc": "Keymap changed due to a system event such as an input language or keyboard layout change.",
+              "doc": "Keymap changed due to a system event such as an\n                                            input language or keyboard layout change.",
               "name": "SDL_EVENT_KEYMAP_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEYBOARD_ADDED": {
-              "doc": "A new keyboard has been inserted into the system.",
+              "doc": "A new keyboard has been inserted into the system",
               "name": "SDL_EVENT_KEYBOARD_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEYBOARD_REMOVED": {
-              "doc": "A keyboard has been removed.",
+              "doc": "A keyboard has been removed",
               "name": "SDL_EVENT_KEYBOARD_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_TEXT_EDITING_CANDIDATES": {
-              "doc": "Keyboard text editing candidates.",
+              "doc": "Keyboard text editing candidates",
               "name": "SDL_EVENT_TEXT_EDITING_CANDIDATES",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_MOTION": {
-              "doc": "Mouse moved.",
+              "doc": "Mouse moved",
               "name": "SDL_EVENT_MOUSE_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_BUTTON_DOWN": {
-              "doc": "Mouse button pressed.",
+              "doc": "Mouse button pressed",
               "name": "SDL_EVENT_MOUSE_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_BUTTON_UP": {
-              "doc": "Mouse button released.",
+              "doc": "Mouse button released",
               "name": "SDL_EVENT_MOUSE_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_WHEEL": {
-              "doc": "Mouse wheel motion.",
+              "doc": "Mouse wheel motion",
               "name": "SDL_EVENT_MOUSE_WHEEL",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_ADDED": {
-              "doc": "A new mouse has been inserted into the system.",
+              "doc": "A new mouse has been inserted into the system",
               "name": "SDL_EVENT_MOUSE_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_REMOVED": {
-              "doc": "A mouse has been removed.",
+              "doc": "A mouse has been removed",
               "name": "SDL_EVENT_MOUSE_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_AXIS_MOTION": {
-              "doc": "Joystick axis motion.",
+              "doc": "Joystick axis motion",
               "name": "SDL_EVENT_JOYSTICK_AXIS_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BALL_MOTION": {
-              "doc": "Joystick trackball motion.",
+              "doc": "Joystick trackball motion",
               "name": "SDL_EVENT_JOYSTICK_BALL_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_HAT_MOTION": {
-              "doc": "Joystick hat position change.",
+              "doc": "Joystick hat position change",
               "name": "SDL_EVENT_JOYSTICK_HAT_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BUTTON_DOWN": {
-              "doc": "Joystick button pressed.",
+              "doc": "Joystick button pressed",
               "name": "SDL_EVENT_JOYSTICK_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BUTTON_UP": {
-              "doc": "Joystick button released.",
+              "doc": "Joystick button released",
               "name": "SDL_EVENT_JOYSTICK_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_ADDED": {
-              "doc": "A new joystick has been inserted into the system.",
+              "doc": "A new joystick has been inserted into the system",
               "name": "SDL_EVENT_JOYSTICK_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_REMOVED": {
-              "doc": "An opened joystick has been removed.",
+              "doc": "An opened joystick has been removed",
               "name": "SDL_EVENT_JOYSTICK_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BATTERY_UPDATED": {
-              "doc": "Joystick battery level change.",
+              "doc": "Joystick battery level change",
               "name": "SDL_EVENT_JOYSTICK_BATTERY_UPDATED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_UPDATE_COMPLETE": {
-              "doc": "Joystick update is complete.",
+              "doc": "Joystick update is complete",
               "name": "SDL_EVENT_JOYSTICK_UPDATE_COMPLETE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_AXIS_MOTION": {
-              "doc": "Gamepad axis motion.",
+              "doc": "Gamepad axis motion",
               "name": "SDL_EVENT_GAMEPAD_AXIS_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_BUTTON_DOWN": {
-              "doc": "Gamepad button pressed.",
+              "doc": "Gamepad button pressed",
               "name": "SDL_EVENT_GAMEPAD_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_BUTTON_UP": {
-              "doc": "Gamepad button released.",
+              "doc": "Gamepad button released",
               "name": "SDL_EVENT_GAMEPAD_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_ADDED": {
-              "doc": "A new gamepad has been inserted into the system.",
+              "doc": "A new gamepad has been inserted into the system",
               "name": "SDL_EVENT_GAMEPAD_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_REMOVED": {
-              "doc": "A gamepad has been removed.",
+              "doc": "A gamepad has been removed",
               "name": "SDL_EVENT_GAMEPAD_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_REMAPPED": {
-              "doc": "The gamepad mapping was updated.",
+              "doc": "The gamepad mapping was updated",
               "name": "SDL_EVENT_GAMEPAD_REMAPPED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN": {
-              "doc": "Gamepad touchpad was touched.",
+              "doc": "Gamepad touchpad was touched",
               "name": "SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION": {
-              "doc": "Gamepad touchpad finger was moved.",
+              "doc": "Gamepad touchpad finger was moved",
               "name": "SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_TOUCHPAD_UP": {
-              "doc": "Gamepad touchpad finger was lifted.",
+              "doc": "Gamepad touchpad finger was lifted",
               "name": "SDL_EVENT_GAMEPAD_TOUCHPAD_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_SENSOR_UPDATE": {
-              "doc": "Gamepad sensor was updated.",
+              "doc": "Gamepad sensor was updated",
               "name": "SDL_EVENT_GAMEPAD_SENSOR_UPDATE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_UPDATE_COMPLETE": {
-              "doc": "Gamepad update is complete.",
+              "doc": "Gamepad update is complete",
               "name": "SDL_EVENT_GAMEPAD_UPDATE_COMPLETE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED": {
-              "doc": "Gamepad Steam handle has changed.",
+              "doc": "Gamepad Steam handle has changed",
               "name": "SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED",
               "kind": "var",
               "type": ""
@@ -3961,13 +3961,13 @@
               "type": ""
             },
             "SDL_EVENT_CLIPBOARD_UPDATE": {
-              "doc": "The clipboard or primary selection changed.",
+              "doc": "The clipboard or primary selection changed",
               "name": "SDL_EVENT_CLIPBOARD_UPDATE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DROP_FILE": {
-              "doc": "The system requests a file open.",
+              "doc": "The system requests a file open",
               "name": "SDL_EVENT_DROP_FILE",
               "kind": "var",
               "type": ""
@@ -3991,13 +3991,13 @@
               "type": ""
             },
             "SDL_EVENT_DROP_POSITION": {
-              "doc": "Position while moving over the window.",
+              "doc": "Position while moving over the window",
               "name": "SDL_EVENT_DROP_POSITION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_AUDIO_DEVICE_ADDED": {
-              "doc": "A new audio device is available.",
+              "doc": "A new audio device is available",
               "name": "SDL_EVENT_AUDIO_DEVICE_ADDED",
               "kind": "var",
               "type": ""
@@ -4015,61 +4015,61 @@
               "type": ""
             },
             "SDL_EVENT_SENSOR_UPDATE": {
-              "doc": "A sensor was updated.",
+              "doc": "A sensor was updated",
               "name": "SDL_EVENT_SENSOR_UPDATE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_PROXIMITY_IN": {
-              "doc": "Pressure-sensitive pen has become available.",
+              "doc": "Pressure-sensitive pen has become available",
               "name": "SDL_EVENT_PEN_PROXIMITY_IN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_PROXIMITY_OUT": {
-              "doc": "Pressure-sensitive pen has become unavailable.",
+              "doc": "Pressure-sensitive pen has become unavailable",
               "name": "SDL_EVENT_PEN_PROXIMITY_OUT",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_DOWN": {
-              "doc": "Pressure-sensitive pen touched drawing surface.",
+              "doc": "Pressure-sensitive pen touched drawing surface",
               "name": "SDL_EVENT_PEN_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_UP": {
-              "doc": "Pressure-sensitive pen stopped touching drawing surface.",
+              "doc": "Pressure-sensitive pen stopped touching drawing surface",
               "name": "SDL_EVENT_PEN_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_BUTTON_DOWN": {
-              "doc": "Pressure-sensitive pen button pressed.",
+              "doc": "Pressure-sensitive pen button pressed",
               "name": "SDL_EVENT_PEN_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_BUTTON_UP": {
-              "doc": "Pressure-sensitive pen button released.",
+              "doc": "Pressure-sensitive pen button released",
               "name": "SDL_EVENT_PEN_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_MOTION": {
-              "doc": "Pressure-sensitive pen is moving on the tablet.",
+              "doc": "Pressure-sensitive pen is moving on the tablet",
               "name": "SDL_EVENT_PEN_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_AXIS": {
-              "doc": "Pressure-sensitive pen angle/pressure/etc changed.",
+              "doc": "Pressure-sensitive pen angle/pressure/etc changed",
               "name": "SDL_EVENT_PEN_AXIS",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_CAMERA_DEVICE_ADDED": {
-              "doc": "A new camera device is available.",
+              "doc": "A new camera device is available",
               "name": "SDL_EVENT_CAMERA_DEVICE_ADDED",
               "kind": "var",
               "type": ""
@@ -4093,13 +4093,13 @@
               "type": ""
             },
             "SDL_EVENT_RENDER_TARGETS_RESET": {
-              "doc": "The render targets have been reset and their contents need to be updated.",
+              "doc": "The render targets have been reset and their contents need to be updated",
               "name": "SDL_EVENT_RENDER_TARGETS_RESET",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_RENDER_DEVICE_RESET": {
-              "doc": "The device has been reset and all textures need to be recreated.",
+              "doc": "The device has been reset and all textures need to be recreated",
               "name": "SDL_EVENT_RENDER_DEVICE_RESET",
               "kind": "var",
               "type": ""
@@ -4135,19 +4135,19 @@
               "type": ""
             },
             "SDL_EVENT_POLL_SENTINEL": {
-              "doc": "Signals the end of an event poll cycle.",
+              "doc": "Signals the end of an event poll cycle",
               "name": "SDL_EVENT_POLL_SENTINEL",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_USER": {
-              "doc": "Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use, and should be allocated with SDL_RegisterEvents()",
+              "doc": "Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use,\n and should be allocated with SDL_RegisterEvents()",
               "name": "SDL_EVENT_USER",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_LAST": {
-              "doc": "This last event is only for bounding internal arrays.",
+              "doc": "This last event is only for bounding internal arrays",
               "name": "SDL_EVENT_LAST",
               "kind": "var",
               "type": ""
@@ -4457,7 +4457,7 @@
               "doc": "The list of candidates, or NULL if there are no candidates available",
               "name": "candidates",
               "kind": "var",
-              "type": "const char *const  *"
+              "type": "const char * const *"
             },
             "num_candidates": {
               "doc": "The number of strings in `candidates`",
@@ -4954,13 +4954,13 @@
               "type": "Uint8"
             },
             "value": {
-              "doc": "",
+              "doc": "The hat position value.\n  \\sa SDL_HAT_LEFTUP SDL_HAT_UP SDL_HAT_RIGHTUP\n  \\sa SDL_HAT_LEFT SDL_HAT_CENTERED SDL_HAT_RIGHT\n  \\sa SDL_HAT_LEFTDOWN SDL_HAT_DOWN SDL_HAT_RIGHTDOWN\n\n  Note that zero means the POV is centered.",
               "name": "value",
               "kind": "var",
               "type": "Uint8"
             },
             "padding1": {
-              "doc": "Joystick hat position change event structure (event.jhat.*)\n\n\\since This struct is available since SDL 3.2.0.\n/\ntypedef struct SDL_JoyHatEvent\n{\n    SDL_EventType type; /**< SDL_EVENT_JOYSTICK_HAT_MOTION */\n    Uint32 reserved;\n    Uint64 timestamp;   /**< In nanoseconds, populated using SDL_GetTicksNS() */\n    SDL_JoystickID which; /**< The joystick instance id */\n    Uint8 hat;          /**< The joystick hat index */\n    Uint8 value;        /**< The hat position value.\n  \\sa SDL_HAT_LEFTUP SDL_HAT_UP SDL_HAT_RIGHTUP\n  \\sa SDL_HAT_LEFT SDL_HAT_CENTERED SDL_HAT_RIGHT\n  \\sa SDL_HAT_LEFTDOWN SDL_HAT_DOWN SDL_HAT_RIGHTDOWN\n\n  Note that zero means the POV is centered.",
+              "doc": "",
               "name": "padding1",
               "kind": "var",
               "type": "Uint8"

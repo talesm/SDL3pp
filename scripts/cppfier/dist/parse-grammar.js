@@ -109,6 +109,17 @@ class ProgListener {
             type: isStruct ? `struct ${type}` : type,
         };
     }
+    enterUnionDef(ctx) {
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.id(1).text;
+        if (this.api.entries[name]?.doc)
+            return;
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'union',
+        };
+    }
     enterEnumDef(ctx) {
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.id(1).text;
