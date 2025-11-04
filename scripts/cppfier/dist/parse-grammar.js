@@ -95,7 +95,6 @@ class ProgListener {
             parameters: extractSignature(ctx.signature()),
         };
     }
-    ;
     enterAliasDef(ctx) {
         const type = extractType(ctx.type());
         const doc = parseDoc(ctx.doc()?.text ?? '');
@@ -107,6 +106,18 @@ class ProgListener {
             name,
             kind: 'alias',
             type,
+        };
+    }
+    enterEnumDef(ctx) {
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.id(1).text;
+        if (this.api.entries[name]?.doc)
+            return;
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'enum',
+            entries: extractEnumItems(ctx.enumBody()),
         };
     }
     // other enterX functions...
@@ -178,4 +189,19 @@ function extractSignature(ctx) {
             type: paramText.slice(0, i),
         };
     });
+}
+function extractEnumItems(ctx) {
+    const entries = {};
+    ctx.enumItem().forEach(item => addEnumItem(item));
+    addEnumItem(ctx.enumItemLast());
+    return entries;
+    function addEnumItem(ctx) {
+        const name = ctx.id().text;
+        entries[name] = {
+            doc: parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? ''),
+            name,
+            kind: "var",
+            type: "",
+        };
+    }
 }

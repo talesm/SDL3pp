@@ -40,6 +40,110 @@
           "kind": "alias",
           "type": "Uint32"
         },
+        "SDL_BlendOperation": {
+          "doc": "The blend operation used when combining source and destination pixel\ncomponents.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_BlendOperation",
+          "kind": "enum",
+          "entries": {
+            "SDL_BLENDOPERATION_ADD": {
+              "doc": "dst + src: supported by all renderers",
+              "name": "SDL_BLENDOPERATION_ADD",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_SUBTRACT": {
+              "doc": "src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_SUBTRACT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_REV_SUBTRACT": {
+              "doc": "dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_REV_SUBTRACT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_MINIMUM": {
+              "doc": "min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_MINIMUM",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_MAXIMUM": {
+              "doc": "max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_MAXIMUM",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_BlendFactor": {
+          "doc": "The normalized factor used to multiply pixel components.\n\nThe blend factors are multiplied with the pixels from a drawing operation\n(src) and the pixels from the render target (dst) before the blend\noperation. The comma-separated factors listed above are always applied in\nthe component order red, green, blue, and alpha.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_BlendFactor",
+          "kind": "enum",
+          "entries": {
+            "SDL_BLENDFACTOR_ZERO": {
+              "doc": "0, 0, 0, 0",
+              "name": "SDL_BLENDFACTOR_ZERO",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE": {
+              "doc": "1, 1, 1, 1",
+              "name": "SDL_BLENDFACTOR_ONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_SRC_COLOR": {
+              "doc": "srcR, srcG, srcB, srcA",
+              "name": "SDL_BLENDFACTOR_SRC_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR": {
+              "doc": "1-srcR, 1-srcG, 1-srcB, 1-srcA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_SRC_ALPHA": {
+              "doc": "srcA, srcA, srcA, srcA",
+              "name": "SDL_BLENDFACTOR_SRC_ALPHA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA": {
+              "doc": "1-srcA, 1-srcA, 1-srcA, 1-srcA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_DST_COLOR": {
+              "doc": "dstR, dstG, dstB, dstA",
+              "name": "SDL_BLENDFACTOR_DST_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR": {
+              "doc": "1-dstR, 1-dstG, 1-dstB, 1-dstA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_DST_ALPHA": {
+              "doc": "dstA, dstA, dstA, dstA",
+              "name": "SDL_BLENDFACTOR_DST_ALPHA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA": {
+              "doc": "1-dstA, 1-dstA, 1-dstA, 1-dstA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
         "SDL_ComposeCustomBlendMode": {
           "doc": "Compose a custom blend mode for renderers.\n\nThe functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept\nthe SDL_BlendMode returned by this function if the renderer supports it.\n\nA blend mode controls how the pixels from a drawing operation (source) get\ncombined with the pixels from the render target (destination). First, the\ncomponents of the source and destination pixels get multiplied with their\nblend factors. Then, the blend operation takes the two products and\ncalculates the result that will get stored in the render target.\n\nExpressed in pseudocode, it would look like this:\n\n```c\ndstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);\ndstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);\n```\n\nWhere the functions `colorOperation(src, dst)` and `alphaOperation(src,\ndst)` can return one of the following:\n\n- `src + dst`\n- `src - dst`\n- `dst - src`\n- `min(src, dst)`\n- `max(src, dst)`\n\nThe red, green, and blue components are always multiplied with the first,\nsecond, and third components of the SDL_BlendFactor, respectively. The\nfourth component is not used.\n\nThe alpha component is always multiplied with the fourth component of the\nSDL_BlendFactor. The other components are not used in the alpha\ncalculation.\n\nSupport for these blend modes varies for each renderer. To check if a\nspecific SDL_BlendMode is supported, create a renderer and pass it to\neither SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will\nreturn with an error if the blend mode is not supported.\n\nThis list describes the support of custom blend modes for each renderer.\nAll renderers support the four blend modes listed in the SDL_BlendMode\nenumeration.\n\n- **direct3d**: Supports all operations with all factors. However, some\n  factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and\n  `SDL_BLENDOPERATION_MAXIMUM`.\n- **direct3d11**: Same as Direct3D 9.\n- **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all\n  factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.\n- **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,\n  `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`\n  operations with all factors.\n- **psp**: No custom blend mode support.\n- **software**: No custom blend mode support.\n\nSome renderers do not provide an alpha component for the default render\ntarget. The `SDL_BLENDFACTOR_DST_ALPHA` and\n`SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this\ncase.\n\n\\param srcColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the source pixels.\n\\param dstColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the destination pixels.\n\\param colorOperation the SDL_BlendOperation used to combine the red,\n                      green, and blue components of the source and\n                      destination pixels.\n\\param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the source pixels.\n\\param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the destination pixels.\n\\param alphaOperation the SDL_BlendOperation used to combine the alpha\n                      component of the source and destination pixels.\n\\returns an SDL_BlendMode that represents the chosen factors and\n         operations.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetRenderDrawBlendMode\n\\sa SDL_GetRenderDrawBlendMode\n\\sa SDL_SetTextureBlendMode\n\\sa SDL_GetTextureBlendMode",
           "name": "SDL_ComposeCustomBlendMode",

@@ -1,11 +1,11 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CHeaderParser, DirectiveContext, DocContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CHeaderParser, DirectiveContext, DocContext, EnumBodyContext, EnumDefContext, EnumItemContext, EnumItemLastContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 import { readFileSync } from "fs";
-import { Api, ApiFile, ApiParameters } from './types';
+import { Api, ApiEntries, ApiFile, ApiParameters } from './types';
 import { system } from './utils';
 
 export interface ParseConfig {
@@ -97,7 +97,7 @@ class ProgListener implements CHeaderListener {
       type,
       parameters: extractSignature(ctx.signature()),
     };
-  };
+  }
 
   enterAliasDef(ctx: AliasDefContext) {
     const type = extractType(ctx.type());
@@ -109,6 +109,18 @@ class ProgListener implements CHeaderListener {
       name,
       kind: 'alias',
       type,
+    };
+  }
+
+  enterEnumDef(ctx: EnumDefContext) {
+    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const name = ctx.id(1).text;
+    if (this.api.entries[name]?.doc) return;
+    this.api.entries[name] = {
+      doc,
+      name,
+      kind: 'enum',
+      entries: extractEnumItems(ctx.enumBody()),
     };
   }
 
@@ -187,5 +199,22 @@ function extractSignature(ctx: SignatureContext): ApiParameters {
       type: paramText.slice(0, i),
     };
   });
+}
+
+function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
+  const entries: ApiEntries = {};
+  ctx.enumItem().forEach(item => addEnumItem(item));
+  addEnumItem(ctx.enumItemLast());
+  return entries;
+
+  function addEnumItem(ctx: EnumItemContext | EnumItemLastContext) {
+    const name = ctx.id().text;
+    entries[name] = {
+      doc: parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? ''),
+      name,
+      kind: "var",
+      type: "",
+    };
+  }
 }
 
