@@ -1,7 +1,9 @@
 import { writeJSONSync, combineObject } from "./cppfier/dist/utils.js";
 import { parseApi } from "./cppfier/dist/parse.js";
 import sourceConfig from "./config-source.json" with {type: "json"};
+import sourceConfig2 from "./config-source2.json" with {type: "json"};
 import sourceXml from "./source_xml.json" with {type: "json"};
+import { parseApi as parseApiNew } from "./cppfier/dist/parse-grammar.js";
 
 const api = parseApi({
   ...sourceConfig,
@@ -13,6 +15,11 @@ for (const [key, file] of Object.entries(api.files)) {
     delete entry.proto;
   }
   combineObject(file, sourceXml.files[key]);
+  sourceXml.files[key] = file;
+}
+
+const newApi = parseApiNew(sourceConfig2);
+for (const [key, file] of Object.entries(newApi.files)) {
   sourceXml.files[key] = file;
 }
 

@@ -41,7 +41,7 @@ class ProgListener {
     enterDirective(ctx) {
         const directive = ctx.DIRECTIVE().text;
         const docIndex = directive.indexOf('/**<');
-        const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex)));
+        const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
         const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
         if (!m)
             return;
