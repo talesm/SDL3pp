@@ -29,6 +29,7 @@ stm: block | indexing | expr | punct;
 expr: group | word;
 word:
 	ID
+	| CONST
 	| VOID
 	| STATIC
 	| ENUM
@@ -44,11 +45,11 @@ enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
 
 structBody: CURLY_B structItem* CURLY_E;
 structItem:
-	doc? STRUCT? type id (COMMA id)* indexing* SEMI trailingDoc?;
+	doc? (CONST? STRUCT)? type id (COMMA id)* indexing* SEMI trailingDoc?;
 
 id: ID;
 type: (typeEl)+;
-typeEl: (VOID | ID) STAR*;
+typeEl: (VOID | ID | CONST) STAR*;
 signature: ROUND_B (type (COMMA type)*)? ROUND_E;
 
 attribute: ATTRIBUTE group;
@@ -82,10 +83,11 @@ DIRECTIVE:
 	) -> skip;
 
 ATTRIBUTE: '__attribute__';
+CONST: 'const';
 ENUM: 'enum';
 EXTERN: 'extern';
 INLINE: '__inline__';
-SDL_NOISE: ('SDL_DECLSPEC' | 'SDLCALL') -> skip;
+SDL_NOISE: ('SDL_DECLSPEC' | 'SDLCALL' | 'SDL_ANALYZER_NORETURN') -> skip;
 SDL_INLINE: 'SDL_FORCE_INLINE';
 STATIC: 'static';
 STRUCT: 'struct';

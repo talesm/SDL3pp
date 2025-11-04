@@ -240,7 +240,7 @@ function extractStructItems(ctx) {
                 doc,
                 name,
                 kind: 'var',
-                type,
+                type: item.CONST() ? `const ${type}` : type,
             };
         }
     }

@@ -1894,7 +1894,7 @@
               "type": ""
             }
           ],
-          "value": "    do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)"
+          "value": "\\\n    do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)"
         },
         "SDL_AssertState": {
           "doc": "Possible outcomes from a triggered assertion.\n\nWhen an enabled assertion triggers, it may call the assertion handler\n(possibly one provided by the app via SDL_SetAssertionHandler), which will\nreturn one of these values, possibly after asking the user.\n\nThen SDL will respond based on this outcome (loop around to retry the\ncondition, try to break in a debugger, kill the program, or ignore the\nproblem).\n\n\\since This enum is available since SDL 3.2.0.",
@@ -1978,7 +1978,7 @@
               "doc": "next item in the linked list.",
               "name": "next",
               "kind": "var",
-              "type": "SDL_AssertData"
+              "type": "const SDL_AssertData *"
             }
           }
         },
@@ -2001,8 +2001,8 @@
               "type": "const char *"
             },
             {
-              "name": "SDL_ANALYZER_NORETUR",
-              "type": "int line)"
+              "name": "line",
+              "type": "int"
             }
           ]
         },
@@ -2023,7 +2023,7 @@
               "type": ""
             }
           ],
-          "value": "[object Object]"
+          "value": "\\\n    do { \\\n        while ( !(condition) ) { \\\n            static struct SDL_AssertData sdl_assert_data = { false, 0, #condition, NULL, 0, NULL, NULL }; \\\n            const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(&sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE); \\\n            if (sdl_assert_state == SDL_ASSERTION_RETRY) { \\\n                continue; /* go again. */ \\\n            } else if (sdl_assert_state == SDL_ASSERTION_BREAK) { \\\n                SDL_AssertBreakpoint(); \\\n            } \\\n            break; /* not retrying. */ \\\n        } \\\n    } while (SDL_NULL_WHILE_LOOP_CONDITION)"
         },
         "SDL_assert": {
           "doc": "An assertion test that is normally performed only in debug builds.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is\ndisabled. This is meant to only do these tests in debug builds, so they can\ntend to be more expensive, and they are meant to bring everything to a halt\nwhen they fail, with the programmer there to assess the problem.\n\nIn short: you can sprinkle these around liberally and assume they will\nevaporate out of the build when building for end-users.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
