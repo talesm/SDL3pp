@@ -2946,14 +2946,11 @@ using GPUSampleCount = SDL_GPUSampleCount;
 constexpr GPUSampleCount GPU_SAMPLECOUNT_1 =
   SDL_GPU_SAMPLECOUNT_1; ///< No multisampling.
 
-constexpr GPUSampleCount GPU_SAMPLECOUNT_2 =
-  SDL_GPU_SAMPLECOUNT_2; ///< MSAA 2x.
+constexpr GPUSampleCount GPU_SAMPLECOUNT_2 = SDL_GPU_SAMPLECOUNT_2; ///< MSAA 2x
 
-constexpr GPUSampleCount GPU_SAMPLECOUNT_4 =
-  SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x.
+constexpr GPUSampleCount GPU_SAMPLECOUNT_4 = SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x
 
-constexpr GPUSampleCount GPU_SAMPLECOUNT_8 =
-  SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x.
+constexpr GPUSampleCount GPU_SAMPLECOUNT_8 = SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x
 
 /**
  * An opaque handle representing the SDL_GPU context.
@@ -3818,6 +3815,37 @@ public:
    */
   bool TextureSupportsSampleCount(GPUTextureFormat format,
                                   GPUSampleCount sample_count);
+#ifdef SDL_PLATFORM_GDK
+
+  /**
+   * Call this to suspend GPU operation on Xbox when you receive the
+   * EVENT_DID_ENTER_BACKGROUND event.
+   *
+   * Do NOT call any SDL_GPU functions after calling this function! This must
+   * also be called before calling GDKSuspendComplete.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AddEventWatch
+   */
+  void GDKSuspendGPU();
+
+  /**
+   * Call this to resume GPU operation on Xbox when you receive the
+   * EVENT_WILL_ENTER_FOREGROUND event.
+   *
+   * When resuming, this function MUST be called before calling any other
+   * SDL_GPU functions.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AddEventWatch
+   */
+  void GDKResumeGPU();
+
+#endif /* SDL_PLATFORM_GDK */
 };
 
 /// Semi-safe reference for GPUDevice.
@@ -3900,8 +3928,8 @@ constexpr GPULoadOp GPU_LOADOP_LOAD = SDL_GPU_LOADOP_LOAD;
 constexpr GPULoadOp GPU_LOADOP_CLEAR = SDL_GPU_LOADOP_CLEAR;
 
 /**
- * The previous contents of the texture need not be preserved.  The contents
- * will be undefined.
+ * The previous contents of the texture need not be preserved. The contents will
+ * be undefined.
  */
 constexpr GPULoadOp GPU_LOADOP_DONT_CARE = SDL_GPU_LOADOP_DONT_CARE;
 
@@ -3920,20 +3948,20 @@ constexpr GPUStoreOp GPU_STOREOP_STORE = SDL_GPU_STOREOP_STORE;
 
 /**
  * The contents generated during the render pass are not needed and may be
- * discarded.  The contents will be undefined.
+ * discarded. The contents will be undefined.
  */
 constexpr GPUStoreOp GPU_STOREOP_DONT_CARE = SDL_GPU_STOREOP_DONT_CARE;
 
 /**
  * The multisample contents generated during the render pass will be resolved to
- * a non-multisample texture.  The contents in the multisample texture may then
+ * a non-multisample texture. The contents in the multisample texture may then
  * be discarded and will be undefined.
  */
 constexpr GPUStoreOp GPU_STOREOP_RESOLVE = SDL_GPU_STOREOP_RESOLVE;
 
 /**
  * The multisample contents generated during the render pass will be resolved to
- * a non-multisample texture.  The contents in the multisample texture will be
+ * a non-multisample texture. The contents in the multisample texture will be
  * written to memory.
  */
 constexpr GPUStoreOp GPU_STOREOP_RESOLVE_AND_STORE =
@@ -7469,6 +7497,44 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
   return SDL_CalculateGPUTextureFormatSize(
     format, width, height, depth_or_layer_count);
 }
+
+#ifdef SDL_PLATFORM_GDK
+
+/**
+ * Call this to suspend GPU operation on Xbox when you receive the
+ * EVENT_DID_ENTER_BACKGROUND event.
+ *
+ * Do NOT call any SDL_GPU functions after calling this function! This must
+ * also be called before calling GDKSuspendComplete.
+ *
+ * @param device a GPU context.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddEventWatch
+ */
+inline void GDKSuspendGPU(GPUDeviceParam device) { SDL_GDKSuspendGPU(device); }
+
+inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
+
+/**
+ * Call this to resume GPU operation on Xbox when you receive the
+ * EVENT_WILL_ENTER_FOREGROUND event.
+ *
+ * When resuming, this function MUST be called before calling any other
+ * SDL_GPU functions.
+ *
+ * @param device a GPU context.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddEventWatch
+ */
+inline void GDKResumeGPU(GPUDeviceParam device) { SDL_GDKResumeGPU(device); }
+
+inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
+
+#endif /* SDL_PLATFORM_GDK */
 
 /// @}
 

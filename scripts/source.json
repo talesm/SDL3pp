@@ -8365,7 +8365,7 @@
               "type": ""
             },
             "SDL_GPU_LOADOP_DONT_CARE": {
-              "doc": "The previous contents of the texture need not be preserved.  The contents will be undefined.",
+              "doc": "The previous contents of the texture need not be preserved. The contents will be undefined.",
               "name": "SDL_GPU_LOADOP_DONT_CARE",
               "kind": "var",
               "type": ""
@@ -8384,19 +8384,19 @@
               "type": ""
             },
             "SDL_GPU_STOREOP_DONT_CARE": {
-              "doc": "The contents generated during the render pass are not needed and may be discarded.  The contents will be undefined.",
+              "doc": "The contents generated during the render pass are not needed and may be discarded. The contents will be undefined.",
               "name": "SDL_GPU_STOREOP_DONT_CARE",
               "kind": "var",
               "type": ""
             },
             "SDL_GPU_STOREOP_RESOLVE": {
-              "doc": "The multisample contents generated during the render pass will be resolved to a non-multisample texture.  The contents in the multisample texture may then be discarded and will be undefined.",
+              "doc": "The multisample contents generated during the render pass will be resolved to a non-multisample texture. The contents in the multisample texture may then be discarded and will be undefined.",
               "name": "SDL_GPU_STOREOP_RESOLVE",
               "kind": "var",
               "type": ""
             },
             "SDL_GPU_STOREOP_RESOLVE_AND_STORE": {
-              "doc": "The multisample contents generated during the render pass will be resolved to a non-multisample texture.  The contents in the multisample texture will be written to memory.",
+              "doc": "The multisample contents generated during the render pass will be resolved to a non-multisample texture. The contents in the multisample texture will be written to memory.",
               "name": "SDL_GPU_STOREOP_RESOLVE_AND_STORE",
               "kind": "var",
               "type": ""
@@ -9156,19 +9156,19 @@
               "type": ""
             },
             "SDL_GPU_SAMPLECOUNT_2": {
-              "doc": "MSAA 2x.",
+              "doc": "MSAA 2x",
               "name": "SDL_GPU_SAMPLECOUNT_2",
               "kind": "var",
               "type": ""
             },
             "SDL_GPU_SAMPLECOUNT_4": {
-              "doc": "MSAA 4x.",
+              "doc": "MSAA 4x",
               "name": "SDL_GPU_SAMPLECOUNT_4",
               "kind": "var",
               "type": ""
             },
             "SDL_GPU_SAMPLECOUNT_8": {
-              "doc": "MSAA 8x.",
+              "doc": "MSAA 8x",
               "name": "SDL_GPU_SAMPLECOUNT_8",
               "kind": "var",
               "type": ""
@@ -10583,7 +10583,7 @@
               "doc": "A pointer to an array of vertex buffer descriptions.",
               "name": "vertex_buffer_descriptions",
               "kind": "var",
-              "type": "SDL_GPUVertexBufferDescription"
+              "type": "const SDL_GPUVertexBufferDescription *"
             },
             "num_vertex_buffers": {
               "doc": "The number of vertex buffer descriptions in the above array.",
@@ -10595,7 +10595,7 @@
               "doc": "A pointer to an array of vertex attribute descriptions.",
               "name": "vertex_attributes",
               "kind": "var",
-              "type": "SDL_GPUVertexAttribute"
+              "type": "const SDL_GPUVertexAttribute *"
             },
             "num_vertex_attributes": {
               "doc": "The number of vertex attribute descriptions in the above array.",
@@ -11098,7 +11098,7 @@
               "doc": "A pointer to an array of color target descriptions.",
               "name": "color_target_descriptions",
               "kind": "var",
-              "type": "SDL_GPUColorTargetDescription"
+              "type": "const SDL_GPUColorTargetDescription *"
             },
             "num_color_targets": {
               "doc": "The number of color target descriptions in the above array.",
@@ -12466,7 +12466,7 @@
             },
             {
               "name": "storage_textures",
-              "type": "SDL_GPUTexture *const *"
+              "type": "SDL_GPUTexture * const *"
             },
             {
               "name": "num_bindings",
@@ -12490,7 +12490,7 @@
             },
             {
               "name": "storage_buffers",
-              "type": "SDL_GPUBuffer *const *"
+              "type": "SDL_GPUBuffer * const *"
             },
             {
               "name": "num_bindings",
@@ -12538,7 +12538,7 @@
             },
             {
               "name": "storage_textures",
-              "type": "SDL_GPUTexture *const *"
+              "type": "SDL_GPUTexture * const *"
             },
             {
               "name": "num_bindings",
@@ -12562,7 +12562,7 @@
             },
             {
               "name": "storage_buffers",
-              "type": "SDL_GPUBuffer *const *"
+              "type": "SDL_GPUBuffer * const *"
             },
             {
               "name": "num_bindings",
@@ -12774,7 +12774,7 @@
             },
             {
               "name": "storage_textures",
-              "type": "SDL_GPUTexture *const *"
+              "type": "SDL_GPUTexture * const *"
             },
             {
               "name": "num_bindings",
@@ -12798,7 +12798,7 @@
             },
             {
               "name": "storage_buffers",
-              "type": "SDL_GPUBuffer *const *"
+              "type": "SDL_GPUBuffer * const *"
             },
             {
               "name": "num_bindings",
@@ -13370,7 +13370,7 @@
             },
             {
               "name": "fences",
-              "type": "SDL_GPUFence *const *"
+              "type": "SDL_GPUFence * const *"
             },
             {
               "name": "num_fences",
@@ -13487,6 +13487,30 @@
             {
               "name": "depth_or_layer_count",
               "type": "Uint32"
+            }
+          ]
+        },
+        "SDL_GDKSuspendGPU": {
+          "doc": "Call this to suspend GPU operation on Xbox when you receive the\nSDL_EVENT_DID_ENTER_BACKGROUND event.\n\nDo NOT call any SDL_GPU functions after calling this function! This must\nalso be called before calling SDL_GDKSuspendComplete.\n\n\\param device a GPU context.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AddEventWatch",
+          "name": "SDL_GDKSuspendGPU",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "device",
+              "type": "SDL_GPUDevice *"
+            }
+          ]
+        },
+        "SDL_GDKResumeGPU": {
+          "doc": "Call this to resume GPU operation on Xbox when you receive the\nSDL_EVENT_WILL_ENTER_FOREGROUND event.\n\nWhen resuming, this function MUST be called before calling any other\nSDL_GPU functions.\n\n\\param device a GPU context.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AddEventWatch",
+          "name": "SDL_GDKResumeGPU",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "device",
+              "type": "SDL_GPUDevice *"
             }
           ]
         }
@@ -13801,7 +13825,7 @@
           "kind": "struct",
           "entries": {
             "type": {
-              "doc": "",
+              "doc": "SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE\n                             SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or\n                             SDL_HAPTIC_SAWTOOTHDOWN",
               "name": "type",
               "kind": "var",
               "type": "Uint16"
@@ -13892,7 +13916,7 @@
           "kind": "struct",
           "entries": {
             "type": {
-              "doc": "",
+              "doc": "SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER,\n                                 SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION",
               "name": "type",
               "kind": "var",
               "type": "Uint16"
