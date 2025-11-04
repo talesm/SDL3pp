@@ -41,46 +41,46 @@
           "type": "Uint32"
         },
         "SDL_BLENDMODE_NONE": {
-          "doc": "",
+          "doc": "no blending: dstRGBA = srcRGBA *",
           "name": "SDL_BLENDMODE_NONE",
           "kind": "def",
-          "value": "0x00000000u /**< no blending: dstRGBA = srcRGBA */"
+          "value": "0x00000000u"
         },
         "SDL_BLENDMODE_BLEND": {
-          "doc": "",
+          "doc": "alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) *",
           "name": "SDL_BLENDMODE_BLEND",
           "kind": "def",
-          "value": "0x00000001u /**< alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) */"
+          "value": "0x00000001u"
         },
         "SDL_BLENDMODE_BLEND_PREMULTIPLIED": {
-          "doc": "",
+          "doc": "pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA)) *",
           "name": "SDL_BLENDMODE_BLEND_PREMULTIPLIED",
           "kind": "def",
-          "value": "0x00000010u /**< pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA)) */"
+          "value": "0x00000010u"
         },
         "SDL_BLENDMODE_ADD": {
-          "doc": "",
+          "doc": "additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA *",
           "name": "SDL_BLENDMODE_ADD",
           "kind": "def",
-          "value": "0x00000002u /**< additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA */"
+          "value": "0x00000002u"
         },
         "SDL_BLENDMODE_ADD_PREMULTIPLIED": {
-          "doc": "",
+          "doc": "pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA *",
           "name": "SDL_BLENDMODE_ADD_PREMULTIPLIED",
           "kind": "def",
-          "value": "0x00000020u /**< pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA */"
+          "value": "0x00000020u"
         },
         "SDL_BLENDMODE_MOD": {
-          "doc": "",
+          "doc": "color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA *",
           "name": "SDL_BLENDMODE_MOD",
           "kind": "def",
-          "value": "0x00000004u /**< color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA */"
+          "value": "0x00000004u"
         },
         "SDL_BLENDMODE_MUL": {
-          "doc": "",
+          "doc": "color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA *",
           "name": "SDL_BLENDMODE_MUL",
           "kind": "def",
-          "value": "0x00000008u /**< color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA */"
+          "value": "0x00000008u"
         },
         "SDL_BLENDMODE_INVALID": {
           "doc": "",

@@ -40,7 +40,8 @@ class ProgListener {
     }
     enterDirective(ctx) {
         const directive = ctx.DIRECTIVE().text;
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const docIndex = directive.indexOf('/**<');
+        const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex)));
         const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
         if (!m)
             return;
@@ -48,7 +49,7 @@ class ProgListener {
         if (name.endsWith("_h_") || name.startsWith("_"))
             return;
         const parameters = m[2]?.split(/,\s*/)?.map(p => ({ name: p, type: "" }));
-        const value = directive.slice(m[0].length).trim();
+        const value = directive.slice(m[0].length, docIndex === -1 ? undefined : docIndex).trim();
         if (this.api.entries[name]?.doc)
             return;
         this.api.entries[name] = {
