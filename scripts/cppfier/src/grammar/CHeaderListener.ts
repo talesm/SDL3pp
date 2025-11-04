@@ -27,6 +27,7 @@ import { EnumBodyContext } from "./CHeaderParser";
 import { EnumItemContext } from "./CHeaderParser";
 import { StructBodyContext } from "./CHeaderParser";
 import { StructItemContext } from "./CHeaderParser";
+import { UnionInlineTypeContext } from "./CHeaderParser";
 import { IdContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
 import { TypeElContext } from "./CHeaderParser";
@@ -304,6 +305,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitStructItem?: (ctx: StructItemContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.unionInlineType`.
+	 * @param ctx the parse tree
+	 */
+	enterUnionInlineType?: (ctx: UnionInlineTypeContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.unionInlineType`.
+	 * @param ctx the parse tree
+	 */
+	exitUnionInlineType?: (ctx: UnionInlineTypeContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.id`.

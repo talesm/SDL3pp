@@ -56,9 +56,10 @@ punct:
 enumBody: CURLY_B enumItem* CURLY_E;
 enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
 
-structBody: CURLY_B structItem* CURLY_E;
+structBody: CURLY_B (structItem | unionInlineType)* CURLY_E;
 structItem:
 	doc? (CONST? STRUCT)? type id (COMMA id)* indexing* SEMI trailingDoc?;
+unionInlineType: doc? UNION block id SEMI;
 
 id: ID;
 type: (typeEl)+;
@@ -128,4 +129,4 @@ PUNCT_EXTRA: [<>&|!=%/+-];
 
 STRING: '"' (~'"' | '\\"')* '"';
 ID: [A-Za-z_][A-Za-z0-9_]*;
-NUMBER: ('0' | [1-9][0-9]* | '0x' [0-9A-Fa-f]+) [ul]*;
+NUMBER: [+-]? ('0' | [1-9][0-9]* | '0x' [0-9A-Fa-f]+) [ul]*;

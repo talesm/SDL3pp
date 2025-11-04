@@ -72580,16 +72580,16 @@ constexpr GamepadButton GAMEPAD_BUTTON_INVALID =
   SDL_GAMEPAD_BUTTON_INVALID; ///< GAMEPAD_BUTTON_INVALID
 
 constexpr GamepadButton GAMEPAD_BUTTON_SOUTH =
-  SDL_GAMEPAD_BUTTON_SOUTH; ///< Bottom face button (e.g.  Xbox A button)
+  SDL_GAMEPAD_BUTTON_SOUTH; ///< Bottom face button (e.g. Xbox A button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_EAST =
-  SDL_GAMEPAD_BUTTON_EAST; ///< Right face button (e.g.  Xbox B button)
+  SDL_GAMEPAD_BUTTON_EAST; ///< Right face button (e.g. Xbox B button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_WEST =
-  SDL_GAMEPAD_BUTTON_WEST; ///< Left face button (e.g.  Xbox X button)
+  SDL_GAMEPAD_BUTTON_WEST; ///< Left face button (e.g. Xbox X button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_NORTH =
-  SDL_GAMEPAD_BUTTON_NORTH; ///< Top face button (e.g.  Xbox Y button)
+  SDL_GAMEPAD_BUTTON_NORTH; ///< Top face button (e.g. Xbox Y button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_BACK =
   SDL_GAMEPAD_BUTTON_BACK; ///< GAMEPAD_BUTTON_BACK
@@ -72625,51 +72625,49 @@ constexpr GamepadButton GAMEPAD_BUTTON_DPAD_RIGHT =
   SDL_GAMEPAD_BUTTON_DPAD_RIGHT; ///< GAMEPAD_BUTTON_DPAD_RIGHT
 
 /**
- * Additional button (e.g.  Xbox Series X share button, PS5 microphone button,
+ * Additional button (e.g. Xbox Series X share button, PS5 microphone button,
  * Nintendo Switch Pro capture button, Amazon Luna microphone button, Google
  * Stadia capture button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_MISC1 = SDL_GAMEPAD_BUTTON_MISC1;
 
-/**
- * Upper or primary paddle, under your right hand (e.g.  Xbox Elite paddle P1)
- */
+/// Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1)
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1;
 
-/// Upper or primary paddle, under your left hand (e.g.  Xbox Elite paddle P3)
+/// Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3)
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE1;
 
 /**
- * Lower or secondary paddle, under your right hand (e.g.  Xbox Elite paddle P2)
+ * Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
 /**
- * Lower or secondary paddle, under your left hand (e.g.  Xbox Elite paddle P4)
+ * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
 
 constexpr GamepadButton GAMEPAD_BUTTON_TOUCHPAD =
-  SDL_GAMEPAD_BUTTON_TOUCHPAD; ///< PS4/PS5 touchpad button.
+  SDL_GAMEPAD_BUTTON_TOUCHPAD; ///< PS4/PS5 touchpad button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC2 =
-  SDL_GAMEPAD_BUTTON_MISC2; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC2; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC3 =
-  SDL_GAMEPAD_BUTTON_MISC3; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC3; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC4 =
-  SDL_GAMEPAD_BUTTON_MISC4; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC4; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC5 =
-  SDL_GAMEPAD_BUTTON_MISC5; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC5; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC6 =
-  SDL_GAMEPAD_BUTTON_MISC6; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC6; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_COUNT =
   SDL_GAMEPAD_BUTTON_COUNT; ///< GAMEPAD_BUTTON_COUNT

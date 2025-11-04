@@ -70,13 +70,14 @@ export declare class CHeaderParser extends Parser {
     static readonly RULE_enumItem = 21;
     static readonly RULE_structBody = 22;
     static readonly RULE_structItem = 23;
-    static readonly RULE_id = 24;
-    static readonly RULE_type = 25;
-    static readonly RULE_typeEl = 26;
-    static readonly RULE_signature = 27;
-    static readonly RULE_attribute = 28;
-    static readonly RULE_doc = 29;
-    static readonly RULE_trailingDoc = 30;
+    static readonly RULE_unionInlineType = 24;
+    static readonly RULE_id = 25;
+    static readonly RULE_type = 26;
+    static readonly RULE_typeEl = 27;
+    static readonly RULE_signature = 28;
+    static readonly RULE_attribute = 29;
+    static readonly RULE_doc = 30;
+    static readonly RULE_trailingDoc = 31;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -111,6 +112,7 @@ export declare class CHeaderParser extends Parser {
     enumItem(): EnumItemContext;
     structBody(): StructBodyContext;
     structItem(): StructItemContext;
+    unionInlineType(): UnionInlineTypeContext;
     id(): IdContext;
     type(): TypeContext;
     typeEl(): TypeElContext;
@@ -388,6 +390,8 @@ export declare class StructBodyContext extends ParserRuleContext {
     CURLY_E(): TerminalNode;
     structItem(): StructItemContext[];
     structItem(i: number): StructItemContext;
+    unionInlineType(): UnionInlineTypeContext[];
+    unionInlineType(i: number): UnionInlineTypeContext;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
@@ -406,6 +410,17 @@ export declare class StructItemContext extends ParserRuleContext {
     indexing(i: number): IndexingContext;
     trailingDoc(): TrailingDocContext | undefined;
     CONST(): TerminalNode | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class UnionInlineTypeContext extends ParserRuleContext {
+    UNION(): TerminalNode;
+    block(): BlockContext;
+    id(): IdContext;
+    SEMI(): TerminalNode;
+    doc(): DocContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;

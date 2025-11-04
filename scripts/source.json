@@ -6855,25 +6855,25 @@
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_SOUTH": {
-              "doc": "Bottom face button (e.g.  Xbox A button)",
+              "doc": "Bottom face button (e.g. Xbox A button)",
               "name": "SDL_GAMEPAD_BUTTON_SOUTH",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_EAST": {
-              "doc": "Right face button (e.g.  Xbox B button)",
+              "doc": "Right face button (e.g. Xbox B button)",
               "name": "SDL_GAMEPAD_BUTTON_EAST",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_WEST": {
-              "doc": "Left face button (e.g.  Xbox X button)",
+              "doc": "Left face button (e.g. Xbox X button)",
               "name": "SDL_GAMEPAD_BUTTON_WEST",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_NORTH": {
-              "doc": "Top face button (e.g.  Xbox Y button)",
+              "doc": "Top face button (e.g. Xbox Y button)",
               "name": "SDL_GAMEPAD_BUTTON_NORTH",
               "kind": "var",
               "type": ""
@@ -6945,67 +6945,67 @@
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_MISC1": {
-              "doc": "Additional button (e.g.  Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)",
+              "doc": "Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)",
               "name": "SDL_GAMEPAD_BUTTON_MISC1",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1": {
-              "doc": "Upper or primary paddle, under your right hand (e.g.  Xbox Elite paddle P1)",
+              "doc": "Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1)",
               "name": "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_LEFT_PADDLE1": {
-              "doc": "Upper or primary paddle, under your left hand (e.g.  Xbox Elite paddle P3)",
+              "doc": "Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3)",
               "name": "SDL_GAMEPAD_BUTTON_LEFT_PADDLE1",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2": {
-              "doc": "Lower or secondary paddle, under your right hand (e.g.  Xbox Elite paddle P2)",
+              "doc": "Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2)",
               "name": "SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_LEFT_PADDLE2": {
-              "doc": "Lower or secondary paddle, under your left hand (e.g.  Xbox Elite paddle P4)",
+              "doc": "Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)",
               "name": "SDL_GAMEPAD_BUTTON_LEFT_PADDLE2",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_TOUCHPAD": {
-              "doc": "PS4/PS5 touchpad button.",
+              "doc": "PS4/PS5 touchpad button",
               "name": "SDL_GAMEPAD_BUTTON_TOUCHPAD",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_MISC2": {
-              "doc": "Additional button.",
+              "doc": "Additional button",
               "name": "SDL_GAMEPAD_BUTTON_MISC2",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_MISC3": {
-              "doc": "Additional button.",
+              "doc": "Additional button",
               "name": "SDL_GAMEPAD_BUTTON_MISC3",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_MISC4": {
-              "doc": "Additional button.",
+              "doc": "Additional button",
               "name": "SDL_GAMEPAD_BUTTON_MISC4",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_MISC5": {
-              "doc": "Additional button.",
+              "doc": "Additional button",
               "name": "SDL_GAMEPAD_BUTTON_MISC5",
               "kind": "var",
               "type": ""
             },
             "SDL_GAMEPAD_BUTTON_MISC6": {
-              "doc": "Additional button.",
+              "doc": "Additional button",
               "name": "SDL_GAMEPAD_BUTTON_MISC6",
               "kind": "var",
               "type": ""
@@ -7176,59 +7176,11 @@
               "kind": "var",
               "type": "SDL_GamepadBindingType"
             },
-            "button": {
-              "doc": "",
-              "name": "button",
-              "kind": "var",
-              "type": "SDL_GamepadButton"
-            },
-            "axis": {
-              "doc": "",
-              "name": "axis",
-              "kind": "var",
-              "type": "SDL_GamepadBinding"
-            },
-            "axis_min": {
-              "doc": "",
-              "name": "axis_min",
-              "kind": "var",
-              "type": "int"
-            },
-            "axis_max": {
-              "doc": "",
-              "name": "axis_max",
-              "kind": "var",
-              "type": "int"
-            },
-            "hat": {
-              "doc": "",
-              "name": "hat",
-              "kind": "var",
-              "type": "SDL_GamepadBinding"
-            },
-            "hat_mask": {
-              "doc": "",
-              "name": "hat_mask",
-              "kind": "var",
-              "type": "int"
-            },
-            "input": {
-              "doc": "",
-              "name": "input",
-              "kind": "var",
-              "type": "SDL_GamepadBinding"
-            },
             "output_type": {
               "doc": "",
               "name": "output_type",
               "kind": "var",
               "type": "SDL_GamepadBindingType"
-            },
-            "output": {
-              "doc": "",
-              "name": "output",
-              "kind": "var",
-              "type": "SDL_GamepadBinding"
             }
           }
         },
