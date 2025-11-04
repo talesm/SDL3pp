@@ -41,13 +41,11 @@ class ProgListener {
     enterDirective(ctx) {
         const directive = ctx.DIRECTIVE().text;
         const doc = parseDoc(ctx.doc()?.text ?? '');
-        if (!doc)
-            return;
         const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
         if (!m)
             return;
         const name = m[1];
-        if (name.endsWith("_h_"))
+        if (name.endsWith("_h_") || name.startsWith("_"))
             return;
         const parameters = m[2]?.split(/,\s*/)?.map(p => ({ name: p, type: "" }));
         const value = directive.slice(m[0].length).trim();

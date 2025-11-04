@@ -40,6 +40,54 @@
           "kind": "alias",
           "type": "Uint32"
         },
+        "SDL_BLENDMODE_NONE": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_NONE",
+          "kind": "def",
+          "value": "0x00000000u /**< no blending: dstRGBA = srcRGBA */"
+        },
+        "SDL_BLENDMODE_BLEND": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_BLEND",
+          "kind": "def",
+          "value": "0x00000001u /**< alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) */"
+        },
+        "SDL_BLENDMODE_BLEND_PREMULTIPLIED": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_BLEND_PREMULTIPLIED",
+          "kind": "def",
+          "value": "0x00000010u /**< pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA)) */"
+        },
+        "SDL_BLENDMODE_ADD": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_ADD",
+          "kind": "def",
+          "value": "0x00000002u /**< additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA */"
+        },
+        "SDL_BLENDMODE_ADD_PREMULTIPLIED": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_ADD_PREMULTIPLIED",
+          "kind": "def",
+          "value": "0x00000020u /**< pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA */"
+        },
+        "SDL_BLENDMODE_MOD": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_MOD",
+          "kind": "def",
+          "value": "0x00000004u /**< color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA */"
+        },
+        "SDL_BLENDMODE_MUL": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_MUL",
+          "kind": "def",
+          "value": "0x00000008u /**< color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA */"
+        },
+        "SDL_BLENDMODE_INVALID": {
+          "doc": "",
+          "name": "SDL_BLENDMODE_INVALID",
+          "kind": "def",
+          "value": "0x7FFFFFFFu"
+        },
         "SDL_BlendOperation": {
           "doc": "The blend operation used when combining source and destination pixel\ncomponents.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_BlendOperation",
