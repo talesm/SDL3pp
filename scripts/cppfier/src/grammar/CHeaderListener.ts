@@ -8,6 +8,7 @@ import { StmContext } from "./CHeaderParser";
 import { ExternCContext } from "./CHeaderParser";
 import { DirectiveContext } from "./CHeaderParser";
 import { FunctionDeclContext } from "./CHeaderParser";
+import { FunctionDefContext } from "./CHeaderParser";
 import { TypeContext } from "./CHeaderParser";
 import { TypeElContext } from "./CHeaderParser";
 import { SignatureContext } from "./CHeaderParser";
@@ -74,6 +75,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitFunctionDecl?: (ctx: FunctionDeclContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `CHeaderParser.functionDef`.
+	 * @param ctx the parse tree
+	 */
+	enterFunctionDef?: (ctx: FunctionDefContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.functionDef`.
+	 * @param ctx the parse tree
+	 */
+	exitFunctionDef?: (ctx: FunctionDefContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.type`.

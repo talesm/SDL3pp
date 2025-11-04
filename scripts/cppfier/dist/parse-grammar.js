@@ -40,15 +40,19 @@ class ProgListener {
     }
     enterDirective(ctx) {
         const directive = ctx.DIRECTIVE().text;
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        if (!doc)
+            return;
         const m = directive.match(/^#define\s*(\w+)(?:\((\w+(,\s*\w+)*)\))?/);
         if (!m)
             return;
-        const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = m[1];
         if (name.endsWith("_h_"))
             return;
         const parameters = m[2]?.split(/,\s*/)?.map(p => ({ name: p, type: "" }));
         const value = directive.slice(m[0].length).trim();
+        if (this.api.entries[name]?.doc)
+            return;
         this.api.entries[name] = {
             doc,
             name,
@@ -61,6 +65,8 @@ class ProgListener {
         const type = extractType(ctx.type());
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.ID().text;
+        if (this.api.entries[name]?.doc)
+            return;
         this.api.entries[name] = {
             doc,
             name,
@@ -69,6 +75,21 @@ class ProgListener {
             parameters: extractSignature(ctx.signature()),
         };
     }
+    enterFunctionDef(ctx) {
+        const type = extractType(ctx.type());
+        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const name = ctx.ID().text;
+        if (this.api.entries[name]?.doc)
+            return;
+        this.api.entries[name] = {
+            doc,
+            name,
+            kind: 'function',
+            type,
+            parameters: extractSignature(ctx.signature()),
+        };
+    }
+    ;
     // other enterX functions...
     visitTerminal(/*@NotNull*/ node) { }
 }
