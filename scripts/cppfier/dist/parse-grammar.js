@@ -96,7 +96,8 @@ class ProgListener {
         };
     }
     enterAliasDef(ctx) {
-        const type = extractType(ctx.type()).replace(/^struct\s+/, "");
+        const type = extractType(ctx.type());
+        const isStruct = !!ctx.STRUCT();
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
         if (this.api.entries[name]?.doc)
@@ -105,7 +106,7 @@ class ProgListener {
             doc,
             name,
             kind: 'alias',
-            type,
+            type: isStruct ? `struct ${type}` : type,
         };
     }
     enterEnumDef(ctx) {

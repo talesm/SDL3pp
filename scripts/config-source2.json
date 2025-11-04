@@ -3,6 +3,7 @@
     "SDL_bits.h",
     "SDL_blendmode.h",
     "SDL_endian.h",
+    "SDL_hidapi.h",
     "SDL_messagebox.h",
     "SDL_misc.h",
     "SDL_pixels.h",

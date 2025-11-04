@@ -101,7 +101,8 @@ class ProgListener implements CHeaderListener {
   }
 
   enterAliasDef(ctx: AliasDefContext) {
-    const type = extractType(ctx.type()).replace(/^struct\s+/, "");
+    const type = extractType(ctx.type());
+    const isStruct = !!ctx.STRUCT();
     const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
     if (this.api.entries[name]?.doc) return;
@@ -109,7 +110,7 @@ class ProgListener implements CHeaderListener {
       doc,
       name,
       kind: 'alias',
-      type,
+      type: isStruct ? `struct ${type}` : type,
     };
   }
 

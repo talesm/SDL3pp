@@ -14644,31 +14644,31 @@
           "kind": "enum",
           "entries": {
             "SDL_HID_API_BUS_UNKNOWN": {
-              "doc": "Unknown bus type.",
+              "doc": "Unknown bus type",
               "name": "SDL_HID_API_BUS_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_USB": {
-              "doc": "USB bus\n       Specifications:",
+              "doc": "USB bus\n       Specifications:\n       https://usb.org/hid",
               "name": "SDL_HID_API_BUS_USB",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_BLUETOOTH": {
-              "doc": "Bluetooth or Bluetooth LE bus\n       Specifications:\n       https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/\n       https://www.bluetooth.com/specifications/specs/hid-service-1-0/",
+              "doc": "Bluetooth or Bluetooth LE bus\n       Specifications:\n       https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/\n       https://www.bluetooth.com/specifications/specs/hid-service-1-0/\n       https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/",
               "name": "SDL_HID_API_BUS_BLUETOOTH",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_I2C": {
-              "doc": "I2C bus\n       Specifications:",
+              "doc": "I2C bus\n       Specifications:\n       https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)",
               "name": "SDL_HID_API_BUS_I2C",
               "kind": "var",
               "type": ""
             },
             "SDL_HID_API_BUS_SPI": {
-              "doc": "SPI bus\n       Specifications:",
+              "doc": "SPI bus\n       Specifications:\n       https://www.microsoft.com/download/details.aspx?id=103325",
               "name": "SDL_HID_API_BUS_SPI",
               "kind": "var",
               "type": ""
@@ -14681,55 +14681,55 @@
           "kind": "struct",
           "entries": {
             "path": {
-              "doc": "",
+              "doc": "Platform-specific device path",
               "name": "path",
               "kind": "var",
               "type": "char *"
             },
             "vendor_id": {
-              "doc": "",
+              "doc": "Device Vendor ID",
               "name": "vendor_id",
               "kind": "var",
               "type": "unsigned short"
             },
             "product_id": {
-              "doc": "",
+              "doc": "Device Product ID",
               "name": "product_id",
               "kind": "var",
               "type": "unsigned short"
             },
             "serial_number": {
-              "doc": "",
+              "doc": "Serial Number",
               "name": "serial_number",
               "kind": "var",
               "type": "wchar_t *"
             },
             "release_number": {
-              "doc": "",
+              "doc": "Device Release Number in binary-coded decimal,\n        also known as Device Version Number",
               "name": "release_number",
               "kind": "var",
               "type": "unsigned short"
             },
             "manufacturer_string": {
-              "doc": "",
+              "doc": "Manufacturer String",
               "name": "manufacturer_string",
               "kind": "var",
               "type": "wchar_t *"
             },
             "product_string": {
-              "doc": "",
+              "doc": "Product string",
               "name": "product_string",
               "kind": "var",
               "type": "wchar_t *"
             },
             "usage_page": {
-              "doc": "",
+              "doc": "Usage Page for this Device/Interface\n        (Windows/Mac/hidraw only)",
               "name": "usage_page",
               "kind": "var",
               "type": "unsigned short"
             },
             "usage": {
-              "doc": "",
+              "doc": "Usage for this Device/Interface\n        (Windows/Mac/hidraw only)",
               "name": "usage",
               "kind": "var",
               "type": "unsigned short"
@@ -14741,7 +14741,7 @@
               "type": "int"
             },
             "interface_class": {
-              "doc": "",
+              "doc": "Additional information about the USB interface.\n        Valid on libusb and Android implementations.",
               "name": "interface_class",
               "kind": "var",
               "type": "int"
@@ -14759,16 +14759,16 @@
               "type": "int"
             },
             "bus_type": {
-              "doc": "",
+              "doc": "Underlying bus type",
               "name": "bus_type",
               "kind": "var",
               "type": "SDL_hid_bus_type"
             },
             "next": {
-              "doc": "",
+              "doc": "Pointer to the next device",
               "name": "next",
               "kind": "var",
-              "type": "SDL_hid_device_info"
+              "type": "SDL_hid_device_info *"
             }
           }
         },
@@ -36807,7 +36807,7 @@
           "doc": "",
           "name": "MSG",
           "kind": "alias",
-          "type": "tagMSG"
+          "type": "struct tagMSG"
         },
         "SDL_WindowsMessageHook": {
           "doc": "A callback to be used with SDL_SetWindowsMessageHook.\n\nThis callback may modify the message, and should return true if the message\nshould continue to be processed, or false to prevent further processing.\n\nAs this is processing a message directly from the Windows event loop, this\ncallback should do the minimum required work and return quickly.\n\n\\param userdata the app-defined pointer provided to\n                SDL_SetWindowsMessageHook.\n\\param msg a pointer to a Win32 event structure to process.\n\\returns true to let event continue on, false to drop it.\n\n\\threadsafety This may only be called (by SDL) from the thread handling the\n              Windows event loop.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetWindowsMessageHook\n\\sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP",
@@ -37272,13 +37272,13 @@
           "doc": "",
           "name": "XTaskQueueHandle",
           "kind": "alias",
-          "type": "XTaskQueueObject *"
+          "type": "struct XTaskQueueObject *"
         },
         "XUserHandle": {
           "doc": "",
           "name": "XUserHandle",
           "kind": "alias",
-          "type": "XUser *"
+          "type": "struct XUser *"
         },
         "SDL_GetGDKTaskQueue": {
           "doc": "Gets a reference to the global async task queue handle for GDK,\ninitializing if needed.\n\nOnce you are done with the task queue, you should call\nXTaskQueueCloseHandle to reduce the reference count to avoid a resource\nleak.\n\n\\param outTaskQueue a pointer to be filled in with task queue handle.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",

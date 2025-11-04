@@ -362,6 +362,7 @@ export declare class StructItemContext extends ParserRuleContext {
     id(i: number): IdContext;
     SEMI(): TerminalNode;
     doc(): DocContext | undefined;
+    STRUCT(): TerminalNode | undefined;
     COMMA(): TerminalNode[];
     COMMA(i: number): TerminalNode;
     indexing(): IndexingContext[];

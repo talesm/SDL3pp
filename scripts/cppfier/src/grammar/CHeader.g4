@@ -44,7 +44,7 @@ enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
 
 structBody: CURLY_B structItem* CURLY_E;
 structItem:
-	doc? type id (COMMA id)* indexing* SEMI trailingDoc?;
+	doc? STRUCT? type id (COMMA id)* indexing* SEMI trailingDoc?;
 
 id: ID;
 type: (typeEl)+;
