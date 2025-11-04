@@ -67,6 +67,8 @@ class ProgListener {
             return;
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.ID().text;
+        if (name.startsWith('_'))
+            return;
         if (this.api.entries[name]?.doc)
             return;
         this.api.entries[name] = {
@@ -81,6 +83,8 @@ class ProgListener {
         const type = extractType(ctx.type());
         const doc = parseDoc(ctx.doc()?.text ?? '');
         const name = ctx.ID().text;
+        if (name.startsWith('_'))
+            return;
         if (this.api.entries[name]?.doc)
             return;
         this.api.entries[name] = {

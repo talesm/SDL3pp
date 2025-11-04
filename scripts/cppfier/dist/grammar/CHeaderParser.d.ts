@@ -15,30 +15,44 @@ export declare class CHeaderParser extends Parser {
     static readonly DIRECTIVE = 6;
     static readonly EXTERN = 7;
     static readonly VOID = 8;
-    static readonly SDL_NOISE = 9;
-    static readonly CURLY_B = 10;
-    static readonly CURLY_E = 11;
-    static readonly ROUND_B = 12;
-    static readonly ROUND_E = 13;
-    static readonly COLON = 14;
-    static readonly SEMI = 15;
-    static readonly COMMA = 16;
-    static readonly DOT = 17;
-    static readonly STAR = 18;
-    static readonly INLINE = 19;
-    static readonly STRING = 20;
-    static readonly ID = 21;
-    static readonly NUMBER = 22;
+    static readonly ATTRIBUTE = 9;
+    static readonly SDL_NOISE = 10;
+    static readonly STATIC = 11;
+    static readonly INLINE = 12;
+    static readonly SDL_INLINE = 13;
+    static readonly CURLY_B = 14;
+    static readonly CURLY_E = 15;
+    static readonly ROUND_B = 16;
+    static readonly ROUND_E = 17;
+    static readonly SQUARE_B = 18;
+    static readonly SQUARE_E = 19;
+    static readonly COLON = 20;
+    static readonly SEMI = 21;
+    static readonly COMMA = 22;
+    static readonly DOT = 23;
+    static readonly STAR = 24;
+    static readonly PUNCT_EXTRA = 25;
+    static readonly STRING = 26;
+    static readonly ID = 27;
+    static readonly NUMBER = 28;
     static readonly RULE_prog = 0;
-    static readonly RULE_stm = 1;
+    static readonly RULE_decl = 1;
     static readonly RULE_externC = 2;
     static readonly RULE_directive = 3;
     static readonly RULE_functionDecl = 4;
     static readonly RULE_functionDef = 5;
-    static readonly RULE_type = 6;
-    static readonly RULE_typeEl = 7;
-    static readonly RULE_signature = 8;
-    static readonly RULE_doc = 9;
+    static readonly RULE_inline = 6;
+    static readonly RULE_block = 7;
+    static readonly RULE_group = 8;
+    static readonly RULE_indexing = 9;
+    static readonly RULE_stm = 10;
+    static readonly RULE_word = 11;
+    static readonly RULE_punct = 12;
+    static readonly RULE_type = 13;
+    static readonly RULE_typeEl = 14;
+    static readonly RULE_signature = 15;
+    static readonly RULE_attribute = 16;
+    static readonly RULE_doc = 17;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -50,14 +64,22 @@ export declare class CHeaderParser extends Parser {
     protected createFailedPredicateException(predicate?: string, message?: string): FailedPredicateException;
     constructor(input: TokenStream);
     prog(): ProgContext;
-    stm(): StmContext;
+    decl(): DeclContext;
     externC(): ExternCContext;
     directive(): DirectiveContext;
     functionDecl(): FunctionDeclContext;
     functionDef(): FunctionDefContext;
+    inline(): InlineContext;
+    block(): BlockContext;
+    group(): GroupContext;
+    indexing(): IndexingContext;
+    stm(): StmContext;
+    word(): WordContext;
+    punct(): PunctContext;
     type(): TypeContext;
     typeEl(): TypeElContext;
     signature(): SignatureContext;
+    attribute(): AttributeContext;
     doc(): DocContext;
     static readonly _serializedATN: string;
     static __ATN: ATN;
@@ -66,14 +88,14 @@ export declare class CHeaderParser extends Parser {
 export declare class ProgContext extends ParserRuleContext {
     EOF(): TerminalNode;
     doc(): DocContext | undefined;
-    stm(): StmContext[];
-    stm(i: number): StmContext;
+    decl(): DeclContext[];
+    decl(i: number): DeclContext;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
     exitRule(listener: CHeaderListener): void;
 }
-export declare class StmContext extends ParserRuleContext {
+export declare class DeclContext extends ParserRuleContext {
     directive(): DirectiveContext | undefined;
     externC(): ExternCContext | undefined;
     functionDecl(): FunctionDeclContext | undefined;
@@ -89,8 +111,8 @@ export declare class ExternCContext extends ParserRuleContext {
     STRING(): TerminalNode;
     CURLY_B(): TerminalNode;
     CURLY_E(): TerminalNode;
-    stm(): StmContext[];
-    stm(i: number): StmContext;
+    decl(): DeclContext[];
+    decl(i: number): DeclContext;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
@@ -111,18 +133,94 @@ export declare class FunctionDeclContext extends ParserRuleContext {
     signature(): SignatureContext;
     SEMI(): TerminalNode;
     doc(): DocContext | undefined;
+    attribute(): AttributeContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
     exitRule(listener: CHeaderListener): void;
 }
 export declare class FunctionDefContext extends ParserRuleContext {
-    INLINE(): TerminalNode;
+    inline(): InlineContext;
     type(): TypeContext;
     ID(): TerminalNode;
     signature(): SignatureContext;
-    CURLY_B(): TerminalNode;
+    block(): BlockContext;
     doc(): DocContext | undefined;
+    attribute(): AttributeContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class InlineContext extends ParserRuleContext {
+    SDL_INLINE(): TerminalNode | undefined;
+    STATIC(): TerminalNode | undefined;
+    INLINE(): TerminalNode | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class BlockContext extends ParserRuleContext {
+    CURLY_B(): TerminalNode;
+    CURLY_E(): TerminalNode;
+    stm(): StmContext[];
+    stm(i: number): StmContext;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class GroupContext extends ParserRuleContext {
+    ROUND_B(): TerminalNode;
+    ROUND_E(): TerminalNode;
+    stm(): StmContext[];
+    stm(i: number): StmContext;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class IndexingContext extends ParserRuleContext {
+    SQUARE_B(): TerminalNode;
+    SQUARE_E(): TerminalNode;
+    stm(): StmContext[];
+    stm(i: number): StmContext;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class StmContext extends ParserRuleContext {
+    block(): BlockContext | undefined;
+    group(): GroupContext | undefined;
+    indexing(): IndexingContext | undefined;
+    word(): WordContext | undefined;
+    punct(): PunctContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class WordContext extends ParserRuleContext {
+    ID(): TerminalNode | undefined;
+    VOID(): TerminalNode | undefined;
+    STATIC(): TerminalNode | undefined;
+    NUMBER(): TerminalNode | undefined;
+    STRING(): TerminalNode | undefined;
+    DIRECTIVE(): TerminalNode | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class PunctContext extends ParserRuleContext {
+    COLON(): TerminalNode | undefined;
+    SEMI(): TerminalNode | undefined;
+    COMMA(): TerminalNode | undefined;
+    DOT(): TerminalNode | undefined;
+    STAR(): TerminalNode | undefined;
+    PUNCT_EXTRA(): TerminalNode | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
@@ -150,6 +248,14 @@ export declare class SignatureContext extends ParserRuleContext {
     ROUND_B(): TerminalNode;
     ROUND_E(): TerminalNode;
     type(): TypeContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class AttributeContext extends ParserRuleContext {
+    ATTRIBUTE(): TerminalNode;
+    group(): GroupContext;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
