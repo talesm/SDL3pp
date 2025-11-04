@@ -1,11 +1,11 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { CHeaderParser, DirectiveContext, DocContext, FunctionDeclContext, ProgContext, TypeContext } from './grammar/CHeaderParser';
+import { CHeaderParser, DirectiveContext, DocContext, FunctionDeclContext, ProgContext, SignatureContext, TypeContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 import { readFileSync } from "fs";
-import { Api, ApiFile } from './types';
+import { Api, ApiFile, ApiParameters } from './types';
 import { system } from './utils';
 
 export interface ParseConfig {
@@ -75,7 +75,7 @@ class ProgListener implements CHeaderListener {
       name,
       kind: 'function',
       type,
-      parameters: [],
+      parameters: extractSignature(ctx.signature()),
     };
   }
 
@@ -141,5 +141,14 @@ export function normalizeType(typeString: string) {
 
 function extractType(ctx: TypeContext): string {
   return normalizeType(ctx.typeEl().map(el => el.text).join(" "));
+}
+
+function extractSignature(ctx: SignatureContext): ApiParameters {
+  const el = ctx.signatureEl();
+  if (!el) return [];
+  return [{
+    name: el.ID().text,
+    type: extractType(el.type()),
+  }];
 }
 

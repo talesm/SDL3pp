@@ -1,5 +1,23 @@
 {
   "files": {
+    "SDL_misc.h": {
+      "name": "SDL_misc.h",
+      "doc": "# CategoryMisc\n\nSDL API functions that don't fit elsewhere.",
+      "entries": {
+        "SDL_OpenURL": {
+          "doc": "Open a URL/URI in the browser or other appropriate external application.\n\nOpen a URL in a separate, system-provided application. How this works will\nvary wildly depending on the platform. This will likely launch what makes\nsense to handle a specific URL's protocol (a web browser for `http://`,\netc), but it might also be able to launch file managers for directories and\nother things.\n\nWhat happens when you open a URL varies wildly as well: your game window\nmay lose focus (and may or may not lose focus if your game was fullscreen\nor grabbing input at the time). On mobile devices, your app will likely\nmove to the background or your process might be paused. Any given platform\nmay or may not handle a given URL.\n\nIf this is unimplemented (or simply unavailable) for a platform, this will\nfail with an error. A successful result does not mean the URL loaded, just\nthat we launched _something_ to handle it (or at least believe we did).\n\nAll this to say: this function can be useful, but you should definitely\ntest it on every platform you target.\n\n\\param url a valid URL/URI to open. Use `file:///full/path/to/file` for\n           local files, if supported.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_OpenURL",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "url",
+              "type": "const char *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_version.h": {
       "name": "SDL_version.h",
       "doc": "# CategoryVersion\n\nFunctionality to query the current SDL version, both as headers the app was\ncompiled against, and a library the app is linked to.",

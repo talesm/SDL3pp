@@ -1,5 +1,6 @@
 {
   "sources": [
+    "SDL_misc.h",
     "SDL_version.h"
   ],
   "baseDir": [

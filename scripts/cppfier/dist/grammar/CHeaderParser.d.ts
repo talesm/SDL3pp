@@ -32,7 +32,8 @@ export declare class CHeaderParser extends Parser {
     static readonly RULE_type = 5;
     static readonly RULE_typeEl = 6;
     static readonly RULE_signature = 7;
-    static readonly RULE_doc = 8;
+    static readonly RULE_signatureEl = 8;
+    static readonly RULE_doc = 9;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -51,6 +52,7 @@ export declare class CHeaderParser extends Parser {
     type(): TypeContext;
     typeEl(): TypeElContext;
     signature(): SignatureContext;
+    signatureEl(): SignatureElContext;
     doc(): DocContext;
     static readonly _serializedATN: string;
     static __ATN: ATN;
@@ -127,8 +129,17 @@ export declare class TypeElContext extends ParserRuleContext {
 }
 export declare class SignatureContext extends ParserRuleContext {
     ROUND_B(): TerminalNode;
-    VOID(): TerminalNode;
     ROUND_E(): TerminalNode;
+    VOID(): TerminalNode | undefined;
+    signatureEl(): SignatureElContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class SignatureElContext extends ParserRuleContext {
+    type(): TypeContext;
+    ID(): TerminalNode;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;

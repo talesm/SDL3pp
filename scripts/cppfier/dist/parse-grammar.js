@@ -66,7 +66,7 @@ class ProgListener {
             name,
             kind: 'function',
             type,
-            parameters: [],
+            parameters: extractSignature(ctx.signature()),
         };
     }
     // other enterX functions...
@@ -122,4 +122,13 @@ function normalizeType(typeString) {
 }
 function extractType(ctx) {
     return normalizeType(ctx.typeEl().map(el => el.text).join(" "));
+}
+function extractSignature(ctx) {
+    const el = ctx.signatureEl();
+    if (!el)
+        return [];
+    return [{
+            name: el.ID().text,
+            type: extractType(el.type()),
+        }];
 }

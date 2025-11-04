@@ -8,7 +8,8 @@ functionDecl: doc? EXTERN type ID signature SEMI;
 
 type: (typeEl)+;
 typeEl: (VOID | ID) STAR*;
-signature: ROUND_B VOID ROUND_E;
+signature: ROUND_B (VOID | signatureEl) ROUND_E;
+signatureEl: type ID;
 
 doc: SHORT_DOC | LONG_DOC;
 
