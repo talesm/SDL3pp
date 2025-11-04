@@ -19,6 +19,8 @@
     "SDL_guid.h",
     "SDL_haptic.h",
     "SDL_hidapi.h",
+    "SDL_hints.h",
+    "SDL_intrin.h",
     "SDL_messagebox.h",
     "SDL_misc.h",
     "SDL_pixels.h",

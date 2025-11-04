@@ -17148,7 +17148,8 @@
         "SDL_HAS_TARGET_ATTRIBS": {
           "doc": "A macro to decide if the compiler supports `__attribute__((target))`.\n\nEven though this is defined in SDL's public headers, it is generally not\nused directly by apps. Apps should probably just use SDL_TARGETING\ndirectly, instead.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_TARGETING",
           "name": "SDL_HAS_TARGET_ATTRIBS",
-          "kind": "def"
+          "kind": "def",
+          "value": ""
         },
         "SDL_TARGETING": {
           "doc": "A macro to tag a function as targeting a specific CPU architecture.\n\nThis is a hint to the compiler that a function should be built with support\nfor a CPU instruction set that might be different than the rest of the\nprogram.\n\nThe particulars of this are explained in the GCC documentation:\n\nhttps://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-target-function-attribute\n\nAn example of using this feature is to turn on SSE2 support for a specific\nfunction, even if the rest of the source code is not compiled to use SSE2\ncode:\n\n```c\n#ifdef SDL_SSE2_INTRINSICS\nstatic void SDL_TARGETING(\"sse2\") DoSomethingWithSSE2(char *x) {\n   ...use SSE2 intrinsic functions, etc...\n}\n#endif\n\n// later...\n#ifdef SDL_SSE2_INTRINSICS\nif (SDL_HasSSE2()) {\n    DoSomethingWithSSE2(str);\n}\n#endif\n```\n\nThe application is, on a whole, built without SSE2 instructions, so it will\nrun on Intel machines that don't support SSE2. But then at runtime, it\nchecks if the system supports the instructions, and then calls into a\nfunction that uses SSE2 opcodes. The ifdefs make sure that this code isn't\nused on platforms that don't have SSE2 at all.\n\nOn compilers without target support, this is defined to nothing.\n\nThis symbol is used by SDL internally, but apps and other libraries are\nwelcome to use it for their own interfaces as well.\n\n\\since This macro is available since SDL 3.2.0.",
