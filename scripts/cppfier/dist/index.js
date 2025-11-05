@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const generate_1 = require("./generate");
-const parse_grammar_1 = require("./parse-grammar");
+const parse_1 = require("./parse");
 const transform_js_1 = require("./transform.js");
 const utils_js_1 = require("./utils.js");
 /**
@@ -125,7 +125,7 @@ function parseNew(args) {
         config.outputFile = config.api;
     if (printConfig)
         (0, utils_js_1.writeJSONSync)(config.outputFile ? 1 : 2, config);
-    const api = (0, parse_grammar_1.parseApi)(config);
+    const api = (0, parse_1.parseApi)(config);
     (0, utils_js_1.writeJSONSync)(config.outputFile || 1, api);
 }
 function mergeInto(destiny, source) {

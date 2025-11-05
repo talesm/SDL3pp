@@ -1,5 +1,5 @@
 import { generateApi } from "./generate";
-import { parseApi } from "./parse-grammar";
+import { parseApi } from "./parse";
 import { transformApi } from "./transform.js";
 import { readJSONSync, system, writeJSONSync, writeLinesSync } from "./utils.js";
 import { Api, ApiTransform, Dict } from "./types";
