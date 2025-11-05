@@ -237,6 +237,7 @@ export declare class AliasDefContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class UnionDefContext extends ParserRuleContext {
+    _name: IdContext;
     TYPEDEF(): TerminalNode;
     UNION(): TerminalNode;
     id(): IdContext[];
@@ -250,6 +251,7 @@ export declare class UnionDefContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class EnumDefContext extends ParserRuleContext {
+    _name: IdContext;
     TYPEDEF(): TerminalNode;
     ENUM(): TerminalNode;
     id(): IdContext[];
@@ -263,13 +265,14 @@ export declare class EnumDefContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class StructDefContext extends ParserRuleContext {
-    TYPEDEF(): TerminalNode;
+    _name: IdContext;
     STRUCT(): TerminalNode;
-    id(): IdContext[];
-    id(i: number): IdContext;
     structBody(): StructBodyContext;
     SEMI(): TerminalNode;
+    id(): IdContext[];
+    id(i: number): IdContext;
     doc(): DocContext | undefined;
+    TYPEDEF(): TerminalNode | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;

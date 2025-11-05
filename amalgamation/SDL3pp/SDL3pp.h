@@ -77277,13 +77277,13 @@ using Vertex = SDL_Vertex;
 using TextureAccess = SDL_TextureAccess;
 
 constexpr TextureAccess TEXTUREACCESS_STATIC =
-  SDL_TEXTUREACCESS_STATIC; ///< Changes rarely, not lockable.
+  SDL_TEXTUREACCESS_STATIC; ///< Changes rarely, not lockable
 
 constexpr TextureAccess TEXTUREACCESS_STREAMING =
-  SDL_TEXTUREACCESS_STREAMING; ///< Changes frequently, lockable.
+  SDL_TEXTUREACCESS_STREAMING; ///< Changes frequently, lockable
 
 constexpr TextureAccess TEXTUREACCESS_TARGET =
-  SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target.
+  SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
 /**
  * How the logical size is mapped to the output.
@@ -77293,29 +77293,29 @@ constexpr TextureAccess TEXTUREACCESS_TARGET =
 using RendererLogicalPresentation = SDL_RendererLogicalPresentation;
 
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_DISABLED =
-  SDL_LOGICAL_PRESENTATION_DISABLED; ///< There is no logical size in effect.
+  SDL_LOGICAL_PRESENTATION_DISABLED; ///< There is no logical size in effect
 
-/// The rendered content is stretched to the output resolution.
+/// The rendered content is stretched to the output resolution
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_STRETCH =
   SDL_LOGICAL_PRESENTATION_STRETCH;
 
 /**
  * The rendered content is fit to the largest dimension and the other dimension
- * is letterboxed with black bars.
+ * is letterboxed with black bars
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_LETTERBOX =
   SDL_LOGICAL_PRESENTATION_LETTERBOX;
 
 /**
  * The rendered content is fit to the smallest dimension and the other dimension
- * extends beyond the output bounds.
+ * extends beyond the output bounds
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
   SDL_LOGICAL_PRESENTATION_OVERSCAN;
 
 /**
  * The rendered content is scaled up by integer multiples to fit the output
- * resolution.
+ * resolution
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;

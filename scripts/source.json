@@ -27000,7 +27000,8 @@
               "name": "frect",
               "type": "SDL_FRect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_PointInRect": {
           "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not NULL,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param p the point to test.\n\\param r the rectangle to test.\n\\returns true if `p` is contained by `r`, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -27016,7 +27017,8 @@
               "name": "r",
               "type": "const SDL_Rect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_RectEmpty": {
           "doc": "Determine whether a rectangle has no area.\n\nA rectangle is considered \"empty\" for this function if `r` is NULL, or if\n`r`'s width and/or height are <= 0.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param r the rectangle to test.\n\\returns true if the rectangle is \"empty\", false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -27028,7 +27030,8 @@
               "name": "r",
               "type": "const SDL_Rect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_RectsEqual": {
           "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param a the first rectangle to test.\n\\param b the second rectangle to test.\n\\returns true if the rectangles are equal, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -27044,7 +27047,8 @@
               "name": "b",
               "type": "const SDL_Rect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_HasRectIntersection": {
           "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is NULL the function will return false.\n\n\\param A an SDL_Rect structure representing the first rectangle.\n\\param B an SDL_Rect structure representing the second rectangle.\n\\returns true if there is an intersection, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetRectIntersection",
@@ -27168,7 +27172,8 @@
               "name": "r",
               "type": "const SDL_FRect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_RectEmptyFloat": {
           "doc": "Determine whether a floating point rectangle can contain any point.\n\nA rectangle is considered \"empty\" for this function if `r` is NULL, or if\n`r`'s width and/or height are < 0.0f.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param r the rectangle to test.\n\\returns true if the rectangle is \"empty\", false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -27180,7 +27185,8 @@
               "name": "r",
               "type": "const SDL_FRect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_RectsEqualEpsilon": {
           "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the SDL_RectsEqualFloat\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param a the first rectangle to test.\n\\param b the second rectangle to test.\n\\param epsilon the epsilon value for comparison.\n\\returns true if the rectangles are equal, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_RectsEqualFloat",
@@ -27200,7 +27206,8 @@
               "name": "epsilon",
               "type": "float"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_RectsEqualFloat": {
           "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param a the first rectangle to test.\n\\param b the second rectangle to test.\n\\returns true if the rectangles are equal, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_RectsEqualEpsilon",
@@ -27216,7 +27223,8 @@
               "name": "b",
               "type": "const SDL_FRect *"
             }
-          ]
+          ],
+          "constexpr": true
         },
         "SDL_HasRectIntersectionFloat": {
           "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is NULL the function will return false.\n\n\\param A an SDL_FRect structure representing the first rectangle.\n\\param B an SDL_FRect structure representing the second rectangle.\n\\returns true if there is an intersection, false otherwise.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetRectIntersection",
@@ -27369,19 +27377,19 @@
           "kind": "enum",
           "entries": {
             "SDL_TEXTUREACCESS_STATIC": {
-              "doc": "Changes rarely, not lockable.",
+              "doc": "Changes rarely, not lockable",
               "name": "SDL_TEXTUREACCESS_STATIC",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTUREACCESS_STREAMING": {
-              "doc": "Changes frequently, lockable.",
+              "doc": "Changes frequently, lockable",
               "name": "SDL_TEXTUREACCESS_STREAMING",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTUREACCESS_TARGET": {
-              "doc": "Texture can be used as a render target.",
+              "doc": "Texture can be used as a render target",
               "name": "SDL_TEXTUREACCESS_TARGET",
               "kind": "var",
               "type": ""
@@ -27394,31 +27402,31 @@
           "kind": "enum",
           "entries": {
             "SDL_LOGICAL_PRESENTATION_DISABLED": {
-              "doc": "There is no logical size in effect.",
+              "doc": "There is no logical size in effect",
               "name": "SDL_LOGICAL_PRESENTATION_DISABLED",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_STRETCH": {
-              "doc": "The rendered content is stretched to the output resolution.",
+              "doc": "The rendered content is stretched to the output resolution",
               "name": "SDL_LOGICAL_PRESENTATION_STRETCH",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_LETTERBOX": {
-              "doc": "The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars.",
+              "doc": "The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars",
               "name": "SDL_LOGICAL_PRESENTATION_LETTERBOX",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_OVERSCAN": {
-              "doc": "The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds.",
+              "doc": "The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds",
               "name": "SDL_LOGICAL_PRESENTATION_OVERSCAN",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE": {
-              "doc": "The rendered content is scaled up by integer multiples to fit the output resolution.",
+              "doc": "The rendered content is scaled up by integer multiples to fit the output resolution",
               "name": "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE",
               "kind": "var",
               "type": ""

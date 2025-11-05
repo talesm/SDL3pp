@@ -21,9 +21,11 @@ globalVar:
 functionDecl: doc? EXTERN? type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
-unionDef: doc? TYPEDEF UNION id block id SEMI;
-enumDef: doc? TYPEDEF ENUM id enumBody id SEMI;
-structDef: doc? TYPEDEF STRUCT id structBody id SEMI;
+unionDef: doc? TYPEDEF UNION id block name = id SEMI;
+enumDef: doc? TYPEDEF ENUM id enumBody name = id SEMI;
+structDef:
+	doc? STRUCT name = id structBody SEMI
+	| doc? TYPEDEF STRUCT id structBody name = id SEMI;
 callbackDef:
 	doc? TYPEDEF type ROUND_B STAR id ROUND_E signature SEMI;
 compileTimeAssert: SDL_COMPILE_TIME_ASSERT group SEMI;
@@ -138,7 +140,7 @@ DOT: '.';
 STAR: '*';
 EQ: '=';
 ELLIPSIS: '...';
-PUNCT_EXTRA: [<>&|!=%/+-];
+PUNCT_EXTRA: [?:<>&|!=%/+-];
 
 STRING: '"' (~'"' | '\\"')* '"';
 ID: [A-Za-z_][A-Za-z0-9_]*;

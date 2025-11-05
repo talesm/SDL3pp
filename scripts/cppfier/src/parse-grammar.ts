@@ -134,7 +134,7 @@ class ProgListener implements CHeaderListener {
 
   enterUnionDef(ctx: UnionDefContext) {
     const doc = parseDoc(ctx.doc()?.text ?? '');
-    const name = ctx.id(1).text;
+    const name = ctx._name.text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
@@ -145,7 +145,7 @@ class ProgListener implements CHeaderListener {
 
   enterEnumDef(ctx: EnumDefContext) {
     const doc = parseDoc(ctx.doc()?.text ?? '');
-    const name = ctx.id(1).text;
+    const name = ctx._name.text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
@@ -157,7 +157,7 @@ class ProgListener implements CHeaderListener {
 
   enterStructDef(ctx: StructDefContext) {
     const doc = parseDoc(ctx.doc()?.text ?? '');
-    const name = ctx.id(1).text;
+    const name = ctx._name.text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,

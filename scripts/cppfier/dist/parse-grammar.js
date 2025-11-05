@@ -129,7 +129,7 @@ class ProgListener {
     }
     enterUnionDef(ctx) {
         const doc = parseDoc(ctx.doc()?.text ?? '');
-        const name = ctx.id(1).text;
+        const name = ctx._name.text;
         if (this.api.entries[name]?.doc)
             return;
         this.api.entries[name] = {
@@ -140,7 +140,7 @@ class ProgListener {
     }
     enterEnumDef(ctx) {
         const doc = parseDoc(ctx.doc()?.text ?? '');
-        const name = ctx.id(1).text;
+        const name = ctx._name.text;
         if (this.api.entries[name]?.doc)
             return;
         this.api.entries[name] = {
@@ -152,7 +152,7 @@ class ProgListener {
     }
     enterStructDef(ctx) {
         const doc = parseDoc(ctx.doc()?.text ?? '');
-        const name = ctx.id(1).text;
+        const name = ctx._name.text;
         if (this.api.entries[name]?.doc)
             return;
         this.api.entries[name] = {
