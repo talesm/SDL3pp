@@ -46,6 +46,8 @@
     "SDL_scancode.h",
     "SDL_sensor.h",
     "SDL_stdinc.h",
+    "SDL_storage.h",
+    "SDL_surface.h",
     "SDL_system.h",
     "SDL_version.h"
   ],

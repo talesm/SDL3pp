@@ -35276,59 +35276,71 @@
               "kind": "var",
               "type": "Uint32"
             },
-            "path": {
+            "close": {
               "doc": "",
-              "name": "path",
+              "name": "close",
               "kind": "var",
-              "type": "const char *"
+              "type": "bool"
             },
-            "callback": {
+            "ready": {
               "doc": "",
-              "name": "callback",
+              "name": "ready",
               "kind": "var",
-              "type": "const char SDL_EnumerateDirectoryCallback"
+              "type": "bool"
             },
-            "callback_userdata": {
+            "enumerate": {
               "doc": "",
-              "name": "callback_userdata",
+              "name": "enumerate",
               "kind": "var",
-              "type": "const char SDL_EnumerateDirectoryCallback void *"
+              "type": "bool"
             },
             "info": {
               "doc": "",
               "name": "info",
               "kind": "var",
-              "type": "SDL_PathInfo"
+              "type": "bool"
             },
-            "destination": {
+            "read_file": {
               "doc": "",
-              "name": "destination",
+              "name": "read_file",
               "kind": "var",
-              "type": "const char void *"
+              "type": "bool"
             },
-            "length": {
+            "write_file": {
               "doc": "",
-              "name": "length",
+              "name": "write_file",
               "kind": "var",
-              "type": "const char const void Uint64"
+              "type": "bool"
             },
-            "source": {
+            "mkdir": {
               "doc": "",
-              "name": "source",
+              "name": "mkdir",
               "kind": "var",
-              "type": "const char const void *"
+              "type": "bool"
             },
-            "oldpath": {
+            "remove": {
               "doc": "",
-              "name": "oldpath",
+              "name": "remove",
               "kind": "var",
-              "type": "const char *"
+              "type": "bool"
             },
-            "newpath": {
+            "rename": {
               "doc": "",
-              "name": "newpath",
+              "name": "rename",
               "kind": "var",
-              "type": "const char const char *"
+              "type": "bool"
+            },
+            "copy": {
+              "doc": "",
+              "name": "copy",
+              "kind": "var",
+              "type": "bool"
+            },
+            "space_remaining": {
+              "doc": "",
+              "name": "space_remaining",
+              "kind": "var",
+              "type": "Uint64"
             }
           }
         },
@@ -35729,7 +35741,7 @@
           "kind": "enum",
           "entries": {
             "SDL_FLIP_NONE": {
-              "doc": "Do not flip.",
+              "doc": "Do not flip",
               "name": "SDL_FLIP_NONE",
               "kind": "var",
               "type": ""
