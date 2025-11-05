@@ -18,7 +18,8 @@ directive: doc? DEFINE;
 externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
 globalVar:
 	doc? EXTERN? type id (COMMA id)* indexing* SEMI trailingDoc?;
-functionDecl: doc? EXTERN? type attribute? id signature SEMI;
+functionDecl:
+	doc? EXTERN? attribute? type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
 unionDef: doc? TYPEDEF UNION id block name = id SEMI;
@@ -73,13 +74,17 @@ id: ID;
 type: (typeEl)+;
 typeEl: (VOID | ID | CONST) (STAR | indexing)*;
 signature:
-	ROUND_B (type (COMMA type)*)? (COMMA ELLIPSIS)? ROUND_E attribute?;
+	ROUND_B (attribute? type (COMMA attribute? type)*)? (
+		COMMA ELLIPSIS
+	)? ROUND_E attribute?;
 
 attribute: (
 		ATTRIBUTE
 		| SDL_VARARG_ATTRIB
 		| SDL_ACQUIRE
 		| SDL_RELEASE
+		| SDL_ALLOC_SIZE
+		| SDL_INOUT
 	) group;
 
 doc: SHORT_DOC | LONG_DOC;
@@ -115,7 +120,12 @@ CONST: 'const';
 ENUM: 'enum';
 EXTERN: 'extern';
 INLINE: '__inline__';
-SDL_NOISE: ('SDL_DECLSPEC' | 'SDLCALL' | 'SDL_ANALYZER_NORETURN') -> skip;
+SDL_NOISE: (
+		'SDL_DECLSPEC'
+		| 'SDLCALL'
+		| 'SDL_ANALYZER_NORETURN'
+		| 'SDL_MALLOC'
+	) -> skip;
 SDL_INLINE: 'SDL_FORCE_INLINE';
 STATIC: 'static';
 STRUCT: 'struct';
@@ -126,6 +136,9 @@ SDL_VARARG_ATTRIB: 'SDL_' [A-Z0-9_]+ '_VARARG_FUNC' 'V'?;
 SDL_ACQUIRE: 'SDL_' 'TRY_'? 'ACQUIRE' '_SHARED'?;
 SDL_RELEASE: 'SDL_RELEASE' '_GENERIC'?;
 SDL_COMPILE_TIME_ASSERT: 'SDL_COMPILE_TIME_ASSERT';
+SDL_ALLOC_SIZE: 'SDL_ALLOC_SIZE' '2'?;
+SDL_INOUT:
+	'SDL_' ('IN' | 'OUT' | 'INOUT') '_Z'? '_' 'BYTE'? 'CAP';
 
 CURLY_B: '{';
 CURLY_E: '}';
@@ -140,7 +153,7 @@ DOT: '.';
 STAR: '*';
 EQ: '=';
 ELLIPSIS: '...';
-PUNCT_EXTRA: [?:<>&|!=%/+-];
+PUNCT_EXTRA: [~?:<>&|!=%/+-];
 
 STRING: '"' (~'"' | '\\"')* '"';
 ID: [A-Za-z_][A-Za-z0-9_]*;

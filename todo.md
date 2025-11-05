@@ -21,6 +21,11 @@ Replace parse and parse-xml for a antlr parser, convert to typescript
   - [x] SDL_gpu.h:
     - [x] SDL_GDKSuspendGPU() (GDK only);
     - [x] SDL_GDKResumeGPU() (GDK only);
+  - [x] SDL_stdinc.h
+    - [x] SDL_lltoa
+    - [x] SDL_ulltoa
+    - [x] SDL_strtoll
+    - [x] SDL_strtoull
 - [ ] Reflow documentation paragraphs.
 
 Backlog

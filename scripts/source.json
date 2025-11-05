@@ -29773,7 +29773,7 @@
               "type": ""
             },
             "SDL_SCANCODE_A": {
-              "doc": "\\name Usage page 0x07\n\n These values are from usage page 0x07 (USB keyboard page).",
+              "doc": "",
               "name": "SDL_SCANCODE_A",
               "kind": "var",
               "type": ""
@@ -31524,6 +31524,12 @@
       "name": "SDL_stdinc.h",
       "doc": "# CategoryStdinc\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
+        "SDL_INCLUDE_STDBOOL_H": {
+          "doc": "",
+          "name": "SDL_INCLUDE_STDBOOL_H",
+          "kind": "def",
+          "value": ""
+        },
         "bool": {
           "doc": "",
           "name": "bool",
@@ -31539,12 +31545,6 @@
         "true": {
           "doc": "",
           "name": "true",
-          "kind": "def",
-          "value": "1"
-        },
-        "__bool_true_false_are_defined": {
-          "doc": "",
-          "name": "__bool_true_false_are_defined",
           "kind": "def",
           "value": "1"
         },
@@ -31571,6 +31571,22 @@
           "name": "SDL_SIZE_MAX",
           "kind": "def",
           "value": "SIZE_MAX"
+        },
+        "SDL_COMPILE_TIME_ASSERT": {
+          "doc": "A compile-time assertion.\n\nThis can check constant values _known to the compiler at build time_ for\ncorrectness, and end the compile with the error if they fail.\n\nOften times these are used to verify basic truths, like the size of a\ndatatype is what is expected:\n\n```c\nSDL_COMPILE_TIME_ASSERT(uint32_size, sizeof(Uint32) == 4);\n```\n\nThe `name` parameter must be a valid C symbol, and must be unique across\nall compile-time asserts in the same compilation unit (one run of the\ncompiler), or the build might fail with cryptic errors on some targets.\nThis is used with a C language trick that works on older compilers that\ndon't support better assertion techniques.\n\nIf you need an assertion that operates at runtime, on variable data, you\nshould try SDL_assert instead.\n\n\\param name a unique identifier for this assertion.\n\\param x the value to test. Must be a boolean value.\n\n\\threadsafety This macro doesn't generate any code to run.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_assert",
+          "name": "SDL_COMPILE_TIME_ASSERT",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "name",
+              "type": ""
+            },
+            {
+              "name": "x",
+              "type": ""
+            }
+          ],
+          "value": "FailToCompileIf_x_IsFalse(x)"
         },
         "SDL_arraysize": {
           "doc": "The number of elements in a static array.\n\nThis will compile but return incorrect results for a pointer to an array;\nit has to be an array the compiler knows the size of.\n\nThis macro looks like it double-evaluates the argument, but it does so\ninside of `sizeof`, so there are no side-effects here, as expressions do\nnot actually run any code in these cases.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -31666,7 +31682,7 @@
               "type": ""
             }
           ],
-          "value": "    ((SDL_static_cast(Uint32, SDL_static_cast(Uint8, (A))) << 0) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (B))) << 8) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (C))) << 16) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (D))) << 24))"
+          "value": "\\\n    ((SDL_static_cast(Uint32, SDL_static_cast(Uint8, (A))) << 0) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (B))) << 8) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (C))) << 16) | \\\n     (SDL_static_cast(Uint32, SDL_static_cast(Uint8, (D))) << 24))"
         },
         "SDL_SINT64_C": {
           "doc": "Append the 64 bit integer suffix to a signed integer literal.\n\nThis helps compilers that might believe a integer literal larger than\n0xFFFFFFFF is overflowing a 32-bit value. Use `SDL_SINT64_C(0xFFFFFFFF1)`\ninstead of `0xFFFFFFFF1` by itself.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_UINT64_C",
@@ -31909,7 +31925,7 @@
           "value": "\"X\""
         },
         "SDL_PRILL_PREFIX": {
-          "doc": "",
+          "doc": "A printf-formatting string prefix for a `long long` value.\n\nThis is just the prefix! You probably actually want SDL_PRILLd, SDL_PRILLu,\nSDL_PRILLx, or SDL_PRILLX instead.\n\nUse it like this:\n\n```c\nSDL_Log(\"There are %\" SDL_PRILL_PREFIX \"d bottles of beer on the wall.\", bottles);\n```\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_PRILL_PREFIX",
           "kind": "def",
           "value": "\"ll\""
@@ -32094,6 +32110,38 @@
           ],
           "value": "/* __attribute__ (( format( __wprintf__, fmtargnumber, 0 ))) */"
         },
+        "SDL_alignment_test": {
+          "doc": "",
+          "name": "SDL_alignment_test",
+          "kind": "struct",
+          "entries": {
+            "a": {
+              "doc": "",
+              "name": "a",
+              "kind": "var",
+              "type": "Uint8"
+            },
+            "b": {
+              "doc": "",
+              "name": "b",
+              "kind": "var",
+              "type": "void *"
+            }
+          }
+        },
+        "SDL_DUMMY_ENUM": {
+          "doc": "\\cond",
+          "name": "SDL_DUMMY_ENUM",
+          "kind": "enum",
+          "entries": {
+            "DUMMY_ENUM_VALUE": {
+              "doc": "",
+              "name": "DUMMY_ENUM_VALUE",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
         "SDL_INIT_INTERFACE": {
           "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nSDL_IOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = SDL_OpenIO(&iface, NULL);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nSDL_IOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = SDL_OpenIO(&iface, NULL);\n```\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_IOStreamInterface\n\\sa SDL_StorageInterface\n\\sa SDL_VirtualJoystickDesc",
           "name": "SDL_INIT_INTERFACE",
@@ -32104,7 +32152,7 @@
               "type": ""
             }
           ],
-          "value": "    do {                                        \\\n        SDL_zerop(iface);                       \\\n        (iface)->version = sizeof(*(iface));    \\\n    } while (0)"
+          "value": "\\\n    do {                                        \\\n        SDL_zerop(iface);                       \\\n        (iface)->version = sizeof(*(iface));    \\\n    } while (0)"
         },
         "SDL_stack_alloc": {
           "doc": "Allocate memory on the stack (maybe).\n\nIf SDL knows how to access alloca() on the current platform, it will use it\nto stack-allocate memory here. If it doesn't, it will use SDL_malloc() to\nheap-allocate memory.\n\nSince this might not be stack memory at all, it's important that you check\nthe returned pointer for NULL, and that you call SDL_stack_free on the\nmemory when done with it. Since this might be stack memory, it's important\nthat you don't allocate large amounts of it, or allocate in a loop without\nreturning from the function, so the stack doesn't overflow.\n\n\\param type the datatype of the memory to allocate.\n\\param count the number of `type` objects to allocate.\n\\returns newly-allocated memory, or NULL on failure.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_stack_free",
@@ -32131,7 +32179,8 @@
               "name": "data",
               "type": ""
             }
-          ]
+          ],
+          "value": ""
         },
         "SDL_malloc": {
           "doc": "Allocate uninitialized memory.\n\nThe allocated memory returned by this function must be freed with\nSDL_free().\n\nIf `size` is 0, it will be set to 1.\n\nIf the allocation is successful, the returned pointer is guaranteed to be\naligned to either the *fundamental alignment* (`alignof(max_align_t)` in\nC11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use\nSDL_aligned_alloc() if you need to allocate memory aligned to an alignment\ngreater than this guarantee.\n\n\\param size the size to allocate.\n\\returns a pointer to the allocated memory, or NULL if allocation failed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_free\n\\sa SDL_calloc\n\\sa SDL_realloc\n\\sa SDL_aligned_alloc",
@@ -32987,7 +33036,7 @@
               "type": ""
             }
           ],
-          "value": "    { SDL_COMPILE_TIME_ASSERT(SDL_copyp, sizeof (*(dst)) == sizeof (*(src))); }             \\\n    SDL_memcpy((dst), (src), sizeof(*(src)))"
+          "value": "\\\n    { SDL_COMPILE_TIME_ASSERT(SDL_copyp, sizeof (*(dst)) == sizeof (*(src))); }             \\\n    SDL_memcpy((dst), (src), sizeof(*(src)))"
         },
         "SDL_memmove": {
           "doc": "Copy memory ranges that might overlap.\n\nIt is okay for the memory regions to overlap. If you are confident that the\nregions never overlap, using SDL_memcpy() may improve performance.\n\n\\param dst The destination memory region. Must not be NULL.\n\\param src The source memory region. Must not be NULL.\n\\param len The length in bytes of both `dst` and `src`.\n\\returns `dst`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_memcpy",
@@ -33677,6 +33726,46 @@
             }
           ]
         },
+        "SDL_lltoa": {
+          "doc": "Convert a long long integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexadecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget possible negative\nsigns, null terminator bytes, etc).\n\n\\param value the long long integer to convert.\n\\param str the buffer to write the string into.\n\\param radix the radix to use for string generation.\n\\returns `str`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ulltoa\n\\sa SDL_itoa\n\\sa SDL_ltoa",
+          "name": "SDL_lltoa",
+          "kind": "function",
+          "type": "char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "long long"
+            },
+            {
+              "name": "str",
+              "type": "char *"
+            },
+            {
+              "name": "radix",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_ulltoa": {
+          "doc": "Convert an unsigned long long integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexadecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget null terminator\nbytes, etc).\n\n\\param value the unsigned long long integer to convert.\n\\param str the buffer to write the string into.\n\\param radix the radix to use for string generation.\n\\returns `str`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_lltoa\n\\sa SDL_uitoa\n\\sa SDL_ultoa",
+          "name": "SDL_ulltoa",
+          "kind": "function",
+          "type": "char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "unsigned long long"
+            },
+            {
+              "name": "str",
+              "type": "char *"
+            },
+            {
+              "name": "radix",
+              "type": "int"
+            }
+          ]
+        },
         "SDL_atoi": {
           "doc": "Parse an `int` from a string.\n\nThe result of calling `SDL_atoi(str)` is equivalent to\n`(int)SDL_strtol(str, NULL, 10)`.\n\n\\param str The null-terminated string to read. Must not be NULL.\n\\returns the parsed `int`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_atof\n\\sa SDL_strtol\n\\sa SDL_strtoul\n\\sa SDL_strtoll\n\\sa SDL_strtoull\n\\sa SDL_strtod\n\\sa SDL_itoa",
           "name": "SDL_atoi",
@@ -33726,6 +33815,46 @@
           "name": "SDL_strtoul",
           "kind": "function",
           "type": "unsigned long",
+          "parameters": [
+            {
+              "name": "str",
+              "type": "const char *"
+            },
+            {
+              "name": "endp",
+              "type": "char **"
+            },
+            {
+              "name": "base",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_strtoll": {
+          "doc": "Parse a `long long` from a string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside a `long long`, the result is\nclamped to the minimum and maximum representable `long long` values.\n\n\\param str The null-terminated string to read. Must not be NULL.\n\\param endp If not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n\\param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n\\returns the parsed `long long`, or 0 if no number could be parsed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_atoi\n\\sa SDL_atof\n\\sa SDL_strtol\n\\sa SDL_strtoul\n\\sa SDL_strtoull\n\\sa SDL_strtod\n\\sa SDL_lltoa",
+          "name": "SDL_strtoll",
+          "kind": "function",
+          "type": "long long",
+          "parameters": [
+            {
+              "name": "str",
+              "type": "const char *"
+            },
+            {
+              "name": "endp",
+              "type": "char **"
+            },
+            {
+              "name": "base",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_strtoull": {
+          "doc": "Parse an `unsigned long long` from a string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside an `unsigned long long`, the\nresult is clamped to the maximum representable `unsigned long long` value.\n\n\\param str The null-terminated string to read. Must not be NULL.\n\\param endp If not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n\\param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n\\returns the parsed `unsigned long long`, or 0 if no number could be\n         parsed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_atoi\n\\sa SDL_atof\n\\sa SDL_strtol\n\\sa SDL_strtoll\n\\sa SDL_strtoul\n\\sa SDL_strtod\n\\sa SDL_ulltoa",
+          "name": "SDL_strtoull",
+          "kind": "function",
+          "type": "unsigned long long",
           "parameters": [
             {
               "name": "str",
@@ -34947,6 +35076,98 @@
           ],
           "value": "SDL_iconv_string(\"UTF-8\", \"WCHAR_T\", SDL_reinterpret_cast(const char *, S), (SDL_wcslen(S)+1)*sizeof(wchar_t))"
         },
+        "strlcpy": {
+          "doc": "",
+          "name": "strlcpy",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "char *"
+            },
+            {
+              "name": "src",
+              "type": "const char *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ]
+        },
+        "strlcat": {
+          "doc": "",
+          "name": "strlcat",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "char *"
+            },
+            {
+              "name": "src",
+              "type": "const char *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ]
+        },
+        "wcslcpy": {
+          "doc": "",
+          "name": "wcslcpy",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "src",
+              "type": "const wchar_t *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ]
+        },
+        "wcslcat": {
+          "doc": "",
+          "name": "wcslcat",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [
+            {
+              "name": "dst",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "src",
+              "type": "const wchar_t *"
+            },
+            {
+              "name": "size",
+              "type": "size_t"
+            }
+          ]
+        },
+        "strdup": {
+          "doc": "",
+          "name": "strdup",
+          "kind": "function",
+          "type": "char *",
+          "parameters": [
+            {
+              "name": "str",
+              "type": "const char *"
+            }
+          ]
+        },
         "SDL_size_mul_check_overflow": {
           "doc": "Multiply two integers, checking for overflow.\n\nIf `a * b` would overflow, return false.\n\nOtherwise store `a * b` via ret and return true.\n\n\\param a the multiplicand.\n\\param b the multiplier.\n\\param ret on non-overflow output, stores the multiplication result, may\n           not be NULL.\n\\returns false on overflow, true if result is multiplied without overflow.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
           "name": "SDL_size_mul_check_overflow",
@@ -34965,7 +35186,29 @@
               "name": "ret",
               "type": "size_t *"
             }
-          ]
+          ],
+          "constexpr": true
+        },
+        "SDL_size_mul_check_overflow_builtin": {
+          "doc": "",
+          "name": "SDL_size_mul_check_overflow_builtin",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "size_t"
+            },
+            {
+              "name": "b",
+              "type": "size_t"
+            },
+            {
+              "name": "ret",
+              "type": "size_t *"
+            }
+          ],
+          "constexpr": true
         },
         "SDL_size_add_check_overflow": {
           "doc": "Add two integers, checking for overflow.\n\nIf `a + b` would overflow, return false.\n\nOtherwise store `a + b` via ret and return true.\n\n\\param a the first addend.\n\\param b the second addend.\n\\param ret on non-overflow output, stores the addition result, may not be\n           NULL.\n\\returns false on overflow, true if result is added without overflow.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
@@ -34985,7 +35228,29 @@
               "name": "ret",
               "type": "size_t *"
             }
-          ]
+          ],
+          "constexpr": true
+        },
+        "SDL_size_add_check_overflow_builtin": {
+          "doc": "",
+          "name": "SDL_size_add_check_overflow_builtin",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "size_t"
+            },
+            {
+              "name": "b",
+              "type": "size_t"
+            },
+            {
+              "name": "ret",
+              "type": "size_t *"
+            }
+          ],
+          "constexpr": true
         },
         "SDL_FunctionPointer": {
           "doc": "A generic function pointer.\n\nIn theory, generic function pointers should use this, instead of `void *`,\nsince some platforms could treat code addresses differently than data\naddresses. Although in current times no popular platforms make this\ndistinction, it is more correct and portable to use the correct type for a\ngeneric pointer.\n\nIf for some reason you need to force this typedef to be an actual `void *`,\nperhaps to work around a compiler or existing code, you can define\n`SDL_FUNCTION_POINTER_IS_VOID_POINTER` before including any SDL headers.\n\n\\since This datatype is available since SDL 3.2.0.",

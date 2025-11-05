@@ -5252,7 +5252,6 @@ const transform = {
         "SDL_Scancode": {
           wrapper: { ordered: true }
         },
-        "SDL_SCANCODE_A": { doc: "A" },
       }
     },
     "SDL_stdinc.h": {
@@ -5270,6 +5269,7 @@ const transform = {
         "bool",
         "__bool_true_false_are_defined",
         "false",
+        "SDL_INCLUDE_STDBOOL_H",
         "SDL_alignment_test",
         "SDL_const_cast",
         "SDL_DUMMY_ENUM",
@@ -5306,7 +5306,12 @@ const transform = {
         "SDL_static_cast",
         "SDL_WPRINTF_VARARG_FUNC",
         "SDL_WPRINTF_VARARG_FUNCV",
-        "true"
+        "true",
+        "strlcpy",
+        "strlcat",
+        "wcslcpy",
+        "wcslcat",
+        "strdup",
       ],
       transform: {
         "SDL_Environment": {

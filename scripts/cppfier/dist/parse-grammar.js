@@ -46,13 +46,13 @@ class ProgListener {
         const directive = ctx.DEFINE().text;
         const docIndex = directive.indexOf('/**<');
         const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
-        const m = directive.match(/^#define\s*(\w+)(\((\w+(,\s*\w+)*)?\))?/);
+        const m = directive.match(/^#define\s*(\w+)(\([ \t]*(\w+[ \t]*(,[ \t]*\w+[ \t]*)*)?\))?/);
         if (!m)
             return;
         const name = m[1];
         if (name.endsWith("_h_") || name.endsWith("_h") || name.startsWith("_"))
             return;
-        const parameters = m[3]?.split(/,\s*/)?.map(p => ({ name: p, type: "" })) ?? (m[2] ? [] : undefined);
+        const parameters = m[3]?.split(',')?.map(p => ({ name: p.trim(), type: "" })) ?? (m[2] ? [] : undefined);
         const value = directive.slice(m[0].length, docIndex === -1 ? undefined : docIndex).trim();
         if (this.api.entries[name]?.doc)
             return;
@@ -193,6 +193,8 @@ function parseContent(name, content) {
     return listener.api;
 }
 function parseDoc(text) {
+    if (text.includes('\\name'))
+        return "";
     if (text.startsWith('/**<')) {
         return text.slice(4, text.length - 2)
             .replaceAll(/^[ \t]*\*[ \t]?/mg, '')

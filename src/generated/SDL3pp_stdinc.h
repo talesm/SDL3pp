@@ -126,7 +126,7 @@ struct IConvParam
  * is safe to define this yourself to build against the SDL headers.
  *
  * If this is defined, it will remove access to some C runtime support
- * functions, like SDL_ulltoa and SDL_strtoll that refer to this datatype
+ * functions, like ulltoa and strtoll that refer to this datatype
  * explicitly. The rest of SDL will still be available.
  *
  * SDL's own source code cannot be built with a compiler that has this
@@ -149,6 +149,39 @@ struct IConvParam
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_SIZE_MAX SIZE_MAX
+
+/**
+ * A compile-time assertion.
+ *
+ * This can check constant values _known to the compiler at build time_ for
+ * correctness, and end the compile with the error if they fail.
+ *
+ * Often times these are used to verify basic truths, like the size of a
+ * datatype is what is expected:
+ *
+ * ```c
+ * SDL_COMPILE_TIME_ASSERT(uint32_size, sizeof(Uint32) == 4);
+ * ```
+ *
+ * The `name` parameter must be a valid C symbol, and must be unique across
+ * all compile-time asserts in the same compilation unit (one run of the
+ * compiler), or the build might fail with cryptic errors on some targets.
+ * This is used with a C language trick that works on older compilers that
+ * don't support better assertion techniques.
+ *
+ * If you need an assertion that operates at runtime, on variable data, you
+ * should try SDL_assert instead.
+ *
+ * @param name a unique identifier for this assertion.
+ * @param x the value to test. Must be a boolean value.
+ *
+ * @threadsafety This macro doesn't generate any code to run.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_assert
+ */
+#define SDL_COMPILE_TIME_ASSERT(name, x) FailToCompileIf_x_IsFalse(x)
 
 /**
  * The number of elements in a static array.
@@ -3294,7 +3327,7 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
  *
  * @sa uitoa
  * @sa ltoa
- * @sa SDL_lltoa
+ * @sa lltoa
  */
 inline char* itoa(int value, char* str, int radix)
 {
@@ -3325,7 +3358,7 @@ inline char* itoa(int value, char* str, int radix)
  *
  * @sa itoa
  * @sa ultoa
- * @sa SDL_ulltoa
+ * @sa ulltoa
  */
 inline char* uitoa(unsigned int value, char* str, int radix)
 {
@@ -3356,7 +3389,7 @@ inline char* uitoa(unsigned int value, char* str, int radix)
  *
  * @sa ultoa
  * @sa itoa
- * @sa SDL_lltoa
+ * @sa lltoa
  */
 inline char* ltoa(long value, char* str, int radix)
 {
@@ -3387,11 +3420,73 @@ inline char* ltoa(long value, char* str, int radix)
  *
  * @sa ltoa
  * @sa uitoa
- * @sa SDL_ulltoa
+ * @sa ulltoa
  */
 inline char* ultoa(unsigned long value, char* str, int radix)
 {
   return SDL_ultoa(value, str, radix);
+}
+
+/**
+ * Convert a long long integer into a string.
+ *
+ * This requires a radix to specified for string format. Specifying 10
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
+ * to 36.
+ *
+ * Note that this function will overflow a buffer if `str` is not large enough
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * much more space than you expect to use (and don't forget possible negative
+ * signs, null terminator bytes, etc).
+ *
+ * @param value the long long integer to convert.
+ * @param str the buffer to write the string into.
+ * @param radix the radix to use for string generation.
+ * @returns `str`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ulltoa
+ * @sa itoa
+ * @sa ltoa
+ */
+inline char* lltoa(long long value, char* str, int radix)
+{
+  return SDL_lltoa(value, str, radix);
+}
+
+/**
+ * Convert an unsigned long long integer into a string.
+ *
+ * This requires a radix to specified for string format. Specifying 10
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
+ * to 36.
+ *
+ * Note that this function will overflow a buffer if `str` is not large enough
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * much more space than you expect to use (and don't forget null terminator
+ * bytes, etc).
+ *
+ * @param value the unsigned long long integer to convert.
+ * @param str the buffer to write the string into.
+ * @param radix the radix to use for string generation.
+ * @returns `str`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa lltoa
+ * @sa uitoa
+ * @sa ultoa
+ */
+inline char* ulltoa(unsigned long long value, char* str, int radix)
+{
+  return SDL_ulltoa(value, str, radix);
 }
 
 /**
@@ -3410,8 +3505,8 @@ inline char* ultoa(unsigned long value, char* str, int radix)
  * @sa atof
  * @sa strtol
  * @sa strtoul
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  * @sa itoa
  */
@@ -3433,8 +3528,8 @@ inline int atoi(StringParam str) { return SDL_atoi(str); }
  * @sa atoi
  * @sa strtol
  * @sa strtoul
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  */
 inline double atof(StringParam str) { return SDL_atof(str); }
@@ -3465,8 +3560,8 @@ inline double atof(StringParam str) { return SDL_atof(str); }
  * @sa atoi
  * @sa atof
  * @sa strtoul
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  * @sa ltoa
  * @sa wcstol
@@ -3502,14 +3597,87 @@ inline long strtol(StringParam str, char** endp, int base)
  * @sa atoi
  * @sa atof
  * @sa strtol
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  * @sa ultoa
  */
 inline unsigned long strtoul(StringParam str, char** endp, int base)
 {
   return SDL_strtoul(str, endp, base);
+}
+
+/**
+ * Parse a `long long` from a string.
+ *
+ * If `str` starts with whitespace, then those whitespace characters are
+ * skipped before attempting to parse the number.
+ *
+ * If the parsed number does not fit inside a `long long`, the result is
+ * clamped to the minimum and maximum representable `long long` values.
+ *
+ * @param str The null-terminated string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid character (i.e.
+ *             the next character after the parsed number) will be written to
+ *             this pointer.
+ * @param base The base of the integer to read. Supported values are 0 and 2
+ *             to 36 inclusive. If 0, the base will be inferred from the
+ *             number's prefix (0x for hexadecimal, 0 for octal, decimal
+ *             otherwise).
+ * @returns the parsed `long long`, or 0 if no number could be parsed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa atoi
+ * @sa atof
+ * @sa strtol
+ * @sa strtoul
+ * @sa strtoull
+ * @sa strtod
+ * @sa lltoa
+ */
+inline long long strtoll(StringParam str, char** endp, int base)
+{
+  return SDL_strtoll(str, endp, base);
+}
+
+/**
+ * Parse an `unsigned long long` from a string.
+ *
+ * If `str` starts with whitespace, then those whitespace characters are
+ * skipped before attempting to parse the number.
+ *
+ * If the parsed number does not fit inside an `unsigned long long`, the
+ * result is clamped to the maximum representable `unsigned long long` value.
+ *
+ * @param str The null-terminated string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid character (i.e.
+ *             the next character after the parsed number) will be written to
+ *             this pointer.
+ * @param base The base of the integer to read. Supported values are 0 and 2
+ *             to 36 inclusive. If 0, the base will be inferred from the
+ *             number's prefix (0x for hexadecimal, 0 for octal, decimal
+ *             otherwise).
+ * @returns the parsed `unsigned long long`, or 0 if no number could be
+ *          parsed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa atoi
+ * @sa atof
+ * @sa strtol
+ * @sa strtoll
+ * @sa strtoul
+ * @sa strtod
+ * @sa ulltoa
+ */
+inline unsigned long long strtoull(StringParam str, char** endp, int base)
+{
+  return SDL_strtoull(str, endp, base);
 }
 
 /**
@@ -3535,9 +3703,9 @@ inline unsigned long strtoul(StringParam str, char** endp, int base)
  * @sa atoi
  * @sa atof
  * @sa strtol
- * @sa SDL_strtoll
+ * @sa strtoll
  * @sa strtoul
- * @sa SDL_strtoull
+ * @sa strtoull
  */
 inline double strtod(StringParam str, char** endp)
 {
@@ -6033,7 +6201,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -6055,7 +6223,7 @@ inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }
