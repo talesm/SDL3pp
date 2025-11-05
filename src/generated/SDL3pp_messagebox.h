@@ -150,8 +150,8 @@ struct MessageBox : MessageBoxRaw
                        const char* title,
                        const char* message,
                        int numbuttons,
-                       SDL_MessageBoxButtonData buttons,
-                       SDL_MessageBoxColorScheme colorScheme)
+                       const SDL_MessageBoxButtonData* buttons,
+                       const SDL_MessageBoxColorScheme* colorScheme)
     : MessageBoxRaw{flags,
                     window,
                     title,
@@ -269,7 +269,10 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current buttons value.
    */
-  constexpr SDL_MessageBoxButtonData GetButtons() const { return buttons; }
+  constexpr const SDL_MessageBoxButtonData* GetButtons() const
+  {
+    return buttons;
+  }
 
   /**
    * Set the buttons.
@@ -277,7 +280,7 @@ struct MessageBox : MessageBoxRaw
    * @param newButtons the new buttons value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetButtons(SDL_MessageBoxButtonData newButtons)
+  constexpr MessageBox& SetButtons(const SDL_MessageBoxButtonData* newButtons)
   {
     buttons = newButtons;
     return *this;
@@ -288,7 +291,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current colorScheme value.
    */
-  constexpr SDL_MessageBoxColorScheme GetColorScheme() const
+  constexpr const SDL_MessageBoxColorScheme* GetColorScheme() const
   {
     return colorScheme;
   }
@@ -299,7 +302,8 @@ struct MessageBox : MessageBoxRaw
    * @param newColorScheme the new colorScheme value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetColorScheme(SDL_MessageBoxColorScheme newColorScheme)
+  constexpr MessageBox& SetColorScheme(
+    const SDL_MessageBoxColorScheme* newColorScheme)
   {
     colorScheme = newColorScheme;
     return *this;

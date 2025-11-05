@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const generate_js_1 = require("./generate.js");
-const parse_xml_js_1 = require("./parse-xml.js");
-const parse_js_1 = require("./parse.js");
+const generate_1 = require("./generate");
+const parse_1 = require("./parse");
 const transform_js_1 = require("./transform.js");
 const utils_js_1 = require("./utils.js");
 /**
@@ -19,10 +18,7 @@ function main(args) {
     const command = args.shift();
     switch (command) {
         case "parse":
-            parse(args);
-            break;
-        case "xml":
-            parseXML(args);
+            parseNew(args);
             break;
         case "generate":
             generate(args);
@@ -43,7 +39,6 @@ const guideDoc = [
     wrapUsageText(`usage: node ${process.argv[1]} ` + "<verb> [OPTION]... [--] <file>..."),
     "\nValid verbs are:",
     "    parse      parse headers",
-    "    xml        parse xml headers",
     "    transform  transform source C API into C++ API",
     "    generate   generate target headers",
     "    update     update target headers DEPRECATED",
@@ -65,7 +60,7 @@ function printError(message, ...parameters) {
  * Scan files
  * @param args the arguments
  */
-function parse(args) {
+function parseNew(args) {
     if (args?.length == 0) {
         return help(["parse"]);
     }
@@ -107,10 +102,6 @@ function parse(args) {
             case '--print-config':
                 printConfig = true;
                 break;
-            case '--store-line-numbers':
-            case '-l':
-                config.storeLineNumbers = true;
-                break;
             default:
                 throw new Error(`Invalid option ${arg}`);
         }
@@ -134,90 +125,7 @@ function parse(args) {
         config.outputFile = config.api;
     if (printConfig)
         (0, utils_js_1.writeJSONSync)(config.outputFile ? 1 : 2, config);
-    const api = (0, parse_js_1.parseApi)(config);
-    (0, utils_js_1.writeJSONSync)(config.outputFile || 1, api);
-}
-/**
- * Scan files
- * @param args the arguments
- */
-async function parseXML(args) {
-    if (args?.length == 0) {
-        return help(["xml"]);
-    }
-    const config = {
-        /** @type {string[]} */
-        sources: [],
-        outputFile: "",
-        /** @type {*} */
-        api: null,
-        xmlDir: [],
-        baseDir: [],
-        storeLineNumbers: false,
-    };
-    let printConfig = false;
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
-        if (arg == "--") {
-            config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
-            break;
-        }
-        if (!arg.startsWith('-')) {
-            if (arg.endsWith(".json")) {
-                mergeInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", '/')));
-            }
-            else
-                config.sources.push(arg.replaceAll("\\", '/'));
-            continue;
-        }
-        switch (arg) {
-            case '--outputFile':
-            case '-o':
-                config.outputFile = args[++i].replaceAll("\\", '/');
-                break;
-            case '--xmlDir':
-            case '-x':
-                config.xmlDir.push(args[++i].replaceAll("\\", '/'));
-                break;
-            case '--baseDir':
-            case '-d':
-                config.baseDir.push(args[++i].replaceAll("\\", '/'));
-                break;
-            case '--config':
-            case '-c':
-                mergeInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/')));
-                break;
-            case '--print-config':
-                printConfig = true;
-                break;
-            case '--store-line-numbers':
-            case '-l':
-                config.storeLineNumbers = true;
-                break;
-            default:
-                throw new Error(`Invalid option ${arg}`);
-        }
-    }
-    if (!config.baseDir?.length && config.sources.length && config.sources[0].includes('/')) {
-        let baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
-        for (let i = 1; i < config.sources.length; i++) {
-            const file = config.sources[i];
-            while (!file.startsWith(baseDir)) {
-                const pos = baseDir.lastIndexOf('/');
-                baseDir = baseDir.slice(0, pos + 1);
-            }
-        }
-        if (baseDir) {
-            config.baseDir = [baseDir];
-            const baseDirLen = baseDir.length;
-            config.sources = config.sources.map(file => file.startsWith(baseDir) ? file.slice(baseDirLen) : file);
-        }
-    }
-    if (!config.outputFile && typeof config.api == "string")
-        config.outputFile = config.api;
-    if (printConfig)
-        (0, utils_js_1.writeJSONSync)(config.outputFile ? 1 : 2, config);
-    const api = await (0, parse_xml_js_1.parseXmlApi)(config);
+    const api = (0, parse_1.parseApi)(config);
     (0, utils_js_1.writeJSONSync)(config.outputFile || 1, api);
 }
 function mergeInto(destiny, source) {
@@ -314,7 +222,7 @@ function generate(args) {
                 delete config.api.files[file];
         }
     }
-    (0, generate_js_1.generateApi)(config);
+    (0, generate_1.generateApi)(config);
 }
 /**
  * Transform files

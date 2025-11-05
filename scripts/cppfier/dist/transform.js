@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.transformApi = transformApi;
 const generate_1 = require("./generate");
-const parse_1 = require("./parse");
 const utils_1 = require("./utils");
 /**
  * Transform the Api
@@ -1546,16 +1545,16 @@ function makeSortedEntryArray(sourceEntries, file, context) {
                     else {
                         newEntry.kind = entry;
                     }
-                    (0, parse_1.insertEntry)(entries, newEntry);
+                    insertEntry(entries, newEntry);
                 }
                 else if (entry.hints?.delegate) {
                     context.includeAfter({ ...entry, name: `${type}::${nameCandidate}` }, entry.hints.delegate);
                     if (!entries[nameCandidate]) {
-                        (0, parse_1.insertEntry)(entries, { name: nameCandidate, kind: "plc" });
+                        insertEntry(entries, { name: nameCandidate, kind: "plc" });
                     }
                 }
                 else {
-                    (0, parse_1.insertEntry)(entries, entry, nameCandidate);
+                    insertEntry(entries, entry, nameCandidate);
                 }
                 return;
             }
@@ -1563,7 +1562,7 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             if (context.blacklist.has(key))
                 addTransform(nameChange);
             if (!entries[nameChange.name]) {
-                (0, parse_1.insertEntry)(entries, { name: nameChange.name, kind: "plc" });
+                insertEntry(entries, { name: nameChange.name, kind: "plc" });
             }
             const currLink = file.transform[key];
             const currLinkName = currLink?.name ?? transformName(key, context);
@@ -1785,8 +1784,74 @@ function scanFreeFunction(entries, uniqueType, pointerType) {
 /**
  * Insert entry into entries
  */
+function insertEntry(entries, entry, defaultName = "") {
+    if (Array.isArray(entry))
+        entry.forEach(doInsertEntry);
+    else
+        doInsertEntry(entry);
+    return entries;
+    /**
+     * Insert entry into entries
+     */
+    function doInsertEntry(entry) {
+        if (!entry.name)
+            entry.name = defaultName;
+        entry = /** @type {ApiEntry} */ (entry);
+        fixEntry(entry);
+        const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
+        const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
+        if (entries[key]) {
+            const currEntry = entries[key];
+            if (currEntry.kind !== 'function') {
+                if (entry.doc || !currEntry.doc) {
+                    if (entry.kind === "def") {
+                        currEntry.doc = entry.doc;
+                    }
+                    else {
+                        entries[key] = entry;
+                    }
+                }
+            }
+            else if (entry.kind === 'function') {
+                let e = currEntry;
+                while (e.overload)
+                    e = e.overload;
+                e.overload = entry;
+                if (typeof entry.doc !== 'string' && currEntry.doc)
+                    entry.doc = currEntry.doc;
+            }
+        }
+        else {
+            entries[key] = entry;
+        }
+        return entries;
+    }
+    /**
+   * Add missing fields
+   */
+    function fixEntry(entry) {
+        if (entry.entries) {
+            for (const subEntry of Object.values(entry.entries)) {
+                if (Array.isArray(subEntry)) {
+                    subEntry.forEach(fixEntry);
+                }
+                else if (typeof subEntry === 'object') {
+                    fixEntry(subEntry);
+                }
+            }
+        }
+        else if (entry.kind == "struct") {
+            entry.entries = {};
+        }
+        if (!entry.kind)
+            entry.kind = 'plc';
+    }
+}
+/**
+ * Insert entry into entries
+ */
 function insertEntryAndCheck(entries, entry, context, file, defaultName) {
-    (0, parse_1.insertEntry)(entries, entry, defaultName);
+    insertEntry(entries, entry, defaultName);
     if (entry.kind === 'ns' || entry.kind === "struct") {
         const currType = context.types[entry.name];
         if (currType) {
@@ -1818,7 +1883,7 @@ function transformHierarchy(targetEntries, context) {
             while (entry) {
                 const nextEntry = entry.overload;
                 prepareForTypeInsert(entry, targetName, typeName);
-                (0, parse_1.insertEntry)(obj.entries, { ...entry, overload: undefined });
+                insertEntry(obj.entries, { ...entry, overload: undefined });
                 entry = nextEntry;
             }
         }
@@ -1831,7 +1896,7 @@ function transformHierarchy(targetEntries, context) {
             }
         }
         function insertCopyEntry(entry) {
-            (0, parse_1.insertEntry)(obj.entries, {
+            insertEntry(obj.entries, {
                 ...entry,
                 proto: true,
                 overload: undefined

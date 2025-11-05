@@ -124,7 +124,7 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
   SDL_PEN_AXIS_TANGENTIAL_PRESSURE;
 
 /**
- * Total known pen axis types in this version of SDL.  This number may grow in
+ * Total known pen axis types in this version of SDL. This number may grow in
  * future releases!
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;

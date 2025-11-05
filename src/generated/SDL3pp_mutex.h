@@ -429,10 +429,7 @@ inline Mutex CreateMutex() { return Mutex(); }
  * @sa Mutex.TryLock
  * @sa Mutex.Unlock
  */
-inline void LockMutex(SDL_Mutex* mutex) SDL_ACQUIRE(mutex)
-{
-  SDL_LockMutex(SDL_ACQUIRE(mutex);
-}
+inline void LockMutex(MutexParam mutex) { SDL_LockMutex(mutex); }
 
 inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
 
@@ -455,9 +452,9 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.Unlock
  */
-inline void TryLockMutex(SDL_Mutex* mutex) SDL_TRY_ACQUIRE(tru)
+inline void TryLockMutex(MutexParam mutex)
 {
-  CheckError(SDL_TryLockMutex(SDL_TRY_ACQUIRE(tru));
+  CheckError(SDL_TryLockMutex(mutex));
 }
 
 inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
@@ -479,10 +476,7 @@ inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.TryLock
  */
-inline void UnlockMutex(SDL_Mutex* mutex) SDL_RELEASE(mutex)
-{
-  SDL_UnlockMutex(SDL_RELEASE(mutex);
-}
+inline void UnlockMutex(MutexParam mutex) { SDL_UnlockMutex(mutex); }
 
 inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
 
@@ -898,9 +892,9 @@ inline RWLock CreateRWLock() { return RWLock(); }
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForReading(SDL_RWLock* rwlock) SDL_ACQUIRE_SHARED(rwlock)
+inline void LockRWLockForReading(RWLockParam rwlock)
 {
-  SDL_LockRWLockForReading(SDL_ACQUIRE_SHARED(rwlock);
+  SDL_LockRWLockForReading(rwlock);
 }
 
 inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
@@ -934,9 +928,9 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForWriting(SDL_RWLock* rwlock) SDL_ACQUIRE(rwlock)
+inline void LockRWLockForWriting(RWLockParam rwlock)
 {
-  SDL_LockRWLockForWriting(SDL_ACQUIRE(rwlock);
+  SDL_LockRWLockForWriting(rwlock);
 }
 
 inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
@@ -964,10 +958,9 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForReading(SDL_RWLock* rwlock)
-  SDL_TRY_ACQUIRE_SHARED(tru)
+inline void TryLockRWLockForReading(RWLockParam rwlock)
 {
-  CheckError(SDL_TryLockRWLockForReading(SDL_TRY_ACQUIRE_SHARED(tru));
+  CheckError(SDL_TryLockRWLockForReading(rwlock));
 }
 
 inline void RWLock::TryLockForReading()
@@ -1003,9 +996,9 @@ inline void RWLock::TryLockForReading()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForWriting(SDL_RWLock* rwlock) SDL_TRY_ACQUIRE(tru)
+inline void TryLockRWLockForWriting(RWLockParam rwlock)
 {
-  CheckError(SDL_TryLockRWLockForWriting(SDL_TRY_ACQUIRE(tru));
+  CheckError(SDL_TryLockRWLockForWriting(rwlock));
 }
 
 inline void RWLock::TryLockForWriting()
@@ -1036,10 +1029,7 @@ inline void RWLock::TryLockForWriting()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  */
-inline void UnlockRWLock(SDL_RWLock* rwlock) SDL_RELEASE_GENERIC(rwlock)
-{
-  SDL_UnlockRWLock(SDL_RELEASE_GENERIC(rwlock);
-}
+inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
 
 inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 

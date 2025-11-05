@@ -247,7 +247,21 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_enabled_assert(condition) [object Object]
+#define SDL_enabled_assert(condition)                                          \
+  do {                                                                         \
+    while (!(condition)) {                                                     \
+      static struct SDL_AssertData sdl_assert_data = {                         \
+        false, 0, #condition, NULL, 0, NULL, NULL};                            \
+      const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(            \
+        &sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE);                   \
+      if (sdl_assert_state == SDL_ASSERTION_RETRY) {                           \
+        continue; /* go again. */                                              \
+      } else if (sdl_assert_state == SDL_ASSERTION_BREAK) {                    \
+        SDL_AssertBreakpoint();                                                \
+      }                                                                        \
+      break; /* not retrying. */                                               \
+    }                                                                          \
+  } while (SDL_NULL_WHILE_LOOP_CONDITION)
 
 /**
  * An assertion test that is normally performed only in debug builds.

@@ -49,8 +49,8 @@
     "SDL_storage.h",
     "SDL_surface.h",
     "SDL_system.h",
-    "SDL_timer.h",
     "SDL_time.h",
+    "SDL_timer.h",
     "SDL_thread.h",
     "SDL_touch.h",
     "SDL_tray.h",
@@ -60,13 +60,10 @@
     "SDL_image.h",
     "SDL_ttf.h"
   ],
-  "api": "scripts/target.json",
   "baseDir": [
     "external/SDL/include/SDL3/",
     "external/SDL_image/include/SDL3_image/",
     "external/SDL_ttf/include/SDL3_ttf/"
   ],
-  "outputFile": "scripts/source_xml.json",
-  "sourceApi": "scripts/source.json",
-  "transform": "scripts/transform.json"
+  "outputFile": "scripts/source.json"
 }

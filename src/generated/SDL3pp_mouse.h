@@ -88,18 +88,18 @@ struct CursorParam
 using SystemCursor = SDL_SystemCursor;
 
 constexpr SystemCursor SYSTEM_CURSOR_DEFAULT =
-  SDL_SYSTEM_CURSOR_DEFAULT; ///< Default cursor.  Usually an arrow.
+  SDL_SYSTEM_CURSOR_DEFAULT; ///< Default cursor. Usually an arrow.
 
 constexpr SystemCursor SYSTEM_CURSOR_TEXT =
-  SDL_SYSTEM_CURSOR_TEXT; ///< Text selection.  Usually an I-beam.
+  SDL_SYSTEM_CURSOR_TEXT; ///< Text selection. Usually an I-beam.
 
-/// Wait.  Usually an hourglass or watch or spinning ball.
+/// Wait. Usually an hourglass or watch or spinning ball.
 constexpr SystemCursor SYSTEM_CURSOR_WAIT = SDL_SYSTEM_CURSOR_WAIT;
 
 constexpr SystemCursor SYSTEM_CURSOR_CROSSHAIR =
   SDL_SYSTEM_CURSOR_CROSSHAIR; ///< Crosshair.
 
-/// Program is busy but still interactive.  Usually it's WAIT with an arrow.
+/// Program is busy but still interactive. Usually it's WAIT with an arrow.
 constexpr SystemCursor SYSTEM_CURSOR_PROGRESS = SDL_SYSTEM_CURSOR_PROGRESS;
 
 constexpr SystemCursor SYSTEM_CURSOR_NWSE_RESIZE =
@@ -119,42 +119,41 @@ constexpr SystemCursor SYSTEM_CURSOR_NS_RESIZE =
 /// Four pointed arrow pointing north, south, east, and west.
 constexpr SystemCursor SYSTEM_CURSOR_MOVE = SDL_SYSTEM_CURSOR_MOVE;
 
-/// Not permitted.  Usually a slashed circle or crossbones.
+/// Not permitted. Usually a slashed circle or crossbones.
 constexpr SystemCursor SYSTEM_CURSOR_NOT_ALLOWED =
   SDL_SYSTEM_CURSOR_NOT_ALLOWED;
 
-/// Pointer that indicates a link.  Usually a pointing hand.
+/// Pointer that indicates a link. Usually a pointing hand.
 constexpr SystemCursor SYSTEM_CURSOR_POINTER = SDL_SYSTEM_CURSOR_POINTER;
 
 /**
- * Window resize top-left.  This may be a single arrow or a double arrow like
+ * Window resize top-left. This may be a single arrow or a double arrow like
  * NWSE_RESIZE.
  */
 constexpr SystemCursor SYSTEM_CURSOR_NW_RESIZE = SDL_SYSTEM_CURSOR_NW_RESIZE;
 
 constexpr SystemCursor SYSTEM_CURSOR_N_RESIZE =
-  SDL_SYSTEM_CURSOR_N_RESIZE; ///< Window resize top.  May be NS_RESIZE.
+  SDL_SYSTEM_CURSOR_N_RESIZE; ///< Window resize top. May be NS_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_NE_RESIZE =
-  SDL_SYSTEM_CURSOR_NE_RESIZE; ///< Window resize top-right.  May be
-                               ///< NESW_RESIZE.
+  SDL_SYSTEM_CURSOR_NE_RESIZE; ///< Window resize top-right. May be NESW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_E_RESIZE =
-  SDL_SYSTEM_CURSOR_E_RESIZE; ///< Window resize right.  May be EW_RESIZE.
+  SDL_SYSTEM_CURSOR_E_RESIZE; ///< Window resize right. May be EW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_SE_RESIZE =
-  SDL_SYSTEM_CURSOR_SE_RESIZE; ///< Window resize bottom-right.  May be
+  SDL_SYSTEM_CURSOR_SE_RESIZE; ///< Window resize bottom-right. May be
                                ///< NWSE_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_S_RESIZE =
-  SDL_SYSTEM_CURSOR_S_RESIZE; ///< Window resize bottom.  May be NS_RESIZE.
+  SDL_SYSTEM_CURSOR_S_RESIZE; ///< Window resize bottom. May be NS_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_SW_RESIZE =
-  SDL_SYSTEM_CURSOR_SW_RESIZE; ///< Window resize bottom-left.  May be
+  SDL_SYSTEM_CURSOR_SW_RESIZE; ///< Window resize bottom-left. May be
                                ///< NESW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_W_RESIZE =
-  SDL_SYSTEM_CURSOR_W_RESIZE; ///< Window resize left.  May be EW_RESIZE.
+  SDL_SYSTEM_CURSOR_W_RESIZE; ///< Window resize left. May be EW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_COUNT = SDL_SYSTEM_CURSOR_COUNT; ///< COUNT
 
@@ -417,10 +416,10 @@ struct CursorRef : Cursor
 using MouseWheelDirection = SDL_MouseWheelDirection;
 
 constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
-  SDL_MOUSEWHEEL_NORMAL; ///< The scroll direction is normal.
+  SDL_MOUSEWHEEL_NORMAL; ///< The scroll direction is normal
 
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
-  SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural.
+  SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
 using MouseButton = Uint8;
 

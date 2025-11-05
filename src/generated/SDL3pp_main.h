@@ -178,6 +178,52 @@ inline int EnterAppMainCallbacks(int argc,
 }
 
 /**
+ * Register a win32 window class for SDL's use.
+ *
+ * This can be called to set the application window class at startup. It is
+ * safe to call this multiple times, as long as every call is eventually
+ * paired with a call to UnregisterApp, but a second registration attempt
+ * while a previous registration is still active will be ignored, other than
+ * to increment a counter.
+ *
+ * Most applications do not need to, and should not, call this directly; SDL
+ * will call it when initializing the video subsystem.
+ *
+ * @param name the window class name, in UTF-8 encoding. If nullptr, SDL
+ *             currently uses "SDL_app" but this isn't guaranteed.
+ * @param style the value to use in WNDCLASSEX::style. If `name` is nullptr, SDL
+ *              currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)` regardless of
+ *              what is specified here.
+ * @param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL
+ *              will use `GetModuleHandle(nullptr)` instead.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool RegisterApp(StringParam name, Uint32 style, void* hInst)
+{
+  return SDL_RegisterApp(name, style, hInst);
+}
+
+/**
+ * Deregister the win32 window class from an RegisterApp call.
+ *
+ * This can be called to undo the effects of RegisterApp.
+ *
+ * Most applications do not need to, and should not, call this directly; SDL
+ * will call it when deinitializing the video subsystem.
+ *
+ * It is safe to call this multiple times, as long as every call is eventually
+ * paired with a prior call to RegisterApp. The window class will only be
+ * deregistered when the registration counter in RegisterApp decrements to
+ * zero through calls to this function.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void UnregisterApp() { SDL_UnregisterApp(); }
+
+/**
  * Callback from the application to let the suspend continue.
  *
  * This function is only needed for Xbox GDK support; all other platforms will

@@ -126,26 +126,26 @@ using SensorID = Uint32;
 using SensorType = SDL_SensorType;
 
 constexpr SensorType SENSOR_INVALID =
-  SDL_SENSOR_INVALID; ///< Returned for an invalid sensor.
+  SDL_SENSOR_INVALID; ///< Returned for an invalid sensor
 
 constexpr SensorType SENSOR_UNKNOWN =
-  SDL_SENSOR_UNKNOWN; ///< Unknown sensor type.
+  SDL_SENSOR_UNKNOWN; ///< Unknown sensor type
 
-constexpr SensorType SENSOR_ACCEL = SDL_SENSOR_ACCEL; ///< Accelerometer.
+constexpr SensorType SENSOR_ACCEL = SDL_SENSOR_ACCEL; ///< Accelerometer
 
-constexpr SensorType SENSOR_GYRO = SDL_SENSOR_GYRO; ///< Gyroscope.
+constexpr SensorType SENSOR_GYRO = SDL_SENSOR_GYRO; ///< Gyroscope
 
-/// Accelerometer for left Joy-Con controller and Wii nunchuk.
+/// Accelerometer for left Joy-Con controller and Wii nunchuk
 constexpr SensorType SENSOR_ACCEL_L = SDL_SENSOR_ACCEL_L;
 
 constexpr SensorType SENSOR_GYRO_L =
-  SDL_SENSOR_GYRO_L; ///< Gyroscope for left Joy-Con controller.
+  SDL_SENSOR_GYRO_L; ///< Gyroscope for left Joy-Con controller
 
 constexpr SensorType SENSOR_ACCEL_R =
-  SDL_SENSOR_ACCEL_R; ///< Accelerometer for right Joy-Con controller.
+  SDL_SENSOR_ACCEL_R; ///< Accelerometer for right Joy-Con controller
 
 constexpr SensorType SENSOR_GYRO_R =
-  SDL_SENSOR_GYRO_R; ///< Gyroscope for right Joy-Con controller.
+  SDL_SENSOR_GYRO_R; ///< Gyroscope for right Joy-Con controller
 
 #if SDL_VERSION_ATLEAST(3, 2, 22)
 

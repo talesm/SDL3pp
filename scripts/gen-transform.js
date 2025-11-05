@@ -161,6 +161,8 @@ const transform = {
         "SDL_TryLockSpinlock",
         "SDL_LockSpinlock",
         "SDL_UnlockSpinlock",
+        "SDL_KernelMemoryBarrierFunc",
+        "SDL_MEMORY_BARRIER_USES_FUNCTION",
       ],
       transform: {
         "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease", after: "__begin" },
@@ -1855,6 +1857,7 @@ const transform = {
         "SDL3pp_stdinc.h",
         "SDL3pp_rect.h",
       ],
+      ignoreEntries: ["SDL_joystick_lock"],
       namespacesMap: {
         "SDL_PROP_JOYSTICK_CAP_": "prop::JoystickCap",
       },
@@ -3022,6 +3025,9 @@ const transform = {
         "SDL_main",
         "SDL_MAIN_AVAILABLE",
         "SDL_MAIN_NEEDED",
+        "SDL_PLATFORM_PRIVATE_MAIN",
+        "SDL_MAIN_EXPORTED",
+        "SDL_PS2_SKIP_IOP_RESET",
         "SDL_AppInit",
         "SDL_AppIterate",
         "SDL_AppEvent",
@@ -5245,7 +5251,7 @@ const transform = {
         "Keycode": { kind: "forward" },
         "SDL_Scancode": {
           wrapper: { ordered: true }
-        }
+        },
       }
     },
     "SDL_stdinc.h": {
@@ -5263,6 +5269,7 @@ const transform = {
         "bool",
         "__bool_true_false_are_defined",
         "false",
+        "SDL_INCLUDE_STDBOOL_H",
         "SDL_alignment_test",
         "SDL_const_cast",
         "SDL_DUMMY_ENUM",
@@ -5299,7 +5306,12 @@ const transform = {
         "SDL_static_cast",
         "SDL_WPRINTF_VARARG_FUNC",
         "SDL_WPRINTF_VARARG_FUNCV",
-        "true"
+        "true",
+        "strlcpy",
+        "strlcat",
+        "wcslcpy",
+        "wcslcat",
+        "strdup",
       ],
       transform: {
         "SDL_Environment": {
@@ -6873,6 +6885,10 @@ const transform = {
       namespacesMap: {
         "SDL_PROP_THREAD_": "prop::thread"
       },
+      ignoreEntries: [
+        "SDL_CreateThreadRuntime",
+        "SDL_CreateThreadWithPropertiesRuntime",
+      ],
       transform: {
         "ThreadID": { after: "__begin" },
         "ThreadFunction": { after: "__begin" },
@@ -7580,7 +7596,7 @@ const transform = {
     },
     "SDL_vulkan.h": {
       localIncludes: ["SDL3pp.h"],
-      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"],
+      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE", "NO_SDL_VULKAN_TYPEDEFS"],
       transform: {
         "SDL_Vulkan_GetInstanceExtensions": {
           type: "std::span<char const * const>",

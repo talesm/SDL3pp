@@ -2281,7 +2281,7 @@ inline AssertState ReportAssertion(AssertData* data,
   do {                                                                         \
     while (!(condition)) {                                                     \
       static struct SDL_AssertData sdl_assert_data = {                         \
-        0, 0, #condition, 0, 0, 0, 0};                                         \
+        false, 0, #condition, NULL, 0, NULL, NULL};                            \
       const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(            \
         &sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE);                   \
       if (sdl_assert_state == SDL_ASSERTION_RETRY) {                           \
@@ -9561,10 +9561,10 @@ constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
   SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
 
 constexpr PixelFormat PIXELFORMAT_YV12 =
-  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
+  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U  (3 planes)
 
 constexpr PixelFormat PIXELFORMAT_IYUV =
-  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
+  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V  (3 planes)
 
 constexpr PixelFormat PIXELFORMAT_YUY2 =
   SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
@@ -9576,20 +9576,20 @@ constexpr PixelFormat PIXELFORMAT_YVYU =
   SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
 
 constexpr PixelFormat PIXELFORMAT_NV12 =
-  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
+  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved  (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_NV21 =
-  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
+  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved  (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_P010 =
-  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
+  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved  (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
-  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
+  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
@@ -10042,22 +10042,22 @@ constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN =
   SDL_COLOR_PRIMARIES_UNKNOWN; ///< COLOR_PRIMARIES_UNKNOWN
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT709 =
-  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6.
+  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6
 
 constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
   SDL_COLOR_PRIMARIES_UNSPECIFIED; ///< COLOR_PRIMARIES_UNSPECIFIED
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT470M =
-  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M.
+  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
   SDL_COLOR_PRIMARIES_BT470BG; ///< ITU-R BT.470-6 System B, G / ITU-R BT.601-7
-                               ///< 625.
+                               ///< 625
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
-  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M.
+  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M
 
-/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
+/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
   SDL_COLOR_PRIMARIES_SMPTE240;
 
@@ -10066,19 +10066,19 @@ constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
                                     ///< Illuminant C)
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 =
-  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0.
+  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0
 
 constexpr ColorPrimaries COLOR_PRIMARIES_XYZ =
-  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1.
+  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1
 
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
-  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2.
+  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2
 
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
-  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3.
+  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3
 
 constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 =
-  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech.  3213-E
+  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech. 3213-E
 
 constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
   SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
@@ -10103,24 +10103,24 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
   SDL_TRANSFER_CHARACTERISTICS_UNKNOWN; ///< TRANSFER_CHARACTERISTICS_UNKNOWN
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
-  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec.  ITU-R BT.709-6 / ITU-R BT1361
+  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec. ITU-R BT.709-6 / ITU-R BT1361
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
   SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
 
-/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
+/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
   SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G.
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
   SDL_TRANSFER_CHARACTERISTICS_BT601; ///< SMPTE ST 170M / ITU-R BT.601-7 525 or
-                                      ///< 625.
+                                      ///< 625
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M.
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
   SDL_TRANSFER_CHARACTERISTICS_LINEAR; ///< TRANSFER_CHARACTERISTICS_LINEAR
@@ -10132,28 +10132,26 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
   SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10; ///< TRANSFER_CHARACTERISTICS_LOG100_SQRT10
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
-  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4.
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
-  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut.
+  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
   SDL_TRANSFER_CHARACTERISTICS_SRGB; ///< IEC 61966-2-1 (sRGB or sYCC)
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit
-                                             ///< system.
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit system
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit
-                                             ///< system.
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit system
 
-/// SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
-  SDL_TRANSFER_CHARACTERISTICS_PQ;
+  SDL_TRANSFER_CHARACTERISTICS_PQ; ///< SMPTE ST 2084 for 10-, 12-, 14- and
+                                   ///< 16-bit systems
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1.
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
   SDL_TRANSFER_CHARACTERISTICS_HLG; ///< ARIB STD-B67, known as "hybrid
@@ -10182,39 +10180,39 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
   SDL_MATRIX_COEFFICIENTS_IDENTITY; ///< MATRIX_COEFFICIENTS_IDENTITY
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
-  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6.
+  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
   SDL_MATRIX_COEFFICIENTS_UNSPECIFIED; ///< MATRIX_COEFFICIENTS_UNSPECIFIED
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
-  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47.
+  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47
 
 /**
  * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
- * MATRIX_COEFFICIENTS_BT601.
+ * MATRIX_COEFFICIENTS_BT601
  */
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
   SDL_MATRIX_COEFFICIENTS_BT470BG;
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
-  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525.
+  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M.
+  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
   SDL_MATRIX_COEFFICIENTS_YCGCO; ///< MATRIX_COEFFICIENTS_YCGCO
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
   SDL_MATRIX_COEFFICIENTS_BT2020_NCL; ///< ITU-R BT.2020-2 non-constant
-                                      ///< luminance.
+                                      ///< luminance
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance.
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085.
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
   SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL
@@ -10223,7 +10221,7 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
   SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
-  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP.
+  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
   SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
@@ -10243,7 +10241,7 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
 using ChromaLocation = SDL_ChromaLocation;
 
 constexpr ChromaLocation CHROMA_LOCATION_NONE =
-  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling.
+  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling
 
 /**
  * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
@@ -10482,7 +10480,7 @@ public:
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
-/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
 constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
@@ -10491,31 +10489,31 @@ constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
 constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
 constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
 constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
 constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
 constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
 constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
 constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
 constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
-/// The default colorspace for RGB surfaces if no colorspace is specified.
+/// The default colorspace for RGB surfaces if no colorspace is specified
 constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
-/// The default colorspace for YUV surfaces if no colorspace is specified.
+/// The default colorspace for YUV surfaces if no colorspace is specified
 constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /// @}
@@ -13244,7 +13242,7 @@ struct IConvParam
  * is safe to define this yourself to build against the SDL headers.
  *
  * If this is defined, it will remove access to some C runtime support
- * functions, like SDL_ulltoa and SDL_strtoll that refer to this datatype
+ * functions, like ulltoa and strtoll that refer to this datatype
  * explicitly. The rest of SDL will still be available.
  *
  * SDL's own source code cannot be built with a compiler that has this
@@ -13267,6 +13265,39 @@ struct IConvParam
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_SIZE_MAX SIZE_MAX
+
+/**
+ * A compile-time assertion.
+ *
+ * This can check constant values _known to the compiler at build time_ for
+ * correctness, and end the compile with the error if they fail.
+ *
+ * Often times these are used to verify basic truths, like the size of a
+ * datatype is what is expected:
+ *
+ * ```c
+ * SDL_COMPILE_TIME_ASSERT(uint32_size, sizeof(Uint32) == 4);
+ * ```
+ *
+ * The `name` parameter must be a valid C symbol, and must be unique across
+ * all compile-time asserts in the same compilation unit (one run of the
+ * compiler), or the build might fail with cryptic errors on some targets.
+ * This is used with a C language trick that works on older compilers that
+ * don't support better assertion techniques.
+ *
+ * If you need an assertion that operates at runtime, on variable data, you
+ * should try SDL_assert instead.
+ *
+ * @param name a unique identifier for this assertion.
+ * @param x the value to test. Must be a boolean value.
+ *
+ * @threadsafety This macro doesn't generate any code to run.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_assert
+ */
+#define SDL_COMPILE_TIME_ASSERT(name, x) FailToCompileIf_x_IsFalse(x)
 
 #endif // SDL3PP_DOC
 
@@ -16477,7 +16508,7 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
  *
  * @sa uitoa
  * @sa ltoa
- * @sa SDL_lltoa
+ * @sa lltoa
  */
 inline char* itoa(int value, char* str, int radix)
 {
@@ -16508,7 +16539,7 @@ inline char* itoa(int value, char* str, int radix)
  *
  * @sa itoa
  * @sa ultoa
- * @sa SDL_ulltoa
+ * @sa ulltoa
  */
 inline char* uitoa(unsigned int value, char* str, int radix)
 {
@@ -16539,7 +16570,7 @@ inline char* uitoa(unsigned int value, char* str, int radix)
  *
  * @sa ultoa
  * @sa itoa
- * @sa SDL_lltoa
+ * @sa lltoa
  */
 inline char* ltoa(long value, char* str, int radix)
 {
@@ -16570,12 +16601,78 @@ inline char* ltoa(long value, char* str, int radix)
  *
  * @sa ltoa
  * @sa uitoa
- * @sa SDL_ulltoa
+ * @sa ulltoa
  */
 inline char* ultoa(unsigned long value, char* str, int radix)
 {
   return SDL_ultoa(value, str, radix);
 }
+
+#ifndef SDL_NOLONGLONG
+
+/**
+ * Convert a long long integer into a string.
+ *
+ * This requires a radix to specified for string format. Specifying 10
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
+ * to 36.
+ *
+ * Note that this function will overflow a buffer if `str` is not large enough
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * much more space than you expect to use (and don't forget possible negative
+ * signs, null terminator bytes, etc).
+ *
+ * @param value the long long integer to convert.
+ * @param str the buffer to write the string into.
+ * @param radix the radix to use for string generation.
+ * @returns `str`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ulltoa
+ * @sa itoa
+ * @sa ltoa
+ */
+inline char* lltoa(long long value, char* str, int radix)
+{
+  return SDL_lltoa(value, str, radix);
+}
+
+/**
+ * Convert an unsigned long long integer into a string.
+ *
+ * This requires a radix to specified for string format. Specifying 10
+ * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
+ * to 36.
+ *
+ * Note that this function will overflow a buffer if `str` is not large enough
+ * to hold the output! It may be safer to use snprintf to clamp output, or
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
+ * much more space than you expect to use (and don't forget null terminator
+ * bytes, etc).
+ *
+ * @param value the unsigned long long integer to convert.
+ * @param str the buffer to write the string into.
+ * @param radix the radix to use for string generation.
+ * @returns `str`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa lltoa
+ * @sa uitoa
+ * @sa ultoa
+ */
+inline char* ulltoa(unsigned long long value, char* str, int radix)
+{
+  return SDL_ulltoa(value, str, radix);
+}
+
+#endif // SDL_NOLONGLONG
 
 /**
  * Parse an `int` from a string.
@@ -16593,8 +16690,8 @@ inline char* ultoa(unsigned long value, char* str, int radix)
  * @sa atof
  * @sa strtol
  * @sa strtoul
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  * @sa itoa
  */
@@ -16616,8 +16713,8 @@ inline int atoi(StringParam str) { return SDL_atoi(str); }
  * @sa atoi
  * @sa strtol
  * @sa strtoul
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  */
 inline double atof(StringParam str) { return SDL_atof(str); }
@@ -16648,8 +16745,8 @@ inline double atof(StringParam str) { return SDL_atof(str); }
  * @sa atoi
  * @sa atof
  * @sa strtoul
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  * @sa ltoa
  * @sa wcstol
@@ -16685,8 +16782,8 @@ inline long strtol(StringParam str, char** endp, int base)
  * @sa atoi
  * @sa atof
  * @sa strtol
- * @sa SDL_strtoll
- * @sa SDL_strtoull
+ * @sa strtoll
+ * @sa strtoull
  * @sa strtod
  * @sa ultoa
  */
@@ -16694,6 +16791,83 @@ inline unsigned long strtoul(StringParam str, char** endp, int base)
 {
   return SDL_strtoul(str, endp, base);
 }
+
+#ifndef SDL_NOLONGLONG
+
+/**
+ * Parse a `long long` from a string.
+ *
+ * If `str` starts with whitespace, then those whitespace characters are
+ * skipped before attempting to parse the number.
+ *
+ * If the parsed number does not fit inside a `long long`, the result is
+ * clamped to the minimum and maximum representable `long long` values.
+ *
+ * @param str The null-terminated string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid character (i.e.
+ *             the next character after the parsed number) will be written to
+ *             this pointer.
+ * @param base The base of the integer to read. Supported values are 0 and 2
+ *             to 36 inclusive. If 0, the base will be inferred from the
+ *             number's prefix (0x for hexadecimal, 0 for octal, decimal
+ *             otherwise).
+ * @returns the parsed `long long`, or 0 if no number could be parsed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa atoi
+ * @sa atof
+ * @sa strtol
+ * @sa strtoul
+ * @sa strtoull
+ * @sa strtod
+ * @sa lltoa
+ */
+inline long long strtoll(StringParam str, char** endp, int base)
+{
+  return SDL_strtoll(str, endp, base);
+}
+
+/**
+ * Parse an `unsigned long long` from a string.
+ *
+ * If `str` starts with whitespace, then those whitespace characters are
+ * skipped before attempting to parse the number.
+ *
+ * If the parsed number does not fit inside an `unsigned long long`, the
+ * result is clamped to the maximum representable `unsigned long long` value.
+ *
+ * @param str The null-terminated string to read. Must not be nullptr.
+ * @param endp If not nullptr, the address of the first invalid character (i.e.
+ *             the next character after the parsed number) will be written to
+ *             this pointer.
+ * @param base The base of the integer to read. Supported values are 0 and 2
+ *             to 36 inclusive. If 0, the base will be inferred from the
+ *             number's prefix (0x for hexadecimal, 0 for octal, decimal
+ *             otherwise).
+ * @returns the parsed `unsigned long long`, or 0 if no number could be
+ *          parsed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa atoi
+ * @sa atof
+ * @sa strtol
+ * @sa strtoll
+ * @sa strtoul
+ * @sa strtod
+ * @sa ulltoa
+ */
+inline unsigned long long strtoull(StringParam str, char** endp, int base)
+{
+  return SDL_strtoull(str, endp, base);
+}
+
+#endif // SDL_NOLONGLONG
 
 /**
  * Parse a `double` from a string.
@@ -16718,9 +16892,9 @@ inline unsigned long strtoul(StringParam str, char** endp, int base)
  * @sa atoi
  * @sa atof
  * @sa strtol
- * @sa SDL_strtoll
+ * @sa strtoll
  * @sa strtoul
- * @sa SDL_strtoull
+ * @sa strtoull
  */
 inline double strtod(StringParam str, char** endp)
 {
@@ -19249,7 +19423,7 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
+constexpr bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -19271,7 +19445,7 @@ inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
+constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }
@@ -22140,32 +22314,11 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
 #endif // SDL3PP_DOC
 
 /**
- * Byte-swap a floating point number.
- *
- * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SwapFloatLE or
- * SwapFloatBE instead, in most cases.
- *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
- *
- * @param x the value to byte-swap.
- * @returns x, with its bytes in the opposite endian order.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
-
-/**
  * Byte-swap an unsigned 16-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
- * in most cases.
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE
+ * instead, in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -22185,8 +22338,8 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  * Byte-swap an unsigned 32-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
- * in most cases.
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE
+ * instead, in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -22206,8 +22359,8 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * Byte-swap an unsigned 64-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
- * in most cases.
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE
+ * instead, in most cases.
  *
  * Note that this is a forced-inline function in a header, and not a public
  * API function available in the SDL library (which is to say, the code is
@@ -22222,6 +22375,27 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * @since This function is available since SDL 3.2.0.
  */
 constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+
+/**
+ * Byte-swap a floating point number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use SwapFloatLE or
+ * SwapFloatBE instead, in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns x, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
 
 /**
  * Swap a 16-bit value from littleendian to native byte order.
@@ -22570,14 +22744,14 @@ using Folder = SDL_Folder;
 
 /**
  * The folder which contains all of the current user's data, preferences, and
- * documents.  It usually contains most of the other folders. If a requested
+ * documents. It usually contains most of the other folders. If a requested
  * folder does not exist, the home folder can be considered a safe fallback to
  * store a user's documents.
  */
 constexpr Folder FOLDER_HOME = SDL_FOLDER_HOME;
 
 /**
- * The folder of files that are displayed on the desktop.  Note that the
+ * The folder of files that are displayed on the desktop. Note that the
  * existence of a desktop folder does not guarantee that the system does show
  * icons on its desktop; certain GNU/Linux distros with a graphical environment
  * may not have desktop icons.
@@ -22585,7 +22759,7 @@ constexpr Folder FOLDER_HOME = SDL_FOLDER_HOME;
 constexpr Folder FOLDER_DESKTOP = SDL_FOLDER_DESKTOP;
 
 /**
- * User document files, possibly application-specific.  This is a good place to
+ * User document files, possibly application-specific. This is a good place to
  * save a user's projects.
  */
 constexpr Folder FOLDER_DOCUMENTS = SDL_FOLDER_DOCUMENTS;
@@ -23246,7 +23420,7 @@ struct HidDeviceParam
 using hid_bus_type = SDL_hid_bus_type;
 
 constexpr hid_bus_type HID_API_BUS_UNKNOWN =
-  SDL_HID_API_BUS_UNKNOWN; ///< Unknown bus type.
+  SDL_HID_API_BUS_UNKNOWN; ///< Unknown bus type
 
 /**
  * USB bus Specifications:
@@ -25007,18 +25181,18 @@ constexpr IOStatus IO_STATUS_READY =
   SDL_IO_STATUS_READY; ///< Everything is ready (no errors and not EOF).
 
 constexpr IOStatus IO_STATUS_ERROR =
-  SDL_IO_STATUS_ERROR; ///< Read or write I/O error.
+  SDL_IO_STATUS_ERROR; ///< Read or write I/O error
 
-constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file.
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file
 
 constexpr IOStatus IO_STATUS_NOT_READY =
-  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready.
+  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready
 
 constexpr IOStatus IO_STATUS_READONLY =
-  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer.
+  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer
 
 constexpr IOStatus IO_STATUS_WRITEONLY =
-  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
+  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer
 
 /**
  * Possible `whence` values for IOStream seeking.
@@ -25031,13 +25205,13 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
 using IOWhence = SDL_IOWhence;
 
 constexpr IOWhence IO_SEEK_SET =
-  SDL_IO_SEEK_SET; ///< Seek from the beginning of data.
+  SDL_IO_SEEK_SET; ///< Seek from the beginning of data
 
 constexpr IOWhence IO_SEEK_CUR =
-  SDL_IO_SEEK_CUR; ///< Seek relative to current read point.
+  SDL_IO_SEEK_CUR; ///< Seek relative to current read point
 
 constexpr IOWhence IO_SEEK_END =
-  SDL_IO_SEEK_END; ///< Seek relative to the end of data.
+  SDL_IO_SEEK_END; ///< Seek relative to the end of data
 
 /**
  * The function pointers that drive an IOStream.
@@ -28522,16 +28696,16 @@ constexpr PowerState POWERSTATE_UNKNOWN =
   SDL_POWERSTATE_UNKNOWN; ///< cannot determine power status
 
 constexpr PowerState POWERSTATE_ON_BATTERY =
-  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery.
+  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery
 
 constexpr PowerState POWERSTATE_NO_BATTERY =
-  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available.
+  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available
 
 constexpr PowerState POWERSTATE_CHARGING =
-  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery.
+  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery
 
 constexpr PowerState POWERSTATE_CHARGED =
-  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged.
+  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged
 
 /// @}
 
@@ -31396,23 +31570,34 @@ constexpr Scancode SCANCODE_RIGHTBRACKET =
   SDL_SCANCODE_RIGHTBRACKET; ///< RIGHTBRACKET
 
 /**
- * Located at the lower left of the return key on ISO keyboards and at the right
- * end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS
- * (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL
- * LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR
- * SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a
- * German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and
- * ASTERISK and MICRO SIGN in a French Windows layout.
+ * Located at the lower left of the return
+ *   key on ISO keyboards and at the right end
+ *   of the QWERTY row on ANSI keyboards.
+ *   Produces REVERSE SOLIDUS (backslash) and
+ *   VERTICAL LINE in a US layout, REVERSE
+ *   SOLIDUS and VERTICAL LINE in a UK Mac
+ *   layout, NUMBER SIGN and TILDE in a UK
+ *   Windows layout, DOLLAR SIGN and POUND SIGN
+ *   in a Swiss German layout, NUMBER SIGN and
+ *   APOSTROPHE in a German layout, GRAVE
+ *   ACCENT and POUND SIGN in a French Mac
+ *   layout, and ASTERISK and MICRO SIGN in a
+ *   French Windows layout.
  */
 constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
 
 /**
- * ISO USB keyboards actually use this code instead of 49 for the same key, but
- * all OSes I've seen treat the two codes identically.  So, as an implementor,
- * unless your keyboard generates both of those codes and your OS treats them
- * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
- * a user, you should not rely on this code because SDL will never generate it
- * with most (all?) keyboards.
+ * ISO USB keyboards actually use this code
+ *   instead of 49 for the same key, but all
+ *   OSes I've seen treat the two codes
+ *   identically. So, as an implementor, unless
+ *   your keyboard generates both of those
+ *   codes and your OS treats them differently,
+ *   you should generate SCANCODE_BACKSLASH
+ *   instead of this code. As a user, you
+ *   should not rely on this code because SDL
+ *   will never generate it with most (all?)
+ *   keyboards.
  */
 constexpr Scancode SCANCODE_NONUSHASH = SDL_SCANCODE_NONUSHASH;
 
@@ -31422,16 +31607,22 @@ constexpr Scancode SCANCODE_APOSTROPHE =
   SDL_SCANCODE_APOSTROPHE; ///< APOSTROPHE
 
 /**
- * Located in the top left corner (on both ANSI and ISO keyboards).  Produces
- * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
- * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
- * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
- * SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),
- * CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO
- * keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL
- * AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN
- * SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on
- * ANSI keyboards.
+ * Located in the top left corner (on both ANSI
+ *   and ISO keyboards). Produces GRAVE ACCENT and
+ *   TILDE in a US Windows layout and in US and UK
+ *   Mac layouts on ANSI keyboards, GRAVE ACCENT
+ *   and NOT SIGN in a UK Windows layout, SECTION
+ *   SIGN and PLUS-MINUS SIGN in US and UK Mac
+ *   layouts on ISO keyboards, SECTION SIGN and
+ *   DEGREE SIGN in a Swiss German layout (Mac:
+ *   only on ISO keyboards), CIRCUMFLEX ACCENT and
+ *   DEGREE SIGN in a German layout (Mac: only on
+ *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a
+ *   French Windows layout, COMMERCIAL AT and
+ *   NUMBER SIGN in a French Mac layout on ISO
+ *   keyboards, and LESS-THAN SIGN and GREATER-THAN
+ *   SIGN in a Swiss German, German, or French Mac
+ *   layout on ANSI keyboards.
  */
 constexpr Scancode SCANCODE_GRAVE = SDL_SCANCODE_GRAVE;
 
@@ -31475,7 +31666,10 @@ constexpr Scancode SCANCODE_SCROLLLOCK =
 
 constexpr Scancode SCANCODE_PAUSE = SDL_SCANCODE_PAUSE; ///< PAUSE
 
-/// insert on PC, help on some Mac keyboards (but does send code 73, not 117)
+/**
+ * insert on PC, help on some Mac keyboards (but
+ *                                    does send code 73, not 117)
+ */
 constexpr Scancode SCANCODE_INSERT = SDL_SCANCODE_INSERT;
 
 constexpr Scancode SCANCODE_HOME = SDL_SCANCODE_HOME; ///< HOME
@@ -31533,11 +31727,16 @@ constexpr Scancode SCANCODE_KP_0 = SDL_SCANCODE_KP_0; ///< KP_0
 constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD; ///< KP_PERIOD
 
 /**
- * This is the additional key that ISO keyboards have over ANSI ones, located
- * between left shift and Z.  Produces GRAVE ACCENT and TILDE in a US or UK Mac
- * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
- * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
- * or French layout.
+ * This is the additional key that ISO
+ *   keyboards have over ANSI ones,
+ *   located between left shift and Z.
+ *   Produces GRAVE ACCENT and TILDE in a
+ *   US or UK Mac layout, REVERSE SOLIDUS
+ *   (backslash) and VERTICAL LINE in a
+ *   US or UK Windows layout, and
+ *   LESS-THAN SIGN and GREATER-THAN SIGN
+ *   in a Swiss German, German, or French
+ *   layout.
  */
 constexpr Scancode SCANCODE_NONUSBACKSLASH = SDL_SCANCODE_NONUSBACKSLASH;
 
@@ -31545,8 +31744,9 @@ constexpr Scancode SCANCODE_APPLICATION =
   SDL_SCANCODE_APPLICATION; ///< windows contextual menu, compose
 
 /**
- * The USB document says this is a status flag, not a physical key - but some
- * Mac keyboards do have a power key.
+ * The USB document says this is a status flag,
+ *   not a physical key - but some Mac keyboards
+ *   do have a power key.
  */
 constexpr Scancode SCANCODE_POWER = SDL_SCANCODE_POWER;
 
@@ -31579,25 +31779,25 @@ constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24; ///< F24
 constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE; ///< EXECUTE
 
 constexpr Scancode SCANCODE_HELP =
-  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
+  SDL_SCANCODE_HELP; ///< AL Integrated Help Center
 
 constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
 
 constexpr Scancode SCANCODE_SELECT = SDL_SCANCODE_SELECT; ///< SELECT
 
-constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop.
+constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop
 
-constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat.
+constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat
 
-constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo.
+constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo
 
-constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut.
+constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut
 
-constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy.
+constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy
 
-constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste.
+constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste
 
-constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find.
+constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find
 
 constexpr Scancode SCANCODE_MUTE = SDL_SCANCODE_MUTE; ///< MUTE
 
@@ -31611,15 +31811,17 @@ constexpr Scancode SCANCODE_KP_COMMA = SDL_SCANCODE_KP_COMMA; ///< KP_COMMA
 constexpr Scancode SCANCODE_KP_EQUALSAS400 =
   SDL_SCANCODE_KP_EQUALSAS400; ///< KP_EQUALSAS400
 
-constexpr Scancode SCANCODE_INTERNATIONAL1 =
-  SDL_SCANCODE_INTERNATIONAL1; ///< used on Asian keyboards, see footnotes in
-                               ///< USB doc
+/**
+ * used on Asian keyboards, see
+ *                                             footnotes in USB doc
+ */
+constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
 
 constexpr Scancode SCANCODE_INTERNATIONAL2 =
   SDL_SCANCODE_INTERNATIONAL2; ///< INTERNATIONAL2
 
 constexpr Scancode SCANCODE_INTERNATIONAL3 =
-  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
+  SDL_SCANCODE_INTERNATIONAL3; ///< Yen
 
 constexpr Scancode SCANCODE_INTERNATIONAL4 =
   SDL_SCANCODE_INTERNATIONAL4; ///< INTERNATIONAL4
@@ -31640,15 +31842,15 @@ constexpr Scancode SCANCODE_INTERNATIONAL9 =
   SDL_SCANCODE_INTERNATIONAL9; ///< INTERNATIONAL9
 
 constexpr Scancode SCANCODE_LANG1 =
-  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
+  SDL_SCANCODE_LANG1; ///< Hangul/English toggle
 
-constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
+constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion
 
-constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana.
+constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana
 
-constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana.
+constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana
 
-constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku.
+constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku
 
 constexpr Scancode SCANCODE_LANG6 = SDL_SCANCODE_LANG6; ///< reserved
 
@@ -31658,11 +31860,11 @@ constexpr Scancode SCANCODE_LANG8 = SDL_SCANCODE_LANG8; ///< reserved
 
 constexpr Scancode SCANCODE_LANG9 = SDL_SCANCODE_LANG9; ///< reserved
 
-constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze.
+constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze
 
 constexpr Scancode SCANCODE_SYSREQ = SDL_SCANCODE_SYSREQ; ///< SYSREQ
 
-constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel.
+constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel
 
 constexpr Scancode SCANCODE_CLEAR = SDL_SCANCODE_CLEAR; ///< CLEAR
 
@@ -31819,93 +32021,96 @@ constexpr Scancode SCANCODE_RGUI =
   SDL_SCANCODE_RGUI; ///< windows, command (apple), meta
 
 /**
- * I'm not sure if this is really not covered by any of the above, but since
- * there's a special KMOD_MODE for it I'm adding it here.
+ * I'm not sure if this is really not covered
+ *   by any of the above, but since there's a
+ *   special KMOD_MODE for it I'm adding it here
  */
 constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
 
-constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep.
+constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep
 
-constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake.
+constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake
 
 constexpr Scancode SCANCODE_CHANNEL_INCREMENT =
-  SDL_SCANCODE_CHANNEL_INCREMENT; ///< Channel Increment.
+  SDL_SCANCODE_CHANNEL_INCREMENT; ///< Channel Increment
 
 constexpr Scancode SCANCODE_CHANNEL_DECREMENT =
-  SDL_SCANCODE_CHANNEL_DECREMENT; ///< Channel Decrement.
+  SDL_SCANCODE_CHANNEL_DECREMENT; ///< Channel Decrement
 
-constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
+constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play
 
-constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
+constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause
 
 constexpr Scancode SCANCODE_MEDIA_RECORD =
-  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
+  SDL_SCANCODE_MEDIA_RECORD; ///< Record
 
 constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
-  SDL_SCANCODE_MEDIA_FAST_FORWARD; ///< Fast Forward.
+  SDL_SCANCODE_MEDIA_FAST_FORWARD; ///< Fast Forward
 
 constexpr Scancode SCANCODE_MEDIA_REWIND =
-  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
+  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind
 
 constexpr Scancode SCANCODE_MEDIA_NEXT_TRACK =
-  SDL_SCANCODE_MEDIA_NEXT_TRACK; ///< Next Track.
+  SDL_SCANCODE_MEDIA_NEXT_TRACK; ///< Next Track
 
 constexpr Scancode SCANCODE_MEDIA_PREVIOUS_TRACK =
-  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK; ///< Previous Track.
+  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK; ///< Previous Track
 
-constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop.
+constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop
 
-constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject.
+constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject
 
 constexpr Scancode SCANCODE_MEDIA_PLAY_PAUSE =
-  SDL_SCANCODE_MEDIA_PLAY_PAUSE; ///< Play / Pause.
+  SDL_SCANCODE_MEDIA_PLAY_PAUSE; ///< Play / Pause
 
 constexpr Scancode SCANCODE_MEDIA_SELECT =
   SDL_SCANCODE_MEDIA_SELECT; ///< MEDIA_SELECT
 
-constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New.
+constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New
 
-constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open.
+constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open
 
-constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close.
+constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close
 
-constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit.
+constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit
 
-constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save.
+constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save
 
-constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print.
+constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print
 
 constexpr Scancode SCANCODE_AC_PROPERTIES =
-  SDL_SCANCODE_AC_PROPERTIES; ///< AC Properties.
+  SDL_SCANCODE_AC_PROPERTIES; ///< AC Properties
 
-constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search.
+constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search
 
-constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
+constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home
 
-constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
+constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back
 
 constexpr Scancode SCANCODE_AC_FORWARD =
-  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
+  SDL_SCANCODE_AC_FORWARD; ///< AC Forward
 
-constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
+constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop
 
 constexpr Scancode SCANCODE_AC_REFRESH =
-  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
+  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh
 
 constexpr Scancode SCANCODE_AC_BOOKMARKS =
-  SDL_SCANCODE_AC_BOOKMARKS; ///< AC Bookmarks.
+  SDL_SCANCODE_AC_BOOKMARKS; ///< AC Bookmarks
 
 /**
- * Usually situated below the display on phones and used as a multi-function
- * feature key for selecting a software defined function shown on the bottom
- * left of the display.
+ * Usually situated below the display on phones and
+ *                                       used as a multi-function feature key
+ * for selecting a software defined function shown on the bottom left of the
+ * display.
  */
 constexpr Scancode SCANCODE_SOFTLEFT = SDL_SCANCODE_SOFTLEFT;
 
 /**
- * Usually situated below the display on phones and used as a multi-function
- * feature key for selecting a software defined function shown on the bottom
- * right of the display.
+ * Usually situated below the display on phones and
+ *                                        used as a multi-function feature key
+ * for selecting a software defined function shown on the bottom right of the
+ * display.
  */
 constexpr Scancode SCANCODE_SOFTRIGHT = SDL_SCANCODE_SOFTRIGHT;
 
@@ -32040,26 +32245,26 @@ using SensorID = Uint32;
 using SensorType = SDL_SensorType;
 
 constexpr SensorType SENSOR_INVALID =
-  SDL_SENSOR_INVALID; ///< Returned for an invalid sensor.
+  SDL_SENSOR_INVALID; ///< Returned for an invalid sensor
 
 constexpr SensorType SENSOR_UNKNOWN =
-  SDL_SENSOR_UNKNOWN; ///< Unknown sensor type.
+  SDL_SENSOR_UNKNOWN; ///< Unknown sensor type
 
-constexpr SensorType SENSOR_ACCEL = SDL_SENSOR_ACCEL; ///< Accelerometer.
+constexpr SensorType SENSOR_ACCEL = SDL_SENSOR_ACCEL; ///< Accelerometer
 
-constexpr SensorType SENSOR_GYRO = SDL_SENSOR_GYRO; ///< Gyroscope.
+constexpr SensorType SENSOR_GYRO = SDL_SENSOR_GYRO; ///< Gyroscope
 
-/// Accelerometer for left Joy-Con controller and Wii nunchuk.
+/// Accelerometer for left Joy-Con controller and Wii nunchuk
 constexpr SensorType SENSOR_ACCEL_L = SDL_SENSOR_ACCEL_L;
 
 constexpr SensorType SENSOR_GYRO_L =
-  SDL_SENSOR_GYRO_L; ///< Gyroscope for left Joy-Con controller.
+  SDL_SENSOR_GYRO_L; ///< Gyroscope for left Joy-Con controller
 
 constexpr SensorType SENSOR_ACCEL_R =
-  SDL_SENSOR_ACCEL_R; ///< Accelerometer for right Joy-Con controller.
+  SDL_SENSOR_ACCEL_R; ///< Accelerometer for right Joy-Con controller
 
 constexpr SensorType SENSOR_GYRO_R =
-  SDL_SENSOR_GYRO_R; ///< Gyroscope for right Joy-Con controller.
+  SDL_SENSOR_GYRO_R; ///< Gyroscope for right Joy-Con controller
 
 #if SDL_VERSION_ATLEAST(3, 2, 22)
 
@@ -32779,13 +32984,13 @@ struct DateTime : DateTimeRaw
 using DateFormat = SDL_DateFormat;
 
 constexpr DateFormat DATE_FORMAT_YYYYMMDD =
-  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day.
+  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day
 
 constexpr DateFormat DATE_FORMAT_DDMMYYYY =
-  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year.
+  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year
 
 constexpr DateFormat DATE_FORMAT_MMDDYYYY =
-  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year.
+  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year
 
 /**
  * The preferred time format of the current system locale.
@@ -33667,27 +33872,27 @@ public:
 #undef AUDIO_F32
 
 constexpr AudioFormat AUDIO_UNKNOWN =
-  SDL_AUDIO_UNKNOWN; ///< Unspecified audio format.
+  SDL_AUDIO_UNKNOWN; ///< Unspecified audio format
 
-constexpr AudioFormat AUDIO_U8 = SDL_AUDIO_U8; ///< Unsigned 8-bit samples.
+constexpr AudioFormat AUDIO_U8 = SDL_AUDIO_U8; ///< Unsigned 8-bit samples
 
-constexpr AudioFormat AUDIO_S8 = SDL_AUDIO_S8; ///< Signed 8-bit samples.
+constexpr AudioFormat AUDIO_S8 = SDL_AUDIO_S8; ///< Signed 8-bit samples
 
-constexpr AudioFormat AUDIO_S16LE = SDL_AUDIO_S16LE; ///< Signed 16-bit samples.
+constexpr AudioFormat AUDIO_S16LE = SDL_AUDIO_S16LE; ///< Signed 16-bit samples
 
 constexpr AudioFormat AUDIO_S16BE =
-  SDL_AUDIO_S16BE; ///< As above, but big-endian byte order.
+  SDL_AUDIO_S16BE; ///< As above, but big-endian byte order
 
 constexpr AudioFormat AUDIO_S32LE = SDL_AUDIO_S32LE; ///< 32-bit integer samples
 
 constexpr AudioFormat AUDIO_S32BE =
-  SDL_AUDIO_S32BE; ///< As above, but big-endian byte order.
+  SDL_AUDIO_S32BE; ///< As above, but big-endian byte order
 
 constexpr AudioFormat AUDIO_F32LE =
   SDL_AUDIO_F32LE; ///< 32-bit floating point samples
 
 constexpr AudioFormat AUDIO_F32BE =
-  SDL_AUDIO_F32BE; ///< As above, but big-endian byte order.
+  SDL_AUDIO_F32BE; ///< As above, but big-endian byte order
 
 constexpr AudioFormat AUDIO_S16 = SDL_AUDIO_S16; ///< AUDIO_S16
 
@@ -39313,7 +39518,7 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
 
 /**
  * The I/O stream is connected to a new IOStream that the application can read
- * or write.
+ * or write
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 
@@ -41684,7 +41889,7 @@ constexpr ScaleMode SCALEMODE_LINEAR =
  */
 using FlipMode = SDL_FlipMode;
 
-constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE; ///< Do not flip.
+constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE; ///< Do not flip
 
 constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL; ///< flip horizontally
 
@@ -45698,13 +45903,13 @@ constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
 using ThreadState = SDL_ThreadState;
 
 constexpr ThreadState THREAD_UNKNOWN =
-  SDL_THREAD_UNKNOWN; ///< The thread is not valid.
+  SDL_THREAD_UNKNOWN; ///< The thread is not valid
 
 constexpr ThreadState THREAD_ALIVE =
-  SDL_THREAD_ALIVE; ///< The thread is currently running.
+  SDL_THREAD_ALIVE; ///< The thread is currently running
 
 constexpr ThreadState THREAD_DETACHED =
-  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on.
+  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on
 
 /// The thread has finished and should be cleaned up with Thread.Wait()
 constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;
@@ -50876,27 +51081,27 @@ struct RendererRef;
 using DisplayOrientation = SDL_DisplayOrientation;
 
 constexpr DisplayOrientation ORIENTATION_UNKNOWN =
-  SDL_ORIENTATION_UNKNOWN; ///< The display orientation can't be determined.
+  SDL_ORIENTATION_UNKNOWN; ///< The display orientation can't be determined
 
 /**
  * The display is in landscape mode, with the right side up, relative to
- * portrait mode.
+ * portrait mode
  */
 constexpr DisplayOrientation ORIENTATION_LANDSCAPE = SDL_ORIENTATION_LANDSCAPE;
 
 /**
  * The display is in landscape mode, with the left side up, relative to portrait
- * mode.
+ * mode
  */
 constexpr DisplayOrientation ORIENTATION_LANDSCAPE_FLIPPED =
   SDL_ORIENTATION_LANDSCAPE_FLIPPED;
 
 constexpr DisplayOrientation ORIENTATION_PORTRAIT =
-  SDL_ORIENTATION_PORTRAIT; ///< The display is in portrait mode.
+  SDL_ORIENTATION_PORTRAIT; ///< The display is in portrait mode
 
 constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
   SDL_ORIENTATION_PORTRAIT_FLIPPED; ///< The display is in portrait mode, upside
-                                    ///< down.
+                                    ///< down
 
 /**
  * The structure that defines a display mode.
@@ -51257,13 +51462,13 @@ constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
 using SystemTheme = SDL_SystemTheme;
 
 constexpr SystemTheme SYSTEM_THEME_UNKNOWN =
-  SDL_SYSTEM_THEME_UNKNOWN; ///< Unknown system theme.
+  SDL_SYSTEM_THEME_UNKNOWN; ///< Unknown system theme
 
 constexpr SystemTheme SYSTEM_THEME_LIGHT =
-  SDL_SYSTEM_THEME_LIGHT; ///< Light colored system theme.
+  SDL_SYSTEM_THEME_LIGHT; ///< Light colored system theme
 
 constexpr SystemTheme SYSTEM_THEME_DARK =
-  SDL_SYSTEM_THEME_DARK; ///< Dark colored system theme.
+  SDL_SYSTEM_THEME_DARK; ///< Dark colored system theme
 
 /**
  * Internal display mode data.
@@ -51381,13 +51586,13 @@ constexpr WindowFlags WINDOW_NOT_FOCUSABLE =
 using FlashOperation = SDL_FlashOperation;
 
 constexpr FlashOperation FLASH_CANCEL =
-  SDL_FLASH_CANCEL; ///< Cancel any window flash state.
+  SDL_FLASH_CANCEL; ///< Cancel any window flash state
 
 constexpr FlashOperation FLASH_BRIEFLY =
-  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention.
+  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention
 
 constexpr FlashOperation FLASH_UNTIL_FOCUSED =
-  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus.
+  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus
 
 /**
  * Possible return values from the HitTest callback.
@@ -51402,7 +51607,7 @@ constexpr FlashOperation FLASH_UNTIL_FOCUSED =
 using HitTestResult = SDL_HitTestResult;
 
 constexpr HitTestResult HITTEST_NORMAL =
-  SDL_HITTEST_NORMAL; ///< Region is normal.  No special properties.
+  SDL_HITTEST_NORMAL; ///< Region is normal. No special properties.
 
 constexpr HitTestResult HITTEST_DRAGGABLE =
   SDL_HITTEST_DRAGGABLE; ///< Region can drag entire window.
@@ -54228,7 +54433,7 @@ constexpr GLAttr GL_CONTEXT_MINOR_VERSION =
 constexpr GLAttr GL_CONTEXT_FLAGS = SDL_GL_CONTEXT_FLAGS;
 
 /**
- * type of GL context (Core, Compatibility, ES).  See GLProfile; default value
+ * type of GL context (Core, Compatibility, ES). See GLProfile; default value
  * depends on platform.
  */
 constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
@@ -54241,13 +54446,13 @@ constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE =
                                    ///< to 0.
 
 /**
- * sets context the release behavior.  See GLContextReleaseFlag; defaults to
+ * sets context the release behavior. See GLContextReleaseFlag; defaults to
  * FLUSH.
  */
 constexpr GLAttr GL_CONTEXT_RELEASE_BEHAVIOR = SDL_GL_CONTEXT_RELEASE_BEHAVIOR;
 
 /**
- * set context reset notification.  See GLContextResetNotification; defaults to
+ * set context reset notification. See GLContextResetNotification; defaults to
  * NO_NOTIFICATION.
  */
 constexpr GLAttr GL_CONTEXT_RESET_NOTIFICATION =
@@ -58688,24 +58893,24 @@ using EventType = SDL_EventType;
 
 constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST; ///< Unused (do not remove)
 
-constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT; ///< User-requested quit.
+constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT; ///< User-requested quit
 
 /**
- * The application is being terminated by the OS.  This event must be handled in
+ * The application is being terminated by the OS. This event must be handled in
  * a callback set with AddEventWatch(). Called on iOS in
  * applicationWillTerminate() Called on Android in onDestroy()
  */
 constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
 
 /**
- * The application is low on memory, free memory if possible.  This event must
- * be handled in a callback set with AddEventWatch(). Called on iOS in
+ * The application is low on memory, free memory if possible. This event must be
+ * handled in a callback set with AddEventWatch(). Called on iOS in
  * applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
  */
 constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
 
 /**
- * The application is about to enter the background.  This event must be handled
+ * The application is about to enter the background. This event must be handled
  * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillResignActive() Called on Android in onPause()
  */
@@ -58720,7 +58925,7 @@ constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
 constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
 
 /**
- * The application is about to enter the foreground.  This event must be handled
+ * The application is about to enter the foreground. This event must be handled
  * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillEnterForeground() Called on Android in onResume()
  */
@@ -58728,7 +58933,7 @@ constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
   SDL_EVENT_WILL_ENTER_FOREGROUND;
 
 /**
- * The application is now interactive.  This event must be handled in a callback
+ * The application is now interactive. This event must be handled in a callback
  * set with AddEventWatch(). Called on iOS in applicationDidBecomeActive()
  * Called on Android in onResume()
  */
@@ -58738,29 +58943,29 @@ constexpr EventType EVENT_LOCALE_CHANGED =
   SDL_EVENT_LOCALE_CHANGED; ///< The user's locale preferences have changed.
 
 constexpr EventType EVENT_SYSTEM_THEME_CHANGED =
-  SDL_EVENT_SYSTEM_THEME_CHANGED; ///< The system theme changed.
+  SDL_EVENT_SYSTEM_THEME_CHANGED; ///< The system theme changed
 
 constexpr EventType EVENT_DISPLAY_ORIENTATION =
-  SDL_EVENT_DISPLAY_ORIENTATION; ///< Display orientation has changed to data1.
+  SDL_EVENT_DISPLAY_ORIENTATION; ///< Display orientation has changed to data1
 
 constexpr EventType EVENT_DISPLAY_ADDED =
-  SDL_EVENT_DISPLAY_ADDED; ///< Display has been added to the system.
+  SDL_EVENT_DISPLAY_ADDED; ///< Display has been added to the system
 
 constexpr EventType EVENT_DISPLAY_REMOVED =
-  SDL_EVENT_DISPLAY_REMOVED; ///< Display has been removed from the system.
+  SDL_EVENT_DISPLAY_REMOVED; ///< Display has been removed from the system
 
 constexpr EventType EVENT_DISPLAY_MOVED =
-  SDL_EVENT_DISPLAY_MOVED; ///< Display has changed position.
+  SDL_EVENT_DISPLAY_MOVED; ///< Display has changed position
 
 constexpr EventType EVENT_DISPLAY_DESKTOP_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED; ///< Display has changed desktop mode.
+  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED; ///< Display has changed desktop mode
 
 constexpr EventType EVENT_DISPLAY_CURRENT_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED; ///< Display has changed current mode.
+  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED; ///< Display has changed current mode
 
 constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
-                                           ///< scale.
+                                           ///< scale
 
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
@@ -58769,87 +58974,85 @@ constexpr EventType EVENT_DISPLAY_LAST =
   SDL_EVENT_DISPLAY_LAST; ///< DISPLAY_LAST
 
 constexpr EventType EVENT_WINDOW_SHOWN =
-  SDL_EVENT_WINDOW_SHOWN; ///< Window has been shown.
+  SDL_EVENT_WINDOW_SHOWN; ///< Window has been shown
 
 constexpr EventType EVENT_WINDOW_HIDDEN =
-  SDL_EVENT_WINDOW_HIDDEN; ///< Window has been hidden.
+  SDL_EVENT_WINDOW_HIDDEN; ///< Window has been hidden
 
 /**
  * Window has been exposed and should be redrawn, and can be redrawn directly
- * from event watchers for this event.
+ * from event watchers for this event
  */
 constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
 
 constexpr EventType EVENT_WINDOW_MOVED =
-  SDL_EVENT_WINDOW_MOVED; ///< Window has been moved to data1, data2.
+  SDL_EVENT_WINDOW_MOVED; ///< Window has been moved to data1, data2
 
 constexpr EventType EVENT_WINDOW_RESIZED =
-  SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
+  SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2
 
-/// The pixel size of the window has changed to data1xdata2.
+/// The pixel size of the window has changed to data1xdata2
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
-/// The pixel size of a Metal view associated with the window has changed.
+/// The pixel size of a Metal view associated with the window has changed
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
 constexpr EventType EVENT_WINDOW_MINIMIZED =
-  SDL_EVENT_WINDOW_MINIMIZED; ///< Window has been minimized.
+  SDL_EVENT_WINDOW_MINIMIZED; ///< Window has been minimized
 
 constexpr EventType EVENT_WINDOW_MAXIMIZED =
-  SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
+  SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized
 
-/// Window has been restored to normal size and position.
+/// Window has been restored to normal size and position
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
 constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
-  SDL_EVENT_WINDOW_MOUSE_ENTER; ///< Window has gained mouse focus.
+  SDL_EVENT_WINDOW_MOUSE_ENTER; ///< Window has gained mouse focus
 
 constexpr EventType EVENT_WINDOW_MOUSE_LEAVE =
-  SDL_EVENT_WINDOW_MOUSE_LEAVE; ///< Window has lost mouse focus.
+  SDL_EVENT_WINDOW_MOUSE_LEAVE; ///< Window has lost mouse focus
 
 constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
-  SDL_EVENT_WINDOW_FOCUS_GAINED; ///< Window has gained keyboard focus.
+  SDL_EVENT_WINDOW_FOCUS_GAINED; ///< Window has gained keyboard focus
 
 constexpr EventType EVENT_WINDOW_FOCUS_LOST =
-  SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
+  SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus
 
-/// The window manager requests that the window be closed.
+/// The window manager requests that the window be closed
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
 constexpr EventType EVENT_WINDOW_HIT_TEST =
   SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
-                             ///< HITTEST_NORMAL.
+                             ///< HITTEST_NORMAL
 
-/// The ICC profile of the window's display has changed.
+/// The ICC profile of the window's display has changed
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
 constexpr EventType EVENT_WINDOW_DISPLAY_CHANGED =
-  SDL_EVENT_WINDOW_DISPLAY_CHANGED; ///< Window has been moved to display data1.
+  SDL_EVENT_WINDOW_DISPLAY_CHANGED; ///< Window has been moved to display data1
 
 constexpr EventType EVENT_WINDOW_DISPLAY_SCALE_CHANGED =
   SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED; ///< Window display scale has been
-                                          ///< changed.
+                                          ///< changed
 
 constexpr EventType EVENT_WINDOW_SAFE_AREA_CHANGED =
-  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED; ///< The window safe area has been
-                                      ///< changed.
+  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED; ///< The window safe area has been changed
 
 constexpr EventType EVENT_WINDOW_OCCLUDED =
-  SDL_EVENT_WINDOW_OCCLUDED; ///< The window has been occluded.
+  SDL_EVENT_WINDOW_OCCLUDED; ///< The window has been occluded
 
 constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
-  SDL_EVENT_WINDOW_ENTER_FULLSCREEN; ///< The window has entered fullscreen
-                                     ///< mode.
+  SDL_EVENT_WINDOW_ENTER_FULLSCREEN; ///< The window has entered fullscreen mode
 
 constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
-  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN; ///< The window has left fullscreen mode.
+  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN; ///< The window has left fullscreen mode
 
 /**
- * The window with the associated ID is being or has been destroyed.  If this
+ * The window with the associated ID is being or has been destroyed. If this
  * message is being handled in an event watcher, the window handle is still
  * valid and can still be used to retrieve any properties associated with the
  * window. Otherwise, the handle has already been destroyed and all resources
@@ -58858,22 +59061,22 @@ constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
 constexpr EventType EVENT_WINDOW_HDR_STATE_CHANGED =
-  SDL_EVENT_WINDOW_HDR_STATE_CHANGED; ///< Window HDR properties have changed.
+  SDL_EVENT_WINDOW_HDR_STATE_CHANGED; ///< Window HDR properties have changed
 
 constexpr EventType EVENT_WINDOW_FIRST =
   SDL_EVENT_WINDOW_FIRST; ///< WINDOW_FIRST
 
 constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST; ///< WINDOW_LAST
 
-constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN; ///< Key pressed.
+constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN; ///< Key pressed
 
-constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP; ///< Key released.
+constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP; ///< Key released
 
 constexpr EventType EVENT_TEXT_EDITING =
   SDL_EVENT_TEXT_EDITING; ///< Keyboard text editing (composition)
 
 constexpr EventType EVENT_TEXT_INPUT =
-  SDL_EVENT_TEXT_INPUT; ///< Keyboard text input.
+  SDL_EVENT_TEXT_INPUT; ///< Keyboard text input
 
 /**
  * Keymap changed due to a system event such as an input language or keyboard
@@ -58883,95 +59086,95 @@ constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
 constexpr EventType EVENT_KEYBOARD_ADDED =
   SDL_EVENT_KEYBOARD_ADDED; ///< A new keyboard has been inserted into the
-                            ///< system.
+                            ///< system
 
 constexpr EventType EVENT_KEYBOARD_REMOVED =
-  SDL_EVENT_KEYBOARD_REMOVED; ///< A keyboard has been removed.
+  SDL_EVENT_KEYBOARD_REMOVED; ///< A keyboard has been removed
 
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
-  SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates.
+  SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates
 
 constexpr EventType EVENT_MOUSE_MOTION =
-  SDL_EVENT_MOUSE_MOTION; ///< Mouse moved.
+  SDL_EVENT_MOUSE_MOTION; ///< Mouse moved
 
 constexpr EventType EVENT_MOUSE_BUTTON_DOWN =
-  SDL_EVENT_MOUSE_BUTTON_DOWN; ///< Mouse button pressed.
+  SDL_EVENT_MOUSE_BUTTON_DOWN; ///< Mouse button pressed
 
 constexpr EventType EVENT_MOUSE_BUTTON_UP =
-  SDL_EVENT_MOUSE_BUTTON_UP; ///< Mouse button released.
+  SDL_EVENT_MOUSE_BUTTON_UP; ///< Mouse button released
 
 constexpr EventType EVENT_MOUSE_WHEEL =
-  SDL_EVENT_MOUSE_WHEEL; ///< Mouse wheel motion.
+  SDL_EVENT_MOUSE_WHEEL; ///< Mouse wheel motion
 
 constexpr EventType EVENT_MOUSE_ADDED =
-  SDL_EVENT_MOUSE_ADDED; ///< A new mouse has been inserted into the system.
+  SDL_EVENT_MOUSE_ADDED; ///< A new mouse has been inserted into the system
 
 constexpr EventType EVENT_MOUSE_REMOVED =
-  SDL_EVENT_MOUSE_REMOVED; ///< A mouse has been removed.
+  SDL_EVENT_MOUSE_REMOVED; ///< A mouse has been removed
 
 constexpr EventType EVENT_JOYSTICK_AXIS_MOTION =
-  SDL_EVENT_JOYSTICK_AXIS_MOTION; ///< Joystick axis motion.
+  SDL_EVENT_JOYSTICK_AXIS_MOTION; ///< Joystick axis motion
 
 constexpr EventType EVENT_JOYSTICK_BALL_MOTION =
-  SDL_EVENT_JOYSTICK_BALL_MOTION; ///< Joystick trackball motion.
+  SDL_EVENT_JOYSTICK_BALL_MOTION; ///< Joystick trackball motion
 
 constexpr EventType EVENT_JOYSTICK_HAT_MOTION =
-  SDL_EVENT_JOYSTICK_HAT_MOTION; ///< Joystick hat position change.
+  SDL_EVENT_JOYSTICK_HAT_MOTION; ///< Joystick hat position change
 
 constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN =
-  SDL_EVENT_JOYSTICK_BUTTON_DOWN; ///< Joystick button pressed.
+  SDL_EVENT_JOYSTICK_BUTTON_DOWN; ///< Joystick button pressed
 
 constexpr EventType EVENT_JOYSTICK_BUTTON_UP =
-  SDL_EVENT_JOYSTICK_BUTTON_UP; ///< Joystick button released.
+  SDL_EVENT_JOYSTICK_BUTTON_UP; ///< Joystick button released
 
 constexpr EventType EVENT_JOYSTICK_ADDED =
   SDL_EVENT_JOYSTICK_ADDED; ///< A new joystick has been inserted into the
-                            ///< system.
+                            ///< system
 
 constexpr EventType EVENT_JOYSTICK_REMOVED =
-  SDL_EVENT_JOYSTICK_REMOVED; ///< An opened joystick has been removed.
+  SDL_EVENT_JOYSTICK_REMOVED; ///< An opened joystick has been removed
 
 constexpr EventType EVENT_JOYSTICK_BATTERY_UPDATED =
-  SDL_EVENT_JOYSTICK_BATTERY_UPDATED; ///< Joystick battery level change.
+  SDL_EVENT_JOYSTICK_BATTERY_UPDATED; ///< Joystick battery level change
 
 constexpr EventType EVENT_JOYSTICK_UPDATE_COMPLETE =
-  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE; ///< Joystick update is complete.
+  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE; ///< Joystick update is complete
 
 constexpr EventType EVENT_GAMEPAD_AXIS_MOTION =
-  SDL_EVENT_GAMEPAD_AXIS_MOTION; ///< Gamepad axis motion.
+  SDL_EVENT_GAMEPAD_AXIS_MOTION; ///< Gamepad axis motion
 
 constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN =
-  SDL_EVENT_GAMEPAD_BUTTON_DOWN; ///< Gamepad button pressed.
+  SDL_EVENT_GAMEPAD_BUTTON_DOWN; ///< Gamepad button pressed
 
 constexpr EventType EVENT_GAMEPAD_BUTTON_UP =
-  SDL_EVENT_GAMEPAD_BUTTON_UP; ///< Gamepad button released.
+  SDL_EVENT_GAMEPAD_BUTTON_UP; ///< Gamepad button released
 
 constexpr EventType EVENT_GAMEPAD_ADDED =
-  SDL_EVENT_GAMEPAD_ADDED; ///< A new gamepad has been inserted into the system.
+  SDL_EVENT_GAMEPAD_ADDED; ///< A new gamepad has been inserted into the system
 
 constexpr EventType EVENT_GAMEPAD_REMOVED =
-  SDL_EVENT_GAMEPAD_REMOVED; ///< A gamepad has been removed.
+  SDL_EVENT_GAMEPAD_REMOVED; ///< A gamepad has been removed
 
 constexpr EventType EVENT_GAMEPAD_REMAPPED =
-  SDL_EVENT_GAMEPAD_REMAPPED; ///< The gamepad mapping was updated.
+  SDL_EVENT_GAMEPAD_REMAPPED; ///< The gamepad mapping was updated
 
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_DOWN =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN; ///< Gamepad touchpad was touched.
+  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN; ///< Gamepad touchpad was touched
 
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_MOTION =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION; ///< Gamepad touchpad finger was moved.
+  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION; ///< Gamepad touchpad finger was moved
 
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_UP; ///< Gamepad touchpad finger was lifted.
+  SDL_EVENT_GAMEPAD_TOUCHPAD_UP; ///< Gamepad touchpad finger was lifted
 
 constexpr EventType EVENT_GAMEPAD_SENSOR_UPDATE =
-  SDL_EVENT_GAMEPAD_SENSOR_UPDATE; ///< Gamepad sensor was updated.
+  SDL_EVENT_GAMEPAD_SENSOR_UPDATE; ///< Gamepad sensor was updated
 
 constexpr EventType EVENT_GAMEPAD_UPDATE_COMPLETE =
-  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE; ///< Gamepad update is complete.
+  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE; ///< Gamepad update is complete
 
 constexpr EventType EVENT_GAMEPAD_STEAM_HANDLE_UPDATED =
-  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED; ///< Gamepad Steam handle has changed.
+  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED; ///< Gamepad Steam handle has changed
 
 constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN; ///< FINGER_DOWN
 
@@ -58984,10 +59187,10 @@ constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
 constexpr EventType EVENT_CLIPBOARD_UPDATE =
-  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard or primary selection changed.
+  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard or primary selection changed
 
 constexpr EventType EVENT_DROP_FILE =
-  SDL_EVENT_DROP_FILE; ///< The system requests a file open.
+  SDL_EVENT_DROP_FILE; ///< The system requests a file open
 
 constexpr EventType EVENT_DROP_TEXT =
   SDL_EVENT_DROP_TEXT; ///< text/plain drag-and-drop event
@@ -58999,10 +59202,10 @@ constexpr EventType EVENT_DROP_BEGIN =
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
 constexpr EventType EVENT_DROP_POSITION =
-  SDL_EVENT_DROP_POSITION; ///< Position while moving over the window.
+  SDL_EVENT_DROP_POSITION; ///< Position while moving over the window
 
 constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
-  SDL_EVENT_AUDIO_DEVICE_ADDED; ///< A new audio device is available.
+  SDL_EVENT_AUDIO_DEVICE_ADDED; ///< A new audio device is available
 
 constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
   SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
@@ -59012,35 +59215,35 @@ constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
 constexpr EventType EVENT_SENSOR_UPDATE =
-  SDL_EVENT_SENSOR_UPDATE; ///< A sensor was updated.
+  SDL_EVENT_SENSOR_UPDATE; ///< A sensor was updated
 
 constexpr EventType EVENT_PEN_PROXIMITY_IN =
-  SDL_EVENT_PEN_PROXIMITY_IN; ///< Pressure-sensitive pen has become available.
+  SDL_EVENT_PEN_PROXIMITY_IN; ///< Pressure-sensitive pen has become available
 
 constexpr EventType EVENT_PEN_PROXIMITY_OUT =
   SDL_EVENT_PEN_PROXIMITY_OUT; ///< Pressure-sensitive pen has become
-                               ///< unavailable.
+                               ///< unavailable
 
 constexpr EventType EVENT_PEN_DOWN =
-  SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
+  SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface
 
-/// Pressure-sensitive pen stopped touching drawing surface.
+/// Pressure-sensitive pen stopped touching drawing surface
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
 constexpr EventType EVENT_PEN_BUTTON_DOWN =
-  SDL_EVENT_PEN_BUTTON_DOWN; ///< Pressure-sensitive pen button pressed.
+  SDL_EVENT_PEN_BUTTON_DOWN; ///< Pressure-sensitive pen button pressed
 
 constexpr EventType EVENT_PEN_BUTTON_UP =
-  SDL_EVENT_PEN_BUTTON_UP; ///< Pressure-sensitive pen button released.
+  SDL_EVENT_PEN_BUTTON_UP; ///< Pressure-sensitive pen button released
 
 constexpr EventType EVENT_PEN_MOTION =
-  SDL_EVENT_PEN_MOTION; ///< Pressure-sensitive pen is moving on the tablet.
+  SDL_EVENT_PEN_MOTION; ///< Pressure-sensitive pen is moving on the tablet
 
 constexpr EventType EVENT_PEN_AXIS =
-  SDL_EVENT_PEN_AXIS; ///< Pressure-sensitive pen angle/pressure/etc changed.
+  SDL_EVENT_PEN_AXIS; ///< Pressure-sensitive pen angle/pressure/etc changed
 
 constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
-  SDL_EVENT_CAMERA_DEVICE_ADDED; ///< A new camera device is available.
+  SDL_EVENT_CAMERA_DEVICE_ADDED; ///< A new camera device is available
 
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
   SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
@@ -59052,10 +59255,10 @@ constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
 /// A camera device has been denied for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
-/// The render targets have been reset and their contents need to be updated.
+/// The render targets have been reset and their contents need to be updated
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
-/// The device has been reset and all textures need to be recreated.
+/// The device has been reset and all textures need to be recreated
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
 constexpr EventType EVENT_RENDER_DEVICE_LOST =
@@ -59071,15 +59274,15 @@ constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2; ///< PRIVATE2
 constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3; ///< PRIVATE3
 
 constexpr EventType EVENT_POLL_SENTINEL =
-  SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle.
+  SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle
 
 /**
- * Events EVENT_USER through EVENT_LAST are for your use, and should be
- * allocated with RegisterEvents()
+ * Events EVENT_USER through EVENT_LAST are for your use,
+ *  and should be allocated with RegisterEvents()
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
-/// This last event is only for bounding internal arrays.
+/// This last event is only for bounding internal arrays
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
 constexpr EventType EVENT_ENUM_PADDING =
@@ -63358,14 +63561,11 @@ using GPUSampleCount = SDL_GPUSampleCount;
 constexpr GPUSampleCount GPU_SAMPLECOUNT_1 =
   SDL_GPU_SAMPLECOUNT_1; ///< No multisampling.
 
-constexpr GPUSampleCount GPU_SAMPLECOUNT_2 =
-  SDL_GPU_SAMPLECOUNT_2; ///< MSAA 2x.
+constexpr GPUSampleCount GPU_SAMPLECOUNT_2 = SDL_GPU_SAMPLECOUNT_2; ///< MSAA 2x
 
-constexpr GPUSampleCount GPU_SAMPLECOUNT_4 =
-  SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x.
+constexpr GPUSampleCount GPU_SAMPLECOUNT_4 = SDL_GPU_SAMPLECOUNT_4; ///< MSAA 4x
 
-constexpr GPUSampleCount GPU_SAMPLECOUNT_8 =
-  SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x.
+constexpr GPUSampleCount GPU_SAMPLECOUNT_8 = SDL_GPU_SAMPLECOUNT_8; ///< MSAA 8x
 
 /**
  * An opaque handle representing the SDL_GPU context.
@@ -64230,6 +64430,37 @@ public:
    */
   bool TextureSupportsSampleCount(GPUTextureFormat format,
                                   GPUSampleCount sample_count);
+#ifdef SDL_PLATFORM_GDK
+
+  /**
+   * Call this to suspend GPU operation on Xbox when you receive the
+   * EVENT_DID_ENTER_BACKGROUND event.
+   *
+   * Do NOT call any SDL_GPU functions after calling this function! This must
+   * also be called before calling GDKSuspendComplete.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AddEventWatch
+   */
+  void GDKSuspendGPU();
+
+  /**
+   * Call this to resume GPU operation on Xbox when you receive the
+   * EVENT_WILL_ENTER_FOREGROUND event.
+   *
+   * When resuming, this function MUST be called before calling any other
+   * SDL_GPU functions.
+   *
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AddEventWatch
+   */
+  void GDKResumeGPU();
+
+#endif /* SDL_PLATFORM_GDK */
 };
 
 /// Semi-safe reference for GPUDevice.
@@ -64312,8 +64543,8 @@ constexpr GPULoadOp GPU_LOADOP_LOAD = SDL_GPU_LOADOP_LOAD;
 constexpr GPULoadOp GPU_LOADOP_CLEAR = SDL_GPU_LOADOP_CLEAR;
 
 /**
- * The previous contents of the texture need not be preserved.  The contents
- * will be undefined.
+ * The previous contents of the texture need not be preserved. The contents will
+ * be undefined.
  */
 constexpr GPULoadOp GPU_LOADOP_DONT_CARE = SDL_GPU_LOADOP_DONT_CARE;
 
@@ -64332,20 +64563,20 @@ constexpr GPUStoreOp GPU_STOREOP_STORE = SDL_GPU_STOREOP_STORE;
 
 /**
  * The contents generated during the render pass are not needed and may be
- * discarded.  The contents will be undefined.
+ * discarded. The contents will be undefined.
  */
 constexpr GPUStoreOp GPU_STOREOP_DONT_CARE = SDL_GPU_STOREOP_DONT_CARE;
 
 /**
  * The multisample contents generated during the render pass will be resolved to
- * a non-multisample texture.  The contents in the multisample texture may then
+ * a non-multisample texture. The contents in the multisample texture may then
  * be discarded and will be undefined.
  */
 constexpr GPUStoreOp GPU_STOREOP_RESOLVE = SDL_GPU_STOREOP_RESOLVE;
 
 /**
  * The multisample contents generated during the render pass will be resolved to
- * a non-multisample texture.  The contents in the multisample texture will be
+ * a non-multisample texture. The contents in the multisample texture will be
  * written to memory.
  */
 constexpr GPUStoreOp GPU_STOREOP_RESOLVE_AND_STORE =
@@ -67882,6 +68113,44 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
+#ifdef SDL_PLATFORM_GDK
+
+/**
+ * Call this to suspend GPU operation on Xbox when you receive the
+ * EVENT_DID_ENTER_BACKGROUND event.
+ *
+ * Do NOT call any SDL_GPU functions after calling this function! This must
+ * also be called before calling GDKSuspendComplete.
+ *
+ * @param device a GPU context.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddEventWatch
+ */
+inline void GDKSuspendGPU(GPUDeviceParam device) { SDL_GDKSuspendGPU(device); }
+
+inline void GPUDevice::GDKSuspendGPU() { SDL::GDKSuspendGPU(m_resource); }
+
+/**
+ * Call this to resume GPU operation on Xbox when you receive the
+ * EVENT_WILL_ENTER_FOREGROUND event.
+ *
+ * When resuming, this function MUST be called before calling any other
+ * SDL_GPU functions.
+ *
+ * @param device a GPU context.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddEventWatch
+ */
+inline void GDKResumeGPU(GPUDeviceParam device) { SDL_GDKResumeGPU(device); }
+
+inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
+
+#endif /* SDL_PLATFORM_GDK */
+
 /// @}
 
 /**
@@ -68982,14 +69251,14 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void LockJoysticks(void) { SDL_LockJoysticks(); }
+inline void LockJoysticks() { SDL_LockJoysticks(); }
 
 /**
  * Unlocking for atomic access to the joystick API.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void UnlockJoysticks(void) { SDL_UnlockJoysticks(); }
+inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
 
 /**
  * Return whether a joystick is currently connected.
@@ -70613,35 +70882,35 @@ inline void Window::StartTextInput(PropertiesParam props)
 using TextInputType = SDL_TextInputType;
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT =
-  SDL_TEXTINPUT_TYPE_TEXT; ///< The input is text.
+  SDL_TEXTINPUT_TYPE_TEXT; ///< The input is text
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_NAME =
-  SDL_TEXTINPUT_TYPE_TEXT_NAME; ///< The input is a person's name.
+  SDL_TEXTINPUT_TYPE_TEXT_NAME; ///< The input is a person's name
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_EMAIL =
-  SDL_TEXTINPUT_TYPE_TEXT_EMAIL; ///< The input is an e-mail address.
+  SDL_TEXTINPUT_TYPE_TEXT_EMAIL; ///< The input is an e-mail address
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_USERNAME =
-  SDL_TEXTINPUT_TYPE_TEXT_USERNAME; ///< The input is a username.
+  SDL_TEXTINPUT_TYPE_TEXT_USERNAME; ///< The input is a username
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN =
   SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN; ///< The input is a secure password
-                                           ///< that is hidden.
+                                           ///< that is hidden
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE =
   SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE; ///< The input is a secure password
-                                            ///< that is visible.
+                                            ///< that is visible
 
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER =
-  SDL_TEXTINPUT_TYPE_NUMBER; ///< The input is a number.
+  SDL_TEXTINPUT_TYPE_NUMBER; ///< The input is a number
 
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN =
   SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN; ///< The input is a secure PIN that
-                                             ///< is hidden.
+                                             ///< is hidden
 
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
   SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE; ///< The input is a secure PIN
-                                              ///< that is visible.
+                                              ///< that is visible
 
 /**
  * Auto capitalization type.
@@ -70657,17 +70926,17 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
 using Capitalization = SDL_Capitalization;
 
 constexpr Capitalization CAPITALIZE_NONE =
-  SDL_CAPITALIZE_NONE; ///< No auto-capitalization will be done.
+  SDL_CAPITALIZE_NONE; ///< No auto-capitalization will be done
 
 constexpr Capitalization CAPITALIZE_SENTENCES =
   SDL_CAPITALIZE_SENTENCES; ///< The first letter of sentences will be
-                            ///< capitalized.
+                            ///< capitalized
 
 constexpr Capitalization CAPITALIZE_WORDS =
-  SDL_CAPITALIZE_WORDS; ///< The first letter of words will be capitalized.
+  SDL_CAPITALIZE_WORDS; ///< The first letter of words will be capitalized
 
 constexpr Capitalization CAPITALIZE_LETTERS =
-  SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized.
+  SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
 
 namespace prop::TextInput {
 
@@ -71514,18 +71783,18 @@ struct CursorParam
 using SystemCursor = SDL_SystemCursor;
 
 constexpr SystemCursor SYSTEM_CURSOR_DEFAULT =
-  SDL_SYSTEM_CURSOR_DEFAULT; ///< Default cursor.  Usually an arrow.
+  SDL_SYSTEM_CURSOR_DEFAULT; ///< Default cursor. Usually an arrow.
 
 constexpr SystemCursor SYSTEM_CURSOR_TEXT =
-  SDL_SYSTEM_CURSOR_TEXT; ///< Text selection.  Usually an I-beam.
+  SDL_SYSTEM_CURSOR_TEXT; ///< Text selection. Usually an I-beam.
 
-/// Wait.  Usually an hourglass or watch or spinning ball.
+/// Wait. Usually an hourglass or watch or spinning ball.
 constexpr SystemCursor SYSTEM_CURSOR_WAIT = SDL_SYSTEM_CURSOR_WAIT;
 
 constexpr SystemCursor SYSTEM_CURSOR_CROSSHAIR =
   SDL_SYSTEM_CURSOR_CROSSHAIR; ///< Crosshair.
 
-/// Program is busy but still interactive.  Usually it's WAIT with an arrow.
+/// Program is busy but still interactive. Usually it's WAIT with an arrow.
 constexpr SystemCursor SYSTEM_CURSOR_PROGRESS = SDL_SYSTEM_CURSOR_PROGRESS;
 
 constexpr SystemCursor SYSTEM_CURSOR_NWSE_RESIZE =
@@ -71545,42 +71814,41 @@ constexpr SystemCursor SYSTEM_CURSOR_NS_RESIZE =
 /// Four pointed arrow pointing north, south, east, and west.
 constexpr SystemCursor SYSTEM_CURSOR_MOVE = SDL_SYSTEM_CURSOR_MOVE;
 
-/// Not permitted.  Usually a slashed circle or crossbones.
+/// Not permitted. Usually a slashed circle or crossbones.
 constexpr SystemCursor SYSTEM_CURSOR_NOT_ALLOWED =
   SDL_SYSTEM_CURSOR_NOT_ALLOWED;
 
-/// Pointer that indicates a link.  Usually a pointing hand.
+/// Pointer that indicates a link. Usually a pointing hand.
 constexpr SystemCursor SYSTEM_CURSOR_POINTER = SDL_SYSTEM_CURSOR_POINTER;
 
 /**
- * Window resize top-left.  This may be a single arrow or a double arrow like
+ * Window resize top-left. This may be a single arrow or a double arrow like
  * NWSE_RESIZE.
  */
 constexpr SystemCursor SYSTEM_CURSOR_NW_RESIZE = SDL_SYSTEM_CURSOR_NW_RESIZE;
 
 constexpr SystemCursor SYSTEM_CURSOR_N_RESIZE =
-  SDL_SYSTEM_CURSOR_N_RESIZE; ///< Window resize top.  May be NS_RESIZE.
+  SDL_SYSTEM_CURSOR_N_RESIZE; ///< Window resize top. May be NS_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_NE_RESIZE =
-  SDL_SYSTEM_CURSOR_NE_RESIZE; ///< Window resize top-right.  May be
-                               ///< NESW_RESIZE.
+  SDL_SYSTEM_CURSOR_NE_RESIZE; ///< Window resize top-right. May be NESW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_E_RESIZE =
-  SDL_SYSTEM_CURSOR_E_RESIZE; ///< Window resize right.  May be EW_RESIZE.
+  SDL_SYSTEM_CURSOR_E_RESIZE; ///< Window resize right. May be EW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_SE_RESIZE =
-  SDL_SYSTEM_CURSOR_SE_RESIZE; ///< Window resize bottom-right.  May be
+  SDL_SYSTEM_CURSOR_SE_RESIZE; ///< Window resize bottom-right. May be
                                ///< NWSE_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_S_RESIZE =
-  SDL_SYSTEM_CURSOR_S_RESIZE; ///< Window resize bottom.  May be NS_RESIZE.
+  SDL_SYSTEM_CURSOR_S_RESIZE; ///< Window resize bottom. May be NS_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_SW_RESIZE =
-  SDL_SYSTEM_CURSOR_SW_RESIZE; ///< Window resize bottom-left.  May be
+  SDL_SYSTEM_CURSOR_SW_RESIZE; ///< Window resize bottom-left. May be
                                ///< NESW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_W_RESIZE =
-  SDL_SYSTEM_CURSOR_W_RESIZE; ///< Window resize left.  May be EW_RESIZE.
+  SDL_SYSTEM_CURSOR_W_RESIZE; ///< Window resize left. May be EW_RESIZE.
 
 constexpr SystemCursor SYSTEM_CURSOR_COUNT = SDL_SYSTEM_CURSOR_COUNT; ///< COUNT
 
@@ -71840,10 +72108,10 @@ struct CursorRef : Cursor
 using MouseWheelDirection = SDL_MouseWheelDirection;
 
 constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
-  SDL_MOUSEWHEEL_NORMAL; ///< The scroll direction is normal.
+  SDL_MOUSEWHEEL_NORMAL; ///< The scroll direction is normal
 
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
-  SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural.
+  SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
 /**
  * Represents a button index.
@@ -72584,16 +72852,16 @@ constexpr GamepadButton GAMEPAD_BUTTON_INVALID =
   SDL_GAMEPAD_BUTTON_INVALID; ///< GAMEPAD_BUTTON_INVALID
 
 constexpr GamepadButton GAMEPAD_BUTTON_SOUTH =
-  SDL_GAMEPAD_BUTTON_SOUTH; ///< Bottom face button (e.g.  Xbox A button)
+  SDL_GAMEPAD_BUTTON_SOUTH; ///< Bottom face button (e.g. Xbox A button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_EAST =
-  SDL_GAMEPAD_BUTTON_EAST; ///< Right face button (e.g.  Xbox B button)
+  SDL_GAMEPAD_BUTTON_EAST; ///< Right face button (e.g. Xbox B button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_WEST =
-  SDL_GAMEPAD_BUTTON_WEST; ///< Left face button (e.g.  Xbox X button)
+  SDL_GAMEPAD_BUTTON_WEST; ///< Left face button (e.g. Xbox X button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_NORTH =
-  SDL_GAMEPAD_BUTTON_NORTH; ///< Top face button (e.g.  Xbox Y button)
+  SDL_GAMEPAD_BUTTON_NORTH; ///< Top face button (e.g. Xbox Y button)
 
 constexpr GamepadButton GAMEPAD_BUTTON_BACK =
   SDL_GAMEPAD_BUTTON_BACK; ///< GAMEPAD_BUTTON_BACK
@@ -72629,51 +72897,49 @@ constexpr GamepadButton GAMEPAD_BUTTON_DPAD_RIGHT =
   SDL_GAMEPAD_BUTTON_DPAD_RIGHT; ///< GAMEPAD_BUTTON_DPAD_RIGHT
 
 /**
- * Additional button (e.g.  Xbox Series X share button, PS5 microphone button,
+ * Additional button (e.g. Xbox Series X share button, PS5 microphone button,
  * Nintendo Switch Pro capture button, Amazon Luna microphone button, Google
  * Stadia capture button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_MISC1 = SDL_GAMEPAD_BUTTON_MISC1;
 
-/**
- * Upper or primary paddle, under your right hand (e.g.  Xbox Elite paddle P1)
- */
+/// Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1)
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1;
 
-/// Upper or primary paddle, under your left hand (e.g.  Xbox Elite paddle P3)
+/// Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3)
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE1;
 
 /**
- * Lower or secondary paddle, under your right hand (e.g.  Xbox Elite paddle P2)
+ * Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
 /**
- * Lower or secondary paddle, under your left hand (e.g.  Xbox Elite paddle P4)
+ * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
 
 constexpr GamepadButton GAMEPAD_BUTTON_TOUCHPAD =
-  SDL_GAMEPAD_BUTTON_TOUCHPAD; ///< PS4/PS5 touchpad button.
+  SDL_GAMEPAD_BUTTON_TOUCHPAD; ///< PS4/PS5 touchpad button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC2 =
-  SDL_GAMEPAD_BUTTON_MISC2; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC2; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC3 =
-  SDL_GAMEPAD_BUTTON_MISC3; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC3; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC4 =
-  SDL_GAMEPAD_BUTTON_MISC4; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC4; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC5 =
-  SDL_GAMEPAD_BUTTON_MISC5; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC5; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC6 =
-  SDL_GAMEPAD_BUTTON_MISC6; ///< Additional button.
+  SDL_GAMEPAD_BUTTON_MISC6; ///< Additional button
 
 constexpr GamepadButton GAMEPAD_BUTTON_COUNT =
   SDL_GAMEPAD_BUTTON_COUNT; ///< GAMEPAD_BUTTON_COUNT
@@ -77218,13 +77484,13 @@ using Vertex = SDL_Vertex;
 using TextureAccess = SDL_TextureAccess;
 
 constexpr TextureAccess TEXTUREACCESS_STATIC =
-  SDL_TEXTUREACCESS_STATIC; ///< Changes rarely, not lockable.
+  SDL_TEXTUREACCESS_STATIC; ///< Changes rarely, not lockable
 
 constexpr TextureAccess TEXTUREACCESS_STREAMING =
-  SDL_TEXTUREACCESS_STREAMING; ///< Changes frequently, lockable.
+  SDL_TEXTUREACCESS_STREAMING; ///< Changes frequently, lockable
 
 constexpr TextureAccess TEXTUREACCESS_TARGET =
-  SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target.
+  SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
 /**
  * How the logical size is mapped to the output.
@@ -77234,29 +77500,29 @@ constexpr TextureAccess TEXTUREACCESS_TARGET =
 using RendererLogicalPresentation = SDL_RendererLogicalPresentation;
 
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_DISABLED =
-  SDL_LOGICAL_PRESENTATION_DISABLED; ///< There is no logical size in effect.
+  SDL_LOGICAL_PRESENTATION_DISABLED; ///< There is no logical size in effect
 
-/// The rendered content is stretched to the output resolution.
+/// The rendered content is stretched to the output resolution
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_STRETCH =
   SDL_LOGICAL_PRESENTATION_STRETCH;
 
 /**
  * The rendered content is fit to the largest dimension and the other dimension
- * is letterboxed with black bars.
+ * is letterboxed with black bars
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_LETTERBOX =
   SDL_LOGICAL_PRESENTATION_LETTERBOX;
 
 /**
  * The rendered content is fit to the smallest dimension and the other dimension
- * extends beyond the output bounds.
+ * extends beyond the output bounds
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
   SDL_LOGICAL_PRESENTATION_OVERSCAN;
 
 /**
  * The rendered content is scaled up by integer multiples to fit the output
- * resolution.
+ * resolution
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
@@ -85500,7 +85766,7 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
   SDL_PEN_AXIS_TANGENTIAL_PRESSURE;
 
 /**
- * Total known pen axis types in this version of SDL.  This number may grow in
+ * Total known pen axis types in this version of SDL. This number may grow in
  * future releases!
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
@@ -88344,9 +88610,6 @@ inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
   TTF_GetHarfBuzzVersion(major, minor, patch);
 }
 
-/// Internal data for Text
-using TextData = TTF_TextData;
-
 /**
  * Font style flags for Font
  *
@@ -88441,13 +88704,13 @@ using Direction = TTF_Direction;
 
 constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID; ///< INVALID
 
-constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR; ///< Left to Right.
+constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR; ///< Left to Right
 
-constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL; ///< Right to Left.
+constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL; ///< Right to Left
 
-constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB; ///< Top to Bottom.
+constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB; ///< Top to Bottom
 
-constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT; ///< Bottom to Top.
+constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT; ///< Bottom to Top
 
 /**
  * The type of data in a glyph image
@@ -88459,12 +88722,12 @@ using ImageType = TTF_ImageType;
 constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID; ///< INVALID
 
 constexpr ImageType IMAGE_ALPHA =
-  TTF_IMAGE_ALPHA; ///< The color channels are white.
+  TTF_IMAGE_ALPHA; ///< The color channels are white
 
 constexpr ImageType IMAGE_COLOR =
-  TTF_IMAGE_COLOR; ///< The color channels have image data.
+  TTF_IMAGE_COLOR; ///< The color channels have image data
 
-/// The alpha channel has signed distance field information.
+/// The alpha channel has signed distance field information
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
 
 /**
@@ -89984,379 +90247,6 @@ struct FontRef : Font
 };
 
 /**
- * Flags for SubString
- *
- * @since This datatype is available since SDL_ttf 3.0.0.
- *
- * @sa SubString
- */
-using SubStringFlags = Uint32;
-
-constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
-  TTF_SUBSTRING_DIRECTION_MASK; ///< The mask for the flow direction for this
-                                ///< substring
-
-constexpr SubStringFlags SUBSTRING_TEXT_START =
-  TTF_SUBSTRING_TEXT_START; ///< This substring contains the beginning of the
-                            ///< text
-
-/// This substring contains the beginning of line `line_index`
-constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
-
-/// This substring contains the end of line `line_index`
-constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
-
-constexpr SubStringFlags SUBSTRING_TEXT_END =
-  TTF_SUBSTRING_TEXT_END; ///< This substring contains the end of the text
-
-/**
- * The winding order of the vertices returned by Text.GetGPUDrawData
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- */
-using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
-  TTF_GPU_TEXTENGINE_WINDING_INVALID; ///< INVALID
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE; ///< CLOCKWISE
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
-
-/**
- * A resource engine
- *
- * @cat resource
- */
-class TextEngine
-{
-  TextEngineRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr TextEngine() = default;
-
-  /**
-   * Constructs from TextEngineParam.
-   *
-   * @param resource a TextEngineRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit TextEngine(const TextEngineRaw resource)
-    : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) = delete;
-
-  /// Move constructor
-  constexpr TextEngine(TextEngine&& other)
-    : TextEngine(other.release())
-  {
-  }
-
-  /// Destructor
-  virtual ~TextEngine() = default;
-
-  /// Assignment operator.
-  TextEngine& operator=(TextEngine&& other)
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = delete;
-
-  /// Retrieves underlying TextEngineRaw.
-  constexpr TextEngineRaw get() const { return m_resource; }
-
-  /// Retrieves underlying TextEngineRaw and clear this.
-  constexpr TextEngineRaw release()
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextEngine& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Converts to TextEngineParam
-  constexpr operator TextEngineParam() const { return {m_resource}; }
-
-  /// frees up textEngine. Pure virtual
-  virtual void Destroy() = 0;
-
-  /**
-   * Create a text object from UTF-8 text and a text engine.
-   *
-   *               nullptr.
-   * @param font the font to render with.
-   * @param text the text to use, in UTF-8 encoding.
-   * @returns a Text object or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               font and text engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa Text.Destroy
-   */
-  Text CreateText(FontParam font, std::string_view text);
-};
-
-/// A surface based text engine
-struct SurfaceTextEngine : TextEngine
-{
-  /**
-   * Create a text engine for drawing text on SDL surfaces.
-   *
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa SurfaceTextEngine.Destroy
-   * @sa Text.DrawSurface
-   */
-  SurfaceTextEngine()
-    : TextEngine(TTF_CreateSurfaceTextEngine())
-  {
-  }
-
-  ~SurfaceTextEngine() { Destroy(); }
-
-  /**
-   * Destroy a text engine created for drawing text on SDL surfaces.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
-   */
-  void Destroy() final;
-};
-
-/// A renderer based text engine
-struct RendererTextEngine : TextEngine
-{
-  /**
-   * Create a text engine for drawing text on an SDL renderer.
-   *
-   * @param renderer the renderer to use for creating textures and drawing text.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.Destroy
-   * @sa Text.DrawRenderer
-   * @sa RendererTextEngine.RendererTextEngine
-   */
-  RendererTextEngine(RendererParam renderer)
-    : TextEngine(TTF_CreateRendererTextEngine(renderer))
-  {
-  }
-
-  /**
-   * Create a text engine for drawing text on an SDL renderer, with the
-   * specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
-   *   creating textures and drawing text
-   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
-   *   texture atlas
-   *
-   * @param props the properties to use.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.RendererTextEngine
-   * @sa RendererTextEngine.Destroy
-   * @sa Text.DrawRenderer
-   */
-  RendererTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
-  {
-  }
-
-  ~RendererTextEngine() { Destroy(); }
-
-  /**
-   * Destroy a text engine created for drawing text on an SDL renderer.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.RendererTextEngine
-   */
-  void Destroy() final;
-};
-
-/// A GPU based text engine
-struct GPUTextEngine : TextEngine
-{
-  /**
-   * Create a text engine for drawing text with the SDL GPU API.
-   *
-   * @param device the GPUDevice to use for creating textures and drawing
-   *               text.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               device.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   * @sa GPUTextEngine.Destroy
-   * @sa Text.GetGPUDrawData
-   */
-  GPUTextEngine(GPUDeviceParam device)
-    : TextEngine(TTF_CreateGPUTextEngine(device))
-  {
-  }
-
-  /**
-   * Create a text engine for drawing text with the SDL GPU API, with the
-   * specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
-   *   textures and drawing text.
-   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
-   *   atlas
-   *
-   * @param props the properties to use.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               device.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   * @sa GPUTextEngine.Destroy
-   * @sa Text.GetGPUDrawData
-   */
-  GPUTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
-  {
-  }
-
-  ~GPUTextEngine() { Destroy(); }
-
-  /**
-   * Sets the winding order of the vertices returned by Text.GetGPUDrawData
-   * for a particular GPU text engine.
-   *
-   * @param winding the new winding order option.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GetGPUWinding
-   */
-  void SetGPUWinding(GPUTextEngineWinding winding);
-
-  /**
-   * Get the winding order of the vertices returned by Text.GetGPUDrawData
-   * for a particular GPU text engine
-   *
-   * @returns the winding order used by the GPU text engine or
-   *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.SetGPUWinding
-   */
-  GPUTextEngineWinding GetGPUWinding() const;
-
-  /**
-   * Destroy a text engine created for drawing text with the SDL GPU API.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   */
-  void Destroy() final;
-};
-
-/**
- * Draw sequence returned by Text.GetGPUDrawData
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- *
- * @sa Text.GetGPUDrawData
- */
-using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
-
-/**
- * The representation of a substring within text.
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- *
- * @sa Text.GetNextSubString
- * @sa Text.GetPreviousSubString
- * @sa Text.GetSubString
- * @sa Text.GetSubStringForLine
- * @sa Text.GetSubStringForPoint
- * @sa Text.GetSubStringsForRange
- */
-using SubString = TTF_SubString;
-
-// Forward decl
-struct SubStringIterator;
-
-/**
  * Create a font from a file, using a specified point size.
  *
  * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -91448,9 +91338,9 @@ inline void Font::SetScript(Uint32 script)
  * Get the script used for text shaping a font.
  *
  * @param font the font to query.
- * @returns an [ISO 15924
- *          code](https://unicode.org/iso15924/iso15924-codes.html) or 0 if a
- *          script hasn't been set.
+ * @returns an
+ *          [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+ *          or 0 if a script hasn't been set.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -92324,6 +92214,399 @@ inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
 }
 
 /**
+ * Flags for SubString
+ *
+ * @since This datatype is available since SDL_ttf 3.0.0.
+ *
+ * @sa SubString
+ */
+using SubStringFlags = Uint32;
+
+constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
+  TTF_SUBSTRING_DIRECTION_MASK; ///< The mask for the flow direction for this
+                                ///< substring
+
+constexpr SubStringFlags SUBSTRING_TEXT_START =
+  TTF_SUBSTRING_TEXT_START; ///< This substring contains the beginning of the
+                            ///< text
+
+/// This substring contains the beginning of line `line_index`
+constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
+
+/// This substring contains the end of line `line_index`
+constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
+
+constexpr SubStringFlags SUBSTRING_TEXT_END =
+  TTF_SUBSTRING_TEXT_END; ///< This substring contains the end of the text
+
+/**
+ * The winding order of the vertices returned by Text.GetGPUDrawData
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ */
+using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
+  TTF_GPU_TEXTENGINE_WINDING_INVALID; ///< INVALID
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
+  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE; ///< CLOCKWISE
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
+  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
+
+/**
+ * A text engine used to create text objects.
+ *
+ * This is a public interface that can be used by applications and libraries
+ * to perform customize rendering with text objects. See
+ * <SDL3_ttf/SDL_textengine.h> for details.
+ *
+ * There are three text engines provided with the library:
+ *
+ * - Drawing to an Surface, created with SurfaceTextEngine.SurfaceTextEngine()
+ * - Drawing with an SDL 2D renderer, created with
+ *   RendererTextEngine.RendererTextEngine()
+ * - Drawing with the SDL GPU API, created with GPUTextEngine.GPUTextEngine()
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @cat resource
+ */
+class TextEngine
+{
+  TextEngineRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr TextEngine() = default;
+
+  /**
+   * Constructs from TextEngineParam.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit TextEngine(const TextEngineRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr TextEngine(const TextEngine& other) = delete;
+
+  /// Move constructor
+  constexpr TextEngine(TextEngine&& other)
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Destructor
+  virtual ~TextEngine() = default;
+
+  /// Assignment operator.
+  TextEngine& operator=(TextEngine&& other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Assignment operator.
+  TextEngine& operator=(const TextEngine& other) = delete;
+
+  /// Retrieves underlying TextEngineRaw.
+  constexpr TextEngineRaw get() const { return m_resource; }
+
+  /// Retrieves underlying TextEngineRaw and clear this.
+  constexpr TextEngineRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextEngine& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to TextEngineParam
+  constexpr operator TextEngineParam() const { return {m_resource}; }
+
+  /// frees up textEngine. Pure virtual
+  virtual void Destroy() = 0;
+
+  /**
+   * Create a text object from UTF-8 text and a text engine.
+   *
+   *               nullptr.
+   * @param font the font to render with.
+   * @param text the text to use, in UTF-8 encoding.
+   * @returns a Text object or nullptr on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               font and text engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa Text.Destroy
+   */
+  Text CreateText(FontParam font, std::string_view text);
+};
+
+/// A surface based text engine
+struct SurfaceTextEngine : TextEngine
+{
+  /**
+   * Create a text engine for drawing text on SDL surfaces.
+   *
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa SurfaceTextEngine.Destroy
+   * @sa Text.DrawSurface
+   */
+  SurfaceTextEngine()
+    : TextEngine(TTF_CreateSurfaceTextEngine())
+  {
+  }
+
+  ~SurfaceTextEngine() { Destroy(); }
+
+  /**
+   * Destroy a text engine created for drawing text on SDL surfaces.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa SurfaceTextEngine.SurfaceTextEngine
+   */
+  void Destroy() final;
+};
+
+/// A renderer based text engine
+struct RendererTextEngine : TextEngine
+{
+  /**
+   * Create a text engine for drawing text on an SDL renderer.
+   *
+   * @param renderer the renderer to use for creating textures and drawing text.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa RendererTextEngine.Destroy
+   * @sa Text.DrawRenderer
+   * @sa RendererTextEngine.RendererTextEngine
+   */
+  RendererTextEngine(RendererParam renderer)
+    : TextEngine(TTF_CreateRendererTextEngine(renderer))
+  {
+  }
+
+  /**
+   * Create a text engine for drawing text on an SDL renderer, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+   *   creating textures and drawing text
+   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+   *   texture atlas
+   *
+   * @param props the properties to use.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa RendererTextEngine.RendererTextEngine
+   * @sa RendererTextEngine.Destroy
+   * @sa Text.DrawRenderer
+   */
+  RendererTextEngine(PropertiesParam props)
+    : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
+  {
+  }
+
+  ~RendererTextEngine() { Destroy(); }
+
+  /**
+   * Destroy a text engine created for drawing text on an SDL renderer.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa RendererTextEngine.RendererTextEngine
+   */
+  void Destroy() final;
+};
+
+/// A GPU based text engine
+struct GPUTextEngine : TextEngine
+{
+  /**
+   * Create a text engine for drawing text with the SDL GPU API.
+   *
+   * @param device the GPUDevice to use for creating textures and drawing
+   *               text.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GPUTextEngine
+   * @sa GPUTextEngine.Destroy
+   * @sa Text.GetGPUDrawData
+   */
+  GPUTextEngine(GPUDeviceParam device)
+    : TextEngine(TTF_CreateGPUTextEngine(device))
+  {
+  }
+
+  /**
+   * Create a text engine for drawing text with the SDL GPU API, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+   *   textures and drawing text.
+   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+   *   atlas
+   *
+   * @param props the properties to use.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GPUTextEngine
+   * @sa GPUTextEngine.Destroy
+   * @sa Text.GetGPUDrawData
+   */
+  GPUTextEngine(PropertiesParam props)
+    : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
+  {
+  }
+
+  ~GPUTextEngine() { Destroy(); }
+
+  /**
+   * Sets the winding order of the vertices returned by Text.GetGPUDrawData
+   * for a particular GPU text engine.
+   *
+   * @param winding the new winding order option.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GetGPUWinding
+   */
+  void SetGPUWinding(GPUTextEngineWinding winding);
+
+  /**
+   * Get the winding order of the vertices returned by Text.GetGPUDrawData
+   * for a particular GPU text engine
+   *
+   * @returns the winding order used by the GPU text engine or
+   *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.SetGPUWinding
+   */
+  GPUTextEngineWinding GetGPUWinding() const;
+
+  /**
+   * Destroy a text engine created for drawing text with the SDL GPU API.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GPUTextEngine
+   */
+  void Destroy() final;
+};
+
+/**
+ * Draw sequence returned by Text.GetGPUDrawData
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa Text.GetGPUDrawData
+ */
+using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
+
+/**
+ * The representation of a substring within text.
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa Text.GetNextSubString
+ * @sa Text.GetPreviousSubString
+ * @sa Text.GetSubString
+ * @sa Text.GetSubStringForLine
+ * @sa Text.GetSubStringForPoint
+ * @sa Text.GetSubStringsForRange
+ */
+using SubString = TTF_SubString;
+
+// Forward decl
+struct SubStringIterator;
+
+/**
+ * Internal data for Text
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ */
+using TextData = TTF_TextData;
+
+/**
  * Text created with Text.Text()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
@@ -92422,7 +92705,7 @@ public:
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
-  /// converts to bool
+  /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextParam

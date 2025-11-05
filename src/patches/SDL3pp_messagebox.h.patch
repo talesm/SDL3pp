@@ -37,8 +37,8 @@
 >                        WindowRef window,
 152,154c171,172
 <                        int numbuttons,
-<                        SDL_MessageBoxButtonData buttons,
-<                        SDL_MessageBoxColorScheme colorScheme)
+<                        const SDL_MessageBoxButtonData* buttons,
+<                        const SDL_MessageBoxColorScheme* colorScheme)
 ---
 >                        std::span<const MessageBoxButtonData> buttons,
 >                        OptionalRef<const MessageBoxColorScheme> colorScheme)
@@ -64,20 +64,21 @@
 <    * @returns current buttons value.
 ---
 >    * @returns current buttons.
-272c283,287
-<   constexpr SDL_MessageBoxButtonData GetButtons() const { return buttons; }
+272c283
+<   constexpr const SDL_MessageBoxButtonData* GetButtons() const
 ---
 >   constexpr std::span<const MessageBoxButtonData> GetButtons() const
->   {
+274c285,286
+<     return buttons;
+---
 >     if (numbuttons == 0) return {};
 >     return std::span(buttons, size_t(numbuttons));
->   }
-280c295,296
-<   constexpr MessageBox& SetButtons(SDL_MessageBoxButtonData newButtons)
+283c295,296
+<   constexpr MessageBox& SetButtons(const SDL_MessageBoxButtonData* newButtons)
 ---
 >   constexpr MessageBox& SetButtons(
 >     std::span<const MessageBoxButtonData> newButtons)
-282c298,304
+285c298,304
 <     buttons = newButtons;
 ---
 >     if (newButtons.empty()) {
@@ -87,20 +88,19 @@
 >       numbuttons = newButtons.size();
 >       buttons = newButtons.data();
 >     }
-291c313
-<   constexpr SDL_MessageBoxColorScheme GetColorScheme() const
+294c313
+<   constexpr const SDL_MessageBoxColorScheme* GetColorScheme() const
 ---
 >   constexpr const MessageBoxColorScheme* GetColorScheme() const
-302c324,325
-<   constexpr MessageBox& SetColorScheme(SDL_MessageBoxColorScheme newColorScheme)
+306c325
+<     const SDL_MessageBoxColorScheme* newColorScheme)
 ---
->   constexpr MessageBox& SetColorScheme(
 >     OptionalRef<const MessageBoxColorScheme> newColorScheme)
-378c401
+382c401
 <   CheckError(SDL_ShowMessageBox(messageboxdata, buttonid));
 ---
 >   CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
-383c406
+387c406
 <   SDL::ShowMessageBox(this, buttonid);
 ---
 >   SDL::ShowMessageBox(*this, buttonid);

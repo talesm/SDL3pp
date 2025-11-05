@@ -100,13 +100,13 @@ constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
 using ThreadState = SDL_ThreadState;
 
 constexpr ThreadState THREAD_UNKNOWN =
-  SDL_THREAD_UNKNOWN; ///< The thread is not valid.
+  SDL_THREAD_UNKNOWN; ///< The thread is not valid
 
 constexpr ThreadState THREAD_ALIVE =
-  SDL_THREAD_ALIVE; ///< The thread is currently running.
+  SDL_THREAD_ALIVE; ///< The thread is currently running
 
 constexpr ThreadState THREAD_DETACHED =
-  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on.
+  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on
 
 /// The thread has finished and should be cleaned up with Thread.Wait()
 constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;

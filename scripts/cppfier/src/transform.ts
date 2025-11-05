@@ -1,5 +1,4 @@
 import { generateCallParameters } from "./generate";
-import { insertEntry } from "./parse";
 import { Api, ApiEntries, ApiEntry, ApiEntryBase, ApiEntryKind, ApiEntryTransform, ApiEntryTransformMap, ApiFile, ApiFileTransform, ApiParameter, ApiParameters, ApiTransform, ApiType, Dict, EntryHint, QuickTransform, ReplacementRule, SignatureTransform, StringMap, VersionTag } from "./types";
 import { system, combineObject, looksLikeFreeFunction, deepClone } from "./utils";
 
@@ -1797,6 +1796,66 @@ function scanFreeFunction(entries: Dict<ApiEntry>, uniqueType: string, pointerTy
   }
   if (candidates.length === 1) return candidates[0];
 }
+
+/**
+ * Insert entry into entries
+ */
+function insertEntry(entries: ApiEntries, entry: ApiEntry | ApiEntry[], defaultName: string = "") {
+  if (Array.isArray(entry)) entry.forEach(doInsertEntry);
+  else doInsertEntry(entry);
+  return entries;
+
+  /**
+   * Insert entry into entries
+   */
+  function doInsertEntry(entry: ApiEntry) {
+    if (!entry.name) entry.name = defaultName;
+    entry = /** @type {ApiEntry} */(entry);
+    fixEntry(entry);
+    const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
+    const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
+    if (entries[key]) {
+      const currEntry = entries[key];
+      if (currEntry.kind !== 'function') {
+        if (entry.doc || !currEntry.doc) {
+          if (entry.kind === "def") {
+            currEntry.doc = entry.doc;
+          } else {
+            entries[key] = entry;
+          }
+        }
+      } else if (entry.kind === 'function') {
+        let e = currEntry;
+        while (e.overload) e = e.overload;
+        e.overload = entry;
+        if (typeof entry.doc !== 'string' && currEntry.doc) entry.doc = currEntry.doc;
+      }
+    } else {
+      entries[key] = entry;
+    }
+    return entries;
+  }
+
+  /**
+ * Add missing fields
+ */
+  function fixEntry(entry: ApiEntry) {
+    if (entry.entries) {
+      for (const subEntry of Object.values(entry.entries)) {
+        if (Array.isArray(subEntry)) {
+          subEntry.forEach(fixEntry);
+        } else if (typeof subEntry === 'object') {
+          fixEntry(subEntry);
+        }
+      }
+    } else if (entry.kind == "struct") {
+      entry.entries = {};
+    }
+    if (!entry.kind) entry.kind = 'plc';
+  }
+}
+
+
 
 /**
  * Insert entry into entries

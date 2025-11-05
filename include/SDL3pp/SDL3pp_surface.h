@@ -161,7 +161,7 @@ constexpr ScaleMode SCALEMODE_LINEAR =
  */
 using FlipMode = SDL_FlipMode;
 
-constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE; ///< Do not flip.
+constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE; ///< Do not flip
 
 constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL; ///< flip horizontally
 

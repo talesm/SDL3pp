@@ -13,40 +13,6 @@
 <  * ```c
 ---
 >  * ```cpp
-107a110,111
-> #endif // SDL3PP_DOC
+106a109,110
 > 
-127c131
-< inline float SwapFloat(float x) { return SDL_SwapFloat(x); }
----
-> constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
-133,134c137,138
-<  * byteorder of the system or not. You should use Swap16LE or Swap16BE
-<  * instead, in most cases.
----
->  * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
->  * in most cases.
-148c152
-< inline Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
----
-> constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
-154,155c158,159
-<  * byteorder of the system or not. You should use Swap32LE or Swap32BE
-<  * instead, in most cases.
----
->  * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
->  * in most cases.
-169c173
-< inline Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
----
-> constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
-175,176c179,180
-<  * byteorder of the system or not. You should use Swap64LE or Swap64BE
-<  * instead, in most cases.
----
->  * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
->  * in most cases.
-190c194
-< inline Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
----
-> constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
+> #endif // SDL3PP_DOC
