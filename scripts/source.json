@@ -42120,7 +42120,7 @@
           "doc": "This is the version number macro for the current SDL_image version.",
           "name": "SDL_IMAGE_VERSION",
           "kind": "def",
-          "value": "    SDL_VERSIONNUM(SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_MICRO_VERSION)"
+          "value": "\\\n    SDL_VERSIONNUM(SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_MICRO_VERSION)"
         },
         "SDL_IMAGE_VERSION_ATLEAST": {
           "doc": "This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.",
@@ -42140,7 +42140,7 @@
               "type": ""
             }
           ],
-          "value": "    ((SDL_IMAGE_MAJOR_VERSION >= X) && \\\n     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION >= Y) && \\\n     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION > Y || SDL_IMAGE_MICRO_VERSION >= Z))"
+          "value": "\\\n    ((SDL_IMAGE_MAJOR_VERSION >= X) && \\\n     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION >= Y) && \\\n     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION > Y || SDL_IMAGE_MICRO_VERSION >= Z))"
         },
         "IMG_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_image library.\n\n\\returns SDL_image version.\n\n\\since This function is available since SDL_image 3.0.0.",

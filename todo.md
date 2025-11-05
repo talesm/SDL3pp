@@ -11,7 +11,7 @@ Replace parse and parse-xml for a antlr parser, convert to typescript
   - [x] Update CMake to only look for dist/*.js;
 - [ ] Make antlr parser:
   - [x] Create command `parse-new` to use it;
-  - [ ] Create restricted grammar for C, enough to parse SDL library;
+  - [x] Create restricted grammar for C, enough to parse SDL library;
   - [x] Achieve parity with current `parse` and remove it.
   - [ ] Achieve parity with current `parse-xml` and remove it.
 - [ ] Add miss-detected functions:

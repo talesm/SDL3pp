@@ -57,6 +57,7 @@
     "SDL_version.h",
     "SDL_video.h",
     "SDL_vulkan.h",
+    "SDL_image.h",
     "SDL_ttf.h"
   ],
   "baseDir": [
