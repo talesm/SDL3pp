@@ -2138,7 +2138,7 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
   function transformEntryDoc(entry: ApiEntry) {
     if (entry.doc) {
       if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
-      entry.doc = reflow(resolveDocRefs(entry.doc, context));
+      entry.doc = resolveDocRefs(entry.doc, context);
     }
     if (entry.entries) transformEntriesDocRefs(entry.entries, context);
     if (entry.overload) transformEntryDoc(entry.overload);
@@ -2161,12 +2161,3 @@ function resolveDocRefs(doc: string, context: ApiContext) {
   if (!doc) return "";
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
-function reflow(doc: string): string {
-  return doc.split(/^```/m)
-    .map((portion, index) => {
-      if (index % 2 === 1) return portion;
-      return portion.split(/\n{2,}/).join('\n\n');
-    })
-    .join('```');
-}
-

@@ -2137,7 +2137,7 @@ function transformEntriesDocRefs(entries, context) {
         if (entry.doc) {
             if (!entry.since)
                 entry.since = resolveVersionDoc(entry.doc, context);
-            entry.doc = reflow(resolveDocRefs(entry.doc, context));
+            entry.doc = resolveDocRefs(entry.doc, context);
         }
         if (entry.entries)
             transformEntriesDocRefs(entry.entries, context);
@@ -2162,13 +2162,4 @@ function resolveDocRefs(doc, context) {
     if (!doc)
         return "";
     return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
-}
-function reflow(doc) {
-    return doc.split(/^```/m)
-        .map((portion, index) => {
-        if (index % 2 === 1)
-            return portion;
-        return portion.split(/\n{2,}/).join('\n\n');
-    })
-        .join('```');
 }

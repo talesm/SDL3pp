@@ -94,12 +94,28 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   function generateDocString(docStr: string, prefix?: string) {
     if (!docStr) return '';
     prefix = prefix ?? '';
-    const docLines = docStr.split('\n');
-    if (docLines.length === 1 && docStr.length < (80 - 4 - prefix.length)) {
+    if (!docStr.includes('\n') && docStr.length < (80 - 4 - prefix.length)) {
       return `\n${prefix} /// ${docStr}`;
     }
-    docStr = docLines.map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
+    docStr = reflow(docStr, 80 - 3 - prefix.length)
+      .split('\n')
+      .map(l => l ? `${prefix} * ${l}` : `${prefix} *`)
+      .join('\n');
     return `\n${prefix}/**\n${docStr}\n${prefix} */`;
+  }
+
+  function reflow(text: string, maxLength: number) {
+    return text.split(/^```/m)
+      .map((portion, index) => {
+        if (index % 2 === 1) return portion;
+        return portion.split(/\n{2,}/).map(reflowParagraph).join('\n\n');
+      })
+      .join('```');;
+
+
+    function reflowParagraph(paragraph: string) {
+      return paragraph;
+    }
   }
 
   function generateEntry(entry: ApiEntry, prefix?: string) {
