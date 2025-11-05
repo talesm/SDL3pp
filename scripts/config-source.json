@@ -65,5 +65,5 @@
     "external/SDL_image/include/SDL3_image/",
     "external/SDL_ttf/include/SDL3_ttf/"
   ],
-  "outputFile": "scripts/source2.json"
+  "outputFile": "scripts/source.json"
 }

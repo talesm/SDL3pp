@@ -175,8 +175,8 @@ file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/dist/*.js)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND node scripts/gen-source
-    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json ${PROJECT_SOURCE_DIR}/scripts/gen-source.js ${CPPFIER_SOURCES}
+    COMMAND node scripts/cppfier parse scripts/config-source.json
+    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
