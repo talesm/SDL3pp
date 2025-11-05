@@ -316,7 +316,7 @@ struct Rect : RectRaw
    */
   Rect(const PointRaw& corner, const PointRaw& size) {}
 
-  ///@sa Empty()
+  /// @sa Empty()
   constexpr explicit operator bool() const
   {
     static_assert(false, "Not implemented");
@@ -496,7 +496,7 @@ struct Rect : RectRaw
    */
   constexpr operator SDL_FRect() const;
 
-  ///@sa operator ToFRect()
+  /// @sa operator ToFRect()
   constexpr operator FRect() const { static_assert(false, "Not implemented"); }
 
   /**
@@ -641,7 +641,7 @@ struct FRect : FRectRaw
    */
   constexpr FRect(const FPointRaw& corner, const FPointRaw& size) {}
 
-  ///@sa Empty()
+  /// @sa Empty()
   constexpr explicit operator bool() const
   {
     static_assert(false, "Not implemented");

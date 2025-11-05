@@ -22762,9 +22762,7 @@ constexpr Folder FOLDER_DOCUMENTS = SDL_FOLDER_DOCUMENTS;
 /// Standard folder for user files downloaded from the internet.
 constexpr Folder FOLDER_DOWNLOADS = SDL_FOLDER_DOWNLOADS;
 
-/**
- * Music files that can be played using a standard music player (mp3, ogg...).
- */
+/// Music files that can be played using a standard music player (mp3, ogg...).
 constexpr Folder FOLDER_MUSIC = SDL_FOLDER_MUSIC;
 
 /// Image files that can be displayed using a standard viewer (png, jpg...).
@@ -29915,7 +29913,7 @@ struct Rect : RectRaw
    */
   constexpr operator SDL_FRect() const;
 
-  ///@sa operator ToFRect()
+  /// @sa operator ToFRect()
   constexpr operator FRect() const;
 
   /**
@@ -64912,13 +64910,13 @@ using GPUBlendOp = SDL_GPUBlendOp;
 constexpr GPUBlendOp GPU_BLENDOP_INVALID =
   SDL_GPU_BLENDOP_INVALID; ///< GPU_BLENDOP_INVALID
 
-///(source * source_factor) + (destination * destination_factor)
+/// (source * source_factor) + (destination * destination_factor)
 constexpr GPUBlendOp GPU_BLENDOP_ADD = SDL_GPU_BLENDOP_ADD;
 
-///(source * source_factor) - (destination * destination_factor)
+/// (source * source_factor) - (destination * destination_factor)
 constexpr GPUBlendOp GPU_BLENDOP_SUBTRACT = SDL_GPU_BLENDOP_SUBTRACT;
 
-///(destination * destination_factor) - (source * source_factor)
+/// (destination * destination_factor) - (source * source_factor)
 constexpr GPUBlendOp GPU_BLENDOP_REVERSE_SUBTRACT =
   SDL_GPU_BLENDOP_REVERSE_SUBTRACT;
 
@@ -72877,9 +72875,7 @@ constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
-/**
- * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
- */
+/// Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
 
@@ -85848,9 +85844,7 @@ struct AnimationConstParam
   SDL_VERSIONNUM(                                                              \
     SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_MICRO_VERSION)
 
-/**
- * This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.
- */
+/// This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.
 #define SDL_IMAGE_VERSION_ATLEAST(X, Y, Z)                                     \
   ((SDL_IMAGE_MAJOR_VERSION >= X) &&                                           \
    (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION >= Y) &&            \

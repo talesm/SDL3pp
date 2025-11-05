@@ -7352,7 +7352,7 @@ const transform = {
         "HitTestCB": {
           before: "SDL_Window",
           kind: "alias",
-          type: "HitTest",
+          type: "std::function<HitTestResult(WindowRaw window, const Point& area)>",
           doc: "@sa HitTest"
         },
         "SDL_EGLSurface": { before: "SDL_Window" },

@@ -81,8 +81,8 @@ function generateFile(targetFile, config) {
             return '';
         prefix = prefix ?? '';
         const docLines = docStr.split('\n');
-        if (docLines.length === 1 && docStr.length < 75) {
-            return `\n${prefix}///${docStr}`;
+        if (docLines.length === 1 && docStr.length < (80 - 4 - prefix.length)) {
+            return `\n${prefix} /// ${docStr}`;
         }
         docStr = docLines.map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
         return `\n${prefix}/**\n${docStr}\n${prefix} */`;

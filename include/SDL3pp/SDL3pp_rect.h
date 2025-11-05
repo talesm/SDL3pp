@@ -1182,7 +1182,7 @@ struct Rect : RectRaw
    */
   constexpr operator SDL_FRect() const;
 
-  ///@sa operator ToFRect()
+  /// @sa operator ToFRect()
   constexpr operator FRect() const;
 
   /**

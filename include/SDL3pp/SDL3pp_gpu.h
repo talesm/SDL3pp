@@ -4327,13 +4327,13 @@ using GPUBlendOp = SDL_GPUBlendOp;
 constexpr GPUBlendOp GPU_BLENDOP_INVALID =
   SDL_GPU_BLENDOP_INVALID; ///< GPU_BLENDOP_INVALID
 
-///(source * source_factor) + (destination * destination_factor)
+/// (source * source_factor) + (destination * destination_factor)
 constexpr GPUBlendOp GPU_BLENDOP_ADD = SDL_GPU_BLENDOP_ADD;
 
-///(source * source_factor) - (destination * destination_factor)
+/// (source * source_factor) - (destination * destination_factor)
 constexpr GPUBlendOp GPU_BLENDOP_SUBTRACT = SDL_GPU_BLENDOP_SUBTRACT;
 
-///(destination * destination_factor) - (source * source_factor)
+/// (destination * destination_factor) - (source * source_factor)
 constexpr GPUBlendOp GPU_BLENDOP_REVERSE_SUBTRACT =
   SDL_GPU_BLENDOP_REVERSE_SUBTRACT;
 

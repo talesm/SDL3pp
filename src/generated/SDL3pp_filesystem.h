@@ -220,9 +220,7 @@ constexpr Folder FOLDER_DOCUMENTS = SDL_FOLDER_DOCUMENTS;
 /// Standard folder for user files downloaded from the internet.
 constexpr Folder FOLDER_DOWNLOADS = SDL_FOLDER_DOWNLOADS;
 
-/**
- * Music files that can be played using a standard music player (mp3, ogg...).
- */
+/// Music files that can be played using a standard music player (mp3, ogg...).
 constexpr Folder FOLDER_MUSIC = SDL_FOLDER_MUSIC;
 
 /// Image files that can be displayed using a standard viewer (png, jpg...).

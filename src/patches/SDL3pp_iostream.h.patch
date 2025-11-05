@@ -87,7 +87,7 @@
 ---
 >    * @param buf the bytes to write to
 605c633,639
-<   ///@cat formatted-string
+<   /// @cat formatted-string
 ---
 >   /**
 >    * Prints formatted string.
@@ -101,7 +101,7 @@
 ---
 >     return Write(std::vformat(fmt, std::make_format_args(args...)));
 611c645,651
-<   ///@cat formatted-string
+<   /// @cat formatted-string
 ---
 >   /**
 >    * Prints formatted string.

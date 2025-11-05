@@ -666,7 +666,7 @@
 >   {
 >   }
 319,320c874,878
-<   ///@sa Empty()
+<   /// @sa Empty()
 <   constexpr explicit operator bool() const
 ---
 >   /// Compares with the underlying type
@@ -1168,23 +1168,23 @@
 <    * @param r the value to be wrapped
 ---
 >    * Constructs from top-left corner plus size
-642c1459,1468
+642c1459,1462
 <   constexpr FRect(const FPointRaw& corner, const FPointRaw& size) {}
 ---
 >   constexpr FRect(FPoint corner, FPoint size)
 >     : FRect{corner.x, corner.y, size.x, size.y}
 >   {
 >   }
-> 
+644,645c1464,1471
+<   /// @sa Empty()
+<   constexpr explicit operator bool() const
+---
 >   /// Compares with the underlying type
 >   constexpr bool operator==(const FRectRaw& other) const
 >   {
 >     return Equal(other);
 >   }
-644,645c1470,1471
-<   ///@sa Empty()
-<   constexpr explicit operator bool() const
----
+> 
 >   /// Compares with the underlying type
 >   constexpr bool operator==(const FRect& other) const
 647c1473

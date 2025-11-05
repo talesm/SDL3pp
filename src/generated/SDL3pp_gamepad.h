@@ -244,9 +244,7 @@ constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
-/**
- * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
- */
+/// Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
 

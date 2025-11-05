@@ -90,15 +90,15 @@
 >  * SCREENSHOTS | Vista+  |           |      |            |       |
 >  * TEMPLATES   | X       | X         |      | X          |       |
 >  * VIDEOS      | X       | X*        |      | X          |       |
-340c366
+338c364
 <   constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
 ---
 >   constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
-433d458
+431d456
 <  * @param userdata an app-controlled pointer that is passed to the callback.
-488d512
+486d510
 <  * @param userdata a pointer that is passed to `callback`.
-495c519,525
+493c517,523
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateDirectory(
@@ -108,7 +108,7 @@
 >       return cb(dirname, fname);
 >     },
 >     &callback);
-499,509c529
+497,507c527
 <  * Enumerate a directory through a callback function.
 <  *
 <  * This function provides every directory entry through an app-provided
@@ -122,13 +122,13 @@
 <  * were enumerated.
 ---
 >  * Enumerate a directory.
-512,514c532
+510,512c530
 <  * @param callback a function that is called for each entry in the directory.
 <  * @param userdata a pointer that is passed to `callback`.
 <  * @throws Error on failure.
 ---
 >  * @returns all the directory contents.
-520c538,543
+518c536,541
 <   static_assert(false, "Not implemented");
 ---
 >   std::vector<Path> r;
@@ -137,35 +137,35 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-526c549
+524c547
 <  * Directories that are not empty will fail; this function will not recursely
 ---
 >  * Directories that are not empty will fail; this function will not recursively
-607,608c630
+605,606c628
 <  * @param info a pointer filled in with information about the path, or nullptr
 <  * to check for the existence of a file.
 ---
 >  * @returns the information about the path on success.
-615c637,639
+613c635,637
 <   return CheckError(SDL_GetPathInfo(path));
 ---
 >   PathInfo info;
 >   CheckError(SDL_GetPathInfo(path, &info));
 >   return info;
-639,640d662
+637,638d660
 <  * @param count on return, will be set to the number of items in the returned
 <  *              array. Can be nullptr.
-650c672
+648c670
 <                                      GlobFlags flags)
 ---
 >                                      GlobFlags flags = 0)
-652c674,676
+650c672,674
 <   return CheckError(SDL_GlobDirectory(path, pattern, flags));
 ---
 >   int count;
 >   auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
 >   return OwnArray<char*>{data, size_t(count)};
-674c698
+672c696
 < inline Path GetCurrentDirectory() { return SDL_GetCurrentDirectory(); }
 ---
 > inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }

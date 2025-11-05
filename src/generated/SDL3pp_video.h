@@ -702,8 +702,9 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  */
 using HitTest = SDL_HitTest;
 
-///@sa HitTest
-using HitTestCB = HitTest;
+/// @sa HitTest
+using HitTestCB =
+  std::function<HitTestResult(WindowRaw window, const Point& area)>;
 
 /**
  * Opaque type for an EGL surface.

@@ -602,13 +602,13 @@ public:
    */
   size_t Write(SourceBytes buf);
 
-  ///@cat formatted-string
+  /// @cat formatted-string
   size_t print(std::string_view fmt, auto... args)
   {
     static_assert(false, "Not implemented");
   }
 
-  ///@cat formatted-string
+  /// @cat formatted-string
   size_t println(std::string_view fmt, auto... args)
   {
     static_assert(false, "Not implemented");
