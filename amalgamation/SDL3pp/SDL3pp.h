@@ -32984,13 +32984,13 @@ struct DateTime : DateTimeRaw
 using DateFormat = SDL_DateFormat;
 
 constexpr DateFormat DATE_FORMAT_YYYYMMDD =
-  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day.
+  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day
 
 constexpr DateFormat DATE_FORMAT_DDMMYYYY =
-  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year.
+  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year
 
 constexpr DateFormat DATE_FORMAT_MMDDYYYY =
-  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year.
+  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year
 
 /**
  * The preferred time format of the current system locale.
@@ -45903,13 +45903,13 @@ constexpr ThreadPriority THREAD_PRIORITY_TIME_CRITICAL =
 using ThreadState = SDL_ThreadState;
 
 constexpr ThreadState THREAD_UNKNOWN =
-  SDL_THREAD_UNKNOWN; ///< The thread is not valid.
+  SDL_THREAD_UNKNOWN; ///< The thread is not valid
 
 constexpr ThreadState THREAD_ALIVE =
-  SDL_THREAD_ALIVE; ///< The thread is currently running.
+  SDL_THREAD_ALIVE; ///< The thread is currently running
 
 constexpr ThreadState THREAD_DETACHED =
-  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on.
+  SDL_THREAD_DETACHED; ///< The thread is detached and can't be waited on
 
 /// The thread has finished and should be cleaned up with Thread.Wait()
 constexpr ThreadState THREAD_COMPLETE = SDL_THREAD_COMPLETE;

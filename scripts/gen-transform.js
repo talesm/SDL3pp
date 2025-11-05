@@ -6885,6 +6885,10 @@ const transform = {
       namespacesMap: {
         "SDL_PROP_THREAD_": "prop::thread"
       },
+      ignoreEntries: [
+        "SDL_CreateThreadRuntime",
+        "SDL_CreateThreadWithPropertiesRuntime",
+      ],
       transform: {
         "ThreadID": { after: "__begin" },
         "ThreadFunction": { after: "__begin" },

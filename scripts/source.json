@@ -37955,19 +37955,19 @@
           "kind": "enum",
           "entries": {
             "SDL_DATE_FORMAT_YYYYMMDD": {
-              "doc": "Year/Month/Day.",
+              "doc": "Year/Month/Day",
               "name": "SDL_DATE_FORMAT_YYYYMMDD",
               "kind": "var",
               "type": ""
             },
             "SDL_DATE_FORMAT_DDMMYYYY": {
-              "doc": "Day/Month/Year.",
+              "doc": "Day/Month/Year",
               "name": "SDL_DATE_FORMAT_DDMMYYYY",
               "kind": "var",
               "type": ""
             },
             "SDL_DATE_FORMAT_MMDDYYYY": {
-              "doc": "Month/Day/Year.",
+              "doc": "Month/Day/Year",
               "name": "SDL_DATE_FORMAT_MMDDYYYY",
               "kind": "var",
               "type": ""
@@ -38170,7 +38170,8 @@
         "SDL_TLSID": {
           "doc": "Thread local storage ID.\n\n0 is the invalid ID. An app can create these and then set data for these\nIDs that is unique to each thread.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_GetTLS\n\\sa SDL_SetTLS",
           "name": "SDL_TLSID",
-          "kind": "alias"
+          "kind": "alias",
+          "type": "SDL_AtomicInt"
         },
         "SDL_ThreadPriority": {
           "doc": "The SDL thread priority.\n\nSDL will make system changes as necessary in order to apply the thread\npriority. Code which attempts to control thread state related to priority\nshould be aware that calling SDL_SetCurrentThreadPriority may alter such\nstate. SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of\nthis behavior.\n\n\\since This enum is available since SDL 3.2.0.",
@@ -38209,19 +38210,19 @@
           "kind": "enum",
           "entries": {
             "SDL_THREAD_UNKNOWN": {
-              "doc": "The thread is not valid.",
+              "doc": "The thread is not valid",
               "name": "SDL_THREAD_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_THREAD_ALIVE": {
-              "doc": "The thread is currently running.",
+              "doc": "The thread is currently running",
               "name": "SDL_THREAD_ALIVE",
               "kind": "var",
               "type": ""
             },
             "SDL_THREAD_DETACHED": {
-              "doc": "The thread is detached and can't be waited on.",
+              "doc": "The thread is detached and can't be waited on",
               "name": "SDL_THREAD_DETACHED",
               "kind": "var",
               "type": ""
@@ -38301,6 +38302,54 @@
           "name": "SDL_PROP_THREAD_CREATE_STACKSIZE_NUMBER",
           "kind": "def",
           "value": "\"SDL.thread.create.stacksize\""
+        },
+        "SDL_CreateThreadRuntime": {
+          "doc": "The actual entry point for SDL_CreateThread.\n\n\\param fn the SDL_ThreadFunction function to call in the new thread\n\\param name the name of the thread\n\\param data a pointer that is passed to `fn`\n\\param pfnBeginThread the C runtime's _beginthreadex (or whatnot). Can be NULL.\n\\param pfnEndThread the C runtime's _endthreadex (or whatnot). Can be NULL.\n\\returns an opaque pointer to the new thread object on success, NULL if the\n         new thread could not be created; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_CreateThreadRuntime",
+          "kind": "function",
+          "type": "SDL_Thread *",
+          "parameters": [
+            {
+              "name": "fn",
+              "type": "SDL_ThreadFunction"
+            },
+            {
+              "name": "name",
+              "type": "const char *"
+            },
+            {
+              "name": "data",
+              "type": "void *"
+            },
+            {
+              "name": "pfnBeginThread",
+              "type": "SDL_FunctionPointer"
+            },
+            {
+              "name": "pfnEndThread",
+              "type": "SDL_FunctionPointer"
+            }
+          ]
+        },
+        "SDL_CreateThreadWithPropertiesRuntime": {
+          "doc": "The actual entry point for SDL_CreateThreadWithProperties.\n\n\\param props the properties to use\n\\param pfnBeginThread the C runtime's _beginthreadex (or whatnot). Can be NULL.\n\\param pfnEndThread the C runtime's _endthreadex (or whatnot). Can be NULL.\n\\returns an opaque pointer to the new thread object on success, NULL if the\n         new thread could not be created; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_CreateThreadWithPropertiesRuntime",
+          "kind": "function",
+          "type": "SDL_Thread *",
+          "parameters": [
+            {
+              "name": "props",
+              "type": "SDL_PropertiesID"
+            },
+            {
+              "name": "pfnBeginThread",
+              "type": "SDL_FunctionPointer"
+            },
+            {
+              "name": "pfnEndThread",
+              "type": "SDL_FunctionPointer"
+            }
+          ]
         },
         "SDL_GetThreadName": {
           "doc": "Get the thread name as it was specified in SDL_CreateThread().\n\n\\param thread the thread to query.\n\\returns a pointer to a UTF-8 string that names the specified thread, or\n         NULL if it doesn't have a name.\n\n\\since This function is available since SDL 3.2.0.",

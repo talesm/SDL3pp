@@ -49,6 +49,9 @@
     "SDL_storage.h",
     "SDL_surface.h",
     "SDL_system.h",
+    "SDL_time.h",
+    "SDL_timer.h",
+    "SDL_thread.h",
     "SDL_version.h"
   ],
   "baseDir": [
