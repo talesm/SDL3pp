@@ -22136,17 +22136,39 @@
         "SDL_MAIN_AVAILABLE": {
           "doc": "Defined if the target platform offers a special mainline through SDL.\n\nThis won't be defined otherwise. If defined, SDL's headers will redefine\n`main` to `SDL_main`.\n\nThis macro is defined by `SDL_main.h`, which is not automatically included\nby `SDL.h`.\n\nEven if available, an app can define SDL_MAIN_HANDLED and provide their\nown, if they know what they're doing.\n\nThis macro is used internally by SDL, and apps probably shouldn't rely on it.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_MAIN_AVAILABLE",
-          "kind": "def"
+          "kind": "def",
+          "value": ""
         },
         "SDL_MAIN_NEEDED": {
           "doc": "Defined if the target platform _requires_ a special mainline through SDL.\n\nThis won't be defined otherwise. If defined, SDL's headers will redefine\n`main` to `SDL_main`.\n\nThis macro is defined by `SDL_main.h`, which is not automatically included\nby `SDL.h`.\n\nEven if required, an app can define SDL_MAIN_HANDLED and provide their\nown, if they know what they're doing.\n\nThis macro is used internally by SDL, and apps probably shouldn't rely on it.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_MAIN_NEEDED",
-          "kind": "def"
+          "kind": "def",
+          "value": ""
+        },
+        "SDL_PLATFORM_PRIVATE_MAIN": {
+          "doc": "",
+          "name": "SDL_PLATFORM_PRIVATE_MAIN",
+          "kind": "def",
+          "value": ""
+        },
+        "SDL_MAIN_EXPORTED": {
+          "doc": "",
+          "name": "SDL_MAIN_EXPORTED",
+          "kind": "def",
+          "value": ""
+        },
+        "SDL_PS2_SKIP_IOP_RESET": {
+          "doc": "",
+          "name": "SDL_PS2_SKIP_IOP_RESET",
+          "kind": "def",
+          "parameters": [],
+          "value": "\\\n           void reset_IOP(); \\\n           void reset_IOP() {}"
         },
         "SDLMAIN_DECLSPEC": {
           "doc": "A macro to tag a main entry point function as exported.\n\nMost platforms don't need this, and the macro will be defined to nothing.\nSome, like Android, keep the entry points in a shared library and need to\nexplicitly export the symbols.\n\nExternal code rarely needs this, and if it needs something, it's almost\nalways SDL_DECLSPEC instead.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_DECLSPEC",
           "name": "SDLMAIN_DECLSPEC",
-          "kind": "def"
+          "kind": "def",
+          "value": ""
         },
         "main": {
           "doc": "",
@@ -22312,6 +22334,33 @@
               "type": "SDL_AppQuit_func"
             }
           ]
+        },
+        "SDL_RegisterApp": {
+          "doc": "Register a win32 window class for SDL's use.\n\nThis can be called to set the application window class at startup. It is\nsafe to call this multiple times, as long as every call is eventually\npaired with a call to SDL_UnregisterApp, but a second registration attempt\nwhile a previous registration is still active will be ignored, other than\nto increment a counter.\n\nMost applications do not need to, and should not, call this directly; SDL\nwill call it when initializing the video subsystem.\n\n\\param name the window class name, in UTF-8 encoding. If NULL, SDL\n            currently uses \"SDL_app\" but this isn't guaranteed.\n\\param style the value to use in WNDCLASSEX::style. If `name` is NULL, SDL\n             currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)` regardless of\n             what is specified here.\n\\param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL\n             will use `GetModuleHandle(NULL)` instead.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_RegisterApp",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "const char *"
+            },
+            {
+              "name": "style",
+              "type": "Uint32"
+            },
+            {
+              "name": "hInst",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_UnregisterApp": {
+          "doc": "Deregister the win32 window class from an SDL_RegisterApp call.\n\nThis can be called to undo the effects of SDL_RegisterApp.\n\nMost applications do not need to, and should not, call this directly; SDL\nwill call it when deinitializing the video subsystem.\n\nIt is safe to call this multiple times, as long as every call is eventually\npaired with a prior call to SDL_RegisterApp. The window class will only be\nderegistered when the registration counter in SDL_RegisterApp decrements to\nzero through calls to this function.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_UnregisterApp",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
         },
         "SDL_GDKSuspendComplete": {
           "doc": "Callback from the application to let the suspend continue.\n\nThis function is only needed for Xbox GDK support; all other platforms will\ndo nothing and set an \"unsupported\" error message.\n\n\\since This function is available since SDL 3.2.0.",

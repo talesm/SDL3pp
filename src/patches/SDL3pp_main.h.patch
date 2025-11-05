@@ -33,7 +33,13 @@
 <     argc, argv[], appinit, appiter, appevent, appquit);
 ---
 >     argc, argv, appinit, appiter, appevent, appquit);
-188a201,224
+179a192,193
+> #if defined(SDL_PLATFORM_WINDOWS)
+> 
+225a240,241
+> #endif /* defined(SDL_PLATFORM_WINDOWS) */
+> 
+234a251,274
 > 
 > /**
 >  * Use this to define the callbacks for given class
