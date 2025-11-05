@@ -23251,13 +23251,13 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(capability(x))"
         },
         "SDL_SCOPED_CAPABILITY": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_SCOPED_CAPABILITY",
           "kind": "def",
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(scoped_lockable)"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(scoped_lockable)"
         },
         "SDL_GUARDED_BY": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23269,7 +23269,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(guarded_by(x))"
         },
         "SDL_PT_GUARDED_BY": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23281,7 +23281,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(pt_guarded_by(x))"
         },
         "SDL_ACQUIRED_BEFORE": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23293,7 +23293,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_before(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_before(x))"
         },
         "SDL_ACQUIRED_AFTER": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23305,7 +23305,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_after(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquired_after(x))"
         },
         "SDL_REQUIRES": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23317,7 +23317,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_capability(x))"
         },
         "SDL_REQUIRES_SHARED": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23329,7 +23329,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_shared_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(requires_shared_capability(x))"
         },
         "SDL_ACQUIRE": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23341,7 +23341,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_capability(x))"
         },
         "SDL_ACQUIRE_SHARED": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23353,7 +23353,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_shared_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(acquire_shared_capability(x))"
         },
         "SDL_RELEASE": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23365,7 +23365,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_capability(x))"
         },
         "SDL_RELEASE_SHARED": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23377,7 +23377,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_shared_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_shared_capability(x))"
         },
         "SDL_RELEASE_GENERIC": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23389,7 +23389,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_generic_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(release_generic_capability(x))"
         },
         "SDL_TRY_ACQUIRE": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23405,7 +23405,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_capability(x, y))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_capability(x, y))"
         },
         "SDL_TRY_ACQUIRE_SHARED": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23421,7 +23421,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_shared_capability(x, y))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(try_acquire_shared_capability(x, y))"
         },
         "SDL_EXCLUDES": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23433,7 +23433,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(locks_excluded(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(locks_excluded(x))"
         },
         "SDL_ASSERT_CAPABILITY": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23445,7 +23445,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_capability(x))"
         },
         "SDL_ASSERT_SHARED_CAPABILITY": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23457,7 +23457,7 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(assert_shared_capability(x))"
         },
         "SDL_RETURN_CAPABILITY": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
@@ -23469,13 +23469,13 @@
               "type": ""
             }
           ],
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(lock_returned(x))"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(lock_returned(x))"
         },
         "SDL_NO_THREAD_SAFETY_ANALYSIS": {
           "doc": "Wrapper around Clang thread safety analysis annotations.\n\nPlease see https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#mutex-h\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_NO_THREAD_SAFETY_ANALYSIS",
           "kind": "def",
-          "value": "  SDL_THREAD_ANNOTATION_ATTRIBUTE__(no_thread_safety_analysis)"
+          "value": "\\\n  SDL_THREAD_ANNOTATION_ATTRIBUTE__(no_thread_safety_analysis)"
         },
         "SDL_Mutex": {
           "doc": "A means to serialize access to a resource between threads.\n\nMutexes (short for \"mutual exclusion\") are a synchronization primitive that\nallows exactly one thread to proceed at a time.\n\nWikipedia has a thorough explanation of the concept:\n\nhttps://en.wikipedia.org/wiki/Mutex\n\n\\since This struct is available since SDL 3.2.0.",
@@ -23497,8 +23497,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "SDL_ACQUIRE(mutex",
-              "type": "SDL_Mutex *mutex)"
+              "name": "mutex",
+              "type": "SDL_Mutex *"
             }
           ]
         },
@@ -23509,8 +23509,8 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "SDL_TRY_ACQUIRE(tru",
-              "type": "SDL_Mutex *mutex)"
+              "name": "mutex",
+              "type": "SDL_Mutex *"
             }
           ]
         },
@@ -23521,8 +23521,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "SDL_RELEASE(mutex",
-              "type": "SDL_Mutex *mutex)"
+              "name": "mutex",
+              "type": "SDL_Mutex *"
             }
           ]
         },
@@ -23558,8 +23558,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "SDL_ACQUIRE_SHARED(rwlock",
-              "type": "SDL_RWLock *rwlock)"
+              "name": "rwlock",
+              "type": "SDL_RWLock *"
             }
           ]
         },
@@ -23570,8 +23570,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "SDL_ACQUIRE(rwlock",
-              "type": "SDL_RWLock *rwlock)"
+              "name": "rwlock",
+              "type": "SDL_RWLock *"
             }
           ]
         },
@@ -23582,8 +23582,8 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "SDL_TRY_ACQUIRE_SHARED(tru",
-              "type": "SDL_RWLock *rwlock)"
+              "name": "rwlock",
+              "type": "SDL_RWLock *"
             }
           ]
         },
@@ -23594,8 +23594,8 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "SDL_TRY_ACQUIRE(tru",
-              "type": "SDL_RWLock *rwlock)"
+              "name": "rwlock",
+              "type": "SDL_RWLock *"
             }
           ]
         },
@@ -23606,8 +23606,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "SDL_RELEASE_GENERIC(rwlock",
-              "type": "SDL_RWLock *rwlock)"
+              "name": "rwlock",
+              "type": "SDL_RWLock *"
             }
           ]
         },
@@ -24018,7 +24018,7 @@
               "type": ""
             },
             "SDL_PEN_AXIS_COUNT": {
-              "doc": "Total known pen axis types in this version of SDL.  This number may grow in future releases!",
+              "doc": "Total known pen axis types in this version of SDL. This number may grow in future releases!",
               "name": "SDL_PEN_AXIS_COUNT",
               "kind": "var",
               "type": ""

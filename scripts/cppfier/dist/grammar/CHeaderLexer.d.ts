@@ -57,6 +57,9 @@ export declare class CHeaderLexer extends Lexer {
     get serializedATN(): string;
     get channelNames(): string[];
     get modeNames(): string[];
+    private static readonly _serializedATNSegments;
+    private static readonly _serializedATNSegment0;
+    private static readonly _serializedATNSegment1;
     static readonly _serializedATN: string;
     static __ATN: ATN;
     static get _ATN(): ATN;

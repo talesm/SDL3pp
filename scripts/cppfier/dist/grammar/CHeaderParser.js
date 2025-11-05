@@ -1985,9 +1985,9 @@ CHeaderParser._LITERAL_NAMES = [
     undefined, undefined, undefined, undefined, undefined, undefined, undefined,
     undefined, undefined, "'__attribute__'", "'const'", "'enum'", "'extern'",
     "'__inline__'", undefined, "'SDL_FORCE_INLINE'", "'static'", "'struct'",
-    "'typedef'", "'union'", "'void'", undefined, "'SDL_ACQUIRE'", "'SDL_RELEASE'",
-    "'SDL_COMPILE_TIME_ASSERT'", "'{'", "'}'", "'('", "')'", "'['", "']'",
-    "':'", "';'", "','", "'.'", "'*'", "'='", "'...'",
+    "'typedef'", "'union'", "'void'", undefined, undefined, undefined, "'SDL_COMPILE_TIME_ASSERT'",
+    "'{'", "'}'", "'('", "')'", "'['", "']'", "':'", "';'", "','", "'.'",
+    "'*'", "'='", "'...'",
 ];
 CHeaderParser._SYMBOLIC_NAMES = [
     undefined, "WS", "LONG_COMMENT", "SHORT_COMMENT", "TRAILING_DOC", "LONG_DOC",

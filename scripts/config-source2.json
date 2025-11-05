@@ -34,6 +34,8 @@
     "SDL_metal.h",
     "SDL_misc.h",
     "SDL_mouse.h",
+    "SDL_mutex.h",
+    "SDL_pen.h",
     "SDL_pixels.h",
     "SDL_system.h",
     "SDL_version.h"

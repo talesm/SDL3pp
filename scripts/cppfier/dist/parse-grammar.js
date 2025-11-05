@@ -32,10 +32,14 @@ class ProgListener {
     constructor(name) {
         this.api = { name, doc: undefined, entries: {} };
     }
-    // Assuming a parser rule with name: `functionDeclaration`
     enterProg(ctx) {
         const doc = ctx.doc();
         if (doc)
+            this.api.doc = parseDoc(doc.text);
+    }
+    enterDecl(ctx) {
+        const doc = ctx.doc();
+        if (doc && !this.api.doc)
             this.api.doc = parseDoc(doc.text);
     }
     enterDirective(ctx) {

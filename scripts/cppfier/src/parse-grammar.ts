@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, GlobalVarContext, ProgContext, SignatureContext, StructBodyContext, StructCallbackContext, StructDefContext, StructVarContext, TypeContext, UnionDefContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CallbackDefContext, CHeaderParser, DeclContext, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, GlobalVarContext, ProgContext, SignatureContext, StructBodyContext, StructCallbackContext, StructDefContext, StructVarContext, TypeContext, UnionDefContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -42,10 +42,14 @@ class ProgListener implements CHeaderListener {
     this.api = { name, doc: undefined, entries: {} };
   }
 
-  // Assuming a parser rule with name: `functionDeclaration`
   enterProg(ctx: ProgContext) {
     const doc = ctx.doc();
     if (doc) this.api.doc = parseDoc(doc.text);
+  }
+
+  enterDecl(ctx: DeclContext) {
+    const doc = ctx.doc();
+    if (doc && !this.api.doc) this.api.doc = parseDoc(doc.text);
   }
 
   enterDirective(ctx: DirectiveContext) {
