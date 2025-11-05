@@ -1978,7 +1978,7 @@
               "doc": "next item in the linked list.",
               "name": "next",
               "kind": "var",
-              "type": "const SDL_AssertData *"
+              "type": "const struct SDL_AssertData *"
             }
           }
         },
@@ -14757,7 +14757,7 @@
               "doc": "Pointer to the next device",
               "name": "next",
               "kind": "var",
-              "type": "SDL_hid_device_info *"
+              "type": "struct SDL_hid_device_info *"
             }
           }
         },
@@ -41960,6 +41960,12 @@
       "name": "SDL_vulkan.h",
       "doc": "# CategoryVulkan\n\nFunctions for creating Vulkan surfaces on SDL windows.\n\nFor the most part, Vulkan operates independent of SDL, but it benefits from\na little support during setup.\n\nUse SDL_Vulkan_GetInstanceExtensions() to get platform-specific bits for\ncreating a VkInstance, then SDL_Vulkan_GetVkGetInstanceProcAddr() to get\nthe appropriate function for querying Vulkan entry points. Then\nSDL_Vulkan_CreateSurface() will get you the final pieces you need to\nprepare for rendering into an SDL_Window with Vulkan.\n\nUnlike OpenGL, most of the details of \"context\" creation and window buffer\nswapping are handled by the Vulkan API directly, so SDL doesn't provide\nVulkan equivalents of SDL_GL_SwapWindow(), etc; they aren't necessary.",
       "entries": {
+        "NO_SDL_VULKAN_TYPEDEFS": {
+          "doc": "",
+          "name": "NO_SDL_VULKAN_TYPEDEFS",
+          "kind": "def",
+          "value": ""
+        },
         "VK_DEFINE_HANDLE": {
           "doc": "",
           "name": "VK_DEFINE_HANDLE",
@@ -42014,7 +42020,7 @@
           "doc": "Get the Vulkan instance extensions needed for vkCreateInstance.\n\nThis should be called after either calling SDL_Vulkan_LoadLibrary() or\ncreating an SDL_Window with the `SDL_WINDOW_VULKAN` flag.\n\nOn return, the variable pointed to by `count` will be set to the number of\nelements returned, suitable for using with\nVkInstanceCreateInfo::enabledExtensionCount, and the returned array can be\nused with VkInstanceCreateInfo::ppEnabledExtensionNames, for calling\nVulkan's vkCreateInstance API.\n\nYou should not free the returned array; it is owned by SDL.\n\n\\param count a pointer filled in with the number of extensions returned.\n\\returns an array of extension name strings on success, NULL on failure;\n         call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Vulkan_CreateSurface",
           "name": "SDL_Vulkan_GetInstanceExtensions",
           "kind": "function",
-          "type": "char const *const *",
+          "type": "char const * const *",
           "parameters": [
             {
               "name": "count",

@@ -9,6 +9,7 @@ decl:
 	| aliasDef
 	| unionDef
 	| enumDef
+	| structDecl
 	| structDef
 	| callbackDef
 	| compileTimeAssert
@@ -19,11 +20,12 @@ externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
 globalVar:
 	doc? EXTERN? type id (COMMA id)* indexing* SEMI trailingDoc?;
 functionDecl:
-	doc? EXTERN? attribute? type attribute? id signature SEMI;
-functionDef: doc? inline type attribute? id signature block;
+	doc? EXTERN? attribute* type attribute* id signature SEMI;
+functionDef: doc? inline type attribute* id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
 unionDef: doc? TYPEDEF UNION id block name = id SEMI;
 enumDef: doc? TYPEDEF ENUM id enumBody name = id SEMI;
+structDecl: attribute* STRUCT id SEMI;
 structDef:
 	doc? STRUCT name = id structBody SEMI
 	| doc? TYPEDEF STRUCT id structBody name = id SEMI;
@@ -64,19 +66,18 @@ enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
 
 structBody: CURLY_B (structItem | unionInlineType)* CURLY_E;
 structItem: structVar | structCallback;
-structVar:
-	doc? (CONST? STRUCT)? type id (COMMA id)* indexing* SEMI trailingDoc?;
+structVar: doc? type id (COMMA id)* indexing* SEMI trailingDoc?;
 structCallback:
 	doc? type ROUND_B STAR id ROUND_E signature SEMI trailingDoc?;
 unionInlineType: doc? UNION block id SEMI;
 
 id: ID;
 type: (typeEl)+;
-typeEl: (VOID | ID | CONST) (STAR | indexing)*;
+typeEl: (VOID | ID | CONST | STRUCT) (STAR | indexing)*;
 signature:
-	ROUND_B (attribute? type (COMMA attribute? type)*)? (
+	ROUND_B (attribute* type (COMMA attribute* type)*)? (
 		COMMA ELLIPSIS
-	)? ROUND_E attribute?;
+	)? ROUND_E attribute*;
 
 attribute: (
 		ATTRIBUTE
@@ -85,6 +86,7 @@ attribute: (
 		| SDL_RELEASE
 		| SDL_ALLOC_SIZE
 		| SDL_INOUT
+		| VK_DEFINE_HANDLE
 	) group;
 
 doc: SHORT_DOC | LONG_DOC;
@@ -139,6 +141,7 @@ SDL_COMPILE_TIME_ASSERT: 'SDL_COMPILE_TIME_ASSERT';
 SDL_ALLOC_SIZE: 'SDL_ALLOC_SIZE' '2'?;
 SDL_INOUT:
 	'SDL_' ('IN' | 'OUT' | 'INOUT') '_Z'? '_' 'BYTE'? 'CAP';
+VK_DEFINE_HANDLE: 'VK_DEFINE_' 'NON_DISPATCHABLE_'? 'HANDLE';
 
 CURLY_B: '{';
 CURLY_E: '}';

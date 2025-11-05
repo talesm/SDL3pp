@@ -55,7 +55,8 @@
     "SDL_touch.h",
     "SDL_tray.h",
     "SDL_version.h",
-    "SDL_video.h"
+    "SDL_video.h",
+    "SDL_vulkan.h"
   ],
   "baseDir": [
     "external/SDL/include/SDL3/",

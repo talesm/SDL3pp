@@ -293,7 +293,7 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
         doc,
         name,
         kind: 'var',
-        type: item.CONST() ? `const ${type}` : type,
+        type,
       };
     }
   }

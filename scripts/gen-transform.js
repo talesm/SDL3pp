@@ -7596,7 +7596,7 @@ const transform = {
     },
     "SDL_vulkan.h": {
       localIncludes: ["SDL3pp.h"],
-      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"],
+      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE", "NO_SDL_VULKAN_TYPEDEFS"],
       transform: {
         "SDL_Vulkan_GetInstanceExtensions": {
           type: "std::span<char const * const>",
