@@ -28520,16 +28520,16 @@ constexpr PowerState POWERSTATE_UNKNOWN =
   SDL_POWERSTATE_UNKNOWN; ///< cannot determine power status
 
 constexpr PowerState POWERSTATE_ON_BATTERY =
-  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery.
+  SDL_POWERSTATE_ON_BATTERY; ///< Not plugged in, running on the battery
 
 constexpr PowerState POWERSTATE_NO_BATTERY =
-  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available.
+  SDL_POWERSTATE_NO_BATTERY; ///< Plugged in, no battery available
 
 constexpr PowerState POWERSTATE_CHARGING =
-  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery.
+  SDL_POWERSTATE_CHARGING; ///< Plugged in, charging battery
 
 constexpr PowerState POWERSTATE_CHARGED =
-  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged.
+  SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged
 
 /// @}
 
@@ -39311,7 +39311,7 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
 
 /**
  * The I/O stream is connected to a new IOStream that the application can read
- * or write.
+ * or write
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 

@@ -37,6 +37,10 @@
     "SDL_mutex.h",
     "SDL_pen.h",
     "SDL_pixels.h",
+    "SDL_platform.h",
+    "SDL_power.h",
+    "SDL_process.h",
+    "SDL_properties.h",
     "SDL_system.h",
     "SDL_version.h"
   ],

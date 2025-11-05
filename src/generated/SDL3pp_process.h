@@ -120,7 +120,7 @@ constexpr ProcessIO PROCESS_STDIO_NULL =
 
 /**
  * The I/O stream is connected to a new IOStream that the application can read
- * or write.
+ * or write
  */
 constexpr ProcessIO PROCESS_STDIO_APP = SDL_PROCESS_STDIO_APP;
 

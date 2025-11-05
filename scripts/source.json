@@ -26121,25 +26121,25 @@
               "type": ""
             },
             "SDL_POWERSTATE_ON_BATTERY": {
-              "doc": "Not plugged in, running on the battery.",
+              "doc": "Not plugged in, running on the battery",
               "name": "SDL_POWERSTATE_ON_BATTERY",
               "kind": "var",
               "type": ""
             },
             "SDL_POWERSTATE_NO_BATTERY": {
-              "doc": "Plugged in, no battery available.",
+              "doc": "Plugged in, no battery available",
               "name": "SDL_POWERSTATE_NO_BATTERY",
               "kind": "var",
               "type": ""
             },
             "SDL_POWERSTATE_CHARGING": {
-              "doc": "Plugged in, charging battery.",
+              "doc": "Plugged in, charging battery",
               "name": "SDL_POWERSTATE_CHARGING",
               "kind": "var",
               "type": ""
             },
             "SDL_POWERSTATE_CHARGED": {
-              "doc": "Plugged in, battery charged.",
+              "doc": "Plugged in, battery charged",
               "name": "SDL_POWERSTATE_CHARGED",
               "kind": "var",
               "type": ""
@@ -26182,7 +26182,7 @@
           "parameters": [
             {
               "name": "args",
-              "type": "const char *const *"
+              "type": "const char * const *"
             },
             {
               "name": "pipe_stdio",
@@ -26208,7 +26208,7 @@
               "type": ""
             },
             "SDL_PROCESS_STDIO_APP": {
-              "doc": "The I/O stream is connected to a new SDL_IOStream that the application can read or write.",
+              "doc": "The I/O stream is connected to a new SDL_IOStream that the application can read or write",
               "name": "SDL_PROCESS_STDIO_APP",
               "kind": "var",
               "type": ""
