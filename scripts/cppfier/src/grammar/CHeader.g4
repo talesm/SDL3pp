@@ -63,7 +63,7 @@ unionInlineType: doc? UNION block id SEMI;
 
 id: ID;
 type: (typeEl)+;
-typeEl: (VOID | ID | CONST) STAR*;
+typeEl: (VOID | ID | CONST) (STAR | indexing)*;
 signature:
 	ROUND_B (type (COMMA type)*)? (COMMA ELLIPSIS)? ROUND_E attribute?;
 

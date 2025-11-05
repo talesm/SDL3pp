@@ -447,6 +447,8 @@ export declare class TypeElContext extends ParserRuleContext {
     CONST(): TerminalNode | undefined;
     STAR(): TerminalNode[];
     STAR(i: number): TerminalNode;
+    indexing(): IndexingContext[];
+    indexing(i: number): IndexingContext;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
