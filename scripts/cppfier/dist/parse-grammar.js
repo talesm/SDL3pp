@@ -46,7 +46,7 @@ class ProgListener {
         if (!m)
             return;
         const name = m[1];
-        if (name.endsWith("_h_") || name.startsWith("_"))
+        if (name.endsWith("_h_") || name.endsWith("_h") || name.startsWith("_"))
             return;
         const parameters = m[3]?.split(/,\s*/)?.map(p => ({ name: p, type: "" })) ?? (m[2] ? [] : undefined);
         const value = directive.slice(m[0].length, docIndex === -1 ? undefined : docIndex).trim();

@@ -19589,55 +19589,55 @@
           "kind": "enum",
           "entries": {
             "SDL_TEXTINPUT_TYPE_TEXT": {
-              "doc": "The input is text.",
+              "doc": "The input is text",
               "name": "SDL_TEXTINPUT_TYPE_TEXT",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_TEXT_NAME": {
-              "doc": "The input is a person's name.",
+              "doc": "The input is a person's name",
               "name": "SDL_TEXTINPUT_TYPE_TEXT_NAME",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_TEXT_EMAIL": {
-              "doc": "The input is an e-mail address.",
+              "doc": "The input is an e-mail address",
               "name": "SDL_TEXTINPUT_TYPE_TEXT_EMAIL",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_TEXT_USERNAME": {
-              "doc": "The input is a username.",
+              "doc": "The input is a username",
               "name": "SDL_TEXTINPUT_TYPE_TEXT_USERNAME",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN": {
-              "doc": "The input is a secure password that is hidden.",
+              "doc": "The input is a secure password that is hidden",
               "name": "SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE": {
-              "doc": "The input is a secure password that is visible.",
+              "doc": "The input is a secure password that is visible",
               "name": "SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_NUMBER": {
-              "doc": "The input is a number.",
+              "doc": "The input is a number",
               "name": "SDL_TEXTINPUT_TYPE_NUMBER",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN": {
-              "doc": "The input is a secure PIN that is hidden.",
+              "doc": "The input is a secure PIN that is hidden",
               "name": "SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE": {
-              "doc": "The input is a secure PIN that is visible.",
+              "doc": "The input is a secure PIN that is visible",
               "name": "SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE",
               "kind": "var",
               "type": ""
@@ -19650,25 +19650,25 @@
           "kind": "enum",
           "entries": {
             "SDL_CAPITALIZE_NONE": {
-              "doc": "No auto-capitalization will be done.",
+              "doc": "No auto-capitalization will be done",
               "name": "SDL_CAPITALIZE_NONE",
               "kind": "var",
               "type": ""
             },
             "SDL_CAPITALIZE_SENTENCES": {
-              "doc": "The first letter of sentences will be capitalized.",
+              "doc": "The first letter of sentences will be capitalized",
               "name": "SDL_CAPITALIZE_SENTENCES",
               "kind": "var",
               "type": ""
             },
             "SDL_CAPITALIZE_WORDS": {
-              "doc": "The first letter of words will be capitalized.",
+              "doc": "The first letter of words will be capitalized",
               "name": "SDL_CAPITALIZE_WORDS",
               "kind": "var",
               "type": ""
             },
             "SDL_CAPITALIZE_LETTERS": {
-              "doc": "All letters will be capitalized.",
+              "doc": "All letters will be capitalized",
               "name": "SDL_CAPITALIZE_LETTERS",
               "kind": "var",
               "type": ""

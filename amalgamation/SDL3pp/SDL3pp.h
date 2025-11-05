@@ -70675,35 +70675,35 @@ inline void Window::StartTextInput(PropertiesParam props)
 using TextInputType = SDL_TextInputType;
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT =
-  SDL_TEXTINPUT_TYPE_TEXT; ///< The input is text.
+  SDL_TEXTINPUT_TYPE_TEXT; ///< The input is text
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_NAME =
-  SDL_TEXTINPUT_TYPE_TEXT_NAME; ///< The input is a person's name.
+  SDL_TEXTINPUT_TYPE_TEXT_NAME; ///< The input is a person's name
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_EMAIL =
-  SDL_TEXTINPUT_TYPE_TEXT_EMAIL; ///< The input is an e-mail address.
+  SDL_TEXTINPUT_TYPE_TEXT_EMAIL; ///< The input is an e-mail address
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_USERNAME =
-  SDL_TEXTINPUT_TYPE_TEXT_USERNAME; ///< The input is a username.
+  SDL_TEXTINPUT_TYPE_TEXT_USERNAME; ///< The input is a username
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN =
   SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN; ///< The input is a secure password
-                                           ///< that is hidden.
+                                           ///< that is hidden
 
 constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE =
   SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE; ///< The input is a secure password
-                                            ///< that is visible.
+                                            ///< that is visible
 
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER =
-  SDL_TEXTINPUT_TYPE_NUMBER; ///< The input is a number.
+  SDL_TEXTINPUT_TYPE_NUMBER; ///< The input is a number
 
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN =
   SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN; ///< The input is a secure PIN that
-                                             ///< is hidden.
+                                             ///< is hidden
 
 constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
   SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE; ///< The input is a secure PIN
-                                              ///< that is visible.
+                                              ///< that is visible
 
 /**
  * Auto capitalization type.
@@ -70719,17 +70719,17 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
 using Capitalization = SDL_Capitalization;
 
 constexpr Capitalization CAPITALIZE_NONE =
-  SDL_CAPITALIZE_NONE; ///< No auto-capitalization will be done.
+  SDL_CAPITALIZE_NONE; ///< No auto-capitalization will be done
 
 constexpr Capitalization CAPITALIZE_SENTENCES =
   SDL_CAPITALIZE_SENTENCES; ///< The first letter of sentences will be
-                            ///< capitalized.
+                            ///< capitalized
 
 constexpr Capitalization CAPITALIZE_WORDS =
-  SDL_CAPITALIZE_WORDS; ///< The first letter of words will be capitalized.
+  SDL_CAPITALIZE_WORDS; ///< The first letter of words will be capitalized
 
 constexpr Capitalization CAPITALIZE_LETTERS =
-  SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized.
+  SDL_CAPITALIZE_LETTERS; ///< All letters will be capitalized
 
 namespace prop::TextInput {
 
