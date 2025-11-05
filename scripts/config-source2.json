@@ -31,7 +31,9 @@
     "SDL_log.h",
     "SDL_main.h",
     "SDL_messagebox.h",
+    "SDL_metal.h",
     "SDL_misc.h",
+    "SDL_mouse.h",
     "SDL_pixels.h",
     "SDL_system.h",
     "SDL_version.h"

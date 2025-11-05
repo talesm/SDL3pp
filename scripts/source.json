@@ -22714,19 +22714,19 @@
           "kind": "enum",
           "entries": {
             "SDL_SYSTEM_CURSOR_DEFAULT": {
-              "doc": "Default cursor.  Usually an arrow.",
+              "doc": "Default cursor. Usually an arrow.",
               "name": "SDL_SYSTEM_CURSOR_DEFAULT",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_TEXT": {
-              "doc": "Text selection.  Usually an I-beam.",
+              "doc": "Text selection. Usually an I-beam.",
               "name": "SDL_SYSTEM_CURSOR_TEXT",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_WAIT": {
-              "doc": "Wait.  Usually an hourglass or watch or spinning ball.",
+              "doc": "Wait. Usually an hourglass or watch or spinning ball.",
               "name": "SDL_SYSTEM_CURSOR_WAIT",
               "kind": "var",
               "type": ""
@@ -22738,7 +22738,7 @@
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_PROGRESS": {
-              "doc": "Program is busy but still interactive.  Usually it's WAIT with an arrow.",
+              "doc": "Program is busy but still interactive. Usually it's WAIT with an arrow.",
               "name": "SDL_SYSTEM_CURSOR_PROGRESS",
               "kind": "var",
               "type": ""
@@ -22774,61 +22774,61 @@
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_NOT_ALLOWED": {
-              "doc": "Not permitted.  Usually a slashed circle or crossbones.",
+              "doc": "Not permitted. Usually a slashed circle or crossbones.",
               "name": "SDL_SYSTEM_CURSOR_NOT_ALLOWED",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_POINTER": {
-              "doc": "Pointer that indicates a link.  Usually a pointing hand.",
+              "doc": "Pointer that indicates a link. Usually a pointing hand.",
               "name": "SDL_SYSTEM_CURSOR_POINTER",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_NW_RESIZE": {
-              "doc": "Window resize top-left.  This may be a single arrow or a double arrow like NWSE_RESIZE.",
+              "doc": "Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_NW_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_N_RESIZE": {
-              "doc": "Window resize top.  May be NS_RESIZE.",
+              "doc": "Window resize top. May be NS_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_N_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_NE_RESIZE": {
-              "doc": "Window resize top-right.  May be NESW_RESIZE.",
+              "doc": "Window resize top-right. May be NESW_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_NE_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_E_RESIZE": {
-              "doc": "Window resize right.  May be EW_RESIZE.",
+              "doc": "Window resize right. May be EW_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_E_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_SE_RESIZE": {
-              "doc": "Window resize bottom-right.  May be NWSE_RESIZE.",
+              "doc": "Window resize bottom-right. May be NWSE_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_SE_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_S_RESIZE": {
-              "doc": "Window resize bottom.  May be NS_RESIZE.",
+              "doc": "Window resize bottom. May be NS_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_S_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_SW_RESIZE": {
-              "doc": "Window resize bottom-left.  May be NESW_RESIZE.",
+              "doc": "Window resize bottom-left. May be NESW_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_SW_RESIZE",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_CURSOR_W_RESIZE": {
-              "doc": "Window resize left.  May be EW_RESIZE.",
+              "doc": "Window resize left. May be EW_RESIZE.",
               "name": "SDL_SYSTEM_CURSOR_W_RESIZE",
               "kind": "var",
               "type": ""
@@ -22847,13 +22847,13 @@
           "kind": "enum",
           "entries": {
             "SDL_MOUSEWHEEL_NORMAL": {
-              "doc": "The scroll direction is normal.",
+              "doc": "The scroll direction is normal",
               "name": "SDL_MOUSEWHEEL_NORMAL",
               "kind": "var",
               "type": ""
             },
             "SDL_MOUSEWHEEL_FLIPPED": {
-              "doc": "The scroll direction is flipped / natural.",
+              "doc": "The scroll direction is flipped / natural",
               "name": "SDL_MOUSEWHEEL_FLIPPED",
               "kind": "var",
               "type": ""
