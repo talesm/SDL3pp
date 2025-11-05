@@ -9,11 +9,11 @@ Replace parse and parse-xml for a antlr parser, convert to typescript
   - [x] Convert generate to ts;
   - [x] Convert transform to ts;
   - [x] Update CMake to only look for dist/*.js;
-- [ ] Make antlr parser:
+- [x] Make antlr parser:
   - [x] Create command `parse-new` to use it;
   - [x] Create restricted grammar for C, enough to parse SDL library;
   - [x] Achieve parity with current `parse` and remove it.
-  - [ ] Achieve parity with current `parse-xml` and remove it.
+  - [x] Achieve parity with current `parse-xml` and remove it.
 - [ ] Add miss-detected functions:
   - [x] SDL_main.h:
     - [x] SDL_RegisterApp() (windows only);
