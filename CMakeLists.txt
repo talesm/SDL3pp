@@ -168,41 +168,32 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
-set(TRANSFORM_JSON ${PROJECT_SOURCE_DIR}/scripts/transform.json)
-set(TARGET_JSON ${PROJECT_SOURCE_DIR}/scripts/target.json)
-set(CONFIG_TARGET ${PROJECT_SOURCE_DIR}/scripts/config-target.json)
 file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/dist/*.js)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND node scripts/cppfier parse scripts/config-source.json
-    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json ${CPPFIER_SOURCES}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-)
-
-# Generate the transform
-add_custom_command(OUTPUT ${TRANSFORM_JSON}
-    COMMAND node scripts/gen-transform ${TRANSFORM_JSON}
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
+    COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
+    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
+            ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
+            ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 # Target SDL3pp state
-add_custom_command(OUTPUT ${TARGET_JSON}
-    COMMAND node scripts/cppfier transform ${CONFIG_TARGET}
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
+    COMMAND ${PROJECT_SOURCE_DIR}/scripts/transform.sh
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
-            ${CONFIG_TARGET} 
-            ${TRANSFORM_JSON}
+            ${PROJECT_SOURCE_DIR}/scripts/config-target.json
+            ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
             ${CPPFIER_SOURCES}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 # Generate sources
 add_custom_target(SDL3pp_generate
-    COMMAND mkdir -p ${PROJECT_SOURCE_DIR}/src/generated/
-    COMMAND node scripts/cppfier generate ${CONFIG_TARGET}
-    COMMAND scripts/applyFormat.sh ${CONFIG_TARGET}
-    DEPENDS ${CONFIG_TARGET} ${TARGET_JSON}
+    COMMAND ${PROJECT_SOURCE_DIR}/scripts/generate.sh
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/config-target.json 
+            ${PROJECT_SOURCE_DIR}/scripts/target.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
