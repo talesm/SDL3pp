@@ -39174,19 +39174,19 @@
           "kind": "enum",
           "entries": {
             "SDL_SYSTEM_THEME_UNKNOWN": {
-              "doc": "Unknown system theme.",
+              "doc": "Unknown system theme",
               "name": "SDL_SYSTEM_THEME_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_THEME_LIGHT": {
-              "doc": "Light colored system theme.",
+              "doc": "Light colored system theme",
               "name": "SDL_SYSTEM_THEME_LIGHT",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_THEME_DARK": {
-              "doc": "Dark colored system theme.",
+              "doc": "Dark colored system theme",
               "name": "SDL_SYSTEM_THEME_DARK",
               "kind": "var",
               "type": ""
@@ -39266,31 +39266,31 @@
           "kind": "enum",
           "entries": {
             "SDL_ORIENTATION_UNKNOWN": {
-              "doc": "The display orientation can't be determined.",
+              "doc": "The display orientation can't be determined",
               "name": "SDL_ORIENTATION_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_LANDSCAPE": {
-              "doc": "The display is in landscape mode, with the right side up, relative to portrait mode.",
+              "doc": "The display is in landscape mode, with the right side up, relative to portrait mode",
               "name": "SDL_ORIENTATION_LANDSCAPE",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_LANDSCAPE_FLIPPED": {
-              "doc": "The display is in landscape mode, with the left side up, relative to portrait mode.",
+              "doc": "The display is in landscape mode, with the left side up, relative to portrait mode",
               "name": "SDL_ORIENTATION_LANDSCAPE_FLIPPED",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_PORTRAIT": {
-              "doc": "The display is in portrait mode.",
+              "doc": "The display is in portrait mode",
               "name": "SDL_ORIENTATION_PORTRAIT",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_PORTRAIT_FLIPPED": {
-              "doc": "The display is in portrait mode, upside down.",
+              "doc": "The display is in portrait mode, upside down",
               "name": "SDL_ORIENTATION_PORTRAIT_FLIPPED",
               "kind": "var",
               "type": ""
@@ -39529,7 +39529,7 @@
               "type": ""
             }
           ],
-          "value": "            (((X)&0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)"
+          "value": "\\\n            (((X)&0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)"
         },
         "SDL_FlashOperation": {
           "doc": "Window flash operation.\n\n\\since This enum is available since SDL 3.2.0.",
@@ -39537,19 +39537,19 @@
           "kind": "enum",
           "entries": {
             "SDL_FLASH_CANCEL": {
-              "doc": "Cancel any window flash state.",
+              "doc": "Cancel any window flash state",
               "name": "SDL_FLASH_CANCEL",
               "kind": "var",
               "type": ""
             },
             "SDL_FLASH_BRIEFLY": {
-              "doc": "Flash the window briefly to get attention.",
+              "doc": "Flash the window briefly to get attention",
               "name": "SDL_FLASH_BRIEFLY",
               "kind": "var",
               "type": ""
             },
             "SDL_FLASH_UNTIL_FOCUSED": {
-              "doc": "Flash the window until it gets focus.",
+              "doc": "Flash the window until it gets focus",
               "name": "SDL_FLASH_UNTIL_FOCUSED",
               "kind": "var",
               "type": ""
@@ -39750,7 +39750,7 @@
               "type": ""
             },
             "SDL_GL_CONTEXT_PROFILE_MASK": {
-              "doc": "type of GL context (Core, Compatibility, ES).  See SDL_GLProfile; default value depends on platform.",
+              "doc": "type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.",
               "name": "SDL_GL_CONTEXT_PROFILE_MASK",
               "kind": "var",
               "type": ""
@@ -39768,13 +39768,13 @@
               "type": ""
             },
             "SDL_GL_CONTEXT_RELEASE_BEHAVIOR": {
-              "doc": "sets context the release behavior.  See SDL_GLContextReleaseFlag; defaults to FLUSH.",
+              "doc": "sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH.",
               "name": "SDL_GL_CONTEXT_RELEASE_BEHAVIOR",
               "kind": "var",
               "type": ""
             },
             "SDL_GL_CONTEXT_RESET_NOTIFICATION": {
-              "doc": "set context reset notification.  See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.",
+              "doc": "set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.",
               "name": "SDL_GL_CONTEXT_RESET_NOTIFICATION",
               "kind": "var",
               "type": ""
@@ -41554,7 +41554,7 @@
           "kind": "enum",
           "entries": {
             "SDL_HITTEST_NORMAL": {
-              "doc": "Region is normal.  No special properties.",
+              "doc": "Region is normal. No special properties.",
               "name": "SDL_HITTEST_NORMAL",
               "kind": "var",
               "type": ""

@@ -126,27 +126,27 @@ struct RendererRef;
 using DisplayOrientation = SDL_DisplayOrientation;
 
 constexpr DisplayOrientation ORIENTATION_UNKNOWN =
-  SDL_ORIENTATION_UNKNOWN; ///< The display orientation can't be determined.
+  SDL_ORIENTATION_UNKNOWN; ///< The display orientation can't be determined
 
 /**
  * The display is in landscape mode, with the right side up, relative to
- * portrait mode.
+ * portrait mode
  */
 constexpr DisplayOrientation ORIENTATION_LANDSCAPE = SDL_ORIENTATION_LANDSCAPE;
 
 /**
  * The display is in landscape mode, with the left side up, relative to portrait
- * mode.
+ * mode
  */
 constexpr DisplayOrientation ORIENTATION_LANDSCAPE_FLIPPED =
   SDL_ORIENTATION_LANDSCAPE_FLIPPED;
 
 constexpr DisplayOrientation ORIENTATION_PORTRAIT =
-  SDL_ORIENTATION_PORTRAIT; ///< The display is in portrait mode.
+  SDL_ORIENTATION_PORTRAIT; ///< The display is in portrait mode
 
 constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
   SDL_ORIENTATION_PORTRAIT_FLIPPED; ///< The display is in portrait mode, upside
-                                    ///< down.
+                                    ///< down
 
 /**
  * The structure that defines a display mode.
@@ -507,13 +507,13 @@ constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
 using SystemTheme = SDL_SystemTheme;
 
 constexpr SystemTheme SYSTEM_THEME_UNKNOWN =
-  SDL_SYSTEM_THEME_UNKNOWN; ///< Unknown system theme.
+  SDL_SYSTEM_THEME_UNKNOWN; ///< Unknown system theme
 
 constexpr SystemTheme SYSTEM_THEME_LIGHT =
-  SDL_SYSTEM_THEME_LIGHT; ///< Light colored system theme.
+  SDL_SYSTEM_THEME_LIGHT; ///< Light colored system theme
 
 constexpr SystemTheme SYSTEM_THEME_DARK =
-  SDL_SYSTEM_THEME_DARK; ///< Dark colored system theme.
+  SDL_SYSTEM_THEME_DARK; ///< Dark colored system theme
 
 /**
  * Internal display mode data.
@@ -631,13 +631,13 @@ constexpr WindowFlags WINDOW_NOT_FOCUSABLE =
 using FlashOperation = SDL_FlashOperation;
 
 constexpr FlashOperation FLASH_CANCEL =
-  SDL_FLASH_CANCEL; ///< Cancel any window flash state.
+  SDL_FLASH_CANCEL; ///< Cancel any window flash state
 
 constexpr FlashOperation FLASH_BRIEFLY =
-  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention.
+  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention
 
 constexpr FlashOperation FLASH_UNTIL_FOCUSED =
-  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus.
+  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus
 
 /**
  * Possible return values from the HitTest callback.
@@ -652,7 +652,7 @@ constexpr FlashOperation FLASH_UNTIL_FOCUSED =
 using HitTestResult = SDL_HitTestResult;
 
 constexpr HitTestResult HITTEST_NORMAL =
-  SDL_HITTEST_NORMAL; ///< Region is normal.  No special properties.
+  SDL_HITTEST_NORMAL; ///< Region is normal. No special properties.
 
 constexpr HitTestResult HITTEST_DRAGGABLE =
   SDL_HITTEST_DRAGGABLE; ///< Region can drag entire window.
@@ -3478,7 +3478,7 @@ constexpr GLAttr GL_CONTEXT_MINOR_VERSION =
 constexpr GLAttr GL_CONTEXT_FLAGS = SDL_GL_CONTEXT_FLAGS;
 
 /**
- * type of GL context (Core, Compatibility, ES).  See GLProfile; default value
+ * type of GL context (Core, Compatibility, ES). See GLProfile; default value
  * depends on platform.
  */
 constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
@@ -3491,13 +3491,13 @@ constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE =
                                    ///< to 0.
 
 /**
- * sets context the release behavior.  See GLContextReleaseFlag; defaults to
+ * sets context the release behavior. See GLContextReleaseFlag; defaults to
  * FLUSH.
  */
 constexpr GLAttr GL_CONTEXT_RELEASE_BEHAVIOR = SDL_GL_CONTEXT_RELEASE_BEHAVIOR;
 
 /**
- * set context reset notification.  See GLContextResetNotification; defaults to
+ * set context reset notification. See GLContextResetNotification; defaults to
  * NO_NOTIFICATION.
  */
 constexpr GLAttr GL_CONTEXT_RESET_NOTIFICATION =
