@@ -2162,7 +2162,11 @@ function resolveDocRefs(doc: string, context: ApiContext) {
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
 }
 function reflow(doc: string): string {
-  return doc.split(/\n{2,}/)
-    .join('\n\n');
+  return doc.split(/^```/m)
+    .map((portion, index) => {
+      if (index % 2 === 1) return portion;
+      return portion.split(/\n{2,}/).join('\n\n');
+    })
+    .join('```');
 }
 
