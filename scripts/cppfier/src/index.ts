@@ -1,5 +1,4 @@
 import { generateApi } from "./generate.js";
-import { parseXmlApi } from "./parse-xml.js";
 import { parseApi } from "./parse.js";
 import { parseApi as parseApiNew } from "./parse-grammar";
 import { transformApi } from "./transform.js";
@@ -27,9 +26,6 @@ function main(args: string[]) {
     case "parse-new":
       parseNew(args);
       break;
-    case "xml":
-      parseXML(args);
-      break;
     case "generate":
       generate(args);
       break;
@@ -50,7 +46,6 @@ const guideDoc = [
   wrapUsageText(`usage: node ${process.argv[1]} ` + "<verb> [OPTION]... [--] <file>..."),
   "\nValid verbs are:",
   "    parse      parse headers",
-  "    xml        parse xml headers",
   "    transform  transform source C API into C++ API",
   "    generate   generate target headers",
   "    update     update target headers DEPRECATED",
@@ -194,75 +189,6 @@ function parseNew(args: string[]) {
   if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
   if (printConfig) writeJSONSync(config.outputFile ? 1 : 2, config);
   const api = parseApiNew(config);
-  writeJSONSync(config.outputFile || 1, api);
-}
-
-/**
- * Scan files
- * @param args the arguments
- */
-async function parseXML(args: string[]) {
-  if (args?.length == 0) {
-    return help(["xml"]);
-  }
-  const config = {
-    /** @type {string[]} */
-    sources: [],
-    outputFile: "",
-    /** @type {*} */
-    api: null,
-    xmlDir: [],
-    baseDir: [],
-    storeLineNumbers: false,
-  };
-  let printConfig = false;
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg == "--") {
-      config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
-      break;
-    }
-    if (!arg.startsWith('-')) {
-      if (arg.endsWith(".json")) {
-        mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
-      } else
-        config.sources.push(arg.replaceAll("\\", '/'));
-      continue;
-    }
-    switch (arg) {
-      case '--outputFile':
-      case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
-      case '--xmlDir':
-      case '-x': config.xmlDir.push(args[++i].replaceAll("\\", '/')); break;
-      case '--baseDir':
-      case '-d': config.baseDir.push(args[++i].replaceAll("\\", '/')); break;
-      case '--config':
-      case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
-      case '--print-config': printConfig = true; break;
-      case '--store-line-numbers':
-      case '-l': config.storeLineNumbers = true; break;
-      default:
-        throw new Error(`Invalid option ${arg}`);
-    }
-  }
-  if (!config.baseDir?.length && config.sources.length && config.sources[0].includes('/')) {
-    let baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
-    for (let i = 1; i < config.sources.length; i++) {
-      const file = config.sources[i];
-      while (!file.startsWith(baseDir)) {
-        const pos = baseDir.lastIndexOf('/');
-        baseDir = baseDir.slice(0, pos + 1);
-      }
-    }
-    if (baseDir) {
-      config.baseDir = [baseDir];
-      const baseDirLen = baseDir.length;
-      config.sources = config.sources.map(file => file.startsWith(baseDir) ? file.slice(baseDirLen) : file);
-    }
-  }
-  if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
-  if (printConfig) writeJSONSync(config.outputFile ? 1 : 2, config);
-  const api = await parseXmlApi(config);
   writeJSONSync(config.outputFile || 1, api);
 }
 
