@@ -17181,31 +17181,31 @@
               "type": ""
             },
             "SDL_IO_STATUS_ERROR": {
-              "doc": "Read or write I/O error.",
+              "doc": "Read or write I/O error",
               "name": "SDL_IO_STATUS_ERROR",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_EOF": {
-              "doc": "End of file.",
+              "doc": "End of file",
               "name": "SDL_IO_STATUS_EOF",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_NOT_READY": {
-              "doc": "Non blocking I/O, not ready.",
+              "doc": "Non blocking I/O, not ready",
               "name": "SDL_IO_STATUS_NOT_READY",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_READONLY": {
-              "doc": "Tried to write a read-only buffer.",
+              "doc": "Tried to write a read-only buffer",
               "name": "SDL_IO_STATUS_READONLY",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_WRITEONLY": {
-              "doc": "Tried to read a write-only buffer.",
+              "doc": "Tried to read a write-only buffer",
               "name": "SDL_IO_STATUS_WRITEONLY",
               "kind": "var",
               "type": ""
@@ -17218,19 +17218,19 @@
           "kind": "enum",
           "entries": {
             "SDL_IO_SEEK_SET": {
-              "doc": "Seek from the beginning of data.",
+              "doc": "Seek from the beginning of data",
               "name": "SDL_IO_SEEK_SET",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_SEEK_CUR": {
-              "doc": "Seek relative to current read point.",
+              "doc": "Seek relative to current read point",
               "name": "SDL_IO_SEEK_CUR",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_SEEK_END": {
-              "doc": "Seek relative to the end of data.",
+              "doc": "Seek relative to the end of data",
               "name": "SDL_IO_SEEK_END",
               "kind": "var",
               "type": ""
@@ -17248,35 +17248,41 @@
               "kind": "var",
               "type": "Uint32"
             },
-            "offset": {
-              "doc": "Seek to `offset` relative to `whence`, one of stdio's whence values:\n SDL_IO_SEEK_SET, SDL_IO_SEEK_CUR, SDL_IO_SEEK_END\n\n \\return the final offset in the data stream, or -1 on error.",
-              "name": "offset",
-              "kind": "var",
-              "type": "Sint64"
-            },
-            "whence": {
-              "doc": "Seek to `offset` relative to `whence`, one of stdio's whence values:\n SDL_IO_SEEK_SET, SDL_IO_SEEK_CUR, SDL_IO_SEEK_END\n\n \\return the final offset in the data stream, or -1 on error.",
-              "name": "whence",
-              "kind": "var",
-              "type": "Sint64"
-            },
-            "ptr": {
-              "doc": "Write exactly `size` bytes from the area pointed at by `ptr`\n to data stream.\n\n On an incomplete write, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful write.\n\n \\return the number of bytes written",
-              "name": "ptr",
-              "kind": "var",
-              "type": "const void *"
-            },
             "size": {
-              "doc": "Write exactly `size` bytes from the area pointed at by `ptr`\n to data stream.\n\n On an incomplete write, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful write.\n\n \\return the number of bytes written",
+              "doc": "Return the number of bytes in this SDL_IOStream\n\n \\return the total size of the data stream, or -1 on error.",
               "name": "size",
+              "kind": "var",
+              "type": "Sint64"
+            },
+            "seek": {
+              "doc": "Seek to `offset` relative to `whence`, one of stdio's whence values:\n SDL_IO_SEEK_SET, SDL_IO_SEEK_CUR, SDL_IO_SEEK_END\n\n \\return the final offset in the data stream, or -1 on error.",
+              "name": "seek",
+              "kind": "var",
+              "type": "Sint64"
+            },
+            "read": {
+              "doc": "Read up to `size` bytes from the data stream to the area pointed\n at by `ptr`.\n\n On an incomplete read, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful read.\n\n \\return the number of bytes read",
+              "name": "read",
               "kind": "var",
               "type": "size_t"
             },
-            "status": {
-              "doc": "If the stream is buffering, make sure the data is written out.\n\n On failure, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a successful flush.\n\n \\return true if successful or false on write error when flushing data.",
-              "name": "status",
+            "write": {
+              "doc": "Write exactly `size` bytes from the area pointed at by `ptr`\n to data stream.\n\n On an incomplete write, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful write.\n\n \\return the number of bytes written",
+              "name": "write",
               "kind": "var",
-              "type": "SDL_IOStatus *"
+              "type": "size_t"
+            },
+            "flush": {
+              "doc": "If the stream is buffering, make sure the data is written out.\n\n On failure, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a successful flush.\n\n \\return true if successful or false on write error when flushing data.",
+              "name": "flush",
+              "kind": "var",
+              "type": "bool"
+            },
+            "close": {
+              "doc": "Close and free any allocated resources.\n\n This does not guarantee file writes will sync to physical media; they\n can be in the system's file cache, waiting to go to disk.\n\n The SDL_IOStream is still destroyed even if this fails, so clean up anything\n even if flushing buffers, etc, returns an error.\n\n \\return true if successful or false on write error when flushing data.",
+              "name": "close",
+              "kind": "var",
+              "type": "bool"
             }
           }
         },

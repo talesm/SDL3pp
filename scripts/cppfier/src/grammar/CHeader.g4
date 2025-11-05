@@ -57,8 +57,11 @@ enumBody: CURLY_B enumItem* CURLY_E;
 enumItem: doc? id (EQ expr)? COMMA? trailingDoc?;
 
 structBody: CURLY_B (structItem | unionInlineType)* CURLY_E;
-structItem:
+structItem: structVar | structCallback;
+structVar:
 	doc? (CONST? STRUCT)? type id (COMMA id)* indexing* SEMI trailingDoc?;
+structCallback:
+	doc? type ROUND_B STAR id ROUND_E signature SEMI trailingDoc?;
 unionInlineType: doc? UNION block id SEMI;
 
 id: ID;

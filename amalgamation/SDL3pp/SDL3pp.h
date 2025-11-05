@@ -25005,18 +25005,18 @@ constexpr IOStatus IO_STATUS_READY =
   SDL_IO_STATUS_READY; ///< Everything is ready (no errors and not EOF).
 
 constexpr IOStatus IO_STATUS_ERROR =
-  SDL_IO_STATUS_ERROR; ///< Read or write I/O error.
+  SDL_IO_STATUS_ERROR; ///< Read or write I/O error
 
-constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file.
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file
 
 constexpr IOStatus IO_STATUS_NOT_READY =
-  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready.
+  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready
 
 constexpr IOStatus IO_STATUS_READONLY =
-  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer.
+  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer
 
 constexpr IOStatus IO_STATUS_WRITEONLY =
-  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
+  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer
 
 /**
  * Possible `whence` values for IOStream seeking.
@@ -25029,13 +25029,13 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
 using IOWhence = SDL_IOWhence;
 
 constexpr IOWhence IO_SEEK_SET =
-  SDL_IO_SEEK_SET; ///< Seek from the beginning of data.
+  SDL_IO_SEEK_SET; ///< Seek from the beginning of data
 
 constexpr IOWhence IO_SEEK_CUR =
-  SDL_IO_SEEK_CUR; ///< Seek relative to current read point.
+  SDL_IO_SEEK_CUR; ///< Seek relative to current read point
 
 constexpr IOWhence IO_SEEK_END =
-  SDL_IO_SEEK_END; ///< Seek relative to the end of data.
+  SDL_IO_SEEK_END; ///< Seek relative to the end of data
 
 /**
  * The function pointers that drive an IOStream.

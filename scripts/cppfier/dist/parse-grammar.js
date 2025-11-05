@@ -247,6 +247,15 @@ function extractEnumItems(ctx) {
 function extractStructItems(ctx) {
     const entries = {};
     for (const item of ctx.structItem()) {
+        const field = item.structVar();
+        if (field)
+            addVar(field);
+        const callback = item.structCallback();
+        if (callback)
+            addCallback(callback);
+    }
+    return entries;
+    function addVar(item) {
         const type = extractType(item.type());
         const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
         for (const name of item.id().map(id => id.text)) {
@@ -258,5 +267,15 @@ function extractStructItems(ctx) {
             };
         }
     }
-    return entries;
+    function addCallback(item) {
+        const type = extractType(item.type());
+        const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+        const name = item.id().text;
+        entries[name] = {
+            doc,
+            name,
+            kind: 'var',
+            type,
+        };
+    }
 }

@@ -70,14 +70,16 @@ export declare class CHeaderParser extends Parser {
     static readonly RULE_enumItem = 21;
     static readonly RULE_structBody = 22;
     static readonly RULE_structItem = 23;
-    static readonly RULE_unionInlineType = 24;
-    static readonly RULE_id = 25;
-    static readonly RULE_type = 26;
-    static readonly RULE_typeEl = 27;
-    static readonly RULE_signature = 28;
-    static readonly RULE_attribute = 29;
-    static readonly RULE_doc = 30;
-    static readonly RULE_trailingDoc = 31;
+    static readonly RULE_structVar = 24;
+    static readonly RULE_structCallback = 25;
+    static readonly RULE_unionInlineType = 26;
+    static readonly RULE_id = 27;
+    static readonly RULE_type = 28;
+    static readonly RULE_typeEl = 29;
+    static readonly RULE_signature = 30;
+    static readonly RULE_attribute = 31;
+    static readonly RULE_doc = 32;
+    static readonly RULE_trailingDoc = 33;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -112,6 +114,8 @@ export declare class CHeaderParser extends Parser {
     enumItem(): EnumItemContext;
     structBody(): StructBodyContext;
     structItem(): StructItemContext;
+    structVar(): StructVarContext;
+    structCallback(): StructCallbackContext;
     unionInlineType(): UnionInlineTypeContext;
     id(): IdContext;
     type(): TypeContext;
@@ -398,6 +402,14 @@ export declare class StructBodyContext extends ParserRuleContext {
     exitRule(listener: CHeaderListener): void;
 }
 export declare class StructItemContext extends ParserRuleContext {
+    structVar(): StructVarContext | undefined;
+    structCallback(): StructCallbackContext | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class StructVarContext extends ParserRuleContext {
     type(): TypeContext;
     id(): IdContext[];
     id(i: number): IdContext;
@@ -410,6 +422,21 @@ export declare class StructItemContext extends ParserRuleContext {
     indexing(i: number): IndexingContext;
     trailingDoc(): TrailingDocContext | undefined;
     CONST(): TerminalNode | undefined;
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: CHeaderListener): void;
+    exitRule(listener: CHeaderListener): void;
+}
+export declare class StructCallbackContext extends ParserRuleContext {
+    type(): TypeContext;
+    ROUND_B(): TerminalNode;
+    STAR(): TerminalNode;
+    id(): IdContext;
+    ROUND_E(): TerminalNode;
+    signature(): SignatureContext;
+    SEMI(): TerminalNode;
+    doc(): DocContext | undefined;
+    trailingDoc(): TrailingDocContext | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: CHeaderListener): void;
