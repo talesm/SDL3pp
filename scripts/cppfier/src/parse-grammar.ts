@@ -1,6 +1,6 @@
 import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { CHeaderListener } from './grammar/CHeaderListener';
-import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, ProgContext, SignatureContext, StructBodyContext, StructCallbackContext, StructDefContext, StructVarContext, TypeContext, UnionDefContext } from './grammar/CHeaderParser';
+import { AliasDefContext, CallbackDefContext, CHeaderParser, DirectiveContext, EnumBodyContext, EnumDefContext, EnumItemContext, FunctionDeclContext, FunctionDefContext, GlobalVarContext, ProgContext, SignatureContext, StructBodyContext, StructCallbackContext, StructDefContext, StructVarContext, TypeContext, UnionDefContext } from './grammar/CHeaderParser';
 import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
@@ -66,6 +66,20 @@ class ProgListener implements CHeaderListener {
       parameters,
       value,
     };
+  }
+
+  enterGlobalVar(ctx: GlobalVarContext) {
+    const type = extractType(ctx.type());
+    const doc = parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
+    for (const name of ctx.id().map(id => id.text)) {
+      if (this.api.entries[name]?.doc) return;
+      this.api.entries[name] = {
+        doc,
+        name,
+        kind: 'var',
+        type,
+      };
+    }
   }
 
   enterFunctionDecl(ctx: FunctionDeclContext) {

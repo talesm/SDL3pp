@@ -23,6 +23,7 @@
     "SDL_init.h",
     "SDL_intrin.h",
     "SDL_iostream.h",
+    "SDL_joystick.h",
     "SDL_messagebox.h",
     "SDL_misc.h",
     "SDL_pixels.h",

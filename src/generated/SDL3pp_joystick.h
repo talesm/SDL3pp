@@ -1110,20 +1110,14 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void LockJoysticks(void) SDL_ACQUIRE(SDL_joystick_lock)
-{
-  SDL_LockJoysticks(SDL_ACQUIRE(SDL_joystick_lock);
-}
+inline void LockJoysticks() { SDL_LockJoysticks(); }
 
 /**
  * Unlocking for atomic access to the joystick API.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void UnlockJoysticks(void) SDL_RELEASE(SDL_joystick_lock)
-{
-  SDL_UnlockJoysticks(SDL_RELEASE(SDL_joystick_lock);
-}
+inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
 
 /**
  * Return whether a joystick is currently connected.

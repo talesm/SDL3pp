@@ -60,6 +60,20 @@ class ProgListener {
             value,
         };
     }
+    enterGlobalVar(ctx) {
+        const type = extractType(ctx.type());
+        const doc = parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
+        for (const name of ctx.id().map(id => id.text)) {
+            if (this.api.entries[name]?.doc)
+                return;
+            this.api.entries[name] = {
+                doc,
+                name,
+                kind: 'var',
+                type,
+            };
+        }
+    }
     enterFunctionDecl(ctx) {
         const type = extractType(ctx.type());
         if (type.startsWith('__inline'))

@@ -5,8 +5,9 @@ import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
 
 import { ProgContext } from "./CHeaderParser";
 import { DeclContext } from "./CHeaderParser";
-import { ExternCContext } from "./CHeaderParser";
 import { DirectiveContext } from "./CHeaderParser";
+import { ExternCContext } from "./CHeaderParser";
+import { GlobalVarContext } from "./CHeaderParser";
 import { FunctionDeclContext } from "./CHeaderParser";
 import { FunctionDefContext } from "./CHeaderParser";
 import { AliasDefContext } from "./CHeaderParser";
@@ -67,6 +68,17 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitDecl?: (ctx: DeclContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `CHeaderParser.directive`.
+	 * @param ctx the parse tree
+	 */
+	enterDirective?: (ctx: DirectiveContext) => void;
+	/**
+	 * Exit a parse tree produced by `CHeaderParser.directive`.
+	 * @param ctx the parse tree
+	 */
+	exitDirective?: (ctx: DirectiveContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `CHeaderParser.externC`.
 	 * @param ctx the parse tree
 	 */
@@ -78,15 +90,15 @@ export interface CHeaderListener extends ParseTreeListener {
 	exitExternC?: (ctx: ExternCContext) => void;
 
 	/**
-	 * Enter a parse tree produced by `CHeaderParser.directive`.
+	 * Enter a parse tree produced by `CHeaderParser.globalVar`.
 	 * @param ctx the parse tree
 	 */
-	enterDirective?: (ctx: DirectiveContext) => void;
+	enterGlobalVar?: (ctx: GlobalVarContext) => void;
 	/**
-	 * Exit a parse tree produced by `CHeaderParser.directive`.
+	 * Exit a parse tree produced by `CHeaderParser.globalVar`.
 	 * @param ctx the parse tree
 	 */
-	exitDirective?: (ctx: DirectiveContext) => void;
+	exitGlobalVar?: (ctx: GlobalVarContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `CHeaderParser.functionDecl`.

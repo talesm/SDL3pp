@@ -18117,6 +18117,12 @@
       "name": "SDL_joystick.h",
       "doc": "# CategoryJoystick\n\nSDL joystick support.\n\nThis is the lower-level joystick handling. If you want the simpler option,\nwhere what each button does is well-defined, you should use the gamepad API\ninstead.\n\nThe term \"instance_id\" is the current instantiation of a joystick device in\nthe system, if the joystick is removed and then re-inserted then it will\nget a new instance_id, instance_id's are monotonically increasing\nidentifiers of a joystick plugged in.\n\nThe term \"player_index\" is the number assigned to a player on a specific\ncontroller. For XInput controllers this returns the XInput user index. Many\njoysticks will not be able to supply this information.\n\nSDL_GUID is used as a stable 128-bit identifier for a joystick device that\ndoes not change over time. It identifies class of the device (a X360 wired\ncontroller for example). This identifier is platform dependent.\n\nIn order to use these functions, SDL_Init() must have been called with the\nSDL_INIT_JOYSTICK flag. This causes SDL to scan the system for joysticks,\nand load appropriate drivers.\n\nIf you would like to receive joystick updates while the application is in\nthe background, you should set the following hint before calling\nSDL_Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS",
       "entries": {
+        "SDL_joystick_lock": {
+          "doc": "",
+          "name": "SDL_joystick_lock",
+          "kind": "var",
+          "type": "SDL_Mutex *"
+        },
         "SDL_Joystick": {
           "doc": "The joystick structure used to identify an SDL joystick.\n\nThis is opaque data.\n\n\\since This struct is available since SDL 3.2.0.",
           "name": "SDL_Joystick",
@@ -18250,24 +18256,14 @@
           "name": "SDL_LockJoysticks",
           "kind": "function",
           "type": "void",
-          "parameters": [
-            {
-              "name": "SDL_ACQUIRE(SDL_joystick_lock",
-              "type": "void)"
-            }
-          ]
+          "parameters": []
         },
         "SDL_UnlockJoysticks": {
           "doc": "Unlocking for atomic access to the joystick API.\n\n\\since This function is available since SDL 3.2.0.",
           "name": "SDL_UnlockJoysticks",
           "kind": "function",
           "type": "void",
-          "parameters": [
-            {
-              "name": "SDL_RELEASE(SDL_joystick_lock",
-              "type": "void)"
-            }
-          ]
+          "parameters": []
         },
         "SDL_HasJoystick": {
           "doc": "Return whether a joystick is currently connected.\n\n\\returns true if a joystick is connected, false otherwise.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetJoysticks",
@@ -18536,13 +18532,13 @@
               "type": "Uint16"
             },
             "button_mask": {
-              "doc": "",
+              "doc": "A mask of which buttons are valid for this controller\n                             e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH)",
               "name": "button_mask",
               "kind": "var",
               "type": "Uint32"
             },
             "axis_mask": {
-              "doc": "",
+              "doc": "A mask of which axes are valid for this controller\n                             e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX)",
               "name": "axis_mask",
               "kind": "var",
               "type": "Uint32"
@@ -18557,85 +18553,67 @@
               "doc": "A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0",
               "name": "touchpads",
               "kind": "var",
-              "type": "SDL_VirtualJoystickTouchpadDesc"
+              "type": "const SDL_VirtualJoystickTouchpadDesc *"
             },
             "sensors": {
               "doc": "A pointer to an array of sensor descriptions, required if `nsensors` is > 0",
               "name": "sensors",
               "kind": "var",
-              "type": "SDL_VirtualJoystickSensorDesc"
+              "type": "const SDL_VirtualJoystickSensorDesc *"
             },
             "userdata": {
               "doc": "User data pointer passed to callbacks",
               "name": "userdata",
               "kind": "var",
+              "type": "void *"
+            },
+            "Update": {
+              "doc": "Called when the joystick state should be updated",
+              "name": "Update",
+              "kind": "var",
               "type": "void"
             },
-            "player_index": {
+            "SetPlayerIndex": {
               "doc": "Called when the player index is set",
-              "name": "player_index",
-              "kind": "var",
-              "type": "int"
-            },
-            "low_frequency_rumble": {
-              "doc": "Implements SDL_RumbleJoystick()",
-              "name": "low_frequency_rumble",
-              "kind": "var",
-              "type": "Uint16"
-            },
-            "high_frequency_rumble": {
-              "doc": "Implements SDL_RumbleJoystick()",
-              "name": "high_frequency_rumble",
-              "kind": "var",
-              "type": "Uint16 Uint16"
-            },
-            "left_rumble": {
-              "doc": "Implements SDL_RumbleJoystickTriggers()",
-              "name": "left_rumble",
-              "kind": "var",
-              "type": "Uint16"
-            },
-            "right_rumble": {
-              "doc": "Implements SDL_RumbleJoystickTriggers()",
-              "name": "right_rumble",
-              "kind": "var",
-              "type": "Uint16 Uint16"
-            },
-            "red": {
-              "doc": "Implements SDL_SetJoystickLED()",
-              "name": "red",
-              "kind": "var",
-              "type": "Uint8"
-            },
-            "green": {
-              "doc": "Implements SDL_SetJoystickLED()",
-              "name": "green",
-              "kind": "var",
-              "type": "Uint8 Uint8"
-            },
-            "blue": {
-              "doc": "Implements SDL_SetJoystickLED()",
-              "name": "blue",
-              "kind": "var",
-              "type": "Uint8 Uint8 Uint8"
-            },
-            "data": {
-              "doc": "Implements SDL_SendJoystickEffect()",
-              "name": "data",
+              "name": "SetPlayerIndex",
               "kind": "var",
               "type": "void"
             },
-            "size": {
-              "doc": "Implements SDL_SendJoystickEffect()",
-              "name": "size",
-              "kind": "var",
-              "type": "void"
-            },
-            "enabled": {
-              "doc": "Implements SDL_SetGamepadSensorEnabled()",
-              "name": "enabled",
+            "Rumble": {
+              "doc": "Implements SDL_RumbleJoystick()",
+              "name": "Rumble",
               "kind": "var",
               "type": "bool"
+            },
+            "RumbleTriggers": {
+              "doc": "Implements SDL_RumbleJoystickTriggers()",
+              "name": "RumbleTriggers",
+              "kind": "var",
+              "type": "bool"
+            },
+            "SetLED": {
+              "doc": "Implements SDL_SetJoystickLED()",
+              "name": "SetLED",
+              "kind": "var",
+              "type": "bool"
+            },
+            "SendEffect": {
+              "doc": "Implements SDL_SendJoystickEffect()",
+              "name": "SendEffect",
+              "kind": "var",
+              "type": "bool"
+            },
+            "SetSensorsEnabled": {
+              "doc": "Implements SDL_SetGamepadSensorEnabled()",
+              "name": "SetSensorsEnabled",
+              "kind": "var",
+              "type": "bool"
+            },
+            "Cleanup": {
+              "doc": "Cleans up the userdata when the joystick is detached",
+              "name": "Cleanup",
+              "kind": "var",
+              "type": "void"
             }
           }
         },

@@ -3,6 +3,7 @@ prog: doc? (decl)* EOF;
 decl:
 	directive
 	| externC
+	| globalVar
 	| functionDecl
 	| functionDef
 	| aliasDef
@@ -13,8 +14,10 @@ decl:
 	| compileTimeAssert
 	| doc;
 
-externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
 directive: doc? DEFINE;
+externC: EXTERN STRING CURLY_B (decl)* CURLY_E;
+globalVar:
+	doc? EXTERN? type id (COMMA id)* indexing* SEMI trailingDoc?;
 functionDecl: doc? EXTERN? type attribute? id signature SEMI;
 functionDef: doc? inline type attribute? id signature block;
 aliasDef: doc? TYPEDEF (UNION | STRUCT)? type id SEMI;
@@ -70,7 +73,12 @@ typeEl: (VOID | ID | CONST) (STAR | indexing)*;
 signature:
 	ROUND_B (type (COMMA type)*)? (COMMA ELLIPSIS)? ROUND_E attribute?;
 
-attribute: (ATTRIBUTE | SDL_VARARG_ATTRIB) group;
+attribute: (
+		ATTRIBUTE
+		| SDL_VARARG_ATTRIB
+		| SDL_ACQUIRE
+		| SDL_RELEASE
+	) group;
 
 doc: SHORT_DOC | LONG_DOC;
 trailingDoc: TRAILING_DOC;
@@ -113,6 +121,8 @@ TYPEDEF: 'typedef';
 UNION: 'union';
 VOID: 'void';
 SDL_VARARG_ATTRIB: 'SDL_' [A-Z0-9_]+ '_VARARG_FUNC' 'V'?;
+SDL_ACQUIRE: 'SDL_ACQUIRE';
+SDL_RELEASE: 'SDL_RELEASE';
 SDL_COMPILE_TIME_ASSERT: 'SDL_COMPILE_TIME_ASSERT';
 
 CURLY_B: '{';

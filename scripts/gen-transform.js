@@ -1857,6 +1857,7 @@ const transform = {
         "SDL3pp_stdinc.h",
         "SDL3pp_rect.h",
       ],
+      ignoreEntries: ["SDL_joystick_lock"],
       namespacesMap: {
         "SDL_PROP_JOYSTICK_CAP_": "prop::JoystickCap",
       },
