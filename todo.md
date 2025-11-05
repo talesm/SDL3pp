@@ -14,7 +14,7 @@ Replace parse and parse-xml for a antlr parser, convert to typescript
   - [x] Create restricted grammar for C, enough to parse SDL library;
   - [x] Achieve parity with current `parse` and remove it.
   - [x] Achieve parity with current `parse-xml` and remove it.
-- [ ] Add miss-detected functions:
+- [x] Add miss-detected functions:
   - [x] SDL_main.h:
     - [x] SDL_RegisterApp() (windows only);
     - [x] SDL_UnregisterApp() (windows only);
