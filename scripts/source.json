@@ -43018,7 +43018,7 @@
           "doc": "This is the version number macro for the current SDL_ttf version.",
           "name": "SDL_TTF_VERSION",
           "kind": "def",
-          "value": "    SDL_VERSIONNUM(SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_MICRO_VERSION)"
+          "value": "\\\n    SDL_VERSIONNUM(SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_MICRO_VERSION)"
         },
         "SDL_TTF_VERSION_ATLEAST": {
           "doc": "This macro will evaluate to true if compiled with SDL_ttf at least X.Y.Z.",
@@ -43038,7 +43038,7 @@
               "type": ""
             }
           ],
-          "value": "    ((SDL_TTF_MAJOR_VERSION >= X) && \\\n     (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION >= Y) && \\\n     (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION > Y || SDL_TTF_MICRO_VERSION >= Z))"
+          "value": "\\\n    ((SDL_TTF_MAJOR_VERSION >= X) && \\\n     (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION >= Y) && \\\n     (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION > Y || SDL_TTF_MICRO_VERSION >= Z))"
         },
         "TTF_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_ttf library.\n\n\\returns SDL_ttf version.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL_ttf 3.0.0.",
@@ -43087,109 +43087,6 @@
             }
           ]
         },
-        "TTF_TextData": {
-          "doc": "",
-          "name": "TTF_TextData",
-          "kind": "struct",
-          "entries": {
-            "font": {
-              "doc": "",
-              "name": "font",
-              "kind": "var",
-              "type": "TTF_Font *"
-            },
-            "color": {
-              "doc": "",
-              "name": "color",
-              "kind": "var",
-              "type": "SDL_FColor"
-            },
-            "needs_layout_update": {
-              "doc": "",
-              "name": "needs_layout_update",
-              "kind": "var",
-              "type": "bool"
-            },
-            "layout": {
-              "doc": "The internal structure containing font information.\n\nOpaque data!",
-              "name": "layout",
-              "kind": "var",
-              "type": "TTF_TextLayout *"
-            },
-            "x": {
-              "doc": "",
-              "name": "x",
-              "kind": "var",
-              "type": "int"
-            },
-            "y": {
-              "doc": "",
-              "name": "y",
-              "kind": "var",
-              "type": "int"
-            },
-            "w": {
-              "doc": "",
-              "name": "w",
-              "kind": "var",
-              "type": "int"
-            },
-            "h": {
-              "doc": "",
-              "name": "h",
-              "kind": "var",
-              "type": "int"
-            },
-            "num_ops": {
-              "doc": "",
-              "name": "num_ops",
-              "kind": "var",
-              "type": "int"
-            },
-            "ops": {
-              "doc": "",
-              "name": "ops",
-              "kind": "var",
-              "type": "TTF_DrawOperation"
-            },
-            "num_clusters": {
-              "doc": "",
-              "name": "num_clusters",
-              "kind": "var",
-              "type": "int"
-            },
-            "clusters": {
-              "doc": "",
-              "name": "clusters",
-              "kind": "var",
-              "type": "TTF_SubString"
-            },
-            "props": {
-              "doc": "",
-              "name": "props",
-              "kind": "var",
-              "type": "SDL_PropertiesID"
-            },
-            "needs_engine_update": {
-              "doc": "",
-              "name": "needs_engine_update",
-              "kind": "var",
-              "type": "bool"
-            },
-            "engine": {
-              "doc": "",
-              "name": "engine",
-              "kind": "var",
-              "type": "TTF_TextEngine"
-            },
-            "engine_text": {
-              "doc": "",
-              "name": "engine_text",
-              "kind": "var",
-              "type": "void *"
-            }
-          }
-        },
         "TTF_Font": {
           "doc": "The internal structure containing font information.\n\nOpaque data!",
           "name": "TTF_Font",
@@ -43202,31 +43099,6 @@
           "kind": "function",
           "type": "bool",
           "parameters": []
-        },
-        "TTF_TextEngine": {
-          "doc": "",
-          "name": "TTF_TextEngine",
-          "kind": "struct",
-          "entries": {
-            "version": {
-              "doc": "",
-              "name": "version",
-              "kind": "var",
-              "type": "Uint32"
-            },
-            "userdata": {
-              "doc": "",
-              "name": "userdata",
-              "kind": "var",
-              "type": "void"
-            },
-            "text": {
-              "doc": "",
-              "name": "text",
-              "kind": "var",
-              "type": "TTF_Text"
-            }
-          }
         },
         "TTF_OpenFont": {
           "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.\n\n\\param file path to font file.\n\\param ptsize point size to use for the newly-opened font.\n\\returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL_ttf 3.0.0.\n\n\\sa TTF_CloseFont",
@@ -43986,25 +43858,25 @@
               "type": ""
             },
             "TTF_DIRECTION_LTR": {
-              "doc": "Left to Right.",
+              "doc": "Left to Right",
               "name": "TTF_DIRECTION_LTR",
               "kind": "var",
               "type": ""
             },
             "TTF_DIRECTION_RTL": {
-              "doc": "Right to Left.",
+              "doc": "Right to Left",
               "name": "TTF_DIRECTION_RTL",
               "kind": "var",
               "type": ""
             },
             "TTF_DIRECTION_TTB": {
-              "doc": "Top to Bottom.",
+              "doc": "Top to Bottom",
               "name": "TTF_DIRECTION_TTB",
               "kind": "var",
               "type": ""
             },
             "TTF_DIRECTION_BTT": {
-              "doc": "Bottom to Top.",
+              "doc": "Bottom to Top",
               "name": "TTF_DIRECTION_BTT",
               "kind": "var",
               "type": ""
@@ -44155,19 +44027,19 @@
               "type": ""
             },
             "TTF_IMAGE_ALPHA": {
-              "doc": "The color channels are white.",
+              "doc": "The color channels are white",
               "name": "TTF_IMAGE_ALPHA",
               "kind": "var",
               "type": ""
             },
             "TTF_IMAGE_COLOR": {
-              "doc": "The color channels have image data.",
+              "doc": "The color channels have image data",
               "name": "TTF_IMAGE_COLOR",
               "kind": "var",
               "type": ""
             },
             "TTF_IMAGE_SDF": {
-              "doc": "The alpha channel has signed distance field information.",
+              "doc": "The alpha channel has signed distance field information",
               "name": "TTF_IMAGE_SDF",
               "kind": "var",
               "type": ""
@@ -44678,6 +44550,18 @@
             }
           ]
         },
+        "TTF_TextEngine": {
+          "doc": "A text engine used to create text objects.\n\nThis is a public interface that can be used by applications and libraries\nto perform customize rendering with text objects. See\n<SDL3_ttf/SDL_textengine.h> for details.\n\nThere are three text engines provided with the library:\n\n- Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()\n- Drawing with an SDL 2D renderer, created with\n  TTF_CreateRendererTextEngine()\n- Drawing with the SDL GPU API, created with TTF_CreateGPUTextEngine()\n\n\\since This struct is available since SDL_ttf 3.0.0.",
+          "name": "TTF_TextEngine",
+          "kind": "alias",
+          "type": "struct TTF_TextEngine"
+        },
+        "TTF_TextData": {
+          "doc": "Internal data for TTF_Text\n\n\\since This struct is available since SDL_ttf 3.0.0.",
+          "name": "TTF_TextData",
+          "kind": "alias",
+          "type": "struct TTF_TextData"
+        },
         "TTF_Text": {
           "doc": "Text created with TTF_CreateText()\n\n\\since This struct is available since SDL_ttf 3.0.0.\n\n\\sa TTF_CreateText\n\\sa TTF_GetTextProperties\n\\sa TTF_DestroyText",
           "name": "TTF_Text",
@@ -44705,7 +44589,7 @@
               "doc": "Private",
               "name": "internal",
               "kind": "var",
-              "type": "TTF_TextData"
+              "type": "TTF_TextData *"
             }
           }
         },
@@ -44907,7 +44791,7 @@
               "doc": "The next sequence (will be NULL in case of the last sequence)",
               "name": "next",
               "kind": "var",
-              "type": "TTF_GPUAtlasDrawSequence"
+              "type": "struct TTF_GPUAtlasDrawSequence *"
             }
           }
         },

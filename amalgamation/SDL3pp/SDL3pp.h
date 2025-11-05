@@ -88610,9 +88610,6 @@ inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
   TTF_GetHarfBuzzVersion(major, minor, patch);
 }
 
-/// Internal data for Text
-using TextData = TTF_TextData;
-
 /**
  * Font style flags for Font
  *
@@ -88707,13 +88704,13 @@ using Direction = TTF_Direction;
 
 constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID; ///< INVALID
 
-constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR; ///< Left to Right.
+constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR; ///< Left to Right
 
-constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL; ///< Right to Left.
+constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL; ///< Right to Left
 
-constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB; ///< Top to Bottom.
+constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB; ///< Top to Bottom
 
-constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT; ///< Bottom to Top.
+constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT; ///< Bottom to Top
 
 /**
  * The type of data in a glyph image
@@ -88725,12 +88722,12 @@ using ImageType = TTF_ImageType;
 constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID; ///< INVALID
 
 constexpr ImageType IMAGE_ALPHA =
-  TTF_IMAGE_ALPHA; ///< The color channels are white.
+  TTF_IMAGE_ALPHA; ///< The color channels are white
 
 constexpr ImageType IMAGE_COLOR =
-  TTF_IMAGE_COLOR; ///< The color channels have image data.
+  TTF_IMAGE_COLOR; ///< The color channels have image data
 
-/// The alpha channel has signed distance field information.
+/// The alpha channel has signed distance field information
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
 
 /**
@@ -90250,379 +90247,6 @@ struct FontRef : Font
 };
 
 /**
- * Flags for SubString
- *
- * @since This datatype is available since SDL_ttf 3.0.0.
- *
- * @sa SubString
- */
-using SubStringFlags = Uint32;
-
-constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
-  TTF_SUBSTRING_DIRECTION_MASK; ///< The mask for the flow direction for this
-                                ///< substring
-
-constexpr SubStringFlags SUBSTRING_TEXT_START =
-  TTF_SUBSTRING_TEXT_START; ///< This substring contains the beginning of the
-                            ///< text
-
-/// This substring contains the beginning of line `line_index`
-constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
-
-/// This substring contains the end of line `line_index`
-constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
-
-constexpr SubStringFlags SUBSTRING_TEXT_END =
-  TTF_SUBSTRING_TEXT_END; ///< This substring contains the end of the text
-
-/**
- * The winding order of the vertices returned by Text.GetGPUDrawData
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- */
-using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
-  TTF_GPU_TEXTENGINE_WINDING_INVALID; ///< INVALID
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE; ///< CLOCKWISE
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
-
-/**
- * A resource engine
- *
- * @cat resource
- */
-class TextEngine
-{
-  TextEngineRaw m_resource = nullptr;
-
-public:
-  /// Default ctor
-  constexpr TextEngine() = default;
-
-  /**
-   * Constructs from TextEngineParam.
-   *
-   * @param resource a TextEngineRaw to be wrapped.
-   *
-   * This assumes the ownership, call release() if you need to take back.
-   */
-  constexpr explicit TextEngine(const TextEngineRaw resource)
-    : m_resource(resource)
-  {
-  }
-
-  /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) = delete;
-
-  /// Move constructor
-  constexpr TextEngine(TextEngine&& other)
-    : TextEngine(other.release())
-  {
-  }
-
-  /// Destructor
-  virtual ~TextEngine() = default;
-
-  /// Assignment operator.
-  TextEngine& operator=(TextEngine&& other)
-  {
-    std::swap(m_resource, other.m_resource);
-    return *this;
-  }
-
-  /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = delete;
-
-  /// Retrieves underlying TextEngineRaw.
-  constexpr TextEngineRaw get() const { return m_resource; }
-
-  /// Retrieves underlying TextEngineRaw and clear this.
-  constexpr TextEngineRaw release()
-  {
-    auto r = m_resource;
-    m_resource = nullptr;
-    return r;
-  }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextEngine& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Converts to TextEngineParam
-  constexpr operator TextEngineParam() const { return {m_resource}; }
-
-  /// frees up textEngine. Pure virtual
-  virtual void Destroy() = 0;
-
-  /**
-   * Create a text object from UTF-8 text and a text engine.
-   *
-   *               nullptr.
-   * @param font the font to render with.
-   * @param text the text to use, in UTF-8 encoding.
-   * @returns a Text object or nullptr on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               font and text engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa Text.Destroy
-   */
-  Text CreateText(FontParam font, std::string_view text);
-};
-
-/// A surface based text engine
-struct SurfaceTextEngine : TextEngine
-{
-  /**
-   * Create a text engine for drawing text on SDL surfaces.
-   *
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa SurfaceTextEngine.Destroy
-   * @sa Text.DrawSurface
-   */
-  SurfaceTextEngine()
-    : TextEngine(TTF_CreateSurfaceTextEngine())
-  {
-  }
-
-  ~SurfaceTextEngine() { Destroy(); }
-
-  /**
-   * Destroy a text engine created for drawing text on SDL surfaces.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa SurfaceTextEngine.SurfaceTextEngine
-   */
-  void Destroy() final;
-};
-
-/// A renderer based text engine
-struct RendererTextEngine : TextEngine
-{
-  /**
-   * Create a text engine for drawing text on an SDL renderer.
-   *
-   * @param renderer the renderer to use for creating textures and drawing text.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.Destroy
-   * @sa Text.DrawRenderer
-   * @sa RendererTextEngine.RendererTextEngine
-   */
-  RendererTextEngine(RendererParam renderer)
-    : TextEngine(TTF_CreateRendererTextEngine(renderer))
-  {
-  }
-
-  /**
-   * Create a text engine for drawing text on an SDL renderer, with the
-   * specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
-   *   creating textures and drawing text
-   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
-   *   texture atlas
-   *
-   * @param props the properties to use.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               renderer.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.RendererTextEngine
-   * @sa RendererTextEngine.Destroy
-   * @sa Text.DrawRenderer
-   */
-  RendererTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
-  {
-  }
-
-  ~RendererTextEngine() { Destroy(); }
-
-  /**
-   * Destroy a text engine created for drawing text on an SDL renderer.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa RendererTextEngine.RendererTextEngine
-   */
-  void Destroy() final;
-};
-
-/// A GPU based text engine
-struct GPUTextEngine : TextEngine
-{
-  /**
-   * Create a text engine for drawing text with the SDL GPU API.
-   *
-   * @param device the GPUDevice to use for creating textures and drawing
-   *               text.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               device.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   * @sa GPUTextEngine.Destroy
-   * @sa Text.GetGPUDrawData
-   */
-  GPUTextEngine(GPUDeviceParam device)
-    : TextEngine(TTF_CreateGPUTextEngine(device))
-  {
-  }
-
-  /**
-   * Create a text engine for drawing text with the SDL GPU API, with the
-   * specified properties.
-   *
-   * These are the supported properties:
-   *
-   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
-   *   textures and drawing text.
-   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
-   *   atlas
-   *
-   * @param props the properties to use.
-   * @post a TextEngine object or nullptr on failure; call GetError()
-   *          for more information.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               device.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   * @sa GPUTextEngine.Destroy
-   * @sa Text.GetGPUDrawData
-   */
-  GPUTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
-  {
-  }
-
-  ~GPUTextEngine() { Destroy(); }
-
-  /**
-   * Sets the winding order of the vertices returned by Text.GetGPUDrawData
-   * for a particular GPU text engine.
-   *
-   * @param winding the new winding order option.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GetGPUWinding
-   */
-  void SetGPUWinding(GPUTextEngineWinding winding);
-
-  /**
-   * Get the winding order of the vertices returned by Text.GetGPUDrawData
-   * for a particular GPU text engine
-   *
-   * @returns the winding order used by the GPU text engine or
-   *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.SetGPUWinding
-   */
-  GPUTextEngineWinding GetGPUWinding() const;
-
-  /**
-   * Destroy a text engine created for drawing text with the SDL GPU API.
-   *
-   * All text created by this engine should be destroyed before calling this
-   * function.
-   *
-   * @threadsafety This function should be called on the thread that created the
-   *               engine.
-   *
-   * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa GPUTextEngine.GPUTextEngine
-   */
-  void Destroy() final;
-};
-
-/**
- * Draw sequence returned by Text.GetGPUDrawData
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- *
- * @sa Text.GetGPUDrawData
- */
-using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
-
-/**
- * The representation of a substring within text.
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- *
- * @sa Text.GetNextSubString
- * @sa Text.GetPreviousSubString
- * @sa Text.GetSubString
- * @sa Text.GetSubStringForLine
- * @sa Text.GetSubStringForPoint
- * @sa Text.GetSubStringsForRange
- */
-using SubString = TTF_SubString;
-
-// Forward decl
-struct SubStringIterator;
-
-/**
  * Create a font from a file, using a specified point size.
  *
  * Some .fon fonts will have several sizes embedded in the file, so the point
@@ -91714,9 +91338,9 @@ inline void Font::SetScript(Uint32 script)
  * Get the script used for text shaping a font.
  *
  * @param font the font to query.
- * @returns an [ISO 15924
- *          code](https://unicode.org/iso15924/iso15924-codes.html) or 0 if a
- *          script hasn't been set.
+ * @returns an
+ *          [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
+ *          or 0 if a script hasn't been set.
  *
  * @threadsafety This function should be called on the thread that created the
  *               font.
@@ -92590,6 +92214,399 @@ inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
 }
 
 /**
+ * Flags for SubString
+ *
+ * @since This datatype is available since SDL_ttf 3.0.0.
+ *
+ * @sa SubString
+ */
+using SubStringFlags = Uint32;
+
+constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
+  TTF_SUBSTRING_DIRECTION_MASK; ///< The mask for the flow direction for this
+                                ///< substring
+
+constexpr SubStringFlags SUBSTRING_TEXT_START =
+  TTF_SUBSTRING_TEXT_START; ///< This substring contains the beginning of the
+                            ///< text
+
+/// This substring contains the beginning of line `line_index`
+constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
+
+/// This substring contains the end of line `line_index`
+constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
+
+constexpr SubStringFlags SUBSTRING_TEXT_END =
+  TTF_SUBSTRING_TEXT_END; ///< This substring contains the end of the text
+
+/**
+ * The winding order of the vertices returned by Text.GetGPUDrawData
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ */
+using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
+  TTF_GPU_TEXTENGINE_WINDING_INVALID; ///< INVALID
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
+  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE; ///< CLOCKWISE
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
+  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE; ///< COUNTER_CLOCKWISE
+
+/**
+ * A text engine used to create text objects.
+ *
+ * This is a public interface that can be used by applications and libraries
+ * to perform customize rendering with text objects. See
+ * <SDL3_ttf/SDL_textengine.h> for details.
+ *
+ * There are three text engines provided with the library:
+ *
+ * - Drawing to an Surface, created with SurfaceTextEngine.SurfaceTextEngine()
+ * - Drawing with an SDL 2D renderer, created with
+ *   RendererTextEngine.RendererTextEngine()
+ * - Drawing with the SDL GPU API, created with GPUTextEngine.GPUTextEngine()
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @cat resource
+ */
+class TextEngine
+{
+  TextEngineRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr TextEngine() = default;
+
+  /**
+   * Constructs from TextEngineParam.
+   *
+   * @param resource a TextEngineRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit TextEngine(const TextEngineRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr TextEngine(const TextEngine& other) = delete;
+
+  /// Move constructor
+  constexpr TextEngine(TextEngine&& other)
+    : TextEngine(other.release())
+  {
+  }
+
+  /// Destructor
+  virtual ~TextEngine() = default;
+
+  /// Assignment operator.
+  TextEngine& operator=(TextEngine&& other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Assignment operator.
+  TextEngine& operator=(const TextEngine& other) = delete;
+
+  /// Retrieves underlying TextEngineRaw.
+  constexpr TextEngineRaw get() const { return m_resource; }
+
+  /// Retrieves underlying TextEngineRaw and clear this.
+  constexpr TextEngineRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const TextEngine& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to TextEngineParam
+  constexpr operator TextEngineParam() const { return {m_resource}; }
+
+  /// frees up textEngine. Pure virtual
+  virtual void Destroy() = 0;
+
+  /**
+   * Create a text object from UTF-8 text and a text engine.
+   *
+   *               nullptr.
+   * @param font the font to render with.
+   * @param text the text to use, in UTF-8 encoding.
+   * @returns a Text object or nullptr on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               font and text engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa Text.Destroy
+   */
+  Text CreateText(FontParam font, std::string_view text);
+};
+
+/// A surface based text engine
+struct SurfaceTextEngine : TextEngine
+{
+  /**
+   * Create a text engine for drawing text on SDL surfaces.
+   *
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa SurfaceTextEngine.Destroy
+   * @sa Text.DrawSurface
+   */
+  SurfaceTextEngine()
+    : TextEngine(TTF_CreateSurfaceTextEngine())
+  {
+  }
+
+  ~SurfaceTextEngine() { Destroy(); }
+
+  /**
+   * Destroy a text engine created for drawing text on SDL surfaces.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa SurfaceTextEngine.SurfaceTextEngine
+   */
+  void Destroy() final;
+};
+
+/// A renderer based text engine
+struct RendererTextEngine : TextEngine
+{
+  /**
+   * Create a text engine for drawing text on an SDL renderer.
+   *
+   * @param renderer the renderer to use for creating textures and drawing text.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa RendererTextEngine.Destroy
+   * @sa Text.DrawRenderer
+   * @sa RendererTextEngine.RendererTextEngine
+   */
+  RendererTextEngine(RendererParam renderer)
+    : TextEngine(TTF_CreateRendererTextEngine(renderer))
+  {
+  }
+
+  /**
+   * Create a text engine for drawing text on an SDL renderer, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
+   *   creating textures and drawing text
+   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
+   *   texture atlas
+   *
+   * @param props the properties to use.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa RendererTextEngine.RendererTextEngine
+   * @sa RendererTextEngine.Destroy
+   * @sa Text.DrawRenderer
+   */
+  RendererTextEngine(PropertiesParam props)
+    : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
+  {
+  }
+
+  ~RendererTextEngine() { Destroy(); }
+
+  /**
+   * Destroy a text engine created for drawing text on an SDL renderer.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa RendererTextEngine.RendererTextEngine
+   */
+  void Destroy() final;
+};
+
+/// A GPU based text engine
+struct GPUTextEngine : TextEngine
+{
+  /**
+   * Create a text engine for drawing text with the SDL GPU API.
+   *
+   * @param device the GPUDevice to use for creating textures and drawing
+   *               text.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GPUTextEngine
+   * @sa GPUTextEngine.Destroy
+   * @sa Text.GetGPUDrawData
+   */
+  GPUTextEngine(GPUDeviceParam device)
+    : TextEngine(TTF_CreateGPUTextEngine(device))
+  {
+  }
+
+  /**
+   * Create a text engine for drawing text with the SDL GPU API, with the
+   * specified properties.
+   *
+   * These are the supported properties:
+   *
+   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
+   *   textures and drawing text.
+   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
+   *   atlas
+   *
+   * @param props the properties to use.
+   * @post a TextEngine object or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               device.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GPUTextEngine
+   * @sa GPUTextEngine.Destroy
+   * @sa Text.GetGPUDrawData
+   */
+  GPUTextEngine(PropertiesParam props)
+    : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
+  {
+  }
+
+  ~GPUTextEngine() { Destroy(); }
+
+  /**
+   * Sets the winding order of the vertices returned by Text.GetGPUDrawData
+   * for a particular GPU text engine.
+   *
+   * @param winding the new winding order option.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GetGPUWinding
+   */
+  void SetGPUWinding(GPUTextEngineWinding winding);
+
+  /**
+   * Get the winding order of the vertices returned by Text.GetGPUDrawData
+   * for a particular GPU text engine
+   *
+   * @returns the winding order used by the GPU text engine or
+   *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.SetGPUWinding
+   */
+  GPUTextEngineWinding GetGPUWinding() const;
+
+  /**
+   * Destroy a text engine created for drawing text with the SDL GPU API.
+   *
+   * All text created by this engine should be destroyed before calling this
+   * function.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               engine.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   *
+   * @sa GPUTextEngine.GPUTextEngine
+   */
+  void Destroy() final;
+};
+
+/**
+ * Draw sequence returned by Text.GetGPUDrawData
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa Text.GetGPUDrawData
+ */
+using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
+
+/**
+ * The representation of a substring within text.
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa Text.GetNextSubString
+ * @sa Text.GetPreviousSubString
+ * @sa Text.GetSubString
+ * @sa Text.GetSubStringForLine
+ * @sa Text.GetSubStringForPoint
+ * @sa Text.GetSubStringsForRange
+ */
+using SubString = TTF_SubString;
+
+// Forward decl
+struct SubStringIterator;
+
+/**
+ * Internal data for Text
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ */
+using TextData = TTF_TextData;
+
+/**
  * Text created with Text.Text()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
@@ -92688,7 +92705,7 @@ public:
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
-  /// converts to bool
+  /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to TextParam
