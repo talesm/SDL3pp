@@ -620,7 +620,7 @@
 <    * @param newA the new a value.
 ---
 >    * @param newA New alpha component value.
-2405,2408c2600,2601
+2404,2407c2599,2600
 <   constexpr const ColorRaw* data() const
 <   {
 <     static_assert(false, "Not implemented");
@@ -628,40 +628,40 @@
 ---
 >   /// Access specific pallete colors
 >   constexpr const ColorRaw* data() const { return m_resource->colors; }
-2410c2603,2604
+2409c2602,2603
 <   constexpr int size() const { static_assert(false, "Not implemented"); }
 ---
 >   /// Returns number of colors in the palette.
 >   constexpr int size() const { return m_resource->ncolors; }
-2411a2606
+2410a2605
 >   /// Access specific pallete index
-2414c2609
+2413c2608
 <     static_assert(false, "Not implemented");
 ---
 >     return m_resource->colors[index];
-2422d2616
+2421d2615
 <    * @param ncolors the number of entries to modify.
-2428a2623,2624
+2427a2622,2623
 >    *
 >    * @sa Palette.Palette
-2537,2538c2733,2734
+2536,2537c2732,2733
 <  * @returns a pointer to a PixelFormatDetails structure or nullptr on
 <  *          failure; call GetError() for more information.
 ---
 >  * @returns a PixelFormatDetails structure on success
 >  * @throws Error on failure.
-2546c2742
+2545c2741
 <   return CheckError(SDL_GetPixelFormatDetails(format));
 ---
 >   return *CheckError(SDL_GetPixelFormatDetails(format));
-2584d2779
+2583d2778
 <  * @param ncolors the number of entries to modify.
-2596c2791,2792
+2595c2790,2791
 <   CheckError(SDL_SetPaletteColors(palette, colors, firstcolor));
 ---
 >   CheckError(
 >     SDL_SetPaletteColors(palette, colors.data(), firstcolor, colors.size()));
-2664a2861,2897
+2663a2860,2896
 > /**
 >  * Map an RGBA quadruple to a pixel value for a given pixel format.
 >  *
@@ -699,30 +699,30 @@
 >  * @sa MapRGB
 >  * @sa Surface.MapRGBA
 >  */
-2672c2905
+2671c2904
 <   static_assert(false, "Not implemented");
 ---
 >   return SDL_MapRGBA(&format, palette, r, g, b, a);
-2694a2928
+2693a2927
 >  * @param c the color components of the pixel in the range 0-255.
-2696,2699d2929
+2695,2698d2928
 <  * @param r the red component of the pixel in the range 0-255.
 <  * @param g the green component of the pixel in the range 0-255.
 <  * @param b the blue component of the pixel in the range 0-255.
 <  * @param a the alpha component of the pixel in the range 0-255.
-2716c2946
+2715c2945
 <   return SDL_MapRGBA(&format, c, palette);
 ---
 >   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
-2722c2952
+2721c2951
 <   static_assert(false, "Not implemented");
 ---
 >   return MapColor(format, *this, palette);
-2727c2957
+2726c2956
 <   static_assert(false, "Not implemented");
 ---
 >   return MapColor(GetDetails(), c, palette);
-2806a3037,3063
+2805a3036,3062
 > /**
 >  * Get RGBA values from a pixel in the specified format.
 >  *
@@ -750,17 +750,17 @@
 >  * @sa MapRGB
 >  * @sa MapRGBA
 >  */
-2811c3068,3070
+2810c3067,3069
 <   static_assert(false, "Not implemented");
 ---
 >   Color c;
 >   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
 >   return c;
-2818c3077
+2817c3076
 <   static_assert(false, "Not implemented");
 ---
 >   return GetColor(pixel, format, palette);
-2823c3082
+2822c3081
 <   static_assert(false, "Not implemented");
 ---
 >   return GetColor(pixel, GetDetails(), palette);

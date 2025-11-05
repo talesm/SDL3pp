@@ -429,7 +429,6 @@ constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
  *                |__|~')_____('
  *                  [ COMPUTER ]
  *
- *
  *                    North (0,-1)
  *                        ^
  *                        |
@@ -439,7 +438,6 @@ constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
  *                        |
  *                        v
  *                     South (0,1)
- *
  *
  *                     [ USER ]
  *                       \|||/
@@ -900,7 +898,6 @@ public:
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *

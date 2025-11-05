@@ -1034,7 +1034,6 @@ public:
   /**
    * Destroy a set of environment variables.
    *
-   *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the environment is no longer in use.
    *

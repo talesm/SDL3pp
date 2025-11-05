@@ -11222,7 +11222,6 @@ public:
   /**
    * Free a palette created with Palette.Palette().
    *
-   *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
@@ -12045,7 +12044,6 @@ public:
 
   /**
    * Unlock a group of properties.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -14176,7 +14174,6 @@ public:
 
   /**
    * Destroy a set of environment variables.
-   *
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the environment is no longer in use.
@@ -20080,7 +20077,6 @@ public:
    * unblock those threads, and take measures (such as Thread.Wait()) to make
    * sure they have finished their wait and won't wait on the queue again.
    *
-   *
    * @threadsafety It is safe to call this function from any thread, so long as
    *               no other thread is waiting on the queue with
    *               AsyncIOQueue.WaitResult.
@@ -20207,7 +20203,6 @@ public:
    * from their wait and will not touch the queue again (perhaps by setting a
    * flag to tell the threads to terminate and then using Thread.Wait() to
    * make sure they've done so).
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -28404,7 +28399,6 @@ public:
    * Note that any pointers from this object looked up through
    * SharedObject.LoadFunction() will no longer be valid.
    *
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -32362,7 +32356,6 @@ public:
   /**
    * Close a sensor previously opened with Sensor.Sensor().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void Close();
@@ -36107,7 +36100,6 @@ public:
    * This is a convenience function, equivalent to calling
    * `UnbindAudioStreams(&stream, 1)`.
    *
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -39718,7 +39710,6 @@ public:
    * to track it. If you want to stop the process you should use
    * Process.Kill().
    *
-   *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
@@ -42200,7 +42191,6 @@ public:
    *
    * It is safe to pass nullptr to this function.
    *
-   *
    * @threadsafety No other thread should be using the surface when it is freed.
    *
    * @since This function is available since SDL 3.2.0.
@@ -42408,7 +42398,6 @@ public:
    * This function removes a reference from all the alternative versions,
    * destroying them if this is the last reference to them.
    *
-   *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
@@ -42446,7 +42435,6 @@ public:
 
   /**
    * Release a surface after directly accessing the pixels.
-   *
    *
    * @threadsafety This function is not thread safe. The locking referred to by
    *               this function is making the pixels available for direct
@@ -46920,7 +46908,6 @@ public:
    * Use this function to shut down camera processing and close the camera
    * device.
    *
-   *
    * @threadsafety It is safe to call this function from any thread, but no
    *               thread may reference `device` once this function is called.
    *
@@ -47833,7 +47820,6 @@ public:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Mutex
@@ -47854,7 +47840,6 @@ public:
    * This function does not fail; if mutex is nullptr, it will return
    * immediately having locked nothing. If the mutex is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -47892,7 +47877,6 @@ public:
    *
    * It is illegal to unlock a mutex that has not been locked by the current
    * thread, and doing so results in undefined behavior.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48178,7 +48162,6 @@ public:
    * is not safe to attempt to destroy a locked rwlock, and may result in
    * undefined behavior depending on the platform.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.RWLock
@@ -48212,7 +48195,6 @@ public:
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForWriting
@@ -48241,7 +48223,6 @@ public:
    * This function does not fail; if rwlock is nullptr, it will return
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48317,7 +48298,6 @@ public:
    *
    * It is illegal to unlock a rwlock that has not been locked by the current
    * thread, and doing so results in undefined behavior.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48706,7 +48686,6 @@ public:
    * It is not safe to destroy a semaphore if there are threads currently
    * waiting on it.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Semaphore
@@ -48722,7 +48701,6 @@ public:
    *
    * This function is the equivalent of calling Semaphore.WaitTimeout() with
    * a time length of -1.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48771,7 +48749,6 @@ public:
 
   /**
    * Atomically increment a semaphore's value and wake waiting threads.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -49067,7 +49044,6 @@ public:
   /**
    * Destroy a condition variable.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Condition.Condition
@@ -49076,7 +49052,6 @@ public:
 
   /**
    * Restart one of the threads that are waiting on the condition variable.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -49090,7 +49065,6 @@ public:
 
   /**
    * Restart all threads that are waiting on the condition variable.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -49801,7 +49775,6 @@ public:
    *
    * This also destroys all associated menus and entries.
    *
-   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
@@ -50117,7 +50090,6 @@ public:
   /**
    * Removes a tray entry.
    *
-   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
@@ -50315,7 +50287,6 @@ public:
 
   /**
    * Simulate a click on a tray entry.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
@@ -52066,7 +52037,6 @@ public:
    * Note that on some platforms, the visible window may not actually be removed
    * from the screen until the SDL event loop is pumped again, even though the
    * Window is no longer valid after this call.
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -62063,7 +62033,6 @@ public:
    * All bound graphics state on the render pass command buffer is unset. The
    * render pass handle is now invalid.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void End();
@@ -62214,7 +62183,6 @@ public:
    *
    * All bound compute state on the command buffer is unset. The compute pass
    * handle is now invalid.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -62435,7 +62403,6 @@ public:
   /**
    * Ends the current copy pass.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void End();
@@ -62645,7 +62612,6 @@ public:
 
   /**
    * Ends the most-recently pushed debug group.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -63715,7 +63681,6 @@ public:
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.GPUDevice
@@ -64439,7 +64404,6 @@ public:
    * Do NOT call any SDL_GPU functions after calling this function! This must
    * also be called before calling GDKSuspendComplete.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AddEventWatch
@@ -64452,7 +64416,6 @@ public:
    *
    * When resuming, this function MUST be called before calling any other
    * SDL_GPU functions.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -68619,7 +68582,6 @@ public:
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.OpenJoystick
@@ -71601,7 +71563,6 @@ public:
    * This should be called before Window.Destroy, if MetalView.MetalView was
    * called after Window.Window.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.MetalView
@@ -72044,7 +72005,6 @@ public:
    *
    * Use this function to free cursor resources created with Cursor.Cursor(),
    * Cursor.Cursor() or Cursor.Cursor().
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -76313,7 +76273,6 @@ public:
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Haptic.Haptic
@@ -77757,7 +77716,6 @@ public:
    * textures.
    *
    * This should be called before destroying the associated window.
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -79792,7 +79750,6 @@ public:
    * Passing nullptr or an otherwise invalid texture will set the SDL error
    * message to "Invalid texture".
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -80445,7 +80402,6 @@ public:
    *
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -88026,7 +87982,6 @@ public:
    *
    * The provided `anim` pointer is not valid once this call returns.
    *
-   *
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Animation.Animation
@@ -88914,7 +88869,6 @@ public:
    * Font.GetFamilyName() and Font.GetStyleName(), are no longer valid
    * after this call, as well.
    *
-   *
    * @threadsafety This function should not be called while any other thread is
    *               using the font.
    *
@@ -89025,7 +88979,6 @@ public:
    * Remove all fallback fonts.
    *
    * This updates any Text objects using this font.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -92713,7 +92666,6 @@ public:
 
   /**
    * Destroy a text object created by a text engine.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.

@@ -288,7 +288,6 @@ public:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Mutex
@@ -309,7 +308,6 @@ public:
    * This function does not fail; if mutex is nullptr, it will return
    * immediately having locked nothing. If the mutex is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -347,7 +345,6 @@ public:
    *
    * It is illegal to unlock a mutex that has not been locked by the current
    * thread, and doing so results in undefined behavior.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -633,7 +630,6 @@ public:
    * is not safe to attempt to destroy a locked rwlock, and may result in
    * undefined behavior depending on the platform.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.RWLock
@@ -667,7 +663,6 @@ public:
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForWriting
@@ -696,7 +691,6 @@ public:
    * This function does not fail; if rwlock is nullptr, it will return
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -772,7 +766,6 @@ public:
    *
    * It is illegal to unlock a rwlock that has not been locked by the current
    * thread, and doing so results in undefined behavior.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1161,7 +1154,6 @@ public:
    * It is not safe to destroy a semaphore if there are threads currently
    * waiting on it.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Semaphore
@@ -1177,7 +1169,6 @@ public:
    *
    * This function is the equivalent of calling Semaphore.WaitTimeout() with
    * a time length of -1.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1226,7 +1217,6 @@ public:
 
   /**
    * Atomically increment a semaphore's value and wake waiting threads.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1522,7 +1512,6 @@ public:
   /**
    * Destroy a condition variable.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Condition.Condition
@@ -1531,7 +1520,6 @@ public:
 
   /**
    * Restart one of the threads that are waiting on the condition variable.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1545,7 +1533,6 @@ public:
 
   /**
    * Restart all threads that are waiting on the condition variable.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *

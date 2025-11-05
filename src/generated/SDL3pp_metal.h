@@ -156,7 +156,6 @@ public:
    * This should be called before Window.Destroy, if MetalView.MetalView was
    * called after Window.Window.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.MetalView

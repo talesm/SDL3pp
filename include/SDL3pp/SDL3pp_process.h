@@ -320,7 +320,6 @@ public:
    * to track it. If you want to stop the process you should use
    * Process.Kill().
    *
-   *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.

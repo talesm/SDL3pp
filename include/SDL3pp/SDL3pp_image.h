@@ -2259,7 +2259,6 @@ public:
    *
    * The provided `anim` pointer is not valid once this call returns.
    *
-   *
    * @since This function is available since SDL_image 3.0.0.
    *
    * @sa Animation.Animation

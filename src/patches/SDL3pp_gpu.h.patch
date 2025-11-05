@@ -28,65 +28,65 @@
 <    * @param num_bindings the number of storage textures to bind from the array.
 1357d1346
 <    * @param num_bindings the number of storage buffers to bind from the array.
-1521,1522d1509
+1520,1521d1508
 <    * @param num_bindings the number of texture-sampler bindings to bind from the
 <    *                     array.
-1543d1529
+1542d1528
 <    * @param num_bindings the number of storage textures to bind from the array.
-1563d1548
+1562d1547
 <    * @param num_bindings the number of storage buffers to bind from the array.
-2067d2051
+2063d2047
 <    * @param length the length of the data to write.
-2084d2067
+2080d2063
 <    * @param length the length of the data to write.
-2101d2083
+2097d2079
 <    * @param length the length of the data to write.
-2120,2121d2101
+2116,2117d2097
 <    * @param num_color_targets the number of color targets in the
 <    *                          color_target_infos array.
-2159,2160d2138
+2155,2156d2134
 <    * @param num_storage_texture_bindings the number of storage textures to bind
 <    *                                     from the array.
-2163,2164d2140
+2159,2160d2136
 <    * @param num_storage_buffer_bindings the number of storage buffers to bind
 <    *                                    from the array.
-2232,2233d2207
+2228,2229d2203
 <    * @param swapchain_texture a pointer filled in with a swapchain texture
 <    *                          handle.
-2237a2212
+2233a2208
 >    * @returns a swapchain texture handle.
-2282,2283d2256
+2278,2279d2252
 <    * @param swapchain_texture a pointer filled in with a swapchain texture
 <    *                          handle.
-2287a2261
+2283a2257
 >    * @returns a swapchain texture handle.
-3392,3393c3366
+3387,3388c3361
 <    * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
 <    * .
 ---
 >    * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
-3785d3757
+3780d3752
 <    * @param num_fences the number of fences in the fences array.
-3845a3818
+3840a3813
 > #ifdef SDL_PLATFORM_GDK
-3873a3847,3848
+3866a3840,3841
 > 
 > #endif /* SDL_PLATFORM_GDK */
-5247,5248c5222
+5240,5241c5215
 <  * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/)
 <  * .
 ---
 >  * [this blog post](https://moonside.games/posts/sdl-gpu-concepts-cycling/).
-5661d5634
+5654d5627
 <  * @param length the length of the data to write.
-5692d5664
+5685d5657
 <  * @param length the length of the data to write.
-5723d5694
+5716d5687
 <  * @param length the length of the data to write.
-5756,5757d5726
+5749,5750d5719
 <  * @param num_color_targets the number of color targets in the
 <  *                          color_target_infos array.
-5772,5773c5741,5744
+5765,5766c5734,5737
 <   return SDL_BeginGPURenderPass(
 <     command_buffer, color_target_infos, depth_stencil_target_info);
 ---
@@ -94,45 +94,45 @@
 >                                 color_target_infos.data(),
 >                                 color_target_infos.size(),
 >                                 depth_stencil_target_info);
-5834c5805
+5827c5798
 <   SDL_SetGPUScissor(render_pass, scissor);
 ---
 >   SDL_SetGPUScissor(render_pass, &scissor);
-5890d5860
+5883d5853
 <  * @param num_bindings the number of bindings in the bindings array.
-5898c5868,5869
+5891c5861,5862
 <   SDL_BindGPUVertexBuffers(render_pass, first_slot, bindings);
 ---
 >   SDL_BindGPUVertexBuffers(
 >     render_pass, first_slot, bindings.data(), bindings.size());
-5945,5946d5915
+5938,5939d5908
 <  * @param num_bindings the number of texture-sampler pairs to bind from the
 <  *                     array.
-5957c5926,5929
+5950c5919,5922
 <   SDL_BindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings);
 ---
 >   SDL_BindGPUVertexSamplers(render_pass,
 >                             first_slot,
 >                             texture_sampler_bindings.data(),
 >                             texture_sampler_bindings.size());
-5980d5951
+5973d5944
 <  * @param num_bindings the number of storage texture to bind from the array.
-5991c5962,5963
+5984c5955,5956
 <   SDL_BindGPUVertexStorageTextures(render_pass, first_slot, storage_textures);
 ---
 >   SDL_BindGPUVertexStorageTextures(
 >     render_pass, first_slot, storage_textures.data(), storage_textures.size());
-6014d5985
+6007d5978
 <  * @param num_bindings the number of buffers to bind from the array.
-6025c5996,5997
+6018c5989,5990
 <   SDL_BindGPUVertexStorageBuffers(render_pass, first_slot, storage_buffers);
 ---
 >   SDL_BindGPUVertexStorageBuffers(
 >     render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
-6048,6049d6019
+6041,6042d6012
 <  * @param num_bindings the number of texture-sampler pairs to bind from the
 <  *                     array.
-6060,6061c6030,6033
+6053,6054c6023,6026
 <   SDL_BindGPUFragmentSamplers(
 <     render_pass, first_slot, texture_sampler_bindings);
 ---
@@ -140,27 +140,27 @@
 >                               first_slot,
 >                               texture_sampler_bindings.data(),
 >                               texture_sampler_bindings.size());
-6084d6055
+6077d6048
 <  * @param num_bindings the number of storage textures to bind from the array.
-6095c6066,6067
+6088c6059,6060
 <   SDL_BindGPUFragmentStorageTextures(render_pass, first_slot, storage_textures);
 ---
 >   SDL_BindGPUFragmentStorageTextures(
 >     render_pass, first_slot, storage_textures.data(), storage_textures.size());
-6118d6089
+6111d6082
 <  * @param num_bindings the number of storage buffers to bind from the array.
-6129c6100,6101
+6122c6093,6094
 <   SDL_BindGPUFragmentStorageBuffers(render_pass, first_slot, storage_buffers);
 ---
 >   SDL_BindGPUFragmentStorageBuffers(
 >     render_pass, first_slot, storage_buffers.data(), storage_buffers.size());
-6336,6337d6307
+6329,6330d6300
 <  * @param num_storage_texture_bindings the number of storage textures to bind
 <  *                                     from the array.
-6340,6341d6309
+6333,6334d6302
 <  * @param num_storage_buffer_bindings the number of storage buffers to bind
 <  *                                    from the array.
-6353,6354c6321,6325
+6346,6347c6314,6318
 <   return SDL_BeginGPUComputePass(
 <     command_buffer, storage_texture_bindings, storage_buffer_bindings);
 ---
@@ -169,10 +169,10 @@
 >                                  storage_texture_bindings.size(),
 >                                  storage_buffer_bindings.data(),
 >                                  storage_buffer_bindings.size());
-6396,6397d6366
+6389,6390d6359
 <  * @param num_bindings the number of texture-sampler bindings to bind from the
 <  *                     array.
-6408,6409c6377,6380
+6401,6402c6370,6373
 <   SDL_BindGPUComputeSamplers(
 <     compute_pass, first_slot, texture_sampler_bindings);
 ---
@@ -180,26 +180,26 @@
 >                              first_slot,
 >                              texture_sampler_bindings.data(),
 >                              texture_sampler_bindings.size());
-6432d6402
+6425d6395
 <  * @param num_bindings the number of storage textures to bind from the array.
-6443c6413,6414
+6436c6406,6407
 <   SDL_BindGPUComputeStorageTextures(compute_pass, first_slot, storage_textures);
 ---
 >   SDL_BindGPUComputeStorageTextures(
 >     compute_pass, first_slot, storage_textures.data(), storage_textures.size());
-6466d6436
+6459d6429
 <  * @param num_bindings the number of storage buffers to bind from the array.
-6477c6447,6448
+6470c6440,6441
 <   SDL_BindGPUComputeStorageBuffers(compute_pass, first_slot, storage_buffers);
 ---
 >   SDL_BindGPUComputeStorageBuffers(
 >     compute_pass, first_slot, storage_buffers.data(), storage_buffers.size());
-7122,7123d7092
+7115,7116d7085
 <  * @param swapchain_texture a pointer filled in with a swapchain texture
 <  *                          handle.
-7127a7097
+7120a7090
 >  * @returns a swapchain texture handle.
-7150,7151c7120,7126
+7143,7144c7113,7119
 <   return CheckError(SDL_AcquireGPUSwapchainTexture(
 <     command_buffer, window, swapchain_texture_width, swapchain_texture_height));
 ---
@@ -210,12 +210,12 @@
 >                                             swapchain_texture_width,
 >                                             swapchain_texture_height));
 >   return texture;
-7215,7216d7189
+7208,7209d7182
 <  * @param swapchain_texture a pointer filled in with a swapchain texture
 <  *                          handle.
-7220a7194
+7213a7187
 >  * @returns a swapchain texture handle.
-7238,7239c7212,7218
+7231,7232c7205,7211
 <   return CheckError(SDL_WaitAndAcquireGPUSwapchainTexture(
 <     command_buffer, window, swapchain_texture_width, swapchain_texture_height));
 ---
@@ -226,16 +226,16 @@
 >                                                    swapchain_texture_width,
 >                                                    swapchain_texture_height));
 >   return texture;
-7373d7351
+7366d7344
 <  * @param num_fences the number of fences in the fences array.
-7385c7363,7364
+7378c7356,7357
 <   CheckError(SDL_WaitForGPUFences(device, wait_all, fences));
 ---
 >   CheckError(
 >     SDL_WaitForGPUFences(device, wait_all, fences.data(), fences.size()));
-7521a7501,7502
+7514a7494,7495
 > #ifdef SDL_PLATFORM_GDK
 > 
-7554a7536,7537
+7547a7529,7530
 > 
 > #endif /* SDL_PLATFORM_GDK */

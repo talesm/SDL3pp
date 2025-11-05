@@ -283,7 +283,6 @@ public:
    * All properties are deleted and their cleanup functions will be called, if
    * any.
    *
-   *
    * @threadsafety This function should not be called while these properties are
    *               locked or other threads might be setting or getting values
    *               from these properties.
@@ -335,7 +334,6 @@ public:
 
   /**
    * Unlock a group of properties.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *

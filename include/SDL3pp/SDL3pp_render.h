@@ -443,7 +443,6 @@ public:
    *
    * This should be called before destroying the associated window.
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2477,7 +2476,6 @@ public:
    * Passing nullptr or an otherwise invalid texture will set the SDL error
    * message to "Invalid texture".
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -3130,7 +3128,6 @@ public:
    *
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *

@@ -1112,7 +1112,6 @@ public:
    * from the screen until the SDL event loop is pumped again, even though the
    * Window is no longer valid after this call.
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.

@@ -616,7 +616,6 @@ public:
    * unblock those threads, and take measures (such as Thread.Wait()) to make
    * sure they have finished their wait and won't wait on the queue again.
    *
-   *
    * @threadsafety It is safe to call this function from any thread, so long as
    *               no other thread is waiting on the queue with
    *               AsyncIOQueue.WaitResult.
@@ -743,7 +742,6 @@ public:
    * from their wait and will not touch the queue again (perhaps by setting a
    * flag to tell the threads to terminate and then using Thread.Wait() to
    * make sure they've done so).
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *

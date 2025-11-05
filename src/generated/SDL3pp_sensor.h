@@ -243,7 +243,6 @@ public:
   /**
    * Close a sensor previously opened with Sensor.Sensor().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void Close();

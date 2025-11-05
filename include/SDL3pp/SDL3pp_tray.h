@@ -259,7 +259,6 @@ public:
    *
    * This also destroys all associated menus and entries.
    *
-   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
@@ -575,7 +574,6 @@ public:
   /**
    * Removes a tray entry.
    *
-   *
    * @threadsafety This function should be called on the thread that created the
    *               tray.
    *
@@ -773,7 +771,6 @@ public:
 
   /**
    * Simulate a click on a tray entry.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               tray.

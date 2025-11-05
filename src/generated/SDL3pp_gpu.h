@@ -1459,7 +1459,6 @@ public:
    * All bound graphics state on the render pass command buffer is unset. The
    * render pass handle is now invalid.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void End();
@@ -1614,7 +1613,6 @@ public:
    *
    * All bound compute state on the command buffer is unset. The compute pass
    * handle is now invalid.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1835,7 +1833,6 @@ public:
   /**
    * Ends the current copy pass.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void End();
@@ -2045,7 +2042,6 @@ public:
 
   /**
    * Ends the most-recently pushed debug group.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -3126,7 +3122,6 @@ public:
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUDevice.GPUDevice
@@ -3851,7 +3846,6 @@ public:
    * Do NOT call any SDL_GPU functions after calling this function! This must
    * also be called before calling GDKSuspendComplete.
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AddEventWatch
@@ -3864,7 +3858,6 @@ public:
    *
    * When resuming, this function MUST be called before calling any other
    * SDL_GPU functions.
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *

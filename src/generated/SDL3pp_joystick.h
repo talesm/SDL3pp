@@ -476,7 +476,6 @@ public:
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.OpenJoystick

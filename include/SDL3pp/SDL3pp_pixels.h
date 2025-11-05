@@ -2587,7 +2587,6 @@ public:
   /**
    * Free a palette created with Palette.Palette().
    *
-   *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *

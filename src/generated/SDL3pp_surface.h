@@ -483,7 +483,6 @@ public:
    *
    * It is safe to pass nullptr to this function.
    *
-   *
    * @threadsafety No other thread should be using the surface when it is freed.
    *
    * @since This function is available since SDL 3.2.0.
@@ -700,7 +699,6 @@ public:
    * This function removes a reference from all the alternative versions,
    * destroying them if this is the last reference to them.
    *
-   *
    * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
@@ -738,7 +736,6 @@ public:
 
   /**
    * Release a surface after directly accessing the pixels.
-   *
    *
    * @threadsafety This function is not thread safe. The locking referred to by
    *               this function is making the pixels available for direct

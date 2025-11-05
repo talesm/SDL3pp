@@ -353,7 +353,6 @@ public:
    * Use this function to free cursor resources created with Cursor.Cursor(),
    * Cursor.Cursor() or Cursor.Cursor().
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.

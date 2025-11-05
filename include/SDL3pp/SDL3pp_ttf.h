@@ -626,7 +626,6 @@ public:
    * Font.GetFamilyName() and Font.GetStyleName(), are no longer valid
    * after this call, as well.
    *
-   *
    * @threadsafety This function should not be called while any other thread is
    *               using the font.
    *
@@ -737,7 +736,6 @@ public:
    * Remove all fallback fonts.
    *
    * This updates any Text objects using this font.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -4425,7 +4423,6 @@ public:
 
   /**
    * Destroy a text object created by a text engine.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.

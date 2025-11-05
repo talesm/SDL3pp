@@ -9,10 +9,10 @@
 144,145d146
 <  * @param userdata an optional pointer to pass extra data to the callback when
 <  *                 it will be invoked.
-401,402d401
+400,401d400
 <    * @param count An optional pointer to obtain the number of entries in the
 <    *              menu.
-443a443,466
+442a442,465
 >   /**
 >    * Appends a tray entry.
 >    *
@@ -37,7 +37,7 @@
 >    * @sa TrayEntry.Remove
 >    * @sa TrayEntry.GetParent
 >    */
-718a742,754
+716a740,752
 >   /**
 >    * Sets a callback to be invoked when the entry is selected.
 >    *
@@ -51,17 +51,17 @@
 >    * @sa TrayMenu.GetEntries
 >    * @sa TrayMenu.InsertEntry
 >    */
-978,979d1013
+975,976d1010
 <  * @param count An optional pointer to obtain the number of entries in the
 <  *              menu.
-994c1028,1031
+991c1025,1028
 <   return SDL_GetTrayEntries(menu);
 ---
 >   int count;
 >   auto entries = SDL_GetTrayEntries(menu, &count);
 >   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
 >                               size_t(count)};
-1372a1410,1422
+1369a1407,1419
 > 
 > inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 > {

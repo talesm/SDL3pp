@@ -1786,7 +1786,6 @@ public:
    * device that was opened alongside this stream's creation will be closed,
    * too.
    *
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2565,7 +2564,6 @@ public:
    *
    * This is a convenience function, equivalent to calling
    * `UnbindAudioStreams(&stream, 1)`.
-   *
    *
    * @threadsafety It is safe to call this function from any thread.
    *

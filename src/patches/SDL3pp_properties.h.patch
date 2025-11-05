@@ -30,13 +30,11 @@
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-286d285
-<    *
-400d398
+398d397
 <    * @param userdata a pointer that is passed to the cleanup function.
-683d680
+681d679
 <    * @param userdata a pointer that is passed to `callback`.
-691a689,695
+689a688,694
 >   /**
 >    * Returns the number of properties this has
 >    *
@@ -44,23 +42,23 @@
 >    *
 >    * @return Uint64
 >    */
-730c734
+728c733
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-738,739c742,743
+736,737c741,742
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-749c753
+747c752
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-883d886
+881d885
 <  * @param userdata a pointer that is passed to the cleanup function.
-899c902,907
+897c901,906
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -69,9 +67,9 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-1336d1343
+1334d1342
 <  * @param userdata a pointer that is passed to `callback`.
-1346c1353,1359
+1344c1352,1358
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -81,7 +79,7 @@
 >       f(props, name);
 >     },
 >     &callback);
-1359a1373,1380
+1357a1372,1379
 > /**
 >  * Returns the number of properties this has
 >  *
@@ -90,7 +88,7 @@
 >  * @param props
 >  * @return Uint64
 >  */
-1362c1383,1385
+1360c1382,1384
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;

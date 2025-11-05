@@ -920,7 +920,6 @@ public:
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Haptic.Haptic

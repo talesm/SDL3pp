@@ -266,7 +266,6 @@ public:
    * Use this function to shut down camera processing and close the camera
    * device.
    *
-   *
    * @threadsafety It is safe to call this function from any thread, but no
    *               thread may reference `device` once this function is called.
    *
