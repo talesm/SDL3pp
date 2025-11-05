@@ -254,7 +254,7 @@ function extractEnumItems(ctx) {
     for (const item of ctx.enumItem()) {
         const name = item.id().text;
         entries[name] = {
-            doc: parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? ''),
+            doc: parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
             name,
             kind: "var",
             type: "",
@@ -275,7 +275,7 @@ function extractStructItems(ctx) {
     return entries;
     function addVar(item) {
         const type = extractType(item.type());
-        const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+        const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
         for (const name of item.id().map(id => id.text)) {
             entries[name] = {
                 doc,
@@ -287,7 +287,7 @@ function extractStructItems(ctx) {
     }
     function addCallback(item) {
         const type = extractType(item.type());
-        const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+        const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
         const name = item.id().text;
         entries[name] = {
             doc,

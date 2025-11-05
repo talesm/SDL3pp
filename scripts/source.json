@@ -29773,7 +29773,7 @@
               "type": ""
             },
             "SDL_SCANCODE_A": {
-              "doc": "",
+              "doc": "\\name Usage page 0x07\n\n These values are from usage page 0x07 (USB keyboard page).",
               "name": "SDL_SCANCODE_A",
               "kind": "var",
               "type": ""
@@ -30043,13 +30043,13 @@
               "type": ""
             },
             "SDL_SCANCODE_BACKSLASH": {
-              "doc": "Located at the lower left of the return key on ISO keyboards and at the right end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and ASTERISK and MICRO SIGN in a French Windows layout.",
+              "doc": "Located at the lower left of the return\n  key on ISO keyboards and at the right end\n  of the QWERTY row on ANSI keyboards.\n  Produces REVERSE SOLIDUS (backslash) and\n  VERTICAL LINE in a US layout, REVERSE\n  SOLIDUS and VERTICAL LINE in a UK Mac\n  layout, NUMBER SIGN and TILDE in a UK\n  Windows layout, DOLLAR SIGN and POUND SIGN\n  in a Swiss German layout, NUMBER SIGN and\n  APOSTROPHE in a German layout, GRAVE\n  ACCENT and POUND SIGN in a French Mac\n  layout, and ASTERISK and MICRO SIGN in a\n  French Windows layout.",
               "name": "SDL_SCANCODE_BACKSLASH",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_NONUSHASH": {
-              "doc": "ISO USB keyboards actually use this code instead of 49 for the same key, but all OSes I've seen treat the two codes identically.  So, as an implementor, unless your keyboard generates both of those codes and your OS treats them differently, you should generate SDL_SCANCODE_BACKSLASH instead of this code. As a user, you should not rely on this code because SDL will never generate it with most (all?) keyboards.",
+              "doc": "ISO USB keyboards actually use this code\n  instead of 49 for the same key, but all\n  OSes I've seen treat the two codes\n  identically. So, as an implementor, unless\n  your keyboard generates both of those\n  codes and your OS treats them differently,\n  you should generate SDL_SCANCODE_BACKSLASH\n  instead of this code. As a user, you\n  should not rely on this code because SDL\n  will never generate it with most (all?)\n  keyboards.",
               "name": "SDL_SCANCODE_NONUSHASH",
               "kind": "var",
               "type": ""
@@ -30067,7 +30067,7 @@
               "type": ""
             },
             "SDL_SCANCODE_GRAVE": {
-              "doc": "Located in the top left corner (on both ANSI and ISO keyboards).  Produces GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards), CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on ANSI keyboards.",
+              "doc": "Located in the top left corner (on both ANSI\n  and ISO keyboards). Produces GRAVE ACCENT and\n  TILDE in a US Windows layout and in US and UK\n  Mac layouts on ANSI keyboards, GRAVE ACCENT\n  and NOT SIGN in a UK Windows layout, SECTION\n  SIGN and PLUS-MINUS SIGN in US and UK Mac\n  layouts on ISO keyboards, SECTION SIGN and\n  DEGREE SIGN in a Swiss German layout (Mac:\n  only on ISO keyboards), CIRCUMFLEX ACCENT and\n  DEGREE SIGN in a German layout (Mac: only on\n  ISO keyboards), SUPERSCRIPT TWO and TILDE in a\n  French Windows layout, COMMERCIAL AT and\n  NUMBER SIGN in a French Mac layout on ISO\n  keyboards, and LESS-THAN SIGN and GREATER-THAN\n  SIGN in a Swiss German, German, or French Mac\n  layout on ANSI keyboards.",
               "name": "SDL_SCANCODE_GRAVE",
               "kind": "var",
               "type": ""
@@ -30187,7 +30187,7 @@
               "type": ""
             },
             "SDL_SCANCODE_INSERT": {
-              "doc": "insert on PC, help on some Mac keyboards (but does send code 73, not 117)",
+              "doc": "insert on PC, help on some Mac keyboards (but\n                                   does send code 73, not 117)",
               "name": "SDL_SCANCODE_INSERT",
               "kind": "var",
               "type": ""
@@ -30349,7 +30349,7 @@
               "type": ""
             },
             "SDL_SCANCODE_NONUSBACKSLASH": {
-              "doc": "This is the additional key that ISO keyboards have over ANSI ones, located between left shift and Z.  Produces GRAVE ACCENT and TILDE in a US or UK Mac layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German, or French layout.",
+              "doc": "This is the additional key that ISO\n  keyboards have over ANSI ones,\n  located between left shift and Z.\n  Produces GRAVE ACCENT and TILDE in a\n  US or UK Mac layout, REVERSE SOLIDUS\n  (backslash) and VERTICAL LINE in a\n  US or UK Windows layout, and\n  LESS-THAN SIGN and GREATER-THAN SIGN\n  in a Swiss German, German, or French\n  layout.",
               "name": "SDL_SCANCODE_NONUSBACKSLASH",
               "kind": "var",
               "type": ""
@@ -30361,7 +30361,7 @@
               "type": ""
             },
             "SDL_SCANCODE_POWER": {
-              "doc": "The USB document says this is a status flag, not a physical key - but some Mac keyboards do have a power key.",
+              "doc": "The USB document says this is a status flag,\n  not a physical key - but some Mac keyboards\n  do have a power key.",
               "name": "SDL_SCANCODE_POWER",
               "kind": "var",
               "type": ""
@@ -30451,7 +30451,7 @@
               "type": ""
             },
             "SDL_SCANCODE_HELP": {
-              "doc": "AL Integrated Help Center.",
+              "doc": "AL Integrated Help Center",
               "name": "SDL_SCANCODE_HELP",
               "kind": "var",
               "type": ""
@@ -30469,43 +30469,43 @@
               "type": ""
             },
             "SDL_SCANCODE_STOP": {
-              "doc": "AC Stop.",
+              "doc": "AC Stop",
               "name": "SDL_SCANCODE_STOP",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AGAIN": {
-              "doc": "AC Redo/Repeat.",
+              "doc": "AC Redo/Repeat",
               "name": "SDL_SCANCODE_AGAIN",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_UNDO": {
-              "doc": "AC Undo.",
+              "doc": "AC Undo",
               "name": "SDL_SCANCODE_UNDO",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_CUT": {
-              "doc": "AC Cut.",
+              "doc": "AC Cut",
               "name": "SDL_SCANCODE_CUT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_COPY": {
-              "doc": "AC Copy.",
+              "doc": "AC Copy",
               "name": "SDL_SCANCODE_COPY",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_PASTE": {
-              "doc": "AC Paste.",
+              "doc": "AC Paste",
               "name": "SDL_SCANCODE_PASTE",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_FIND": {
-              "doc": "AC Find.",
+              "doc": "AC Find",
               "name": "SDL_SCANCODE_FIND",
               "kind": "var",
               "type": ""
@@ -30541,7 +30541,7 @@
               "type": ""
             },
             "SDL_SCANCODE_INTERNATIONAL1": {
-              "doc": "used on Asian keyboards, see footnotes in USB doc",
+              "doc": "used on Asian keyboards, see\n                                            footnotes in USB doc",
               "name": "SDL_SCANCODE_INTERNATIONAL1",
               "kind": "var",
               "type": ""
@@ -30553,7 +30553,7 @@
               "type": ""
             },
             "SDL_SCANCODE_INTERNATIONAL3": {
-              "doc": "Yen.",
+              "doc": "Yen",
               "name": "SDL_SCANCODE_INTERNATIONAL3",
               "kind": "var",
               "type": ""
@@ -30595,31 +30595,31 @@
               "type": ""
             },
             "SDL_SCANCODE_LANG1": {
-              "doc": "Hangul/English toggle.",
+              "doc": "Hangul/English toggle",
               "name": "SDL_SCANCODE_LANG1",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_LANG2": {
-              "doc": "Hanja conversion.",
+              "doc": "Hanja conversion",
               "name": "SDL_SCANCODE_LANG2",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_LANG3": {
-              "doc": "Katakana.",
+              "doc": "Katakana",
               "name": "SDL_SCANCODE_LANG3",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_LANG4": {
-              "doc": "Hiragana.",
+              "doc": "Hiragana",
               "name": "SDL_SCANCODE_LANG4",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_LANG5": {
-              "doc": "Zenkaku/Hankaku.",
+              "doc": "Zenkaku/Hankaku",
               "name": "SDL_SCANCODE_LANG5",
               "kind": "var",
               "type": ""
@@ -30649,7 +30649,7 @@
               "type": ""
             },
             "SDL_SCANCODE_ALTERASE": {
-              "doc": "Erase-Eaze.",
+              "doc": "Erase-Eaze",
               "name": "SDL_SCANCODE_ALTERASE",
               "kind": "var",
               "type": ""
@@ -30661,7 +30661,7 @@
               "type": ""
             },
             "SDL_SCANCODE_CANCEL": {
-              "doc": "AC Cancel.",
+              "doc": "AC Cancel",
               "name": "SDL_SCANCODE_CANCEL",
               "kind": "var",
               "type": ""
@@ -31045,91 +31045,91 @@
               "type": ""
             },
             "SDL_SCANCODE_MODE": {
-              "doc": "I'm not sure if this is really not covered by any of the above, but since there's a special SDL_KMOD_MODE for it I'm adding it here.",
+              "doc": "I'm not sure if this is really not covered\n  by any of the above, but since there's a\n  special SDL_KMOD_MODE for it I'm adding it here",
               "name": "SDL_SCANCODE_MODE",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_SLEEP": {
-              "doc": "Sleep.",
+              "doc": "Sleep",
               "name": "SDL_SCANCODE_SLEEP",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_WAKE": {
-              "doc": "Wake.",
+              "doc": "Wake",
               "name": "SDL_SCANCODE_WAKE",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_CHANNEL_INCREMENT": {
-              "doc": "Channel Increment.",
+              "doc": "Channel Increment",
               "name": "SDL_SCANCODE_CHANNEL_INCREMENT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_CHANNEL_DECREMENT": {
-              "doc": "Channel Decrement.",
+              "doc": "Channel Decrement",
               "name": "SDL_SCANCODE_CHANNEL_DECREMENT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_PLAY": {
-              "doc": "Play.",
+              "doc": "Play",
               "name": "SDL_SCANCODE_MEDIA_PLAY",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_PAUSE": {
-              "doc": "Pause.",
+              "doc": "Pause",
               "name": "SDL_SCANCODE_MEDIA_PAUSE",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_RECORD": {
-              "doc": "Record.",
+              "doc": "Record",
               "name": "SDL_SCANCODE_MEDIA_RECORD",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_FAST_FORWARD": {
-              "doc": "Fast Forward.",
+              "doc": "Fast Forward",
               "name": "SDL_SCANCODE_MEDIA_FAST_FORWARD",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_REWIND": {
-              "doc": "Rewind.",
+              "doc": "Rewind",
               "name": "SDL_SCANCODE_MEDIA_REWIND",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_NEXT_TRACK": {
-              "doc": "Next Track.",
+              "doc": "Next Track",
               "name": "SDL_SCANCODE_MEDIA_NEXT_TRACK",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_PREVIOUS_TRACK": {
-              "doc": "Previous Track.",
+              "doc": "Previous Track",
               "name": "SDL_SCANCODE_MEDIA_PREVIOUS_TRACK",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_STOP": {
-              "doc": "Stop.",
+              "doc": "Stop",
               "name": "SDL_SCANCODE_MEDIA_STOP",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_EJECT": {
-              "doc": "Eject.",
+              "doc": "Eject",
               "name": "SDL_SCANCODE_MEDIA_EJECT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_MEDIA_PLAY_PAUSE": {
-              "doc": "Play / Pause.",
+              "doc": "Play / Pause",
               "name": "SDL_SCANCODE_MEDIA_PLAY_PAUSE",
               "kind": "var",
               "type": ""
@@ -31141,97 +31141,97 @@
               "type": ""
             },
             "SDL_SCANCODE_AC_NEW": {
-              "doc": "AC New.",
+              "doc": "AC New",
               "name": "SDL_SCANCODE_AC_NEW",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_OPEN": {
-              "doc": "AC Open.",
+              "doc": "AC Open",
               "name": "SDL_SCANCODE_AC_OPEN",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_CLOSE": {
-              "doc": "AC Close.",
+              "doc": "AC Close",
               "name": "SDL_SCANCODE_AC_CLOSE",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_EXIT": {
-              "doc": "AC Exit.",
+              "doc": "AC Exit",
               "name": "SDL_SCANCODE_AC_EXIT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_SAVE": {
-              "doc": "AC Save.",
+              "doc": "AC Save",
               "name": "SDL_SCANCODE_AC_SAVE",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_PRINT": {
-              "doc": "AC Print.",
+              "doc": "AC Print",
               "name": "SDL_SCANCODE_AC_PRINT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_PROPERTIES": {
-              "doc": "AC Properties.",
+              "doc": "AC Properties",
               "name": "SDL_SCANCODE_AC_PROPERTIES",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_SEARCH": {
-              "doc": "AC Search.",
+              "doc": "AC Search",
               "name": "SDL_SCANCODE_AC_SEARCH",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_HOME": {
-              "doc": "AC Home.",
+              "doc": "AC Home",
               "name": "SDL_SCANCODE_AC_HOME",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_BACK": {
-              "doc": "AC Back.",
+              "doc": "AC Back",
               "name": "SDL_SCANCODE_AC_BACK",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_FORWARD": {
-              "doc": "AC Forward.",
+              "doc": "AC Forward",
               "name": "SDL_SCANCODE_AC_FORWARD",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_STOP": {
-              "doc": "AC Stop.",
+              "doc": "AC Stop",
               "name": "SDL_SCANCODE_AC_STOP",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_REFRESH": {
-              "doc": "AC Refresh.",
+              "doc": "AC Refresh",
               "name": "SDL_SCANCODE_AC_REFRESH",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_AC_BOOKMARKS": {
-              "doc": "AC Bookmarks.",
+              "doc": "AC Bookmarks",
               "name": "SDL_SCANCODE_AC_BOOKMARKS",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_SOFTLEFT": {
-              "doc": "Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom left of the display.",
+              "doc": "Usually situated below the display on phones and\n                                      used as a multi-function feature key for selecting\n                                      a software defined function shown on the bottom left\n                                      of the display.",
               "name": "SDL_SCANCODE_SOFTLEFT",
               "kind": "var",
               "type": ""
             },
             "SDL_SCANCODE_SOFTRIGHT": {
-              "doc": "Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom right of the display.",
+              "doc": "Usually situated below the display on phones and\n                                       used as a multi-function feature key for selecting\n                                       a software defined function shown on the bottom right\n                                       of the display.",
               "name": "SDL_SCANCODE_SOFTRIGHT",
               "kind": "var",
               "type": ""
@@ -31292,49 +31292,49 @@
           "kind": "enum",
           "entries": {
             "SDL_SENSOR_INVALID": {
-              "doc": "Returned for an invalid sensor.",
+              "doc": "Returned for an invalid sensor",
               "name": "SDL_SENSOR_INVALID",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_UNKNOWN": {
-              "doc": "Unknown sensor type.",
+              "doc": "Unknown sensor type",
               "name": "SDL_SENSOR_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_ACCEL": {
-              "doc": "Accelerometer.",
+              "doc": "Accelerometer",
               "name": "SDL_SENSOR_ACCEL",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_GYRO": {
-              "doc": "Gyroscope.",
+              "doc": "Gyroscope",
               "name": "SDL_SENSOR_GYRO",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_ACCEL_L": {
-              "doc": "Accelerometer for left Joy-Con controller and Wii nunchuk.",
+              "doc": "Accelerometer for left Joy-Con controller and Wii nunchuk",
               "name": "SDL_SENSOR_ACCEL_L",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_GYRO_L": {
-              "doc": "Gyroscope for left Joy-Con controller.",
+              "doc": "Gyroscope for left Joy-Con controller",
               "name": "SDL_SENSOR_GYRO_L",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_ACCEL_R": {
-              "doc": "Accelerometer for right Joy-Con controller.",
+              "doc": "Accelerometer for right Joy-Con controller",
               "name": "SDL_SENSOR_ACCEL_R",
               "kind": "var",
               "type": ""
             },
             "SDL_SENSOR_GYRO_R": {
-              "doc": "Gyroscope for right Joy-Con controller.",
+              "doc": "Gyroscope for right Joy-Con controller",
               "name": "SDL_SENSOR_GYRO_R",
               "kind": "var",
               "type": ""

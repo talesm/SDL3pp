@@ -43,6 +43,8 @@
     "SDL_properties.h",
     "SDL_rect.h",
     "SDL_render.h",
+    "SDL_scancode.h",
+    "SDL_sensor.h",
     "SDL_system.h",
     "SDL_version.h"
   ],

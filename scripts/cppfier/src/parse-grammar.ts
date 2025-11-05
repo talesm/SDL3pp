@@ -265,7 +265,7 @@ function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
   for (const item of ctx.enumItem()) {
     const name = item.id().text;
     entries[name] = {
-      doc: parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? ''),
+      doc: parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
       name,
       kind: "var",
       type: "",
@@ -286,7 +286,7 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
 
   function addVar(item: StructVarContext) {
     const type = extractType(item.type());
-    const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+    const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     for (const name of item.id().map(id => id.text)) {
       entries[name] = {
         doc,
@@ -298,7 +298,7 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
   }
   function addCallback(item: StructCallbackContext) {
     const type = extractType(item.type());
-    const doc = parseDoc(item.doc()?.text ?? item.trailingDoc()?.text ?? '');
+    const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     const name = item.id().text;
     entries[name] = {
       doc,

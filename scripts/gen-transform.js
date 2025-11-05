@@ -5251,7 +5251,8 @@ const transform = {
         "Keycode": { kind: "forward" },
         "SDL_Scancode": {
           wrapper: { ordered: true }
-        }
+        },
+        "SDL_SCANCODE_A": { doc: "A" },
       }
     },
     "SDL_stdinc.h": {
