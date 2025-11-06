@@ -37,7 +37,7 @@
 397c419,422
 <     static_assert(false, "Not implemented");
 ---
->     OwnArray<std::byte> data = Read(exitcode);
+>     StringResult data = Read(exitcode);
 >     if (data.empty()) return {};
 >     size_t sz = data.size() / sizeof(T);
 >     return OwnArray{static_cast<T*>(data.release()), sz};
