@@ -2436,6 +2436,7 @@ using AssertionHandler = SDL_AssertionHandler;
  *               assert at any time.
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =

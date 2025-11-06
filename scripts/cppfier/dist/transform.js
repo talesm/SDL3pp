@@ -360,7 +360,7 @@ function expandTypes(sourceEntries, file, context) {
                     name: callbackName,
                     type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
                     doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
-                    parsedDoc: parsedDoc ? [...parsedDoc, `\n@sa ${name}`] : undefined,
+                    parsedDoc: removeTagFromGroup(addToTagGroup(parsedDoc, "@sa", name), "@param userdata"),
                     ...(file.transform[callbackName] ?? {}),
                     before: undefined,
                     after: undefined,
@@ -2136,8 +2136,9 @@ function transformParsedDoc(doc, context) {
         if (Array.isArray(docStr))
             return docStr.map(transformDocItem);
         const r = { ...docStr };
+        r.content = transformDocStr(r.content);
         if (r.tag)
-            r.content = transformDocStr(r.content);
+            r.tag = r.tag.replace('\\', '@');
         return r;
     }
     function transformDocStr(docStr) {
@@ -2205,12 +2206,60 @@ function resolveParsedDocRefs(doc, context) {
             return resolveDocRefStr(item);
         if (Array.isArray(item))
             return item.map(resolveDocRefItem);
-        const r = { ...item };
-        if (r.tag)
-            r.content = resolveDocRefStr(r.content);
-        return r;
+        return { ...item, content: resolveDocRefStr(item.content) };
     }
     function resolveDocRefStr(docStr) {
         return docStr.replaceAll(context.referenceCandidate, ref => context.getName(ref));
     }
+}
+function addToTagGroup(doc, tag, content) {
+    if (!doc)
+        return;
+    for (let i = doc.length - 1; i >= 0; i--) {
+        const item = doc[i];
+        if (typeof item !== "object")
+            continue;
+        if (Array.isArray(item)) {
+            for (let j = item.length - 1; j >= 0; j--) {
+                const subItem = item[j];
+                if (matchTag(subItem.tag, tag)) {
+                    item.splice(j, 1, subItem, { tag, content });
+                    return doc;
+                }
+            }
+        }
+        else if (matchTag(item.tag, tag)) {
+            doc.splice(i, 1, item, { tag, content });
+            return doc;
+        }
+    }
+    doc.push({ tag, content });
+    return doc;
+}
+function removeTagFromGroup(doc, tag, count = 0) {
+    if (!doc)
+        return;
+    const partialMatchTag = tag + ' ';
+    for (let i = 0; i < doc.length; i++) {
+        const item = doc[i];
+        if (typeof item !== "object")
+            continue;
+        if (Array.isArray(item)) {
+            for (let j = 0; j < item.length; j++) {
+                const subItem = item[j];
+                if (matchTag(subItem.tag, tag) && (count--) === 0) {
+                    item.splice(j, 1);
+                    return doc;
+                }
+            }
+        }
+        else if (matchTag(item.tag, tag) && (count--) === 0) {
+            doc.splice(i, 1);
+            return doc;
+        }
+    }
+    return doc;
+}
+function matchTag(item, tag) {
+    return tag === item || item.startsWith(tag + ' ');
 }

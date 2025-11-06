@@ -42,7 +42,7 @@ TITLE_DELIM: '#'+;
 DEFGROUP_TAG: [\\@]'defgroup';
 RETURNS_TAG: [\\@]'returns';
 PARAM_TAG: [\\@]'param';
-THREAD_SAFETY_TAG: [\\@]'thread_safety';
+THREAD_SAFETY_TAG: [\\@]'threadsafety';
 SA_TAG: [\\@]'sa';
 SINCE_TAG: [\\@]'since';
 POST_TAG: [\\@]'post';

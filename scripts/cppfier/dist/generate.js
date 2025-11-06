@@ -71,11 +71,6 @@ function generateFile(targetFile, config) {
                 doGenerateEntries(entry.overload);
         }
     }
-    /**
-     *
-     * @param {string}  docStr
-     * @param {string=} prefix
-     */
     function generateDocString(docStr, prefix) {
         if (!docStr)
             return '';
@@ -88,6 +83,51 @@ function generateFile(targetFile, config) {
             .map(l => l ? `${prefix} * ${l}` : `${prefix} *`)
             .join('\n');
         return `\n${prefix}/**\n${docStr}\n${prefix} */`;
+    }
+    function generateParsedDocString(doc, prefix) {
+        if (!doc?.length)
+            return undefined;
+        prefix = (prefix ?? '');
+        if (doc.length === 1) {
+            const docStr = doc[0];
+            if (typeof docStr === 'string' && docStr.length < (80 - 4 - prefix.length)) {
+                return `\n${prefix} /// ${docStr}`;
+            }
+        }
+        const internalPrefix = prefix + " * ";
+        const maxLength = 80 - internalPrefix.length;
+        const docStr = doc.map(generateDocItem).join(`\n${prefix} *\n${internalPrefix}`);
+        return `\n${prefix}/**\n${internalPrefix}${docStr}\n${prefix} */`;
+        function generateDocItem(item) {
+            if (typeof item === 'string')
+                return generateDocStringItem(item, internalPrefix, maxLength).trimEnd();
+            if (Array.isArray(item))
+                return item.map(generateDocItem).join('\n' + internalPrefix);
+            if (!item.tag)
+                return item.content.replaceAll('\n', '\n' + internalPrefix);
+            const tagLen = item.tag.length + 1;
+            const content = generateDocStringItem(item.content, internalPrefix + ' '.repeat(tagLen), maxLength - tagLen);
+            return `${item.tag} ${content}`;
+        }
+    }
+    function generateDocStringItem(docStr, prefix, maxLength) {
+        if (docStr.length <= maxLength)
+            return docStr;
+        const result = [];
+        while (docStr.length > maxLength) {
+            let cutPoint = docStr.lastIndexOf(' ', maxLength);
+            if (cutPoint === -1) {
+                cutPoint = docStr.indexOf(' ');
+                if (cutPoint === -1)
+                    break;
+            }
+            result.push(docStr.slice(0, cutPoint));
+            docStr = docStr.slice(cutPoint + 1);
+        }
+        docStr = docStr.trim();
+        if (docStr)
+            result.push(docStr);
+        return result.join('\n' + prefix);
     }
     function reflow(text, maxLength) {
         return text.split(/^```/m)
@@ -143,7 +183,7 @@ function generateFile(targetFile, config) {
     }
     function generateEntry(entry, prefix) {
         prefix = prefix ?? '';
-        const doc = generateDocString(entry.doc, prefix) + "\n";
+        const doc = (generateParsedDocString(entry.parsedDoc, prefix) ?? generateDocString(entry.doc, prefix)) + "\n";
         const template = generateTemplateSignature(entry.template, prefix);
         const version = entry.since;
         const accessMod = entry.hints?.changeAccess ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n` : '';

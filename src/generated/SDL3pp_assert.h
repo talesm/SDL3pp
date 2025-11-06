@@ -398,13 +398,13 @@ using AssertionHandler = SDL_AssertionHandler;
  *
  * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
- * @param userdata what was passed as `userdata` to SetAssertionHandler().
  * @returns an AssertState value indicating how to handle the failure.
  *
  * @threadsafety This callback may be called from any thread that triggers an
  *               assert at any time.
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =

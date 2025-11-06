@@ -1,5 +1,5 @@
 import { generateCallParameters } from "./generate";
-import { Api, ApiEntries, ApiEntry, ApiEntryBase, ApiEntryKind, ApiEntryTransform, ApiEntryTransformMap, ApiFile, ApiFileTransform, ApiParameter, ApiParameters, ApiTransform, ApiType, Dict, EntryHint, ParsedDoc, ParsedDocContent, QuickTransform, ReplacementRule, SignatureTransform, StringMap, VersionTag } from "./types";
+import { Api, ApiEntries, ApiEntry, ApiEntryBase, ApiEntryKind, ApiEntryTransform, ApiEntryTransformMap, ApiFile, ApiFileTransform, ApiParameter, ApiParameters, ApiTransform, ApiType, Dict, EntryHint, ParsedDoc, ParsedDocContent, QuickTransform, ReplacementRule, SignatureTransform, StringMap, TaggedContent, VersionTag } from "./types";
 import { system, combineObject, looksLikeFreeFunction, deepClone } from "./utils";
 
 export interface TransformConfig {
@@ -411,7 +411,7 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
           name: callbackName,
           type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
           doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
-          parsedDoc: parsedDoc ? [...parsedDoc, `\n@sa ${name}`] : undefined,
+          parsedDoc: removeTagFromGroup(addToTagGroup(parsedDoc, "@sa", name), "@param userdata"),
           ...(file.transform[callbackName] ?? {}),
           before: undefined,
           after: undefined,
@@ -2132,7 +2132,8 @@ function transformParsedDoc(doc: ParsedDoc, context: ApiContext): ParsedDoc {
     if (typeof docStr === 'string') return transformDocStr(docStr);
     if (Array.isArray(docStr)) return <ParsedDocContent>docStr.map(transformDocItem);
     const r = { ...docStr };
-    if (r.tag) r.content = transformDocStr(r.content);
+    r.content = transformDocStr(r.content);
+    if (r.tag) r.tag = r.tag.replace('\\', '@');
     return r;
   }
   function transformDocStr(docStr: string) {
@@ -2200,12 +2201,61 @@ function resolveParsedDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {
   function resolveDocRefItem(item: ParsedDocContent): ParsedDocContent {
     if (typeof item === 'string') return resolveDocRefStr(item);
     if (Array.isArray(item)) return <ParsedDocContent>item.map(resolveDocRefItem);
-    const r = { ...item };
-    if (r.tag) r.content = resolveDocRefStr(r.content);
-    return r;
+    return { ...item, content: resolveDocRefStr(item.content) };
   }
 
   function resolveDocRefStr(docStr: string) {
     return docStr.replaceAll(context.referenceCandidate, ref => context.getName(ref));
   }
 }
+
+function addToTagGroup(doc: ParsedDoc, tag: string, content: string) {
+  if (!doc) return;
+  for (let i = doc.length - 1; i >= 0; i--) {
+    const item = doc[i];
+    if (typeof item !== "object") continue;
+    if (Array.isArray(item)) {
+      for (let j = item.length - 1; j >= 0; j--) {
+        const subItem = item[j];
+        if (matchTag(subItem.tag, tag)) {
+          item.splice(j, 1, subItem, { tag, content });
+          return doc;
+        }
+      }
+    } else if (matchTag(item.tag, tag)) {
+      doc.splice(i, 1, item, { tag, content });
+      return doc;
+    }
+  }
+  doc.push({ tag, content });
+  return doc;
+}
+
+function removeTagFromGroup(doc: ParsedDoc, tag: string, count: number = 0) {
+  if (!doc) return;
+  const partialMatchTag = tag + ' ';
+  for (let i = 0; i < doc.length; i++) {
+    const item = doc[i];
+    if (typeof item !== "object") continue;
+    if (Array.isArray(item)) {
+      for (let j = 0; j < item.length; j++) {
+        const subItem = item[j];
+        if (matchTag(subItem.tag, tag) && (count--) === 0) {
+          item.splice(j, 1);
+          return doc;
+        }
+      }
+    } else if (matchTag(item.tag, tag) && (count--) === 0) {
+      doc.splice(i, 1);
+      return doc;
+    }
+  }
+  return doc;
+
+}
+
+function matchTag(item: string, tag: string) {
+  return tag === item || item.startsWith(tag + ' ');
+}
+
+

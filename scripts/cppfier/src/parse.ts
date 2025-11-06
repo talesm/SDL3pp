@@ -204,7 +204,7 @@ function parseContent(name: string, content: string) {
   // Use the entry point for listeners
   ParseTreeWalker.DEFAULT.walk(listener, tree);
   const api = listener.api;
-  if (name < 'SDL_b') {
+  if (name === 'SDL_assert.h') {
     api.parsedDoc = parseDoc(name, api.doc ?? "");
     for (const apiEntry of Object.values(api.entries)) {
       apiEntry.parsedDoc = parseDoc(`${name}@${apiEntry.name}`, apiEntry.doc);
