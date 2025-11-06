@@ -39803,7 +39803,7 @@ public:
   template<class T>
   OwnArray<T> ReadAs(int* exitcode = nullptr)
   {
-    OwnArray<std::byte> data = Read(exitcode);
+    StringResult data = Read(exitcode);
     if (data.empty()) return {};
     size_t sz = data.size() / sizeof(T);
     return OwnArray{static_cast<T*>(data.release()), sz};
