@@ -234,6 +234,7 @@ export type ParsedDoc = ParsedDocContent[];
 export type ParsedDocContent = string | ListContent | StaticContent | TaggedContent;
 export type ListContent = TaggedContent[];
 export interface StaticContent {
+    tag?: undefined;
     content: string;
 }
 export interface TaggedContent {

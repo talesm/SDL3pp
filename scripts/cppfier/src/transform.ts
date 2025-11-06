@@ -1,5 +1,5 @@
 import { generateCallParameters } from "./generate";
-import { Api, ApiEntries, ApiEntry, ApiEntryBase, ApiEntryKind, ApiEntryTransform, ApiEntryTransformMap, ApiFile, ApiFileTransform, ApiParameter, ApiParameters, ApiTransform, ApiType, Dict, EntryHint, QuickTransform, ReplacementRule, SignatureTransform, StringMap, VersionTag } from "./types";
+import { Api, ApiEntries, ApiEntry, ApiEntryBase, ApiEntryKind, ApiEntryTransform, ApiEntryTransformMap, ApiFile, ApiFileTransform, ApiParameter, ApiParameters, ApiTransform, ApiType, Dict, EntryHint, ParsedDoc, ParsedDocContent, QuickTransform, ReplacementRule, SignatureTransform, StringMap, VersionTag } from "./types";
 import { system, combineObject, looksLikeFreeFunction, deepClone } from "./utils";
 
 export interface TransformConfig {
@@ -72,6 +72,7 @@ export function transformApi(config: TransformConfig) {
   // Step 4: Transform docs
   for (const file of files) {
     if (file.doc) file.doc = resolveDocRefs(file.doc, context);
+    if (file.parsedDoc) file.parsedDoc = resolveParsedDocRefs(file.parsedDoc, context);
     if (file.entries) transformEntriesDocRefs(file.entries, context);
   }
 
@@ -404,11 +405,13 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
         const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
         const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
         typeParams.splice(i, 1);
+        const parsedDoc = transformParsedDoc(sourceEntry.parsedDoc ?? undefined, context);
         const callbackEntry: ApiEntryTransform = {
           kind: "alias",
           name: callbackName,
           type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
           doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
+          parsedDoc: parsedDoc ? [...parsedDoc, `\n@sa ${name}`] : undefined,
           ...(file.transform[callbackName] ?? {}),
           before: undefined,
           after: undefined,
@@ -988,6 +991,7 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
       combineObject(freeFunction, freeTransformEntry);
       freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), targetName);
       freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
+      if (freeFunction.parsedDoc) freeFunction.parsedDoc = transformParsedDoc(freeFunction.parsedDoc, context);
       const fileLevelEntry: ApiEntryTransform = file.transform[sourceName] ?? { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
       file.transform[sourceName] = fileLevelEntry;
       const fileLevelName = fileLevelEntry.name ?? transformName(sourceName, context);
@@ -1040,6 +1044,9 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
     }
 
     targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
+    if (sourceEntry.parsedDoc) {
+      targetEntry.parsedDoc = [...transformParsedDoc(sourceEntry.parsedDoc, context), '@cat resource'];
+    }
     targetEntry.entries = {
       "m_resource": {
         kind: "var",
@@ -2036,6 +2043,9 @@ function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc, context);
   }
+  if (sourceEntry.parsedDoc) {
+    targetEntry.parsedDoc = transformParsedDoc(targetEntry.parsedDoc, context);
+  }
   const sourceName = sourceEntry.name;
   targetEntry.sourceName = sourceName;
   switch (sourceEntry.kind) {
@@ -2115,6 +2125,23 @@ function transformDoc(docStr: string, context: ApiContext) {
     .replaceAll("NULL", "nullptr");
 }
 
+function transformParsedDoc(doc: ParsedDoc, context: ApiContext): ParsedDoc {
+  return doc?.map(transformDocItem);
+
+  function transformDocItem(docStr: ParsedDocContent): ParsedDocContent {
+    if (typeof docStr === 'string') return transformDocStr(docStr);
+    if (Array.isArray(docStr)) return <ParsedDocContent>docStr.map(transformDocItem);
+    const r = { ...docStr };
+    if (r.tag) r.content = transformDocStr(r.content);
+    return r;
+  }
+  function transformDocStr(docStr: string) {
+    return transformString(docStr, context.docRules)
+      .replace(/\\(\w+)/g, '@$1')
+      .replaceAll("NULL", "nullptr");
+  }
+}
+
 function transformIncludeName(name: string, context: ApiContext) {
   return transformString(name, context.renameRules);
 }
@@ -2144,6 +2171,7 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
       if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
       entry.doc = resolveDocRefs(entry.doc, context);
     }
+    if (entry.parsedDoc) entry.parsedDoc = resolveParsedDocRefs(entry.parsedDoc, context);
     if (entry.entries) transformEntriesDocRefs(entry.entries, context);
     if (entry.overload) transformEntryDoc(entry.overload);
   }
@@ -2164,4 +2192,20 @@ function resolveVersionDoc(doc: string, context: ApiContext) {
 function resolveDocRefs(doc: string, context: ApiContext) {
   if (!doc) return "";
   return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
+}
+
+function resolveParsedDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {
+  return doc?.map(resolveDocRefItem);
+
+  function resolveDocRefItem(item: ParsedDocContent): ParsedDocContent {
+    if (typeof item === 'string') return resolveDocRefStr(item);
+    if (Array.isArray(item)) return <ParsedDocContent>item.map(resolveDocRefItem);
+    const r = { ...item };
+    if (r.tag) r.content = resolveDocRefStr(r.content);
+    return r;
+  }
+
+  function resolveDocRefStr(docStr: string) {
+    return docStr.replaceAll(context.referenceCandidate, ref => context.getName(ref));
+  }
 }
