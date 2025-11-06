@@ -781,13 +781,12 @@ struct AsyncIOQueueRef : AsyncIOQueue
  * The `mode` string understands the following values:
  *
  * - "r": Open a file for reading only. It must exist.
- * - "w": Open a file for writing only. It will create missing files or
- *   truncate existing ones.
- * - "r+": Open a file for update both reading and writing. The file must
- *   exist.
- * - "w+": Create an empty file for both reading and writing. If a file with
- *   the same name already exists its content is erased and the file is
- *   treated as a new empty file.
+ * - "w": Open a file for writing only. It will create missing files or truncate
+ *   existing ones.
+ * - "r+": Open a file for update both reading and writing. The file must exist.
+ * - "w+": Create an empty file for both reading and writing. If a file with the
+ *   same name already exists its content is erased and the file is treated as a
+ *   new empty file.
  *
  * There is no "b" mode, as there is only "binary" style I/O, and no "a" mode
  * for appending, since you specify the position when starting a task.

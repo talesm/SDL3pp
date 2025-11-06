@@ -1928,6 +1928,7 @@ function transformHierarchy(targetEntries, context) {
             if (!entry.since)
                 entry.since = resolveVersionDoc(entry.doc, context);
             delete entry.doc;
+            delete entry.parsedDoc;
         }
     }
     function makeMemberName(key, template) {
@@ -2008,6 +2009,11 @@ function prepareForTypeInsert(entry, name, typeName) {
         if (entry.doc)
             entry.doc = entry.doc.replace(/@returns?/, "@post");
         entry.type = "";
+        if (entry.parsedDoc) {
+            const r = getTagInGroup(entry.parsedDoc, "@returns");
+            if (r)
+                r.tag = "@post";
+        }
         return;
     }
     typeName = normalizeTypeName(typeName);
@@ -2020,6 +2026,8 @@ function prepareForTypeInsert(entry, name, typeName) {
         parameters.shift();
         if (entry.doc)
             entry.doc = removeFirstParam(entry);
+        if (entry.parsedDoc)
+            removeTagFromGroup(entry.parsedDoc, "@param");
         if (type.startsWith("const "))
             entry.immutable = true;
     }
@@ -2058,18 +2066,37 @@ function transformEntry(sourceEntry, context) {
             targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
             targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
             checkSignatureRules(targetEntry, context);
-            const m = /@returns (?:(.*) on success|(an? valid [^,]+), or (?:\w+) on failure)/.exec(targetEntry.doc ?? "");
-            if (context.enableException && m) {
-                targetEntry.hints = { mayFail: true };
-                const returnIndexBegin = m.index;
-                const returnIndexEnd = targetEntry.doc.indexOf("\n\n", returnIndexBegin);
-                const throwString = "@throws Error on failure.";
-                if (sourceEntry.type === "bool") {
-                    targetEntry.type = "void";
-                    targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
+            if (context.enableException) {
+                const r = getTagInGroup(targetEntry.parsedDoc, "@returns");
+                if (r) {
+                    const m = r.content.match(/(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/);
+                    if (m) {
+                        targetEntry.hints = { mayFail: true };
+                        if (sourceEntry.type === "bool") {
+                            targetEntry.type = "void";
+                            r.content = "Error on failure.";
+                            r.tag = "@throws";
+                        }
+                        else {
+                            addToTagGroup(targetEntry.parsedDoc, "@returns", "Error on failure.");
+                            r.content = `${m[1] || m[2]} on success.`;
+                            getTagInGroup(targetEntry.parsedDoc, "@returns", 1).tag = "@throws";
+                        }
+                    }
                 }
-                else {
-                    targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}@returns ${m[1] || m[2]} on success.\n${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
+                const throwString = "@throws Error on failure.";
+                const m = /@returns (?:(.*) on success|(an? valid [^,]+), or (?:\w+) on failure)/.exec(targetEntry.doc ?? "");
+                if (m) {
+                    targetEntry.hints = { mayFail: true };
+                    const returnIndexBegin = m.index;
+                    const returnIndexEnd = targetEntry.doc.indexOf("\n\n", returnIndexBegin);
+                    if (sourceEntry.type === "bool") {
+                        targetEntry.type = "void";
+                        targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
+                    }
+                    else {
+                        targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}@returns ${m[1] || m[2]} on success.\n${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
+                    }
                 }
             }
             break;
@@ -2239,7 +2266,24 @@ function addToTagGroup(doc, tag, content) {
 function removeTagFromGroup(doc, tag, count = 0) {
     if (!doc)
         return;
-    const partialMatchTag = tag + ' ';
+    return removeItemFromGroup(doc, findTagInGroup(doc, tag, count));
+}
+function removeItemFromGroup(doc, r) {
+    if (!doc)
+        return;
+    if (Array.isArray(r)) {
+        const l = (doc[r[0]]);
+        l.splice(r[1], 1);
+    }
+    else if (r !== -1) {
+        doc.splice(r, 1);
+    }
+    return doc;
+}
+function findTagInGroup(doc, tagOrFunction, count = 0) {
+    if (!doc)
+        return -1;
+    const test = (typeof tagOrFunction === "function") ? tagOrFunction : (item) => matchTag(item, tagOrFunction);
     for (let i = 0; i < doc.length; i++) {
         const item = doc[i];
         if (typeof item !== "object")
@@ -2247,19 +2291,28 @@ function removeTagFromGroup(doc, tag, count = 0) {
         if (Array.isArray(item)) {
             for (let j = 0; j < item.length; j++) {
                 const subItem = item[j];
-                if (matchTag(subItem.tag, tag) && (count--) === 0) {
-                    item.splice(j, 1);
-                    return doc;
-                }
+                if (test(subItem.tag) && (count--) === 0)
+                    return [i, j];
             }
         }
-        else if (matchTag(item.tag, tag) && (count--) === 0) {
-            doc.splice(i, 1);
-            return doc;
-        }
+        else if (test(item.tag) && (count--) === 0)
+            return i;
     }
-    return doc;
+    return -1;
+}
+function getItemInGroup(doc, index) {
+    if (Array.isArray(index)) {
+        const l = (doc?.[index[0]]);
+        return l?.[index[1]];
+    }
+    else {
+        return doc?.[index];
+    }
+}
+function getTagInGroup(doc, tagOrFunction, count = 0) {
+    const r = findTagInGroup(doc, tagOrFunction, count);
+    return getItemInGroup(doc, r);
 }
 function matchTag(item, tag) {
-    return tag === item || item.startsWith(tag + ' ');
+    return tag === item || item?.startsWith(tag + ' ');
 }
