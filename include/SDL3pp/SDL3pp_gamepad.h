@@ -483,8 +483,6 @@ public:
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
    *
-   *                Gamepad.Gamepad().
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.Gamepad
@@ -527,7 +525,6 @@ public:
    * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
    *   simple trigger rumble
    *
-   *                Gamepad.Gamepad().
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -538,7 +535,6 @@ public:
   /**
    * Get the instance ID of an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the instance ID of the specified gamepad on success.
    * @throws Error on failure.
    *
@@ -549,7 +545,6 @@ public:
   /**
    * Get the implementation-dependent name for an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the implementation dependent name for the gamepad, or nullptr if
    *          there is no name or the identifier passed is invalid.
    *
@@ -562,7 +557,6 @@ public:
   /**
    * Get the implementation-dependent path for an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the implementation dependent path for the gamepad, or nullptr if
    *          there is no path or the identifier passed is invalid.
    *
@@ -728,7 +722,6 @@ public:
   /**
    * Check if a gamepad has been opened and is currently connected.
    *
-   *                Gamepad.Gamepad().
    * @returns true if the gamepad has been opened and is currently connected, or
    *          false if not.
    *

@@ -524,41 +524,39 @@
 >   }
 5905d6015
 <    * @param cd The character set conversion handle.
-5937d6046
-<    *           IConv.IConv().
-6057c6166
+6056c6166
 < inline size_t iconv(IConv cd,
 ---
 > inline size_t iconv(IConvRaw cd,
-6095,6097d6203
+6094,6096d6203
 <  * The returned string is owned by the caller, and should be passed to
 <  * free when no longer needed.
 <  *
-6102d6207
+6101d6207
 <  * @param inbytesleft the size of the input string _in bytes_.
-6115c6220,6221
+6114c6220,6221
 <   return SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes());
 ---
 >   return OwnArray<char>{
 >     SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes())};
-6132c6238
+6131c6238
 <   return SDL_iconv_utf8_locale(S);
 ---
 >   return iconv_string("", "UTF-8", S);
-6149c6255,6256
+6148c6255,6256
 <   return SDL_iconv_utf8_ucs2(S);
 ---
 >   auto data = SDL_iconv_string("UCS-2", "UTF-8", S.data(), S.size());
 >   return OwnArray<Uint16>(reinterpret_cast<Uint16*>(data));
-6166c6273,6274
+6165c6273,6274
 <   return SDL_iconv_utf8_ucs4(S);
 ---
 >   auto data = SDL_iconv_string("UCS-4", "UTF-8", S.data(), S.size());
 >   return OwnArray<Uint32>(reinterpret_cast<Uint32*>(data));
-6183c6291
+6182c6291
 <   return SDL_iconv_wchar_utf8(S);
 ---
 >   return iconv_string("UTF-8", "WCHAR_T", S);
-6247a6356,6357
+6246a6356,6357
 > 
 > inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }

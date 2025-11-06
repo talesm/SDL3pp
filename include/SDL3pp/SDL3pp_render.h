@@ -3066,7 +3066,6 @@ public:
    * You must use Texture.Unlock() to unlock the pixels and apply any
    * changes.
    *
-   *                `TEXTUREACCESS_STREAMING`.
    * @param rect an Rect structure representing the area to lock for access;
    *             nullptr to lock the entire texture.
    * @param pixels this is filled in with a pointer to the locked pixels,
@@ -3102,7 +3101,6 @@ public:
    * The returned surface is freed internally after calling Texture.Unlock()
    * or Texture.Destroy(). The caller should not free it.
    *
-   *                `TEXTUREACCESS_STREAMING`.
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
    * @returns a surface of size **rect**. Don't assume any specific pixel

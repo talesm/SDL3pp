@@ -351,7 +351,6 @@ struct MessageBox : MessageBoxRaw
    * concern, check the return value from this function and fall back to writing
    * to stderr if you can.
    *
-   *                       other options.
    * @param buttonid the pointer to which user id of hit button should be
    *                 copied.
    * @throws Error on failure.

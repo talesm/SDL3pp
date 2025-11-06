@@ -318,7 +318,6 @@ public:
   /**
    * Detach a virtual joystick.
    *
-   *                    AttachVirtualJoystick().
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.

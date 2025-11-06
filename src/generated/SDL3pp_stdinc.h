@@ -5934,7 +5934,6 @@ public:
    * - outbytesleft will be set to the number of bytes left in the output
    *   buffer.
    *
-   *           IConv.IConv().
    * @param inbuf Address of variable that points to the first character of the
    *              input sequence.
    * @param inbytesleft The number of bytes in the input buffer.

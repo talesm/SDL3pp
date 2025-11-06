@@ -4054,7 +4054,6 @@ public:
   /**
    * Create a text object from UTF-8 text and a text engine.
    *
-   *               nullptr.
    * @param font the font to render with.
    * @param text the text to use, in UTF-8 encoding.
    * @returns a Text object or nullptr on failure; call GetError() for more

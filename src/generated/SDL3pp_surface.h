@@ -1028,7 +1028,6 @@ public:
    * When `surface` is the destination of a blit, only the area within the clip
    * rectangle is drawn into.
    *
-   *                clipped.
    * @param rect an Rect structure filled in with the clipping rectangle for
    *             the surface.
    * @throws Error on failure.

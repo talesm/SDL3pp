@@ -987,8 +987,6 @@ public:
    * hardware, so that applications don't drop the last buffer of data they
    * supplied if terminating immediately afterwards.
    *
-   *              AudioDevice.AudioDevice().
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1437,7 +1435,6 @@ public:
    * Destroying the returned stream with AudioStream.Destroy will also close
    * the audio device associated with this stream.
    *
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
    * @param spec the audio stream's data format. Can be nullptr.
    * @param callback a callback where the app will provide new data for
    *                 playback, or receive new data for recording. Can be

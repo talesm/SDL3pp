@@ -2007,7 +2007,7 @@ function prepareForTypeInsert(entry: ApiEntry, name: string, typeName: string) {
   const type = parameter.type ?? "";
   if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static && entry.sourceName) {
     parameters.shift();
-    if (entry.doc) entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
+    if (entry.doc) entry.doc = removeFirstParam(entry);
     if (type.startsWith("const ")) entry.immutable = true;
   } else if (entry.static !== false) {
     entry.static = !entry.immutable;
@@ -2015,6 +2015,10 @@ function prepareForTypeInsert(entry: ApiEntry, name: string, typeName: string) {
     entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
   }
 
+}
+
+function removeFirstParam(entry: ApiEntry): string {
+  return entry.doc.replace(/@param \w+([^\n]|\n )*\n/, "");
 }
 
 function normalizeTypeName(typeName: string) {

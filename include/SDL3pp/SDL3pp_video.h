@@ -1781,7 +1781,6 @@ public:
    * This function also returns false if getting the information is not
    * supported.
    *
-   *               (decorations) from.
    * @param top pointer to variable for storing the size of the top border;
    * nullptr is permitted.
    * @param left pointer to variable for storing the size of the left border;
@@ -2134,7 +2133,6 @@ public:
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   *               applied.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.

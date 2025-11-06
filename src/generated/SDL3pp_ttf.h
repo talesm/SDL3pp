@@ -4090,7 +4090,6 @@ public:
   /**
    * Create a text object from UTF-8 text and a text engine.
    *
-   *               nullptr.
    * @param font the font to render with.
    * @param text the text to use, in UTF-8 encoding.
    * @param length the length of the text, in bytes, or 0 for null terminated

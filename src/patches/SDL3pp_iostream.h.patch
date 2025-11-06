@@ -35,9 +35,7 @@
 <    *          information.
 ---
 >    * @throws Error on failure.
-532d528
-<    *                current offset.
-543a540,561
+542a540,561
 >   /**
 >    * Read from a data source.
 >    *
@@ -60,7 +58,7 @@
 >    * @sa IOStream.Write
 >    * @sa IOStream.GetStatus
 >    */
-546c564,576
+545c564,576
 <     static_assert(false, "Not implemented");
 ---
 >     Sint64 pos = Tell();
@@ -76,17 +74,17 @@
 >     auto actualSize = Read(result);
 >     if (actualSize < size) result.resize(actualSize);
 >     return result;
-560,561c590
+559,560c590
 <    * @param ptr a pointer to a buffer to read data into.
 <    * @param size the number of bytes to read from the data source.
 ---
 >    * @param buf a pointer to a buffer to read data into.
-588,589c617
+587,588c617
 <    * @param ptr a pointer to a buffer containing data to write.
 <    * @param size the number of bytes to write.
 ---
 >    * @param buf the bytes to write to
-605c633,639
+604c633,639
 <   /// @cat formatted-string
 ---
 >   /**
@@ -96,11 +94,11 @@
 >    * @param args the arguments to be formatted
 >    * @cat formatted-string
 >    */
-608c642
+607c642
 <     static_assert(false, "Not implemented");
 ---
 >     return Write(std::vformat(fmt, std::make_format_args(args...)));
-611c645,651
+610c645,651
 <   /// @cat formatted-string
 ---
 >   /**
@@ -110,16 +108,16 @@
 >    * @param args the arguments to be formatted
 >    * @cat formatted-string
 >    */
-614c654,656
+613c654,656
 <     static_assert(false, "Not implemented");
 ---
 >     std::string result =
 >       std::vformat(fmt, std::make_format_args(args...)) + "\n";
 >     return Write(result);
-619a662,663
+618a662,663
 >    * @warning this is not typesafe! Prefer using print() and println()
 >    *
-637c681,688
+636c681,688
 <     return SDL_IOprintf(m_resource, fmt, ...);
 ---
 >     va_list ap;
@@ -130,16 +128,16 @@
 >     va_end(ap);
 > 
 >     return result;
-642a694,695
+641a694,695
 >    * @warning this is not typesafe! Prefer using print() and println()
 >    *
-681,682c734,735
+680,681c734,735
 <    * convenience. This extra byte is not included in the value reported via
 <    * `datasize`.
 ---
 >    * convenience. This extra byte is not included in the value reported on
 >    * the returned string.
-684,691c737,738
+683,690c737,738
 <    * The data should be freed with free().
 <    *
 <    * @param datasize a pointer filled in with the number of bytes read, may be
@@ -151,7 +149,7 @@
 ---
 >    * @returns the data in bytes
 >    * @throws Error on failure.
-701a749,765
+700a749,765
 >   /**
 >    * Load all the data from an SDL data stream.
 >    *
@@ -169,87 +167,87 @@
 >    * @sa LoadFile
 >    * @sa IOStream.SaveFile
 >    */
-705c769,771
+704c769,771
 <     static_assert(false, "Not implemented");
 ---
 >     size_t datasize = 0;
 >     auto data = static_cast<T*>(SDL_LoadFile_IO(get(), &datasize, false));
 >     return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
-713,715d778
+712,714d778
 <    * @param datasize the number of bytes to be written.
 <    * @param closeio if true, calls IOStream.Close() on `src` before returning,
 <    * even in the case of an error.
-735,736c798
+734,735c798
 <    * @param src the IOStream to read from.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-753,754c815
+752,753c815
 <    * @param src the IOStream to read from.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-775,776c836
+774,775c836
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-797,798c857
+796,797c857
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-819,820c878
+818,819c878
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-841,842c899
+840,841c899
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-863,864c920
+862,863c920
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-885,886c941
+884,885c941
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-907,908c962
+906,907c962
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-929,930c983
+928,929c983
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-951,952c1004
+950,951c1004
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-973,974c1025
+972,973c1025
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-995,996c1046
+994,995c1046
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-1017,1018c1067
+1016,1017c1067
 <    * @param src the stream from which to read data.
 <    * @param value a pointer filled in with the data read.
 ---
 >    * @returns the data read on success.
-1027c1076,1094
+1026c1076,1094
 <   std::optional<Uint8> TryReadU8() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -271,7 +269,7 @@
 >     if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
 >     return {};
 >   }
-1029c1096,1114
+1028c1096,1114
 <   std::optional<Sint8> TryReadS8() { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -293,7 +291,7 @@
 >     if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
 >     return {};
 >   }
-1030a1116,1133
+1029a1116,1133
 >   /**
 >    * Use this function to read 16 bits of little-endian data from an
 >    * IOStreamRef and return in native format.
@@ -312,12 +310,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1033c1136,1137
+1032c1136,1137
 <     static_assert(false, "Not implemented");
 ---
 >     if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
 >     return {};
-1035a1140,1157
+1034a1140,1157
 >   /**
 >    * Use this function to read 16 bits of little-endian data from an
 >    * IOStreamRef and return in native format.
@@ -336,12 +334,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1038c1160,1161
+1037c1160,1161
 <     static_assert(false, "Not implemented");
 ---
 >     if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
 >     return {};
-1040a1164,1181
+1039a1164,1181
 >   /**
 >    * Use this function to read 16 bits of big-endian data from an IOStreamRef
 >    * and return in native format.
@@ -360,12 +358,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1043c1184,1185
+1042c1184,1185
 <     static_assert(false, "Not implemented");
 ---
 >     if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
 >     return {};
-1045a1188,1205
+1044a1188,1205
 >   /**
 >    * Use this function to read 16 bits of big-endian data from an IOStreamRef
 >    * and return in native format.
@@ -384,12 +382,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1048c1208,1209
+1047c1208,1209
 <     static_assert(false, "Not implemented");
 ---
 >     if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
 >     return {};
-1050a1212,1229
+1049a1212,1229
 >   /**
 >    * Use this function to read 32 bits of little-endian data from an
 >    * IOStreamRef and return in native format.
@@ -408,12 +406,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1053c1232,1233
+1052c1232,1233
 <     static_assert(false, "Not implemented");
 ---
 >     if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
 >     return {};
-1055a1236,1253
+1054a1236,1253
 >   /**
 >    * Use this function to read 32 bits of little-endian data from an
 >    * IOStreamRef and return in native format.
@@ -432,12 +430,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1058c1256,1257
+1057c1256,1257
 <     static_assert(false, "Not implemented");
 ---
 >     if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
 >     return {};
-1060a1260,1277
+1059a1260,1277
 >   /**
 >    * Use this function to read 32 bits of big-endian data from an IOStreamRef
 >    * and return in native format.
@@ -456,12 +454,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1063c1280,1281
+1062c1280,1281
 <     static_assert(false, "Not implemented");
 ---
 >     if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
 >     return {};
-1065a1284,1301
+1064a1284,1301
 >   /**
 >    * Use this function to read 32 bits of big-endian data from an IOStreamRef
 >    * and return in native format.
@@ -480,12 +478,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1068c1304,1305
+1067c1304,1305
 <     static_assert(false, "Not implemented");
 ---
 >     if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
 >     return {};
-1070a1308,1325
+1069a1308,1325
 >   /**
 >    * Use this function to read 64 bits of little-endian data from an
 >    * IOStreamRef and return in native format.
@@ -504,12 +502,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1073c1328,1329
+1072c1328,1329
 <     static_assert(false, "Not implemented");
 ---
 >     if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
 >     return {};
-1075a1332,1349
+1074a1332,1349
 >   /**
 >    * Use this function to read 64 bits of little-endian data from an
 >    * IOStreamRef and return in native format.
@@ -528,12 +526,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1078c1352,1353
+1077c1352,1353
 <     static_assert(false, "Not implemented");
 ---
 >     if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
 >     return {};
-1080a1356,1373
+1079a1356,1373
 >   /**
 >    * Use this function to read 64 bits of big-endian data from an IOStreamRef
 >    * and return in native format.
@@ -552,12 +550,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1083c1376,1377
+1082c1376,1377
 <     static_assert(false, "Not implemented");
 ---
 >     if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
 >     return {};
-1085a1380,1397
+1084a1380,1397
 >   /**
 >    * Use this function to read 64 bits of big-endian data from an IOStreamRef
 >    * and return in native format.
@@ -576,12 +574,12 @@
 >    *
 >    * @since This function is available since SDL 3.2.0.
 >    */
-1088c1400,1401
+1087c1400,1401
 <     static_assert(false, "Not implemented");
 ---
 >     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
 >     return {};
-1478,1481c1791,1793
+1477,1480c1791,1793
 <  * @param mem a pointer to a buffer to feed an IOStream stream.
 <  * @param size the buffer size, in bytes.
 <  * @returns a pointer to a new IOStream structure or nullptr on failure; call
@@ -590,15 +588,15 @@
 >  * @param mem a buffer to feed an IOStream stream.
 >  * @returns a valid IOStream on success.
 >  * @throws Error on failure.
-1495c1807
+1494c1807
 < inline IOStream IOFromMem(void* mem, size_t size)
 ---
 > inline IOStream IOFromMem(TargetBytes mem)
-1497c1809
+1496c1809
 <   return IOStream(SDL_IOFromMem(mem, size));
 ---
 >   return IOStream(CheckError(SDL_IOFromMem(mem.data(), mem.size_bytes())));
-1529,1532c1841,1843
+1528,1531c1841,1843
 <  * @param mem a pointer to a read-only buffer to feed an IOStream stream.
 <  * @param size the buffer size, in bytes.
 <  * @returns a pointer to a new IOStream structure or nullptr on failure; call
@@ -607,37 +605,37 @@
 >  * @param mem a read-only buffer to feed an IOStreamRef stream.
 >  * @returns a valid IOStream on success.
 >  * @throws Error on failure.
-1544c1855
+1543c1855
 < inline IOStream IOFromConstMem(const void* mem, size_t size)
 ---
 > inline IOStream IOFromConstMem(SourceBytes mem)
-1546c1857
+1545c1857
 <   return IOStream(SDL_IOFromConstMem(mem, size));
 ---
 >   return IOStream(CheckError(SDL_IOFromConstMem(mem.data(), mem.size_bytes())));
-1670c1981
+1669c1981
 <   return CheckError(SDL_GetIOProperties(context));
 ---
 >   return {CheckError(SDL_GetIOProperties(context))};
-1795,1796c2106
+1794,1795c2106
 <  * @param ptr a pointer to a buffer to read data into.
 <  * @param size the number of bytes to read from the data source.
 ---
 >  * @param buf a pointer to a buffer to read data into.
-1832,1833c2142
+1831,1832c2142
 <  * @param ptr a pointer to a buffer containing data to write.
 <  * @param size the number of bytes to write.
 ---
 >  * @param buf a pointer to a buffer containing data to write.
-1859a2169,2170
+1858a2169,2170
 >  * @warning this is not typesafe! Prefer using print() and println()
 >  *
-1877c2188,2189
+1876c2188,2189
 <                        SDL_PRINTF_FORMAT_STRING const char* fmt)
 ---
 >                        SDL_PRINTF_FORMAT_STRING const char* fmt,
 >                        ...)
-1879c2191,2198
+1878c2191,2198
 <   return SDL_IOprintf(context, fmt);
 ---
 >   va_list ap;
@@ -648,22 +646,22 @@
 >   va_end(ap);
 > 
 >   return result;
-1938,1939c2257,2258
+1937,1938c2257,2258
 <  * convenience. This extra byte is not included in the value reported via
 <  * `datasize`.
 ---
 >  * convenience. This extra byte is not included in the value reported on
 >  * the returned string.
-1944,1945d2262
+1943,1944d2262
 <  * @param datasize a pointer filled in with the number of bytes read, may be
 <  *                 nullptr.
-1960c2277,2279
+1959c2277,2279
 <   return SDL_LoadFile_IO(src, closeio);
 ---
 >   size_t datasize = 0;
 >   auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
 >   return StringResult{CheckError(data), datasize};
-1967,1970c2286,2287
+1966,1969c2286,2287
 <  * convenience. This extra byte is not included in the value reported via
 <  * `datasize`.
 <  *
@@ -671,14 +669,14 @@
 ---
 >  * convenience. This extra byte is not included in the value reported on
 >  * the returned string.
-1973,1975c2290,2291
+1972,1974c2290,2291
 <  * @param datasize if not nullptr, will store the number of bytes read.
 <  * @returns the data or nullptr on failure; call GetError() for more
 <  *          information.
 ---
 >  * @returns the data.
 >  * @throws Error on failure.
-1984c2300,2305
+1983c2300,2305
 < inline StringResult LoadFile(StringParam file) { return SDL_LoadFile(file); }
 ---
 > inline StringResult LoadFile(StringParam file)
@@ -687,14 +685,14 @@
 >   auto data = static_cast<char*>(SDL_LoadFile(file, &datasize));
 >   return StringResult{CheckError(data), datasize};
 > }
-1986c2307,2310
+1985c2307,2310
 < inline StringResult IOStream::LoadFile() { return SDL::LoadFile(m_resource); }
 ---
 > inline StringResult IOStream::LoadFile()
 > {
 >   return SDL::LoadFile(m_resource, false);
 > }
-1987a2312,2329
+1986a2312,2329
 > /**
 >  * Load all the data from a file path.
 >  *
@@ -713,33 +711,33 @@
 >  * @sa IOStream.LoadFile
 >  * @sa SaveFile
 >  */
-1991c2333,2335
+1990c2333,2335
 <   static_assert(false, "Not implemented");
 ---
 >   size_t datasize = 0;
 >   auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
 >   return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
-1998,2000c2342
+1997,1999c2342
 <  * @param data the data to be written. If datasize is 0, may be nullptr or a
 <  *             invalid pointer.
 <  * @param datasize the number of bytes to be written.
 ---
 >  * @param data the data to be written.
-2012c2354
+2011c2354
 < inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
 ---
 > inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
-2021,2023c2363
+2020,2022c2363
 <  * @param data the data to be written. If datasize is 0, may be nullptr or a
 <  *             invalid pointer.
 <  * @param datasize the number of bytes to be written.
 ---
 >  * @param data the data to be written.
-2052c2392
+2051c2392
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2059,2061c2399,2404
+2058,2060c2399,2404
 < inline Uint8 ReadU8(IOStreamParam src) { return CheckError(SDL_ReadU8(src)); }
 < 
 < inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(m_resource); }
@@ -750,11 +748,11 @@
 >   CheckError(SDL_ReadU8(src, &value));
 >   return value;
 > }
-2072c2415
+2071c2415
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2079,2081c2422,2427
+2078,2080c2422,2427
 < inline Sint8 ReadS8(IOStreamParam src) { return CheckError(SDL_ReadS8(src)); }
 < 
 < inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(m_resource); }
@@ -765,121 +763,121 @@
 >   CheckError(SDL_ReadS8(src, &value));
 >   return value;
 > }
-2096c2442
+2095c2442
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2105c2451,2453
+2104c2451,2453
 <   return CheckError(SDL_ReadU16LE(src));
 ---
 >   Uint16 value;
 >   CheckError(SDL_ReadU16LE(src, &value));
 >   return value;
-2123c2471
+2122c2471
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2132c2480,2482
+2131c2480,2482
 <   return CheckError(SDL_ReadS16LE(src));
 ---
 >   Sint16 value;
 >   CheckError(SDL_ReadS16LE(src, &value));
 >   return value;
-2150c2500
+2149c2500
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2159c2509,2511
+2158c2509,2511
 <   return CheckError(SDL_ReadU16BE(src));
 ---
 >   Uint16 value;
 >   CheckError(SDL_ReadU16BE(src, &value));
 >   return value;
-2177c2529
+2176c2529
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2186c2538,2540
+2185c2538,2540
 <   return CheckError(SDL_ReadS16BE(src));
 ---
 >   Sint16 value;
 >   CheckError(SDL_ReadS16BE(src, &value));
 >   return value;
-2204c2558
+2203c2558
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2213c2567,2569
+2212c2567,2569
 <   return CheckError(SDL_ReadU32LE(src));
 ---
 >   Uint32 value;
 >   CheckError(SDL_ReadU32LE(src, &value));
 >   return value;
-2231c2587
+2230c2587
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2240c2596,2598
+2239c2596,2598
 <   return CheckError(SDL_ReadS32LE(src));
 ---
 >   Sint32 value;
 >   CheckError(SDL_ReadS32LE(src, &value));
 >   return value;
-2258c2616
+2257c2616
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2267c2625,2627
+2266c2625,2627
 <   return CheckError(SDL_ReadU32BE(src));
 ---
 >   Uint32 value;
 >   CheckError(SDL_ReadU32BE(src, &value));
 >   return value;
-2285c2645
+2284c2645
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2294c2654,2656
+2293c2654,2656
 <   return CheckError(SDL_ReadS32BE(src));
 ---
 >   Sint32 value;
 >   CheckError(SDL_ReadS32BE(src, &value));
 >   return value;
-2312c2674
+2311c2674
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2321c2683,2685
+2320c2683,2685
 <   return CheckError(SDL_ReadU64LE(src));
 ---
 >   Uint64 value;
 >   CheckError(SDL_ReadU64LE(src, &value));
 >   return value;
-2339c2703
+2338c2703
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2348c2712,2714
+2347c2712,2714
 <   return CheckError(SDL_ReadS64LE(src));
 ---
 >   Sint64 value;
 >   CheckError(SDL_ReadS64LE(src, &value));
 >   return value;
-2366c2732
+2365c2732
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2375c2741,2743
+2374c2741,2743
 <   return CheckError(SDL_ReadU64BE(src));
 ---
 >   Uint64 value;
 >   CheckError(SDL_ReadU64BE(src, &value));
 >   return value;
-2393c2761
+2392c2761
 <  * @param value a pointer filled in with the data read.
 ---
 >  * @return the  data read.
-2402c2770,2772
+2401c2770,2772
 <   return CheckError(SDL_ReadS64BE(src));
 ---
 >   Sint64 value;

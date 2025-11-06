@@ -96,11 +96,11 @@
 <     const SDL_MessageBoxColorScheme* newColorScheme)
 ---
 >     OptionalRef<const MessageBoxColorScheme> newColorScheme)
-382c401
+381c400
 <   CheckError(SDL_ShowMessageBox(messageboxdata, buttonid));
 ---
 >   CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
-387c406
+386c405
 <   SDL::ShowMessageBox(this, buttonid);
 ---
 >   SDL::ShowMessageBox(*this, buttonid);

@@ -360,8 +360,6 @@ public:
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
-   *               Thread.Thread() call that started this thread.
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -431,7 +429,6 @@ public:
    * Note that the thread pointer is freed by this function and is not valid
    * afterward.
    *
-   *               Thread.Thread() call that started this thread.
    * @param status a pointer filled in with the value returned from the thread
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.

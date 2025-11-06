@@ -2010,7 +2010,7 @@ function prepareForTypeInsert(entry, name, typeName) {
     if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static && entry.sourceName) {
         parameters.shift();
         if (entry.doc)
-            entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
+            entry.doc = removeFirstParam(entry);
         if (type.startsWith("const "))
             entry.immutable = true;
     }
@@ -2020,6 +2020,9 @@ function prepareForTypeInsert(entry, name, typeName) {
     else if (!entry.sourceName && entry.doc && entry.type) {
         entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
     }
+}
+function removeFirstParam(entry) {
+    return entry.doc.replace(/@param \w+([^\n]|\n )*\n/, "");
 }
 function normalizeTypeName(typeName) {
     if (typeName.endsWith("Ref"))

@@ -46156,8 +46156,6 @@ public:
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
-   *               Thread.Thread() call that started this thread.
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -46227,7 +46225,6 @@ public:
    * Note that the thread pointer is freed by this function and is not valid
    * afterward.
    *
-   *               Thread.Thread() call that started this thread.
    * @param status a pointer filled in with the value returned from the thread
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
@@ -52705,7 +52702,6 @@ public:
    * This function also returns false if getting the information is not
    * supported.
    *
-   *               (decorations) from.
    * @param top pointer to variable for storing the size of the top border;
    * nullptr is permitted.
    * @param left pointer to variable for storing the size of the left border;
@@ -53058,7 +53054,6 @@ public:
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   *               applied.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -68419,7 +68414,6 @@ public:
   /**
    * Detach a virtual joystick.
    *
-   *                    AttachVirtualJoystick().
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -71307,7 +71301,6 @@ struct MessageBox : MessageBoxRaw
    * concern, check the return value from this function and fall back to writing
    * to stderr if you can.
    *
-   *                       other options.
    * @param buttonid the pointer to which user id of hit button should be
    *                 copied.
    * @throws Error on failure.
@@ -73114,8 +73107,6 @@ public:
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
    *
-   *                Gamepad.Gamepad().
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.Gamepad
@@ -73158,7 +73149,6 @@ public:
    * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
    *   simple trigger rumble
    *
-   *                Gamepad.Gamepad().
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -73169,7 +73159,6 @@ public:
   /**
    * Get the instance ID of an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the instance ID of the specified gamepad on success.
    * @throws Error on failure.
    *
@@ -73180,7 +73169,6 @@ public:
   /**
    * Get the implementation-dependent name for an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the implementation dependent name for the gamepad, or nullptr if
    *          there is no name or the identifier passed is invalid.
    *
@@ -73193,7 +73181,6 @@ public:
   /**
    * Get the implementation-dependent path for an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the implementation dependent path for the gamepad, or nullptr if
    *          there is no path or the identifier passed is invalid.
    *
@@ -73359,7 +73346,6 @@ public:
   /**
    * Check if a gamepad has been opened and is currently connected.
    *
-   *                Gamepad.Gamepad().
    * @returns true if the gamepad has been opened and is currently connected, or
    *          false if not.
    *
@@ -80336,7 +80322,6 @@ public:
    * You must use Texture.Unlock() to unlock the pixels and apply any
    * changes.
    *
-   *                `TEXTUREACCESS_STREAMING`.
    * @param rect an Rect structure representing the area to lock for access;
    *             nullptr to lock the entire texture.
    * @param pixels this is filled in with a pointer to the locked pixels,
@@ -80372,7 +80357,6 @@ public:
    * The returned surface is freed internally after calling Texture.Unlock()
    * or Texture.Destroy(). The caller should not free it.
    *
-   *                `TEXTUREACCESS_STREAMING`.
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
    * @returns a surface of size **rect**. Don't assume any specific pixel
@@ -92291,7 +92275,6 @@ public:
   /**
    * Create a text object from UTF-8 text and a text engine.
    *
-   *               nullptr.
    * @param font the font to render with.
    * @param text the text to use, in UTF-8 encoding.
    * @returns a Text object or nullptr on failure; call GetError() for more

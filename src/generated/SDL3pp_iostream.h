@@ -529,7 +529,6 @@ public:
    * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to
    * simplify application development.
    *
-   *                current offset.
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
    *

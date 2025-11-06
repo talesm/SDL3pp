@@ -2,10 +2,10 @@
 <  * @defgroup CategoryGamepad Category Gamepad
 ---
 >  * @defgroup CategoryGamepad Gamepad Support
-1329,1330d1328
+1322,1323d1321
 <  * @param count a pointer filled in with the number of gamepads returned, may
 <  *              be nullptr.
-1340c1338,1343
+1333c1331,1336
 < inline OwnArray<JoystickID> GetGamepads() { return SDL_GetGamepads(); }
 ---
 > inline OwnArray<JoystickID> GetGamepads()
@@ -14,19 +14,19 @@
 >   auto r = reinterpret_cast<JoystickID*>(SDL_GetGamepads(&count));
 >   return OwnArray<JoystickID>(r, count);
 > }
-1580c1583
+1573c1576
 <   return CheckError(SDL_GetGamepadFromID(instance_id));
 ---
 >   return {CheckError(SDL_GetGamepadFromID(instance_id))};
-1596c1599
+1589c1592
 <   return SDL_GetGamepadFromPlayerIndex(player_index);
 ---
 >   return {SDL_GetGamepadFromPlayerIndex(player_index)};
-1626c1629
+1619c1622
 <   return CheckError(SDL_GetGamepadProperties(gamepad));
 ---
 >   return {CheckError(SDL_GetGamepadProperties(gamepad))};
-2004c2007
+1997c2000
 <   return SDL_GetGamepadJoystick(gamepad);
 ---
 >   return {SDL_GetGamepadJoystick(gamepad)};
