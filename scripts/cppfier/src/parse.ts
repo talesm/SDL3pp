@@ -7,6 +7,7 @@ import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 import { readFileSync } from "fs";
 import { Api, ApiEntries, ApiFile, ApiParameters } from './types';
 import { system } from './utils';
+import { parseDoc } from './parseDoc';
 
 export interface ParseConfig {
   baseDir: string[];
@@ -44,18 +45,18 @@ class ProgListener implements CHeaderListener {
 
   enterProg(ctx: ProgContext) {
     const doc = ctx.doc();
-    if (doc) this.api.doc = parseDoc(doc.text);
+    if (doc) this.api.doc = extractDoc(doc.text);
   }
 
   enterDecl(ctx: DeclContext) {
     const doc = ctx.doc();
-    if (doc && !this.api.doc) this.api.doc = parseDoc(doc.text);
+    if (doc && !this.api.doc) this.api.doc = extractDoc(doc.text);
   }
 
   enterDirective(ctx: DirectiveContext) {
     const directive = ctx.DEFINE().text;
     const docIndex = directive.indexOf('/**<');
-    const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
+    const doc = extractDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
     const m = directive.match(/^#define\s*(\w+)(\([ \t]*(\w+[ \t]*(,[ \t]*\w+[ \t]*)*)?\))?/);
     if (!m) return;
     const name = m[1];
@@ -74,7 +75,7 @@ class ProgListener implements CHeaderListener {
 
   enterGlobalVar(ctx: GlobalVarContext) {
     const type = extractType(ctx.type());
-    const doc = parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
     for (const name of ctx.id().map(id => id.text)) {
       if (this.api.entries[name]?.doc) return;
       this.api.entries[name] = {
@@ -89,7 +90,7 @@ class ProgListener implements CHeaderListener {
   enterFunctionDecl(ctx: FunctionDeclContext) {
     const type = extractType(ctx.type());
     if (type.startsWith('__inline')) return;
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
     if (name.startsWith('_')) return;
     if (this.api.entries[name]?.doc) return;
@@ -104,7 +105,7 @@ class ProgListener implements CHeaderListener {
 
   enterFunctionDef(ctx: FunctionDefContext) {
     const type = extractType(ctx.type());
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
     if (name.startsWith('_')) return;
     if (this.api.entries[name]?.doc) return;
@@ -121,7 +122,7 @@ class ProgListener implements CHeaderListener {
   enterAliasDef(ctx: AliasDefContext) {
     const type = extractType(ctx.type());
     const isStruct = !!ctx.STRUCT();
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
@@ -133,7 +134,7 @@ class ProgListener implements CHeaderListener {
   }
 
   enterUnionDef(ctx: UnionDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx._name.text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
@@ -144,7 +145,7 @@ class ProgListener implements CHeaderListener {
   }
 
   enterEnumDef(ctx: EnumDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx._name.text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
@@ -156,7 +157,7 @@ class ProgListener implements CHeaderListener {
   }
 
   enterStructDef(ctx: StructDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx._name.text;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
@@ -168,7 +169,7 @@ class ProgListener implements CHeaderListener {
   }
 
   enterCallbackDef(ctx: CallbackDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
+    const doc = extractDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
     if (this.api.entries[name]?.doc) return;
     const type = extractType(ctx.type());
@@ -202,9 +203,16 @@ function parseContent(name: string, content: string) {
   const listener = new ProgListener(name);
   // Use the entry point for listeners
   ParseTreeWalker.DEFAULT.walk(listener, tree);
-  return listener.api;
+  const api = listener.api;
+  if (name < 'SDL_b') {
+    api.parsedDoc = parseDoc(name, api.doc ?? "");
+    for (const apiEntry of Object.values(api.entries)) {
+      apiEntry.parsedDoc = parseDoc(`${name}@${apiEntry.name}`, apiEntry.doc);
+    }
+  }
+  return api;
 }
-function parseDoc(text: string): string {
+function extractDoc(text: string): string {
   if (text.includes('\\name')) return "";
   if (text.startsWith('/**<')) {
     return text.slice(4, text.length - 2)
@@ -266,7 +274,7 @@ function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
   for (const item of ctx.enumItem()) {
     const name = item.id().text;
     entries[name] = {
-      doc: parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
+      doc: extractDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
       name,
       kind: "var",
       type: "",
@@ -287,7 +295,7 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
 
   function addVar(item: StructVarContext) {
     const type = extractType(item.type());
-    const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
+    const doc = extractDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     for (const name of item.id().map(id => id.text)) {
       entries[name] = {
         doc,
@@ -299,7 +307,7 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
   }
   function addCallback(item: StructCallbackContext) {
     const type = extractType(item.type());
-    const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
+    const doc = extractDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     const name = item.id().text;
     entries[name] = {
       doc,

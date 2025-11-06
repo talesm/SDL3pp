@@ -9,6 +9,7 @@ export interface Api {
 export interface ApiFile {
     name: string;
     doc?: string;
+    parsedDoc?: ParsedDoc;
     entries?: ApiEntries;
     namespace?: string;
     includes?: string[];
@@ -23,6 +24,7 @@ export interface ApiEntryBase {
     name?: string;
     kind?: ApiEntryKind;
     doc?: string;
+    parsedDoc?: ParsedDoc;
     type?: string;
     parameters?: ApiParameters;
     template?: ApiParameters;
@@ -227,4 +229,14 @@ export interface FileToken {
     spaces: number;
     doc?: string;
     since?: VersionTag;
+}
+export type ParsedDoc = ParsedDocContent[];
+export type ParsedDocContent = string | ListContent | StaticContent | TaggedContent;
+export type ListContent = TaggedContent[];
+export interface StaticContent {
+    content: string;
+}
+export interface TaggedContent {
+    tag: string;
+    content: string;
 }

@@ -8,6 +8,7 @@ const CHeaderLexer_1 = require("./grammar/CHeaderLexer");
 const ParseTreeWalker_1 = require("antlr4ts/tree/ParseTreeWalker");
 const fs_1 = require("fs");
 const utils_1 = require("./utils");
+const parseDoc_1 = require("./parseDoc");
 function parseApi({ baseDir, sources }) {
     const api = { files: {} };
     for (const name of sources) {
@@ -35,17 +36,17 @@ class ProgListener {
     enterProg(ctx) {
         const doc = ctx.doc();
         if (doc)
-            this.api.doc = parseDoc(doc.text);
+            this.api.doc = extractDoc(doc.text);
     }
     enterDecl(ctx) {
         const doc = ctx.doc();
         if (doc && !this.api.doc)
-            this.api.doc = parseDoc(doc.text);
+            this.api.doc = extractDoc(doc.text);
     }
     enterDirective(ctx) {
         const directive = ctx.DEFINE().text;
         const docIndex = directive.indexOf('/**<');
-        const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
+        const doc = extractDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
         const m = directive.match(/^#define\s*(\w+)(\([ \t]*(\w+[ \t]*(,[ \t]*\w+[ \t]*)*)?\))?/);
         if (!m)
             return;
@@ -66,7 +67,7 @@ class ProgListener {
     }
     enterGlobalVar(ctx) {
         const type = extractType(ctx.type());
-        const doc = parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
         for (const name of ctx.id().map(id => id.text)) {
             if (this.api.entries[name]?.doc)
                 return;
@@ -82,7 +83,7 @@ class ProgListener {
         const type = extractType(ctx.type());
         if (type.startsWith('__inline'))
             return;
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
         if (name.startsWith('_'))
             return;
@@ -98,7 +99,7 @@ class ProgListener {
     }
     enterFunctionDef(ctx) {
         const type = extractType(ctx.type());
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
         if (name.startsWith('_'))
             return;
@@ -116,7 +117,7 @@ class ProgListener {
     enterAliasDef(ctx) {
         const type = extractType(ctx.type());
         const isStruct = !!ctx.STRUCT();
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
         if (this.api.entries[name]?.doc)
             return;
@@ -128,7 +129,7 @@ class ProgListener {
         };
     }
     enterUnionDef(ctx) {
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx._name.text;
         if (this.api.entries[name]?.doc)
             return;
@@ -139,7 +140,7 @@ class ProgListener {
         };
     }
     enterEnumDef(ctx) {
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx._name.text;
         if (this.api.entries[name]?.doc)
             return;
@@ -151,7 +152,7 @@ class ProgListener {
         };
     }
     enterStructDef(ctx) {
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx._name.text;
         if (this.api.entries[name]?.doc)
             return;
@@ -163,7 +164,7 @@ class ProgListener {
         };
     }
     enterCallbackDef(ctx) {
-        const doc = parseDoc(ctx.doc()?.text ?? '');
+        const doc = extractDoc(ctx.doc()?.text ?? '');
         const name = ctx.id().text;
         if (this.api.entries[name]?.doc)
             return;
@@ -190,9 +191,16 @@ function parseContent(name, content) {
     const listener = new ProgListener(name);
     // Use the entry point for listeners
     ParseTreeWalker_1.ParseTreeWalker.DEFAULT.walk(listener, tree);
-    return listener.api;
+    const api = listener.api;
+    if (name < 'SDL_b') {
+        api.parsedDoc = (0, parseDoc_1.parseDoc)(name, api.doc ?? "");
+        for (const apiEntry of Object.values(api.entries)) {
+            apiEntry.parsedDoc = (0, parseDoc_1.parseDoc)(`${name}@${apiEntry.name}`, apiEntry.doc);
+        }
+    }
+    return api;
 }
-function parseDoc(text) {
+function extractDoc(text) {
     if (text.includes('\\name'))
         return "";
     if (text.startsWith('/**<')) {
@@ -256,7 +264,7 @@ function extractEnumItems(ctx) {
     for (const item of ctx.enumItem()) {
         const name = item.id().text;
         entries[name] = {
-            doc: parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
+            doc: extractDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
             name,
             kind: "var",
             type: "",
@@ -277,7 +285,7 @@ function extractStructItems(ctx) {
     return entries;
     function addVar(item) {
         const type = extractType(item.type());
-        const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
+        const doc = extractDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
         for (const name of item.id().map(id => id.text)) {
             entries[name] = {
                 doc,
@@ -289,7 +297,7 @@ function extractStructItems(ctx) {
     }
     function addCallback(item) {
         const type = extractType(item.type());
-        const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
+        const doc = extractDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
         const name = item.id().text;
         entries[name] = {
             doc,
