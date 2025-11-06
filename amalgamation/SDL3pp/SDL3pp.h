@@ -2069,8 +2069,8 @@ public:
  *   these claims were wrong). This can help the analyzer avoid false
  *   positives.
  *
- * To use it: compile a debug build and just sprinkle around tests to check
- * your code!
+ * To use it: compile a debug build and just sprinkle around tests to check your
+ * code!
  *
  * @{
  */
@@ -2103,8 +2103,8 @@ public:
  * had hit a breakpoint, allowing the developer to examine program state, etc.
  *
  * This is a macro--not a function--so that the debugger breaks on the source
- * code line that used SDL_TriggerBreakpoint and not in some random guts of
- * SDL. SDL_assert uses this macro for the same reason.
+ * code line that used SDL_TriggerBreakpoint and not in some random guts of SDL.
+ * SDL_assert uses this macro for the same reason.
  *
  * If the program is not running under a debugger, SDL_TriggerBreakpoint will
  * likely terminate the app, possibly without warning. If the current platform
@@ -2145,9 +2145,8 @@ public:
  * Visual Studio with really aggressive warnings enabled needs this to avoid
  * compiler complaints.
  *
- * the `do {} while (0);` trick is useful for wrapping code in a macro that
- * may or may not be a single statement, to avoid various C language
- * accidents.
+ * the `do {} while (0);` trick is useful for wrapping code in a macro that may
+ * or may not be a single statement, to avoid various C language accidents.
  *
  * To use:
  *
@@ -2162,12 +2161,12 @@ public:
 /**
  * The macro used when an assertion is disabled.
  *
- * This isn't for direct use by apps, but this is the code that is inserted
- * when an SDL_assert is disabled (perhaps in a release build).
+ * This isn't for direct use by apps, but this is the code that is inserted when
+ * an SDL_assert is disabled (perhaps in a release build).
  *
  * The code does nothing, but wraps `condition` in a sizeof operator, which
- * generates no code and has no side effects, but avoid compiler warnings
- * about unused variables.
+ * generates no code and has no side effects, but avoid compiler warnings about
+ * unused variables.
  *
  * @param condition the condition to assert (but not actually run here).
  *
@@ -2184,8 +2183,8 @@ public:
  * Possible outcomes from a triggered assertion.
  *
  * When an enabled assertion triggers, it may call the assertion handler
- * (possibly one provided by the app via SetAssertionHandler), which will
- * return one of these values, possibly after asking the user.
+ * (possibly one provided by the app via SetAssertionHandler), which will return
+ * one of these values, possibly after asking the user.
  *
  * Then SDL will respond based on this outcome (loop around to retry the
  * condition, try to break in a debugger, kill the program, or ignore the
@@ -2259,8 +2258,8 @@ inline AssertState ReportAssertion(AssertData* data,
 /**
  * The macro used when an assertion is enabled.
  *
- * This isn't for direct use by apps, but this is the code that is inserted
- * when an SDL_assert is enabled.
+ * This isn't for direct use by apps, but this is the code that is inserted when
+ * an SDL_assert is enabled.
  *
  * The `do {} while(0)` avoids dangling else problems:
  *
@@ -2269,9 +2268,8 @@ inline AssertState ReportAssertion(AssertData* data,
  * ```
  *
  * ... without the do/while, the "else" could attach to this macro's "if". We
- * try to handle just the minimum we need here in a macro...the loop, the
- * static vars, and break points. The heavy lifting is handled in
- * ReportAssertion().
+ * try to handle just the minimum we need here in a macro...the loop, the static
+ * vars, and break points. The heavy lifting is handled in ReportAssertion().
  *
  * @param condition the condition to assert.
  *
@@ -2304,16 +2302,16 @@ inline AssertState ReportAssertion(AssertData* data,
  * In short: you can sprinkle these around liberally and assume they will
  * evaporate out of the build when building for end-users.
  *
- * When assertions are disabled, this wraps `condition` in a `sizeof`
- * operator, which means any function calls and side effects will not run, but
- * the compiler will not complain about any otherwise-unused variables that
- * are only referenced in the assertion.
+ * When assertions are disabled, this wraps `condition` in a `sizeof` operator,
+ * which means any function calls and side effects will not run, but the
+ * compiler will not complain about any otherwise-unused variables that are only
+ * referenced in the assertion.
  *
  * One can set the environment variable "SDL_ASSERT" to one of several strings
  * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
  * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
+ * requires GUI interfaces to happen on the main thread but you're debugging an
+ * assertion in a background thread, it might be desirable to set this to
  * "break" so that your debugger takes control as soon as assert is triggered,
  * instead of risking a bad UI interaction (deadlock, etc) in the application.
  *
@@ -2330,26 +2328,25 @@ inline AssertState ReportAssertion(AssertData* data,
  * An assertion test that is performed even in release builds.
  *
  * This macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is
- * disabled. This is meant to be for tests that are cheap to make and
- * extremely unlikely to fail; generally it is frowned upon to have an
- * assertion failure in a release build, so these assertions generally need to
- * be of more than life-and-death importance if there's a chance they might
- * trigger. You should almost always consider handling these cases more
- * gracefully than an assert allows.
+ * disabled. This is meant to be for tests that are cheap to make and extremely
+ * unlikely to fail; generally it is frowned upon to have an assertion failure
+ * in a release build, so these assertions generally need to be of more than
+ * life-and-death importance if there's a chance they might trigger. You should
+ * almost always consider handling these cases more gracefully than an assert
+ * allows.
  *
- * When assertions are disabled, this wraps `condition` in a `sizeof`
- * operator, which means any function calls and side effects will not run, but
- * the compiler will not complain about any otherwise-unused variables that
- * are only referenced in the assertion.
+ * When assertions are disabled, this wraps `condition` in a `sizeof` operator,
+ * which means any function calls and side effects will not run, but the
+ * compiler will not complain about any otherwise-unused variables that are only
+ * referenced in the assertion.
  *
  * One can set the environment variable "SDL_ASSERT" to one of several strings
  * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
  * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
+ * requires GUI interfaces to happen on the main thread but you're debugging an
+ * assertion in a background thread, it might be desirable to set this to
  * "break" so that your debugger takes control as soon as assert is triggered,
  * instead of risking a bad UI interaction (deadlock, etc) in the application.
- * *
  *
  * @param condition boolean value to test.
  *
@@ -2363,20 +2360,20 @@ inline AssertState ReportAssertion(AssertData* data,
  * An assertion test that is performed only when built with paranoid settings.
  *
  * This macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is
- * disabled. This is a higher level than both release and debug, so these
- * tests are meant to be expensive and only run when specifically looking for
+ * disabled. This is a higher level than both release and debug, so these tests
+ * are meant to be expensive and only run when specifically looking for
  * extremely unexpected failure cases in a special build.
  *
- * When assertions are disabled, this wraps `condition` in a `sizeof`
- * operator, which means any function calls and side effects will not run, but
- * the compiler will not complain about any otherwise-unused variables that
- * are only referenced in the assertion.
+ * When assertions are disabled, this wraps `condition` in a `sizeof` operator,
+ * which means any function calls and side effects will not run, but the
+ * compiler will not complain about any otherwise-unused variables that are only
+ * referenced in the assertion.
  *
  * One can set the environment variable "SDL_ASSERT" to one of several strings
  * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
  * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
+ * requires GUI interfaces to happen on the main thread but you're debugging an
+ * assertion in a background thread, it might be desirable to set this to
  * "break" so that your debugger takes control as soon as assert is triggered,
  * instead of risking a bad UI interaction (deadlock, etc) in the application.
  *
@@ -2398,8 +2395,8 @@ inline AssertState ReportAssertion(AssertData* data,
  * One can set the environment variable "SDL_ASSERT" to one of several strings
  * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
  * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
+ * requires GUI interfaces to happen on the main thread but you're debugging an
+ * assertion in a background thread, it might be desirable to set this to
  * "break" so that your debugger takes control as soon as assert is triggered,
  * instead of risking a bad UI interaction (deadlock, etc) in the application.
  *
@@ -2429,7 +2426,7 @@ inline AssertState ReportAssertion(AssertData* data,
 using AssertionHandler = SDL_AssertionHandler;
 
 /**
- * A callback that fires when an SDL assertion fails.
+ * A @ref callback that fires when an SDL assertion fails.
  *
  * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
@@ -2447,18 +2444,18 @@ using AssertionHandlerCB =
 /**
  * Set an application-defined assertion handler.
  *
- * This function allows an application to show its own assertion UI and/or
- * force the response to an assertion failure. If the application doesn't
- * provide this, SDL will try to do the right thing, popping up a
- * system-specific GUI dialog, and probably minimizing any fullscreen windows.
+ * This function allows an application to show its own assertion UI and/or force
+ * the response to an assertion failure. If the application doesn't provide
+ * this, SDL will try to do the right thing, popping up a system-specific GUI
+ * dialog, and probably minimizing any fullscreen windows.
  *
- * This callback may fire from any thread, but it runs wrapped in a mutex, so
- * it will only fire from one thread at a time.
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so it
+ * will only fire from one thread at a time.
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the AssertionHandler function to call when an assertion
- *                fails or nullptr for the default handler.
+ * @param handler the AssertionHandler function to call when an assertion fails
+ *                or nullptr for the default handler.
  * @param userdata a pointer that is passed to `handler`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2476,18 +2473,17 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 /**
  * Set an application-defined assertion handler.
  *
- * This function allows an application to show its own assertion UI and/or
- * force the response to an assertion failure. If the application doesn't
- * provide this, SDL will try to do the right thing, popping up a
- * system-specific GUI dialog, and probably minimizing any fullscreen windows.
+ * This function allows an application to show its own assertion UI and/or force
+ * the response to an assertion failure. If the application doesn't provide
+ * this, SDL will try to do the right thing, popping up a system-specific GUI
+ * dialog, and probably minimizing any fullscreen windows.
  *
- * This callback may fire from any thread, but it runs wrapped in a mutex, so
- * it will only fire from one thread at a time.
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so it
+ * will only fire from one thread at a time.
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the SDL_AssertionHandler function to call when an assertion
- *                fails.
+ * @param handler the AssertionHandler function to call when an assertion fails.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2504,10 +2500,10 @@ inline void SetAssertionHandler(AssertionHandlerCB handler)
 /**
  * Get the default assertion handler.
  *
- * This returns the function pointer that is called by default when an
- * assertion is triggered. This is an internal function provided by SDL, that
- * is used for assertions when SetAssertionHandler() hasn't been used to
- * provide a different function.
+ * This returns the function pointer that is called by default when an assertion
+ * is triggered. This is an internal function provided by SDL, that is used for
+ * assertions when SetAssertionHandler() hasn't been used to provide a different
+ * function.
  *
  * @returns the default AssertionHandler that is called when an assert triggers.
  *
@@ -2531,12 +2527,12 @@ inline AssertionHandler GetDefaultAssertionHandler()
  * GetDefaultAssertionHandler().
  *
  * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SetAssertionHandler(). This value
- * will always be nullptr for the default handler. If you don't care about this
- * data, it is safe to pass a nullptr pointer to this function to ignore it.
+ * "userdata" pointer that was passed to SetAssertionHandler(). This value will
+ * always be nullptr for the default handler. If you don't care about this data,
+ * it is safe to pass a nullptr pointer to this function to ignore it.
  *
- * @param puserdata pointer which is filled with the "userdata" pointer that
- *                  was passed to SetAssertionHandler().
+ * @param puserdata pointer which is filled with the "userdata" pointer that was
+ *                  passed to SetAssertionHandler().
  * @returns the AssertionHandler that is called when an assert triggers.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2554,14 +2550,14 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
  * Get the current assertion handler.
  *
  * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to
- * SDL_SetAssertionHandler(), or if no application-specified function is set,
- * is equivalent to calling SDL_GetDefaultAssertionHandler().
+ * triggered. This is either the value last passed to SetAssertionHandler(), or
+ * if no application-specified function is set, is equivalent to calling
+ * GetDefaultAssertionHandler().
  *
  * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
- * will always be nullptr for the default handler. If you don't care about this
- * data, it is safe to pass a nullptr pointer to this function to ignore it.
+ * "userdata" pointer that was passed to SetAssertionHandler(). This value will
+ * always be nullptr for the default handler. If you don't care about this data,
+ * it is safe to pass a nullptr pointer to this function to ignore it.
  *
  * @returns the AssertionHandlerCB that is called when an assert triggers.
  *
@@ -2600,12 +2596,13 @@ inline AssertionHandlerCB GetAssertionHandler()
  * ```
  *
  * @returns a list of all failed assertions or nullptr if the list is empty.
- * This memory should not be modified or freed by the application. This pointer
- * remains valid until the next call to Quit() or ResetAssertionReport().
+ *          This memory should not be modified or freed by the application. This
+ *          pointer remains valid until the next call to Quit() or
+ *          ResetAssertionReport().
  *
  * @threadsafety This function is not thread safe. Other threads calling
- *               ResetAssertionReport() simultaneously, may render the
- *               returned pointer invalid.
+ *               ResetAssertionReport() simultaneously, may render the returned
+ *               pointer invalid.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2620,9 +2617,9 @@ inline const AssertData& GetAssertionReport()
  * Clear the list of all assertion failures.
  *
  * This function will clear the list of all assertions triggered up to that
- * point. Immediately following this call, GetAssertionReport will return
- * no items. In addition, any previously-triggered assertions will be reset to
- * a trigger_count of zero, and their always_ignore state will be false.
+ * point. Immediately following this call, GetAssertionReport will return no
+ * items. In addition, any previously-triggered assertions will be reset to a
+ * trigger_count of zero, and their always_ignore state will be false.
  *
  * @threadsafety This function is not thread safe. Other threads triggering an
  *               assertion, or simultaneously calling this function may cause
@@ -19471,16 +19468,16 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
 /**
  * @defgroup CategoryAsyncIO Async I/O
  *
- * SDL offers a way to perform I/O asynchronously. This allows an app to read
- * or write files without waiting for data to actually transfer; the functions
- * that request I/O never block while the request is fulfilled.
+ * SDL offers a way to perform I/O asynchronously. This allows an app to read or
+ * write files without waiting for data to actually transfer; the functions that
+ * request I/O never block while the request is fulfilled.
  *
  * Instead, the data moves in the background and the app can check for results
  * at their leisure.
  *
- * This is more complicated than just reading and writing files in a
- * synchronous way, but it can allow for more efficiency, and never having
- * framerate drops as the hard drive catches up, etc.
+ * This is more complicated than just reading and writing files in a synchronous
+ * way, but it can allow for more efficiency, and never having framerate drops
+ * as the hard drive catches up, etc.
  *
  * The general usage pattern for async I/O is:
  *
@@ -19502,21 +19499,20 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  * - When shutting down, call AsyncIOQueue.Signal to unblock any sleeping
  *   threads despite there being no new tasks completed.
  *
- * And, of course, to match the synchronous LoadFile, we offer
- * LoadFileAsync as a convenience function. This will handle allocating a
- * buffer, slurping in the file data, and null-terminating it; you still check
- * for results later.
+ * And, of course, to match the synchronous LoadFile, we offer LoadFileAsync as
+ * a convenience function. This will handle allocating a buffer, slurping in the
+ * file data, and null-terminating it; you still check for results later.
  *
  * Behind the scenes, SDL will use newer, efficient APIs on platforms that
- * support them: Linux's io_uring and Windows 11's IoRing, for example. If
- * those technologies aren't available, SDL will offload the work to a thread
- * pool that will manage otherwise-synchronous loads without blocking the app.
+ * support them: Linux's io_uring and Windows 11's IoRing, for example. If those
+ * technologies aren't available, SDL will offload the work to a thread pool
+ * that will manage otherwise-synchronous loads without blocking the app.
  *
  * ## Best Practices
  *
- * Simple non-blocking I/O--for an app that just wants to pick up data
- * whenever it's ready without losing framerate waiting on disks to spin--can
- * use whatever pattern works well for the program. In this case, simply call
+ * Simple non-blocking I/O--for an app that just wants to pick up data whenever
+ * it's ready without losing framerate waiting on disks to spin--can use
+ * whatever pattern works well for the program. In this case, simply call
  * AsyncIO.Read, or maybe LoadFileAsync, as needed. Once a frame, call
  * AsyncIOQueue.GetResult to check for any completed tasks and deal with the
  * data as it arrives.
@@ -19527,24 +19523,23 @@ inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
  * some amount of resources, but it is not an overwhelming cost. Do not make a
  * queue for each task, however. It is better to put many tasks into a single
  * queue. They will be reported in order of completion, not in the order they
- * were submitted, so it doesn't generally matter what order tasks are
- * started.
+ * were submitted, so it doesn't generally matter what order tasks are started.
  *
- * One async I/O queue can be shared by multiple threads, or one thread can
- * have more than one queue, but the most efficient way--if ruthless
- * efficiency is the goal--is to have one queue per thread, with multiple
- * threads working in parallel, and attempt to keep each queue loaded with
- * tasks that are both started by and consumed by the same thread. On modern
- * platforms that can use newer interfaces, this can keep data flowing as
- * efficiently as possible all the way from storage hardware to the app, with
- * no contention between threads for access to the same queue.
+ * One async I/O queue can be shared by multiple threads, or one thread can have
+ * more than one queue, but the most efficient way--if ruthless efficiency is
+ * the goal--is to have one queue per thread, with multiple threads working in
+ * parallel, and attempt to keep each queue loaded with tasks that are both
+ * started by and consumed by the same thread. On modern platforms that can use
+ * newer interfaces, this can keep data flowing as efficiently as possible all
+ * the way from storage hardware to the app, with no contention between threads
+ * for access to the same queue.
  *
  * Written data is not guaranteed to make it to physical media by the time a
- * closing task is completed, unless AsyncIO.Close is called with its
- * `flush` parameter set to true, which is to say that a successful result
- * here can still result in lost data during an unfortunately-timed power
- * outage if not flushed. However, flushing will take longer and may be
- * unnecessary, depending on the app's needs.
+ * closing task is completed, unless AsyncIO.Close is called with its `flush`
+ * parameter set to true, which is to say that a successful result here can
+ * still result in lost data during an unfortunately-timed power outage if not
+ * flushed. However, flushing will take longer and may be unnecessary, depending
+ * on the app's needs.
  *
  * @{
  */
@@ -19667,8 +19662,8 @@ public:
   constexpr AsyncIO(AsyncIORef&& other) = delete;
 
   /**
-   * Use this function to create a new AsyncIO object for reading from
-   * and/or writing to a named file.
+   * Use this function to create a new AsyncIO object for reading from and/or
+   * writing to a named file.
    *
    * The `mode` string understands the following values:
    *
@@ -19695,7 +19690,7 @@ public:
    * @param mode an ASCII string representing the mode to be used for opening
    *             the file.
    * @post a pointer to the AsyncIO structure that is created or nullptr on
-   *          failure; call GetError() for more information.
+   *       failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -19772,14 +19767,14 @@ public:
    *
    * Once this function returns true, `asyncio` is no longer valid, regardless
    * of any future outcomes. Any completed tasks might still contain this
-   * pointer in their AsyncIOOutcome data, in case the app was using this
-   * value to track information, but it should not be used again.
+   * pointer in their AsyncIOOutcome data, in case the app was using this value
+   * to track information, but it should not be used again.
    *
    * If this function returns false, the close wasn't started at all, and it's
    * safe to attempt to close again later.
    *
-   * An AsyncIOQueue must be specified. The newly-created task will be added
-   * to it when it completes its work.
+   * An AsyncIOQueue must be specified. The newly-created task will be added to
+   * it when it completes its work.
    *
    * @param flush true if data should sync to disk before the task completes.
    * @param queue a queue to add the new AsyncIO to.
@@ -19826,8 +19821,8 @@ public:
    * the system at any time until then. Do not allocate it on the stack, as this
    * might take longer than the life of the calling function to complete!
    *
-   * An AsyncIOQueue must be specified. The newly-created task will be added
-   * to it when it completes its work.
+   * An AsyncIOQueue must be specified. The newly-created task will be added to
+   * it when it completes its work.
    *
    * @param ptr a pointer to a buffer to read data into.
    * @param offset the position to start reading in the data source.
@@ -19865,8 +19860,8 @@ public:
    * the system at any time until then. Do not allocate it on the stack, as this
    * might take longer than the life of the calling function to complete!
    *
-   * An AsyncIOQueue must be specified. The newly-created task will be added
-   * to it when it completes its work.
+   * An AsyncIOQueue must be specified. The newly-created task will be added to
+   * it when it completes its work.
    *
    * @param ptr a pointer to a buffer to write data from.
    * @param offset the position to start writing to the data source.
@@ -19958,9 +19953,9 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  * A queue of completed asynchronous I/O tasks.
  *
  * When starting an asynchronous operation, you specify a queue for the new
- * task. A queue can be asked later if any tasks in it have completed,
- * allowing an app to manage multiple pending tasks in one place, in whatever
- * order they complete.
+ * task. A queue can be asked later if any tasks in it have completed, allowing
+ * an app to manage multiple pending tasks in one place, in whatever order they
+ * complete.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -20009,7 +20004,7 @@ public:
    * checked for completed tasks thereafter.
    *
    * @post a new task queue object or nullptr if there was an error; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -20064,9 +20059,8 @@ public:
    * those tasks are finished. All those tasks will be deallocated. Their
    * results will be lost to the app.
    *
-   * Any pending reads from LoadFileAsync() that are still in this queue
-   * will have their buffers deallocated by this function, to prevent a memory
-   * leak.
+   * Any pending reads from LoadFileAsync() that are still in this queue will
+   * have their buffers deallocated by this function, to prevent a memory leak.
    *
    * Once this function is called, the queue is no longer valid and should not
    * be used, including by other threads that might access it while destruction
@@ -20201,8 +20195,8 @@ public:
    * it indefinitely. In this case, once this call completes, the caller should
    * take measures to make sure any previously-blocked threads have returned
    * from their wait and will not touch the queue again (perhaps by setting a
-   * flag to tell the threads to terminate and then using Thread.Wait() to
-   * make sure they've done so).
+   * flag to tell the threads to terminate and then using Thread.Wait() to make
+   * sure they've done so).
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -20239,8 +20233,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
 };
 
 /**
- * Use this function to create a new AsyncIO object for reading from
- * and/or writing to a named file.
+ * Use this function to create a new AsyncIO object for reading from and/or
+ * writing to a named file.
  *
  * The `mode` string understands the following values:
  *
@@ -20264,8 +20258,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
  * reads and writes to the opened file will be async, however.
  *
  * @param file a UTF-8 string representing the filename to open.
- * @param mode an ASCII string representing the mode to be used for opening
- *             the file.
+ * @param mode an ASCII string representing the mode to be used for opening the
+ *             file.
  * @returns a pointer to the AsyncIO structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
@@ -20317,8 +20311,8 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * the system at any time until then. Do not allocate it on the stack, as this
  * might take longer than the life of the calling function to complete!
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param asyncio a pointer to an AsyncIO structure.
  * @param ptr a pointer to a buffer to read data into.
@@ -20361,8 +20355,8 @@ inline void AsyncIO::Read(void* ptr,
  * This function writes `size` bytes from `offset` position in the data source
  * to the area pointed at by `ptr`.
  *
- * This function returns as quickly as possible; it does not wait for the
- * write to complete. On a successful return, this work will continue in the
+ * This function returns as quickly as possible; it does not wait for the write
+ * to complete. On a successful return, this work will continue in the
  * background. If the work begins, even failure is asynchronous: a failing
  * return value from this function only means the work couldn't start at all.
  *
@@ -20370,8 +20364,8 @@ inline void AsyncIO::Read(void* ptr,
  * the system at any time until then. Do not allocate it on the stack, as this
  * might take longer than the life of the calling function to complete!
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param asyncio a pointer to an AsyncIO structure.
  * @param ptr a pointer to a buffer to write data from.
@@ -20412,35 +20406,34 @@ inline void AsyncIO::Write(void* ptr,
  * Close and free any allocated resources for an async I/O object.
  *
  * Closing a file is _also_ an asynchronous task! If a write failure were to
- * happen during the closing process, for example, the task results will
- * report it as usual.
+ * happen during the closing process, for example, the task results will report
+ * it as usual.
  *
- * Closing a file that has been written to does not guarantee the data has
- * made it to physical media; it may remain in the operating system's file
- * cache, for later writing to disk. This means that a successfully-closed
- * file can be lost if the system crashes or loses power in this small window.
- * To prevent this, call this function with the `flush` parameter set to true.
- * This will make the operation take longer, and perhaps increase system load
- * in general, but a successful result guarantees that the data has made it to
- * physical storage. Don't use this for temporary files, caches, and
- * unimportant data, and definitely use it for crucial irreplaceable files,
- * like game saves.
+ * Closing a file that has been written to does not guarantee the data has made
+ * it to physical media; it may remain in the operating system's file cache, for
+ * later writing to disk. This means that a successfully-closed file can be lost
+ * if the system crashes or loses power in this small window. To prevent this,
+ * call this function with the `flush` parameter set to true. This will make the
+ * operation take longer, and perhaps increase system load in general, but a
+ * successful result guarantees that the data has made it to physical storage.
+ * Don't use this for temporary files, caches, and unimportant data, and
+ * definitely use it for crucial irreplaceable files, like game saves.
  *
  * This function guarantees that the close will happen after any other pending
  * tasks to `asyncio`, so it's safe to open a file, start several operations,
  * close the file immediately, then check for all results later. This function
  * will not block until the tasks have completed.
  *
- * Once this function returns true, `asyncio` is no longer valid, regardless
- * of any future outcomes. Any completed tasks might still contain this
- * pointer in their AsyncIOOutcome data, in case the app was using this
- * value to track information, but it should not be used again.
+ * Once this function returns true, `asyncio` is no longer valid, regardless of
+ * any future outcomes. Any completed tasks might still contain this pointer in
+ * their AsyncIOOutcome data, in case the app was using this value to track
+ * information, but it should not be used again.
  *
  * If this function returns false, the close wasn't started at all, and it's
  * safe to attempt to close again later.
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param asyncio a pointer to an AsyncIO structure to close.
  * @param flush true if data should sync to disk before the task completes.
@@ -20491,26 +20484,25 @@ inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
  * Destroy a previously-created async I/O task queue.
  *
  * If there are still tasks pending for this queue, this call will block until
- * those tasks are finished. All those tasks will be deallocated. Their
- * results will be lost to the app.
+ * those tasks are finished. All those tasks will be deallocated. Their results
+ * will be lost to the app.
  *
- * Any pending reads from LoadFileAsync() that are still in this queue
- * will have their buffers deallocated by this function, to prevent a memory
- * leak.
+ * Any pending reads from LoadFileAsync() that are still in this queue will have
+ * their buffers deallocated by this function, to prevent a memory leak.
  *
- * Once this function is called, the queue is no longer valid and should not
- * be used, including by other threads that might access it while destruction
- * is blocking on pending tasks.
+ * Once this function is called, the queue is no longer valid and should not be
+ * used, including by other threads that might access it while destruction is
+ * blocking on pending tasks.
  *
  * Do not destroy a queue that still has threads waiting on it through
  * AsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to
- * unblock those threads, and take measures (such as Thread.Wait()) to make
- * sure they have finished their wait and won't wait on the queue again.
+ * unblock those threads, and take measures (such as Thread.Wait()) to make sure
+ * they have finished their wait and won't wait on the queue again.
  *
  * @param queue the task queue to destroy.
  *
- * @threadsafety It is safe to call this function from any thread, so long as
- *               no other thread is waiting on the queue with
+ * @threadsafety It is safe to call this function from any thread, so long as no
+ *               other thread is waiting on the queue with
  *               AsyncIOQueue.WaitResult.
  *
  * @since This function is available since SDL 3.2.0.
@@ -20525,8 +20517,8 @@ inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
 /**
  * Query an async I/O task queue for completed tasks.
  *
- * If a task assigned to this queue has finished, this will return true and
- * fill in `outcome` with the details of the task. If no task in the queue has
+ * If a task assigned to this queue has finished, this will return true and fill
+ * in `outcome` with the details of the task. If no task in the queue has
  * finished, this function will return false. This function does not block.
  *
  * If a task has completed, this function will free its resources and the task
@@ -20561,11 +20553,11 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
 /**
  * Block until an async I/O task queue has a completed task.
  *
- * This function puts the calling thread to sleep until there a task assigned
- * to the queue that has finished.
+ * This function puts the calling thread to sleep until there a task assigned to
+ * the queue that has finished.
  *
- * If a task assigned to the queue has finished, this will return true and
- * fill in `outcome` with the details of the task. If no task in the queue has
+ * If a task assigned to the queue has finished, this will return true and fill
+ * in `outcome` with the details of the task. If no task in the queue has
  * finished, this function will return false.
  *
  * If a task has completed, this function will free its resources and the task
@@ -20575,13 +20567,12 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  * once; a completed task will only go to one of the threads.
  *
  * Note that by the nature of various platforms, more than one waiting thread
- * may wake to handle a single task, but only one will obtain it, so
- * `timeoutMS` is a _maximum_ wait time, and this function may return false
- * sooner.
+ * may wake to handle a single task, but only one will obtain it, so `timeoutMS`
+ * is a _maximum_ wait time, and this function may return false sooner.
  *
  * This function may return false if there was a system error, the OS
- * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was
- * called to wake up all waiting threads without a finished task.
+ * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was called
+ * to wake up all waiting threads without a finished task.
  *
  * A timeout can be used to specify a maximum wait time, but rather than
  * polling, it is possible to have a timeout of -1 to wait forever, and use
@@ -20611,11 +20602,11 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
 /**
  * Block until an async I/O task queue has a completed task.
  *
- * This function puts the calling thread to sleep until there a task assigned
- * to the queue that has finished.
+ * This function puts the calling thread to sleep until there a task assigned to
+ * the queue that has finished.
  *
- * If a task assigned to the queue has finished, this will return true and
- * fill in `outcome` with the details of the task. If no task in the queue has
+ * If a task assigned to the queue has finished, this will return true and fill
+ * in `outcome` with the details of the task. If no task in the queue has
  * finished, this function will return false.
  *
  * If a task has completed, this function will free its resources and the task
@@ -20625,13 +20616,12 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
  * once; a completed task will only go to one of the threads.
  *
  * Note that by the nature of various platforms, more than one waiting thread
- * may wake to handle a single task, but only one will obtain it, so
- * `timeoutMS` is a _maximum_ wait time, and this function may return false
- * sooner.
+ * may wake to handle a single task, but only one will obtain it, so `timeoutMS`
+ * is a _maximum_ wait time, and this function may return false sooner.
  *
  * This function may return false if there was a system error, the OS
- * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was
- * called to wake up all waiting threads without a finished task.
+ * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was called
+ * to wake up all waiting threads without a finished task.
  *
  * A timeout can be used to specify a maximum wait time, but rather than
  * polling, it is possible to have a timeout of -1 to wait forever, and use
@@ -20675,10 +20665,10 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
  *
  * This can be useful when destroying a queue to make sure nothing is touching
  * it indefinitely. In this case, once this call completes, the caller should
- * take measures to make sure any previously-blocked threads have returned
- * from their wait and will not touch the queue again (perhaps by setting a
- * flag to tell the threads to terminate and then using Thread.Wait() to
- * make sure they've done so).
+ * take measures to make sure any previously-blocked threads have returned from
+ * their wait and will not touch the queue again (perhaps by setting a flag to
+ * tell the threads to terminate and then using Thread.Wait() to make sure
+ * they've done so).
  *
  * @param queue the async I/O task queue to signal.
  *
@@ -20708,11 +20698,11 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  * bytes_transferred value.
  *
  * This function will allocate the buffer to contain the file. It must be
- * deallocated by calling free() on AsyncIOOutcome's buffer field
- * after completion.
+ * deallocated by calling free() on AsyncIOOutcome's buffer field after
+ * completion.
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param file the path to read all available data from.
  * @param queue a queue to add the new AsyncIO to.
@@ -20739,8 +20729,8 @@ inline void LoadFileAsync(StringParam file,
  * Atomic operations.
  *
  * IMPORTANT: If you are not an expert in concurrent lockless programming, you
- * should not be using any functions in this file. You should be protecting
- * your data structures with full mutexes instead.
+ * should not be using any functions in this file. You should be protecting your
+ * data structures with full mutexes instead.
  *
  * ***Seriously, here be dragons!***
  *
@@ -20780,10 +20770,10 @@ struct AtomicU32;
  *
  * Please refer to SDL_MemoryBarrierRelease for details. This is a function
  * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this
- * function behind the scenes, where more heavy lifting can happen inside of
- * SDL. Generally, though, an app written in C/C++/etc should use the macro
- * version, as it will be more efficient.
+ * scripting language, etc. Also, some of the macro versions call this function
+ * behind the scenes, where more heavy lifting can happen inside of SDL.
+ * Generally, though, an app written in C/C++/etc should use the macro version,
+ * as it will be more efficient.
  *
  * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -20800,10 +20790,10 @@ inline void MemoryBarrierRelease() { SDL_MemoryBarrierReleaseFunction(); }
  *
  * Please refer to SDL_MemoryBarrierRelease for details. This is a function
  * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this
- * function behind the scenes, where more heavy lifting can happen inside of
- * SDL. Generally, though, an app written in C/C++/etc should use the macro
- * version, as it will be more efficient.
+ * scripting language, etc. Also, some of the macro versions call this function
+ * behind the scenes, where more heavy lifting can happen inside of SDL.
+ * Generally, though, an app written in C/C++/etc should use the macro version,
+ * as it will be more efficient.
  *
  * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -20820,8 +20810,8 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 /**
  * Mark a compiler barrier.
  *
- * A compiler barrier prevents the compiler from reordering reads and writes
- * to globally visible variables across the call.
+ * A compiler barrier prevents the compiler from reordering reads and writes to
+ * globally visible variables across the call.
  *
  * This macro only prevents the compiler from reordering reads and writes, it
  * does not prevent the CPU from reordering reads and writes. However, all of
@@ -20838,29 +20828,27 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 /**
  * Insert a memory release barrier (macro version).
  *
- * Memory barriers are designed to prevent reads and writes from being
- * reordered by the compiler and being seen out of order on multi-core CPUs.
+ * Memory barriers are designed to prevent reads and writes from being reordered
+ * by the compiler and being seen out of order on multi-core CPUs.
  *
  * A typical pattern would be for thread A to write some data and a flag, and
- * for thread B to read the flag and get the data. In this case you would
- * insert a release barrier between writing the data and the flag,
- * guaranteeing that the data write completes no later than the flag is
- * written, and you would insert an acquire barrier between reading the flag
- * and reading the data, to ensure that all the reads associated with the flag
- * have completed.
+ * for thread B to read the flag and get the data. In this case you would insert
+ * a release barrier between writing the data and the flag, guaranteeing that
+ * the data write completes no later than the flag is written, and you would
+ * insert an acquire barrier between reading the flag and reading the data, to
+ * ensure that all the reads associated with the flag have completed.
  *
  * In this pattern you should always see a release barrier paired with an
- * acquire barrier and you should gate the data reads/writes with a single
- * flag variable.
+ * acquire barrier and you should gate the data reads/writes with a single flag
+ * variable.
  *
  * For more information on these semantics, take a look at the blog post:
  * http://preshing.com/20120913/acquire-and-release-semantics
  *
  * This is the macro version of this functionality; if possible, SDL will use
- * compiler intrinsics or inline assembly, but some platforms might need to
- * call the function version of this, MemoryBarrierRelease to do
- * the heavy lifting. Apps that can use the macro should favor it over the
- * function.
+ * compiler intrinsics or inline assembly, but some platforms might need to call
+ * the function version of this, MemoryBarrierRelease to do the heavy lifting.
+ * Apps that can use the macro should favor it over the function.
  *
  * @threadsafety Obviously this macro is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -20880,10 +20868,9 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  * are and when to use them.
  *
  * This is the macro version of this functionality; if possible, SDL will use
- * compiler intrinsics or inline assembly, but some platforms might need to
- * call the function version of this, MemoryBarrierAcquire, to do
- * the heavy lifting. Apps that can use the macro should favor it over the
- * function.
+ * compiler intrinsics or inline assembly, but some platforms might need to call
+ * the function version of this, MemoryBarrierAcquire, to do the heavy lifting.
+ * Apps that can use the macro should favor it over the function.
  *
  * @threadsafety Obviously this macro is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -20901,12 +20888,12 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  *
  * This can be useful in busy-wait loops, as it serves as a hint to the CPU as
  * to the program's intent; some CPUs can use this to do more efficient
- * processing. On some platforms, this doesn't do anything, so using this
- * macro might just be a harmless no-op.
+ * processing. On some platforms, this doesn't do anything, so using this macro
+ * might just be a harmless no-op.
  *
- * Note that if you are busy-waiting, there are often more-efficient
- * approaches with other synchronization primitives: mutexes, semaphores,
- * condition variables, etc.
+ * Note that if you are busy-waiting, there are often more-efficient approaches
+ * with other synchronization primitives: mutexes, semaphores, condition
+ * variables, etc.
  *
  * @threadsafety This macro is safe to use from any thread.
  *
@@ -20920,19 +20907,17 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 /**
  * A type representing an atomic integer value.
  *
- * This can be used to manage a value that is synchronized across multiple
- * CPUs without a race condition; when an app sets a value with
- * AtomicInt.Set all other threads, regardless of the CPU it is running on,
- * will see that value when retrieved with AtomicInt.Get, regardless of CPU
- * caches, etc.
+ * This can be used to manage a value that is synchronized across multiple CPUs
+ * without a race condition; when an app sets a value with AtomicInt.Set all
+ * other threads, regardless of the CPU it is running on, will see that value
+ * when retrieved with AtomicInt.Get, regardless of CPU caches, etc.
  *
  * This is also useful for atomic compare-and-swap operations: a thread can
- * change the value as long as its current value matches expectations. When
- * done in a loop, one can guarantee data consistency across threads without a
- * lock (but the usual warnings apply: if you don't know what you're doing, or
- * you don't do it carefully, you can confidently cause any number of
- * disasters with this, so in most cases, you _should_ use a mutex instead of
- * this!).
+ * change the value as long as its current value matches expectations. When done
+ * in a loop, one can guarantee data consistency across threads without a lock
+ * (but the usual warnings apply: if you don't know what you're doing, or you
+ * don't do it carefully, you can confidently cause any number of disasters with
+ * this, so in most cases, you _should_ use a mutex instead of this!).
  *
  * This is a struct so people don't accidentally use numeric operations on it
  * directly. You have to use SDL atomic functions.
@@ -21204,19 +21189,17 @@ inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(this); }
 /**
  * A type representing an atomic unsigned 32-bit value.
  *
- * This can be used to manage a value that is synchronized across multiple
- * CPUs without a race condition; when an app sets a value with
- * AtomicU32.Set all other threads, regardless of the CPU it is running on,
- * will see that value when retrieved with AtomicU32.Get, regardless of CPU
- * caches, etc.
+ * This can be used to manage a value that is synchronized across multiple CPUs
+ * without a race condition; when an app sets a value with AtomicU32.Set all
+ * other threads, regardless of the CPU it is running on, will see that value
+ * when retrieved with AtomicU32.Get, regardless of CPU caches, etc.
  *
  * This is also useful for atomic compare-and-swap operations: a thread can
- * change the value as long as its current value matches expectations. When
- * done in a loop, one can guarantee data consistency across threads without a
- * lock (but the usual warnings apply: if you don't know what you're doing, or
- * you don't do it carefully, you can confidently cause any number of
- * disasters with this, so in most cases, you _should_ use a mutex instead of
- * this!).
+ * change the value as long as its current value matches expectations. When done
+ * in a loop, one can guarantee data consistency across threads without a lock
+ * (but the usual warnings apply: if you don't know what you're doing, or you
+ * don't do it carefully, you can confidently cause any number of disasters with
+ * this, so in most cases, you _should_ use a mutex instead of this!).
  *
  * This is a struct so people don't accidentally use numeric operations on it
  * directly. You have to use SDL atomic functions.
@@ -33428,9 +33411,9 @@ inline void RemoveTimer(TimerID id)
  *
  * Audio functionality for the SDL library.
  *
- * All audio in SDL3 revolves around AudioStream. Whether you want to play
- * or record audio, convert it, stream it, buffer it, or mix it, you're going
- * to be passing it through an audio stream.
+ * All audio in SDL3 revolves around AudioStream. Whether you want to play or
+ * record audio, convert it, stream it, buffer it, or mix it, you're going to be
+ * passing it through an audio stream.
  *
  * Audio streams are quite flexible; they can accept any amount of data at a
  * time, in any supported format, and output it as needed in any other format,
@@ -33441,12 +33424,11 @@ inline void RemoveTimer(TimerID id)
  * data, it will pull it from all bound streams and mix them together for
  * playback.
  *
- * Audio streams can also use an app-provided callback to supply data
- * on-demand, which maps pretty closely to the SDL2 audio model.
+ * Audio streams can also use an app-provided callback to supply data on-demand,
+ * which maps pretty closely to the SDL2 audio model.
  *
- * SDL also provides a simple .WAV loader in LoadWAV (and LoadWAV
- * if you aren't reading from a file) as a basic means to load sound data into
- * your program.
+ * SDL also provides a simple .WAV loader in LoadWAV (and LoadWAV if you aren't
+ * reading from a file) as a basic means to load sound data into your program.
  *
  * ## Logical audio devices
  *
@@ -33460,39 +33442,36 @@ inline void RemoveTimer(TimerID id)
  * logical device will mix its separate audio down to a single buffer, fed to
  * the physical device, behind the scenes. As many logical devices as you like
  * can come and go; SDL will only have to open the physical device at the OS
- * level once, and will manage all the logical devices on top of it
- * internally.
+ * level once, and will manage all the logical devices on top of it internally.
  *
  * One other benefit of logical devices: if you don't open a specific physical
  * device, instead opting for the default, SDL can automatically migrate those
- * logical devices to different hardware as circumstances change: a user
- * plugged in headphones? The system default changed? SDL can transparently
- * migrate the logical devices to the correct physical device seamlessly and
- * keep playing; the app doesn't even have to know it happened if it doesn't
- * want to.
+ * logical devices to different hardware as circumstances change: a user plugged
+ * in headphones? The system default changed? SDL can transparently migrate the
+ * logical devices to the correct physical device seamlessly and keep playing;
+ * the app doesn't even have to know it happened if it doesn't want to.
  *
  * ## Simplified audio
  *
- * As a simplified model for when a single source of audio is all that's
- * needed, an app can use AudioStream.AudioStream, which is a single
- * function to open an audio device, create an audio stream, bind that stream
- * to the newly-opened device, and (optionally) provide a callback for
- * obtaining audio data. When using this function, the primary interface is
- * the AudioStream and the device handle is mostly hidden away; destroying
- * a stream created through this function will also close the device, stream
- * bindings cannot be changed, etc. One other quirk of this is that the device
- * is started in a _paused_ state and must be explicitly resumed; this is
- * partially to offer a clean migration for SDL2 apps and partially because
- * the app might have to do more setup before playback begins; in the
- * non-simplified form, nothing will play until a stream is bound to a device,
- * so they start _unpaused_.
+ * As a simplified model for when a single source of audio is all that's needed,
+ * an app can use AudioStream.AudioStream, which is a single function to open an
+ * audio device, create an audio stream, bind that stream to the newly-opened
+ * device, and (optionally) provide a callback for obtaining audio data. When
+ * using this function, the primary interface is the AudioStream and the device
+ * handle is mostly hidden away; destroying a stream created through this
+ * function will also close the device, stream bindings cannot be changed, etc.
+ * One other quirk of this is that the device is started in a _paused_ state and
+ * must be explicitly resumed; this is partially to offer a clean migration for
+ * SDL2 apps and partially because the app might have to do more setup before
+ * playback begins; in the non-simplified form, nothing will play until a stream
+ * is bound to a device, so they start _unpaused_.
  *
  * ## Channel layouts
  *
- * Audio data passing through SDL is uncompressed PCM data, interleaved. One
- * can provide their own decompression through an MP3, etc, decoder, but SDL
- * does not provide this directly. Each interleaved channel of data is meant
- * to be in a specific order.
+ * Audio data passing through SDL is uncompressed PCM data, interleaved. One can
+ * provide their own decompression through an MP3, etc, decoder, but SDL does
+ * not provide this directly. Each interleaved channel of data is meant to be in
+ * a specific order.
  *
  * Abbreviations:
  *
@@ -33507,9 +33486,9 @@ inline void RemoveTimer(TimerID id)
  * - BC = back center speaker
  * - LFE = low-frequency speaker
  *
- * These are listed in the order they are laid out in memory, so "FL, FR"
- * means "the front left speaker is laid out in memory first, then the front
- * right, then it repeats for the next audio frame".
+ * These are listed in the order they are laid out in memory, so "FL, FR" means
+ * "the front left speaker is laid out in memory first, then the front right,
+ * then it repeats for the next audio frame".
  *
  * - 1 channel (mono) layout: FRONT
  * - 2 channels (stereo) layout: FL, FR
@@ -33521,12 +33500,12 @@ inline void RemoveTimer(TimerID id)
  * - 7 channels (6.1) layout: FL, FR, FC, LFE, BC, SL, SR
  * - 8 channels (7.1) layout: FL, FR, FC, LFE, BL, BR, SL, SR
  *
- * This is the same order as DirectSound expects, but applied to all
- * platforms; SDL will swizzle the channels as necessary if a platform expects
- * something different.
+ * This is the same order as DirectSound expects, but applied to all platforms;
+ * SDL will swizzle the channels as necessary if a platform expects something
+ * different.
  *
- * AudioStream can also be provided channel maps to change this ordering
- * to whatever is necessary, in other audio processing scenarios.
+ * AudioStream can also be provided channel maps to change this ordering to
+ * whatever is necessary, in other audio processing scenarios.
  *
  * @{
  */
@@ -33843,8 +33822,7 @@ public:
    * Get the appropriate memset value for silencing an audio format.
    *
    * The value returned by this function can be used as the second argument to
-   * memset (or memset) to set an audio buffer in a specific format to
-   * silence.
+   * memset (or memset) to set an audio buffer in a specific format to silence.
    *
    * @returns a byte value that can be passed to memset.
    *
@@ -34089,17 +34067,17 @@ constexpr bool AudioFormat::IsUnsigned() const
 /**
  * A callback that fires when data is about to be fed to an audio device.
  *
- * This is useful for accessing the final mix, perhaps for writing a
- * visualizer or applying a final effect to the audio data before playback.
+ * This is useful for accessing the final mix, perhaps for writing a visualizer
+ * or applying a final effect to the audio data before playback.
  *
  * This callback should run as quickly as possible and not block for any
  * significant time, as this callback delays submission of data to the audio
  * device, which can cause audio playback problems.
  *
- * The postmix callback _must_ be able to handle any audio data format
- * specified in `spec`, which can change between callbacks if the audio device
- * changed. However, this only covers frequency and channel count; data is
- * always provided here in AUDIO_F32 format.
+ * The postmix callback _must_ be able to handle any audio data format specified
+ * in `spec`, which can change between callbacks if the audio device changed.
+ * However, this only covers frequency and channel count; data is always
+ * provided here in AUDIO_F32 format.
  *
  * The postmix callback runs _after_ logical device gain and audiostream gain
  * have been applied, which is to say you can make the output data louder at
@@ -34107,8 +34085,8 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @param userdata a pointer provided by the app through
  *                 AudioDevice.SetPostmixCallback, for its own use.
- * @param spec the current format of audio that is to be submitted to the
- *             audio device.
+ * @param spec the current format of audio that is to be submitted to the audio
+ *             device.
  * @param buffer the buffer of audio samples to be submitted. The callback can
  *               inspect and/or modify this data.
  * @param buflen the size of `buffer` in bytes.
@@ -34126,24 +34104,24 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
 /**
  * A callback that fires when data is about to be fed to an audio device.
  *
- * This is useful for accessing the final mix, perhaps for writing a
- * visualizer or applying a final effect to the audio data before playback.
+ * This is useful for accessing the final mix, perhaps for writing a visualizer
+ * or applying a final effect to the audio data before playback.
  *
  * This callback should run as quickly as possible and not block for any
  * significant time, as this callback delays submission of data to the audio
  * device, which can cause audio playback problems.
  *
- * The postmix callback _must_ be able to handle any audio data format
- * specified in `spec`, which can change between callbacks if the audio device
- * changed. However, this only covers frequency and channel count; data is
- * always provided here in AUDIO_F32 format.
+ * The postmix callback _must_ be able to handle any audio data format specified
+ * in `spec`, which can change between callbacks if the audio device changed.
+ * However, this only covers frequency and channel count; data is always
+ * provided here in AUDIO_F32 format.
  *
  * The postmix callback runs _after_ logical device gain and audiostream gain
  * have been applied, which is to say you can make the output data louder at
  * this point than the gain settings would suggest.
  *
- * @param spec the current format of audio that is to be submitted to the
- *             audio device.
+ * @param spec the current format of audio that is to be submitted to the audio
+ *             device.
  * @param buffer the buffer of audio samples to be submitted. The callback can
  *               inspect and/or modify this data.
  *
@@ -34162,15 +34140,15 @@ using AudioPostmixCB =
 /**
  * A callback that fires when data passes through an AudioStream.
  *
- * Apps can (optionally) register a callback with an audio stream that is
- * called when data is added with AudioStream.PutData, or requested with
+ * Apps can (optionally) register a callback with an audio stream that is called
+ * when data is added with AudioStream.PutData, or requested with
  * AudioStream.GetData.
  *
  * Two values are offered here: one is the amount of additional data needed to
- * satisfy the immediate request (which might be zero if the stream already
- * has enough data queued) and the other is the total amount being requested.
- * In a Get call triggering a Put callback, these values can be different. In
- * a Put call triggering a Get callback, these values are always the same.
+ * satisfy the immediate request (which might be zero if the stream already has
+ * enough data queued) and the other is the total amount being requested. In a
+ * Get call triggering a Put callback, these values can be different. In a Put
+ * call triggering a Get callback, these values are always the same.
  *
  * Byte counts might be slightly overestimated due to buffering or resampling,
  * and may change from call to call.
@@ -34185,8 +34163,7 @@ using AudioPostmixCB =
  *                          now.
  * @param total_amount the total amount of data requested, in bytes, that is
  *                     requested or available.
- * @param userdata an opaque pointer provided by the app for their personal
- *                 use.
+ * @param userdata an opaque pointer provided by the app for their personal use.
  *
  * @threadsafety This callbacks may run from any thread, so if you need to
  *               protect shared data, you should use AudioStream.Lock to
@@ -34204,15 +34181,15 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
 /**
  * A callback that fires when data passes through an AudioStream.
  *
- * Apps can (optionally) register a callback with an audio stream that is
- * called when data is added with AudioStream.PutData, or requested with
+ * Apps can (optionally) register a callback with an audio stream that is called
+ * when data is added with AudioStream.PutData, or requested with
  * AudioStream.GetData.
  *
  * Two values are offered here: one is the amount of additional data needed to
- * satisfy the immediate request (which might be zero if the stream already
- * has enough data queued) and the other is the total amount being requested.
- * In a Get call triggering a Put callback, these values can be different. In
- * a Put call triggering a Get callback, these values are always the same.
+ * satisfy the immediate request (which might be zero if the stream already has
+ * enough data queued) and the other is the total amount being requested. In a
+ * Get call triggering a Put callback, these values can be different. In a Put
+ * call triggering a Get callback, these values are always the same.
  *
  * Byte counts might be slightly overestimated due to buffering or resampling,
  * and may change from call to call.
@@ -34297,33 +34274,30 @@ public:
    * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
    * there is no audio callback; you only bind audio streams and make sure they
    * have data flowing into them (however, you can simulate SDL2's semantics
-   * fairly closely by using AudioStream.AudioStream instead of this
-   * function).
+   * fairly closely by using AudioStream.AudioStream instead of this function).
    *
    * If you don't care about opening a specific device, pass a `devid` of either
-   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
-   * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
-   * the most reasonable default, and may also switch between physical devices
-   * seamlessly later, if the most reasonable default changes during the
-   * lifetime of this opened device (user changed the default in the OS's system
-   * preferences, the default got unplugged so the system jumped to a new
-   * default, the user plugged in headphones on a mobile device, etc). Unless
-   * you have a good reason to choose a specific device, this is probably what
-   * you want.
+   * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In
+   * this case, SDL will try to pick the most reasonable default, and may also
+   * switch between physical devices seamlessly later, if the most reasonable
+   * default changes during the lifetime of this opened device (user changed the
+   * default in the OS's system preferences, the default got unplugged so the
+   * system jumped to a new default, the user plugged in headphones on a mobile
+   * device, etc). Unless you have a good reason to choose a specific device,
+   * this is probably what you want.
    *
    * You may request a specific format for the audio device, but there is no
    * promise the device will honor that request for several reasons. As such,
    * it's only meant to be a hint as to what data your app will provide. Audio
    * streams will accept data in whatever format you specify and manage
-   * conversion for you as appropriate. AudioDevice.GetFormat can tell you
-   * the preferred format for the device before opening and the actual format
-   * the device is using after opening.
+   * conversion for you as appropriate. AudioDevice.GetFormat can tell you the
+   * preferred format for the device before opening and the actual format the
+   * device is using after opening.
    *
    * It's legal to open the same device ID more than once; each successful open
-   * will generate a new logical AudioDevice that is managed separately
-   * from others on the same physical device. This allows libraries to open a
-   * device separately from the main app and bind its own streams without
-   * conflicting.
+   * will generate a new logical AudioDevice that is managed separately from
+   * others on the same physical device. This allows libraries to open a device
+   * separately from the main app and bind its own streams without conflicting.
    *
    * It is also legal to open a device ID returned by a previous call to this
    * function; doing so just creates another logical device on the same physical
@@ -34345,8 +34319,8 @@ public:
    *
    * @param devid the device instance id to open, or
    *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
-   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
-   *              default device.
+   *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable default
+   *              device.
    * @param spec the requested device configuration. Can be nullptr to use
    *             reasonable defaults.
    * @post the device ID on success.
@@ -34486,11 +34460,11 @@ public:
   /**
    * Determine if an audio device is physical (instead of logical).
    *
-   * An AudioDevice that represents physical hardware is a physical
-   * device; there is one for each piece of hardware that SDL can see. Logical
-   * devices are created by calling AudioDevice.AudioDevice or
-   * AudioStream.AudioStream, and while each is associated with a physical
-   * device, there can be any number of logical devices on one physical device.
+   * An AudioDevice that represents physical hardware is a physical device;
+   * there is one for each piece of hardware that SDL can see. Logical devices
+   * are created by calling AudioDevice.AudioDevice or AudioStream.AudioStream,
+   * and while each is associated with a physical device, there can be any
+   * number of logical devices on one physical device.
    *
    * For the most part, logical and physical IDs are interchangeable--if you try
    * to open a logical device, SDL understands to assign that effort to the
@@ -34553,9 +34527,8 @@ public:
    * Use this function to unpause audio playback on a specified device.
    *
    * This function unpauses audio processing for a given device that has
-   * previously been paused with AudioDevice.Pause(). Once unpaused, any
-   * bound audio streams will begin to progress again, and audio can be
-   * generated.
+   * previously been paused with AudioDevice.Pause(). Once unpaused, any bound
+   * audio streams will begin to progress again, and audio can be generated.
    *
    * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
    * has to bind a stream before any audio will flow. Unpausing an unpaused
@@ -34607,8 +34580,8 @@ public:
    * Physical devices may not have their gain changed, only logical devices, and
    * this function will always return -1.0f when used on physical devices.
    *
-   * @returns the gain of the device or -1.0f on failure; call GetError()
-   *          for more information.
+   * @returns the gain of the device or -1.0f on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -34670,8 +34643,8 @@ public:
    * Binding a stream to a device will set its output format for playback
    * devices, and its input format for recording devices, so they match the
    * device's settings. The caller is welcome to change the other end of the
-   * stream's format at any time with AudioStream.SetFormat(). If the other
-   * end of the stream's format has never been set (the audio stream was created
+   * stream's format at any time with AudioStream.SetFormat(). If the other end
+   * of the stream's format has never been set (the audio stream was created
    * with a nullptr audio spec), this function will set it to match the device
    * end's format.
    *
@@ -34820,8 +34793,8 @@ public:
    *
    * This function will open an audio device, create a stream and bind it.
    * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStream as
-   * the only object needed to manage audio playback.
+   * stream is destroyed, so the app can treat the returned AudioStream as the
+   * only object needed to manage audio playback.
    *
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
@@ -34845,14 +34818,14 @@ public:
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStream.Destroy will also close
-   * the audio device associated with this stream.
+   * Destroying the returned stream with AudioStream.Destroy will also close the
+   * audio device associated with this stream.
    *
    * @param spec the audio stream's data format. Can be nullptr.
    * @param callback a callback where the app will provide new data for
    *                 playback, or receive new data for recording. Can be
-   * nullptr, in which case the app will need to call AudioStream.PutData or
-   * AudioStream.GetData as necessary.
+   *                 nullptr, in which case the app will need to call
+   *                 AudioStream.PutData or AudioStream.GetData as necessary.
    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
    *                 Ignored if callback is nullptr.
    * @returns an audio stream on success.
@@ -34879,8 +34852,8 @@ public:
    *
    * This function will open an audio device, create a stream and bind it.
    * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStream as
-   * the only object needed to manage audio playback.
+   * stream is destroyed, so the app can treat the returned AudioStream as the
+   * only object needed to manage audio playback.
    *
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
@@ -34904,8 +34877,8 @@ public:
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStream.Destroy will also close
-   * the audio device associated with this stream.
+   * Destroying the returned stream with AudioStream.Destroy will also close the
+   * audio device associated with this stream.
    *
    * @param spec the audio stream's data format. Can be nullptr.
    * @param callback a callback where the app will provide new data for
@@ -34952,9 +34925,9 @@ struct AudioDeviceRef : AudioDevice
 /**
  * A value used to request a default playback audio device.
  *
- * Several functions that require an AudioDevice will accept this value
- * to signify the app just wants the system to choose a default device instead
- * of the app providing a specific one.
+ * Several functions that require an AudioDevice will accept this value to
+ * signify the app just wants the system to choose a default device instead of
+ * the app providing a specific one.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -34964,9 +34937,9 @@ constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_PLAYBACK =
 /**
  * A value used to request a default recording audio device.
  *
- * Several functions that require an AudioDevice will accept this value
- * to signify the app just wants the system to choose a default device instead
- * of the app providing a specific one.
+ * Several functions that require an AudioDevice will accept this value to
+ * signify the app just wants the system to choose a default device instead of
+ * the app providing a specific one.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -35008,8 +34981,8 @@ constexpr int AudioFrameSize(const AudioSpec& x)
  *   to manage data on-the-fly.
  *
  * Audio streams are the core of the SDL3 audio interface. You create one or
- * more of them, bind them to an opened audio device, and feed data to them
- * (or for recording, consume data from them).
+ * more of them, bind them to an opened audio device, and feed data to them (or
+ * for recording, consume data from them).
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -35086,8 +35059,8 @@ public:
    *
    * This function will open an audio device, create a stream and bind it.
    * Unlike other methods of setup, the audio device will be closed when this
-   * stream is destroyed, so the app can treat the returned AudioStream as
-   * the only object needed to manage audio playback.
+   * stream is destroyed, so the app can treat the returned AudioStream as the
+   * only object needed to manage audio playback.
    *
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
@@ -35111,16 +35084,16 @@ public:
    * capturing). Otherwise, the callback will begin to fire once the device is
    * unpaused.
    *
-   * Destroying the returned stream with AudioStream.Destroy will also close
-   * the audio device associated with this stream.
+   * Destroying the returned stream with AudioStream.Destroy will also close the
+   * audio device associated with this stream.
    *
-   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
-   *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+   * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
+   *              AUDIO_DEVICE_DEFAULT_RECORDING.
    * @param spec the audio stream's data format. Can be nullptr.
    * @param callback a callback where the app will provide new data for
    *                 playback, or receive new data for recording. Can be
-   * nullptr, in which case the app will need to call AudioStream.PutData or
-   * AudioStream.GetData as necessary.
+   *                 nullptr, in which case the app will need to call
+   *                 AudioStream.PutData or AudioStream.GetData as necessary.
    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
    *                 Ignored if callback is nullptr.
    * @post an audio stream on success.
@@ -35386,9 +35359,9 @@ public:
   /**
    * Change the input and output formats of an audio stream.
    *
-   * Future calls to and AudioStream.GetAvailable and AudioStream.GetData
-   * will reflect the new format, and future calls to AudioStream.PutData
-   * must provide data in the new input formats.
+   * Future calls to and AudioStream.GetAvailable and AudioStream.GetData will
+   * reflect the new format, and future calls to AudioStream.PutData must
+   * provide data in the new input formats.
    *
    * Data that was previously queued in the stream will still be operated on in
    * the format that was current when it was added, which is to say you can put
@@ -35443,8 +35416,8 @@ public:
    * pitch. A value less than 1.0 will play the audio slower, and at a lower
    * pitch.
    *
-   * This is applied during AudioStream.GetData, and can be continuously
-   * changed to create various effects.
+   * This is applied during AudioStream.GetData, and can be continuously changed
+   * to create various effects.
    *
    * @param ratio the frequency ratio. 1.0 is normal speed. Must be between 0.01
    *              and 100.
@@ -35468,8 +35441,8 @@ public:
    *
    * Audio streams default to a gain of 1.0f (no change in output).
    *
-   * @returns the gain of the stream or -1.0f on failure; call GetError()
-   *          for more information.
+   * @returns the gain of the stream or -1.0f on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety It is safe to call this function from any thread, as it holds
    *               a stream-specific mutex while running.
@@ -35488,8 +35461,8 @@ public:
    *
    * Audio streams default to a gain of 1.0f (no change in output).
    *
-   * This is applied during AudioStream.GetData, and can be continuously
-   * changed to create various effects.
+   * This is applied during AudioStream.GetData, and can be continuously changed
+   * to create various effects.
    *
    * @param gain the gain. 1.0f is no change, 0.0f is silence.
    * @throws Error on failure.
@@ -35552,8 +35525,8 @@ public:
    * data in the [order that SDL expects](CategoryAudio#channel-layouts).
    *
    * The input channel map reorders data that is added to a stream via
-   * AudioStream.PutData. Future calls to AudioStream.PutData must provide
-   * data in the new channel order.
+   * AudioStream.PutData. Future calls to AudioStream.PutData must provide data
+   * in the new channel order.
    *
    * Each item in the array represents an input channel, and its value is the
    * channel that it should be remapped to. To reverse a stereo signal's left
@@ -35692,9 +35665,9 @@ public:
    * AudioStream.SetFormat.
    *
    * Note that any conversion and resampling necessary is done during this call,
-   * and AudioStream.PutData simply queues unconverted data for later. This
-   * is different than SDL2, where that work was done while inputting new data
-   * to the stream and requesting the output just copied the converted data.
+   * and AudioStream.PutData simply queues unconverted data for later. This is
+   * different than SDL2, where that work was done while inputting new data to
+   * the stream and requesting the output just copied the converted data.
    *
    * @param buf a buffer to fill with audio data.
    * @returns the number of bytes read from the stream or -1 on failure; call
@@ -35752,9 +35725,9 @@ public:
    * Users of this API should be aware of format changes they make when feeding
    * a stream and plan accordingly.
    *
-   * Queued data is not converted until it is consumed by
-   * AudioStream.GetData, so this value should be representative of the exact
-   * data that was put into the stream.
+   * Queued data is not converted until it is consumed by AudioStream.GetData,
+   * so this value should be representative of the exact data that was put into
+   * the stream.
    *
    * If the stream has so much data that it would overflow an int, the return
    * value is clamped to a maximum value, but no queued data is lost; if there
@@ -35762,8 +35735,8 @@ public:
    * AudioStream.GetData before this function's return value is no longer
    * clamped.
    *
-   * @returns the number of bytes queued or -1 on failure; call GetError()
-   *          for more information.
+   * @returns the number of bytes queued or -1 on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -35885,8 +35858,8 @@ public:
    * protect shared data during those callbacks, locking the stream guarantees
    * that the callback is not running while the lock is held.
    *
-   * As this is just a wrapper over Mutex.Lock for an internal lock; it has
-   * all the same attributes (recursive locks are allowed, etc).
+   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+   * the same attributes (recursive locks are allowed, etc).
    *
    * @throws Error on failure.
    *
@@ -35920,9 +35893,9 @@ public:
    * This callback is called _before_ data is obtained from the stream, giving
    * the callback the chance to add more on-demand.
    *
-   * The callback can (optionally) call AudioStream.PutData() to add more
-   * audio to the stream during this call; if needed, the request that triggered
-   * this callback will obtain the new data immediately.
+   * The callback can (optionally) call AudioStream.PutData() to add more audio
+   * to the stream during this call; if needed, the request that triggered this
+   * callback will obtain the new data immediately.
    *
    * The callback's `additional_amount` argument is roughly how many bytes of
    * _unconverted_ data (in the stream's input format) is needed by the caller,
@@ -35964,9 +35937,9 @@ public:
    * This callback is called _before_ data is obtained from the stream, giving
    * the callback the chance to add more on-demand.
    *
-   * The callback can (optionally) call AudioStream.PutData() to add more
-   * audio to the stream during this call; if needed, the request that triggered
-   * this callback will obtain the new data immediately.
+   * The callback can (optionally) call AudioStream.PutData() to add more audio
+   * to the stream during this call; if needed, the request that triggered this
+   * callback will obtain the new data immediately.
    *
    * The callback's `additional_amount` argument is roughly how many bytes of
    * _unconverted_ data (in the stream's input format) is needed by the caller,
@@ -36156,14 +36129,14 @@ struct AudioStreamRef : AudioStream
  * Use this function to get the number of built-in audio drivers.
  *
  * This function returns a hardcoded number. This never returns a negative
- * value; if there are no drivers compiled into this build of SDL, this
- * function returns zero. The presence of a driver in this list does not mean
- * it will function, it just means SDL is capable of interacting with that
- * interface. For example, a build of SDL might have esound support, but if
- * there's no esound server available, SDL's esound driver would fail if used.
+ * value; if there are no drivers compiled into this build of SDL, this function
+ * returns zero. The presence of a driver in this list does not mean it will
+ * function, it just means SDL is capable of interacting with that interface.
+ * For example, a build of SDL might have esound support, but if there's no
+ * esound server available, SDL's esound driver would fail if used.
  *
- * By default, SDL tries all drivers, in its preferred order, until one is
- * found to be usable.
+ * By default, SDL tries all drivers, in its preferred order, until one is found
+ * to be usable.
  *
  * @returns the number of built-in audio drivers.
  *
@@ -36179,8 +36152,8 @@ inline int GetNumAudioDrivers() { return SDL_GetNumAudioDrivers(); }
  * Use this function to get the name of a built in audio driver.
  *
  * The list of audio drivers is given in the order that they are normally
- * initialized by default; the drivers that seem more reasonable to choose
- * first (as far as the SDL developers believe) are earlier in the list.
+ * initialized by default; the drivers that seem more reasonable to choose first
+ * (as far as the SDL developers believe) are earlier in the list.
  *
  * The names of drivers are all simple, low-ASCII identifiers, like "alsa",
  * "coreaudio" or "wasapi". These never have Unicode characters, and are not
@@ -36189,7 +36162,7 @@ inline int GetNumAudioDrivers() { return SDL_GetNumAudioDrivers(); }
  * @param index the index of the audio driver; the value ranges from 0 to
  *              GetNumAudioDrivers() - 1.
  * @returns the name of the audio driver at the requested index, or nullptr if
- * an invalid index was specified.
+ *          an invalid index was specified.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -36210,7 +36183,7 @@ inline const char* GetAudioDriver(int index)
  * meant to be proper names.
  *
  * @returns the name of the current audio driver or nullptr if no driver has
- * been initialized.
+ *          been initialized.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -36225,12 +36198,12 @@ inline const char* GetCurrentAudioDriver()
  * Get a list of currently-connected audio playback devices.
  *
  * This returns of list of available devices that play sound, perhaps to
- * speakers or headphones ("playback" devices). If you want devices that
- * record audio, like a microphone ("recording" devices), use
+ * speakers or headphones ("playback" devices). If you want devices that record
+ * audio, like a microphone ("recording" devices), use
  * GetAudioRecordingDevices() instead.
  *
- * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDevice.AudioDevice().
+ * This only returns a list of physical devices; it will not have any device IDs
+ * returned by AudioDevice.AudioDevice().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -36261,8 +36234,8 @@ inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  * perhaps to speakers or headphones ("playback" devices), use
  * GetAudioPlaybackDevices() instead.
  *
- * This only returns a list of physical devices; it will not have any device
- * IDs returned by AudioDevice.AudioDevice().
+ * This only returns a list of physical devices; it will not have any device IDs
+ * returned by AudioDevice.AudioDevice().
  *
  * If this function returns nullptr, to signify an error, `*count` will be set
  * to zero.
@@ -36317,14 +36290,13 @@ inline const char* AudioDevice::GetName() const
  * preferred format (or a reasonable default if this can't be determined).
  *
  * You may also specify AUDIO_DEVICE_DEFAULT_PLAYBACK or
- * AUDIO_DEVICE_DEFAULT_RECORDING here, which is useful for getting a
- * reasonable recommendation before opening the system-recommended default
- * device.
+ * AUDIO_DEVICE_DEFAULT_RECORDING here, which is useful for getting a reasonable
+ * recommendation before opening the system-recommended default device.
  *
  * You can also use this to request the current device buffer size. This is
- * specified in sample frames and represents the amount of data SDL will feed
- * to the physical hardware in each chunk. This can be converted to
- * milliseconds of audio with the following equation:
+ * specified in sample frames and represents the amount of data SDL will feed to
+ * the physical hardware in each chunk. This can be converted to milliseconds of
+ * audio with the following equation:
  *
  * `ms = (int) ((((Sint64) frames) * 1000) / spec.freq);`
  *
@@ -36356,8 +36328,8 @@ inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
 /**
  * Get the current channel map of an audio device.
  *
- * Channel maps are optional; most things do not need them, instead passing
- * data in the [order that SDL expects](CategoryAudio#channel-layouts).
+ * Channel maps are optional; most things do not need them, instead passing data
+ * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * Audio devices usually have no remapping applied. This is represented by
  * returning nullptr, and does not signify an error.
@@ -36388,63 +36360,59 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * Open a specific audio device.
  *
  * You can open both playback and recording devices through this function.
- * Playback devices will take data from bound audio streams, mix it, and send
- * it to the hardware. Recording devices will feed any bound audio streams
- * with a copy of any incoming data.
+ * Playback devices will take data from bound audio streams, mix it, and send it
+ * to the hardware. Recording devices will feed any bound audio streams with a
+ * copy of any incoming data.
  *
- * An opened audio device starts out with no audio streams bound. To start
- * audio playing, bind a stream and supply audio data to it. Unlike SDL2,
- * there is no audio callback; you only bind audio streams and make sure they
- * have data flowing into them (however, you can simulate SDL2's semantics
- * fairly closely by using AudioStream.AudioStream instead of this
- * function).
+ * An opened audio device starts out with no audio streams bound. To start audio
+ * playing, bind a stream and supply audio data to it. Unlike SDL2, there is no
+ * audio callback; you only bind audio streams and make sure they have data
+ * flowing into them (however, you can simulate SDL2's semantics fairly closely
+ * by using AudioStream.AudioStream instead of this function).
  *
  * If you don't care about opening a specific device, pass a `devid` of either
- * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or
- * `AUDIO_DEVICE_DEFAULT_RECORDING`. In this case, SDL will try to pick
- * the most reasonable default, and may also switch between physical devices
- * seamlessly later, if the most reasonable default changes during the
- * lifetime of this opened device (user changed the default in the OS's system
- * preferences, the default got unplugged so the system jumped to a new
- * default, the user plugged in headphones on a mobile device, etc). Unless
- * you have a good reason to choose a specific device, this is probably what
- * you want.
+ * `AUDIO_DEVICE_DEFAULT_PLAYBACK` or `AUDIO_DEVICE_DEFAULT_RECORDING`. In this
+ * case, SDL will try to pick the most reasonable default, and may also switch
+ * between physical devices seamlessly later, if the most reasonable default
+ * changes during the lifetime of this opened device (user changed the default
+ * in the OS's system preferences, the default got unplugged so the system
+ * jumped to a new default, the user plugged in headphones on a mobile device,
+ * etc). Unless you have a good reason to choose a specific device, this is
+ * probably what you want.
  *
  * You may request a specific format for the audio device, but there is no
- * promise the device will honor that request for several reasons. As such,
- * it's only meant to be a hint as to what data your app will provide. Audio
- * streams will accept data in whatever format you specify and manage
- * conversion for you as appropriate. AudioDevice.GetFormat can tell you
- * the preferred format for the device before opening and the actual format
- * the device is using after opening.
+ * promise the device will honor that request for several reasons. As such, it's
+ * only meant to be a hint as to what data your app will provide. Audio streams
+ * will accept data in whatever format you specify and manage conversion for you
+ * as appropriate. AudioDevice.GetFormat can tell you the preferred format for
+ * the device before opening and the actual format the device is using after
+ * opening.
  *
  * It's legal to open the same device ID more than once; each successful open
- * will generate a new logical AudioDevice that is managed separately
- * from others on the same physical device. This allows libraries to open a
- * device separately from the main app and bind its own streams without
- * conflicting.
+ * will generate a new logical AudioDevice that is managed separately from
+ * others on the same physical device. This allows libraries to open a device
+ * separately from the main app and bind its own streams without conflicting.
  *
  * It is also legal to open a device ID returned by a previous call to this
  * function; doing so just creates another logical device on the same physical
  * device. This may be useful for making logical groupings of audio streams.
  *
- * This function returns the opened device ID on success. This is a new,
- * unique AudioDevice that represents a logical device.
+ * This function returns the opened device ID on success. This is a new, unique
+ * AudioDevice that represents a logical device.
  *
  * Some backends might offer arbitrary devices (for example, a networked audio
  * protocol that can connect to an arbitrary server). For these, as a change
- * from SDL2, you should open a default device ID and use an SDL hint to
- * specify the target if you care, or otherwise let the backend figure out a
- * reasonable default. Most backends don't offer anything like this, and often
- * this would be an end user setting an environment variable for their custom
- * need, and not something an application should specifically manage.
+ * from SDL2, you should open a default device ID and use an SDL hint to specify
+ * the target if you care, or otherwise let the backend figure out a reasonable
+ * default. Most backends don't offer anything like this, and often this would
+ * be an end user setting an environment variable for their custom need, and not
+ * something an application should specifically manage.
  *
  * When done with an audio device, possibly at the end of the app's life, one
  * should call AudioDevice.Close() on the returned device id.
  *
- * @param devid the device instance id to open, or
- *              AUDIO_DEVICE_DEFAULT_PLAYBACK or
- *              AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
+ * @param devid the device instance id to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
+ *              or AUDIO_DEVICE_DEFAULT_RECORDING for the most reasonable
  *              default device.
  * @param spec the requested device configuration. Can be nullptr to use
  *             reasonable defaults.
@@ -36467,11 +36435,11 @@ inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
 /**
  * Determine if an audio device is physical (instead of logical).
  *
- * An AudioDevice that represents physical hardware is a physical
- * device; there is one for each piece of hardware that SDL can see. Logical
- * devices are created by calling AudioDevice.AudioDevice or
- * AudioStream.AudioStream, and while each is associated with a physical
- * device, there can be any number of logical devices on one physical device.
+ * An AudioDevice that represents physical hardware is a physical device; there
+ * is one for each piece of hardware that SDL can see. Logical devices are
+ * created by calling AudioDevice.AudioDevice or AudioStream.AudioStream, and
+ * while each is associated with a physical device, there can be any number of
+ * logical devices on one physical device.
  *
  * For the most part, logical and physical IDs are interchangeable--if you try
  * to open a logical device, SDL understands to assign that effort to the
@@ -36523,19 +36491,19 @@ inline bool AudioDevice::IsPlayback() const
  * Use this function to pause audio playback on a specified device.
  *
  * This function pauses audio processing for a given device. Any bound audio
- * streams will not progress, and no audio will be generated. Pausing one
- * device does not prevent other unpaused devices from running.
+ * streams will not progress, and no audio will be generated. Pausing one device
+ * does not prevent other unpaused devices from running.
  *
- * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
- * has to bind a stream before any audio will flow. Pausing a paused device is
- * a legal no-op.
+ * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app has
+ * to bind a stream before any audio will flow. Pausing a paused device is a
+ * legal no-op.
  *
  * Pausing a device can be useful to halt all audio without unbinding all the
  * audio streams. This might be useful while a game is paused, or a level is
  * loading, etc.
  *
- * Physical devices can not be paused or unpaused, only logical devices
- * created through AudioDevice.AudioDevice() can be.
+ * Physical devices can not be paused or unpaused, only logical devices created
+ * through AudioDevice.AudioDevice() can be.
  *
  * @param devid a device opened by AudioDevice.AudioDevice().
  * @throws Error on failure.
@@ -36558,16 +36526,15 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
  * Use this function to unpause audio playback on a specified device.
  *
  * This function unpauses audio processing for a given device that has
- * previously been paused with AudioDevice.Pause(). Once unpaused, any
- * bound audio streams will begin to progress again, and audio can be
- * generated.
+ * previously been paused with AudioDevice.Pause(). Once unpaused, any bound
+ * audio streams will begin to progress again, and audio can be generated.
  *
- * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
- * has to bind a stream before any audio will flow. Unpausing an unpaused
- * device is a legal no-op.
+ * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app has
+ * to bind a stream before any audio will flow. Unpausing an unpaused device is
+ * a legal no-op.
  *
- * Physical devices can not be paused or unpaused, only logical devices
- * created through AudioDevice.AudioDevice() can be.
+ * Physical devices can not be paused or unpaused, only logical devices created
+ * through AudioDevice.AudioDevice() can be.
  *
  * @param devid a device opened by AudioDevice.AudioDevice().
  * @throws Error on failure.
@@ -36589,12 +36556,12 @@ inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
 /**
  * Use this function to query if an audio device is paused.
  *
- * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
- * has to bind a stream before any audio will flow.
+ * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app has
+ * to bind a stream before any audio will flow.
  *
- * Physical devices can not be paused or unpaused, only logical devices
- * created through AudioDevice.AudioDevice() can be. Physical and invalid device
- * IDs will report themselves as unpaused here.
+ * Physical devices can not be paused or unpaused, only logical devices created
+ * through AudioDevice.AudioDevice() can be. Physical and invalid device IDs
+ * will report themselves as unpaused here.
  *
  * @param devid a device opened by AudioDevice.AudioDevice().
  * @returns true if device is valid and paused, false otherwise.
@@ -36619,8 +36586,8 @@ inline bool AudioDevice::Paused() const
 /**
  * Get the gain of an audio device.
  *
- * The gain of a device is its volume; a larger gain means a louder output,
- * with a gain of zero being silence.
+ * The gain of a device is its volume; a larger gain means a louder output, with
+ * a gain of zero being silence.
  *
  * Audio devices default to a gain of 1.0f (no change in output).
  *
@@ -36628,8 +36595,8 @@ inline bool AudioDevice::Paused() const
  * this function will always return -1.0f when used on physical devices.
  *
  * @param devid the audio device to query.
- * @returns the gain of the device or -1.0f on failure; call GetError()
- *          for more information.
+ * @returns the gain of the device or -1.0f on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -36650,8 +36617,8 @@ inline float AudioDevice::GetGain() const
 /**
  * Change the gain of an audio device.
  *
- * The gain of a device is its volume; a larger gain means a louder output,
- * with a gain of zero being silence.
+ * The gain of a device is its volume; a larger gain means a louder output, with
+ * a gain of zero being silence.
  *
  * Audio devices default to a gain of 1.0f (no change in output).
  *
@@ -36661,19 +36628,19 @@ inline float AudioDevice::GetGain() const
  * way, it would allow an app or library to interfere with another portion of
  * the program's otherwise-isolated devices.
  *
- * This is applied, along with any per-audiostream gain, during playback to
- * the hardware, and can be continuously changed to create various effects. On
- * recording devices, this will adjust the gain before passing the data into
- * an audiostream; that recording audiostream can then adjust its gain further
- * when outputting the data elsewhere, if it likes, but that second gain is
- * not applied until the data leaves the audiostream again.
+ * This is applied, along with any per-audiostream gain, during playback to the
+ * hardware, and can be continuously changed to create various effects. On
+ * recording devices, this will adjust the gain before passing the data into an
+ * audiostream; that recording audiostream can then adjust its gain further when
+ * outputting the data elsewhere, if it likes, but that second gain is not
+ * applied until the data leaves the audiostream again.
  *
  * @param devid the audio device on which to change gain.
  * @param gain the gain. 1.0f is no change, 0.0f is silence.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -36724,20 +36691,20 @@ inline void AudioDevice::Close() { CloseAudioDevice(release()); }
  * stream.
  *
  * Audio streams can only be bound to an open device. This operation is
- * atomic--all streams bound in the same call will start processing at the
- * same time, so they can stay in sync. Also: either all streams will be bound
- * or none of them will be.
+ * atomic--all streams bound in the same call will start processing at the same
+ * time, so they can stay in sync. Also: either all streams will be bound or
+ * none of them will be.
  *
- * It is an error to bind an already-bound stream; it must be explicitly
- * unbound first.
+ * It is an error to bind an already-bound stream; it must be explicitly unbound
+ * first.
  *
- * Binding a stream to a device will set its output format for playback
- * devices, and its input format for recording devices, so they match the
- * device's settings. The caller is welcome to change the other end of the
- * stream's format at any time with AudioStream.SetFormat(). If the other
- * end of the stream's format has never been set (the audio stream was created
- * with a nullptr audio spec), this function will set it to match the device
- * end's format.
+ * Binding a stream to a device will set its output format for playback devices,
+ * and its input format for recording devices, so they match the device's
+ * settings. The caller is welcome to change the other end of the stream's
+ * format at any time with AudioStream.SetFormat(). If the other end of the
+ * stream's format has never been set (the audio stream was created with a
+ * nullptr audio spec), this function will set it to match the device end's
+ * format.
  *
  * @param devid an audio device to bind a stream to.
  * @param streams an array of audio streams to bind.
@@ -36797,8 +36764,8 @@ inline void AudioDevice::BindAudioStream(AudioStreamParam stream)
  * Unbind a list of audio streams from their audio devices.
  *
  * The streams being unbound do not all have to be on the same device. All
- * streams on the same device will be unbound atomically (data will stop
- * flowing through all unbound streams on the same device at the same time).
+ * streams on the same device will be unbound atomically (data will stop flowing
+ * through all unbound streams on the same device at the same time).
  *
  * Unbinding a stream that isn't bound to a device is a legal no-op.
  *
@@ -36844,8 +36811,7 @@ inline void AudioStream::Unbind() { SDL::UnbindAudioStream(m_resource); }
  * This reports the logical audio device that an audio stream is currently bound
  * to.
  *
- * If not bound, or invalid, this returns zero, which is not a valid device
- * ID.
+ * If not bound, or invalid, this returns zero, which is not a valid device ID.
  *
  * @param stream the audio stream to query.
  * @returns the bound audio device, or 0 if not bound or invalid.
@@ -36922,8 +36888,8 @@ inline PropertiesRef AudioStream::GetProperties() const
  * @param dst_spec where to store the output audio format; ignored if nullptr.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -36945,9 +36911,9 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
 /**
  * Change the input and output formats of an audio stream.
  *
- * Future calls to and AudioStream.GetAvailable and AudioStream.GetData
- * will reflect the new format, and future calls to AudioStream.PutData
- * must provide data in the new input formats.
+ * Future calls to and AudioStream.GetAvailable and AudioStream.GetData will
+ * reflect the new format, and future calls to AudioStream.PutData must provide
+ * data in the new input formats.
  *
  * Data that was previously queued in the stream will still be operated on in
  * the format that was current when it was added, which is to say you can put
@@ -36956,10 +36922,10 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
  * file is still queued, and everything will still play back correctly.
  *
  * If a stream is bound to a device, then the format of the side of the stream
- * bound to a device cannot be changed (src_spec for recording devices,
- * dst_spec for playback devices). Attempts to make a change to this side will
- * be ignored, but this will not report an error. The other side's format can
- * be changed.
+ * bound to a device cannot be changed (src_spec for recording devices, dst_spec
+ * for playback devices). Attempts to make a change to this side will be
+ * ignored, but this will not report an error. The other side's format can be
+ * changed.
  *
  * @param stream the stream the format is being changed.
  * @param src_spec the new format of the audio input; if nullptr, it is not
@@ -36968,8 +36934,8 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
  *                 changed.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -36993,11 +36959,11 @@ inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
  * Get the frequency ratio of an audio stream.
  *
  * @param stream the AudioStream to query.
- * @returns the frequency ratio of the stream or 0.0 on failure; call
- *          GetError() for more information.
+ * @returns the frequency ratio of the stream or 0.0 on failure; call GetError()
+ *          for more information.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37022,16 +36988,16 @@ inline float AudioStream::GetFrequencyRatio() const
  * pitch. A value less than 1.0 will play the audio slower, and at a lower
  * pitch.
  *
- * This is applied during AudioStream.GetData, and can be continuously
- * changed to create various effects.
+ * This is applied during AudioStream.GetData, and can be continuously changed
+ * to create various effects.
  *
  * @param stream the stream the frequency ratio is being changed.
  * @param ratio the frequency ratio. 1.0 is normal speed. Must be between 0.01
  *              and 100.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37051,17 +37017,17 @@ inline void AudioStream::SetFrequencyRatio(float ratio)
 /**
  * Get the gain of an audio stream.
  *
- * The gain of a stream is its volume; a larger gain means a louder output,
- * with a gain of zero being silence.
+ * The gain of a stream is its volume; a larger gain means a louder output, with
+ * a gain of zero being silence.
  *
  * Audio streams default to a gain of 1.0f (no change in output).
  *
  * @param stream the AudioStream to query.
- * @returns the gain of the stream or -1.0f on failure; call GetError()
- *          for more information.
+ * @returns the gain of the stream or -1.0f on failure; call GetError() for more
+ *          information.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37080,20 +37046,20 @@ inline float AudioStream::GetGain() const
 /**
  * Change the gain of an audio stream.
  *
- * The gain of a stream is its volume; a larger gain means a louder output,
- * with a gain of zero being silence.
+ * The gain of a stream is its volume; a larger gain means a louder output, with
+ * a gain of zero being silence.
  *
  * Audio streams default to a gain of 1.0f (no change in output).
  *
- * This is applied during AudioStream.GetData, and can be continuously
- * changed to create various effects.
+ * This is applied during AudioStream.GetData, and can be continuously changed
+ * to create various effects.
  *
  * @param stream the stream on which the gain is being changed.
  * @param gain the gain. 1.0f is no change, 0.0f is silence.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37112,8 +37078,8 @@ inline void AudioStream::SetGain(float gain)
 /**
  * Get the current input channel map of an audio stream.
  *
- * Channel maps are optional; most things do not need them, instead passing
- * data in the [order that SDL expects](CategoryAudio#channel-layouts).
+ * Channel maps are optional; most things do not need them, instead passing data
+ * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * Audio streams default to no remapping applied. This is represented by
  * returning nullptr, and does not signify an error.
@@ -37122,8 +37088,8 @@ inline void AudioStream::SetGain(float gain)
  * @returns an array of the current channel mapping, with as many elements as
  *          the current output spec's channels, or nullptr if default.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37145,8 +37111,8 @@ inline OwnArray<int> AudioStream::GetInputChannelMap() const
 /**
  * Get the current output channel map of an audio stream.
  *
- * Channel maps are optional; most things do not need them, instead passing
- * data in the [order that SDL expects](CategoryAudio#channel-layouts).
+ * Channel maps are optional; most things do not need them, instead passing data
+ * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * Audio streams default to no remapping applied. This is represented by
  * returning nullptr, and does not signify an error.
@@ -37155,8 +37121,8 @@ inline OwnArray<int> AudioStream::GetInputChannelMap() const
  * @returns an array of the current channel mapping, with as many elements as
  *          the current output spec's channels, or nullptr if default.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running.
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37178,29 +37144,29 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
 /**
  * Set the current input channel map of an audio stream.
  *
- * Channel maps are optional; most things do not need them, instead passing
- * data in the [order that SDL expects](CategoryAudio#channel-layouts).
+ * Channel maps are optional; most things do not need them, instead passing data
+ * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * The input channel map reorders data that is added to a stream via
- * AudioStream.PutData. Future calls to AudioStream.PutData must provide
- * data in the new channel order.
+ * AudioStream.PutData. Future calls to AudioStream.PutData must provide data in
+ * the new channel order.
  *
  * Each item in the array represents an input channel, and its value is the
- * channel that it should be remapped to. To reverse a stereo signal's left
- * and right values, you'd have an array of `{ 1, 0 }`. It is legal to remap
- * multiple channels to the same thing, so `{ 1, 1 }` would duplicate the
- * right channel to both channels of a stereo signal. An element in the
- * channel map set to -1 instead of a valid channel will mute that channel,
- * setting it to a silence value.
+ * channel that it should be remapped to. To reverse a stereo signal's left and
+ * right values, you'd have an array of `{ 1, 0 }`. It is legal to remap
+ * multiple channels to the same thing, so `{ 1, 1 }` would duplicate the right
+ * channel to both channels of a stereo signal. An element in the channel map
+ * set to -1 instead of a valid channel will mute that channel, setting it to a
+ * silence value.
  *
  * You cannot change the number of channels through a channel map, just
  * reorder/mute them.
  *
  * Data that was previously queued in the stream will still be operated on in
- * the order that was current when it was added, which is to say you can put
- * the end of a sound file in one order to a stream, change orders for the
- * next sound file, and start putting that new data while the previous sound
- * file is still queued, and everything will still play back correctly.
+ * the order that was current when it was added, which is to say you can put the
+ * end of a sound file in one order to a stream, change orders for the next
+ * sound file, and start putting that new data while the previous sound file is
+ * still queued, and everything will still play back correctly.
  *
  * Audio streams default to no remapping applied. Passing a nullptr channel map
  * is legal, and turns off remapping.
@@ -37209,9 +37175,9 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  * after this call.
  *
  * If `count` is not equal to the current number of channels in the audio
- * stream's format, this will fail. This is a safety measure to make sure a
- * race condition hasn't changed the format while this call is setting the
- * channel map.
+ * stream's format, this will fail. This is a safety measure to make sure a race
+ * condition hasn't changed the format while this call is setting the channel
+ * map.
  *
  * Unlike attempting to change the stream's format, the input channel map on a
  * stream bound to a recording device is permitted to change at any time; any
@@ -37222,10 +37188,10 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  * @param chmap the new channel map, nullptr to reset to default.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running. Don't change the
- *               stream's format to have a different number of channels from a
- *               a different thread at the same time, though!
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running. Don't change the stream's
+ *               format to have a different number of channels from a a
+ *               different thread at the same time, though!
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37246,19 +37212,19 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
 /**
  * Set the current output channel map of an audio stream.
  *
- * Channel maps are optional; most things do not need them, instead passing
- * data in the [order that SDL expects](CategoryAudio#channel-layouts).
+ * Channel maps are optional; most things do not need them, instead passing data
+ * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
  * The output channel map reorders data that leaving a stream via
  * AudioStream.GetData.
  *
  * Each item in the array represents an input channel, and its value is the
- * channel that it should be remapped to. To reverse a stereo signal's left
- * and right values, you'd have an array of `{ 1, 0 }`. It is legal to remap
- * multiple channels to the same thing, so `{ 1, 1 }` would duplicate the
- * right channel to both channels of a stereo signal. An element in the
- * channel map set to -1 instead of a valid channel will mute that channel,
- * setting it to a silence value.
+ * channel that it should be remapped to. To reverse a stereo signal's left and
+ * right values, you'd have an array of `{ 1, 0 }`. It is legal to remap
+ * multiple channels to the same thing, so `{ 1, 1 }` would duplicate the right
+ * channel to both channels of a stereo signal. An element in the channel map
+ * set to -1 instead of a valid channel will mute that channel, setting it to a
+ * silence value.
  *
  * You cannot change the number of channels through a channel map, just
  * reorder/mute them.
@@ -37273,25 +37239,25 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  * after this call.
  *
  * If `count` is not equal to the current number of channels in the audio
- * stream's format, this will fail. This is a safety measure to make sure a
- * race condition hasn't changed the format while this call is setting the
- * channel map.
+ * stream's format, this will fail. This is a safety measure to make sure a race
+ * condition hasn't changed the format while this call is setting the channel
+ * map.
  *
- * Unlike attempting to change the stream's format, the output channel map on
- * a stream bound to a recording device is permitted to change at any time;
- * any data added to the stream after this call will have the new mapping, but
- * previously-added data will still have the prior mapping. When the channel
- * map doesn't match the hardware's channel layout, SDL will convert the data
- * before feeding it to the device for playback.
+ * Unlike attempting to change the stream's format, the output channel map on a
+ * stream bound to a recording device is permitted to change at any time; any
+ * data added to the stream after this call will have the new mapping, but
+ * previously-added data will still have the prior mapping. When the channel map
+ * doesn't match the hardware's channel layout, SDL will convert the data before
+ * feeding it to the device for playback.
  *
  * @param stream the AudioStream to change.
  * @param chmap the new channel map, nullptr to reset to default.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, as it holds
- *               a stream-specific mutex while running. Don't change the
- *               stream's format to have a different number of channels from a
- *               a different thread at the same time, though!
+ * @threadsafety It is safe to call this function from any thread, as it holds a
+ *               stream-specific mutex while running. Don't change the stream's
+ *               format to have a different number of channels from a a
+ *               different thread at the same time, though!
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37317,8 +37283,8 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  * stream if it hasn't been changed.
  *
  * Note that this call simply copies the unconverted data for later. This is
- * different than SDL2, where data was converted during the Put call and the
- * Get call would just dequeue the previously-converted data.
+ * different than SDL2, where data was converted during the Put call and the Get
+ * call would just dequeue the previously-converted data.
  *
  * @param stream the stream the audio data is being added to.
  * @param buf a pointer to the audio data to add.
@@ -37353,9 +37319,9 @@ inline void AudioStream::PutData(SourceBytes buf)
  * AudioStream.SetFormat.
  *
  * Note that any conversion and resampling necessary is done during this call,
- * and AudioStream.PutData simply queues unconverted data for later. This
- * is different than SDL2, where that work was done while inputting new data
- * to the stream and requesting the output just copied the converted data.
+ * and AudioStream.PutData simply queues unconverted data for later. This is
+ * different than SDL2, where that work was done while inputting new data to the
+ * stream and requesting the output just copied the converted data.
  *
  * @param stream the stream the audio is being requested from.
  * @param buf a buffer to fill with audio data.
@@ -37390,14 +37356,13 @@ inline int AudioStream::GetData(TargetBytes buf)
  * even be zero. Add more data or flush the stream if you need the data now.
  *
  * If the stream has so much data that it would overflow an int, the return
- * value is clamped to a maximum value, but no queued data is lost; if there
- * are gigabytes of data queued, the app might need to read some of it with
- * AudioStream.GetData before this function's return value is no longer
- * clamped.
+ * value is clamped to a maximum value, but no queued data is lost; if there are
+ * gigabytes of data queued, the app might need to read some of it with
+ * AudioStream.GetData before this function's return value is no longer clamped.
  *
  * @param stream the audio stream to query.
- * @returns the number of converted/resampled bytes available or -1 on
- *          failure; call GetError() for more information.
+ * @returns the number of converted/resampled bytes available or -1 on failure;
+ *          call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -37420,30 +37385,29 @@ inline int AudioStream::GetAvailable() const
  * Get the number of bytes currently queued.
  *
  * This is the number of bytes put into a stream as input, not the number that
- * can be retrieved as output. Because of several details, it's not possible
- * to calculate one number directly from the other. If you need to know how
- * much usable data can be retrieved right now, you should use
+ * can be retrieved as output. Because of several details, it's not possible to
+ * calculate one number directly from the other. If you need to know how much
+ * usable data can be retrieved right now, you should use
  * AudioStream.GetAvailable() and not this function.
  *
  * Note that audio streams can change their input format at any time, even if
- * there is still data queued in a different format, so the returned byte
- * count will not necessarily match the number of _sample frames_ available.
- * Users of this API should be aware of format changes they make when feeding
- * a stream and plan accordingly.
+ * there is still data queued in a different format, so the returned byte count
+ * will not necessarily match the number of _sample frames_ available. Users of
+ * this API should be aware of format changes they make when feeding a stream
+ * and plan accordingly.
  *
- * Queued data is not converted until it is consumed by
- * AudioStream.GetData, so this value should be representative of the exact
- * data that was put into the stream.
+ * Queued data is not converted until it is consumed by AudioStream.GetData, so
+ * this value should be representative of the exact data that was put into the
+ * stream.
  *
  * If the stream has so much data that it would overflow an int, the return
- * value is clamped to a maximum value, but no queued data is lost; if there
- * are gigabytes of data queued, the app might need to read some of it with
- * AudioStream.GetData before this function's return value is no longer
- * clamped.
+ * value is clamped to a maximum value, but no queued data is lost; if there are
+ * gigabytes of data queued, the app might need to read some of it with
+ * AudioStream.GetData before this function's return value is no longer clamped.
  *
  * @param stream the audio stream to query.
- * @returns the number of bytes queued or -1 on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes queued or -1 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -37489,8 +37453,8 @@ inline void AudioStream::Flush() { SDL::FlushAudioStream(m_resource); }
 /**
  * Clear any pending data in the stream.
  *
- * This drops any queued data, so there will be nothing to read from the
- * stream until more is added.
+ * This drops any queued data, so there will be nothing to read from the stream
+ * until more is added.
  *
  * @param stream the audio stream to clear.
  * @throws Error on failure.
@@ -37512,12 +37476,12 @@ inline void ClearAudioStream(AudioStreamParam stream)
 inline void AudioStream::Clear() { SDL::ClearAudioStream(m_resource); }
 
 /**
- * Use this function to pause audio playback on the audio device associated
- * with an audio stream.
+ * Use this function to pause audio playback on the audio device associated with
+ * an audio stream.
  *
  * This function pauses audio processing for a given device. Any bound audio
- * streams will not progress, and no audio will be generated. Pausing one
- * device does not prevent other unpaused devices from running.
+ * streams will not progress, and no audio will be generated. Pausing one device
+ * does not prevent other unpaused devices from running.
  *
  * Pausing a device can be useful to halt all audio without unbinding all the
  * audio streams. This might be useful while a game is paused, or a level is
@@ -37547,8 +37511,8 @@ inline void AudioStream::PauseDevice()
  * with an audio stream.
  *
  * This function unpauses audio processing for a given device that has
- * previously been paused. Once unpaused, any bound audio streams will begin
- * to progress again, and audio can be generated.
+ * previously been paused. Once unpaused, any bound audio streams will begin to
+ * progress again, and audio can be generated.
  *
  * Remember, AudioStream.AudioStream opens device in a paused state, so this
  * function call is required for audio playback to begin on such device.
@@ -37576,8 +37540,8 @@ inline void AudioStream::ResumeDevice()
  * Use this function to query if an audio device associated with a stream is
  * paused.
  *
- * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app
- * has to bind a stream before any audio will flow.
+ * Unlike in SDL2, audio devices start in an _unpaused_ state, since an app has
+ * to bind a stream before any audio will flow.
  *
  * @param stream the audio stream associated with the audio device to query.
  * @returns true if device is valid and paused, false otherwise.
@@ -37602,9 +37566,9 @@ inline bool AudioStream::DevicePaused() const
 /**
  * Lock an audio stream for serialized access.
  *
- * Each AudioStream has an internal mutex it uses to protect its data
- * structures from threading conflicts. This function allows an app to lock
- * that mutex, which could be useful if registering callbacks on this stream.
+ * Each AudioStream has an internal mutex it uses to protect its data structures
+ * from threading conflicts. This function allows an app to lock that mutex,
+ * which could be useful if registering callbacks on this stream.
  *
  * One does not need to lock a stream to use in it most cases, as the stream
  * manages this lock internally. However, this lock is held during callbacks,
@@ -37612,8 +37576,8 @@ inline bool AudioStream::DevicePaused() const
  * protect shared data during those callbacks, locking the stream guarantees
  * that the callback is not running while the lock is held.
  *
- * As this is just a wrapper over Mutex.Lock for an internal lock; it has
- * all the same attributes (recursive locks are allowed, etc).
+ * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+ * the same attributes (recursive locks are allowed, etc).
  *
  * @param stream the audio stream to lock.
  * @throws Error on failure.
@@ -37639,8 +37603,8 @@ inline void AudioStream::Lock() { SDL::LockAudioStream(m_resource); }
  * @param stream the audio stream to unlock.
  * @throws Error on failure.
  *
- * @threadsafety You should only call this from the same thread that
- *               previously called AudioStream.Lock.
+ * @threadsafety You should only call this from the same thread that previously
+ *               called AudioStream.Lock.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -37656,12 +37620,12 @@ inline void AudioStream::Unlock() { SDL::UnlockAudioStream(m_resource); }
 /**
  * Set a callback that runs when data is requested from an audio stream.
  *
- * This callback is called _before_ data is obtained from the stream, giving
- * the callback the chance to add more on-demand.
+ * This callback is called _before_ data is obtained from the stream, giving the
+ * callback the chance to add more on-demand.
  *
- * The callback can (optionally) call AudioStream.PutData() to add more
- * audio to the stream during this call; if needed, the request that triggered
- * this callback will obtain the new data immediately.
+ * The callback can (optionally) call AudioStream.PutData() to add more audio to
+ * the stream during this call; if needed, the request that triggered this
+ * callback will obtain the new data immediately.
  *
  * The callback's `additional_amount` argument is roughly how many bytes of
  * _unconverted_ data (in the stream's input format) is needed by the caller,
@@ -37670,22 +37634,20 @@ inline void AudioStream::Unlock() { SDL::UnlockAudioStream(m_resource); }
  * resolve the request, which means the callback may be asked for zero bytes,
  * and a different amount on each call.
  *
- * The callback is not required to supply exact amounts; it is allowed to
- * supply too much or too little or none at all. The caller will get what's
- * available, up to the amount they requested, regardless of this callback's
- * outcome.
+ * The callback is not required to supply exact amounts; it is allowed to supply
+ * too much or too little or none at all. The caller will get what's available,
+ * up to the amount they requested, regardless of this callback's outcome.
  *
  * Clearing or flushing an audio stream does not call this callback.
  *
  * This function obtains the stream's lock, which means any existing callback
- * (get or put) in progress will finish running before setting the new
- * callback.
+ * (get or put) in progress will finish running before setting the new callback.
  *
  * Setting a nullptr function turns off the callback.
  *
  * @param stream the audio stream to set the new callback on.
- * @param callback the new callback function to call when data is requested
- *                 from the stream.
+ * @param callback the new callback function to call when data is requested from
+ *                 the stream.
  * @param userdata an opaque pointer provided to the callback for its own
  *                 personal use.
  * @throws Error on failure.
@@ -37707,12 +37669,12 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
 /**
  * Set a callback that runs when data is requested from an audio stream.
  *
- * This callback is called _before_ data is obtained from the stream, giving
- * the callback the chance to add more on-demand.
+ * This callback is called _before_ data is obtained from the stream, giving the
+ * callback the chance to add more on-demand.
  *
- * The callback can (optionally) call AudioStream.PutData() to add more
- * audio to the stream during this call; if needed, the request that triggered
- * this callback will obtain the new data immediately.
+ * The callback can (optionally) call AudioStream.PutData() to add more audio to
+ * the stream during this call; if needed, the request that triggered this
+ * callback will obtain the new data immediately.
  *
  * The callback's `additional_amount` argument is roughly how many bytes of
  * _unconverted_ data (in the stream's input format) is needed by the caller,
@@ -37721,22 +37683,20 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
  * resolve the request, which means the callback may be asked for zero bytes,
  * and a different amount on each call.
  *
- * The callback is not required to supply exact amounts; it is allowed to
- * supply too much or too little or none at all. The caller will get what's
- * available, up to the amount they requested, regardless of this callback's
- * outcome.
+ * The callback is not required to supply exact amounts; it is allowed to supply
+ * too much or too little or none at all. The caller will get what's available,
+ * up to the amount they requested, regardless of this callback's outcome.
  *
  * Clearing or flushing an audio stream does not call this callback.
  *
  * This function obtains the stream's lock, which means any existing callback
- * (get or put) in progress will finish running before setting the new
- * callback.
+ * (get or put) in progress will finish running before setting the new callback.
  *
  * Setting a nullptr function turns off the callback.
  *
  * @param stream the audio stream to set the new callback on.
- * @param callback the new callback function to call when data is requested
- *                 from the stream.
+ * @param callback the new callback function to call when data is requested from
+ *                 the stream.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -37780,30 +37740,29 @@ inline void AudioStream::SetGetCallback(AudioStreamCB callback)
  * This callback is called _after_ the data is added to the stream, giving the
  * callback the chance to obtain it immediately.
  *
- * The callback can (optionally) call AudioStream.GetData() to obtain audio
- * from the stream during this call.
+ * The callback can (optionally) call AudioStream.GetData() to obtain audio from
+ * the stream during this call.
  *
- * The callback's `additional_amount` argument is how many bytes of
- * _converted_ data (in the stream's output format) was provided by the
- * caller, although this may underestimate a little for safety. This value
- * might be less than what is currently available in the stream, if data was
- * already there, and might be less than the caller provided if the stream
- * needs to keep a buffer to aid in resampling. Which means the callback may
- * be provided with zero bytes, and a different amount on each call.
+ * The callback's `additional_amount` argument is how many bytes of _converted_
+ * data (in the stream's output format) was provided by the caller, although
+ * this may underestimate a little for safety. This value might be less than
+ * what is currently available in the stream, if data was already there, and
+ * might be less than the caller provided if the stream needs to keep a buffer
+ * to aid in resampling. Which means the callback may be provided with zero
+ * bytes, and a different amount on each call.
  *
  * The callback may call AudioStream.GetAvailable to see the total amount
- * currently available to read from the stream, instead of the total provided
- * by the current call.
+ * currently available to read from the stream, instead of the total provided by
+ * the current call.
  *
  * The callback is not required to obtain all data. It is allowed to read less
- * or none at all. Anything not read now simply remains in the stream for
- * later access.
+ * or none at all. Anything not read now simply remains in the stream for later
+ * access.
  *
  * Clearing or flushing an audio stream does not call this callback.
  *
  * This function obtains the stream's lock, which means any existing callback
- * (get or put) in progress will finish running before setting the new
- * callback.
+ * (get or put) in progress will finish running before setting the new callback.
  *
  * Setting a nullptr function turns off the callback.
  *
@@ -37834,30 +37793,29 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
  * This callback is called _after_ the data is added to the stream, giving the
  * callback the chance to obtain it immediately.
  *
- * The callback can (optionally) call AudioStream.GetData() to obtain audio
- * from the stream during this call.
+ * The callback can (optionally) call AudioStream.GetData() to obtain audio from
+ * the stream during this call.
  *
- * The callback's `additional_amount` argument is how many bytes of
- * _converted_ data (in the stream's output format) was provided by the
- * caller, although this may underestimate a little for safety. This value
- * might be less than what is currently available in the stream, if data was
- * already there, and might be less than the caller provided if the stream
- * needs to keep a buffer to aid in resampling. Which means the callback may
- * be provided with zero bytes, and a different amount on each call.
+ * The callback's `additional_amount` argument is how many bytes of _converted_
+ * data (in the stream's output format) was provided by the caller, although
+ * this may underestimate a little for safety. This value might be less than
+ * what is currently available in the stream, if data was already there, and
+ * might be less than the caller provided if the stream needs to keep a buffer
+ * to aid in resampling. Which means the callback may be provided with zero
+ * bytes, and a different amount on each call.
  *
  * The callback may call AudioStream.GetAvailable to see the total amount
- * currently available to read from the stream, instead of the total provided
- * by the current call.
+ * currently available to read from the stream, instead of the total provided by
+ * the current call.
  *
  * The callback is not required to obtain all data. It is allowed to read less
- * or none at all. Anything not read now simply remains in the stream for
- * later access.
+ * or none at all. Anything not read now simply remains in the stream for later
+ * access.
  *
  * Clearing or flushing an audio stream does not call this callback.
  *
  * This function obtains the stream's lock, which means any existing callback
- * (get or put) in progress will finish running before setting the new
- * callback.
+ * (get or put) in progress will finish running before setting the new callback.
  *
  * Setting a nullptr function turns off the callback.
  *
@@ -37907,10 +37865,9 @@ inline void AudioStream::SetPutCallback(AudioStreamCB callback)
  * This will release all allocated data, including any audio that is still
  * queued. You do not need to manually clear the stream first.
  *
- * If this stream was bound to an audio device, it is unbound during this
- * call. If this stream was created with AudioStream.AudioStream, the audio
- * device that was opened alongside this stream's creation will be closed,
- * too.
+ * If this stream was bound to an audio device, it is unbound during this call.
+ * If this stream was created with AudioStream.AudioStream, the audio device
+ * that was opened alongside this stream's creation will be closed, too.
  *
  * @param stream the audio stream to destroy.
  *
@@ -37935,23 +37892,23 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  *
  * This is also intended to be a clean means to migrate apps from SDL2.
  *
- * This function will open an audio device, create a stream and bind it.
- * Unlike other methods of setup, the audio device will be closed when this
- * stream is destroyed, so the app can treat the returned AudioStream as
- * the only object needed to manage audio playback.
+ * This function will open an audio device, create a stream and bind it. Unlike
+ * other methods of setup, the audio device will be closed when this stream is
+ * destroyed, so the app can treat the returned AudioStream as the only object
+ * needed to manage audio playback.
  *
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
- * bind a stream to begin audio flowing. The audio device should be resumed
- * with `AudioStream.ResumeDevice(stream);`
+ * bind a stream to begin audio flowing. The audio device should be resumed with
+ * `AudioStream.ResumeDevice(stream);`
  *
  * This function works with both playback and recording devices.
  *
- * The `spec` parameter represents the app's side of the audio stream. That
- * is, for recording audio, this will be the output format, and for playing
- * audio, this will be the input format. If spec is nullptr, the system will
- * choose the format, and the app can use AudioStream.GetFormat() to obtain
- * this information later.
+ * The `spec` parameter represents the app's side of the audio stream. That is,
+ * for recording audio, this will be the output format, and for playing audio,
+ * this will be the input format. If spec is nullptr, the system will choose the
+ * format, and the app can use AudioStream.GetFormat() to obtain this
+ * information later.
  *
  * If you don't care about opening a specific audio device, you can (and
  * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
@@ -37962,17 +37919,16 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * capturing). Otherwise, the callback will begin to fire once the device is
  * unpaused.
  *
- * Destroying the returned stream with AudioStream.Destroy will also close
- * the audio device associated with this stream.
+ * Destroying the returned stream with AudioStream.Destroy will also close the
+ * audio device associated with this stream.
  *
- * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
- *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+ * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
+ *              AUDIO_DEVICE_DEFAULT_RECORDING.
  * @param spec the audio stream's data format. Can be nullptr.
- * @param callback a callback where the app will provide new data for
- *                 playback, or receive new data for recording. Can be nullptr,
- *                 in which case the app will need to call
- *                 AudioStream.PutData or AudioStream.GetData as
- *                 necessary.
+ * @param callback a callback where the app will provide new data for playback,
+ *                 or receive new data for recording. Can be nullptr, in which
+ *                 case the app will need to call AudioStream.PutData or
+ *                 AudioStream.GetData as necessary.
  * @param userdata app-controlled pointer passed to callback. Can be nullptr.
  *                 Ignored if callback is nullptr.
  * @returns an audio stream on success.
@@ -38001,23 +37957,23 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
  *
  * This is also intended to be a clean means to migrate apps from SDL2.
  *
- * This function will open an audio device, create a stream and bind it.
- * Unlike other methods of setup, the audio device will be closed when this
- * stream is destroyed, so the app can treat the returned AudioStream as
- * the only object needed to manage audio playback.
+ * This function will open an audio device, create a stream and bind it. Unlike
+ * other methods of setup, the audio device will be closed when this stream is
+ * destroyed, so the app can treat the returned AudioStream as the only object
+ * needed to manage audio playback.
  *
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
- * bind a stream to begin audio flowing. The audio device should be resumed
- * with `AudioStream.ResumeDevice(stream);`
+ * bind a stream to begin audio flowing. The audio device should be resumed with
+ * `AudioStream.ResumeDevice(stream);`
  *
  * This function works with both playback and recording devices.
  *
- * The `spec` parameter represents the app's side of the audio stream. That
- * is, for recording audio, this will be the output format, and for playing
- * audio, this will be the input format. If spec is nullptr, the system will
- * choose the format, and the app can use AudioStream.GetFormat() to obtain
- * this information later.
+ * The `spec` parameter represents the app's side of the audio stream. That is,
+ * for recording audio, this will be the output format, and for playing audio,
+ * this will be the input format. If spec is nullptr, the system will choose the
+ * format, and the app can use AudioStream.GetFormat() to obtain this
+ * information later.
  *
  * If you don't care about opening a specific audio device, you can (and
  * probably _should_), use AUDIO_DEVICE_DEFAULT_PLAYBACK for playback and
@@ -38028,14 +37984,14 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
  * capturing). Otherwise, the callback will begin to fire once the device is
  * unpaused.
  *
- * Destroying the returned stream with AudioStream.Destroy will also close
- * the audio device associated with this stream.
+ * Destroying the returned stream with AudioStream.Destroy will also close the
+ * audio device associated with this stream.
  *
- * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK
- *              or AUDIO_DEVICE_DEFAULT_RECORDING.
+ * @param devid an audio device to open, or AUDIO_DEVICE_DEFAULT_PLAYBACK or
+ *              AUDIO_DEVICE_DEFAULT_RECORDING.
  * @param spec the audio stream's data format. Can be nullptr.
- * @param callback a callback where the app will provide new data for
- *                 playback, or receive new data for recording.
+ * @param callback a callback where the app will provide new data for playback,
+ *                 or receive new data for recording.
  * @returns an audio stream on success.
  * @throws Error on failure.
  *
@@ -38081,21 +38037,21 @@ inline AudioStream::AudioStream(AudioDeviceParam devid,
 /**
  * Set a callback that fires when data is about to be fed to an audio device.
  *
- * This is useful for accessing the final mix, perhaps for writing a
- * visualizer or applying a final effect to the audio data before playback.
+ * This is useful for accessing the final mix, perhaps for writing a visualizer
+ * or applying a final effect to the audio data before playback.
  *
  * The buffer is the final mix of all bound audio streams on an opened device;
  * this callback will fire regularly for any device that is both opened and
- * unpaused. If there is no new data to mix, either because no streams are
- * bound to the device or all the streams are empty, this callback will still
- * fire with the entire buffer set to silence.
+ * unpaused. If there is no new data to mix, either because no streams are bound
+ * to the device or all the streams are empty, this callback will still fire
+ * with the entire buffer set to silence.
  *
  * This callback is allowed to make changes to the data; the contents of the
  * buffer after this call is what is ultimately passed along to the hardware.
  *
  * The callback is always provided the data in float format (values from -1.0f
- * to 1.0f), but the number of channels or sample rate may be different than
- * the format the app requested when opening the device; SDL might have had to
+ * to 1.0f), but the number of channels or sample rate may be different than the
+ * format the app requested when opening the device; SDL might have had to
  * manage a conversion behind the scenes, or the playback might have jumped to
  * new physical hardware when a system default changed, etc. These details may
  * change between calls. Accordingly, the size of the buffer might change
@@ -38114,9 +38070,9 @@ inline AudioStream::AudioStream(AudioDeviceParam devid,
  * amount of work possible and return as quickly as it can. The longer the
  * callback runs, the higher the risk of audio dropouts or other problems.
  *
- * This function will block until the audio device is in between iterations,
- * so any existing callback that might be running will finish before this
- * function sets the new callback and returns.
+ * This function will block until the audio device is in between iterations, so
+ * any existing callback that might be running will finish before this function
+ * sets the new callback and returns.
  *
  * Setting a nullptr callback function disables any previously-set callback.
  *
@@ -38140,21 +38096,21 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
 /**
  * Set a callback that fires when data is about to be fed to an audio device.
  *
- * This is useful for accessing the final mix, perhaps for writing a
- * visualizer or applying a final effect to the audio data before playback.
+ * This is useful for accessing the final mix, perhaps for writing a visualizer
+ * or applying a final effect to the audio data before playback.
  *
  * The buffer is the final mix of all bound audio streams on an opened device;
  * this callback will fire regularly for any device that is both opened and
- * unpaused. If there is no new data to mix, either because no streams are
- * bound to the device or all the streams are empty, this callback will still
- * fire with the entire buffer set to silence.
+ * unpaused. If there is no new data to mix, either because no streams are bound
+ * to the device or all the streams are empty, this callback will still fire
+ * with the entire buffer set to silence.
  *
  * This callback is allowed to make changes to the data; the contents of the
  * buffer after this call is what is ultimately passed along to the hardware.
  *
  * The callback is always provided the data in float format (values from -1.0f
- * to 1.0f), but the number of channels or sample rate may be different than
- * the format the app requested when opening the device; SDL might have had to
+ * to 1.0f), but the number of channels or sample rate may be different than the
+ * format the app requested when opening the device; SDL might have had to
  * manage a conversion behind the scenes, or the playback might have jumped to
  * new physical hardware when a system default changed, etc. These details may
  * change between calls. Accordingly, the size of the buffer might change
@@ -38173,9 +38129,9 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
  * amount of work possible and return as quickly as it can. The longer the
  * callback runs, the higher the risk of audio dropouts or other problems.
  *
- * This function will block until the audio device is in between iterations,
- * so any existing callback that might be running will finish before this
- * function sets the new callback and returns.
+ * This function will block until the audio device is in between iterations, so
+ * any existing callback that might be running will finish before this function
+ * sets the new callback and returns.
  *
  * Setting a nullptr callback function disables any previously-set callback.
  *
@@ -38220,31 +38176,30 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
 /**
  * Load the audio data of a WAVE file into memory.
  *
- * Loading a WAVE file requires `src`, `spec`, `audio_buf` and `audio_len` to
- * be valid pointers. The entire data portion of the file is then loaded into
+ * Loading a WAVE file requires `src`, `spec`, `audio_buf` and `audio_len` to be
+ * valid pointers. The entire data portion of the file is then loaded into
  * memory and decoded if necessary.
  *
- * Supported formats are RIFF WAVE files with the formats PCM (8, 16, 24, and
- * 32 bits), IEEE Float (32 bits), Microsoft ADPCM and IMA ADPCM (4 bits), and
- * A-law and mu-law (8 bits). Other formats are currently unsupported and
- * cause an error.
+ * Supported formats are RIFF WAVE files with the formats PCM (8, 16, 24, and 32
+ * bits), IEEE Float (32 bits), Microsoft ADPCM and IMA ADPCM (4 bits), and
+ * A-law and mu-law (8 bits). Other formats are currently unsupported and cause
+ * an error.
  *
  * If this function succeeds, the return value is zero and the pointer to the
- * audio data allocated by the function is written to `audio_buf` and its
- * length in bytes to `audio_len`. The AudioSpec members `freq`,
- * `channels`, and `format` are set to the values of the audio data in the
- * buffer.
+ * audio data allocated by the function is written to `audio_buf` and its length
+ * in bytes to `audio_len`. The AudioSpec members `freq`, `channels`, and
+ * `format` are set to the values of the audio data in the buffer.
  *
- * It's necessary to use free() to free the audio data returned in
- * `audio_buf` when it is no longer used.
+ * It's necessary to use free() to free the audio data returned in `audio_buf`
+ * when it is no longer used.
  *
  * Because of the underspecification of the .WAV format, there are many
  * problematic files in the wild that cause issues with strict decoders. To
- * provide compatibility with these files, this decoder is lenient in regards
- * to the truncation of the file, the fact chunk, and the size of the RIFF
- * chunk. The hints `SDL_HINT_WAVE_RIFF_CHUNK_SIZE`,
- * `SDL_HINT_WAVE_TRUNCATION`, and `SDL_HINT_WAVE_FACT_CHUNK` can be used to
- * tune the behavior of the loading process.
+ * provide compatibility with these files, this decoder is lenient in regards to
+ * the truncation of the file, the fact chunk, and the size of the RIFF chunk.
+ * The hints `SDL_HINT_WAVE_RIFF_CHUNK_SIZE`, `SDL_HINT_WAVE_TRUNCATION`, and
+ * `SDL_HINT_WAVE_FACT_CHUNK` can be used to tune the behavior of the loading
+ * process.
  *
  * Any file that is invalid (due to truncation, corruption, or wrong values in
  * the headers), too big, or unsupported causes an error. Additionally, any
@@ -38261,8 +38216,8 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), spec);
  * ```
  *
- * Note that the LoadWAV function does this same thing for you, but in a
- * less messy way:
+ * Note that the LoadWAV function does this same thing for you, but in a less
+ * messy way:
  *
  * ```cpp
  * LoadWAV("sample.wav", &spec);
@@ -38304,8 +38259,8 @@ inline OwnArray<Uint8> LoadWAV(IOStreamParam src,
  * ```
  *
  * @param path the file path of the WAV file to open.
- * @param spec a pointer to an AudioSpec that will be set to the WAVE
- *             data's format details on successful return.
+ * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
+ *             format details on successful return.
  * @throws Error on failure.
  *
  * This function throws if the .WAV file cannot be opened, uses an unknown data
@@ -38328,29 +38283,28 @@ inline OwnArray<Uint8> LoadWAV(StringParam path, AudioSpec* spec)
 /**
  * Mix audio data in a specified format.
  *
- * This takes an audio buffer `src` of `len` bytes of `format` data and mixes
- * it into `dst`, performing addition, volume adjustment, and overflow
- * clipping. The buffer pointed to by `dst` must also be `len` bytes of
- * `format` data.
+ * This takes an audio buffer `src` of `len` bytes of `format` data and mixes it
+ * into `dst`, performing addition, volume adjustment, and overflow clipping.
+ * The buffer pointed to by `dst` must also be `len` bytes of `format` data.
  *
  * This is provided for convenience -- you can mix your own audio data.
  *
- * Do not use this function for mixing together more than two streams of
- * sample data. The output from repeated application of this function may be
- * distorted by clipping, because there is no accumulator with greater range
- * than the input (not to mention this being an inefficient way of doing it).
+ * Do not use this function for mixing together more than two streams of sample
+ * data. The output from repeated application of this function may be distorted
+ * by clipping, because there is no accumulator with greater range than the
+ * input (not to mention this being an inefficient way of doing it).
  *
  * It is a common misconception that this function is required to write audio
  * data to an output stream in an audio callback. While you can do that,
- * MixAudio() is really only needed when you're mixing a single audio
- * stream with a volume adjustment.
+ * MixAudio() is really only needed when you're mixing a single audio stream
+ * with a volume adjustment.
  *
  * @param dst the destination for the mixed audio.
  * @param src the source audio buffer to be mixed.
  * @param format the AudioFormat structure representing the desired audio
  *               format.
- * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full
- *               audio volume.
+ * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
+ *               volume.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -38369,29 +38323,28 @@ inline void MixAudio(Uint8* dst,
 /**
  * Mix audio data in a specified format.
  *
- * This takes an audio buffer `src` of `len` bytes of `format` data and mixes
- * it into `dst`, performing addition, volume adjustment, and overflow
- * clipping. The buffer pointed to by `dst` must also be `len` bytes of
- * `format` data.
+ * This takes an audio buffer `src` of `len` bytes of `format` data and mixes it
+ * into `dst`, performing addition, volume adjustment, and overflow clipping.
+ * The buffer pointed to by `dst` must also be `len` bytes of `format` data.
  *
  * This is provided for convenience -- you can mix your own audio data.
  *
- * Do not use this function for mixing together more than two streams of
- * sample data. The output from repeated application of this function may be
- * distorted by clipping, because there is no accumulator with greater range
- * than the input (not to mention this being an inefficient way of doing it).
+ * Do not use this function for mixing together more than two streams of sample
+ * data. The output from repeated application of this function may be distorted
+ * by clipping, because there is no accumulator with greater range than the
+ * input (not to mention this being an inefficient way of doing it).
  *
  * It is a common misconception that this function is required to write audio
  * data to an output stream in an audio callback. While you can do that,
- * MixAudio() is really only needed when you're mixing a single audio
- * stream with a volume adjustment.
+ * MixAudio() is really only needed when you're mixing a single audio stream
+ * with a volume adjustment.
  *
  * @param dst the destination for the mixed audio.
  * @param src the source audio buffer to be mixed.
  * @param format the AudioFormat structure representing the desired audio
  *               format.
- * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full
- *               audio volume.
+ * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
+ *               volume.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -38415,15 +38368,15 @@ inline void MixAudio(TargetBytes dst,
 /**
  * Convert some audio data of one format to another format.
  *
- * Please note that this function is for convenience, but should not be used
- * to resample audio in blocks, as it will introduce audio artifacts on the
+ * Please note that this function is for convenience, but should not be used to
+ * resample audio in blocks, as it will introduce audio artifacts on the
  * boundaries. You should only use this function if you are converting audio
  * data in its entirety in one call. If you want to convert audio in smaller
  * chunks, use an AudioStream, which is designed for this situation.
  *
- * Internally, this function creates and destroys an AudioStream on each
- * use, so it's also less efficient than using one directly, if you need to
- * convert multiple times.
+ * Internally, this function creates and destroys an AudioStream on each use, so
+ * it's also less efficient than using one directly, if you need to convert
+ * multiple times.
  *
  * @param src_spec the format details of the input audio.
  * @param src_data the audio data to be converted.
@@ -38474,8 +38427,7 @@ inline const char* AudioFormat::GetName() const
  * Get the appropriate memset value for silencing an audio format.
  *
  * The value returned by this function can be used as the second argument to
- * memset (or memset) to set an audio buffer in a specific format to
- * silence.
+ * memset (or memset) to set an audio buffer in a specific format to silence.
  *
  * @param format the audio data format to query.
  * @returns a byte value that can be passed to memset.
