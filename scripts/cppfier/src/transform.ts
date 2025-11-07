@@ -1471,6 +1471,12 @@ function makeSortedEntryArray(sourceEntries: Dict<ApiEntry>, file: ApiFileTransf
             .replace(/^@since This macro is available/m, `@since This ${replacement} is available`)
             .replace(/^@threadsafety It is safe to call this macro/m, `@threadsafety It is safe to call this ${replacement}`);
         }
+        if (typeof targetDelta.doc === 'undefined' && targetEntry.parsedDoc) {
+          const macro = getTagInGroup(targetEntry.parsedDoc, '@since');
+          if (macro) macro.content = macro.content.replaceAll("macro", replacement);
+          const tSafety = getTagInGroup(targetEntry.parsedDoc, "@threadsafety");
+          if (tSafety) tSafety.content = tSafety.content.replaceAll("macro", replacement);
+        }
       }
     } else if (context.blacklist.has(sourceName)) {
       continue;

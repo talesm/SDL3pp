@@ -1540,16 +1540,75 @@
     },
     "SDL_atomic.h": {
       "name": "SDL_atomic.h",
-      "doc": "# CategoryAtomic\n\nAtomic operations.\n\nIMPORTANT: If you are not an expert in concurrent lockless programming, you\nshould not be using any functions in this file. You should be protecting\nyour data structures with full mutexes instead.\n\n***Seriously, here be dragons!***\n\nYou can find out a little more about lockless programming and the subtle\nissues that can arise here:\nhttps://learn.microsoft.com/en-us/windows/win32/dxtecharts/lockless-programming\n\nThere's also lots of good information here:\n\n- https://www.1024cores.net/home/lock-free-algorithms\n- https://preshing.com/\n\nThese operations may or may not actually be implemented using processor\nspecific atomic operations. When possible they are implemented as true\nprocessor specific atomic operations. When that is not possible the are\nimplemented using locks that *do* use the available atomic operations.\n\nAll of the atomic operations that modify memory are full memory barriers.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryAtomic"
+        },
+        "Atomic operations.",
+        "IMPORTANT: If you are not an expert in concurrent lockless programming, you should not be using any functions in this file. You should be protecting your data structures with full mutexes instead.",
+        "***Seriously, here be dragons!***",
+        "You can find out a little more about lockless programming and the subtle issues that can arise here: https://learn.microsoft.com/en-us/windows/win32/dxtecharts/lockless-programming",
+        "There's also lots of good information here:",
+        [
+          {
+            "tag": "-",
+            "content": "https://www.1024cores.net/home/lock-free-algorithms"
+          },
+          {
+            "tag": "-",
+            "content": "https://preshing.com/"
+          }
+        ],
+        "These operations may or may not actually be implemented using processor specific atomic operations. When possible they are implemented as true processor specific atomic operations. When that is not possible the are implemented using locks that *do* use the available atomic operations.",
+        "All of the atomic operations that modify memory are full memory barriers."
+      ],
       "entries": {
         "SDL_SpinLock": {
-          "doc": "An atomic spinlock.\n\nThe atomic locks are efficient spinlocks using CPU instructions, but are\nvulnerable to starvation and can spin forever if a thread holding a lock\nhas been terminated. For this reason you should minimize the code executed\ninside an atomic lock and never do expensive things like API or system\ncalls while holding them.\n\nThey are also vulnerable to starvation if the thread holding the lock is\nlower priority than other threads and doesn't get scheduled. In general you\nshould use mutexes instead, since they have better performance and\ncontention behavior.\n\nThe atomic locks are not safe to lock recursively.\n\nPorting Note: The spin lock functions and type are required and can not be\nemulated because they are used in the atomic emulation code.",
+          "parsedDoc": [
+            "An atomic spinlock.",
+            "The atomic locks are efficient spinlocks using CPU instructions, but are vulnerable to starvation and can spin forever if a thread holding a lock has been terminated. For this reason you should minimize the code executed inside an atomic lock and never do expensive things like API or system calls while holding them.",
+            "They are also vulnerable to starvation if the thread holding the lock is lower priority than other threads and doesn't get scheduled. In general you should use mutexes instead, since they have better performance and contention behavior.",
+            "The atomic locks are not safe to lock recursively.",
+            "Porting Note: The spin lock functions and type are required and can not be emulated because they are used in the atomic emulation code."
+          ],
           "name": "SDL_SpinLock",
           "kind": "alias",
           "type": "int"
         },
         "SDL_TryLockSpinlock": {
-          "doc": "Try to lock a spin lock by setting it to a non-zero value.\n\n***Please note that spinlocks are dangerous if you don't know what you're\ndoing. Please be careful using any sort of spinlock!***\n\n\\param lock a pointer to a lock variable.\n\\returns true if the lock succeeded, false if the lock is already held.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockSpinlock\n\\sa SDL_UnlockSpinlock",
+          "parsedDoc": [
+            "Try to lock a spin lock by setting it to a non-zero value.",
+            "***Please note that spinlocks are dangerous if you don't know what you're doing. Please be careful using any sort of spinlock!***",
+            [
+              {
+                "tag": "\\param lock",
+                "content": "a pointer to a lock variable."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if the lock succeeded, false if the lock is already held."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LockSpinlock"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_UnlockSpinlock"
+              }
+            ]
+          ],
           "name": "SDL_TryLockSpinlock",
           "kind": "function",
           "type": "bool",
@@ -1561,7 +1620,32 @@
           ]
         },
         "SDL_LockSpinlock": {
-          "doc": "Lock a spin lock by setting it to a non-zero value.\n\n***Please note that spinlocks are dangerous if you don't know what you're\ndoing. Please be careful using any sort of spinlock!***\n\n\\param lock a pointer to a lock variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_TryLockSpinlock\n\\sa SDL_UnlockSpinlock",
+          "parsedDoc": [
+            "Lock a spin lock by setting it to a non-zero value.",
+            "***Please note that spinlocks are dangerous if you don't know what you're doing. Please be careful using any sort of spinlock!***",
+            {
+              "tag": "\\param lock",
+              "content": "a pointer to a lock variable."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_TryLockSpinlock"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_UnlockSpinlock"
+              }
+            ]
+          ],
           "name": "SDL_LockSpinlock",
           "kind": "function",
           "type": "void",
@@ -1573,7 +1657,33 @@
           ]
         },
         "SDL_UnlockSpinlock": {
-          "doc": "Unlock a spin lock by setting it to 0.\n\nAlways returns immediately.\n\n***Please note that spinlocks are dangerous if you don't know what you're\ndoing. Please be careful using any sort of spinlock!***\n\n\\param lock a pointer to a lock variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LockSpinlock\n\\sa SDL_TryLockSpinlock",
+          "parsedDoc": [
+            "Unlock a spin lock by setting it to 0.",
+            "Always returns immediately.",
+            "***Please note that spinlocks are dangerous if you don't know what you're doing. Please be careful using any sort of spinlock!***",
+            {
+              "tag": "\\param lock",
+              "content": "a pointer to a lock variable."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LockSpinlock"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_TryLockSpinlock"
+              }
+            ]
+          ],
           "name": "SDL_UnlockSpinlock",
           "kind": "function",
           "type": "void",
@@ -1585,62 +1695,188 @@
           ]
         },
         "SDL_CompilerBarrier": {
-          "doc": "Mark a compiler barrier.\n\nA compiler barrier prevents the compiler from reordering reads and writes\nto globally visible variables across the call.\n\nThis macro only prevents the compiler from reordering reads and writes, it\ndoes not prevent the CPU from reordering reads and writes. However, all of\nthe atomic operations that modify memory are full memory barriers.\n\n\\threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Mark a compiler barrier.",
+            "A compiler barrier prevents the compiler from reordering reads and writes to globally visible variables across the call.",
+            "This macro only prevents the compiler from reordering reads and writes, it does not prevent the CPU from reordering reads and writes. However, all of the atomic operations that modify memory are full memory barriers.",
+            {
+              "tag": "\\threadsafety",
+              "content": "Obviously this macro is safe to use from any thread at any time, but if you find yourself needing this, you are probably dealing with some very sensitive code; be careful!"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_CompilerBarrier",
           "kind": "def",
           "parameters": [],
           "value": "DoCompilerSpecificReadWriteBarrier()"
         },
         "SDL_MemoryBarrierReleaseFunction": {
-          "doc": "Insert a memory release barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n\\threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierRelease",
+          "parsedDoc": [
+            "Insert a memory release barrier (function version).",
+            "Please refer to SDL_MemoryBarrierRelease for details. This is a function version, which might be useful if you need to use this functionality from a scripting language, etc. Also, some of the macro versions call this function behind the scenes, where more heavy lifting can happen inside of SDL. Generally, though, an app written in C/C++/etc should use the macro version, as it will be more efficient.",
+            {
+              "tag": "\\threadsafety",
+              "content": "Obviously this function is safe to use from any thread at any time, but if you find yourself needing this, you are probably dealing with some very sensitive code; be careful!"
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_MemoryBarrierRelease"
+            }
+          ],
           "name": "SDL_MemoryBarrierReleaseFunction",
           "kind": "function",
           "type": "void",
           "parameters": []
         },
         "SDL_MemoryBarrierAcquireFunction": {
-          "doc": "Insert a memory acquire barrier (function version).\n\nPlease refer to SDL_MemoryBarrierRelease for details. This is a function\nversion, which might be useful if you need to use this functionality from a\nscripting language, etc. Also, some of the macro versions call this\nfunction behind the scenes, where more heavy lifting can happen inside of\nSDL. Generally, though, an app written in C/C++/etc should use the macro\nversion, as it will be more efficient.\n\n\\threadsafety Obviously this function is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierAcquire",
+          "parsedDoc": [
+            "Insert a memory acquire barrier (function version).",
+            "Please refer to SDL_MemoryBarrierRelease for details. This is a function version, which might be useful if you need to use this functionality from a scripting language, etc. Also, some of the macro versions call this function behind the scenes, where more heavy lifting can happen inside of SDL. Generally, though, an app written in C/C++/etc should use the macro version, as it will be more efficient.",
+            {
+              "tag": "\\threadsafety",
+              "content": "Obviously this function is safe to use from any thread at any time, but if you find yourself needing this, you are probably dealing with some very sensitive code; be careful!"
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_MemoryBarrierAcquire"
+            }
+          ],
           "name": "SDL_MemoryBarrierAcquireFunction",
           "kind": "function",
           "type": "void",
           "parameters": []
         },
         "SDL_MemoryBarrierRelease": {
-          "doc": "Insert a memory release barrier (macro version).\n\nMemory barriers are designed to prevent reads and writes from being\nreordered by the compiler and being seen out of order on multi-core CPUs.\n\nA typical pattern would be for thread A to write some data and a flag, and\nfor thread B to read the flag and get the data. In this case you would\ninsert a release barrier between writing the data and the flag,\nguaranteeing that the data write completes no later than the flag is\nwritten, and you would insert an acquire barrier between reading the flag\nand reading the data, to ensure that all the reads associated with the flag\nhave completed.\n\nIn this pattern you should always see a release barrier paired with an\nacquire barrier and you should gate the data reads/writes with a single\nflag variable.\n\nFor more information on these semantics, take a look at the blog post:\nhttp://preshing.com/20120913/acquire-and-release-semantics\n\nThis is the macro version of this functionality; if possible, SDL will use\ncompiler intrinsics or inline assembly, but some platforms might need to\ncall the function version of this, SDL_MemoryBarrierReleaseFunction to do\nthe heavy lifting. Apps that can use the macro should favor it over the\nfunction.\n\n\\threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierAcquire\n\\sa SDL_MemoryBarrierReleaseFunction",
+          "parsedDoc": [
+            "Insert a memory release barrier (macro version).",
+            "Memory barriers are designed to prevent reads and writes from being reordered by the compiler and being seen out of order on multi-core CPUs.",
+            "A typical pattern would be for thread A to write some data and a flag, and for thread B to read the flag and get the data. In this case you would insert a release barrier between writing the data and the flag, guaranteeing that the data write completes no later than the flag is written, and you would insert an acquire barrier between reading the flag and reading the data, to ensure that all the reads associated with the flag have completed.",
+            "In this pattern you should always see a release barrier paired with an acquire barrier and you should gate the data reads/writes with a single flag variable.",
+            "For more information on these semantics, take a look at the blog post: http://preshing.com/20120913/acquire-and-release-semantics",
+            "This is the macro version of this functionality; if possible, SDL will use compiler intrinsics or inline assembly, but some platforms might need to call the function version of this, SDL_MemoryBarrierReleaseFunction to do the heavy lifting. Apps that can use the macro should favor it over the function.",
+            {
+              "tag": "\\threadsafety",
+              "content": "Obviously this macro is safe to use from any thread at any time, but if you find yourself needing this, you are probably dealing with some very sensitive code; be careful!"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_MemoryBarrierAcquire"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_MemoryBarrierReleaseFunction"
+              }
+            ]
+          ],
           "name": "SDL_MemoryBarrierRelease",
           "kind": "def",
           "parameters": [],
           "value": "SDL_MemoryBarrierReleaseFunction()"
         },
         "SDL_MemoryBarrierAcquire": {
-          "doc": "Insert a memory acquire barrier (macro version).\n\nPlease see SDL_MemoryBarrierRelease for the details on what memory barriers\nare and when to use them.\n\nThis is the macro version of this functionality; if possible, SDL will use\ncompiler intrinsics or inline assembly, but some platforms might need to\ncall the function version of this, SDL_MemoryBarrierAcquireFunction, to do\nthe heavy lifting. Apps that can use the macro should favor it over the\nfunction.\n\n\\threadsafety Obviously this macro is safe to use from any thread at any\n              time, but if you find yourself needing this, you are probably\n              dealing with some very sensitive code; be careful!\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_MemoryBarrierRelease\n\\sa SDL_MemoryBarrierAcquireFunction",
+          "parsedDoc": [
+            "Insert a memory acquire barrier (macro version).",
+            "Please see SDL_MemoryBarrierRelease for the details on what memory barriers are and when to use them.",
+            "This is the macro version of this functionality; if possible, SDL will use compiler intrinsics or inline assembly, but some platforms might need to call the function version of this, SDL_MemoryBarrierAcquireFunction, to do the heavy lifting. Apps that can use the macro should favor it over the function.",
+            {
+              "tag": "\\threadsafety",
+              "content": "Obviously this macro is safe to use from any thread at any time, but if you find yourself needing this, you are probably dealing with some very sensitive code; be careful!"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_MemoryBarrierRelease"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_MemoryBarrierAcquireFunction"
+              }
+            ]
+          ],
           "name": "SDL_MemoryBarrierAcquire",
           "kind": "def",
           "parameters": [],
           "value": "SDL_MemoryBarrierAcquireFunction()"
         },
         "SDL_KernelMemoryBarrierFunc": {
-          "doc": "",
           "name": "SDL_KernelMemoryBarrierFunc",
           "kind": "callback",
           "type": "void",
           "parameters": []
         },
         "SDL_MEMORY_BARRIER_USES_FUNCTION": {
-          "doc": "",
           "name": "SDL_MEMORY_BARRIER_USES_FUNCTION",
           "kind": "def",
           "value": ""
         },
         "SDL_CPUPauseInstruction": {
-          "doc": "A macro to insert a CPU-specific \"pause\" instruction into the program.\n\nThis can be useful in busy-wait loops, as it serves as a hint to the CPU as\nto the program's intent; some CPUs can use this to do more efficient\nprocessing. On some platforms, this doesn't do anything, so using this\nmacro might just be a harmless no-op.\n\nNote that if you are busy-waiting, there are often more-efficient\napproaches with other synchronization primitives: mutexes, semaphores,\ncondition variables, etc.\n\n\\threadsafety This macro is safe to use from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro to insert a CPU-specific \"pause\" instruction into the program.",
+            "This can be useful in busy-wait loops, as it serves as a hint to the CPU as to the program's intent; some CPUs can use this to do more efficient processing. On some platforms, this doesn't do anything, so using this macro might just be a harmless no-op.",
+            "Note that if you are busy-waiting, there are often more-efficient approaches with other synchronization primitives: mutexes, semaphores, condition variables, etc.",
+            {
+              "tag": "\\threadsafety",
+              "content": "This macro is safe to use from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_CPUPauseInstruction",
           "kind": "def",
           "parameters": [],
           "value": "DoACPUPauseInACompilerAndArchitectureSpecificWay"
         },
         "SDL_AtomicInt": {
-          "doc": "A type representing an atomic integer value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicInt all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicInt, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicInt\n\\sa SDL_GetAtomicInt\n\\sa SDL_SetAtomicInt\n\\sa SDL_AddAtomicInt",
+          "parsedDoc": [
+            "A type representing an atomic integer value.",
+            "This can be used to manage a value that is synchronized across multiple CPUs without a race condition; when an app sets a value with SDL_SetAtomicInt all other threads, regardless of the CPU it is running on, will see that value when retrieved with SDL_GetAtomicInt, regardless of CPU caches, etc.",
+            "This is also useful for atomic compare-and-swap operations: a thread can change the value as long as its current value matches expectations. When done in a loop, one can guarantee data consistency across threads without a lock (but the usual warnings apply: if you don't know what you're doing, or you don't do it carefully, you can confidently cause any number of disasters with this, so in most cases, you _should_ use a mutex instead of this!).",
+            "This is a struct so people don't accidentally use numeric operations on it directly. You have to use SDL atomic functions.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_CompareAndSwapAtomicInt"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetAtomicInt"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetAtomicInt"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_AddAtomicInt"
+              }
+            ]
+          ],
           "name": "SDL_AtomicInt",
           "kind": "struct",
           "entries": {
@@ -1653,7 +1889,46 @@
           }
         },
         "SDL_CompareAndSwapAtomicInt": {
-          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable to be modified.\n\\param oldval the old value.\n\\param newval the new value.\n\\returns true if the atomic variable was set, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicInt\n\\sa SDL_SetAtomicInt",
+          "parsedDoc": [
+            "Set an atomic variable to a new value if it is currently an old value.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicInt variable to be modified."
+              },
+              {
+                "tag": "\\param oldval",
+                "content": "the old value."
+              },
+              {
+                "tag": "\\param newval",
+                "content": "the new value."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if the atomic variable was set, false otherwise."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetAtomicInt"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetAtomicInt"
+              }
+            ]
+          ],
           "name": "SDL_CompareAndSwapAtomicInt",
           "kind": "function",
           "type": "bool",
@@ -1673,7 +1948,37 @@
           ]
         },
         "SDL_SetAtomicInt": {
-          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable to be modified.\n\\param v the desired value.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicInt",
+          "parsedDoc": [
+            "Set an atomic variable to a value.",
+            "This function also acts as a full memory barrier.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicInt variable to be modified."
+              },
+              {
+                "tag": "\\param v",
+                "content": "the desired value."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the previous value of the atomic variable."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetAtomicInt"
+            }
+          ],
           "name": "SDL_SetAtomicInt",
           "kind": "function",
           "type": "int",
@@ -1689,7 +1994,32 @@
           ]
         },
         "SDL_GetAtomicInt": {
-          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable.\n\\returns the current value of an atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetAtomicInt",
+          "parsedDoc": [
+            "Get the value of an atomic variable.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicInt variable."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the current value of an atomic variable."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetAtomicInt"
+            }
+          ],
           "name": "SDL_GetAtomicInt",
           "kind": "function",
           "type": "int",
@@ -1701,7 +2031,43 @@
           ]
         },
         "SDL_AddAtomicInt": {
-          "doc": "Add to an atomic variable.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicInt variable to be modified.\n\\param v the desired value to add.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AtomicDecRef\n\\sa SDL_AtomicIncRef",
+          "parsedDoc": [
+            "Add to an atomic variable.",
+            "This function also acts as a full memory barrier.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicInt variable to be modified."
+              },
+              {
+                "tag": "\\param v",
+                "content": "the desired value to add."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the previous value of the atomic variable."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_AtomicDecRef"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_AtomicIncRef"
+              }
+            ]
+          ],
           "name": "SDL_AddAtomicInt",
           "kind": "function",
           "type": "int",
@@ -1717,7 +2083,32 @@
           ]
         },
         "SDL_AtomicIncRef": {
-          "doc": "Increment an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n\\param a a pointer to an SDL_AtomicInt to increment.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_AtomicDecRef",
+          "parsedDoc": [
+            "Increment an atomic variable used as a reference count.",
+            "***Note: If you don't know what this macro is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicInt to increment."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the previous value of the atomic variable."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_AtomicDecRef"
+            }
+          ],
           "name": "SDL_AtomicIncRef",
           "kind": "def",
           "parameters": [
@@ -1729,7 +2120,32 @@
           "value": "SDL_AddAtomicInt(a, 1)"
         },
         "SDL_AtomicDecRef": {
-          "doc": "Decrement an atomic variable used as a reference count.\n\n***Note: If you don't know what this macro is for, you shouldn't use it!***\n\n\\param a a pointer to an SDL_AtomicInt to decrement.\n\\returns true if the variable reached zero after decrementing, false\n         otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_AtomicIncRef",
+          "parsedDoc": [
+            "Decrement an atomic variable used as a reference count.",
+            "***Note: If you don't know what this macro is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicInt to decrement."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if the variable reached zero after decrementing, false otherwise."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_AtomicIncRef"
+            }
+          ],
           "name": "SDL_AtomicDecRef",
           "kind": "def",
           "parameters": [
@@ -1741,7 +2157,30 @@
           "value": "(SDL_AddAtomicInt(a, -1) == 1)"
         },
         "SDL_AtomicU32": {
-          "doc": "A type representing an atomic unsigned 32-bit value.\n\nThis can be used to manage a value that is synchronized across multiple\nCPUs without a race condition; when an app sets a value with\nSDL_SetAtomicU32 all other threads, regardless of the CPU it is running on,\nwill see that value when retrieved with SDL_GetAtomicU32, regardless of CPU\ncaches, etc.\n\nThis is also useful for atomic compare-and-swap operations: a thread can\nchange the value as long as its current value matches expectations. When\ndone in a loop, one can guarantee data consistency across threads without a\nlock (but the usual warnings apply: if you don't know what you're doing, or\nyou don't do it carefully, you can confidently cause any number of\ndisasters with this, so in most cases, you _should_ use a mutex instead of\nthis!).\n\nThis is a struct so people don't accidentally use numeric operations on it\ndirectly. You have to use SDL atomic functions.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicU32\n\\sa SDL_GetAtomicU32\n\\sa SDL_SetAtomicU32",
+          "parsedDoc": [
+            "A type representing an atomic unsigned 32-bit value.",
+            "This can be used to manage a value that is synchronized across multiple CPUs without a race condition; when an app sets a value with SDL_SetAtomicU32 all other threads, regardless of the CPU it is running on, will see that value when retrieved with SDL_GetAtomicU32, regardless of CPU caches, etc.",
+            "This is also useful for atomic compare-and-swap operations: a thread can change the value as long as its current value matches expectations. When done in a loop, one can guarantee data consistency across threads without a lock (but the usual warnings apply: if you don't know what you're doing, or you don't do it carefully, you can confidently cause any number of disasters with this, so in most cases, you _should_ use a mutex instead of this!).",
+            "This is a struct so people don't accidentally use numeric operations on it directly. You have to use SDL atomic functions.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_CompareAndSwapAtomicU32"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetAtomicU32"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetAtomicU32"
+              }
+            ]
+          ],
           "name": "SDL_AtomicU32",
           "kind": "struct",
           "entries": {
@@ -1754,7 +2193,46 @@
           }
         },
         "SDL_CompareAndSwapAtomicU32": {
-          "doc": "Set an atomic variable to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicU32 variable to be modified.\n\\param oldval the old value.\n\\param newval the new value.\n\\returns true if the atomic variable was set, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicU32\n\\sa SDL_SetAtomicU32",
+          "parsedDoc": [
+            "Set an atomic variable to a new value if it is currently an old value.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicU32 variable to be modified."
+              },
+              {
+                "tag": "\\param oldval",
+                "content": "the old value."
+              },
+              {
+                "tag": "\\param newval",
+                "content": "the new value."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if the atomic variable was set, false otherwise."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetAtomicU32"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetAtomicU32"
+              }
+            ]
+          ],
           "name": "SDL_CompareAndSwapAtomicU32",
           "kind": "function",
           "type": "bool",
@@ -1774,7 +2252,37 @@
           ]
         },
         "SDL_SetAtomicU32": {
-          "doc": "Set an atomic variable to a value.\n\nThis function also acts as a full memory barrier.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicU32 variable to be modified.\n\\param v the desired value.\n\\returns the previous value of the atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAtomicU32",
+          "parsedDoc": [
+            "Set an atomic variable to a value.",
+            "This function also acts as a full memory barrier.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicU32 variable to be modified."
+              },
+              {
+                "tag": "\\param v",
+                "content": "the desired value."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the previous value of the atomic variable."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetAtomicU32"
+            }
+          ],
           "name": "SDL_SetAtomicU32",
           "kind": "function",
           "type": "Uint32",
@@ -1790,7 +2298,32 @@
           ]
         },
         "SDL_GetAtomicU32": {
-          "doc": "Get the value of an atomic variable.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to an SDL_AtomicU32 variable.\n\\returns the current value of an atomic variable.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetAtomicU32",
+          "parsedDoc": [
+            "Get the value of an atomic variable.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to an SDL_AtomicU32 variable."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the current value of an atomic variable."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetAtomicU32"
+            }
+          ],
           "name": "SDL_GetAtomicU32",
           "kind": "function",
           "type": "Uint32",
@@ -1802,7 +2335,50 @@
           ]
         },
         "SDL_CompareAndSwapAtomicPointer": {
-          "doc": "Set a pointer to a new value if it is currently an old value.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to a pointer.\n\\param oldval the old pointer value.\n\\param newval the new pointer value.\n\\returns true if the pointer was set, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicInt\n\\sa SDL_GetAtomicPointer\n\\sa SDL_SetAtomicPointer",
+          "parsedDoc": [
+            "Set a pointer to a new value if it is currently an old value.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to a pointer."
+              },
+              {
+                "tag": "\\param oldval",
+                "content": "the old pointer value."
+              },
+              {
+                "tag": "\\param newval",
+                "content": "the new pointer value."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if the pointer was set, false otherwise."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_CompareAndSwapAtomicInt"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetAtomicPointer"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetAtomicPointer"
+              }
+            ]
+          ],
           "name": "SDL_CompareAndSwapAtomicPointer",
           "kind": "function",
           "type": "bool",
@@ -1822,7 +2398,42 @@
           ]
         },
         "SDL_SetAtomicPointer": {
-          "doc": "Set a pointer to a value atomically.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to a pointer.\n\\param v the desired pointer value.\n\\returns the previous value of the pointer.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicPointer\n\\sa SDL_GetAtomicPointer",
+          "parsedDoc": [
+            "Set a pointer to a value atomically.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to a pointer."
+              },
+              {
+                "tag": "\\param v",
+                "content": "the desired pointer value."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the previous value of the pointer."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_CompareAndSwapAtomicPointer"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetAtomicPointer"
+              }
+            ]
+          ],
           "name": "SDL_SetAtomicPointer",
           "kind": "function",
           "type": "void *",
@@ -1838,7 +2449,38 @@
           ]
         },
         "SDL_GetAtomicPointer": {
-          "doc": "Get the value of a pointer atomically.\n\n***Note: If you don't know what this function is for, you shouldn't use\nit!***\n\n\\param a a pointer to a pointer.\n\\returns the current value of a pointer.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CompareAndSwapAtomicPointer\n\\sa SDL_SetAtomicPointer",
+          "parsedDoc": [
+            "Get the value of a pointer atomically.",
+            "***Note: If you don't know what this function is for, you shouldn't use it!***",
+            [
+              {
+                "tag": "\\param a",
+                "content": "a pointer to a pointer."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the current value of a pointer."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_CompareAndSwapAtomicPointer"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetAtomicPointer"
+              }
+            ]
+          ],
           "name": "SDL_GetAtomicPointer",
           "kind": "function",
           "type": "void *",
