@@ -11,8 +11,8 @@ namespace SDL {
  *
  * System-dependent library loading routines.
  *
- * Shared objects are code that is programmatically loadable at runtime.
- * Windows calls these "DLLs", Linux calls them "shared libraries", etc.
+ * Shared objects are code that is programmatically loadable at runtime. Windows
+ * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
  * To use them, build such a library, then call SharedObject.SharedObject() on
  * it. Once loaded, you can use SharedObject.LoadFunction() on that object to
@@ -28,14 +28,14 @@ namespace SDL {
  *   convention as the actual library function. Your code will crash
  *   mysteriously if you do not do this.
  * - Avoid namespace collisions. If you load a symbol from the library, it is
- *   not defined whether or not it goes into the global symbol namespace for
- *   the application. If it does and it conflicts with symbols in your code or
- *   other shared libraries, you will not get the results you expect. :)
+ *   not defined whether or not it goes into the global symbol namespace for the
+ *   application. If it does and it conflicts with symbols in your code or other
+ *   shared libraries, you will not get the results you expect. :)
  * - Once a library is unloaded, all pointers into it obtained through
  *   SharedObject.LoadFunction() become invalid, even if the library is later
- * reloaded. Don't unload a library if you plan to use these pointers in the
- * future. Notably: beware of giving one of these pointers to atexit(), since it
- * may call that pointer after the library unloads.
+ *   reloaded. Don't unload a library if you plan to use these pointers in the
+ *   future. Notably: beware of giving one of these pointers to atexit(), since
+ *   it may call that pointer after the library unloads.
  *
  * @{
  */
@@ -125,7 +125,7 @@ public:
    *
    * @param sofile a system-dependent name of the object file.
    * @post an opaque pointer to the object handle or nullptr on failure; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -268,17 +268,17 @@ inline SharedObject LoadObject(StringParam sofile)
  * name mangling and intrinsic language support that varies from compiler to
  * compiler.
  *
- * Make sure you declare your function pointers with the same calling
- * convention as the actual library function. Your code will crash
- * mysteriously if you do not do this.
+ * Make sure you declare your function pointers with the same calling convention
+ * as the actual library function. Your code will crash mysteriously if you do
+ * not do this.
  *
  * If the requested function doesn't exist, nullptr is returned.
  *
  * @param handle a valid shared object handle returned by
- * SharedObject.SharedObject().
+ *               SharedObject.SharedObject().
  * @param name the name of the function to look up.
- * @returns a pointer to the function or nullptr on failure; call GetError()
- *          for more information.
+ * @returns a pointer to the function or nullptr on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -303,7 +303,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  * SharedObject.LoadFunction() will no longer be valid.
  *
  * @param handle a valid shared object handle returned by
- * SharedObject.SharedObject().
+ *               SharedObject.SharedObject().
  *
  * @threadsafety It is safe to call this function from any thread.
  *

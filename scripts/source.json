@@ -47195,16 +47195,93 @@
     },
     "SDL_loadso.h": {
       "name": "SDL_loadso.h",
-      "doc": "# CategorySharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SDL_LoadObject() on it. Once\nloaded, you can use SDL_LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SDL_UnloadObject()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SDL_LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategorySharedObject"
+        },
+        "System-dependent library loading routines.",
+        "Shared objects are code that is programmatically loadable at runtime. Windows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.",
+        "To use them, build such a library, then call SDL_LoadObject() on it. Once loaded, you can use SDL_LoadFunction() on that object to find the address of its exported symbols. When done with the object, call SDL_UnloadObject() to dispose of it.",
+        "Some things to keep in mind:",
+        [
+          {
+            "tag": "-",
+            "content": "These functions only work on C function names. Other languages may have name mangling and intrinsic language support that varies from compiler to compiler."
+          },
+          {
+            "tag": "-",
+            "content": "Make sure you declare your function pointers with the same calling convention as the actual library function. Your code will crash mysteriously if you do not do this."
+          },
+          {
+            "tag": "-",
+            "content": "Avoid namespace collisions. If you load a symbol from the library, it is not defined whether or not it goes into the global symbol namespace for the application. If it does and it conflicts with symbols in your code or other shared libraries, you will not get the results you expect. :)"
+          },
+          {
+            "tag": "-",
+            "content": "Once a library is unloaded, all pointers into it obtained through SDL_LoadFunction() become invalid, even if the library is later reloaded. Don't unload a library if you plan to use these pointers in the future. Notably: beware of giving one of these pointers to atexit(), since it may call that pointer after the library unloads."
+          }
+        ]
+      ],
       "entries": {
         "SDL_SharedObject": {
-          "doc": "An opaque datatype that represents a loaded shared object.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_LoadObject\n\\sa SDL_LoadFunction\n\\sa SDL_UnloadObject",
+          "parsedDoc": [
+            "An opaque datatype that represents a loaded shared object.",
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LoadObject"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LoadFunction"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_UnloadObject"
+              }
+            ]
+          ],
           "name": "SDL_SharedObject",
           "kind": "alias",
           "type": "struct SDL_SharedObject"
         },
         "SDL_LoadObject": {
-          "doc": "Dynamically load a shared object.\n\n\\param sofile a system-dependent name of the object file.\n\\returns an opaque pointer to the object handle or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadFunction\n\\sa SDL_UnloadObject",
+          "parsedDoc": [
+            "Dynamically load a shared object.",
+            [
+              {
+                "tag": "\\param sofile",
+                "content": "a system-dependent name of the object file."
+              },
+              {
+                "tag": "\\returns",
+                "content": "an opaque pointer to the object handle or NULL on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LoadFunction"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_UnloadObject"
+              }
+            ]
+          ],
           "name": "SDL_LoadObject",
           "kind": "function",
           "type": "SDL_SharedObject *",
@@ -47216,7 +47293,39 @@
           ]
         },
         "SDL_LoadFunction": {
-          "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SDL_UnloadObject().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, NULL is returned.\n\n\\param handle a valid shared object handle returned by SDL_LoadObject().\n\\param name the name of the function to look up.\n\\returns a pointer to the function or NULL on failure; call SDL_GetError()\n         for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadObject",
+          "parsedDoc": [
+            "Look up the address of the named function in a shared object.",
+            "This function pointer is no longer valid after calling SDL_UnloadObject().",
+            "This function can only look up C function names. Other languages may have name mangling and intrinsic language support that varies from compiler to compiler.",
+            "Make sure you declare your function pointers with the same calling convention as the actual library function. Your code will crash mysteriously if you do not do this.",
+            "If the requested function doesn't exist, NULL is returned.",
+            [
+              {
+                "tag": "\\param handle",
+                "content": "a valid shared object handle returned by SDL_LoadObject()."
+              },
+              {
+                "tag": "\\param name",
+                "content": "the name of the function to look up."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a pointer to the function or NULL on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_LoadObject"
+            }
+          ],
           "name": "SDL_LoadFunction",
           "kind": "function",
           "type": "SDL_FunctionPointer",
@@ -47232,7 +47341,26 @@
           ]
         },
         "SDL_UnloadObject": {
-          "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSDL_LoadFunction() will no longer be valid.\n\n\\param handle a valid shared object handle returned by SDL_LoadObject().\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadObject",
+          "parsedDoc": [
+            "Unload a shared object from memory.",
+            "Note that any pointers from this object looked up through SDL_LoadFunction() will no longer be valid.",
+            {
+              "tag": "\\param handle",
+              "content": "a valid shared object handle returned by SDL_LoadObject()."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_LoadObject"
+            }
+          ],
           "name": "SDL_UnloadObject",
           "kind": "function",
           "type": "void",
@@ -47247,10 +47375,28 @@
     },
     "SDL_locale.h": {
       "name": "SDL_locale.h",
-      "doc": "# CategoryLocale\n\nSDL locale services.\n\nThis provides a way to get a list of preferred locales (language plus\ncountry) for the user. There is exactly one function:\nSDL_GetPreferredLocales(), which handles all the heavy lifting, and offers\ndocumentation on all the strange ways humans might have configured their\nlanguage settings.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryLocale"
+        },
+        "SDL locale services.",
+        "This provides a way to get a list of preferred locales (language plus country) for the user. There is exactly one function: SDL_GetPreferredLocales(), which handles all the heavy lifting, and offers documentation on all the strange ways humans might have configured their language settings."
+      ],
       "entries": {
         "SDL_Locale": {
-          "doc": "A struct to provide locale data.\n\nLocale data is split into a spoken language, like English, and an optional\ncountry, like Canada. The language will be in ISO-639 format (so English\nwould be \"en\"), and the country, if not NULL, will be an ISO-3166 country\ncode (so Canada would be \"CA\").\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetPreferredLocales",
+          "parsedDoc": [
+            "A struct to provide locale data.",
+            "Locale data is split into a spoken language, like English, and an optional country, like Canada. The language will be in ISO-639 format (so English would be \"en\"), and the country, if not NULL, will be an ISO-3166 country code (so Canada would be \"CA\").",
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetPreferredLocales"
+            }
+          ],
           "name": "SDL_Locale",
           "kind": "struct",
           "entries": {
@@ -47269,7 +47415,28 @@
           }
         },
         "SDL_GetPreferredLocales": {
-          "doc": "Report the user's preferred locale.\n\nReturned language strings are in the format xx, where 'xx' is an ISO-639\nlanguage specifier (such as \"en\" for English, \"de\" for German, etc).\nCountry strings are in the format YY, where \"YY\" is an ISO-3166 country\ncode (such as \"US\" for the United States, \"CA\" for Canada, etc). Country\nmight be NULL if there's no specific guidance on them (so you might get {\n\"en\", \"US\" } for American English, but { \"en\", NULL } means \"English\nlanguage, generically\"). Language strings are never NULL, except to\nterminate the array.\n\nPlease note that not all of these strings are 2 characters; some are three\nor more.\n\nThe returned list of locales are in the order of the user's preference. For\nexample, a German citizen that is fluent in US English and knows enough\nJapanese to navigate around Tokyo might have a list like: { \"de\", \"en_US\",\n\"jp\", NULL }. Someone from England might prefer British English (where\n\"color\" is spelled \"colour\", etc), but will settle for anything like it: {\n\"en_GB\", \"en\", NULL }.\n\nThis function returns NULL on error, including when the platform does not\nsupply this information at all.\n\nThis might be a \"slow\" call that has to query the operating system. It's\nbest to ask for this once and save the results. However, this list can\nchange, usually because the user has changed a system preference outside of\nyour program; SDL will send an SDL_EVENT_LOCALE_CHANGED event in this case,\nif possible, and you can call this function again to get an updated copy of\npreferred locales.\n\n\\param count a pointer filled in with the number of locales returned, may\n             be NULL.\n\\returns a NULL terminated array of locale pointers, or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Report the user's preferred locale.",
+            "Returned language strings are in the format xx, where 'xx' is an ISO-639 language specifier (such as \"en\" for English, \"de\" for German, etc). Country strings are in the format YY, where \"YY\" is an ISO-3166 country code (such as \"US\" for the United States, \"CA\" for Canada, etc). Country might be NULL if there's no specific guidance on them (so you might get { \"en\", \"US\" } for American English, but { \"en\", NULL } means \"English language, generically\"). Language strings are never NULL, except to terminate the array.",
+            "Please note that not all of these strings are 2 characters; some are three or more.",
+            "The returned list of locales are in the order of the user's preference. For example, a German citizen that is fluent in US English and knows enough Japanese to navigate around Tokyo might have a list like: { \"de\", \"en_US\", \"jp\", NULL }. Someone from England might prefer British English (where \"color\" is spelled \"colour\", etc), but will settle for anything like it: { \"en_GB\", \"en\", NULL }.",
+            "This function returns NULL on error, including when the platform does not supply this information at all.",
+            "This might be a \"slow\" call that has to query the operating system. It's best to ask for this once and save the results. However, this list can change, usually because the user has changed a system preference outside of your program; SDL will send an SDL_EVENT_LOCALE_CHANGED event in this case, if possible, and you can call this function again to get an updated copy of preferred locales.",
+            [
+              {
+                "tag": "\\param count",
+                "content": "a pointer filled in with the number of locales returned, may be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a NULL terminated array of locale pointers, or NULL on failure; call SDL_GetError() for more information. This is a single allocation that should be freed with SDL_free() when it is no longer needed."
+              }
+            ],
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GetPreferredLocales",
           "kind": "function",
           "type": "SDL_Locale **",
@@ -47284,10 +47451,47 @@
     },
     "SDL_log.h": {
       "name": "SDL_log.h",
-      "doc": "# CategoryLog\n\nSimple log messages with priorities and categories. A message's\nSDL_LogPriority signifies how important the message is. A message's\nSDL_LogCategory signifies from what domain it belongs to. Every category\nhas a minimum priority specified: when a message belongs to that category,\nit will only be sent out if it has that minimum priority or higher.\n\nSDL's own logs are sent below the default priority threshold, so they are\nquiet by default.\n\nYou can change the log verbosity programmatically using\nSDL_SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or with\nthe \"SDL_LOGGING\" environment variable. This variable is a comma separated\nset of category=level tokens that define the default logging levels for SDL\napplications.\n\nThe category can be a numeric category, one of \"app\", \"error\", \"assert\",\n\"system\", \"audio\", \"video\", \"render\", \"input\", \"test\", or `*` for any\nunspecified category.\n\nThe level can be a numeric level, one of \"trace\", \"verbose\", \"debug\",\n\"info\", \"warn\", \"error\", \"critical\", or \"quiet\" to disable that category.\n\nYou can omit the category if you want to set the logging level for all\ncategories.\n\nIf this hint isn't set, the default log levels are equivalent to:\n\n`app=info,assert=warn,test=verbose,*=error`\n\nHere's where the messages go on different platforms:\n\n- Windows: debug output stream\n- Android: log output\n- Others: standard error output (stderr)\n\nYou don't need to have a newline (`\\n`) on the end of messages, the\nfunctions will do that for you. For consistent behavior cross-platform, you\nshouldn't have any newlines in messages, such as to log multiple lines in\none call; unusual platform-specific behavior can be observed in such usage.\nDo one log call per line instead, with no newlines in messages.\n\nEach log call is atomic, so you won't see log messages cut off one another\nwhen logging from multiple threads.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryLog"
+        },
+        "Simple log messages with priorities and categories. A message's SDL_LogPriority signifies how important the message is. A message's SDL_LogCategory signifies from what domain it belongs to. Every category has a minimum priority specified: when a message belongs to that category, it will only be sent out if it has that minimum priority or higher.",
+        "SDL's own logs are sent below the default priority threshold, so they are quiet by default.",
+        "You can change the log verbosity programmatically using SDL_SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or with the \"SDL_LOGGING\" environment variable. This variable is a comma separated set of category=level tokens that define the default logging levels for SDL applications.",
+        "The category can be a numeric category, one of \"app\", \"error\", \"assert\", \"system\", \"audio\", \"video\", \"render\", \"input\", \"test\", or `*` for any unspecified category.",
+        "The level can be a numeric level, one of \"trace\", \"verbose\", \"debug\", \"info\", \"warn\", \"error\", \"critical\", or \"quiet\" to disable that category.",
+        "You can omit the category if you want to set the logging level for all categories.",
+        "If this hint isn't set, the default log levels are equivalent to:",
+        "`app=info,assert=warn,test=verbose,*=error`",
+        "Here's where the messages go on different platforms:",
+        [
+          {
+            "tag": "-",
+            "content": "Windows: debug output stream"
+          },
+          {
+            "tag": "-",
+            "content": "Android: log output"
+          },
+          {
+            "tag": "-",
+            "content": "Others: standard error output (stderr)"
+          }
+        ],
+        "You don't need to have a newline (`\\n`) on the end of messages, the functions will do that for you. For consistent behavior cross-platform, you shouldn't have any newlines in messages, such as to log multiple lines in one call; unusual platform-specific behavior can be observed in such usage. Do one log call per line instead, with no newlines in messages.",
+        "Each log call is atomic, so you won't see log messages cut off one another when logging from multiple threads."
+      ],
       "entries": {
         "SDL_LogCategory": {
-          "doc": "The predefined log categories\n\nBy default the application and gpu categories are enabled at the INFO\nlevel, the assert category is enabled at the WARN level, test is enabled at\nthe VERBOSE level and all other categories are enabled at the ERROR level.\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The predefined log categories",
+            "By default the application and gpu categories are enabled at the INFO level, the assert category is enabled at the WARN level, test is enabled at the VERBOSE level and all other categories are enabled at the ERROR level.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_LogCategory",
           "kind": "enum",
           "entries": {
@@ -47414,7 +47618,13 @@
           }
         },
         "SDL_LogPriority": {
-          "doc": "The predefined log priorities\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The predefined log priorities",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_LogPriority",
           "kind": "enum",
           "entries": {
@@ -47475,7 +47685,31 @@
           }
         },
         "SDL_SetLogPriorities": {
-          "doc": "Set the priority of all log categories.\n\n\\param priority the SDL_LogPriority to assign.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ResetLogPriorities\n\\sa SDL_SetLogPriority",
+          "parsedDoc": [
+            "Set the priority of all log categories.",
+            {
+              "tag": "\\param priority",
+              "content": "the SDL_LogPriority to assign."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_ResetLogPriorities"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogPriority"
+              }
+            ]
+          ],
           "name": "SDL_SetLogPriorities",
           "kind": "function",
           "type": "void",
@@ -47487,7 +47721,41 @@
           ]
         },
         "SDL_SetLogPriority": {
-          "doc": "Set the priority of a particular log category.\n\n\\param category the category to assign a priority to.\n\\param priority the SDL_LogPriority to assign.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetLogPriority\n\\sa SDL_ResetLogPriorities\n\\sa SDL_SetLogPriorities",
+          "parsedDoc": [
+            "Set the priority of a particular log category.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category to assign a priority to."
+              },
+              {
+                "tag": "\\param priority",
+                "content": "the SDL_LogPriority to assign."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetLogPriority"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ResetLogPriorities"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogPriorities"
+              }
+            ]
+          ],
           "name": "SDL_SetLogPriority",
           "kind": "function",
           "type": "void",
@@ -47503,7 +47771,31 @@
           ]
         },
         "SDL_GetLogPriority": {
-          "doc": "Get the priority of a particular log category.\n\n\\param category the category to query.\n\\returns the SDL_LogPriority for the requested category.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetLogPriority",
+          "parsedDoc": [
+            "Get the priority of a particular log category.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category to query."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the SDL_LogPriority for the requested category."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetLogPriority"
+            }
+          ],
           "name": "SDL_GetLogPriority",
           "kind": "function",
           "type": "SDL_LogPriority",
@@ -47515,14 +47807,70 @@
           ]
         },
         "SDL_ResetLogPriorities": {
-          "doc": "Reset all priorities to default.\n\nThis is called by SDL_Quit().\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetLogPriorities\n\\sa SDL_SetLogPriority",
+          "parsedDoc": [
+            "Reset all priorities to default.",
+            "This is called by SDL_Quit().",
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogPriorities"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogPriority"
+              }
+            ]
+          ],
           "name": "SDL_ResetLogPriorities",
           "kind": "function",
           "type": "void",
           "parameters": []
         },
         "SDL_SetLogPriorityPrefix": {
-          "doc": "Set the text prepended to log messages of a given priority.\n\nBy default SDL_LOG_PRIORITY_INFO and below have no prefix, and\nSDL_LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.\n\"WARNING: \".\n\n\\param priority the SDL_LogPriority to modify.\n\\param prefix the prefix to use for that log priority, or NULL to use no\n              prefix.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetLogPriorities\n\\sa SDL_SetLogPriority",
+          "parsedDoc": [
+            "Set the text prepended to log messages of a given priority.",
+            "By default SDL_LOG_PRIORITY_INFO and below have no prefix, and SDL_LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g. \"WARNING: \".",
+            [
+              {
+                "tag": "\\param priority",
+                "content": "the SDL_LogPriority to modify."
+              },
+              {
+                "tag": "\\param prefix",
+                "content": "the prefix to use for that log priority, or NULL to use no prefix."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogPriorities"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogPriority"
+              }
+            ]
+          ],
           "name": "SDL_SetLogPriorityPrefix",
           "kind": "function",
           "type": "bool",
@@ -47538,7 +47886,65 @@
           ]
         },
         "SDL_Log": {
-          "doc": "Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.\n\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.",
+            [
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the `fmt` string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_Log",
           "kind": "function",
           "type": "void",
@@ -47554,7 +47960,73 @@
           ]
         },
         "SDL_LogTrace": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_TRACE.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_TRACE.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogTrace",
           "kind": "function",
           "type": "void",
@@ -47574,7 +48046,65 @@
           ]
         },
         "SDL_LogVerbose": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_VERBOSE.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_VERBOSE.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogVerbose",
           "kind": "function",
           "type": "void",
@@ -47594,7 +48124,69 @@
           ]
         },
         "SDL_LogDebug": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_DEBUG.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_DEBUG.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogDebug",
           "kind": "function",
           "type": "void",
@@ -47614,7 +48206,69 @@
           ]
         },
         "SDL_LogInfo": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_INFO.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_INFO.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogInfo",
           "kind": "function",
           "type": "void",
@@ -47634,7 +48288,69 @@
           ]
         },
         "SDL_LogWarn": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_WARN.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_WARN.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              }
+            ]
+          ],
           "name": "SDL_LogWarn",
           "kind": "function",
           "type": "void",
@@ -47654,7 +48370,69 @@
           ]
         },
         "SDL_LogError": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_ERROR.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_ERROR.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogError",
           "kind": "function",
           "type": "void",
@@ -47674,7 +48452,69 @@
           ]
         },
         "SDL_LogCritical": {
-          "doc": "Log a message with SDL_LOG_PRIORITY_CRITICAL.\n\n\\param category the category of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with SDL_LOG_PRIORITY_CRITICAL.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogCritical",
           "kind": "function",
           "type": "void",
@@ -47694,7 +48534,73 @@
           ]
         },
         "SDL_LogMessage": {
-          "doc": "Log a message with the specified category and priority.\n\n\\param category the category of the message.\n\\param priority the priority of the message.\n\\param fmt a printf() style message format string.\n\\param ... additional parameters matching % tokens in the **fmt** string,\n           if any.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessageV\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with the specified category and priority.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param priority",
+                "content": "the priority of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the **fmt** string, if any."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessageV"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogMessage",
           "kind": "function",
           "type": "void",
@@ -47718,7 +48624,73 @@
           ]
         },
         "SDL_LogMessageV": {
-          "doc": "Log a message with the specified category and priority.\n\n\\param category the category of the message.\n\\param priority the priority of the message.\n\\param fmt a printf() style message format string.\n\\param ap a variable argument list.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Log\n\\sa SDL_LogCritical\n\\sa SDL_LogDebug\n\\sa SDL_LogError\n\\sa SDL_LogInfo\n\\sa SDL_LogMessage\n\\sa SDL_LogTrace\n\\sa SDL_LogVerbose\n\\sa SDL_LogWarn",
+          "parsedDoc": [
+            "Log a message with the specified category and priority.",
+            [
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param priority",
+                "content": "the priority of the message."
+              },
+              {
+                "tag": "\\param fmt",
+                "content": "a printf() style message format string."
+              },
+              {
+                "tag": "\\param ap",
+                "content": "a variable argument list."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_Log"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogCritical"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogDebug"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogInfo"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogMessage"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogTrace"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogVerbose"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LogWarn"
+              }
+            ]
+          ],
           "name": "SDL_LogMessageV",
           "kind": "function",
           "type": "void",
@@ -47742,7 +48714,32 @@
           ]
         },
         "SDL_LogOutputFunction": {
-          "doc": "The prototype for the log output callback function.\n\nThis function is called by SDL when there is new text to be logged. A mutex\nis held so that this function is never called by more than one thread at\nonce.\n\n\\param userdata what was passed as `userdata` to\n                SDL_SetLogOutputFunction().\n\\param category the category of the message.\n\\param priority the priority of the message.\n\\param message the message being output.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The prototype for the log output callback function.",
+            "This function is called by SDL when there is new text to be logged. A mutex is held so that this function is never called by more than one thread at once.",
+            [
+              {
+                "tag": "\\param userdata",
+                "content": "what was passed as `userdata` to SDL_SetLogOutputFunction()."
+              },
+              {
+                "tag": "\\param category",
+                "content": "the category of the message."
+              },
+              {
+                "tag": "\\param priority",
+                "content": "the priority of the message."
+              },
+              {
+                "tag": "\\param message",
+                "content": "the message being output."
+              }
+            ],
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_LogOutputFunction",
           "kind": "callback",
           "type": "void",
@@ -47766,14 +48763,68 @@
           ]
         },
         "SDL_GetDefaultLogOutputFunction": {
-          "doc": "Get the default log output function.\n\n\\returns the default log output callback.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetLogOutputFunction\n\\sa SDL_GetLogOutputFunction",
+          "parsedDoc": [
+            "Get the default log output function.",
+            {
+              "tag": "\\returns",
+              "content": "the default log output callback."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogOutputFunction"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetLogOutputFunction"
+              }
+            ]
+          ],
           "name": "SDL_GetDefaultLogOutputFunction",
           "kind": "function",
           "type": "SDL_LogOutputFunction",
           "parameters": []
         },
         "SDL_GetLogOutputFunction": {
-          "doc": "Get the current log output function.\n\n\\param callback an SDL_LogOutputFunction filled in with the current log\n                callback.\n\\param userdata a pointer filled in with the pointer that is passed to\n                `callback`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetDefaultLogOutputFunction\n\\sa SDL_SetLogOutputFunction",
+          "parsedDoc": [
+            "Get the current log output function.",
+            [
+              {
+                "tag": "\\param callback",
+                "content": "an SDL_LogOutputFunction filled in with the current log callback."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer filled in with the pointer that is passed to `callback`."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetDefaultLogOutputFunction"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetLogOutputFunction"
+              }
+            ]
+          ],
           "name": "SDL_GetLogOutputFunction",
           "kind": "function",
           "type": "void",
@@ -47789,7 +48840,37 @@
           ]
         },
         "SDL_SetLogOutputFunction": {
-          "doc": "Replace the default log output function with one of your own.\n\n\\param callback an SDL_LogOutputFunction to call instead of the default.\n\\param userdata a pointer that is passed to `callback`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetDefaultLogOutputFunction\n\\sa SDL_GetLogOutputFunction",
+          "parsedDoc": [
+            "Replace the default log output function with one of your own.",
+            [
+              {
+                "tag": "\\param callback",
+                "content": "an SDL_LogOutputFunction to call instead of the default."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer that is passed to `callback`."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetDefaultLogOutputFunction"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetLogOutputFunction"
+              }
+            ]
+          ],
           "name": "SDL_SetLogOutputFunction",
           "kind": "function",
           "type": "void",

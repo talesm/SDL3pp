@@ -7472,11 +7472,11 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
 /**
  * @defgroup CategoryLog Log Handling
  *
- * Simple log messages with priorities and categories. A message's
- * LogPriority signifies how important the message is. A message's
- * LogCategory signifies from what domain it belongs to. Every category
- * has a minimum priority specified: when a message belongs to that category,
- * it will only be sent out if it has that minimum priority or higher.
+ * Simple log messages with priorities and categories. A message's LogPriority
+ * signifies how important the message is. A message's LogCategory signifies
+ * from what domain it belongs to. Every category has a minimum priority
+ * specified: when a message belongs to that category, it will only be sent out
+ * if it has that minimum priority or higher.
  *
  * SDL's own logs are sent below the default priority threshold, so they are
  * quiet by default.
@@ -7491,8 +7491,8 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  * "system", "audio", "video", "render", "input", "test", or `*` for any
  * unspecified category.
  *
- * The level can be a numeric level, one of "trace", "verbose", "debug",
- * "info", "warn", "error", "critical", or "quiet" to disable that category.
+ * The level can be a numeric level, one of "trace", "verbose", "debug", "info",
+ * "warn", "error", "critical", or "quiet" to disable that category.
  *
  * You can omit the category if you want to set the logging level for all
  * categories.
@@ -7507,11 +7507,11 @@ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
  * - Android: log output
  * - Others: standard error output (stderr)
  *
- * You don't need to have a newline (`@n`) on the end of messages, the
- * functions will do that for you. For consistent behavior cross-platform, you
- * shouldn't have any newlines in messages, such as to log multiple lines in
- * one call; unusual platform-specific behavior can be observed in such usage.
- * Do one log call per line instead, with no newlines in messages.
+ * You don't need to have a newline (`@n`) on the end of messages, the functions
+ * will do that for you. For consistent behavior cross-platform, you shouldn't
+ * have any newlines in messages, such as to log multiple lines in one call;
+ * unusual platform-specific behavior can be observed in such usage. Do one log
+ * call per line instead, with no newlines in messages.
  *
  * Each log call is atomic, so you won't see log messages cut off one another
  * when logging from multiple threads.
@@ -7574,9 +7574,9 @@ constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
 /**
  * The predefined log categories
  *
- * By default the application and gpu categories are enabled at the INFO
- * level, the assert category is enabled at the WARN level, test is enabled at
- * the VERBOSE level and all other categories are enabled at the ERROR level.
+ * By default the application and gpu categories are enabled at the INFO level,
+ * the assert category is enabled at the WARN level, test is enabled at the
+ * VERBOSE level and all other categories are enabled at the ERROR level.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -8019,9 +8019,8 @@ inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
 /**
  * Set the text prepended to log messages of a given priority.
  *
- * By default LOG_PRIORITY_INFO and below have no prefix, and
- * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
- * "WARNING: ".
+ * By default LOG_PRIORITY_INFO and below have no prefix, and LOG_PRIORITY_WARN
+ * and higher have a prefix showing their priority, e.g. "WARNING: ".
  *
  * @param priority the LogPriority to modify.
  * @param prefix the prefix to use for that log priority, or nullptr to use no
@@ -8134,7 +8133,7 @@ inline void Log(std::string_view fmt, ARGS&&... args)
  * @param priority the priority of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8174,7 +8173,7 @@ inline void LogCategory::LogMessage(LogPriority priority,
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8209,7 +8208,7 @@ inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8244,7 +8243,7 @@ inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8278,7 +8277,7 @@ inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8312,7 +8311,7 @@ inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8346,7 +8345,7 @@ inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -8417,8 +8416,7 @@ inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
  * is held so that this function is never called by more than one thread at
  * once.
  *
- * @param userdata what was passed as `userdata` to
- *                 SetLogOutputFunction().
+ * @param userdata what was passed as `userdata` to SetLogOutputFunction().
  * @param category the category of the message.
  * @param priority the priority of the message.
  * @param message the message being output.
@@ -28104,8 +28102,8 @@ inline void IOStream::WriteS64BE(Sint64 value)
  *
  * System-dependent library loading routines.
  *
- * Shared objects are code that is programmatically loadable at runtime.
- * Windows calls these "DLLs", Linux calls them "shared libraries", etc.
+ * Shared objects are code that is programmatically loadable at runtime. Windows
+ * calls these "DLLs", Linux calls them "shared libraries", etc.
  *
  * To use them, build such a library, then call SharedObject.SharedObject() on
  * it. Once loaded, you can use SharedObject.LoadFunction() on that object to
@@ -28121,14 +28119,14 @@ inline void IOStream::WriteS64BE(Sint64 value)
  *   convention as the actual library function. Your code will crash
  *   mysteriously if you do not do this.
  * - Avoid namespace collisions. If you load a symbol from the library, it is
- *   not defined whether or not it goes into the global symbol namespace for
- *   the application. If it does and it conflicts with symbols in your code or
- *   other shared libraries, you will not get the results you expect. :)
+ *   not defined whether or not it goes into the global symbol namespace for the
+ *   application. If it does and it conflicts with symbols in your code or other
+ *   shared libraries, you will not get the results you expect. :)
  * - Once a library is unloaded, all pointers into it obtained through
  *   SharedObject.LoadFunction() become invalid, even if the library is later
- * reloaded. Don't unload a library if you plan to use these pointers in the
- * future. Notably: beware of giving one of these pointers to atexit(), since it
- * may call that pointer after the library unloads.
+ *   reloaded. Don't unload a library if you plan to use these pointers in the
+ *   future. Notably: beware of giving one of these pointers to atexit(), since
+ *   it may call that pointer after the library unloads.
  *
  * @{
  */
@@ -28218,7 +28216,7 @@ public:
    *
    * @param sofile a system-dependent name of the object file.
    * @post an opaque pointer to the object handle or nullptr on failure; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -28361,17 +28359,17 @@ inline SharedObject LoadObject(StringParam sofile)
  * name mangling and intrinsic language support that varies from compiler to
  * compiler.
  *
- * Make sure you declare your function pointers with the same calling
- * convention as the actual library function. Your code will crash
- * mysteriously if you do not do this.
+ * Make sure you declare your function pointers with the same calling convention
+ * as the actual library function. Your code will crash mysteriously if you do
+ * not do this.
  *
  * If the requested function doesn't exist, nullptr is returned.
  *
  * @param handle a valid shared object handle returned by
- * SharedObject.SharedObject().
+ *               SharedObject.SharedObject().
  * @param name the name of the function to look up.
- * @returns a pointer to the function or nullptr on failure; call GetError()
- *          for more information.
+ * @returns a pointer to the function or nullptr on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -28396,7 +28394,7 @@ inline FunctionPointer SharedObject::LoadFunction(StringParam name)
  * SharedObject.LoadFunction() will no longer be valid.
  *
  * @param handle a valid shared object handle returned by
- * SharedObject.SharedObject().
+ *               SharedObject.SharedObject().
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -28416,10 +28414,9 @@ inline void SharedObject::Unload() { UnloadObject(release()); }
  * SDL locale services.
  *
  * This provides a way to get a list of preferred locales (language plus
- * country) for the user. There is exactly one function:
- * GetPreferredLocales(), which handles all the heavy lifting, and offers
- * documentation on all the strange ways humans might have configured their
- * language settings.
+ * country) for the user. There is exactly one function: GetPreferredLocales(),
+ * which handles all the heavy lifting, and offers documentation on all the
+ * strange ways humans might have configured their language settings.
  *
  * @{
  */
@@ -28442,16 +28439,16 @@ using Locale = SDL_Locale;
  * Report the user's preferred locale.
  *
  * Returned language strings are in the format xx, where 'xx' is an ISO-639
- * language specifier (such as "en" for English, "de" for German, etc).
- * Country strings are in the format YY, where "YY" is an ISO-3166 country
- * code (such as "US" for the United States, "CA" for Canada, etc). Country
- * might be nullptr if there's no specific guidance on them (so you might get {
- * "en", "US" } for American English, but { "en", nullptr } means "English
- * language, generically"). Language strings are never nullptr, except to
- * terminate the array.
+ * language specifier (such as "en" for English, "de" for German, etc). Country
+ * strings are in the format YY, where "YY" is an ISO-3166 country code (such as
+ * "US" for the United States, "CA" for Canada, etc). Country might be nullptr
+ * if there's no specific guidance on them (so you might get { "en", "US" } for
+ * American English, but { "en", nullptr } means "English language,
+ * generically"). Language strings are never nullptr, except to terminate the
+ * array.
  *
- * Please note that not all of these strings are 2 characters; some are three
- * or more.
+ * Please note that not all of these strings are 2 characters; some are three or
+ * more.
  *
  * The returned list of locales are in the order of the user's preference. For
  * example, a German citizen that is fluent in US English and knows enough
@@ -28463,11 +28460,11 @@ using Locale = SDL_Locale;
  * This function returns nullptr on error, including when the platform does not
  * supply this information at all.
  *
- * This might be a "slow" call that has to query the operating system. It's
- * best to ask for this once and save the results. However, this list can
- * change, usually because the user has changed a system preference outside of
- * your program; SDL will send an EVENT_LOCALE_CHANGED event in this case,
- * if possible, and you can call this function again to get an updated copy of
+ * This might be a "slow" call that has to query the operating system. It's best
+ * to ask for this once and save the results. However, this list can change,
+ * usually because the user has changed a system preference outside of your
+ * program; SDL will send an EVENT_LOCALE_CHANGED event in this case, if
+ * possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
  * @returns a nullptr terminated array of locale pointers on success.
