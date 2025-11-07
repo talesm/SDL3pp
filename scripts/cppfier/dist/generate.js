@@ -51,11 +51,12 @@ function generateFile(targetFile, config) {
         ...(targetFile.includes ?? []).sort().map(s => `#include <${s}>`),
         ...(targetFile.localIncludes ?? []).sort().map(s => `#include "${s}"`),
     ];
+    const doc = generateFileDocString(targetFile.parsedDoc) ?? generateDocString(targetFile.doc + "\n\n@{");
     return [
         `#ifndef ${guardName}\n#define ${guardName}\n`,
         ...includes,
         `\nnamespace ${namespace} {\n`,
-        generateDocString(targetFile.doc + "\n\n@{") + "\n",
+        `${doc}\n`,
         generatedEntries,
         `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`
     ];
@@ -83,6 +84,12 @@ function generateFile(targetFile, config) {
             .map(l => l ? `${prefix} * ${l}` : `${prefix} *`)
             .join('\n');
         return `\n${prefix}/**\n${docStr}\n${prefix} */`;
+    }
+    function generateFileDocString(doc) {
+        if (!doc?.length)
+            return undefined;
+        doc.push("@{");
+        return generateParsedDocString(doc);
     }
     function generateParsedDocString(doc, prefix) {
         if (!doc?.length)

@@ -215,10 +215,10 @@ function parseContent(name: string, content: string) {
   const api = listener.api;
   if (name < "SDL_atomic.h") {
     api.parsedDoc = parseDoc(name, api.doc ?? "");
-    // delete api.doc;
+    delete api.doc;
     for (const apiEntry of Object.values(api.entries)) {
       apiEntry.parsedDoc = parseDoc(`${name}@${apiEntry.name}`, apiEntry.doc);
-      // delete apiEntry.doc;
+      delete apiEntry.doc;
     }
   }
   return api;

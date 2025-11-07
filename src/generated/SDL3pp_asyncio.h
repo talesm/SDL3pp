@@ -8,7 +8,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryAsyncIO Category AsyncIO
+ * @defgroup CategoryAsyncIO CategoryAsyncIO
  *
  * SDL offers a way to perform I/O asynchronously. This allows an app to read or
  * write files without waiting for data to actually transfer; the functions that
@@ -25,13 +25,13 @@ namespace SDL {
  *
  * - Create one or more AsyncIOQueue objects.
  * - Open files with AsyncIO.AsyncIO.
- * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write,
- *   putting those tasks into one of the queues.
+ * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write, putting
+ *   those tasks into one of the queues.
  * - Later on, use AsyncIOQueue.GetResult on a queue to see if any task is
- *   finished without blocking. Tasks might finish in any order with success
- *   or failure.
- * - When all your tasks are done, close the file with AsyncIO.Close. This
- *   also generates a task, since it might flush data to disk!
+ *   finished without blocking. Tasks might finish in any order with success or
+ *   failure.
+ * - When all your tasks are done, close the file with AsyncIO.Close. This also
+ *   generates a task, since it might flush data to disk!
  *
  * This all works, without blocking, in a single thread, but one can also wait
  * on a queue in a background thread, sleeping until new results have arrived:
@@ -715,7 +715,6 @@ public:
    * polling, it is possible to have a timeout of -1 to wait forever, and use
    * AsyncIOQueue.Signal() to wake up the waiting threads later.
    *
-   * @param queue the async I/O task queue to wait on.
    * @param outcome details of a finished task will be written here. May not be
    *                nullptr.
    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait

@@ -57,6 +57,7 @@ export function transformApi(config: TransformConfig) {
     files.push({
       name: targetName,
       doc: fileConfig.doc ?? transformFileDoc(sourceFile.doc, context) ?? "",
+      parsedDoc: transformFileParsedDoc(sourceFile.parsedDoc, context),
       entries: transformEntries(sourceFile.entries, fileConfig, context),
       includes,
       localIncludes: fileConfig.localIncludes,
@@ -1836,6 +1837,7 @@ function insertEntry(entries: ApiEntries, entry: ApiEntry | ApiEntry[], defaultN
         while (e.overload) e = e.overload;
         e.overload = entry;
         if (typeof entry.doc !== 'string' && currEntry.doc) entry.doc = currEntry.doc;
+        if (!entry.parsedDoc && currEntry.parsedDoc) entry.parsedDoc = [...currEntry.parsedDoc];
       }
     } else {
       entries[key] = entry;
@@ -2141,6 +2143,15 @@ function transformFileDoc(docStr: string, context: ApiContext) {
   if (!docStr) return "";
   docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
+}
+
+function transformFileParsedDoc(doc: ParsedDoc, context: ApiContext) {
+  if (!doc?.length) return;
+  const title = doc[0];
+  if (typeof title === "object" && !Array.isArray(title) && title.tag === '#') {
+    title.tag = `@defgroup ${title.content}`;
+  }
+  return transformParsedDoc(doc, context);
 }
 
 function transformDoc(docStr: string, context: ApiContext) {

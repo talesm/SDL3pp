@@ -1,61 +1,61 @@
 11c11
-<  * @defgroup CategoryAssert Category Assert
+<  * @defgroup CategoryAssert CategoryAssert
 ---
 >  * @defgroup CategoryAssert Assertions
-53a54,55
+52a53,54
 > #ifdef SDL3PP_DOC
 > 
-128c130
+127c129
 <  * do { SomethingOnce(); } while (SDL_nullptr_WHILE_LOOP_CONDITION (0));
 ---
 >  * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
-153a156,157
+152a155,156
 > #endif // SDL3PP_DOC
 > 
-217a222,223
+216a221,222
 > #ifdef SDL3PP_DOC
 > 
-319c325
+318c324
 <  * instead of risking a bad UI interaction (deadlock, etc) in the application. *
 ---
 >  * instead of risking a bad UI interaction (deadlock, etc) in the application.
-380a387,388
+379a386,387
 > #endif // SDL3PP_DOC
 > 
-382c390
+381c389
 <  * A callback that fires when an SDL assertion fails.
 ---
 >  * A @ref callback that fires when an SDL assertion fails.
-397c405
+396c404
 <  * A callback that fires when an SDL assertion fails.
 ---
 >  * A @ref callback that fires when an SDL assertion fails.
-438c446,447
+437c445,446
 <   SDL_SetAssertionHandler(handler, userdata);
 ---
 >   UniqueCallbackWrapper<AssertionHandlerCB>::erase();
 >   return SDL_SetAssertionHandler(handler, userdata);
-454,456c463
+453,455c462
 <  * @param handler the AssertionHandler function to call when an assertion fails
 <  *                or nullptr for the default handler.
 <  * @param userdata a pointer that is passed to `handler`.
 ---
 >  * @param handler the AssertionHandler function to call when an assertion fails.
-466c473,475
+465c472,474
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
 >   SetAssertionHandler(&Wrapper::CallSuffixed,
 >                       Wrapper::Wrap(std::move(handler)));
-468d476
+467d475
 < 
-531,533c539
+530,532c538
 <  * @param puserdata pointer which is filled with the "userdata" pointer that was
 <  *                  passed to SetAssertionHandler().
 <  * @returns the AssertionHandler that is called when an assert triggers.
 ---
 >  * @returns the AssertionHandlerCB that is called when an assert triggers.
-543c549,553
+542c548,552
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
@@ -63,11 +63,11 @@
 >   auto cb = GetAssertionHandler(&userdata);
 >   if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
 >   return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-554c564
+553c563
 <  * ```c
 ---
 >  * ```cpp
-580c590
+579c589
 <   return SDL_GetAssertionReport();
 ---
 >   return *SDL_GetAssertionReport();

@@ -62,12 +62,13 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     ...(targetFile.localIncludes ?? []).sort().map(s => `#include "${s}"`),
   ];
 
+  const doc = generateFileDocString(targetFile.parsedDoc) ?? generateDocString(targetFile.doc + "\n\n@{");
 
   return [
     `#ifndef ${guardName}\n#define ${guardName}\n`,
     ...includes,
     `\nnamespace ${namespace} {\n`,
-    generateDocString(targetFile.doc + "\n\n@{") + "\n",
+    `${doc}\n`,
     generatedEntries,
     `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`
   ];
@@ -96,6 +97,12 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
       .map(l => l ? `${prefix} * ${l}` : `${prefix} *`)
       .join('\n');
     return `\n${prefix}/**\n${docStr}\n${prefix} */`;
+  }
+
+  function generateFileDocString(doc: ParsedDoc) {
+    if (!doc?.length) return undefined;
+    doc.push("@{");
+    return generateParsedDocString(doc);
   }
 
   function generateParsedDocString(doc: ParsedDoc, prefix?: string) {
