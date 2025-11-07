@@ -1,18 +1,18 @@
 10c10
-<  * @defgroup CategoryEndian Category Endian
+<  * @defgroup CategoryEndian CategoryEndian
 ---
 >  * @defgroup CategoryEndian Byte Order and Byte Swapping
-29a30,31
+27a28,29
 > #ifdef SDL3PP_DOC
 > 
-36c38
+34c36
 <  * ```c
 ---
 >  * ```cpp
-55c57
+53c55
 <  * ```c
 ---
 >  * ```cpp
-106a109,110
+104a107,108
 > 
 > #endif // SDL3PP_DOC

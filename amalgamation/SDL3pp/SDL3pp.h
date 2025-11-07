@@ -2633,13 +2633,13 @@ inline void ResetAssertionReport() { SDL_ResetAssertionReport(); }
  *
  * Simple error message routines for SDL.
  *
- * Most apps will interface with these APIs in exactly one function: when
- * almost any SDL function call reports failure, you can get a human-readable
- * string of the problem from GetError().
+ * Most apps will interface with these APIs in exactly one function: when almost
+ * any SDL function call reports failure, you can get a human-readable string of
+ * the problem from GetError().
  *
  * These strings are maintained per-thread, and apps are welcome to set their
- * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SetError().
+ * own errors, which is popular when building libraries on top of SDL for other
+ * apps to consume. These strings are set by calling SetError().
  *
  * A common usage pattern is to have a function that returns true for success
  * and false for failure, and do this when something fails:
@@ -2650,8 +2650,8 @@ inline void ResetAssertionReport() { SDL_ResetAssertionReport(); }
  * }
  * ```
  *
- * It's also common to just return `false` in this case if the failing thing
- * is known to call SetError(), so errors simply propagate through.
+ * It's also common to just return `false` in this case if the failing thing is
+ * known to call SetError(), so errors simply propagate through.
  *
  * @{
  */
@@ -2741,28 +2741,27 @@ inline bool SetError(std::string_view fmt, ARGS... args)
 inline bool OutOfMemory() { return SDL_OutOfMemory(); }
 
 /**
- * Retrieve a message about the last error that occurred on the current
- * thread.
+ * Retrieve a message about the last error that occurred on the current thread.
  *
- * It is possible for multiple errors to occur before calling GetError().
- * Only the last error is returned.
+ * It is possible for multiple errors to occur before calling GetError(). Only
+ * the last error is returned.
  *
  * The message is only applicable when an SDL function has signaled an error.
  * You must check the return values of SDL function calls to determine when to
- * appropriately call GetError(). You should *not* use the results of
- * GetError() to decide if an error has occurred! Sometimes SDL will set
- * an error string even when reporting success.
+ * appropriately call GetError(). You should *not* use the results of GetError()
+ * to decide if an error has occurred! Sometimes SDL will set an error string
+ * even when reporting success.
  *
  * SDL will *not* clear the error string for successful API calls. You *must*
- * check return values for failure cases before you can assume the error
- * string applies.
+ * check return values for failure cases before you can assume the error string
+ * applies.
  *
- * Error strings are set per-thread, so an error set in a different thread
- * will not interfere with the current thread's operation.
+ * Error strings are set per-thread, so an error set in a different thread will
+ * not interfere with the current thread's operation.
  *
- * The returned value is a thread-local string which will remain valid until
- * the current thread's error string is changed. The caller should make a copy
- * if the value is needed after the next SDL API call.
+ * The returned value is a thread-local string which will remain valid until the
+ * current thread's error string is changed. The caller should make a copy if
+ * the value is needed after the next SDL API call.
  *
  * @returns a message with information about the specific error that occurred,
  *          or an empty string if there hasn't been an error message set since
@@ -22185,18 +22184,16 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * Functions converting endian-specific values to different byte orders.
  *
- * These functions either unconditionally swap byte order (Swap16,
- * Swap32, Swap64, SwapFloat), or they swap to/from the system's
- * native byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,
- * Swap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the
- * latter case, the functionality is provided by macros that become no-ops if
- * a swap isn't necessary: on an x86 (littleendian) processor, Swap32LE
- * does nothing, but Swap32BE reverses the bytes of the data. On a PowerPC
- * processor (bigendian), the macros behavior is reversed.
+ * These functions either unconditionally swap byte order (Swap16, Swap32,
+ * Swap64, SwapFloat), or they swap to/from the system's native byte order
+ * (Swap16LE, Swap16BE, Swap32LE, Swap32BE, Swap32LE, Swap32BE, SwapFloatLE,
+ * SwapFloatBE). In the latter case, the functionality is provided by macros
+ * that become no-ops if a swap isn't necessary: on an x86 (littleendian)
+ * processor, Swap32LE does nothing, but Swap32BE reverses the bytes of the
+ * data. On a PowerPC processor (bigendian), the macros behavior is reversed.
  *
  * The swap routines are inline functions, and attempt to use compiler
- * intrinsics, inline assembly, and other magic to make byteswapping
- * efficient.
+ * intrinsics, inline assembly, and other magic to make byteswapping efficient.
  *
  * @{
  */
@@ -22245,8 +22242,8 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * A macro that reports the target system's byte order.
  *
  * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
- * values in the future, if something else becomes popular). This can be
- * tested with the preprocessor, so decisions can be made at compile time.
+ * values in the future, if something else becomes popular). This can be tested
+ * with the preprocessor, so decisions can be made at compile time.
  *
  * ```c
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -22265,8 +22262,8 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * A macro that reports the target system's floating point word order.
  *
  * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
- * values in the future, if something else becomes popular). This can be
- * tested with the preprocessor, so decisions can be made at compile time.
+ * values in the future, if something else becomes popular). This can be tested
+ * with the preprocessor, so decisions can be made at compile time.
  *
  * ```c
  * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
@@ -22287,13 +22284,13 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * Byte-swap an unsigned 16-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap16LE or Swap16BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
+ * in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns `x`, with its bytes in the opposite endian order.
@@ -22308,13 +22305,13 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  * Byte-swap an unsigned 32-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap32LE or Swap32BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
+ * in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns `x`, with its bytes in the opposite endian order.
@@ -22329,13 +22326,13 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * Byte-swap an unsigned 64-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap64LE or Swap64BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
+ * in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns `x`, with its bytes in the opposite endian order.
@@ -22350,13 +22347,13 @@ constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  * Byte-swap a floating point number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SwapFloatLE or
- * SwapFloatBE instead, in most cases.
+ * byteorder of the system or not. You should use SwapFloatLE or SwapFloatBE
+ * instead, in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns x, with its bytes in the opposite endian order.
@@ -58164,7 +58161,7 @@ using DialogFileFilter = SDL_DialogFileFilter;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -58172,13 +58169,13 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * The filelist argument should not be freed; it will automatically be freed
  * when the callback returns.
  *
- * The filter argument is the index of the filter that was selected, or -1 if
- * no filter was selected or if the platform or method doesn't support
- * fetching the selected filter.
+ * The filter argument is the index of the filter that was selected, or -1 if no
+ * filter was selected or if the platform or method doesn't support fetching the
+ * selected filter.
  *
- * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both to open
- * and save file dialog.
+ * In Android, the `filelist` are `content://` URIs. They should be opened using
+ * IOStream.FromFile() with appropriate modes. This applies both to open and
+ * save file dialog.
  *
  * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
@@ -58203,7 +58200,7 @@ using DialogFileCallback = SDL_DialogFileCallback;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -58211,16 +58208,16 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * The filelist argument should not be freed; it will automatically be freed
  * when the callback returns.
  *
- * The filter argument is the index of the filter that was selected, or -1 if
- * no filter was selected or if the platform or method doesn't support
- * fetching the selected filter.
+ * The filter argument is the index of the filter that was selected, or -1 if no
+ * filter was selected or if the platform or method doesn't support fetching the
+ * selected filter.
  *
- * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both to open
- * and save file dialog.
+ * In Android, the `filelist` are `content://` URIs. They should be opened using
+ * IOStream.FromFile() with appropriate modes. This applies both to open and
+ * save file dialog.
  *
- * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
+ * @param filter index of the selected filter.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -58236,26 +58233,25 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
@@ -58266,7 +58262,7 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -58301,26 +58297,25 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
  * @param filters a list of filters, may be nullptr. Not all platforms support
@@ -58329,7 +58324,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -58364,15 +58359,15 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  * Displays a dialog that lets the user choose a new or existing file on their
  * filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
  * The chosen file may or may not already exist.
  *
@@ -58380,9 +58375,8 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
@@ -58393,7 +58387,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  *
  * @threadsafety This function should be called only from the main thread. The
  *               callback may be invoked from the same thread or from a
@@ -58425,15 +58419,15 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * Displays a dialog that lets the user choose a new or existing file on their
  * filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
  * The chosen file may or may not already exist.
  *
@@ -58441,9 +58435,8 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
  * @param filters a list of filters, may be nullptr. Not all platforms support
@@ -58452,7 +58445,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  *                valid at least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  *
  * @threadsafety This function should be called only from the main thread. The
  *               callback may be invoked from the same thread or from a
@@ -58482,33 +58475,32 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
 /**
  * Displays a dialog that lets the user select a folder on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -58536,31 +58528,30 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
 /**
  * Displays a dialog that lets the user select a folder on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -58591,8 +58582,8 @@ inline void ShowOpenFolderDialog(DialogFileCB callback,
 /**
  * Various types of file dialogs.
  *
- * This is used by ShowFileDialogWithProperties() to decide what kind of
- * dialog to present to the user.
+ * This is used by ShowFileDialogWithProperties() to decide what kind of dialog
+ * to present to the user.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -58614,31 +58605,29 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
- *   DialogFileFilter structs, which will be used as filters for
- *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
- *   If non-nullptr, the array of filters must remain valid at least until the
- *   callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
- *   array of filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
- *   be modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
- *   start the dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
- *   more than one entry.
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ *   structs, which will be used as filters for file-based selections. Ignored
+ *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
+ *   filters must remain valid at least until the callback is invoked.
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ *   filters, if it exists.
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ *   modal for.
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ *   dialog at.
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ *   one entry.
  * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
- *   should have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
- *   should have.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ *   have.
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ *   have.
  *
  * Note that each platform may or may not support any of the properties.
  *
  * @param type the type of file dialog.
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param props the properties to use.
@@ -58669,31 +58658,29 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
- *   DialogFileFilter structs, which will be used as filters for
- *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
- *   If non-nullptr, the array of filters must remain valid at least until the
- *   callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
- *   array of filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
- *   be modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
- *   start the dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
- *   more than one entry.
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ *   structs, which will be used as filters for file-based selections. Ignored
+ *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
+ *   filters must remain valid at least until the callback is invoked.
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ *   filters, if it exists.
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ *   modal for.
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ *   dialog at.
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ *   one entry.
  * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
- *   should have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
- *   should have.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ *   have.
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ *   have.
  *
  * Note that each platform may or may not support any of the properties.
  *
  * @param type the type of file dialog.
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param props the properties to use.
  *
  * @threadsafety This function should be called only from the main thread. The
@@ -58752,22 +58739,21 @@ constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
  * examine any events that have occured since the last time and process or
- * ignore them. This is generally done by calling PollEvent() in a loop
- * until it returns false (or, if using the main callbacks, events are
- * provided one at a time in calls to SDL_AppEvent() before the next call to
- * SDL_AppIterate(); in this scenario, the app does not call PollEvent()
- * at all).
+ * ignore them. This is generally done by calling PollEvent() in a loop until it
+ * returns false (or, if using the main callbacks, events are provided one at a
+ * time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in
+ * this scenario, the app does not call PollEvent() at all).
  *
- * There is other forms of control, too: PeepEvents() has more
- * functionality at the cost of more complexity, and WaitEvent() can block
- * the process until something interesting happens, which might be beneficial
- * for certain types of programs on low-power hardware. One may also call
- * AddEventWatch() to set a callback when new events arrive.
+ * There is other forms of control, too: PeepEvents() has more functionality at
+ * the cost of more complexity, and WaitEvent() can block the process until
+ * something interesting happens, which might be beneficial for certain types of
+ * programs on low-power hardware. One may also call AddEventWatch() to set a
+ * callback when new events arrive.
  *
- * The app is free to generate their own events, too: PushEvent allows the
- * app to put events onto the queue for later retrieval; RegisterEvents
- * can guarantee that these events have a type that isn't in use by other
- * parts of the system.
+ * The app is free to generate their own events, too: PushEvent allows the app
+ * to put events onto the queue for later retrieval; RegisterEvents can
+ * guarantee that these events have a type that isn't in use by other parts of
+ * the system.
  *
  * @{
  */
@@ -59216,10 +59202,10 @@ using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
 /**
  * Keyboard button event structure (event.key.*)
  *
- * The `key` is the base Keycode generated by pressing the `scancode`
- * using the current keyboard layout, applying any options specified in
- * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the
- * event scancode and modifiers directly from the keyboard layout, bypassing
+ * The `key` is the base Keycode generated by pressing the `scancode` using the
+ * current keyboard layout, applying any options specified in
+ * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the event
+ * scancode and modifiers directly from the keyboard layout, bypassing
  * SDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().
  *
  * @since This struct is available since SDL 3.2.0.
@@ -59232,8 +59218,8 @@ using KeyboardEvent = SDL_KeyboardEvent;
 /**
  * Keyboard text editing event structure (event.edit.*)
  *
- * The start cursor is the position, in UTF-8 characters, where new typing
- * will be inserted into the editing text. The length is the number of UTF-8
+ * The start cursor is the position, in UTF-8 characters, where new typing will
+ * be inserted into the editing text. The length is the number of UTF-8
  * characters that will be replaced by new typing.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -59352,12 +59338,12 @@ using GamepadButtonEvent = SDL_GamepadButtonEvent;
 /**
  * Gamepad device event structure (event.gdevice.*)
  *
- * Joysticks that are supported gamepads receive both an JoyDeviceEvent
- * and an GamepadDeviceEvent.
+ * Joysticks that are supported gamepads receive both an JoyDeviceEvent and an
+ * GamepadDeviceEvent.
  *
- * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged
- * in during Init() and are recognized as gamepads. It will also send
- * events for joysticks that get gamepad mappings at runtime.
+ * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged in
+ * during Init() and are recognized as gamepads. It will also send events for
+ * joysticks that get gamepad mappings at runtime.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -59404,18 +59390,17 @@ using RenderEvent = SDL_RenderEvent;
  * Touch finger event structure (event.tfinger.*)
  *
  * Coordinates in this event are normalized. `x` and `y` are normalized to a
- * range between 0.0f and 1.0f, relative to the window, so (0,0) is the top
- * left and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are
- * normalized in the ranges of -1.0f (traversed all the way from the bottom or
- * right to all the way up or left) to 1.0f (traversed all the way from the
- * top or left to all the way down or right).
+ * range between 0.0f and 1.0f, relative to the window, so (0,0) is the top left
+ * and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are normalized
+ * in the ranges of -1.0f (traversed all the way from the bottom or right to all
+ * the way up or left) to 1.0f (traversed all the way from the top or left to
+ * all the way down or right).
  *
  * Note that while the coordinates are _normalized_, they are not _clamped_,
- * which means in some circumstances you can get a value outside of this
- * range. For example, a renderer using logical presentation might give a
- * negative value when the touch is in the letterboxing. Some platforms might
- * report a touch outside of the window, which will also be outside of the
- * range.
+ * which means in some circumstances you can get a value outside of this range.
+ * For example, a renderer using logical presentation might give a negative
+ * value when the touch is in the letterboxing. Some platforms might report a
+ * touch outside of the window, which will also be outside of the range.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59425,14 +59410,14 @@ using TouchFingerEvent = SDL_TouchFingerEvent;
  * Pressure-sensitive pen proximity event structure (event.pmotion.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
- * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's
- * ID. This ID is valid until the pen leaves proximity again (has been removed
- * from the tablet's area, the tablet has been unplugged, etc). If the same
- * pen reenters proximity again, it will be given a new ID.
+ * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's ID.
+ * This ID is valid until the pen leaves proximity again (has been removed from
+ * the tablet's area, the tablet has been unplugged, etc). If the same pen
+ * reenters proximity again, it will be given a new ID.
  *
- * Note that "proximity" means "close enough for the tablet to know the tool
- * is there." The pen touching and lifting off from the tablet while not
- * leaving the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
+ * Note that "proximity" means "close enough for the tablet to know the tool is
+ * there." The pen touching and lifting off from the tablet while not leaving
+ * the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59442,10 +59427,9 @@ using PenProximityEvent = SDL_PenProximityEvent;
  * Pressure-sensitive pen motion event structure (event.pmotion.*)
  *
  * Depending on the hardware, you may get motion events when the pen is not
- * touching a tablet, for tracking a pen even when it isn't drawing. You
- * should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check
- * `pen_state & PEN_INPUT_DOWN` to decide if a pen is "drawing" when
- * dealing with pen motion.
+ * touching a tablet, for tracking a pen even when it isn't drawing. You should
+ * listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check `pen_state &
+ * PEN_INPUT_DOWN` to decide if a pen is "drawing" when dealing with pen motion.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59454,8 +59438,8 @@ using PenMotionEvent = SDL_PenMotionEvent;
 /**
  * Pressure-sensitive pen touched event structure (event.ptouch.*)
  *
- * These events come when a pen touches a surface (a tablet, etc), or lifts
- * off from one.
+ * These events come when a pen touches a surface (a tablet, etc), or lifts off
+ * from one.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59474,8 +59458,7 @@ using PenButtonEvent = SDL_PenButtonEvent;
 /**
  * Pressure-sensitive pen pressure / angle event structure (event.paxis.*)
  *
- * You might get some of these events even if the pen isn't touching the
- * tablet.
+ * You might get some of these events even if the pen isn't touching the tablet.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59515,10 +59498,10 @@ using QuitEvent = SDL_QuitEvent;
  * A user-defined event type (event.user.*)
  *
  * This event is unique; it is never created by SDL, but only by the
- * application. The event can be pushed onto the event queue using
- * PushEvent(). The contents of the structure members are completely up to
- * the programmer; the only requirement is that '''type''' is a value obtained
- * from RegisterEvents().
+ * application. The event can be pushed onto the event queue using PushEvent().
+ * The contents of the structure members are completely up to the programmer;
+ * the only requirement is that '''type''' is a value obtained from
+ * RegisterEvents().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59527,8 +59510,8 @@ using UserEvent = SDL_UserEvent;
 /**
  * The structure for all events in SDL.
  *
- * The Event structure is the core of all event handling in SDL. Event
- * is a union of all event structures used in SDL.
+ * The Event structure is the core of all event handling in SDL. Event is a
+ * union of all event structures used in SDL.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -59540,12 +59523,12 @@ using Event = SDL_Event;
  * This function updates the event queue and internal input device state.
  *
  * PumpEvents() gathers all the pending input information from devices and
- * places it in the event queue. Without calls to PumpEvents() no events
- * would ever be placed on the queue. Often the need for calls to
- * PumpEvents() is hidden from the user since PollEvent() and
- * WaitEvent() implicitly call PumpEvents(). However, if you are not
- * polling or waiting for events (e.g. you are filtering them), then you must
- * call PumpEvents() to force an event queue update.
+ * places it in the event queue. Without calls to PumpEvents() no events would
+ * ever be placed on the queue. Often the need for calls to PumpEvents() is
+ * hidden from the user since PollEvent() and WaitEvent() implicitly call
+ * PumpEvents(). However, if you are not polling or waiting for events (e.g. you
+ * are filtering them), then you must call PumpEvents() to force an event queue
+ * update.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -59587,32 +59570,31 @@ constexpr EventAction GETEVENT = SDL_GETEVENT;
  *
  * ## remarks
  *
- * - `ADDEVENT`: up to `numevents` events will be added to the back of the
- *   event queue.
- * - `PEEKEVENT`: `numevents` events at the front of the event queue,
- *   within the specified minimum and maximum type, will be returned to the
- *   caller and will _not_ be removed from the queue. If you pass nullptr for
- *   `events`, then `numevents` is ignored and the total number of matching
- *   events will be returned.
+ * - `ADDEVENT`: up to `numevents` events will be added to the back of the event
+ *   queue.
+ * - `PEEKEVENT`: `numevents` events at the front of the event queue, within the
+ *   specified minimum and maximum type, will be returned to the caller and will
+ *   _not_ be removed from the queue. If you pass nullptr for `events`, then
+ *   `numevents` is ignored and the total number of matching events will be
+ *   returned.
  * - `GETEVENT`: up to `numevents` events at the front of the event queue,
  *   within the specified minimum and maximum type, will be returned to the
  *   caller and will be removed from the queue.
  *
- * You may have to call PumpEvents() before calling this function.
- * Otherwise, the events may not be ready to be filtered when you call
- * PeepEvents().
+ * You may have to call PumpEvents() before calling this function. Otherwise,
+ * the events may not be ready to be filtered when you call PeepEvents().
  *
  * @param events destination buffer for the retrieved events, may be nullptr to
  *               leave the events in the queue and return the number of events
  *               that would have been stored.
- * @param numevents if action is ADDEVENT, the number of events to add
- *                  back to the event queue; if action is PEEKEVENT or
- *                  GETEVENT, the maximum number of events to retrieve.
+ * @param numevents if action is ADDEVENT, the number of events to add back to
+ *                  the event queue; if action is PEEKEVENT or GETEVENT, the
+ *                  maximum number of events to retrieve.
  * @param action action to take; see [Remarks](#remarks) for details.
- * @param minType minimum value of the event type to be considered;
- *                EVENT_FIRST is a safe choice.
- * @param maxType maximum value of the event type to be considered;
- *                EVENT_LAST is a safe choice.
+ * @param minType minimum value of the event type to be considered; EVENT_FIRST
+ *                is a safe choice.
+ * @param maxType maximum value of the event type to be considered; EVENT_LAST
+ *                is a safe choice.
  * @returns the number of events actually stored or -1 on failure; call
  *          GetError() for more information.
  *
@@ -59636,8 +59618,7 @@ inline int PeepEvents(Event* events,
 /**
  * Check for the existence of a certain event type in the event queue.
  *
- * If you need to check for a range of event types, use HasEvents()
- * instead.
+ * If you need to check for a range of event types, use HasEvents() instead.
  *
  * @param type the type of event to be queried; see EventType for details.
  * @returns true if events matching `type` are present, or false if events
@@ -59660,8 +59641,8 @@ inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
  *                EventType for details.
  * @param maxType the high end of event type to be queried, inclusive; see
  *                EventType for details.
- * @returns true if events with type >= `minType` and <= `maxType` are
- *          present, or false if not.
+ * @returns true if events with type >= `minType` and <= `maxType` are present,
+ *          or false if not.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -59677,20 +59658,19 @@ inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 /**
  * Clear events of a specific type from the event queue.
  *
- * This will unconditionally remove any events from the queue that match
- * `type`. If you need to remove a range of event types, use FlushEvents()
- * instead.
+ * This will unconditionally remove any events from the queue that match `type`.
+ * If you need to remove a range of event types, use FlushEvents() instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * If you have user events with custom data that needs to be freed, you should
- * use PeepEvents() to remove and clean up those events before calling
- * this function.
+ * use PeepEvents() to remove and clean up those events before calling this
+ * function.
  *
  * @param type the type of event to be cleared; see EventType for details.
  *
@@ -59712,9 +59692,9 @@ inline void FlushEvent(Uint32 type) { SDL_FlushEvent(type); }
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * @param minType the low end of event type to be cleared, inclusive; see
  *                EventType for details.
@@ -59738,18 +59718,18 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  *
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`. The 1 returned refers to
- * this event, immediately stored in the SDL Event structure -- not an event
- * to follow.
+ * this event, immediately stored in the SDL Event structure -- not an event to
+ * follow.
  *
  * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
  * but will not remove it from the queue.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that set the video mode.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that set the video mode.
  *
- * PollEvent() is the favored way of receiving system events since it can
- * be done from the main loop and does not suspend the main loop while waiting
- * on an event to be posted.
+ * PollEvent() is the favored way of receiving system events since it can be
+ * done from the main loop and does not suspend the main loop while waiting on
+ * an event to be posted.
  *
  * The common practice is to fully process the event queue once every frame,
  * usually as a first step before updating the game's state:
@@ -59765,8 +59745,8 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * }
  * ```
  *
- * @param event the Event structure to be filled with the next event from
- *              the queue, or nullptr.
+ * @param event the Event structure to be filled with the next event from the
+ *              queue, or nullptr.
  * @returns true if this got an event or false if there are none available.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -59784,12 +59764,12 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *
  * The next event is removed from the queue and returned.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that set the video mode.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that set the video mode.
  *
- * PollEvent() is the favored way of receiving system events since it can
- * be done from the main loop and does not suspend the main loop while waiting
- * on an event to be posted.
+ * PollEvent() is the favored way of receiving system events since it can be
+ * done from the main loop and does not suspend the main loop while waiting on
+ * an event to be posted.
  *
  * The common practice is to fully process the event queue once every frame,
  * usually as a first step before updating the game's state:
@@ -59805,7 +59785,7 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  * ```
  *
  * @returns Event if this got an event or std::nullopt if there are none
- * available.
+ *          available.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -59827,11 +59807,11 @@ inline std::optional<Event> PollEvent()
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
- * @param event the Event structure to be filled in with the next event
- *              from the queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -59849,10 +59829,11 @@ inline void WaitEvent(Event* event) { CheckError(SDL_WaitEvent(event)); }
  *
  * The next event is removed from the queue and returned.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * @returns Event on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -59877,14 +59858,14 @@ inline Event WaitEvent()
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event
- *              from the queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns true if this got an event or false if the timeout elapsed without
@@ -59907,12 +59888,14 @@ inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
  * Wait until the specified timeout (in milliseconds) for the next available
  * event.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns the Event if this got an event or std::nullopt if the timeout
@@ -59939,14 +59922,14 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event
- *              from the queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @param timeoutDuration the duration to wait for the next available event,
  *                        with millisecond precision
  * @returns true if this got an event or false if the timeout elapsed without
@@ -59970,8 +59953,8 @@ inline bool WaitEventTimeout(Event* event,
  * Wait until the specified timeout (with milliseconds precision) for the next
  * available event.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
@@ -59979,7 +59962,7 @@ inline bool WaitEventTimeout(Event* event,
  * @param timeoutDuration the duration to wait for the next available event,
  *                        with millisecond precision.
  * @returns the Event if this got an event or std::nullopt if the timeout
- * elapsed without any events available.
+ *          elapsed without any events available.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -59999,21 +59982,21 @@ inline std::optional<Event> WaitEventTimeout(
 /**
  * Add an event to the event queue.
  *
- * The event queue can actually be used as a two way communication channel.
- * Not only can events be read from the queue, but the user can also push
- * their own events onto it. `event` is a pointer to the event structure you
- * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after PushEvent() returns.
+ * The event queue can actually be used as a two way communication channel. Not
+ * only can events be read from the queue, but the user can also push their own
+ * events onto it. `event` is a pointer to the event structure you wish to push
+ * onto the queue. The event is copied into the queue, and the caller may
+ * dispose of the memory pointed to after PushEvent() returns.
  *
- * Note: Pushing device input events onto the queue doesn't modify the state
- * of the device within SDL.
+ * Note: Pushing device input events onto the queue doesn't modify the state of
+ * the device within SDL.
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter but events added with PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use RegisterEvents() to
- * get an event type that does not conflict with other code that also wants
- * its own custom event types.
+ * For pushing application-specific events, please use RegisterEvents() to get
+ * an event type that does not conflict with other code that also wants its own
+ * custom event types.
  *
  * @param event the Event to be added to the queue.
  * @throws Error on failure.
@@ -60031,21 +60014,21 @@ inline void PushEvent(Event* event) { CheckError(SDL_PushEvent(event)); }
 /**
  * Add an event to the event queue.
  *
- * The event queue can actually be used as a two way communication channel.
- * Not only can events be read from the queue, but the user can also push
- * their own events onto it. `event` is a pointer to the event structure you
- * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after PushEvent() returns.
+ * The event queue can actually be used as a two way communication channel. Not
+ * only can events be read from the queue, but the user can also push their own
+ * events onto it. `event` is a pointer to the event structure you wish to push
+ * onto the queue. The event is copied into the queue, and the caller may
+ * dispose of the memory pointed to after PushEvent() returns.
  *
- * Note: Pushing device input events onto the queue doesn't modify the state
- * of the device within SDL.
+ * Note: Pushing device input events onto the queue doesn't modify the state of
+ * the device within SDL.
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter but events added with PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use RegisterEvents() to
- * get an event type that does not conflict with other code that also wants
- * its own custom event types.
+ * For pushing application-specific events, please use RegisterEvents() to get
+ * an event type that does not conflict with other code that also wants its own
+ * custom event types.
  *
  * @param event the Event to be added to the queue.
  * @throws Error on failure.
@@ -60069,9 +60052,8 @@ inline void PushEvent(const Event& event)
  * @param userdata what was passed as `userdata` to SetEventFilter() or
  *                 AddEventWatch, etc.
  * @param event the event that triggered the callback.
- * @returns true to permit event to be added to the queue, and false to
- *          disallow it. When used with AddEventWatch, the return value is
- *          ignored.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
  *
  * @threadsafety SDL may call this callback at any time from any thread; the
  *               application is responsible for locking resources the callback
@@ -60088,9 +60070,8 @@ using EventFilter = SDL_EventFilter;
  * A std::function used for callbacks that watch the event queue.
  *
  * @param event the event that triggered the callback.
- * @returns true to permit event to be added to the queue, and false to
- *          disallow it. When used with AddEventWatch(), the return value is
- *          ignored.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
  *
  * @threadsafety SDL may call this callback at any time from any thread; the
  *               application is responsible for locking resources the callback
@@ -60122,27 +60103,26 @@ struct EventWatchHandle : CallbackHandle
  * Set up a filter to process all events before they are added to the internal
  * event queue.
  *
- * If you just want to see events without modifying them or preventing them
- * from being queued, you should use AddEventWatch() instead.
+ * If you just want to see events without modifying them or preventing them from
+ * being queued, you should use AddEventWatch() instead.
  *
- * If the filter function returns true when called, then the event will be
- * added to the internal queue. If it returns false, then the event will be
- * dropped from the queue, but the internal state will still be updated. This
- * allows selective filtering of dynamically arriving events.
+ * If the filter function returns true when called, then the event will be added
+ * to the internal queue. If it returns false, then the event will be dropped
+ * from the queue, but the internal state will still be updated. This allows
+ * selective filtering of dynamically arriving events.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread!
  *
- * On platforms that support it, if the quit event is generated by an
- * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
- * application at the next event poll.
+ * On platforms that support it, if the quit event is generated by an interrupt
+ * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
+ * next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
  * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter, but events pushed onto the queue with PeepEvents() do
- * not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
  * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -60167,27 +60147,26 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * Set up a filter to process all events before they are added to the internal
  * event queue.
  *
- * If you just want to see events without modifying them or preventing them
- * from being queued, you should use AddEventWatch() instead.
+ * If you just want to see events without modifying them or preventing them from
+ * being queued, you should use AddEventWatch() instead.
  *
- * If the filter function returns true when called, then the event will be
- * added to the internal queue. If it returns false, then the event will be
- * dropped from the queue, but the internal state will still be updated. This
- * allows selective filtering of dynamically arriving events.
+ * If the filter function returns true when called, then the event will be added
+ * to the internal queue. If it returns false, then the event will be dropped
+ * from the queue, but the internal state will still be updated. This allows
+ * selective filtering of dynamically arriving events.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread!
  *
- * On platforms that support it, if the quit event is generated by an
- * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
- * application at the next event poll.
+ * On platforms that support it, if the quit event is generated by an interrupt
+ * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
+ * next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
  * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter, but events pushed onto the queue with PeepEvents() do
- * not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
  * @param filter an EventFilterCB function to call when an event happens.
  *
@@ -60284,17 +60263,17 @@ inline bool EventWatchAuxCallback(void* userdata, Event* event)
  * `filter` will be called when an event happens, and its return value is
  * ignored.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread!
  *
- * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
- * the internal queue and be delivered to the watch callback immediately, and
- * arrive at the next event poll.
+ * If the quit event is generated by a signal (e.g. SIGINT), it will bypass the
+ * internal queue and be delivered to the watch callback immediately, and arrive
+ * at the next event poll.
  *
  * Note: the callback is called for events posted by the user through
- * PushEvent(), but not for disabled events, nor for events by a filter
- * callback set with SetEventFilter(), nor for events posted by the user
- * through PeepEvents().
+ * PushEvent(), but not for disabled events, nor for events by a filter callback
+ * set with SetEventFilter(), nor for events posted by the user through
+ * PeepEvents().
  *
  * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -60318,17 +60297,17 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * `filter` will be called when an event happens, and its return value is
  * ignored.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread!
  *
- * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
- * the internal queue and be delivered to the watch callback immediately, and
- * arrive at the next event poll.
+ * If the quit event is generated by a signal (e.g. SIGINT), it will bypass the
+ * internal queue and be delivered to the watch callback immediately, and arrive
+ * at the next event poll.
  *
  * Note: the callback is called for events posted by the user through
- * PushEvent(), but not for disabled events, nor for events by a filter
- * callback set with SetEventFilter(), nor for events posted by the user
- * through PeepEvents().
+ * PushEvent(), but not for disabled events, nor for events by a filter callback
+ * set with SetEventFilter(), nor for events posted by the user through
+ * PeepEvents().
  *
  * @param filter an EventFilterCB to call when an event happens.
  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
@@ -60359,8 +60338,8 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 /**
  * Remove an event watch callback added with AddEventWatch().
  *
- * This function takes the same input as AddEventWatch() to identify and
- * delete the corresponding callback.
+ * This function takes the same input as AddEventWatch() to identify and delete
+ * the corresponding callback.
  *
  * @param filter the function originally passed to AddEventWatch().
  * @param userdata the pointer originally passed to AddEventWatch().
@@ -60400,9 +60379,9 @@ inline void RemoveEventWatch(EventWatchHandle handle)
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SetEventFilter() for more information. Unlike SetEventFilter(),
- * this function does not change the filter permanently, it only uses the
- * supplied filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
  *
  * @param filter the EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -60423,9 +60402,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SetEventFilter() for more information. Unlike SetEventFilter(),
- * this function does not change the filter permanently, it only uses the
- * supplied filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
  *
  * @param filter the EventFilter function to call when an event happens.
  *
@@ -60481,12 +60460,12 @@ inline void SetEventEnabled(Uint32 type, bool enabled)
 inline bool EventEnabled(Uint32 type) { return SDL_EventEnabled(type); }
 
 /**
- * Allocate a set of user-defined events, and return the beginning event
- * number for that set of events.
+ * Allocate a set of user-defined events, and return the beginning event number
+ * for that set of events.
  *
  * @param numevents the number of events to be allocated.
- * @returns the beginning event number, or 0 if numevents is invalid or if
- *          there are not enough user-defined events left.
+ * @returns the beginning event number, or 0 if numevents is invalid or if there
+ *          are not enough user-defined events left.
  *
  * @threadsafety It is safe to call this function from any thread.
  *

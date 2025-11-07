@@ -8362,10 +8362,48 @@
     },
     "SDL_dialog.h": {
       "name": "SDL_dialog.h",
-      "doc": "# CategoryDialog\n\nFile dialog support.\n\nSDL offers file dialogs, to let users select files with native GUI\ninterfaces. There are \"open\" dialogs, \"save\" dialogs, and folder selection\ndialogs. The app can control some details, such as filtering to specific\nfiles, or whether multiple files can be selected by the user.\n\nNote that launching a file dialog is a non-blocking operation; control\nreturns to the app immediately, and a callback is called later (possibly in\nanother thread) when the user makes a choice.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryDialog"
+        },
+        "File dialog support.",
+        "SDL offers file dialogs, to let users select files with native GUI interfaces. There are \"open\" dialogs, \"save\" dialogs, and folder selection dialogs. The app can control some details, such as filtering to specific files, or whether multiple files can be selected by the user.",
+        "Note that launching a file dialog is a non-blocking operation; control returns to the app immediately, and a callback is called later (possibly in another thread) when the user makes a choice."
+      ],
       "entries": {
         "SDL_DialogFileFilter": {
-          "doc": "An entry for filters for file dialogs.\n\n`name` is a user-readable label for the filter (for example, \"Office\ndocument\").\n\n`pattern` is a semicolon-separated list of file extensions (for example,\n\"doc;docx\"). File extensions may only contain alphanumeric characters,\nhyphens, underscores and periods. Alternatively, the whole string can be a\nsingle asterisk (\"*\"), which serves as an \"All files\" filter.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_DialogFileCallback\n\\sa SDL_ShowOpenFileDialog\n\\sa SDL_ShowSaveFileDialog\n\\sa SDL_ShowOpenFolderDialog\n\\sa SDL_ShowFileDialogWithProperties",
+          "parsedDoc": [
+            "An entry for filters for file dialogs.",
+            "`name` is a user-readable label for the filter (for example, \"Office document\").",
+            "`pattern` is a semicolon-separated list of file extensions (for example, \"doc;docx\"). File extensions may only contain alphanumeric characters, hyphens, underscores and periods. Alternatively, the whole string can be a single asterisk (\"*\"), which serves as an \"All files\" filter.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileCallback"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowSaveFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFolderDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowFileDialogWithProperties"
+              }
+            ]
+          ],
           "name": "SDL_DialogFileFilter",
           "kind": "struct",
           "entries": {
@@ -8384,7 +8422,68 @@
           }
         },
         "SDL_DialogFileCallback": {
-          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- NULL, an error occurred. Details can be obtained with SDL_GetError().\n- A pointer to NULL, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`NULL`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing SDL_IOFromFile() with appropriate modes. This applies both to open\nand save file dialog.\n\n\\param userdata an app-provided pointer, for the callback's use.\n\\param filelist the file(s) chosen by the user.\n\\param filter index of the selected filter.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_DialogFileFilter\n\\sa SDL_ShowOpenFileDialog\n\\sa SDL_ShowSaveFileDialog\n\\sa SDL_ShowOpenFolderDialog\n\\sa SDL_ShowFileDialogWithProperties",
+          "parsedDoc": [
+            "Callback used by file dialog functions.",
+            "The specific usage is described in each function.",
+            "If `filelist` is:",
+            [
+              {
+                "tag": "-",
+                "content": "NULL, an error occurred. Details can be obtained with SDL_GetError()."
+              },
+              {
+                "tag": "-",
+                "content": "A pointer to NULL, the user either didn't choose any file or canceled the dialog."
+              },
+              {
+                "tag": "-",
+                "content": "A pointer to non-`NULL`, the user chose one or more files. The argument is a null-terminated array of pointers to UTF-8 encoded strings, each containing a path."
+              }
+            ],
+            "The filelist argument should not be freed; it will automatically be freed when the callback returns.",
+            "The filter argument is the index of the filter that was selected, or -1 if no filter was selected or if the platform or method doesn't support fetching the selected filter.",
+            "In Android, the `filelist` are `content://` URIs. They should be opened using SDL_IOFromFile() with appropriate modes. This applies both to open and save file dialog.",
+            [
+              {
+                "tag": "\\param userdata",
+                "content": "an app-provided pointer, for the callback's use."
+              },
+              {
+                "tag": "\\param filelist",
+                "content": "the file(s) chosen by the user."
+              },
+              {
+                "tag": "\\param filter",
+                "content": "index of the selected filter."
+              }
+            ],
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowSaveFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFolderDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowFileDialogWithProperties"
+              }
+            ]
+          ],
           "name": "SDL_DialogFileCallback",
           "kind": "callback",
           "type": "void",
@@ -8404,7 +8503,74 @@
           ]
         },
         "SDL_ShowOpenFileDialog": {
-          "doc": "Displays a dialog that lets the user select a file on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe NULL if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to SDL_PumpEvents in their main loop.\n\n\\param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n\\param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\\param window the window that the dialog should be modal for, may be NULL.\n              Not all platforms support this option.\n\\param filters a list of filters, may be NULL. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-NULL, it must remain\n               valid at least until the callback is invoked.\n\\param nfilters the number of filters. Ignored if filters is NULL.\n\\param default_location the default folder or file to start the dialog at,\n                        may be NULL. Not all platforms support this option.\n\\param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n\\threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DialogFileCallback\n\\sa SDL_DialogFileFilter\n\\sa SDL_ShowSaveFileDialog\n\\sa SDL_ShowOpenFolderDialog\n\\sa SDL_ShowFileDialogWithProperties",
+          "parsedDoc": [
+            "Displays a dialog that lets the user select a file on their filesystem.",
+            "This is an asynchronous function; it will return immediately, and the result will be passed to the callback.",
+            "The callback will be invoked with a null-terminated list of files the user chose. The list will be empty if the user canceled the dialog, and it will be NULL if an error occurred.",
+            "Note that the callback may be called from a different thread than the one the function was invoked on.",
+            "Depending on the platform, the user may be allowed to input paths that don't yet exist.",
+            "On Linux, dialogs may require XDG Portals, which requires DBus, which requires an event-handling loop. Apps that do not use SDL to handle events should add a call to SDL_PumpEvents in their main loop.",
+            [
+              {
+                "tag": "\\param callback",
+                "content": "a function pointer to be invoked when the user selects a file and accepts, or cancels the dialog, or an error occurs."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "an optional pointer to pass extra data to the callback when it will be invoked."
+              },
+              {
+                "tag": "\\param window",
+                "content": "the window that the dialog should be modal for, may be NULL. Not all platforms support this option."
+              },
+              {
+                "tag": "\\param filters",
+                "content": "a list of filters, may be NULL. Not all platforms support this option, and platforms that do support it may allow the user to ignore the filters. If non-NULL, it must remain valid at least until the callback is invoked."
+              },
+              {
+                "tag": "\\param nfilters",
+                "content": "the number of filters. Ignored if filters is NULL."
+              },
+              {
+                "tag": "\\param default_location",
+                "content": "the default folder or file to start the dialog at, may be NULL. Not all platforms support this option."
+              },
+              {
+                "tag": "\\param allow_many",
+                "content": "if non-zero, the user will be allowed to select multiple entries. Not all platforms support this option."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should be called only from the main thread. The callback may be invoked from the same thread or from a different one, depending on the OS's constraints."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileCallback"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowSaveFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFolderDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowFileDialogWithProperties"
+              }
+            ]
+          ],
           "name": "SDL_ShowOpenFileDialog",
           "kind": "function",
           "type": "void",
@@ -8440,7 +8606,70 @@
           ]
         },
         "SDL_ShowSaveFileDialog": {
-          "doc": "Displays a dialog that lets the user choose a new or existing file on their\nfilesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe NULL if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nThe chosen file may or may not already exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to SDL_PumpEvents in their main loop.\n\n\\param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n\\param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\\param window the window that the dialog should be modal for, may be NULL.\n              Not all platforms support this option.\n\\param filters a list of filters, may be NULL. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-NULL, it must remain\n               valid at least until the callback is invoked.\n\\param nfilters the number of filters. Ignored if filters is NULL.\n\\param default_location the default folder or file to start the dialog at,\n                        may be NULL. Not all platforms support this option.\n\n\\threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DialogFileCallback\n\\sa SDL_DialogFileFilter\n\\sa SDL_ShowOpenFileDialog\n\\sa SDL_ShowOpenFolderDialog\n\\sa SDL_ShowFileDialogWithProperties",
+          "parsedDoc": [
+            "Displays a dialog that lets the user choose a new or existing file on their filesystem.",
+            "This is an asynchronous function; it will return immediately, and the result will be passed to the callback.",
+            "The callback will be invoked with a null-terminated list of files the user chose. The list will be empty if the user canceled the dialog, and it will be NULL if an error occurred.",
+            "Note that the callback may be called from a different thread than the one the function was invoked on.",
+            "The chosen file may or may not already exist.",
+            "On Linux, dialogs may require XDG Portals, which requires DBus, which requires an event-handling loop. Apps that do not use SDL to handle events should add a call to SDL_PumpEvents in their main loop.",
+            [
+              {
+                "tag": "\\param callback",
+                "content": "a function pointer to be invoked when the user selects a file and accepts, or cancels the dialog, or an error occurs."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "an optional pointer to pass extra data to the callback when it will be invoked."
+              },
+              {
+                "tag": "\\param window",
+                "content": "the window that the dialog should be modal for, may be NULL. Not all platforms support this option."
+              },
+              {
+                "tag": "\\param filters",
+                "content": "a list of filters, may be NULL. Not all platforms support this option, and platforms that do support it may allow the user to ignore the filters. If non-NULL, it must remain valid at least until the callback is invoked."
+              },
+              {
+                "tag": "\\param nfilters",
+                "content": "the number of filters. Ignored if filters is NULL."
+              },
+              {
+                "tag": "\\param default_location",
+                "content": "the default folder or file to start the dialog at, may be NULL. Not all platforms support this option."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should be called only from the main thread. The callback may be invoked from the same thread or from a different one, depending on the OS's constraints."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileCallback"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFolderDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowFileDialogWithProperties"
+              }
+            ]
+          ],
           "name": "SDL_ShowSaveFileDialog",
           "kind": "function",
           "type": "void",
@@ -8472,7 +8701,62 @@
           ]
         },
         "SDL_ShowOpenFolderDialog": {
-          "doc": "Displays a dialog that lets the user select a folder on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe NULL if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to SDL_PumpEvents in their main loop.\n\n\\param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n\\param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\\param window the window that the dialog should be modal for, may be NULL.\n              Not all platforms support this option.\n\\param default_location the default folder or file to start the dialog at,\n                        may be NULL. Not all platforms support this option.\n\\param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n\\threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DialogFileCallback\n\\sa SDL_ShowOpenFileDialog\n\\sa SDL_ShowSaveFileDialog\n\\sa SDL_ShowFileDialogWithProperties",
+          "parsedDoc": [
+            "Displays a dialog that lets the user select a folder on their filesystem.",
+            "This is an asynchronous function; it will return immediately, and the result will be passed to the callback.",
+            "The callback will be invoked with a null-terminated list of files the user chose. The list will be empty if the user canceled the dialog, and it will be NULL if an error occurred.",
+            "Note that the callback may be called from a different thread than the one the function was invoked on.",
+            "Depending on the platform, the user may be allowed to input paths that don't yet exist.",
+            "On Linux, dialogs may require XDG Portals, which requires DBus, which requires an event-handling loop. Apps that do not use SDL to handle events should add a call to SDL_PumpEvents in their main loop.",
+            [
+              {
+                "tag": "\\param callback",
+                "content": "a function pointer to be invoked when the user selects a file and accepts, or cancels the dialog, or an error occurs."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "an optional pointer to pass extra data to the callback when it will be invoked."
+              },
+              {
+                "tag": "\\param window",
+                "content": "the window that the dialog should be modal for, may be NULL. Not all platforms support this option."
+              },
+              {
+                "tag": "\\param default_location",
+                "content": "the default folder or file to start the dialog at, may be NULL. Not all platforms support this option."
+              },
+              {
+                "tag": "\\param allow_many",
+                "content": "if non-zero, the user will be allowed to select multiple entries. Not all platforms support this option."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should be called only from the main thread. The callback may be invoked from the same thread or from a different one, depending on the OS's constraints."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileCallback"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowSaveFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowFileDialogWithProperties"
+              }
+            ]
+          ],
           "name": "SDL_ShowOpenFolderDialog",
           "kind": "function",
           "type": "void",
@@ -8500,7 +8784,18 @@
           ]
         },
         "SDL_FileDialogType": {
-          "doc": "Various types of file dialogs.\n\nThis is used by SDL_ShowFileDialogWithProperties() to decide what kind of\ndialog to present to the user.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_ShowFileDialogWithProperties",
+          "parsedDoc": [
+            "Various types of file dialogs.",
+            "This is used by SDL_ShowFileDialogWithProperties() to decide what kind of dialog to present to the user.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_ShowFileDialogWithProperties"
+            }
+          ],
           "name": "SDL_FileDialogType",
           "kind": "enum",
           "entries": {
@@ -8525,7 +8820,97 @@
           }
         },
         "SDL_ShowFileDialogWithProperties": {
-          "doc": "Create and launch a file dialog with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of\n  SDL_DialogFileFilter structs, which will be used as filters for\n  file-based selections. Ignored if the dialog is an \"Open Folder\" dialog.\n  If non-NULL, the array of filters must remain valid at least until the\n  callback is invoked.\n- `SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER`: the number of filters in the\n  array of filters, if it exists.\n- `SDL_PROP_FILE_DIALOG_WINDOW_POINTER`: the window that the dialog should\n  be modal for.\n- `SDL_PROP_FILE_DIALOG_LOCATION_STRING`: the default folder or file to\n  start the dialog at.\n- `SDL_PROP_FILE_DIALOG_MANY_BOOLEAN`: true to allow the user to select\n  more than one entry.\n- `SDL_PROP_FILE_DIALOG_TITLE_STRING`: the title for the dialog.\n- `SDL_PROP_FILE_DIALOG_ACCEPT_STRING`: the label that the accept button\n  should have.\n- `SDL_PROP_FILE_DIALOG_CANCEL_STRING`: the label that the cancel button\n  should have.\n\nNote that each platform may or may not support any of the properties.\n\n\\param type the type of file dialog.\n\\param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n\\param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n\\param props the properties to use.\n\n\\threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_FileDialogType\n\\sa SDL_DialogFileCallback\n\\sa SDL_DialogFileFilter\n\\sa SDL_ShowOpenFileDialog\n\\sa SDL_ShowSaveFileDialog\n\\sa SDL_ShowOpenFolderDialog",
+          "parsedDoc": [
+            "Create and launch a file dialog with the specified properties.",
+            "These are the supported properties:",
+            [
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of SDL_DialogFileFilter structs, which will be used as filters for file-based selections. Ignored if the dialog is an \"Open Folder\" dialog. If non-NULL, the array of filters must remain valid at least until the callback is invoked."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER`: the number of filters in the array of filters, if it exists."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_WINDOW_POINTER`: the window that the dialog should be modal for."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_LOCATION_STRING`: the default folder or file to start the dialog at."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_MANY_BOOLEAN`: true to allow the user to select more than one entry."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_TITLE_STRING`: the title for the dialog."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_ACCEPT_STRING`: the label that the accept button should have."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_FILE_DIALOG_CANCEL_STRING`: the label that the cancel button should have."
+              }
+            ],
+            "Note that each platform may or may not support any of the properties.",
+            [
+              {
+                "tag": "\\param type",
+                "content": "the type of file dialog."
+              },
+              {
+                "tag": "\\param callback",
+                "content": "a function pointer to be invoked when the user selects a file and accepts, or cancels the dialog, or an error occurs."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "an optional pointer to pass extra data to the callback when it will be invoked."
+              },
+              {
+                "tag": "\\param props",
+                "content": "the properties to use."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should be called only from the main thread. The callback may be invoked from the same thread or from a different one, depending on the OS's constraints."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_FileDialogType"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileCallback"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_DialogFileFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowSaveFileDialog"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_ShowOpenFolderDialog"
+              }
+            ]
+          ],
           "name": "SDL_ShowFileDialogWithProperties",
           "kind": "function",
           "type": "void",
@@ -8549,49 +8934,41 @@
           ]
         },
         "SDL_PROP_FILE_DIALOG_FILTERS_POINTER": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_FILTERS_POINTER",
           "kind": "def",
           "value": "\"SDL.filedialog.filters\""
         },
         "SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER",
           "kind": "def",
           "value": "\"SDL.filedialog.nfilters\""
         },
         "SDL_PROP_FILE_DIALOG_WINDOW_POINTER": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_WINDOW_POINTER",
           "kind": "def",
           "value": "\"SDL.filedialog.window\""
         },
         "SDL_PROP_FILE_DIALOG_LOCATION_STRING": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_LOCATION_STRING",
           "kind": "def",
           "value": "\"SDL.filedialog.location\""
         },
         "SDL_PROP_FILE_DIALOG_MANY_BOOLEAN": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_MANY_BOOLEAN",
           "kind": "def",
           "value": "\"SDL.filedialog.many\""
         },
         "SDL_PROP_FILE_DIALOG_TITLE_STRING": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_TITLE_STRING",
           "kind": "def",
           "value": "\"SDL.filedialog.title\""
         },
         "SDL_PROP_FILE_DIALOG_ACCEPT_STRING": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_ACCEPT_STRING",
           "kind": "def",
           "value": "\"SDL.filedialog.accept\""
         },
         "SDL_PROP_FILE_DIALOG_CANCEL_STRING": {
-          "doc": "",
           "name": "SDL_PROP_FILE_DIALOG_CANCEL_STRING",
           "kind": "def",
           "value": "\"SDL.filedialog.cancel\""
@@ -8600,34 +8977,144 @@
     },
     "SDL_endian.h": {
       "name": "SDL_endian.h",
-      "doc": "# CategoryEndian\n\nFunctions converting endian-specific values to different byte orders.\n\nThese functions either unconditionally swap byte order (SDL_Swap16,\nSDL_Swap32, SDL_Swap64, SDL_SwapFloat), or they swap to/from the system's\nnative byte order (SDL_Swap16LE, SDL_Swap16BE, SDL_Swap32LE, SDL_Swap32BE,\nSDL_Swap32LE, SDL_Swap32BE, SDL_SwapFloatLE, SDL_SwapFloatBE). In the\nlatter case, the functionality is provided by macros that become no-ops if\na swap isn't necessary: on an x86 (littleendian) processor, SDL_Swap32LE\ndoes nothing, but SDL_Swap32BE reverses the bytes of the data. On a PowerPC\nprocessor (bigendian), the macros behavior is reversed.\n\nThe swap routines are inline functions, and attempt to use compiler\nintrinsics, inline assembly, and other magic to make byteswapping\nefficient.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryEndian"
+        },
+        "Functions converting endian-specific values to different byte orders.",
+        "These functions either unconditionally swap byte order (SDL_Swap16, SDL_Swap32, SDL_Swap64, SDL_SwapFloat), or they swap to/from the system's native byte order (SDL_Swap16LE, SDL_Swap16BE, SDL_Swap32LE, SDL_Swap32BE, SDL_Swap32LE, SDL_Swap32BE, SDL_SwapFloatLE, SDL_SwapFloatBE). In the latter case, the functionality is provided by macros that become no-ops if a swap isn't necessary: on an x86 (littleendian) processor, SDL_Swap32LE does nothing, but SDL_Swap32BE reverses the bytes of the data. On a PowerPC processor (bigendian), the macros behavior is reversed.",
+        "The swap routines are inline functions, and attempt to use compiler intrinsics, inline assembly, and other magic to make byteswapping efficient."
+      ],
       "entries": {
         "SDL_LIL_ENDIAN": {
-          "doc": "A value to represent littleendian byteorder.\n\nThis is used with the preprocessor macro SDL_BYTEORDER, to determine a\nplatform's byte ordering:\n\n```c\n#if SDL_BYTEORDER == SDL_LIL_ENDIAN\nSDL_Log(\"This system is littleendian.\");\n#endif\n```\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_BYTEORDER\n\\sa SDL_BIG_ENDIAN",
+          "parsedDoc": [
+            "A value to represent littleendian byteorder.",
+            "This is used with the preprocessor macro SDL_BYTEORDER, to determine a platform's byte ordering:",
+            {
+              "content": "```c\n#if SDL_BYTEORDER == SDL_LIL_ENDIAN\nSDL_Log(\"This system is littleendian.\");\n#endif\n```"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_BYTEORDER"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_BIG_ENDIAN"
+              }
+            ]
+          ],
           "name": "SDL_LIL_ENDIAN",
           "kind": "def",
           "value": "1234"
         },
         "SDL_BIG_ENDIAN": {
-          "doc": "A value to represent bigendian byteorder.\n\nThis is used with the preprocessor macro SDL_BYTEORDER, to determine a\nplatform's byte ordering:\n\n```c\n#if SDL_BYTEORDER == SDL_BIG_ENDIAN\nSDL_Log(\"This system is bigendian.\");\n#endif\n```\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_BYTEORDER\n\\sa SDL_LIL_ENDIAN",
+          "parsedDoc": [
+            "A value to represent bigendian byteorder.",
+            "This is used with the preprocessor macro SDL_BYTEORDER, to determine a platform's byte ordering:",
+            {
+              "content": "```c\n#if SDL_BYTEORDER == SDL_BIG_ENDIAN\nSDL_Log(\"This system is bigendian.\");\n#endif\n```"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_BYTEORDER"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LIL_ENDIAN"
+              }
+            ]
+          ],
           "name": "SDL_BIG_ENDIAN",
           "kind": "def",
           "value": "4321"
         },
         "SDL_BYTEORDER": {
-          "doc": "A macro that reports the target system's byte order.\n\nThis is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other\nvalues in the future, if something else becomes popular). This can be\ntested with the preprocessor, so decisions can be made at compile time.\n\n```c\n#if SDL_BYTEORDER == SDL_BIG_ENDIAN\nSDL_Log(\"This system is bigendian.\");\n#endif\n```\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_LIL_ENDIAN\n\\sa SDL_BIG_ENDIAN",
+          "parsedDoc": [
+            "A macro that reports the target system's byte order.",
+            "This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other values in the future, if something else becomes popular). This can be tested with the preprocessor, so decisions can be made at compile time.",
+            {
+              "content": "```c\n#if SDL_BYTEORDER == SDL_BIG_ENDIAN\nSDL_Log(\"This system is bigendian.\");\n#endif\n```"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LIL_ENDIAN"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_BIG_ENDIAN"
+              }
+            ]
+          ],
           "name": "SDL_BYTEORDER",
           "kind": "def",
           "value": "SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN"
         },
         "SDL_FLOATWORDORDER": {
-          "doc": "A macro that reports the target system's floating point word order.\n\nThis is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other\nvalues in the future, if something else becomes popular). This can be\ntested with the preprocessor, so decisions can be made at compile time.\n\n```c\n#if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN\nSDL_Log(\"This system's floats are bigendian.\");\n#endif\n```\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_LIL_ENDIAN\n\\sa SDL_BIG_ENDIAN",
+          "parsedDoc": [
+            "A macro that reports the target system's floating point word order.",
+            "This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other values in the future, if something else becomes popular). This can be tested with the preprocessor, so decisions can be made at compile time.",
+            {
+              "content": "```c\n#if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN\nSDL_Log(\"This system's floats are bigendian.\");\n#endif\n```"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_LIL_ENDIAN"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_BIG_ENDIAN"
+              }
+            ]
+          ],
           "name": "SDL_FLOATWORDORDER",
           "kind": "def",
           "value": "SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN"
         },
         "SDL_Swap16": {
-          "doc": "Byte-swap an unsigned 16-bit number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE\ninstead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns `x`, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Byte-swap an unsigned 16-bit number.",
+            "This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE instead, in most cases.",
+            "Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to byte-swap."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x`, with its bytes in the opposite endian order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap16",
           "kind": "function",
           "type": "Uint16",
@@ -8640,7 +9127,29 @@
           "constexpr": true
         },
         "SDL_Swap32": {
-          "doc": "Byte-swap an unsigned 32-bit number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE\ninstead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns `x`, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Byte-swap an unsigned 32-bit number.",
+            "This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE instead, in most cases.",
+            "Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to byte-swap."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x`, with its bytes in the opposite endian order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap32",
           "kind": "function",
           "type": "Uint32",
@@ -8653,7 +9162,29 @@
           "constexpr": true
         },
         "SDL_Swap64": {
-          "doc": "Byte-swap an unsigned 64-bit number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE\ninstead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns `x`, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Byte-swap an unsigned 64-bit number.",
+            "This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE instead, in most cases.",
+            "Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to byte-swap."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x`, with its bytes in the opposite endian order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap64",
           "kind": "function",
           "type": "Uint64",
@@ -8666,7 +9197,29 @@
           "constexpr": true
         },
         "SDL_SwapFloat": {
-          "doc": "Byte-swap a floating point number.\n\nThis will always byte-swap the value, whether it's currently in the native\nbyteorder of the system or not. You should use SDL_SwapFloatLE or\nSDL_SwapFloatBE instead, in most cases.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the value to byte-swap.\n\\returns x, with its bytes in the opposite endian order.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Byte-swap a floating point number.",
+            "This will always byte-swap the value, whether it's currently in the native byteorder of the system or not. You should use SDL_SwapFloatLE or SDL_SwapFloatBE instead, in most cases.",
+            "Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to byte-swap."
+              },
+              {
+                "tag": "\\returns",
+                "content": "x, with its bytes in the opposite endian order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_SwapFloat",
           "kind": "function",
           "type": "float",
@@ -8679,7 +9232,29 @@
           "constexpr": true
         },
         "SDL_Swap16LE": {
-          "doc": "Swap a 16-bit value from littleendian to native byte order.\n\nIf this is running on a littleendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in littleendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a 16-bit value from littleendian to native byte order.",
+            "If this is running on a littleendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in littleendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap16LE",
           "kind": "def",
           "parameters": [
@@ -8691,7 +9266,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_Swap32LE": {
-          "doc": "Swap a 32-bit value from littleendian to native byte order.\n\nIf this is running on a littleendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in littleendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a 32-bit value from littleendian to native byte order.",
+            "If this is running on a littleendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in littleendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap32LE",
           "kind": "def",
           "parameters": [
@@ -8703,7 +9300,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_Swap64LE": {
-          "doc": "Swap a 64-bit value from littleendian to native byte order.\n\nIf this is running on a littleendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in littleendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a 64-bit value from littleendian to native byte order.",
+            "If this is running on a littleendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in littleendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap64LE",
           "kind": "def",
           "parameters": [
@@ -8715,7 +9334,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_SwapFloatLE": {
-          "doc": "Swap a floating point value from littleendian to native byte order.\n\nIf this is running on a littleendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in littleendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a floating point value from littleendian to native byte order.",
+            "If this is running on a littleendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in littleendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_SwapFloatLE",
           "kind": "def",
           "parameters": [
@@ -8727,7 +9368,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_Swap16BE": {
-          "doc": "Swap a 16-bit value from bigendian to native byte order.\n\nIf this is running on a bigendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in bigendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a 16-bit value from bigendian to native byte order.",
+            "If this is running on a bigendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in bigendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap16BE",
           "kind": "def",
           "parameters": [
@@ -8739,7 +9402,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_Swap32BE": {
-          "doc": "Swap a 32-bit value from bigendian to native byte order.\n\nIf this is running on a bigendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in bigendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a 32-bit value from bigendian to native byte order.",
+            "If this is running on a bigendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in bigendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap32BE",
           "kind": "def",
           "parameters": [
@@ -8751,7 +9436,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_Swap64BE": {
-          "doc": "Swap a 64-bit value from bigendian to native byte order.\n\nIf this is running on a bigendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in bigendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a 64-bit value from bigendian to native byte order.",
+            "If this is running on a bigendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in bigendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Swap64BE",
           "kind": "def",
           "parameters": [
@@ -8763,7 +9470,29 @@
           "value": "SwapOnlyIfNecessary(x)"
         },
         "SDL_SwapFloatBE": {
-          "doc": "Swap a floating point value from bigendian to native byte order.\n\nIf this is running on a bigendian system, `x` is returned unchanged.\n\nThis macro never references `x` more than once, avoiding side effects.\n\n\\param x the value to swap, in bigendian byte order.\n\\returns `x` in native byte order.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Swap a floating point value from bigendian to native byte order.",
+            "If this is running on a bigendian system, `x` is returned unchanged.",
+            "This macro never references `x` more than once, avoiding side effects.",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the value to swap, in bigendian byte order."
+              },
+              {
+                "tag": "\\returns",
+                "content": "`x` in native byte order."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_SwapFloatBE",
           "kind": "def",
           "parameters": [
@@ -8778,10 +9507,66 @@
     },
     "SDL_error.h": {
       "name": "SDL_error.h",
-      "doc": "# CategoryError\n\nSimple error message routines for SDL.\n\nMost apps will interface with these APIs in exactly one function: when\nalmost any SDL function call reports failure, you can get a human-readable\nstring of the problem from SDL_GetError().\n\nThese strings are maintained per-thread, and apps are welcome to set their\nown errors, which is popular when building libraries on top of SDL for\nother apps to consume. These strings are set by calling SDL_SetError().\n\nA common usage pattern is to have a function that returns true for success\nand false for failure, and do this when something fails:\n\n```c\nif (something_went_wrong) {\n   return SDL_SetError(\"The thing broke in this specific way: %d\", errcode);\n}\n```\n\nIt's also common to just return `false` in this case if the failing thing\nis known to call SDL_SetError(), so errors simply propagate through.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryError"
+        },
+        "Simple error message routines for SDL.",
+        "Most apps will interface with these APIs in exactly one function: when almost any SDL function call reports failure, you can get a human-readable string of the problem from SDL_GetError().",
+        "These strings are maintained per-thread, and apps are welcome to set their own errors, which is popular when building libraries on top of SDL for other apps to consume. These strings are set by calling SDL_SetError().",
+        "A common usage pattern is to have a function that returns true for success and false for failure, and do this when something fails:",
+        {
+          "content": "```c\nif (something_went_wrong) {\n   return SDL_SetError(\"The thing broke in this specific way: %d\", errcode);\n}\n```"
+        },
+        "It's also common to just return `false` in this case if the failing thing is known to call SDL_SetError(), so errors simply propagate through."
+      ],
       "entries": {
         "SDL_SetError": {
-          "doc": "Set the SDL error message for the current thread.\n\nCalling this function will replace any previous error message that was set.\n\nThis function always returns false, since SDL frequently uses false to\nsignify a failing result, leading to this idiom:\n\n```c\nif (error_code) {\n    return SDL_SetError(\"This operation has failed: %d\", error_code);\n}\n```\n\n\\param fmt a printf()-style message format string.\n\\param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n\\returns false.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ClearError\n\\sa SDL_GetError\n\\sa SDL_SetErrorV",
+          "parsedDoc": [
+            "Set the SDL error message for the current thread.",
+            "Calling this function will replace any previous error message that was set.",
+            "This function always returns false, since SDL frequently uses false to signify a failing result, leading to this idiom:",
+            {
+              "content": "```c\nif (error_code) {\n    return SDL_SetError(\"This operation has failed: %d\", error_code);\n}\n```"
+            },
+            [
+              {
+                "tag": "\\param fmt",
+                "content": "a printf()-style message format string."
+              },
+              {
+                "tag": "\\param ...",
+                "content": "additional parameters matching % tokens in the `fmt` string, if any."
+              },
+              {
+                "tag": "\\returns",
+                "content": "false."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_ClearError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetErrorV"
+              }
+            ]
+          ],
           "name": "SDL_SetError",
           "kind": "function",
           "type": "bool",
@@ -8797,7 +9582,46 @@
           ]
         },
         "SDL_SetErrorV": {
-          "doc": "Set the SDL error message for the current thread.\n\nCalling this function will replace any previous error message that was set.\n\n\\param fmt a printf()-style message format string.\n\\param ap a variable argument list.\n\\returns false.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ClearError\n\\sa SDL_GetError\n\\sa SDL_SetError",
+          "parsedDoc": [
+            "Set the SDL error message for the current thread.",
+            "Calling this function will replace any previous error message that was set.",
+            [
+              {
+                "tag": "\\param fmt",
+                "content": "a printf()-style message format string."
+              },
+              {
+                "tag": "\\param ap",
+                "content": "a variable argument list."
+              },
+              {
+                "tag": "\\returns",
+                "content": "false."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_ClearError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetError"
+              }
+            ]
+          ],
           "name": "SDL_SetErrorV",
           "kind": "function",
           "type": "bool",
@@ -8813,35 +9637,129 @@
           ]
         },
         "SDL_OutOfMemory": {
-          "doc": "Set an error indicating that memory allocation failed.\n\nThis function does not do any memory allocation.\n\n\\returns false.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Set an error indicating that memory allocation failed.",
+            "This function does not do any memory allocation.",
+            {
+              "tag": "\\returns",
+              "content": "false."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_OutOfMemory",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_GetError": {
-          "doc": "Retrieve a message about the last error that occurred on the current\nthread.\n\nIt is possible for multiple errors to occur before calling SDL_GetError().\nOnly the last error is returned.\n\nThe message is only applicable when an SDL function has signaled an error.\nYou must check the return values of SDL function calls to determine when to\nappropriately call SDL_GetError(). You should *not* use the results of\nSDL_GetError() to decide if an error has occurred! Sometimes SDL will set\nan error string even when reporting success.\n\nSDL will *not* clear the error string for successful API calls. You *must*\ncheck return values for failure cases before you can assume the error\nstring applies.\n\nError strings are set per-thread, so an error set in a different thread\nwill not interfere with the current thread's operation.\n\nThe returned value is a thread-local string which will remain valid until\nthe current thread's error string is changed. The caller should make a copy\nif the value is needed after the next SDL API call.\n\n\\returns a message with information about the specific error that occurred,\n         or an empty string if there hasn't been an error message set since\n         the last call to SDL_ClearError().\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ClearError\n\\sa SDL_SetError",
+          "parsedDoc": [
+            "Retrieve a message about the last error that occurred on the current thread.",
+            "It is possible for multiple errors to occur before calling SDL_GetError(). Only the last error is returned.",
+            "The message is only applicable when an SDL function has signaled an error. You must check the return values of SDL function calls to determine when to appropriately call SDL_GetError(). You should *not* use the results of SDL_GetError() to decide if an error has occurred! Sometimes SDL will set an error string even when reporting success.",
+            "SDL will *not* clear the error string for successful API calls. You *must* check return values for failure cases before you can assume the error string applies.",
+            "Error strings are set per-thread, so an error set in a different thread will not interfere with the current thread's operation.",
+            "The returned value is a thread-local string which will remain valid until the current thread's error string is changed. The caller should make a copy if the value is needed after the next SDL API call.",
+            {
+              "tag": "\\returns",
+              "content": "a message with information about the specific error that occurred, or an empty string if there hasn't been an error message set since the last call to SDL_ClearError()."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_ClearError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetError"
+              }
+            ]
+          ],
           "name": "SDL_GetError",
           "kind": "function",
           "type": "const char *",
           "parameters": []
         },
         "SDL_ClearError": {
-          "doc": "Clear any previous error message for this thread.\n\n\\returns true.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetError\n\\sa SDL_SetError",
+          "parsedDoc": [
+            "Clear any previous error message for this thread.",
+            {
+              "tag": "\\returns",
+              "content": "true."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetError"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetError"
+              }
+            ]
+          ],
           "name": "SDL_ClearError",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_Unsupported": {
-          "doc": "A macro to standardize error reporting on unsupported operations.\n\nThis simply calls SDL_SetError() with a standardized error string, for\nconvenience, consistency, and clarity.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro to standardize error reporting on unsupported operations.",
+            "This simply calls SDL_SetError() with a standardized error string, for convenience, consistency, and clarity.",
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Unsupported",
           "kind": "def",
           "parameters": [],
           "value": "SDL_SetError(\"That operation is not supported\")"
         },
         "SDL_InvalidParamError": {
-          "doc": "A macro to standardize error reporting on unsupported operations.\n\nThis simply calls SDL_SetError() with a standardized error string, for\nconvenience, consistency, and clarity.\n\nA common usage pattern inside SDL is this:\n\n```c\nbool MyFunction(const char *str) {\n    if (!str) {\n        return SDL_InvalidParamError(\"str\");  // returns false.\n    }\n    DoSomething(str);\n    return true;\n}\n```\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro to standardize error reporting on unsupported operations.",
+            "This simply calls SDL_SetError() with a standardized error string, for convenience, consistency, and clarity.",
+            "A common usage pattern inside SDL is this:",
+            {
+              "content": "```c\nbool MyFunction(const char *str) {\n    if (!str) {\n        return SDL_InvalidParamError(\"str\");  // returns false.\n    }\n    DoSomething(str);\n    return true;\n}\n```"
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_InvalidParamError",
           "kind": "def",
           "parameters": [
@@ -8856,10 +9774,26 @@
     },
     "SDL_events.h": {
       "name": "SDL_events.h",
-      "doc": "# CategoryEvents\n\nEvent queue management.\n\nIt's extremely common--often required--that an app deal with SDL's event\nqueue. Almost all useful information about interactions with the real world\nflow through here: the user interacting with the computer and app, hardware\ncoming and going, the system changing in some way, etc.\n\nAn app generally takes a moment, perhaps at the start of a new frame, to\nexamine any events that have occured since the last time and process or\nignore them. This is generally done by calling SDL_PollEvent() in a loop\nuntil it returns false (or, if using the main callbacks, events are\nprovided one at a time in calls to SDL_AppEvent() before the next call to\nSDL_AppIterate(); in this scenario, the app does not call SDL_PollEvent()\nat all).\n\nThere is other forms of control, too: SDL_PeepEvents() has more\nfunctionality at the cost of more complexity, and SDL_WaitEvent() can block\nthe process until something interesting happens, which might be beneficial\nfor certain types of programs on low-power hardware. One may also call\nSDL_AddEventWatch() to set a callback when new events arrive.\n\nThe app is free to generate their own events, too: SDL_PushEvent allows the\napp to put events onto the queue for later retrieval; SDL_RegisterEvents\ncan guarantee that these events have a type that isn't in use by other\nparts of the system.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryEvents"
+        },
+        "Event queue management.",
+        "It's extremely common--often required--that an app deal with SDL's event queue. Almost all useful information about interactions with the real world flow through here: the user interacting with the computer and app, hardware coming and going, the system changing in some way, etc.",
+        "An app generally takes a moment, perhaps at the start of a new frame, to examine any events that have occured since the last time and process or ignore them. This is generally done by calling SDL_PollEvent() in a loop until it returns false (or, if using the main callbacks, events are provided one at a time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in this scenario, the app does not call SDL_PollEvent() at all).",
+        "There is other forms of control, too: SDL_PeepEvents() has more functionality at the cost of more complexity, and SDL_WaitEvent() can block the process until something interesting happens, which might be beneficial for certain types of programs on low-power hardware. One may also call SDL_AddEventWatch() to set a callback when new events arrive.",
+        "The app is free to generate their own events, too: SDL_PushEvent allows the app to put events onto the queue for later retrieval; SDL_RegisterEvents can guarantee that these events have a type that isn't in use by other parts of the system."
+      ],
       "entries": {
         "SDL_EventType": {
-          "doc": "The types of events that can be delivered.\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The types of events that can be delivered.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_EventType",
           "kind": "enum",
           "entries": {
@@ -9574,7 +10508,13 @@
           }
         },
         "SDL_CommonEvent": {
-          "doc": "Fields shared by every event\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Fields shared by every event",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_CommonEvent",
           "kind": "struct",
           "entries": {
@@ -9599,7 +10539,13 @@
           }
         },
         "SDL_DisplayEvent": {
-          "doc": "Display state change event data (event.display.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Display state change event data (event.display.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_DisplayEvent",
           "kind": "struct",
           "entries": {
@@ -9642,7 +10588,13 @@
           }
         },
         "SDL_WindowEvent": {
-          "doc": "Window state change event data (event.window.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Window state change event data (event.window.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_WindowEvent",
           "kind": "struct",
           "entries": {
@@ -9685,7 +10637,13 @@
           }
         },
         "SDL_KeyboardDeviceEvent": {
-          "doc": "Keyboard device event structure (event.kdevice.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Keyboard device event structure (event.kdevice.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_KeyboardDeviceEvent",
           "kind": "struct",
           "entries": {
@@ -9716,7 +10674,24 @@
           }
         },
         "SDL_KeyboardEvent": {
-          "doc": "Keyboard button event structure (event.key.*)\n\nThe `key` is the base SDL_Keycode generated by pressing the `scancode`\nusing the current keyboard layout, applying any options specified in\nSDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the\nevent scancode and modifiers directly from the keyboard layout, bypassing\nSDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GetKeyFromScancode\n\\sa SDL_HINT_KEYCODE_OPTIONS",
+          "parsedDoc": [
+            "Keyboard button event structure (event.key.*)",
+            "The `key` is the base SDL_Keycode generated by pressing the `scancode` using the current keyboard layout, applying any options specified in SDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the event scancode and modifiers directly from the keyboard layout, bypassing SDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetKeyFromScancode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HINT_KEYCODE_OPTIONS"
+              }
+            ]
+          ],
           "name": "SDL_KeyboardEvent",
           "kind": "struct",
           "entries": {
@@ -9789,7 +10764,14 @@
           }
         },
         "SDL_TextEditingEvent": {
-          "doc": "Keyboard text editing event structure (event.edit.*)\n\nThe start cursor is the position, in UTF-8 characters, where new typing\nwill be inserted into the editing text. The length is the number of UTF-8\ncharacters that will be replaced by new typing.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Keyboard text editing event structure (event.edit.*)",
+            "The start cursor is the position, in UTF-8 characters, where new typing will be inserted into the editing text. The length is the number of UTF-8 characters that will be replaced by new typing.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_TextEditingEvent",
           "kind": "struct",
           "entries": {
@@ -9838,7 +10820,13 @@
           }
         },
         "SDL_TextEditingCandidatesEvent": {
-          "doc": "Keyboard IME candidates event structure (event.edit_candidates.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Keyboard IME candidates event structure (event.edit_candidates.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_TextEditingCandidatesEvent",
           "kind": "struct",
           "entries": {
@@ -9911,7 +10899,24 @@
           }
         },
         "SDL_TextInputEvent": {
-          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nSDL_StartTextInput(). Text input is disabled by default!\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_StartTextInput\n\\sa SDL_StopTextInput",
+          "parsedDoc": [
+            "Keyboard text input event structure (event.text.*)",
+            "This event will never be delivered unless text input is enabled by calling SDL_StartTextInput(). Text input is disabled by default!",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_StartTextInput"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_StopTextInput"
+              }
+            ]
+          ],
           "name": "SDL_TextInputEvent",
           "kind": "struct",
           "entries": {
@@ -9948,7 +10953,13 @@
           }
         },
         "SDL_MouseDeviceEvent": {
-          "doc": "Mouse device event structure (event.mdevice.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Mouse device event structure (event.mdevice.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_MouseDeviceEvent",
           "kind": "struct",
           "entries": {
@@ -9979,7 +10990,13 @@
           }
         },
         "SDL_MouseMotionEvent": {
-          "doc": "Mouse motion event structure (event.motion.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Mouse motion event structure (event.motion.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_MouseMotionEvent",
           "kind": "struct",
           "entries": {
@@ -10046,7 +11063,13 @@
           }
         },
         "SDL_MouseButtonEvent": {
-          "doc": "Mouse button event structure (event.button.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Mouse button event structure (event.button.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_MouseButtonEvent",
           "kind": "struct",
           "entries": {
@@ -10119,7 +11142,13 @@
           }
         },
         "SDL_MouseWheelEvent": {
-          "doc": "Mouse wheel event structure (event.wheel.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Mouse wheel event structure (event.wheel.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_MouseWheelEvent",
           "kind": "struct",
           "entries": {
@@ -10198,7 +11227,13 @@
           }
         },
         "SDL_JoyAxisEvent": {
-          "doc": "Joystick axis motion event structure (event.jaxis.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Joystick axis motion event structure (event.jaxis.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_JoyAxisEvent",
           "kind": "struct",
           "entries": {
@@ -10265,7 +11300,13 @@
           }
         },
         "SDL_JoyBallEvent": {
-          "doc": "Joystick trackball motion event structure (event.jball.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Joystick trackball motion event structure (event.jball.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_JoyBallEvent",
           "kind": "struct",
           "entries": {
@@ -10332,7 +11373,13 @@
           }
         },
         "SDL_JoyHatEvent": {
-          "doc": "Joystick hat position change event structure (event.jhat.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Joystick hat position change event structure (event.jhat.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_JoyHatEvent",
           "kind": "struct",
           "entries": {
@@ -10387,7 +11434,13 @@
           }
         },
         "SDL_JoyButtonEvent": {
-          "doc": "Joystick button event structure (event.jbutton.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Joystick button event structure (event.jbutton.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_JoyButtonEvent",
           "kind": "struct",
           "entries": {
@@ -10442,7 +11495,18 @@
           }
         },
         "SDL_JoyDeviceEvent": {
-          "doc": "Joystick device event structure (event.jdevice.*)\n\nSDL will send JOYSTICK_ADDED events for devices that are already plugged in\nduring SDL_Init.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GamepadDeviceEvent",
+          "parsedDoc": [
+            "Joystick device event structure (event.jdevice.*)",
+            "SDL will send JOYSTICK_ADDED events for devices that are already plugged in during SDL_Init.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GamepadDeviceEvent"
+            }
+          ],
           "name": "SDL_JoyDeviceEvent",
           "kind": "struct",
           "entries": {
@@ -10473,7 +11537,13 @@
           }
         },
         "SDL_JoyBatteryEvent": {
-          "doc": "Joystick battery level change event structure (event.jbattery.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Joystick battery level change event structure (event.jbattery.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_JoyBatteryEvent",
           "kind": "struct",
           "entries": {
@@ -10516,7 +11586,13 @@
           }
         },
         "SDL_GamepadAxisEvent": {
-          "doc": "Gamepad axis motion event structure (event.gaxis.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Gamepad axis motion event structure (event.gaxis.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GamepadAxisEvent",
           "kind": "struct",
           "entries": {
@@ -10583,7 +11659,13 @@
           }
         },
         "SDL_GamepadButtonEvent": {
-          "doc": "Gamepad button event structure (event.gbutton.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Gamepad button event structure (event.gbutton.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GamepadButtonEvent",
           "kind": "struct",
           "entries": {
@@ -10638,7 +11720,19 @@
           }
         },
         "SDL_GamepadDeviceEvent": {
-          "doc": "Gamepad device event structure (event.gdevice.*)\n\nJoysticks that are supported gamepads receive both an SDL_JoyDeviceEvent\nand an SDL_GamepadDeviceEvent.\n\nSDL will send GAMEPAD_ADDED events for joysticks that are already plugged\nin during SDL_Init() and are recognized as gamepads. It will also send\nevents for joysticks that get gamepad mappings at runtime.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_JoyDeviceEvent",
+          "parsedDoc": [
+            "Gamepad device event structure (event.gdevice.*)",
+            "Joysticks that are supported gamepads receive both an SDL_JoyDeviceEvent and an SDL_GamepadDeviceEvent.",
+            "SDL will send GAMEPAD_ADDED events for joysticks that are already plugged in during SDL_Init() and are recognized as gamepads. It will also send events for joysticks that get gamepad mappings at runtime.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_JoyDeviceEvent"
+            }
+          ],
           "name": "SDL_GamepadDeviceEvent",
           "kind": "struct",
           "entries": {
@@ -10669,7 +11763,13 @@
           }
         },
         "SDL_GamepadTouchpadEvent": {
-          "doc": "Gamepad touchpad event structure (event.gtouchpad.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Gamepad touchpad event structure (event.gtouchpad.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GamepadTouchpadEvent",
           "kind": "struct",
           "entries": {
@@ -10730,7 +11830,13 @@
           }
         },
         "SDL_GamepadSensorEvent": {
-          "doc": "Gamepad sensor event structure (event.gsensor.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Gamepad sensor event structure (event.gsensor.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GamepadSensorEvent",
           "kind": "struct",
           "entries": {
@@ -10779,7 +11885,13 @@
           }
         },
         "SDL_AudioDeviceEvent": {
-          "doc": "Audio device event structure (event.adevice.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Audio device event structure (event.adevice.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_AudioDeviceEvent",
           "kind": "struct",
           "entries": {
@@ -10834,7 +11946,13 @@
           }
         },
         "SDL_CameraDeviceEvent": {
-          "doc": "Camera device event structure (event.cdevice.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Camera device event structure (event.cdevice.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_CameraDeviceEvent",
           "kind": "struct",
           "entries": {
@@ -10865,7 +11983,13 @@
           }
         },
         "SDL_RenderEvent": {
-          "doc": "Renderer event structure (event.render.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Renderer event structure (event.render.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_RenderEvent",
           "kind": "struct",
           "entries": {
@@ -10896,7 +12020,15 @@
           }
         },
         "SDL_TouchFingerEvent": {
-          "doc": "Touch finger event structure (event.tfinger.*)\n\nCoordinates in this event are normalized. `x` and `y` are normalized to a\nrange between 0.0f and 1.0f, relative to the window, so (0,0) is the top\nleft and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are\nnormalized in the ranges of -1.0f (traversed all the way from the bottom or\nright to all the way up or left) to 1.0f (traversed all the way from the\ntop or left to all the way down or right).\n\nNote that while the coordinates are _normalized_, they are not _clamped_,\nwhich means in some circumstances you can get a value outside of this\nrange. For example, a renderer using logical presentation might give a\nnegative value when the touch is in the letterboxing. Some platforms might\nreport a touch outside of the window, which will also be outside of the\nrange.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Touch finger event structure (event.tfinger.*)",
+            "Coordinates in this event are normalized. `x` and `y` are normalized to a range between 0.0f and 1.0f, relative to the window, so (0,0) is the top left and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are normalized in the ranges of -1.0f (traversed all the way from the bottom or right to all the way up or left) to 1.0f (traversed all the way from the top or left to all the way down or right).",
+            "Note that while the coordinates are _normalized_, they are not _clamped_, which means in some circumstances you can get a value outside of this range. For example, a renderer using logical presentation might give a negative value when the touch is in the letterboxing. Some platforms might report a touch outside of the window, which will also be outside of the range.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_TouchFingerEvent",
           "kind": "struct",
           "entries": {
@@ -10969,7 +12101,15 @@
           }
         },
         "SDL_PenProximityEvent": {
-          "doc": "Pressure-sensitive pen proximity event structure (event.pmotion.*)\n\nWhen a pen becomes visible to the system (it is close enough to a tablet,\netc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's\nID. This ID is valid until the pen leaves proximity again (has been removed\nfrom the tablet's area, the tablet has been unplugged, etc). If the same\npen reenters proximity again, it will be given a new ID.\n\nNote that \"proximity\" means \"close enough for the tablet to know the tool\nis there.\" The pen touching and lifting off from the tablet while not\nleaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Pressure-sensitive pen proximity event structure (event.pmotion.*)",
+            "When a pen becomes visible to the system (it is close enough to a tablet, etc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's ID. This ID is valid until the pen leaves proximity again (has been removed from the tablet's area, the tablet has been unplugged, etc). If the same pen reenters proximity again, it will be given a new ID.",
+            "Note that \"proximity\" means \"close enough for the tablet to know the tool is there.\" The pen touching and lifting off from the tablet while not leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_PenProximityEvent",
           "kind": "struct",
           "entries": {
@@ -11006,7 +12146,14 @@
           }
         },
         "SDL_PenMotionEvent": {
-          "doc": "Pressure-sensitive pen motion event structure (event.pmotion.*)\n\nDepending on the hardware, you may get motion events when the pen is not\ntouching a tablet, for tracking a pen even when it isn't drawing. You\nshould listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check\n`pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is \"drawing\" when\ndealing with pen motion.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Pressure-sensitive pen motion event structure (event.pmotion.*)",
+            "Depending on the hardware, you may get motion events when the pen is not touching a tablet, for tracking a pen even when it isn't drawing. You should listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check `pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is \"drawing\" when dealing with pen motion.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_PenMotionEvent",
           "kind": "struct",
           "entries": {
@@ -11061,7 +12208,14 @@
           }
         },
         "SDL_PenTouchEvent": {
-          "doc": "Pressure-sensitive pen touched event structure (event.ptouch.*)\n\nThese events come when a pen touches a surface (a tablet, etc), or lifts\noff from one.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Pressure-sensitive pen touched event structure (event.ptouch.*)",
+            "These events come when a pen touches a surface (a tablet, etc), or lifts off from one.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_PenTouchEvent",
           "kind": "struct",
           "entries": {
@@ -11128,7 +12282,14 @@
           }
         },
         "SDL_PenButtonEvent": {
-          "doc": "Pressure-sensitive pen button event structure (event.pbutton.*)\n\nThis is for buttons on the pen itself that the user might click. The pen\nitself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Pressure-sensitive pen button event structure (event.pbutton.*)",
+            "This is for buttons on the pen itself that the user might click. The pen itself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_PenButtonEvent",
           "kind": "struct",
           "entries": {
@@ -11195,7 +12356,14 @@
           }
         },
         "SDL_PenAxisEvent": {
-          "doc": "Pressure-sensitive pen pressure / angle event structure (event.paxis.*)\n\nYou might get some of these events even if the pen isn't touching the\ntablet.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Pressure-sensitive pen pressure / angle event structure (event.paxis.*)",
+            "You might get some of these events even if the pen isn't touching the tablet.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_PenAxisEvent",
           "kind": "struct",
           "entries": {
@@ -11262,7 +12430,13 @@
           }
         },
         "SDL_DropEvent": {
-          "doc": "An event used to drop text or request a file open by the system\n(event.drop.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "An event used to drop text or request a file open by the system (event.drop.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_DropEvent",
           "kind": "struct",
           "entries": {
@@ -11317,7 +12491,13 @@
           }
         },
         "SDL_ClipboardEvent": {
-          "doc": "An event triggered when the clipboard contents have changed\n(event.clipboard.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "An event triggered when the clipboard contents have changed (event.clipboard.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_ClipboardEvent",
           "kind": "struct",
           "entries": {
@@ -11360,7 +12540,13 @@
           }
         },
         "SDL_SensorEvent": {
-          "doc": "Sensor event structure (event.sensor.*)\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Sensor event structure (event.sensor.*)",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_SensorEvent",
           "kind": "struct",
           "entries": {
@@ -11403,7 +12589,13 @@
           }
         },
         "SDL_QuitEvent": {
-          "doc": "The \"quit requested\" event\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The \"quit requested\" event",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_QuitEvent",
           "kind": "struct",
           "entries": {
@@ -11428,7 +12620,14 @@
           }
         },
         "SDL_UserEvent": {
-          "doc": "A user-defined event type (event.user.*)\n\nThis event is unique; it is never created by SDL, but only by the\napplication. The event can be pushed onto the event queue using\nSDL_PushEvent(). The contents of the structure members are completely up to\nthe programmer; the only requirement is that '''type''' is a value obtained\nfrom SDL_RegisterEvents().\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A user-defined event type (event.user.*)",
+            "This event is unique; it is never created by SDL, but only by the application. The event can be pushed onto the event queue using SDL_PushEvent(). The contents of the structure members are completely up to the programmer; the only requirement is that '''type''' is a value obtained from SDL_RegisterEvents().",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_UserEvent",
           "kind": "struct",
           "entries": {
@@ -11477,19 +12676,54 @@
           }
         },
         "SDL_Event": {
-          "doc": "The structure for all events in SDL.\n\nThe SDL_Event structure is the core of all event handling in SDL. SDL_Event\nis a union of all event structures used in SDL.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The structure for all events in SDL.",
+            "The SDL_Event structure is the core of all event handling in SDL. SDL_Event is a union of all event structures used in SDL.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Event",
           "kind": "union"
         },
         "SDL_PumpEvents": {
-          "doc": "Pump the event loop, gathering events from the input devices.\n\nThis function updates the event queue and internal input device state.\n\nSDL_PumpEvents() gathers all the pending input information from devices and\nplaces it in the event queue. Without calls to SDL_PumpEvents() no events\nwould ever be placed on the queue. Often the need for calls to\nSDL_PumpEvents() is hidden from the user since SDL_PollEvent() and\nSDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not\npolling or waiting for events (e.g. you are filtering them), then you must\ncall SDL_PumpEvents() to force an event queue update.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PollEvent\n\\sa SDL_WaitEvent",
+          "parsedDoc": [
+            "Pump the event loop, gathering events from the input devices.",
+            "This function updates the event queue and internal input device state.",
+            "SDL_PumpEvents() gathers all the pending input information from devices and places it in the event queue. Without calls to SDL_PumpEvents() no events would ever be placed on the queue. Often the need for calls to SDL_PumpEvents() is hidden from the user since SDL_PollEvent() and SDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not polling or waiting for events (e.g. you are filtering them), then you must call SDL_PumpEvents() to force an event queue update.",
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PollEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEvent"
+              }
+            ]
+          ],
           "name": "SDL_PumpEvents",
           "kind": "function",
           "type": "void",
           "parameters": []
         },
         "SDL_EventAction": {
-          "doc": "The type of action to request from SDL_PeepEvents().\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The type of action to request from SDL_PeepEvents().",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_EventAction",
           "kind": "enum",
           "entries": {
@@ -11514,7 +12748,73 @@
           }
         },
         "SDL_PeepEvents": {
-          "doc": "Check the event queue for messages and optionally return them.\n\n`action` may be any of the following:\n\n- `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the\n  event queue.\n- `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,\n  within the specified minimum and maximum type, will be returned to the\n  caller and will _not_ be removed from the queue. If you pass NULL for\n  `events`, then `numevents` is ignored and the total number of matching\n  events will be returned.\n- `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,\n  within the specified minimum and maximum type, will be returned to the\n  caller and will be removed from the queue.\n\nYou may have to call SDL_PumpEvents() before calling this function.\nOtherwise, the events may not be ready to be filtered when you call\nSDL_PeepEvents().\n\n\\param events destination buffer for the retrieved events, may be NULL to\n              leave the events in the queue and return the number of events\n              that would have been stored.\n\\param numevents if action is SDL_ADDEVENT, the number of events to add\n                 back to the event queue; if action is SDL_PEEKEVENT or\n                 SDL_GETEVENT, the maximum number of events to retrieve.\n\\param action action to take; see [Remarks](#remarks) for details.\n\\param minType minimum value of the event type to be considered;\n               SDL_EVENT_FIRST is a safe choice.\n\\param maxType maximum value of the event type to be considered;\n               SDL_EVENT_LAST is a safe choice.\n\\returns the number of events actually stored or -1 on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PollEvent\n\\sa SDL_PumpEvents\n\\sa SDL_PushEvent",
+          "parsedDoc": [
+            "Check the event queue for messages and optionally return them.",
+            "`action` may be any of the following:",
+            [
+              {
+                "tag": "-",
+                "content": "`SDL_ADDEVENT`: up to `numevents` events will be added to the back of the event queue."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PEEKEVENT`: `numevents` events at the front of the event queue, within the specified minimum and maximum type, will be returned to the caller and will _not_ be removed from the queue. If you pass NULL for `events`, then `numevents` is ignored and the total number of matching events will be returned."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_GETEVENT`: up to `numevents` events at the front of the event queue, within the specified minimum and maximum type, will be returned to the caller and will be removed from the queue."
+              }
+            ],
+            "You may have to call SDL_PumpEvents() before calling this function. Otherwise, the events may not be ready to be filtered when you call SDL_PeepEvents().",
+            [
+              {
+                "tag": "\\param events",
+                "content": "destination buffer for the retrieved events, may be NULL to leave the events in the queue and return the number of events that would have been stored."
+              },
+              {
+                "tag": "\\param numevents",
+                "content": "if action is SDL_ADDEVENT, the number of events to add back to the event queue; if action is SDL_PEEKEVENT or SDL_GETEVENT, the maximum number of events to retrieve."
+              },
+              {
+                "tag": "\\param action",
+                "content": "action to take; see [Remarks](#remarks) for details."
+              },
+              {
+                "tag": "\\param minType",
+                "content": "minimum value of the event type to be considered; SDL_EVENT_FIRST is a safe choice."
+              },
+              {
+                "tag": "\\param maxType",
+                "content": "maximum value of the event type to be considered; SDL_EVENT_LAST is a safe choice."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the number of events actually stored or -1 on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PollEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PumpEvents"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PushEvent"
+              }
+            ]
+          ],
           "name": "SDL_PeepEvents",
           "kind": "function",
           "type": "int",
@@ -11542,7 +12842,32 @@
           ]
         },
         "SDL_HasEvent": {
-          "doc": "Check for the existence of a certain event type in the event queue.\n\nIf you need to check for a range of event types, use SDL_HasEvents()\ninstead.\n\n\\param type the type of event to be queried; see SDL_EventType for details.\n\\returns true if events matching `type` are present, or false if events\n         matching `type` are not present.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasEvents",
+          "parsedDoc": [
+            "Check for the existence of a certain event type in the event queue.",
+            "If you need to check for a range of event types, use SDL_HasEvents() instead.",
+            [
+              {
+                "tag": "\\param type",
+                "content": "the type of event to be queried; see SDL_EventType for details."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if events matching `type` are present, or false if events matching `type` are not present."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_HasEvents"
+            }
+          ],
           "name": "SDL_HasEvent",
           "kind": "function",
           "type": "bool",
@@ -11554,7 +12879,36 @@
           ]
         },
         "SDL_HasEvents": {
-          "doc": "Check for the existence of certain event types in the event queue.\n\nIf you need to check for a single event type, use SDL_HasEvent() instead.\n\n\\param minType the low end of event type to be queried, inclusive; see\n               SDL_EventType for details.\n\\param maxType the high end of event type to be queried, inclusive; see\n               SDL_EventType for details.\n\\returns true if events with type >= `minType` and <= `maxType` are\n         present, or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasEvents",
+          "parsedDoc": [
+            "Check for the existence of certain event types in the event queue.",
+            "If you need to check for a single event type, use SDL_HasEvent() instead.",
+            [
+              {
+                "tag": "\\param minType",
+                "content": "the low end of event type to be queried, inclusive; see SDL_EventType for details."
+              },
+              {
+                "tag": "\\param maxType",
+                "content": "the high end of event type to be queried, inclusive; see SDL_EventType for details."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if events with type >= `minType` and <= `maxType` are present, or false if not."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_HasEvents"
+            }
+          ],
           "name": "SDL_HasEvents",
           "kind": "function",
           "type": "bool",
@@ -11570,7 +12924,29 @@
           ]
         },
         "SDL_FlushEvent": {
-          "doc": "Clear events of a specific type from the event queue.\n\nThis will unconditionally remove any events from the queue that match\n`type`. If you need to remove a range of event types, use SDL_FlushEvents()\ninstead.\n\nIt's also normal to just ignore events you don't care about in your event\nloop without calling this function.\n\nThis function only affects currently queued events. If you want to make\nsure that all pending OS events are flushed, you can call SDL_PumpEvents()\non the main thread immediately before the flush call.\n\nIf you have user events with custom data that needs to be freed, you should\nuse SDL_PeepEvents() to remove and clean up those events before calling\nthis function.\n\n\\param type the type of event to be cleared; see SDL_EventType for details.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_FlushEvents",
+          "parsedDoc": [
+            "Clear events of a specific type from the event queue.",
+            "This will unconditionally remove any events from the queue that match `type`. If you need to remove a range of event types, use SDL_FlushEvents() instead.",
+            "It's also normal to just ignore events you don't care about in your event loop without calling this function.",
+            "This function only affects currently queued events. If you want to make sure that all pending OS events are flushed, you can call SDL_PumpEvents() on the main thread immediately before the flush call.",
+            "If you have user events with custom data that needs to be freed, you should use SDL_PeepEvents() to remove and clean up those events before calling this function.",
+            {
+              "tag": "\\param type",
+              "content": "the type of event to be cleared; see SDL_EventType for details."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_FlushEvents"
+            }
+          ],
           "name": "SDL_FlushEvent",
           "kind": "function",
           "type": "void",
@@ -11582,7 +12958,34 @@
           ]
         },
         "SDL_FlushEvents": {
-          "doc": "Clear events of a range of types from the event queue.\n\nThis will unconditionally remove any events from the queue that are in the\nrange of `minType` to `maxType`, inclusive. If you need to remove a single\nevent type, use SDL_FlushEvent() instead.\n\nIt's also normal to just ignore events you don't care about in your event\nloop without calling this function.\n\nThis function only affects currently queued events. If you want to make\nsure that all pending OS events are flushed, you can call SDL_PumpEvents()\non the main thread immediately before the flush call.\n\n\\param minType the low end of event type to be cleared, inclusive; see\n               SDL_EventType for details.\n\\param maxType the high end of event type to be cleared, inclusive; see\n               SDL_EventType for details.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_FlushEvent",
+          "parsedDoc": [
+            "Clear events of a range of types from the event queue.",
+            "This will unconditionally remove any events from the queue that are in the range of `minType` to `maxType`, inclusive. If you need to remove a single event type, use SDL_FlushEvent() instead.",
+            "It's also normal to just ignore events you don't care about in your event loop without calling this function.",
+            "This function only affects currently queued events. If you want to make sure that all pending OS events are flushed, you can call SDL_PumpEvents() on the main thread immediately before the flush call.",
+            [
+              {
+                "tag": "\\param minType",
+                "content": "the low end of event type to be cleared, inclusive; see SDL_EventType for details."
+              },
+              {
+                "tag": "\\param maxType",
+                "content": "the high end of event type to be cleared, inclusive; see SDL_EventType for details."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_FlushEvent"
+            }
+          ],
           "name": "SDL_FlushEvents",
           "kind": "function",
           "type": "void",
@@ -11598,7 +13001,49 @@
           ]
         },
         "SDL_PollEvent": {
-          "doc": "Poll for currently pending events.\n\nIf `event` is not NULL, the next event is removed from the queue and stored\nin the SDL_Event structure pointed to by `event`. The 1 returned refers to\nthis event, immediately stored in the SDL Event structure -- not an event\nto follow.\n\nIf `event` is NULL, it simply returns 1 if there is an event in the queue,\nbut will not remove it from the queue.\n\nAs this function may implicitly call SDL_PumpEvents(), you can only call\nthis function in the thread that set the video mode.\n\nSDL_PollEvent() is the favored way of receiving system events since it can\nbe done from the main loop and does not suspend the main loop while waiting\non an event to be posted.\n\nThe common practice is to fully process the event queue once every frame,\nusually as a first step before updating the game's state:\n\n```c\nwhile (game_is_still_running) {\n    SDL_Event event;\n    while (SDL_PollEvent(&event)) {  // poll until all events are handled!\n        // decide what to do with this event.\n    }\n\n    // update game state, draw the current frame\n}\n```\n\n\\param event the SDL_Event structure to be filled with the next event from\n             the queue, or NULL.\n\\returns true if this got an event or false if there are none available.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PushEvent\n\\sa SDL_WaitEvent\n\\sa SDL_WaitEventTimeout",
+          "parsedDoc": [
+            "Poll for currently pending events.",
+            "If `event` is not NULL, the next event is removed from the queue and stored in the SDL_Event structure pointed to by `event`. The 1 returned refers to this event, immediately stored in the SDL Event structure -- not an event to follow.",
+            "If `event` is NULL, it simply returns 1 if there is an event in the queue, but will not remove it from the queue.",
+            "As this function may implicitly call SDL_PumpEvents(), you can only call this function in the thread that set the video mode.",
+            "SDL_PollEvent() is the favored way of receiving system events since it can be done from the main loop and does not suspend the main loop while waiting on an event to be posted.",
+            "The common practice is to fully process the event queue once every frame, usually as a first step before updating the game's state:",
+            {
+              "content": "```c\nwhile (game_is_still_running) {\n    SDL_Event event;\n    while (SDL_PollEvent(&event)) {  // poll until all events are handled!\n        // decide what to do with this event.\n    }\n\n    // update game state, draw the current frame\n}\n```"
+            },
+            [
+              {
+                "tag": "\\param event",
+                "content": "the SDL_Event structure to be filled with the next event from the queue, or NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if this got an event or false if there are none available."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PushEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEventTimeout"
+              }
+            ]
+          ],
           "name": "SDL_PollEvent",
           "kind": "function",
           "type": "bool",
@@ -11610,7 +13055,43 @@
           ]
         },
         "SDL_WaitEvent": {
-          "doc": "Wait indefinitely for the next available event.\n\nIf `event` is not NULL, the next event is removed from the queue and stored\nin the SDL_Event structure pointed to by `event`.\n\nAs this function may implicitly call SDL_PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\n\\param event the SDL_Event structure to be filled in with the next event\n             from the queue, or NULL.\n\\returns true on success or false if there was an error while waiting for\n         events; call SDL_GetError() for more information.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PollEvent\n\\sa SDL_PushEvent\n\\sa SDL_WaitEventTimeout",
+          "parsedDoc": [
+            "Wait indefinitely for the next available event.",
+            "If `event` is not NULL, the next event is removed from the queue and stored in the SDL_Event structure pointed to by `event`.",
+            "As this function may implicitly call SDL_PumpEvents(), you can only call this function in the thread that initialized the video subsystem.",
+            [
+              {
+                "tag": "\\param event",
+                "content": "the SDL_Event structure to be filled in with the next event from the queue, or NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false if there was an error while waiting for events; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PollEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PushEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEventTimeout"
+              }
+            ]
+          ],
           "name": "SDL_WaitEvent",
           "kind": "function",
           "type": "bool",
@@ -11622,7 +13103,48 @@
           ]
         },
         "SDL_WaitEventTimeout": {
-          "doc": "Wait until the specified timeout (in milliseconds) for the next available\nevent.\n\nIf `event` is not NULL, the next event is removed from the queue and stored\nin the SDL_Event structure pointed to by `event`.\n\nAs this function may implicitly call SDL_PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\nThe timeout is not guaranteed, the actual wait time could be longer due to\nsystem scheduling.\n\n\\param event the SDL_Event structure to be filled in with the next event\n             from the queue, or NULL.\n\\param timeoutMS the maximum number of milliseconds to wait for the next\n                 available event.\n\\returns true if this got an event or false if the timeout elapsed without\n         any events available.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PollEvent\n\\sa SDL_PushEvent\n\\sa SDL_WaitEvent",
+          "parsedDoc": [
+            "Wait until the specified timeout (in milliseconds) for the next available event.",
+            "If `event` is not NULL, the next event is removed from the queue and stored in the SDL_Event structure pointed to by `event`.",
+            "As this function may implicitly call SDL_PumpEvents(), you can only call this function in the thread that initialized the video subsystem.",
+            "The timeout is not guaranteed, the actual wait time could be longer due to system scheduling.",
+            [
+              {
+                "tag": "\\param event",
+                "content": "the SDL_Event structure to be filled in with the next event from the queue, or NULL."
+              },
+              {
+                "tag": "\\param timeoutMS",
+                "content": "the maximum number of milliseconds to wait for the next available event."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if this got an event or false if the timeout elapsed without any events available."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PollEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PushEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEvent"
+              }
+            ]
+          ],
           "name": "SDL_WaitEventTimeout",
           "kind": "function",
           "type": "bool",
@@ -11638,7 +13160,45 @@
           ]
         },
         "SDL_PushEvent": {
-          "doc": "Add an event to the event queue.\n\nThe event queue can actually be used as a two way communication channel.\nNot only can events be read from the queue, but the user can also push\ntheir own events onto it. `event` is a pointer to the event structure you\nwish to push onto the queue. The event is copied into the queue, and the\ncaller may dispose of the memory pointed to after SDL_PushEvent() returns.\n\nNote: Pushing device input events onto the queue doesn't modify the state\nof the device within SDL.\n\nNote: Events pushed onto the queue with SDL_PushEvent() get passed through\nthe event filter but events added with SDL_PeepEvents() do not.\n\nFor pushing application-specific events, please use SDL_RegisterEvents() to\nget an event type that does not conflict with other code that also wants\nits own custom event types.\n\n\\param event the SDL_Event to be added to the queue.\n\\returns true on success, false if the event was filtered or on failure;\n         call SDL_GetError() for more information. A common reason for\n         error is the event queue being full.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PeepEvents\n\\sa SDL_PollEvent\n\\sa SDL_RegisterEvents",
+          "parsedDoc": [
+            "Add an event to the event queue.",
+            "The event queue can actually be used as a two way communication channel. Not only can events be read from the queue, but the user can also push their own events onto it. `event` is a pointer to the event structure you wish to push onto the queue. The event is copied into the queue, and the caller may dispose of the memory pointed to after SDL_PushEvent() returns.",
+            "Note: Pushing device input events onto the queue doesn't modify the state of the device within SDL.",
+            "Note: Events pushed onto the queue with SDL_PushEvent() get passed through the event filter but events added with SDL_PeepEvents() do not.",
+            "For pushing application-specific events, please use SDL_RegisterEvents() to get an event type that does not conflict with other code that also wants its own custom event types.",
+            [
+              {
+                "tag": "\\param event",
+                "content": "the SDL_Event to be added to the queue."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success, false if the event was filtered or on failure; call SDL_GetError() for more information. A common reason for error is the event queue being full."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PeepEvents"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PollEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_RegisterEvents"
+              }
+            ]
+          ],
           "name": "SDL_PushEvent",
           "kind": "function",
           "type": "bool",
@@ -11650,7 +13210,41 @@
           ]
         },
         "SDL_EventFilter": {
-          "doc": "A function pointer used for callbacks that watch the event queue.\n\n\\param userdata what was passed as `userdata` to SDL_SetEventFilter() or\n                SDL_AddEventWatch, etc.\n\\param event the event that triggered the callback.\n\\returns true to permit event to be added to the queue, and false to\n         disallow it. When used with SDL_AddEventWatch, the return value is\n         ignored.\n\n\\threadsafety SDL may call this callback at any time from any thread; the\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_SetEventFilter\n\\sa SDL_AddEventWatch",
+          "parsedDoc": [
+            "A function pointer used for callbacks that watch the event queue.",
+            [
+              {
+                "tag": "\\param userdata",
+                "content": "what was passed as `userdata` to SDL_SetEventFilter() or SDL_AddEventWatch, etc."
+              },
+              {
+                "tag": "\\param event",
+                "content": "the event that triggered the callback."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true to permit event to be added to the queue, and false to disallow it. When used with SDL_AddEventWatch, the return value is ignored."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "SDL may call this callback at any time from any thread; the application is responsible for locking resources the callback touches that need to be protected."
+            },
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetEventFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_AddEventWatch"
+              }
+            ]
+          ],
           "name": "SDL_EventFilter",
           "kind": "callback",
           "type": "bool",
@@ -11666,7 +13260,55 @@
           ]
         },
         "SDL_SetEventFilter": {
-          "doc": "Set up a filter to process all events before they are added to the internal\nevent queue.\n\nIf you just want to see events without modifying them or preventing them\nfrom being queued, you should use SDL_AddEventWatch() instead.\n\nIf the filter function returns true when called, then the event will be\nadded to the internal queue. If it returns false, then the event will be\ndropped from the queue, but the internal state will still be updated. This\nallows selective filtering of dynamically arriving events.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nOn platforms that support it, if the quit event is generated by an\ninterrupt signal (e.g. pressing Ctrl-C), it will be delivered to the\napplication at the next event poll.\n\nNote: Disabled events never make it to the event filter function; see\nSDL_SetEventEnabled().\n\nNote: Events pushed onto the queue with SDL_PushEvent() get passed through\nthe event filter, but events pushed onto the queue with SDL_PeepEvents() do\nnot.\n\n\\param filter an SDL_EventFilter function to call when an event happens.\n\\param userdata a pointer that is passed to `filter`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AddEventWatch\n\\sa SDL_SetEventEnabled\n\\sa SDL_GetEventFilter\n\\sa SDL_PeepEvents\n\\sa SDL_PushEvent",
+          "parsedDoc": [
+            "Set up a filter to process all events before they are added to the internal event queue.",
+            "If you just want to see events without modifying them or preventing them from being queued, you should use SDL_AddEventWatch() instead.",
+            "If the filter function returns true when called, then the event will be added to the internal queue. If it returns false, then the event will be dropped from the queue, but the internal state will still be updated. This allows selective filtering of dynamically arriving events.",
+            "**WARNING**: Be very careful of what you do in the event filter function, as it may run in a different thread!",
+            "On platforms that support it, if the quit event is generated by an interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the application at the next event poll.",
+            "Note: Disabled events never make it to the event filter function; see SDL_SetEventEnabled().",
+            "Note: Events pushed onto the queue with SDL_PushEvent() get passed through the event filter, but events pushed onto the queue with SDL_PeepEvents() do not.",
+            [
+              {
+                "tag": "\\param filter",
+                "content": "an SDL_EventFilter function to call when an event happens."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer that is passed to `filter`."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_AddEventWatch"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetEventEnabled"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetEventFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PeepEvents"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_PushEvent"
+              }
+            ]
+          ],
           "name": "SDL_SetEventFilter",
           "kind": "function",
           "type": "void",
@@ -11682,7 +13324,36 @@
           ]
         },
         "SDL_GetEventFilter": {
-          "doc": "Query the current event filter.\n\nThis function can be used to \"chain\" filters, by saving the existing filter\nbefore replacing it with a function that will call that saved filter.\n\n\\param filter the current callback function will be stored here.\n\\param userdata the pointer that is passed to the current event filter will\n                be stored here.\n\\returns true on success or false if there is no event filter set.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetEventFilter",
+          "parsedDoc": [
+            "Query the current event filter.",
+            "This function can be used to \"chain\" filters, by saving the existing filter before replacing it with a function that will call that saved filter.",
+            [
+              {
+                "tag": "\\param filter",
+                "content": "the current callback function will be stored here."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "the pointer that is passed to the current event filter will be stored here."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false if there is no event filter set."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetEventFilter"
+            }
+          ],
           "name": "SDL_GetEventFilter",
           "kind": "function",
           "type": "bool",
@@ -11698,7 +13369,45 @@
           ]
         },
         "SDL_AddEventWatch": {
-          "doc": "Add a callback to be triggered when an event is added to the event queue.\n\n`filter` will be called when an event happens, and its return value is\nignored.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nIf the quit event is generated by a signal (e.g. SIGINT), it will bypass\nthe internal queue and be delivered to the watch callback immediately, and\narrive at the next event poll.\n\nNote: the callback is called for events posted by the user through\nSDL_PushEvent(), but not for disabled events, nor for events by a filter\ncallback set with SDL_SetEventFilter(), nor for events posted by the user\nthrough SDL_PeepEvents().\n\n\\param filter an SDL_EventFilter function to call when an event happens.\n\\param userdata a pointer that is passed to `filter`.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_RemoveEventWatch\n\\sa SDL_SetEventFilter",
+          "parsedDoc": [
+            "Add a callback to be triggered when an event is added to the event queue.",
+            "`filter` will be called when an event happens, and its return value is ignored.",
+            "**WARNING**: Be very careful of what you do in the event filter function, as it may run in a different thread!",
+            "If the quit event is generated by a signal (e.g. SIGINT), it will bypass the internal queue and be delivered to the watch callback immediately, and arrive at the next event poll.",
+            "Note: the callback is called for events posted by the user through SDL_PushEvent(), but not for disabled events, nor for events by a filter callback set with SDL_SetEventFilter(), nor for events posted by the user through SDL_PeepEvents().",
+            [
+              {
+                "tag": "\\param filter",
+                "content": "an SDL_EventFilter function to call when an event happens."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer that is passed to `filter`."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_RemoveEventWatch"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetEventFilter"
+              }
+            ]
+          ],
           "name": "SDL_AddEventWatch",
           "kind": "function",
           "type": "bool",
@@ -11714,7 +13423,32 @@
           ]
         },
         "SDL_RemoveEventWatch": {
-          "doc": "Remove an event watch callback added with SDL_AddEventWatch().\n\nThis function takes the same input as SDL_AddEventWatch() to identify and\ndelete the corresponding callback.\n\n\\param filter the function originally passed to SDL_AddEventWatch().\n\\param userdata the pointer originally passed to SDL_AddEventWatch().\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AddEventWatch",
+          "parsedDoc": [
+            "Remove an event watch callback added with SDL_AddEventWatch().",
+            "This function takes the same input as SDL_AddEventWatch() to identify and delete the corresponding callback.",
+            [
+              {
+                "tag": "\\param filter",
+                "content": "the function originally passed to SDL_AddEventWatch()."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "the pointer originally passed to SDL_AddEventWatch()."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_AddEventWatch"
+            }
+          ],
           "name": "SDL_RemoveEventWatch",
           "kind": "function",
           "type": "void",
@@ -11730,7 +13464,38 @@
           ]
         },
         "SDL_FilterEvents": {
-          "doc": "Run a specific filter function on the current event queue, removing any\nevents for which the filter returns false.\n\nSee SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),\nthis function does not change the filter permanently, it only uses the\nsupplied filter until this function returns.\n\n\\param filter the SDL_EventFilter function to call when an event happens.\n\\param userdata a pointer that is passed to `filter`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetEventFilter\n\\sa SDL_SetEventFilter",
+          "parsedDoc": [
+            "Run a specific filter function on the current event queue, removing any events for which the filter returns false.",
+            "See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(), this function does not change the filter permanently, it only uses the supplied filter until this function returns.",
+            [
+              {
+                "tag": "\\param filter",
+                "content": "the SDL_EventFilter function to call when an event happens."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer that is passed to `filter`."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetEventFilter"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetEventFilter"
+              }
+            ]
+          ],
           "name": "SDL_FilterEvents",
           "kind": "function",
           "type": "void",
@@ -11746,7 +13511,31 @@
           ]
         },
         "SDL_SetEventEnabled": {
-          "doc": "Set the state of processing events by type.\n\n\\param type the type of event; see SDL_EventType for details.\n\\param enabled whether to process the event or not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_EventEnabled",
+          "parsedDoc": [
+            "Set the state of processing events by type.",
+            [
+              {
+                "tag": "\\param type",
+                "content": "the type of event; see SDL_EventType for details."
+              },
+              {
+                "tag": "\\param enabled",
+                "content": "whether to process the event or not."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_EventEnabled"
+            }
+          ],
           "name": "SDL_SetEventEnabled",
           "kind": "function",
           "type": "void",
@@ -11762,7 +13551,31 @@
           ]
         },
         "SDL_EventEnabled": {
-          "doc": "Query the state of processing events by type.\n\n\\param type the type of event; see SDL_EventType for details.\n\\returns true if the event is being processed, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetEventEnabled",
+          "parsedDoc": [
+            "Query the state of processing events by type.",
+            [
+              {
+                "tag": "\\param type",
+                "content": "the type of event; see SDL_EventType for details."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if the event is being processed, false otherwise."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetEventEnabled"
+            }
+          ],
           "name": "SDL_EventEnabled",
           "kind": "function",
           "type": "bool",
@@ -11774,7 +13587,31 @@
           ]
         },
         "SDL_RegisterEvents": {
-          "doc": "Allocate a set of user-defined events, and return the beginning event\nnumber for that set of events.\n\n\\param numevents the number of events to be allocated.\n\\returns the beginning event number, or 0 if numevents is invalid or if\n         there are not enough user-defined events left.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PushEvent",
+          "parsedDoc": [
+            "Allocate a set of user-defined events, and return the beginning event number for that set of events.",
+            [
+              {
+                "tag": "\\param numevents",
+                "content": "the number of events to be allocated."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the beginning event number, or 0 if numevents is invalid or if there are not enough user-defined events left."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_PushEvent"
+            }
+          ],
           "name": "SDL_RegisterEvents",
           "kind": "function",
           "type": "Uint32",
@@ -11786,7 +13623,41 @@
           ]
         },
         "SDL_GetWindowFromEvent": {
-          "doc": "Get window associated with an event.\n\n\\param event an event containing a `windowID`.\n\\returns the associated window on success or NULL if there is none.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_PollEvent\n\\sa SDL_WaitEvent\n\\sa SDL_WaitEventTimeout",
+          "parsedDoc": [
+            "Get window associated with an event.",
+            [
+              {
+                "tag": "\\param event",
+                "content": "an event containing a `windowID`."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the associated window on success or NULL if there is none."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_PollEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEvent"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_WaitEventTimeout"
+              }
+            ]
+          ],
           "name": "SDL_GetWindowFromEvent",
           "kind": "function",
           "type": "SDL_Window *",

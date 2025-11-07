@@ -7,22 +7,20 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryEndian Category Endian
+ * @defgroup CategoryEndian CategoryEndian
  *
  * Functions converting endian-specific values to different byte orders.
  *
- * These functions either unconditionally swap byte order (Swap16,
- * Swap32, Swap64, SwapFloat), or they swap to/from the system's
- * native byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,
- * Swap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the
- * latter case, the functionality is provided by macros that become no-ops if
- * a swap isn't necessary: on an x86 (littleendian) processor, Swap32LE
- * does nothing, but Swap32BE reverses the bytes of the data. On a PowerPC
- * processor (bigendian), the macros behavior is reversed.
+ * These functions either unconditionally swap byte order (Swap16, Swap32,
+ * Swap64, SwapFloat), or they swap to/from the system's native byte order
+ * (Swap16LE, Swap16BE, Swap32LE, Swap32BE, Swap32LE, Swap32BE, SwapFloatLE,
+ * SwapFloatBE). In the latter case, the functionality is provided by macros
+ * that become no-ops if a swap isn't necessary: on an x86 (littleendian)
+ * processor, Swap32LE does nothing, but Swap32BE reverses the bytes of the
+ * data. On a PowerPC processor (bigendian), the macros behavior is reversed.
  *
  * The swap routines are inline functions, and attempt to use compiler
- * intrinsics, inline assembly, and other magic to make byteswapping
- * efficient.
+ * intrinsics, inline assembly, and other magic to make byteswapping efficient.
  *
  * @{
  */
@@ -69,8 +67,8 @@ namespace SDL {
  * A macro that reports the target system's byte order.
  *
  * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
- * values in the future, if something else becomes popular). This can be
- * tested with the preprocessor, so decisions can be made at compile time.
+ * values in the future, if something else becomes popular). This can be tested
+ * with the preprocessor, so decisions can be made at compile time.
  *
  * ```c
  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -89,8 +87,8 @@ namespace SDL {
  * A macro that reports the target system's floating point word order.
  *
  * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
- * values in the future, if something else becomes popular). This can be
- * tested with the preprocessor, so decisions can be made at compile time.
+ * values in the future, if something else becomes popular). This can be tested
+ * with the preprocessor, so decisions can be made at compile time.
  *
  * ```c
  * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
@@ -109,13 +107,13 @@ namespace SDL {
  * Byte-swap an unsigned 16-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap16LE or Swap16BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap16LE or Swap16BE instead,
+ * in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns `x`, with its bytes in the opposite endian order.
@@ -130,13 +128,13 @@ constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
  * Byte-swap an unsigned 32-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap32LE or Swap32BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap32LE or Swap32BE instead,
+ * in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns `x`, with its bytes in the opposite endian order.
@@ -151,13 +149,13 @@ constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
  * Byte-swap an unsigned 64-bit number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use Swap64LE or Swap64BE
- * instead, in most cases.
+ * byteorder of the system or not. You should use Swap64LE or Swap64BE instead,
+ * in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns `x`, with its bytes in the opposite endian order.
@@ -172,13 +170,13 @@ constexpr Uint64 Swap64(Uint64 x) { return SDL_Swap64(x); }
  * Byte-swap a floating point number.
  *
  * This will always byte-swap the value, whether it's currently in the native
- * byteorder of the system or not. You should use SwapFloatLE or
- * SwapFloatBE instead, in most cases.
+ * byteorder of the system or not. You should use SwapFloatLE or SwapFloatBE
+ * instead, in most cases.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param x the value to byte-swap.
  * @returns x, with its bytes in the opposite endian order.
