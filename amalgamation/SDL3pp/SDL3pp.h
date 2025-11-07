@@ -33494,8 +33494,8 @@ inline void RemoveTimer(TimerID id)
  * - 3 channels (2.1) layout: FL, FR, LFE
  * - 4 channels (quad) layout: FL, FR, BL, BR
  * - 5 channels (4.1) layout: FL, FR, LFE, BL, BR
- * - 6 channels (5.1) layout: FL, FR, FC, LFE, BL, BR (last two can also be
- *   SL, SR)
+ * - 6 channels (5.1) layout: FL, FR, FC, LFE, BL, BR (last two can also be SL,
+ *   SR)
  * - 7 channels (6.1) layout: FL, FR, FC, LFE, BC, SL, SR
  * - 8 channels (7.1) layout: FL, FR, FC, LFE, BL, BR, SL, SR
  *
@@ -34131,6 +34131,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa AudioDevice.SetPostmixCallback
+ *
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
@@ -34968,16 +34969,16 @@ constexpr int AudioFrameSize(const AudioSpec& x)
  *
  * AudioStream is an audio conversion interface.
  *
- * - It can handle resampling data in chunks without generating artifacts,
- *   when it doesn't have the complete buffer available.
+ * - It can handle resampling data in chunks without generating artifacts, when
+ *   it doesn't have the complete buffer available.
  * - It can handle incoming data in any variable size.
  * - It can handle input/output format changes on the fly.
  * - It can remap audio channels between inputs and outputs.
  * - You push data as you have it, and pull it when you need it
  * - It can also function as a basic audio data queue even if you just have
  *   sound that needs to pass from one place to another.
- * - You can hook callbacks up to them when more data is added or requested,
- *   to manage data on-the-fly.
+ * - You can hook callbacks up to them when more data is added or requested, to
+ *   manage data on-the-fly.
  *
  * Audio streams are the core of the SDL3 audio interface. You create one or
  * more of them, bind them to an opened audio device, and feed data to them (or
