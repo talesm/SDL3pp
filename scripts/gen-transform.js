@@ -831,6 +831,11 @@ const transform = {
           type: "OwnArray<CameraID>",
           parameters: [],
         },
+        "SDL_GetCameraSupportedFormats": {
+          type: "OwnArray<CameraSpec *>",
+          parameters: [{}],
+
+        },
         "SDL_GetCameraFormat": {
           type: "std::optional<CameraSpec>",
           parameters: [{}],

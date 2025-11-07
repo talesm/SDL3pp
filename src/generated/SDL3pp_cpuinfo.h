@@ -7,19 +7,18 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryCPUInfo Category CPUInfo
+ * @defgroup CategoryCPUInfo CategoryCPUInfo
  *
  * CPU feature detection for SDL.
  *
- * These functions are largely concerned with reporting if the system has
- * access to various SIMD instruction sets, but also has other important info
- * to share, such as system RAM size and number of logical CPU cores.
+ * These functions are largely concerned with reporting if the system has access
+ * to various SIMD instruction sets, but also has other important info to share,
+ * such as system RAM size and number of logical CPU cores.
  *
- * CPU instruction set checks, like HasSSE() and HasNEON(), are
- * available on all platforms, even if they don't make sense (an ARM processor
- * will never have SSE and an x86 processor will never have NEON, for example,
- * but these functions still exist and will simply return false in these
- * cases).
+ * CPU instruction set checks, like HasSSE() and HasNEON(), are available on all
+ * platforms, even if they don't make sense (an ARM processor will never have
+ * SSE and an x86 processor will never have NEON, for example, but these
+ * functions still exist and will simply return false in these cases).
  *
  * @{
  */
@@ -27,9 +26,8 @@ namespace SDL {
 /**
  * A guess for the cacheline size used for padding.
  *
- * Most x86 processors have a 64 byte cache line. The 64-bit PowerPC
- * processors have a 128 byte cache line. We use the larger value to be
- * generally safe.
+ * Most x86 processors have a 64 byte cache line. The 64-bit PowerPC processors
+ * have a 128 byte cache line. We use the larger value to be generally safe.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -39,8 +37,8 @@ constexpr int CACHELINE_SIZE = SDL_CACHELINE_SIZE;
  * Get the number of logical CPU cores available.
  *
  * @returns the total number of logical CPU cores. On CPUs that include
- *          technologies such as hyperthreading, the number of logical cores
- *          may be more than the number of physical cores.
+ *          technologies such as hyperthreading, the number of logical cores may
+ *          be more than the number of physical cores.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -65,8 +63,7 @@ inline int GetCPUCacheLineSize() { return SDL_GetCPUCacheLineSize(); }
 /**
  * Determine whether the CPU has AltiVec features.
  *
- * This always returns false on CPUs that aren't using PowerPC instruction
- * sets.
+ * This always returns false on CPUs that aren't using PowerPC instruction sets.
  *
  * @returns true if the CPU has AltiVec features or false if not.
  *
@@ -304,9 +301,9 @@ inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
  * example, if the machine supports SSE only, it will return 16, but if it
  * supports AVX-512F, it'll return 64 (etc). This only reports values for
  * instruction sets SDL knows about, so if your SDL build doesn't have
- * HasAVX512F(), then it might return 16 for the SSE support it sees and
- * not 64 for the AVX-512 instructions that exist but SDL doesn't know about.
- * Plan accordingly.
+ * HasAVX512F(), then it might return 16 for the SSE support it sees and not 64
+ * for the AVX-512 instructions that exist but SDL doesn't know about. Plan
+ * accordingly.
  *
  * @returns the alignment in bytes needed for available, known SIMD
  *          instructions.

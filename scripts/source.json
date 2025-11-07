@@ -6522,22 +6522,72 @@
     },
     "SDL_camera.h": {
       "name": "SDL_camera.h",
-      "doc": "# CategoryCamera\n\nVideo capture for the SDL library.\n\nThis API lets apps read input from video sources, like webcams. Camera\ndevices can be enumerated, queried, and opened. Once opened, it will\nprovide SDL_Surface objects as new frames of video come in. These surfaces\ncan be uploaded to an SDL_Texture or processed as pixels in memory.\n\nSeveral platforms will alert the user if an app tries to access a camera,\nand some will present a UI asking the user if your application should be\nallowed to obtain images at all, which they can deny. A successfully opened\ncamera will not provide images until permission is granted. Applications,\nafter opening a camera device, can see if they were granted access by\neither polling with the SDL_GetCameraPermissionState() function, or waiting\nfor an SDL_EVENT_CAMERA_DEVICE_APPROVED or SDL_EVENT_CAMERA_DEVICE_DENIED\nevent. Platforms that don't have any user approval process will report\napproval immediately.\n\nNote that SDL cameras only provide video as individual frames; they will\nnot provide full-motion video encoded in a movie file format, although an\napp is free to encode the acquired frames into any format it likes. It also\ndoes not provide audio from the camera hardware through this API; not only\ndo many webcams not have microphones at all, many people--from streamers to\npeople on Zoom calls--will want to use a separate microphone regardless of\nthe camera. In any case, recorded audio will be available through SDL's\naudio API no matter what hardware provides the microphone.\n\n## Camera gotchas\n\nConsumer-level camera hardware tends to take a little while to warm up,\nonce the device has been opened. Generally most camera apps have some sort\nof UI to take a picture (a button to snap a pic while a preview is showing,\nsome sort of multi-second countdown for the user to pose, like a photo\nbooth), which puts control in the users' hands, or they are intended to\nstay on for long times (Pokemon Go, etc).\n\nIt's not uncommon that a newly-opened camera will provide a couple of\ncompletely black frames, maybe followed by some under-exposed images. If\ntaking a single frame automatically, or recording video from a camera's\ninput without the user initiating it from a preview, it could be wise to\ndrop the first several frames (if not the first several _seconds_ worth of\nframes!) before using images from a camera.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryCamera"
+        },
+        "Video capture for the SDL library.",
+        "This API lets apps read input from video sources, like webcams. Camera devices can be enumerated, queried, and opened. Once opened, it will provide SDL_Surface objects as new frames of video come in. These surfaces can be uploaded to an SDL_Texture or processed as pixels in memory.",
+        "Several platforms will alert the user if an app tries to access a camera, and some will present a UI asking the user if your application should be allowed to obtain images at all, which they can deny. A successfully opened camera will not provide images until permission is granted. Applications, after opening a camera device, can see if they were granted access by either polling with the SDL_GetCameraPermissionState() function, or waiting for an SDL_EVENT_CAMERA_DEVICE_APPROVED or SDL_EVENT_CAMERA_DEVICE_DENIED event. Platforms that don't have any user approval process will report approval immediately.",
+        "Note that SDL cameras only provide video as individual frames; they will not provide full-motion video encoded in a movie file format, although an app is free to encode the acquired frames into any format it likes. It also does not provide audio from the camera hardware through this API; not only do many webcams not have microphones at all, many people--from streamers to people on Zoom calls--will want to use a separate microphone regardless of the camera. In any case, recorded audio will be available through SDL's audio API no matter what hardware provides the microphone.",
+        {
+          "tag": "##",
+          "content": "Camera gotchas"
+        },
+        "Consumer-level camera hardware tends to take a little while to warm up, once the device has been opened. Generally most camera apps have some sort of UI to take a picture (a button to snap a pic while a preview is showing, some sort of multi-second countdown for the user to pose, like a photo booth), which puts control in the users' hands, or they are intended to stay on for long times (Pokemon Go, etc).",
+        "It's not uncommon that a newly-opened camera will provide a couple of completely black frames, maybe followed by some under-exposed images. If taking a single frame automatically, or recording video from a camera's input without the user initiating it from a preview, it could be wise to drop the first several frames (if not the first several _seconds_ worth of frames!) before using images from a camera."
+      ],
       "entries": {
         "SDL_CameraID": {
-          "doc": "This is a unique ID for a camera device for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the device is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras",
+          "parsedDoc": [
+            "This is a unique ID for a camera device for the time it is connected to the system, and is never reused for the lifetime of the application.",
+            "If the device is disconnected and reconnected, it will get a new ID.",
+            "The value 0 is an invalid ID.",
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetCameras"
+            }
+          ],
           "name": "SDL_CameraID",
           "kind": "alias",
           "type": "Uint32"
         },
         "SDL_Camera": {
-          "doc": "The opaque structure used to identify an opened SDL camera.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The opaque structure used to identify an opened SDL camera.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_Camera",
           "kind": "alias",
           "type": "struct SDL_Camera"
         },
         "SDL_CameraSpec": {
-          "doc": "The details of an output format for a camera device.\n\nCameras often support multiple formats; each one will be encapsulated in\nthis struct.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GetCameraSupportedFormats\n\\sa SDL_GetCameraFormat",
+          "parsedDoc": [
+            "The details of an output format for a camera device.",
+            "Cameras often support multiple formats; each one will be encapsulated in this struct.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetCameraSupportedFormats"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetCameraFormat"
+              }
+            ]
+          ],
           "name": "SDL_CameraSpec",
           "kind": "struct",
           "entries": {
@@ -6580,7 +6630,17 @@
           }
         },
         "SDL_CameraPosition": {
-          "doc": "The position of camera in relation to system device.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_GetCameraPosition",
+          "parsedDoc": [
+            "The position of camera in relation to system device.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetCameraPosition"
+            }
+          ],
           "name": "SDL_CameraPosition",
           "kind": "enum",
           "entries": {
@@ -6605,14 +6665,60 @@
           }
         },
         "SDL_GetNumCameraDrivers": {
-          "doc": "Use this function to get the number of built-in camera drivers.\n\nThis function returns a hardcoded number. This never returns a negative\nvalue; if there are no drivers compiled into this build of SDL, this\nfunction returns zero. The presence of a driver in this list does not mean\nit will function, it just means SDL is capable of interacting with that\ninterface. For example, a build of SDL might have v4l2 support, but if\nthere's no kernel support available, SDL's v4l2 driver would fail if used.\n\nBy default, SDL tries all drivers, in its preferred order, until one is\nfound to be usable.\n\n\\returns the number of built-in camera drivers.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameraDriver",
+          "parsedDoc": [
+            "Use this function to get the number of built-in camera drivers.",
+            "This function returns a hardcoded number. This never returns a negative value; if there are no drivers compiled into this build of SDL, this function returns zero. The presence of a driver in this list does not mean it will function, it just means SDL is capable of interacting with that interface. For example, a build of SDL might have v4l2 support, but if there's no kernel support available, SDL's v4l2 driver would fail if used.",
+            "By default, SDL tries all drivers, in its preferred order, until one is found to be usable.",
+            {
+              "tag": "\\returns",
+              "content": "the number of built-in camera drivers."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetCameraDriver"
+            }
+          ],
           "name": "SDL_GetNumCameraDrivers",
           "kind": "function",
           "type": "int",
           "parameters": []
         },
         "SDL_GetCameraDriver": {
-          "doc": "Use this function to get the name of a built in camera driver.\n\nThe list of camera drivers is given in the order that they are normally\ninitialized by default; the drivers that seem more reasonable to choose\nfirst (as far as the SDL developers believe) are earlier in the list.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"v4l2\",\n\"coremedia\" or \"android\". These never have Unicode characters, and are not\nmeant to be proper names.\n\n\\param index the index of the camera driver; the value ranges from 0 to\n             SDL_GetNumCameraDrivers() - 1.\n\\returns the name of the camera driver at the requested index, or NULL if\n         an invalid index was specified.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetNumCameraDrivers",
+          "parsedDoc": [
+            "Use this function to get the name of a built in camera driver.",
+            "The list of camera drivers is given in the order that they are normally initialized by default; the drivers that seem more reasonable to choose first (as far as the SDL developers believe) are earlier in the list.",
+            "The names of drivers are all simple, low-ASCII identifiers, like \"v4l2\", \"coremedia\" or \"android\". These never have Unicode characters, and are not meant to be proper names.",
+            [
+              {
+                "tag": "\\param index",
+                "content": "the index of the camera driver; the value ranges from 0 to SDL_GetNumCameraDrivers() - 1."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the name of the camera driver at the requested index, or NULL if an invalid index was specified."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetNumCameraDrivers"
+            }
+          ],
           "name": "SDL_GetCameraDriver",
           "kind": "function",
           "type": "const char *",
@@ -6624,14 +6730,53 @@
           ]
         },
         "SDL_GetCurrentCameraDriver": {
-          "doc": "Get the name of the current camera driver.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"v4l2\",\n\"coremedia\" or \"android\". These never have Unicode characters, and are not\nmeant to be proper names.\n\n\\returns the name of the current camera driver or NULL if no driver has\n         been initialized.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Get the name of the current camera driver.",
+            "The names of drivers are all simple, low-ASCII identifiers, like \"v4l2\", \"coremedia\" or \"android\". These never have Unicode characters, and are not meant to be proper names.",
+            {
+              "tag": "\\returns",
+              "content": "the name of the current camera driver or NULL if no driver has been initialized."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GetCurrentCameraDriver",
           "kind": "function",
           "type": "const char *",
           "parameters": []
         },
         "SDL_GetCameras": {
-          "doc": "Get a list of currently connected camera devices.\n\n\\param count a pointer filled in with the number of cameras returned, may\n             be NULL.\n\\returns a 0 terminated array of camera instance IDs or NULL on failure;\n         call SDL_GetError() for more information. This should be freed\n         with SDL_free() when it is no longer needed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "parsedDoc": [
+            "Get a list of currently connected camera devices.",
+            [
+              {
+                "tag": "\\param count",
+                "content": "a pointer filled in with the number of cameras returned, may be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a 0 terminated array of camera instance IDs or NULL on failure; call SDL_GetError() for more information. This should be freed with SDL_free() when it is no longer needed."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_OpenCamera"
+            }
+          ],
           "name": "SDL_GetCameras",
           "kind": "function",
           "type": "SDL_CameraID *",
@@ -6643,7 +6788,45 @@
           ]
         },
         "SDL_GetCameraSupportedFormats": {
-          "doc": "Get the list of native formats/sizes a camera supports.\n\nThis returns a list of all formats and frame sizes that a specific camera\ncan offer. This is useful if your app can accept a variety of image formats\nand sizes and so want to find the optimal spec that doesn't require\nconversion.\n\nThis function isn't strictly required; if you call SDL_OpenCamera with a\nNULL spec, SDL will choose a native format for you, and if you instead\nspecify a desired format, it will transparently convert to the requested\nformat on your behalf.\n\nIf `count` is not NULL, it will be filled with the number of elements in\nthe returned array.\n\nNote that it's legal for a camera to supply an empty list. This is what\nwill happen on Emscripten builds, since that platform won't tell _anything_\nabout available cameras until you've opened one, and won't even tell if\nthere _is_ a camera until the user has given you permission to check\nthrough a scary warning popup.\n\n\\param instance_id the camera device instance ID.\n\\param count a pointer filled in with the number of elements in the list,\n             may be NULL.\n\\returns a NULL terminated array of pointers to SDL_CameraSpec or NULL on\n         failure; call SDL_GetError() for more information. This is a\n         single allocation that should be freed with SDL_free() when it is\n         no longer needed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras\n\\sa SDL_OpenCamera",
+          "parsedDoc": [
+            "Get the list of native formats/sizes a camera supports.",
+            "This returns a list of all formats and frame sizes that a specific camera can offer. This is useful if your app can accept a variety of image formats and sizes and so want to find the optimal spec that doesn't require conversion.",
+            "This function isn't strictly required; if you call SDL_OpenCamera with a NULL spec, SDL will choose a native format for you, and if you instead specify a desired format, it will transparently convert to the requested format on your behalf.",
+            "If `count` is not NULL, it will be filled with the number of elements in the returned array.",
+            "Note that it's legal for a camera to supply an empty list. This is what will happen on Emscripten builds, since that platform won't tell _anything_ about available cameras until you've opened one, and won't even tell if there _is_ a camera until the user has given you permission to check through a scary warning popup.",
+            [
+              {
+                "tag": "\\param instance_id",
+                "content": "the camera device instance ID."
+              },
+              {
+                "tag": "\\param count",
+                "content": "a pointer filled in with the number of elements in the list, may be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a NULL terminated array of pointers to SDL_CameraSpec or NULL on failure; call SDL_GetError() for more information. This is a single allocation that should be freed with SDL_free() when it is no longer needed."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetCameras"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_OpenCamera"
+              }
+            ]
+          ],
           "name": "SDL_GetCameraSupportedFormats",
           "kind": "function",
           "type": "SDL_CameraSpec **",
@@ -6659,7 +6842,31 @@
           ]
         },
         "SDL_GetCameraName": {
-          "doc": "Get the human-readable device name for a camera.\n\n\\param instance_id the camera device instance ID.\n\\returns a human-readable device name or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras",
+          "parsedDoc": [
+            "Get the human-readable device name for a camera.",
+            [
+              {
+                "tag": "\\param instance_id",
+                "content": "the camera device instance ID."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a human-readable device name or NULL on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetCameras"
+            }
+          ],
           "name": "SDL_GetCameraName",
           "kind": "function",
           "type": "const char *",
@@ -6671,7 +6878,32 @@
           ]
         },
         "SDL_GetCameraPosition": {
-          "doc": "Get the position of the camera in relation to the system.\n\nMost platforms will report UNKNOWN, but mobile devices, like phones, can\noften make a distinction between cameras on the front of the device (that\npoints towards the user, for taking \"selfies\") and cameras on the back (for\nfilming in the direction the user is facing).\n\n\\param instance_id the camera device instance ID.\n\\returns the position of the camera on the system hardware.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras",
+          "parsedDoc": [
+            "Get the position of the camera in relation to the system.",
+            "Most platforms will report UNKNOWN, but mobile devices, like phones, can often make a distinction between cameras on the front of the device (that points towards the user, for taking \"selfies\") and cameras on the back (for filming in the direction the user is facing).",
+            [
+              {
+                "tag": "\\param instance_id",
+                "content": "the camera device instance ID."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the position of the camera on the system hardware."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetCameras"
+            }
+          ],
           "name": "SDL_GetCameraPosition",
           "kind": "function",
           "type": "SDL_CameraPosition",
@@ -6683,7 +6915,46 @@
           ]
         },
         "SDL_OpenCamera": {
-          "doc": "Open a video recording device (a \"camera\").\n\nYou can open the device with any reasonable spec, and if the hardware can't\ndirectly support it, it will convert data seamlessly to the requested\nformat. This might incur overhead, including scaling of image data.\n\nIf you would rather accept whatever format the device offers, you can pass\na NULL spec here and it will choose one for you (and you can use\nSDL_Surface's conversion/scaling functions directly if necessary).\n\nYou can call SDL_GetCameraFormat() to get the actual data format if passing\na NULL spec here. You can see the exact specs a device can support without\nconversion with SDL_GetCameraSupportedFormats().\n\nSDL will not attempt to emulate framerate; it will try to set the hardware\nto the rate closest to the requested speed, but it won't attempt to limit\nor duplicate frames artificially; call SDL_GetCameraFormat() to see the\nactual framerate of the opened the device, and check your timestamps if\nthis is crucial to your app!\n\nNote that the camera is not usable until the user approves its use! On some\nplatforms, the operating system will prompt the user to permit access to\nthe camera, and they can choose Yes or No at that point. Until they do, the\ncamera will not be usable. The app should either wait for an\nSDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event,\nor poll SDL_GetCameraPermissionState() occasionally until it returns\nnon-zero. On platforms that don't require explicit user approval (and\nperhaps in places where the user previously permitted access), the approval\nevent might come immediately, but it might come seconds, minutes, or hours\nlater!\n\n\\param instance_id the camera device instance ID.\n\\param spec the desired format for data the device will provide. Can be\n            NULL.\n\\returns an SDL_Camera object or NULL on failure; call SDL_GetError() for\n         more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetCameras\n\\sa SDL_GetCameraFormat",
+          "parsedDoc": [
+            "Open a video recording device (a \"camera\").",
+            "You can open the device with any reasonable spec, and if the hardware can't directly support it, it will convert data seamlessly to the requested format. This might incur overhead, including scaling of image data.",
+            "If you would rather accept whatever format the device offers, you can pass a NULL spec here and it will choose one for you (and you can use SDL_Surface's conversion/scaling functions directly if necessary).",
+            "You can call SDL_GetCameraFormat() to get the actual data format if passing a NULL spec here. You can see the exact specs a device can support without conversion with SDL_GetCameraSupportedFormats().",
+            "SDL will not attempt to emulate framerate; it will try to set the hardware to the rate closest to the requested speed, but it won't attempt to limit or duplicate frames artificially; call SDL_GetCameraFormat() to see the actual framerate of the opened the device, and check your timestamps if this is crucial to your app!",
+            "Note that the camera is not usable until the user approves its use! On some platforms, the operating system will prompt the user to permit access to the camera, and they can choose Yes or No at that point. Until they do, the camera will not be usable. The app should either wait for an SDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event, or poll SDL_GetCameraPermissionState() occasionally until it returns non-zero. On platforms that don't require explicit user approval (and perhaps in places where the user previously permitted access), the approval event might come immediately, but it might come seconds, minutes, or hours later!",
+            [
+              {
+                "tag": "\\param instance_id",
+                "content": "the camera device instance ID."
+              },
+              {
+                "tag": "\\param spec",
+                "content": "the desired format for data the device will provide. Can be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "an SDL_Camera object or NULL on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetCameras"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetCameraFormat"
+              }
+            ]
+          ],
           "name": "SDL_OpenCamera",
           "kind": "function",
           "type": "SDL_Camera *",
@@ -6699,7 +6970,41 @@
           ]
         },
         "SDL_GetCameraPermissionState": {
-          "doc": "Query if camera access has been approved by the user.\n\nCameras will not function between when the device is opened by the app and\nwhen the user permits access to the hardware. On some platforms, this\npresents as a popup dialog where the user has to explicitly approve access;\non others the approval might be implicit and not alert the user at all.\n\nThis function can be used to check the status of that approval. It will\nreturn 0 if still waiting for user response, 1 if the camera is approved\nfor use, and -1 if the user denied access.\n\nInstead of polling with this function, you can wait for a\nSDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event\nin the standard SDL event loop, which is guaranteed to be sent once when\npermission to use the camera is decided.\n\nIf a camera is declined, there's nothing to be done but call\nSDL_CloseCamera() to dispose of it.\n\n\\param camera the opened camera device to query.\n\\returns -1 if user denied access to the camera, 1 if user approved access,\n         0 if no decision has been made yet.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera\n\\sa SDL_CloseCamera",
+          "parsedDoc": [
+            "Query if camera access has been approved by the user.",
+            "Cameras will not function between when the device is opened by the app and when the user permits access to the hardware. On some platforms, this presents as a popup dialog where the user has to explicitly approve access; on others the approval might be implicit and not alert the user at all.",
+            "This function can be used to check the status of that approval. It will return 0 if still waiting for user response, 1 if the camera is approved for use, and -1 if the user denied access.",
+            "Instead of polling with this function, you can wait for a SDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event in the standard SDL event loop, which is guaranteed to be sent once when permission to use the camera is decided.",
+            "If a camera is declined, there's nothing to be done but call SDL_CloseCamera() to dispose of it.",
+            [
+              {
+                "tag": "\\param camera",
+                "content": "the opened camera device to query."
+              },
+              {
+                "tag": "\\returns",
+                "content": "-1 if user denied access to the camera, 1 if user approved access, 0 if no decision has been made yet."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_OpenCamera"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_CloseCamera"
+              }
+            ]
+          ],
           "name": "SDL_GetCameraPermissionState",
           "kind": "function",
           "type": "int",
@@ -6711,7 +7016,31 @@
           ]
         },
         "SDL_GetCameraID": {
-          "doc": "Get the instance ID of an opened camera.\n\n\\param camera an SDL_Camera to query.\n\\returns the instance ID of the specified camera on success or 0 on\n         failure; call SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "parsedDoc": [
+            "Get the instance ID of an opened camera.",
+            [
+              {
+                "tag": "\\param camera",
+                "content": "an SDL_Camera to query."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the instance ID of the specified camera on success or 0 on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_OpenCamera"
+            }
+          ],
           "name": "SDL_GetCameraID",
           "kind": "function",
           "type": "SDL_CameraID",
@@ -6723,7 +7052,27 @@
           ]
         },
         "SDL_GetCameraProperties": {
-          "doc": "Get the properties associated with an opened camera.\n\n\\param camera the SDL_Camera obtained from SDL_OpenCamera().\n\\returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Get the properties associated with an opened camera.",
+            [
+              {
+                "tag": "\\param camera",
+                "content": "the SDL_Camera obtained from SDL_OpenCamera()."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a valid property ID on success or 0 on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GetCameraProperties",
           "kind": "function",
           "type": "SDL_PropertiesID",
@@ -6735,7 +7084,37 @@
           ]
         },
         "SDL_GetCameraFormat": {
-          "doc": "Get the spec that a camera is using when generating images.\n\nNote that this might not be the native format of the hardware, as SDL might\nbe converting to this format behind the scenes.\n\nIf the system is waiting for the user to approve access to the camera, as\nsome platforms require, this will return false, but this isn't necessarily\na fatal error; you should either wait for an\nSDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event,\nor poll SDL_GetCameraPermissionState() occasionally until it returns\nnon-zero.\n\n\\param camera opened camera device.\n\\param spec the SDL_CameraSpec to be initialized by this function.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "parsedDoc": [
+            "Get the spec that a camera is using when generating images.",
+            "Note that this might not be the native format of the hardware, as SDL might be converting to this format behind the scenes.",
+            "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return false, but this isn't necessarily a fatal error; you should either wait for an SDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event, or poll SDL_GetCameraPermissionState() occasionally until it returns non-zero.",
+            [
+              {
+                "tag": "\\param camera",
+                "content": "opened camera device."
+              },
+              {
+                "tag": "\\param spec",
+                "content": "the SDL_CameraSpec to be initialized by this function."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_OpenCamera"
+            }
+          ],
           "name": "SDL_GetCameraFormat",
           "kind": "function",
           "type": "bool",
@@ -6751,7 +7130,41 @@
           ]
         },
         "SDL_AcquireCameraFrame": {
-          "doc": "Acquire a frame.\n\nThe frame is a memory pointer to the image data, whose size and format are\ngiven by the spec requested when opening the device.\n\nThis is a non blocking API. If there is a frame available, a non-NULL\nsurface is returned, and timestampNS will be filled with a non-zero value.\n\nNote that an error case can also return NULL, but a NULL by itself is\nnormal and just signifies that a new frame is not yet available. Note that\neven if a camera device fails outright (a USB camera is unplugged while in\nuse, etc), SDL will send an event separately to notify the app, but\ncontinue to provide blank frames at ongoing intervals until\nSDL_CloseCamera() is called, so real failure here is almost always an out\nof memory condition.\n\nAfter use, the frame should be released with SDL_ReleaseCameraFrame(). If\nyou don't do this, the system may stop providing more video!\n\nDo not call SDL_DestroySurface() on the returned surface! It must be given\nback to the camera subsystem with SDL_ReleaseCameraFrame!\n\nIf the system is waiting for the user to approve access to the camera, as\nsome platforms require, this will return NULL (no frames available); you\nshould either wait for an SDL_EVENT_CAMERA_DEVICE_APPROVED (or\nSDL_EVENT_CAMERA_DEVICE_DENIED) event, or poll\nSDL_GetCameraPermissionState() occasionally until it returns non-zero.\n\n\\param camera opened camera device.\n\\param timestampNS a pointer filled in with the frame's timestamp, or 0 on\n                   error. Can be NULL.\n\\returns a new frame of video on success, NULL if none is currently\n         available.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ReleaseCameraFrame",
+          "parsedDoc": [
+            "Acquire a frame.",
+            "The frame is a memory pointer to the image data, whose size and format are given by the spec requested when opening the device.",
+            "This is a non blocking API. If there is a frame available, a non-NULL surface is returned, and timestampNS will be filled with a non-zero value.",
+            "Note that an error case can also return NULL, but a NULL by itself is normal and just signifies that a new frame is not yet available. Note that even if a camera device fails outright (a USB camera is unplugged while in use, etc), SDL will send an event separately to notify the app, but continue to provide blank frames at ongoing intervals until SDL_CloseCamera() is called, so real failure here is almost always an out of memory condition.",
+            "After use, the frame should be released with SDL_ReleaseCameraFrame(). If you don't do this, the system may stop providing more video!",
+            "Do not call SDL_DestroySurface() on the returned surface! It must be given back to the camera subsystem with SDL_ReleaseCameraFrame!",
+            "If the system is waiting for the user to approve access to the camera, as some platforms require, this will return NULL (no frames available); you should either wait for an SDL_EVENT_CAMERA_DEVICE_APPROVED (or SDL_EVENT_CAMERA_DEVICE_DENIED) event, or poll SDL_GetCameraPermissionState() occasionally until it returns non-zero.",
+            [
+              {
+                "tag": "\\param camera",
+                "content": "opened camera device."
+              },
+              {
+                "tag": "\\param timestampNS",
+                "content": "a pointer filled in with the frame's timestamp, or 0 on error. Can be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a new frame of video on success, NULL if none is currently available."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_ReleaseCameraFrame"
+            }
+          ],
           "name": "SDL_AcquireCameraFrame",
           "kind": "function",
           "type": "SDL_Surface *",
@@ -6767,7 +7180,35 @@
           ]
         },
         "SDL_ReleaseCameraFrame": {
-          "doc": "Release a frame of video acquired from a camera.\n\nLet the back-end re-use the internal buffer for camera.\n\nThis function _must_ be called only on surface objects returned by\nSDL_AcquireCameraFrame(). This function should be called as quickly as\npossible after acquisition, as SDL keeps a small FIFO queue of surfaces for\nvideo frames; if surfaces aren't released in a timely manner, SDL may drop\nupcoming video frames from the camera.\n\nIf the app needs to keep the surface for a significant time, they should\nmake a copy of it and release the original.\n\nThe app should not use the surface again after calling this function;\nassume the surface is freed and the pointer is invalid.\n\n\\param camera opened camera device.\n\\param frame the video frame surface to release.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AcquireCameraFrame",
+          "parsedDoc": [
+            "Release a frame of video acquired from a camera.",
+            "Let the back-end re-use the internal buffer for camera.",
+            "This function _must_ be called only on surface objects returned by SDL_AcquireCameraFrame(). This function should be called as quickly as possible after acquisition, as SDL keeps a small FIFO queue of surfaces for video frames; if surfaces aren't released in a timely manner, SDL may drop upcoming video frames from the camera.",
+            "If the app needs to keep the surface for a significant time, they should make a copy of it and release the original.",
+            "The app should not use the surface again after calling this function; assume the surface is freed and the pointer is invalid.",
+            [
+              {
+                "tag": "\\param camera",
+                "content": "opened camera device."
+              },
+              {
+                "tag": "\\param frame",
+                "content": "the video frame surface to release."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_AcquireCameraFrame"
+            }
+          ],
           "name": "SDL_ReleaseCameraFrame",
           "kind": "function",
           "type": "void",
@@ -6783,7 +7224,25 @@
           ]
         },
         "SDL_CloseCamera": {
-          "doc": "Use this function to shut down camera processing and close the camera\ndevice.\n\n\\param camera opened camera device.\n\n\\threadsafety It is safe to call this function from any thread, but no\n              thread may reference `device` once this function is called.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_OpenCamera",
+          "parsedDoc": [
+            "Use this function to shut down camera processing and close the camera device.",
+            {
+              "tag": "\\param camera",
+              "content": "opened camera device."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread, but no thread may reference `device` once this function is called."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_OpenCamera"
+            }
+          ],
           "name": "SDL_CloseCamera",
           "kind": "function",
           "type": "void",
@@ -6798,10 +7257,64 @@
     },
     "SDL_clipboard.h": {
       "name": "SDL_clipboard.h",
-      "doc": "# CategoryClipboard\n\nSDL provides access to the system clipboard, both for reading information\nfrom other processes and publishing information of its own.\n\nThis is not just text! SDL apps can access and publish data by mimetype.\n\n## Basic use (text)\n\nObtaining and publishing simple text to the system clipboard is as easy as\ncalling SDL_GetClipboardText() and SDL_SetClipboardText(), respectively.\nThese deal with C strings in UTF-8 encoding. Data transmission and encoding\nconversion is completely managed by SDL.\n\n## Clipboard callbacks (data other than text)\n\nThings get more complicated when the clipboard contains something other\nthan text. Not only can the system clipboard contain data of any type, in\nsome cases it can contain the same data in different formats! For example,\nan image painting app might let the user copy a graphic to the clipboard,\nand offers it in .BMP, .JPG, or .PNG format for other apps to consume.\n\nObtaining clipboard data (\"pasting\") like this is a matter of calling\nSDL_GetClipboardData() and telling it the mimetype of the data you want.\nBut how does one know if that format is available? SDL_HasClipboardData()\ncan report if a specific mimetype is offered, and\nSDL_GetClipboardMimeTypes() can provide the entire list of mimetypes\navailable, so the app can decide what to do with the data and what formats\nit can support.\n\nSetting the clipboard (\"copying\") to arbitrary data is done with\nSDL_SetClipboardData. The app does not provide the data in this call, but\nrather the mimetypes it is willing to provide and a callback function.\nDuring the callback, the app will generate the data. This allows massive\ndata sets to be provided to the clipboard, without any data being copied\nbefore it is explicitly requested. More specifically, it allows an app to\noffer data in multiple formats without providing a copy of all of them\nupfront. If the app has an image that it could provide in PNG or JPG\nformat, it doesn't have to encode it to either of those unless and until\nsomething tries to paste it.\n\n## Primary Selection\n\nThe X11 and Wayland video targets have a concept of the \"primary selection\"\nin addition to the usual clipboard. This is generally highlighted (but not\nexplicitly copied) text from various apps. SDL offers APIs for this through\nSDL_GetPrimarySelectionText() and SDL_SetPrimarySelectionText(). SDL offers\nthese APIs on platforms without this concept, too, but only so far that it\nwill keep a copy of a string that the app sets for later retrieval; the\noperating system will not ever attempt to change the string externally if\nit doesn't support a primary selection.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryClipboard"
+        },
+        "SDL provides access to the system clipboard, both for reading information from other processes and publishing information of its own.",
+        "This is not just text! SDL apps can access and publish data by mimetype.",
+        {
+          "tag": "##",
+          "content": "Basic use (text)"
+        },
+        "Obtaining and publishing simple text to the system clipboard is as easy as calling SDL_GetClipboardText() and SDL_SetClipboardText(), respectively. These deal with C strings in UTF-8 encoding. Data transmission and encoding conversion is completely managed by SDL.",
+        {
+          "tag": "##",
+          "content": "Clipboard callbacks (data other than text)"
+        },
+        "Things get more complicated when the clipboard contains something other than text. Not only can the system clipboard contain data of any type, in some cases it can contain the same data in different formats! For example, an image painting app might let the user copy a graphic to the clipboard, and offers it in .BMP, .JPG, or .PNG format for other apps to consume.",
+        "Obtaining clipboard data (\"pasting\") like this is a matter of calling SDL_GetClipboardData() and telling it the mimetype of the data you want. But how does one know if that format is available? SDL_HasClipboardData() can report if a specific mimetype is offered, and SDL_GetClipboardMimeTypes() can provide the entire list of mimetypes available, so the app can decide what to do with the data and what formats it can support.",
+        "Setting the clipboard (\"copying\") to arbitrary data is done with SDL_SetClipboardData. The app does not provide the data in this call, but rather the mimetypes it is willing to provide and a callback function. During the callback, the app will generate the data. This allows massive data sets to be provided to the clipboard, without any data being copied before it is explicitly requested. More specifically, it allows an app to offer data in multiple formats without providing a copy of all of them upfront. If the app has an image that it could provide in PNG or JPG format, it doesn't have to encode it to either of those unless and until something tries to paste it.",
+        {
+          "tag": "##",
+          "content": "Primary Selection"
+        },
+        "The X11 and Wayland video targets have a concept of the \"primary selection\" in addition to the usual clipboard. This is generally highlighted (but not explicitly copied) text from various apps. SDL offers APIs for this through SDL_GetPrimarySelectionText() and SDL_SetPrimarySelectionText(). SDL offers these APIs on platforms without this concept, too, but only so far that it will keep a copy of a string that the app sets for later retrieval; the operating system will not ever attempt to change the string externally if it doesn't support a primary selection."
+      ],
       "entries": {
         "SDL_SetClipboardText": {
-          "doc": "Put UTF-8 text into the clipboard.\n\n\\param text the text to store in the clipboard.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetClipboardText\n\\sa SDL_HasClipboardText",
+          "parsedDoc": [
+            "Put UTF-8 text into the clipboard.",
+            [
+              {
+                "tag": "\\param text",
+                "content": "the text to store in the clipboard."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetClipboardText"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasClipboardText"
+              }
+            ]
+          ],
           "name": "SDL_SetClipboardText",
           "kind": "function",
           "type": "bool",
@@ -6813,21 +7326,100 @@
           ]
         },
         "SDL_GetClipboardText": {
-          "doc": "Get UTF-8 text from the clipboard.\n\nThis function returns an empty string if there is not enough memory left\nfor a copy of the clipboard's content.\n\n\\returns the clipboard text on success or an empty string on failure; call\n         SDL_GetError() for more information. This should be freed with\n         SDL_free() when it is no longer needed.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasClipboardText\n\\sa SDL_SetClipboardText",
+          "parsedDoc": [
+            "Get UTF-8 text from the clipboard.",
+            "This function returns an empty string if there is not enough memory left for a copy of the clipboard's content.",
+            {
+              "tag": "\\returns",
+              "content": "the clipboard text on success or an empty string on failure; call SDL_GetError() for more information. This should be freed with SDL_free() when it is no longer needed."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasClipboardText"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetClipboardText"
+              }
+            ]
+          ],
           "name": "SDL_GetClipboardText",
           "kind": "function",
           "type": "char *",
           "parameters": []
         },
         "SDL_HasClipboardText": {
-          "doc": "Query whether the clipboard exists and contains a non-empty text string.\n\n\\returns true if the clipboard has text, or false if it does not.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetClipboardText\n\\sa SDL_SetClipboardText",
+          "parsedDoc": [
+            "Query whether the clipboard exists and contains a non-empty text string.",
+            {
+              "tag": "\\returns",
+              "content": "true if the clipboard has text, or false if it does not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetClipboardText"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetClipboardText"
+              }
+            ]
+          ],
           "name": "SDL_HasClipboardText",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_SetPrimarySelectionText": {
-          "doc": "Put UTF-8 text into the primary selection.\n\n\\param text the text to store in the primary selection.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetPrimarySelectionText\n\\sa SDL_HasPrimarySelectionText",
+          "parsedDoc": [
+            "Put UTF-8 text into the primary selection.",
+            [
+              {
+                "tag": "\\param text",
+                "content": "the text to store in the primary selection."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetPrimarySelectionText"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasPrimarySelectionText"
+              }
+            ]
+          ],
           "name": "SDL_SetPrimarySelectionText",
           "kind": "function",
           "type": "bool",
@@ -6839,21 +7431,99 @@
           ]
         },
         "SDL_GetPrimarySelectionText": {
-          "doc": "Get UTF-8 text from the primary selection.\n\nThis function returns an empty string if there is not enough memory left\nfor a copy of the primary selection's content.\n\n\\returns the primary selection text on success or an empty string on\n         failure; call SDL_GetError() for more information. This should be\n         freed with SDL_free() when it is no longer needed.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasPrimarySelectionText\n\\sa SDL_SetPrimarySelectionText",
+          "parsedDoc": [
+            "Get UTF-8 text from the primary selection.",
+            "This function returns an empty string if there is not enough memory left for a copy of the primary selection's content.",
+            {
+              "tag": "\\returns",
+              "content": "the primary selection text on success or an empty string on failure; call SDL_GetError() for more information. This should be freed with SDL_free() when it is no longer needed."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasPrimarySelectionText"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetPrimarySelectionText"
+              }
+            ]
+          ],
           "name": "SDL_GetPrimarySelectionText",
           "kind": "function",
           "type": "char *",
           "parameters": []
         },
         "SDL_HasPrimarySelectionText": {
-          "doc": "Query whether the primary selection exists and contains a non-empty text\nstring.\n\n\\returns true if the primary selection has text, or false if it does not.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetPrimarySelectionText\n\\sa SDL_SetPrimarySelectionText",
+          "parsedDoc": [
+            "Query whether the primary selection exists and contains a non-empty text string.",
+            {
+              "tag": "\\returns",
+              "content": "true if the primary selection has text, or false if it does not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetPrimarySelectionText"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetPrimarySelectionText"
+              }
+            ]
+          ],
           "name": "SDL_HasPrimarySelectionText",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_ClipboardDataCallback": {
-          "doc": "Callback function that will be called when data for the specified mime-type\nis requested by the OS.\n\nThe callback function is called with NULL as the mime_type when the\nclipboard is cleared or new data is set. The clipboard is automatically\ncleared in SDL_Quit().\n\n\\param userdata a pointer to the provided user data.\n\\param mime_type the requested mime-type.\n\\param size a pointer filled in with the length of the returned data.\n\\returns a pointer to the data for the provided mime-type. Returning NULL\n         or setting the length to 0 will cause zero length data to be sent\n         to the \"receiver\", which should be able to handle this. The\n         returned data will not be freed, so it needs to be retained and\n         dealt with internally.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetClipboardData",
+          "parsedDoc": [
+            "Callback function that will be called when data for the specified mime-type is requested by the OS.",
+            "The callback function is called with NULL as the mime_type when the clipboard is cleared or new data is set. The clipboard is automatically cleared in SDL_Quit().",
+            [
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer to the provided user data."
+              },
+              {
+                "tag": "\\param mime_type",
+                "content": "the requested mime-type."
+              },
+              {
+                "tag": "\\param size",
+                "content": "a pointer filled in with the length of the returned data."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a pointer to the data for the provided mime-type. Returning NULL or setting the length to 0 will cause zero length data to be sent to the \"receiver\", which should be able to handle this. The returned data will not be freed, so it needs to be retained and dealt with internally."
+              }
+            ],
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetClipboardData"
+            }
+          ],
           "name": "SDL_ClipboardDataCallback",
           "kind": "callback",
           "type": "const void *",
@@ -6873,7 +7543,21 @@
           ]
         },
         "SDL_ClipboardCleanupCallback": {
-          "doc": "Callback function that will be called when the clipboard is cleared, or when new\ndata is set.\n\n\\param userdata a pointer to the provided user data.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetClipboardData",
+          "parsedDoc": [
+            "Callback function that will be called when the clipboard is cleared, or when new data is set.",
+            {
+              "tag": "\\param userdata",
+              "content": "a pointer to the provided user data."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetClipboardData"
+            }
+          ],
           "name": "SDL_ClipboardCleanupCallback",
           "kind": "callback",
           "type": "void",
@@ -6885,7 +7569,59 @@
           ]
         },
         "SDL_SetClipboardData": {
-          "doc": "Offer clipboard data to the OS.\n\nTell the operating system that the application is offering clipboard data\nfor each of the provided mime-types. Once another application requests the\ndata the callback function will be called, allowing it to generate and\nrespond with the data for the requested mime-type.\n\nThe size of text data does not include any terminator, and the text does\nnot need to be null-terminated (e.g., you can directly copy a portion of a\ndocument).\n\n\\param callback a function pointer to the function that provides the\n                clipboard data.\n\\param cleanup a function pointer to the function that cleans up the\n               clipboard data.\n\\param userdata an opaque pointer that will be forwarded to the callbacks.\n\\param mime_types a list of mime-types that are being offered. SDL copies the given list.\n\\param num_mime_types the number of mime-types in the mime_types list.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ClearClipboardData\n\\sa SDL_GetClipboardData\n\\sa SDL_HasClipboardData",
+          "parsedDoc": [
+            "Offer clipboard data to the OS.",
+            "Tell the operating system that the application is offering clipboard data for each of the provided mime-types. Once another application requests the data the callback function will be called, allowing it to generate and respond with the data for the requested mime-type.",
+            "The size of text data does not include any terminator, and the text does not need to be null-terminated (e.g., you can directly copy a portion of a document).",
+            [
+              {
+                "tag": "\\param callback",
+                "content": "a function pointer to the function that provides the clipboard data."
+              },
+              {
+                "tag": "\\param cleanup",
+                "content": "a function pointer to the function that cleans up the clipboard data."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "an opaque pointer that will be forwarded to the callbacks."
+              },
+              {
+                "tag": "\\param mime_types",
+                "content": "a list of mime-types that are being offered. SDL copies the given list."
+              },
+              {
+                "tag": "\\param num_mime_types",
+                "content": "the number of mime-types in the mime_types list."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_ClearClipboardData"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetClipboardData"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasClipboardData"
+              }
+            ]
+          ],
           "name": "SDL_SetClipboardData",
           "kind": "function",
           "type": "bool",
@@ -6913,14 +7649,67 @@
           ]
         },
         "SDL_ClearClipboardData": {
-          "doc": "Clear the clipboard data.\n\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetClipboardData",
+          "parsedDoc": [
+            "Clear the clipboard data.",
+            {
+              "tag": "\\returns",
+              "content": "true on success or false on failure; call SDL_GetError() for more information."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetClipboardData"
+            }
+          ],
           "name": "SDL_ClearClipboardData",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_GetClipboardData": {
-          "doc": "Get the data from the clipboard for a given mime type.\n\nThe size of text data does not include the terminator, but the text is\nguaranteed to be null-terminated.\n\n\\param mime_type the mime type to read from the clipboard.\n\\param size a pointer filled in with the length of the returned data.\n\\returns the retrieved data buffer or NULL on failure; call SDL_GetError()\n         for more information. This should be freed with SDL_free() when it\n         is no longer needed.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasClipboardData\n\\sa SDL_SetClipboardData",
+          "parsedDoc": [
+            "Get the data from the clipboard for a given mime type.",
+            "The size of text data does not include the terminator, but the text is guaranteed to be null-terminated.",
+            [
+              {
+                "tag": "\\param mime_type",
+                "content": "the mime type to read from the clipboard."
+              },
+              {
+                "tag": "\\param size",
+                "content": "a pointer filled in with the length of the returned data."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the retrieved data buffer or NULL on failure; call SDL_GetError() for more information. This should be freed with SDL_free() when it is no longer needed."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasClipboardData"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetClipboardData"
+              }
+            ]
+          ],
           "name": "SDL_GetClipboardData",
           "kind": "function",
           "type": "void *",
@@ -6936,7 +7725,37 @@
           ]
         },
         "SDL_HasClipboardData": {
-          "doc": "Query whether there is data in the clipboard for the provided mime type.\n\n\\param mime_type the mime type to check for data.\n\\returns true if data exists in the clipboard for the provided mime type,\n         false if it does not.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetClipboardData\n\\sa SDL_GetClipboardData",
+          "parsedDoc": [
+            "Query whether there is data in the clipboard for the provided mime type.",
+            [
+              {
+                "tag": "\\param mime_type",
+                "content": "the mime type to check for data."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if data exists in the clipboard for the provided mime type, false if it does not."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetClipboardData"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetClipboardData"
+              }
+            ]
+          ],
           "name": "SDL_HasClipboardData",
           "kind": "function",
           "type": "bool",
@@ -6948,7 +7767,31 @@
           ]
         },
         "SDL_GetClipboardMimeTypes": {
-          "doc": "Retrieve the list of mime types available in the clipboard.\n\n\\param num_mime_types a pointer filled with the number of mime types, may\n                      be NULL.\n\\returns a null-terminated array of strings with mime types, or NULL on\n         failure; call SDL_GetError() for more information. This should be\n         freed with SDL_free() when it is no longer needed.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetClipboardData",
+          "parsedDoc": [
+            "Retrieve the list of mime types available in the clipboard.",
+            [
+              {
+                "tag": "\\param num_mime_types",
+                "content": "a pointer filled with the number of mime types, may be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a null-terminated array of strings with mime types, or NULL on failure; call SDL_GetError() for more information. This should be freed with SDL_free() when it is no longer needed."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetClipboardData"
+            }
+          ],
           "name": "SDL_GetClipboardMimeTypes",
           "kind": "function",
           "type": "char **",
@@ -6963,135 +7806,553 @@
     },
     "SDL_cpuinfo.h": {
       "name": "SDL_cpuinfo.h",
-      "doc": "# CategoryCPUInfo\n\nCPU feature detection for SDL.\n\nThese functions are largely concerned with reporting if the system has\naccess to various SIMD instruction sets, but also has other important info\nto share, such as system RAM size and number of logical CPU cores.\n\nCPU instruction set checks, like SDL_HasSSE() and SDL_HasNEON(), are\navailable on all platforms, even if they don't make sense (an ARM processor\nwill never have SSE and an x86 processor will never have NEON, for example,\nbut these functions still exist and will simply return false in these\ncases).",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryCPUInfo"
+        },
+        "CPU feature detection for SDL.",
+        "These functions are largely concerned with reporting if the system has access to various SIMD instruction sets, but also has other important info to share, such as system RAM size and number of logical CPU cores.",
+        "CPU instruction set checks, like SDL_HasSSE() and SDL_HasNEON(), are available on all platforms, even if they don't make sense (an ARM processor will never have SSE and an x86 processor will never have NEON, for example, but these functions still exist and will simply return false in these cases)."
+      ],
       "entries": {
         "SDL_CACHELINE_SIZE": {
-          "doc": "A guess for the cacheline size used for padding.\n\nMost x86 processors have a 64 byte cache line. The 64-bit PowerPC\nprocessors have a 128 byte cache line. We use the larger value to be\ngenerally safe.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A guess for the cacheline size used for padding.",
+            "Most x86 processors have a 64 byte cache line. The 64-bit PowerPC processors have a 128 byte cache line. We use the larger value to be generally safe.",
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_CACHELINE_SIZE",
           "kind": "def",
           "value": "128"
         },
         "SDL_GetNumLogicalCPUCores": {
-          "doc": "Get the number of logical CPU cores available.\n\n\\returns the total number of logical CPU cores. On CPUs that include\n         technologies such as hyperthreading, the number of logical cores\n         may be more than the number of physical cores.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Get the number of logical CPU cores available.",
+            {
+              "tag": "\\returns",
+              "content": "the total number of logical CPU cores. On CPUs that include technologies such as hyperthreading, the number of logical cores may be more than the number of physical cores."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GetNumLogicalCPUCores",
           "kind": "function",
           "type": "int",
           "parameters": []
         },
         "SDL_GetCPUCacheLineSize": {
-          "doc": "Determine the L1 cache line size of the CPU.\n\nThis is useful for determining multi-threaded structure padding or SIMD\nprefetch sizes.\n\n\\returns the L1 cache line size of the CPU, in bytes.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine the L1 cache line size of the CPU.",
+            "This is useful for determining multi-threaded structure padding or SIMD prefetch sizes.",
+            {
+              "tag": "\\returns",
+              "content": "the L1 cache line size of the CPU, in bytes."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GetCPUCacheLineSize",
           "kind": "function",
           "type": "int",
           "parameters": []
         },
         "SDL_HasAltiVec": {
-          "doc": "Determine whether the CPU has AltiVec features.\n\nThis always returns false on CPUs that aren't using PowerPC instruction\nsets.\n\n\\returns true if the CPU has AltiVec features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine whether the CPU has AltiVec features.",
+            "This always returns false on CPUs that aren't using PowerPC instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has AltiVec features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_HasAltiVec",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasMMX": {
-          "doc": "Determine whether the CPU has MMX features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has MMX features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine whether the CPU has MMX features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has MMX features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_HasMMX",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasSSE": {
-          "doc": "Determine whether the CPU has SSE features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has SSE features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasSSE2\n\\sa SDL_HasSSE3\n\\sa SDL_HasSSE41\n\\sa SDL_HasSSE42",
+          "parsedDoc": [
+            "Determine whether the CPU has SSE features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has SSE features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE2"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE3"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE41"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE42"
+              }
+            ]
+          ],
           "name": "SDL_HasSSE",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasSSE2": {
-          "doc": "Determine whether the CPU has SSE2 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has SSE2 features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasSSE\n\\sa SDL_HasSSE3\n\\sa SDL_HasSSE41\n\\sa SDL_HasSSE42",
+          "parsedDoc": [
+            "Determine whether the CPU has SSE2 features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has SSE2 features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE3"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE41"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE42"
+              }
+            ]
+          ],
           "name": "SDL_HasSSE2",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasSSE3": {
-          "doc": "Determine whether the CPU has SSE3 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has SSE3 features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasSSE\n\\sa SDL_HasSSE2\n\\sa SDL_HasSSE41\n\\sa SDL_HasSSE42",
+          "parsedDoc": [
+            "Determine whether the CPU has SSE3 features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has SSE3 features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE2"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE41"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE42"
+              }
+            ]
+          ],
           "name": "SDL_HasSSE3",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasSSE41": {
-          "doc": "Determine whether the CPU has SSE4.1 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has SSE4.1 features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasSSE\n\\sa SDL_HasSSE2\n\\sa SDL_HasSSE3\n\\sa SDL_HasSSE42",
+          "parsedDoc": [
+            "Determine whether the CPU has SSE4.1 features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has SSE4.1 features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE2"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE3"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE42"
+              }
+            ]
+          ],
           "name": "SDL_HasSSE41",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasSSE42": {
-          "doc": "Determine whether the CPU has SSE4.2 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has SSE4.2 features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasSSE\n\\sa SDL_HasSSE2\n\\sa SDL_HasSSE3\n\\sa SDL_HasSSE41",
+          "parsedDoc": [
+            "Determine whether the CPU has SSE4.2 features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has SSE4.2 features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE2"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE3"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasSSE41"
+              }
+            ]
+          ],
           "name": "SDL_HasSSE42",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasAVX": {
-          "doc": "Determine whether the CPU has AVX features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has AVX features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasAVX2\n\\sa SDL_HasAVX512F",
+          "parsedDoc": [
+            "Determine whether the CPU has AVX features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has AVX features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasAVX2"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasAVX512F"
+              }
+            ]
+          ],
           "name": "SDL_HasAVX",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasAVX2": {
-          "doc": "Determine whether the CPU has AVX2 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has AVX2 features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasAVX\n\\sa SDL_HasAVX512F",
+          "parsedDoc": [
+            "Determine whether the CPU has AVX2 features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has AVX2 features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasAVX"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasAVX512F"
+              }
+            ]
+          ],
           "name": "SDL_HasAVX2",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasAVX512F": {
-          "doc": "Determine whether the CPU has AVX-512F (foundation) features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n\\returns true if the CPU has AVX-512F features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasAVX\n\\sa SDL_HasAVX2",
+          "parsedDoc": [
+            "Determine whether the CPU has AVX-512F (foundation) features.",
+            "This always returns false on CPUs that aren't using Intel instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has AVX-512F features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasAVX"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_HasAVX2"
+              }
+            ]
+          ],
           "name": "SDL_HasAVX512F",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasARMSIMD": {
-          "doc": "Determine whether the CPU has ARM SIMD (ARMv6) features.\n\nThis is different from ARM NEON, which is a different instruction set.\n\nThis always returns false on CPUs that aren't using ARM instruction sets.\n\n\\returns true if the CPU has ARM SIMD features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasNEON",
+          "parsedDoc": [
+            "Determine whether the CPU has ARM SIMD (ARMv6) features.",
+            "This is different from ARM NEON, which is a different instruction set.",
+            "This always returns false on CPUs that aren't using ARM instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has ARM SIMD features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_HasNEON"
+            }
+          ],
           "name": "SDL_HasARMSIMD",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasNEON": {
-          "doc": "Determine whether the CPU has NEON (ARM SIMD) features.\n\nThis always returns false on CPUs that aren't using ARM instruction sets.\n\n\\returns true if the CPU has ARM NEON features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine whether the CPU has NEON (ARM SIMD) features.",
+            "This always returns false on CPUs that aren't using ARM instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has ARM NEON features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_HasNEON",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasLSX": {
-          "doc": "Determine whether the CPU has LSX (LOONGARCH SIMD) features.\n\nThis always returns false on CPUs that aren't using LOONGARCH instruction\nsets.\n\n\\returns true if the CPU has LOONGARCH LSX features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine whether the CPU has LSX (LOONGARCH SIMD) features.",
+            "This always returns false on CPUs that aren't using LOONGARCH instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has LOONGARCH LSX features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_HasLSX",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_HasLASX": {
-          "doc": "Determine whether the CPU has LASX (LOONGARCH SIMD) features.\n\nThis always returns false on CPUs that aren't using LOONGARCH instruction\nsets.\n\n\\returns true if the CPU has LOONGARCH LASX features or false if not.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine whether the CPU has LASX (LOONGARCH SIMD) features.",
+            "This always returns false on CPUs that aren't using LOONGARCH instruction sets.",
+            {
+              "tag": "\\returns",
+              "content": "true if the CPU has LOONGARCH LASX features or false if not."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_HasLASX",
           "kind": "function",
           "type": "bool",
           "parameters": []
         },
         "SDL_GetSystemRAM": {
-          "doc": "Get the amount of RAM configured in the system.\n\n\\returns the amount of RAM configured in the system in MiB.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Get the amount of RAM configured in the system.",
+            {
+              "tag": "\\returns",
+              "content": "the amount of RAM configured in the system in MiB."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_GetSystemRAM",
           "kind": "function",
           "type": "int",
           "parameters": []
         },
         "SDL_GetSIMDAlignment": {
-          "doc": "Report the alignment this system needs for SIMD allocations.\n\nThis will return the minimum number of bytes to which a pointer must be\naligned to be compatible with SIMD instructions on the current machine. For\nexample, if the machine supports SSE only, it will return 16, but if it\nsupports AVX-512F, it'll return 64 (etc). This only reports values for\ninstruction sets SDL knows about, so if your SDL build doesn't have\nSDL_HasAVX512F(), then it might return 16 for the SSE support it sees and\nnot 64 for the AVX-512 instructions that exist but SDL doesn't know about.\nPlan accordingly.\n\n\\returns the alignment in bytes needed for available, known SIMD\n         instructions.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_aligned_alloc\n\\sa SDL_aligned_free",
+          "parsedDoc": [
+            "Report the alignment this system needs for SIMD allocations.",
+            "This will return the minimum number of bytes to which a pointer must be aligned to be compatible with SIMD instructions on the current machine. For example, if the machine supports SSE only, it will return 16, but if it supports AVX-512F, it'll return 64 (etc). This only reports values for instruction sets SDL knows about, so if your SDL build doesn't have SDL_HasAVX512F(), then it might return 16 for the SSE support it sees and not 64 for the AVX-512 instructions that exist but SDL doesn't know about. Plan accordingly.",
+            {
+              "tag": "\\returns",
+              "content": "the alignment in bytes needed for available, known SIMD instructions."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_aligned_alloc"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_aligned_free"
+              }
+            ]
+          ],
           "name": "SDL_GetSIMDAlignment",
           "kind": "function",
           "type": "size_t",
