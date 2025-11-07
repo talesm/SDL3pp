@@ -201,7 +201,7 @@ function parseContent(name, content) {
     // Use the entry point for listeners
     ParseTreeWalker_1.ParseTreeWalker.DEFAULT.walk(listener, tree);
     const api = listener.api;
-    if (name < "SDL_n") {
+    if (name < "SDL_r") {
         api.parsedDoc = (0, parseDoc_1.parseDoc)(name, api.doc ?? "");
         delete api.doc;
         for (const apiEntry of Object.values(api.entries)) {

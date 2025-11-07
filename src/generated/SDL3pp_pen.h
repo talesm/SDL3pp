@@ -17,8 +17,8 @@ namespace SDL {
  * tablet devices.
  *
  * To get started with pens, simply handle SDL_EVENT_PEN_* events. When a pen
- * starts providing input, SDL will assign it a unique PenID, which will
- * remain for the life of the process, as long as the pen stays connected.
+ * starts providing input, SDL will assign it a unique PenID, which will remain
+ * for the life of the process, as long as the pen stays connected.
  *
  * Pens may provide more than simple touch input; they might have other axes,
  * such as pressure, tilt, rotation, etc.
@@ -84,13 +84,13 @@ constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
 /**
  * Pen axis indices.
  *
- * These are the valid values for the `axis` field in PenAxisEvent. All
- * axes are either normalised to 0..1 or report a (positive or negative) angle
- * in degrees, with 0.0 representing the centre. Not all pens/backends support
- * all axes: unsupported axes are always zero.
+ * These are the valid values for the `axis` field in PenAxisEvent. All axes are
+ * either normalised to 0..1 or report a (positive or negative) angle in
+ * degrees, with 0.0 representing the centre. Not all pens/backends support all
+ * axes: unsupported axes are always zero.
  *
- * To convert angles for tilt and rotation into vector representation, use
- * sin on the XTILT, YTILT, or ROTATION component, for example:
+ * To convert angles for tilt and rotation into vector representation, use sin
+ * on the XTILT, YTILT, or ROTATION component, for example:
  *
  * `sin(xtilt * PI_F / 180.0)`.
  *

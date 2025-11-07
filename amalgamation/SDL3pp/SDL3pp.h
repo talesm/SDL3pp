@@ -1104,8 +1104,8 @@ using RefArray = std::span<T>;
 /**
  * @defgroup CategoryPlatform Platform Detection
  *
- * SDL provides a means to identify the app's platform, both at compile time
- * and runtime.
+ * SDL provides a means to identify the app's platform, both at compile time and
+ * runtime.
  *
  * For sanity, we don't wrap the macros, so use the regular SDL_* macros as
  * documented.
@@ -8581,20 +8581,19 @@ inline void ResetLogOutputFunction()
  *
  * SDL offers facilities for pixel management.
  *
- * Largely these facilities deal with pixel _format_: what does this set of
- * bits represent?
+ * Largely these facilities deal with pixel _format_: what does this set of bits
+ * represent?
  *
  * If you mostly want to think of a pixel as some combination of red, green,
- * blue, and maybe alpha intensities, this is all pretty straightforward, and
- * in many cases, is enough information to build a perfectly fine game.
+ * blue, and maybe alpha intensities, this is all pretty straightforward, and in
+ * many cases, is enough information to build a perfectly fine game.
  *
  * However, the actual definition of a pixel is more complex than that:
  *
  * Pixels are a representation of a color in a particular color space.
  *
- * The first characteristic of a color space is the color type. SDL
- * understands two different color types, RGB and YCbCr, or in SDL also
- * referred to as YUV.
+ * The first characteristic of a color space is the color type. SDL understands
+ * two different color types, RGB and YCbCr, or in SDL also referred to as YUV.
  *
  * RGB colors consist of red, green, and blue channels of color that are added
  * together to represent the colors we see on the screen.
@@ -8603,8 +8602,8 @@ inline void ResetLogOutputFunction()
  *
  * YCbCr colors represent colors as a Y luma brightness component and red and
  * blue chroma color offsets. This color representation takes advantage of the
- * fact that the human eye is more sensitive to brightness than the color in
- * an image. The Cb and Cr components are often compressed and have lower
+ * fact that the human eye is more sensitive to brightness than the color in an
+ * image. The Cb and Cr components are often compressed and have lower
  * resolution than the luma component.
  *
  * https://en.wikipedia.org/wiki/YCbCr
@@ -8614,19 +8613,19 @@ inline void ResetLogOutputFunction()
  * information in a block of Y pixels. The chroma location determines where in
  * that block of pixels the color information is coming from.
  *
- * The color range defines how much of the pixel to use when converting a
- * pixel into a color on the display. When the full color range is used, the
- * entire numeric range of the pixel bits is significant. When narrow color
- * range is used, for historical reasons, the pixel uses only a portion of the
- * numeric range to represent colors.
+ * The color range defines how much of the pixel to use when converting a pixel
+ * into a color on the display. When the full color range is used, the entire
+ * numeric range of the pixel bits is significant. When narrow color range is
+ * used, for historical reasons, the pixel uses only a portion of the numeric
+ * range to represent colors.
  *
  * The color primaries and white point are a definition of the colors in the
  * color space relative to the standard XYZ color space.
  *
  * https://en.wikipedia.org/wiki/CIE_1931_color_space
  *
- * The transfer characteristic, or opto-electrical transfer function (OETF),
- * is the way a color is converted from mathematically linear space into a
+ * The transfer characteristic, or opto-electrical transfer function (OETF), is
+ * the way a color is converted from mathematically linear space into a
  * non-linear output signals.
  *
  * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
@@ -8944,32 +8943,30 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
  * - Names with a list of components and a single bit count, such as RGB24 and
  *   ABGR32, define a platform-independent encoding into bytes in the order
  *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
- *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
- *   encoded in 4 bytes (alpha, blue, green, red) in that order. Use these
- *   names if the property of a format that is important to you is the order
- *   of the bytes in memory or on disk.
+ *   (red, green, blue) in that order, and in ABGR32 data, each pixel is encoded
+ *   in 4 bytes (alpha, blue, green, red) in that order. Use these names if the
+ *   property of a format that is important to you is the order of the bytes in
+ *   memory or on disk.
  * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
  *   "packed" into an appropriately-sized integer in the platform's native
- *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in
- *   each integer, the most significant bits are alpha, and the least
- *   significant bits are blue. On a little-endian CPU such as x86, the least
- *   significant bits of each integer are arranged first in memory, but on a
- *   big-endian CPU such as s390x, the most significant bits are arranged
- *   first. Use these names if the property of a format that is important to
- *   you is the meaning of each bit position within a native-endianness
- *   integer.
- * - In indexed formats such as INDEX4LSB, each pixel is represented by
- *   encoding an index into the palette into the indicated number of bits,
- *   with multiple pixels packed into each byte if appropriate. In LSB
- *   formats, the first (leftmost) pixel is stored in the least-significant
- *   bits of the byte; in MSB formats, it's stored in the most-significant
- *   bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly
- *   fills one byte.
+ *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in each
+ *   integer, the most significant bits are alpha, and the least significant
+ *   bits are blue. On a little-endian CPU such as x86, the least significant
+ *   bits of each integer are arranged first in memory, but on a big-endian CPU
+ *   such as s390x, the most significant bits are arranged first. Use these
+ *   names if the property of a format that is important to you is the meaning
+ *   of each bit position within a native-endianness integer.
+ * - In indexed formats such as INDEX4LSB, each pixel is represented by encoding
+ *   an index into the palette into the indicated number of bits, with multiple
+ *   pixels packed into each byte if appropriate. In LSB formats, the first
+ *   (leftmost) pixel is stored in the least-significant bits of the byte; in
+ *   MSB formats, it's stored in the most-significant bits. INDEX8 does not need
+ *   LSB/MSB variants, because each pixel exactly fills one byte.
  *
  * The 32-bit byte-array encodings such as RGBA32 are aliases for the
- * appropriate 8888 encoding for the current platform. For example, RGBA32 is
- * an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
- * RGBA8888 on big-endian CPUs.
+ * appropriate 8888 encoding for the current platform. For example, RGBA32 is an
+ * alias for ABGR8888 on little-endian CPUs like x86, or an alias for RGBA8888
+ * on big-endian CPUs.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -9006,8 +9003,8 @@ public:
    * @param type the type of the new format, probably a PixelType value.
    * @param order the order of the new format, probably a BitmapOrder,
    *              PackedOrder, or ArrayOrder value.
-   * @param layout the layout of the new format, probably an PackedLayout
-   *               value or zero.
+   * @param layout the layout of the new format, probably an PackedLayout value
+   *               or zero.
    * @param bits the number of bits per pixel of the new format.
    * @param bytes the number of bytes per pixel of the new format.
    * @post a format value in the style of PixelFormat.
@@ -9036,8 +9033,7 @@ public:
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
    *
-   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't
-   * possible.
+   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
    *
    * @param bpp a bits per pixel value; usually 15, 16, or 32.
    * @param Rmask the red mask for the format.
@@ -9087,8 +9083,8 @@ public:
   /**
    * Retrieve the order.
    *
-   * This is usually a value from the BitmapOrder, PackedOrder, or
-   * ArrayOrder enumerations, depending on the format type.
+   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+   * enumerations, depending on the format type.
    *
    * @returns the order.
    *
@@ -9581,8 +9577,8 @@ constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
  * @param type the type of the new format, probably a PixelType value.
  * @param order the order of the new format, probably a BitmapOrder,
  *              PackedOrder, or ArrayOrder value.
- * @param layout the layout of the new format, probably an PackedLayout
- *               value or zero.
+ * @param layout the layout of the new format, probably an PackedLayout value or
+ *               zero.
  * @param bits the number of bits per pixel of the new format.
  * @param bytes the number of bytes per pixel of the new format.
  * @returns a format value in the style of PixelFormat.
@@ -9648,8 +9644,8 @@ constexpr PixelType PixelFormat::GetType() const
 /**
  * A macro to retrieve the order of an PixelFormat.
  *
- * This is usually a value from the BitmapOrder, PackedOrder, or
- * ArrayOrder enumerations, depending on the format type.
+ * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+ * enumerations, depending on the format type.
  *
  * @param format an PixelFormat to check.
  * @returns the order of `format`.
@@ -10208,8 +10204,8 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  * Colorspace definitions.
  *
  * Since similar colorspaces may vary in their details (matrix, transfer
- * function, etc.), this is not an exhaustive list, but rather a
- * representative sample of the kinds of colorspaces supported in SDL.
+ * function, etc.), this is not an exhaustive list, but rather a representative
+ * sample of the kinds of colorspaces supported in SDL.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -10467,8 +10463,8 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * @param type the type of the new format, probably an ColorType value.
  * @param range the range of the new format, probably a ColorRange value.
- * @param primaries the primaries of the new format, probably an
- *                  ColorPrimaries value.
+ * @param primaries the primaries of the new format, probably an ColorPrimaries
+ *                  value.
  * @param transfer the transfer characteristics of the new format, probably an
  *                 TransferCharacteristics value.
  * @param matrix the matrix coefficients of the new format, probably an
@@ -10656,8 +10652,7 @@ constexpr bool Colorspace::IsMatrixBT709() const
 }
 
 /**
- * A macro to determine if an Colorspace uses BT2020_NCL matrix
- * coefficients.
+ * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
  *
  * @param cspace an Colorspace to check.
  * @returns true if BT2020_NCL, false otherwise.
@@ -10749,10 +10744,9 @@ constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
 /**
  * A structure that represents a color as RGBA components.
  *
- * The bits of this structure can be directly reinterpreted as an
- * integer-packed color which uses the PIXELFORMAT_RGBA32 format
- * (PIXELFORMAT_ABGR8888 on little-endian systems and
- * PIXELFORMAT_RGBA8888 on big-endian systems).
+ * The bits of this structure can be directly reinterpreted as an integer-packed
+ * color which uses the PIXELFORMAT_RGBA32 format (PIXELFORMAT_ABGR8888 on
+ * little-endian systems and PIXELFORMAT_RGBA8888 on big-endian systems).
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -11254,8 +11248,7 @@ inline void PixelFormat::GetMasks(int* bpp,
 /**
  * Convert a bpp value and RGBA masks to an enumerated pixel format.
  *
- * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't
- * possible.
+ * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
  *
  * @param bpp a bits per pixel value; usually 15, 16, or 32.
  * @param Rmask the red mask for the format.
@@ -11384,8 +11377,8 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * Map an RGB triple to an opaque pixel value for a given pixel format.
  *
  * This function maps the RGB color value to the specified pixel format and
- * returns the pixel value best approximating the given RGB color value for
- * the given pixel format.
+ * returns the pixel value best approximating the given RGB color value for the
+ * given pixel format.
  *
  * If the format has a palette (8-bit) the index of the closest matching color
  * in the palette will be returned.
@@ -11398,8 +11391,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r the red component of the pixel in the range 0-255.
  * @param g the green component of the pixel in the range 0-255.
@@ -11476,11 +11468,11 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  * Map an RGBA quadruple to a pixel value for a given pixel format.
  *
  * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for
- * the given pixel format.
+ * returns the pixel value best approximating the given RGBA color value for the
+ * given pixel format.
  *
- * If the specified pixel format has no alpha component the alpha value will
- * be ignored (as it will be in formats with a palette).
+ * If the specified pixel format has no alpha component the alpha value will be
+ * ignored (as it will be in formats with a palette).
  *
  * If the format has a palette (8-bit) the index of the closest matching color
  * in the palette will be returned.
@@ -11490,8 +11482,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param c the color components of the pixel in the range 0-255.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @returns a pixel value.
@@ -11528,13 +11519,12 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  * Get RGB values from a pixel in the specified format.
  *
  * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ * components from pixel formats with less than 8-bits per RGB component (e.g.,
+ * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
+ * 0xff] not [0xf8, 0xfc, 0xf8]).
  *
  * @param pixel a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
  * @param g a pointer filled in with the green component, may be nullptr.
@@ -11564,16 +11554,15 @@ inline void GetRGB(Uint32 pixel,
  * Get RGBA values from a pixel in the specified format.
  *
  * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ * components from pixel formats with less than 8-bits per RGB component (e.g.,
+ * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
+ * 0xff] not [0xf8, 0xfc, 0xf8]).
  *
  * If the surface has no alpha component, the alpha will be returned as 0xff
  * (100% opaque).
  *
  * @param pixel a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
  * @param g a pointer filled in with the green component, may be nullptr.
@@ -11666,15 +11655,15 @@ inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
  * following functions:
  *
  * - Properties.SetPointerProperty and Properties.GetPointerProperty operate on
- * `void*` pointer types.
+ *   `void*` pointer types.
  * - Properties.SetStringProperty and Properties.GetStringProperty operate on
- * string types.
+ *   string types.
  * - Properties.SetNumberProperty and Properties.GetNumberProperty operate on
- * signed 64-bit integer types.
+ *   signed 64-bit integer types.
  * - Properties.SetFloatProperty and Properties.GetFloatProperty operate on
- * floating point types.
+ *   floating point types.
  * - Properties.SetBooleanProperty and Properties.GetBooleanProperty operate on
- * boolean types.
+ *   boolean types.
  *
  * Properties can be removed from a group by using Properties.ClearProperty.
  *
@@ -11744,8 +11733,8 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from Properties.Enumerate(), and is called once
- * per property in the set.
+ * This callback is called from Properties.Enumerate(), and is called once per
+ * property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
  * @param props the Properties that is being enumerated.
@@ -11763,8 +11752,8 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from Properties.Enumerate(), and is called once
- * per property in the set.
+ * This callback is called from Properties.Enumerate(), and is called once per
+ * property in the set.
  *
  * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
@@ -11782,11 +11771,11 @@ using EnumeratePropertiesCB =
 /**
  * A callback used to free resources when a property is deleted.
  *
- * This should release any resources associated with `value` that are no
- * longer needed.
+ * This should release any resources associated with `value` that are no longer
+ * needed.
  *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
+ * This callback is set per-property. Different properties in the same group can
+ * have different cleanup callbacks.
  *
  * This callback will be called _during_
  * Properties.SetPointerPropertyWithCleanup if the function fails for any
@@ -11807,11 +11796,11 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 /**
  * A callback used to free resources when a property is deleted.
  *
- * This should release any resources associated with `value` that are no
- * longer needed.
+ * This should release any resources associated with `value` that are no longer
+ * needed.
  *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
+ * This callback is set per-property. Different properties in the same group can
+ * have different cleanup callbacks.
  *
  * This callback will be called _during_
  * Properties.SetPointerPropertyWithCleanup if the function fails for any
@@ -11825,6 +11814,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa Properties.SetPointerPropertyWithCleanup
+ *
  * @sa CleanupPropertyCallback
  */
 using CleanupPropertyCB = std::function<void(void*)>;
@@ -12001,9 +11991,9 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @param cleanup the function to call when this property is deleted, or
-   * nullptr if no cleanup is necessary.
+   *                nullptr if no cleanup is necessary.
    * @param userdata a pointer that is passed to the cleanup function.
    * @throws Error on failure.
    *
@@ -12035,9 +12025,9 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @param cleanup the function to call when this property is deleted, or
-   * nullptr if no cleanup is necessary.
+   *                nullptr if no cleanup is necessary.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -12057,7 +12047,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -12082,7 +12072,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -12156,8 +12146,8 @@ public:
    * Get the type of a property in a group of properties.
    *
    * @param name the name of the property to query.
-   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
-   *          not set.
+   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is not
+   *          set.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -12184,7 +12174,7 @@ public:
    *               the data returned is not protected and could potentially be
    *               freed if you call Properties.SetPointerProperty() or
    *               Properties.ClearProperty() on these properties from another
-   * thread. If you need to avoid this, use Properties.Lock() and
+   *               thread. If you need to avoid this, use Properties.Lock() and
    *               Properties.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
@@ -12211,7 +12201,7 @@ public:
    *               the data returned is not protected and could potentially be
    *               freed if you call Properties.SetStringProperty() or
    *               Properties.ClearProperty() on these properties from another
-   * thread. If you need to avoid this, use Properties.Lock() and
+   *               thread. If you need to avoid this, use Properties.Lock() and
    *               Properties.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
@@ -12367,6 +12357,7 @@ struct PropertiesRef : Properties
  * Get the global SDL properties.
  *
  * @returns a valid property ID on success.
+ *
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -12431,8 +12422,8 @@ inline void Properties::Copy(PropertiesParam dst)
  * must be unlocked before they are destroyed.
  *
  * The lock is automatically taken when setting individual properties, this
- * function is only needed when you want to set several properties atomically
- * or want to guarantee that properties being queried aren't freed in another
+ * function is only needed when you want to set several properties atomically or
+ * want to guarantee that properties being queried aren't freed in another
  * thread.
  *
  * @param props the properties to lock.
@@ -12470,8 +12461,8 @@ inline void UnlockProperties(PropertiesParam props)
 inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
 
 /**
- * Set a pointer property in a group of properties with a cleanup function
- * that is called when the property is deleted.
+ * Set a pointer property in a group of properties with a cleanup function that
+ * is called when the property is deleted.
  *
  * The cleanup function is also called if setting the property fails for any
  * reason.
@@ -12484,7 +12475,7 @@ inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @param cleanup the function to call when this property is deleted, or nullptr
  *                if no cleanup is necessary.
  * @param userdata a pointer that is passed to the cleanup function.
@@ -12509,8 +12500,8 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
 }
 
 /**
- * Set a pointer property in a group of properties with a cleanup function
- * that is called when the property is deleted.
+ * Set a pointer property in a group of properties with a cleanup function that
+ * is called when the property is deleted.
  *
  * The cleanup function is also called if setting the property fails for any
  * reason.
@@ -12523,7 +12514,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @param cleanup the function to call when this property is deleted, or nullptr
  *                if no cleanup is necessary.
  * @throws Error on failure.
@@ -12573,7 +12564,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -12609,7 +12600,7 @@ inline void Properties::SetPointerProperty(StringParam name, void* value)
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -12736,8 +12727,7 @@ inline bool Properties::HasProperty(StringParam name)
  *
  * @param props the properties to query.
  * @param name the name of the property to query.
- * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
- *          not set.
+ * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is not set.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -12758,8 +12748,8 @@ inline PropertyType Properties::GetPropertyType(StringParam name)
 /**
  * Get a pointer property from a group of properties.
  *
- * By convention, the names of properties that SDL exposes on objects will
- * start with "SDL.", and properties that SDL uses internally will start with
+ * By convention, the names of properties that SDL exposes on objects will start
+ * with "SDL.", and properties that SDL uses internally will start with
  * "SDL.internal.". These should be considered read-only and should not be
  * modified by applications.
  *
@@ -12769,11 +12759,11 @@ inline PropertyType Properties::GetPropertyType(StringParam name)
  * @returns the value of the property, or `default_value` if it is not set or
  *          not a pointer property.
  *
- * @threadsafety It is safe to call this function from any thread, although
- *               the data returned is not protected and could potentially be
- *               freed if you call Properties.SetPointerProperty() or
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               data returned is not protected and could potentially be freed
+ *               if you call Properties.SetPointerProperty() or
  *               Properties.ClearProperty() on these properties from another
- * thread. If you need to avoid this, use Properties.Lock() and
+ *               thread. If you need to avoid this, use Properties.Lock() and
  *               Properties.Unlock().
  *
  * @since This function is available since SDL 3.2.0.
@@ -12808,11 +12798,11 @@ inline void* Properties::GetPointerProperty(StringParam name,
  * @returns the value of the property, or `default_value` if it is not set or
  *          not a string property.
  *
- * @threadsafety It is safe to call this function from any thread, although
- *               the data returned is not protected and could potentially be
- *               freed if you call Properties.SetStringProperty() or
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               data returned is not protected and could potentially be freed
+ *               if you call Properties.SetStringProperty() or
  *               Properties.ClearProperty() on these properties from another
- * thread. If you need to avoid this, use Properties.Lock() and
+ *               thread. If you need to avoid this, use Properties.Lock() and
  *               Properties.Unlock().
  *
  * @since This function is available since SDL 3.2.0.
@@ -12956,8 +12946,8 @@ inline void Properties::ClearProperty(StringParam name)
 /**
  * Enumerate the properties contained in a group of properties.
  *
- * The callback function is called for each property in the group of
- * properties. The properties are locked during enumeration.
+ * The callback function is called for each property in the group of properties.
+ * The properties are locked during enumeration.
  *
  * @param props the properties to query.
  * @param callback the function to call for each property.
@@ -12978,8 +12968,8 @@ inline void EnumerateProperties(PropertiesParam props,
 /**
  * Enumerate the properties contained in a group of properties.
  *
- * The callback function is called for each property in the group of
- * properties. The properties are locked during enumeration.
+ * The callback function is called for each property in the group of properties.
+ * The properties are locked during enumeration.
  *
  * @param props the properties to query.
  * @param callback the function to call for each property.
@@ -13041,8 +13031,8 @@ inline Uint64 Properties::GetCount()
  * @param props the properties to destroy.
  *
  * @threadsafety This function should not be called while these properties are
- *               locked or other threads might be setting or getting values
- *               from these properties.
+ *               locked or other threads might be setting or getting values from
+ *               these properties.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -28576,31 +28566,30 @@ constexpr PowerState POWERSTATE_CHARGED =
  * Get the current power supply details.
  *
  * You should never take a battery status as absolute truth. Batteries
- * (especially failing batteries) are delicate hardware, and the values
- * reported here are best estimates based on what that hardware reports. It's
- * not uncommon for older batteries to lose stored power much faster than it
+ * (especially failing batteries) are delicate hardware, and the values reported
+ * here are best estimates based on what that hardware reports. It's not
+ * uncommon for older batteries to lose stored power much faster than it
  * reports, or completely drain when reporting it has 20 percent left, etc.
  *
- * Battery status can change at any time; if you are concerned with power
- * state, you should call this function frequently, and perhaps ignore changes
- * until they seem to be stable for a few seconds.
+ * Battery status can change at any time; if you are concerned with power state,
+ * you should call this function frequently, and perhaps ignore changes until
+ * they seem to be stable for a few seconds.
  *
- * It's possible a platform can only report battery percentage or time left
- * but not both.
+ * It's possible a platform can only report battery percentage or time left but
+ * not both.
  *
- * On some platforms, retrieving power supply details might be expensive. If
- * you want to display continuous status you could call this function every
- * minute or so.
+ * On some platforms, retrieving power supply details might be expensive. If you
+ * want to display continuous status you could call this function every minute
+ * or so.
  *
- * @param seconds a pointer filled in with the seconds of battery life left,
- *                or nullptr to ignore. This will be filled in with -1 if we
- *                can't determine a value or there is no battery.
- * @param percent a pointer filled in with the percentage of battery life
- *                left, between 0 and 100, or nullptr to ignore. This will be
- *                filled in with -1 we can't determine a value or there is no
- *                battery.
- * @returns the current battery state or `POWERSTATE_ERROR` on failure;
- *          call GetError() for more information.
+ * @param seconds a pointer filled in with the seconds of battery life left, or
+ *                nullptr to ignore. This will be filled in with -1 if we can't
+ *                determine a value or there is no battery.
+ * @param percent a pointer filled in with the percentage of battery life left,
+ *                between 0 and 100, or nullptr to ignore. This will be filled
+ *                in with -1 we can't determine a value or there is no battery.
+ * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
+ *          GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -39244,14 +39233,13 @@ constexpr Keycode ScancodeToKeycode(Scancode x)
  * These functions provide a cross-platform way to spawn and manage OS-level
  * processes.
  *
- * You can create a new subprocess with Process.Process() and optionally
- * read and write to it using Process.Read() or Process.GetInput() and
+ * You can create a new subprocess with Process.Process() and optionally read
+ * and write to it using Process.Read() or Process.GetInput() and
  * Process.GetOutput(). If more advanced functionality like chaining input
- * between processes is necessary, you can use
- * Process.Process().
+ * between processes is necessary, you can use Process.Process().
  *
- * You can get the status of a created process with Process.Wait(), or
- * terminate the process with Process.Kill().
+ * You can get the status of a created process with Process.Wait(), or terminate
+ * the process with Process.Kill().
  *
  * Don't forget to call Process.Destroy() to clean up, whether the process
  * process was killed, terminated on its own, or is still running!
@@ -39296,36 +39284,34 @@ struct ProcessParam
 };
 
 /**
- * Description of where standard I/O should be directed when creating a
- * process.
+ * Description of where standard I/O should be directed when creating a process.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_INHERITED, it will go
- * to the same place as the application's I/O stream. This is the default for
- * standard output and standard error.
+ * If a standard I/O stream is set to PROCESS_STDIO_INHERITED, it will go to the
+ * same place as the application's I/O stream. This is the default for standard
+ * output and standard error.
  *
  * If a standard I/O stream is set to SDL_PROCESS_STDIO_nullptr, it is connected
  * to `NUL:` on Windows and `/dev/null` on POSIX systems. This is the default
  * for standard input.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected
- * to a new IOStream that is available to the application. Standard input
- * will be available as `prop::process.STDIN_POINTER` and allows
- * Process.GetInput(), standard output will be available as
- * `prop::process.STDOUT_POINTER` and allows Process.Read() and
- * Process.GetOutput(), and standard error will be available as
- * `prop::process.STDERR_POINTER` in the properties for the created
+ * If a standard I/O stream is set to PROCESS_STDIO_APP, it is connected to a
+ * new IOStream that is available to the application. Standard input will be
+ * available as `prop::process.STDIN_POINTER` and allows Process.GetInput(),
+ * standard output will be available as `prop::process.STDOUT_POINTER` and
+ * allows Process.Read() and Process.GetOutput(), and standard error will be
+ * available as `prop::process.STDERR_POINTER` in the properties for the created
  * process.
  *
- * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is
- * connected to an existing IOStream provided by the application. Standard
- * input is provided using `prop::process.CREATE_STDIN_POINTER`, standard
- * output is provided using `prop::process.CREATE_STDOUT_POINTER`, and
- * standard error is provided using `prop::process.CREATE_STDERR_POINTER`
- * in the creation properties. These existing streams should be closed by the
- * application once the new process is created.
+ * If a standard I/O stream is set to PROCESS_STDIO_REDIRECT, it is connected to
+ * an existing IOStream provided by the application. Standard input is provided
+ * using `prop::process.CREATE_STDIN_POINTER`, standard output is provided using
+ * `prop::process.CREATE_STDOUT_POINTER`, and standard error is provided using
+ * `prop::process.CREATE_STDERR_POINTER` in the creation properties. These
+ * existing streams should be closed by the application once the new process is
+ * created.
  *
- * In order to use an IOStream with PROCESS_STDIO_REDIRECT, it must
- * have `prop::IOStream.WINDOWS_HANDLE_POINTER` or
+ * In order to use an IOStream with PROCESS_STDIO_REDIRECT, it must have
+ * `prop::IOStream.WINDOWS_HANDLE_POINTER` or
  * `prop::IOStream.FILE_DESCRIPTOR_NUMBER` set. This is true for streams
  * representing files and process I/O.
  *
@@ -39410,9 +39396,8 @@ public:
    *
    * Setting pipe_stdio to true is equivalent to setting
    * `prop::process.CREATE_STDIN_NUMBER` and
-   * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and
-   * will allow the use of Process.Read() or Process.GetInput() and
-   * Process.GetOutput().
+   * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and will allow
+   * the use of Process.Read() or Process.GetInput() and Process.GetOutput().
    *
    * See Process.Process() for more details.
    *
@@ -39422,7 +39407,7 @@ public:
    *                   to have no input and inherit the application's standard
    *                   output.
    * @post the newly created and running process, or nullptr if the process
-   *          couldn't be created.
+   *       couldn't be created.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -39447,37 +39432,37 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing
-   *   the program to run, any arguments, and a nullptr pointer, e.g. const char
+   * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing the
+   *   program to run, any arguments, and a nullptr pointer, e.g. const char
    *   *args[] = { "myprogram", "argument", nullptr }. This is a required
-   * property.
-   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment
-   *   pointer. If this property is set, it will be the entire environment for
-   *   the process, otherwise the current environment is used.
-   * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing
-   *   where standard input for the process comes from, defaults to
+   *   property.
+   * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
+   *   this property is set, it will be the entire environment for the process,
+   *   otherwise the current environment is used.
+   * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
+   *   standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_nullptr`.
    * - `prop::process.CREATE_STDIN_POINTER`: an IOStream pointer used for
    *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value
-   *   describing where standard output for the process goes to, defaults to
+   * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
+   *   standard output for the process goes to, defaults to
    *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStream pointer used
-   *   for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set
-   *   to `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value
-   *   describing where standard error for the process goes to, defaults to
-   *   `PROCESS_STDIO_INHERITED`.
-   * - `prop::process.CREATE_STDERR_POINTER`: an IOStream pointer used
-   *   for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+   * - `prop::process.CREATE_STDOUT_POINTER`: an IOStream pointer used for
+   *   standard output when `prop::process.CREATE_STDOUT_NUMBER` is set to
    *   `PROCESS_STDIO_REDIRECT`.
-   * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error
-   *   output of the process should be redirected into the standard output of
-   *   the process. This property has no effect if
+   * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
+   *   standard error for the process goes to, defaults to
+   *   `PROCESS_STDIO_INHERITED`.
+   * - `prop::process.CREATE_STDERR_POINTER`: an IOStream pointer used for
+   *   standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+   *   `PROCESS_STDIO_REDIRECT`.
+   * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output
+   *   of the process should be redirected into the standard output of the
+   *   process. This property has no effect if
    *   `prop::process.CREATE_STDERR_NUMBER` is set.
-   * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should
-   *   run in the background. In this case the default input and output is
+   * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run
+   *   in the background. In this case the default input and output is
    *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
    *   available, and will always be 0.
    *
@@ -39488,7 +39473,7 @@ public:
    *
    * @param props the properties to use.
    * @post the newly created and running process, or nullptr if the process
-   *          couldn't be created.
+   *       couldn't be created.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -39545,8 +39530,7 @@ public:
    * Destroy a previously created process object.
    *
    * Note that this does not stop the process, just destroys the SDL object used
-   * to track it. If you want to stop the process you should use
-   * Process.Kill().
+   * to track it. If you want to stop the process you should use Process.Kill().
    *
    * @threadsafety This function is not thread safe.
    *
@@ -39564,17 +39548,17 @@ public:
    * The following read-only properties are provided by SDL:
    *
    * - `prop::process.PID_NUMBER`: the process ID of the process.
-   * - `prop::process.STDIN_POINTER`: an IOStream that can be used to
-   *   write input to the process, if it was created with
+   * - `prop::process.STDIN_POINTER`: an IOStream that can be used to write
+   *   input to the process, if it was created with
    *   `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.STDOUT_POINTER`: a non-blocking IOStream that can
-   *   be used to read output from the process, if it was created with
+   * - `prop::process.STDOUT_POINTER`: a non-blocking IOStream that can be used
+   *   to read output from the process, if it was created with
    *   `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.STDERR_POINTER`: a non-blocking IOStream that can
-   *   be used to read error output from the process, if it was created with
+   * - `prop::process.STDERR_POINTER`: a non-blocking IOStream that can be used
+   *   to read error output from the process, if it was created with
    *   `prop::process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
-   * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in
-   *   the background.
+   * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in the
+   *   background.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -39730,8 +39714,8 @@ public:
    * If you create a process with standard output piped to the application
    * (`pipe_stdio` being true) then you should read all of the process output
    * before calling Process.Wait(). If you don't do this the process might be
-   * blocked indefinitely waiting for output to be read and Process.Wait()
-   * will never return true;
+   * blocked indefinitely waiting for output to be read and Process.Wait() will
+   * never return true;
    *
    * @param block If true, block until the process finishes; otherwise, report
    *              on the process' status.
@@ -39779,19 +39763,18 @@ struct ProcessRef : Process
 /**
  * Create a new process.
  *
- * The path to the executable is supplied in args[0]. args[1..N] are
- * additional arguments passed on the command line of the new process, and the
- * argument list should be terminated with a nullptr, e.g.:
+ * The path to the executable is supplied in args[0]. args[1..N] are additional
+ * arguments passed on the command line of the new process, and the argument
+ * list should be terminated with a nullptr, e.g.:
  *
  * ```c
  * const char *args[] = { "myprogram", "argument", nullptr };
  * ```
  *
  * Setting pipe_stdio to true is equivalent to setting
- * `prop::process.CREATE_STDIN_NUMBER` and
- * `prop::process.CREATE_STDOUT_NUMBER` to `PROCESS_STDIO_APP`, and
- * will allow the use of Process.Read() or Process.GetInput() and
- * Process.GetOutput().
+ * `prop::process.CREATE_STDIN_NUMBER` and `prop::process.CREATE_STDOUT_NUMBER`
+ * to `PROCESS_STDIO_APP`, and will allow the use of Process.Read() or
+ * Process.GetInput() and Process.GetOutput().
  *
  * See Process.Process() for more details.
  *
@@ -39826,44 +39809,44 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  *
  * These are the supported properties:
  *
- * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing
- *   the program to run, any arguments, and a nullptr pointer, e.g. const char
+ * - `prop::process.CREATE_ARGS_POINTER`: an array of strings containing the
+ *   program to run, any arguments, and a nullptr pointer, e.g. const char
  *   *args[] = { "myprogram", "argument", nullptr }. This is a required
- * property.
- * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment
- *   pointer. If this property is set, it will be the entire environment for
- *   the process, otherwise the current environment is used.
- * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing
- *   where standard input for the process comes from, defaults to
+ *   property.
+ * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
+ *   property is set, it will be the entire environment for the process,
+ *   otherwise the current environment is used.
+ * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
+ *   standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_nullptr`.
- * - `prop::process.CREATE_STDIN_POINTER`: an IOStream pointer used for
- *   standard input when `prop::process.CREATE_STDIN_NUMBER` is set to
+ * - `prop::process.CREATE_STDIN_POINTER`: an IOStream pointer used for standard
+ *   input when `prop::process.CREATE_STDIN_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value
- *   describing where standard output for the process goes to, defaults to
+ * - `prop::process.CREATE_STDOUT_NUMBER`: an ProcessIO value describing where
+ *   standard output for the process goes to, defaults to
  *   `PROCESS_STDIO_INHERITED`.
- * - `prop::process.CREATE_STDOUT_POINTER`: an IOStream pointer used
- *   for standard output when `prop::process.CREATE_STDOUT_NUMBER` is set
- *   to `PROCESS_STDIO_REDIRECT`.
- * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value
- *   describing where standard error for the process goes to, defaults to
- *   `PROCESS_STDIO_INHERITED`.
- * - `prop::process.CREATE_STDERR_POINTER`: an IOStream pointer used
- *   for standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+ * - `prop::process.CREATE_STDOUT_POINTER`: an IOStream pointer used for
+ *   standard output when `prop::process.CREATE_STDOUT_NUMBER` is set to
  *   `PROCESS_STDIO_REDIRECT`.
- * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error
- *   output of the process should be redirected into the standard output of
- *   the process. This property has no effect if
+ * - `prop::process.CREATE_STDERR_NUMBER`: an ProcessIO value describing where
+ *   standard error for the process goes to, defaults to
+ *   `PROCESS_STDIO_INHERITED`.
+ * - `prop::process.CREATE_STDERR_POINTER`: an IOStream pointer used for
+ *   standard error when `prop::process.CREATE_STDERR_NUMBER` is set to
+ *   `PROCESS_STDIO_REDIRECT`.
+ * - `prop::process.CREATE_STDERR_TO_STDOUT_BOOLEAN`: true if the error output
+ *   of the process should be redirected into the standard output of the
+ *   process. This property has no effect if
  *   `prop::process.CREATE_STDERR_NUMBER` is set.
- * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should
- *   run in the background. In this case the default input and output is
+ * - `prop::process.CREATE_BACKGROUND_BOOLEAN`: true if the process should run
+ *   in the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
  *   available, and will always be 0.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
- * SIGCHLD should not be ignored or handled because those would prevent SDL
- * from properly tracking the lifetime of the underlying process. You should
- * use Process.Wait() instead.
+ * SIGCHLD should not be ignored or handled because those would prevent SDL from
+ * properly tracking the lifetime of the underlying process. You should use
+ * Process.Wait() instead.
  *
  * @param props the properties to use.
  * @returns the newly created and running process, or nullptr if the process
@@ -39930,17 +39913,17 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * The following read-only properties are provided by SDL:
  *
  * - `prop::process.PID_NUMBER`: the process ID of the process.
- * - `prop::process.STDIN_POINTER`: an IOStream that can be used to
- *   write input to the process, if it was created with
- *   `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop::process.STDOUT_POINTER`: a non-blocking IOStream that can
- *   be used to read output from the process, if it was created with
+ * - `prop::process.STDIN_POINTER`: an IOStream that can be used to write input
+ *   to the process, if it was created with `prop::process.CREATE_STDIN_NUMBER`
+ *   set to `PROCESS_STDIO_APP`.
+ * - `prop::process.STDOUT_POINTER`: a non-blocking IOStream that can be used to
+ *   read output from the process, if it was created with
  *   `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop::process.STDERR_POINTER`: a non-blocking IOStream that can
- *   be used to read error output from the process, if it was created with
+ * - `prop::process.STDERR_POINTER`: a non-blocking IOStream that can be used to
+ *   read error output from the process, if it was created with
  *   `prop::process.CREATE_STDERR_NUMBER` set to `PROCESS_STDIO_APP`.
- * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in
- *   the background.
+ * - `prop::process.BACKGROUND_BOOLEAN`: true if the process is running in the
+ *   background.
  *
  * @param process the process to query.
  * @returns a valid property ID on success.
@@ -39966,9 +39949,9 @@ inline PropertiesRef Process::GetProperties() const
 /**
  * Read all the output from a process.
  *
- * If a process was created with I/O enabled, you can use this function to
- * read the output. This function blocks until the process is complete,
- * capturing all output, and providing the process exit code.
+ * If a process was created with I/O enabled, you can use this function to read
+ * the output. This function blocks until the process is complete, capturing all
+ * output, and providing the process exit code.
  *
  * The data is allocated with a zero byte at the end (null terminated) for
  * convenience. This extra byte is not included in the value reported via
@@ -39977,8 +39960,8 @@ inline PropertiesRef Process::GetProperties() const
  * The data should be freed with free().
  *
  * @param process The process to read.
- * @param exitcode a pointer filled in with the process exit code if the
- *                 process has exited, may be nullptr.
+ * @param exitcode a pointer filled in with the process exit code if the process
+ *                 has exited, may be nullptr.
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
@@ -40005,9 +39988,9 @@ inline StringResult Process::Read(int* exitcode)
 /**
  * Get the IOStream associated with process standard input.
  *
- * The process must have been created with Process.Process() and pipe_stdio
- * set to true, or with Process.Process() and
- * `prop::process.CREATE_STDIN_NUMBER` set to `PROCESS_STDIO_APP`.
+ * The process must have been created with Process.Process() and pipe_stdio set
+ * to true, or with Process.Process() and `prop::process.CREATE_STDIN_NUMBER`
+ * set to `PROCESS_STDIO_APP`.
  *
  * Writing to this stream can return less data than expected if the process
  * hasn't read its input. It may be blocked waiting for its output to be read,
@@ -40039,9 +40022,9 @@ inline IOStreamRef Process::GetInput()
 /**
  * Get the IOStream associated with process standard output.
  *
- * The process must have been created with Process.Process() and pipe_stdio
- * set to true, or with Process.Process() and
- * `prop::process.CREATE_STDOUT_NUMBER` set to `PROCESS_STDIO_APP`.
+ * The process must have been created with Process.Process() and pipe_stdio set
+ * to true, or with Process.Process() and `prop::process.CREATE_STDOUT_NUMBER`
+ * set to `PROCESS_STDIO_APP`.
  *
  * Reading from this stream can return 0 with IOStream.GetStatus() returning
  * IO_STATUS_NOT_READY if no output is available yet.
@@ -40072,11 +40055,10 @@ inline IOStreamRef Process::GetOutput()
  * Stop a process.
  *
  * @param process The process to stop.
- * @param force true to terminate the process immediately, false to try to
- *              stop the process gracefully. In general you should try to stop
- *              the process gracefully first as terminating a process may
- *              leave it with half-written data or in some other unstable
- *              state.
+ * @param force true to terminate the process immediately, false to try to stop
+ *              the process gracefully. In general you should try to stop the
+ *              process gracefully first as terminating a process may leave it
+ *              with half-written data or in some other unstable state.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -40100,21 +40082,21 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  *
  * This can be called multiple times to get the status of a process.
  *
- * The exit code will be the exit code of the process if it terminates
- * normally, a negative signal if it terminated due to a signal, or -255
- * otherwise. It will not be changed if the process is still running.
+ * The exit code will be the exit code of the process if it terminates normally,
+ * a negative signal if it terminated due to a signal, or -255 otherwise. It
+ * will not be changed if the process is still running.
  *
  * If you create a process with standard output piped to the application
  * (`pipe_stdio` being true) then you should read all of the process output
  * before calling Process.Wait(). If you don't do this the process might be
- * blocked indefinitely waiting for output to be read and Process.Wait()
- * will never return true;
+ * blocked indefinitely waiting for output to be read and Process.Wait() will
+ * never return true;
  *
  * @param process The process to wait for.
- * @param block If true, block until the process finishes; otherwise, report
- *              on the process' status.
- * @param exitcode a pointer filled in with the process exit code if the
- *                 process has exited, may be nullptr.
+ * @param block If true, block until the process finishes; otherwise, report on
+ *              the process' status.
+ * @param exitcode a pointer filled in with the process exit code if the process
+ *                 has exited, may be nullptr.
  * @returns true if the process exited, false otherwise.
  *
  * @threadsafety This function is not thread safe.
@@ -40140,8 +40122,7 @@ inline bool Process::Wait(bool block, int* exitcode)
  * Destroy a previously created process object.
  *
  * Note that this does not stop the process, just destroys the SDL object used
- * to track it. If you want to stop the process you should use
- * Process.Kill().
+ * to track it. If you want to stop the process you should use Process.Kill().
  *
  * @param process The process object to destroy.
  *
@@ -85321,8 +85302,8 @@ inline OwnArray<Finger*> GetTouchFingers(TouchID touchID)
  * tablet devices.
  *
  * To get started with pens, simply handle SDL_EVENT_PEN_* events. When a pen
- * starts providing input, SDL will assign it a unique PenID, which will
- * remain for the life of the process, as long as the pen stays connected.
+ * starts providing input, SDL will assign it a unique PenID, which will remain
+ * for the life of the process, as long as the pen stays connected.
  *
  * Pens may provide more than simple touch input; they might have other axes,
  * such as pressure, tilt, rotation, etc.
@@ -85388,13 +85369,13 @@ constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
 /**
  * Pen axis indices.
  *
- * These are the valid values for the `axis` field in PenAxisEvent. All
- * axes are either normalised to 0..1 or report a (positive or negative) angle
- * in degrees, with 0.0 representing the centre. Not all pens/backends support
- * all axes: unsupported axes are always zero.
+ * These are the valid values for the `axis` field in PenAxisEvent. All axes are
+ * either normalised to 0..1 or report a (positive or negative) angle in
+ * degrees, with 0.0 representing the centre. Not all pens/backends support all
+ * axes: unsupported axes are always zero.
  *
- * To convert angles for tilt and rotation into vector representation, use
- * sin on the XTILT, YTILT, or ROTATION component, for example:
+ * To convert angles for tilt and rotation into vector representation, use sin
+ * on the XTILT, YTILT, or ROTATION component, for example:
  *
  * `sin(xtilt * PI_F / 180.0)`.
  *

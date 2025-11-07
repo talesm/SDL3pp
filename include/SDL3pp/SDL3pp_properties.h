@@ -23,15 +23,15 @@ namespace SDL {
  * following functions:
  *
  * - Properties.SetPointerProperty and Properties.GetPointerProperty operate on
- * `void*` pointer types.
+ *   `void*` pointer types.
  * - Properties.SetStringProperty and Properties.GetStringProperty operate on
- * string types.
+ *   string types.
  * - Properties.SetNumberProperty and Properties.GetNumberProperty operate on
- * signed 64-bit integer types.
+ *   signed 64-bit integer types.
  * - Properties.SetFloatProperty and Properties.GetFloatProperty operate on
- * floating point types.
+ *   floating point types.
  * - Properties.SetBooleanProperty and Properties.GetBooleanProperty operate on
- * boolean types.
+ *   boolean types.
  *
  * Properties can be removed from a group by using Properties.ClearProperty.
  *
@@ -101,8 +101,8 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from Properties.Enumerate(), and is called once
- * per property in the set.
+ * This callback is called from Properties.Enumerate(), and is called once per
+ * property in the set.
  *
  * @param userdata an app-defined pointer passed to the callback.
  * @param props the Properties that is being enumerated.
@@ -120,8 +120,8 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
 /**
  * A callback used to enumerate all the properties in a group of properties.
  *
- * This callback is called from Properties.Enumerate(), and is called once
- * per property in the set.
+ * This callback is called from Properties.Enumerate(), and is called once per
+ * property in the set.
  *
  * @param props the Properties that is being enumerated.
  * @param name the next property name in the enumeration.
@@ -139,11 +139,11 @@ using EnumeratePropertiesCB =
 /**
  * A callback used to free resources when a property is deleted.
  *
- * This should release any resources associated with `value` that are no
- * longer needed.
+ * This should release any resources associated with `value` that are no longer
+ * needed.
  *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
+ * This callback is set per-property. Different properties in the same group can
+ * have different cleanup callbacks.
  *
  * This callback will be called _during_
  * Properties.SetPointerPropertyWithCleanup if the function fails for any
@@ -164,11 +164,11 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 /**
  * A callback used to free resources when a property is deleted.
  *
- * This should release any resources associated with `value` that are no
- * longer needed.
+ * This should release any resources associated with `value` that are no longer
+ * needed.
  *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
+ * This callback is set per-property. Different properties in the same group can
+ * have different cleanup callbacks.
  *
  * This callback will be called _during_
  * Properties.SetPointerPropertyWithCleanup if the function fails for any
@@ -182,6 +182,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa Properties.SetPointerPropertyWithCleanup
+ *
  * @sa CleanupPropertyCallback
  */
 using CleanupPropertyCB = std::function<void(void*)>;
@@ -358,9 +359,9 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @param cleanup the function to call when this property is deleted, or
-   * nullptr if no cleanup is necessary.
+   *                nullptr if no cleanup is necessary.
    * @param userdata a pointer that is passed to the cleanup function.
    * @throws Error on failure.
    *
@@ -392,9 +393,9 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @param cleanup the function to call when this property is deleted, or
-   * nullptr if no cleanup is necessary.
+   *                nullptr if no cleanup is necessary.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -414,7 +415,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -439,7 +440,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or nullptr to delete the
-   * property.
+   *              property.
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -513,8 +514,8 @@ public:
    * Get the type of a property in a group of properties.
    *
    * @param name the name of the property to query.
-   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
-   *          not set.
+   * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is not
+   *          set.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -541,7 +542,7 @@ public:
    *               the data returned is not protected and could potentially be
    *               freed if you call Properties.SetPointerProperty() or
    *               Properties.ClearProperty() on these properties from another
-   * thread. If you need to avoid this, use Properties.Lock() and
+   *               thread. If you need to avoid this, use Properties.Lock() and
    *               Properties.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
@@ -568,7 +569,7 @@ public:
    *               the data returned is not protected and could potentially be
    *               freed if you call Properties.SetStringProperty() or
    *               Properties.ClearProperty() on these properties from another
-   * thread. If you need to avoid this, use Properties.Lock() and
+   *               thread. If you need to avoid this, use Properties.Lock() and
    *               Properties.Unlock().
    *
    * @since This function is available since SDL 3.2.0.
@@ -724,6 +725,7 @@ struct PropertiesRef : Properties
  * Get the global SDL properties.
  *
  * @returns a valid property ID on success.
+ *
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -788,8 +790,8 @@ inline void Properties::Copy(PropertiesParam dst)
  * must be unlocked before they are destroyed.
  *
  * The lock is automatically taken when setting individual properties, this
- * function is only needed when you want to set several properties atomically
- * or want to guarantee that properties being queried aren't freed in another
+ * function is only needed when you want to set several properties atomically or
+ * want to guarantee that properties being queried aren't freed in another
  * thread.
  *
  * @param props the properties to lock.
@@ -827,8 +829,8 @@ inline void UnlockProperties(PropertiesParam props)
 inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
 
 /**
- * Set a pointer property in a group of properties with a cleanup function
- * that is called when the property is deleted.
+ * Set a pointer property in a group of properties with a cleanup function that
+ * is called when the property is deleted.
  *
  * The cleanup function is also called if setting the property fails for any
  * reason.
@@ -841,7 +843,7 @@ inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @param cleanup the function to call when this property is deleted, or nullptr
  *                if no cleanup is necessary.
  * @param userdata a pointer that is passed to the cleanup function.
@@ -866,8 +868,8 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
 }
 
 /**
- * Set a pointer property in a group of properties with a cleanup function
- * that is called when the property is deleted.
+ * Set a pointer property in a group of properties with a cleanup function that
+ * is called when the property is deleted.
  *
  * The cleanup function is also called if setting the property fails for any
  * reason.
@@ -880,7 +882,7 @@ inline void SetPointerPropertyWithCleanup(PropertiesParam props,
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @param cleanup the function to call when this property is deleted, or nullptr
  *                if no cleanup is necessary.
  * @throws Error on failure.
@@ -930,7 +932,7 @@ inline void Properties::SetPointerPropertyWithCleanup(StringParam name,
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -966,7 +968,7 @@ inline void Properties::SetPointerProperty(StringParam name, void* value)
  * @param props the properties to modify.
  * @param name the name of the property to modify.
  * @param value the new value of the property, or nullptr to delete the
- * property.
+ *              property.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1093,8 +1095,7 @@ inline bool Properties::HasProperty(StringParam name)
  *
  * @param props the properties to query.
  * @param name the name of the property to query.
- * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is
- *          not set.
+ * @returns the type of the property, or PROPERTY_TYPE_INVALID if it is not set.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1115,8 +1116,8 @@ inline PropertyType Properties::GetPropertyType(StringParam name)
 /**
  * Get a pointer property from a group of properties.
  *
- * By convention, the names of properties that SDL exposes on objects will
- * start with "SDL.", and properties that SDL uses internally will start with
+ * By convention, the names of properties that SDL exposes on objects will start
+ * with "SDL.", and properties that SDL uses internally will start with
  * "SDL.internal.". These should be considered read-only and should not be
  * modified by applications.
  *
@@ -1126,11 +1127,11 @@ inline PropertyType Properties::GetPropertyType(StringParam name)
  * @returns the value of the property, or `default_value` if it is not set or
  *          not a pointer property.
  *
- * @threadsafety It is safe to call this function from any thread, although
- *               the data returned is not protected and could potentially be
- *               freed if you call Properties.SetPointerProperty() or
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               data returned is not protected and could potentially be freed
+ *               if you call Properties.SetPointerProperty() or
  *               Properties.ClearProperty() on these properties from another
- * thread. If you need to avoid this, use Properties.Lock() and
+ *               thread. If you need to avoid this, use Properties.Lock() and
  *               Properties.Unlock().
  *
  * @since This function is available since SDL 3.2.0.
@@ -1165,11 +1166,11 @@ inline void* Properties::GetPointerProperty(StringParam name,
  * @returns the value of the property, or `default_value` if it is not set or
  *          not a string property.
  *
- * @threadsafety It is safe to call this function from any thread, although
- *               the data returned is not protected and could potentially be
- *               freed if you call Properties.SetStringProperty() or
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               data returned is not protected and could potentially be freed
+ *               if you call Properties.SetStringProperty() or
  *               Properties.ClearProperty() on these properties from another
- * thread. If you need to avoid this, use Properties.Lock() and
+ *               thread. If you need to avoid this, use Properties.Lock() and
  *               Properties.Unlock().
  *
  * @since This function is available since SDL 3.2.0.
@@ -1313,8 +1314,8 @@ inline void Properties::ClearProperty(StringParam name)
 /**
  * Enumerate the properties contained in a group of properties.
  *
- * The callback function is called for each property in the group of
- * properties. The properties are locked during enumeration.
+ * The callback function is called for each property in the group of properties.
+ * The properties are locked during enumeration.
  *
  * @param props the properties to query.
  * @param callback the function to call for each property.
@@ -1335,8 +1336,8 @@ inline void EnumerateProperties(PropertiesParam props,
 /**
  * Enumerate the properties contained in a group of properties.
  *
- * The callback function is called for each property in the group of
- * properties. The properties are locked during enumeration.
+ * The callback function is called for each property in the group of properties.
+ * The properties are locked during enumeration.
  *
  * @param props the properties to query.
  * @param callback the function to call for each property.
@@ -1398,8 +1399,8 @@ inline Uint64 Properties::GetCount()
  * @param props the properties to destroy.
  *
  * @threadsafety This function should not be called while these properties are
- *               locked or other threads might be setting or getting values
- *               from these properties.
+ *               locked or other threads might be setting or getting values from
+ *               these properties.
  *
  * @since This function is available since SDL 3.2.0.
  *
