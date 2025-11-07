@@ -2757,24 +2757,24 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
-   *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
-   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
-   *   that describes how text should be capitalized, defaults to
+   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that describes
+   *   text being input, defaults to TEXTINPUT_TYPE_TEXT.
+   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
+   *   describes how text should be capitalized, defaults to
    *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
-   *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
-   *   addresses, usernames, and passwords.
+   *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses,
+   *   usernames, and passwords.
    * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
    *   and auto correction, defaults to true.
-   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
-   *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
-   *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
-   *   is "1".
+   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
+   *   allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or
+   *   is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is
+   *   "1".
    *
    * On Android you can directly specify the input type:
    *
-   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
-   *   use, overriding other properties. This is documented at
+   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
+   *   overriding other properties. This is documented at
    *   https://developer.android.com/reference/android/text/InputType
    *
    * @param props the properties to use.
@@ -2860,8 +2860,8 @@ public:
    *
    * This returns the values previously set by Window.SetTextInputArea().
    *
-   * @param rect a pointer to an Rect filled in with the text input area,
-   *             may be nullptr.
+   * @param rect a pointer to an Rect filled in with the text input area, may be
+   *             nullptr.
    * @param cursor a pointer to the offset of the current cursor location
    *               relative to `rect->x`, may be nullptr.
    * @throws Error on failure.

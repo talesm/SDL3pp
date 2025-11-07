@@ -61,8 +61,8 @@ public:
    * Get a scancode from a human-readable name.
    *
    * @param name the human-readable scancode name.
-   * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't
-   *          recognized; call GetError() for more information.
+   * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't recognized;
+   *       call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -104,10 +104,9 @@ public:
    * e.g. the name for `SCANCODE_LGUI` is "Left GUI" under Linux but "Left
    * Windows" under Microsoft Windows, and some scancodes like
    * `SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even
-   * scancodes that share names, e.g. `SCANCODE_RETURN` and
-   * `SCANCODE_RETURN2` (both called "Return"). This function is therefore
-   * unsuitable for creating a stable cross-platform two-way mapping between
-   * strings and scancodes.
+   * scancodes that share names, e.g. `SCANCODE_RETURN` and `SCANCODE_RETURN2`
+   * (both called "Return"). This function is therefore unsuitable for creating
+   * a stable cross-platform two-way mapping between strings and scancodes.
    *
    * @returns a pointer to the name for the scancode. If the scancode doesn't
    *          have a name this function returns an empty string ("").

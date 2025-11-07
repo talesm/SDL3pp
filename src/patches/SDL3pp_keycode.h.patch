@@ -27,19 +27,19 @@
 160a181
 >   /// Has Scancode flag.
 205c226
-< constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\r'
+< constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
 ---
 > constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
 207c228
-< constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\x1B'
+< constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
 ---
 > constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
 209c230
-< constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\b'
+< constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
 ---
 > constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
 211c232
-< constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\t'
+< constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
 ---
 > constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
 281c302
@@ -47,11 +47,11 @@
 ---
 > constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
 351c372
-< constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\x7F'
+< constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
 ---
 > constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
 353c374
-< constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\xB1'
+< constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
 ---
 > constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
 862c883
