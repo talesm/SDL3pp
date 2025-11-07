@@ -28494,25 +28494,25 @@ inline OwnArray<Locale*> GetPreferredLocales()
  *
  * Open a URL in a separate, system-provided application. How this works will
  * vary wildly depending on the platform. This will likely launch what makes
- * sense to handle a specific URL's protocol (a web browser for `http://`,
- * etc), but it might also be able to launch file managers for directories and
- * other things.
+ * sense to handle a specific URL's protocol (a web browser for `http://`, etc),
+ * but it might also be able to launch file managers for directories and other
+ * things.
  *
- * What happens when you open a URL varies wildly as well: your game window
- * may lose focus (and may or may not lose focus if your game was fullscreen
- * or grabbing input at the time). On mobile devices, your app will likely
- * move to the background or your process might be paused. Any given platform
- * may or may not handle a given URL.
+ * What happens when you open a URL varies wildly as well: your game window may
+ * lose focus (and may or may not lose focus if your game was fullscreen or
+ * grabbing input at the time). On mobile devices, your app will likely move to
+ * the background or your process might be paused. Any given platform may or may
+ * not handle a given URL.
  *
  * If this is unimplemented (or simply unavailable) for a platform, this will
  * fail with an error. A successful result does not mean the URL loaded, just
  * that we launched _something_ to handle it (or at least believe we did).
  *
- * All this to say: this function can be useful, but you should definitely
- * test it on every platform you target.
+ * All this to say: this function can be useful, but you should definitely test
+ * it on every platform you target.
  *
- * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
- *            local files, if supported.
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for local
+ *            files, if supported.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -47363,18 +47363,18 @@ inline void Camera::Close() { CloseCamera(release()); }
  * @defgroup CategoryMutex Thread Synchronization Primitives
  *
  * SDL offers several thread synchronization primitives. This document can't
- * cover the complicated topic of thread safety, but reading up on what each
- * of these primitives are, why they are useful, and how to correctly use them
- * is vital to writing correct and safe multithreaded programs.
+ * cover the complicated topic of thread safety, but reading up on what each of
+ * these primitives are, why they are useful, and how to correctly use them is
+ * vital to writing correct and safe multithreaded programs.
  *
  * - Mutexes: Mutex.Mutex()
  * - Read/Write locks: RWLock.RWLock()
  * - Semaphores: Semaphore.Semaphore()
  * - Condition variables: Condition.Condition()
  *
- * SDL also offers a datatype, InitState, which can be used to make sure
- * only one thread initializes/deinitializes some resource that several
- * threads might try to use for the first time simultaneously.
+ * SDL also offers a datatype, InitState, which can be used to make sure only
+ * one thread initializes/deinitializes some resource that several threads might
+ * try to use for the first time simultaneously.
  *
  * @{
  */
@@ -47578,13 +47578,13 @@ public:
    *
    * All newly-created mutexes begin in the _unlocked_ state.
    *
-   * Calls to Mutex.Lock() will not return while the mutex is locked by
-   * another thread. See Mutex.TryLock() to attempt to lock without blocking.
+   * Calls to Mutex.Lock() will not return while the mutex is locked by another
+   * thread. See Mutex.TryLock() to attempt to lock without blocking.
    *
    * SDL mutexes are reentrant.
    *
    * @post the initialized and unlocked mutex or nullptr on failure; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -47671,8 +47671,8 @@ public:
   /**
    * Try to lock a mutex without blocking.
    *
-   * This works just like Mutex.Lock(), but if the mutex is not available,
-   * this function returns false immediately.
+   * This works just like Mutex.Lock(), but if the mutex is not available, this
+   * function returns false immediately.
    *
    * This technique is useful if you need exclusive access to a resource but
    * don't want to wait for it, and will return to it to try again later.
@@ -47736,8 +47736,8 @@ struct MutexRef : Mutex
  *
  * All newly-created mutexes begin in the _unlocked_ state.
  *
- * Calls to Mutex.Lock() will not return while the mutex is locked by
- * another thread. See Mutex.TryLock() to attempt to lock without blocking.
+ * Calls to Mutex.Lock() will not return while the mutex is locked by another
+ * thread. See Mutex.TryLock() to attempt to lock without blocking.
  *
  * SDL mutexes are reentrant.
  *
@@ -47765,8 +47765,8 @@ inline Mutex CreateMutex() { return Mutex(); }
  * other threads in the system (this is known as a "recursive mutex").
  *
  * This function does not fail; if mutex is nullptr, it will return immediately
- * having locked nothing. If the mutex is valid, this function will always
- * block until it can lock the mutex, and return with it locked.
+ * having locked nothing. If the mutex is valid, this function will always block
+ * until it can lock the mutex, and return with it locked.
  *
  * @param mutex the mutex to lock.
  *
@@ -47782,11 +47782,11 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
 /**
  * Try to lock a mutex without blocking.
  *
- * This works just like Mutex.Lock(), but if the mutex is not available,
- * this function returns false immediately.
+ * This works just like Mutex.Lock(), but if the mutex is not available, this
+ * function returns false immediately.
  *
- * This technique is useful if you need exclusive access to a resource but
- * don't want to wait for it, and will return to it to try again later.
+ * This technique is useful if you need exclusive access to a resource but don't
+ * want to wait for it, and will return to it to try again later.
  *
  * This function returns true if passed a nullptr mutex.
  *
@@ -47830,10 +47830,10 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  * Destroy a mutex created with Mutex.Mutex().
  *
  * This function must be called on any mutex that is no longer needed. Failure
- * to destroy a mutex will result in a system memory or resource leak. While
- * it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt
- * to destroy a locked mutex, and may result in undefined behavior depending
- * on the platform.
+ * to destroy a mutex will result in a system memory or resource leak. While it
+ * is safe to destroy a mutex that is _unlocked_, it is not safe to attempt to
+ * destroy a locked mutex, and may result in undefined behavior depending on the
+ * platform.
  *
  * @param mutex the mutex to destroy.
  *
@@ -47854,8 +47854,8 @@ inline void Mutex::Destroy() { DestroyMutex(release()); }
  * released the lock, and no one else can hold the thread (for reading or
  * writing) at the same time as the writing thread.
  *
- * This can be more efficient in cases where several threads need to access
- * data frequently, but changes to that data are rare.
+ * This can be more efficient in cases where several threads need to access data
+ * frequently, but changes to that data are rare.
  *
  * There are other rules that apply to rwlocks that don't apply to mutexes,
  * about how threads are scheduled and when they can be recursively locked.
@@ -47912,10 +47912,10 @@ public:
    *
    * All newly-created read/write locks begin in the _unlocked_ state.
    *
-   * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not
-   * return while the rwlock is locked _for writing_ by another thread. See
-   * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt
-   * to lock without blocking.
+   * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not return
+   * while the rwlock is locked _for writing_ by another thread. See
+   * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to
+   * lock without blocking.
    *
    * SDL read/write locks are only recursive for read-only locks! They are not
    * guaranteed to be fair, or provide access in a FIFO manner! They are not
@@ -47924,7 +47924,7 @@ public:
    * promote your read-only lock to a write lock without unlocking first).
    *
    * @post the initialized and unlocked read/write lock or nullptr on failure;
-   *          call GetError() for more information.
+   *       call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48158,12 +48158,12 @@ struct RWLockRef : RWLock
  * Create a new read/write lock.
  *
  * A read/write lock is useful for situations where you have multiple threads
- * trying to access a resource that is rarely updated. All threads requesting
- * a read-only lock will be allowed to run in parallel; if a thread requests a
+ * trying to access a resource that is rarely updated. All threads requesting a
+ * read-only lock will be allowed to run in parallel; if a thread requests a
  * write lock, it will be provided exclusive access. This makes it safe for
  * multiple threads to use a resource at the same time if they promise not to
- * change it, and when it has to be changed, the rwlock will serve as a
- * gateway to make sure those changes can be made safely.
+ * change it, and when it has to be changed, the rwlock will serve as a gateway
+ * to make sure those changes can be made safely.
  *
  * In the right situation, a rwlock can be more efficient than a mutex, which
  * only lets a single thread proceed at a time, even if it won't be modifying
@@ -48171,16 +48171,16 @@ struct RWLockRef : RWLock
  *
  * All newly-created read/write locks begin in the _unlocked_ state.
  *
- * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not
- * return while the rwlock is locked _for writing_ by another thread. See
- * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt
- * to lock without blocking.
+ * Calls to RWLock.LockForReading() and RWLock.LockForWriting will not return
+ * while the rwlock is locked _for writing_ by another thread. See
+ * RWLock.TryLockForReading() and RWLock.TryLockForWriting() to attempt to lock
+ * without blocking.
  *
  * SDL read/write locks are only recursive for read-only locks! They are not
  * guaranteed to be fair, or provide access in a FIFO manner! They are not
- * guaranteed to favor writers. You may not lock a rwlock for both read-only
- * and write access at the same time from the same thread (so you can't
- * promote your read-only lock to a write lock without unlocking first).
+ * guaranteed to favor writers. You may not lock a rwlock for both read-only and
+ * write access at the same time from the same thread (so you can't promote your
+ * read-only lock to a write lock without unlocking first).
  *
  * @returns the initialized and unlocked read/write lock or nullptr on failure;
  *          call GetError() for more information.
@@ -48208,16 +48208,16 @@ inline RWLock CreateRWLock() { return RWLock(); }
  *
  * It is legal for the owning thread to lock an already-locked rwlock for
  * reading. It must unlock it the same number of times before it is actually
- * made available for other threads in the system (this is known as a
- * "recursive rwlock").
+ * made available for other threads in the system (this is known as a "recursive
+ * rwlock").
  *
  * Note that locking for writing is not recursive (this is only available to
  * read-only locks).
  *
  * It is illegal to request a read-only lock from a thread that already holds
- * the write lock. Doing so results in undefined behavior. Unlock the write
- * lock before requesting a read-only lock. (But, of course, if you have the
- * write lock, you don't need further locks to read in any case.)
+ * the write lock. Doing so results in undefined behavior. Unlock the write lock
+ * before requesting a read-only lock. (But, of course, if you have the write
+ * lock, you don't need further locks to read in any case.)
  *
  * This function does not fail; if rwlock is nullptr, it will return immediately
  * having locked nothing. If the rwlock is valid, this function will always
@@ -48243,17 +48243,17 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  *
  * This will block until the rwlock is available, which is to say it is not
  * locked for reading or writing by any other thread. Only one thread may hold
- * the lock when it requests write access; all other threads, whether they
- * also want to write or only want read-only access, must wait until the
- * writer thread has released the lock.
+ * the lock when it requests write access; all other threads, whether they also
+ * want to write or only want read-only access, must wait until the writer
+ * thread has released the lock.
  *
  * It is illegal for the owning thread to lock an already-locked rwlock for
  * writing (read-only may be locked recursively, writing can not). Doing so
  * results in undefined behavior.
  *
  * It is illegal to request a write lock from a thread that already holds a
- * read-only lock. Doing so results in undefined behavior. Unlock the
- * read-only lock before requesting a write lock.
+ * read-only lock. Doing so results in undefined behavior. Unlock the read-only
+ * lock before requesting a write lock.
  *
  * This function does not fail; if rwlock is nullptr, it will return immediately
  * having locked nothing. If the rwlock is valid, this function will always
@@ -48283,8 +48283,8 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * This technique is useful if you need access to a resource but don't want to
  * wait for it, and will return to it to try again later.
  *
- * Trying to lock for read-only access can succeed if other threads are
- * holding read-only locks, as this won't prevent access.
+ * Trying to lock for read-only access can succeed if other threads are holding
+ * read-only locks, as this won't prevent access.
  *
  * This function returns true if passed a nullptr rwlock.
  *
@@ -48313,16 +48313,16 @@ inline void RWLock::TryLockForReading()
  * This works just like RWLock.LockForWriting(), but if the rwlock is not
  * available, then this function returns false immediately.
  *
- * This technique is useful if you need exclusive access to a resource but
- * don't want to wait for it, and will return to it to try again later.
+ * This technique is useful if you need exclusive access to a resource but don't
+ * want to wait for it, and will return to it to try again later.
  *
  * It is illegal for the owning thread to lock an already-locked rwlock for
  * writing (read-only may be locked recursively, writing can not). Doing so
  * results in undefined behavior.
  *
  * It is illegal to request a write lock from a thread that already holds a
- * read-only lock. Doing so results in undefined behavior. Unlock the
- * read-only lock before requesting a write lock.
+ * read-only lock. Doing so results in undefined behavior. Unlock the read-only
+ * lock before requesting a write lock.
  *
  * This function returns true if passed a nullptr rwlock.
  *
@@ -48375,11 +48375,11 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 /**
  * Destroy a read/write lock created with RWLock.RWLock().
  *
- * This function must be called on any read/write lock that is no longer
- * needed. Failure to destroy a rwlock will result in a system memory or
- * resource leak. While it is safe to destroy a rwlock that is _unlocked_, it
- * is not safe to attempt to destroy a locked rwlock, and may result in
- * undefined behavior depending on the platform.
+ * This function must be called on any read/write lock that is no longer needed.
+ * Failure to destroy a rwlock will result in a system memory or resource leak.
+ * While it is safe to destroy a rwlock that is _unlocked_, it is not safe to
+ * attempt to destroy a locked rwlock, and may result in undefined behavior
+ * depending on the platform.
  *
  * @param rwlock the rwlock to destroy.
  *
@@ -48451,7 +48451,7 @@ public:
    *
    * @param initial_value the starting value of the semaphore.
    * @post a new semaphore or nullptr on failure; call GetError() for more
-   *          information.
+   *       information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48519,8 +48519,8 @@ public:
    * `sem` has a positive value, and then atomically decrement the semaphore
    * value.
    *
-   * This function is the equivalent of calling Semaphore.WaitTimeout() with
-   * a time length of -1.
+   * This function is the equivalent of calling Semaphore.WaitTimeout() with a
+   * time length of -1.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48618,9 +48618,9 @@ struct SemaphoreRef : Semaphore
  *
  * This function creates a new semaphore and initializes it with the value
  * `initial_value`. Each wait operation on the semaphore will atomically
- * decrement the semaphore value and potentially block if the semaphore value
- * is 0. Each post operation will atomically increment the semaphore value and
- * wake waiting threads and allow them to retry the wait operation.
+ * decrement the semaphore value and potentially block if the semaphore value is
+ * 0. Each post operation will atomically increment the semaphore value and wake
+ * waiting threads and allow them to retry the wait operation.
  *
  * @param initial_value the starting value of the semaphore.
  * @returns a new semaphore or nullptr on failure; call GetError() for more
@@ -48643,8 +48643,8 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
 /**
  * Destroy a semaphore.
  *
- * It is not safe to destroy a semaphore if there are threads currently
- * waiting on it.
+ * It is not safe to destroy a semaphore if there are threads currently waiting
+ * on it.
  *
  * @param sem the semaphore to destroy.
  *
@@ -48663,8 +48663,8 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * `sem` has a positive value, and then atomically decrement the semaphore
  * value.
  *
- * This function is the equivalent of calling Semaphore.WaitTimeout() with
- * a time length of -1.
+ * This function is the equivalent of calling Semaphore.WaitTimeout() with a
+ * time length of -1.
  *
  * @param sem the semaphore wait on.
  *
@@ -48683,8 +48683,8 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
  *
  * This function checks to see if the semaphore pointed to by `sem` has a
  * positive value and atomically decrements the semaphore value if it does. If
- * the semaphore doesn't have a positive value, the function immediately
- * returns false.
+ * the semaphore doesn't have a positive value, the function immediately returns
+ * false.
  *
  * @param sem the semaphore to wait on.
  * @returns true if the wait succeeds, false if the wait would block.
@@ -48705,9 +48705,9 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
 /**
  * Wait until a semaphore has a positive value and then decrements it.
  *
- * This function suspends the calling thread until either the semaphore
- * pointed to by `sem` has a positive value or the specified time has elapsed.
- * If the call is successful it will atomically decrement the semaphore value.
+ * This function suspends the calling thread until either the semaphore pointed
+ * to by `sem` has a positive value or the specified time has elapsed. If the
+ * call is successful it will atomically decrement the semaphore value.
  *
  * @param sem the semaphore to wait on.
  * @param timeout the length of the timeout, in milliseconds, or -1 to wait
@@ -48767,9 +48767,9 @@ inline Uint32 Semaphore::GetValue() const
 /**
  * A means to block multiple threads until a condition is satisfied.
  *
- * Condition variables, paired with an Mutex, let an app halt multiple
- * threads until a condition has occurred, at which time the app can release
- * one or all waiting threads.
+ * Condition variables, paired with an Mutex, let an app halt multiple threads
+ * until a condition has occurred, at which time the app can release one or all
+ * waiting threads.
  *
  * Wikipedia has a thorough explanation of the concept:
  *
@@ -48812,8 +48812,8 @@ public:
   /**
    * Create a condition variable.
    *
-   * @post a new condition variable or nullptr on failure; call GetError()
-   *          for more information.
+   * @post a new condition variable or nullptr on failure; call GetError() for
+   *       more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -48900,16 +48900,16 @@ public:
    * Wait until a condition variable is signaled.
    *
    * This function unlocks the specified `mutex` and waits for another thread to
-   * call Condition.Signal() or Condition.Broadcast() on the condition
-   * variable `cond`. Once the condition variable is signaled, the mutex is
-   * re-locked and the function returns.
+   * call Condition.Signal() or Condition.Broadcast() on the condition variable
+   * `cond`. Once the condition variable is signaled, the mutex is re-locked and
+   * the function returns.
    *
    * The mutex must be locked before calling this function. Locking the mutex
    * recursively (more than once) is not supported and leads to undefined
    * behavior.
    *
-   * This function is the equivalent of calling Condition.WaitTimeout() with
-   * a time length of -1.
+   * This function is the equivalent of calling Condition.WaitTimeout() with a
+   * time length of -1.
    *
    * @param mutex the mutex used to coordinate thread access.
    *
@@ -48927,10 +48927,10 @@ public:
    * Wait until a condition variable is signaled or a certain time has passed.
    *
    * This function unlocks the specified `mutex` and waits for another thread to
-   * call Condition.Signal() or Condition.Broadcast() on the condition
-   * variable `cond`, or for the specified time to elapse. Once the condition
-   * variable is signaled or the time elapsed, the mutex is re-locked and the
-   * function returns.
+   * call Condition.Signal() or Condition.Broadcast() on the condition variable
+   * `cond`, or for the specified time to elapse. Once the condition variable is
+   * signaled or the time elapsed, the mutex is re-locked and the function
+   * returns.
    *
    * The mutex must be locked before calling this function. Locking the mutex
    * recursively (more than once) is not supported and leads to undefined
@@ -48981,8 +48981,8 @@ struct ConditionRef : Condition
 /**
  * Create a condition variable.
  *
- * @returns a new condition variable or nullptr on failure; call GetError()
- *          for more information.
+ * @returns a new condition variable or nullptr on failure; call GetError() for
+ *          more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -49048,16 +49048,16 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(m_resource); }
  * Wait until a condition variable is signaled.
  *
  * This function unlocks the specified `mutex` and waits for another thread to
- * call Condition.Signal() or Condition.Broadcast() on the condition
- * variable `cond`. Once the condition variable is signaled, the mutex is
- * re-locked and the function returns.
+ * call Condition.Signal() or Condition.Broadcast() on the condition variable
+ * `cond`. Once the condition variable is signaled, the mutex is re-locked and
+ * the function returns.
  *
  * The mutex must be locked before calling this function. Locking the mutex
  * recursively (more than once) is not supported and leads to undefined
  * behavior.
  *
- * This function is the equivalent of calling Condition.WaitTimeout() with
- * a time length of -1.
+ * This function is the equivalent of calling Condition.WaitTimeout() with a
+ * time length of -1.
  *
  * @param cond the condition variable to wait on.
  * @param mutex the mutex used to coordinate thread access.
@@ -49084,10 +49084,10 @@ inline void Condition::Wait(MutexParam mutex)
  * Wait until a condition variable is signaled or a certain time has passed.
  *
  * This function unlocks the specified `mutex` and waits for another thread to
- * call Condition.Signal() or Condition.Broadcast() on the condition
- * variable `cond`, or for the specified time to elapse. Once the condition
- * variable is signaled or the time elapsed, the mutex is re-locked and the
- * function returns.
+ * call Condition.Signal() or Condition.Broadcast() on the condition variable
+ * `cond`, or for the specified time to elapse. Once the condition variable is
+ * signaled or the time elapsed, the mutex is re-locked and the function
+ * returns.
  *
  * The mutex must be locked before calling this function. Locking the mutex
  * recursively (more than once) is not supported and leads to undefined
@@ -49192,9 +49192,8 @@ constexpr InitStatus INIT_STATUS_UNINITIALIZING =
  * ```
  *
  * Note that this doesn't protect any resources created during initialization,
- * or guarantee that nobody is using those resources during cleanup. You
- * should use other mechanisms to protect those, if that's a concern for your
- * code.
+ * or guarantee that nobody is using those resources during cleanup. You should
+ * use other mechanisms to protect those, if that's a concern for your code.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -49209,9 +49208,9 @@ struct InitState : InitStateRaw
    * Return whether initialization should be done.
    *
    * This function checks the passed in state and if initialization should be
-   * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true.
-   * If another thread is already modifying this state, it will wait until
-   * that's done before returning.
+   * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true. If
+   * another thread is already modifying this state, it will wait until that's
+   * done before returning.
    *
    * If this function returns true, the calling code must call
    * InitState.SetInitialized() to complete the initialization.
@@ -49251,8 +49250,8 @@ struct InitState : InitStateRaw
    * Finish an initialization state transition.
    *
    * This function sets the status of the passed in state to
-   * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows
-   * any threads waiting for the status to proceed.
+   * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows any
+   * threads waiting for the status to proceed.
    *
    * @param initialized the new initialization state.
    *
@@ -49270,9 +49269,9 @@ struct InitState : InitStateRaw
  * Return whether initialization should be done.
  *
  * This function checks the passed in state and if initialization should be
- * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true.
- * If another thread is already modifying this state, it will wait until
- * that's done before returning.
+ * done, sets the status to `INIT_STATUS_INITIALIZING` and returns true. If
+ * another thread is already modifying this state, it will wait until that's
+ * done before returning.
  *
  * If this function returns true, the calling code must call
  * InitState.SetInitialized() to complete the initialization.
@@ -49294,8 +49293,8 @@ inline bool InitState::ShouldInit() { return SDL::ShouldInit(this); }
 /**
  * Return whether cleanup should be done.
  *
- * This function checks the passed in state and if cleanup should be done,
- * sets the status to `INIT_STATUS_UNINITIALIZING` and returns true.
+ * This function checks the passed in state and if cleanup should be done, sets
+ * the status to `INIT_STATUS_UNINITIALIZING` and returns true.
  *
  * If this function returns true, the calling code must call
  * InitState.SetInitialized() to complete the cleanup.
@@ -49318,8 +49317,8 @@ inline bool InitState::ShouldQuit() { return SDL::ShouldQuit(this); }
  * Finish an initialization state transition.
  *
  * This function sets the status of the passed in state to
- * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows
- * any threads waiting for the status to proceed.
+ * `INIT_STATUS_INITIALIZED` or `INIT_STATUS_UNINITIALIZED` and allows any
+ * threads waiting for the status to proceed.
  *
  * @param state the initialization state to check.
  * @param initialized the new initialization state.
@@ -53662,9 +53661,9 @@ public:
    * the window.
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
-   * can use Window.SetMouseRect(). If you'd like the cursor to be at a
-   * specific location when relative mode ends, you should use
-   * Window.WarpMouse() before disabling relative mode.
+   * can use Window.SetMouseRect(). If you'd like the cursor to be at a specific
+   * location when relative mode ends, you should use Window.WarpMouse() before
+   * disabling relative mode.
    *
    * This function will flush any pending mouse motion for this window.
    *
@@ -70725,18 +70724,17 @@ inline bool Window::IsScreenKeyboardShown() const
 /**
  * @defgroup CategoryMessagebox Message Boxes
  *
- * SDL offers a simple message box API, which is useful for simple alerts,
- * such as informing the user when something fatal happens at startup without
- * the need to build a UI for it (or informing the user _before_ your UI is
- * ready).
+ * SDL offers a simple message box API, which is useful for simple alerts, such
+ * as informing the user when something fatal happens at startup without the
+ * need to build a UI for it (or informing the user _before_ your UI is ready).
  *
  * These message boxes are native system dialogs where possible.
  *
- * There is both a customizable function (MessageBox.Show()) that offers
- * lots of options for what to display and reports on what choice the user
- * made, and also a much-simplified version (ShowSimpleMessageBox()),
- * merely takes a text message and title, and waits until the user presses a
- * single "OK" UI button. Often, this is all that is necessary.
+ * There is both a customizable function (MessageBox.Show()) that offers lots of
+ * options for what to display and reports on what choice the user made, and
+ * also a much-simplified version (ShowSimpleMessageBox()), merely takes a text
+ * message and title, and waits until the user presses a single "OK" UI button.
+ * Often, this is all that is necessary.
  *
  * @{
  */
@@ -70819,10 +70817,7 @@ using MessageBoxColor = SDL_MessageBoxColor;
  * @{
  */
 
-/**
- * An enumeration of indices inside the colors array of
- * MessageBoxColorScheme.
- */
+/// An enumeration of indices inside the colors array of MessageBoxColorScheme.
 using MessageBoxColorType = SDL_MessageBoxColorType;
 
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_BACKGROUND =
@@ -71054,9 +71049,9 @@ struct MessageBox : MessageBoxRaw
    * block execution of that thread until the user clicks a button or closes the
    * messagebox.
    *
-   * This function may be called at any time, even before Init(). This makes
-   * it useful for reporting errors like a failure to create a renderer or
-   * OpenGL context.
+   * This function may be called at any time, even before Init(). This makes it
+   * useful for reporting errors like a failure to create a renderer or OpenGL
+   * context.
    *
    * On X11, SDL rolls its own dialog box with X11 primitives instead of a
    * formal toolkit like GTK+ or Qt.
@@ -71080,30 +71075,28 @@ struct MessageBox : MessageBoxRaw
 /**
  * Create a modal message box.
  *
- * If your needs aren't complex, it might be easier to use
- * ShowSimpleMessageBox.
+ * If your needs aren't complex, it might be easier to use ShowSimpleMessageBox.
  *
- * This function should be called on the thread that created the parent
- * window, or on the main thread if the messagebox has no parent. It will
- * block execution of that thread until the user clicks a button or closes the
+ * This function should be called on the thread that created the parent window,
+ * or on the main thread if the messagebox has no parent. It will block
+ * execution of that thread until the user clicks a button or closes the
  * messagebox.
  *
- * This function may be called at any time, even before Init(). This makes
- * it useful for reporting errors like a failure to create a renderer or
- * OpenGL context.
+ * This function may be called at any time, even before Init(). This makes it
+ * useful for reporting errors like a failure to create a renderer or OpenGL
+ * context.
  *
- * On X11, SDL rolls its own dialog box with X11 primitives instead of a
- * formal toolkit like GTK+ or Qt.
+ * On X11, SDL rolls its own dialog box with X11 primitives instead of a formal
+ * toolkit like GTK+ or Qt.
  *
  * Note that if Init() would fail because there isn't any available video
  * target, this function is likely to fail for the same reasons. If this is a
  * concern, check the return value from this function and fall back to writing
  * to stderr if you can.
  *
- * @param messageboxdata the MessageBox structure with title, text and
- *                       other options.
- * @param buttonid the pointer to which user id of hit button should be
- *                 copied.
+ * @param messageboxdata the MessageBox structure with title, text and other
+ *                       options.
+ * @param buttonid the pointer to which user id of hit button should be copied.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -71132,17 +71125,17 @@ inline void MessageBox::Show(int* buttonid) const
  * - `MESSAGEBOX_WARNING`: warning dialog
  * - `MESSAGEBOX_INFORMATION`: informational dialog
  *
- * This function should be called on the thread that created the parent
- * window, or on the main thread if the messagebox has no parent. It will
- * block execution of that thread until the user clicks a button or closes the
+ * This function should be called on the thread that created the parent window,
+ * or on the main thread if the messagebox has no parent. It will block
+ * execution of that thread until the user clicks a button or closes the
  * messagebox.
  *
- * This function may be called at any time, even before Init(). This makes
- * it useful for reporting errors like a failure to create a renderer or
- * OpenGL context.
+ * This function may be called at any time, even before Init(). This makes it
+ * useful for reporting errors like a failure to create a renderer or OpenGL
+ * context.
  *
- * On X11, SDL rolls its own dialog box with X11 primitives instead of a
- * formal toolkit like GTK+ or Qt.
+ * On X11, SDL rolls its own dialog box with X11 primitives instead of a formal
+ * toolkit like GTK+ or Qt.
  *
  * Note that if Init() would fail because there isn't any available video
  * target, this function is likely to fail for the same reasons. If this is a
@@ -71174,9 +71167,9 @@ inline void ShowSimpleMessageBox(MessageBoxFlags flags,
  *
  * Functions to creating Metal layers and views on SDL windows.
  *
- * This provides some platform-specific glue for Apple platforms. Most macOS
- * and iOS apps can use SDL without these functions, but this API they can be
- * useful for specific OS-level integration tasks.
+ * This provides some platform-specific glue for Apple platforms. Most macOS and
+ * iOS apps can use SDL without these functions, but this API they can be useful
+ * for specific OS-level integration tasks.
  *
  * @{
  */
@@ -71364,8 +71357,8 @@ struct MetalViewRef : MetalView
  * Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
  * window.
  *
- * On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on
- * its own. It is up to user code to do that.
+ * On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on its
+ * own. It is up to user code to do that.
  *
  * The returned handle can be casted directly to a NSView or UIView. To access
  * the backing CAMetalLayer, call MetalView.GetLayer().
@@ -71422,36 +71415,36 @@ inline void* MetalView::GetLayer() { return SDL::Metal_GetLayer(m_resource); }
 /**
  * @defgroup CategoryMouse Mouse Support
  *
- * Any GUI application has to deal with the mouse, and SDL provides functions
- * to manage mouse input and the displayed cursor.
+ * Any GUI application has to deal with the mouse, and SDL provides functions to
+ * manage mouse input and the displayed cursor.
  *
  * Most interactions with the mouse will come through the event subsystem.
  * Moving a mouse generates an EVENT_MOUSE_MOTION event, pushing a button
- * generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the
- * current state of the mouse at any time with GetMouseState().
+ * generates EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the current
+ * state of the mouse at any time with GetMouseState().
  *
  * For certain games, it's useful to disassociate the mouse cursor from mouse
- * input. An FPS, for example, would not want the player's motion to stop as
- * the mouse hits the edge of the window. For these scenarios, use
- * Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input
- * to the window, and reads mouse input no matter how far it moves.
+ * input. An FPS, for example, would not want the player's motion to stop as the
+ * mouse hits the edge of the window. For these scenarios, use
+ * Window.SetRelativeMouseMode(), which hides the cursor, grabs mouse input to
+ * the window, and reads mouse input no matter how far it moves.
  *
  * Games that want the system to track the mouse but want to draw their own
- * cursor can use HideCursor() and ShowCursor(). It might be more
- * efficient to let the system manage the cursor, if possible, using
- * Cursor.Set() with a custom image made through Cursor.Cursor(),
- * or perhaps just a specific system cursor from Cursor.Cursor().
+ * cursor can use HideCursor() and ShowCursor(). It might be more efficient to
+ * let the system manage the cursor, if possible, using Cursor.Set() with a
+ * custom image made through Cursor.Cursor(), or perhaps just a specific system
+ * cursor from Cursor.Cursor().
  *
  * SDL can, on many platforms, differentiate between multiple connected mice,
  * allowing for interesting input scenarios and multiplayer games. They can be
  * enumerated with GetMice(), and SDL will send EVENT_MOUSE_ADDED and
  * EVENT_MOUSE_REMOVED events as they are connected and unplugged.
  *
- * Since many apps only care about basic mouse input, SDL offers a virtual
- * mouse device for touch and pen input, which often can make a desktop
- * application work on a touchscreen phone without any code changes. Apps that
- * care about touch/pen separately from mouse input should filter out events
- * with a `which` field of TOUCH_MOUSEID/PEN_MOUSEID.
+ * Since many apps only care about basic mouse input, SDL offers a virtual mouse
+ * device for touch and pen input, which often can make a desktop application
+ * work on a touchscreen phone without any code changes. Apps that care about
+ * touch/pen separately from mouse input should filter out events with a `which`
+ * field of TOUCH_MOUSEID/PEN_MOUSEID.
  *
  * @{
  */
@@ -71639,10 +71632,10 @@ public:
    *
    * Cursors created with this function must be freed with Cursor.Destroy().
    *
-   * If you want to have a color cursor, or create your cursor from an
-   * Surface, you should use Cursor.Cursor(). Alternately, you can
-   * hide the cursor and draw your own as part of your game's rendering, but it
-   * will be bound to the framerate.
+   * If you want to have a color cursor, or create your cursor from an Surface,
+   * you should use Cursor.Cursor(). Alternately, you can hide the cursor and
+   * draw your own as part of your game's rendering, but it will be bound to the
+   * framerate.
    *
    * Also, Cursor.Cursor() is available, which provides several
    * readily-available system cursors to pick from.
@@ -71894,10 +71887,9 @@ inline bool HasMouse() { return SDL_HasMouse(); }
 /**
  * Get a list of currently connected mice.
  *
- * Note that this will include any device or virtual driver that includes
- * mouse functionality, including some game controllers, KVM switches, etc.
- * You should wait for input from a device before you consider it actively in
- * use.
+ * Note that this will include any device or virtual driver that includes mouse
+ * functionality, including some game controllers, KVM switches, etc. You should
+ * wait for input from a device before you consider it actively in use.
  *
  * @returns a 0 terminated array of mouse instance IDs.
  * @throws Error on failure.
@@ -71951,8 +71943,8 @@ inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
  * Query SDL's cache for the synchronous mouse button state and the
  * window-relative SDL-cursor position.
  *
- * This function returns the cached synchronous state as SDL understands it
- * from the last pump of the event queue.
+ * This function returns the cached synchronous state as SDL understands it from
+ * the last pump of the event queue.
  *
  * To query the platform for immediate asynchronous state, use
  * GetGlobalMouseState.
@@ -71961,8 +71953,8 @@ inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
  * respective x or y coordinates relative to the focused window.
  *
  * In Relative Mode, the SDL-cursor's position usually contradicts the
- * platform-cursor's position as manually calculated from
- * GetGlobalMouseState() and Window.GetPosition.
+ * platform-cursor's position as manually calculated from GetGlobalMouseState()
+ * and Window.GetPosition.
  *
  * @param x a pointer to receive the SDL-cursor's x-position from the focused
  *          window's top left corner, can be nullptr if unused.
@@ -71999,9 +71991,9 @@ inline MouseButtonFlags GetMouseState(float* x, float* y)
  * Window.GetPosition.
  *
  * This function can be useful if you need to track the mouse outside of a
- * specific window and CaptureMouse() doesn't fit your needs. For example,
- * it could be useful if you need to track the mouse while dragging a window,
- * where coordinates relative to a window might not be in sync at all times.
+ * specific window and CaptureMouse() doesn't fit your needs. For example, it
+ * could be useful if you need to track the mouse while dragging a window, where
+ * coordinates relative to a window might not be in sync at all times.
  *
  * @param x a pointer to receive the platform-cursor's x-position from the
  *          desktop's top left corner, can be nullptr if unused.
@@ -72027,25 +72019,25 @@ inline MouseButtonFlags GetGlobalMouseState(float* x, float* y)
  * Query SDL's cache for the synchronous mouse button state and accumulated
  * mouse delta since last call.
  *
- * This function returns the cached synchronous state as SDL understands it
- * from the last pump of the event queue.
+ * This function returns the cached synchronous state as SDL understands it from
+ * the last pump of the event queue.
  *
  * To query the platform for immediate asynchronous state, use
  * GetGlobalMouseState.
  *
  * Passing non-nullptr pointers to `x` or `y` will write the destination with
- * respective x or y deltas accumulated since the last call to this function
- * (or since event initialization).
+ * respective x or y deltas accumulated since the last call to this function (or
+ * since event initialization).
  *
  * This function is useful for reducing overhead by processing relative mouse
- * inputs in one go per-frame instead of individually per-event, at the
- * expense of losing the order between events within the frame (e.g. quickly
- * pressing and releasing a button within the same frame).
+ * inputs in one go per-frame instead of individually per-event, at the expense
+ * of losing the order between events within the frame (e.g. quickly pressing
+ * and releasing a button within the same frame).
  *
- * @param x a pointer to receive the x mouse delta accumulated since last
- *          call, can be nullptr if unused.
- * @param y a pointer to receive the y mouse delta accumulated since last
- *          call, can be nullptr if unused.
+ * @param x a pointer to receive the x mouse delta accumulated since last call,
+ *          can be nullptr if unused.
+ * @param y a pointer to receive the y mouse delta accumulated since last call,
+ *          can be nullptr if unused.
  * @returns a 32-bit bitmask of the button state that can be bitwise-compared
  *          against the ButtonMask(X) macro.
  *
@@ -72145,32 +72137,31 @@ inline bool Window::GetRelativeMouseMode() const
  * unlike relative mode, no change is made to the cursor and it is not
  * restrained to your window.
  *
- * This function may also deny mouse input to other windows--both those in
- * your application and others on the system--so you should use this function
+ * This function may also deny mouse input to other windows--both those in your
+ * application and others on the system--so you should use this function
  * sparingly, and in small bursts. For example, you might want to track the
  * mouse while the user is dragging something, until the user releases a mouse
- * button. It is not recommended that you capture the mouse for long periods
- * of time, such as the entire time your app is running. For that, you should
+ * button. It is not recommended that you capture the mouse for long periods of
+ * time, such as the entire time your app is running. For that, you should
  * probably use Window.SetRelativeMouseMode() or Window.SetMouseGrab(),
  * depending on your goals.
  *
- * While captured, mouse events still report coordinates relative to the
- * current (foreground) window, but those coordinates may be outside the
- * bounds of the window (including negative values). Capturing is only allowed
- * for the foreground window. If the window loses focus while capturing, the
- * capture will be disabled automatically.
+ * While captured, mouse events still report coordinates relative to the current
+ * (foreground) window, but those coordinates may be outside the bounds of the
+ * window (including negative values). Capturing is only allowed for the
+ * foreground window. If the window loses focus while capturing, the capture
+ * will be disabled automatically.
  *
  * While capturing is enabled, the current window will have the
  * `WINDOW_MOUSE_CAPTURE` flag set.
  *
- * Please note that SDL will attempt to "auto capture" the mouse while the
- * user is pressing a button; this is to try and make mouse behavior more
- * consistent between platforms, and deal with the common case of a user
- * dragging the mouse outside of the window. This means that if you are
- * calling CaptureMouse() only to deal with this situation, you do not
- * have to (although it is safe to do so). If this causes problems for your
- * app, you can disable auto capture by setting the
- * `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.
+ * Please note that SDL will attempt to "auto capture" the mouse while the user
+ * is pressing a button; this is to try and make mouse behavior more consistent
+ * between platforms, and deal with the common case of a user dragging the mouse
+ * outside of the window. This means that if you are calling CaptureMouse() only
+ * to deal with this situation, you do not have to (although it is safe to do
+ * so). If this causes problems for your app, you can disable auto capture by
+ * setting the `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.
  *
  * @param enabled true to enable capturing, false to disable.
  * @throws Error on failure.
@@ -72202,13 +72193,13 @@ inline void CaptureMouse(bool enabled)
  *
  * Cursors created with this function must be freed with Cursor.Destroy().
  *
- * If you want to have a color cursor, or create your cursor from an
- * Surface, you should use Cursor.Cursor(). Alternately, you can
- * hide the cursor and draw your own as part of your game's rendering, but it
- * will be bound to the framerate.
+ * If you want to have a color cursor, or create your cursor from an Surface,
+ * you should use Cursor.Cursor(). Alternately, you can hide the cursor and draw
+ * your own as part of your game's rendering, but it will be bound to the
+ * framerate.
  *
- * Also, Cursor.Cursor() is available, which provides several
- * readily-available system cursors to pick from.
+ * Also, Cursor.Cursor() is available, which provides several readily-available
+ * system cursors to pick from.
  *
  * @param data the color value for each pixel of the cursor.
  * @param mask the mask value for each pixel of the cursor.
@@ -72239,14 +72230,14 @@ inline Cursor CreateCursor(const Uint8* data,
  * Create a color cursor.
  *
  * If this function is passed a surface with alternate representations, the
- * surface will be interpreted as the content to be used for 100% display
- * scale, and the alternate representations will be used for high DPI
- * situations. For example, if the original surface is 32x32, then on a 2x
- * macOS display or 200% display scale on Windows, a 64x64 version of the
- * image will be used, if available. If a matching version of the image isn't
- * available, the closest larger size image will be downscaled to the
- * appropriate size and be used instead, if available. Otherwise, the closest
- * smaller image will be upscaled and be used instead.
+ * surface will be interpreted as the content to be used for 100% display scale,
+ * and the alternate representations will be used for high DPI situations. For
+ * example, if the original surface is 32x32, then on a 2x macOS display or 200%
+ * display scale on Windows, a 64x64 version of the image will be used, if
+ * available. If a matching version of the image isn't available, the closest
+ * larger size image will be downscaled to the appropriate size and be used
+ * instead, if available. Otherwise, the closest smaller image will be upscaled
+ * and be used instead.
  *
  * @param surface an Surface structure representing the cursor image.
  * @param hot the position of the cursor hot spot.
@@ -72287,8 +72278,8 @@ inline Cursor CreateSystemCursor(SystemCursor id) { return Cursor(id); }
  *
  * This function sets the currently active cursor to the specified one. If the
  * cursor is currently visible, the change will be immediately represented on
- * the display. Cursor.Set(nullptr) can be used to force cursor redraw, if
- * this is desired for any reason.
+ * the display. Cursor.Set(nullptr) can be used to force cursor redraw, if this
+ * is desired for any reason.
  *
  * @param cursor a cursor to make active.
  * @throws Error on failure.
@@ -72322,10 +72313,11 @@ inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
 /**
  * Get the default cursor.
  *
- * You do not have to call Cursor.Destroy() on the return value, but it is
- * safe to do so.
+ * You do not have to call Cursor.Destroy() on the return value, but it is safe
+ * to do so.
  *
  * @returns the default cursor on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.

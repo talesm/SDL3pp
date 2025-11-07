@@ -2916,9 +2916,9 @@ public:
    * the window.
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
-   * can use Window.SetMouseRect(). If you'd like the cursor to be at a
-   * specific location when relative mode ends, you should use
-   * Window.WarpMouse() before disabling relative mode.
+   * can use Window.SetMouseRect(). If you'd like the cursor to be at a specific
+   * location when relative mode ends, you should use Window.WarpMouse() before
+   * disabling relative mode.
    *
    * This function will flush any pending mouse motion for this window.
    *

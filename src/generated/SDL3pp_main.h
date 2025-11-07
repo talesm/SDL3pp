@@ -28,9 +28,9 @@ namespace SDL {
  * This is also where an app can be configured to use the main callbacks, via
  * the SDL3PP_MAIN_USE_CALLBACKS macro.
  *
- * SDL_main.h is a "single-header library," which is to say that including
- * this header inserts code into your program, and you should only include it
- * once in most cases. SDL.h does not include this header automatically.
+ * SDL_main.h is a "single-header library," which is to say that including this
+ * header inserts code into your program, and you should only include it once in
+ * most cases. SDL.h does not include this header automatically.
  *
  * For more information, see:
  *
@@ -44,8 +44,8 @@ namespace SDL {
  *
  * SDL does not define this macro, but will check if it is defined when
  * including `SDL_main.h`. If defined, SDL will expect the app to provide the
- * proper entry point for the platform, and all the other magic details
- * needed, like manually calling SetMainReady.
+ * proper entry point for the platform, and all the other magic details needed,
+ * like manually calling SetMainReady.
  *
  * Please see [README/main-functions](README/main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
@@ -83,21 +83,19 @@ namespace SDL {
  * @param argc an ANSI-C style main function's argc.
  * @param argv an ANSI-C style main function's argv.
  * @returns an ANSI-C main return code; generally 0 is considered successful
- *          program completion, and small non-zero values are considered
- *          errors.
+ *          program completion, and small non-zero values are considered errors.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
 using main_func = SDL_main_func;
 
 /**
- * Circumvent failure of Init() when not using SDL_main() as an entry
- * point.
+ * Circumvent failure of Init() when not using SDL_main() as an entry point.
  *
  * This function is defined in SDL_main.h, along with the preprocessor rule to
- * redefine main() as SDL_main(). Thus to ensure that your main() function
- * will not be changed it is necessary to define SDL3PP_MAIN_HANDLED before
- * including SDL.h.
+ * redefine main() as SDL_main(). Thus to ensure that your main() function will
+ * not be changed it is necessary to define SDL3PP_MAIN_HANDLED before including
+ * SDL.h.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -124,12 +122,11 @@ inline void SetMainReady() { SDL_SetMainReady(); }
  *                     literally have to be `main`.
  * @param reserved should be nullptr (reserved for future use, will probably be
  *                 platform-specific then).
- * @returns the return value from mainFunction: 0 on success, otherwise
- *          failure; GetError() might have more information on the
- *          failure.
+ * @returns the return value from mainFunction: 0 on success, otherwise failure;
+ *          GetError() might have more information on the failure.
  *
- * @threadsafety Generally this is called once, near startup, from the
- *               process's initial thread.
+ * @threadsafety Generally this is called once, near startup, from the process's
+ *               initial thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -146,12 +143,12 @@ inline int RunApp(int argc,
  *
  * Generally, you should not call this function directly. This only exists to
  * hand off work into SDL as soon as possible, where it has a lot more control
- * and functionality available, and make the inline code in SDL_main.h as
- * small as possible.
+ * and functionality available, and make the inline code in SDL_main.h as small
+ * as possible.
  *
- * Not all platforms use this, it's actual use is hidden in a magic
- * header-only library, and you should not call this directly unless you
- * _really_ know what you're doing.
+ * Not all platforms use this, it's actual use is hidden in a magic header-only
+ * library, and you should not call this directly unless you _really_ know what
+ * you're doing.
  *
  * @param argc standard Unix main argc.
  * @param argv standard Unix main argv.
@@ -180,11 +177,11 @@ inline int EnterAppMainCallbacks(int argc,
 /**
  * Register a win32 window class for SDL's use.
  *
- * This can be called to set the application window class at startup. It is
- * safe to call this multiple times, as long as every call is eventually
- * paired with a call to UnregisterApp, but a second registration attempt
- * while a previous registration is still active will be ignored, other than
- * to increment a counter.
+ * This can be called to set the application window class at startup. It is safe
+ * to call this multiple times, as long as every call is eventually paired with
+ * a call to UnregisterApp, but a second registration attempt while a previous
+ * registration is still active will be ignored, other than to increment a
+ * counter.
  *
  * Most applications do not need to, and should not, call this directly; SDL
  * will call it when initializing the video subsystem.
@@ -194,8 +191,8 @@ inline int EnterAppMainCallbacks(int argc,
  * @param style the value to use in WNDCLASSEX::style. If `name` is nullptr, SDL
  *              currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)` regardless of
  *              what is specified here.
- * @param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL
- *              will use `GetModuleHandle(nullptr)` instead.
+ * @param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL will
+ *              use `GetModuleHandle(nullptr)` instead.
  * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
@@ -216,8 +213,8 @@ inline bool RegisterApp(StringParam name, Uint32 style, void* hInst)
  *
  * It is safe to call this multiple times, as long as every call is eventually
  * paired with a prior call to RegisterApp. The window class will only be
- * deregistered when the registration counter in RegisterApp decrements to
- * zero through calls to this function.
+ * deregistered when the registration counter in RegisterApp decrements to zero
+ * through calls to this function.
  *
  * @since This function is available since SDL 3.2.0.
  */

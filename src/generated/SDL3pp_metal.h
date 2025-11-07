@@ -11,9 +11,9 @@ namespace SDL {
  *
  * Functions to creating Metal layers and views on SDL windows.
  *
- * This provides some platform-specific glue for Apple platforms. Most macOS
- * and iOS apps can use SDL without these functions, but this API they can be
- * useful for specific OS-level integration tasks.
+ * This provides some platform-specific glue for Apple platforms. Most macOS and
+ * iOS apps can use SDL without these functions, but this API they can be useful
+ * for specific OS-level integration tasks.
  *
  * @{
  */
@@ -201,8 +201,8 @@ struct MetalViewRef : MetalView
  * Create a CAMetalLayer-backed NSView/UIView and attach it to the specified
  * window.
  *
- * On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on
- * its own. It is up to user code to do that.
+ * On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on its
+ * own. It is up to user code to do that.
  *
  * The returned handle can be casted directly to a NSView or UIView. To access
  * the backing CAMetalLayer, call MetalView.GetLayer().
