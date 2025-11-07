@@ -31,7 +31,7 @@ function readContent(name, baseDirs) {
 }
 class ProgListener {
     constructor(name) {
-        this.api = { name, doc: undefined, entries: {} };
+        this.api = { name, doc: undefined, parsedDoc: undefined, entries: {} };
     }
     enterProg(ctx) {
         const doc = ctx.doc();
@@ -59,6 +59,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'def',
             parameters,
@@ -73,6 +74,7 @@ class ProgListener {
                 return;
             this.api.entries[name] = {
                 doc,
+                parsedDoc: undefined,
                 name,
                 kind: 'var',
                 type,
@@ -91,6 +93,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'function',
             type,
@@ -107,6 +110,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'function',
             type,
@@ -123,6 +127,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'alias',
             type: isStruct ? `struct ${type}` : type,
@@ -135,6 +140,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'union',
         };
@@ -146,6 +152,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'enum',
             entries: extractEnumItems(ctx.enumBody()),
@@ -158,6 +165,7 @@ class ProgListener {
             return;
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'struct',
             entries: extractStructItems(ctx.structBody()),
@@ -171,6 +179,7 @@ class ProgListener {
         const type = extractType(ctx.type());
         this.api.entries[name] = {
             doc,
+            parsedDoc: undefined,
             name,
             kind: 'callback',
             type,
@@ -194,8 +203,10 @@ function parseContent(name, content) {
     const api = listener.api;
     if (name < "SDL_atomic.h") {
         api.parsedDoc = (0, parseDoc_1.parseDoc)(name, api.doc ?? "");
+        // delete api.doc;
         for (const apiEntry of Object.values(api.entries)) {
             apiEntry.parsedDoc = (0, parseDoc_1.parseDoc)(`${name}@${apiEntry.name}`, apiEntry.doc);
+            // delete apiEntry.doc;
         }
     }
     return api;

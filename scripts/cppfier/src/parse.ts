@@ -40,7 +40,7 @@ class ProgListener implements CHeaderListener {
   public api: ApiFile;
 
   constructor(name: string) {
-    this.api = { name, doc: undefined, entries: {} };
+    this.api = { name, doc: undefined, parsedDoc: undefined, entries: {} };
   }
 
   enterProg(ctx: ProgContext) {
@@ -66,6 +66,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'def',
       parameters,
@@ -80,6 +81,7 @@ class ProgListener implements CHeaderListener {
       if (this.api.entries[name]?.doc) return;
       this.api.entries[name] = {
         doc,
+        parsedDoc: undefined,
         name,
         kind: 'var',
         type,
@@ -96,6 +98,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'function',
       type,
@@ -111,6 +114,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'function',
       type,
@@ -127,6 +131,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'alias',
       type: isStruct ? `struct ${type}` : type,
@@ -139,6 +144,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'union',
     };
@@ -150,6 +156,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'enum',
       entries: extractEnumItems(ctx.enumBody()),
@@ -162,6 +169,7 @@ class ProgListener implements CHeaderListener {
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'struct',
       entries: extractStructItems(ctx.structBody()),
@@ -175,6 +183,7 @@ class ProgListener implements CHeaderListener {
     const type = extractType(ctx.type());
     this.api.entries[name] = {
       doc,
+      parsedDoc: undefined,
       name,
       kind: 'callback',
       type,
@@ -206,8 +215,10 @@ function parseContent(name: string, content: string) {
   const api = listener.api;
   if (name < "SDL_atomic.h") {
     api.parsedDoc = parseDoc(name, api.doc ?? "");
+    // delete api.doc;
     for (const apiEntry of Object.values(api.entries)) {
       apiEntry.parsedDoc = parseDoc(`${name}@${apiEntry.name}`, apiEntry.doc);
+      // delete apiEntry.doc;
     }
   }
   return api;

@@ -3,676 +3,6 @@
     "SDL_assert.h": {
       "name": "SDL_assert.h",
       "doc": "# CategoryAssert\n\nA helpful assertion macro!\n\nSDL assertions operate like your usual `assert` macro, but with some added\nfeatures:\n\n- It uses a trick with the `sizeof` operator, so disabled assertions\n  vaporize out of the compiled code, but variables only referenced in the\n  assertion won't trigger compiler warnings about being unused.\n- It is safe to use with a dangling-else: `if (x) SDL_assert(y); else\n  do_something();`\n- It works the same everywhere, instead of counting on various platforms'\n  compiler and C runtime to behave.\n- It provides multiple levels of assertion (SDL_assert, SDL_assert_release,\n  SDL_assert_paranoid) instead of a single all-or-nothing option.\n- It offers a variety of responses when an assertion fails (retry, trigger\n  the debugger, abort the program, ignore the failure once, ignore it for\n  the rest of the program's run).\n- It tries to show the user a dialog by default, if possible, but the app\n  can provide a callback to handle assertion failures however they like.\n- It lets failed assertions be retried. Perhaps you had a network failure\n  and just want to retry the test after plugging your network cable back\n  in? You can.\n- It lets the user ignore an assertion failure, if there's a harmless\n  problem that one can continue past.\n- It lets the user mark an assertion as ignored for the rest of the\n  program's run; if there's a harmless problem that keeps popping up.\n- It provides statistics and data on all failed assertions to the app.\n- It allows the default assertion handler to be controlled with environment\n  variables, in case an automated script needs to control it.\n- It can be used as an aid to Clang's static analysis; it will treat SDL\n  assertions as universally true (under the assumption that you are serious\n  about the asserted claims and that your debug builds will detect when\n  these claims were wrong). This can help the analyzer avoid false\n  positives.\n\nTo use it: compile a debug build and just sprinkle around tests to check\nyour code!",
-      "entries": {
-        "SDL_ASSERT_LEVEL": {
-          "doc": "The level of assertion aggressiveness.\n\nThis value changes depending on compiler options and other preprocessor\ndefines.\n\nIt is currently one of the following values, but future SDL releases might\nadd more:\n\n- 0: All SDL assertion macros are disabled.\n- 1: Release settings: SDL_assert disabled, SDL_assert_release enabled.\n- 2: Debug settings: SDL_assert and SDL_assert_release enabled.\n- 3: Paranoid settings: All SDL assertion macros enabled, including\n  SDL_assert_paranoid.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_ASSERT_LEVEL",
-          "kind": "def",
-          "value": "SomeNumberBasedOnVariousFactors",
-          "parsedDoc": [
-            "The level of assertion aggressiveness.",
-            "This value changes depending on compiler options and other preprocessor defines.",
-            "It is currently one of the following values, but future SDL releases might add more:",
-            [
-              {
-                "tag": "-",
-                "content": "0: All SDL assertion macros are disabled."
-              },
-              {
-                "tag": "-",
-                "content": "1: Release settings: SDL_assert disabled, SDL_assert_release enabled."
-              },
-              {
-                "tag": "-",
-                "content": "2: Debug settings: SDL_assert and SDL_assert_release enabled."
-              },
-              {
-                "tag": "-",
-                "content": "3: Paranoid settings: All SDL assertion macros enabled, including SDL_assert_paranoid."
-              }
-            ],
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_TriggerBreakpoint": {
-          "doc": "Attempt to tell an attached debugger to pause.\n\nThis allows an app to programmatically halt (\"break\") the debugger as if it\nhad hit a breakpoint, allowing the developer to examine program state, etc.\n\nThis is a macro--not a function--so that the debugger breaks on the source\ncode line that used SDL_TriggerBreakpoint and not in some random guts of\nSDL. SDL_assert uses this macro for the same reason.\n\nIf the program is not running under a debugger, SDL_TriggerBreakpoint will\nlikely terminate the app, possibly without warning. If the current platform\nisn't supported, this macro is left undefined.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_TriggerBreakpoint",
-          "kind": "def",
-          "parameters": [],
-          "value": "TriggerABreakpointInAPlatformSpecificManner",
-          "parsedDoc": [
-            "Attempt to tell an attached debugger to pause.",
-            "This allows an app to programmatically halt (\"break\") the debugger as if it had hit a breakpoint, allowing the developer to examine program state, etc.",
-            "This is a macro--not a function--so that the debugger breaks on the source code line that used SDL_TriggerBreakpoint and not in some random guts of SDL. SDL_assert uses this macro for the same reason.",
-            "If the program is not running under a debugger, SDL_TriggerBreakpoint will likely terminate the app, possibly without warning. If the current platform isn't supported, this macro is left undefined.",
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this macro from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_FUNCTION": {
-          "doc": "A macro that reports the current function being compiled.\n\nIf SDL can't figure how the compiler reports this, it will use \"???\".\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_FUNCTION",
-          "kind": "def",
-          "value": "__FUNCTION__",
-          "parsedDoc": [
-            "A macro that reports the current function being compiled.",
-            "If SDL can't figure how the compiler reports this, it will use \"???\".",
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_FILE": {
-          "doc": "A macro that reports the current file being compiled.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_FILE",
-          "kind": "def",
-          "value": "__FILE__",
-          "parsedDoc": [
-            "A macro that reports the current file being compiled.",
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_LINE": {
-          "doc": "A macro that reports the current line number of the file being compiled.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_LINE",
-          "kind": "def",
-          "value": "__LINE__",
-          "parsedDoc": [
-            "A macro that reports the current line number of the file being compiled.",
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_NULL_WHILE_LOOP_CONDITION": {
-          "doc": "A macro for wrapping code in `do {} while (0);` without compiler warnings.\n\nVisual Studio with really aggressive warnings enabled needs this to avoid\ncompiler complaints.\n\nthe `do {} while (0);` trick is useful for wrapping code in a macro that\nmay or may not be a single statement, to avoid various C language\naccidents.\n\nTo use:\n\n```c\ndo { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));\n```\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_NULL_WHILE_LOOP_CONDITION",
-          "kind": "def",
-          "value": "(0)",
-          "parsedDoc": [
-            "A macro for wrapping code in `do {} while (0);` without compiler warnings.",
-            "Visual Studio with really aggressive warnings enabled needs this to avoid compiler complaints.",
-            "the `do {} while (0);` trick is useful for wrapping code in a macro that may or may not be a single statement, to avoid various C language accidents.",
-            "To use:",
-            {
-              "content": "```c\ndo { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));\n```"
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_disabled_assert": {
-          "doc": "The macro used when an assertion is disabled.\n\nThis isn't for direct use by apps, but this is the code that is inserted\nwhen an SDL_assert is disabled (perhaps in a release build).\n\nThe code does nothing, but wraps `condition` in a sizeof operator, which\ngenerates no code and has no side effects, but avoid compiler warnings\nabout unused variables.\n\n\\param condition the condition to assert (but not actually run here).\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_disabled_assert",
-          "kind": "def",
-          "parameters": [
-            {
-              "name": "condition",
-              "type": ""
-            }
-          ],
-          "value": "\\\n    do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)",
-          "parsedDoc": [
-            "The macro used when an assertion is disabled.",
-            "This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is disabled (perhaps in a release build).",
-            "The code does nothing, but wraps `condition` in a sizeof operator, which generates no code and has no side effects, but avoid compiler warnings about unused variables.",
-            {
-              "tag": "\\param condition",
-              "content": "the condition to assert (but not actually run here)."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_AssertState": {
-          "doc": "Possible outcomes from a triggered assertion.\n\nWhen an enabled assertion triggers, it may call the assertion handler\n(possibly one provided by the app via SDL_SetAssertionHandler), which will\nreturn one of these values, possibly after asking the user.\n\nThen SDL will respond based on this outcome (loop around to retry the\ncondition, try to break in a debugger, kill the program, or ignore the\nproblem).\n\n\\since This enum is available since SDL 3.2.0.",
-          "name": "SDL_AssertState",
-          "kind": "enum",
-          "entries": {
-            "SDL_ASSERTION_RETRY": {
-              "doc": "Retry the assert immediately.",
-              "name": "SDL_ASSERTION_RETRY",
-              "kind": "var",
-              "type": ""
-            },
-            "SDL_ASSERTION_BREAK": {
-              "doc": "Make the debugger trigger a breakpoint.",
-              "name": "SDL_ASSERTION_BREAK",
-              "kind": "var",
-              "type": ""
-            },
-            "SDL_ASSERTION_ABORT": {
-              "doc": "Terminate the program.",
-              "name": "SDL_ASSERTION_ABORT",
-              "kind": "var",
-              "type": ""
-            },
-            "SDL_ASSERTION_IGNORE": {
-              "doc": "Ignore the assert.",
-              "name": "SDL_ASSERTION_IGNORE",
-              "kind": "var",
-              "type": ""
-            },
-            "SDL_ASSERTION_ALWAYS_IGNORE": {
-              "doc": "Ignore the assert from now on.",
-              "name": "SDL_ASSERTION_ALWAYS_IGNORE",
-              "kind": "var",
-              "type": ""
-            }
-          },
-          "parsedDoc": [
-            "Possible outcomes from a triggered assertion.",
-            "When an enabled assertion triggers, it may call the assertion handler (possibly one provided by the app via SDL_SetAssertionHandler), which will return one of these values, possibly after asking the user.",
-            "Then SDL will respond based on this outcome (loop around to retry the condition, try to break in a debugger, kill the program, or ignore the problem).",
-            {
-              "tag": "\\since",
-              "content": "This enum is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_AssertData": {
-          "doc": "Information about an assertion failure.\n\nThis structure is filled in with information about a triggered assertion,\nused by the assertion handler, then added to the assertion report. This is\nreturned as a linked list from SDL_GetAssertionReport().\n\n\\since This struct is available since SDL 3.2.0.",
-          "name": "SDL_AssertData",
-          "kind": "struct",
-          "entries": {
-            "always_ignore": {
-              "doc": "true if app should always continue when assertion is triggered.",
-              "name": "always_ignore",
-              "kind": "var",
-              "type": "bool"
-            },
-            "trigger_count": {
-              "doc": "Number of times this assertion has been triggered.",
-              "name": "trigger_count",
-              "kind": "var",
-              "type": "unsigned int"
-            },
-            "condition": {
-              "doc": "A string of this assert's test code.",
-              "name": "condition",
-              "kind": "var",
-              "type": "const char *"
-            },
-            "filename": {
-              "doc": "The source file where this assert lives.",
-              "name": "filename",
-              "kind": "var",
-              "type": "const char *"
-            },
-            "linenum": {
-              "doc": "The line in `filename` where this assert lives.",
-              "name": "linenum",
-              "kind": "var",
-              "type": "int"
-            },
-            "function": {
-              "doc": "The name of the function where this assert lives.",
-              "name": "function",
-              "kind": "var",
-              "type": "const char *"
-            },
-            "next": {
-              "doc": "next item in the linked list.",
-              "name": "next",
-              "kind": "var",
-              "type": "const struct SDL_AssertData *"
-            }
-          },
-          "parsedDoc": [
-            "Information about an assertion failure.",
-            "This structure is filled in with information about a triggered assertion, used by the assertion handler, then added to the assertion report. This is returned as a linked list from SDL_GetAssertionReport().",
-            {
-              "tag": "\\since",
-              "content": "This struct is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_ReportAssertion": {
-          "doc": "Never call this directly.\n\nUse the SDL_assert macros instead.\n\n\\param data assert data structure.\n\\param func function name.\n\\param file file name.\n\\param line line number.\n\\returns assert state.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
-          "name": "SDL_ReportAssertion",
-          "kind": "function",
-          "type": "SDL_AssertState",
-          "parameters": [
-            {
-              "name": "data",
-              "type": "SDL_AssertData *"
-            },
-            {
-              "name": "func",
-              "type": "const char *"
-            },
-            {
-              "name": "file",
-              "type": "const char *"
-            },
-            {
-              "name": "line",
-              "type": "int"
-            }
-          ],
-          "parsedDoc": [
-            "Never call this directly.",
-            "Use the SDL_assert macros instead.",
-            [
-              {
-                "tag": "\\param data",
-                "content": "assert data structure."
-              },
-              {
-                "tag": "\\param func",
-                "content": "function name."
-              },
-              {
-                "tag": "\\param file",
-                "content": "file name."
-              },
-              {
-                "tag": "\\param line",
-                "content": "line number."
-              },
-              {
-                "tag": "\\returns",
-                "content": "assert state."
-              }
-            ],
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this function from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This function is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_AssertBreakpoint": {
-          "doc": "The macro used when an assertion triggers a breakpoint.\n\nThis isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint\ninstead.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_AssertBreakpoint",
-          "kind": "def",
-          "parameters": [],
-          "value": "SDL_TriggerBreakpoint()",
-          "parsedDoc": [
-            "The macro used when an assertion triggers a breakpoint.",
-            "This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint instead.",
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_enabled_assert": {
-          "doc": "The macro used when an assertion is enabled.\n\nThis isn't for direct use by apps, but this is the code that is inserted\nwhen an SDL_assert is enabled.\n\nThe `do {} while(0)` avoids dangling else problems:\n\n```c\nif (x) SDL_assert(y); else blah();\n```\n\n... without the do/while, the \"else\" could attach to this macro's \"if\". We\ntry to handle just the minimum we need here in a macro...the loop, the\nstatic vars, and break points. The heavy lifting is handled in\nSDL_ReportAssertion().\n\n\\param condition the condition to assert.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_enabled_assert",
-          "kind": "def",
-          "parameters": [
-            {
-              "name": "condition",
-              "type": ""
-            }
-          ],
-          "value": "\\\n    do { \\\n        while ( !(condition) ) { \\\n            static struct SDL_AssertData sdl_assert_data = { false, 0, #condition, NULL, 0, NULL, NULL }; \\\n            const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(&sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE); \\\n            if (sdl_assert_state == SDL_ASSERTION_RETRY) { \\\n                continue; /* go again. */ \\\n            } else if (sdl_assert_state == SDL_ASSERTION_BREAK) { \\\n                SDL_AssertBreakpoint(); \\\n            } \\\n            break; /* not retrying. */ \\\n        } \\\n    } while (SDL_NULL_WHILE_LOOP_CONDITION)",
-          "parsedDoc": [
-            "The macro used when an assertion is enabled.",
-            "This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is enabled.",
-            "The `do {} while(0)` avoids dangling else problems:",
-            {
-              "content": "```c\nif (x) SDL_assert(y); else blah();\n```"
-            },
-            "... without the do/while, the \"else\" could attach to this macro's \"if\". We try to handle just the minimum we need here in a macro...the loop, the static vars, and break points. The heavy lifting is handled in SDL_ReportAssertion().",
-            {
-              "tag": "\\param condition",
-              "content": "the condition to assert."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_assert": {
-          "doc": "An assertion test that is normally performed only in debug builds.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is\ndisabled. This is meant to only do these tests in debug builds, so they can\ntend to be more expensive, and they are meant to bring everything to a halt\nwhen they fail, with the programmer there to assess the problem.\n\nIn short: you can sprinkle these around liberally and assume they will\nevaporate out of the build when building for end-users.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_assert",
-          "kind": "def",
-          "parameters": [
-            {
-              "name": "condition",
-              "type": ""
-            }
-          ],
-          "value": "if (assertion_enabled && (condition)) { trigger_assertion; }",
-          "parsedDoc": [
-            "An assertion test that is normally performed only in debug builds.",
-            "This macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is disabled. This is meant to only do these tests in debug builds, so they can tend to be more expensive, and they are meant to bring everything to a halt when they fail, with the programmer there to assess the problem.",
-            "In short: you can sprinkle these around liberally and assume they will evaporate out of the build when building for end-users.",
-            "When assertions are disabled, this wraps `condition` in a `sizeof` operator, which means any function calls and side effects will not run, but the compiler will not complain about any otherwise-unused variables that are only referenced in the assertion.",
-            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application.",
-            {
-              "tag": "\\param condition",
-              "content": "boolean value to test."
-            },
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this macro from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_assert_release": {
-          "doc": "An assertion test that is performed even in release builds.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is\ndisabled. This is meant to be for tests that are cheap to make and\nextremely unlikely to fail; generally it is frowned upon to have an\nassertion failure in a release build, so these assertions generally need to\nbe of more than life-and-death importance if there's a chance they might\ntrigger. You should almost always consider handling these cases more\ngracefully than an assert allows.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n*\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_assert_release",
-          "kind": "def",
-          "parameters": [
-            {
-              "name": "condition",
-              "type": ""
-            }
-          ],
-          "value": "SDL_disabled_assert(condition)",
-          "parsedDoc": [
-            "An assertion test that is performed even in release builds.",
-            "This macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is disabled. This is meant to be for tests that are cheap to make and extremely unlikely to fail; generally it is frowned upon to have an assertion failure in a release build, so these assertions generally need to be of more than life-and-death importance if there's a chance they might trigger. You should almost always consider handling these cases more gracefully than an assert allows.",
-            "When assertions are disabled, this wraps `condition` in a `sizeof` operator, which means any function calls and side effects will not run, but the compiler will not complain about any otherwise-unused variables that are only referenced in the assertion.",
-            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application. *",
-            {
-              "tag": "\\param condition",
-              "content": "boolean value to test."
-            },
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this macro from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_assert_paranoid": {
-          "doc": "An assertion test that is performed only when built with paranoid settings.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is\ndisabled. This is a higher level than both release and debug, so these\ntests are meant to be expensive and only run when specifically looking for\nextremely unexpected failure cases in a special build.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_assert_paranoid",
-          "kind": "def",
-          "parameters": [
-            {
-              "name": "condition",
-              "type": ""
-            }
-          ],
-          "value": "SDL_disabled_assert(condition)",
-          "parsedDoc": [
-            "An assertion test that is performed only when built with paranoid settings.",
-            "This macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is disabled. This is a higher level than both release and debug, so these tests are meant to be expensive and only run when specifically looking for extremely unexpected failure cases in a special build.",
-            "When assertions are disabled, this wraps `condition` in a `sizeof` operator, which means any function calls and side effects will not run, but the compiler will not complain about any otherwise-unused variables that are only referenced in the assertion.",
-            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application.",
-            {
-              "tag": "\\param condition",
-              "content": "boolean value to test."
-            },
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this macro from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_assert_always": {
-          "doc": "An assertion test that is always performed.\n\nThis macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You\nalmost never want to use this, as it could trigger on an end-user's system,\ncrashing your program.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
-          "name": "SDL_assert_always",
-          "kind": "def",
-          "parameters": [
-            {
-              "name": "condition",
-              "type": ""
-            }
-          ],
-          "value": "SDL_enabled_assert(condition)",
-          "parsedDoc": [
-            "An assertion test that is always performed.",
-            "This macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You almost never want to use this, as it could trigger on an end-user's system, crashing your program.",
-            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application.",
-            {
-              "tag": "\\param condition",
-              "content": "boolean value to test."
-            },
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this macro from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This macro is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_AssertionHandler": {
-          "doc": "A callback that fires when an SDL assertion fails.\n\n\\param data a pointer to the SDL_AssertData structure corresponding to the\n            current assertion.\n\\param userdata what was passed as `userdata` to SDL_SetAssertionHandler().\n\\returns an SDL_AssertState value indicating how to handle the failure.\n\n\\threadsafety This callback may be called from any thread that triggers an\n              assert at any time.\n\n\\since This datatype is available since SDL 3.2.0.",
-          "name": "SDL_AssertionHandler",
-          "kind": "callback",
-          "type": "SDL_AssertState",
-          "parameters": [
-            {
-              "name": "data",
-              "type": "const SDL_AssertData *"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "parsedDoc": [
-            "A callback that fires when an SDL assertion fails.",
-            [
-              {
-                "tag": "\\param data",
-                "content": "a pointer to the SDL_AssertData structure corresponding to the current assertion."
-              },
-              {
-                "tag": "\\param userdata",
-                "content": "what was passed as `userdata` to SDL_SetAssertionHandler()."
-              },
-              {
-                "tag": "\\returns",
-                "content": "an SDL_AssertState value indicating how to handle the failure."
-              }
-            ],
-            {
-              "tag": "\\threadsafety",
-              "content": "This callback may be called from any thread that triggers an assert at any time."
-            },
-            {
-              "tag": "\\since",
-              "content": "This datatype is available since SDL 3.2.0."
-            }
-          ]
-        },
-        "SDL_SetAssertionHandler": {
-          "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon SDL_Quit()!\n\n\\param handler the SDL_AssertionHandler function to call when an assertion\n               fails or NULL for the default handler.\n\\param userdata a pointer that is passed to `handler`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAssertionHandler",
-          "name": "SDL_SetAssertionHandler",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "handler",
-              "type": "SDL_AssertionHandler"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "parsedDoc": [
-            "Set an application-defined assertion handler.",
-            "This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, SDL will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.",
-            "This callback may fire from any thread, but it runs wrapped in a mutex, so it will only fire from one thread at a time.",
-            "This callback is NOT reset to SDL's internal handler upon SDL_Quit()!",
-            [
-              {
-                "tag": "\\param handler",
-                "content": "the SDL_AssertionHandler function to call when an assertion fails or NULL for the default handler."
-              },
-              {
-                "tag": "\\param userdata",
-                "content": "a pointer that is passed to `handler`."
-              }
-            ],
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this function from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This function is available since SDL 3.2.0."
-            },
-            {
-              "tag": "\\sa",
-              "content": "SDL_GetAssertionHandler"
-            }
-          ]
-        },
-        "SDL_GetDefaultAssertionHandler": {
-          "doc": "Get the default assertion handler.\n\nThis returns the function pointer that is called by default when an\nassertion is triggered. This is an internal function provided by SDL, that\nis used for assertions when SDL_SetAssertionHandler() hasn't been used to\nprovide a different function.\n\n\\returns the default SDL_AssertionHandler that is called when an assert\n         triggers.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAssertionHandler",
-          "name": "SDL_GetDefaultAssertionHandler",
-          "kind": "function",
-          "type": "SDL_AssertionHandler",
-          "parameters": [],
-          "parsedDoc": [
-            "Get the default assertion handler.",
-            "This returns the function pointer that is called by default when an assertion is triggered. This is an internal function provided by SDL, that is used for assertions when SDL_SetAssertionHandler() hasn't been used to provide a different function.",
-            {
-              "tag": "\\returns",
-              "content": "the default SDL_AssertionHandler that is called when an assert triggers."
-            },
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this function from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This function is available since SDL 3.2.0."
-            },
-            {
-              "tag": "\\sa",
-              "content": "SDL_GetAssertionHandler"
-            }
-          ]
-        },
-        "SDL_GetAssertionHandler": {
-          "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSDL_SetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling SDL_GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SDL_SetAssertionHandler(). This value\nwill always be NULL for the default handler. If you don't care about this\ndata, it is safe to pass a NULL pointer to this function to ignore it.\n\n\\param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SDL_SetAssertionHandler().\n\\returns the SDL_AssertionHandler that is called when an assert triggers.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetAssertionHandler",
-          "name": "SDL_GetAssertionHandler",
-          "kind": "function",
-          "type": "SDL_AssertionHandler",
-          "parameters": [
-            {
-              "name": "puserdata",
-              "type": "void **"
-            }
-          ],
-          "parsedDoc": [
-            "Get the current assertion handler.",
-            "This returns the function pointer that is called when an assertion is triggered. This is either the value last passed to SDL_SetAssertionHandler(), or if no application-specified function is set, is equivalent to calling SDL_GetDefaultAssertionHandler().",
-            "The parameter `puserdata` is a pointer to a void*, which will store the \"userdata\" pointer that was passed to SDL_SetAssertionHandler(). This value will always be NULL for the default handler. If you don't care about this data, it is safe to pass a NULL pointer to this function to ignore it.",
-            [
-              {
-                "tag": "\\param puserdata",
-                "content": "pointer which is filled with the \"userdata\" pointer that was passed to SDL_SetAssertionHandler()."
-              },
-              {
-                "tag": "\\returns",
-                "content": "the SDL_AssertionHandler that is called when an assert triggers."
-              }
-            ],
-            {
-              "tag": "\\threadsafety",
-              "content": "It is safe to call this function from any thread."
-            },
-            {
-              "tag": "\\since",
-              "content": "This function is available since SDL 3.2.0."
-            },
-            {
-              "tag": "\\sa",
-              "content": "SDL_SetAssertionHandler"
-            }
-          ]
-        },
-        "SDL_GetAssertionReport": {
-          "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nSDL_ResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst SDL_AssertData *item = SDL_GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\\\n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n\\returns a list of all failed assertions or NULL if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to SDL_Quit() or\n         SDL_ResetAssertionReport().\n\n\\threadsafety This function is not thread safe. Other threads calling\n              SDL_ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ResetAssertionReport",
-          "name": "SDL_GetAssertionReport",
-          "kind": "function",
-          "type": "const SDL_AssertData *",
-          "parameters": [],
-          "parsedDoc": [
-            "Get a list of all assertion failures.",
-            "This function gets all assertions triggered since the last call to SDL_ResetAssertionReport(), or the start of the program.",
-            "The proper way to examine this data looks something like this:",
-            {
-              "content": "```c\nconst SDL_AssertData *item = SDL_GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\\\n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```"
-            },
-            {
-              "tag": "\\returns",
-              "content": "a list of all failed assertions or NULL if the list is empty. This memory should not be modified or freed by the application. This pointer remains valid until the next call to SDL_Quit() or SDL_ResetAssertionReport()."
-            },
-            {
-              "tag": "\\threadsafety",
-              "content": "This function is not thread safe. Other threads calling SDL_ResetAssertionReport() simultaneously, may render the returned pointer invalid."
-            },
-            {
-              "tag": "\\since",
-              "content": "This function is available since SDL 3.2.0."
-            },
-            {
-              "tag": "\\sa",
-              "content": "SDL_ResetAssertionReport"
-            }
-          ]
-        },
-        "SDL_ResetAssertionReport": {
-          "doc": "Clear the list of all assertion failures.\n\nThis function will clear the list of all assertions triggered up to that\npoint. Immediately following this call, SDL_GetAssertionReport will return\nno items. In addition, any previously-triggered assertions will be reset to\na trigger_count of zero, and their always_ignore state will be false.\n\n\\threadsafety This function is not thread safe. Other threads triggering an\n              assertion, or simultaneously calling this function may cause\n              memory leaks or crashes.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAssertionReport",
-          "name": "SDL_ResetAssertionReport",
-          "kind": "function",
-          "type": "void",
-          "parameters": [],
-          "parsedDoc": [
-            "Clear the list of all assertion failures.",
-            "This function will clear the list of all assertions triggered up to that point. Immediately following this call, SDL_GetAssertionReport will return no items. In addition, any previously-triggered assertions will be reset to a trigger_count of zero, and their always_ignore state will be false.",
-            {
-              "tag": "\\threadsafety",
-              "content": "This function is not thread safe. Other threads triggering an assertion, or simultaneously calling this function may cause memory leaks or crashes."
-            },
-            {
-              "tag": "\\since",
-              "content": "This function is available since SDL 3.2.0."
-            },
-            {
-              "tag": "\\sa",
-              "content": "SDL_GetAssertionReport"
-            }
-          ]
-        }
-      },
       "parsedDoc": [
         {
           "tag": "#",
@@ -731,17 +61,737 @@
           }
         ],
         "To use it: compile a debug build and just sprinkle around tests to check your code!"
-      ]
+      ],
+      "entries": {
+        "SDL_ASSERT_LEVEL": {
+          "doc": "The level of assertion aggressiveness.\n\nThis value changes depending on compiler options and other preprocessor\ndefines.\n\nIt is currently one of the following values, but future SDL releases might\nadd more:\n\n- 0: All SDL assertion macros are disabled.\n- 1: Release settings: SDL_assert disabled, SDL_assert_release enabled.\n- 2: Debug settings: SDL_assert and SDL_assert_release enabled.\n- 3: Paranoid settings: All SDL assertion macros enabled, including\n  SDL_assert_paranoid.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The level of assertion aggressiveness.",
+            "This value changes depending on compiler options and other preprocessor defines.",
+            "It is currently one of the following values, but future SDL releases might add more:",
+            [
+              {
+                "tag": "-",
+                "content": "0: All SDL assertion macros are disabled."
+              },
+              {
+                "tag": "-",
+                "content": "1: Release settings: SDL_assert disabled, SDL_assert_release enabled."
+              },
+              {
+                "tag": "-",
+                "content": "2: Debug settings: SDL_assert and SDL_assert_release enabled."
+              },
+              {
+                "tag": "-",
+                "content": "3: Paranoid settings: All SDL assertion macros enabled, including SDL_assert_paranoid."
+              }
+            ],
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_ASSERT_LEVEL",
+          "kind": "def",
+          "value": "SomeNumberBasedOnVariousFactors"
+        },
+        "SDL_TriggerBreakpoint": {
+          "doc": "Attempt to tell an attached debugger to pause.\n\nThis allows an app to programmatically halt (\"break\") the debugger as if it\nhad hit a breakpoint, allowing the developer to examine program state, etc.\n\nThis is a macro--not a function--so that the debugger breaks on the source\ncode line that used SDL_TriggerBreakpoint and not in some random guts of\nSDL. SDL_assert uses this macro for the same reason.\n\nIf the program is not running under a debugger, SDL_TriggerBreakpoint will\nlikely terminate the app, possibly without warning. If the current platform\nisn't supported, this macro is left undefined.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Attempt to tell an attached debugger to pause.",
+            "This allows an app to programmatically halt (\"break\") the debugger as if it had hit a breakpoint, allowing the developer to examine program state, etc.",
+            "This is a macro--not a function--so that the debugger breaks on the source code line that used SDL_TriggerBreakpoint and not in some random guts of SDL. SDL_assert uses this macro for the same reason.",
+            "If the program is not running under a debugger, SDL_TriggerBreakpoint will likely terminate the app, possibly without warning. If the current platform isn't supported, this macro is left undefined.",
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_TriggerBreakpoint",
+          "kind": "def",
+          "parameters": [],
+          "value": "TriggerABreakpointInAPlatformSpecificManner"
+        },
+        "SDL_FUNCTION": {
+          "doc": "A macro that reports the current function being compiled.\n\nIf SDL can't figure how the compiler reports this, it will use \"???\".\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro that reports the current function being compiled.",
+            "If SDL can't figure how the compiler reports this, it will use \"???\".",
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_FUNCTION",
+          "kind": "def",
+          "value": "__FUNCTION__"
+        },
+        "SDL_FILE": {
+          "doc": "A macro that reports the current file being compiled.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro that reports the current file being compiled.",
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_FILE",
+          "kind": "def",
+          "value": "__FILE__"
+        },
+        "SDL_LINE": {
+          "doc": "A macro that reports the current line number of the file being compiled.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro that reports the current line number of the file being compiled.",
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_LINE",
+          "kind": "def",
+          "value": "__LINE__"
+        },
+        "SDL_NULL_WHILE_LOOP_CONDITION": {
+          "doc": "A macro for wrapping code in `do {} while (0);` without compiler warnings.\n\nVisual Studio with really aggressive warnings enabled needs this to avoid\ncompiler complaints.\n\nthe `do {} while (0);` trick is useful for wrapping code in a macro that\nmay or may not be a single statement, to avoid various C language\naccidents.\n\nTo use:\n\n```c\ndo { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));\n```\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A macro for wrapping code in `do {} while (0);` without compiler warnings.",
+            "Visual Studio with really aggressive warnings enabled needs this to avoid compiler complaints.",
+            "the `do {} while (0);` trick is useful for wrapping code in a macro that may or may not be a single statement, to avoid various C language accidents.",
+            "To use:",
+            {
+              "content": "```c\ndo { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));\n```"
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_NULL_WHILE_LOOP_CONDITION",
+          "kind": "def",
+          "value": "(0)"
+        },
+        "SDL_disabled_assert": {
+          "doc": "The macro used when an assertion is disabled.\n\nThis isn't for direct use by apps, but this is the code that is inserted\nwhen an SDL_assert is disabled (perhaps in a release build).\n\nThe code does nothing, but wraps `condition` in a sizeof operator, which\ngenerates no code and has no side effects, but avoid compiler warnings\nabout unused variables.\n\n\\param condition the condition to assert (but not actually run here).\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The macro used when an assertion is disabled.",
+            "This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is disabled (perhaps in a release build).",
+            "The code does nothing, but wraps `condition` in a sizeof operator, which generates no code and has no side effects, but avoid compiler warnings about unused variables.",
+            {
+              "tag": "\\param condition",
+              "content": "the condition to assert (but not actually run here)."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_disabled_assert",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "condition",
+              "type": ""
+            }
+          ],
+          "value": "\\\n    do { (void) sizeof ((condition)); } while (SDL_NULL_WHILE_LOOP_CONDITION)"
+        },
+        "SDL_AssertState": {
+          "doc": "Possible outcomes from a triggered assertion.\n\nWhen an enabled assertion triggers, it may call the assertion handler\n(possibly one provided by the app via SDL_SetAssertionHandler), which will\nreturn one of these values, possibly after asking the user.\n\nThen SDL will respond based on this outcome (loop around to retry the\ncondition, try to break in a debugger, kill the program, or ignore the\nproblem).\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Possible outcomes from a triggered assertion.",
+            "When an enabled assertion triggers, it may call the assertion handler (possibly one provided by the app via SDL_SetAssertionHandler), which will return one of these values, possibly after asking the user.",
+            "Then SDL will respond based on this outcome (loop around to retry the condition, try to break in a debugger, kill the program, or ignore the problem).",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_AssertState",
+          "kind": "enum",
+          "entries": {
+            "SDL_ASSERTION_RETRY": {
+              "doc": "Retry the assert immediately.",
+              "name": "SDL_ASSERTION_RETRY",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ASSERTION_BREAK": {
+              "doc": "Make the debugger trigger a breakpoint.",
+              "name": "SDL_ASSERTION_BREAK",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ASSERTION_ABORT": {
+              "doc": "Terminate the program.",
+              "name": "SDL_ASSERTION_ABORT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ASSERTION_IGNORE": {
+              "doc": "Ignore the assert.",
+              "name": "SDL_ASSERTION_IGNORE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ASSERTION_ALWAYS_IGNORE": {
+              "doc": "Ignore the assert from now on.",
+              "name": "SDL_ASSERTION_ALWAYS_IGNORE",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "SDL_AssertData": {
+          "doc": "Information about an assertion failure.\n\nThis structure is filled in with information about a triggered assertion,\nused by the assertion handler, then added to the assertion report. This is\nreturned as a linked list from SDL_GetAssertionReport().\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Information about an assertion failure.",
+            "This structure is filled in with information about a triggered assertion, used by the assertion handler, then added to the assertion report. This is returned as a linked list from SDL_GetAssertionReport().",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_AssertData",
+          "kind": "struct",
+          "entries": {
+            "always_ignore": {
+              "doc": "true if app should always continue when assertion is triggered.",
+              "name": "always_ignore",
+              "kind": "var",
+              "type": "bool"
+            },
+            "trigger_count": {
+              "doc": "Number of times this assertion has been triggered.",
+              "name": "trigger_count",
+              "kind": "var",
+              "type": "unsigned int"
+            },
+            "condition": {
+              "doc": "A string of this assert's test code.",
+              "name": "condition",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "filename": {
+              "doc": "The source file where this assert lives.",
+              "name": "filename",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "linenum": {
+              "doc": "The line in `filename` where this assert lives.",
+              "name": "linenum",
+              "kind": "var",
+              "type": "int"
+            },
+            "function": {
+              "doc": "The name of the function where this assert lives.",
+              "name": "function",
+              "kind": "var",
+              "type": "const char *"
+            },
+            "next": {
+              "doc": "next item in the linked list.",
+              "name": "next",
+              "kind": "var",
+              "type": "const struct SDL_AssertData *"
+            }
+          }
+        },
+        "SDL_ReportAssertion": {
+          "doc": "Never call this directly.\n\nUse the SDL_assert macros instead.\n\n\\param data assert data structure.\n\\param func function name.\n\\param file file name.\n\\param line line number.\n\\returns assert state.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Never call this directly.",
+            "Use the SDL_assert macros instead.",
+            [
+              {
+                "tag": "\\param data",
+                "content": "assert data structure."
+              },
+              {
+                "tag": "\\param func",
+                "content": "function name."
+              },
+              {
+                "tag": "\\param file",
+                "content": "file name."
+              },
+              {
+                "tag": "\\param line",
+                "content": "line number."
+              },
+              {
+                "tag": "\\returns",
+                "content": "assert state."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_ReportAssertion",
+          "kind": "function",
+          "type": "SDL_AssertState",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "SDL_AssertData *"
+            },
+            {
+              "name": "func",
+              "type": "const char *"
+            },
+            {
+              "name": "file",
+              "type": "const char *"
+            },
+            {
+              "name": "line",
+              "type": "int"
+            }
+          ]
+        },
+        "SDL_AssertBreakpoint": {
+          "doc": "The macro used when an assertion triggers a breakpoint.\n\nThis isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint\ninstead.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The macro used when an assertion triggers a breakpoint.",
+            "This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint instead.",
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_AssertBreakpoint",
+          "kind": "def",
+          "parameters": [],
+          "value": "SDL_TriggerBreakpoint()"
+        },
+        "SDL_enabled_assert": {
+          "doc": "The macro used when an assertion is enabled.\n\nThis isn't for direct use by apps, but this is the code that is inserted\nwhen an SDL_assert is enabled.\n\nThe `do {} while(0)` avoids dangling else problems:\n\n```c\nif (x) SDL_assert(y); else blah();\n```\n\n... without the do/while, the \"else\" could attach to this macro's \"if\". We\ntry to handle just the minimum we need here in a macro...the loop, the\nstatic vars, and break points. The heavy lifting is handled in\nSDL_ReportAssertion().\n\n\\param condition the condition to assert.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The macro used when an assertion is enabled.",
+            "This isn't for direct use by apps, but this is the code that is inserted when an SDL_assert is enabled.",
+            "The `do {} while(0)` avoids dangling else problems:",
+            {
+              "content": "```c\nif (x) SDL_assert(y); else blah();\n```"
+            },
+            "... without the do/while, the \"else\" could attach to this macro's \"if\". We try to handle just the minimum we need here in a macro...the loop, the static vars, and break points. The heavy lifting is handled in SDL_ReportAssertion().",
+            {
+              "tag": "\\param condition",
+              "content": "the condition to assert."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_enabled_assert",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "condition",
+              "type": ""
+            }
+          ],
+          "value": "\\\n    do { \\\n        while ( !(condition) ) { \\\n            static struct SDL_AssertData sdl_assert_data = { false, 0, #condition, NULL, 0, NULL, NULL }; \\\n            const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(&sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE); \\\n            if (sdl_assert_state == SDL_ASSERTION_RETRY) { \\\n                continue; /* go again. */ \\\n            } else if (sdl_assert_state == SDL_ASSERTION_BREAK) { \\\n                SDL_AssertBreakpoint(); \\\n            } \\\n            break; /* not retrying. */ \\\n        } \\\n    } while (SDL_NULL_WHILE_LOOP_CONDITION)"
+        },
+        "SDL_assert": {
+          "doc": "An assertion test that is normally performed only in debug builds.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is\ndisabled. This is meant to only do these tests in debug builds, so they can\ntend to be more expensive, and they are meant to bring everything to a halt\nwhen they fail, with the programmer there to assess the problem.\n\nIn short: you can sprinkle these around liberally and assume they will\nevaporate out of the build when building for end-users.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "An assertion test that is normally performed only in debug builds.",
+            "This macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is disabled. This is meant to only do these tests in debug builds, so they can tend to be more expensive, and they are meant to bring everything to a halt when they fail, with the programmer there to assess the problem.",
+            "In short: you can sprinkle these around liberally and assume they will evaporate out of the build when building for end-users.",
+            "When assertions are disabled, this wraps `condition` in a `sizeof` operator, which means any function calls and side effects will not run, but the compiler will not complain about any otherwise-unused variables that are only referenced in the assertion.",
+            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application.",
+            {
+              "tag": "\\param condition",
+              "content": "boolean value to test."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_assert",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "condition",
+              "type": ""
+            }
+          ],
+          "value": "if (assertion_enabled && (condition)) { trigger_assertion; }"
+        },
+        "SDL_assert_release": {
+          "doc": "An assertion test that is performed even in release builds.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is\ndisabled. This is meant to be for tests that are cheap to make and\nextremely unlikely to fail; generally it is frowned upon to have an\nassertion failure in a release build, so these assertions generally need to\nbe of more than life-and-death importance if there's a chance they might\ntrigger. You should almost always consider handling these cases more\ngracefully than an assert allows.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n*\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "An assertion test that is performed even in release builds.",
+            "This macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is disabled. This is meant to be for tests that are cheap to make and extremely unlikely to fail; generally it is frowned upon to have an assertion failure in a release build, so these assertions generally need to be of more than life-and-death importance if there's a chance they might trigger. You should almost always consider handling these cases more gracefully than an assert allows.",
+            "When assertions are disabled, this wraps `condition` in a `sizeof` operator, which means any function calls and side effects will not run, but the compiler will not complain about any otherwise-unused variables that are only referenced in the assertion.",
+            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application. *",
+            {
+              "tag": "\\param condition",
+              "content": "boolean value to test."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_assert_release",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "condition",
+              "type": ""
+            }
+          ],
+          "value": "SDL_disabled_assert(condition)"
+        },
+        "SDL_assert_paranoid": {
+          "doc": "An assertion test that is performed only when built with paranoid settings.\n\nThis macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is\ndisabled. This is a higher level than both release and debug, so these\ntests are meant to be expensive and only run when specifically looking for\nextremely unexpected failure cases in a special build.\n\nWhen assertions are disabled, this wraps `condition` in a `sizeof`\noperator, which means any function calls and side effects will not run, but\nthe compiler will not complain about any otherwise-unused variables that\nare only referenced in the assertion.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "An assertion test that is performed only when built with paranoid settings.",
+            "This macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is disabled. This is a higher level than both release and debug, so these tests are meant to be expensive and only run when specifically looking for extremely unexpected failure cases in a special build.",
+            "When assertions are disabled, this wraps `condition` in a `sizeof` operator, which means any function calls and side effects will not run, but the compiler will not complain about any otherwise-unused variables that are only referenced in the assertion.",
+            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application.",
+            {
+              "tag": "\\param condition",
+              "content": "boolean value to test."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_assert_paranoid",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "condition",
+              "type": ""
+            }
+          ],
+          "value": "SDL_disabled_assert(condition)"
+        },
+        "SDL_assert_always": {
+          "doc": "An assertion test that is always performed.\n\nThis macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You\nalmost never want to use this, as it could trigger on an end-user's system,\ncrashing your program.\n\nOne can set the environment variable \"SDL_ASSERT\" to one of several strings\n(\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default\nbehavior, which may be desirable for automation purposes. If your platform\nrequires GUI interfaces to happen on the main thread but you're debugging\nan assertion in a background thread, it might be desirable to set this to\n\"break\" so that your debugger takes control as soon as assert is triggered,\ninstead of risking a bad UI interaction (deadlock, etc) in the application.\n\n\\param condition boolean value to test.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "An assertion test that is always performed.",
+            "This macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You almost never want to use this, as it could trigger on an end-user's system, crashing your program.",
+            "One can set the environment variable \"SDL_ASSERT\" to one of several strings (\"abort\", \"break\", \"retry\", \"ignore\", \"always_ignore\") to force a default behavior, which may be desirable for automation purposes. If your platform requires GUI interfaces to happen on the main thread but you're debugging an assertion in a background thread, it might be desirable to set this to \"break\" so that your debugger takes control as soon as assert is triggered, instead of risking a bad UI interaction (deadlock, etc) in the application.",
+            {
+              "tag": "\\param condition",
+              "content": "boolean value to test."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this macro from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_assert_always",
+          "kind": "def",
+          "parameters": [
+            {
+              "name": "condition",
+              "type": ""
+            }
+          ],
+          "value": "SDL_enabled_assert(condition)"
+        },
+        "SDL_AssertionHandler": {
+          "doc": "A callback that fires when an SDL assertion fails.\n\n\\param data a pointer to the SDL_AssertData structure corresponding to the\n            current assertion.\n\\param userdata what was passed as `userdata` to SDL_SetAssertionHandler().\n\\returns an SDL_AssertState value indicating how to handle the failure.\n\n\\threadsafety This callback may be called from any thread that triggers an\n              assert at any time.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "A callback that fires when an SDL assertion fails.",
+            [
+              {
+                "tag": "\\param data",
+                "content": "a pointer to the SDL_AssertData structure corresponding to the current assertion."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "what was passed as `userdata` to SDL_SetAssertionHandler()."
+              },
+              {
+                "tag": "\\returns",
+                "content": "an SDL_AssertState value indicating how to handle the failure."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This callback may be called from any thread that triggers an assert at any time."
+            },
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_AssertionHandler",
+          "kind": "callback",
+          "type": "SDL_AssertState",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "const SDL_AssertData *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_SetAssertionHandler": {
+          "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon SDL_Quit()!\n\n\\param handler the SDL_AssertionHandler function to call when an assertion\n               fails or NULL for the default handler.\n\\param userdata a pointer that is passed to `handler`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAssertionHandler",
+          "parsedDoc": [
+            "Set an application-defined assertion handler.",
+            "This function allows an application to show its own assertion UI and/or force the response to an assertion failure. If the application doesn't provide this, SDL will try to do the right thing, popping up a system-specific GUI dialog, and probably minimizing any fullscreen windows.",
+            "This callback may fire from any thread, but it runs wrapped in a mutex, so it will only fire from one thread at a time.",
+            "This callback is NOT reset to SDL's internal handler upon SDL_Quit()!",
+            [
+              {
+                "tag": "\\param handler",
+                "content": "the SDL_AssertionHandler function to call when an assertion fails or NULL for the default handler."
+              },
+              {
+                "tag": "\\param userdata",
+                "content": "a pointer that is passed to `handler`."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetAssertionHandler"
+            }
+          ],
+          "name": "SDL_SetAssertionHandler",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "handler",
+              "type": "SDL_AssertionHandler"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_GetDefaultAssertionHandler": {
+          "doc": "Get the default assertion handler.\n\nThis returns the function pointer that is called by default when an\nassertion is triggered. This is an internal function provided by SDL, that\nis used for assertions when SDL_SetAssertionHandler() hasn't been used to\nprovide a different function.\n\n\\returns the default SDL_AssertionHandler that is called when an assert\n         triggers.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAssertionHandler",
+          "parsedDoc": [
+            "Get the default assertion handler.",
+            "This returns the function pointer that is called by default when an assertion is triggered. This is an internal function provided by SDL, that is used for assertions when SDL_SetAssertionHandler() hasn't been used to provide a different function.",
+            {
+              "tag": "\\returns",
+              "content": "the default SDL_AssertionHandler that is called when an assert triggers."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetAssertionHandler"
+            }
+          ],
+          "name": "SDL_GetDefaultAssertionHandler",
+          "kind": "function",
+          "type": "SDL_AssertionHandler",
+          "parameters": []
+        },
+        "SDL_GetAssertionHandler": {
+          "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSDL_SetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling SDL_GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SDL_SetAssertionHandler(). This value\nwill always be NULL for the default handler. If you don't care about this\ndata, it is safe to pass a NULL pointer to this function to ignore it.\n\n\\param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SDL_SetAssertionHandler().\n\\returns the SDL_AssertionHandler that is called when an assert triggers.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetAssertionHandler",
+          "parsedDoc": [
+            "Get the current assertion handler.",
+            "This returns the function pointer that is called when an assertion is triggered. This is either the value last passed to SDL_SetAssertionHandler(), or if no application-specified function is set, is equivalent to calling SDL_GetDefaultAssertionHandler().",
+            "The parameter `puserdata` is a pointer to a void*, which will store the \"userdata\" pointer that was passed to SDL_SetAssertionHandler(). This value will always be NULL for the default handler. If you don't care about this data, it is safe to pass a NULL pointer to this function to ignore it.",
+            [
+              {
+                "tag": "\\param puserdata",
+                "content": "pointer which is filled with the \"userdata\" pointer that was passed to SDL_SetAssertionHandler()."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the SDL_AssertionHandler that is called when an assert triggers."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_SetAssertionHandler"
+            }
+          ],
+          "name": "SDL_GetAssertionHandler",
+          "kind": "function",
+          "type": "SDL_AssertionHandler",
+          "parameters": [
+            {
+              "name": "puserdata",
+              "type": "void **"
+            }
+          ]
+        },
+        "SDL_GetAssertionReport": {
+          "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nSDL_ResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst SDL_AssertData *item = SDL_GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\\\n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n\\returns a list of all failed assertions or NULL if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to SDL_Quit() or\n         SDL_ResetAssertionReport().\n\n\\threadsafety This function is not thread safe. Other threads calling\n              SDL_ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ResetAssertionReport",
+          "parsedDoc": [
+            "Get a list of all assertion failures.",
+            "This function gets all assertions triggered since the last call to SDL_ResetAssertionReport(), or the start of the program.",
+            "The proper way to examine this data looks something like this:",
+            {
+              "content": "```c\nconst SDL_AssertData *item = SDL_GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\\\n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```"
+            },
+            {
+              "tag": "\\returns",
+              "content": "a list of all failed assertions or NULL if the list is empty. This memory should not be modified or freed by the application. This pointer remains valid until the next call to SDL_Quit() or SDL_ResetAssertionReport()."
+            },
+            {
+              "tag": "\\threadsafety",
+              "content": "This function is not thread safe. Other threads calling SDL_ResetAssertionReport() simultaneously, may render the returned pointer invalid."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_ResetAssertionReport"
+            }
+          ],
+          "name": "SDL_GetAssertionReport",
+          "kind": "function",
+          "type": "const SDL_AssertData *",
+          "parameters": []
+        },
+        "SDL_ResetAssertionReport": {
+          "doc": "Clear the list of all assertion failures.\n\nThis function will clear the list of all assertions triggered up to that\npoint. Immediately following this call, SDL_GetAssertionReport will return\nno items. In addition, any previously-triggered assertions will be reset to\na trigger_count of zero, and their always_ignore state will be false.\n\n\\threadsafety This function is not thread safe. Other threads triggering an\n              assertion, or simultaneously calling this function may cause\n              memory leaks or crashes.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetAssertionReport",
+          "parsedDoc": [
+            "Clear the list of all assertion failures.",
+            "This function will clear the list of all assertions triggered up to that point. Immediately following this call, SDL_GetAssertionReport will return no items. In addition, any previously-triggered assertions will be reset to a trigger_count of zero, and their always_ignore state will be false.",
+            {
+              "tag": "\\threadsafety",
+              "content": "This function is not thread safe. Other threads triggering an assertion, or simultaneously calling this function may cause memory leaks or crashes."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetAssertionReport"
+            }
+          ],
+          "name": "SDL_ResetAssertionReport",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        }
+      }
     },
     "SDL_asyncio.h": {
       "name": "SDL_asyncio.h",
       "doc": "# CategoryAsyncIO\n\nSDL offers a way to perform I/O asynchronously. This allows an app to read\nor write files without waiting for data to actually transfer; the functions\nthat request I/O never block while the request is fulfilled.\n\nInstead, the data moves in the background and the app can check for results\nat their leisure.\n\nThis is more complicated than just reading and writing files in a\nsynchronous way, but it can allow for more efficiency, and never having\nframerate drops as the hard drive catches up, etc.\n\nThe general usage pattern for async I/O is:\n\n- Create one or more SDL_AsyncIOQueue objects.\n- Open files with SDL_AsyncIOFromFile.\n- Start I/O tasks to the files with SDL_ReadAsyncIO or SDL_WriteAsyncIO,\n  putting those tasks into one of the queues.\n- Later on, use SDL_GetAsyncIOResult on a queue to see if any task is\n  finished without blocking. Tasks might finish in any order with success\n  or failure.\n- When all your tasks are done, close the file with SDL_CloseAsyncIO. This\n  also generates a task, since it might flush data to disk!\n\nThis all works, without blocking, in a single thread, but one can also wait\non a queue in a background thread, sleeping until new results have arrived:\n\n- Call SDL_WaitAsyncIOResult from one or more threads to efficiently block\n  until new tasks complete.\n- When shutting down, call SDL_SignalAsyncIOQueue to unblock any sleeping\n  threads despite there being no new tasks completed.\n\nAnd, of course, to match the synchronous SDL_LoadFile, we offer\nSDL_LoadFileAsync as a convenience function. This will handle allocating a\nbuffer, slurping in the file data, and null-terminating it; you still check\nfor results later.\n\nBehind the scenes, SDL will use newer, efficient APIs on platforms that\nsupport them: Linux's io_uring and Windows 11's IoRing, for example. If\nthose technologies aren't available, SDL will offload the work to a thread\npool that will manage otherwise-synchronous loads without blocking the app.\n\n## Best Practices\n\nSimple non-blocking I/O--for an app that just wants to pick up data\nwhenever it's ready without losing framerate waiting on disks to spin--can\nuse whatever pattern works well for the program. In this case, simply call\nSDL_ReadAsyncIO, or maybe SDL_LoadFileAsync, as needed. Once a frame, call\nSDL_GetAsyncIOResult to check for any completed tasks and deal with the\ndata as it arrives.\n\nIf two separate pieces of the same program need their own I/O, it is legal\nfor each to create their own queue. This will prevent either piece from\naccidentally consuming the other's completed tasks. Each queue does require\nsome amount of resources, but it is not an overwhelming cost. Do not make a\nqueue for each task, however. It is better to put many tasks into a single\nqueue. They will be reported in order of completion, not in the order they\nwere submitted, so it doesn't generally matter what order tasks are\nstarted.\n\nOne async I/O queue can be shared by multiple threads, or one thread can\nhave more than one queue, but the most efficient way--if ruthless\nefficiency is the goal--is to have one queue per thread, with multiple\nthreads working in parallel, and attempt to keep each queue loaded with\ntasks that are both started by and consumed by the same thread. On modern\nplatforms that can use newer interfaces, this can keep data flowing as\nefficiently as possible all the way from storage hardware to the app, with\nno contention between threads for access to the same queue.\n\nWritten data is not guaranteed to make it to physical media by the time a\nclosing task is completed, unless SDL_CloseAsyncIO is called with its\n`flush` parameter set to true, which is to say that a successful result\nhere can still result in lost data during an unfortunately-timed power\noutage if not flushed. However, flushing will take longer and may be\nunnecessary, depending on the app's needs.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryAsyncIO"
+        },
+        "SDL offers a way to perform I/O asynchronously. This allows an app to read or write files without waiting for data to actually transfer; the functions that request I/O never block while the request is fulfilled.",
+        "Instead, the data moves in the background and the app can check for results at their leisure.",
+        "This is more complicated than just reading and writing files in a synchronous way, but it can allow for more efficiency, and never having framerate drops as the hard drive catches up, etc.",
+        "The general usage pattern for async I/O is:",
+        [
+          {
+            "tag": "-",
+            "content": "Create one or more SDL_AsyncIOQueue objects."
+          },
+          {
+            "tag": "-",
+            "content": "Open files with SDL_AsyncIOFromFile."
+          },
+          {
+            "tag": "-",
+            "content": "Start I/O tasks to the files with SDL_ReadAsyncIO or SDL_WriteAsyncIO, putting those tasks into one of the queues."
+          },
+          {
+            "tag": "-",
+            "content": "Later on, use SDL_GetAsyncIOResult on a queue to see if any task is finished without blocking. Tasks might finish in any order with success or failure."
+          },
+          {
+            "tag": "-",
+            "content": "When all your tasks are done, close the file with SDL_CloseAsyncIO. This also generates a task, since it might flush data to disk!"
+          }
+        ],
+        "This all works, without blocking, in a single thread, but one can also wait on a queue in a background thread, sleeping until new results have arrived:",
+        [
+          {
+            "tag": "-",
+            "content": "Call SDL_WaitAsyncIOResult from one or more threads to efficiently block until new tasks complete."
+          },
+          {
+            "tag": "-",
+            "content": "When shutting down, call SDL_SignalAsyncIOQueue to unblock any sleeping threads despite there being no new tasks completed."
+          }
+        ],
+        "And, of course, to match the synchronous SDL_LoadFile, we offer SDL_LoadFileAsync as a convenience function. This will handle allocating a buffer, slurping in the file data, and null-terminating it; you still check for results later.",
+        "Behind the scenes, SDL will use newer, efficient APIs on platforms that support them: Linux's io_uring and Windows 11's IoRing, for example. If those technologies aren't available, SDL will offload the work to a thread pool that will manage otherwise-synchronous loads without blocking the app.",
+        {
+          "tag": "##",
+          "content": "Best Practices"
+        },
+        "Simple non-blocking I/O--for an app that just wants to pick up data whenever it's ready without losing framerate waiting on disks to spin--can use whatever pattern works well for the program. In this case, simply call SDL_ReadAsyncIO, or maybe SDL_LoadFileAsync, as needed. Once a frame, call SDL_GetAsyncIOResult to check for any completed tasks and deal with the data as it arrives.",
+        "If two separate pieces of the same program need their own I/O, it is legal for each to create their own queue. This will prevent either piece from accidentally consuming the other's completed tasks. Each queue does require some amount of resources, but it is not an overwhelming cost. Do not make a queue for each task, however. It is better to put many tasks into a single queue. They will be reported in order of completion, not in the order they were submitted, so it doesn't generally matter what order tasks are started.",
+        "One async I/O queue can be shared by multiple threads, or one thread can have more than one queue, but the most efficient way--if ruthless efficiency is the goal--is to have one queue per thread, with multiple threads working in parallel, and attempt to keep each queue loaded with tasks that are both started by and consumed by the same thread. On modern platforms that can use newer interfaces, this can keep data flowing as efficiently as possible all the way from storage hardware to the app, with no contention between threads for access to the same queue.",
+        "Written data is not guaranteed to make it to physical media by the time a closing task is completed, unless SDL_CloseAsyncIO is called with its `flush` parameter set to true, which is to say that a successful result here can still result in lost data during an unfortunately-timed power outage if not flushed. However, flushing will take longer and may be unnecessary, depending on the app's needs."
+      ],
       "entries": {
         "SDL_AsyncIO": {
           "doc": "The asynchronous I/O operation structure.\n\nThis operates as an opaque handle. One can then request read or write\noperations on it.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_AsyncIOFromFile",
-          "name": "SDL_AsyncIO",
-          "kind": "alias",
-          "type": "struct SDL_AsyncIO",
           "parsedDoc": [
             "The asynchronous I/O operation structure.",
             "This operates as an opaque handle. One can then request read or write operations on it.",
@@ -753,10 +803,20 @@
               "tag": "\\sa",
               "content": "SDL_AsyncIOFromFile"
             }
-          ]
+          ],
+          "name": "SDL_AsyncIO",
+          "kind": "alias",
+          "type": "struct SDL_AsyncIO"
         },
         "SDL_AsyncIOTaskType": {
           "doc": "Types of asynchronous I/O tasks.\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Types of asynchronous I/O tasks.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_AsyncIOTaskType",
           "kind": "enum",
           "entries": {
@@ -778,17 +838,17 @@
               "kind": "var",
               "type": ""
             }
-          },
+          }
+        },
+        "SDL_AsyncIOResult": {
+          "doc": "Possible outcomes of an asynchronous I/O task.\n\n\\since This enum is available since SDL 3.2.0.",
           "parsedDoc": [
-            "Types of asynchronous I/O tasks.",
+            "Possible outcomes of an asynchronous I/O task.",
             {
               "tag": "\\since",
               "content": "This enum is available since SDL 3.2.0."
             }
-          ]
-        },
-        "SDL_AsyncIOResult": {
-          "doc": "Possible outcomes of an asynchronous I/O task.\n\n\\since This enum is available since SDL 3.2.0.",
+          ],
           "name": "SDL_AsyncIOResult",
           "kind": "enum",
           "entries": {
@@ -810,17 +870,17 @@
               "kind": "var",
               "type": ""
             }
-          },
-          "parsedDoc": [
-            "Possible outcomes of an asynchronous I/O task.",
-            {
-              "tag": "\\since",
-              "content": "This enum is available since SDL 3.2.0."
-            }
-          ]
+          }
         },
         "SDL_AsyncIOOutcome": {
           "doc": "Information about a completed asynchronous I/O request.\n\n\\since This struct is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Information about a completed asynchronous I/O request.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_AsyncIOOutcome",
           "kind": "struct",
           "entries": {
@@ -872,20 +932,10 @@
               "kind": "var",
               "type": "void *"
             }
-          },
-          "parsedDoc": [
-            "Information about a completed asynchronous I/O request.",
-            {
-              "tag": "\\since",
-              "content": "This struct is available since SDL 3.2.0."
-            }
-          ]
+          }
         },
         "SDL_AsyncIOQueue": {
           "doc": "A queue of completed asynchronous I/O tasks.\n\nWhen starting an asynchronous operation, you specify a queue for the new\ntask. A queue can be asked later if any tasks in it have completed,\nallowing an app to manage multiple pending tasks in one place, in whatever\norder they complete.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CreateAsyncIOQueue\n\\sa SDL_ReadAsyncIO\n\\sa SDL_WriteAsyncIO\n\\sa SDL_GetAsyncIOResult\n\\sa SDL_WaitAsyncIOResult",
-          "name": "SDL_AsyncIOQueue",
-          "kind": "alias",
-          "type": "struct SDL_AsyncIOQueue",
           "parsedDoc": [
             "A queue of completed asynchronous I/O tasks.",
             "When starting an asynchronous operation, you specify a queue for the new task. A queue can be asked later if any tasks in it have completed, allowing an app to manage multiple pending tasks in one place, in whatever order they complete.",
@@ -915,23 +965,13 @@
                 "content": "SDL_WaitAsyncIOResult"
               }
             ]
-          ]
+          ],
+          "name": "SDL_AsyncIOQueue",
+          "kind": "alias",
+          "type": "struct SDL_AsyncIOQueue"
         },
         "SDL_AsyncIOFromFile": {
           "doc": "Use this function to create a new SDL_AsyncIO object for reading from\nand/or writing to a named file.\n\nThe `mode` string understands the following values:\n\n- \"r\": Open a file for reading only. It must exist.\n- \"w\": Open a file for writing only. It will create missing files or\n  truncate existing ones.\n- \"r+\": Open a file for update both reading and writing. The file must\n  exist.\n- \"w+\": Create an empty file for both reading and writing. If a file with\n  the same name already exists its content is erased and the file is\n  treated as a new empty file.\n\nThere is no \"b\" mode, as there is only \"binary\" style I/O, and no \"a\" mode\nfor appending, since you specify the position when starting a task.\n\nThis function supports Unicode filenames, but they must be encoded in UTF-8\nformat, regardless of the underlying operating system.\n\nThis call is _not_ asynchronous; it will open the file before returning,\nunder the assumption that doing so is generally a fast operation. Future\nreads and writes to the opened file will be async, however.\n\n\\param file a UTF-8 string representing the filename to open.\n\\param mode an ASCII string representing the mode to be used for opening\n            the file.\n\\returns a pointer to the SDL_AsyncIO structure that is created or NULL on\n         failure; call SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_CloseAsyncIO\n\\sa SDL_ReadAsyncIO\n\\sa SDL_WriteAsyncIO",
-          "name": "SDL_AsyncIOFromFile",
-          "kind": "function",
-          "type": "SDL_AsyncIO *",
-          "parameters": [
-            {
-              "name": "file",
-              "type": "const char *"
-            },
-            {
-              "name": "mode",
-              "type": "const char *"
-            }
-          ],
           "parsedDoc": [
             "Use this function to create a new SDL_AsyncIO object for reading from and/or writing to a named file.",
             "The `mode` string understands the following values:",
@@ -988,19 +1028,23 @@
                 "content": "SDL_WriteAsyncIO"
               }
             ]
+          ],
+          "name": "SDL_AsyncIOFromFile",
+          "kind": "function",
+          "type": "SDL_AsyncIO *",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "const char *"
+            },
+            {
+              "name": "mode",
+              "type": "const char *"
+            }
           ]
         },
         "SDL_GetAsyncIOSize": {
           "doc": "Use this function to get the size of the data stream in an SDL_AsyncIO.\n\nThis call is _not_ asynchronous; it assumes that obtaining this info is a\nnon-blocking operation in most reasonable cases.\n\n\\param asyncio the SDL_AsyncIO to get the size of the data stream from.\n\\returns the size of the data stream in the SDL_IOStream on success or a\n         negative error code on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
-          "name": "SDL_GetAsyncIOSize",
-          "kind": "function",
-          "type": "Sint64",
-          "parameters": [
-            {
-              "name": "asyncio",
-              "type": "SDL_AsyncIO *"
-            }
-          ],
           "parsedDoc": [
             "Use this function to get the size of the data stream in an SDL_AsyncIO.",
             "This call is _not_ asynchronous; it assumes that obtaining this info is a non-blocking operation in most reasonable cases.",
@@ -1022,39 +1066,19 @@
               "tag": "\\since",
               "content": "This function is available since SDL 3.2.0."
             }
-          ]
-        },
-        "SDL_ReadAsyncIO": {
-          "doc": "Start an async read.\n\nThis function reads up to `size` bytes from `offset` position in the data\nsource to the area pointed at by `ptr`. This function may read less bytes\nthan requested.\n\nThis function returns as quickly as possible; it does not wait for the read\nto complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param asyncio a pointer to an SDL_AsyncIO structure.\n\\param ptr a pointer to a buffer to read data into.\n\\param offset the position to start reading in the data source.\n\\param size the number of bytes to read from the data source.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WriteAsyncIO\n\\sa SDL_CreateAsyncIOQueue",
-          "name": "SDL_ReadAsyncIO",
+          ],
+          "name": "SDL_GetAsyncIOSize",
           "kind": "function",
-          "type": "bool",
+          "type": "Sint64",
           "parameters": [
             {
               "name": "asyncio",
               "type": "SDL_AsyncIO *"
-            },
-            {
-              "name": "ptr",
-              "type": "void *"
-            },
-            {
-              "name": "offset",
-              "type": "Uint64"
-            },
-            {
-              "name": "size",
-              "type": "Uint64"
-            },
-            {
-              "name": "queue",
-              "type": "SDL_AsyncIOQueue *"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
             }
-          ],
+          ]
+        },
+        "SDL_ReadAsyncIO": {
+          "doc": "Start an async read.\n\nThis function reads up to `size` bytes from `offset` position in the data\nsource to the area pointed at by `ptr`. This function may read less bytes\nthan requested.\n\nThis function returns as quickly as possible; it does not wait for the read\nto complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param asyncio a pointer to an SDL_AsyncIO structure.\n\\param ptr a pointer to a buffer to read data into.\n\\param offset the position to start reading in the data source.\n\\param size the number of bytes to read from the data source.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WriteAsyncIO\n\\sa SDL_CreateAsyncIOQueue",
           "parsedDoc": [
             "Start an async read.",
             "This function reads up to `size` bytes from `offset` position in the data source to the area pointed at by `ptr`. This function may read less bytes than requested.",
@@ -1109,11 +1133,8 @@
                 "content": "SDL_CreateAsyncIOQueue"
               }
             ]
-          ]
-        },
-        "SDL_WriteAsyncIO": {
-          "doc": "Start an async write.\n\nThis function writes `size` bytes from `offset` position in the data source\nto the area pointed at by `ptr`.\n\nThis function returns as quickly as possible; it does not wait for the\nwrite to complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param asyncio a pointer to an SDL_AsyncIO structure.\n\\param ptr a pointer to a buffer to write data from.\n\\param offset the position to start writing to the data source.\n\\param size the number of bytes to write to the data source.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ReadAsyncIO\n\\sa SDL_CreateAsyncIOQueue",
-          "name": "SDL_WriteAsyncIO",
+          ],
+          "name": "SDL_ReadAsyncIO",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -1141,7 +1162,10 @@
               "name": "userdata",
               "type": "void *"
             }
-          ],
+          ]
+        },
+        "SDL_WriteAsyncIO": {
+          "doc": "Start an async write.\n\nThis function writes `size` bytes from `offset` position in the data source\nto the area pointed at by `ptr`.\n\nThis function returns as quickly as possible; it does not wait for the\nwrite to complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\n`ptr` must remain available until the work is done, and may be accessed by\nthe system at any time until then. Do not allocate it on the stack, as this\nmight take longer than the life of the calling function to complete!\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param asyncio a pointer to an SDL_AsyncIO structure.\n\\param ptr a pointer to a buffer to write data from.\n\\param offset the position to start writing to the data source.\n\\param size the number of bytes to write to the data source.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ReadAsyncIO\n\\sa SDL_CreateAsyncIOQueue",
           "parsedDoc": [
             "Start an async write.",
             "This function writes `size` bytes from `offset` position in the data source to the area pointed at by `ptr`.",
@@ -1196,11 +1220,8 @@
                 "content": "SDL_CreateAsyncIOQueue"
               }
             ]
-          ]
-        },
-        "SDL_CloseAsyncIO": {
-          "doc": "Close and free any allocated resources for an async I/O object.\n\nClosing a file is _also_ an asynchronous task! If a write failure were to\nhappen during the closing process, for example, the task results will\nreport it as usual.\n\nClosing a file that has been written to does not guarantee the data has\nmade it to physical media; it may remain in the operating system's file\ncache, for later writing to disk. This means that a successfully-closed\nfile can be lost if the system crashes or loses power in this small window.\nTo prevent this, call this function with the `flush` parameter set to true.\nThis will make the operation take longer, and perhaps increase system load\nin general, but a successful result guarantees that the data has made it to\nphysical storage. Don't use this for temporary files, caches, and\nunimportant data, and definitely use it for crucial irreplaceable files,\nlike game saves.\n\nThis function guarantees that the close will happen after any other pending\ntasks to `asyncio`, so it's safe to open a file, start several operations,\nclose the file immediately, then check for all results later. This function\nwill not block until the tasks have completed.\n\nOnce this function returns true, `asyncio` is no longer valid, regardless\nof any future outcomes. Any completed tasks might still contain this\npointer in their SDL_AsyncIOOutcome data, in case the app was using this\nvalue to track information, but it should not be used again.\n\nIf this function returns false, the close wasn't started at all, and it's\nsafe to attempt to close again later.\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param asyncio a pointer to an SDL_AsyncIO structure to close.\n\\param flush true if data should sync to disk before the task completes.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread, but two\n              threads should not attempt to close the same object.\n\n\\since This function is available since SDL 3.2.0.",
-          "name": "SDL_CloseAsyncIO",
+          ],
+          "name": "SDL_WriteAsyncIO",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -1209,8 +1230,16 @@
               "type": "SDL_AsyncIO *"
             },
             {
-              "name": "flush",
-              "type": "bool"
+              "name": "ptr",
+              "type": "void *"
+            },
+            {
+              "name": "offset",
+              "type": "Uint64"
+            },
+            {
+              "name": "size",
+              "type": "Uint64"
             },
             {
               "name": "queue",
@@ -1220,7 +1249,10 @@
               "name": "userdata",
               "type": "void *"
             }
-          ],
+          ]
+        },
+        "SDL_CloseAsyncIO": {
+          "doc": "Close and free any allocated resources for an async I/O object.\n\nClosing a file is _also_ an asynchronous task! If a write failure were to\nhappen during the closing process, for example, the task results will\nreport it as usual.\n\nClosing a file that has been written to does not guarantee the data has\nmade it to physical media; it may remain in the operating system's file\ncache, for later writing to disk. This means that a successfully-closed\nfile can be lost if the system crashes or loses power in this small window.\nTo prevent this, call this function with the `flush` parameter set to true.\nThis will make the operation take longer, and perhaps increase system load\nin general, but a successful result guarantees that the data has made it to\nphysical storage. Don't use this for temporary files, caches, and\nunimportant data, and definitely use it for crucial irreplaceable files,\nlike game saves.\n\nThis function guarantees that the close will happen after any other pending\ntasks to `asyncio`, so it's safe to open a file, start several operations,\nclose the file immediately, then check for all results later. This function\nwill not block until the tasks have completed.\n\nOnce this function returns true, `asyncio` is no longer valid, regardless\nof any future outcomes. Any completed tasks might still contain this\npointer in their SDL_AsyncIOOutcome data, in case the app was using this\nvalue to track information, but it should not be used again.\n\nIf this function returns false, the close wasn't started at all, and it's\nsafe to attempt to close again later.\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param asyncio a pointer to an SDL_AsyncIO structure to close.\n\\param flush true if data should sync to disk before the task completes.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread, but two\n              threads should not attempt to close the same object.\n\n\\since This function is available since SDL 3.2.0.",
           "parsedDoc": [
             "Close and free any allocated resources for an async I/O object.",
             "Closing a file is _also_ an asynchronous task! If a write failure were to happen during the closing process, for example, the task results will report it as usual.",
@@ -1259,14 +1291,31 @@
               "tag": "\\since",
               "content": "This function is available since SDL 3.2.0."
             }
+          ],
+          "name": "SDL_CloseAsyncIO",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "asyncio",
+              "type": "SDL_AsyncIO *"
+            },
+            {
+              "name": "flush",
+              "type": "bool"
+            },
+            {
+              "name": "queue",
+              "type": "SDL_AsyncIOQueue *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
           ]
         },
         "SDL_CreateAsyncIOQueue": {
           "doc": "Create a task queue for tracking multiple I/O operations.\n\nAsync I/O operations are assigned to a queue when started. The queue can be\nchecked for completed tasks thereafter.\n\n\\returns a new task queue object or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_DestroyAsyncIOQueue\n\\sa SDL_GetAsyncIOResult\n\\sa SDL_WaitAsyncIOResult",
-          "name": "SDL_CreateAsyncIOQueue",
-          "kind": "function",
-          "type": "SDL_AsyncIOQueue *",
-          "parameters": [],
           "parsedDoc": [
             "Create a task queue for tracking multiple I/O operations.",
             "Async I/O operations are assigned to a queue when started. The queue can be checked for completed tasks thereafter.",
@@ -1296,19 +1345,14 @@
                 "content": "SDL_WaitAsyncIOResult"
               }
             ]
-          ]
+          ],
+          "name": "SDL_CreateAsyncIOQueue",
+          "kind": "function",
+          "type": "SDL_AsyncIOQueue *",
+          "parameters": []
         },
         "SDL_DestroyAsyncIOQueue": {
           "doc": "Destroy a previously-created async I/O task queue.\n\nIf there are still tasks pending for this queue, this call will block until\nthose tasks are finished. All those tasks will be deallocated. Their\nresults will be lost to the app.\n\nAny pending reads from SDL_LoadFileAsync() that are still in this queue\nwill have their buffers deallocated by this function, to prevent a memory\nleak.\n\nOnce this function is called, the queue is no longer valid and should not\nbe used, including by other threads that might access it while destruction\nis blocking on pending tasks.\n\nDo not destroy a queue that still has threads waiting on it through\nSDL_WaitAsyncIOResult(). You can call SDL_SignalAsyncIOQueue() first to\nunblock those threads, and take measures (such as SDL_WaitThread()) to make\nsure they have finished their wait and won't wait on the queue again.\n\n\\param queue the task queue to destroy.\n\n\\threadsafety It is safe to call this function from any thread, so long as\n              no other thread is waiting on the queue with\n              SDL_WaitAsyncIOResult.\n\n\\since This function is available since SDL 3.2.0.",
-          "name": "SDL_DestroyAsyncIOQueue",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "queue",
-              "type": "SDL_AsyncIOQueue *"
-            }
-          ],
           "parsedDoc": [
             "Destroy a previously-created async I/O task queue.",
             "If there are still tasks pending for this queue, this call will block until those tasks are finished. All those tasks will be deallocated. Their results will be lost to the app.",
@@ -1327,23 +1371,19 @@
               "tag": "\\since",
               "content": "This function is available since SDL 3.2.0."
             }
-          ]
-        },
-        "SDL_GetAsyncIOResult": {
-          "doc": "Query an async I/O task queue for completed tasks.\n\nIf a task assigned to this queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false. This function does not block.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\n\\param queue the async I/O task queue to query.\n\\param outcome details of a finished task will be written here. May not be\n               NULL.\n\\returns true if a task has completed, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WaitAsyncIOResult",
-          "name": "SDL_GetAsyncIOResult",
+          ],
+          "name": "SDL_DestroyAsyncIOQueue",
           "kind": "function",
-          "type": "bool",
+          "type": "void",
           "parameters": [
             {
               "name": "queue",
               "type": "SDL_AsyncIOQueue *"
-            },
-            {
-              "name": "outcome",
-              "type": "SDL_AsyncIOOutcome *"
             }
-          ],
+          ]
+        },
+        "SDL_GetAsyncIOResult": {
+          "doc": "Query an async I/O task queue for completed tasks.\n\nIf a task assigned to this queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false. This function does not block.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\n\\param queue the async I/O task queue to query.\n\\param outcome details of a finished task will be written here. May not be\n               NULL.\n\\returns true if a task has completed, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WaitAsyncIOResult",
           "parsedDoc": [
             "Query an async I/O task queue for completed tasks.",
             "If a task assigned to this queue has finished, this will return true and fill in `outcome` with the details of the task. If no task in the queue has finished, this function will return false. This function does not block.",
@@ -1375,11 +1415,8 @@
               "tag": "\\sa",
               "content": "SDL_WaitAsyncIOResult"
             }
-          ]
-        },
-        "SDL_WaitAsyncIOResult": {
-          "doc": "Block until an async I/O task queue has a completed task.\n\nThis function puts the calling thread to sleep until there a task assigned\nto the queue that has finished.\n\nIf a task assigned to the queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\nNote that by the nature of various platforms, more than one waiting thread\nmay wake to handle a single task, but only one will obtain it, so\n`timeoutMS` is a _maximum_ wait time, and this function may return false\nsooner.\n\nThis function may return false if there was a system error, the OS\ninadvertently awoke multiple threads, or if SDL_SignalAsyncIOQueue() was\ncalled to wake up all waiting threads without a finished task.\n\nA timeout can be used to specify a maximum wait time, but rather than\npolling, it is possible to have a timeout of -1 to wait forever, and use\nSDL_SignalAsyncIOQueue() to wake up the waiting threads later.\n\n\\param queue the async I/O task queue to wait on.\n\\param outcome details of a finished task will be written here. May not be\n               NULL.\n\\param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n\\returns true if task has completed, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SignalAsyncIOQueue",
-          "name": "SDL_WaitAsyncIOResult",
+          ],
+          "name": "SDL_GetAsyncIOResult",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -1390,12 +1427,11 @@
             {
               "name": "outcome",
               "type": "SDL_AsyncIOOutcome *"
-            },
-            {
-              "name": "timeoutMS",
-              "type": "Sint32"
             }
-          ],
+          ]
+        },
+        "SDL_WaitAsyncIOResult": {
+          "doc": "Block until an async I/O task queue has a completed task.\n\nThis function puts the calling thread to sleep until there a task assigned\nto the queue that has finished.\n\nIf a task assigned to the queue has finished, this will return true and\nfill in `outcome` with the details of the task. If no task in the queue has\nfinished, this function will return false.\n\nIf a task has completed, this function will free its resources and the task\npointer will no longer be valid. The task will be removed from the queue.\n\nIt is safe for multiple threads to call this function on the same queue at\nonce; a completed task will only go to one of the threads.\n\nNote that by the nature of various platforms, more than one waiting thread\nmay wake to handle a single task, but only one will obtain it, so\n`timeoutMS` is a _maximum_ wait time, and this function may return false\nsooner.\n\nThis function may return false if there was a system error, the OS\ninadvertently awoke multiple threads, or if SDL_SignalAsyncIOQueue() was\ncalled to wake up all waiting threads without a finished task.\n\nA timeout can be used to specify a maximum wait time, but rather than\npolling, it is possible to have a timeout of -1 to wait forever, and use\nSDL_SignalAsyncIOQueue() to wake up the waiting threads later.\n\n\\param queue the async I/O task queue to wait on.\n\\param outcome details of a finished task will be written here. May not be\n               NULL.\n\\param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait\n                 indefinitely.\n\\returns true if task has completed, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SignalAsyncIOQueue",
           "parsedDoc": [
             "Block until an async I/O task queue has a completed task.",
             "This function puts the calling thread to sleep until there a task assigned to the queue that has finished.",
@@ -1435,19 +1471,27 @@
               "tag": "\\sa",
               "content": "SDL_SignalAsyncIOQueue"
             }
-          ]
-        },
-        "SDL_SignalAsyncIOQueue": {
-          "doc": "Wake up any threads that are blocking in SDL_WaitAsyncIOResult().\n\nThis will unblock any threads that are sleeping in a call to\nSDL_WaitAsyncIOResult for the specified queue, and cause them to return\nfrom that function.\n\nThis can be useful when destroying a queue to make sure nothing is touching\nit indefinitely. In this case, once this call completes, the caller should\ntake measures to make sure any previously-blocked threads have returned\nfrom their wait and will not touch the queue again (perhaps by setting a\nflag to tell the threads to terminate and then using SDL_WaitThread() to\nmake sure they've done so).\n\n\\param queue the async I/O task queue to signal.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WaitAsyncIOResult",
-          "name": "SDL_SignalAsyncIOQueue",
+          ],
+          "name": "SDL_WaitAsyncIOResult",
           "kind": "function",
-          "type": "void",
+          "type": "bool",
           "parameters": [
             {
               "name": "queue",
               "type": "SDL_AsyncIOQueue *"
+            },
+            {
+              "name": "outcome",
+              "type": "SDL_AsyncIOOutcome *"
+            },
+            {
+              "name": "timeoutMS",
+              "type": "Sint32"
             }
-          ],
+          ]
+        },
+        "SDL_SignalAsyncIOQueue": {
+          "doc": "Wake up any threads that are blocking in SDL_WaitAsyncIOResult().\n\nThis will unblock any threads that are sleeping in a call to\nSDL_WaitAsyncIOResult for the specified queue, and cause them to return\nfrom that function.\n\nThis can be useful when destroying a queue to make sure nothing is touching\nit indefinitely. In this case, once this call completes, the caller should\ntake measures to make sure any previously-blocked threads have returned\nfrom their wait and will not touch the queue again (perhaps by setting a\nflag to tell the threads to terminate and then using SDL_WaitThread() to\nmake sure they've done so).\n\n\\param queue the async I/O task queue to signal.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_WaitAsyncIOResult",
           "parsedDoc": [
             "Wake up any threads that are blocking in SDL_WaitAsyncIOResult().",
             "This will unblock any threads that are sleeping in a call to SDL_WaitAsyncIOResult for the specified queue, and cause them to return from that function.",
@@ -1468,27 +1512,19 @@
               "tag": "\\sa",
               "content": "SDL_WaitAsyncIOResult"
             }
+          ],
+          "name": "SDL_SignalAsyncIOQueue",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "queue",
+              "type": "SDL_AsyncIOQueue *"
+            }
           ]
         },
         "SDL_LoadFileAsync": {
           "doc": "Load all the data from a file path, asynchronously.\n\nThis function returns as quickly as possible; it does not wait for the read\nto complete. On a successful return, this work will continue in the\nbackground. If the work begins, even failure is asynchronous: a failing\nreturn value from this function only means the work couldn't start at all.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in SDL_AsyncIOOutcome's\nbytes_transferred value.\n\nThis function will allocate the buffer to contain the file. It must be\ndeallocated by calling SDL_free() on SDL_AsyncIOOutcome's buffer field\nafter completion.\n\nAn SDL_AsyncIOQueue must be specified. The newly-created task will be added\nto it when it completes its work.\n\n\\param file the path to read all available data from.\n\\param queue a queue to add the new SDL_AsyncIO to.\n\\param userdata an app-defined pointer that will be provided with the task\n                results.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadFile_IO",
-          "name": "SDL_LoadFileAsync",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "file",
-              "type": "const char *"
-            },
-            {
-              "name": "queue",
-              "type": "SDL_AsyncIOQueue *"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
           "parsedDoc": [
             "Load all the data from a file path, asynchronously.",
             "This function returns as quickly as possible; it does not wait for the read to complete. On a successful return, this work will continue in the background. If the work begins, even failure is asynchronous: a failing return value from this function only means the work couldn't start at all.",
@@ -1521,62 +1557,26 @@
               "tag": "\\sa",
               "content": "SDL_LoadFile_IO"
             }
+          ],
+          "name": "SDL_LoadFileAsync",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "const char *"
+            },
+            {
+              "name": "queue",
+              "type": "SDL_AsyncIOQueue *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
           ]
         }
-      },
-      "parsedDoc": [
-        {
-          "tag": "#",
-          "content": "CategoryAsyncIO"
-        },
-        "SDL offers a way to perform I/O asynchronously. This allows an app to read or write files without waiting for data to actually transfer; the functions that request I/O never block while the request is fulfilled.",
-        "Instead, the data moves in the background and the app can check for results at their leisure.",
-        "This is more complicated than just reading and writing files in a synchronous way, but it can allow for more efficiency, and never having framerate drops as the hard drive catches up, etc.",
-        "The general usage pattern for async I/O is:",
-        [
-          {
-            "tag": "-",
-            "content": "Create one or more SDL_AsyncIOQueue objects."
-          },
-          {
-            "tag": "-",
-            "content": "Open files with SDL_AsyncIOFromFile."
-          },
-          {
-            "tag": "-",
-            "content": "Start I/O tasks to the files with SDL_ReadAsyncIO or SDL_WriteAsyncIO, putting those tasks into one of the queues."
-          },
-          {
-            "tag": "-",
-            "content": "Later on, use SDL_GetAsyncIOResult on a queue to see if any task is finished without blocking. Tasks might finish in any order with success or failure."
-          },
-          {
-            "tag": "-",
-            "content": "When all your tasks are done, close the file with SDL_CloseAsyncIO. This also generates a task, since it might flush data to disk!"
-          }
-        ],
-        "This all works, without blocking, in a single thread, but one can also wait on a queue in a background thread, sleeping until new results have arrived:",
-        [
-          {
-            "tag": "-",
-            "content": "Call SDL_WaitAsyncIOResult from one or more threads to efficiently block until new tasks complete."
-          },
-          {
-            "tag": "-",
-            "content": "When shutting down, call SDL_SignalAsyncIOQueue to unblock any sleeping threads despite there being no new tasks completed."
-          }
-        ],
-        "And, of course, to match the synchronous SDL_LoadFile, we offer SDL_LoadFileAsync as a convenience function. This will handle allocating a buffer, slurping in the file data, and null-terminating it; you still check for results later.",
-        "Behind the scenes, SDL will use newer, efficient APIs on platforms that support them: Linux's io_uring and Windows 11's IoRing, for example. If those technologies aren't available, SDL will offload the work to a thread pool that will manage otherwise-synchronous loads without blocking the app.",
-        {
-          "tag": "##",
-          "content": "Best Practices"
-        },
-        "Simple non-blocking I/O--for an app that just wants to pick up data whenever it's ready without losing framerate waiting on disks to spin--can use whatever pattern works well for the program. In this case, simply call SDL_ReadAsyncIO, or maybe SDL_LoadFileAsync, as needed. Once a frame, call SDL_GetAsyncIOResult to check for any completed tasks and deal with the data as it arrives.",
-        "If two separate pieces of the same program need their own I/O, it is legal for each to create their own queue. This will prevent either piece from accidentally consuming the other's completed tasks. Each queue does require some amount of resources, but it is not an overwhelming cost. Do not make a queue for each task, however. It is better to put many tasks into a single queue. They will be reported in order of completion, not in the order they were submitted, so it doesn't generally matter what order tasks are started.",
-        "One async I/O queue can be shared by multiple threads, or one thread can have more than one queue, but the most efficient way--if ruthless efficiency is the goal--is to have one queue per thread, with multiple threads working in parallel, and attempt to keep each queue loaded with tasks that are both started by and consumed by the same thread. On modern platforms that can use newer interfaces, this can keep data flowing as efficiently as possible all the way from storage hardware to the app, with no contention between threads for access to the same queue.",
-        "Written data is not guaranteed to make it to physical media by the time a closing task is completed, unless SDL_CloseAsyncIO is called with its `flush` parameter set to true, which is to say that a successful result here can still result in lost data during an unfortunately-timed power outage if not flushed. However, flushing will take longer and may be unnecessary, depending on the app's needs."
-      ]
+      }
     },
     "SDL_atomic.h": {
       "name": "SDL_atomic.h",
