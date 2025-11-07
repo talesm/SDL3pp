@@ -626,20 +626,20 @@ private:
  *
  * SDL does some preprocessor gymnastics to determine if any CPU-specific
  * compiler intrinsics are available, as this is not necessarily an easy thing
- * to calculate, and sometimes depends on quirks of a system, versions of
- * build tools, and other external forces.
+ * to calculate, and sometimes depends on quirks of a system, versions of build
+ * tools, and other external forces.
  *
  * Apps including SDL's headers will be able to check consistent preprocessor
- * definitions to decide if it's safe to use compiler intrinsics for a
- * specific CPU architecture. This check only tells you that the compiler is
- * capable of using those intrinsics; at runtime, you should still check if
- * they are available on the current system with the
- * [CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo)
- * , such as HasSSE() or HasNEON(). Otherwise, the process might crash
- * for using an unsupported CPU instruction.
+ * definitions to decide if it's safe to use compiler intrinsics for a specific
+ * CPU architecture. This check only tells you that the compiler is capable of
+ * using those intrinsics; at runtime, you should still check if they are
+ * available on the current system with the [CPU info
+ * functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo) , such as HasSSE()
+ * or HasNEON(). Otherwise, the process might crash for using an unsupported CPU
+ * instruction.
  *
- * SDL only sets preprocessor defines for CPU intrinsics if they are
- * supported, so apps should check with `#ifdef` and not `#if`.
+ * SDL only sets preprocessor defines for CPU intrinsics if they are supported,
+ * so apps should check with `#ifdef` and not `#if`.
  *
  * SDL will also include the appropriate instruction-set-specific support
  * headers, so if SDL decides to define SDL_SSE2_INTRINSICS, it will also
@@ -813,9 +813,9 @@ private:
 /**
  * A macro to decide if the compiler supports `__attribute__((target))`.
  *
- * Even though this is defined in SDL's public headers, it is generally not
- * used directly by apps. Apps should probably just use SDL_TARGETING
- * directly, instead.
+ * Even though this is defined in SDL's public headers, it is generally not used
+ * directly by apps. Apps should probably just use SDL_TARGETING directly,
+ * instead.
  *
  * @since This macro is available since SDL 3.2.0.
  *
@@ -854,10 +854,10 @@ private:
  * ```
  *
  * The application is, on a whole, built without SSE2 instructions, so it will
- * run on Intel machines that don't support SSE2. But then at runtime, it
- * checks if the system supports the instructions, and then calls into a
- * function that uses SSE2 opcodes. The ifdefs make sure that this code isn't
- * used on platforms that don't have SSE2 at all.
+ * run on Intel machines that don't support SSE2. But then at runtime, it checks
+ * if the system supports the instructions, and then calls into a function that
+ * uses SSE2 opcodes. The ifdefs make sure that this code isn't used on
+ * platforms that don't have SSE2 at all.
  *
  * On compilers without target support, this is defined to nothing.
  *
@@ -24228,27 +24228,27 @@ inline void hid_ble_scan(bool active) { SDL_hid_ble_scan(active); }
 /**
  * @defgroup CategoryInit Initialization and Shutdown
  *
- * All SDL programs need to initialize the library before starting to work
- * with it.
+ * All SDL programs need to initialize the library before starting to work with
+ * it.
  *
- * Almost everything can simply call Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
- * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `INIT_AUDIO` flag to make sure that
- * external library has complete control.
+ * Almost everything can simply call Init() near startup, with a handful of
+ * flags to specify subsystems to touch. These are here to make sure SDL does
+ * not even attempt to touch low-level pieces of the operating system that you
+ * don't intend to use. For example, you might be using SDL for video and input
+ * but chose an external library for audio, and in this case you would just need
+ * to leave off the `INIT_AUDIO` flag to make sure that external library has
+ * complete control.
  *
- * Most apps, when terminating, should call Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
+ * Most apps, when terminating, should call Quit(). This will clean up (nearly)
+ * everything that SDL might have allocated, and crucially, it'll make sure that
+ * the display's resolution is back to what the user expects if you had
+ * previously changed it for your game.
  *
- * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
+ * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
+ * in details about the program. This is completely optional, but it helps in
+ * small ways (we can provide an About dialog box for the macOS menu, we can
+ * name the app in the system's audio mixer, etc). Those that want to provide a
+ * _lot_ of information should look at the more-detailed
  * SetAppMetadataProperty().
  *
  * @{
@@ -24263,8 +24263,8 @@ inline void hid_ble_scan(bool active) { SDL_hid_ble_scan(active); }
 /**
  * Initialization flags for Init and/or InitSubSystem
  *
- * These are the flags which may be passed to Init(). You should specify
- * the subsystems which you will be using in your application.
+ * These are the flags which may be passed to Init(). You should specify the
+ * subsystems which you will be using in your application.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -24311,19 +24311,16 @@ constexpr InitFlags INIT_CAMERA =
 /**
  * Return values for optional main callbacks.
  *
- * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit,
- * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
- * success/failure to the operating system. What that means is
- * platform-dependent. On Unix, for example, on success, the process error
- * code will be zero, and on failure it will be 1. This interface doesn't
- * allow you to return specific exit codes, just whether there was an error
- * generally or not.
+ * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or
+ * SDL_AppIterate will terminate the program and report success/failure to the
+ * operating system. What that means is platform-dependent. On Unix, for
+ * example, on success, the process error code will be zero, and on failure it
+ * will be 1. This interface doesn't allow you to return specific exit codes,
+ * just whether there was an error generally or not.
  *
- * Returning APP_CONTINUE from these functions will let the app continue
- * to run.
+ * Returning APP_CONTINUE from these functions will let the app continue to run.
  *
- * See
- * [Main callbacks in
+ * See [Main callbacks in
  * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
  * for complete details.
  *
@@ -24351,17 +24348,16 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /**
  * Function pointer typedef for SDL_AppInit.
  *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppInit directly.
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppInit directly.
  *
  * @param appstate a place where the app can optionally store a pointer for
  *                 future use.
  * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line
- *             arguments.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
- *          terminate with success, APP_CONTINUE to continue.
+ * @param argv the standard ANSI C main's argv; array of command line arguments.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -24370,13 +24366,13 @@ using AppInit_func = SDL_AppInit_func;
 /**
  * Function pointer typedef for SDL_AppIterate.
  *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppIterate directly.
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppIterate directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
- *          terminate with success, APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -24385,14 +24381,14 @@ using AppIterate_func = SDL_AppIterate_func;
 /**
  * Function pointer typedef for SDL_AppEvent.
  *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppEvent directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
  * @param event the new event for the app to examine.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to
- *          terminate with success, APP_CONTINUE to continue.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -24401,9 +24397,9 @@ using AppEvent_func = SDL_AppEvent_func;
 /**
  * Function pointer typedef for SDL_AppQuit.
  *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppEvent directly.
  *
  * @param appstate an optional pointer, provided by the app in SDL_AppInit.
  * @param result the result code that terminated the app (success or failure).
@@ -24417,16 +24413,15 @@ using AppQuit_func = SDL_AppQuit_func;
 /**
  * Initialize the SDL library.
  *
- * Init() simply forwards to calling InitSubSystem(). Therefore, the
- * two may be used interchangeably. Though for readability of your code
- * InitSubSystem() might be preferred.
+ * Init() simply forwards to calling InitSubSystem(). Therefore, the two may be
+ * used interchangeably. Though for readability of your code InitSubSystem()
+ * might be preferred.
  *
  * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
- * subsystems are initialized by default. Message boxes
- * (ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
+ * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
+ * also attempt to work without initializing the video subsystem, in hopes of
+ * being useful in showing an error dialog when Init fails. You must
+ * specifically initialize other subsystems if you use them in your application.
  *
  * Logging (such as Log) works without initialization, too.
  *
@@ -24436,25 +24431,24 @@ using AppQuit_func = SDL_AppQuit_func;
  *   subsystem
  * - `INIT_VIDEO`: video subsystem; automatically initializes the events
  *   subsystem, should be initialized on the main thread.
- * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the events
+ *   subsystem
  * - `INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the joystick
+ *   subsystem
  * - `INIT_EVENTS`: events subsystem
  * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
  *   subsystem
  * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
  *   subsystem
  *
- * Subsystem initialization is ref-counted, you must call QuitSubSystem()
- * for each InitSubSystem() to correctly shutdown a subsystem manually (or
- * call Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem() for
+ * each InitSubSystem() to correctly shutdown a subsystem manually (or call
+ * Quit() to force shutdown). If a subsystem is already loaded then this call
+ * will increase the ref-count and return.
  *
- * Consider reporting some basic metadata about your application before
- * calling Init, using either SetAppMetadata() or
- * SetAppMetadataProperty().
+ * Consider reporting some basic metadata about your application before calling
+ * Init, using either SetAppMetadata() or SetAppMetadataProperty().
  *
  * @param flags subsystem initialization flags.
  * @throws Error on failure.
@@ -24492,8 +24486,8 @@ inline void InitSubSystem(InitFlags flags)
 /**
  * Shut down specific SDL subsystems.
  *
- * You still need to call Quit() even if you close all open subsystems
- * with QuitSubSystem().
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
  *
  * @param flags any of the flags used by Init(); see Init for details.
  *
@@ -24522,8 +24516,8 @@ inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
  * Clean up all initialized subsystems.
  *
  * You should call this function even if you have already shutdown each
- * initialized subsystem with QuitSubSystem(). It is safe to call this
- * function even in the case of errors in initialization.
+ * initialized subsystem with QuitSubSystem(). It is safe to call this function
+ * even in the case of errors in initialization.
  *
  * You can use this function with atexit() to ensure that it is run when your
  * application is shutdown, but it is not wise to do this from a library or
@@ -24540,11 +24534,10 @@ inline void Quit() { SDL_Quit(); }
  * Return whether this is the main thread.
  *
  * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that
- * calls Init(INIT_VIDEO), which should usually be the one that runs
- * your program's main() entry point. If you are using the main callbacks,
- * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
- * main thread.
+ * main() entry point. On other platforms, the main thread is the one that calls
+ * Init(INIT_VIDEO), which should usually be the one that runs your program's
+ * main() entry point. If you are using the main callbacks, SDL_AppInit(),
+ * SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.
  *
  * @returns true if this thread is the main thread, or false otherwise.
  *
@@ -24578,6 +24571,7 @@ using MainThreadCallback = SDL_MainThreadCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa RunOnMainThread
+ *
  * @sa MainThreadCallback
  *
  * @cat result-callback
@@ -24591,8 +24585,8 @@ using MainThreadCB = std::function<void()>;
  * Call a function on the main thread during event processing.
  *
  * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
+ * If this is called on another thread, this callback is queued for execution on
+ * the main thread during event processing.
  *
  * Be careful of deadlocks when using this functionality. You should not have
  * the main thread wait for the current thread while this function is being
@@ -24621,8 +24615,8 @@ inline void RunOnMainThread(MainThreadCallback callback,
  * Call a function on the main thread during event processing.
  *
  * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
+ * If this is called on another thread, this callback is queued for execution on
+ * the main thread during event processing.
  *
  * Be careful of deadlocks when using this functionality. You should not have
  * the main thread wait for the current thread while this function is being
@@ -24660,22 +24654,20 @@ inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
  * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
  * detail doesn't make sense for the app.
  *
- * This function should be called as early as possible, before Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
+ * This function should be called as early as possible, before Init. Multiple
+ * calls to this function are allowed, but various state might not change once
+ * it has been set up with a previous call to this function.
  *
  * Passing a nullptr removes any previous metadata.
  *
  * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with
- * SetAppMetadataProperty().
+ * supply significantly more detailed metadata with SetAppMetadataProperty().
  *
- * @param appname The name of the application ("My Game 2: Bad Guy's
- *                Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git
- *                   hash, or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that
- *                      identifies this app ("com.example.mygame2").
+ * @param appname The name of the application ("My Game 2: Bad Guy's Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git hash,
+ *                   or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that identifies
+ *                      this app ("com.example.mygame2").
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -24702,9 +24694,9 @@ inline void SetAppMetadata(StringParam appname,
  * mixers, etc). Any piece of metadata can be left out, if a specific detail
  * doesn't make sense for the app.
  *
- * This function should be called as early as possible, before Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
+ * This function should be called as early as possible, before Init. Multiple
+ * calls to this function are allowed, but various state might not change once
+ * it has been set up with a previous call to this function.
  *
  * Once set, this metadata can be read using GetAppMetadataProperty().
  *
@@ -24715,30 +24707,29 @@ inline void SetAppMetadata(StringParam appname,
  *   anywhere the OS shows the name of the application separately from window
  *   titles, such as volume control applets, etc. This defaults to "SDL
  *   Application".
- * - `prop::appMetaData.VERSION_STRING`: The version of the app that is
- *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
- *   2024" and a git hash are all valid options. This has no default.
- * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that
- *   identifies this app. This must be in reverse-domain format, like
- *   "com.example.mygame2". This string is used by desktop compositors to
- *   identify and group windows together, as well as match applications with
- *   associated desktop settings and icons. If you plan to package your
- *   application in a container such as Flatpak, the app ID should match the
- *   name of your Flatpak container as well. This has no default.
+ * - `prop::appMetaData.VERSION_STRING`: The version of the app that is running;
+ *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
+ *   git hash are all valid options. This has no default.
+ * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
+ *   app. This must be in reverse-domain format, like "com.example.mygame2".
+ *   This string is used by desktop compositors to identify and group windows
+ *   together, as well as match applications with associated desktop settings
+ *   and icons. If you plan to package your application in a container such as
+ *   Flatpak, the app ID should match the name of your Flatpak container as
+ *   well. This has no default.
  * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
  *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright
- *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
- *   to one line, don't paste a copy of a whole software license in here. This
- *   has no default.
+ * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
+ *   like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
+ *   line, don't paste a copy of a whole software license in here. This has no
+ *   default.
  * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
  *   product page, or a storefront, or even a GitHub repository, for user's
  *   further information This has no default.
- * - `prop::appMetaData.TYPE_STRING`: The type of application this is.
- *   Currently this string can be "game" for a video game, "mediaplayer" for a
- *   media player, or generically "application" if nothing else applies.
- *   Future versions of SDL might add new types. This defaults to
- *   "application".
+ * - `prop::appMetaData.TYPE_STRING`: The type of application this is. Currently
+ *   this string can be "game" for a video game, "mediaplayer" for a media
+ *   player, or generically "application" if nothing else applies. Future
+ *   versions of SDL might add new types. This defaults to "application".
  *
  * @param name the name of the metadata property to set.
  * @param value the value of the property, or nullptr to remove that property.
@@ -24778,17 +24769,17 @@ constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
  * Get metadata about your app.
  *
  * This returns metadata previously set using SetAppMetadata() or
- * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list
- * of available properties and their meanings.
+ * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list of
+ * available properties and their meanings.
  *
  * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it
- *          is not set, nullptr for properties with no default.
+ * @returns the current value of the metadata property, or the default if it is
+ *          not set, nullptr for properties with no default.
  *
- * @threadsafety It is safe to call this function from any thread, although
- *               the string returned is not protected and could potentially be
- *               freed if you call SetAppMetadataProperty() to set that
- *               property from another thread.
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               string returned is not protected and could potentially be freed
+ *               if you call SetAppMetadataProperty() to set that property from
+ *               another thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -25019,11 +25010,11 @@ inline void QuitClass(T* state, AppResult result)
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
+ * offers implementations for files, memory, etc, and the app can provide their
+ * own implementations, too.
  *
- * IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
+ * IOStream is not related to the standard C++ iostream class, other than both
+ * are abstract interfaces to read/write data.
  *
  * @{
  */
@@ -25111,8 +25102,8 @@ constexpr IOWhence IO_SEEK_END =
  * The function pointers that drive an IOStream.
  *
  * Applications can provide this struct to IOStream.Open() to create their own
- * implementation of IOStream. This is not necessarily required, as SDL
- * already offers several common types of I/O streams, via functions like
+ * implementation of IOStream. This is not necessarily required, as SDL already
+ * offers several common types of I/O streams, via functions like
  * IOStream.FromFile() and IOStream.FromMem().
  *
  * This structure should be initialized using InitInterface()
@@ -25215,23 +25206,23 @@ public:
    *
    * The following properties may be set at creation time by SDL:
    *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStream is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
+   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+   *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
+   *   the program isn't running on Windows, or SDL used some other method to
+   *   access the filesystem, this property will not be set.
    * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStream is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
+   *   SDL used some other method to access the filesystem, this property will
+   *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
+   *   your app, trying to use this pointer will almost certainly result in a
+   *   crash! This is mostly a problem on Windows; make sure you build SDL and
    *   your app with the same compiler and settings to avoid it.
    * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
    *   IOStream is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStream is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
+   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to
+   *   an Android NDK `AAsset *`, that this IOStream is using to access the
+   *   filesystem. If SDL used some other method to access the filesystem, this
+   *   property will not be set.
    *
    * @param file a UTF-8 string representing the filename to open.
    * @param mode an ASCII string representing the mode to be used for opening
@@ -25259,13 +25250,13 @@ public:
    * This function sets up an IOStream struct based on a memory area of a
    * certain size, for both read and write access.
    *
-   * This memory buffer is not copied by the IOStream; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream. Closing the stream will not
+   * free the original buffer.
    *
-   * If you need to make sure the IOStream never writes to the memory
-   * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
-   * memory instead.
+   * If you need to make sure the IOStream never writes to the memory buffer,
+   * you should use IOStream.FromConstMem() with a read-only buffer of memory
+   * instead.
    *
    * The following properties will be set at creation time by SDL:
    *
@@ -25299,12 +25290,12 @@ public:
    * This function sets up an IOStream struct based on a memory area of a
    * certain size. It assumes the memory area is not writable.
    *
-   * Attempting to write to this IOStream stream will report an error
-   * without writing to the memory buffer.
+   * Attempting to write to this IOStream stream will report an error without
+   * writing to the memory buffer.
    *
-   * This memory buffer is not copied by the IOStream; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream. Closing the stream will not
+   * free the original buffer.
    *
    * If you need to write to a memory buffer, you should use IOStream.FromMem()
    * with a writable buffer of memory instead.
@@ -25339,11 +25330,10 @@ public:
    * This supports the following properties to provide access to the memory and
    * control over allocations:
    *
-   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
-   *   memory of the stream. This can be set to nullptr to transfer ownership of
-   *   the memory to the application, which should free the memory with
-   *   free(). If this is done, the next operation on the stream must be
-   *   IOStream.Close().
+   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+   *   of the stream. This can be set to nullptr to transfer ownership of the
+   *   memory to the application, which should free the memory with free(). If
+   *   this is done, the next operation on the stream must be IOStream.Close().
    * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
@@ -25374,8 +25364,8 @@ public:
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
    *
-   * @param iface the interface that implements this IOStream, initialized
-   *              using InitInterface().
+   * @param iface the interface that implements this IOStream, initialized using
+   *              InitInterface().
    * @param userdata the pointer that will be passed to the interface functions.
    * @returns a valid stream on success.
    * @throws Error on failure.
@@ -25429,9 +25419,9 @@ public:
    * Close and free an allocated IOStream structure.
    *
    * IOStream.Close() closes and cleans up the IOStream stream. It releases any
-   * resources used by the stream and frees the IOStream itself. This
-   * returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
+   * resources used by the stream and frees the IOStream itself. This returns
+   * true on success, or false if the stream failed to flush to its output (e.g.
+   * to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
    * reports an error, but the IOStream is still invalid once this function
@@ -25514,8 +25504,7 @@ public:
    *
    * @param offset an offset in bytes, relative to `whence` location; can be
    *               negative.
-   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
-   *               `IO_SEEK_END`.
+   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`, `IO_SEEK_END`.
    * @returns the final offset in the data stream after the seek or -1 on
    *          failure; call GetError() for more information.
    *
@@ -25531,8 +25520,8 @@ public:
    * Determine the current read/write offset in an IOStream data stream.
    *
    * IOStream.Tell is actually a wrapper function that calls the IOStream's
-   * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to
-   * simplify application development.
+   * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
+   * application development.
    *
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
@@ -25591,9 +25580,9 @@ public:
    * pointed at by `ptr`. This function may read less bytes than requested.
    *
    * This function will return zero when the data stream is completely read, and
-   * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and the
+   * stream is not at EOF, IOStream.GetStatus() will return a different error
+   * value and GetError() will offer a human-readable message.
    *
    * @param buf a pointer to a buffer to read data into.
    * @returns the number of bytes read, or 0 on end of file or other failure;
@@ -25674,8 +25663,8 @@ public:
    * @param fmt a printf() style format string.
    * @param ... additional parameters matching % tokens in the `fmt` string, if
    *            any.
-   * @returns the number of bytes written or 0 on failure; call GetError()
-   *          for more information.
+   * @returns the number of bytes written or 0 on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -25705,8 +25694,8 @@ public:
    *
    * @param fmt a printf() style format string.
    * @param ap a variable argument list.
-   * @returns the number of bytes written or 0 on failure; call GetError()
-   *          for more information.
+   * @returns the number of bytes written or 0 on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -25739,8 +25728,7 @@ public:
    * Load all the data from an SDL data stream.
    *
    * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported on
-   * the returned string.
+   * convenience.
    *
    * @returns the data in bytes
    * @throws Error on failure.
@@ -25830,8 +25818,8 @@ public:
   Sint8 ReadS8();
 
   /**
-   * Use this function to read 16 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 16 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25851,8 +25839,8 @@ public:
   Uint16 ReadU16LE();
 
   /**
-   * Use this function to read 16 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 16 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25872,8 +25860,8 @@ public:
   Sint16 ReadS16LE();
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 16 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25893,8 +25881,8 @@ public:
   Uint16 ReadU16BE();
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 16 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25914,8 +25902,8 @@ public:
   Sint16 ReadS16BE();
 
   /**
-   * Use this function to read 32 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 32 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25935,8 +25923,8 @@ public:
   Uint32 ReadU32LE();
 
   /**
-   * Use this function to read 32 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 32 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25956,8 +25944,8 @@ public:
   Sint32 ReadS32LE();
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 32 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25977,8 +25965,8 @@ public:
   Uint32 ReadU32BE();
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 32 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -25998,8 +25986,8 @@ public:
   Sint32 ReadS32BE();
 
   /**
-   * Use this function to read 64 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 64 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -26019,8 +26007,8 @@ public:
   Uint64 ReadU64LE();
 
   /**
-   * Use this function to read 64 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 64 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -26040,8 +26028,8 @@ public:
   Sint64 ReadS64LE();
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 64 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -26061,8 +26049,8 @@ public:
   Uint64 ReadU64BE();
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 64 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -26658,40 +26646,36 @@ struct IOStreamRef : IOStream
 };
 
 /**
- * Use this function to create a new IOStream structure for reading from
- * and/or writing to a named file.
+ * Use this function to create a new IOStream structure for reading from and/or
+ * writing to a named file.
  *
- * The `mode` string is treated roughly the same as in a call to the C
- * library's fopen(), even if SDL doesn't happen to use fopen() behind the
- * scenes.
+ * The `mode` string is treated roughly the same as in a call to the C library's
+ * fopen(), even if SDL doesn't happen to use fopen() behind the scenes.
  *
  * Available `mode` strings:
  *
  * - "r": Open a file for reading. The file must exist.
- * - "w": Create an empty file for writing. If a file with the same name
- *   already exists its content is erased and the file is treated as a new
- *   empty file.
+ * - "w": Create an empty file for writing. If a file with the same name already
+ *   exists its content is erased and the file is treated as a new empty file.
  * - "a": Append to a file. Writing operations append data at the end of the
  *   file. The file is created if it does not exist.
- * - "r+": Open a file for update both reading and writing. The file must
- *   exist.
- * - "w+": Create an empty file for both reading and writing. If a file with
- *   the same name already exists its content is erased and the file is
- *   treated as a new empty file.
+ * - "r+": Open a file for update both reading and writing. The file must exist.
+ * - "w+": Create an empty file for both reading and writing. If a file with the
+ *   same name already exists its content is erased and the file is treated as a
+ *   new empty file.
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
- *   anywhere in the file for reading, but writing operations will move it
- *   back to the end of file. The file is created if it does not exist.
+ *   anywhere in the file for reading, but writing operations will move it back
+ *   to the end of file. The file is created if it does not exist.
  *
- * **NOTE**: In order to open a file as a binary file, a "b" character has to
- * be included in the `mode` string. This additional "b" character can either
- * be appended at the end of the string (thus making the following compound
- * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
- * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
- * Additional characters may follow the sequence, although they should have no
- * effect. For example, "t" is sometimes appended to make explicit the file is
- * a text file.
+ * **NOTE**: In order to open a file as a binary file, a "b" character has to be
+ * included in the `mode` string. This additional "b" character can either be
+ * appended at the end of the string (thus making the following compound modes:
+ * "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the letter and
+ * the "+" sign for the mixed modes ("rb+", "wb+", "ab+"). Additional characters
+ * may follow the sequence, although they should have no effect. For example,
+ * "t" is sometimes appended to make explicit the file is a text file.
  *
  * This function supports Unicode filenames, but they must be encoded in UTF-8
  * format, regardless of the underlying operating system.
@@ -26704,27 +26688,27 @@ struct IOStreamRef : IOStream
  *
  * The following properties may be set at creation time by SDL:
  *
- * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
- *   to a win32 `HANDLE`, that this IOStream is using to access the
- *   filesystem. If the program isn't running on Windows, or SDL used some
- *   other method to access the filesystem, this property will not be set.
- * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
- *   stdio `FILE *`, that this IOStream is using to access the filesystem.
- *   If SDL used some other method to access the filesystem, this property
- *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
- *   than your app, trying to use this pointer will almost certainly result in
- *   a crash! This is mostly a problem on Windows; make sure you build SDL and
- *   your app with the same compiler and settings to avoid it.
+ * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+ *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
+ *   the program isn't running on Windows, or SDL used some other method to
+ *   access the filesystem, this property will not be set.
+ * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio
+ *   `FILE *`, that this IOStream is using to access the filesystem. If SDL used
+ *   some other method to access the filesystem, this property will not be set.
+ *   PLEASE NOTE that if SDL is using a different C runtime than your app,
+ *   trying to use this pointer will almost certainly result in a crash! This is
+ *   mostly a problem on Windows; make sure you build SDL and your app with the
+ *   same compiler and settings to avoid it.
  * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
  *   IOStream is using to access the filesystem.
- * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
- *   to an Android NDK `AAsset *`, that this IOStream is using to access
- *   the filesystem. If SDL used some other method to access the filesystem,
- *   this property will not be set.
+ * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+ *   Android NDK `AAsset *`, that this IOStream is using to access the
+ *   filesystem. If SDL used some other method to access the filesystem, this
+ *   property will not be set.
  *
  * @param file a UTF-8 string representing the filename to open.
- * @param mode an ASCII string representing the mode to be used for opening
- *             the file.
+ * @param mode an ASCII string representing the mode to be used for opening the
+ *             file.
  * @returns a pointer to the IOStream structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
@@ -26778,23 +26762,22 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * Use this function to prepare a read-write memory buffer for use with
  * IOStream.
  *
- * This function sets up an IOStream struct based on a memory area of a
- * certain size, for both read and write access.
+ * This function sets up an IOStream struct based on a memory area of a certain
+ * size, for both read and write access.
  *
- * This memory buffer is not copied by the IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * This memory buffer is not copied by the IOStream; the pointer you provide
+ * must remain valid until you close the stream. Closing the stream will not
+ * free the original buffer.
  *
- * If you need to make sure the IOStream never writes to the memory
- * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
- * memory instead.
+ * If you need to make sure the IOStream never writes to the memory buffer, you
+ * should use IOStream.FromConstMem() with a read-only buffer of memory instead.
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+ * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ *   passed to this function.
+ * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
- *   that was passed to this function.
  *
  * @param mem a buffer to feed an IOStream stream.
  * @returns a valid IOStream on success.
@@ -26823,28 +26806,27 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
 }
 
 /**
- * Use this function to prepare a read-only memory buffer for use with
- * IOStream.
+ * Use this function to prepare a read-only memory buffer for use with IOStream.
  *
- * This function sets up an IOStream struct based on a memory area of a
- * certain size. It assumes the memory area is not writable.
+ * This function sets up an IOStream struct based on a memory area of a certain
+ * size. It assumes the memory area is not writable.
  *
- * Attempting to write to this IOStream stream will report an error
- * without writing to the memory buffer.
+ * Attempting to write to this IOStream stream will report an error without
+ * writing to the memory buffer.
  *
- * This memory buffer is not copied by the IOStream; the pointer you
- * provide must remain valid until you close the stream. Closing the stream
- * will not free the original buffer.
+ * This memory buffer is not copied by the IOStream; the pointer you provide
+ * must remain valid until you close the stream. Closing the stream will not
+ * free the original buffer.
  *
  * If you need to write to a memory buffer, you should use IOStream.FromMem()
  * with a writable buffer of memory instead.
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+ * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ *   passed to this function.
+ * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
- *   that was passed to this function.
  *
  * @param mem a read-only buffer to feed an IOStreamRef stream.
  * @returns a valid IOStream on success.
@@ -26877,11 +26859,10 @@ inline IOStream IOStream::FromConstMem(SourceBytes mem)
  * This supports the following properties to provide access to the memory and
  * control over allocations:
  *
- * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
- *   memory of the stream. This can be set to nullptr to transfer ownership of
- *   the memory to the application, which should free the memory with
- *   free(). If this is done, the next operation on the stream must be
- *   IOStream.Close().
+ * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+ *   of the stream. This can be set to nullptr to transfer ownership of the
+ *   memory to the application, which should free the memory with free(). If
+ *   this is done, the next operation on the stream must be IOStream.Close().
  * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
  *   multiples of this size, defaulting to 1024.
  *
@@ -26905,16 +26886,16 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
 /**
  * Create a custom IOStream.
  *
- * Applications do not need to use this function unless they are providing
- * their own IOStream implementation. If you just need an IOStream to
- * read/write a common data source, you should use the built-in
- * implementations in SDL, like IOStream.FromFile() or IOStream.FromMem(), etc.
+ * Applications do not need to use this function unless they are providing their
+ * own IOStream implementation. If you just need an IOStream to read/write a
+ * common data source, you should use the built-in implementations in SDL, like
+ * IOStream.FromFile() or IOStream.FromMem(), etc.
  *
- * This function makes a copy of `iface` and the caller does not need to keep
- * it around after this call.
+ * This function makes a copy of `iface` and the caller does not need to keep it
+ * around after this call.
  *
- * @param iface the interface that implements this IOStream, initialized
- *              using InitInterface().
+ * @param iface the interface that implements this IOStream, initialized using
+ *              InitInterface().
  * @param userdata the pointer that will be passed to the interface functions.
  * @returns a pointer to the allocated memory on success.
  * @throws Error on failure.
@@ -26943,22 +26924,21 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  * Close and free an allocated IOStream structure.
  *
  * IOStream.Close() closes and cleans up the IOStream stream. It releases any
- * resources used by the stream and frees the IOStream itself. This
- * returns true on success, or false if the stream failed to flush to its
- * output (e.g. to disk).
+ * resources used by the stream and frees the IOStream itself. This returns true
+ * on success, or false if the stream failed to flush to its output (e.g. to
+ * disk).
  *
  * Note that if this fails to flush the stream for any reason, this function
  * reports an error, but the IOStream is still invalid once this function
  * returns.
  *
- * This call flushes any buffered writes to the operating system, but there
- * are no guarantees that those writes have gone to physical media; they might
- * be in the OS's file cache, waiting to go to disk later. If it's absolutely
- * crucial that writes go to disk immediately, so they are definitely stored
- * even if the power fails before the file cache would have caught up, one
- * should call IOStream.Flush() before closing. Note that flushing takes time
- * and makes the system and your app operate less efficiently, so do so
- * sparingly.
+ * This call flushes any buffered writes to the operating system, but there are
+ * no guarantees that those writes have gone to physical media; they might be in
+ * the OS's file cache, waiting to go to disk later. If it's absolutely crucial
+ * that writes go to disk immediately, so they are definitely stored even if the
+ * power fails before the file cache would have caught up, one should call
+ * IOStream.Flush() before closing. Note that flushing takes time and makes the
+ * system and your app operate less efficiently, so do so sparingly.
  *
  * @param context IOStream structure to close.
  * @throws Error on failure.
@@ -26997,8 +26977,8 @@ inline PropertiesRef IOStream::GetProperties() const
 /**
  * Query the stream status of an IOStream.
  *
- * This information can be useful to decide if a short read or write was due
- * to an error, an EOF, or a non-blocking operation that isn't yet ready to
+ * This information can be useful to decide if a short read or write was due to
+ * an error, an EOF, or a non-blocking operation that isn't yet ready to
  * complete.
  *
  * An IOStream's status is only expected to change after a IOStream.Read or
@@ -27056,10 +27036,9 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
  * @param context a pointer to an IOStream structure.
  * @param offset an offset in bytes, relative to `whence` location; can be
  *               negative.
- * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
- *               `IO_SEEK_END`.
- * @returns the final offset in the data stream after the seek or -1 on
- *          failure; call GetError() for more information.
+ * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`, `IO_SEEK_END`.
+ * @returns the final offset in the data stream after the seek or -1 on failure;
+ *          call GetError() for more information.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -27080,12 +27059,12 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
 /**
  * Determine the current read/write offset in an IOStream data stream.
  *
- * IOStream.Tell is actually a wrapper function that calls the IOStream's
- * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to
- * simplify application development.
+ * IOStream.Tell is actually a wrapper function that calls the IOStream's `seek`
+ * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify application
+ * development.
  *
- * @param context an IOStream data stream object from which to get the
- *                current offset.
+ * @param context an IOStream data stream object from which to get the current
+ *                offset.
  * @returns the current offset in the stream, or -1 if the information can not
  *          be determined.
  *
@@ -27102,18 +27081,18 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
 /**
  * Read from a data source.
  *
- * This function reads up `size` bytes from the data source to the area
- * pointed at by `ptr`. This function may read less bytes than requested.
+ * This function reads up `size` bytes from the data source to the area pointed
+ * at by `ptr`. This function may read less bytes than requested.
  *
  * This function will return zero when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and
- * the stream is not at EOF, IOStream.GetStatus() will return a different error
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
  * value and GetError() will offer a human-readable message.
  *
  * @param context a pointer to an IOStream structure.
  * @param buf a pointer to a buffer to read data into.
- * @returns the number of bytes read, or 0 on end of file or other failure;
- *          call GetError() for more information.
+ * @returns the number of bytes read, or 0 on end of file or other failure; call
+ *          GetError() for more information.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -27136,8 +27115,8 @@ inline size_t IOStream::Read(TargetBytes buf)
  * Write to an IOStream data stream.
  *
  * This function writes exactly `size` bytes from the area pointed at by `ptr`
- * to the stream. If this fails for any reason, it'll return less than `size`
- * to demonstrate how far the write progressed. On success, it returns `size`.
+ * to the stream. If this fails for any reason, it'll return less than `size` to
+ * demonstrate how far the write progressed. On success, it returns `size`.
  *
  * On error, this function still attempts to write as much as possible, so it
  * might return a positive value less than the requested write size.
@@ -27182,8 +27161,8 @@ inline size_t IOStream::Write(SourceBytes buf)
  * @param fmt a printf() style format string.
  * @param ... additional parameters matching % tokens in the `fmt` string, if
  *            any.
- * @returns the number of bytes written or 0 on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes written or 0 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -27214,8 +27193,8 @@ inline size_t IOprintf(IOStreamParam context,
  * @param context a pointer to an IOStream structure.
  * @param fmt a printf() style format string.
  * @param ap a variable argument list.
- * @returns the number of bytes written or 0 on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes written or 0 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -27269,7 +27248,7 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  *
  * @param src the IOStream to read all available data from.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
+ *                even in the case of an error.
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
@@ -27349,7 +27328,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @param src the IOStream to write all data to.
  * @param data the data to be written.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
+ *                even in the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -27391,10 +27370,10 @@ inline void IOStream::SaveFile(SourceBytes data)
 /**
  * Use this function to read a byte from an IOStream.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
  * @return the  data read.
@@ -27414,10 +27393,10 @@ inline Uint8 ReadU8(IOStreamParam src)
 /**
  * Use this function to read a signed byte from an IOStream.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
  * @return the  data read.
@@ -27435,16 +27414,16 @@ inline Sint8 ReadS8(IOStreamParam src)
 }
 
 /**
- * Use this function to read 16 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 16 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27464,16 +27443,16 @@ inline Uint16 ReadU16LE(IOStreamParam src)
 inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
 
 /**
- * Use this function to read 16 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 16 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27493,16 +27472,16 @@ inline Sint16 ReadS16LE(IOStreamParam src)
 inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
 
 /**
- * Use this function to read 16 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 16 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27522,16 +27501,16 @@ inline Uint16 ReadU16BE(IOStreamParam src)
 inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
 
 /**
- * Use this function to read 16 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 16 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27551,16 +27530,16 @@ inline Sint16 ReadS16BE(IOStreamParam src)
 inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
 
 /**
- * Use this function to read 32 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 32 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27580,16 +27559,16 @@ inline Uint32 ReadU32LE(IOStreamParam src)
 inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
 
 /**
- * Use this function to read 32 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 32 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27609,16 +27588,16 @@ inline Sint32 ReadS32LE(IOStreamParam src)
 inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
 
 /**
- * Use this function to read 32 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 32 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27638,16 +27617,16 @@ inline Uint32 ReadU32BE(IOStreamParam src)
 inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
 
 /**
- * Use this function to read 32 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 32 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27667,16 +27646,16 @@ inline Sint32 ReadS32BE(IOStreamParam src)
 inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
 
 /**
- * Use this function to read 64 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 64 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27696,16 +27675,16 @@ inline Uint64 ReadU64LE(IOStreamParam src)
 inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
 
 /**
- * Use this function to read 64 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 64 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27725,16 +27704,16 @@ inline Sint64 ReadS64LE(IOStreamParam src)
 inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
 
 /**
- * Use this function to read 64 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 64 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27754,16 +27733,16 @@ inline Uint64 ReadU64BE(IOStreamParam src)
 inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
 
 /**
- * Use this function to read 64 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 64 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -27822,9 +27801,8 @@ inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
  * Use this function to write 16 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -27848,9 +27826,8 @@ inline void IOStream::WriteU16LE(Uint16 value)
  * Use this function to write 16 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -27874,8 +27851,8 @@ inline void IOStream::WriteS16LE(Sint16 value)
  * Use this function to write 16 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -27899,8 +27876,8 @@ inline void IOStream::WriteU16BE(Uint16 value)
  * Use this function to write 16 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -27924,9 +27901,8 @@ inline void IOStream::WriteS16BE(Sint16 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -27950,9 +27926,8 @@ inline void IOStream::WriteU32LE(Uint32 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -27976,8 +27951,8 @@ inline void IOStream::WriteS32LE(Sint32 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -28001,8 +27976,8 @@ inline void IOStream::WriteU32BE(Uint32 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -28026,9 +28001,8 @@ inline void IOStream::WriteS32BE(Sint32 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -28052,9 +28026,8 @@ inline void IOStream::WriteU64LE(Uint64 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -28078,8 +28051,8 @@ inline void IOStream::WriteS64LE(Sint64 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -28103,8 +28076,8 @@ inline void IOStream::WriteU64BE(Uint64 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -41870,26 +41843,25 @@ public:
   /**
    * Load an image from a filesystem path into a software surface.
    *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use
-   * this if you plan to hand the data to something else or manipulate it
-   * further in code.
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
    *
-   * There are no guarantees about what format the new Surface data will be;
-   * in many cases, SDL_image will attempt to supply a surface that exactly
-   * matches the provided image, but in others it might have to convert (either
-   * because the image is in a format that SDL doesn't directly support or
-   * because it's compressed data that could reasonably uncompress to various
-   * formats and SDL_image had to pick one). You can inspect an Surface for
-   * its specifics, and use Surface.Convert to then migrate to any supported
-   * format.
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use Surface.Convert to then migrate to any supported format.
    *
    * If the image format supports a transparent pixel, SDL will set the colorkey
    * for the surface. You can enable RLE acceleration on the surface afterwards
    * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
    * image->format->colorkey);
    *
-   * There is a separate function to read files from an IOStream, if you
-   * need an i/o abstraction to provide data from anywhere instead of a simple
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
    * filesystem read; that function is Surface.Surface().
    *
    * If you are using SDL's 2D rendering API, there is an equivalent call to
@@ -41910,18 +41882,17 @@ public:
   /**
    * Load an image from an SDL data source into a software surface.
    *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use
-   * this if you plan to hand the data to something else or manipulate it
-   * further in code.
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
    *
-   * There are no guarantees about what format the new Surface data will be;
-   * in many cases, SDL_image will attempt to supply a surface that exactly
-   * matches the provided image, but in others it might have to convert (either
-   * because the image is in a format that SDL doesn't directly support or
-   * because it's compressed data that could reasonably uncompress to various
-   * formats and SDL_image had to pick one). You can inspect an Surface for
-   * its specifics, and use Surface.Convert to then migrate to any supported
-   * format.
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use Surface.Convert to then migrate to any supported format.
    *
    * If the image format supports a transparent pixel, SDL will set the colorkey
    * for the surface. You can enable RLE acceleration on the surface afterwards
@@ -41946,8 +41917,8 @@ public:
    * software surface: call Texture.Texture() instead.
    *
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new SDL surface, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -79390,21 +79361,20 @@ public:
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after
-   * loading it.
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
    *
    * If the loaded image has transparency or a colorkey, a texture with an alpha
    * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image
-   * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
-   * RGBA).
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
    *
-   * There is a separate function to read files from an IOStream, if you
-   * need an i/o abstraction to provide data from anywhere instead of a simple
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
    * filesystem read; that function is Texture.Texture().
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels
-   * in CPU memory), call Surface.Surface() instead.
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call Surface.Surface() instead.
    *
    * @param renderer the Renderer to use to create the GPU texture.
    * @param file a path on the filesystem to load an image from.
@@ -79422,35 +79392,34 @@ public:
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after
-   * loading it.
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
    *
    * If the loaded image has transparency or a colorkey, a texture with an alpha
    * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image
-   * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
-   * RGBA).
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
    *
    * If `closeio` is true, `src` will be closed before returning, whether this
    * function succeeds or not. SDL_image reads everything it needs from `src`
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
-   * this function and manage those details for you, determining the file type
-   * from the filename's extension.
+   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+   * function and manage those details for you, determining the file type from
+   * the filename's extension.
    *
-   * There is also LoadTextureTyped(), which is equivalent to this
-   * function except a file extension (like "BMP", "JPG", etc) can be specified,
-   * in case SDL_image cannot autodetect the file format.
+   * There is also LoadTextureTyped(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels
-   * in CPU memory), call Surface.Surface() instead.
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call Surface.Surface() instead.
    *
    * @param renderer the Renderer to use to create the GPU texture.
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new texture, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -85643,33 +85612,30 @@ inline int Version() { return IMG_Version(); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use Surface.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
+ * Even though this function accepts a file type, SDL_image may still try other
+ * decoders that are capable of detecting file type from the contents of the
+ * image data, but may rely on the caller-provided type string for formats that
+ * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
+ * ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `Surface.Surface("filename.jpg")` will call this function and
@@ -85677,12 +85643,12 @@ inline int Version() { return IMG_Version(); }
  * extension.
  *
  * There is also Surface.Surface(), which is equivalent to this function except
- * that it will rely on SDL_image to determine what type of data it is
- * loading, much like passing a nullptr for type.
+ * that it will rely on SDL_image to determine what type of data it is loading,
+ * much like passing a nullptr for type.
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call LoadTextureTyped() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call LoadTextureTyped() instead.
  *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
@@ -85707,31 +85673,28 @@ inline Surface LoadSurfaceTyped(IOStreamParam src,
 /**
  * Load an image from a filesystem path into a software surface.
  *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use Surface.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Surface.Surface().
+ * There is a separate function to read files from an IOStream, if you need an
+ * i/o abstraction to provide data from anywhere instead of a simple filesystem
+ * read; that function is Surface.Surface().
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call Texture.Texture() instead.
  *
  * @param file a path on the filesystem to load an image from.
  * @returns a new SDL surface, or nullptr on error.
@@ -85747,23 +85710,20 @@ inline Surface LoadSurface(StringParam file) { return Surface(IMG_Load(file)); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use Surface.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
@@ -85774,17 +85734,17 @@ inline Surface LoadSurface(StringParam file) { return Surface(IMG_Load(file)); }
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also LoadSurfaceTyped(), which is equivalent to this function
- * except a file extension (like "BMP", "JPG", etc) can be specified, in case
- * SDL_image cannot autodetect the file format.
+ * There is also LoadSurfaceTyped(), which is equivalent to this function except
+ * a file extension (like "BMP", "JPG", etc) can be specified, in case SDL_image
+ * cannot autodetect the file format.
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call Texture.Texture() instead.
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -85811,23 +85771,21 @@ inline Surface::Surface(IOStreamParam src, bool closeio)
 /**
  * Load an image from a filesystem path into a GPU texture.
  *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Texture.Texture().
+ * There is a separate function to read files from an IOStream, if you need an
+ * i/o abstraction to provide data from anywhere instead of a simple filesystem
+ * read; that function is Texture.Texture().
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call Surface.Surface() instead.
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
@@ -85846,37 +85804,35 @@ inline Texture LoadTexture(RendererParam renderer, StringParam file)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
- * this function and manage those details for you, determining the file type
- * from the filename's extension.
+ * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+ * function and manage those details for you, determining the file type from the
+ * filename's extension.
  *
- * There is also LoadTextureTyped(), which is equivalent to this
- * function except a file extension (like "BMP", "JPG", etc) can be specified,
- * in case SDL_image cannot autodetect the file format.
+ * There is also LoadTextureTyped(), which is equivalent to this function except
+ * a file extension (like "BMP", "JPG", etc) can be specified, in case SDL_image
+ * cannot autodetect the file format.
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call Surface.Surface() instead.
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -85905,45 +85861,43 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
+ * Even though this function accepts a file type, SDL_image may still try other
+ * decoders that are capable of detecting file type from the contents of the
+ * image data, but may rely on the caller-provided type string for formats that
+ * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
+ * ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture("filename.jpg")` will call this
- * function and manage those details for you, determining the file type from
- * the filename's extension.
+ * with IOStream: `Texture.Texture("filename.jpg")` will call this function and
+ * manage those details for you, determining the file type from the filename's
+ * extension.
  *
- * There is also Texture.Texture(), which is equivalent to this function
- * except that it will rely on SDL_image to determine what type of data it is
- * loading, much like passing a nullptr for type.
+ * There is also Texture.Texture(), which is equivalent to this function except
+ * that it will rely on SDL_image to determine what type of data it is loading,
+ * much like passing a nullptr for type.
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call LoadSurfaceTyped() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call LoadSurfaceTyped() instead.
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -85965,14 +85919,13 @@ inline Texture LoadTextureTyped(RendererParam renderer,
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86009,14 +85962,13 @@ inline bool isAVIF(IOStreamParam src) { return IMG_isAVIF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86052,14 +86004,13 @@ inline bool isICO(IOStreamParam src) { return IMG_isICO(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86095,14 +86046,13 @@ inline bool isCUR(IOStreamParam src) { return IMG_isCUR(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86138,14 +86088,13 @@ inline bool isBMP(IOStreamParam src) { return IMG_isBMP(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86181,14 +86130,13 @@ inline bool isGIF(IOStreamParam src) { return IMG_isGIF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86224,14 +86172,13 @@ inline bool isJPG(IOStreamParam src) { return IMG_isJPG(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86267,14 +86214,13 @@ inline bool isJXL(IOStreamParam src) { return IMG_isJXL(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86310,14 +86256,13 @@ inline bool isLBM(IOStreamParam src) { return IMG_isLBM(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86353,14 +86298,13 @@ inline bool isPCX(IOStreamParam src) { return IMG_isPCX(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86396,14 +86340,13 @@ inline bool isPNG(IOStreamParam src) { return IMG_isPNG(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86439,14 +86382,13 @@ inline bool isPNM(IOStreamParam src) { return IMG_isPNM(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86482,14 +86424,13 @@ inline bool isSVG(IOStreamParam src) { return IMG_isSVG(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86525,14 +86466,13 @@ inline bool isQOI(IOStreamParam src) { return IMG_isQOI(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86568,14 +86508,13 @@ inline bool isTIF(IOStreamParam src) { return IMG_isTIF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86611,14 +86550,13 @@ inline bool isXCF(IOStreamParam src) { return IMG_isXCF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86654,14 +86592,13 @@ inline bool isXPM(IOStreamParam src) { return IMG_isXPM(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -86697,14 +86634,13 @@ inline bool isXV(IOStreamParam src) { return IMG_isXV(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -87366,10 +87302,10 @@ inline Surface LoadXPM(IOStreamParam src)
 /**
  * Load a XV image directly.
  *
- * If you know you definitely have a XV image, you can call this function,
- * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStream
- * interface available here.
+ * If you know you definitely have a XV image, you can call this function, which
+ * will skip SDL_image's file format detection routines. Generally it's better
+ * to use the abstract interfaces; also, there is only an IOStream interface
+ * available here.
  *
  * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
@@ -87440,8 +87376,8 @@ inline Surface LoadWEBP(IOStreamParam src)
  * Since SVG files are resolution-independent, you specify the size you would
  * like the output image to be and it will be generated at those dimensions.
  *
- * Either width or height may be 0 and the image will be auto-sized to
- * preserve aspect ratio.
+ * Either width or height may be 0 and the image will be auto-sized to preserve
+ * aspect ratio.
  *
  * @param src an IOStream to load SVG data from.
  * @param size desired width and height of the generated surface, in pixels.
@@ -87457,8 +87393,8 @@ inline Surface LoadSizedSVG(IOStreamParam src, const PointRaw& size)
 /**
  * Load an XPM image from a memory array.
  *
- * The returned surface will be an 8bpp indexed surface, if possible,
- * otherwise it will be 32bpp. If you always want 32-bit data, use
+ * The returned surface will be an 8bpp indexed surface, if possible, otherwise
+ * it will be 32bpp. If you always want 32-bit data, use
  * ReadXPMFromArrayToRGB888() instead.
  *
  * @param xpm a null-terminated array of strings that comprise XPM data.
@@ -87477,11 +87413,7 @@ inline Surface ReadXPMFromArray(char** xpm)
  * Load an XPM image from a memory array.
  *
  * The returned surface will always be a 32-bit RGB surface. If you want 8-bit
- * indexed colors (and the XPM data allows it), use ReadXPMFromArray()
- * instead.
- *
- * When done with the returned surface, the app should dispose of it with a
- * call to Surface.Destroy().
+ * indexed colors (and the XPM data allows it), use ReadXPMFromArray() instead.
  *
  * @param xpm a null-terminated array of strings that comprise XPM data.
  * @returns a new SDL surface, or nullptr on error.
@@ -87525,8 +87457,8 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  * @param dst the IOStream to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -87567,8 +87499,8 @@ inline void SavePNG(SurfaceParam surface, StringParam file)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -87610,8 +87542,8 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  * @param dst the IOStream to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -87693,8 +87625,8 @@ public:
    * call to Animation.Free().
    *
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -87905,8 +87837,8 @@ inline Animation LoadAnimation(StringParam file)
  * call to Animation.Free().
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -87921,11 +87853,11 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
 /**
  * Load an animation from an SDL datasource
  *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
+ * Even though this function accepts a file type, SDL_image may still try other
+ * decoders that are capable of detecting file type from the contents of the
+ * image data, but may rely on the caller-provided type string for formats that
+ * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
+ * ability to guess the format.
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
@@ -87936,8 +87868,8 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
  *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("GIF", etc).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.

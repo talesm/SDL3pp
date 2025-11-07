@@ -2332,21 +2332,20 @@ public:
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after
-   * loading it.
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
    *
    * If the loaded image has transparency or a colorkey, a texture with an alpha
    * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image
-   * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
-   * RGBA).
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
    *
-   * There is a separate function to read files from an IOStream, if you
-   * need an i/o abstraction to provide data from anywhere instead of a simple
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
    * filesystem read; that function is Texture.Texture().
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels
-   * in CPU memory), call Surface.Surface() instead.
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call Surface.Surface() instead.
    *
    * When done with the returned texture, the app should dispose of it with a
    * call to Texture.Destroy().
@@ -2367,38 +2366,37 @@ public:
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after
-   * loading it.
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
    *
    * If the loaded image has transparency or a colorkey, a texture with an alpha
    * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image
-   * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
-   * RGBA).
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
    *
    * If `closeio` is true, `src` will be closed before returning, whether this
    * function succeeds or not. SDL_image reads everything it needs from `src`
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
-   * this function and manage those details for you, determining the file type
-   * from the filename's extension.
+   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+   * function and manage those details for you, determining the file type from
+   * the filename's extension.
    *
-   * There is also LoadTextureTyped(), which is equivalent to this
-   * function except a file extension (like "BMP", "JPG", etc) can be specified,
-   * in case SDL_image cannot autodetect the file format.
+   * There is also LoadTextureTyped(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels
-   * in CPU memory), call Surface.Surface() instead.
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call Surface.Surface() instead.
    *
    * When done with the returned texture, the app should dispose of it with a
    * call to Texture.Destroy().
    *
    * @param renderer the Renderer to use to create the GPU texture.
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new texture, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.

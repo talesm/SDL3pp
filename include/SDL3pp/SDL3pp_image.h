@@ -150,33 +150,30 @@ inline int Version() { return IMG_Version(); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use Surface.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
+ * Even though this function accepts a file type, SDL_image may still try other
+ * decoders that are capable of detecting file type from the contents of the
+ * image data, but may rely on the caller-provided type string for formats that
+ * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
+ * ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
  * with IOStream: `Surface.Surface("filename.jpg")` will call this function and
@@ -184,12 +181,12 @@ inline int Version() { return IMG_Version(); }
  * extension.
  *
  * There is also Surface.Surface(), which is equivalent to this function except
- * that it will rely on SDL_image to determine what type of data it is
- * loading, much like passing a nullptr for type.
+ * that it will rely on SDL_image to determine what type of data it is loading,
+ * much like passing a nullptr for type.
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call LoadTextureTyped() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call LoadTextureTyped() instead.
  *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
@@ -214,31 +211,28 @@ inline Surface LoadSurfaceTyped(IOStreamParam src,
 /**
  * Load an image from a filesystem path into a software surface.
  *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use Surface.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Surface.Surface().
+ * There is a separate function to read files from an IOStream, if you need an
+ * i/o abstraction to provide data from anywhere instead of a simple filesystem
+ * read; that function is Surface.Surface().
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call Texture.Texture() instead.
  *
  * @param file a path on the filesystem to load an image from.
  * @returns a new SDL surface, or nullptr on error.
@@ -254,23 +248,20 @@ inline Surface LoadSurface(StringParam file) { return Surface(IMG_Load(file)); }
 /**
  * Load an image from an SDL data source into a software surface.
  *
- * An Surface is a buffer of pixels in memory accessible by the CPU. Use
- * this if you plan to hand the data to something else or manipulate it
- * further in code.
+ * An Surface is a buffer of pixels in memory accessible by the CPU. Use this if
+ * you plan to hand the data to something else or manipulate it further in code.
  *
- * There are no guarantees about what format the new Surface data will be;
- * in many cases, SDL_image will attempt to supply a surface that exactly
- * matches the provided image, but in others it might have to convert (either
- * because the image is in a format that SDL doesn't directly support or
- * because it's compressed data that could reasonably uncompress to various
- * formats and SDL_image had to pick one). You can inspect an Surface for
- * its specifics, and use Surface.Convert to then migrate to any supported
- * format.
+ * There are no guarantees about what format the new Surface data will be; in
+ * many cases, SDL_image will attempt to supply a surface that exactly matches
+ * the provided image, but in others it might have to convert (either because
+ * the image is in a format that SDL doesn't directly support or because it's
+ * compressed data that could reasonably uncompress to various formats and
+ * SDL_image had to pick one). You can inspect an Surface for its specifics, and
+ * use Surface.Convert to then migrate to any supported format.
  *
  * If the image format supports a transparent pixel, SDL will set the colorkey
- * for the surface. You can enable RLE acceleration on the surface afterwards
- * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
- * image->format->colorkey);
+ * for the surface. You can enable RLE acceleration on the surface afterwards by
+ * calling: Surface.SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
@@ -281,17 +272,17 @@ inline Surface LoadSurface(StringParam file) { return Surface(IMG_Load(file)); }
  * manage those details for you, determining the file type from the filename's
  * extension.
  *
- * There is also LoadSurfaceTyped(), which is equivalent to this function
- * except a file extension (like "BMP", "JPG", etc) can be specified, in case
- * SDL_image cannot autodetect the file format.
+ * There is also LoadSurfaceTyped(), which is equivalent to this function except
+ * a file extension (like "BMP", "JPG", etc) can be specified, in case SDL_image
+ * cannot autodetect the file format.
  *
- * If you are using SDL's 2D rendering API, there is an equivalent call to
- * load images directly into an Texture for use by the GPU without using a
- * software surface: call Texture.Texture() instead.
+ * If you are using SDL's 2D rendering API, there is an equivalent call to load
+ * images directly into an Texture for use by the GPU without using a software
+ * surface: call Texture.Texture() instead.
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -318,23 +309,21 @@ inline Surface::Surface(IOStreamParam src, bool closeio)
 /**
  * Load an image from a filesystem path into a GPU texture.
  *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
- * There is a separate function to read files from an IOStream, if you
- * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Texture.Texture().
+ * There is a separate function to read files from an IOStream, if you need an
+ * i/o abstraction to provide data from anywhere instead of a simple filesystem
+ * read; that function is Texture.Texture().
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call Surface.Surface() instead.
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
@@ -353,37 +342,35 @@ inline Texture LoadTexture(RendererParam renderer, StringParam file)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
- * this function and manage those details for you, determining the file type
- * from the filename's extension.
+ * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+ * function and manage those details for you, determining the file type from the
+ * filename's extension.
  *
- * There is also LoadTextureTyped(), which is equivalent to this
- * function except a file extension (like "BMP", "JPG", etc) can be specified,
- * in case SDL_image cannot autodetect the file format.
+ * There is also LoadTextureTyped(), which is equivalent to this function except
+ * a file extension (like "BMP", "JPG", etc) can be specified, in case SDL_image
+ * cannot autodetect the file format.
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Surface.Surface() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call Surface.Surface() instead.
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -412,45 +399,43 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
 /**
  * Load an image from an SDL data source into a GPU texture.
  *
- * An Texture represents an image in GPU memory, usable by SDL's 2D Render
- * API. This can be significantly more efficient than using a CPU-bound
- * Surface if you don't need to manipulate the image directly after
- * loading it.
+ * An Texture represents an image in GPU memory, usable by SDL's 2D Render API.
+ * This can be significantly more efficient than using a CPU-bound Surface if
+ * you don't need to manipulate the image directly after loading it.
  *
  * If the loaded image has transparency or a colorkey, a texture with an alpha
  * channel will be created. Otherwise, SDL_image will attempt to create an
- * Texture in the most format that most reasonably represents the image
- * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
- * RGBA).
+ * Texture in the most format that most reasonably represents the image data
+ * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
  * during this call in any case.
  *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
+ * Even though this function accepts a file type, SDL_image may still try other
+ * decoders that are capable of detecting file type from the contents of the
+ * image data, but may rely on the caller-provided type string for formats that
+ * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
+ * ability to guess the format.
  *
  * There is a separate function to read files from disk without having to deal
- * with IOStream: `Texture.Texture("filename.jpg")` will call this
- * function and manage those details for you, determining the file type from
- * the filename's extension.
+ * with IOStream: `Texture.Texture("filename.jpg")` will call this function and
+ * manage those details for you, determining the file type from the filename's
+ * extension.
  *
- * There is also Texture.Texture(), which is equivalent to this function
- * except that it will rely on SDL_image to determine what type of data it is
- * loading, much like passing a nullptr for type.
+ * There is also Texture.Texture(), which is equivalent to this function except
+ * that it will rely on SDL_image to determine what type of data it is loading,
+ * much like passing a nullptr for type.
  *
- * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call LoadSurfaceTyped() instead.
+ * If you would rather decode an image to an Surface (a buffer of pixels in CPU
+ * memory), call LoadSurfaceTyped() instead.
  *
  * @param renderer the Renderer to use to create the GPU texture.
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -472,14 +457,13 @@ inline Texture LoadTextureTyped(RendererParam renderer,
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -516,14 +500,13 @@ inline bool isAVIF(IOStreamParam src) { return IMG_isAVIF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -559,14 +542,13 @@ inline bool isICO(IOStreamParam src) { return IMG_isICO(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -602,14 +584,13 @@ inline bool isCUR(IOStreamParam src) { return IMG_isCUR(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -645,14 +626,13 @@ inline bool isBMP(IOStreamParam src) { return IMG_isBMP(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -688,14 +668,13 @@ inline bool isGIF(IOStreamParam src) { return IMG_isGIF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -731,14 +710,13 @@ inline bool isJPG(IOStreamParam src) { return IMG_isJPG(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -774,14 +752,13 @@ inline bool isJXL(IOStreamParam src) { return IMG_isJXL(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -817,14 +794,13 @@ inline bool isLBM(IOStreamParam src) { return IMG_isLBM(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -860,14 +836,13 @@ inline bool isPCX(IOStreamParam src) { return IMG_isPCX(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -903,14 +878,13 @@ inline bool isPNG(IOStreamParam src) { return IMG_isPNG(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -946,14 +920,13 @@ inline bool isPNM(IOStreamParam src) { return IMG_isPNM(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -989,14 +962,13 @@ inline bool isSVG(IOStreamParam src) { return IMG_isSVG(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -1032,14 +1004,13 @@ inline bool isQOI(IOStreamParam src) { return IMG_isQOI(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -1075,14 +1046,13 @@ inline bool isTIF(IOStreamParam src) { return IMG_isTIF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -1118,14 +1088,13 @@ inline bool isXCF(IOStreamParam src) { return IMG_isXCF(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -1161,14 +1130,13 @@ inline bool isXPM(IOStreamParam src) { return IMG_isXPM(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -1204,14 +1172,13 @@ inline bool isXV(IOStreamParam src) { return IMG_isXV(src); }
  * This function attempts to determine if a file is a given filetype, reading
  * the least amount possible from the IOStream (usually a few bytes).
  *
- * There is no distinction made between "not the filetype in question" and
- * basic i/o errors.
+ * There is no distinction made between "not the filetype in question" and basic
+ * i/o errors.
  *
- * This function will always attempt to seek `src` back to where it started
- * when this function was called, but it will not report any errors in doing
- * so, but assuming seeking works, this means you can immediately use this
- * with a different IMG_isTYPE function, or load the image without further
- * seeking.
+ * This function will always attempt to seek `src` back to where it started when
+ * this function was called, but it will not report any errors in doing so, but
+ * assuming seeking works, this means you can immediately use this with a
+ * different IMG_isTYPE function, or load the image without further seeking.
  *
  * You do not need to call this function to load data; SDL_image can work to
  * determine file type in many cases in its standard load functions.
@@ -1873,10 +1840,10 @@ inline Surface LoadXPM(IOStreamParam src)
 /**
  * Load a XV image directly.
  *
- * If you know you definitely have a XV image, you can call this function,
- * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an IOStream
- * interface available here.
+ * If you know you definitely have a XV image, you can call this function, which
+ * will skip SDL_image's file format detection routines. Generally it's better
+ * to use the abstract interfaces; also, there is only an IOStream interface
+ * available here.
  *
  * @param src an IOStream to load image data from.
  * @returns SDL surface, or nullptr on error.
@@ -1947,8 +1914,8 @@ inline Surface LoadWEBP(IOStreamParam src)
  * Since SVG files are resolution-independent, you specify the size you would
  * like the output image to be and it will be generated at those dimensions.
  *
- * Either width or height may be 0 and the image will be auto-sized to
- * preserve aspect ratio.
+ * Either width or height may be 0 and the image will be auto-sized to preserve
+ * aspect ratio.
  *
  * @param src an IOStream to load SVG data from.
  * @param size desired width and height of the generated surface, in pixels.
@@ -1964,8 +1931,8 @@ inline Surface LoadSizedSVG(IOStreamParam src, const PointRaw& size)
 /**
  * Load an XPM image from a memory array.
  *
- * The returned surface will be an 8bpp indexed surface, if possible,
- * otherwise it will be 32bpp. If you always want 32-bit data, use
+ * The returned surface will be an 8bpp indexed surface, if possible, otherwise
+ * it will be 32bpp. If you always want 32-bit data, use
  * ReadXPMFromArrayToRGB888() instead.
  *
  * @param xpm a null-terminated array of strings that comprise XPM data.
@@ -1984,11 +1951,7 @@ inline Surface ReadXPMFromArray(char** xpm)
  * Load an XPM image from a memory array.
  *
  * The returned surface will always be a 32-bit RGB surface. If you want 8-bit
- * indexed colors (and the XPM data allows it), use ReadXPMFromArray()
- * instead.
- *
- * When done with the returned surface, the app should dispose of it with a
- * call to Surface.Destroy().
+ * indexed colors (and the XPM data allows it), use ReadXPMFromArray() instead.
  *
  * @param xpm a null-terminated array of strings that comprise XPM data.
  * @returns a new SDL surface, or nullptr on error.
@@ -2032,8 +1995,8 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  * @param dst the IOStream to save the image data to.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -2074,8 +2037,8 @@ inline void SavePNG(SurfaceParam surface, StringParam file)
  *
  * @param surface the SDL surface to save.
  * @param dst the IOStream to save the image data to.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -2117,8 +2080,8 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  * @param dst the IOStream to save the image data to.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -2200,8 +2163,8 @@ public:
    * call to Animation.Free().
    *
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new Animation, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -2412,8 +2375,8 @@ inline Animation LoadAnimation(StringParam file)
  * call to Animation.Free().
  *
  * @param src an IOStream that data will be read from.
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
@@ -2428,11 +2391,11 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
 /**
  * Load an animation from an SDL datasource
  *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
+ * Even though this function accepts a file type, SDL_image may still try other
+ * decoders that are capable of detecting file type from the contents of the
+ * image data, but may rely on the caller-provided type string for formats that
+ * it cannot autodetect. If `type` is nullptr, SDL_image will rely solely on its
+ * ability to guess the format.
  *
  * If `closeio` is true, `src` will be closed before returning, whether this
  * function succeeds or not. SDL_image reads everything it needs from `src`
@@ -2443,8 +2406,8 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
  *
  * @param src an IOStream that data will be read from.
  * @param type a filename extension that represent this data ("GIF", etc).
- * @param closeio true to close/free the IOStream before returning, false
- *                to leave it open.
+ * @param closeio true to close/free the IOStream before returning, false to
+ *                leave it open.
  * @returns a new Animation, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.

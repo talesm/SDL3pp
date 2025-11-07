@@ -282,26 +282,25 @@ public:
   /**
    * Load an image from a filesystem path into a software surface.
    *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use
-   * this if you plan to hand the data to something else or manipulate it
-   * further in code.
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
    *
-   * There are no guarantees about what format the new Surface data will be;
-   * in many cases, SDL_image will attempt to supply a surface that exactly
-   * matches the provided image, but in others it might have to convert (either
-   * because the image is in a format that SDL doesn't directly support or
-   * because it's compressed data that could reasonably uncompress to various
-   * formats and SDL_image had to pick one). You can inspect an Surface for
-   * its specifics, and use Surface.Convert to then migrate to any supported
-   * format.
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use Surface.Convert to then migrate to any supported format.
    *
    * If the image format supports a transparent pixel, SDL will set the colorkey
    * for the surface. You can enable RLE acceleration on the surface afterwards
    * by calling: Surface.SetColorKey(image, SDL_RLEACCEL,
    * image->format->colorkey);
    *
-   * There is a separate function to read files from an IOStream, if you
-   * need an i/o abstraction to provide data from anywhere instead of a simple
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
    * filesystem read; that function is Surface.Surface().
    *
    * If you are using SDL's 2D rendering API, there is an equivalent call to
@@ -322,18 +321,17 @@ public:
   /**
    * Load an image from an SDL data source into a software surface.
    *
-   * An Surface is a buffer of pixels in memory accessible by the CPU. Use
-   * this if you plan to hand the data to something else or manipulate it
-   * further in code.
+   * An Surface is a buffer of pixels in memory accessible by the CPU. Use this
+   * if you plan to hand the data to something else or manipulate it further in
+   * code.
    *
-   * There are no guarantees about what format the new Surface data will be;
-   * in many cases, SDL_image will attempt to supply a surface that exactly
-   * matches the provided image, but in others it might have to convert (either
-   * because the image is in a format that SDL doesn't directly support or
-   * because it's compressed data that could reasonably uncompress to various
-   * formats and SDL_image had to pick one). You can inspect an Surface for
-   * its specifics, and use Surface.Convert to then migrate to any supported
-   * format.
+   * There are no guarantees about what format the new Surface data will be; in
+   * many cases, SDL_image will attempt to supply a surface that exactly matches
+   * the provided image, but in others it might have to convert (either because
+   * the image is in a format that SDL doesn't directly support or because it's
+   * compressed data that could reasonably uncompress to various formats and
+   * SDL_image had to pick one). You can inspect an Surface for its specifics,
+   * and use Surface.Convert to then migrate to any supported format.
    *
    * If the image format supports a transparent pixel, SDL will set the colorkey
    * for the surface. You can enable RLE acceleration on the surface afterwards
@@ -358,8 +356,8 @@ public:
    * software surface: call Texture.Texture() instead.
    *
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new SDL surface, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
