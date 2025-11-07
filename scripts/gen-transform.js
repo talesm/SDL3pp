@@ -1602,6 +1602,18 @@ const transform = {
         "SDL_GamepadAxis": { before: "SDL_Gamepad" },
         "SDL_GamepadBindingType": { before: "SDL_Gamepad" },
         "SDL_GamepadBinding": { before: "SDL_Gamepad" },
+        "SDL_GetGamepadMappings": {
+          type: "OwnArray<char *>",
+          parameters: [],
+        },
+        "SDL_GetGamepadMappingForGUID": {
+          type: "StringResult",
+          parameters: [{}],
+        },
+        "SDL_GetGamepadMapping": {
+          type: "StringResult",
+          parameters: [{}],
+        },
         "SDL_GetGamepads": {
           type: "OwnArray<JoystickID>",
           parameters: [],
