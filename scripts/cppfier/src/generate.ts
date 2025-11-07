@@ -150,45 +150,9 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     return text.split(/^```/m)
       .map((portion, index) => {
         if (index % 2 === 1) return portion;
-        if (targetFile.name > "SDL3pp_b") return portion.split(/\n{2,}/).join('\n\n');
-        return portion.split(/\n{2,}/).map(reflowParagraph).join('\n\n');
+        return portion.split(/\n{2,}/).join('\n\n');
       })
-      .join('```');;
-
-
-    function reflowParagraph(paragraph: string) {
-      if (paragraph.startsWith('-') || paragraph.startsWith('|')) return paragraph;
-      const lines: string[] = [];
-      let currLine = '';
-      let spaces = '';
-      paragraph.split('\n').forEach((line, i) => {
-        const m = line.match(/^( *)(@(?:returns|param (?:\w+|\.\.\.)|threadsafety|sa|since|post|throws))/);
-        if (!m) {
-          line = line.trim();
-          if (line) currLine += line + ' ';
-        } else {
-          if (currLine.trim()) lines.push(currLine.trimEnd());
-          spaces = ' '.repeat(m[2].length + 1);
-          currLine = line.trim() + ' ';
-        }
-        while (currLine.length > maxLength) {
-          let cutPoint = currLine.lastIndexOf(' ', maxLength);
-          if (cutPoint === -1) {
-            lines.push(currLine);
-            currLine = spaces;
-            break;
-          } else if (currLine.length === maxLength + 1) {
-            lines.push(currLine.trimEnd());
-            currLine = spaces;
-          } else {
-            lines.push(currLine.slice(0, cutPoint).trimEnd());
-            currLine = spaces + currLine.slice(cutPoint).trim() + ' ';
-          }
-        }
-      });
-      if (currLine.trim()) lines.push(currLine);
-      return lines.join('\n');
-    }
+      .join('```');
   }
 
   function generateEntry(entry: ApiEntry, prefix?: string) {
