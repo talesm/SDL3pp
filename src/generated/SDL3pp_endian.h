@@ -7,7 +7,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryEndian CategoryEndian
+ * @defgroup CategoryEndian Category Endian
  *
  * Functions converting endian-specific values to different byte orders.
  *

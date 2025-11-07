@@ -11,7 +11,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryCamera CategoryCamera
+ * @defgroup CategoryCamera Category Camera
  *
  * Video capture for the SDL library.
  *

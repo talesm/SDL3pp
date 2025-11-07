@@ -7,7 +7,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryClipboard CategoryClipboard
+ * @defgroup CategoryClipboard Category Clipboard
  *
  * SDL provides access to the system clipboard, both for reading information
  * from other processes and publishing information of its own.

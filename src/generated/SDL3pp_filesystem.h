@@ -7,7 +7,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryFilesystem CategoryFilesystem
+ * @defgroup CategoryFilesystem Category Filesystem
  *
  * SDL offers an API for examining and manipulating the system's filesystem.
  * This covers most things one would need to do with directories, except for

@@ -9,7 +9,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryAudio CategoryAudio
+ * @defgroup CategoryAudio Category Audio
  *
  * Audio functionality for the SDL library.
  *

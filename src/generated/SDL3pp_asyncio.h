@@ -8,7 +8,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryAsyncIO CategoryAsyncIO
+ * @defgroup CategoryAsyncIO Category AsyncIO
  *
  * SDL offers a way to perform I/O asynchronously. This allows an app to read or
  * write files without waiting for data to actually transfer; the functions that

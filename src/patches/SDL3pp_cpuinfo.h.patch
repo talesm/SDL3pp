@@ -1,4 +1,4 @@
 10c10
-<  * @defgroup CategoryCPUInfo CategoryCPUInfo
+<  * @defgroup CategoryCPUInfo Category CPUInfo
 ---
 >  * @defgroup CategoryCPUInfo CPU Feature Detection

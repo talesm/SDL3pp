@@ -1,5 +1,5 @@
 12c12
-<  * @defgroup CategoryError CategoryError
+<  * @defgroup CategoryError Category Error
 ---
 >  * @defgroup CategoryError Error Handling
 22c22

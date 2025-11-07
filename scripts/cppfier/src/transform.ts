@@ -2157,6 +2157,7 @@ function transformFileParsedDoc(doc: ParsedDoc, context: ApiContext) {
   const title = doc[0];
   if (typeof title === "object" && !Array.isArray(title) && title.tag === '#') {
     title.tag = `@defgroup ${title.content}`;
+    title.content = title.content.replace(/(Category)(\w+)/, '$1 $2');
   }
   return transformParsedDoc(doc, context);
 }

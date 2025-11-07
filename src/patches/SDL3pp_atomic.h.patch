@@ -1,5 +1,5 @@
 10c10
-<  * @defgroup CategoryAtomic CategoryAtomic
+<  * @defgroup CategoryAtomic Category Atomic
 ---
 >  * @defgroup CategoryAtomic Atomic Operations
 90a91,92

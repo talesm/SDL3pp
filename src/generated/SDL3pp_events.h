@@ -8,7 +8,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryEvents CategoryEvents
+ * @defgroup CategoryEvents Category Events
  *
  * Event queue management.
  *

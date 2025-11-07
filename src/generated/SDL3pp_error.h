@@ -9,7 +9,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryError CategoryError
+ * @defgroup CategoryError Category Error
  *
  * Simple error message routines for SDL.
  *

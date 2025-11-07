@@ -7,7 +7,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryCPUInfo CategoryCPUInfo
+ * @defgroup CategoryCPUInfo Category CPUInfo
  *
  * CPU feature detection for SDL.
  *

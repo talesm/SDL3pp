@@ -9,7 +9,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryDialog CategoryDialog
+ * @defgroup CategoryDialog Category Dialog
  *
  * File dialog support.
  *

@@ -1,5 +1,5 @@
 10c10
-<  * @defgroup CategoryEndian CategoryEndian
+<  * @defgroup CategoryEndian Category Endian
 ---
 >  * @defgroup CategoryEndian Byte Order and Byte Swapping
 27a28,29

@@ -7,7 +7,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryAtomic CategoryAtomic
+ * @defgroup CategoryAtomic Category Atomic
  *
  * Atomic operations.
  *

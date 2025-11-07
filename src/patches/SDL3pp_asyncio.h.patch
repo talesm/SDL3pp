@@ -1,5 +1,5 @@
 11c11
-<  * @defgroup CategoryAsyncIO CategoryAsyncIO
+<  * @defgroup CategoryAsyncIO Category AsyncIO
 ---
 >  * @defgroup CategoryAsyncIO Async I/O
 249c249,255

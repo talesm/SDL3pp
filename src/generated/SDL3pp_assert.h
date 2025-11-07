@@ -8,7 +8,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryAssert CategoryAssert
+ * @defgroup CategoryAssert Category Assert
  *
  * A helpful assertion macro!
  *
