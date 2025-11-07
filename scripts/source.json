@@ -6082,10 +6082,38 @@
     },
     "SDL_bits.h": {
       "name": "SDL_bits.h",
-      "doc": "# CategoryBits\n\nFunctions for fiddling with bits and bitmasks.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryBits"
+        },
+        "Functions for fiddling with bits and bitmasks."
+      ],
       "entries": {
         "SDL_MostSignificantBitIndex32": {
-          "doc": "Get the index of the most significant (set) bit in a 32-bit number.\n\nResult is undefined when called with 0. This operation can also be stated\nas \"count leading zeroes\" and \"log base 2\".\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the 32-bit value to examine.\n\\returns the index of the most significant bit, or -1 if the value is 0.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Get the index of the most significant (set) bit in a 32-bit number.",
+            "Result is undefined when called with 0. This operation can also be stated as \"count leading zeroes\" and \"log base 2\".",
+            "Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the 32-bit value to examine."
+              },
+              {
+                "tag": "\\returns",
+                "content": "the index of the most significant bit, or -1 if the value is 0."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_MostSignificantBitIndex32",
           "kind": "function",
           "type": "int",
@@ -6098,7 +6126,29 @@
           "constexpr": true
         },
         "SDL_HasExactlyOneBitSet32": {
-          "doc": "Determine if a unsigned 32-bit value has exactly one bit set.\n\nIf there are no bits set (`x` is zero), or more than one bit set, this\nreturns false. If any one bit is exclusively set, this returns true.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the 32-bit value to examine.\n\\returns true if exactly one bit is set in `x`, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "Determine if a unsigned 32-bit value has exactly one bit set.",
+            "If there are no bits set (`x` is zero), or more than one bit set, this returns false. If any one bit is exclusively set, this returns true.",
+            "Note that this is a forced-inline function in a header, and not a public API function available in the SDL library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside SDL itself).",
+            [
+              {
+                "tag": "\\param x",
+                "content": "the 32-bit value to examine."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true if exactly one bit is set in `x`, false otherwise."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_HasExactlyOneBitSet32",
           "kind": "function",
           "type": "bool",
@@ -6114,64 +6164,101 @@
     },
     "SDL_blendmode.h": {
       "name": "SDL_blendmode.h",
-      "doc": "# CategoryBlendmode\n\nBlend modes decide how two colors will mix together. There are both\nstandard modes for basic needs and a means to create custom modes,\ndictating what sort of math to do on what color components.",
+      "parsedDoc": [
+        {
+          "tag": "#",
+          "content": "CategoryBlendmode"
+        },
+        "Blend modes decide how two colors will mix together. There are both standard modes for basic needs and a means to create custom modes, dictating what sort of math to do on what color components."
+      ],
       "entries": {
         "SDL_BlendMode": {
-          "doc": "A set of blend modes used in drawing operations.\n\nThese predefined blend modes are supported everywhere.\n\nAdditional values may be obtained from SDL_ComposeCustomBlendMode.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_ComposeCustomBlendMode",
+          "parsedDoc": [
+            "A set of blend modes used in drawing operations.",
+            "These predefined blend modes are supported everywhere.",
+            "Additional values may be obtained from SDL_ComposeCustomBlendMode.",
+            {
+              "tag": "\\since",
+              "content": "This datatype is available since SDL 3.2.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_ComposeCustomBlendMode"
+            }
+          ],
           "name": "SDL_BlendMode",
           "kind": "alias",
           "type": "Uint32"
         },
         "SDL_BLENDMODE_NONE": {
-          "doc": "no blending: dstRGBA = srcRGBA",
+          "parsedDoc": [
+            "no blending: dstRGBA = srcRGBA"
+          ],
           "name": "SDL_BLENDMODE_NONE",
           "kind": "def",
           "value": "0x00000000u"
         },
         "SDL_BLENDMODE_BLEND": {
-          "doc": "alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))",
+          "parsedDoc": [
+            "alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))"
+          ],
           "name": "SDL_BLENDMODE_BLEND",
           "kind": "def",
           "value": "0x00000001u"
         },
         "SDL_BLENDMODE_BLEND_PREMULTIPLIED": {
-          "doc": "pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))",
+          "parsedDoc": [
+            "pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))"
+          ],
           "name": "SDL_BLENDMODE_BLEND_PREMULTIPLIED",
           "kind": "def",
           "value": "0x00000010u"
         },
         "SDL_BLENDMODE_ADD": {
-          "doc": "additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA",
+          "parsedDoc": [
+            "additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA"
+          ],
           "name": "SDL_BLENDMODE_ADD",
           "kind": "def",
           "value": "0x00000002u"
         },
         "SDL_BLENDMODE_ADD_PREMULTIPLIED": {
-          "doc": "pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA",
+          "parsedDoc": [
+            "pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA"
+          ],
           "name": "SDL_BLENDMODE_ADD_PREMULTIPLIED",
           "kind": "def",
           "value": "0x00000020u"
         },
         "SDL_BLENDMODE_MOD": {
-          "doc": "color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA",
+          "parsedDoc": [
+            "color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA"
+          ],
           "name": "SDL_BLENDMODE_MOD",
           "kind": "def",
           "value": "0x00000004u"
         },
         "SDL_BLENDMODE_MUL": {
-          "doc": "color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA",
+          "parsedDoc": [
+            "color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA"
+          ],
           "name": "SDL_BLENDMODE_MUL",
           "kind": "def",
           "value": "0x00000008u"
         },
         "SDL_BLENDMODE_INVALID": {
-          "doc": "",
           "name": "SDL_BLENDMODE_INVALID",
           "kind": "def",
           "value": "0x7FFFFFFFu"
         },
         "SDL_BlendOperation": {
-          "doc": "The blend operation used when combining source and destination pixel\ncomponents.\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The blend operation used when combining source and destination pixel components.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_BlendOperation",
           "kind": "enum",
           "entries": {
@@ -6208,7 +6295,14 @@
           }
         },
         "SDL_BlendFactor": {
-          "doc": "The normalized factor used to multiply pixel components.\n\nThe blend factors are multiplied with the pixels from a drawing operation\n(src) and the pixels from the render target (dst) before the blend\noperation. The comma-separated factors listed above are always applied in\nthe component order red, green, blue, and alpha.\n\n\\since This enum is available since SDL 3.2.0.",
+          "parsedDoc": [
+            "The normalized factor used to multiply pixel components.",
+            "The blend factors are multiplied with the pixels from a drawing operation (src) and the pixels from the render target (dst) before the blend operation. The comma-separated factors listed above are always applied in the component order red, green, blue, and alpha.",
+            {
+              "tag": "\\since",
+              "content": "This enum is available since SDL 3.2.0."
+            }
+          ],
           "name": "SDL_BlendFactor",
           "kind": "enum",
           "entries": {
@@ -6275,7 +6369,125 @@
           }
         },
         "SDL_ComposeCustomBlendMode": {
-          "doc": "Compose a custom blend mode for renderers.\n\nThe functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept\nthe SDL_BlendMode returned by this function if the renderer supports it.\n\nA blend mode controls how the pixels from a drawing operation (source) get\ncombined with the pixels from the render target (destination). First, the\ncomponents of the source and destination pixels get multiplied with their\nblend factors. Then, the blend operation takes the two products and\ncalculates the result that will get stored in the render target.\n\nExpressed in pseudocode, it would look like this:\n\n```c\ndstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);\ndstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);\n```\n\nWhere the functions `colorOperation(src, dst)` and `alphaOperation(src,\ndst)` can return one of the following:\n\n- `src + dst`\n- `src - dst`\n- `dst - src`\n- `min(src, dst)`\n- `max(src, dst)`\n\nThe red, green, and blue components are always multiplied with the first,\nsecond, and third components of the SDL_BlendFactor, respectively. The\nfourth component is not used.\n\nThe alpha component is always multiplied with the fourth component of the\nSDL_BlendFactor. The other components are not used in the alpha\ncalculation.\n\nSupport for these blend modes varies for each renderer. To check if a\nspecific SDL_BlendMode is supported, create a renderer and pass it to\neither SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will\nreturn with an error if the blend mode is not supported.\n\nThis list describes the support of custom blend modes for each renderer.\nAll renderers support the four blend modes listed in the SDL_BlendMode\nenumeration.\n\n- **direct3d**: Supports all operations with all factors. However, some\n  factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and\n  `SDL_BLENDOPERATION_MAXIMUM`.\n- **direct3d11**: Same as Direct3D 9.\n- **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all\n  factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.\n- **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,\n  `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`\n  operations with all factors.\n- **psp**: No custom blend mode support.\n- **software**: No custom blend mode support.\n\nSome renderers do not provide an alpha component for the default render\ntarget. The `SDL_BLENDFACTOR_DST_ALPHA` and\n`SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this\ncase.\n\n\\param srcColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the source pixels.\n\\param dstColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the destination pixels.\n\\param colorOperation the SDL_BlendOperation used to combine the red,\n                      green, and blue components of the source and\n                      destination pixels.\n\\param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the source pixels.\n\\param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the destination pixels.\n\\param alphaOperation the SDL_BlendOperation used to combine the alpha\n                      component of the source and destination pixels.\n\\returns an SDL_BlendMode that represents the chosen factors and\n         operations.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetRenderDrawBlendMode\n\\sa SDL_GetRenderDrawBlendMode\n\\sa SDL_SetTextureBlendMode\n\\sa SDL_GetTextureBlendMode",
+          "parsedDoc": [
+            "Compose a custom blend mode for renderers.",
+            "The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept the SDL_BlendMode returned by this function if the renderer supports it.",
+            "A blend mode controls how the pixels from a drawing operation (source) get combined with the pixels from the render target (destination). First, the components of the source and destination pixels get multiplied with their blend factors. Then, the blend operation takes the two products and calculates the result that will get stored in the render target.",
+            "Expressed in pseudocode, it would look like this:",
+            {
+              "content": "```c\ndstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);\ndstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);\n```"
+            },
+            "Where the functions `colorOperation(src, dst)` and `alphaOperation(src, dst)` can return one of the following:",
+            [
+              {
+                "tag": "-",
+                "content": "`src + dst`"
+              },
+              {
+                "tag": "-",
+                "content": "`src - dst`"
+              },
+              {
+                "tag": "-",
+                "content": "`dst - src`"
+              },
+              {
+                "tag": "-",
+                "content": "`min(src, dst)`"
+              },
+              {
+                "tag": "-",
+                "content": "`max(src, dst)`"
+              }
+            ],
+            "The red, green, and blue components are always multiplied with the first, second, and third components of the SDL_BlendFactor, respectively. The fourth component is not used.",
+            "The alpha component is always multiplied with the fourth component of the SDL_BlendFactor. The other components are not used in the alpha calculation.",
+            "Support for these blend modes varies for each renderer. To check if a specific SDL_BlendMode is supported, create a renderer and pass it to either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will return with an error if the blend mode is not supported.",
+            "This list describes the support of custom blend modes for each renderer. All renderers support the four blend modes listed in the SDL_BlendMode enumeration.",
+            [
+              {
+                "tag": "-",
+                "content": "**direct3d**: Supports all operations with all factors. However, some factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and `SDL_BLENDOPERATION_MAXIMUM`."
+              },
+              {
+                "tag": "-",
+                "content": "**direct3d11**: Same as Direct3D 9."
+              },
+              {
+                "tag": "-",
+                "content": "**opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here."
+              },
+              {
+                "tag": "-",
+                "content": "**opengles2**: Supports the `SDL_BLENDOPERATION_ADD`, `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT` operations with all factors."
+              },
+              {
+                "tag": "-",
+                "content": "**psp**: No custom blend mode support."
+              },
+              {
+                "tag": "-",
+                "content": "**software**: No custom blend mode support."
+              }
+            ],
+            "Some renderers do not provide an alpha component for the default render target. The `SDL_BLENDFACTOR_DST_ALPHA` and `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this case.",
+            [
+              {
+                "tag": "\\param srcColorFactor",
+                "content": "the SDL_BlendFactor applied to the red, green, and blue components of the source pixels."
+              },
+              {
+                "tag": "\\param dstColorFactor",
+                "content": "the SDL_BlendFactor applied to the red, green, and blue components of the destination pixels."
+              },
+              {
+                "tag": "\\param colorOperation",
+                "content": "the SDL_BlendOperation used to combine the red, green, and blue components of the source and destination pixels."
+              },
+              {
+                "tag": "\\param srcAlphaFactor",
+                "content": "the SDL_BlendFactor applied to the alpha component of the source pixels."
+              },
+              {
+                "tag": "\\param dstAlphaFactor",
+                "content": "the SDL_BlendFactor applied to the alpha component of the destination pixels."
+              },
+              {
+                "tag": "\\param alphaOperation",
+                "content": "the SDL_BlendOperation used to combine the alpha component of the source and destination pixels."
+              },
+              {
+                "tag": "\\returns",
+                "content": "an SDL_BlendMode that represents the chosen factors and operations."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.2.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetRenderDrawBlendMode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetRenderDrawBlendMode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetTextureBlendMode"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_GetTextureBlendMode"
+              }
+            ]
+          ],
           "name": "SDL_ComposeCustomBlendMode",
           "kind": "function",
           "type": "SDL_BlendMode",

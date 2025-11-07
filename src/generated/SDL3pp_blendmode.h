@@ -6,11 +6,11 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryBlendmode Category Blendmode
+ * @defgroup CategoryBlendmode CategoryBlendmode
  *
- * Blend modes decide how two colors will mix together. There are both
- * standard modes for basic needs and a means to create custom modes,
- * dictating what sort of math to do on what color components.
+ * Blend modes decide how two colors will mix together. There are both standard
+ * modes for basic needs and a means to create custom modes, dictating what sort
+ * of math to do on what color components.
  *
  * @{
  */
@@ -86,9 +86,9 @@ constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
  * The normalized factor used to multiply pixel components.
  *
  * The blend factors are multiplied with the pixels from a drawing operation
- * (src) and the pixels from the render target (dst) before the blend
- * operation. The comma-separated factors listed above are always applied in
- * the component order red, green, blue, and alpha.
+ * (src) and the pixels from the render target (dst) before the blend operation.
+ * The comma-separated factors listed above are always applied in the component
+ * order red, green, blue, and alpha.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -125,8 +125,8 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
 /**
  * Compose a custom blend mode for renderers.
  *
- * The functions Renderer.SetDrawBlendMode and Texture.SetBlendMode accept
- * the BlendMode returned by this function if the renderer supports it.
+ * The functions Renderer.SetDrawBlendMode and Texture.SetBlendMode accept the
+ * BlendMode returned by this function if the renderer supports it.
  *
  * A blend mode controls how the pixels from a drawing operation (source) get
  * combined with the pixels from the render target (destination). First, the
@@ -141,8 +141,8 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  * dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);
  * ```
  *
- * Where the functions `colorOperation(src, dst)` and `alphaOperation(src,
- * dst)` can return one of the following:
+ * Where the functions `colorOperation(src, dst)` and `alphaOperation(src, dst)`
+ * can return one of the following:
  *
  * - `src + dst`
  * - `src - dst`
@@ -151,54 +151,49 @@ constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
  * - `max(src, dst)`
  *
  * The red, green, and blue components are always multiplied with the first,
- * second, and third components of the BlendFactor, respectively. The
- * fourth component is not used.
+ * second, and third components of the BlendFactor, respectively. The fourth
+ * component is not used.
  *
  * The alpha component is always multiplied with the fourth component of the
- * BlendFactor. The other components are not used in the alpha
- * calculation.
+ * BlendFactor. The other components are not used in the alpha calculation.
  *
  * Support for these blend modes varies for each renderer. To check if a
- * specific BlendMode is supported, create a renderer and pass it to
- * either Renderer.SetDrawBlendMode or Texture.SetBlendMode. They will
- * return with an error if the blend mode is not supported.
+ * specific BlendMode is supported, create a renderer and pass it to either
+ * Renderer.SetDrawBlendMode or Texture.SetBlendMode. They will return with an
+ * error if the blend mode is not supported.
  *
- * This list describes the support of custom blend modes for each renderer.
- * All renderers support the four blend modes listed in the BlendMode
- * enumeration.
+ * This list describes the support of custom blend modes for each renderer. All
+ * renderers support the four blend modes listed in the BlendMode enumeration.
  *
  * - **direct3d**: Supports all operations with all factors. However, some
  *   factors produce unexpected results with `BLENDOPERATION_MINIMUM` and
  *   `BLENDOPERATION_MAXIMUM`.
  * - **direct3d11**: Same as Direct3D 9.
- * - **opengl**: Supports the `BLENDOPERATION_ADD` operation with all
- *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
+ * - **opengl**: Supports the `BLENDOPERATION_ADD` operation with all factors.
+ *   OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
  * - **opengles2**: Supports the `BLENDOPERATION_ADD`,
- *   `BLENDOPERATION_SUBTRACT`, `BLENDOPERATION_REV_SUBTRACT`
- *   operations with all factors.
+ *   `BLENDOPERATION_SUBTRACT`, `BLENDOPERATION_REV_SUBTRACT` operations with
+ *   all factors.
  * - **psp**: No custom blend mode support.
  * - **software**: No custom blend mode support.
  *
  * Some renderers do not provide an alpha component for the default render
- * target. The `BLENDFACTOR_DST_ALPHA` and
- * `BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
- * case.
+ * target. The `BLENDFACTOR_DST_ALPHA` and `BLENDFACTOR_ONE_MINUS_DST_ALPHA`
+ * factors do not have an effect in this case.
  *
- * @param srcColorFactor the BlendFactor applied to the red, green, and
- *                       blue components of the source pixels.
- * @param dstColorFactor the BlendFactor applied to the red, green, and
- *                       blue components of the destination pixels.
- * @param colorOperation the BlendOperation used to combine the red,
- *                       green, and blue components of the source and
+ * @param srcColorFactor the BlendFactor applied to the red, green, and blue
+ *                       components of the source pixels.
+ * @param dstColorFactor the BlendFactor applied to the red, green, and blue
+ *                       components of the destination pixels.
+ * @param colorOperation the BlendOperation used to combine the red, green, and
+ *                       blue components of the source and destination pixels.
+ * @param srcAlphaFactor the BlendFactor applied to the alpha component of the
+ *                       source pixels.
+ * @param dstAlphaFactor the BlendFactor applied to the alpha component of the
  *                       destination pixels.
- * @param srcAlphaFactor the BlendFactor applied to the alpha component of
- *                       the source pixels.
- * @param dstAlphaFactor the BlendFactor applied to the alpha component of
- *                       the destination pixels.
- * @param alphaOperation the BlendOperation used to combine the alpha
- *                       component of the source and destination pixels.
- * @returns an BlendMode that represents the chosen factors and
- *          operations.
+ * @param alphaOperation the BlendOperation used to combine the alpha component
+ *                       of the source and destination pixels.
+ * @returns an BlendMode that represents the chosen factors and operations.
  *
  * @threadsafety It is safe to call this function from any thread.
  *

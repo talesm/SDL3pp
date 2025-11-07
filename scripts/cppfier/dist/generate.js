@@ -177,6 +177,12 @@ function generateFile(targetFile, config) {
                     if (entry.doc && !entry.doc.includes("\n") && entry.doc.length <= 50) {
                         return template + varStr + " ///< " + entry.doc;
                     }
+                    if (entry?.parsedDoc?.length === 1) {
+                        const firstLine = entry.parsedDoc[0];
+                        if (typeof firstLine === 'string' && firstLine.length <= 50) {
+                            return template + varStr + " ///< " + firstLine;
+                        }
+                    }
                     return doc + template + varStr;
                 default:
                     utils_js_1.system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
