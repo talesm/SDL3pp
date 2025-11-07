@@ -22499,8 +22499,8 @@ constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
  *
  * SDL offers an API for examining and manipulating the system's filesystem.
  * This covers most things one would need to do with directories, except for
- * actual file I/O (which is covered by [CategoryIOStream](CategoryIOStream)
- * and [CategoryAsyncIO](CategoryAsyncIO) instead).
+ * actual file I/O (which is covered by [CategoryIOStream](CategoryIOStream) and
+ * [CategoryAsyncIO](CategoryAsyncIO) instead).
  *
  * There are functions to answer necessary path questions:
  *
@@ -22587,8 +22587,8 @@ struct Path : StringResult
  *
  * **macOS and iOS Specific Functionality**: If the application is in a ".app"
  * bundle, this function returns the Resource directory (e.g.
- * MyApp.app/Contents/Resources/). This behaviour can be overridden by adding
- * a property to the Info.plist file. Adding a string key with the name
+ * MyApp.app/Contents/Resources/). This behaviour can be overridden by adding a
+ * property to the Info.plist file. Adding a string key with the name
  * SDL_FILESYSTEM_BASE_DIR_TYPE with a supported value will change the
  * behaviour.
  *
@@ -22603,8 +22603,8 @@ struct Path : StringResult
  *   `/Applications/SDLApp/`
  *
  * **Nintendo 3DS Specific Functionality**: This function returns "romfs"
- * directory of the application as it is uncommon to store resources outside
- * the executable. As such it is not a writable directory.
+ * directory of the application as it is uncommon to store resources outside the
+ * executable. As such it is not a writable directory.
  *
  * The returned path is guaranteed to end with a path separator ('\\' on
  * Windows, '/' on most other platforms).
@@ -22623,13 +22623,13 @@ inline const char* GetBasePath() { return SDL_GetBasePath(); }
 /**
  * Get the user-and-app-specific path where files can be written.
  *
- * Get the "pref dir". This is meant to be where users can write personal
- * files (preferences and save games, etc) that are specific to your
- * application. This directory is unique per user, per application.
+ * Get the "pref dir". This is meant to be where users can write personal files
+ * (preferences and save games, etc) that are specific to your application. This
+ * directory is unique per user, per application.
  *
- * This function will decide the appropriate location in the native
- * filesystem, create the directory if necessary, and return a string of the
- * absolute path to the directory in UTF-8 encoding.
+ * This function will decide the appropriate location in the native filesystem,
+ * create the directory if necessary, and return a string of the absolute path
+ * to the directory in UTF-8 encoding.
  *
  * On Windows, the string might look like:
  *
@@ -22644,30 +22644,28 @@ inline const char* GetBasePath() { return SDL_GetBasePath(); }
  * `/Users/bob/Library/Application Support/My Program Name/`
  *
  * You should assume the path returned by this function is the only safe place
- * to write files (and that GetBasePath(), while it might be writable, or
- * even the parent of the returned path, isn't where you should be writing
- * things).
+ * to write files (and that GetBasePath(), while it might be writable, or even
+ * the parent of the returned path, isn't where you should be writing things).
  *
  * Both the org and app strings may become part of a directory name, so please
  * follow these rules:
  *
- * - Try to use the same org string (_including case-sensitivity_) for all
- *   your applications that use this function.
- * - Always use a unique app string for each one, and make sure it never
- *   changes for an app once you've decided on it.
+ * - Try to use the same org string (_including case-sensitivity_) for all your
+ *   applications that use this function.
+ * - Always use a unique app string for each one, and make sure it never changes
+ *   for an app once you've decided on it.
  * - Unicode characters are legal, as long as they are UTF-8 encoded, but...
- * - ...only use letters, numbers, and spaces. Avoid punctuation like "Game
- *   Name 2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.
+ * - ...only use letters, numbers, and spaces. Avoid punctuation like "Game Name
+ *   2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.
  *
  * The returned path is guaranteed to end with a path separator ('\\' on
  * Windows, '/' on most other platforms).
  *
  * @param org the name of your organization.
  * @param app the name of your application.
- * @returns a UTF-8 string of the user directory in platform-dependent
- *          notation. nullptr if there's a problem (creating directory failed,
- *          etc.). This should be freed with free() when it is no longer
- *          needed.
+ * @returns a UTF-8 string of the user directory in platform-dependent notation.
+ *          nullptr if there's a problem (creating directory failed, etc.). This
+ *          should be freed with free() when it is no longer needed.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -22768,13 +22766,12 @@ constexpr Folder FOLDER_COUNT = SDL_FOLDER_COUNT;
  * Finds the most suitable user folder for a specific purpose.
  *
  * Many OSes provide certain standard folders for certain purposes, such as
- * storing pictures, music or videos for a certain user. This function gives
- * the path for many of those special locations.
+ * storing pictures, music or videos for a certain user. This function gives the
+ * path for many of those special locations.
  *
  * This function is specifically for _user_ folders, which are meant for the
  * user to access and manage. For application-specific folders, meant to hold
- * data for the application to manage, see GetBasePath() and
- * GetPrefPath().
+ * data for the application to manage, see GetBasePath() and GetPrefPath().
  *
  * The returned path is guaranteed to end with a path separator ('\\' on
  * Windows, '/' on most other platforms).
@@ -22796,8 +22793,7 @@ inline const char* GetUserFolder(Folder folder)
  * Types of filesystem entries.
  *
  * Note that there may be other sorts of items on a filesystem: devices,
- * symlinks, named pipes, etc. They are currently reported as
- * PATHTYPE_OTHER.
+ * symlinks, named pipes, etc. They are currently reported as PATHTYPE_OTHER.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -22904,17 +22900,17 @@ constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
 /**
  * Callback for directory enumeration.
  *
- * Enumeration of directory entries will continue until either all entries
- * have been provided to the callback, or the callback has requested a stop
- * through its return value.
+ * Enumeration of directory entries will continue until either all entries have
+ * been provided to the callback, or the callback has requested a stop through
+ * its return value.
  *
- * Returning ENUM_CONTINUE will let enumeration proceed, calling the
- * callback with further entries. ENUM_SUCCESS and ENUM_FAILURE will
- * terminate the enumeration early, and dictate the return value of the
- * enumeration function itself.
+ * Returning ENUM_CONTINUE will let enumeration proceed, calling the callback
+ * with further entries. ENUM_SUCCESS and ENUM_FAILURE will terminate the
+ * enumeration early, and dictate the return value of the enumeration function
+ * itself.
  *
- * `dirname` is guaranteed to end with a path separator ('\\' on Windows, '/'
- * on most other platforms).
+ * `dirname` is guaranteed to end with a path separator ('\\' on Windows, '/' on
+ * most other platforms).
  *
  * @param userdata an app-controlled pointer that is passed to the callback.
  * @param dirname the directory that is being enumerated.
@@ -22930,17 +22926,17 @@ using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
 /**
  * Callback for directory enumeration.
  *
- * Enumeration of directory entries will continue until either all entries
- * have been provided to the callback, or the callback has requested a stop
- * through its return value.
+ * Enumeration of directory entries will continue until either all entries have
+ * been provided to the callback, or the callback has requested a stop through
+ * its return value.
  *
- * Returning ENUM_CONTINUE will let enumeration proceed, calling the
- * callback with further entries. ENUM_SUCCESS and ENUM_FAILURE will
- * terminate the enumeration early, and dictate the return value of the
- * enumeration function itself.
+ * Returning ENUM_CONTINUE will let enumeration proceed, calling the callback
+ * with further entries. ENUM_SUCCESS and ENUM_FAILURE will terminate the
+ * enumeration early, and dictate the return value of the enumeration function
+ * itself.
  *
- * `dirname` is guaranteed to end with a path separator ('\\' on Windows, '/'
- * on most other platforms).
+ * `dirname` is guaranteed to end with a path separator ('\\' on Windows, '/' on
+ * most other platforms).
  *
  * @param dirname the directory that is being enumerated.
  * @param fname the next entry in the enumeration.
@@ -22949,6 +22945,7 @@ using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa EnumerateDirectory
+ *
  * @sa EnumerateDirectoryCallback
  */
 using EnumerateDirectoryCB =
@@ -22959,13 +22956,11 @@ using EnumerateDirectoryCB =
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * @param path the path of the directory to enumerate.
  * @param callback a function that is called for each entry in the directory.
@@ -22986,13 +22981,11 @@ inline void EnumerateDirectory(StringParam path,
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * @param path the path of the directory to enumerate.
  * @param callback a function that is called for each entry in the directory.
@@ -23047,14 +23040,13 @@ inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
  *
  * If the file at `newpath` already exists, it will replaced.
  *
- * Note that this will not copy files across filesystems/drives/volumes, as
- * that is a much more complicated (and possibly time-consuming) operation.
+ * Note that this will not copy files across filesystems/drives/volumes, as that
+ * is a much more complicated (and possibly time-consuming) operation.
  *
- * Which is to say, if this function fails, CopyFile() to a temporary file
- * in the same directory as `newpath`, then RenamePath() from the
- * temporary file to `newpath` and RemovePath() on `oldpath` might work
- * for files. Renaming a non-empty directory across filesystems is
- * dramatically more complex, however.
+ * Which is to say, if this function fails, CopyFile() to a temporary file in
+ * the same directory as `newpath`, then RenamePath() from the temporary file to
+ * `newpath` and RemovePath() on `oldpath` might work for files. Renaming a
+ * non-empty directory across filesystems is dramatically more complex, however.
  *
  * @param oldpath the old path.
  * @param newpath the new path.
@@ -23080,13 +23072,13 @@ inline void RenamePath(StringParam oldpath, StringParam newpath)
  *
  * Note that this is not an atomic operation! If something tries to read from
  * `newpath` while the copy is in progress, it will see an incomplete copy of
- * the data, and if the calling thread terminates (or the power goes out)
- * during the copy, `newpath`'s previous contents will be gone, replaced with
- * an incomplete copy of the data. To avoid this risk, it is recommended that
- * the app copy to a temporary file in the same directory as `newpath`, and if
- * the copy is successful, use RenamePath() to replace `newpath` with the
- * temporary file. This will ensure that reads of `newpath` will either see a
- * complete copy of the data, or it will see the pre-copy state of `newpath`.
+ * the data, and if the calling thread terminates (or the power goes out) during
+ * the copy, `newpath`'s previous contents will be gone, replaced with an
+ * incomplete copy of the data. To avoid this risk, it is recommended that the
+ * app copy to a temporary file in the same directory as `newpath`, and if the
+ * copy is successful, use RenamePath() to replace `newpath` with the temporary
+ * file. This will ensure that reads of `newpath` will either see a complete
+ * copy of the data, or it will see the pre-copy state of `newpath`.
  *
  * This function attempts to synchronize the newly-copied data to disk before
  * returning, if the platform allows it, so that the renaming trick will not
@@ -23128,8 +23120,8 @@ inline PathInfo GetPathInfo(StringParam path)
 /**
  * Enumerate a directory tree, filtered by pattern, and return a list.
  *
- * Files are filtered out if they don't match the string in `pattern`, which
- * may contain wildcard characters '\*' (match everything) and '?' (match one
+ * Files are filtered out if they don't match the string in `pattern`, which may
+ * contain wildcard characters '\*' (match everything) and '?' (match one
  * character). If pattern is nullptr, no filtering is done and all results are
  * returned. Subdirectories are permitted, and are specified with a path
  * separator of '/'. Wildcard characters '\*' and '?' never match a path
@@ -23165,8 +23157,8 @@ inline OwnArray<char*> GlobDirectory(StringParam path,
 /**
  * Get what the system believes is the "current working directory."
  *
- * For systems without a concept of a current working directory, this will
- * still attempt to provide something reasonable.
+ * For systems without a concept of a current working directory, this will still
+ * attempt to provide something reasonable.
  *
  * SDL does not provide a means to _change_ the current working directory; for
  * platforms without this concept, this would cause surprises with file access
