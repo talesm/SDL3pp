@@ -213,13 +213,11 @@ function parseContent(name: string, content: string) {
   // Use the entry point for listeners
   ParseTreeWalker.DEFAULT.walk(listener, tree);
   const api = listener.api;
-  if (name < "SDL_v") {
-    api.parsedDoc = parseDoc(name, api.doc ?? "");
-    delete api.doc;
-    for (const apiEntry of Object.values(api.entries)) {
-      apiEntry.parsedDoc = parseDoc(`${name}@${apiEntry.name}`, apiEntry.doc);
-      delete apiEntry.doc;
-    }
+  api.parsedDoc = parseDoc(name, api.doc ?? "");
+  delete api.doc;
+  for (const apiEntry of Object.values(api.entries)) {
+    apiEntry.parsedDoc = parseDoc(`${name}@${apiEntry.name}`, apiEntry.doc);
+    delete apiEntry.doc;
   }
   return api;
 }

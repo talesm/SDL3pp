@@ -11,14 +11,14 @@ namespace SDL {
  *
  * Functions for creating Vulkan surfaces on SDL windows.
  *
- * For the most part, Vulkan operates independent of SDL, but it benefits from
- * a little support during setup.
+ * For the most part, Vulkan operates independent of SDL, but it benefits from a
+ * little support during setup.
  *
- * Use Vulkan_GetInstanceExtensions() to get platform-specific bits for
- * creating a VkInstance, then Vulkan_GetVkGetInstanceProcAddr() to get
- * the appropriate function for querying Vulkan entry points. Then
- * Vulkan_CreateSurface() will get you the final pieces you need to
- * prepare for rendering into an Window with Vulkan.
+ * Use Vulkan_GetInstanceExtensions() to get platform-specific bits for creating
+ * a VkInstance, then Vulkan_GetVkGetInstanceProcAddr() to get the appropriate
+ * function for querying Vulkan entry points. Then Vulkan_CreateSurface() will
+ * get you the final pieces you need to prepare for rendering into an Window
+ * with Vulkan.
  *
  * Unlike OpenGL, most of the details of "context" creation and window buffer
  * swapping are handled by the Vulkan API directly, so SDL doesn't provide
@@ -35,27 +35,27 @@ namespace SDL {
  * default library will be loaded upon creation of the first Vulkan window.
  *
  * SDL keeps a counter of how many times this function has been successfully
- * called, so it is safe to call this function multiple times, so long as it
- * is eventually paired with an equivalent number of calls to
- * Vulkan_UnloadLibrary. The `path` argument is ignored unless there is no
- * library currently loaded, and and the library isn't actually unloaded until
- * there have been an equivalent number of calls to Vulkan_UnloadLibrary.
+ * called, so it is safe to call this function multiple times, so long as it is
+ * eventually paired with an equivalent number of calls to Vulkan_UnloadLibrary.
+ * The `path` argument is ignored unless there is no library currently loaded,
+ * and and the library isn't actually unloaded until there have been an
+ * equivalent number of calls to Vulkan_UnloadLibrary.
  *
- * It is fairly common for Vulkan applications to link with libvulkan instead
- * of explicitly loading it at run time. This will work with SDL provided the
+ * It is fairly common for Vulkan applications to link with libvulkan instead of
+ * explicitly loading it at run time. This will work with SDL provided the
  * application links to a dynamic library and both it and SDL use the same
  * search path.
  *
  * If you specify a non-nullptr `path`, an application should retrieve all of
  * the Vulkan functions it uses from the dynamic library using
- * Vulkan_GetVkGetInstanceProcAddr unless you can guarantee `path` points
- * to the same vulkan loader library the application linked to.
+ * Vulkan_GetVkGetInstanceProcAddr unless you can guarantee `path` points to the
+ * same vulkan loader library the application linked to.
  *
  * On Apple devices, if `path` is nullptr, SDL will attempt to find the
  * `vkGetInstanceProcAddr` address within all the Mach-O images of the current
- * process. This is because it is fairly common for Vulkan applications to
- * link with libvulkan (and historically MoltenVK was provided as a static
- * library). If it is not found, on macOS, SDL will attempt to load
+ * process. This is because it is fairly common for Vulkan applications to link
+ * with libvulkan (and historically MoltenVK was provided as a static library).
+ * If it is not found, on macOS, SDL will attempt to load
  * `vulkan.framework/vulkan`, `libvulkan.1.dylib`,
  * `MoltenVK.framework/MoltenVK`, and `libMoltenVK.dylib`, in that order. On
  * iOS, SDL will attempt to load `libMoltenVK.dylib`. Applications using a
@@ -84,8 +84,8 @@ inline void Vulkan_LoadLibrary(StringParam path)
 /**
  * Get the address of the `vkGetInstanceProcAddr` function.
  *
- * This should be called after either calling Vulkan_LoadLibrary() or
- * creating an Window with the `WINDOW_VULKAN` flag.
+ * This should be called after either calling Vulkan_LoadLibrary() or creating
+ * an Window with the `WINDOW_VULKAN` flag.
  *
  * The actual type of the returned function pointer is
  * PFN_vkGetInstanceProcAddr, but that isn't available because the Vulkan
@@ -108,16 +108,16 @@ inline FunctionPointer Vulkan_GetVkGetInstanceProcAddr()
 /**
  * Unload the Vulkan library previously loaded by Vulkan_LoadLibrary().
  *
- * SDL keeps a counter of how many times this function has been called, so it
- * is safe to call this function multiple times, so long as it is paired with
- * an equivalent number of calls to Vulkan_LoadLibrary. The library isn't
- * actually unloaded until there have been an equivalent number of calls to
+ * SDL keeps a counter of how many times this function has been called, so it is
+ * safe to call this function multiple times, so long as it is paired with an
+ * equivalent number of calls to Vulkan_LoadLibrary. The library isn't actually
+ * unloaded until there have been an equivalent number of calls to
  * Vulkan_UnloadLibrary.
  *
- * Once the library has actually been unloaded, if any Vulkan instances
- * remain, they will likely crash the program. Clean up any existing Vulkan
- * resources, and destroy appropriate windows, renderers and GPU devices
- * before calling this function.
+ * Once the library has actually been unloaded, if any Vulkan instances remain,
+ * they will likely crash the program. Clean up any existing Vulkan resources,
+ * and destroy appropriate windows, renderers and GPU devices before calling
+ * this function.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -130,14 +130,14 @@ inline void Vulkan_UnloadLibrary() { SDL_Vulkan_UnloadLibrary(); }
 /**
  * Get the Vulkan instance extensions needed for vkCreateInstance.
  *
- * This should be called after either calling Vulkan_LoadLibrary() or
- * creating an Window with the `WINDOW_VULKAN` flag.
+ * This should be called after either calling Vulkan_LoadLibrary() or creating
+ * an Window with the `WINDOW_VULKAN` flag.
  *
  * On return, the variable pointed to by `count` will be set to the number of
  * elements returned, suitable for using with
  * VkInstanceCreateInfo::enabledExtensionCount, and the returned array can be
- * used with VkInstanceCreateInfo::ppEnabledExtensionNames, for calling
- * Vulkan's vkCreateInstance API.
+ * used with VkInstanceCreateInfo::ppEnabledExtensionNames, for calling Vulkan's
+ * vkCreateInstance API.
  *
  * You should not free the returned array; it is owned by SDL.
  *
@@ -168,8 +168,8 @@ inline std::span<char const* const> Vulkan_GetInstanceExtensions()
  * @param instance the Vulkan instance handle.
  * @param allocator a VkAllocationCallbacks struct, which lets the app set the
  *                  allocator that creates the surface. Can be nullptr.
- * @param surface a pointer to a VkSurfaceKHR handle to output the newly
- *                created surface.
+ * @param surface a pointer to a VkSurfaceKHR handle to output the newly created
+ *                surface.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -188,12 +188,12 @@ inline void Vulkan_CreateSurface(WindowParam window,
 /**
  * Destroy the Vulkan rendering surface of a window.
  *
- * This should be called before Window.Destroy, if Vulkan_CreateSurface
- * was called after Window.Window.
+ * This should be called before Window.Destroy, if Vulkan_CreateSurface was
+ * called after Window.Window.
  *
  * The `instance` must have been created with extensions returned by
- * Vulkan_GetInstanceExtensions() enabled and `surface` must have been
- * created successfully by an Vulkan_CreateSurface() call.
+ * Vulkan_GetInstanceExtensions() enabled and `surface` must have been created
+ * successfully by an Vulkan_CreateSurface() call.
  *
  * If `allocator` is nullptr, Vulkan will use the system default allocator. This
  * argument is passed directly to Vulkan and isn't used by SDL itself.
@@ -216,8 +216,7 @@ inline void Vulkan_DestroySurface(VkInstance instance,
 }
 
 /**
- * Query support for presentation via a given physical device and queue
- * family.
+ * Query support for presentation via a given physical device and queue family.
  *
  * The `instance` must have been created with extensions returned by
  * Vulkan_GetInstanceExtensions() enabled.

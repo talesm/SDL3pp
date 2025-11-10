@@ -201,13 +201,11 @@ function parseContent(name, content) {
     // Use the entry point for listeners
     ParseTreeWalker_1.ParseTreeWalker.DEFAULT.walk(listener, tree);
     const api = listener.api;
-    if (name < "SDL_v") {
-        api.parsedDoc = (0, parseDoc_1.parseDoc)(name, api.doc ?? "");
-        delete api.doc;
-        for (const apiEntry of Object.values(api.entries)) {
-            apiEntry.parsedDoc = (0, parseDoc_1.parseDoc)(`${name}@${apiEntry.name}`, apiEntry.doc);
-            delete apiEntry.doc;
-        }
+    api.parsedDoc = (0, parseDoc_1.parseDoc)(name, api.doc ?? "");
+    delete api.doc;
+    for (const apiEntry of Object.values(api.entries)) {
+        apiEntry.parsedDoc = (0, parseDoc_1.parseDoc)(`${name}@${apiEntry.name}`, apiEntry.doc);
+        delete apiEntry.doc;
     }
     return api;
 }
