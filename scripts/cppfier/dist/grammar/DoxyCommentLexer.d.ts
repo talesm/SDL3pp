@@ -1,0 +1,37 @@
+import { ATN } from "antlr4ts/atn/ATN";
+import { CharStream } from "antlr4ts/CharStream";
+import { Lexer } from "antlr4ts/Lexer";
+import { Vocabulary } from "antlr4ts/Vocabulary";
+export declare class DoxyCommentLexer extends Lexer {
+    static readonly CODE_DELIM = 1;
+    static readonly TABLE_DELIM = 2;
+    static readonly LIST_DELIM = 3;
+    static readonly TITLE_DELIM = 4;
+    static readonly DEFGROUP_TAG = 5;
+    static readonly RETURNS_TAG = 6;
+    static readonly PARAM_TAG = 7;
+    static readonly THREAD_SAFETY_TAG = 8;
+    static readonly SA_TAG = 9;
+    static readonly SINCE_TAG = 10;
+    static readonly POST_TAG = 11;
+    static readonly THROWS_TAG = 12;
+    static readonly WORD = 13;
+    static readonly WS = 14;
+    static readonly NL = 15;
+    static readonly channelNames: string[];
+    static readonly modeNames: string[];
+    static readonly ruleNames: string[];
+    private static readonly _LITERAL_NAMES;
+    private static readonly _SYMBOLIC_NAMES;
+    static readonly VOCABULARY: Vocabulary;
+    get vocabulary(): Vocabulary;
+    constructor(input: CharStream);
+    get grammarFileName(): string;
+    get ruleNames(): string[];
+    get serializedATN(): string;
+    get channelNames(): string[];
+    get modeNames(): string[];
+    static readonly _serializedATN: string;
+    static __ATN: ATN;
+    static get _ATN(): ATN;
+}

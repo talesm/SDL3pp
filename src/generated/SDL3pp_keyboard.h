@@ -14,8 +14,8 @@ namespace SDL {
  *
  * SDL keyboard management.
  *
- * Please refer to the Best Keyboard Practices document for details on how
- * best to accept keyboard input in various types of programs:
+ * Please refer to the Best Keyboard Practices document for details on how best
+ * to accept keyboard input in various types of programs:
  *
  * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
  *
@@ -51,15 +51,15 @@ inline bool HasKeyboard() { return SDL_HasKeyboard(); }
  * Get a list of currently connected keyboards.
  *
  * Note that this will include any device or virtual driver that includes
- * keyboard functionality, including some mice, KVM switches, motherboard
- * power buttons, etc. You should wait for input from a device before you
- * consider it actively in use.
+ * keyboard functionality, including some mice, KVM switches, motherboard power
+ * buttons, etc. You should wait for input from a device before you consider it
+ * actively in use.
  *
  * @param count a pointer filled in with the number of keyboards returned, may
  *              be nullptr.
  * @returns a 0 terminated array of keyboards instance IDs or nullptr on
- * failure; call GetError() for more information. This should be freed with
- * free() when it is no longer needed.
+ *          failure; call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -104,13 +104,13 @@ inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
 /**
  * Get a snapshot of the current state of the keyboard.
  *
- * The pointer returned is a pointer to an internal SDL array. It will be
- * valid for the whole lifetime of the application and should not be freed by
- * the caller.
+ * The pointer returned is a pointer to an internal SDL array. It will be valid
+ * for the whole lifetime of the application and should not be freed by the
+ * caller.
  *
  * A array element with a value of true means that the key is pressed and a
- * value of false means that it is not. Indexes into this array are obtained
- * by using Scancode values.
+ * value of false means that it is not. Indexes into this array are obtained by
+ * using Scancode values.
  *
  * Use PumpEvents() to update the state array.
  *
@@ -119,8 +119,8 @@ inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
  * process events, then the pressed state will never show up in the
  * GetKeyboardState() calls.
  *
- * Note: This function doesn't take into account whether shift has been
- * pressed or not.
+ * Note: This function doesn't take into account whether shift has been pressed
+ * or not.
  *
  * @param numkeys if non-nullptr, receives the length of the returned array.
  * @returns a pointer to an array of key states.
@@ -168,13 +168,12 @@ inline Keymod GetModState() { return SDL_GetModState(); }
 /**
  * Set the current key modifier state for the keyboard.
  *
- * The inverse of GetModState(), SetModState() allows you to impose
- * modifier key states on your application. Simply pass your desired modifier
- * states into `modstate`. This value may be a bitwise, OR'd combination of
- * Keymod values.
+ * The inverse of GetModState(), SetModState() allows you to impose modifier key
+ * states on your application. Simply pass your desired modifier states into
+ * `modstate`. This value may be a bitwise, OR'd combination of Keymod values.
  *
- * This does not change the keyboard state, only the key modifier flags that
- * SDL reports.
+ * This does not change the keyboard state, only the key modifier flags that SDL
+ * reports.
  *
  * @param modstate the desired Keymod for the keyboard.
  *
@@ -234,9 +233,9 @@ inline void Window::StartTextInput(PropertiesParam props)
 /**
  * Text input type.
  *
- * These are the valid values for prop::TextInput.TYPE_NUMBER. Not every
- * value is valid on every platform, but where a value isn't supported, a
- * reasonable fallback will be used.
+ * These are the valid values for prop::TextInput.TYPE_NUMBER. Not every value
+ * is valid on every platform, but where a value isn't supported, a reasonable
+ * fallback will be used.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -278,9 +277,9 @@ constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
 /**
  * Auto capitalization type.
  *
- * These are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.
- * Not every value is valid on every platform, but where a value isn't
- * supported, a reasonable fallback will be used.
+ * These are the valid values for prop::TextInput.CAPITALIZATION_NUMBER. Not
+ * every value is valid on every platform, but where a value isn't supported, a
+ * reasonable fallback will be used.
  *
  * @since This enum is available since SDL 3.2.0.
  *

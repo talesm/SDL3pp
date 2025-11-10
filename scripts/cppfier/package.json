@@ -9,7 +9,7 @@
   "scripts": {
     "compile": "tsc",
     "dev": "tsc --watch",
-    "antlr4ts": "antlr4ts src/grammar/CHeader.g4",
+    "antlr": "antlr4ts src/grammar/CHeader.g4 && antlr4ts src/grammar/DoxyComment.g4",
     "parse": "node dist/index.js parse",
     "update": "node dist/index.js update",
     "transform": "node dist/index.js transform",

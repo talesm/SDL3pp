@@ -55,7 +55,7 @@ using DialogFileFilter = SDL_DialogFileFilter;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -63,13 +63,13 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * The filelist argument should not be freed; it will automatically be freed
  * when the callback returns.
  *
- * The filter argument is the index of the filter that was selected, or -1 if
- * no filter was selected or if the platform or method doesn't support
- * fetching the selected filter.
+ * The filter argument is the index of the filter that was selected, or -1 if no
+ * filter was selected or if the platform or method doesn't support fetching the
+ * selected filter.
  *
- * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both to open
- * and save file dialog.
+ * In Android, the `filelist` are `content://` URIs. They should be opened using
+ * IOStream.FromFile() with appropriate modes. This applies both to open and
+ * save file dialog.
  *
  * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
@@ -94,7 +94,7 @@ using DialogFileCallback = SDL_DialogFileCallback;
  *
  * - nullptr, an error occurred. Details can be obtained with GetError().
  * - A pointer to nullptr, the user either didn't choose any file or canceled
- * the dialog.
+ *   the dialog.
  * - A pointer to non-`nullptr`, the user chose one or more files. The argument
  *   is a null-terminated array of pointers to UTF-8 encoded strings, each
  *   containing a path.
@@ -102,15 +102,14 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * The filelist argument should not be freed; it will automatically be freed
  * when the callback returns.
  *
- * The filter argument is the index of the filter that was selected, or -1 if
- * no filter was selected or if the platform or method doesn't support
- * fetching the selected filter.
+ * The filter argument is the index of the filter that was selected, or -1 if no
+ * filter was selected or if the platform or method doesn't support fetching the
+ * selected filter.
  *
- * In Android, the `filelist` are `content://` URIs. They should be opened
- * using IOStream.FromFile() with appropriate modes. This applies both to open
- * and save file dialog.
+ * In Android, the `filelist` are `content://` URIs. They should be opened using
+ * IOStream.FromFile() with appropriate modes. This applies both to open and
+ * save file dialog.
  *
- * @param userdata an app-provided pointer, for the callback's use.
  * @param filelist the file(s) chosen by the user.
  * @param filter index of the selected filter.
  *
@@ -128,26 +127,25 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
@@ -159,7 +157,7 @@ using DialogFileCB = std::function<void(const char* const*, int)>;
  * @param nfilters the number of filters. Ignored if filters is nullptr.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -189,26 +187,25 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
@@ -220,7 +217,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @param nfilters the number of filters. Ignored if filters is nullptr.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -249,15 +246,15 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  * Displays a dialog that lets the user choose a new or existing file on their
  * filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
  * The chosen file may or may not already exist.
  *
@@ -265,9 +262,8 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
@@ -279,7 +275,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  * @param nfilters the number of filters. Ignored if filters is nullptr.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  *
  * @threadsafety This function should be called only from the main thread. The
  *               callback may be invoked from the same thread or from a
@@ -306,15 +302,15 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * Displays a dialog that lets the user choose a new or existing file on their
  * filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
  * The chosen file may or may not already exist.
  *
@@ -322,9 +318,8 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
@@ -336,7 +331,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @param nfilters the number of filters. Ignored if filters is nullptr.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  *
  * @threadsafety This function should be called only from the main thread. The
  *               callback may be invoked from the same thread or from a
@@ -361,33 +356,32 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
 /**
  * Displays a dialog that lets the user select a folder on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -415,33 +409,32 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
 /**
  * Displays a dialog that lets the user select a folder on their filesystem.
  *
- * This is an asynchronous function; it will return immediately, and the
- * result will be passed to the callback.
+ * This is an asynchronous function; it will return immediately, and the result
+ * will be passed to the callback.
  *
  * The callback will be invoked with a null-terminated list of files the user
- * chose. The list will be empty if the user canceled the dialog, and it will
- * be nullptr if an error occurred.
+ * chose. The list will be empty if the user canceled the dialog, and it will be
+ * nullptr if an error occurred.
  *
- * Note that the callback may be called from a different thread than the one
- * the function was invoked on.
+ * Note that the callback may be called from a different thread than the one the
+ * function was invoked on.
  *
- * Depending on the platform, the user may be allowed to input paths that
- * don't yet exist.
+ * Depending on the platform, the user may be allowed to input paths that don't
+ * yet exist.
  *
  * On Linux, dialogs may require XDG Portals, which requires DBus, which
  * requires an event-handling loop. Apps that do not use SDL to handle events
  * should add a call to PumpEvents in their main loop.
  *
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
- * option.
+ *                         option.
  * @param allow_many if non-zero, the user will be allowed to select multiple
  *                   entries. Not all platforms support this option.
  *
@@ -467,8 +460,8 @@ inline void ShowOpenFolderDialog(DialogFileCB callback,
 /**
  * Various types of file dialogs.
  *
- * This is used by ShowFileDialogWithProperties() to decide what kind of
- * dialog to present to the user.
+ * This is used by ShowFileDialogWithProperties() to decide what kind of dialog
+ * to present to the user.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -490,31 +483,29 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
- *   DialogFileFilter structs, which will be used as filters for
- *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
- *   If non-nullptr, the array of filters must remain valid at least until the
- *   callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
- *   array of filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
- *   be modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
- *   start the dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
- *   more than one entry.
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ *   structs, which will be used as filters for file-based selections. Ignored
+ *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
+ *   filters must remain valid at least until the callback is invoked.
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ *   filters, if it exists.
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ *   modal for.
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ *   dialog at.
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ *   one entry.
  * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
- *   should have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
- *   should have.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ *   have.
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ *   have.
  *
  * Note that each platform may or may not support any of the properties.
  *
  * @param type the type of file dialog.
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param props the properties to use.
@@ -545,31 +536,29 @@ inline void ShowFileDialogWithProperties(FileDialogType type,
  *
  * These are the supported properties:
  *
- * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of
- *   DialogFileFilter structs, which will be used as filters for
- *   file-based selections. Ignored if the dialog is an "Open Folder" dialog.
- *   If non-nullptr, the array of filters must remain valid at least until the
- *   callback is invoked.
- * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the
- *   array of filters, if it exists.
- * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should
- *   be modal for.
- * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to
- *   start the dialog at.
- * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select
- *   more than one entry.
+ * - `prop::FileDialog.FILTERS_POINTER`: a pointer to a list of DialogFileFilter
+ *   structs, which will be used as filters for file-based selections. Ignored
+ *   if the dialog is an "Open Folder" dialog. If non-nullptr, the array of
+ *   filters must remain valid at least until the callback is invoked.
+ * - `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the array of
+ *   filters, if it exists.
+ * - `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should be
+ *   modal for.
+ * - `prop::FileDialog.LOCATION_STRING`: the default folder or file to start the
+ *   dialog at.
+ * - `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select more than
+ *   one entry.
  * - `prop::FileDialog.TITLE_STRING`: the title for the dialog.
- * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button
- *   should have.
- * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button
- *   should have.
+ * - `prop::FileDialog.ACCEPT_STRING`: the label that the accept button should
+ *   have.
+ * - `prop::FileDialog.CANCEL_STRING`: the label that the cancel button should
+ *   have.
  *
  * Note that each platform may or may not support any of the properties.
  *
  * @param type the type of file dialog.
- * @param callback a function pointer to be invoked when the user selects a
- *                 file and accepts, or cancels the dialog, or an error
- *                 occurs.
+ * @param callback a function pointer to be invoked when the user selects a file
+ *                 and accepts, or cancels the dialog, or an error occurs.
  * @param userdata an optional pointer to pass extra data to the callback when
  *                 it will be invoked.
  * @param props the properties to use.

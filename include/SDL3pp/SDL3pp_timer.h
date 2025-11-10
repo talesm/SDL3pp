@@ -12,14 +12,13 @@ namespace SDL {
  * SDL provides time management functionality. It is useful for dealing with
  * (usually) small durations of time.
  *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
+ * This is not to be confused with _calendar time_ management, which is provided
+ * by [CategoryTime](#CategoryTime).
  *
  * This category covers measuring time elapsed (SDL_GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing
- * a callback function after a certain amount of time has elasped
- * (SDL_AddTimer(), etc).
+ * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
+ * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
+ * after a certain amount of time has elasped (SDL_AddTimer(), etc).
  *
  * @{
  */
@@ -55,8 +54,7 @@ inline std::chrono::nanoseconds GetTicks()
  * This function is typically used for profiling.
  *
  * The counter values are only meaningful relative to each other. Differences
- * between values can be converted to times by using
- * GetPerformanceFrequency().
+ * between values can be converted to times by using GetPerformanceFrequency().
  *
  * @returns the current counter value.
  *
@@ -88,8 +86,7 @@ inline Uint64 GetPerformanceFrequency()
  * Wait a specified duration before returning.
  *
  * This function waits a specified duration before returning. It
- * waits at least the specified time, but possibly longer due to OS
- * scheduling.
+ * waits at least the specified time, but possibly longer due to OS scheduling.
  *
  * @param duration the duration to delay, with max precision in ns.
  *
@@ -108,8 +105,8 @@ inline void Delay(std::chrono::nanoseconds duration)
  * Wait a specified duration before returning.
  *
  * This function waits a specified duration before returning. It
- * will attempt to wait as close to the requested time as possible, busy
- * waiting if necessary, but could return later due to OS scheduling.
+ * will attempt to wait as close to the requested time as possible, busy waiting
+ * if necessary, but could return later due to OS scheduling.
  *
  * @param duration the duration to delay.
  *
@@ -135,17 +132,17 @@ using TimerID = SDL_TimerID;
  * Function prototype for the nanosecond timer callback function.
  *
  * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
+ * next timer interval, in nanoseconds. If the returned value is the same as the
+ * one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and will
+ * be removed.
  *
  * @param userdata an arbitrary pointer provided by the app through
  *                 SDL_AddTimer, for its own use.
  * @param timerID the current timer being processed.
  * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
+ * @returns the new callback time interval, or 0 to disable further runs of the
+ *          callback.
  *
  * @threadsafety SDL may call this callback at any time from a background
  *               thread; the application is responsible for locking resources
@@ -161,15 +158,15 @@ using TimerCallback = SDL_NSTimerCallback;
  * Function prototype for the nanosecond timer callback function.
  *
  * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
+ * next timer interval, in nanoseconds. If the returned value is the same as the
+ * one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and will
+ * be removed.
  *
  * @param timerID the current timer being processed.
  * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
+ * @returns the new callback time interval, or 0 to disable further runs of the
+ *          callback.
  *
  * @threadsafety SDL may call this callback at any time from a background
  *               thread; the application is responsible for locking resources
@@ -180,6 +177,7 @@ using TimerCallback = SDL_NSTimerCallback;
  * @cat listener-callback
  *
  * @sa AddTimer
+ *
  * @sa TimerCallback
  */
 using TimerCB =
@@ -189,21 +187,20 @@ using TimerCB =
  * Call a callback function at a future time.
  *
  * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimer() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
+ * supplied parameter from the AddTimer() call and should return the next timer
+ * interval. If the value returned from the callback is 0, the timer is canceled
+ * and will be removed.
  *
  * The callback is run on a separate thread, and for short timeouts can
  * potentially be called before this function returns.
  *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
+ * Timers take into account the amount of time it took to execute the callback.
+ * For example, if the callback took 250 ns to execute and returned 1000 (ns),
+ * the timer would only wait another 750 ns before its next iteration.
  *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicks() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
+ * Timing may be inexact due to OS scheduling. Be sure to note the current time
+ * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+ * adjust for variances.
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
  *                 `callback`.
@@ -230,21 +227,20 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * Call a callback function at a future time.
  *
  * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimer() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
+ * supplied parameter from the AddTimer() call and should return the next timer
+ * interval. If the value returned from the callback is 0, the timer is canceled
+ * and will be removed.
  *
  * The callback is run on a separate thread, and for short timeouts can
  * potentially be called before this function returns.
  *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
+ * Timers take into account the amount of time it took to execute the callback.
+ * For example, if the callback took 250 ns to execute and returned 1000 (ns),
+ * the timer would only wait another 750 ns before its next iteration.
  *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicks() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
+ * Timing may be inexact due to OS scheduling. Be sure to note the current time
+ * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+ * adjust for variances.
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
  * `callback`.

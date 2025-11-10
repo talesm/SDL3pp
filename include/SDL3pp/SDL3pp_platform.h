@@ -8,8 +8,8 @@ namespace SDL {
 /**
  * @defgroup CategoryPlatform Platform Detection
  *
- * SDL provides a means to identify the app's platform, both at compile time
- * and runtime.
+ * SDL provides a means to identify the app's platform, both at compile time and
+ * runtime.
  *
  * For sanity, we don't wrap the macros, so use the regular SDL_* macros as
  * documented.

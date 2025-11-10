@@ -25,21 +25,21 @@
 79a90,91
 > #endif // SDL3PP_DOC
 > 
-141c153
+138c150
 <   return SDL_RunApp(argc, argv[], mainFunction, reserved);
 ---
 >   return SDL_RunApp(argc, argv, mainFunction, reserved);
-177c189
+174c186
 <     argc, argv[], appinit, appiter, appevent, appquit);
 ---
 >     argc, argv, appinit, appiter, appevent, appquit);
-179a192,193
+176a189,190
 > #if defined(SDL_PLATFORM_WINDOWS)
 > 
-225a240,241
+222a237,238
 > #endif /* defined(SDL_PLATFORM_WINDOWS) */
 > 
-234a251,274
+231a248,271
 > 
 > /**
 >  * Use this to define the callbacks for given class

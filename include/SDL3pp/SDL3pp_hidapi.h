@@ -31,10 +31,9 @@ namespace SDL {
  * (Note that this license is the same as item three of SDL's zlib license, so
  * it adds no new requirements on the user.)
  *
- * If you would like a version of SDL without this code, you can build SDL
- * with SDL_HIDAPI_DISABLED defined to 1. You might want to do this for
- * example on iOS or tvOS to avoid a dependency on the CoreBluetooth
- * framework.
+ * If you would like a version of SDL without this code, you can build SDL with
+ * SDL_HIDAPI_DISABLED defined to 1. You might want to do this for example on
+ * iOS or tvOS to avoid a dependency on the CoreBluetooth framework.
  *
  * @{
  */
@@ -88,7 +87,7 @@ constexpr hid_bus_type HID_API_BUS_UNKNOWN =
 /**
  * USB bus Specifications:
  *
- * * https://usb.org/hid
+ * - https://usb.org/hid
  */
 constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
 
@@ -109,10 +108,9 @@ constexpr hid_bus_type HID_API_BUS_BLUETOOTH = SDL_HID_API_BUS_BLUETOOTH;
 constexpr hid_bus_type HID_API_BUS_I2C = SDL_HID_API_BUS_I2C;
 
 /**
- * SPI bus
- * Specifications:
+ * SPI bus Specifications:
  *
- * * https://www.microsoft.com/download/details.aspx?id=103325
+ * - https://www.microsoft.com/download/details.aspx?id=103325
  */
 constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 
@@ -278,8 +276,8 @@ public:
    * @param data a buffer to put the read data into.
    * @param timeout timeout in milliseconds
    * @returns the actual number of bytes read and -1 on on failure; call
-   *          GetError() for more information. If no packet was available to
-   *          be read within the timeout period, this function returns 0.
+   *          GetError() for more information. If no packet was available to be
+   *          read within the timeout period, this function returns 0.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -293,10 +291,9 @@ public:
    * reports.
    *
    * @param data a buffer to put the read data into.
-   * @returns the actual number of bytes read and -1 on failure; call
-   *          GetError() for more information. If no packet was available to
-   *          be read and the handle is in non-blocking mode, this function
-   *          returns 0.
+   * @returns the actual number of bytes read and -1 on failure; call GetError()
+   *          for more information. If no packet was available to be read and
+   *          the handle is in non-blocking mode, this function returns 0.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -355,8 +352,8 @@ public:
    *             be read, or set it to zero if your device does not use numbered
    *             reports.
    * @returns the number of bytes read plus one for the report ID (which is
-   *          still in the first byte), or -1 on on failure; call GetError()
-   *          for more information.
+   *          still in the first byte), or -1 on on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -375,8 +372,8 @@ public:
    *             be read, or set it to zero if your device does not use numbered
    *             reports.
    * @returns the number of bytes read plus one for the report ID (which is
-   *          still in the first byte), or -1 on on failure; call GetError()
-   *          for more information.
+   *          still in the first byte), or -1 on on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -483,10 +480,10 @@ struct HidDeviceRef : HidDevice
  * Initialize the HIDAPI library.
  *
  * This function initializes the HIDAPI library. Calling it is not strictly
- * necessary, as it will be called automatically by hid_enumerate() and
- * any of the SDL_hid_open_*() functions if it is needed. This function should
- * be called at the beginning of execution however, if there is a chance of
- * HIDAPI handles being opened by different threads simultaneously.
+ * necessary, as it will be called automatically by hid_enumerate() and any of
+ * the SDL_hid_open_*() functions if it is needed. This function should be
+ * called at the beginning of execution however, if there is a chance of HIDAPI
+ * handles being opened by different threads simultaneously.
  *
  * Each call to this function should have a matching call to hid_exit()
  *
@@ -501,8 +498,8 @@ inline void hid_init() { CheckErrorIfNot(SDL_hid_init(), 0); }
 /**
  * Finalize the HIDAPI library.
  *
- * This function frees all of the static data associated with HIDAPI. It
- * should be called at the end of execution to avoid memory leaks.
+ * This function frees all of the static data associated with HIDAPI. It should
+ * be called at the end of execution to avoid memory leaks.
  *
  * @throws Error on failure.
  *
@@ -517,9 +514,9 @@ inline void hid_exit() { CheckErrorIfNot(SDL_hid_exit(), 0); }
  *
  * Enumerating the HID devices is an expensive operation, so you can call this
  * to see if there have been any system device changes since the last call to
- * this function. A change in the counter returned doesn't necessarily mean
- * that anything has changed, but you can call hid_enumerate() to get an
- * updated device list.
+ * this function. A change in the counter returned doesn't necessarily mean that
+ * anything has changed, but you can call hid_enumerate() to get an updated
+ * device list.
  *
  * Calling this function for the first time may cause a thread or other system
  * resource to be allocated to track device change notifications.
@@ -540,17 +537,17 @@ inline Uint32 hid_device_change_count()
  * Enumerate the HID Devices.
  *
  * This function returns a linked list of all the HID devices attached to the
- * system which match vendor_id and product_id. If `vendor_id` is set to 0
- * then any vendor matches. If `product_id` is set to 0 then any product
- * matches. If `vendor_id` and `product_id` are both set to 0, then all HID
- * devices will be returned.
+ * system which match vendor_id and product_id. If `vendor_id` is set to 0 then
+ * any vendor matches. If `product_id` is set to 0 then any product matches. If
+ * `vendor_id` and `product_id` are both set to 0, then all HID devices will be
+ * returned.
  *
- * By default SDL will only enumerate controllers, to reduce risk of hanging
- * or crashing on bad drivers, but SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS
- * can be set to "0" to enumerate all HID devices.
+ * By default SDL will only enumerate controllers, to reduce risk of hanging or
+ * crashing on bad drivers, but SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS can
+ * be set to "0" to enumerate all HID devices.
  *
- * @param vendor_id the Vendor ID (VID) of the types of device to open, or 0
- *                  to match any vendor.
+ * @param vendor_id the Vendor ID (VID) of the types of device to open, or 0 to
+ *                  match any vendor.
  * @param product_id the Product ID (PID) of the types of device to open, or 0
  *                   to match any product.
  * @returns a pointer to a linked list of type hid_device_info, containing
@@ -573,8 +570,7 @@ inline hid_device_info* hid_enumerate(unsigned short vendor_id,
  *
  * This function frees a linked list created by hid_enumerate().
  *
- * @param devs pointer to a list of struct_device returned from
- *             hid_enumerate().
+ * @param devs pointer to a list of struct_device returned from hid_enumerate().
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -584,8 +580,8 @@ inline void hid_free_enumeration(hid_device_info* devs)
 }
 
 /**
- * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally
- * a serial number.
+ * Open a HID device using a Vendor ID (VID), Product ID (PID) and optionally a
+ * serial number.
  *
  * If `serial_number` is nullptr, the first device with the specified VID and
  * PID is opened.
@@ -627,21 +623,19 @@ inline HidDevice hid_open_path(StringParam path)
  * Write an Output report to a HID device.
  *
  * The first byte of `data` must contain the Report ID. For devices which only
- * support a single report, this must be set to 0x0. The remaining bytes
- * contain the report data. Since the Report ID is mandatory, calls to
- * HidDevice.write() will always contain one more byte than the report contains.
- * For example, if a hid report is 16 bytes long, 17 bytes must be passed to
- * HidDevice.write(), the Report ID (or 0x0, for devices with a single report),
- * followed by the report data (16 bytes). In this example, the length passed
- * in would be 17.
+ * support a single report, this must be set to 0x0. The remaining bytes contain
+ * the report data. Since the Report ID is mandatory, calls to HidDevice.write()
+ * will always contain one more byte than the report contains. For example, if a
+ * hid report is 16 bytes long, 17 bytes must be passed to HidDevice.write(),
+ * the Report ID (or 0x0, for devices with a single report), followed by the
+ * report data (16 bytes). In this example, the length passed in would be 17.
  *
  * HidDevice.write() will send the data on the first OUT endpoint, if one
  * exists. If it does not, it will send the data through the Control Endpoint
  * (Endpoint 0).
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
- * @param data the data to send, including the report number as the first
- *             byte.
+ * @param data the data to send, including the report number as the first byte.
  * @returns the actual number of bytes written and -1 on on failure; call
  *          GetError() for more information.
  *
@@ -660,16 +654,16 @@ inline int HidDevice::write(SourceBytes data)
 /**
  * Read an Input report from a HID device with timeout.
  *
- * Input reports are returned to the host through the INTERRUPT IN endpoint.
- * The first byte will contain the Report number if the device uses numbered
+ * Input reports are returned to the host through the INTERRUPT IN endpoint. The
+ * first byte will contain the Report number if the device uses numbered
  * reports.
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
  * @param data a buffer to put the read data into.
  * @param timeout timeout in milliseconds
  * @returns the actual number of bytes read and -1 on on failure; call
- *          GetError() for more information. If no packet was available to
- *          be read within the timeout period, this function returns 0.
+ *          GetError() for more information. If no packet was available to be
+ *          read within the timeout period, this function returns 0.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -689,16 +683,15 @@ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
 /**
  * Read an Input report from a HID device.
  *
- * Input reports are returned to the host through the INTERRUPT IN endpoint.
- * The first byte will contain the Report number if the device uses numbered
+ * Input reports are returned to the host through the INTERRUPT IN endpoint. The
+ * first byte will contain the Report number if the device uses numbered
  * reports.
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
  * @param data a buffer to put the read data into.
- * @returns the actual number of bytes read and -1 on failure; call
- *          GetError() for more information. If no packet was available to
- *          be read and the handle is in non-blocking mode, this function
- *          returns 0.
+ * @returns the actual number of bytes read and -1 on failure; call GetError()
+ *          for more information. If no packet was available to be read and the
+ *          handle is in non-blocking mode, this function returns 0.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -741,19 +734,18 @@ inline void HidDevice::set_nonblocking(bool nonblock)
 /**
  * Send a Feature report to the device.
  *
- * Feature reports are sent over the Control endpoint as a Set_Report
- * transfer. The first byte of `data` must contain the Report ID. For devices
- * which only support a single report, this must be set to 0x0. The remaining
- * bytes contain the report data. Since the Report ID is mandatory, calls to
+ * Feature reports are sent over the Control endpoint as a Set_Report transfer.
+ * The first byte of `data` must contain the Report ID. For devices which only
+ * support a single report, this must be set to 0x0. The remaining bytes contain
+ * the report data. Since the Report ID is mandatory, calls to
  * HidDevice.send_feature_report() will always contain one more byte than the
- * report contains. For example, if a hid report is 16 bytes long, 17 bytes
- * must be passed to HidDevice.send_feature_report(): the Report ID (or 0x0, for
+ * report contains. For example, if a hid report is 16 bytes long, 17 bytes must
+ * be passed to HidDevice.send_feature_report(): the Report ID (or 0x0, for
  * devices which do not use numbered reports), followed by the report data (16
  * bytes). In this example, the length passed in would be 17.
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
- * @param data the data to send, including the report number as the first
- *             byte.
+ * @param data the data to send, including the report number as the first byte.
  * @returns the actual number of bytes written and -1 on failure; call
  *          GetError() for more information.
  *
@@ -773,19 +765,19 @@ inline int HidDevice::send_feature_report(SourceBytes data)
 /**
  * Get a feature report from a HID device.
  *
- * Set the first byte of `data` to the Report ID of the report to be read.
- * Make sure to allow space for this extra byte in `data`. Upon return, the
- * first byte will still contain the Report ID, and the report data will start
- * in data[1].
+ * Set the first byte of `data` to the Report ID of the report to be read. Make
+ * sure to allow space for this extra byte in `data`. Upon return, the first
+ * byte will still contain the Report ID, and the report data will start in
+ * data[1].
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
- * @param data a buffer to put the read data into, including the Report ID.
- *             Set the first byte of `data` to the Report ID of the report to
- *             be read, or set it to zero if your device does not use numbered
+ * @param data a buffer to put the read data into, including the Report ID. Set
+ *             the first byte of `data` to the Report ID of the report to be
+ *             read, or set it to zero if your device does not use numbered
  *             reports.
- * @returns the number of bytes read plus one for the report ID (which is
- *          still in the first byte), or -1 on on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes read plus one for the report ID (which is still
+ *          in the first byte), or -1 on on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -803,19 +795,19 @@ inline int HidDevice::get_feature_report(TargetBytes data)
 /**
  * Get an input report from a HID device.
  *
- * Set the first byte of `data` to the Report ID of the report to be read.
- * Make sure to allow space for this extra byte in `data`. Upon return, the
- * first byte will still contain the Report ID, and the report data will start
- * in data[1].
+ * Set the first byte of `data` to the Report ID of the report to be read. Make
+ * sure to allow space for this extra byte in `data`. Upon return, the first
+ * byte will still contain the Report ID, and the report data will start in
+ * data[1].
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
- * @param data a buffer to put the read data into, including the Report ID.
- *             Set the first byte of `data` to the Report ID of the report to
- *             be read, or set it to zero if your device does not use numbered
+ * @param data a buffer to put the read data into, including the Report ID. Set
+ *             the first byte of `data` to the Report ID of the report to be
+ *             read, or set it to zero if your device does not use numbered
  *             reports.
- * @returns the number of bytes read plus one for the report ID (which is
- *          still in the first byte), or -1 on on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes read plus one for the report ID (which is still
+ *          in the first byte), or -1 on on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -962,8 +954,8 @@ inline hid_device_info* HidDevice::get_device_info()
 /**
  * Get a report descriptor from a HID device.
  *
- * User has to provide a preallocated buffer where descriptor will be copied
- * to. The recommended size for a preallocated buffer is 4096 bytes.
+ * User has to provide a preallocated buffer where descriptor will be copied to.
+ * The recommended size for a preallocated buffer is 4096 bytes.
  *
  * @param dev a device handle returned from HidDevice.HidDevice().
  * @param buf the buffer to copy descriptor into.

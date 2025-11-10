@@ -5,8 +5,9 @@ import { CHeaderLexer } from './grammar/CHeaderLexer';
 import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
 import { TerminalNode } from 'antlr4ts/tree/TerminalNode';
 import { readFileSync } from "fs";
-import { Api, ApiEntries, ApiFile, ApiParameters } from './types';
+import { Api, ApiEntries, ApiFile, ApiParameters, ParsedDoc } from './types';
 import { system } from './utils';
+import { parseDoc } from './parseDoc';
 
 export interface ParseConfig {
   baseDir: string[];
@@ -44,27 +45,27 @@ class ProgListener implements CHeaderListener {
 
   enterProg(ctx: ProgContext) {
     const doc = ctx.doc();
-    if (doc) this.api.doc = parseDoc(doc.text);
+    if (doc) this.api.doc = extractDoc(this.api.name, doc.text);
   }
 
   enterDecl(ctx: DeclContext) {
     const doc = ctx.doc();
-    if (doc && !this.api.doc) this.api.doc = parseDoc(doc.text);
+    if (doc && !this.api.doc) this.api.doc = extractDoc(this.api.name, doc.text);
   }
 
   enterDirective(ctx: DirectiveContext) {
     const directive = ctx.DEFINE().text;
     const docIndex = directive.indexOf('/**<');
-    const doc = parseDoc(ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
     const m = directive.match(/^#define\s*(\w+)(\([ \t]*(\w+[ \t]*(,[ \t]*\w+[ \t]*)*)?\))?/);
     if (!m) return;
     const name = m[1];
     if (name.toLowerCase().endsWith("_h_") || name.endsWith("_h") || name.startsWith("_")) return;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
     const parameters = m[3]?.split(',')?.map(p => ({ name: p.trim(), type: "" })) ?? (m[2] ? [] : undefined);
     const value = directive.slice(m[0].length, docIndex === -1 ? undefined : docIndex).trim();
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'def',
       parameters,
@@ -74,11 +75,12 @@ class ProgListener implements CHeaderListener {
 
   enterGlobalVar(ctx: GlobalVarContext) {
     const type = extractType(ctx.type());
-    const doc = parseDoc(ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
-    for (const name of ctx.id().map(id => id.text)) {
+    const names = ctx.id().map(id => id.text);
+    const doc = extractDoc(`${this.api.name}@${names[0]}`, ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
+    for (const name of names) {
       if (this.api.entries[name]?.doc) return;
       this.api.entries[name] = {
-        doc,
+        doc: doc,
         name,
         kind: 'var',
         type,
@@ -89,12 +91,12 @@ class ProgListener implements CHeaderListener {
   enterFunctionDecl(ctx: FunctionDeclContext) {
     const type = extractType(ctx.type());
     if (type.startsWith('__inline')) return;
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (name.startsWith('_')) return;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'function',
       type,
@@ -104,12 +106,12 @@ class ProgListener implements CHeaderListener {
 
   enterFunctionDef(ctx: FunctionDefContext) {
     const type = extractType(ctx.type());
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (name.startsWith('_')) return;
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'function',
       type,
@@ -121,11 +123,11 @@ class ProgListener implements CHeaderListener {
   enterAliasDef(ctx: AliasDefContext) {
     const type = extractType(ctx.type());
     const isStruct = !!ctx.STRUCT();
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'alias',
       type: isStruct ? `struct ${type}` : type,
@@ -133,47 +135,47 @@ class ProgListener implements CHeaderListener {
   }
 
   enterUnionDef(ctx: UnionDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx._name.text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'union',
     };
   }
 
   enterEnumDef(ctx: EnumDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx._name.text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'enum',
-      entries: extractEnumItems(ctx.enumBody()),
+      entries: extractEnumItems(`${this.api.name}@${name}`, ctx.enumBody()),
     };
   }
 
   enterStructDef(ctx: StructDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx._name.text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'struct',
-      entries: extractStructItems(ctx.structBody()),
+      entries: extractStructItems(`${this.api.name}@${name}`, ctx.structBody()),
     };
   }
 
   enterCallbackDef(ctx: CallbackDefContext) {
-    const doc = parseDoc(ctx.doc()?.text ?? '');
     const name = ctx.id().text;
+    const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (this.api.entries[name]?.doc) return;
     const type = extractType(ctx.type());
     this.api.entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'callback',
       type,
@@ -204,29 +206,34 @@ function parseContent(name: string, content: string) {
   ParseTreeWalker.DEFAULT.walk(listener, tree);
   return listener.api;
 }
-function parseDoc(text: string): string {
-  if (text.includes('\\name')) return "";
-  if (text.startsWith('/**<')) {
-    return text.slice(4, text.length - 2)
-      .replaceAll(/^[ \t]*\*[ \t]?/mg, '')
-      .trim();
+
+function extractDoc(name: string, text: string): ParsedDoc {
+  text = extractDocText(text);
+  if (text) return parseDoc(name, text);
+  function extractDocText(text: string): string {
+    if (text.includes('\\name')) return "";
+    if (text.startsWith('/**<')) {
+      return text.slice(4, text.length - 2)
+        .replaceAll(/^[ \t]*\*[ \t]?/mg, '')
+        .trim();
+    }
+    if (text.startsWith('/**')) {
+      return text.slice(3, text.length - 2)
+        .replaceAll(/^[ \t]*\*[ \t]?/mg, '')
+        .trim();
+    }
+    if (text.startsWith('///<')) {
+      text.slice(4)
+        .replaceAll(/^[ \t]\/\/\/[ \t]?/mg, '')
+        .trim();
+    }
+    if (text.startsWith('///')) {
+      text.slice(3)
+        .replaceAll(/^[ \t]\/\/\/[ \t]?/mg, '')
+        .trim();
+    }
+    return text;
   }
-  if (text.startsWith('/**')) {
-    return text.slice(3, text.length - 2)
-      .replaceAll(/^[ \t]*\*[ \t]?/mg, '')
-      .trim();
-  }
-  if (text.startsWith('///<')) {
-    text.slice(4)
-      .replaceAll(/^[ \t]\/\/\/[ \t]?/mg, '')
-      .trim();
-  }
-  if (text.startsWith('///')) {
-    text.slice(3)
-      .replaceAll(/^[ \t]\/\/\/[ \t]?/mg, '')
-      .trim();
-  }
-  return text;
 }
 
 export function normalizeType(typeString: string) {
@@ -261,12 +268,12 @@ function extractSignature(ctx: SignatureContext): ApiParameters {
   return paramsArray;
 }
 
-function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
+function extractEnumItems(prefix: string, ctx: EnumBodyContext): ApiEntries {
   const entries: ApiEntries = {};
   for (const item of ctx.enumItem()) {
     const name = item.id().text;
     entries[name] = {
-      doc: parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
+      doc: extractDoc(`${prefix}@${name}`, item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
       name,
       kind: "var",
       type: "",
@@ -275,7 +282,7 @@ function extractEnumItems(ctx: EnumBodyContext): ApiEntries {
   return entries;
 }
 
-function extractStructItems(ctx: StructBodyContext): ApiEntries {
+function extractStructItems(prefix: string, ctx: StructBodyContext): ApiEntries {
   const entries: ApiEntries = {};
   for (const item of ctx.structItem()) {
     const field = item.structVar();
@@ -287,10 +294,11 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
 
   function addVar(item: StructVarContext) {
     const type = extractType(item.type());
-    const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
-    for (const name of item.id().map(id => id.text)) {
+    const names = item.id().map(id => id.text);
+    const doc = extractDoc(`${prefix}@${names[0]}`, item.trailingDoc()?.text ?? item.doc()?.text ?? '');
+    for (const name of names) {
       entries[name] = {
-        doc,
+        doc: doc,
         name,
         kind: 'var',
         type,
@@ -299,10 +307,10 @@ function extractStructItems(ctx: StructBodyContext): ApiEntries {
   }
   function addCallback(item: StructCallbackContext) {
     const type = extractType(item.type());
-    const doc = parseDoc(item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     const name = item.id().text;
+    const doc = extractDoc(`${prefix}@${name}`, item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     entries[name] = {
-      doc,
+      doc: doc,
       name,
       kind: 'var',
       type,

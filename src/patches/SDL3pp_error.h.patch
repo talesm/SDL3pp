@@ -2,43 +2,42 @@
 <  * @defgroup CategoryError Category Error
 ---
 >  * @defgroup CategoryError Error Handling
-22,23c22
-<  * other apps to consume. These strings are set by calling
-<  * SetErrorUnformatted().
+22c22
+<  * apps to consume. These strings are set by calling SetErrorUnformatted().
 ---
->  * other apps to consume. These strings are set by calling SetError().
-28c27
+>  * apps to consume. These strings are set by calling SetError().
+27c27
 <  * ```c
 ---
 >  * ```cpp
-30,31c29
+29,30c29
 <  *    return SetErrorUnformatted("The thing broke in this specific way: %d",
 <  * errcode);
 ---
 >  *    return SDL::SetError("The thing broke in this specific way: {}", errcode);
-36c34
-<  * is known to call SetErrorUnformatted(), so errors simply propagate through.
+35c34
+<  * known to call SetErrorUnformatted(), so errors simply propagate through.
 ---
->  * is known to call SetError(), so errors simply propagate through.
-51c49
+>  * known to call SetError(), so errors simply propagate through.
+50c49
 <  *     return SetErrorUnformatted("This operation has failed: %d", error_code);
 ---
 >  *     return SDL::SetError("This operation has failed: {}", error_code);
-55,57c53
+54,56c53
 <  * @param fmt a printf()-style message format string.
 <  * @param ... additional parameters matching % tokens in the `fmt` string, if
 <  *            any.
 ---
 >  * @param message the error message
-66c62
+65c62
 <  * @sa SDL_SetErrorV
 ---
 >  * @sa SetError
-70c66
+69c66
 <   return SDL_SetError(message);
 ---
 >   return SDL_SetError("%s", static_cast<const char*>(message));
-72a69,102
+71a69,102
 > /**
 >  * Set the SDL error message for the current thread.
 >  *
@@ -73,12 +72,12 @@
 >  * @sa SetError
 >  * @return false
 >  */
-76c106,107
+75c106,107
 <   static_assert(false, "Not implemented");
 ---
 >   return SetError(
 >     std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
-129c160,164
+127c159,163
 < struct Error : std::exception
 ---
 > /**
@@ -86,13 +85,13 @@
 >  *
 >  */
 > class Error : public std::exception
-132a168
+130a167
 > public:
-146c182
+144c181
 <   const char* what() const { return GetError(); }
 ---
 >   constexpr const char* what() const noexcept { return m_message.c_str(); }
-148,151c184,187
+146,149c183,186
 <   constexpr const std::string& str() const
 <   {
 <     static_assert(false, "Not implemented");
@@ -102,7 +101,7 @@
 >    * Returns the explanatory string.
 >    */
 >   constexpr const std::string& str() const noexcept { return m_message; }
-153a190,197
+151a189,196
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -111,11 +110,11 @@
 >  *
 >  * @param result the result returned
 >  */
-156c200
+154c199
 <   static_assert(false, "Not implemented");
 ---
 >   if (!result) throw Error();
-158a203,210
+156a202,209
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -124,12 +123,12 @@
 >  *
 >  * @param result the result returned
 >  */
-162c214,215
+160c213,214
 <   static_assert(false, "Not implemented");
 ---
 >   if (!result) throw Error();
 >   return result;
-164a218,227
+162a217,226
 > /**
 >  * Check and throw if returned value from SDL is an error.
 >  *
@@ -140,7 +139,7 @@
 >  * @param invalidValue the value that if equal to result indicates this is
 >  *                     invalid.
 >  */
-168c231,247
+166c230,246
 <   static_assert(false, "Not implemented");
 ---
 >   if (result == invalidValue) throw Error();
@@ -160,17 +159,17 @@
 > constexpr void CheckErrorIfNot(T result, T validValue)
 > {
 >   if (result != validValue) throw Error();
-184a264,265
+182a263,264
 > #ifdef SDL3PP_DOC
 > 
-188c269
+186c268
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-200c281
+198c280
 <  * This simply calls SetErrorUnformatted() with a standardized error string, for
 ---
 >  * This simply calls SetError() with a standardized error string, for
-220a302,303
+218a301,302
 > 
 > #endif // SDL3PP_DOC

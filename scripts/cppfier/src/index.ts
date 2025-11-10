@@ -20,7 +20,7 @@ function main(args: string[]) {
   const command = args.shift();
   switch (command) {
     case "parse":
-      parseNew(args);
+      parse(args);
       break;
     case "generate":
       generate(args);
@@ -66,7 +66,7 @@ function printError(message: string, ...parameters: string[]) {
  * Scan files
  * @param args the arguments
  */
-function parseNew(args: string[]) {
+function parse(args: string[]) {
   if (args?.length == 0) {
     return help(["parse"]);
   }

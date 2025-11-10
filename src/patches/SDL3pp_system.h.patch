@@ -13,35 +13,35 @@
 > #if defined(SDL_PLATFORM_WINDOWS) || defined(SDL3PP_DOC)
 > 
 > /// MSG
-100d107
+97d104
 <  * @param userdata a pointer to pass to every iteration of `callback`.
-109c116,118
+106c113,115
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<WindowsMessageHookCB>;
 >   SetWindowsMessageHook(&Wrapper::CallSuffixed,
 >                         Wrapper::Wrap(std::move(callback)));
-110a120
+107a117
 > #endif // SDL_PLATFORM_WINDOWS
-111a122,123
+108a119,120
 > #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
 >   defined(SDL3PP_DOC)
-149a162,164
+146a159,161
 > #endif // defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
 > 
 > /// this is defined in Xlib's headers, just need a simple declaration here
-220d234
+217d231
 <  * @param userdata a pointer to pass to every iteration of `callback`.
-226c240,241
+223c237,238
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<X11EventHookCB>;
 >   SDL_SetX11EventHook(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
-228a244,246
+225a241,243
 > /* Platform specific functions for Linux*/
 > #if defined(SDL_PLATFORM_LINUX) || defined(SDL3PP_DOC)
 > 
-265a284,290
+262a281,287
 > #endif // SDL_PLATFORM_LINUX
 > 
 > /*
@@ -49,14 +49,14 @@
 >  */
 > #if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
 > 
-377d401
+368d392
 <  * @param callbackParam a pointer that is passed to `callback`.
-388c412,413
+379c403,404
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<iOSAnimationCB>;
 >   SetiOSAnimationCallback(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
-403a429,435
+394a420,426
 > #endif // defined(SDL_PLATFORM_IOS)
 > 
 > /*
@@ -64,10 +64,10 @@
 >  */
 > #if defined(SDL_PLATFORM_ANDROID) || defined(SDL3PP_DOC)
 > 
-532,533d563
+523,524d554
 < #error "RequestAndroidPermissionCB (plc)"
 < 
-645a676,690
+637a668,682
 >  * Callback that presents a response from a RequestAndroidPermission call.
 >  *
 >  * @param userdata an app-controlled pointer that is passed to the callback.
@@ -83,9 +83,9 @@
 >   std::function<void(const char* permission, bool granted)>;
 > 
 > /**
-711d755
+703d747
 <  * @param userdata an app-controlled pointer that is passed to the callback.
-723c767,772
+715c759,764
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
@@ -94,19 +94,19 @@
 >         std::move(permission), &Wrapper::CallOnce, callback)) {
 >     Wrapper::release(callback);
 >   }
-778a828,829
+770a820,821
 > #endif // defined(SDL_PLATFORM_ANDROID)
 > 
-945a997,998
+936a988,989
 > #if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
 > 
-965a1019,1023
+956a1010,1014
 > #endif // defined(SDL_PLATFORM_IOS)
 > 
 > #if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
 > 
 > /// XTaskQueueHandle
-967a1026
+958a1017
 > /// XUserHandle
-1004a1064
+993a1053
 > #endif // defined(SDL_PLATFORM_GDK)

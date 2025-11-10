@@ -12,8 +12,8 @@ namespace SDL {
 /**
  * @defgroup CategoryRect Category Rect
  *
- * Some helper functions for managing rectangles and 2D points, in both
- * integer and floating point versions.
+ * Some helper functions for managing rectangles and 2D points, in both integer
+ * and floating point versions.
  *
  * @{
  */
@@ -316,7 +316,7 @@ struct Rect : RectRaw
    */
   Rect(const PointRaw& corner, const PointRaw& size) {}
 
-  ///@sa Empty()
+  /// @sa Empty()
   constexpr explicit operator bool() const
   {
     static_assert(false, "Not implemented");
@@ -496,7 +496,7 @@ struct Rect : RectRaw
    */
   constexpr operator SDL_FRect() const;
 
-  ///@sa operator ToFRect()
+  /// @sa operator ToFRect()
   constexpr operator FRect() const { static_assert(false, "Not implemented"); }
 
   /**
@@ -584,8 +584,8 @@ struct Rect : RectRaw
    * Calculate the union of two rectangles.
    *
    * @param B an Rect structure representing the second rectangle.
-   * @param result an Rect structure filled in with the union of rectangles
-   *               `A` and `B`.
+   * @param result an Rect structure filled in with the union of rectangles `A`
+   *               and `B`.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -594,8 +594,7 @@ struct Rect : RectRaw
 };
 
 /**
- * A rectangle, with the origin at the upper left (using floating point
- * values).
+ * A rectangle, with the origin at the upper left (using floating point values).
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -641,7 +640,7 @@ struct FRect : FRectRaw
    */
   constexpr FRect(const FPointRaw& corner, const FPointRaw& size) {}
 
-  ///@sa Empty()
+  /// @sa Empty()
   constexpr explicit operator bool() const
   {
     static_assert(false, "Not implemented");
@@ -921,8 +920,8 @@ struct FRect : FRectRaw
    * Calculate the union of two rectangles with float precision.
    *
    * @param B an FRect structure representing the second rectangle.
-   * @param result an FRect structure filled in with the union of rectangles
-   *               `A` and `B`.
+   * @param result an FRect structure filled in with the union of rectangles `A`
+   *               and `B`.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -956,10 +955,10 @@ constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(); }
  * corner, and < the rectangle's x+w and y+h. So a 1x1 rectangle considers point
  * (0,0) as "inside" and (0,1) as not.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param p the point to test.
  * @param r the rectangle to test.
@@ -985,10 +984,10 @@ constexpr bool Point::InRect(const RectRaw& r) const
  * A rectangle is considered "empty" for this function if `r` is nullptr, or if
  * `r`'s width and/or height are <= 0.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param r the rectangle to test.
  * @returns true if the rectangle is "empty", false otherwise.
@@ -1007,10 +1006,10 @@ constexpr bool Rect::Empty() const { return SDL::RectEmpty(this); }
  * Rectangles are considered equal if both are not nullptr and each of their x,
  * y, width and height match.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param a the first rectangle to test.
  * @param b the second rectangle to test.
@@ -1062,8 +1061,8 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *
  * @param A an Rect structure representing the first rectangle.
  * @param B an Rect structure representing the second rectangle.
- * @param result an Rect structure filled in with the intersection of
- *               rectangles `A` and `B`.
+ * @param result an Rect structure filled in with the intersection of rectangles
+ *               `A` and `B`.
  * @returns true if there is an intersection, false otherwise.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1085,8 +1084,8 @@ constexpr Rect Rect::GetIntersection(const RectRaw& other) const
  *
  * @param A an Rect structure representing the first rectangle.
  * @param B an Rect structure representing the second rectangle.
- * @param result an Rect structure filled in with the union of rectangles
- *               `A` and `B`.
+ * @param result an Rect structure filled in with the union of rectangles `A`
+ *               and `B`.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1136,9 +1135,9 @@ inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
  *
  * This function is used to clip a line segment to a rectangle. A line segment
  * contained entirely within the rectangle or that does not intersect will
- * remain unchanged. A line segment that crosses the rectangle at either or
- * both ends will be clipped to the boundary of the rectangle and the new
- * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
+ * remain unchanged. A line segment that crosses the rectangle at either or both
+ * ends will be clipped to the boundary of the rectangle and the new coordinates
+ * saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
  *
  * @param rect an Rect structure representing the rectangle to intersect.
  * @param X1 a pointer to the starting X-coordinate of the line.
@@ -1171,10 +1170,10 @@ inline bool Rect::GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const
  * corner, and <= the rectangle's x+w and y+h. So a 1x1 rectangle considers
  * point (0,0) and (0,1) as "inside" and (0,2) as not.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param p the point to test.
  * @param r the rectangle to test.
@@ -1200,10 +1199,10 @@ constexpr bool FPoint::InRect(const FRectRaw& r) const
  * A rectangle is considered "empty" for this function if `r` is nullptr, or if
  * `r`'s width and/or height are < 0.0f.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param r the rectangle to test.
  * @returns true if the rectangle is "empty", false otherwise.
@@ -1220,18 +1219,18 @@ constexpr bool RectEmptyFloat(const FRectRaw& r)
 constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(this); }
 
 /**
- * Determine whether two floating point rectangles are equal, within some
- * given epsilon.
+ * Determine whether two floating point rectangles are equal, within some given
+ * epsilon.
  *
  * Rectangles are considered equal if both are not nullptr and each of their x,
  * y, width and height are within `epsilon` of each other. If you don't know
- * what value to use for `epsilon`, you should call the FRect.Equal
- * function instead.
+ * what value to use for `epsilon`, you should call the FRect.Equal function
+ * instead.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param a the first rectangle to test.
  * @param b the second rectangle to test.
@@ -1262,15 +1261,15 @@ constexpr bool FRect::EqualEpsilon(const FRectRaw& other,
  * epsilon.
  *
  * Rectangles are considered equal if both are not nullptr and each of their x,
- * y, width and height are within FLT_EPSILON of each other. This is often
- * a reasonable way to compare two floating point rectangles and deal with the
+ * y, width and height are within FLT_EPSILON of each other. This is often a
+ * reasonable way to compare two floating point rectangles and deal with the
  * slight precision variations in floating point calculations that tend to pop
  * up.
  *
- * Note that this is a forced-inline function in a header, and not a public
- * API function available in the SDL library (which is to say, the code is
- * embedded in the calling program and the linker and dynamic loader will not
- * be able to find this function inside SDL itself).
+ * Note that this is a forced-inline function in a header, and not a public API
+ * function available in the SDL library (which is to say, the code is embedded
+ * in the calling program and the linker and dynamic loader will not be able to
+ * find this function inside SDL itself).
  *
  * @param a the first rectangle to test.
  * @param b the second rectangle to test.
@@ -1347,8 +1346,8 @@ constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
  *
  * @param A an FRect structure representing the first rectangle.
  * @param B an FRect structure representing the second rectangle.
- * @param result an FRect structure filled in with the union of rectangles
- *               `A` and `B`.
+ * @param result an FRect structure filled in with the union of rectangles `A`
+ *               and `B`.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1364,8 +1363,7 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
 }
 
 /**
- * Calculate a minimal rectangle enclosing a set of points with float
- * precision.
+ * Calculate a minimal rectangle enclosing a set of points with float precision.
  *
  * If `clip` is not nullptr then only points inside of the clipping rectangle
  * are considered.
@@ -1400,9 +1398,9 @@ constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
  *
  * This function is used to clip a line segment to a rectangle. A line segment
  * contained entirely within the rectangle or that does not intersect will
- * remain unchanged. A line segment that crosses the rectangle at either or
- * both ends will be clipped to the boundary of the rectangle and the new
- * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
+ * remain unchanged. A line segment that crosses the rectangle at either or both
+ * ends will be clipped to the boundary of the rectangle and the new coordinates
+ * saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
  *
  * @param rect an FRect structure representing the rectangle to intersect.
  * @param X1 a pointer to the starting X-coordinate of the line.

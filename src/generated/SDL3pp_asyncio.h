@@ -10,28 +10,28 @@ namespace SDL {
 /**
  * @defgroup CategoryAsyncIO Category AsyncIO
  *
- * SDL offers a way to perform I/O asynchronously. This allows an app to read
- * or write files without waiting for data to actually transfer; the functions
- * that request I/O never block while the request is fulfilled.
+ * SDL offers a way to perform I/O asynchronously. This allows an app to read or
+ * write files without waiting for data to actually transfer; the functions that
+ * request I/O never block while the request is fulfilled.
  *
  * Instead, the data moves in the background and the app can check for results
  * at their leisure.
  *
- * This is more complicated than just reading and writing files in a
- * synchronous way, but it can allow for more efficiency, and never having
- * framerate drops as the hard drive catches up, etc.
+ * This is more complicated than just reading and writing files in a synchronous
+ * way, but it can allow for more efficiency, and never having framerate drops
+ * as the hard drive catches up, etc.
  *
  * The general usage pattern for async I/O is:
  *
  * - Create one or more AsyncIOQueue objects.
  * - Open files with AsyncIO.AsyncIO.
- * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write,
- *   putting those tasks into one of the queues.
+ * - Start I/O tasks to the files with AsyncIO.Read or AsyncIO.Write, putting
+ *   those tasks into one of the queues.
  * - Later on, use AsyncIOQueue.GetResult on a queue to see if any task is
- *   finished without blocking. Tasks might finish in any order with success
- *   or failure.
- * - When all your tasks are done, close the file with AsyncIO.Close. This
- *   also generates a task, since it might flush data to disk!
+ *   finished without blocking. Tasks might finish in any order with success or
+ *   failure.
+ * - When all your tasks are done, close the file with AsyncIO.Close. This also
+ *   generates a task, since it might flush data to disk!
  *
  * This all works, without blocking, in a single thread, but one can also wait
  * on a queue in a background thread, sleeping until new results have arrived:
@@ -41,21 +41,20 @@ namespace SDL {
  * - When shutting down, call AsyncIOQueue.Signal to unblock any sleeping
  *   threads despite there being no new tasks completed.
  *
- * And, of course, to match the synchronous LoadFile, we offer
- * LoadFileAsync as a convenience function. This will handle allocating a
- * buffer, slurping in the file data, and null-terminating it; you still check
- * for results later.
+ * And, of course, to match the synchronous LoadFile, we offer LoadFileAsync as
+ * a convenience function. This will handle allocating a buffer, slurping in the
+ * file data, and null-terminating it; you still check for results later.
  *
  * Behind the scenes, SDL will use newer, efficient APIs on platforms that
- * support them: Linux's io_uring and Windows 11's IoRing, for example. If
- * those technologies aren't available, SDL will offload the work to a thread
- * pool that will manage otherwise-synchronous loads without blocking the app.
+ * support them: Linux's io_uring and Windows 11's IoRing, for example. If those
+ * technologies aren't available, SDL will offload the work to a thread pool
+ * that will manage otherwise-synchronous loads without blocking the app.
  *
  * ## Best Practices
  *
- * Simple non-blocking I/O--for an app that just wants to pick up data
- * whenever it's ready without losing framerate waiting on disks to spin--can
- * use whatever pattern works well for the program. In this case, simply call
+ * Simple non-blocking I/O--for an app that just wants to pick up data whenever
+ * it's ready without losing framerate waiting on disks to spin--can use
+ * whatever pattern works well for the program. In this case, simply call
  * AsyncIO.Read, or maybe LoadFileAsync, as needed. Once a frame, call
  * AsyncIOQueue.GetResult to check for any completed tasks and deal with the
  * data as it arrives.
@@ -66,24 +65,23 @@ namespace SDL {
  * some amount of resources, but it is not an overwhelming cost. Do not make a
  * queue for each task, however. It is better to put many tasks into a single
  * queue. They will be reported in order of completion, not in the order they
- * were submitted, so it doesn't generally matter what order tasks are
- * started.
+ * were submitted, so it doesn't generally matter what order tasks are started.
  *
- * One async I/O queue can be shared by multiple threads, or one thread can
- * have more than one queue, but the most efficient way--if ruthless
- * efficiency is the goal--is to have one queue per thread, with multiple
- * threads working in parallel, and attempt to keep each queue loaded with
- * tasks that are both started by and consumed by the same thread. On modern
- * platforms that can use newer interfaces, this can keep data flowing as
- * efficiently as possible all the way from storage hardware to the app, with
- * no contention between threads for access to the same queue.
+ * One async I/O queue can be shared by multiple threads, or one thread can have
+ * more than one queue, but the most efficient way--if ruthless efficiency is
+ * the goal--is to have one queue per thread, with multiple threads working in
+ * parallel, and attempt to keep each queue loaded with tasks that are both
+ * started by and consumed by the same thread. On modern platforms that can use
+ * newer interfaces, this can keep data flowing as efficiently as possible all
+ * the way from storage hardware to the app, with no contention between threads
+ * for access to the same queue.
  *
  * Written data is not guaranteed to make it to physical media by the time a
- * closing task is completed, unless AsyncIO.Close is called with its
- * `flush` parameter set to true, which is to say that a successful result
- * here can still result in lost data during an unfortunately-timed power
- * outage if not flushed. However, flushing will take longer and may be
- * unnecessary, depending on the app's needs.
+ * closing task is completed, unless AsyncIO.Close is called with its `flush`
+ * parameter set to true, which is to say that a successful result here can
+ * still result in lost data during an unfortunately-timed power outage if not
+ * flushed. However, flushing will take longer and may be unnecessary, depending
+ * on the app's needs.
  *
  * @{
  */
@@ -206,8 +204,8 @@ public:
   constexpr AsyncIO(AsyncIORef&& other) = delete;
 
   /**
-   * Use this function to create a new AsyncIO object for reading from
-   * and/or writing to a named file.
+   * Use this function to create a new AsyncIO object for reading from and/or
+   * writing to a named file.
    *
    * The `mode` string understands the following values:
    *
@@ -234,7 +232,7 @@ public:
    * @param mode an ASCII string representing the mode to be used for opening
    *             the file.
    * @post a pointer to the AsyncIO structure that is created or nullptr on
-   *          failure; call GetError() for more information.
+   *       failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -305,14 +303,14 @@ public:
    *
    * Once this function returns true, `asyncio` is no longer valid, regardless
    * of any future outcomes. Any completed tasks might still contain this
-   * pointer in their AsyncIOOutcome data, in case the app was using this
-   * value to track information, but it should not be used again.
+   * pointer in their AsyncIOOutcome data, in case the app was using this value
+   * to track information, but it should not be used again.
    *
    * If this function returns false, the close wasn't started at all, and it's
    * safe to attempt to close again later.
    *
-   * An AsyncIOQueue must be specified. The newly-created task will be added
-   * to it when it completes its work.
+   * An AsyncIOQueue must be specified. The newly-created task will be added to
+   * it when it completes its work.
    *
    * @param flush true if data should sync to disk before the task completes.
    * @param queue a queue to add the new AsyncIO to.
@@ -359,8 +357,8 @@ public:
    * the system at any time until then. Do not allocate it on the stack, as this
    * might take longer than the life of the calling function to complete!
    *
-   * An AsyncIOQueue must be specified. The newly-created task will be added
-   * to it when it completes its work.
+   * An AsyncIOQueue must be specified. The newly-created task will be added to
+   * it when it completes its work.
    *
    * @param ptr a pointer to a buffer to read data into.
    * @param offset the position to start reading in the data source.
@@ -398,8 +396,8 @@ public:
    * the system at any time until then. Do not allocate it on the stack, as this
    * might take longer than the life of the calling function to complete!
    *
-   * An AsyncIOQueue must be specified. The newly-created task will be added
-   * to it when it completes its work.
+   * An AsyncIOQueue must be specified. The newly-created task will be added to
+   * it when it completes its work.
    *
    * @param ptr a pointer to a buffer to write data from.
    * @param offset the position to start writing to the data source.
@@ -491,9 +489,9 @@ using AsyncIOOutcome = SDL_AsyncIOOutcome;
  * A queue of completed asynchronous I/O tasks.
  *
  * When starting an asynchronous operation, you specify a queue for the new
- * task. A queue can be asked later if any tasks in it have completed,
- * allowing an app to manage multiple pending tasks in one place, in whatever
- * order they complete.
+ * task. A queue can be asked later if any tasks in it have completed, allowing
+ * an app to manage multiple pending tasks in one place, in whatever order they
+ * complete.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -545,7 +543,7 @@ public:
    * checked for completed tasks thereafter.
    *
    * @post a new task queue object or nullptr if there was an error; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -600,9 +598,8 @@ public:
    * those tasks are finished. All those tasks will be deallocated. Their
    * results will be lost to the app.
    *
-   * Any pending reads from LoadFileAsync() that are still in this queue
-   * will have their buffers deallocated by this function, to prevent a memory
-   * leak.
+   * Any pending reads from LoadFileAsync() that are still in this queue will
+   * have their buffers deallocated by this function, to prevent a memory leak.
    *
    * Once this function is called, the queue is no longer valid and should not
    * be used, including by other threads that might access it while destruction
@@ -612,7 +609,6 @@ public:
    * AsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to
    * unblock those threads, and take measures (such as Thread.Wait()) to make
    * sure they have finished their wait and won't wait on the queue again.
-   *
    *
    * @threadsafety It is safe to call this function from any thread, so long as
    *               no other thread is waiting on the queue with
@@ -719,7 +715,6 @@ public:
    * polling, it is possible to have a timeout of -1 to wait forever, and use
    * AsyncIOQueue.Signal() to wake up the waiting threads later.
    *
-   * @param queue the async I/O task queue to wait on.
    * @param outcome details of a finished task will be written here. May not be
    *                nullptr.
    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -745,9 +740,8 @@ public:
    * it indefinitely. In this case, once this call completes, the caller should
    * take measures to make sure any previously-blocked threads have returned
    * from their wait and will not touch the queue again (perhaps by setting a
-   * flag to tell the threads to terminate and then using Thread.Wait() to
-   * make sure they've done so).
-   *
+   * flag to tell the threads to terminate and then using Thread.Wait() to make
+   * sure they've done so).
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -784,19 +778,18 @@ struct AsyncIOQueueRef : AsyncIOQueue
 };
 
 /**
- * Use this function to create a new AsyncIO object for reading from
- * and/or writing to a named file.
+ * Use this function to create a new AsyncIO object for reading from and/or
+ * writing to a named file.
  *
  * The `mode` string understands the following values:
  *
  * - "r": Open a file for reading only. It must exist.
- * - "w": Open a file for writing only. It will create missing files or
- *   truncate existing ones.
- * - "r+": Open a file for update both reading and writing. The file must
- *   exist.
- * - "w+": Create an empty file for both reading and writing. If a file with
- *   the same name already exists its content is erased and the file is
- *   treated as a new empty file.
+ * - "w": Open a file for writing only. It will create missing files or truncate
+ *   existing ones.
+ * - "r+": Open a file for update both reading and writing. The file must exist.
+ * - "w+": Create an empty file for both reading and writing. If a file with the
+ *   same name already exists its content is erased and the file is treated as a
+ *   new empty file.
  *
  * There is no "b" mode, as there is only "binary" style I/O, and no "a" mode
  * for appending, since you specify the position when starting a task.
@@ -809,8 +802,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
  * reads and writes to the opened file will be async, however.
  *
  * @param file a UTF-8 string representing the filename to open.
- * @param mode an ASCII string representing the mode to be used for opening
- *             the file.
+ * @param mode an ASCII string representing the mode to be used for opening the
+ *             file.
  * @returns a pointer to the AsyncIO structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
@@ -862,8 +855,8 @@ inline Sint64 AsyncIO::GetSize() { return SDL::GetAsyncIOSize(m_resource); }
  * the system at any time until then. Do not allocate it on the stack, as this
  * might take longer than the life of the calling function to complete!
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param asyncio a pointer to an AsyncIO structure.
  * @param ptr a pointer to a buffer to read data into.
@@ -906,8 +899,8 @@ inline void AsyncIO::Read(void* ptr,
  * This function writes `size` bytes from `offset` position in the data source
  * to the area pointed at by `ptr`.
  *
- * This function returns as quickly as possible; it does not wait for the
- * write to complete. On a successful return, this work will continue in the
+ * This function returns as quickly as possible; it does not wait for the write
+ * to complete. On a successful return, this work will continue in the
  * background. If the work begins, even failure is asynchronous: a failing
  * return value from this function only means the work couldn't start at all.
  *
@@ -915,8 +908,8 @@ inline void AsyncIO::Read(void* ptr,
  * the system at any time until then. Do not allocate it on the stack, as this
  * might take longer than the life of the calling function to complete!
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param asyncio a pointer to an AsyncIO structure.
  * @param ptr a pointer to a buffer to write data from.
@@ -957,35 +950,34 @@ inline void AsyncIO::Write(void* ptr,
  * Close and free any allocated resources for an async I/O object.
  *
  * Closing a file is _also_ an asynchronous task! If a write failure were to
- * happen during the closing process, for example, the task results will
- * report it as usual.
+ * happen during the closing process, for example, the task results will report
+ * it as usual.
  *
- * Closing a file that has been written to does not guarantee the data has
- * made it to physical media; it may remain in the operating system's file
- * cache, for later writing to disk. This means that a successfully-closed
- * file can be lost if the system crashes or loses power in this small window.
- * To prevent this, call this function with the `flush` parameter set to true.
- * This will make the operation take longer, and perhaps increase system load
- * in general, but a successful result guarantees that the data has made it to
- * physical storage. Don't use this for temporary files, caches, and
- * unimportant data, and definitely use it for crucial irreplaceable files,
- * like game saves.
+ * Closing a file that has been written to does not guarantee the data has made
+ * it to physical media; it may remain in the operating system's file cache, for
+ * later writing to disk. This means that a successfully-closed file can be lost
+ * if the system crashes or loses power in this small window. To prevent this,
+ * call this function with the `flush` parameter set to true. This will make the
+ * operation take longer, and perhaps increase system load in general, but a
+ * successful result guarantees that the data has made it to physical storage.
+ * Don't use this for temporary files, caches, and unimportant data, and
+ * definitely use it for crucial irreplaceable files, like game saves.
  *
  * This function guarantees that the close will happen after any other pending
  * tasks to `asyncio`, so it's safe to open a file, start several operations,
  * close the file immediately, then check for all results later. This function
  * will not block until the tasks have completed.
  *
- * Once this function returns true, `asyncio` is no longer valid, regardless
- * of any future outcomes. Any completed tasks might still contain this
- * pointer in their AsyncIOOutcome data, in case the app was using this
- * value to track information, but it should not be used again.
+ * Once this function returns true, `asyncio` is no longer valid, regardless of
+ * any future outcomes. Any completed tasks might still contain this pointer in
+ * their AsyncIOOutcome data, in case the app was using this value to track
+ * information, but it should not be used again.
  *
  * If this function returns false, the close wasn't started at all, and it's
  * safe to attempt to close again later.
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param asyncio a pointer to an AsyncIO structure to close.
  * @param flush true if data should sync to disk before the task completes.
@@ -1035,26 +1027,25 @@ inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
  * Destroy a previously-created async I/O task queue.
  *
  * If there are still tasks pending for this queue, this call will block until
- * those tasks are finished. All those tasks will be deallocated. Their
- * results will be lost to the app.
+ * those tasks are finished. All those tasks will be deallocated. Their results
+ * will be lost to the app.
  *
- * Any pending reads from LoadFileAsync() that are still in this queue
- * will have their buffers deallocated by this function, to prevent a memory
- * leak.
+ * Any pending reads from LoadFileAsync() that are still in this queue will have
+ * their buffers deallocated by this function, to prevent a memory leak.
  *
- * Once this function is called, the queue is no longer valid and should not
- * be used, including by other threads that might access it while destruction
- * is blocking on pending tasks.
+ * Once this function is called, the queue is no longer valid and should not be
+ * used, including by other threads that might access it while destruction is
+ * blocking on pending tasks.
  *
  * Do not destroy a queue that still has threads waiting on it through
  * AsyncIOQueue.WaitResult(). You can call AsyncIOQueue.Signal() first to
- * unblock those threads, and take measures (such as Thread.Wait()) to make
- * sure they have finished their wait and won't wait on the queue again.
+ * unblock those threads, and take measures (such as Thread.Wait()) to make sure
+ * they have finished their wait and won't wait on the queue again.
  *
  * @param queue the task queue to destroy.
  *
- * @threadsafety It is safe to call this function from any thread, so long as
- *               no other thread is waiting on the queue with
+ * @threadsafety It is safe to call this function from any thread, so long as no
+ *               other thread is waiting on the queue with
  *               AsyncIOQueue.WaitResult.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1069,8 +1060,8 @@ inline void AsyncIOQueue::Destroy() { DestroyAsyncIOQueue(release()); }
 /**
  * Query an async I/O task queue for completed tasks.
  *
- * If a task assigned to this queue has finished, this will return true and
- * fill in `outcome` with the details of the task. If no task in the queue has
+ * If a task assigned to this queue has finished, this will return true and fill
+ * in `outcome` with the details of the task. If no task in the queue has
  * finished, this function will return false. This function does not block.
  *
  * If a task has completed, this function will free its resources and the task
@@ -1103,11 +1094,11 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
 /**
  * Block until an async I/O task queue has a completed task.
  *
- * This function puts the calling thread to sleep until there a task assigned
- * to the queue that has finished.
+ * This function puts the calling thread to sleep until there a task assigned to
+ * the queue that has finished.
  *
- * If a task assigned to the queue has finished, this will return true and
- * fill in `outcome` with the details of the task. If no task in the queue has
+ * If a task assigned to the queue has finished, this will return true and fill
+ * in `outcome` with the details of the task. If no task in the queue has
  * finished, this function will return false.
  *
  * If a task has completed, this function will free its resources and the task
@@ -1117,13 +1108,12 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
  * once; a completed task will only go to one of the threads.
  *
  * Note that by the nature of various platforms, more than one waiting thread
- * may wake to handle a single task, but only one will obtain it, so
- * `timeoutMS` is a _maximum_ wait time, and this function may return false
- * sooner.
+ * may wake to handle a single task, but only one will obtain it, so `timeoutMS`
+ * is a _maximum_ wait time, and this function may return false sooner.
  *
  * This function may return false if there was a system error, the OS
- * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was
- * called to wake up all waiting threads without a finished task.
+ * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was called
+ * to wake up all waiting threads without a finished task.
  *
  * A timeout can be used to specify a maximum wait time, but rather than
  * polling, it is possible to have a timeout of -1 to wait forever, and use
@@ -1151,11 +1141,11 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
 /**
  * Block until an async I/O task queue has a completed task.
  *
- * This function puts the calling thread to sleep until there a task assigned
- * to the queue that has finished.
+ * This function puts the calling thread to sleep until there a task assigned to
+ * the queue that has finished.
  *
- * If a task assigned to the queue has finished, this will return true and
- * fill in `outcome` with the details of the task. If no task in the queue has
+ * If a task assigned to the queue has finished, this will return true and fill
+ * in `outcome` with the details of the task. If no task in the queue has
  * finished, this function will return false.
  *
  * If a task has completed, this function will free its resources and the task
@@ -1165,13 +1155,12 @@ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
  * once; a completed task will only go to one of the threads.
  *
  * Note that by the nature of various platforms, more than one waiting thread
- * may wake to handle a single task, but only one will obtain it, so
- * `timeoutMS` is a _maximum_ wait time, and this function may return false
- * sooner.
+ * may wake to handle a single task, but only one will obtain it, so `timeoutMS`
+ * is a _maximum_ wait time, and this function may return false sooner.
  *
  * This function may return false if there was a system error, the OS
- * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was
- * called to wake up all waiting threads without a finished task.
+ * inadvertently awoke multiple threads, or if AsyncIOQueue.Signal() was called
+ * to wake up all waiting threads without a finished task.
  *
  * A timeout can be used to specify a maximum wait time, but rather than
  * polling, it is possible to have a timeout of -1 to wait forever, and use
@@ -1215,10 +1204,10 @@ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult()
  *
  * This can be useful when destroying a queue to make sure nothing is touching
  * it indefinitely. In this case, once this call completes, the caller should
- * take measures to make sure any previously-blocked threads have returned
- * from their wait and will not touch the queue again (perhaps by setting a
- * flag to tell the threads to terminate and then using Thread.Wait() to
- * make sure they've done so).
+ * take measures to make sure any previously-blocked threads have returned from
+ * their wait and will not touch the queue again (perhaps by setting a flag to
+ * tell the threads to terminate and then using Thread.Wait() to make sure
+ * they've done so).
  *
  * @param queue the async I/O task queue to signal.
  *
@@ -1248,11 +1237,11 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  * bytes_transferred value.
  *
  * This function will allocate the buffer to contain the file. It must be
- * deallocated by calling free() on AsyncIOOutcome's buffer field
- * after completion.
+ * deallocated by calling free() on AsyncIOOutcome's buffer field after
+ * completion.
  *
- * An AsyncIOQueue must be specified. The newly-created task will be added
- * to it when it completes its work.
+ * An AsyncIOQueue must be specified. The newly-created task will be added to it
+ * when it completes its work.
  *
  * @param file the path to read all available data from.
  * @param queue a queue to add the new AsyncIO to.

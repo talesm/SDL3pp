@@ -2,19 +2,19 @@
 <  * @defgroup CategoryTouch Category Touch
 ---
 >  * @defgroup CategoryTouch Touch Support
-124c124
+123c123
 <   constexpr explicit operator bool() const { return *this != FingerRaw{}; }
 ---
 >   constexpr explicit operator bool() const { return id != 0; }
-224,225d223
-<  * @param count a pointer filled in with the number of devices returned, may
-<  *              be nullptr.
-227,228c225
-<  *          GetError() for more information. This should be freed with
-<  *          free() when it is no longer needed.
+223,224d222
+<  * @param count a pointer filled in with the number of devices returned, may be
+<  *              nullptr.
+226,227c224
+<  *          GetError() for more information. This should be freed with free()
+<  *          when it is no longer needed.
 ---
 >  *          GetError() for more information.
-232c229,234
+231c228,233
 < inline OwnArray<TouchID> GetTouchDevices() { return SDL_GetTouchDevices(); }
 ---
 > inline OwnArray<TouchID> GetTouchDevices()
@@ -23,16 +23,15 @@
 >   auto data = SDL_GetTouchDevices(&count);
 >   return OwnArray<TouchID>(data, size_t(count));
 > }
-265,266d266
-<  * @param count a pointer filled in with the number of fingers returned, can
-<  *              be nullptr.
-268,270c268
-<  *          call GetError() for more information. This is a single
-<  *          allocation that should be freed with free() when it is no
-<  *          longer needed.
+264,265d265
+<  * @param count a pointer filled in with the number of fingers returned, can be
+<  *              nullptr.
+267,268c267
+<  *          call GetError() for more information. This is a single allocation
+<  *          that should be freed with free() when it is no longer needed.
 ---
 >  *          call GetError() for more information.
-276c274,276
+274c273,275
 <   return SDL_GetTouchFingers(touchID);
 ---
 >   int count = 0;

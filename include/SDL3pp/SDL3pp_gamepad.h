@@ -31,38 +31,36 @@ namespace SDL {
  *
  * One turns a joystick into a gamepad by providing a magic configuration
  * string, which tells SDL the details of a specific device: when you see this
- * specific hardware, if button 2 gets pressed, this is actually D-Pad Up,
- * etc.
+ * specific hardware, if button 2 gets pressed, this is actually D-Pad Up, etc.
  *
- * SDL has many popular controllers configured out of the box, and users can
- * add their own controller details through an environment variable if it's
+ * SDL has many popular controllers configured out of the box, and users can add
+ * their own controller details through an environment variable if it's
  * otherwise unknown to SDL.
  *
  * In order to use these functions, Init() must have been called with the
- * INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and
- * load appropriate drivers.
+ * INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and load
+ * appropriate drivers.
  *
- * If you would like to receive gamepad updates while the application is in
- * the background, you should set the following hint before calling
- * Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+ * If you would like to receive gamepad updates while the application is in the
+ * background, you should set the following hint before calling Init():
+ * SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
  *
  * Gamepads support various optional features such as rumble, color LEDs,
  * touchpad, gyro, etc. The support for these features varies depending on the
  * controller and OS support available. You can check for LED and rumble
- * capabilities at runtime by calling Gamepad.GetProperties() and checking
- * the various capability properties. You can check for touchpad by calling
- * Gamepad.GetNumTouchpads() and check for gyro and accelerometer by
- * calling Gamepad.HasSensor().
+ * capabilities at runtime by calling Gamepad.GetProperties() and checking the
+ * various capability properties. You can check for touchpad by calling
+ * Gamepad.GetNumTouchpads() and check for gyro and accelerometer by calling
+ * Gamepad.HasSensor().
  *
- * By default SDL will try to use the most capable driver available, but you
- * can tune which OS drivers to use with the various joystick hints in
- * SDL_hints.h.
+ * By default SDL will try to use the most capable driver available, but you can
+ * tune which OS drivers to use with the various joystick hints in SDL_hints.h.
  *
- * Your application should always support gamepad hotplugging. On some
- * platforms like Xbox, Steam Deck, etc., this is a requirement for
- * certification. On other platforms, like macOS and Windows when using
- * Windows.Gaming.Input, controllers may not be available at startup and will
- * come in at some point after you've started processing events.
+ * Your application should always support gamepad hotplugging. On some platforms
+ * like Xbox, Steam Deck, etc., this is a requirement for certification. On
+ * other platforms, like macOS and Windows when using Windows.Gaming.Input,
+ * controllers may not be available at startup and will come in at some point
+ * after you've started processing events.
  *
  * @{
  */
@@ -107,8 +105,8 @@ struct GamepadParam
  * Standard gamepad types.
  *
  * This type does not necessarily map to first-party controllers from
- * Microsoft/Sony/Nintendo; in many cases, third-party controllers can report
- * as these, either because they were designed for a specific console, or they
+ * Microsoft/Sony/Nintendo; in many cases, third-party controllers can report as
+ * these, either because they were designed for a specific console, or they
  * simply most closely match that console's controllers (does it have A/B/X/Y
  * buttons or X/O/Square/Triangle? Does it have a touchpad? etc).
  */
@@ -160,16 +158,15 @@ constexpr GamepadType GAMEPAD_TYPE_COUNT =
  * would be Cross/Circle/Square/Triangle.
  *
  * For controllers that don't use a diamond pattern for the face buttons, the
- * south/east/west/north buttons indicate the buttons labeled A, B, C, D, or
- * 1, 2, 3, 4, or for controllers that aren't labeled, they are the primary,
+ * south/east/west/north buttons indicate the buttons labeled A, B, C, D, or 1,
+ * 2, 3, 4, or for controllers that aren't labeled, they are the primary,
  * secondary, etc. buttons.
  *
- * The activate action is often the south button and the cancel action is
- * often the east button, but in some regions this is reversed, so your game
- * should allow remapping actions based on user preferences.
+ * The activate action is often the south button and the cancel action is often
+ * the east button, but in some regions this is reversed, so your game should
+ * allow remapping actions based on user preferences.
  *
- * You can query the labels for the face buttons using
- * Gamepad.GetButtonLabel()
+ * You can query the labels for the face buttons using Gamepad.GetButtonLabel()
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -244,9 +241,7 @@ constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
-/**
- * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
- */
+/// Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
 
@@ -277,8 +272,8 @@ constexpr GamepadButton GAMEPAD_BUTTON_COUNT =
  * This isn't a complete set, just the face buttons to make it easy to show
  * button prompts.
  *
- * For a complete set, you should look at the button and gamepad type and have
- * a set of symbols that work well with your art style.
+ * For a complete set, you should look at the button and gamepad type and have a
+ * set of symbols that work well with your art style.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -314,14 +309,13 @@ constexpr GamepadButtonLabel GAMEPAD_BUTTON_LABEL_TRIANGLE =
 /**
  * The list of axes available on a gamepad
  *
- * Thumbstick axis values range from JOYSTICK_AXIS_MIN to
- * JOYSTICK_AXIS_MAX, and are centered within ~8000 of zero, though
- * advanced UI will allow users to set or autodetect the dead zone, which
- * varies between gamepads.
+ * Thumbstick axis values range from JOYSTICK_AXIS_MIN to JOYSTICK_AXIS_MAX, and
+ * are centered within ~8000 of zero, though advanced UI will allow users to set
+ * or autodetect the dead zone, which varies between gamepads.
  *
  * Trigger axis values range from 0 (released) to JOYSTICK_AXIS_MAX (fully
- * pressed) when reported by Gamepad.GetAxis(). Note that this is not the
- * same range that will be reported by the lower-level Joystick.GetAxis().
+ * pressed) when reported by Gamepad.GetAxis(). Note that this is not the same
+ * range that will be reported by the lower-level Joystick.GetAxis().
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -383,8 +377,8 @@ constexpr GamepadBindingType GAMEPAD_BINDTYPE_HAT =
  * gamepad's "start" button.
  *
  * SDL has these bindings built-in for many popular controllers, and can add
- * more with a simple text string. Those strings are parsed into a collection
- * of these structs to make it easier to operate on the data.
+ * more with a simple text string. Those strings are parsed into a collection of
+ * these structs to make it easier to operate on the data.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -436,8 +430,8 @@ public:
    * Open a gamepad for use.
    *
    * @param instance_id the joystick instance ID.
-   * @post a gamepad identifier or nullptr if an error occurred; call
-   *          GetError() for more information.
+   * @post a gamepad identifier or nullptr if an error occurred; call GetError()
+   *       for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -485,8 +479,6 @@ public:
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
    *
-   *                Gamepad.Gamepad().
-   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.Gamepad
@@ -499,8 +491,7 @@ public:
    * Details about mappings are discussed with AddGamepadMapping().
    *
    * @returns a string that has the gamepad's mapping or nullptr if no mapping
-   * is available; call GetError() for more information. This should be freed
-   * with free() when it is no longer needed.
+   *          is available; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -509,7 +500,7 @@ public:
    * @sa GetGamepadMappingForGUID
    * @sa SetGamepadMapping
    */
-  char* GetMapping();
+  StringResult GetMapping();
 
   /**
    * Get the properties associated with an opened gamepad.
@@ -518,18 +509,17 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED
-   *   that has adjustable brightness
-   * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED
-   *   that has adjustable color
-   * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a
-   *   player LED
-   * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has
-   *   left/right rumble
+   * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
+   *   has adjustable brightness
+   * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
+   *   has adjustable color
+   * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
+   *   LED
+   * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
+   *   rumble
    * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
    *   simple trigger rumble
    *
-   *                Gamepad.Gamepad().
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -540,7 +530,6 @@ public:
   /**
    * Get the instance ID of an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the instance ID of the specified gamepad on success.
    * @throws Error on failure.
    *
@@ -551,7 +540,6 @@ public:
   /**
    * Get the implementation-dependent name for an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the implementation dependent name for the gamepad, or nullptr if
    *          there is no name or the identifier passed is invalid.
    *
@@ -564,7 +552,6 @@ public:
   /**
    * Get the implementation-dependent path for an opened gamepad.
    *
-   *                Gamepad.Gamepad().
    * @returns the implementation dependent path for the gamepad, or nullptr if
    *          there is no path or the identifier passed is invalid.
    *
@@ -577,8 +564,7 @@ public:
   /**
    * Get the type of an opened gamepad.
    *
-   * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
-   *          available.
+   * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -589,8 +575,7 @@ public:
   /**
    * Get the type of an opened gamepad, ignoring any mapping override.
    *
-   * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
-   *          available.
+   * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -730,7 +715,6 @@ public:
   /**
    * Check if a gamepad has been opened and is currently connected.
    *
-   *                Gamepad.Gamepad().
    * @returns true if the gamepad has been opened and is currently connected, or
    *          false if not.
    *
@@ -741,17 +725,17 @@ public:
   /**
    * Get the underlying joystick from a gamepad.
    *
-   * This function will give you a Joystick object, which allows you to use
-   * the Joystick functions with a Gamepad object. This would be useful
-   * for getting a joystick's position at any given time, even if it hasn't
-   * moved (moving it would produce an event, which would have the axis' value).
+   * This function will give you a Joystick object, which allows you to use the
+   * Joystick functions with a Gamepad object. This would be useful for getting
+   * a joystick's position at any given time, even if it hasn't moved (moving it
+   * would produce an event, which would have the axis' value).
    *
    * The pointer returned is owned by the Gamepad. You should not call
-   * Joystick.Close() on it, for example, since doing so will likely cause
-   * SDL to crash.
+   * Joystick.Close() on it, for example, since doing so will likely cause SDL
+   * to crash.
    *
-   * @returns an Joystick object, or nullptr on failure; call GetError()
-   *          for more information.
+   * @returns an Joystick object, or nullptr on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -762,9 +746,9 @@ public:
    *
    * @param count a pointer filled in with the number of bindings returned.
    * @returns a nullptr terminated array of pointers to bindings or nullptr on
-   *          failure; call GetError() for more information. This is a
-   *          single allocation that should be freed with free() when it is
-   *          no longer needed.
+   *          failure; call GetError() for more information. This is a single
+   *          allocation that should be freed with free() when it is no longer
+   *          needed.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -970,8 +954,8 @@ public:
    * Each call to this function cancels any previous rumble effect, and calling
    * it with 0 intensity stops any rumbling.
    *
-   * This function requires you to process SDL events or call
-   * UpdateJoysticks() to update rumble state.
+   * This function requires you to process SDL events or call UpdateJoysticks()
+   * to update rumble state.
    *
    * @param low_frequency_rumble the intensity of the low frequency (left)
    *                             rumble motor, from 0 to 0xFFFF.
@@ -996,8 +980,8 @@ public:
    * whole. This is currently only supported on Xbox One gamepads. If you want
    * the (more common) whole-gamepad rumble, use Gamepad.Rumble() instead.
    *
-   * This function requires you to process SDL events or call
-   * UpdateJoysticks() to update rumble state.
+   * This function requires you to process SDL events or call UpdateJoysticks()
+   * to update rumble state.
    *
    * @param left_rumble the intensity of the left trigger rumble motor, from 0
    *                    to 0xFFFF.
@@ -1099,10 +1083,10 @@ struct GamepadRef : Gamepad
  * existing gamepad.
  *
  * The mapping string has the format "GUID,name,mapping", where GUID is the
- * string value from GUID.ToString(), name is the human readable string for
- * the device and mappings are gamepad mappings to joystick ones. Under
- * Windows there is a reserved GUID of "xinput" that covers all XInput
- * devices. The mapping format for joystick is:
+ * string value from GUID.ToString(), name is the human readable string for the
+ * device and mappings are gamepad mappings to joystick ones. Under Windows
+ * there is a reserved GUID of "xinput" that covers all XInput devices. The
+ * mapping format for joystick is:
  *
  * - `bX`: a joystick button, index X
  * - `hX.Y`: hat X with value Y
@@ -1121,8 +1105,8 @@ struct GamepadRef : Gamepad
  * ```
  *
  * @param mapping the mapping string.
- * @returns 1 if a new mapping is added, 0 if an existing mapping is updated,
- *          -1 on failure; call GetError() for more information.
+ * @returns 1 if a new mapping is added, 0 if an existing mapping is updated, -1
+ *          on failure; call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1163,9 +1147,9 @@ inline int AddGamepadMapping(StringParam mapping)
  *
  * @param src the data stream for the mappings to be added.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
- * @returns the number of mappings added or -1 on failure; call GetError()
- *          for more information.
+ *                even in the case of an error.
+ * @returns the number of mappings added or -1 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1201,8 +1185,8 @@ inline int AddGamepadMappingsFromIO(IOStreamParam src, bool closeio)
  * Windows, etc).
  *
  * @param file the mappings file to load.
- * @returns the number of mappings added or -1 on failure; call GetError()
- *          for more information.
+ * @returns the number of mappings added or -1 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1235,18 +1219,16 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
 /**
  * Get the current gamepad mappings.
  *
- * @param count a pointer filled in with the number of mappings returned, can
- *              be nullptr.
  * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
- *          failure; call GetError() for more information. This is a
- *          single allocation that should be freed with free() when it is
- *          no longer needed.
+ *          failure; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline char** GetGamepadMappings(int* count)
+inline OwnArray<char*> GetGamepadMappings()
 {
-  return SDL_GetGamepadMappings(count);
+  int count;
+  auto data = SDL_GetGamepadMappings(&count);
+  return OwnArray<char*>(data);
 }
 
 /**
@@ -1254,17 +1236,16 @@ inline char** GetGamepadMappings(int* count)
  *
  * @param guid a structure containing the GUID for which a mapping is desired.
  * @returns a mapping string or nullptr on failure; call GetError() for more
- *          information. This should be freed with free() when it is no
- *          longer needed.
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickGUIDForID
  * @sa Joystick.GetGUID
  */
-inline char* GetGamepadMappingForGUID(GUID guid)
+inline StringResult GetGamepadMappingForGUID(GUID guid)
 {
-  return SDL_GetGamepadMappingForGUID(guid);
+  return StringResult(SDL_GetGamepadMappingForGUID(guid));
 }
 
 /**
@@ -1274,8 +1255,7 @@ inline char* GetGamepadMappingForGUID(GUID guid)
  *
  * @param gamepad the gamepad you want to get the current mapping for.
  * @returns a string that has the gamepad's mapping or nullptr if no mapping is
- *          available; call GetError() for more information. This should
- *          be freed with free() when it is no longer needed.
+ *          available; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1284,12 +1264,12 @@ inline char* GetGamepadMappingForGUID(GUID guid)
  * @sa GetGamepadMappingForGUID
  * @sa SetGamepadMapping
  */
-inline char* GetGamepadMapping(GamepadParam gamepad)
+inline StringResult GetGamepadMapping(GamepadParam gamepad)
 {
-  return SDL_GetGamepadMapping(gamepad);
+  return StringResult(SDL_GetGamepadMapping(gamepad));
 }
 
-inline char* Gamepad::GetMapping()
+inline StringResult Gamepad::GetMapping()
 {
   return SDL::GetGamepadMapping(m_resource);
 }
@@ -1329,8 +1309,7 @@ inline bool HasGamepad() { return SDL_HasGamepad(); }
  * Get a list of currently connected gamepads.
  *
  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ *          call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1463,8 +1442,8 @@ inline Uint16 GetGamepadVendorForID(JoystickID instance_id)
  * available this function returns 0.
  *
  * @param instance_id the joystick instance ID.
- * @returns the USB product ID of the selected gamepad. If called on an
- *          invalid index, this function returns zero.
+ * @returns the USB product ID of the selected gamepad. If called on an invalid
+ *          index, this function returns zero.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1483,8 +1462,8 @@ inline Uint16 GetGamepadProductForID(JoystickID instance_id)
  * isn't available this function returns 0.
  *
  * @param instance_id the joystick instance ID.
- * @returns the product version of the selected gamepad. If called on an
- *          invalid index, this function returns zero.
+ * @returns the product version of the selected gamepad. If called on an invalid
+ *          index, this function returns zero.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1608,19 +1587,18 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED
- *   that has adjustable brightness
- * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED
- *   that has adjustable color
- * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a
- *   player LED
- * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has
- *   left/right rumble
- * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has
- *   simple trigger rumble
+ * - `prop::GamepadCap.MONO_LED_BOOLEAN`: true if this gamepad has an LED that
+ *   has adjustable brightness
+ * - `prop::GamepadCap.RGB_LED_BOOLEAN`: true if this gamepad has an LED that
+ *   has adjustable color
+ * - `prop::GamepadCap.PLAYER_LED_BOOLEAN`: true if this gamepad has a player
+ *   LED
+ * - `prop::GamepadCap.RUMBLE_BOOLEAN`: true if this gamepad has left/right
+ *   rumble
+ * - `prop::GamepadCap.TRIGGER_RUMBLE_BOOLEAN`: true if this gamepad has simple
+ *   trigger rumble
  *
- * @param gamepad a gamepad identifier previously returned by
- *                Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
@@ -1654,8 +1632,7 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
 /**
  * Get the instance ID of an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by
- *                Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns the instance ID of the specified gamepad on success.
  * @throws Error on failure.
  *
@@ -1671,8 +1648,7 @@ inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
 /**
  * Get the implementation-dependent name for an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by
- *                Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns the implementation dependent name for the gamepad, or nullptr if
  *          there is no name or the identifier passed is invalid.
  *
@@ -1693,8 +1669,7 @@ inline const char* Gamepad::GetName()
 /**
  * Get the implementation-dependent path for an opened gamepad.
  *
- * @param gamepad a gamepad identifier previously returned by
- *                Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns the implementation dependent path for the gamepad, or nullptr if
  *          there is no path or the identifier passed is invalid.
  *
@@ -1716,8 +1691,7 @@ inline const char* Gamepad::GetPath()
  * Get the type of an opened gamepad.
  *
  * @param gamepad the gamepad object to query.
- * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
- *          available.
+ * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1737,8 +1711,7 @@ inline GamepadType Gamepad::GetType()
  * Get the type of an opened gamepad, ignoring any mapping override.
  *
  * @param gamepad the gamepad object to query.
- * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not
- *          available.
+ * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1945,16 +1918,15 @@ inline JoystickConnectionState Gamepad::GetConnectionState()
  * Get the battery state of a gamepad.
  *
  * You should never take a battery status as absolute truth. Batteries
- * (especially failing batteries) are delicate hardware, and the values
- * reported here are best estimates based on what that hardware reports. It's
- * not uncommon for older batteries to lose stored power much faster than it
+ * (especially failing batteries) are delicate hardware, and the values reported
+ * here are best estimates based on what that hardware reports. It's not
+ * uncommon for older batteries to lose stored power much faster than it
  * reports, or completely drain when reporting it has 20 percent left, etc.
  *
  * @param gamepad the gamepad object to query.
- * @param percent a pointer filled in with the percentage of battery life
- *                left, between 0 and 100, or nullptr to ignore. This will be
- *                filled in with -1 we can't determine a value or there is no
- *                battery.
+ * @param percent a pointer filled in with the percentage of battery life left,
+ *                between 0 and 100, or nullptr to ignore. This will be filled
+ *                in with -1 we can't determine a value or there is no battery.
  * @returns the current battery state.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1972,8 +1944,7 @@ inline PowerState Gamepad::GetPowerInfo(int* percent)
 /**
  * Check if a gamepad has been opened and is currently connected.
  *
- * @param gamepad a gamepad identifier previously returned by
- *                Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns true if the gamepad has been opened and is currently connected, or
  *          false if not.
  *
@@ -1989,18 +1960,18 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
 /**
  * Get the underlying joystick from a gamepad.
  *
- * This function will give you a Joystick object, which allows you to use
- * the Joystick functions with a Gamepad object. This would be useful
- * for getting a joystick's position at any given time, even if it hasn't
- * moved (moving it would produce an event, which would have the axis' value).
+ * This function will give you a Joystick object, which allows you to use the
+ * Joystick functions with a Gamepad object. This would be useful for getting a
+ * joystick's position at any given time, even if it hasn't moved (moving it
+ * would produce an event, which would have the axis' value).
  *
  * The pointer returned is owned by the Gamepad. You should not call
- * Joystick.Close() on it, for example, since doing so will likely cause
- * SDL to crash.
+ * Joystick.Close() on it, for example, since doing so will likely cause SDL to
+ * crash.
  *
  * @param gamepad the gamepad object that you want to get a joystick from.
- * @returns an Joystick object, or nullptr on failure; call GetError()
- *          for more information.
+ * @returns an Joystick object, or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2017,8 +1988,8 @@ inline JoystickRef Gamepad::GetJoystick()
 /**
  * Set the state of gamepad event processing.
  *
- * If gamepad events are disabled, you must call UpdateGamepads() yourself
- * and check the state of the gamepad when you want gamepad information.
+ * If gamepad events are disabled, you must call UpdateGamepads() yourself and
+ * check the state of the gamepad when you want gamepad information.
  *
  * @param enabled whether to process gamepad events or not.
  *
@@ -2035,8 +2006,8 @@ inline void SetGamepadEventsEnabled(bool enabled)
 /**
  * Query the state of gamepad event processing.
  *
- * If gamepad events are disabled, you must call UpdateGamepads() yourself
- * and check the state of the gamepad when you want gamepad information.
+ * If gamepad events are disabled, you must call UpdateGamepads() yourself and
+ * check the state of the gamepad when you want gamepad information.
  *
  * @returns true if gamepad events are being processed, false otherwise.
  *
@@ -2052,9 +2023,9 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  * @param gamepad a gamepad.
  * @param count a pointer filled in with the number of bindings returned.
  * @returns a nullptr terminated array of pointers to bindings or nullptr on
- *          failure; call GetError() for more information. This is a
- *          single allocation that should be freed with free() when it is
- *          no longer needed.
+ *          failure; call GetError() for more information. This is a single
+ *          allocation that should be freed with free() when it is no longer
+ *          needed.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2082,10 +2053,10 @@ inline void UpdateGamepads() { SDL_UpdateGamepads(); }
 /**
  * Convert a string into GamepadType enum.
  *
- * This function is called internally to translate Gamepad mapping strings
- * for the underlying joystick device into the consistent Gamepad mapping.
- * You do not normally need to call this function unless you are parsing
- * Gamepad mappings in your own code.
+ * This function is called internally to translate Gamepad mapping strings for
+ * the underlying joystick device into the consistent Gamepad mapping. You do
+ * not normally need to call this function unless you are parsing Gamepad
+ * mappings in your own code.
  *
  * @param str string representing a GamepadType type.
  * @returns the GamepadType enum corresponding to the input string, or
@@ -2105,8 +2076,8 @@ inline GamepadType GetGamepadTypeFromString(StringParam str)
  *
  * @param type an enum value for a given GamepadType.
  * @returns a string for the given type, or nullptr if an invalid type is
- *          specified. The string returned is of the format used by
- *          Gamepad mapping strings.
+ *          specified. The string returned is of the format used by Gamepad
+ *          mapping strings.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2120,14 +2091,13 @@ inline const char* GetGamepadStringForType(GamepadType type)
 /**
  * Convert a string into GamepadAxis enum.
  *
- * This function is called internally to translate Gamepad mapping strings
- * for the underlying joystick device into the consistent Gamepad mapping.
- * You do not normally need to call this function unless you are parsing
- * Gamepad mappings in your own code.
+ * This function is called internally to translate Gamepad mapping strings for
+ * the underlying joystick device into the consistent Gamepad mapping. You do
+ * not normally need to call this function unless you are parsing Gamepad
+ * mappings in your own code.
  *
  * Note specially that "righttrigger" and "lefttrigger" map to
- * `GAMEPAD_AXIS_RIGHT_TRIGGER` and `GAMEPAD_AXIS_LEFT_TRIGGER`,
- * respectively.
+ * `GAMEPAD_AXIS_RIGHT_TRIGGER` and `GAMEPAD_AXIS_LEFT_TRIGGER`, respectively.
  *
  * @param str string representing a Gamepad axis.
  * @returns the GamepadAxis enum corresponding to the input string, or
@@ -2147,8 +2117,8 @@ inline GamepadAxis GetGamepadAxisFromString(StringParam str)
  *
  * @param axis an enum value for a given GamepadAxis.
  * @returns a string for the given axis, or nullptr if an invalid axis is
- *          specified. The string returned is of the format used by
- *          Gamepad mapping strings.
+ *          specified. The string returned is of the format used by Gamepad
+ *          mapping strings.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2162,8 +2132,8 @@ inline const char* GetGamepadStringForAxis(GamepadAxis axis)
 /**
  * Query whether a gamepad has a given axis.
  *
- * This merely reports whether the gamepad's mapping defined this axis, as
- * that is all the information SDL has about the physical device.
+ * This merely reports whether the gamepad's mapping defined this axis, as that
+ * is all the information SDL has about the physical device.
  *
  * @param gamepad a gamepad.
  * @param axis an axis enum value (an GamepadAxis value).
@@ -2189,8 +2159,8 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  *
  * The axis indices start at index 0.
  *
- * For thumbsticks, the state is a value ranging from -32768 (up/left) to
- * 32767 (down/right).
+ * For thumbsticks, the state is a value ranging from -32768 (up/left) to 32767
+ * (down/right).
  *
  * Triggers range from 0 when released to 32767 when fully pressed, and never
  * return a negative value. Note that this differs from the value reported by
@@ -2219,10 +2189,10 @@ inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
 /**
  * Convert a string into an GamepadButton enum.
  *
- * This function is called internally to translate Gamepad mapping strings
- * for the underlying joystick device into the consistent Gamepad mapping.
- * You do not normally need to call this function unless you are parsing
- * Gamepad mappings in your own code.
+ * This function is called internally to translate Gamepad mapping strings for
+ * the underlying joystick device into the consistent Gamepad mapping. You do
+ * not normally need to call this function unless you are parsing Gamepad
+ * mappings in your own code.
  *
  * @param str string representing a Gamepad axis.
  * @returns the GamepadButton enum corresponding to the input string, or
@@ -2242,8 +2212,8 @@ inline GamepadButton GetGamepadButtonFromString(StringParam str)
  *
  * @param button an enum value for a given GamepadButton.
  * @returns a string for the given button, or nullptr if an invalid button is
- *          specified. The string returned is of the format used by
- *          Gamepad mapping strings.
+ *          specified. The string returned is of the format used by Gamepad
+ *          mapping strings.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2515,8 +2485,8 @@ inline float Gamepad::GetSensorDataRate(SensorType type)
 /**
  * Get the current state of a gamepad sensor.
  *
- * The number of values and interpretation of the data is sensor dependent.
- * See SDL_sensor.h for the details for each type of sensor.
+ * The number of values and interpretation of the data is sensor dependent. See
+ * SDL_sensor.h for the details for each type of sensor.
  *
  * @param gamepad the gamepad to query.
  * @param type the type of sensor to query.
@@ -2542,15 +2512,15 @@ inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
 /**
  * Start a rumble effect on a gamepad.
  *
- * Each call to this function cancels any previous rumble effect, and calling
- * it with 0 intensity stops any rumbling.
+ * Each call to this function cancels any previous rumble effect, and calling it
+ * with 0 intensity stops any rumbling.
  *
- * This function requires you to process SDL events or call
- * UpdateJoysticks() to update rumble state.
+ * This function requires you to process SDL events or call UpdateJoysticks() to
+ * update rumble state.
  *
  * @param gamepad the gamepad to vibrate.
- * @param low_frequency_rumble the intensity of the low frequency (left)
- *                             rumble motor, from 0 to 0xFFFF.
+ * @param low_frequency_rumble the intensity of the low frequency (left) rumble
+ *                             motor, from 0 to 0xFFFF.
  * @param high_frequency_rumble the intensity of the high frequency (right)
  *                              rumble motor, from 0 to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
@@ -2581,16 +2551,16 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
  * Each call to this function cancels any previous trigger rumble effect, and
  * calling it with 0 intensity stops any rumbling.
  *
- * Note that this is rumbling of the _triggers_ and not the gamepad as a
- * whole. This is currently only supported on Xbox One gamepads. If you want
- * the (more common) whole-gamepad rumble, use Gamepad.Rumble() instead.
+ * Note that this is rumbling of the _triggers_ and not the gamepad as a whole.
+ * This is currently only supported on Xbox One gamepads. If you want the (more
+ * common) whole-gamepad rumble, use Gamepad.Rumble() instead.
  *
- * This function requires you to process SDL events or call
- * UpdateJoysticks() to update rumble state.
+ * This function requires you to process SDL events or call UpdateJoysticks() to
+ * update rumble state.
  *
  * @param gamepad the gamepad to vibrate.
- * @param left_rumble the intensity of the left trigger rumble motor, from 0
- *                    to 0xFFFF.
+ * @param left_rumble the intensity of the left trigger rumble motor, from 0 to
+ *                    0xFFFF.
  * @param right_rumble the intensity of the right trigger rumble motor, from 0
  *                     to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
@@ -2670,8 +2640,7 @@ inline void Gamepad::SendEffect(const void* data, int size)
 /**
  * Close a gamepad previously opened with Gamepad.Gamepad().
  *
- * @param gamepad a gamepad identifier previously returned by
- *                Gamepad.Gamepad().
+ * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2682,8 +2651,7 @@ inline void CloseGamepad(GamepadRaw gamepad) { SDL_CloseGamepad(gamepad); }
 inline void Gamepad::Close() { CloseGamepad(release()); }
 
 /**
- * Return the sfSymbolsName for a given button on a gamepad on Apple
- * platforms.
+ * Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
  *
  * @param gamepad the gamepad to query.
  * @param button a button on the gamepad.

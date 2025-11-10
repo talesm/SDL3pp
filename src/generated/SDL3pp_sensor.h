@@ -17,8 +17,8 @@ namespace SDL {
  * These APIs grant access to gyros and accelerometers on various platforms.
  *
  * In order to use these functions, Init() must have been called with the
- * INIT_SENSOR flag. This causes SDL to scan the system for sensors, and
- * load appropriate drivers.
+ * INIT_SENSOR flag. This causes SDL to scan the system for sensors, and load
+ * appropriate drivers.
  *
  * @{
  */
@@ -60,8 +60,8 @@ struct SensorParam
 };
 
 /**
- * This is a unique ID for a sensor for the time it is connected to the
- * system, and is never reused for the lifetime of the application.
+ * This is a unique ID for a sensor for the time it is connected to the system,
+ * and is never reused for the lifetime of the application.
  *
  * The value 0 is an invalid ID.
  *
@@ -81,16 +81,16 @@ using SensorID = Uint32;
  * Accelerometer sensor notes:
  *
  * The accelerometer returns the current acceleration in SI meters per second
- * squared. This measurement includes the force of gravity, so a device at
- * rest will have an value of STANDARD_GRAVITY away from the center of the
- * earth, which is a positive Y value.
+ * squared. This measurement includes the force of gravity, so a device at rest
+ * will have an value of STANDARD_GRAVITY away from the center of the earth,
+ * which is a positive Y value.
  *
  * - `values[0]`: Acceleration on the x axis
  * - `values[1]`: Acceleration on the y axis
  * - `values[2]`: Acceleration on the z axis
  *
- * For phones and tablets held in natural orientation and game controllers
- * held in front of you, the axes are defined as follows:
+ * For phones and tablets held in natural orientation and game controllers held
+ * in front of you, the axes are defined as follows:
  *
  * - -X ... +X : left ... right
  * - -Y ... +Y : bottom ... top
@@ -100,18 +100,17 @@ using SensorID = Uint32;
  *
  * Gyroscope sensor notes:
  *
- * The gyroscope returns the current rate of rotation in radians per second.
- * The rotation is positive in the counter-clockwise direction. That is, an
- * observer looking from a positive location on one of the axes would see
- * positive rotation on that axis when it appeared to be rotating
- * counter-clockwise.
+ * The gyroscope returns the current rate of rotation in radians per second. The
+ * rotation is positive in the counter-clockwise direction. That is, an observer
+ * looking from a positive location on one of the axes would see positive
+ * rotation on that axis when it appeared to be rotating counter-clockwise.
  *
  * - `values[0]`: Angular speed around the x axis (pitch)
  * - `values[1]`: Angular speed around the y axis (yaw)
  * - `values[2]`: Angular speed around the z axis (roll)
  *
- * For phones and tablets held in natural orientation and game controllers
- * held in front of you, the axes are defined as follows:
+ * For phones and tablets held in natural orientation and game controllers held
+ * in front of you, the axes are defined as follows:
  *
  * - -X ... +X : left ... right
  * - -Y ... +Y : bottom ... top
@@ -197,8 +196,8 @@ public:
    * Open a sensor for use.
    *
    * @param instance_id the sensor instance ID.
-   * @post an Sensor object or nullptr on failure; call GetError() for
-   *          more information.
+   * @post an Sensor object or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -243,7 +242,6 @@ public:
   /**
    * Close a sensor previously opened with Sensor.Sensor().
    *
-   *
    * @since This function is available since SDL 3.2.0.
    */
   void Close();
@@ -271,8 +269,7 @@ public:
   /**
    * Get the type of a sensor.
    *
-   * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is
-   *          nullptr.
+   * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is nullptr.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -290,8 +287,8 @@ public:
   /**
    * Get the instance ID of a sensor.
    *
-   * @returns the sensor instance ID, or 0 on failure; call GetError() for
-   *          more information.
+   * @returns the sensor instance ID, or 0 on failure; call GetError() for more
+   *          information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -340,9 +337,9 @@ struct SensorRef : Sensor
  * A constant to represent standard gravity for accelerometer sensors.
  *
  * The accelerometer returns the current acceleration in SI meters per second
- * squared. This measurement includes the force of gravity, so a device at
- * rest will have an value of STANDARD_GRAVITY away from the center of the
- * earth, which is a positive Y value.
+ * squared. This measurement includes the force of gravity, so a device at rest
+ * will have an value of STANDARD_GRAVITY away from the center of the earth,
+ * which is a positive Y value.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -351,11 +348,11 @@ constexpr float STANDARD_GRAVITY = SDL_STANDARD_GRAVITY;
 /**
  * Get a list of currently connected sensors.
  *
- * @param count a pointer filled in with the number of sensors returned, may
- *              be nullptr.
+ * @param count a pointer filled in with the number of sensors returned, may be
+ *              nullptr.
  * @returns a 0 terminated array of sensor instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ *          call GetError() for more information. This should be freed with
+ *          free() when it is no longer needed.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -382,8 +379,7 @@ inline const char* GetSensorNameForID(SensorID instance_id)
  * This can be called before any sensors are opened.
  *
  * @param instance_id the sensor instance ID.
- * @returns the SensorType, or `SENSOR_INVALID` if `instance_id` is
- *          not valid.
+ * @returns the SensorType, or `SENSOR_INVALID` if `instance_id` is not valid.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -412,8 +408,8 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
  * Open a sensor for use.
  *
  * @param instance_id the sensor instance ID.
- * @returns an Sensor object or nullptr on failure; call GetError() for
- *          more information.
+ * @returns an Sensor object or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -423,8 +419,8 @@ inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
  * Return the Sensor associated with an instance ID.
  *
  * @param instance_id the sensor instance ID.
- * @returns an Sensor object or nullptr on failure; call GetError() for
- *          more information.
+ * @returns an Sensor object or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -472,8 +468,7 @@ inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
  * Get the type of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is
- *          nullptr.
+ * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is nullptr.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -506,8 +501,8 @@ inline int Sensor::GetNonPortableType()
  * Get the instance ID of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the sensor instance ID, or 0 on failure; call GetError() for
- *          more information.
+ * @returns the sensor instance ID, or 0 on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -554,8 +549,7 @@ inline void Sensor::Close() { CloseSensor(release()); }
 /**
  * Update the current state of the open sensors.
  *
- * This is called automatically by the event loop if sensor events are
- * enabled.
+ * This is called automatically by the event loop if sensor events are enabled.
  *
  * This needs to be called from the thread that initialized the sensor
  * subsystem.
