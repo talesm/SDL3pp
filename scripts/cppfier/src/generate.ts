@@ -86,26 +86,13 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     }
   }
 
-  function generateDocString(docStr: string, prefix?: string) {
-    if (!docStr) return '';
-    prefix = prefix ?? '';
-    if (!docStr.includes('\n') && docStr.length < (80 - 4 - prefix.length)) {
-      return `\n${prefix} /// ${docStr}`;
-    }
-    docStr = reflow(docStr, 80 - 3 - prefix.length)
-      .split('\n')
-      .map(l => l ? `${prefix} * ${l}` : `${prefix} *`)
-      .join('\n');
-    return `\n${prefix}/**\n${docStr}\n${prefix} */`;
-  }
-
   function generateFileDocString(doc: ParsedDoc) {
     if (!doc?.length) return undefined;
     doc.push("@{");
-    return generateParsedDocString(doc);
+    return generateDocString(doc);
   }
 
-  function generateParsedDocString(doc: ParsedDoc, prefix?: string) {
+  function generateDocString(doc: ParsedDoc, prefix?: string) {
     if (!doc?.length) return undefined;
     prefix = (prefix ?? '');
     if (doc.length === 1) {
@@ -146,18 +133,9 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     return result.join('\n' + prefix);
   }
 
-  function reflow(text: string, maxLength: number) {
-    return text.split(/^```/m)
-      .map((portion, index) => {
-        if (index % 2 === 1) return portion;
-        return portion.split(/\n{2,}/).join('\n\n');
-      })
-      .join('```');
-  }
-
   function generateEntry(entry: ApiEntry, prefix?: string) {
     prefix = prefix ?? '';
-    const doc = (generateParsedDocString(entry.parsedDoc, prefix) ?? generateDocString(entry.doc, prefix)) + "\n";
+    const doc = generateDocString(entry.doc, prefix) ?? "";
     const template = generateTemplateSignature(entry.template, prefix);
     const version = entry.since;
     const accessMod = entry.hints?.changeAccess ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n` : '';
@@ -168,34 +146,31 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     function doGenerate(entry: ApiEntry) {
       switch (entry.kind) {
         case "alias":
-          if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
+          if (!entry.type) return `${doc}\n${prefix}using ${entry.name};`;
           const target = entry.name === entry.type ? `::${entry.type}` : entry.type;
-          return `${doc}${template}${prefix}using ${entry.name} = ${target};`;
+          return `${doc}\n${template}${prefix}using ${entry.name} = ${target};`;
         case "def":
-          return doc + generateDef(entry);
+          return `${doc}\n${generateDef(entry)}`;
         case "forward":
           return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
         case "function":
-          return doc + template + generateFunction(entry, prefix);
+          return `${doc}\n${template}${generateFunction(entry, prefix)}`;
         case "ns":
           return doc + generateNS(entry);
         case "struct":
-          return doc + template + generateStruct(entry, prefix);
+          return `${doc}\n${template}${generateStruct(entry, prefix)}`;
         case "var":
           const varStr = generateVar(entry, prefix);
-          if (entry.doc && !entry.doc.includes("\n") && entry.doc.length <= 50) {
-            return template + varStr + " ///< " + entry.doc;
-          }
-          if (entry?.parsedDoc?.length === 1) {
-            const firstLine = entry.parsedDoc[0];
+          if (entry?.doc?.length === 1) {
+            const firstLine = entry.doc[0];
             if (typeof firstLine === 'string' && firstLine.length <= 50) {
               return template + varStr + " ///< " + firstLine;
             }
           }
-          return doc + template + varStr;
+          return `${doc}\n${template}${varStr}`;
         default:
           system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
-          return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
+          return `${doc}\n#${prefix}error "${entry.name} (${entry.kind})"`;
       }
 
     }

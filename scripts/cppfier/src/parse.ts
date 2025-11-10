@@ -63,9 +63,9 @@ class ProgListener implements CHeaderListener {
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? (docIndex === -1 ? '' : directive.slice(docIndex).trim()));
     const parameters = m[3]?.split(',')?.map(p => ({ name: p.trim(), type: "" })) ?? (m[2] ? [] : undefined);
     const value = directive.slice(m[0].length, docIndex === -1 ? undefined : docIndex).trim();
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'def',
       parameters,
@@ -78,9 +78,9 @@ class ProgListener implements CHeaderListener {
     const names = ctx.id().map(id => id.text);
     const doc = extractDoc(`${this.api.name}@${names[0]}`, ctx.doc()?.text ?? ctx.trailingDoc()?.text ?? '');
     for (const name of names) {
-      if (this.api.entries[name]?.parsedDoc) return;
+      if (this.api.entries[name]?.doc) return;
       this.api.entries[name] = {
-        parsedDoc: doc,
+        doc: doc,
         name,
         kind: 'var',
         type,
@@ -94,9 +94,9 @@ class ProgListener implements CHeaderListener {
     const name = ctx.id().text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (name.startsWith('_')) return;
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'function',
       type,
@@ -109,9 +109,9 @@ class ProgListener implements CHeaderListener {
     const name = ctx.id().text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
     if (name.startsWith('_')) return;
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'function',
       type,
@@ -125,9 +125,9 @@ class ProgListener implements CHeaderListener {
     const isStruct = !!ctx.STRUCT();
     const name = ctx.id().text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'alias',
       type: isStruct ? `struct ${type}` : type,
@@ -137,9 +137,9 @@ class ProgListener implements CHeaderListener {
   enterUnionDef(ctx: UnionDefContext) {
     const name = ctx._name.text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'union',
     };
@@ -148,9 +148,9 @@ class ProgListener implements CHeaderListener {
   enterEnumDef(ctx: EnumDefContext) {
     const name = ctx._name.text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'enum',
       entries: extractEnumItems(`${this.api.name}@${name}`, ctx.enumBody()),
@@ -160,9 +160,9 @@ class ProgListener implements CHeaderListener {
   enterStructDef(ctx: StructDefContext) {
     const name = ctx._name.text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'struct',
       entries: extractStructItems(`${this.api.name}@${name}`, ctx.structBody()),
@@ -172,10 +172,10 @@ class ProgListener implements CHeaderListener {
   enterCallbackDef(ctx: CallbackDefContext) {
     const name = ctx.id().text;
     const doc = extractDoc(`${this.api.name}@${name}`, ctx.doc()?.text ?? '');
-    if (this.api.entries[name]?.parsedDoc) return;
+    if (this.api.entries[name]?.doc) return;
     const type = extractType(ctx.type());
     this.api.entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'callback',
       type,
@@ -273,7 +273,7 @@ function extractEnumItems(prefix: string, ctx: EnumBodyContext): ApiEntries {
   for (const item of ctx.enumItem()) {
     const name = item.id().text;
     entries[name] = {
-      parsedDoc: extractDoc(`${prefix}@${name}`, item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
+      doc: extractDoc(`${prefix}@${name}`, item.trailingDoc()?.text ?? item.doc()?.text ?? ''),
       name,
       kind: "var",
       type: "",
@@ -298,7 +298,7 @@ function extractStructItems(prefix: string, ctx: StructBodyContext): ApiEntries 
     const doc = extractDoc(`${prefix}@${names[0]}`, item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     for (const name of names) {
       entries[name] = {
-        parsedDoc: doc,
+        doc: doc,
         name,
         kind: 'var',
         type,
@@ -310,7 +310,7 @@ function extractStructItems(prefix: string, ctx: StructBodyContext): ApiEntries 
     const name = item.id().text;
     const doc = extractDoc(`${prefix}@${name}`, item.trailingDoc()?.text ?? item.doc()?.text ?? '');
     entries[name] = {
-      parsedDoc: doc,
+      doc: doc,
       name,
       kind: 'var',
       type,

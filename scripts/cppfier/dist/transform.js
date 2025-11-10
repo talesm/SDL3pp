@@ -63,7 +63,7 @@ function transformApi(config) {
     // Step 4: Transform docs
     for (const file of files) {
         if (file.doc)
-            file.doc = resolveParsedDocRefs(file.doc, context);
+            file.doc = resolveDocRefs(file.doc, context);
         if (file.entries)
             transformEntriesDocRefs(file.entries, context);
     }
@@ -352,13 +352,12 @@ function expandTypes(sourceEntries, file, context) {
                 const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
                 const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
                 typeParams.splice(i, 1);
-                const parsedDoc = transformParsedDoc(sourceEntry.parsedDoc ?? undefined, context);
+                const doc = removeTagFromGroup(addToTagGroup(transformDoc(sourceEntry.doc ?? undefined, context), "@sa", name), "@param userdata");
                 const callbackEntry = {
                     kind: "alias",
                     name: callbackName,
                     type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
-                    doc: transformDoc(sourceEntry.doc ?? "", context) + `\n@sa ${name}`,
-                    parsedDoc: removeTagFromGroup(addToTagGroup(parsedDoc, "@sa", name), "@param userdata"),
+                    doc,
                     ...(file.transform[callbackName] ?? {}),
                     before: undefined,
                     after: undefined,
@@ -386,7 +385,7 @@ function expandTypes(sourceEntries, file, context) {
             name: rawType,
             kind: 'alias',
             type: (sourceEntry.type && sourceEntry.type == `struct ${sourceType}`) ? `${sourceType} *` : sourceType,
-            doc: `Alias to raw representation for ${targetType}.`,
+            doc: [`Alias to raw representation for ${targetType}.`],
         }, '__begin');
         context.includeBefore({
             name: targetType,
@@ -427,7 +426,10 @@ function expandTypes(sourceEntries, file, context) {
                         name: paramName,
                         default: wrapper.defaultValue ?? "{}"
                     }],
-                doc: `Wraps ${sourceType}.\n\n@param ${paramName} the value to be wrapped`,
+                doc: [
+                    `Wraps ${sourceType}.`,
+                    { tag: `@param ${paramName}`, content: 'the value to be wrapped' }
+                ],
                 hints: {
                     init: [`${isStruct ? rawType : attribute}(${paramName})`],
                     changeAccess: isStruct ? undefined : 'public',
@@ -445,7 +447,7 @@ function expandTypes(sourceEntries, file, context) {
                     { type: constParamType, name: "lhs" },
                     { type: constParamType, name: "rhs" },
                 ],
-                doc: `Comparison operator for ${targetType}.`,
+                doc: [`Comparison operator for ${targetType}.`],
                 hints: { body },
             }, sourceType);
             if (wrapper.ordered) {
@@ -465,7 +467,7 @@ function expandTypes(sourceEntries, file, context) {
                         { type: constParamType, name: "lhs" },
                         { type: constParamType, name: "rhs" },
                     ],
-                    doc: `Spaceship operator for ${targetType}.`,
+                    doc: [`Spaceship operator for ${targetType}.`],
                     hints: { body },
                 }, sourceType);
             }
@@ -478,7 +480,10 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr,
                 immutable: true,
                 parameters: [{ type: "std::nullptr_t", name: "_" }],
-                doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`,
+                doc: [
+                    'Compare with nullptr.',
+                    { tag: '@returns', content: `True if invalid state, false otherwise.` }
+                ],
                 hints: { body: "return !bool(*this);" }
             });
         if (!isStruct)
@@ -489,7 +494,10 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr,
                 immutable: true,
                 parameters: [],
-                doc: `Unwraps to the underlying ${sourceType}.\n\n@returns the underlying ${rawType}.`,
+                doc: [
+                    `Unwraps to the underlying ${sourceType}.`,
+                    { tag: '@returns', content: `the underlying ${rawType}.` }
+                ],
                 hints: { body: `return ${attribute};` }
             });
         if (wrapper.invalidState !== false && isStruct)
@@ -501,7 +509,10 @@ function expandTypes(sourceEntries, file, context) {
                 explicit: true,
                 immutable: true,
                 parameters: [],
-                doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`,
+                doc: [
+                    'Check if valid.',
+                    { tag: '@returns', content: 'True if valid state, false otherwise.' }
+                ],
                 hints: { body: isStruct ? `return *this != ${rawType}{};` : `return ${attribute} != 0;` }
             });
         if (isStruct) {
@@ -523,7 +534,10 @@ function expandTypes(sourceEntries, file, context) {
                         constexpr,
                         immutable: true,
                         parameters: [],
-                        doc: `Get the ${name}.\n\n@returns current ${name} value.`,
+                        doc: [
+                            `Get the ${name}.`,
+                            { tag: '@returns', content: `current ${name} value.` }
+                        ],
                         hints: { body: `return ${name};` },
                     });
                     insertTransform(entries, {
@@ -535,7 +549,13 @@ function expandTypes(sourceEntries, file, context) {
                                 type,
                                 name: `new${capName}`
                             }],
-                        doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`,
+                        doc: [
+                            `Set the ${name}.`,
+                            [
+                                { tag: `@param new${capName}`, content: `the new ${name} value.` },
+                                { tag: '@returns', content: 'Reference to self.' },
+                            ],
+                        ],
                         hints: { body: `${name} = new${capName};\nreturn *this;` },
                     });
                     context.addParamType(sourceType, rawType);
@@ -549,7 +569,8 @@ function expandTypes(sourceEntries, file, context) {
                     type: "",
                     constexpr,
                     parameters,
-                    doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n"),
+                    doc: ['Constructs from its fields.',
+                        [...parameters.map(p => ({ tag: `@param ${p.name}`, content: `the value for ${p.name}.` }))]],
                     hints: { init: [`${rawType}{${parameters.map(p => p.name).join(", ")}}`] },
                 });
             }
@@ -617,7 +638,7 @@ function expandTypes(sourceEntries, file, context) {
             name: rawName,
             kind: "alias",
             type: pointerType,
-            doc: `Alias to raw representation for ${targetName}.`,
+            doc: [`Alias to raw representation for ${targetName}.`,]
         });
         if (hasRef)
             referenceAliases.push({ name: refName, kind: "forward" });
@@ -626,7 +647,7 @@ function expandTypes(sourceEntries, file, context) {
         const memberAccess = {};
         if (enableMemberAccess) {
             memberAccess["operator->"] = {
-                doc: `member access to underlying ${rawName}.`,
+                doc: [`member access to underlying ${rawName}.`],
                 kind: "function",
                 constexpr: true,
                 type: "auto",
@@ -637,18 +658,18 @@ function expandTypes(sourceEntries, file, context) {
         referenceAliases.push({
             name: paramType,
             kind: 'struct',
-            doc: `Safely wrap ${targetName} for non owning parameters`,
+            doc: [`Safely wrap ${targetName} for non owning parameters`],
             entries: {
                 'value': {
                     kind: 'var',
                     name: 'value',
-                    doc: `parameter's ${rawName}`,
+                    doc: [`parameter's ${rawName}`],
                     type: rawName
                 },
                 [paramType]: {
                     kind: 'function',
                     name: paramType,
-                    doc: `Constructs from ${rawName}`,
+                    doc: [`Constructs from ${rawName}`],
                     constexpr: true,
                     type: '',
                     parameters: [{ type: rawName, name: 'value' }],
@@ -657,7 +678,7 @@ function expandTypes(sourceEntries, file, context) {
                 [`${paramType}#2`]: {
                     kind: 'function',
                     name: paramType,
-                    doc: `Constructs null/invalid`,
+                    doc: [`Constructs null/invalid`],
                     constexpr: true,
                     type: '',
                     parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
@@ -671,7 +692,7 @@ function expandTypes(sourceEntries, file, context) {
                     explicit: true,
                     parameters: [],
                     hints: { body: "return !!value;" },
-                    doc: `Converts to bool`,
+                    doc: [`Converts to bool`],
                 },
                 "operator <=>": {
                     kind: "function",
@@ -680,12 +701,12 @@ function expandTypes(sourceEntries, file, context) {
                     constexpr: true,
                     parameters: [{ type: `const ${paramType} &`, name: "other" }],
                     hints: { default: true },
-                    doc: `Comparison`,
+                    doc: [`Comparison`],
                 },
                 [`operator ${rawName}`]: {
                     kind: 'function',
                     name: `operator ${rawName}`,
-                    doc: `Converts to underlying ${rawName}`,
+                    doc: [`Converts to underlying ${rawName}`],
                     constexpr: true,
                     immutable: true,
                     type: '',
@@ -699,18 +720,18 @@ function expandTypes(sourceEntries, file, context) {
             referenceAliases.push({
                 name: constParamType,
                 kind: 'struct',
-                doc: `Safely wrap ${targetName} for non owning const parameters`,
+                doc: [`Safely wrap ${targetName} for non owning const parameters`],
                 entries: {
                     'value': {
                         kind: 'var',
                         name: 'value',
-                        doc: `parameter's ${constRawName}`,
+                        doc: [`parameter's ${constRawName}`],
                         type: constRawName
                     },
                     [constParamType]: {
                         kind: 'function',
                         name: constParamType,
-                        doc: `Constructs from ${constRawName}`,
+                        doc: [`Constructs from ${constRawName}`],
                         constexpr: true,
                         type: '',
                         parameters: [{ type: constRawName, name: 'value' }],
@@ -719,7 +740,7 @@ function expandTypes(sourceEntries, file, context) {
                     [`${constParamType}#2`]: {
                         kind: 'function',
                         name: constParamType,
-                        doc: `Constructs from ${paramType}`,
+                        doc: [`Constructs from ${paramType}`],
                         constexpr: true,
                         type: '',
                         parameters: [{ type: paramType, name: 'value' }],
@@ -728,7 +749,7 @@ function expandTypes(sourceEntries, file, context) {
                     [`${constParamType}#3`]: {
                         kind: 'function',
                         name: constParamType,
-                        doc: `Constructs null/invalid`,
+                        doc: [`Constructs null/invalid`],
                         constexpr: true,
                         type: '',
                         parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
@@ -742,7 +763,7 @@ function expandTypes(sourceEntries, file, context) {
                         explicit: true,
                         parameters: [],
                         hints: { body: "return !!value;" },
-                        doc: `Converts to bool`,
+                        doc: [`Converts to bool`],
                     },
                     "operator <=>": {
                         kind: "function",
@@ -751,12 +772,12 @@ function expandTypes(sourceEntries, file, context) {
                         constexpr: true,
                         parameters: [{ type: `const ${constParamType} &`, name: "other" }],
                         hints: { default: true },
-                        doc: `Comparison`,
+                        doc: [`Comparison`],
                     },
                     [`operator ${constRawName}`]: {
                         kind: 'function',
                         name: `operator ${constRawName}`,
-                        doc: `Converts to underlying ${constRawName}`,
+                        doc: [`Converts to underlying ${constRawName}`],
                         constexpr: true,
                         immutable: true,
                         type: '',
@@ -785,7 +806,7 @@ function expandTypes(sourceEntries, file, context) {
             context.addReturnType(pointerType, rawName);
         }
         context.addReturnType(constPointerType, constRawName);
-        const ownershipDisclaimer = hasScoped ? "" : "\n\nThis assumes the ownership, call release() if you need to take back.";
+        const ownershipDisclaimer = hasScoped ? [] : ["This assumes the ownership, call release() if you need to take back."];
         const ctors = {
             [targetName]: {
                 kind: "function",
@@ -793,7 +814,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [],
                 hints: { default: true, changeAccess: "public" },
-                doc: "Default ctor"
+                doc: ["Default ctor"]
             },
             [`${targetName}#2`]: {
                 kind: "function",
@@ -802,7 +823,7 @@ function expandTypes(sourceEntries, file, context) {
                 explicit: !hasScoped,
                 parameters: [{ name: "resource", type: constRawName }],
                 hints: { init: ["m_resource(resource)"] },
-                doc: `Constructs from ${paramType}.\n\n@param resource a ${rawName} to be wrapped.${ownershipDisclaimer}`,
+                doc: [`Constructs from ${paramType}.`, { tag: '@param resource', content: `a ${rawName} to be wrapped.` }, ...ownershipDisclaimer],
             },
             [`${targetName}#3`]: {
                 kind: "function",
@@ -810,7 +831,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [{ name: "other", type: `const ${targetName} &` }],
                 hints: { delete: true },
-                doc: "Copy constructor"
+                doc: ["Copy constructor"],
             },
             [`${targetName}#4`]: {
                 kind: "function",
@@ -820,7 +841,7 @@ function expandTypes(sourceEntries, file, context) {
                 hints: {
                     init: [`${targetName}(other.release())`]
                 },
-                doc: "Move constructor"
+                doc: ["Move constructor"],
             }
         };
         if (hasShared) {
@@ -836,7 +857,11 @@ function expandTypes(sourceEntries, file, context) {
                     type: targetName,
                     parameters: [{ name: "resource", type: paramType }],
                     hints: { body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};` },
-                    doc: `Safely borrows the from ${paramType}.\n\n@param resource a ${rawName} or ${targetName}.\n\nThis does not takes ownership!`
+                    doc: [
+                        `Safely borrows the from ${paramType}.`,
+                        { tag: '@param resource', content: `a ${rawName} or ${targetName}.` },
+                        'This does not takes ownership!'
+                    ],
                 };
             }
         }
@@ -846,7 +871,7 @@ function expandTypes(sourceEntries, file, context) {
         if (hasRef) {
             insertTransform(ctors, {
                 kind: "function",
-                doc: "",
+                doc: [],
                 type: "",
                 constexpr: true,
                 parameters: [{ name: "other", type: `const ${refName} &` }],
@@ -854,7 +879,7 @@ function expandTypes(sourceEntries, file, context) {
             }, targetName);
             insertTransform(ctors, {
                 kind: "function",
-                doc: "",
+                doc: [],
                 type: "",
                 constexpr: true,
                 parameters: [{ name: "other", type: `${refName} &&` }],
@@ -940,9 +965,7 @@ function expandTypes(sourceEntries, file, context) {
             const freeTransformEntry = (subEntries[sourceName]) ?? {};
             (0, utils_1.combineObject)(freeFunction, freeTransformEntry);
             freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), targetName);
-            freeFunction.doc = freeFunction.doc ? transformDoc(freeFunction.doc, context) : `frees up ${title}.`;
-            if (freeFunction.parsedDoc)
-                freeFunction.parsedDoc = transformParsedDoc(freeFunction.parsedDoc, context);
+            freeFunction.doc = transformDoc(freeFunction.doc, context) ?? [`frees up ${title}.`];
             const fileLevelEntry = file.transform[sourceName] ?? { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
             file.transform[sourceName] = fileLevelEntry;
             const fileLevelName = fileLevelEntry.name ?? transformName(sourceName, context);
@@ -961,7 +984,7 @@ function expandTypes(sourceEntries, file, context) {
             subEntries['Destroy'] = freeFunction = {
                 kind: "function",
                 name: "Destroy",
-                doc: `frees up ${title}.`,
+                doc: [`frees up ${title}.`],
                 type: "void",
                 parameters: [],
             };
@@ -979,7 +1002,7 @@ function expandTypes(sourceEntries, file, context) {
         }
         if (enableMemberAccess) {
             ctors["operator->"] = {
-                doc: `member access to underlying ${rawName}.`,
+                doc: [`member access to underlying ${rawName}.`],
                 kind: "function",
                 constexpr: true,
                 immutable: true,
@@ -995,9 +1018,11 @@ function expandTypes(sourceEntries, file, context) {
                 hints: { body: "return m_resource;" },
             };
         }
-        targetEntry.doc = transformDoc(sourceEntry.doc ?? `Wraps ${title} resource.`, context) + `\n\n@cat resource`;
-        if (sourceEntry.parsedDoc) {
-            targetEntry.parsedDoc = [...transformParsedDoc(sourceEntry.parsedDoc, context), '@cat resource'];
+        if (sourceEntry.doc) {
+            targetEntry.doc = [...transformDoc(sourceEntry.doc, context), '@cat resource'];
+        }
+        else {
+            targetEntry.doc = [`Wraps ${title} resource.`, '@cat resource'];
         }
         targetEntry.entries = {
             "m_resource": {
@@ -1008,7 +1033,7 @@ function expandTypes(sourceEntries, file, context) {
             ...ctors,
             [`~${targetName}`]: {
                 kind: "function",
-                doc: "Destructor",
+                doc: ["Destructor"],
                 type: "",
                 parameters: [],
                 hints: { body: (freeFunction && !hasScoped) ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
@@ -1018,7 +1043,7 @@ function expandTypes(sourceEntries, file, context) {
                 type: `${targetName} &`,
                 parameters: [{ name: 'other', type: targetName }],
                 hints: { body: "std::swap(m_resource, other.m_resource);\nreturn *this;" },
-                doc: "Assignment operator.",
+                doc: ["Assignment operator."],
             },
             "get": {
                 kind: "function",
@@ -1027,7 +1052,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [],
                 hints: { body: "return m_resource;" },
-                doc: `Retrieves underlying ${rawName}.`,
+                doc: [`Retrieves underlying ${rawName}.`],
             },
             "release": {
                 kind: "function",
@@ -1035,7 +1060,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [],
                 hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
-                doc: `Retrieves underlying ${rawName} and clear this.`,
+                doc: [`Retrieves underlying ${rawName} and clear this.`],
             },
             "operator <=>": {
                 kind: "function",
@@ -1044,7 +1069,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [{ type: `const ${targetName} &`, name: "other" }],
                 hints: { default: true },
-                doc: `Comparison`,
+                doc: [`Comparison`],
             },
             "operator ==": {
                 kind: "function",
@@ -1053,7 +1078,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [{ type: `std::nullptr_t`, name: "_" }],
                 hints: { body: "return !m_resource;" },
-                doc: `Comparison`,
+                doc: [`Comparison`],
             },
             "operator bool": {
                 kind: "function",
@@ -1063,7 +1088,7 @@ function expandTypes(sourceEntries, file, context) {
                 explicit: true,
                 parameters: [],
                 hints: { body: "return !!m_resource;" },
-                doc: `Converts to bool`,
+                doc: [`Converts to bool`],
             },
             [`operator ${paramType}`]: {
                 kind: "function",
@@ -1072,7 +1097,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [],
                 hints: { body: "return {m_resource};" },
-                doc: `Converts to ${paramType}`,
+                doc: [`Converts to ${paramType}`],
             },
             [freeFunction.name]: "plc",
             ...subEntries,
@@ -1088,7 +1113,7 @@ function expandTypes(sourceEntries, file, context) {
                 kind: 'struct',
                 name: refName,
                 type: targetName,
-                doc: `Semi-safe reference for ${targetName}.`,
+                doc: [`Semi-safe reference for ${targetName}.`],
                 entries: {
                     [refName]: {
                         kind: 'function',
@@ -1098,7 +1123,11 @@ function expandTypes(sourceEntries, file, context) {
                                 name: "resource"
                             }],
                         hints: { init: [`${targetName}(resource.value)`] },
-                        doc: `Constructs from ${paramType}.\n\n@param resource a ${rawName} or ${targetName}.\n\nThis does not takes ownership!`
+                        doc: [
+                            `Constructs from ${paramType}.`,
+                            { tag: '@param resource', content: `a ${rawName} or ${targetName}.` },
+                            'This does not takes ownership!'
+                        ],
                     },
                     [`${refName}#2`]: {
                         kind: 'function',
@@ -1108,11 +1137,11 @@ function expandTypes(sourceEntries, file, context) {
                                 name: "other"
                             }],
                         hints: { init: [`${targetName}(other.get())`] },
-                        doc: "Copy constructor.",
+                        doc: ["Copy constructor."],
                     },
                     [`~${refName}`]: {
                         kind: 'function',
-                        doc: "Destructor",
+                        doc: ["Destructor"],
                         type: "",
                         parameters: [],
                         hints: { body: "release();" }
@@ -1124,7 +1153,7 @@ function expandTypes(sourceEntries, file, context) {
                 kind: 'struct',
                 name: scopedName,
                 type: targetName,
-                doc: `RAII owning version ${targetName}.`,
+                doc: [`RAII owning version ${targetName}.`],
                 entries: {
                     [`${targetName}::${targetName}`]: "alias",
                     [scopedName]: {
@@ -1136,7 +1165,7 @@ function expandTypes(sourceEntries, file, context) {
                     },
                     [`${scopedName}#2`]: {
                         kind: "function",
-                        doc: "Move constructor",
+                        doc: ["Move constructor"],
                         type: "",
                         constexpr: true,
                         parameters: [{ name: "other", type: `${targetName} &&` }],
@@ -1146,7 +1175,7 @@ function expandTypes(sourceEntries, file, context) {
                     },
                     [`~${scopedName}`]: {
                         kind: 'function',
-                        doc: "Destructor",
+                        doc: ["Destructor"],
                         type: "",
                         parameters: [],
                         hints: { body: `${freeFunction?.name ?? "Destroy"}();` }
@@ -1312,9 +1341,7 @@ function expandTypes(sourceEntries, file, context) {
         const after = transform.after;
         if (after)
             context.includeAfter(targetName, after);
-        const since = transform.since
-            ?? resolveVersionDoc(sourceEntry.doc, context)
-            ?? resolveVersionParsedDoc(sourceEntry.parsedDoc, context);
+        const since = transform.since ?? resolveVersionDoc(sourceEntry.doc, context);
         for (const value of values) {
             const valueSource = sourceEntries[value];
             const valueTransform = file.transform[value];
@@ -1328,9 +1355,9 @@ function expandTypes(sourceEntries, file, context) {
                 since,
             };
             (0, utils_1.combineObject)(valueTarget, valueTransform || {});
-            if (!valueSource?.parsedDoc) {
-                const sourceDoc = valueSource?.parsedDoc ?? sourceEntry.entries?.[value]?.parsedDoc;
-                valueTarget.parsedDoc = sourceDoc || ([value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name]);
+            if (!valueSource?.doc) {
+                const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
+                valueTarget.doc = sourceDoc || ([value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name]);
             }
             context.addName(value, valueTarget.name);
             if (!valueSource)
@@ -1440,16 +1467,11 @@ function makeSortedEntryArray(sourceEntries, file, context) {
                     targetEntry.type = "auto";
                 if (targetEntry.kind === "function")
                     replacement = "function";
-                if (typeof targetDelta.doc === 'undefined' && targetEntry.doc) {
-                    targetEntry.doc = targetEntry.doc
-                        .replace(/^@since This macro is available/m, `@since This ${replacement} is available`)
-                        .replace(/^@threadsafety It is safe to call this macro/m, `@threadsafety It is safe to call this ${replacement}`);
-                }
-                if (typeof targetDelta.doc === 'undefined' && targetEntry.parsedDoc) {
-                    const macro = getTagInGroup(targetEntry.parsedDoc, '@since');
+                if (!targetDelta.doc && targetEntry.doc) {
+                    const macro = getTagInGroup(targetEntry.doc, '@since');
                     if (macro)
                         macro.content = macro.content.replaceAll("macro", replacement);
-                    const tSafety = getTagInGroup(targetEntry.parsedDoc, "@threadsafety");
+                    const tSafety = getTagInGroup(targetEntry.doc, "@threadsafety");
                     if (tSafety)
                         tSafety.content = tSafety.content.replaceAll("macro", replacement);
                 }
@@ -1822,7 +1844,7 @@ function insertEntry(entries, entry, defaultName = "") {
             if (currEntry.kind !== 'function') {
                 if (entry.doc || !currEntry.doc) {
                     if (entry.kind === "def") {
-                        currEntry.doc = entry.doc;
+                        currEntry.doc = [...entry.doc];
                     }
                     else {
                         entries[key] = entry;
@@ -1834,10 +1856,8 @@ function insertEntry(entries, entry, defaultName = "") {
                 while (e.overload)
                     e = e.overload;
                 e.overload = entry;
-                if (typeof entry.doc !== 'string' && currEntry.doc)
-                    entry.doc = currEntry.doc;
-                if (!entry.parsedDoc && currEntry.parsedDoc)
-                    entry.parsedDoc = [...currEntry.parsedDoc];
+                if (!entry.doc && currEntry.doc)
+                    entry.doc = [...currEntry.doc];
             }
         }
         else {
@@ -1936,10 +1956,8 @@ function transformHierarchy(targetEntries, context) {
             delete entry.static;
             delete entry.explicit;
             if (!entry.since)
-                entry.since = resolveVersionDoc(entry.doc, context)
-                    ?? resolveVersionParsedDoc(entry.parsedDoc, context);
+                entry.since = resolveVersionDoc(entry.doc, context);
             delete entry.doc;
-            delete entry.parsedDoc;
         }
     }
     function makeMemberName(key, template) {
@@ -2017,14 +2035,12 @@ function makeNaturalName(name, typeName) {
 function prepareForTypeInsert(entry, name, typeName) {
     entry.name = name;
     if (name === typeName) {
-        if (entry.doc)
-            entry.doc = entry.doc.replace(/@returns?/, "@post");
-        entry.type = "";
-        if (entry.parsedDoc) {
-            const r = getTagInGroup(entry.parsedDoc, "@returns");
+        if (entry.doc) {
+            const r = getTagInGroup(entry.doc, "@returns");
             if (r)
                 r.tag = "@post";
         }
+        entry.type = "";
         return;
     }
     typeName = normalizeTypeName(typeName);
@@ -2036,21 +2052,13 @@ function prepareForTypeInsert(entry, name, typeName) {
     if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static && entry.sourceName) {
         parameters.shift();
         if (entry.doc)
-            entry.doc = removeFirstParam(entry);
-        if (entry.parsedDoc)
-            removeTagFromGroup(entry.parsedDoc, "@param");
+            removeTagFromGroup(entry.doc, "@param");
         if (type.startsWith("const "))
             entry.immutable = true;
     }
     else if (entry.static !== false) {
         entry.static = !entry.immutable;
     }
-    else if (!entry.sourceName && entry.doc && entry.type) {
-        entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
-    }
-}
-function removeFirstParam(entry) {
-    return entry.doc.replace(/@param \w+([^\n]|\n )*\n/, "");
 }
 function normalizeTypeName(typeName) {
     if (typeName.endsWith("Ref"))
@@ -2067,9 +2075,6 @@ function transformEntry(sourceEntry, context) {
     if (sourceEntry.doc) {
         targetEntry.doc = transformDoc(targetEntry.doc, context);
     }
-    if (sourceEntry.parsedDoc) {
-        targetEntry.parsedDoc = transformParsedDoc(targetEntry.parsedDoc, context);
-    }
     const sourceName = sourceEntry.name;
     targetEntry.sourceName = sourceName;
     switch (sourceEntry.kind) {
@@ -2078,7 +2083,7 @@ function transformEntry(sourceEntry, context) {
             targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
             checkSignatureRules(targetEntry, context);
             if (context.enableException) {
-                const r = getTagInGroup(targetEntry.parsedDoc, "@returns");
+                const r = getTagInGroup(targetEntry.doc, "@returns");
                 if (r) {
                     const m = r.content.match(/(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/);
                     if (m) {
@@ -2089,24 +2094,10 @@ function transformEntry(sourceEntry, context) {
                             r.tag = "@throws";
                         }
                         else {
-                            addToTagGroup(targetEntry.parsedDoc, "@returns", "Error on failure.");
+                            addToTagGroup(targetEntry.doc, "@returns", "Error on failure.");
                             r.content = `${m[1] || m[2]} on success.`;
-                            getTagInGroup(targetEntry.parsedDoc, "@returns", 1).tag = "@throws";
+                            getTagInGroup(targetEntry.doc, "@returns", 1).tag = "@throws";
                         }
-                    }
-                }
-                const throwString = "@throws Error on failure.";
-                const m = /@returns (?:(.*) on success|(an? valid [^,]+), or (?:\w+) on failure)/.exec(targetEntry.doc ?? "");
-                if (m) {
-                    targetEntry.hints = { mayFail: true };
-                    const returnIndexBegin = m.index;
-                    const returnIndexEnd = targetEntry.doc.indexOf("\n\n", returnIndexBegin);
-                    if (sourceEntry.type === "bool") {
-                        targetEntry.type = "void";
-                        targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
-                    }
-                    else {
-                        targetEntry.doc = `${targetEntry.doc.slice(0, returnIndexBegin)}@returns ${m[1] || m[2]} on success.\n${throwString}${targetEntry.doc.slice(returnIndexEnd)}`;
                     }
                 }
             }
@@ -2163,14 +2154,9 @@ function transformFileDoc(doc, context) {
         title.tag = `@defgroup ${title.content}`;
         title.content = title.content.replace(/(Category)(\w+)/, '$1 $2');
     }
-    return transformParsedDoc(doc, context);
+    return transformDoc(doc, context);
 }
-function transformDoc(docStr, context) {
-    return transformString(docStr, context.docRules)
-        .replace(/\\(\w+)/g, '@$1')
-        .replaceAll("NULL", "nullptr");
-}
-function transformParsedDoc(doc, context) {
+function transformDoc(doc, context) {
     return doc?.map(transformDocItem);
     function transformDocItem(docStr) {
         if (typeof docStr === 'string')
@@ -2211,14 +2197,9 @@ function transformEntriesDocRefs(entries, context) {
     }
     function transformEntryDoc(entry) {
         if (entry.doc) {
+            entry.doc = resolveDocRefs(entry.doc, context);
             if (!entry.since)
                 entry.since = resolveVersionDoc(entry.doc, context);
-            entry.doc = resolveDocRefs(entry.doc, context);
-        }
-        if (entry.parsedDoc) {
-            entry.parsedDoc = resolveParsedDocRefs(entry.parsedDoc, context);
-            if (!entry.since)
-                entry.since = resolveVersionParsedDoc(entry.parsedDoc, context);
         }
         if (entry.entries)
             transformEntriesDocRefs(entry.entries, context);
@@ -2227,19 +2208,6 @@ function transformEntriesDocRefs(entries, context) {
     }
 }
 function resolveVersionDoc(doc, context) {
-    const m = /^[@\\]since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
-    if (!m)
-        return undefined;
-    const version = {
-        tag: m[1].toUpperCase(),
-        major: +m[2],
-        minor: +m[3],
-        patch: +m[4],
-    };
-    if (context.isAfterMinVersion(version))
-        return version;
-}
-function resolveVersionParsedDoc(doc, context) {
     const sinceTag = getTagInGroup(doc, '@since');
     if (!sinceTag)
         return;
@@ -2256,11 +2224,6 @@ function resolveVersionParsedDoc(doc, context) {
         return version;
 }
 function resolveDocRefs(doc, context) {
-    if (!doc)
-        return "";
-    return doc.replaceAll(context.referenceCandidate, ref => context.getName(ref));
-}
-function resolveParsedDocRefs(doc, context) {
     return doc?.map(resolveDocRefItem);
     function resolveDocRefItem(item) {
         if (typeof item === 'string')

@@ -22,8 +22,7 @@ export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "
 export interface ApiEntryBase {
     name?: string;
     kind?: ApiEntryKind;
-    doc?: string;
-    parsedDoc?: ParsedDoc;
+    doc?: ParsedDoc;
     type?: string;
     parameters?: ApiParameters;
     template?: ApiParameters;
