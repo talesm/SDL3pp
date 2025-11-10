@@ -10,11 +10,10 @@ namespace SDL {
 /**
  * @defgroup CategoryTray System Tray
  *
- * SDL offers a way to add items to the "system tray" (more correctly called
- * the "notification area" on Windows). On platforms that offer this concept,
- * an SDL app can add a tray icon, submenus, checkboxes, and clickable
- * entries, and register a callback that is fired when the user clicks on
- * these pieces.
+ * SDL offers a way to add items to the "system tray" (more correctly called the
+ * "notification area" on Windows). On platforms that offer this concept, an SDL
+ * app can add a tray icon, submenus, checkboxes, and clickable entries, and
+ * register a callback that is fired when the user clicks on these pieces.
  *
  * @{
  */
@@ -149,6 +148,7 @@ using TrayCallback = SDL_TrayCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa TrayEntry.SetCallback
+ *
  * @sa TrayCallback
  */
 using TrayCB = std::function<void(TrayEntryRaw)>;
@@ -205,7 +205,7 @@ public:
    * @param icon a surface to be used as icon. May be nullptr.
    * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
    *                UTF-8 encoding. Not supported on all platforms. May be
-   * nullptr.
+   *                nullptr.
    * @post The newly created system tray icon.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -322,8 +322,8 @@ public:
   /**
    * Gets a previously created tray menu.
    *
-   * You should have called Tray.CreateMenu() on the tray object. This
-   * function allows you to fetch it again later.
+   * You should have called Tray.CreateMenu() on the tray object. This function
+   * allows you to fetch it again later.
    *
    * This function does the same thing as TrayEntry.GetSubmenu(), except that it
    * takes a Tray instead of a TrayEntry.
@@ -589,8 +589,8 @@ public:
    *
    * This should be called at most once per tray entry.
    *
-   * This function does the same thing as Tray.CreateMenu, except that it
-   * takes a TrayEntry instead of a Tray.
+   * This function does the same thing as Tray.CreateMenu, except that it takes
+   * a TrayEntry instead of a Tray.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -613,8 +613,8 @@ public:
    * You should have called TrayEntry.CreateSubmenu() on the entry object. This
    * function allows you to fetch it again later.
    *
-   * This function does the same thing as Tray.GetMenu(), except that it
-   * takes a TrayEntry instead of a Tray.
+   * This function does the same thing as Tray.GetMenu(), except that it takes a
+   * TrayEntry instead of a Tray.
    *
    * A menu does not need to be destroyed; it will be destroyed with the tray.
    *
@@ -823,7 +823,7 @@ struct TrayEntryScoped : TrayEntry
  * @param icon a surface to be used as icon. May be nullptr.
  * @param tooltip a tooltip to be displayed when the mouse hovers the icon in
  *                UTF-8 encoding. Not supported on all platforms. May be
- * nullptr.
+ *                nullptr.
  * @returns The newly created system tray icon.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -919,8 +919,8 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(m_resource); }
  *
  * This should be called at most once per tray entry.
  *
- * This function does the same thing as Tray.CreateMenu, except that it
- * takes a TrayEntry instead of a Tray.
+ * This function does the same thing as Tray.CreateMenu, except that it takes a
+ * TrayEntry instead of a Tray.
  *
  * A menu does not need to be destroyed; it will be destroyed with the tray.
  *
@@ -949,8 +949,8 @@ inline TrayMenu TrayEntry::CreateSubmenu()
 /**
  * Gets a previously created tray menu.
  *
- * You should have called Tray.CreateMenu() on the tray object. This
- * function allows you to fetch it again later.
+ * You should have called Tray.CreateMenu() on the tray object. This function
+ * allows you to fetch it again later.
  *
  * This function does the same thing as TrayEntry.GetSubmenu(), except that it
  * takes a Tray instead of a TrayEntry.
@@ -978,8 +978,8 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
  * You should have called TrayEntry.CreateSubmenu() on the entry object. This
  * function allows you to fetch it again later.
  *
- * This function does the same thing as Tray.GetMenu(), except that it
- * takes a TrayEntry instead of a Tray.
+ * This function does the same thing as Tray.GetMenu(), except that it takes a
+ * TrayEntry instead of a Tray.
  *
  * A menu does not need to be destroyed; it will be destroyed with the tray.
  *
@@ -1094,8 +1094,8 @@ inline TrayEntry TrayMenu::InsertEntry(int pos,
 /**
  * Sets the label of an entry.
  *
- * An entry cannot change between a separator and an ordinary entry; that is,
- * it is not possible to set a non-nullptr label on an entry that has a nullptr
+ * An entry cannot change between a separator and an ordinary entry; that is, it
+ * is not possible to set a non-nullptr label on an entry that has a nullptr
  * label (separators), or to set a nullptr label to an entry that has a
  * non-nullptr label. The function will silently fail if that happens.
  *
@@ -1339,8 +1339,8 @@ inline TrayMenu TrayEntry::GetParent()
  * Gets the entry for which the menu is a submenu, if the current menu is a
  * submenu.
  *
- * Either this function or TrayMenu.GetParentTray() will return non-nullptr
- * for any given menu.
+ * Either this function or TrayMenu.GetParentTray() will return non-nullptr for
+ * any given menu.
  *
  * @param menu the menu for which to get the parent entry.
  * @returns the parent entry, or nullptr if this menu is not a submenu.
@@ -1367,8 +1367,8 @@ inline TrayEntryParam TrayMenu::GetParentEntry() const
  * Gets the tray for which this menu is the first-level menu, if the current
  * menu isn't a submenu.
  *
- * Either this function or TrayMenu.GetParentEntry() will return non-nullptr
- * for any given menu.
+ * Either this function or TrayMenu.GetParentEntry() will return non-nullptr for
+ * any given menu.
  *
  * @param menu the menu for which to get the parent enttrayry.
  * @returns the parent tray, or nullptr if this menu is a submenu.

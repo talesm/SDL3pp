@@ -3,123 +3,118 @@
 ---
 >  * @defgroup CategoryTimer Timer Support
 16c16
-<  * provided by [CategoryTime](CategoryTime).
+<  * by [CategoryTime](CategoryTime).
 ---
->  * provided by [CategoryTime](#CategoryTime).
-24,26d23
+>  * by [CategoryTime](#CategoryTime).
+23,25d22
 <  * There are also useful macros to convert between time units, like
 <  * Time.FromPosix() and such.
 <  *
-30c27,30
+29c26,29
 < constexpr Time Time::FromPosix(Sint64 time) { return SDL_SECONDS_TO_NS(time); }
 ---
 > constexpr Time Time::FromPosix(Sint64 time)
 > {
 >   return Time::FromNS(SDL_SECONDS_TO_NS(time));
 > }
-32c32,35
+31c31,34
 < constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
 ---
 > constexpr Sint64 Time::ToPosix() const
 > {
 >   return SDL_NS_TO_SECONDS(m_time.count());
 > }
-35c38
+34c37
 <  * Get the number of nanoseconds since SDL library initialization.
 ---
 >  * Get the time elapsed since SDL library initialization.
-37,38c40,41
+36,37c39,40
 <  * @returns an unsigned 64-bit value representing the number of nanoseconds
 <  *          since the SDL library initialized.
 ---
 >  * @returns a std::chrono::nanoseconds value representing the number of
 >  * nanoseconds since the SDL library initialized.
-44c47,50
+43c46,49
 < inline std::chrono::nanoseconds GetTicks() { return SDL_GetTicksNS(); }
 ---
 > inline std::chrono::nanoseconds GetTicks()
 > {
 >   return std::chrono::nanoseconds{SDL_GetTicksNS()};
 > }
-82c88
+80c86
 <  * Wait a specified number of milliseconds before returning.
 ---
 >  * Wait a specified duration before returning.
-84c90
+82c88
 <  * This function waits a specified number of milliseconds before returning. It
 ---
 >  * This function waits a specified duration before returning. It
-88c94
+85c91
 <  * @param ms the number of milliseconds to delay.
 ---
 >  * @param duration the duration to delay, with max precision in ns.
-94d99
+91d96
 <  * @sa SDL_DelayNS
-97c102,105
+94c99,102
 < inline void Delay(std::chrono::nanoseconds duration) { SDL_Delay(duration); }
 ---
 > inline void Delay(std::chrono::nanoseconds duration)
 > {
 >   SDL_DelayNS(duration.count());
 > }
-100c108
+97c105
 <  * Wait a specified number of nanoseconds before returning.
 ---
 >  * Wait a specified duration before returning.
-102c110
+99c107
 <  * This function waits a specified number of nanoseconds before returning. It
 ---
 >  * This function waits a specified duration before returning. It
-106c114
+103c111
 <  * @param ns the number of nanoseconds to delay.
 ---
 >  * @param duration the duration to delay.
-113d120
+110d117
 <  * @sa SDL_DelayNS
-117c124
+114c121
 <   SDL_DelayPrecise(duration);
 ---
 >   SDL_DelayPrecise(duration.count());
-162,163d168
-<  * @param userdata an arbitrary pointer provided by the app through
-<  *                 SDL_AddTimer, for its own use.
-174a180,181
+169a177,178
 >  * @cat listener-callback
 >  *
-201,202c208,210
+196,197c205,207
 <  * @param interval the timer delay, in nanoseconds, passed to `callback`.
 <  * @param callback the SDL_TimerCallback function to call when the specified
 ---
 >  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
 >  *                 `callback`.
 >  * @param callback the NSTimerCallback function to call when the specified
-205,206c213,214
-<  * @returns a timer ID or 0 on failure; call GetError() for more
-<  *          information.
+200c210,211
+<  * @returns a timer ID or 0 on failure; call GetError() for more information.
 ---
 >  * @returns a timer ID.
 >  * @throws Error on failure.
-212d219
+206d216
 <  * @sa SDL_AddTimer
-219c226
+213c223
 <   return SDL_AddTimerNS(interval, callback, userdata);
 ---
 >   return CheckError(SDL_AddTimerNS(interval.count(), callback, userdata));
-242,243c249,251
+235,236c245,247
 <  * @param interval the timer delay, in nanoseconds, passed to `callback`.
 <  * @param callback the SDL_TimerCallback function to call when the specified
 ---
 >  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
 >  * `callback`.
 >  * @param callback the TimerCB function to call when the specified
-245,247c253,254
+238,239c249,250
 <  * @param userdata a pointer that is passed to `callback`.
-<  * @returns a timer ID or 0 on failure; call GetError() for more
-<  *          information.
+<  * @returns a timer ID or 0 on failure; call GetError() for more information.
 ---
 >  * @returns a timer ID.
 >  * @throws Error on failure.
-253,254c260,263
+245,246c256,259
 <  * @sa SDL_AddTimer
 <  * @sa RemoveTimer
 ---
@@ -127,7 +122,7 @@
 >  *
 >  * @sa listener-callback
 >  * @sa RemoveTimer()
-258c267,286
+250c263,282
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<TimerCB>;
@@ -150,7 +145,7 @@
 >   }
 >   delete cb;
 >   throw Error{};
-273c301,305
+265c297,301
 < inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
 ---
 > inline void RemoveTimer(TimerID id)
