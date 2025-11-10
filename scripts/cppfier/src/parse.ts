@@ -40,17 +40,17 @@ class ProgListener implements CHeaderListener {
   public api: ApiFile;
 
   constructor(name: string) {
-    this.api = { name, parsedDoc: undefined, entries: {} };
+    this.api = { name, doc: undefined, entries: {} };
   }
 
   enterProg(ctx: ProgContext) {
     const doc = ctx.doc();
-    if (doc) this.api.parsedDoc = extractDoc(this.api.name, doc.text);
+    if (doc) this.api.doc = extractDoc(this.api.name, doc.text);
   }
 
   enterDecl(ctx: DeclContext) {
     const doc = ctx.doc();
-    if (doc && !this.api.parsedDoc) this.api.parsedDoc = extractDoc(this.api.name, doc.text);
+    if (doc && !this.api.doc) this.api.doc = extractDoc(this.api.name, doc.text);
   }
 
   enterDirective(ctx: DirectiveContext) {

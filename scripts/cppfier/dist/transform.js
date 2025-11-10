@@ -49,7 +49,7 @@ function transformApi(config) {
         includes.push(qualifiedSourceFile);
         files.push({
             name: targetName,
-            parsedDoc: transformFileDoc(sourceFile.parsedDoc, context),
+            doc: transformFileDoc(sourceFile.doc, context),
             entries: transformEntries(sourceFile.entries, fileConfig, context),
             includes,
             localIncludes: fileConfig.localIncludes,
@@ -62,8 +62,8 @@ function transformApi(config) {
     }
     // Step 4: Transform docs
     for (const file of files) {
-        if (file.parsedDoc)
-            file.parsedDoc = resolveParsedDocRefs(file.parsedDoc, context);
+        if (file.doc)
+            file.doc = resolveParsedDocRefs(file.doc, context);
         if (file.entries)
             transformEntriesDocRefs(file.entries, context);
     }

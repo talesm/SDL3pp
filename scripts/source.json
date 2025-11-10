@@ -2,7 +2,7 @@
   "files": {
     "SDL_assert.h": {
       "name": "SDL_assert.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryAssert"
@@ -736,7 +736,7 @@
     },
     "SDL_asyncio.h": {
       "name": "SDL_asyncio.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryAsyncIO"
@@ -1592,7 +1592,7 @@
     },
     "SDL_atomic.h": {
       "name": "SDL_atomic.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryAtomic"
@@ -2545,7 +2545,7 @@
     },
     "SDL_audio.h": {
       "name": "SDL_audio.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryAudio"
@@ -6153,7 +6153,7 @@
     },
     "SDL_bits.h": {
       "name": "SDL_bits.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryBits"
@@ -6235,7 +6235,7 @@
     },
     "SDL_blendmode.h": {
       "name": "SDL_blendmode.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryBlendmode"
@@ -6623,7 +6623,7 @@
     },
     "SDL_camera.h": {
       "name": "SDL_camera.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryCamera"
@@ -7367,7 +7367,7 @@
     },
     "SDL_clipboard.h": {
       "name": "SDL_clipboard.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryClipboard"
@@ -7916,7 +7916,7 @@
     },
     "SDL_cpuinfo.h": {
       "name": "SDL_cpuinfo.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryCPUInfo"
@@ -8472,7 +8472,7 @@
     },
     "SDL_dialog.h": {
       "name": "SDL_dialog.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryDialog"
@@ -9082,7 +9082,7 @@
     },
     "SDL_endian.h": {
       "name": "SDL_endian.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryEndian"
@@ -9612,7 +9612,7 @@
     },
     "SDL_error.h": {
       "name": "SDL_error.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryError"
@@ -9879,7 +9879,7 @@
     },
     "SDL_events.h": {
       "name": "SDL_events.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryEvents"
@@ -14343,7 +14343,7 @@
     },
     "SDL_filesystem.h": {
       "name": "SDL_filesystem.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryFilesystem"
@@ -15179,7 +15179,7 @@
     },
     "SDL_gamepad.h": {
       "name": "SDL_gamepad.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryGamepad"
@@ -18549,7 +18549,7 @@
     },
     "SDL_gpu.h": {
       "name": "SDL_gpu.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryGPU"
@@ -28722,7 +28722,7 @@
     },
     "SDL_guid.h": {
       "name": "SDL_guid.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryGUID"
@@ -28841,7 +28841,7 @@
     },
     "SDL_haptic.h": {
       "name": "SDL_haptic.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryHaptic"
@@ -31505,7 +31505,7 @@
     },
     "SDL_hidapi.h": {
       "name": "SDL_hidapi.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryHIDAPI"
@@ -32547,7 +32547,7 @@
     },
     "SDL_hints.h": {
       "name": "SDL_hints.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryHints"
@@ -38479,7 +38479,7 @@
     },
     "SDL_init.h": {
       "name": "SDL_init.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryInit"
@@ -39330,7 +39330,7 @@
     },
     "SDL_intrin.h": {
       "name": "SDL_intrin.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryIntrinsics"
@@ -39692,7 +39692,7 @@
     },
     "SDL_iostream.h": {
       "name": "SDL_iostream.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryIOStream"
@@ -42267,7 +42267,7 @@
     },
     "SDL_joystick.h": {
       "name": "SDL_joystick.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryJoystick"
@@ -45060,7 +45060,7 @@
     },
     "SDL_keyboard.h": {
       "name": "SDL_keyboard.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryKeyboard"
@@ -46284,7 +46284,7 @@
     },
     "SDL_keycode.h": {
       "name": "SDL_keycode.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryKeycode"
@@ -48538,7 +48538,7 @@
     },
     "SDL_loadso.h": {
       "name": "SDL_loadso.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategorySharedObject"
@@ -48718,7 +48718,7 @@
     },
     "SDL_locale.h": {
       "name": "SDL_locale.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryLocale"
@@ -48798,7 +48798,7 @@
     },
     "SDL_log.h": {
       "name": "SDL_log.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryLog"
@@ -50207,7 +50207,7 @@
     },
     "SDL_main.h": {
       "name": "SDL_main.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryMain"
@@ -50868,7 +50868,7 @@
     },
     "SDL_messagebox.h": {
       "name": "SDL_messagebox.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryMessagebox"
@@ -51266,7 +51266,7 @@
     },
     "SDL_metal.h": {
       "name": "SDL_metal.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryMetal"
@@ -51386,7 +51386,7 @@
     },
     "SDL_misc.h": {
       "name": "SDL_misc.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryMisc"
@@ -51430,7 +51430,7 @@
     },
     "SDL_mouse.h": {
       "name": "SDL_mouse.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryMouse"
@@ -52739,7 +52739,7 @@
     },
     "SDL_mutex.h": {
       "name": "SDL_mutex.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryMutex"
@@ -54433,7 +54433,7 @@
     },
     "SDL_pen.h": {
       "name": "SDL_pen.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryPen"
@@ -54634,7 +54634,7 @@
     },
     "SDL_pixels.h": {
       "name": "SDL_pixels.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryPixels"
@@ -57956,7 +57956,7 @@
     },
     "SDL_platform.h": {
       "name": "SDL_platform.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryPlatform"
@@ -58008,7 +58008,7 @@
     },
     "SDL_power.h": {
       "name": "SDL_power.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryPower"
@@ -58124,7 +58124,7 @@
     },
     "SDL_process.h": {
       "name": "SDL_process.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryProcess"
@@ -58887,7 +58887,7 @@
     },
     "SDL_properties.h": {
       "name": "SDL_properties.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryProperties"
@@ -60128,7 +60128,7 @@
     },
     "SDL_rect.h": {
       "name": "SDL_rect.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryRect"
@@ -61178,7 +61178,7 @@
     },
     "SDL_render.h": {
       "name": "SDL_render.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryRender"
@@ -67374,7 +67374,7 @@
     },
     "SDL_scancode.h": {
       "name": "SDL_scancode.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryScancode"
@@ -68856,7 +68856,7 @@
     },
     "SDL_sensor.h": {
       "name": "SDL_sensor.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategorySensor"
@@ -69454,7 +69454,7 @@
     },
     "SDL_stdinc.h": {
       "name": "SDL_stdinc.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryStdinc"
@@ -80411,7 +80411,7 @@
     },
     "SDL_storage.h": {
       "name": "SDL_storage.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryStorage"
@@ -81466,7 +81466,7 @@
     },
     "SDL_surface.h": {
       "name": "SDL_surface.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategorySurface"
@@ -85164,7 +85164,7 @@
     },
     "SDL_system.h": {
       "name": "SDL_system.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategorySystem"
@@ -86504,7 +86504,7 @@
     },
     "SDL_time.h": {
       "name": "SDL_time.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryTime"
@@ -87025,7 +87025,7 @@
     },
     "SDL_timer.h": {
       "name": "SDL_timer.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryTimer"
@@ -87786,7 +87786,7 @@
     },
     "SDL_thread.h": {
       "name": "SDL_thread.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryThread"
@@ -88609,7 +88609,7 @@
     },
     "SDL_touch.h": {
       "name": "SDL_touch.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryTouch"
@@ -88888,7 +88888,7 @@
     },
     "SDL_tray.h": {
       "name": "SDL_tray.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryTray"
@@ -90058,7 +90058,7 @@
     },
     "SDL_version.h": {
       "name": "SDL_version.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryVersion"
@@ -90309,7 +90309,7 @@
     },
     "SDL_video.h": {
       "name": "SDL_video.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryVideo"
@@ -97369,7 +97369,7 @@
     },
     "SDL_vulkan.h": {
       "name": "SDL_vulkan.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategoryVulkan"
@@ -97703,7 +97703,7 @@
     },
     "SDL_image.h": {
       "name": "SDL_image.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategorySDLImage"
@@ -102678,7 +102678,7 @@
     },
     "SDL_ttf.h": {
       "name": "SDL_ttf.h",
-      "parsedDoc": [
+      "doc": [
         {
           "tag": "#",
           "content": "CategorySDLTTF"

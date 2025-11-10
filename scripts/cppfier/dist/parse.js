@@ -31,17 +31,17 @@ function readContent(name, baseDirs) {
 }
 class ProgListener {
     constructor(name) {
-        this.api = { name, parsedDoc: undefined, entries: {} };
+        this.api = { name, doc: undefined, entries: {} };
     }
     enterProg(ctx) {
         const doc = ctx.doc();
         if (doc)
-            this.api.parsedDoc = extractDoc(this.api.name, doc.text);
+            this.api.doc = extractDoc(this.api.name, doc.text);
     }
     enterDecl(ctx) {
         const doc = ctx.doc();
-        if (doc && !this.api.parsedDoc)
-            this.api.parsedDoc = extractDoc(this.api.name, doc.text);
+        if (doc && !this.api.doc)
+            this.api.doc = extractDoc(this.api.name, doc.text);
     }
     enterDirective(ctx) {
         const directive = ctx.DEFINE().text;
