@@ -11,23 +11,23 @@ namespace SDL {
 /**
  * @defgroup CategoryStorage Storage Abstraction
  *
- * The storage API is a high-level API designed to abstract away the
- * portability issues that come up when using something lower-level (in SDL's
- * case, this sits on top of the [Filesystem](CategoryFilesystem) and
+ * The storage API is a high-level API designed to abstract away the portability
+ * issues that come up when using something lower-level (in SDL's case, this
+ * sits on top of the [Filesystem](CategoryFilesystem) and
  * [IOStream](CategoryIOStream) subsystems). It is significantly more
  * restrictive than a typical filesystem API, for a number of reasons:
  *
- * 1. **What to Access:** A common pitfall with existing filesystem APIs is
- * the assumption that all storage is monolithic. However, many other
- * platforms (game consoles in particular) are more strict about what _type_
- * of filesystem is being accessed; for example, game content and user data
- * are usually two separate storage devices with entirely different
- * characteristics (and possibly different low-level APIs altogether!).
+ * 1. **What to Access:** A common pitfall with existing filesystem APIs is the
+ * assumption that all storage is monolithic. However, many other platforms
+ * (game consoles in particular) are more strict about what _type_ of filesystem
+ * is being accessed; for example, game content and user data are usually two
+ * separate storage devices with entirely different characteristics (and
+ * possibly different low-level APIs altogether!).
  *
  * 2. **How to Access:** Another common mistake is applications assuming that
  * all storage is universally writeable - again, many platforms treat game
- * content and user data as two separate storage devices, and only user data
- * is writeable while game content is read-only.
+ * content and user data as two separate storage devices, and only user data is
+ * writeable while game content is read-only.
  *
  * 3. **When to Access:** The most common portability issue with filesystem
  * access is _timing_ - you cannot always assume that the storage device is
@@ -77,32 +77,31 @@ namespace SDL {
  *
  * Going over the bullet points again:
  *
- * 1. **What to Access:** This code accesses a global filesystem; game data
- * and saves are all presumed to be in the current working directory (which
- * may or may not be the game's installation folder!).
+ * 1. **What to Access:** This code accesses a global filesystem; game data and
+ * saves are all presumed to be in the current working directory (which may or
+ * may not be the game's installation folder!).
  *
- * 2. **How to Access:** This code assumes that content paths are writeable,
- * and that save data is also writeable despite being in the same location as
- * the game data.
+ * 2. **How to Access:** This code assumes that content paths are writeable, and
+ * that save data is also writeable despite being in the same location as the
+ * game data.
  *
- * 3. **When to Access:** This code assumes that they can be called at any
- * time, since the filesystem is always accessible and has no limits on how
- * long the filesystem is being accessed.
+ * 3. **When to Access:** This code assumes that they can be called at any time,
+ * since the filesystem is always accessible and has no limits on how long the
+ * filesystem is being accessed.
  *
  * Due to these assumptions, the filesystem code is not portable and will fail
  * under these common scenarios:
  *
  * - The game is installed on a device that is read-only, both content loading
  *   and game saves will fail or crash outright
- * - Game/User storage is not implicitly mounted, so no files will be found
- *   for either scenario when a platform requires explicitly mounting
- *   filesystems
- * - Save data may not be safe since the I/O is not being flushed or
- *   validated, so an error occurring elsewhere in the program may result in
+ * - Game/User storage is not implicitly mounted, so no files will be found for
+ *   either scenario when a platform requires explicitly mounting filesystems
+ * - Save data may not be safe since the I/O is not being flushed or validated,
+ *   so an error occurring elsewhere in the program may result in
  *   missing/corrupted save data
  *
- * When using Storage, these types of problems are virtually impossible to
- * trip over:
+ * When using Storage, these types of problems are virtually impossible to trip
+ * over:
  *
  * ```cpp
  * void ReadGameData(void)
@@ -192,36 +191,34 @@ namespace SDL {
  * The result is an application that is significantly more robust against the
  * increasing demands of platforms and their filesystems!
  *
- * A publicly available example of an Storage backend is the
- * [Steam Cloud](https://partner.steamgames.com/doc/features/cloud)
- * backend - you can initialize Steamworks when starting the program, and then
- * SDL will recognize that Steamworks is initialized and automatically use
- * ISteamRemoteStorage when the application opens user storage. More
- * importantly, when you _open_ storage it knows to begin a "batch" of
- * filesystem operations, and when you _close_ storage it knows to end and
- * flush the batch. This is used by Steam to support
+ * A publicly available example of an Storage backend is the [Steam
+ * Cloud](https://partner.steamgames.com/doc/features/cloud) backend - you can
+ * initialize Steamworks when starting the program, and then SDL will recognize
+ * that Steamworks is initialized and automatically use ISteamRemoteStorage when
+ * the application opens user storage. More importantly, when you _open_ storage
+ * it knows to begin a "batch" of filesystem operations, and when you _close_
+ * storage it knows to end and flush the batch. This is used by Steam to support
  * [Dynamic Cloud
  * Sync](https://steamcommunity.com/groups/steamworks/announcements/detail/3142949576401813670)
  * ; users can save data on one PC, put the device to sleep, and then continue
- * playing on another PC (and vice versa) with the save data fully
- * synchronized across all devices, allowing for a seamless experience without
- * having to do full restarts of the program.
+ * playing on another PC (and vice versa) with the save data fully synchronized
+ * across all devices, allowing for a seamless experience without having to do
+ * full restarts of the program.
  *
  * ## Notes on valid paths
  *
  * All paths in the Storage API use Unix-style path separators ('/'). Using a
- * different path separator will not work, even if the underlying platform
- * would otherwise accept it. This is to keep code using the Storage API
- * portable between platforms and Storage implementations and simplify app
- * code.
+ * different path separator will not work, even if the underlying platform would
+ * otherwise accept it. This is to keep code using the Storage API portable
+ * between platforms and Storage implementations and simplify app code.
  *
  * Paths with relative directories ("." and "..") are forbidden by the Storage
  * API.
  *
  * All valid UTF-8 strings (discounting the nullptr terminator character and the
- * '/' path separator) are usable for filenames, however, an underlying
- * Storage implementation may not support particularly strange sequences and
- * refuse to create files with those names, etc.
+ * '/' path separator) are usable for filenames, however, an underlying Storage
+ * implementation may not support particularly strange sequences and refuse to
+ * create files with those names, etc.
  *
  * @{
  */
@@ -265,12 +262,12 @@ struct StorageParam
 /**
  * Function interface for Storage.
  *
- * Apps that want to supply a custom implementation of Storage will fill
- * in all the functions in this struct, and then pass it to Storage.Storage to
- * create a custom Storage object.
+ * Apps that want to supply a custom implementation of Storage will fill in all
+ * the functions in this struct, and then pass it to Storage.Storage to create a
+ * custom Storage object.
  *
- * It is not usually necessary to do this; SDL provides standard
- * implementations for many things you might expect to do with an Storage.
+ * It is not usually necessary to do this; SDL provides standard implementations
+ * for many things you might expect to do with an Storage.
  *
  * This structure should be initialized using InitInterface()
  *
@@ -284,8 +281,8 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like Storage.Storage, etc, or create
- * an object with a custom implementation using Storage.Storage.
+ * functions like Storage.Storage, etc, or create an object with a custom
+ * implementation using Storage.Storage.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -377,8 +374,8 @@ public:
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and
-   * Storage.Storage() for access to user data.
+   * use Storage.Storage() for access to game data and Storage.Storage() for
+   * access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -404,9 +401,9 @@ public:
    * Opens up a container using a client-provided storage interface.
    *
    * Applications do not need to use this function unless they are providing
-   * their own Storage implementation. If you just need an Storage, you
-   * should use the built-in implementations in SDL, like Storage.Storage()
-   * or Storage.Storage().
+   * their own Storage implementation. If you just need an Storage, you should
+   * use the built-in implementations in SDL, like Storage.Storage() or
+   * Storage.Storage().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -469,9 +466,9 @@ public:
    * Closes and frees a storage container.
    *
    * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
+   *          call GetError() for more information. Even if the function returns
+   *          an error, the container data will be freed; the error is only for
+   *          informational purposes.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -512,13 +509,13 @@ public:
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed in
-   * a future release.
+   * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+   * future release.
    *
    * @param path the relative path of the file to read.
    * @param destination a client-provided buffer to read the file into.
-   * @returns true if the file was read or false on failure; call GetError()
-   *          for more information.
+   * @returns true if the file was read or false on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -533,12 +530,12 @@ public:
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed in
-   * a future release.
+   * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+   * future release.
    *
    * @param path the relative path of the file to read.
-   * @returns true if the file was read or false on failure; call GetError()
-   *          for more information.
+   * @returns true if the file was read or false on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -601,19 +598,18 @@ public:
    *
    * This function provides every directory entry through an app-provided
    * callback, called once for each directory entry, until all results have been
-   * provided or the callback returns either ENUM_SUCCESS or
-   * ENUM_FAILURE.
+   * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
    *
    * This will return false if there was a system problem in general, or if a
    * callback returns ENUM_FAILURE. A successful return means a callback
-   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-   * were enumerated.
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries were
+   * enumerated.
    *
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @param callback a function that is called for each entry in the directory.
    * @param userdata a pointer that is passed to `callback`.
    * @throws Error on failure.
@@ -631,19 +627,18 @@ public:
    *
    * This function provides every directory entry through an app-provided
    * callback, called once for each directory entry, until all results have been
-   * provided or the callback returns either ENUM_SUCCESS or
-   * ENUM_FAILURE.
+   * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
    *
    * This will return false if there was a system problem in general, or if a
    * callback returns ENUM_FAILURE. A successful return means a callback
-   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-   * were enumerated.
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries were
+   * enumerated.
    *
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @returns all the directory contents.
    * @throws Error on failure.
    *
@@ -658,19 +653,18 @@ public:
    *
    * This function provides every directory entry through an app-provided
    * callback, called once for each directory entry, until all results have been
-   * provided or the callback returns either ENUM_SUCCESS or
-   * ENUM_FAILURE.
+   * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
    *
    * This will return false if there was a system problem in general, or if a
    * callback returns ENUM_FAILURE. A successful return means a callback
-   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-   * were enumerated.
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries were
+   * enumerated.
    *
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @param callback a function that is called for each entry in the directory.
    * @throws Error on failure.
    *
@@ -764,7 +758,7 @@ public:
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @param pattern the pattern that files in the directory must match. Can be
    *                nullptr.
    * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -831,8 +825,8 @@ inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
  *
  * While title storage can generally be kept open throughout runtime, user
  * storage should only be opened when the client is ready to read/write files.
- * This allows the backend to properly batch file operations and flush them
- * when the container has been closed; ensuring safe and optimal save I/O.
+ * This allows the backend to properly batch file operations and flush them when
+ * the container has been closed; ensuring safe and optimal save I/O.
  *
  * @param org the name of your organization.
  * @param app the name of your application.
@@ -860,9 +854,9 @@ inline Storage OpenUserStorage(StringParam org,
 /**
  * Opens up a container for local filesystem storage.
  *
- * This is provided for development and tools. Portable applications should
- * use Storage.Storage() for access to game data and
- * Storage.Storage() for access to user data.
+ * This is provided for development and tools. Portable applications should use
+ * Storage.Storage() for access to game data and Storage.Storage() for access to
+ * user data.
  *
  * @param path the base path prepended to all storage paths, or nullptr for no
  *             base path.
@@ -887,13 +881,12 @@ inline Storage OpenFileStorage(StringParam path)
 /**
  * Opens up a container using a client-provided storage interface.
  *
- * Applications do not need to use this function unless they are providing
- * their own Storage implementation. If you just need an Storage, you
- * should use the built-in implementations in SDL, like Storage.Storage()
- * or Storage.Storage().
+ * Applications do not need to use this function unless they are providing their
+ * own Storage implementation. If you just need an Storage, you should use the
+ * built-in implementations in SDL, like Storage.Storage() or Storage.Storage().
  *
- * This function makes a copy of `iface` and the caller does not need to keep
- * it around after this call.
+ * This function makes a copy of `iface` and the caller does not need to keep it
+ * around after this call.
  *
  * @param iface the interface that implements this storage, initialized using
  *              InitInterface().
@@ -921,9 +914,9 @@ inline Storage OpenStorage(const StorageInterface& iface, void* userdata)
  *
  * @param storage a storage container to close.
  * @returns true if the container was freed with no errors, false otherwise;
- *          call GetError() for more information. Even if the function
- *          returns an error, the container data will be freed; the error is
- *          only for informational purposes.
+ *          call GetError() for more information. Even if the function returns
+ *          an error, the container data will be freed; the error is only for
+ *          informational purposes.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -990,11 +983,15 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  * Synchronously read a file from a storage container into a client-provided
  * buffer.
  *
+ * The value of `destination.size()` must match the length of the file exactly;
+ * call Storage.GetFileSize() to get this value. This behavior may be relaxed in
+ * a future release.
+ *
  * @param storage a storage container to read from.
  * @param path the relative path of the file to read.
  * @param destination a client-provided buffer to read the file into.
- * @returns true if the file was read or false on failure; call GetError()
- *          for more information.
+ * @returns true if the file was read or false on failure; call GetError() for
+ *          more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1129,13 +1126,11 @@ inline void Storage::CreateDirectory(StringParam path)
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * If `path` is nullptr, this is treated as a request to enumerate the root of
  * the storage container's tree. An empty string also works for this.
@@ -1163,13 +1158,11 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * If `path` is nullptr, this is treated as a request to enumerate the root of
  * the storage container's tree. An empty string also works for this.
@@ -1202,13 +1195,11 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * If `path` is nullptr, this is treated as a request to enumerate the root of
  * the storage container's tree. An empty string also works for this.
@@ -1370,8 +1361,8 @@ inline Uint64 Storage::GetSpaceRemaining()
 /**
  * Enumerate a directory tree, filtered by pattern, and return a list.
  *
- * Files are filtered out if they don't match the string in `pattern`, which
- * may contain wildcard characters `*` (match everything) and `?` (match one
+ * Files are filtered out if they don't match the string in `pattern`, which may
+ * contain wildcard characters `*` (match everything) and `?` (match one
  * character). If pattern is nullptr, no filtering is done and all results are
  * returned. Subdirectories are permitted, and are specified with a path
  * separator of '/'. Wildcard characters `*` and `?` never match a path
@@ -1395,8 +1386,8 @@ inline Uint64 Storage::GetSpaceRemaining()
  * @returns an array of strings on success.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, assuming
- *               the `storage` object is thread-safe.
+ * @threadsafety It is safe to call this function from any thread, assuming the
+ *               `storage` object is thread-safe.
  *
  * @since This function is available since SDL 3.2.0.
  */

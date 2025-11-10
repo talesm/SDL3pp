@@ -1315,7 +1315,9 @@ function expandTypes(sourceEntries, file, context) {
         const after = transform.after;
         if (after)
             context.includeAfter(targetName, after);
-        const since = transform.since ?? resolveVersionDoc(sourceEntry.doc ?? "", context);
+        const since = transform.since
+            ?? resolveVersionDoc(sourceEntry.doc, context)
+            ?? resolveVersionParsedDoc(sourceEntry.parsedDoc, context);
         for (const value of values) {
             const valueSource = sourceEntries[value];
             const valueTransform = file.transform[value];
@@ -1937,7 +1939,8 @@ function transformHierarchy(targetEntries, context) {
             delete entry.static;
             delete entry.explicit;
             if (!entry.since)
-                entry.since = resolveVersionDoc(entry.doc, context);
+                entry.since = resolveVersionDoc(entry.doc, context)
+                    ?? resolveVersionParsedDoc(entry.parsedDoc, context);
             delete entry.doc;
             delete entry.parsedDoc;
         }
@@ -2221,8 +2224,11 @@ function transformEntriesDocRefs(entries, context) {
                 entry.since = resolveVersionDoc(entry.doc, context);
             entry.doc = resolveDocRefs(entry.doc, context);
         }
-        if (entry.parsedDoc)
+        if (entry.parsedDoc) {
             entry.parsedDoc = resolveParsedDocRefs(entry.parsedDoc, context);
+            if (!entry.since)
+                entry.since = resolveVersionParsedDoc(entry.parsedDoc, context);
+        }
         if (entry.entries)
             transformEntriesDocRefs(entry.entries, context);
         if (entry.overload)
@@ -2231,6 +2237,22 @@ function transformEntriesDocRefs(entries, context) {
 }
 function resolveVersionDoc(doc, context) {
     const m = /^[@\\]since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
+    if (!m)
+        return undefined;
+    const version = {
+        tag: m[1].toUpperCase(),
+        major: +m[2],
+        minor: +m[3],
+        patch: +m[4],
+    };
+    if (context.isAfterMinVersion(version))
+        return version;
+}
+function resolveVersionParsedDoc(doc, context) {
+    const sinceTag = getTagInGroup(doc, '@since');
+    if (!sinceTag)
+        return;
+    const m = /\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(sinceTag.content);
     if (!m)
         return undefined;
     const version = {

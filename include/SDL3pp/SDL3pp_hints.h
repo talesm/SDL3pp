@@ -2181,6 +2181,8 @@ namespace SDL {
 #define SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES                                \
   "SDL_JOYSTICK_ZERO_CENTERED_DEVICES"
 
+#if SDL_VERSION_ATLEAST(3, 2, 5)
+
 /**
  * A variable containing a list of devices and their desired number of haptic
  * (force feedback) enabled axis.
@@ -2202,6 +2204,8 @@ namespace SDL {
  * @since This hint is available since SDL 3.2.5.
  */
 #define SDL_HINT_JOYSTICK_HAPTIC_AXES "SDL_JOYSTICK_HAPTIC_AXES"
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 5)
 
 /**
  * A variable that controls keycode representation in keyboard events.
@@ -3592,6 +3596,8 @@ namespace SDL {
  */
 #define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
+#if SDL_VERSION_ATLEAST(3, 2, 10)
+
 /**
  * A variable controlling whether SDL should call XSelectInput() to enable input
  * events on X11 windows wrapped by SDL windows.
@@ -3608,6 +3614,8 @@ namespace SDL {
  */
 #define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \
   "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint should

@@ -5096,6 +5096,8 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES                                \
   "SDL_JOYSTICK_ZERO_CENTERED_DEVICES"
 
+#if SDL_VERSION_ATLEAST(3, 2, 5)
+
 /**
  * A variable containing a list of devices and their desired number of haptic
  * (force feedback) enabled axis.
@@ -5117,6 +5119,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.5.
  */
 #define SDL_HINT_JOYSTICK_HAPTIC_AXES "SDL_JOYSTICK_HAPTIC_AXES"
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 5)
 
 /**
  * A variable that controls keycode representation in keyboard events.
@@ -6507,6 +6511,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
+#if SDL_VERSION_ATLEAST(3, 2, 10)
+
 /**
  * A variable controlling whether SDL should call XSelectInput() to enable input
  * events on X11 windows wrapped by SDL windows.
@@ -6523,6 +6529,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \
   "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
 /**
  * A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint should
@@ -13053,22 +13061,21 @@ inline void Properties::Destroy() { DestroyProperties(release()); }
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
- * Using these functions allows an app to have access to common C
- * functionality without depending on a specific C runtime (or a C runtime at
- * all). More importantly, the SDL implementations work identically across
- * platforms, so apps can avoid surprises like snprintf() behaving differently
- * between Windows and Linux builds, or itoa() only existing on some
- * platforms.
+ * Using these functions allows an app to have access to common C functionality
+ * without depending on a specific C runtime (or a C runtime at all). More
+ * importantly, the SDL implementations work identically across platforms, so
+ * apps can avoid surprises like snprintf() behaving differently between Windows
+ * and Linux builds, or itoa() only existing on some platforms.
  *
  * For many of the most common functions, like memcpy, SDL might just call
- * through to the usual C runtime behind the scenes, if it makes sense to do
- * so (if it's faster and always available/reliable on a given platform),
- * reducing library size and offering the most optimized option.
+ * through to the usual C runtime behind the scenes, if it makes sense to do so
+ * (if it's faster and always available/reliable on a given platform), reducing
+ * library size and offering the most optimized option.
  *
  * SDL also offers other C-runtime-adjacent functionality in this header that
  * either isn't, strictly speaking, part of any C runtime standards, like
- * crc32() and SDL_reinterpret_cast, etc. It also offers a few better
- * options, like strlcpy(), which functions as a safer form of strcpy().
+ * crc32() and SDL_reinterpret_cast, etc. It also offers a few better options,
+ * like strlcpy(), which functions as a safer form of strcpy().
  *
  * @{
  */
@@ -13156,18 +13163,18 @@ struct IConvParam
 /**
  * Don't let SDL use "long long" C types.
  *
- * SDL will define this if it believes the compiler doesn't understand the
- * "long long" syntax for C datatypes. This can happen on older compilers.
+ * SDL will define this if it believes the compiler doesn't understand the "long
+ * long" syntax for C datatypes. This can happen on older compilers.
  *
- * If _your_ compiler doesn't support "long long" but SDL doesn't know it, it
- * is safe to define this yourself to build against the SDL headers.
+ * If _your_ compiler doesn't support "long long" but SDL doesn't know it, it is
+ * safe to define this yourself to build against the SDL headers.
  *
  * If this is defined, it will remove access to some C runtime support
- * functions, like ulltoa and strtoll that refer to this datatype
- * explicitly. The rest of SDL will still be available.
+ * functions, like ulltoa and strtoll that refer to this datatype explicitly.
+ * The rest of SDL will still be available.
  *
- * SDL's own source code cannot be built with a compiler that has this
- * defined, for various technical reasons.
+ * SDL's own source code cannot be built with a compiler that has this defined,
+ * for various technical reasons.
  */
 #define SDL_NOLONGLONG 1
 
@@ -13176,9 +13183,9 @@ struct IConvParam
  *
  * `size_t` is generally the same size as a pointer in modern times, but this
  * can get weird on very old and very esoteric machines. For example, on a
- * 16-bit Intel 286, you might have a 32-bit "far" pointer (16-bit segment
- * plus 16-bit offset), but `size_t` is 16 bits, because it can only deal with
- * the offset into an individual segment.
+ * 16-bit Intel 286, you might have a 32-bit "far" pointer (16-bit segment plus
+ * 16-bit offset), but `size_t` is 16 bits, because it can only deal with the
+ * offset into an individual segment.
  *
  * In modern times, it's generally expected to cover an entire linear address
  * space. But be careful!
@@ -13200,11 +13207,11 @@ struct IConvParam
  * SDL_COMPILE_TIME_ASSERT(uint32_size, sizeof(Uint32) == 4);
  * ```
  *
- * The `name` parameter must be a valid C symbol, and must be unique across
- * all compile-time asserts in the same compilation unit (one run of the
- * compiler), or the build might fail with cryptic errors on some targets.
- * This is used with a C language trick that works on older compilers that
- * don't support better assertion techniques.
+ * The `name` parameter must be a valid C symbol, and must be unique across all
+ * compile-time asserts in the same compilation unit (one run of the compiler),
+ * or the build might fail with cryptic errors on some targets. This is used
+ * with a C language trick that works on older compilers that don't support
+ * better assertion techniques.
  *
  * If you need an assertion that operates at runtime, on variable data, you
  * should try SDL_assert instead.
@@ -13225,8 +13232,8 @@ struct IConvParam
 /**
  * The number of elements in a static array.
  *
- * This will compile but return incorrect results for a pointer to an array;
- * it has to be an array the compiler knows the size of.
+ * This will compile but return incorrect results for a pointer to an array; it
+ * has to be an array the compiler knows the size of.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -13263,8 +13270,7 @@ constexpr std::size_t arraysize(const T (&array)[N])
  * @param b the second ASCII character.
  * @param c the third ASCII character.
  * @param d the fourth ASCII character.
- * @returns the four characters converted into a Uint32, one character
- *          per-byte.
+ * @returns the four characters converted into a Uint32, one character per-byte.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -13435,12 +13441,12 @@ constexpr Sint64 ToNS(Nanoseconds duration) { return duration.count(); }
 constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
 
 /**
- * SDL times are signed, 64-bit integers representing nanoseconds since the
- * Unix epoch (Jan 1, 1970).
+ * SDL times are signed, 64-bit integers representing nanoseconds since the Unix
+ * epoch (Jan 1, 1970).
  *
- * They can be converted between POSIX time_t values with Time.ToPosix()
- * and Time.FromPosix(), and between Windows FILETIME values with
- * Time.ToWindows() and Time.FromWindows().
+ * They can be converted between POSIX time_t values with Time.ToPosix() and
+ * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
+ * and Time.FromWindows().
  *
  * @since This type is available since SDL 3.2.0.
  *
@@ -13655,16 +13661,15 @@ constexpr void InitInterface(I* iface)
 /**
  * Allocate uninitialized memory.
  *
- * The allocated memory returned by this function must be freed with
- * free().
+ * The allocated memory returned by this function must be freed with free().
  *
  * If `size` is 0, it will be set to 1.
  *
  * If the allocation is successful, the returned pointer is guaranteed to be
- * aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
- * C11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use
- * aligned_alloc() if you need to allocate memory aligned to an alignment
- * greater than this guarantee.
+ * aligned to either the *fundamental alignment* (`alignof(max_align_t)` in C11
+ * and later) or `2 * sizeof(void *)`, whichever is smaller. Use aligned_alloc()
+ * if you need to allocate memory aligned to an alignment greater than this
+ * guarantee.
  *
  * @param size the size to allocate.
  * @returns a pointer to the allocated memory, or nullptr if allocation failed.
@@ -13688,8 +13693,8 @@ inline void* malloc(size_t size) { return SDL_malloc(size); }
  * If either of `nmemb` or `size` is 0, they will both be set to 1.
  *
  * If the allocation is successful, the returned pointer is guaranteed to be
- * aligned to either the *fundamental alignment* (`alignof(max_align_t)` in
- * C11 and later) or `2 * sizeof(void *)`, whichever is smaller.
+ * aligned to either the *fundamental alignment* (`alignof(max_align_t)` in C11
+ * and later) or `2 * sizeof(void *)`, whichever is smaller.
  *
  * @param nmemb the number of elements in the array.
  * @param size the size of each element of the array.
@@ -13714,24 +13719,22 @@ inline void* calloc(size_t nmemb, size_t size)
  * The memory returned by this function must be freed with free().
  *
  * If `size` is 0, it will be set to 1. Note that this is unlike some other C
- * runtime `realloc` implementations, which may treat `realloc(mem, 0)` the
- * same way as `free(mem)`.
+ * runtime `realloc` implementations, which may treat `realloc(mem, 0)` the same
+ * way as `free(mem)`.
  *
- * If `mem` is nullptr, the behavior of this function is equivalent to
- * malloc(). Otherwise, the function can have one of three possible
- * outcomes:
+ * If `mem` is nullptr, the behavior of this function is equivalent to malloc().
+ * Otherwise, the function can have one of three possible outcomes:
  *
- * - If it returns the same pointer as `mem`, it means that `mem` was resized
- *   in place without freeing.
+ * - If it returns the same pointer as `mem`, it means that `mem` was resized in
+ *   place without freeing.
  * - If it returns a different non-nullptr pointer, it means that `mem` was
- * freed and cannot be dereferenced anymore.
+ *   freed and cannot be dereferenced anymore.
  * - If it returns nullptr (indicating failure), then `mem` will remain valid
- * and must still be freed with free().
+ *   and must still be freed with free().
  *
- * If the allocation is successfully resized, the returned pointer is
- * guaranteed to be aligned to either the *fundamental alignment*
- * (`alignof(max_align_t)` in C11 and later) or `2 * sizeof(void *)`,
- * whichever is smaller.
+ * If the allocation is successfully resized, the returned pointer is guaranteed
+ * to be aligned to either the *fundamental alignment* (`alignof(max_align_t)`
+ * in C11 and later) or `2 * sizeof(void *)`, whichever is smaller.
  *
  * @param mem a pointer to allocated memory to reallocate, or nullptr.
  * @param size the new size of the memory.
@@ -13850,10 +13853,10 @@ using free_func = SDL_free_func;
 /**
  * Get the original set of SDL memory functions.
  *
- * This is what malloc and friends will use by default, if there has been
- * no call to SetMemoryFunctions. This is not necessarily using the C
- * runtime's `malloc` functions behind the scenes! Different platforms and
- * build configurations might do any number of unexpected things.
+ * This is what malloc and friends will use by default, if there has been no
+ * call to SetMemoryFunctions. This is not necessarily using the C runtime's
+ * `malloc` functions behind the scenes! Different platforms and build
+ * configurations might do any number of unexpected things.
  *
  * @param malloc_func filled with malloc function.
  * @param calloc_func filled with calloc function.
@@ -13881,9 +13884,9 @@ inline void GetOriginalMemoryFunctions(malloc_func* malloc_func,
  * @param realloc_func filled with realloc function.
  * @param free_func filled with free function.
  *
- * @threadsafety This does not hold a lock, so do not call this in the
- *               unlikely event of a background thread calling
- *               SetMemoryFunctions simultaneously.
+ * @threadsafety This does not hold a lock, so do not call this in the unlikely
+ *               event of a background thread calling SetMemoryFunctions
+ *               simultaneously.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -13901,9 +13904,9 @@ inline void GetMemoryFunctions(malloc_func* malloc_func,
 /**
  * Replace SDL's memory allocation functions with a custom set.
  *
- * It is not safe to call this function once any allocations have been made,
- * as future calls to free will use the new allocator, even if they came
- * from an malloc made with the old one!
+ * It is not safe to call this function once any allocations have been made, as
+ * future calls to free will use the new allocator, even if they came from an
+ * malloc made with the old one!
  *
  * If used, usually this needs to be the first call made into the SDL library,
  * if not the very first thing done at program startup time.
@@ -13935,8 +13938,8 @@ inline void SetMemoryFunctions(malloc_func malloc_func,
 /**
  * Allocate memory aligned to a specific alignment.
  *
- * The memory returned by this function must be freed with aligned_free(),
- * _not_ free().
+ * The memory returned by this function must be freed with aligned_free(), _not_
+ * free().
  *
  * If `alignment` is less than the size of `void *`, it will be increased to
  * match that.
@@ -13980,8 +13983,7 @@ inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
 /**
  * Get the number of outstanding (unfreed) allocations.
  *
- * @returns the number of allocations or -1 if allocation counting is
- *          disabled.
+ * @returns the number of allocations or -1 if allocation counting is disabled.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -14043,7 +14045,7 @@ public:
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
    * @post a pointer to the new environment or nullptr on failure; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
    *               from any thread, otherwise it is safe if no other threads are
@@ -14231,11 +14233,11 @@ struct EnvironmentRef : Environment
 /**
  * Get the process environment.
  *
- * This is initialized at application start and is not affected by setenv()
- * and unsetenv() calls after that point. Use Environment.SetVariable() and
+ * This is initialized at application start and is not affected by setenv() and
+ * unsetenv() calls after that point. Use Environment.SetVariable() and
  * Environment.UnsetVariable() if you want to modify this environment, or
- * setenv_unsafe() or unsetenv_unsafe() if you want changes to persist
- * in the C runtime environment after Quit().
+ * setenv_unsafe() or unsetenv_unsafe() if you want changes to persist in the C
+ * runtime environment after Quit().
  *
  * @returns a pointer to the environment for the process or nullptr on failure;
  *          call GetError() for more information.
@@ -14254,13 +14256,13 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
 /**
  * Create a set of environment variables
  *
- * @param populated true to initialize it from the C runtime environment,
- *                  false to create an empty environment.
+ * @param populated true to initialize it from the C runtime environment, false
+ *                  to create an empty environment.
  * @returns a pointer to the new environment or nullptr on failure; call
  *          GetError() for more information.
  *
- * @threadsafety If `populated` is false, it is safe to call this function
- *               from any thread, otherwise it is safe if no other threads are
+ * @threadsafety If `populated` is false, it is safe to call this function from
+ *               any thread, otherwise it is safe if no other threads are
  *               calling setenv() or unsetenv()
  *
  * @since This function is available since SDL 3.2.0.
@@ -14310,9 +14312,9 @@ inline const char* Environment::GetVariable(StringParam name)
  *
  * @param env the environment to query.
  * @returns a nullptr terminated array of pointers to environment variables in
- *          the form "variable=value" or nullptr on failure; call GetError()
- *          for more information. This is a single allocation that should be
- *          freed with free() when it is no longer needed.
+ *          the form "variable=value" or nullptr on failure; call GetError() for
+ *          more information. This is a single allocation that should be freed
+ *          with free() when it is no longer needed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -14340,9 +14342,8 @@ inline OwnArray<char*> Environment::GetVariables()
  * @param env the environment to modify.
  * @param name the name of the variable to set.
  * @param value the value of the variable to set.
- * @param overwrite true to overwrite the variable if it exists, false to
- *                  return success without setting the variable if it already
- *                  exists.
+ * @param overwrite true to overwrite the variable if it exists, false to return
+ *                  success without setting the variable if it already exists.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -14939,8 +14940,8 @@ inline int abs(int x) { return SDL_abs(x); }
  *
  * Range: `0 <= y <= INF`
  *
- * This function operates on double-precision floating point values, use
- * abs for single-precision floats.
+ * This function operates on double-precision floating point values, use abs for
+ * single-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @returns the absolute value of `x`.
@@ -14960,8 +14961,8 @@ inline double abs(double x) { return SDL_fabs(x); }
  *
  * Range: `0 <= y <= INF`
  *
- * This function operates on single-precision floating point values, use
- * abs for double-precision floats.
+ * This function operates on single-precision floating point values, use abs for
+ * double-precision floats.
  *
  * @param x floating point value to use as the magnitude.
  * @returns the absolute value of `x`.
@@ -14979,8 +14980,8 @@ inline float abs(float x) { return SDL_fabsf(x); }
  *
  * This is a helper macro that might be more clear than writing out the
  * comparisons directly, and works with any type that can be compared with the
- * `<` operator. However, it double-evaluates both its parameters, so do not
- * use expressions with side-effects here.
+ * `<` operator. However, it double-evaluates both its parameters, so do not use
+ * expressions with side-effects here.
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
@@ -15001,8 +15002,8 @@ constexpr T min(T x, U y)
  *
  * This is a helper macro that might be more clear than writing out the
  * comparisons directly, and works with any type that can be compared with the
- * `>` operator. However, it double-evaluates both its parameters, so do not
- * use expressions with side-effects here.
+ * `>` operator. However, it double-evaluates both its parameters, so do not use
+ * expressions with side-effects here.
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
@@ -15021,15 +15022,15 @@ constexpr T max(T x, U y)
 /**
  * Return a value clamped to a range.
  *
- * If `x` is outside the range a values between `a` and `b`, the returned
- * value will be `a` or `b` as appropriate. Otherwise, `x` is returned.
+ * If `x` is outside the range a values between `a` and `b`, the returned value
+ * will be `a` or `b` as appropriate. Otherwise, `x` is returned.
  *
  * This function will produce incorrect results if `b` is less than `a`.
  *
  * This is a helper function that might be more clear than writing out the
  * comparisons directly, and works with any type that can be compared with the
- * `<` and `>` operators. However, it double-evaluates all its parameters, so
- * do not use expressions with side-effects here.
+ * `<` and `>` operators. However, it double-evaluates all its parameters, so do
+ * not use expressions with side-effects here.
  *
  * @param x the value to compare.
  * @param a the low end value.
@@ -15094,8 +15095,8 @@ inline int isblank(int x) { return SDL_isblank(x); }
 /**
  * Report if a character is a control character.
  *
- * **WARNING**: Regardless of system locale, this will only treat ASCII values
- * 0 through 0x1F, and 0x7F, as true.
+ * **WARNING**: Regardless of system locale, this will only treat ASCII values 0
+ * through 0x1F, and 0x7F, as true.
  *
  * @param x character value to check.
  * @returns non-zero if x falls within the character class, zero otherwise.
@@ -15157,8 +15158,8 @@ inline int ispunct(int x) { return SDL_ispunct(x); }
 /**
  * Report if a character is whitespace.
  *
- * **WARNING**: Regardless of system locale, this will only treat the
- * following ASCII values as true:
+ * **WARNING**: Regardless of system locale, this will only treat the following
+ * ASCII values as true:
  *
  * - space (0x20)
  * - tab (0x09)
@@ -15209,12 +15210,12 @@ inline int islower(int x) { return SDL_islower(x); }
 /**
  * Report if a character is "printable".
  *
- * Be advised that "printable" has a definition that goes back to text
- * terminals from the dawn of computing, making this a sort of special case
- * function that is not suitable for Unicode (or most any) text management.
+ * Be advised that "printable" has a definition that goes back to text terminals
+ * from the dawn of computing, making this a sort of special case function that
+ * is not suitable for Unicode (or most any) text management.
  *
- * **WARNING**: Regardless of system locale, this will only treat ASCII values
- * ' ' (0x20) through '~' (0x7E) as true.
+ * **WARNING**: Regardless of system locale, this will only treat ASCII values '
+ * ' (0x20) through '~' (0x7E) as true.
  *
  * @param x character value to check.
  * @returns non-zero if x falls within the character class, zero otherwise.
@@ -15228,12 +15229,12 @@ inline int isprint(int x) { return SDL_isprint(x); }
 /**
  * Report if a character is any "printable" except space.
  *
- * Be advised that "printable" has a definition that goes back to text
- * terminals from the dawn of computing, making this a sort of special case
- * function that is not suitable for Unicode (or most any) text management.
+ * Be advised that "printable" has a definition that goes back to text terminals
+ * from the dawn of computing, making this a sort of special case function that
+ * is not suitable for Unicode (or most any) text management.
  *
- * **WARNING**: Regardless of system locale, this is equivalent to
- * `(isprint(x)) && ((x) != ' ')`.
+ * **WARNING**: Regardless of system locale, this is equivalent to `(isprint(x))
+ * && ((x) != ' ')`.
  *
  * @param x character value to check.
  * @returns non-zero if x falls within the character class, zero otherwise.
@@ -15249,11 +15250,11 @@ inline int isgraph(int x) { return SDL_isgraph(x); }
 /**
  * Convert low-ASCII English letters to uppercase.
  *
- * **WARNING**: Regardless of system locale, this will only convert ASCII
- * values 'a' through 'z' to uppercase.
+ * **WARNING**: Regardless of system locale, this will only convert ASCII values
+ * 'a' through 'z' to uppercase.
  *
- * This function returns the uppercase equivalent of `x`. If a character
- * cannot be converted, or is already uppercase, this function returns `x`.
+ * This function returns the uppercase equivalent of `x`. If a character cannot
+ * be converted, or is already uppercase, this function returns `x`.
  *
  * @param x character value to check.
  * @returns capitalized version of x, or x if no conversion available.
@@ -15267,11 +15268,11 @@ inline int toupper(int x) { return SDL_toupper(x); }
 /**
  * Convert low-ASCII English letters to lowercase.
  *
- * **WARNING**: Regardless of system locale, this will only convert ASCII
- * values 'A' through 'Z' to lowercase.
+ * **WARNING**: Regardless of system locale, this will only convert ASCII values
+ * 'A' through 'Z' to lowercase.
  *
- * This function returns the lowercase equivalent of `x`. If a character
- * cannot be converted, or is already lowercase, this function returns `x`.
+ * This function returns the lowercase equivalent of `x`. If a character cannot
+ * be converted, or is already lowercase, this function returns `x`.
  *
  * @param x character value to check.
  * @returns lowercase version of x, or x if no conversion available.
@@ -15287,10 +15288,10 @@ inline int tolower(int x) { return SDL_tolower(x); }
  *
  * https://en.wikipedia.org/wiki/Cyclic_redundancy_check
  *
- * This function can be called multiple times, to stream data to be
- * checksummed in blocks. Each call must provide the previous CRC-16 return
- * value to be updated with the next block. The first call to this function
- * for a set of blocks should pass in a zero CRC value.
+ * This function can be called multiple times, to stream data to be checksummed
+ * in blocks. Each call must provide the previous CRC-16 return value to be
+ * updated with the next block. The first call to this function for a set of
+ * blocks should pass in a zero CRC value.
  *
  * @param crc the current checksum for this data set, or 0 for a new data set.
  * @param data a new block of data to add to the checksum.
@@ -15311,10 +15312,10 @@ inline Uint16 crc16(Uint16 crc, const void* data, size_t len)
  *
  * https://en.wikipedia.org/wiki/Cyclic_redundancy_check
  *
- * This function can be called multiple times, to stream data to be
- * checksummed in blocks. Each call must provide the previous CRC-32 return
- * value to be updated with the next block. The first call to this function
- * for a set of blocks should pass in a zero CRC value.
+ * This function can be called multiple times, to stream data to be checksummed
+ * in blocks. Each call must provide the previous CRC-32 return value to be
+ * updated with the next block. The first call to this function for a set of
+ * blocks should pass in a zero CRC value.
  *
  * @param crc the current checksum for this data set, or 0 for a new data set.
  * @param data a new block of data to add to the checksum.
@@ -15336,10 +15337,10 @@ inline Uint32 crc32(Uint32 crc, const void* data, size_t len)
  * https://en.wikipedia.org/wiki/MurmurHash
  *
  * A seed may be specified, which changes the final results consistently, but
- * this does not work like crc16 and crc32: you can't feed a previous
- * result from this function back into itself as the next seed value to
- * calculate a hash in chunks; it won't produce the same hash as it would if
- * the same data was provided in a single call.
+ * this does not work like crc16 and crc32: you can't feed a previous result
+ * from this function back into itself as the next seed value to calculate a
+ * hash in chunks; it won't produce the same hash as it would if the same data
+ * was provided in a single call.
  *
  * If you aren't sure what to provide for a seed, zero is fine. Murmur3 is not
  * cryptographically secure, so it shouldn't be used for hashing top-secret
@@ -15367,7 +15368,7 @@ inline Uint32 murmur3_32(const void* data, size_t len, Uint32 seed)
  * @param dst The destination memory region. Must not be nullptr, and must not
  *            overlap with `src`.
  * @param src The source memory region. Must not be nullptr, and must not
- * overlap with `dst`.
+ *            overlap with `dst`.
  * @param len The length in bytes of both `dst` and `src`.
  * @returns `dst`.
  *
@@ -15389,19 +15390,19 @@ inline void* memcpy(void* dst, const void* src, size_t len)
 /**
  * A macro to copy memory between objects, with basic type checking.
  *
- * memcpy and memmove do not care where you copy memory to and from,
- * which can lead to bugs. This macro aims to avoid most of those bugs by
- * making sure that the source and destination are both pointers to objects
- * that are the same size. It does not check that the objects are the same
- * _type_, just that the copy will not overflow either object.
+ * memcpy and memmove do not care where you copy memory to and from, which can
+ * lead to bugs. This macro aims to avoid most of those bugs by making sure that
+ * the source and destination are both pointers to objects that are the same
+ * size. It does not check that the objects are the same _type_, just that the
+ * copy will not overflow either object.
  *
- * The size check happens at compile time, and the compiler will throw an
- * error if the objects are different sizes.
+ * The size check happens at compile time, and the compiler will throw an error
+ * if the objects are different sizes.
  *
  * Generally this is intended to copy a single object, not an array.
  *
- * This macro looks like it double-evaluates its parameters, but the extras
- * them are in `sizeof` sections, which generate no code nor side-effects.
+ * This macro looks like it double-evaluates its parameters, but the extras them
+ * are in `sizeof` sections, which generate no code nor side-effects.
  *
  * @param dst a pointer to the destination object. Must not be nullptr.
  * @param src a pointer to the source object. Must not be nullptr.
@@ -15449,8 +15450,8 @@ inline void* memmove(void* dst, const void* src, size_t len)
  * This function will set `len` bytes, pointed to by `dst`, to the value
  * specified in `c`.
  *
- * Despite `c` being an `int` instead of a `char`, this only operates on
- * bytes; `c` must be a value between 0 and 255, inclusive.
+ * Despite `c` being an `int` instead of a `char`, this only operates on bytes;
+ * `c` must be a value between 0 and 255, inclusive.
  *
  * @param dst the destination memory region. Must not be nullptr.
  * @param c the byte value to set.
@@ -15476,8 +15477,8 @@ inline void* memset(void* dst, int c, size_t len)
  * This function will set a buffer of `dwords` Uint32 values, pointed to by
  * `dst`, to the value specified in `val`.
  *
- * Unlike memset, this sets 32-bit values, not bytes, so it's not limited
- * to a range of 0-255.
+ * Unlike memset, this sets 32-bit values, not bytes, so it's not limited to a
+ * range of 0-255.
  *
  * @param dst the destination memory region. Must not be nullptr.
  * @param val the Uint32 value to set.
@@ -15496,8 +15497,8 @@ inline void* memset4(void* dst, Uint32 val, size_t dwords)
 /**
  * Clear an object's memory to zero.
  *
- * This is wrapper over memset that handles calculating the object size,
- * so there's no chance of copy/paste errors, and the code is cleaner.
+ * This is wrapper over memset that handles calculating the object size, so
+ * there's no chance of copy/paste errors, and the code is cleaner.
  *
  * This requires an object, not a pointer to an object, nor an array.
  *
@@ -15519,8 +15520,8 @@ inline void zero(T& x)
 /**
  * Clear an object's memory to zero, using a pointer.
  *
- * This is wrapper over memset that handles calculating the object size,
- * so there's no chance of copy/paste errors, and the code is cleaner.
+ * This is wrapper over memset that handles calculating the object size, so
+ * there's no chance of copy/paste errors, and the code is cleaner.
  *
  * This requires a pointer to an object, not an object itself, nor an array.
  *
@@ -15584,15 +15585,14 @@ inline int memcmp(const void* s1, const void* s2, size_t len)
 /**
  * This works exactly like wcslen() but doesn't require access to a C runtime.
  *
- * Counts the number of wchar_t values in `wstr`, excluding the null
- * terminator.
+ * Counts the number of wchar_t values in `wstr`, excluding the null terminator.
  *
- * Like strlen only counts bytes and not codepoints in a UTF-8 string,
- * this counts wchar_t values in a string, even if the string's encoding is of
+ * Like strlen only counts bytes and not codepoints in a UTF-8 string, this
+ * counts wchar_t values in a string, even if the string's encoding is of
  * variable width, like UTF-16.
  *
- * Also be aware that wchar_t is different sizes on different platforms (4
- * bytes on Linux, 2 on Windows, etc).
+ * Also be aware that wchar_t is different sizes on different platforms (4 bytes
+ * on Linux, 2 on Windows, etc).
  *
  * @param wstr The null-terminated wide string to read. Must not be nullptr.
  * @returns the length (in wchar_t values, excluding the null terminator) of
@@ -15609,18 +15609,17 @@ inline int memcmp(const void* s1, const void* s2, size_t len)
 inline size_t wcslen(const wchar_t* wstr) { return SDL_wcslen(wstr); }
 
 /**
- * This works exactly like wcsnlen() but doesn't require access to a C
- * runtime.
+ * This works exactly like wcsnlen() but doesn't require access to a C runtime.
  *
  * Counts up to a maximum of `maxlen` wchar_t values in `wstr`, excluding the
  * null terminator.
  *
- * Like strnlen only counts bytes and not codepoints in a UTF-8 string,
- * this counts wchar_t values in a string, even if the string's encoding is of
+ * Like strnlen only counts bytes and not codepoints in a UTF-8 string, this
+ * counts wchar_t values in a string, even if the string's encoding is of
  * variable width, like UTF-16.
  *
- * Also be aware that wchar_t is different sizes on different platforms (4
- * bytes on Linux, 2 on Windows, etc).
+ * Also be aware that wchar_t is different sizes on different platforms (4 bytes
+ * on Linux, 2 on Windows, etc).
  *
  * Also, `maxlen` is a count of wide characters, not bytes!
  *
@@ -15675,9 +15674,8 @@ inline size_t wcslcpy(wchar_t* dst, const wchar_t* src, size_t maxlen)
 /**
  * Concatenate wide strings.
  *
- * This function appends up to `maxlen` - wcslen(dst) - 1 wide characters
- * from `src` to the end of the wide string in `dst`, then appends a null
- * terminator.
+ * This function appends up to `maxlen` - wcslen(dst) - 1 wide characters from
+ * `src` to the end of the wide string in `dst`, then appends a null terminator.
  *
  * `src` and `dst` must not overlap.
  *
@@ -15710,8 +15708,8 @@ inline size_t wcslcat(wchar_t* dst, const wchar_t* src, size_t maxlen)
  * This allocates enough space for a null-terminated copy of `wstr`, using
  * malloc, and then makes a copy of the string into this space.
  *
- * The returned string is owned by the caller, and should be passed to
- * free when no longer needed.
+ * The returned string is owned by the caller, and should be passed to free when
+ * no longer needed.
  *
  * @param wstr the string to copy.
  * @returns a pointer to the newly-allocated wide string.
@@ -15734,7 +15732,7 @@ inline wchar_t* wcsdup(const wchar_t* wstr) { return SDL_wcsdup(wstr); }
  * @param haystack the wide string to search. Must not be nullptr.
  * @param needle the wide string to search for. Must not be nullptr.
  * @returns a pointer to the first instance of `needle` in the string, or
- * nullptr if not found.
+ *          nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15750,19 +15748,17 @@ inline wchar_t* wcsstr(const wchar_t* haystack, const wchar_t* needle)
  * specific substring.
  *
  * The search ends once it finds the requested substring, or a null terminator
- * value to end the string, or `maxlen` wide character have been examined. It
- * is possible to use this function on a wide string without a null
- * terminator.
+ * value to end the string, or `maxlen` wide character have been examined. It is
+ * possible to use this function on a wide string without a null terminator.
  *
  * Note that this looks for strings of _wide characters_, not _codepoints_, so
  * it's legal to search for malformed and incomplete UTF-16 sequences.
  *
  * @param haystack the wide string to search. Must not be nullptr.
  * @param needle the wide string to search for. Must not be nullptr.
- * @param maxlen the maximum number of wide characters to search in
- *               `haystack`.
+ * @param maxlen the maximum number of wide characters to search in `haystack`.
  * @returns a pointer to the first instance of `needle` in the string, or
- * nullptr if not found.
+ *          nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15778,15 +15774,14 @@ inline wchar_t* wcsnstr(const wchar_t* haystack,
 /**
  * Compare two null-terminated wide strings.
  *
- * This only compares wchar_t values until it hits a null-terminating
- * character; it does not care if the string is well-formed UTF-16 (or UTF-32,
- * depending on your platform's wchar_t size), or uses valid Unicode values.
+ * This only compares wchar_t values until it hits a null-terminating character;
+ * it does not care if the string is well-formed UTF-16 (or UTF-32, depending on
+ * your platform's wchar_t size), or uses valid Unicode values.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15801,26 +15796,24 @@ inline int wcscmp(const wchar_t* str1, const wchar_t* str2)
  * Compare two wide strings up to a number of wchar_t values.
  *
  * This only compares wchar_t values; it does not care if the string is
- * well-formed UTF-16 (or UTF-32, depending on your platform's wchar_t size),
- * or uses valid Unicode values.
+ * well-formed UTF-16 (or UTF-32, depending on your platform's wchar_t size), or
+ * uses valid Unicode values.
  *
- * Note that while this function is intended to be used with UTF-16 (or
- * UTF-32, depending on your platform's definition of wchar_t), it is
- * comparing raw wchar_t values and not Unicode codepoints: `maxlen` specifies
- * a wchar_t limit! If the limit lands in the middle of a multi-wchar UTF-16
- * sequence, it will only compare a portion of the final character.
+ * Note that while this function is intended to be used with UTF-16 (or UTF-32,
+ * depending on your platform's definition of wchar_t), it is comparing raw
+ * wchar_t values and not Unicode codepoints: `maxlen` specifies a wchar_t
+ * limit! If the limit lands in the middle of a multi-wchar UTF-16 sequence, it
+ * will only compare a portion of the final character.
  *
  * `maxlen` specifies a maximum number of wchar_t to compare; if the strings
- * match to this number of wide chars (or both have matched to a
- * null-terminator character before this count), they will be considered
- * equal.
+ * match to this number of wide chars (or both have matched to a null-terminator
+ * character before this count), they will be considered equal.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of wchar_t to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15834,26 +15827,25 @@ inline int wcsncmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
 /**
  * Compare two null-terminated wide strings, case-insensitively.
  *
- * This will work with Unicode strings, using a technique called
- * "case-folding" to handle the vast majority of case-sensitive human
- * languages regardless of system locale. It can deal with expanding values: a
- * German Eszett character can compare against two ASCII 's' chars and be
- * considered a match, for example. A notable exception: it does not handle
- * the Turkish 'i' character; human language is complicated!
+ * This will work with Unicode strings, using a technique called "case-folding"
+ * to handle the vast majority of case-sensitive human languages regardless of
+ * system locale. It can deal with expanding values: a German Eszett character
+ * can compare against two ASCII 's' chars and be considered a match, for
+ * example. A notable exception: it does not handle the Turkish 'i' character;
+ * human language is complicated!
  *
  * Depending on your platform, "wchar_t" might be 2 bytes, and expected to be
  * UTF-16 encoded (like Windows), or 4 bytes in UTF-32 format. Since this
  * handles Unicode, it expects the string to be well-formed and not a
  * null-terminated string of arbitrary bytes. Characters that are not valid
  * UTF-16 (or UTF-32) are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), which is to say two strings of random bits may turn out to
- * match if they convert to the same amount of replacement characters.
+ * CHARACTER), which is to say two strings of random bits may turn out to match
+ * if they convert to the same amount of replacement characters.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15867,26 +15859,26 @@ inline int wcscasecmp(const wchar_t* str1, const wchar_t* str2)
 /**
  * Compare two wide strings, case-insensitively, up to a number of wchar_t.
  *
- * This will work with Unicode strings, using a technique called
- * "case-folding" to handle the vast majority of case-sensitive human
- * languages regardless of system locale. It can deal with expanding values: a
- * German Eszett character can compare against two ASCII 's' chars and be
- * considered a match, for example. A notable exception: it does not handle
- * the Turkish 'i' character; human language is complicated!
+ * This will work with Unicode strings, using a technique called "case-folding"
+ * to handle the vast majority of case-sensitive human languages regardless of
+ * system locale. It can deal with expanding values: a German Eszett character
+ * can compare against two ASCII 's' chars and be considered a match, for
+ * example. A notable exception: it does not handle the Turkish 'i' character;
+ * human language is complicated!
  *
  * Depending on your platform, "wchar_t" might be 2 bytes, and expected to be
  * UTF-16 encoded (like Windows), or 4 bytes in UTF-32 format. Since this
  * handles Unicode, it expects the string to be well-formed and not a
  * null-terminated string of arbitrary bytes. Characters that are not valid
  * UTF-16 (or UTF-32) are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), which is to say two strings of random bits may turn out to
- * match if they convert to the same amount of replacement characters.
+ * CHARACTER), which is to say two strings of random bits may turn out to match
+ * if they convert to the same amount of replacement characters.
  *
  * Note that while this function might deal with variable-sized characters,
  * `maxlen` specifies a _wchar_ limit! If the limit lands in the middle of a
  * multi-byte UTF-16 sequence, it may convert a portion of the final character
- * to one or more Unicode character U+FFFD (REPLACEMENT CHARACTER) so as not
- * to overflow a buffer.
+ * to one or more Unicode character U+FFFD (REPLACEMENT CHARACTER) so as not to
+ * overflow a buffer.
  *
  * `maxlen` specifies a maximum number of wchar_t values to compare; if the
  * strings match to this number of wchar_t (or both have matched to a
@@ -15897,8 +15889,7 @@ inline int wcscasecmp(const wchar_t* str1, const wchar_t* str2)
  * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of wchar_t values to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15912,20 +15903,19 @@ inline int wcsncasecmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
 /**
  * Parse a `long` from a wide string.
  *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
+ * If `str` starts with whitespace, then those whitespace characters are skipped
+ * before attempting to parse the number.
  *
  * If the parsed number does not fit inside a `long`, the result is clamped to
  * the minimum and maximum representable `long` values.
  *
  * @param str The null-terminated wide string to read. Must not be nullptr.
  * @param endp If not nullptr, the address of the first invalid wide character
- *             (i.e. the next character after the parsed number) will be
- *             written to this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
+ *             (i.e. the next character after the parsed number) will be written
+ *             to this pointer.
+ * @param base The base of the integer to read. Supported values are 0 and 2 to
+ *             36 inclusive. If 0, the base will be inferred from the number's
+ *             prefix (0x for hexadecimal, 0 for octal, decimal otherwise).
  * @returns the parsed `long`, or 0 if no number could be parsed.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -15960,8 +15950,7 @@ inline long wcstol(const wchar_t* str, wchar_t** endp, int base)
 inline size_t strlen(StringParam str) { return SDL_strlen(str); }
 
 /**
- * This works exactly like strnlen() but doesn't require access to a C
- * runtime.
+ * This works exactly like strnlen() but doesn't require access to a C runtime.
  *
  * Counts up to a maximum of `maxlen` bytes in `str`, excluding the null
  * terminator.
@@ -15989,11 +15978,10 @@ inline size_t strnlen(StringParam str, size_t maxlen)
 /**
  * Copy a string.
  *
- * This function copies up to `maxlen` - 1 characters from `src` to `dst`,
- * then appends a null terminator.
+ * This function copies up to `maxlen` - 1 characters from `src` to `dst`, then
+ * appends a null terminator.
  *
- * If `maxlen` is 0, no characters are copied and no null terminator is
- * written.
+ * If `maxlen` is 0, no characters are copied and no null terminator is written.
  *
  * If you want to copy an UTF-8 string but need to ensure that multi-byte
  * sequences are not truncated, consider using utf8strlcpy().
@@ -16003,8 +15991,7 @@ inline size_t strnlen(StringParam str, size_t maxlen)
  * @param src The null-terminated string to copy. Must not be nullptr, and must
  *            not overlap with `dst`.
  * @param maxlen The length (in characters) of the destination buffer.
- * @returns the length (in characters, excluding the null terminator) of
- *          `src`.
+ * @returns the length (in characters, excluding the null terminator) of `src`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16034,8 +16021,8 @@ inline size_t strlcpy(char* dst, StringParam src, size_t maxlen)
  *            with `src`.
  * @param src The null-terminated UTF-8 string to copy. Must not be nullptr, and
  *            must not overlap with `dst`.
- * @param dst_bytes The length (in bytes) of the destination buffer. Must not
- *                  be 0.
+ * @param dst_bytes The length (in bytes) of the destination buffer. Must not be
+ *                  0.
  * @returns the number of bytes written, excluding the null terminator.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -16052,8 +16039,8 @@ inline size_t utf8strlcpy(char* dst, StringParam src, size_t dst_bytes)
 /**
  * Concatenate strings.
  *
- * This function appends up to `maxlen` - strlen(dst) - 1 characters from
- * `src` to the end of the string in `dst`, then appends a null terminator.
+ * This function appends up to `maxlen` - strlen(dst) - 1 characters from `src`
+ * to the end of the string in `dst`, then appends a null terminator.
  *
  * `src` and `dst` must not overlap.
  *
@@ -16086,8 +16073,8 @@ inline size_t strlcat(char* dst, StringParam src, size_t maxlen)
  * This allocates enough space for a null-terminated copy of `str`, using
  * malloc, and then makes a copy of the string into this space.
  *
- * The returned string is owned by the caller, and should be passed to
- * free when no longer needed.
+ * The returned string is owned by the caller, and should be passed to free when
+ * no longer needed.
  *
  * @param str the string to copy.
  * @returns a pointer to the newly-allocated string.
@@ -16102,15 +16089,15 @@ inline char* strdup(StringParam str) { return SDL_strdup(str); }
  * Allocate a copy of a string, up to n characters.
  *
  * This allocates enough space for a null-terminated copy of `str`, up to
- * `maxlen` bytes, using malloc, and then makes a copy of the string into
- * this space.
+ * `maxlen` bytes, using malloc, and then makes a copy of the string into this
+ * space.
  *
  * If the string is longer than `maxlen` bytes, the returned string will be
- * `maxlen` bytes long, plus a null-terminator character that isn't included
- * in the count.
+ * `maxlen` bytes long, plus a null-terminator character that isn't included in
+ * the count.
  *
- * The returned string is owned by the caller, and should be passed to
- * free when no longer needed.
+ * The returned string is owned by the caller, and should be passed to free when
+ * no longer needed.
  *
  * @param str the string to copy.
  * @param maxlen the maximum length of the copied string, not counting the
@@ -16135,8 +16122,8 @@ inline char* strndup(StringParam str, size_t maxlen)
  *
  * **WARNING**: This function reverses the _bytes_ of the string, not the
  * codepoints. If `str` is a UTF-8 string with Unicode codepoints > 127, this
- * will ruin the string data. You should only use this function on strings
- * that are completely comprised of low ASCII characters.
+ * will ruin the string data. You should only use this function on strings that
+ * are completely comprised of low ASCII characters.
  *
  * @param str the string to reverse.
  * @returns `str`.
@@ -16150,8 +16137,8 @@ inline char* strrev(char* str) { return SDL_strrev(str); }
 /**
  * Convert a string to uppercase.
  *
- * **WARNING**: Regardless of system locale, this will only convert ASCII
- * values 'A' through 'Z' to uppercase.
+ * **WARNING**: Regardless of system locale, this will only convert ASCII values
+ * 'A' through 'Z' to uppercase.
  *
  * This function operates on a null-terminated string of bytes--even if it is
  * malformed UTF-8!--and converts ASCII characters 'a' through 'z' to their
@@ -16171,8 +16158,8 @@ inline char* strupr(char* str) { return SDL_strupr(str); }
 /**
  * Convert a string to lowercase.
  *
- * **WARNING**: Regardless of system locale, this will only convert ASCII
- * values 'A' through 'Z' to lowercase.
+ * **WARNING**: Regardless of system locale, this will only convert ASCII values
+ * 'A' through 'Z' to lowercase.
  *
  * This function operates on a null-terminated string of bytes--even if it is
  * malformed UTF-8!--and converts ASCII characters 'A' through 'Z' to their
@@ -16192,8 +16179,8 @@ inline char* strlwr(char* str) { return SDL_strlwr(str); }
 /**
  * Search a string for the first instance of a specific byte.
  *
- * The search ends once it finds the requested byte value, or a null
- * terminator byte to end the string.
+ * The search ends once it finds the requested byte value, or a null terminator
+ * byte to end the string.
  *
  * Note that this looks for _bytes_, not _characters_, so you cannot match
  * against a Unicode codepoint > 255, regardless of character encoding.
@@ -16234,13 +16221,13 @@ inline char* strrchr(StringParam str, int c) { return SDL_strrchr(str, c); }
  * The search ends once it finds the requested substring, or a null terminator
  * byte to end the string.
  *
- * Note that this looks for strings of _bytes_, not _characters_, so it's
- * legal to search for malformed and incomplete UTF-8 sequences.
+ * Note that this looks for strings of _bytes_, not _characters_, so it's legal
+ * to search for malformed and incomplete UTF-8 sequences.
  *
  * @param haystack the string to search. Must not be nullptr.
  * @param needle the string to search for. Must not be nullptr.
  * @returns a pointer to the first instance of `needle` in the string, or
- * nullptr if not found.
+ *          nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16256,17 +16243,17 @@ inline char* strstr(StringParam haystack, StringParam needle)
  * substring.
  *
  * The search ends once it finds the requested substring, or a null terminator
- * byte to end the string, or `maxlen` bytes have been examined. It is
- * possible to use this function on a string without a null terminator.
+ * byte to end the string, or `maxlen` bytes have been examined. It is possible
+ * to use this function on a string without a null terminator.
  *
- * Note that this looks for strings of _bytes_, not _characters_, so it's
- * legal to search for malformed and incomplete UTF-8 sequences.
+ * Note that this looks for strings of _bytes_, not _characters_, so it's legal
+ * to search for malformed and incomplete UTF-8 sequences.
  *
  * @param haystack the string to search. Must not be nullptr.
  * @param needle the string to search for. Must not be nullptr.
  * @param maxlen the maximum number of bytes to search in `haystack`.
  * @returns a pointer to the first instance of `needle` in the string, or
- * nullptr if not found.
+ *          nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16281,23 +16268,23 @@ inline char* strnstr(StringParam haystack, StringParam needle, size_t maxlen)
  * Search a UTF-8 string for the first instance of a specific substring,
  * case-insensitively.
  *
- * This will work with Unicode strings, using a technique called
- * "case-folding" to handle the vast majority of case-sensitive human
- * languages regardless of system locale. It can deal with expanding values: a
- * German Eszett character can compare against two ASCII 's' chars and be
- * considered a match, for example. A notable exception: it does not handle
- * the Turkish 'i' character; human language is complicated!
+ * This will work with Unicode strings, using a technique called "case-folding"
+ * to handle the vast majority of case-sensitive human languages regardless of
+ * system locale. It can deal with expanding values: a German Eszett character
+ * can compare against two ASCII 's' chars and be considered a match, for
+ * example. A notable exception: it does not handle the Turkish 'i' character;
+ * human language is complicated!
  *
  * Since this handles Unicode, it expects the strings to be well-formed UTF-8
- * and not a null-terminated string of arbitrary bytes. Bytes that are not
- * valid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), which is to say two strings of random bits may turn out to
- * match if they convert to the same amount of replacement characters.
+ * and not a null-terminated string of arbitrary bytes. Bytes that are not valid
+ * UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT CHARACTER), which
+ * is to say two strings of random bits may turn out to match if they convert to
+ * the same amount of replacement characters.
  *
  * @param haystack the string to search. Must not be nullptr.
  * @param needle the string to search for. Must not be nullptr.
  * @returns a pointer to the first instance of `needle` in the string, or
- * nullptr if not found.
+ *          nullptr if not found.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16309,8 +16296,7 @@ inline char* strcasestr(StringParam haystack, StringParam needle)
 }
 
 /**
- * This works exactly like strtok_r() but doesn't require access to a C
- * runtime.
+ * This works exactly like strtok_r() but doesn't require access to a C runtime.
  *
  * Break a string up into a series of tokens.
  *
@@ -16322,9 +16308,9 @@ inline char* strcasestr(StringParam haystack, StringParam needle)
  * split it into tokens. This function cannot be used with const/read-only
  * strings!
  *
- * `saveptr` just needs to point to a `char *` that can be overwritten; SDL
- * will use this to save tokenizing state between calls. It is initialized if
- * `str` is non-nullptr, and used to resume tokenizing when `str` is nullptr.
+ * `saveptr` just needs to point to a `char *` that can be overwritten; SDL will
+ * use this to save tokenizing state between calls. It is initialized if `str`
+ * is non-nullptr, and used to resume tokenizing when `str` is nullptr.
  *
  * @param str the string to tokenize, or nullptr to continue tokenizing.
  * @param delim the delimiter string that separates tokens.
@@ -16346,18 +16332,16 @@ inline char* strtok_r(char* str, StringParam delim, char** saveptr)
  * Counts the _codepoints_, not _bytes_, in `str`, excluding the null
  * terminator.
  *
- * If you need to count the bytes in a string instead, consider using
- * strlen().
+ * If you need to count the bytes in a string instead, consider using strlen().
  *
  * Since this handles Unicode, it expects the strings to be well-formed UTF-8
- * and not a null-terminated string of arbitrary bytes. Bytes that are not
- * valid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), so a malformed or incomplete UTF-8 sequence might increase the
- * count by several replacement characters.
+ * and not a null-terminated string of arbitrary bytes. Bytes that are not valid
+ * UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT CHARACTER), so a
+ * malformed or incomplete UTF-8 sequence might increase the count by several
+ * replacement characters.
  *
  * @param str The null-terminated UTF-8 string to read. Must not be nullptr.
- * @returns The length (in codepoints, excluding the null terminator) of
- *          `src`.
+ * @returns The length (in codepoints, excluding the null terminator) of `src`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16374,18 +16358,17 @@ inline size_t utf8strlen(StringParam str) { return SDL_utf8strlen(str); }
  * Counts the _codepoints_, not _bytes_, in `str`, excluding the null
  * terminator.
  *
- * If you need to count the bytes in a string instead, consider using
- * strnlen().
+ * If you need to count the bytes in a string instead, consider using strnlen().
  *
  * The counting stops at `bytes` bytes (not codepoints!). This seems
- * counterintuitive, but makes it easy to express the total size of the
- * string's buffer.
+ * counterintuitive, but makes it easy to express the total size of the string's
+ * buffer.
  *
  * Since this handles Unicode, it expects the strings to be well-formed UTF-8
- * and not a null-terminated string of arbitrary bytes. Bytes that are not
- * valid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), so a malformed or incomplete UTF-8 sequence might increase the
- * count by several replacement characters.
+ * and not a null-terminated string of arbitrary bytes. Bytes that are not valid
+ * UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT CHARACTER), so a
+ * malformed or incomplete UTF-8 sequence might increase the count by several
+ * replacement characters.
  *
  * @param str The null-terminated UTF-8 string to read. Must not be nullptr.
  * @param bytes The maximum amount of bytes to count.
@@ -16407,15 +16390,14 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
 /**
  * Convert an integer into a string.
  *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
- * to 36.
+ * This requires a radix to specified for string format. Specifying 10 produces
+ * a decimal number, 16 hexadecimal, etc. Must be in the range of 2 to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
  * to hold the output! It may be safer to use snprintf to clamp output, or
- * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget possible negative
- * signs, null terminator bytes, etc).
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate much
+ * more space than you expect to use (and don't forget possible negative signs,
+ * null terminator bytes, etc).
  *
  * @param value the integer to convert.
  * @param str the buffer to write the string into.
@@ -16438,15 +16420,14 @@ inline char* itoa(int value, char* str, int radix)
 /**
  * Convert an unsigned integer into a string.
  *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
- * to 36.
+ * This requires a radix to specified for string format. Specifying 10 produces
+ * a decimal number, 16 hexadecimal, etc. Must be in the range of 2 to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
  * to hold the output! It may be safer to use snprintf to clamp output, or
- * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget null terminator
- * bytes, etc).
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate much
+ * more space than you expect to use (and don't forget null terminator bytes,
+ * etc).
  *
  * @param value the unsigned integer to convert.
  * @param str the buffer to write the string into.
@@ -16469,15 +16450,14 @@ inline char* uitoa(unsigned int value, char* str, int radix)
 /**
  * Convert a long integer into a string.
  *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
- * to 36.
+ * This requires a radix to specified for string format. Specifying 10 produces
+ * a decimal number, 16 hexadecimal, etc. Must be in the range of 2 to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
  * to hold the output! It may be safer to use snprintf to clamp output, or
- * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget possible negative
- * signs, null terminator bytes, etc).
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate much
+ * more space than you expect to use (and don't forget possible negative signs,
+ * null terminator bytes, etc).
  *
  * @param value the long integer to convert.
  * @param str the buffer to write the string into.
@@ -16500,15 +16480,14 @@ inline char* ltoa(long value, char* str, int radix)
 /**
  * Convert an unsigned long integer into a string.
  *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
- * to 36.
+ * This requires a radix to specified for string format. Specifying 10 produces
+ * a decimal number, 16 hexadecimal, etc. Must be in the range of 2 to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
  * to hold the output! It may be safer to use snprintf to clamp output, or
- * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget null terminator
- * bytes, etc).
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate much
+ * more space than you expect to use (and don't forget null terminator bytes,
+ * etc).
  *
  * @param value the unsigned long integer to convert.
  * @param str the buffer to write the string into.
@@ -16533,15 +16512,14 @@ inline char* ultoa(unsigned long value, char* str, int radix)
 /**
  * Convert a long long integer into a string.
  *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
- * to 36.
+ * This requires a radix to specified for string format. Specifying 10 produces
+ * a decimal number, 16 hexadecimal, etc. Must be in the range of 2 to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
  * to hold the output! It may be safer to use snprintf to clamp output, or
- * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget possible negative
- * signs, null terminator bytes, etc).
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate much
+ * more space than you expect to use (and don't forget possible negative signs,
+ * null terminator bytes, etc).
  *
  * @param value the long long integer to convert.
  * @param str the buffer to write the string into.
@@ -16564,15 +16542,14 @@ inline char* lltoa(long long value, char* str, int radix)
 /**
  * Convert an unsigned long long integer into a string.
  *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexadecimal, etc. Must be in the range of 2
- * to 36.
+ * This requires a radix to specified for string format. Specifying 10 produces
+ * a decimal number, 16 hexadecimal, etc. Must be in the range of 2 to 36.
  *
  * Note that this function will overflow a buffer if `str` is not large enough
  * to hold the output! It may be safer to use snprintf to clamp output, or
- * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget null terminator
- * bytes, etc).
+ * asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate much
+ * more space than you expect to use (and don't forget null terminator bytes,
+ * etc).
  *
  * @param value the unsigned long long integer to convert.
  * @param str the buffer to write the string into.
@@ -16597,8 +16574,8 @@ inline char* ulltoa(unsigned long long value, char* str, int radix)
 /**
  * Parse an `int` from a string.
  *
- * The result of calling `atoi(str)` is equivalent to
- * `(int)strtol(str, nullptr, 10)`.
+ * The result of calling `atoi(str)` is equivalent to `(int)strtol(str, nullptr,
+ * 10)`.
  *
  * @param str The null-terminated string to read. Must not be nullptr.
  * @returns the parsed `int`.
@@ -16620,8 +16597,7 @@ inline int atoi(StringParam str) { return SDL_atoi(str); }
 /**
  * Parse a `double` from a string.
  *
- * The result of calling `atof(str)` is equivalent to `strtod(str,
- * nullptr)`.
+ * The result of calling `atof(str)` is equivalent to `strtod(str, nullptr)`.
  *
  * @param str The null-terminated string to read. Must not be nullptr.
  * @returns the parsed `double`.
@@ -16642,8 +16618,8 @@ inline double atof(StringParam str) { return SDL_atof(str); }
 /**
  * Parse a `long` from a string.
  *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
+ * If `str` starts with whitespace, then those whitespace characters are skipped
+ * before attempting to parse the number.
  *
  * If the parsed number does not fit inside a `long`, the result is clamped to
  * the minimum and maximum representable `long` values.
@@ -16652,10 +16628,9 @@ inline double atof(StringParam str) { return SDL_atof(str); }
  * @param endp If not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
+ * @param base The base of the integer to read. Supported values are 0 and 2 to
+ *             36 inclusive. If 0, the base will be inferred from the number's
+ *             prefix (0x for hexadecimal, 0 for octal, decimal otherwise).
  * @returns the parsed `long`, or 0 if no number could be parsed.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -16679,8 +16654,8 @@ inline long strtol(StringParam str, char** endp, int base)
 /**
  * Parse an `unsigned long` from a string.
  *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
+ * If `str` starts with whitespace, then those whitespace characters are skipped
+ * before attempting to parse the number.
  *
  * If the parsed number does not fit inside an `unsigned long`, the result is
  * clamped to the maximum representable `unsigned long` value.
@@ -16689,10 +16664,9 @@ inline long strtol(StringParam str, char** endp, int base)
  * @param endp If not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
+ * @param base The base of the integer to read. Supported values are 0 and 2 to
+ *             36 inclusive. If 0, the base will be inferred from the number's
+ *             prefix (0x for hexadecimal, 0 for octal, decimal otherwise).
  * @returns the parsed `unsigned long`, or 0 if no number could be parsed.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -16717,20 +16691,19 @@ inline unsigned long strtoul(StringParam str, char** endp, int base)
 /**
  * Parse a `long long` from a string.
  *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
+ * If `str` starts with whitespace, then those whitespace characters are skipped
+ * before attempting to parse the number.
  *
- * If the parsed number does not fit inside a `long long`, the result is
- * clamped to the minimum and maximum representable `long long` values.
+ * If the parsed number does not fit inside a `long long`, the result is clamped
+ * to the minimum and maximum representable `long long` values.
  *
  * @param str The null-terminated string to read. Must not be nullptr.
  * @param endp If not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
+ * @param base The base of the integer to read. Supported values are 0 and 2 to
+ *             36 inclusive. If 0, the base will be inferred from the number's
+ *             prefix (0x for hexadecimal, 0 for octal, decimal otherwise).
  * @returns the parsed `long long`, or 0 if no number could be parsed.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -16753,22 +16726,20 @@ inline long long strtoll(StringParam str, char** endp, int base)
 /**
  * Parse an `unsigned long long` from a string.
  *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
+ * If `str` starts with whitespace, then those whitespace characters are skipped
+ * before attempting to parse the number.
  *
- * If the parsed number does not fit inside an `unsigned long long`, the
- * result is clamped to the maximum representable `unsigned long long` value.
+ * If the parsed number does not fit inside an `unsigned long long`, the result
+ * is clamped to the maximum representable `unsigned long long` value.
  *
  * @param str The null-terminated string to read. Must not be nullptr.
  * @param endp If not nullptr, the address of the first invalid character (i.e.
  *             the next character after the parsed number) will be written to
  *             this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
- * @returns the parsed `unsigned long long`, or 0 if no number could be
- *          parsed.
+ * @param base The base of the integer to read. Supported values are 0 and 2 to
+ *             36 inclusive. If 0, the base will be inferred from the number's
+ *             prefix (0x for hexadecimal, 0 for octal, decimal otherwise).
+ * @returns the parsed `unsigned long long`, or 0 if no number could be parsed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16826,14 +16797,13 @@ inline double strtod(StringParam str, char** endp)
  *
  * Due to the nature of UTF-8 encoding, this will work with Unicode strings,
  * since effectively this function just compares bytes until it hits a
- * null-terminating character. Also due to the nature of UTF-8, this can be
- * used with qsort() to put strings in (roughly) alphabetical order.
+ * null-terminating character. Also due to the nature of UTF-8, this can be used
+ * with qsort() to put strings in (roughly) alphabetical order.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16849,24 +16819,23 @@ inline int strcmp(StringParam str1, StringParam str2)
  *
  * Due to the nature of UTF-8 encoding, this will work with Unicode strings,
  * since effectively this function just compares bytes until it hits a
- * null-terminating character. Also due to the nature of UTF-8, this can be
- * used with qsort() to put strings in (roughly) alphabetical order.
+ * null-terminating character. Also due to the nature of UTF-8, this can be used
+ * with qsort() to put strings in (roughly) alphabetical order.
  *
- * Note that while this function is intended to be used with UTF-8, it is
- * doing a bytewise comparison, and `maxlen` specifies a _byte_ limit! If the
- * limit lands in the middle of a multi-byte UTF-8 sequence, it will only
- * compare a portion of the final character.
+ * Note that while this function is intended to be used with UTF-8, it is doing
+ * a bytewise comparison, and `maxlen` specifies a _byte_ limit! If the limit
+ * lands in the middle of a multi-byte UTF-8 sequence, it will only compare a
+ * portion of the final character.
  *
- * `maxlen` specifies a maximum number of bytes to compare; if the strings
- * match to this number of bytes (or both have matched to a null-terminator
- * character before this number of bytes), they will be considered equal.
+ * `maxlen` specifies a maximum number of bytes to compare; if the strings match
+ * to this number of bytes (or both have matched to a null-terminator character
+ * before this number of bytes), they will be considered equal.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of _bytes_ to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16880,24 +16849,23 @@ inline int strncmp(StringParam str1, StringParam str2, size_t maxlen)
 /**
  * Compare two null-terminated UTF-8 strings, case-insensitively.
  *
- * This will work with Unicode strings, using a technique called
- * "case-folding" to handle the vast majority of case-sensitive human
- * languages regardless of system locale. It can deal with expanding values: a
- * German Eszett character can compare against two ASCII 's' chars and be
- * considered a match, for example. A notable exception: it does not handle
- * the Turkish 'i' character; human language is complicated!
+ * This will work with Unicode strings, using a technique called "case-folding"
+ * to handle the vast majority of case-sensitive human languages regardless of
+ * system locale. It can deal with expanding values: a German Eszett character
+ * can compare against two ASCII 's' chars and be considered a match, for
+ * example. A notable exception: it does not handle the Turkish 'i' character;
+ * human language is complicated!
  *
- * Since this handles Unicode, it expects the string to be well-formed UTF-8
- * and not a null-terminated string of arbitrary bytes. Bytes that are not
- * valid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), which is to say two strings of random bits may turn out to
- * match if they convert to the same amount of replacement characters.
+ * Since this handles Unicode, it expects the string to be well-formed UTF-8 and
+ * not a null-terminated string of arbitrary bytes. Bytes that are not valid
+ * UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT CHARACTER), which
+ * is to say two strings of random bits may turn out to match if they convert to
+ * the same amount of replacement characters.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16911,35 +16879,34 @@ inline int strcasecmp(StringParam str1, StringParam str2)
 /**
  * Compare two UTF-8 strings, case-insensitively, up to a number of bytes.
  *
- * This will work with Unicode strings, using a technique called
- * "case-folding" to handle the vast majority of case-sensitive human
- * languages regardless of system locale. It can deal with expanding values: a
- * German Eszett character can compare against two ASCII 's' chars and be
- * considered a match, for example. A notable exception: it does not handle
- * the Turkish 'i' character; human language is complicated!
+ * This will work with Unicode strings, using a technique called "case-folding"
+ * to handle the vast majority of case-sensitive human languages regardless of
+ * system locale. It can deal with expanding values: a German Eszett character
+ * can compare against two ASCII 's' chars and be considered a match, for
+ * example. A notable exception: it does not handle the Turkish 'i' character;
+ * human language is complicated!
  *
- * Since this handles Unicode, it expects the string to be well-formed UTF-8
- * and not a null-terminated string of arbitrary bytes. Bytes that are not
- * valid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT
- * CHARACTER), which is to say two strings of random bits may turn out to
- * match if they convert to the same amount of replacement characters.
+ * Since this handles Unicode, it expects the string to be well-formed UTF-8 and
+ * not a null-terminated string of arbitrary bytes. Bytes that are not valid
+ * UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT CHARACTER), which
+ * is to say two strings of random bits may turn out to match if they convert to
+ * the same amount of replacement characters.
  *
  * Note that while this function is intended to be used with UTF-8, `maxlen`
  * specifies a _byte_ limit! If the limit lands in the middle of a multi-byte
  * UTF-8 sequence, it may convert a portion of the final character to one or
- * more Unicode character U+FFFD (REPLACEMENT CHARACTER) so as not to overflow
- * a buffer.
+ * more Unicode character U+FFFD (REPLACEMENT CHARACTER) so as not to overflow a
+ * buffer.
  *
- * `maxlen` specifies a maximum number of bytes to compare; if the strings
- * match to this number of bytes (or both have matched to a null-terminator
- * character before this number of bytes), they will be considered equal.
+ * `maxlen` specifies a maximum number of bytes to compare; if the strings match
+ * to this number of bytes (or both have matched to a null-terminator character
+ * before this number of bytes), they will be considered equal.
  *
  * @param str1 the first string to compare. nullptr is not permitted!
  * @param str2 the second string to compare. nullptr is not permitted!
  * @param maxlen the maximum number of bytes to compare.
  * @returns less than zero if str1 is "less than" str2, greater than zero if
- *          str1 is "greater than" str2, and zero if the strings match
- *          exactly.
+ *          str1 is "greater than" str2, and zero if the strings match exactly.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -16955,9 +16922,9 @@ inline int strncasecmp(StringParam str1, StringParam str2, size_t maxlen)
  * breakset, and returns a pointer from the string to that character.
  *
  * @param str The null-terminated string to be searched. Must not be nullptr,
- * and must not overlap with `breakset`.
- * @param breakset A null-terminated string containing the list of characters
- *                 to look for. Must not be nullptr, and must not overlap with
+ *            and must not overlap with `breakset`.
+ * @param breakset A null-terminated string containing the list of characters to
+ *                 look for. Must not be nullptr, and must not overlap with
  *                 `str`.
  * @returns A pointer to the location, in str, of the first occurrence of a
  *          character present in the breakset, or nullptr if none is found.
@@ -16974,8 +16941,8 @@ inline char* strpbrk(StringParam str, StringParam breakset)
 /**
  * The Unicode REPLACEMENT CHARACTER codepoint.
  *
- * StepUTF8() and StepBackUTF8() report this codepoint when they
- * encounter a UTF-8 string with encoding errors.
+ * StepUTF8() and StepBackUTF8() report this codepoint when they encounter a
+ * UTF-8 string with encoding errors.
  *
  * This tends to render as something like a question mark in most places.
  *
@@ -16992,8 +16959,8 @@ constexpr Uint32 INVALID_UNICODE_CODEPOINT = SDL_INVALID_UNICODE_CODEPOINT;
  * This will return the first Unicode codepoint in the UTF-8 encoded string in
  * `*pstr`, and then advance `*pstr` past any consumed bytes before returning.
  *
- * It will not access more than `*pslen` bytes from the string. `*pslen` will
- * be adjusted, as well, subtracting the number of bytes consumed.
+ * It will not access more than `*pslen` bytes from the string. `*pslen` will be
+ * adjusted, as well, subtracting the number of bytes consumed.
  *
  * `pslen` is allowed to be nullptr, in which case the string _must_ be
  * nullptr-terminated, as the function will blindly read until it sees the
@@ -17005,20 +16972,18 @@ constexpr Uint32 INVALID_UNICODE_CODEPOINT = SDL_INVALID_UNICODE_CODEPOINT;
  * If the resulting codepoint is zero (a nullptr terminator), or `*pslen` is
  * zero, it will not advance `*pstr` or `*pslen` at all.
  *
- * Generally this function is called in a loop until it returns zero,
- * adjusting its parameters each iteration.
+ * Generally this function is called in a loop until it returns zero, adjusting
+ * its parameters each iteration.
  *
  * If an invalid UTF-8 sequence is encountered, this function returns
- * INVALID_UNICODE_CODEPOINT and advances the string/length by one byte
- * (which is to say, a multibyte sequence might produce several
- * INVALID_UNICODE_CODEPOINT returns before it syncs to the next valid
- * UTF-8 sequence).
+ * INVALID_UNICODE_CODEPOINT and advances the string/length by one byte (which
+ * is to say, a multibyte sequence might produce several
+ * INVALID_UNICODE_CODEPOINT returns before it syncs to the next valid UTF-8
+ * sequence).
  *
  * Several things can generate invalid UTF-8 sequences, including overlong
  * encodings, the use of UTF-16 surrogate values, and truncated data. Please
- * refer to
- * [RFC3629](https://www.ietf.org/rfc/rfc3629.txt)
- * for details.
+ * refer to [RFC3629](https://www.ietf.org/rfc/rfc3629.txt) for details.
  *
  * @param pstr a pointer to a UTF-8 string pointer to be read and adjusted.
  * @param pslen a pointer to the number of bytes in the string, to be read and
@@ -17043,17 +17008,15 @@ inline Uint32 StepUTF8(const char** pstr, size_t* pslen)
  * If `*pstr` is already at the start of the string), it will not advance
  * `*pstr` at all.
  *
- * Generally this function is called in a loop until it returns zero,
- * adjusting its parameter each iteration.
+ * Generally this function is called in a loop until it returns zero, adjusting
+ * its parameter each iteration.
  *
  * If an invalid UTF-8 sequence is encountered, this function returns
  * INVALID_UNICODE_CODEPOINT.
  *
  * Several things can generate invalid UTF-8 sequences, including overlong
  * encodings, the use of UTF-16 surrogate values, and truncated data. Please
- * refer to
- * [RFC3629](https://www.ietf.org/rfc/rfc3629.txt)
- * for details.
+ * refer to [RFC3629](https://www.ietf.org/rfc/rfc3629.txt) for details.
  *
  * @param start a pointer to the beginning of the UTF-8 string.
  * @param pstr a pointer to a UTF-8 string pointer to be read and adjusted.
@@ -17087,8 +17050,8 @@ inline Uint32 StepBackUTF8(StringParam start, const char** pstr)
  * pointer and without setting an error.
  *
  * @param codepoint a Unicode codepoint to convert to UTF-8.
- * @param dst the location to write the encoded UTF-8. Must point to at least
- *            4 bytes!
+ * @param dst the location to write the encoded UTF-8. Must point to at least 4
+ *            bytes!
  * @returns the first byte past the newly-written UTF-8 sequence.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -17103,8 +17066,8 @@ inline char* UCS4ToUTF8(Uint32 codepoint, char* dst)
 /**
  * This works exactly like sscanf() but doesn't require access to a C runtime.
  *
- * Scan a string, matching a format string, converting each '%' item and
- * storing it to pointers provided through variable arguments.
+ * Scan a string, matching a format string, converting each '%' item and storing
+ * it to pointers provided through variable arguments.
  *
  * @param text the string to scan. Must not be nullptr.
  * @param fmt a printf-style format string. Must not be nullptr.
@@ -17128,11 +17091,10 @@ inline int sscanf(StringParam text,
 }
 
 /**
- * This works exactly like vsscanf() but doesn't require access to a C
- * runtime.
+ * This works exactly like vsscanf() but doesn't require access to a C runtime.
  *
- * Functions identically to sscanf(), except it takes a `va_list` instead
- * of using `...` variable arguments.
+ * Functions identically to sscanf(), except it takes a `va_list` instead of
+ * using `...` variable arguments.
  *
  * @param text the string to scan. Must not be nullptr.
  * @param fmt a printf-style format string. Must not be nullptr.
@@ -17152,21 +17114,20 @@ inline int vsscanf(StringParam text,
 }
 
 /**
- * This works exactly like snprintf() but doesn't require access to a C
- * runtime.
+ * This works exactly like snprintf() but doesn't require access to a C runtime.
  *
  * Format a string of up to `maxlen`-1 bytes, converting each '%' item with
  * values provided through variable arguments.
  *
  * While some C runtimes differ on how to deal with too-large strings, this
- * function null-terminates the output, by treating the null-terminator as
- * part of the `maxlen` count. Note that if `maxlen` is zero, however, no
- * bytes will be written at all.
+ * function null-terminates the output, by treating the null-terminator as part
+ * of the `maxlen` count. Note that if `maxlen` is zero, however, no bytes will
+ * be written at all.
  *
- * This function returns the number of _bytes_ (not _characters_) that should
- * be written, excluding the null-terminator character. If this returns a
- * number >= `maxlen`, it means the output string was truncated. A negative
- * return value means an error occurred.
+ * This function returns the number of _bytes_ (not _characters_) that should be
+ * written, excluding the null-terminator character. If this returns a number >=
+ * `maxlen`, it means the output string was truncated. A negative return value
+ * means an error occurred.
  *
  * Referencing the output string's pointer with a format item is undefined
  * behavior.
@@ -17198,21 +17159,20 @@ inline int snprintf(char* text,
 }
 
 /**
- * This works exactly like swprintf() but doesn't require access to a C
- * runtime.
+ * This works exactly like swprintf() but doesn't require access to a C runtime.
  *
- * Format a wide string of up to `maxlen`-1 wchar_t values, converting each
- * '%' item with values provided through variable arguments.
+ * Format a wide string of up to `maxlen`-1 wchar_t values, converting each '%'
+ * item with values provided through variable arguments.
  *
  * While some C runtimes differ on how to deal with too-large strings, this
- * function null-terminates the output, by treating the null-terminator as
- * part of the `maxlen` count. Note that if `maxlen` is zero, however, no wide
+ * function null-terminates the output, by treating the null-terminator as part
+ * of the `maxlen` count. Note that if `maxlen` is zero, however, no wide
  * characters will be written at all.
  *
- * This function returns the number of _wide characters_ (not _codepoints_)
- * that should be written, excluding the null-terminator character. If this
- * returns a number >= `maxlen`, it means the output string was truncated. A
- * negative return value means an error occurred.
+ * This function returns the number of _wide characters_ (not _codepoints_) that
+ * should be written, excluding the null-terminator character. If this returns a
+ * number >= `maxlen`, it means the output string was truncated. A negative
+ * return value means an error occurred.
  *
  * Referencing the output string's pointer with a format item is undefined
  * behavior.
@@ -17248,8 +17208,8 @@ inline int swprintf(wchar_t* text,
  * This works exactly like vsnprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to snprintf(), except it takes a `va_list`
- * instead of using `...` variable arguments.
+ * Functions identically to snprintf(), except it takes a `va_list` instead of
+ * using `...` variable arguments.
  *
  * @param text the buffer to write the string into. Must not be nullptr.
  * @param maxlen the maximum bytes to write, including the null-terminator.
@@ -17274,8 +17234,8 @@ inline int vsnprintf(char* text,
  * This works exactly like vswprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to swprintf(), except it takes a `va_list`
- * instead of using `...` variable arguments.
+ * Functions identically to swprintf(), except it takes a `va_list` instead of
+ * using `...` variable arguments.
  *
  * @param text the buffer to write the string into. Must not be nullptr.
  * @param maxlen the maximum wide characters to write, including the
@@ -17298,27 +17258,26 @@ inline int vswprintf(wchar_t* text,
 }
 
 /**
- * This works exactly like asprintf() but doesn't require access to a C
- * runtime.
+ * This works exactly like asprintf() but doesn't require access to a C runtime.
  *
  * Functions identically to snprintf(), except it allocates a buffer large
  * enough to hold the output string on behalf of the caller.
  *
  * On success, this function returns the number of bytes (not characters)
- * comprising the output string, not counting the null-terminator character,
- * and sets `*strp` to the newly-allocated string.
+ * comprising the output string, not counting the null-terminator character, and
+ * sets `*strp` to the newly-allocated string.
  *
  * On error, this function returns a negative number, and the value of `*strp`
  * is undefined.
  *
- * The returned string is owned by the caller, and should be passed to
- * free when no longer needed.
+ * The returned string is owned by the caller, and should be passed to free when
+ * no longer needed.
  *
  * @param strp on output, is set to the new string. Must not be nullptr.
  * @param fmt a printf-style format string. Must not be nullptr.
  * @param ... a list of values to be used with the format string.
- * @returns the number of bytes in the newly-allocated string, not counting
- *          the null-terminator char, or a negative value on error.
+ * @returns the number of bytes in the newly-allocated string, not counting the
+ *          null-terminator char, or a negative value on error.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -17340,14 +17299,14 @@ inline int asprintf(char** strp, SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
  * This works exactly like vasprintf() but doesn't require access to a C
  * runtime.
  *
- * Functions identically to asprintf(), except it takes a `va_list`
- * instead of using `...` variable arguments.
+ * Functions identically to asprintf(), except it takes a `va_list` instead of
+ * using `...` variable arguments.
  *
  * @param strp on output, is set to the new string. Must not be nullptr.
  * @param fmt a printf-style format string. Must not be nullptr.
  * @param ap a `va_list` values to be used with the format string.
- * @returns the number of bytes in the newly-allocated string, not counting
- *          the null-terminator char, or a negative value on error.
+ * @returns the number of bytes in the newly-allocated string, not counting the
+ *          null-terminator char, or a negative value on error.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -17369,8 +17328,7 @@ inline int vasprintf(char** strp,
  * @param seed the value to use as a random number seed, or 0 to use
  *             GetPerformanceCounter().
  *
- * @threadsafety This should be called on the same thread that calls
- *               rand()
+ * @threadsafety This should be called on the same thread that calls rand()
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -17387,20 +17345,18 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
  * much worse as n gets bigger.
  *
- * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to
- * 1..6
+ * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to 1..6
  *
  * If you want to generate a pseudo-random number in the full range of Sint32,
  * you should use: (Sint32)rand_bits()
  *
- * If you want reproducible output, be sure to initialize with srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
  * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
  *
  * @param n the number of possible outcomes. n must be positive.
  * @returns a random value in the range of [0 .. n-1].
@@ -17417,14 +17373,13 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
- * If you want reproducible output, be sure to initialize with srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
  * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
  *
  * @returns a random value in the range of [0.0, 1.0).
  *
@@ -17445,8 +17400,8 @@ inline float randf() { return SDL_randf(); }
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
  * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
  *
  * @returns a random value in the range of [0-MAX_UINT32].
  *
@@ -17527,8 +17482,7 @@ public:
   /**
    * Generate a uniform pseudo-random floating point number less than 1.0
    *
-   * If you want reproducible output, be sure to initialize with srand()
-   * first.
+   * If you want reproducible output, be sure to initialize with srand() first.
    *
    * There are no guarantees as to the quality of the random sequence produced,
    * and this should not be used for security (cryptography, passwords) or where
@@ -17589,8 +17543,8 @@ public:
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
  * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
  *
  * @param state a pointer to the current random number state, this may not be
  *              nullptr.
@@ -17611,14 +17565,13 @@ inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
- * If you want reproducible output, be sure to initialize with srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
  * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
  *
  * @param state a pointer to the current random number state, this may not be
  *              nullptr.
@@ -17643,8 +17596,8 @@ inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
  * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
  *
  * @param state a pointer to the current random number state, this may not be
  *              nullptr.
@@ -17687,13 +17640,12 @@ constexpr float PI_F = SDL_PI_F;
  *
  * Range: `0 <= y <= Pi`
  *
- * This function operates on double-precision floating point values, use
- * acos for single-precision floats.
+ * This function operates on double-precision floating point values, use acos
+ * for single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns arc cosine of `x`, in radians.
@@ -17717,13 +17669,12 @@ inline double acos(double x) { return SDL_acos(x); }
  *
  * Range: `0 <= y <= Pi`
  *
- * This function operates on single-precision floating point values, use
- * acos for double-precision floats.
+ * This function operates on single-precision floating point values, use acos
+ * for double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns arc cosine of `x`, in radians.
@@ -17747,13 +17698,12 @@ inline float acos(float x) { return SDL_acosf(x); }
  *
  * Range: `-Pi/2 <= y <= Pi/2`
  *
- * This function operates on double-precision floating point values, use
- * asin for single-precision floats.
+ * This function operates on double-precision floating point values, use asin
+ * for single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns arc sine of `x`, in radians.
@@ -17777,13 +17727,12 @@ inline double asin(double x) { return SDL_asin(x); }
  *
  * Range: `-Pi/2 <= y <= Pi/2`
  *
- * This function operates on single-precision floating point values, use
- * asin for double-precision floats.
+ * This function operates on single-precision floating point values, use asin
+ * for double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns arc sine of `x`, in radians.
@@ -17807,15 +17756,14 @@ inline float asin(float x) { return SDL_asinf(x); }
  *
  * Range: `-Pi/2 <= y <= Pi/2`
  *
- * This function operates on double-precision floating point values, use
- * atan for single-precision floats.
+ * This function operates on double-precision floating point values, use atan
+ * for single-precision floats.
  *
  * To calculate the arc tangent of y / x, use atan2.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns arc tangent of of `x` in radians, or 0 if `x = 0`.
@@ -17839,15 +17787,14 @@ inline double atan(double x) { return SDL_atan(x); }
  *
  * Range: `-Pi/2 <= y <= Pi/2`
  *
- * This function operates on single-precision floating point values, use
- * atan for dboule-precision floats.
+ * This function operates on single-precision floating point values, use atan
+ * for dboule-precision floats.
  *
  * To calculate the arc tangent of y / x, use atan2.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns arc tangent of of `x` in radians, or 0 if `x = 0`.
@@ -17863,25 +17810,24 @@ inline double atan(double x) { return SDL_atan(x); }
 inline float atan(float x) { return SDL_atanf(x); }
 
 /**
- * Compute the arc tangent of `y / x`, using the signs of x and y to adjust
- * the result's quadrant.
+ * Compute the arc tangent of `y / x`, using the signs of x and y to adjust the
+ * result's quadrant.
  *
- * The definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant
- * of z is determined based on the signs of x and y.
+ * The definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant of
+ * z is determined based on the signs of x and y.
  *
  * Domain: `-INF <= x <= INF`, `-INF <= y <= INF`
  *
  * Range: `-Pi <= y <= Pi`
  *
- * This function operates on double-precision floating point values, use
- * atan2 for single-precision floats.
+ * This function operates on double-precision floating point values, use atan2
+ * for single-precision floats.
  *
  * To calculate the arc tangent of a single value, use atan.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param y floating point value of the numerator (y coordinate).
  * @param x floating point value of the denominator (x coordinate).
@@ -17898,25 +17844,24 @@ inline float atan(float x) { return SDL_atanf(x); }
 inline double atan2(double y, double x) { return SDL_atan2(y, x); }
 
 /**
- * Compute the arc tangent of `y / x`, using the signs of x and y to adjust
- * the result's quadrant.
+ * Compute the arc tangent of `y / x`, using the signs of x and y to adjust the
+ * result's quadrant.
  *
- * The definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant
- * of z is determined based on the signs of x and y.
+ * The definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant of
+ * z is determined based on the signs of x and y.
  *
  * Domain: `-INF <= x <= INF`, `-INF <= y <= INF`
  *
  * Range: `-Pi <= y <= Pi`
  *
- * This function operates on single-precision floating point values, use
- * atan2 for double-precision floats.
+ * This function operates on single-precision floating point values, use atan2
+ * for double-precision floats.
  *
  * To calculate the arc tangent of a single value, use atan.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param y floating point value of the numerator (y coordinate).
  * @param x floating point value of the denominator (x coordinate).
@@ -17943,8 +17888,8 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * ceil for single-precision floats.
+ * This function operates on double-precision floating point values, use ceil
+ * for single-precision floats.
  *
  * @param x floating point value.
  * @returns the ceiling of `x`.
@@ -17971,8 +17916,8 @@ inline double ceil(double x) { return SDL_ceil(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * ceil for double-precision floats.
+ * This function operates on single-precision floating point values, use ceil
+ * for double-precision floats.
  *
  * @param x floating point value.
  * @returns the ceiling of `x`.
@@ -18003,8 +17948,7 @@ inline float ceil(float x) { return SDL_ceilf(x); }
  *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
- * @returns the floating point value with the sign of y and the magnitude of
- *          x.
+ * @returns the floating point value with the sign of y and the magnitude of x.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -18029,8 +17973,7 @@ inline double copysign(double x, double y) { return SDL_copysign(x, y); }
  *
  * @param x floating point value to use as the magnitude.
  * @param y floating point value to use as the sign.
- * @returns the floating point value with the sign of y and the magnitude of
- *          x.
+ * @returns the floating point value with the sign of y and the magnitude of x.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -18048,13 +17991,12 @@ inline float copysign(float x, float y) { return SDL_copysignf(x, y); }
  *
  * Range: `-1 <= y <= 1`
  *
- * This function operates on double-precision floating point values, use
- * cos for single-precision floats.
+ * This function operates on double-precision floating point values, use cos for
+ * single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value, in radians.
  * @returns cosine of `x`.
@@ -18076,13 +18018,12 @@ inline double cos(double x) { return SDL_cos(x); }
  *
  * Range: `-1 <= y <= 1`
  *
- * This function operates on single-precision floating point values, use
- * cos for double-precision floats.
+ * This function operates on single-precision floating point values, use cos for
+ * double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value, in radians.
  * @returns cosine of `x`.
@@ -18109,13 +18050,12 @@ inline float cos(float x) { return SDL_cosf(x); }
  *
  * The output will overflow if `exp(x)` is too large to be represented.
  *
- * This function operates on double-precision floating point values, use
- * exp for single-precision floats.
+ * This function operates on double-precision floating point values, use exp for
+ * single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns value of `e^x`.
@@ -18141,13 +18081,12 @@ inline double exp(double x) { return SDL_exp(x); }
  *
  * The output will overflow if `exp(x)` is too large to be represented.
  *
- * This function operates on single-precision floating point values, use
- * exp for double-precision floats.
+ * This function operates on single-precision floating point values, use exp for
+ * double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value.
  * @returns value of `e^x`.
@@ -18171,8 +18110,8 @@ inline float exp(float x) { return SDL_expf(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * floor for single-precision floats.
+ * This function operates on double-precision floating point values, use floor
+ * for single-precision floats.
  *
  * @param x floating point value.
  * @returns the floor of `x`.
@@ -18199,8 +18138,8 @@ inline double floor(double x) { return SDL_floor(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * floor for double-precision floats.
+ * This function operates on single-precision floating point values, use floor
+ * for double-precision floats.
  *
  * @param x floating point value.
  * @returns the floor of `x`.
@@ -18227,8 +18166,8 @@ inline float floor(float x) { return SDL_floorf(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * trunc for single-precision floats.
+ * This function operates on double-precision floating point values, use trunc
+ * for single-precision floats.
  *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
@@ -18256,8 +18195,8 @@ inline double trunc(double x) { return SDL_trunc(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * trunc for double-precision floats.
+ * This function operates on single-precision floating point values, use trunc
+ * for double-precision floats.
  *
  * @param x floating point value.
  * @returns `x` truncated to an integer.
@@ -18284,8 +18223,8 @@ inline float trunc(float x) { return SDL_truncf(x); }
  *
  * Range: `-y <= z <= y`
  *
- * This function operates on double-precision floating point values, use
- * fmod for single-precision floats.
+ * This function operates on double-precision floating point values, use fmod
+ * for single-precision floats.
  *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
@@ -18314,8 +18253,8 @@ inline double fmod(double x, double y) { return SDL_fmod(x, y); }
  *
  * Range: `-y <= z <= y`
  *
- * This function operates on single-precision floating point values, use
- * fmod for double-precision floats.
+ * This function operates on single-precision floating point values, use fmod
+ * for double-precision floats.
  *
  * @param x the numerator.
  * @param y the denominator. Must not be 0.
@@ -18400,13 +18339,12 @@ inline int isnan(float x) { return SDL_isnanf(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
- * This function operates on double-precision floating point values, use
- * log for single-precision floats.
+ * This function operates on double-precision floating point values, use log for
+ * single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value. Must be greater than 0.
  * @returns the natural logarithm of `x`.
@@ -18430,13 +18368,12 @@ inline double log(double x) { return SDL_log(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
- * This function operates on single-precision floating point values, use
- * log for double-precision floats.
+ * This function operates on single-precision floating point values, use log for
+ * double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value. Must be greater than 0.
  * @returns the natural logarithm of `x`.
@@ -18459,13 +18396,12 @@ inline float log(float x) { return SDL_logf(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
- * This function operates on double-precision floating point values, use
- * log10 for single-precision floats.
+ * This function operates on double-precision floating point values, use log10
+ * for single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value. Must be greater than 0.
  * @returns the logarithm of `x`.
@@ -18489,13 +18425,12 @@ inline double log10(double x) { return SDL_log10(x); }
  *
  * It is an error for `x` to be less than or equal to 0.
  *
- * This function operates on single-precision floating point values, use
- * log10 for double-precision floats.
+ * This function operates on single-precision floating point values, use log10
+ * for double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value. Must be greater than 0.
  * @returns the logarithm of `x`.
@@ -18513,8 +18448,8 @@ inline float log10(float x) { return SDL_log10f(x); }
 /**
  * Split `x` into integer and fractional parts
  *
- * This function operates on double-precision floating point values, use
- * modf for single-precision floats.
+ * This function operates on double-precision floating point values, use modf
+ * for single-precision floats.
  *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
@@ -18533,8 +18468,8 @@ inline double modf(double x, double* y) { return SDL_modf(x, y); }
 /**
  * Split `x` into integer and fractional parts
  *
- * This function operates on single-precision floating point values, use
- * modf for double-precision floats.
+ * This function operates on single-precision floating point values, use modf
+ * for double-precision floats.
  *
  * @param x floating point value.
  * @param y output pointer to store the integer part of `x`.
@@ -18557,16 +18492,14 @@ inline float modf(float x, float* y) { return SDL_modff(x, y); }
  *
  * Range: `-INF <= z <= INF`
  *
- * If `y` is the base of the natural logarithm (e), consider using exp
- * instead.
+ * If `y` is the base of the natural logarithm (e), consider using exp instead.
  *
- * This function operates on double-precision floating point values, use
- * pow for single-precision floats.
+ * This function operates on double-precision floating point values, use pow for
+ * single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x the base.
  * @param y the exponent.
@@ -18589,16 +18522,14 @@ inline double pow(double x, double y) { return SDL_pow(x, y); }
  *
  * Range: `-INF <= z <= INF`
  *
- * If `y` is the base of the natural logarithm (e), consider using exp
- * instead.
+ * If `y` is the base of the natural logarithm (e), consider using exp instead.
  *
- * This function operates on single-precision floating point values, use
- * pow for double-precision floats.
+ * This function operates on single-precision floating point values, use pow for
+ * double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x the base.
  * @param y the exponent.
@@ -18624,9 +18555,9 @@ inline float pow(float x, float y) { return SDL_powf(x, y); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on double-precision floating point values, use
- * round for single-precision floats. To get the result as an integer
- * type, use lround.
+ * This function operates on double-precision floating point values, use round
+ * for single-precision floats. To get the result as an integer type, use
+ * lround.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -18653,9 +18584,9 @@ inline double round(double x) { return SDL_round(x); }
  *
  * Range: `-INF <= y <= INF`, y integer
  *
- * This function operates on single-precision floating point values, use
- * round for double-precision floats. To get the result as an integer
- * type, use lround.
+ * This function operates on single-precision floating point values, use round
+ * for double-precision floats. To get the result as an integer type, use
+ * lround.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -18682,9 +18613,9 @@ inline float round(float x) { return SDL_roundf(x); }
  *
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
- * This function operates on double-precision floating point values, use
- * lround for single-precision floats. To get the result as a
- * floating-point type, use round.
+ * This function operates on double-precision floating point values, use lround
+ * for single-precision floats. To get the result as a floating-point type, use
+ * round.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -18711,9 +18642,9 @@ inline long lround(double x) { return SDL_lround(x); }
  *
  * Range: `MIN_LONG <= y <= MAX_LONG`
  *
- * This function operates on single-precision floating point values, use
- * lround for double-precision floats. To get the result as a
- * floating-point type, use round.
+ * This function operates on single-precision floating point values, use lround
+ * for double-precision floats. To get the result as a floating-point type, use
+ * round.
  *
  * @param x floating point value.
  * @returns the nearest integer to `x`.
@@ -18739,8 +18670,8 @@ inline long lround(float x) { return SDL_lroundf(x); }
  *
  * Range: `-INF <= y <= INF`
  *
- * This function operates on double-precision floating point values, use
- * scalbn for single-precision floats.
+ * This function operates on double-precision floating point values, use scalbn
+ * for single-precision floats.
  *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
@@ -18764,8 +18695,8 @@ inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
  *
  * Range: `-INF <= y <= INF`
  *
- * This function operates on single-precision floating point values, use
- * scalbn for double-precision floats.
+ * This function operates on single-precision floating point values, use scalbn
+ * for double-precision floats.
  *
  * @param x floating point value to be scaled.
  * @param n integer exponent.
@@ -18787,13 +18718,12 @@ inline float scalbn(float x, int n) { return SDL_scalbnf(x, n); }
  *
  * Range: `-1 <= y <= 1`
  *
- * This function operates on double-precision floating point values, use
- * sin for single-precision floats.
+ * This function operates on double-precision floating point values, use sin for
+ * single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value, in radians.
  * @returns sine of `x`.
@@ -18815,13 +18745,12 @@ inline double sin(double x) { return SDL_sin(x); }
  *
  * Range: `-1 <= y <= 1`
  *
- * This function operates on single-precision floating point values, use
- * sin for double-precision floats.
+ * This function operates on single-precision floating point values, use sin for
+ * double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value, in radians.
  * @returns sine of `x`.
@@ -18843,13 +18772,12 @@ inline float sin(float x) { return SDL_sinf(x); }
  *
  * Range: `0 <= y <= INF`
  *
- * This function operates on double-precision floating point values, use
- * sqrt for single-precision floats.
+ * This function operates on double-precision floating point values, use sqrt
+ * for single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value. Must be greater than or equal to 0.
  * @returns square root of `x`.
@@ -18869,13 +18797,12 @@ inline double sqrt(double x) { return SDL_sqrt(x); }
  *
  * Range: `0 <= y <= INF`
  *
- * This function operates on single-precision floating point values, use
- * sqrt for double-precision floats.
+ * This function operates on single-precision floating point values, use sqrt
+ * for double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value. Must be greater than or equal to 0.
  * @returns square root of `x`.
@@ -18895,13 +18822,12 @@ inline float sqrt(float x) { return SDL_sqrtf(x); }
  *
  * Range: `-INF <= y <= INF`
  *
- * This function operates on double-precision floating point values, use
- * tan for single-precision floats.
+ * This function operates on double-precision floating point values, use tan for
+ * single-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value, in radians.
  * @returns tangent of `x`.
@@ -18925,13 +18851,12 @@ inline double tan(double x) { return SDL_tan(x); }
  *
  * Range: `-INF <= y <= INF`
  *
- * This function operates on single-precision floating point values, use
- * tan for double-precision floats.
+ * This function operates on single-precision floating point values, use tan for
+ * double-precision floats.
  *
  * This function may use a different approximation across different versions,
- * platforms and configurations. i.e, it can return a different value given
- * the same input on different machines or operating systems, or if SDL is
- * updated.
+ * platforms and configurations. i.e, it can return a different value given the
+ * same input on different machines or operating systems, or if SDL is updated.
  *
  * @param x floating point value, in radians.
  * @returns tangent of `x`.
@@ -19064,9 +18989,8 @@ public:
    *
    * It returns the number of successful conversions on success. On error,
    * ICONV_E2BIG is returned when the output buffer is too small, or
-   * ICONV_EILSEQ is returned when an invalid input sequence is encountered,
-   * or ICONV_EINVAL is returned when an incomplete input sequence is
-   * encountered.
+   * ICONV_EILSEQ is returned when an invalid input sequence is encountered, or
+   * ICONV_EINVAL is returned when an incomplete input sequence is encountered.
    *
    * On exit:
    *
@@ -19125,13 +19049,12 @@ struct IConvRef : IConv
 };
 
 /**
- * This function allocates a context for the specified character set
- * conversion.
+ * This function allocates a context for the specified character set conversion.
  *
  * @param tocode The target character encoding, must not be nullptr.
  * @param fromcode The source character encoding, must not be nullptr.
- * @returns a handle that must be freed with IConv.close, or
- *          ICONV_ERROR on failure.
+ * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
+ *          failure.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -19162,28 +19085,25 @@ inline int iconv_close(IConvRaw cd) { return CheckError(SDL_iconv_close(cd)); }
 inline int IConv::close() { return iconv_close(release()); }
 
 /**
- * This function converts text between encodings, reading from and writing to
- * a buffer.
+ * This function converts text between encodings, reading from and writing to a
+ * buffer.
  *
  * It returns the number of successful conversions on success. On error,
- * ICONV_E2BIG is returned when the output buffer is too small, or
- * ICONV_EILSEQ is returned when an invalid input sequence is encountered,
- * or ICONV_EINVAL is returned when an incomplete input sequence is
- * encountered.
+ * ICONV_E2BIG is returned when the output buffer is too small, or ICONV_EILSEQ
+ * is returned when an invalid input sequence is encountered, or ICONV_EINVAL is
+ * returned when an incomplete input sequence is encountered.
  *
  * On exit:
  *
- * - inbuf will point to the beginning of the next multibyte sequence. On
- *   error, this is the location of the problematic input sequence. On
- *   success, this is the end of the input sequence.
- * - inbytesleft will be set to the number of bytes left to convert, which
- *   will be 0 on success.
+ * - inbuf will point to the beginning of the next multibyte sequence. On error,
+ *   this is the location of the problematic input sequence. On success, this is
+ *   the end of the input sequence.
+ * - inbytesleft will be set to the number of bytes left to convert, which will
+ *   be 0 on success.
  * - outbuf will point to the location where to store the next output byte.
- * - outbytesleft will be set to the number of bytes left in the output
- *   buffer.
+ * - outbytesleft will be set to the number of bytes left in the output buffer.
  *
- * @param cd The character set conversion context, created in
- *           IConv.IConv().
+ * @param cd The character set conversion context, created in IConv.IConv().
  * @param inbuf Address of variable that points to the first character of the
  *              input sequence.
  * @param inbytesleft The number of bytes in the input buffer.
@@ -19259,9 +19179,9 @@ inline OwnArray<char> iconv_string(StringParam tocode,
 /**
  * Convert a UTF-8 string to the current locale's character encoding.
  *
- * This is a helper macro that might be more clear than calling
- * iconv_string directly. However, it double-evaluates its parameter, so
- * do not use an expression with side-effects here.
+ * This is a helper macro that might be more clear than calling iconv_string
+ * directly. However, it double-evaluates its parameter, so do not use an
+ * expression with side-effects here.
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
@@ -19276,9 +19196,9 @@ inline OwnArray<char> iconv_utf8_locale(std::string_view S)
 /**
  * Convert a UTF-8 string to UCS-2.
  *
- * This is a helper macro that might be more clear than calling
- * iconv_string directly. However, it double-evaluates its parameter, so
- * do not use an expression with side-effects here.
+ * This is a helper macro that might be more clear than calling iconv_string
+ * directly. However, it double-evaluates its parameter, so do not use an
+ * expression with side-effects here.
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
@@ -19294,9 +19214,9 @@ inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
 /**
  * Convert a UTF-8 string to UCS-4.
  *
- * This is a helper macro that might be more clear than calling
- * iconv_string directly. However, it double-evaluates its parameter, so
- * do not use an expression with side-effects here.
+ * This is a helper macro that might be more clear than calling iconv_string
+ * directly. However, it double-evaluates its parameter, so do not use an
+ * expression with side-effects here.
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
@@ -19312,9 +19232,9 @@ inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
 /**
  * Convert a wchar_t string to UTF-8.
  *
- * This is a helper macro that might be more clear than calling
- * iconv_string directly. However, it double-evaluates its parameter, so
- * do not use an expression with side-effects here.
+ * This is a helper macro that might be more clear than calling iconv_string
+ * directly. However, it double-evaluates its parameter, so do not use an
+ * expression with side-effects here.
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
@@ -19335,8 +19255,8 @@ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
  *
  * @param a the multiplicand.
  * @param b the multiplier.
- * @param ret on non-overflow output, stores the multiplication result, may
- *            not be nullptr.
+ * @param ret on non-overflow output, stores the multiplication result, may not
+ *            be nullptr.
  * @returns false on overflow, true if result is multiplied without overflow.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -31213,8 +31133,8 @@ constexpr Rect::operator FRect() const
  *
  * Defines keyboard scancodes.
  *
- * Please refer to the Best Keyboard Practices document for details on what
- * this information means and how best to use it.
+ * Please refer to the Best Keyboard Practices document for details on what this
+ * information means and how best to use it.
  *
  * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
  *
@@ -31985,8 +31905,8 @@ constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
  * These APIs grant access to gyros and accelerometers on various platforms.
  *
  * In order to use these functions, Init() must have been called with the
- * INIT_SENSOR flag. This causes SDL to scan the system for sensors, and
- * load appropriate drivers.
+ * INIT_SENSOR flag. This causes SDL to scan the system for sensors, and load
+ * appropriate drivers.
  *
  * @{
  */
@@ -32028,8 +31948,8 @@ struct SensorParam
 };
 
 /**
- * This is a unique ID for a sensor for the time it is connected to the
- * system, and is never reused for the lifetime of the application.
+ * This is a unique ID for a sensor for the time it is connected to the system,
+ * and is never reused for the lifetime of the application.
  *
  * The value 0 is an invalid ID.
  *
@@ -32049,16 +31969,16 @@ using SensorID = Uint32;
  * Accelerometer sensor notes:
  *
  * The accelerometer returns the current acceleration in SI meters per second
- * squared. This measurement includes the force of gravity, so a device at
- * rest will have an value of STANDARD_GRAVITY away from the center of the
- * earth, which is a positive Y value.
+ * squared. This measurement includes the force of gravity, so a device at rest
+ * will have an value of STANDARD_GRAVITY away from the center of the earth,
+ * which is a positive Y value.
  *
  * - `values[0]`: Acceleration on the x axis
  * - `values[1]`: Acceleration on the y axis
  * - `values[2]`: Acceleration on the z axis
  *
- * For phones and tablets held in natural orientation and game controllers
- * held in front of you, the axes are defined as follows:
+ * For phones and tablets held in natural orientation and game controllers held
+ * in front of you, the axes are defined as follows:
  *
  * - -X ... +X : left ... right
  * - -Y ... +Y : bottom ... top
@@ -32068,18 +31988,17 @@ using SensorID = Uint32;
  *
  * Gyroscope sensor notes:
  *
- * The gyroscope returns the current rate of rotation in radians per second.
- * The rotation is positive in the counter-clockwise direction. That is, an
- * observer looking from a positive location on one of the axes would see
- * positive rotation on that axis when it appeared to be rotating
- * counter-clockwise.
+ * The gyroscope returns the current rate of rotation in radians per second. The
+ * rotation is positive in the counter-clockwise direction. That is, an observer
+ * looking from a positive location on one of the axes would see positive
+ * rotation on that axis when it appeared to be rotating counter-clockwise.
  *
  * - `values[0]`: Angular speed around the x axis (pitch)
  * - `values[1]`: Angular speed around the y axis (yaw)
  * - `values[2]`: Angular speed around the z axis (roll)
  *
- * For phones and tablets held in natural orientation and game controllers
- * held in front of you, the axes are defined as follows:
+ * For phones and tablets held in natural orientation and game controllers held
+ * in front of you, the axes are defined as follows:
  *
  * - -X ... +X : left ... right
  * - -Y ... +Y : bottom ... top
@@ -32165,8 +32084,8 @@ public:
    * Open a sensor for use.
    *
    * @param instance_id the sensor instance ID.
-   * @post an Sensor object or nullptr on failure; call GetError() for
-   *          more information.
+   * @post an Sensor object or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -32238,8 +32157,7 @@ public:
   /**
    * Get the type of a sensor.
    *
-   * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is
-   *          nullptr.
+   * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is nullptr.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -32257,8 +32175,8 @@ public:
   /**
    * Get the instance ID of a sensor.
    *
-   * @returns the sensor instance ID, or 0 on failure; call GetError() for
-   *          more information.
+   * @returns the sensor instance ID, or 0 on failure; call GetError() for more
+   *          information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -32307,9 +32225,9 @@ struct SensorRef : Sensor
  * A constant to represent standard gravity for accelerometer sensors.
  *
  * The accelerometer returns the current acceleration in SI meters per second
- * squared. This measurement includes the force of gravity, so a device at
- * rest will have an value of STANDARD_GRAVITY away from the center of the
- * earth, which is a positive Y value.
+ * squared. This measurement includes the force of gravity, so a device at rest
+ * will have an value of STANDARD_GRAVITY away from the center of the earth,
+ * which is a positive Y value.
  *
  * @since This constant is available since SDL 3.2.0.
  */
@@ -32351,8 +32269,7 @@ inline const char* GetSensorNameForID(SensorID instance_id)
  * This can be called before any sensors are opened.
  *
  * @param instance_id the sensor instance ID.
- * @returns the SensorType, or `SENSOR_INVALID` if `instance_id` is
- *          not valid.
+ * @returns the SensorType, or `SENSOR_INVALID` if `instance_id` is not valid.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -32381,8 +32298,8 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
  * Open a sensor for use.
  *
  * @param instance_id the sensor instance ID.
- * @returns an Sensor object or nullptr on failure; call GetError() for
- *          more information.
+ * @returns an Sensor object or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -32392,8 +32309,8 @@ inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
  * Return the Sensor associated with an instance ID.
  *
  * @param instance_id the sensor instance ID.
- * @returns an Sensor object or nullptr on failure; call GetError() for
- *          more information.
+ * @returns an Sensor object or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -32441,8 +32358,7 @@ inline const char* Sensor::GetName() { return SDL::GetSensorName(m_resource); }
  * Get the type of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is
- *          nullptr.
+ * @returns the SensorType type, or `SENSOR_INVALID` if `sensor` is nullptr.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -32475,8 +32391,8 @@ inline int Sensor::GetNonPortableType()
  * Get the instance ID of a sensor.
  *
  * @param sensor the Sensor object to inspect.
- * @returns the sensor instance ID, or 0 on failure; call GetError() for
- *          more information.
+ * @returns the sensor instance ID, or 0 on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -32523,8 +32439,7 @@ inline void Sensor::Close() { CloseSensor(release()); }
 /**
  * Update the current state of the open sensors.
  *
- * This is called automatically by the event loop if sensor events are
- * enabled.
+ * This is called automatically by the event loop if sensor events are enabled.
  *
  * This needs to be called from the thread that initialized the sensor
  * subsystem.
@@ -40141,23 +40056,23 @@ inline void Process::Destroy() { DestroyProcess(release()); }
 /**
  * @defgroup CategoryStorage Storage Abstraction
  *
- * The storage API is a high-level API designed to abstract away the
- * portability issues that come up when using something lower-level (in SDL's
- * case, this sits on top of the [Filesystem](CategoryFilesystem) and
+ * The storage API is a high-level API designed to abstract away the portability
+ * issues that come up when using something lower-level (in SDL's case, this
+ * sits on top of the [Filesystem](CategoryFilesystem) and
  * [IOStream](CategoryIOStream) subsystems). It is significantly more
  * restrictive than a typical filesystem API, for a number of reasons:
  *
- * 1. **What to Access:** A common pitfall with existing filesystem APIs is
- * the assumption that all storage is monolithic. However, many other
- * platforms (game consoles in particular) are more strict about what _type_
- * of filesystem is being accessed; for example, game content and user data
- * are usually two separate storage devices with entirely different
- * characteristics (and possibly different low-level APIs altogether!).
+ * 1. **What to Access:** A common pitfall with existing filesystem APIs is the
+ * assumption that all storage is monolithic. However, many other platforms
+ * (game consoles in particular) are more strict about what _type_ of filesystem
+ * is being accessed; for example, game content and user data are usually two
+ * separate storage devices with entirely different characteristics (and
+ * possibly different low-level APIs altogether!).
  *
  * 2. **How to Access:** Another common mistake is applications assuming that
  * all storage is universally writeable - again, many platforms treat game
- * content and user data as two separate storage devices, and only user data
- * is writeable while game content is read-only.
+ * content and user data as two separate storage devices, and only user data is
+ * writeable while game content is read-only.
  *
  * 3. **When to Access:** The most common portability issue with filesystem
  * access is _timing_ - you cannot always assume that the storage device is
@@ -40207,32 +40122,31 @@ inline void Process::Destroy() { DestroyProcess(release()); }
  *
  * Going over the bullet points again:
  *
- * 1. **What to Access:** This code accesses a global filesystem; game data
- * and saves are all presumed to be in the current working directory (which
- * may or may not be the game's installation folder!).
+ * 1. **What to Access:** This code accesses a global filesystem; game data and
+ * saves are all presumed to be in the current working directory (which may or
+ * may not be the game's installation folder!).
  *
- * 2. **How to Access:** This code assumes that content paths are writeable,
- * and that save data is also writeable despite being in the same location as
- * the game data.
+ * 2. **How to Access:** This code assumes that content paths are writeable, and
+ * that save data is also writeable despite being in the same location as the
+ * game data.
  *
- * 3. **When to Access:** This code assumes that they can be called at any
- * time, since the filesystem is always accessible and has no limits on how
- * long the filesystem is being accessed.
+ * 3. **When to Access:** This code assumes that they can be called at any time,
+ * since the filesystem is always accessible and has no limits on how long the
+ * filesystem is being accessed.
  *
  * Due to these assumptions, the filesystem code is not portable and will fail
  * under these common scenarios:
  *
  * - The game is installed on a device that is read-only, both content loading
  *   and game saves will fail or crash outright
- * - Game/User storage is not implicitly mounted, so no files will be found
- *   for either scenario when a platform requires explicitly mounting
- *   filesystems
- * - Save data may not be safe since the I/O is not being flushed or
- *   validated, so an error occurring elsewhere in the program may result in
+ * - Game/User storage is not implicitly mounted, so no files will be found for
+ *   either scenario when a platform requires explicitly mounting filesystems
+ * - Save data may not be safe since the I/O is not being flushed or validated,
+ *   so an error occurring elsewhere in the program may result in
  *   missing/corrupted save data
  *
- * When using Storage, these types of problems are virtually impossible to
- * trip over:
+ * When using Storage, these types of problems are virtually impossible to trip
+ * over:
  *
  * ```cpp
  * void ReadGameData(void)
@@ -40322,36 +40236,34 @@ inline void Process::Destroy() { DestroyProcess(release()); }
  * The result is an application that is significantly more robust against the
  * increasing demands of platforms and their filesystems!
  *
- * A publicly available example of an Storage backend is the
- * [Steam Cloud](https://partner.steamgames.com/doc/features/cloud)
- * backend - you can initialize Steamworks when starting the program, and then
- * SDL will recognize that Steamworks is initialized and automatically use
- * ISteamRemoteStorage when the application opens user storage. More
- * importantly, when you _open_ storage it knows to begin a "batch" of
- * filesystem operations, and when you _close_ storage it knows to end and
- * flush the batch. This is used by Steam to support
+ * A publicly available example of an Storage backend is the [Steam
+ * Cloud](https://partner.steamgames.com/doc/features/cloud) backend - you can
+ * initialize Steamworks when starting the program, and then SDL will recognize
+ * that Steamworks is initialized and automatically use ISteamRemoteStorage when
+ * the application opens user storage. More importantly, when you _open_ storage
+ * it knows to begin a "batch" of filesystem operations, and when you _close_
+ * storage it knows to end and flush the batch. This is used by Steam to support
  * [Dynamic Cloud
  * Sync](https://steamcommunity.com/groups/steamworks/announcements/detail/3142949576401813670)
  * ; users can save data on one PC, put the device to sleep, and then continue
- * playing on another PC (and vice versa) with the save data fully
- * synchronized across all devices, allowing for a seamless experience without
- * having to do full restarts of the program.
+ * playing on another PC (and vice versa) with the save data fully synchronized
+ * across all devices, allowing for a seamless experience without having to do
+ * full restarts of the program.
  *
  * ## Notes on valid paths
  *
  * All paths in the Storage API use Unix-style path separators ('/'). Using a
- * different path separator will not work, even if the underlying platform
- * would otherwise accept it. This is to keep code using the Storage API
- * portable between platforms and Storage implementations and simplify app
- * code.
+ * different path separator will not work, even if the underlying platform would
+ * otherwise accept it. This is to keep code using the Storage API portable
+ * between platforms and Storage implementations and simplify app code.
  *
  * Paths with relative directories ("." and "..") are forbidden by the Storage
  * API.
  *
  * All valid UTF-8 strings (discounting the nullptr terminator character and the
- * '/' path separator) are usable for filenames, however, an underlying
- * Storage implementation may not support particularly strange sequences and
- * refuse to create files with those names, etc.
+ * '/' path separator) are usable for filenames, however, an underlying Storage
+ * implementation may not support particularly strange sequences and refuse to
+ * create files with those names, etc.
  *
  * @{
  */
@@ -40395,12 +40307,12 @@ struct StorageParam
 /**
  * Function interface for Storage.
  *
- * Apps that want to supply a custom implementation of Storage will fill
- * in all the functions in this struct, and then pass it to Storage.Storage to
- * create a custom Storage object.
+ * Apps that want to supply a custom implementation of Storage will fill in all
+ * the functions in this struct, and then pass it to Storage.Storage to create a
+ * custom Storage object.
  *
- * It is not usually necessary to do this; SDL provides standard
- * implementations for many things you might expect to do with an Storage.
+ * It is not usually necessary to do this; SDL provides standard implementations
+ * for many things you might expect to do with an Storage.
  *
  * This structure should be initialized using InitInterface()
  *
@@ -40414,8 +40326,8 @@ using StorageInterface = SDL_StorageInterface;
  * An abstract interface for filesystem access.
  *
  * This is an opaque datatype. One can create this object using standard SDL
- * functions like Storage.Storage, etc, or create
- * an object with a custom implementation using Storage.Storage.
+ * functions like Storage.Storage, etc, or create an object with a custom
+ * implementation using Storage.Storage.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -40507,8 +40419,8 @@ public:
    * Opens up a container for local filesystem storage.
    *
    * This is provided for development and tools. Portable applications should
-   * use Storage.Storage() for access to game data and
-   * Storage.Storage() for access to user data.
+   * use Storage.Storage() for access to game data and Storage.Storage() for
+   * access to user data.
    *
    * @param path the base path prepended to all storage paths, or nullptr for no
    *             base path.
@@ -40534,9 +40446,9 @@ public:
    * Opens up a container using a client-provided storage interface.
    *
    * Applications do not need to use this function unless they are providing
-   * their own Storage implementation. If you just need an Storage, you
-   * should use the built-in implementations in SDL, like Storage.Storage()
-   * or Storage.Storage().
+   * their own Storage implementation. If you just need an Storage, you should
+   * use the built-in implementations in SDL, like Storage.Storage() or
+   * Storage.Storage().
    *
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
@@ -40599,9 +40511,9 @@ public:
    * Closes and frees a storage container.
    *
    * @returns true if the container was freed with no errors, false otherwise;
-   *          call GetError() for more information. Even if the function
-   *          returns an error, the container data will be freed; the error is
-   *          only for informational purposes.
+   *          call GetError() for more information. Even if the function returns
+   *          an error, the container data will be freed; the error is only for
+   *          informational purposes.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -40642,13 +40554,13 @@ public:
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed in
-   * a future release.
+   * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+   * future release.
    *
    * @param path the relative path of the file to read.
    * @param destination a client-provided buffer to read the file into.
-   * @returns true if the file was read or false on failure; call GetError()
-   *          for more information.
+   * @returns true if the file was read or false on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -40663,12 +40575,12 @@ public:
    * buffer.
    *
    * The value of `length` must match the length of the file exactly; call
-   * Storage.GetFileSize() to get this value. This behavior may be relaxed in
-   * a future release.
+   * Storage.GetFileSize() to get this value. This behavior may be relaxed in a
+   * future release.
    *
    * @param path the relative path of the file to read.
-   * @returns true if the file was read or false on failure; call GetError()
-   *          for more information.
+   * @returns true if the file was read or false on failure; call GetError() for
+   *          more information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -40731,19 +40643,18 @@ public:
    *
    * This function provides every directory entry through an app-provided
    * callback, called once for each directory entry, until all results have been
-   * provided or the callback returns either ENUM_SUCCESS or
-   * ENUM_FAILURE.
+   * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
    *
    * This will return false if there was a system problem in general, or if a
    * callback returns ENUM_FAILURE. A successful return means a callback
-   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-   * were enumerated.
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries were
+   * enumerated.
    *
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @param callback a function that is called for each entry in the directory.
    * @param userdata a pointer that is passed to `callback`.
    * @throws Error on failure.
@@ -40761,19 +40672,18 @@ public:
    *
    * This function provides every directory entry through an app-provided
    * callback, called once for each directory entry, until all results have been
-   * provided or the callback returns either ENUM_SUCCESS or
-   * ENUM_FAILURE.
+   * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
    *
    * This will return false if there was a system problem in general, or if a
    * callback returns ENUM_FAILURE. A successful return means a callback
-   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-   * were enumerated.
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries were
+   * enumerated.
    *
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @returns all the directory contents.
    * @throws Error on failure.
    *
@@ -40788,19 +40698,18 @@ public:
    *
    * This function provides every directory entry through an app-provided
    * callback, called once for each directory entry, until all results have been
-   * provided or the callback returns either ENUM_SUCCESS or
-   * ENUM_FAILURE.
+   * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
    *
    * This will return false if there was a system problem in general, or if a
    * callback returns ENUM_FAILURE. A successful return means a callback
-   * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-   * were enumerated.
+   * returned ENUM_SUCCESS to halt enumeration, or all directory entries were
+   * enumerated.
    *
    * If `path` is nullptr, this is treated as a request to enumerate the root of
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @param callback a function that is called for each entry in the directory.
    * @throws Error on failure.
    *
@@ -40894,7 +40803,7 @@ public:
    * the storage container's tree. An empty string also works for this.
    *
    * @param path the path of the directory to enumerate, or nullptr for the
-   * root.
+   *             root.
    * @param pattern the pattern that files in the directory must match. Can be
    *                nullptr.
    * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -40961,8 +40870,8 @@ inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
  *
  * While title storage can generally be kept open throughout runtime, user
  * storage should only be opened when the client is ready to read/write files.
- * This allows the backend to properly batch file operations and flush them
- * when the container has been closed; ensuring safe and optimal save I/O.
+ * This allows the backend to properly batch file operations and flush them when
+ * the container has been closed; ensuring safe and optimal save I/O.
  *
  * @param org the name of your organization.
  * @param app the name of your application.
@@ -40990,9 +40899,9 @@ inline Storage OpenUserStorage(StringParam org,
 /**
  * Opens up a container for local filesystem storage.
  *
- * This is provided for development and tools. Portable applications should
- * use Storage.Storage() for access to game data and
- * Storage.Storage() for access to user data.
+ * This is provided for development and tools. Portable applications should use
+ * Storage.Storage() for access to game data and Storage.Storage() for access to
+ * user data.
  *
  * @param path the base path prepended to all storage paths, or nullptr for no
  *             base path.
@@ -41017,13 +40926,12 @@ inline Storage OpenFileStorage(StringParam path)
 /**
  * Opens up a container using a client-provided storage interface.
  *
- * Applications do not need to use this function unless they are providing
- * their own Storage implementation. If you just need an Storage, you
- * should use the built-in implementations in SDL, like Storage.Storage()
- * or Storage.Storage().
+ * Applications do not need to use this function unless they are providing their
+ * own Storage implementation. If you just need an Storage, you should use the
+ * built-in implementations in SDL, like Storage.Storage() or Storage.Storage().
  *
- * This function makes a copy of `iface` and the caller does not need to keep
- * it around after this call.
+ * This function makes a copy of `iface` and the caller does not need to keep it
+ * around after this call.
  *
  * @param iface the interface that implements this storage, initialized using
  *              InitInterface().
@@ -41051,9 +40959,9 @@ inline Storage OpenStorage(const StorageInterface& iface, void* userdata)
  *
  * @param storage a storage container to close.
  * @returns true if the container was freed with no errors, false otherwise;
- *          call GetError() for more information. Even if the function
- *          returns an error, the container data will be freed; the error is
- *          only for informational purposes.
+ *          call GetError() for more information. Even if the function returns
+ *          an error, the container data will be freed; the error is only for
+ *          informational purposes.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -41120,11 +41028,15 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  * Synchronously read a file from a storage container into a client-provided
  * buffer.
  *
+ * The value of `destination.size()` must match the length of the file exactly;
+ * call Storage.GetFileSize() to get this value. This behavior may be relaxed in
+ * a future release.
+ *
  * @param storage a storage container to read from.
  * @param path the relative path of the file to read.
  * @param destination a client-provided buffer to read the file into.
- * @returns true if the file was read or false on failure; call GetError()
- *          for more information.
+ * @returns true if the file was read or false on failure; call GetError() for
+ *          more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -41259,13 +41171,11 @@ inline void Storage::CreateDirectory(StringParam path)
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * If `path` is nullptr, this is treated as a request to enumerate the root of
  * the storage container's tree. An empty string also works for this.
@@ -41293,13 +41203,11 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * If `path` is nullptr, this is treated as a request to enumerate the root of
  * the storage container's tree. An empty string also works for this.
@@ -41332,13 +41240,11 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * This function provides every directory entry through an app-provided
  * callback, called once for each directory entry, until all results have been
- * provided or the callback returns either ENUM_SUCCESS or
- * ENUM_FAILURE.
+ * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
  *
  * This will return false if there was a system problem in general, or if a
- * callback returns ENUM_FAILURE. A successful return means a callback
- * returned ENUM_SUCCESS to halt enumeration, or all directory entries
- * were enumerated.
+ * callback returns ENUM_FAILURE. A successful return means a callback returned
+ * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
  *
  * If `path` is nullptr, this is treated as a request to enumerate the root of
  * the storage container's tree. An empty string also works for this.
@@ -41500,8 +41406,8 @@ inline Uint64 Storage::GetSpaceRemaining()
 /**
  * Enumerate a directory tree, filtered by pattern, and return a list.
  *
- * Files are filtered out if they don't match the string in `pattern`, which
- * may contain wildcard characters `*` (match everything) and `?` (match one
+ * Files are filtered out if they don't match the string in `pattern`, which may
+ * contain wildcard characters `*` (match everything) and `?` (match one
  * character). If pattern is nullptr, no filtering is done and all results are
  * returned. Subdirectories are permitted, and are specified with a path
  * separator of '/'. Wildcard characters `*` and `?` never match a path
@@ -41525,8 +41431,8 @@ inline Uint64 Storage::GetSpaceRemaining()
  * @returns an array of strings on success.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread, assuming
- *               the `storage` object is thread-safe.
+ * @threadsafety It is safe to call this function from any thread, assuming the
+ *               `storage` object is thread-safe.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -41712,16 +41618,16 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  *
  * Within each row, pixels are arranged from left to right until the width is
  * reached. Each pixel occupies a number of bits appropriate for its format,
- * with most formats representing each pixel as one or more whole bytes (in
- * some indexed formats, instead multiple pixels are packed into each byte),
- * and a byte order given by the format. After encoding all pixels, any
- * remaining bytes to reach the pitch are used as padding to reach a desired
- * alignment, and have undefined contents.
+ * with most formats representing each pixel as one or more whole bytes (in some
+ * indexed formats, instead multiple pixels are packed into each byte), and a
+ * byte order given by the format. After encoding all pixels, any remaining
+ * bytes to reach the pitch are used as padding to reach a desired alignment,
+ * and have undefined contents.
  *
- * When a surface holds YUV format data, the planes are assumed to be
- * contiguous without padding between them, e.g. a 32x32 surface in NV12
- * format with a pitch of 32 would consist of 32x32 bytes of Y plane followed
- * by 32x16 bytes of UV plane.
+ * When a surface holds YUV format data, the planes are assumed to be contiguous
+ * without padding between them, e.g. a 32x32 surface in NV12 format with a
+ * pitch of 32 would consist of 32x32 bytes of Y plane followed by 32x16 bytes
+ * of UV plane.
  *
  * When a surface holds MJPG format data, pixels points at the compressed JPEG
  * image and pitch is the length of that data.
@@ -41923,12 +41829,12 @@ public:
   /**
    * Load a BMP image from a seekable SDL data stream.
    *
-   * The new surface should be freed with Surface.Destroy(). Not doing so
-   * will result in a memory leak.
+   * The new surface should be freed with Surface.Destroy(). Not doing so will
+   * result in a memory leak.
    *
    * @param src the data stream for the surface.
    * @param closeio if true, calls IOStream.Close() on `src` before returning,
-   * even in the case of an error.
+   *                even in the case of an error.
    * @returns a pointer to a new Surface structure or nullptr on failure; call
    *          GetError() for more information.
    *
@@ -41945,8 +41851,8 @@ public:
   /**
    * Load a BMP image from a file.
    *
-   * The new surface should be freed with Surface.Destroy(). Not doing so
-   * will result in a memory leak.
+   * The new surface should be freed with Surface.Destroy(). Not doing so will
+   * result in a memory leak.
    *
    * @param file the BMP file to load.
    * @returns a pointer to a new Surface structure or nullptr on failure; call
@@ -42035,16 +41941,16 @@ public:
    *   surfaces, this defines the maximum dynamic range used by the content, in
    *   terms of the SDR white point. This defaults to 0.0, which disables tone
    *   mapping.
-   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator
-   *   used when compressing from a surface with high dynamic range to another
-   *   with lower dynamic range. Currently this supports "chrome", which uses
-   *   the same tone mapping that Chrome uses for HDR content, the form "*=N",
-   *   where N is a floating point scale factor applied in linear space, and
-   *   "none", which disables tone mapping. This defaults to "chrome".
-   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the
-   *   left edge of the image, if this surface is being used as a cursor.
-   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
-   *   top edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
+   *   when compressing from a surface with high dynamic range to another with
+   *   lower dynamic range. Currently this supports "chrome", which uses the
+   *   same tone mapping that Chrome uses for HDR content, the form "*=N", where
+   *   N is a floating point scale factor applied in linear space, and "none",
+   *   which disables tone mapping. This defaults to "chrome".
+   * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
+   *   edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
+   *   edge of the image, if this surface is being used as a cursor.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -42076,11 +41982,11 @@ public:
    * Get the colorspace used by a surface.
    *
    * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point
-   * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for
-   * other RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.
+   * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for other RGB
+   * surfaces and COLORSPACE_BT709_FULL for YUV textures.
    *
-   * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
-   *          the surface is nullptr.
+   * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if the
+   *          surface is nullptr.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -42100,9 +42006,9 @@ public:
    * reaches 0, usually when the surface is destroyed.
    *
    * Bitmap surfaces (with format PIXELFORMAT_INDEX1LSB or
-   * PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
-   * white and 1 as black. Other surfaces will get a palette initialized with
-   * white in every entry.
+   * PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as white
+   * and 1 as black. Other surfaces will get a palette initialized with white in
+   * every entry.
    *
    * If this function is called for a surface that already has a palette, a new
    * palette will be created to replace it.
@@ -42139,7 +42045,7 @@ public:
    * Get the palette used by a surface.
    *
    * @returns a pointer to the palette used by the surface, or nullptr if there
-   * is no palette used.
+   *          is no palette used.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -42226,8 +42132,8 @@ public:
   /**
    * Set up a surface for directly accessing the pixels.
    *
-   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to
-   * and read from `surface->pixels`, using the pixel format stored in
+   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and
+   * read from `surface->pixels`, using the pixel format stored in
    * `surface->format`. Once you are done accessing the surface, you should use
    * Surface.Unlock() to release it.
    *
@@ -42272,7 +42178,7 @@ public:
    *
    * @param dst a data stream to save to.
    * @param closeio if true, calls IOStream.Close() on `dst` before returning,
-   * even in the case of an error.
+   *                even in the case of an error.
    * @throws Error on failure.
    *
    * @threadsafety This function is not thread safe.
@@ -42346,8 +42252,7 @@ public:
    * a blit. For example, one can use this to specify that cyan pixels should be
    * considered transparent, and therefore not rendered.
    *
-   * It is a pixel of the format used by the surface, as generated by
-   * MapRGB().
+   * It is a pixel of the format used by the surface, as generated by MapRGB().
    *
    * @param key the transparent pixel or std::nullopt to disable it.
    * @throws Error on failure.
@@ -42672,7 +42577,7 @@ public:
    *
    * @param format the new pixel format.
    * @param palette an optional palette to use for indexed formats, may be
-   * nullptr.
+   *                nullptr.
    * @param colorspace the new colorspace.
    * @param props an Properties with additional color properties, or 0.
    * @returns the new Surface structure that is created or nullptr on failure;
@@ -42726,8 +42631,8 @@ public:
    * Perform a fast fill of a rectangle with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by MapColor(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
+   * generated by MapRGB() or MapColor(). If the color value contains an alpha
+   * component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
@@ -42763,8 +42668,8 @@ public:
    * Perform a fast fill of a set of rectangles with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
-   * generated by MapColor(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
+   * generated by MapRGB() or MapColor(). If the color value contains an alpha
+   * component then the destination is simply filled with that alpha
    * information, no blending takes place.
    *
    * If there is a clip rectangle set on the destination (set via
@@ -42836,10 +42741,10 @@ public:
    * ```
    *
    * @param src the SurfaceRaw structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, or nullptr to copy the entire surface.
-   * @param dstrect the Rect structure representing the x and y position in
-   *                the destination surface, or nullptr for (0,0). The width and
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                or nullptr to copy the entire surface.
+   * @param dstrect the Rect structure representing the x and y position in the
+   *                destination surface, or nullptr for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you
    *                want a specific width and height, you should use
    *                Surface.BlitScaled().
@@ -42937,10 +42842,10 @@ public:
    * blitting, assuming the input rectangles have already been clipped.
    *
    * @param src the Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, may not be nullptr.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, may not be nullptr.
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                may not be nullptr.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, may not be nullptr.
    * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -42959,10 +42864,10 @@ public:
    * format.
    *
    * @param src the Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, or nullptr to copy the entire surface.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, or nullptr to fill the entire
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                or nullptr to copy the entire surface.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, or nullptr to fill the entire
    *                destination surface.
    * @param scaleMode the ScaleMode to be used.
    * @throws Error on failure.
@@ -42986,10 +42891,10 @@ public:
    * assuming the input rectangles have already been clipped.
    *
    * @param src the Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, may not be nullptr.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, may not be nullptr.
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                may not be nullptr.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, may not be nullptr.
    * @param scaleMode the ScaleMode to be used.
    * @throws Error on failure.
    *
@@ -43011,10 +42916,10 @@ public:
    * Perform a stretched pixel copy from one surface to another.
    *
    * @param src the Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, or nullptr to copy the entire surface.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, or nullptr to fill the entire
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                or nullptr to copy the entire surface.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, or nullptr to fill the entire
    *                destination surface.
    * @param scaleMode the ScaleMode to be used.
    * @throws Error on failure.
@@ -43041,11 +42946,10 @@ public:
    * completely fill `dstrect`.
    *
    * @param src the SDL_Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, or nullptr to copy the entire surface.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, or nullptr to fill the entire
-   * surface.
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                or nullptr to copy the entire surface.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, or nullptr to fill the entire surface.
    * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -43067,15 +42971,14 @@ public:
    * to completely fill `dstrect`.
    *
    * @param src the SDL_Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be
-   *                copied, or nullptr to copy the entire surface.
+   * @param srcrect the Rect structure representing the rectangle to be copied,
+   *                or nullptr to copy the entire surface.
    * @param scale the scale used to transform srcrect into the destination
    *              rectangle, e.g. a 32x32 texture with a scale of 2 would fill
    *              64x64 tiles.
    * @param scaleMode scale algorithm to be used.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, or nullptr to fill the entire
-   * surface.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, or nullptr to fill the entire surface.
    * @throws Error on failure.
    *
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
@@ -43102,16 +43005,15 @@ public:
    * then stretched into place to cover the remaining destination rectangle.
    *
    * @param src the SDL_Surface structure to be copied from.
-   * @param srcrect the Rect structure representing the rectangle to be used
-   *                for the 9-grid, or nullptr to use the entire surface.
+   * @param srcrect the Rect structure representing the rectangle to be used for
+   *                the 9-grid, or nullptr to use the entire surface.
    * @param left_width the width, in pixels, of the left corners in `srcrect`.
    * @param right_width the width, in pixels, of the right corners in `srcrect`.
    * @param top_height the height, in pixels, of the top corners in `srcrect`.
    * @param bottom_height the height, in pixels, of the bottom corners in
    *                      `srcrect`.
-   * @param dstrect the Rect structure representing the target rectangle in
-   *                the destination surface, or nullptr to fill the entire
-   *                surface.
+   * @param dstrect the Rect structure representing the target rectangle in the
+   *                destination surface, or nullptr to fill the entire surface.
    * @param scale the scale used to transform the corner of `srcrect` into the
    *              corner of `dstrect`, or 0.0f for an unscaled blit.
    * @param scaleMode scale algorithm to be used.
@@ -43205,7 +43107,7 @@ public:
    *
    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
    * @param r a pointer filled in with the red channel, 0-255, or nullptr to
-   * ignore this channel.
+   *          ignore this channel.
    * @param g a pointer filled in with the green channel, 0-255, or nullptr to
    *          ignore this channel.
    * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
@@ -43372,8 +43274,7 @@ inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 }
 
 /**
- * Allocate a new surface with a specific pixel format and existing pixel
- * data.
+ * Allocate a new surface with a specific pixel format and existing pixel data.
  *
  * No copy is made of the pixel data. Pixel data is not managed automatically;
  * you must free the surface before you free the pixel data.
@@ -43430,23 +43331,22 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  * The following properties are understood by SDL:
  *
  * - `prop::Surface.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
- *   surfaces, this defines the value of 100% diffuse white, with higher
- *   values being displayed in the High Dynamic Range headroom. This defaults
- *   to 203 for HDR10 surfaces and 1.0 for floating point surfaces.
- * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
- *   surfaces, this defines the maximum dynamic range used by the content, in
- *   terms of the SDR white point. This defaults to 0.0, which disables tone
- *   mapping.
- * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator
- *   used when compressing from a surface with high dynamic range to another
- *   with lower dynamic range. Currently this supports "chrome", which uses
- *   the same tone mapping that Chrome uses for HDR content, the form "*=N",
- *   where N is a floating point scale factor applied in linear space, and
- *   "none", which disables tone mapping. This defaults to "chrome".
- * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the
- *   left edge of the image, if this surface is being used as a cursor.
- * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the
- *   top edge of the image, if this surface is being used as a cursor.
+ *   surfaces, this defines the value of 100% diffuse white, with higher values
+ *   being displayed in the High Dynamic Range headroom. This defaults to 203
+ *   for HDR10 surfaces and 1.0 for floating point surfaces.
+ * - `prop::Surface.HDR_HEADROOM_FLOAT`: for HDR10 and floating point surfaces,
+ *   this defines the maximum dynamic range used by the content, in terms of the
+ *   SDR white point. This defaults to 0.0, which disables tone mapping.
+ * - `prop::Surface.TONEMAP_OPERATOR_STRING`: the tone mapping operator used
+ *   when compressing from a surface with high dynamic range to another with
+ *   lower dynamic range. Currently this supports "chrome", which uses the same
+ *   tone mapping that Chrome uses for HDR content, the form "*=N", where N is a
+ *   floating point scale factor applied in linear space, and "none", which
+ *   disables tone mapping. This defaults to "chrome".
+ * - `prop::Surface.HOTSPOT_X_NUMBER`: the hotspot pixel offset from the left
+ *   edge of the image, if this surface is being used as a cursor.
+ * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
+ *   edge of the image, if this surface is being used as a cursor.
  *
  * @param surface the Surface structure to query.
  * @returns a valid property ID on success.
@@ -43492,8 +43392,7 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  * interpreted in color operations.
  *
  * @param surface the Surface structure to update.
- * @param colorspace an Colorspace value describing the surface
- *                   colorspace.
+ * @param colorspace an Colorspace value describing the surface colorspace.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -43515,13 +43414,13 @@ inline void Surface::SetColorspace(Colorspace colorspace)
 /**
  * Get the colorspace used by a surface.
  *
- * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point
- * formats, COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for
- * other RGB surfaces and COLORSPACE_BT709_FULL for YUV textures.
+ * The colorspace defaults to COLORSPACE_SRGB_LINEAR for floating point formats,
+ * COLORSPACE_HDR10 for 10-bit formats, COLORSPACE_SRGB for other RGB surfaces
+ * and COLORSPACE_BT709_FULL for YUV textures.
  *
  * @param surface the Surface structure to query.
- * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if
- *          the surface is nullptr.
+ * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if the
+ *          surface is nullptr.
  *
  * @threadsafety This function is not thread safe.
  *
@@ -43548,10 +43447,9 @@ inline Colorspace Surface::GetColorspace() const
  * destroy the returned palette, it will be freed when the reference count
  * reaches 0, usually when the surface is destroyed.
  *
- * Bitmap surfaces (with format PIXELFORMAT_INDEX1LSB or
- * PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
- * white and 1 as black. Other surfaces will get a palette initialized with
- * white in every entry.
+ * Bitmap surfaces (with format PIXELFORMAT_INDEX1LSB or PIXELFORMAT_INDEX1MSB)
+ * will have the palette initialized with 0 as white and 1 as black. Other
+ * surfaces will get a palette initialized with white in every entry.
  *
  * If this function is called for a surface that already has a palette, a new
  * palette will be created to replace it.
@@ -43686,12 +43584,12 @@ inline bool Surface::HasAlternateImages() const
 /**
  * Get an array including all versions of a surface.
  *
- * This returns all versions of a surface, with the surface being queried as
- * the first element in the returned array.
+ * This returns all versions of a surface, with the surface being queried as the
+ * first element in the returned array.
  *
- * Freeing the array of surfaces does not affect the surfaces in the array.
- * They are still referenced by the surface being queried and will be cleaned
- * up normally.
+ * Freeing the array of surfaces does not affect the surfaces in the array. They
+ * are still referenced by the surface being queried and will be cleaned up
+ * normally.
  *
  * @param surface the Surface structure to query.
  * @returns a nullptr terminated array of Surface pointers or nullptr on
@@ -43746,10 +43644,10 @@ inline void Surface::RemoveAlternateImages()
 /**
  * Set up a surface for directly accessing the pixels.
  *
- * Between calls to Surface.Lock() / Surface.Unlock(), you can write to
- * and read from `surface->pixels`, using the pixel format stored in
- * `surface->format`. Once you are done accessing the surface, you should use
- * Surface.Unlock() to release it.
+ * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and read
+ * from `surface->pixels`, using the pixel format stored in `surface->format`.
+ * Once you are done accessing the surface, you should use Surface.Unlock() to
+ * release it.
  *
  * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
  * 0, then you can read and write to the surface at any time, and the pixel
@@ -43759,8 +43657,8 @@ inline void Surface::RemoveAlternateImages()
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe. The locking referred to by
- *               this function is making the pixels available for direct
- *               access, not thread-safe locking.
+ *               this function is making the pixels available for direct access,
+ *               not thread-safe locking.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43780,8 +43678,8 @@ inline void Surface::Lock() { SDL::LockSurface(m_resource); }
  * @param surface the Surface structure to be unlocked.
  *
  * @threadsafety This function is not thread safe. The locking referred to by
- *               this function is making the pixels available for direct
- *               access, not thread-safe locking.
+ *               this function is making the pixels available for direct access,
+ *               not thread-safe locking.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43794,12 +43692,12 @@ inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 /**
  * Load a BMP image from a seekable SDL data stream.
  *
- * The new surface should be freed with Surface.Destroy(). Not doing so
- * will result in a memory leak.
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
  *
  * @param src the data stream for the surface.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
+ *                even in the case of an error.
  * @returns a pointer to a new Surface structure or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -43819,8 +43717,8 @@ inline Surface LoadBMP(IOStreamParam src, bool closeio = false)
 /**
  * Load a BMP image from a file.
  *
- * The new surface should be freed with Surface.Destroy(). Not doing so
- * will result in a memory leak.
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
  *
  * @param file the BMP file to load.
  * @returns a pointer to a new Surface structure or nullptr on failure; call
@@ -43849,16 +43747,16 @@ inline Surface Surface::LoadBMP(StringParam file)
 /**
  * Save a surface to a seekable SDL data stream in BMP format.
  *
- * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
- * BMP directly. Other RGB formats with 8-bit or higher get converted to a
- * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
- * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
- * not supported.
+ * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP
+ * directly. Other RGB formats with 8-bit or higher get converted to a 24-bit
+ * surface or, if they have an alpha mask or a colorkey, to a 32-bit surface
+ * before they are saved. YUV and paletted 1-bit and 4-bit formats are not
+ * supported.
  *
  * @param surface the Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
  * @param closeio if true, calls IOStream.Close() on `dst` before returning,
- * even in the case of an error.
+ *                even in the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety This function is not thread safe.
@@ -43878,11 +43776,11 @@ inline void SaveBMP(SurfaceConstParam surface,
 /**
  * Save a surface to a file.
  *
- * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
- * BMP directly. Other RGB formats with 8-bit or higher get converted to a
- * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
- * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
- * not supported.
+ * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP
+ * directly. Other RGB formats with 8-bit or higher get converted to a 24-bit
+ * surface or, if they have an alpha mask or a colorkey, to a 32-bit surface
+ * before they are saved. YUV and paletted 1-bit and 4-bit formats are not
+ * supported.
  *
  * @param surface the Surface structure containing the image to be saved.
  * @param file a file to save to.
@@ -43962,12 +43860,11 @@ inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
 /**
  * Set the color key (transparent pixel) in a surface.
  *
- * The color key defines a pixel value that will be treated as transparent in
- * a blit. For example, one can use this to specify that cyan pixels should be
+ * The color key defines a pixel value that will be treated as transparent in a
+ * blit. For example, one can use this to specify that cyan pixels should be
  * considered transparent, and therefore not rendered.
  *
- * It is a pixel of the format used by the surface, as generated by
- * MapRGB().
+ * It is a pixel of the format used by the surface, as generated by MapRGB().
  *
  * @param surface the Surface structure to update.
  * @param key the transparent pixel or std::nullopt to disable it.
@@ -44322,8 +44219,7 @@ inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
  * When `surface` is the destination of a blit, only the area within the clip
  * rectangle is drawn into.
  *
- * @param surface the Surface structure representing the surface to be
- *                clipped.
+ * @param surface the Surface structure representing the surface to be clipped.
  * @returns the Rect structure filled in with the clipping rectangle for the
  *          surface.
  * @throws Error on failure.
@@ -44427,8 +44323,8 @@ inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
  *
  * This function is used to optimize images for faster *repeat* blitting. This
  * is accomplished by converting the original and storing the result as a new
- * surface. The new, optimized surface can then be used as the source for
- * future blits, making them faster.
+ * surface. The new, optimized surface can then be used as the source for future
+ * blits, making them faster.
  *
  * If you are converting to an indexed surface and want to map colors to a
  * palette, you can use Surface.Convert() instead.
@@ -44462,9 +44358,9 @@ inline Surface Surface::Convert(PixelFormat format) const
  * Copy an existing surface to a new surface of the specified format and
  * colorspace.
  *
- * This function converts an existing surface to a new format and colorspace
- * and returns the new surface. This will perform any pixel format and
- * colorspace conversion needed.
+ * This function converts an existing surface to a new format and colorspace and
+ * returns the new surface. This will perform any pixel format and colorspace
+ * conversion needed.
  *
  * If the original surface has alternate images, the new surface will have a
  * reference to them as well.
@@ -44472,7 +44368,7 @@ inline Surface Surface::Convert(PixelFormat format) const
  * @param surface the existing Surface structure to convert.
  * @param format the new pixel format.
  * @param palette an optional palette to use for indexed formats, may be
- * nullptr.
+ *                nullptr.
  * @param colorspace the new colorspace.
  * @param props an Properties with additional color properties, or 0.
  * @returns the new Surface structure that is created or nullptr on failure;
@@ -44516,9 +44412,9 @@ inline Surface Surface::Convert(PixelFormat format,
  * @param dst_pitch the pitch of the destination pixels, in bytes.
  * @throws Error on failure.
  *
- * @threadsafety The same destination pixels should not be used from two
- *               threads at once. It is safe to use the same source pixels
- *               from multiple threads.
+ * @threadsafety The same destination pixels should not be used from two threads
+ *               at once. It is safe to use the same source pixels from multiple
+ *               threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44542,24 +44438,24 @@ inline void ConvertPixels(const PointRaw& size,
  *
  * @param size the width and height  of the block to copy, in pixels.
  * @param src_format an PixelFormat value of the `src` pixels format.
- * @param src_colorspace an Colorspace value describing the colorspace of
- *                       the `src` pixels.
- * @param src_properties an Properties with additional source color
- *                       properties, or 0.
+ * @param src_colorspace an Colorspace value describing the colorspace of the
+ *                       `src` pixels.
+ * @param src_properties an Properties with additional source color properties,
+ *                       or 0.
  * @param src a pointer to the source pixels.
  * @param src_pitch the pitch of the source pixels, in bytes.
  * @param dst_format an PixelFormat value of the `dst` pixels format.
- * @param dst_colorspace an Colorspace value describing the colorspace of
- *                       the `dst` pixels.
+ * @param dst_colorspace an Colorspace value describing the colorspace of the
+ *                       `dst` pixels.
  * @param dst_properties an Properties with additional destination color
  *                       properties, or 0.
  * @param dst a pointer to be filled in with new pixel data.
  * @param dst_pitch the pitch of the destination pixels, in bytes.
  * @throws Error on failure.
  *
- * @threadsafety The same destination pixels should not be used from two
- *               threads at once. It is safe to use the same source pixels
- *               from multiple threads.
+ * @threadsafety The same destination pixels should not be used from two threads
+ *               at once. It is safe to use the same source pixels from multiple
+ *               threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44607,9 +44503,9 @@ inline void ConvertPixelsAndColorspace(const PointRaw& size,
  *               multiplication, false to do multiplication in sRGB space.
  * @throws Error on failure.
  *
- * @threadsafety The same destination pixels should not be used from two
- *               threads at once. It is safe to use the same source pixels
- *               from multiple threads.
+ * @threadsafety The same destination pixels should not be used from two threads
+ *               at once. It is safe to use the same source pixels from multiple
+ *               threads.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44687,17 +44583,17 @@ inline void Surface::Clear(const FColorRaw& c)
  * Perform a fast fill of a rectangle with a specific color.
  *
  * `color` should be a pixel of the format used by the surface, and can be
- * generated by MapColor(). If the color value contains an
- * alpha component then the destination is simply filled with that alpha
- * information, no blending takes place.
+ * generated by MapRGB() or MapColor(). If the color value contains an alpha
+ * component then the destination is simply filled with that alpha information,
+ * no blending takes place.
  *
  * If there is a clip rectangle set on the destination (set via
  * Surface.SetClipRect()), then this function will fill based on the
  * intersection of the clip rectangle and `rect`.
  *
  * @param dst the Surface structure that is the drawing target.
- * @param rect the Rect structure representing the rectangle to fill, or
- *             nullptr to fill the entire surface.
+ * @param rect the Rect structure representing the rectangle to fill, or nullptr
+ *             to fill the entire surface.
  * @param color the color to fill with.
  * @throws Error on failure.
  *
@@ -44741,9 +44637,9 @@ inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
  * Perform a fast fill of a set of rectangles with a specific color.
  *
  * `color` should be a pixel of the format used by the surface, and can be
- * generated by MapColor(). If the color value contains an
- * alpha component then the destination is simply filled with that alpha
- * information, no blending takes place.
+ * generated by MapRGB() or MapColor(). If the color value contains an alpha
+ * component then the destination is simply filled with that alpha information,
+ * no blending takes place.
  *
  * If there is a clip rectangle set on the destination (set via
  * Surface.SetClipRect()), then this function will fill based on the
@@ -44773,8 +44669,8 @@ inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
 }
 
 /**
- * Performs a fast blit from the source surface to the destination surface
- * with clipping.
+ * Performs a fast blit from the source surface to the destination surface with
+ * clipping.
  *
  * If either `srcrect` or `dstrect` are nullptr, the entire surface (`src` or
  * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
@@ -44825,18 +44721,18 @@ inline void Surface::FillRects(SpanRef<const RectRaw> rects, Uint32 color)
  * ```
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, or nullptr to copy the entire surface.
+ * @param srcrect the Rect structure representing the rectangle to be copied, or
+ *                nullptr to copy the entire surface.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the x and y position in
- *                the destination surface, or nullptr for (0,0). The width and
- *                height are ignored, and are copied from `srcrect`. If you
- *                want a specific width and height, you should use
+ * @param dstrect the Rect structure representing the x and y position in the
+ *                destination surface, or nullptr for (0,0). The width and
+ *                height are ignored, and are copied from `srcrect`. If you want
+ *                a specific width and height, you should use
  *                Surface.BlitScaled().
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44946,15 +44842,15 @@ inline void BlitSurfaceAt(SurfaceParam src,
  * blitting, assuming the input rectangles have already been clipped.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, may not be nullptr.
+ * @param srcrect the Rect structure representing the rectangle to be copied,
+ *                may not be nullptr.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, may not be nullptr.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, may not be nullptr.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44980,17 +44876,17 @@ inline void Surface::BlitUnchecked(SurfaceParam src,
  * format.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, or nullptr to copy the entire surface.
+ * @param srcrect the Rect structure representing the rectangle to be copied, or
+ *                nullptr to copy the entire surface.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, or nullptr to fill the entire
- *                destination surface.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, or nullptr to fill the entire destination
+ *                surface.
  * @param scaleMode the ScaleMode to be used.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -45020,16 +44916,16 @@ inline void Surface::BlitScaled(SurfaceParam src,
  * assuming the input rectangles have already been clipped.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, may not be nullptr.
+ * @param srcrect the Rect structure representing the rectangle to be copied,
+ *                may not be nullptr.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, may not be nullptr.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, may not be nullptr.
  * @param scaleMode the ScaleMode to be used.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -45059,17 +44955,17 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
  * Perform a stretched pixel copy from one surface to another.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, or nullptr to copy the entire surface.
+ * @param srcrect the Rect structure representing the rectangle to be copied, or
+ *                nullptr to copy the entire surface.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, or nullptr to fill the entire
- *                destination surface.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, or nullptr to fill the entire destination
+ *                surface.
  * @param scaleMode the ScaleMode to be used.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.4.0.
  *
@@ -45102,16 +44998,15 @@ inline void Surface::Stretch(SurfaceParam src,
  * completely fill `dstrect`.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, or nullptr to copy the entire surface.
+ * @param srcrect the Rect structure representing the rectangle to be copied, or
+ *                nullptr to copy the entire surface.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, or nullptr to fill the entire
- * surface.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, or nullptr to fill the entire surface.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -45140,20 +45035,19 @@ inline void Surface::BlitTiled(SurfaceParam src,
  * to completely fill `dstrect`.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be
- *                copied, or nullptr to copy the entire surface.
+ * @param srcrect the Rect structure representing the rectangle to be copied, or
+ *                nullptr to copy the entire surface.
  * @param scale the scale used to transform srcrect into the destination
  *              rectangle, e.g. a 32x32 texture with a scale of 2 would fill
  *              64x64 tiles.
  * @param scaleMode scale algorithm to be used.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, or nullptr to fill the entire
- * surface.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, or nullptr to fill the entire surface.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -45186,29 +45080,28 @@ inline void Surface::BlitTiledWithScale(SurfaceParam src,
  *
  * The pixels in the source surface are split into a 3x3 grid, using the
  * different corner sizes for each corner, and the sides and center making up
- * the remaining pixels. The corners are then scaled using `scale` and fit
- * into the corners of the destination rectangle. The sides and center are
- * then stretched into place to cover the remaining destination rectangle.
+ * the remaining pixels. The corners are then scaled using `scale` and fit into
+ * the corners of the destination rectangle. The sides and center are then
+ * stretched into place to cover the remaining destination rectangle.
  *
  * @param src the Surface structure to be copied from.
- * @param srcrect the Rect structure representing the rectangle to be used
- *                for the 9-grid, or nullptr to use the entire surface.
+ * @param srcrect the Rect structure representing the rectangle to be used for
+ *                the 9-grid, or nullptr to use the entire surface.
  * @param left_width the width, in pixels, of the left corners in `srcrect`.
  * @param right_width the width, in pixels, of the right corners in `srcrect`.
  * @param top_height the height, in pixels, of the top corners in `srcrect`.
  * @param bottom_height the height, in pixels, of the bottom corners in
  *                      `srcrect`.
  * @param dst the Surface structure that is the blit target.
- * @param dstrect the Rect structure representing the target rectangle in
- *                the destination surface, or nullptr to fill the entire
- *                surface.
+ * @param dstrect the Rect structure representing the target rectangle in the
+ *                destination surface, or nullptr to fill the entire surface.
  * @param scale the scale used to transform the corner of `srcrect` into the
  *              corner of `dstrect`, or 0.0f for an unscaled blit.
  * @param scaleMode scale algorithm to be used.
  * @throws Error on failure.
  *
- * @threadsafety Only one thread should be using the `src` and `dst` surfaces
- *               at any given time.
+ * @threadsafety Only one thread should be using the `src` and `dst` surfaces at
+ *               any given time.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -45263,14 +45156,14 @@ inline void Surface::Blit9Grid(SurfaceParam src,
  * Map an RGB triple to an opaque pixel value for a surface.
  *
  * This function maps the RGB color value to the specified pixel format and
- * returns the pixel value best approximating the given RGB color value for
- * the given pixel format.
+ * returns the pixel value best approximating the given RGB color value for the
+ * given pixel format.
  *
- * If the surface has a palette, the index of the closest matching color in
- * the palette will be returned.
+ * If the surface has a palette, the index of the closest matching color in the
+ * palette will be returned.
  *
- * If the surface pixel format has an alpha component it will be returned as
- * all 1 bits (fully opaque).
+ * If the surface pixel format has an alpha component it will be returned as all
+ * 1 bits (fully opaque).
  *
  * If the pixel format bpp (color depth) is less than 32-bpp then the unused
  * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
@@ -45306,14 +45199,14 @@ inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
  * Map an RGBA quadruple to a pixel value for a surface.
  *
  * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for
- * the given pixel format.
+ * returns the pixel value best approximating the given RGBA color value for the
+ * given pixel format.
  *
  * If the surface pixel format has no alpha component the alpha value will be
  * ignored (as it will be in formats with a palette).
  *
- * If the surface has a palette, the index of the closest matching color in
- * the palette will be returned.
+ * If the surface has a palette, the index of the closest matching color in the
+ * palette will be returned.
  *
  * If the pixel format bpp (color depth) is less than 32-bpp then the unused
  * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
@@ -45352,7 +45245,7 @@ inline Uint32 Surface::MapRGBA(ColorRaw c) const
  * @param surface the surface to read.
  * @param p the coordinates, 0 <= x < width and 0 <= y < height.
  * @param r a pointer filled in with the red channel, 0-255, or nullptr to
- * ignore this channel.
+ *          ignore this channel.
  * @param g a pointer filled in with the green channel, 0-255, or nullptr to
  *          ignore this channel.
  * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
@@ -45422,8 +45315,8 @@ inline Color Surface::ReadPixel(const PointRaw& p) const
  *
  * @param surface the surface to read.
  * @param p the coordinates, 0 <= x < width and 0 <= y < height.
- * @param r a pointer filled in with the red channel, normally in the range
- *          0-1, or nullptr to ignore this channel.
+ * @param r a pointer filled in with the red channel, normally in the range 0-1,
+ *          or nullptr to ignore this channel.
  * @param g a pointer filled in with the green channel, normally in the range
  *          0-1, or nullptr to ignore this channel.
  * @param b a pointer filled in with the blue channel, normally in the range
@@ -83936,8 +83829,8 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
 /**
  * @defgroup CategorySystem Platform-specific Functionality
  *
- * Platform-specific SDL API functions. These are functions that deal with
- * needs of specific operating systems, that didn't make sense to offer as
+ * Platform-specific SDL API functions. These are functions that deal with needs
+ * of specific operating systems, that didn't make sense to offer as
  * platform-independent, generic APIs.
  *
  * Most apps can make do without these functions, but they can be useful for
@@ -83964,8 +83857,7 @@ using MSG = ::MSG;
  * As this is processing a message directly from the Windows event loop, this
  * callback should do the minimum required work and return quickly.
  *
- * @param userdata the app-defined pointer provided to
- *                 SetWindowsMessageHook.
+ * @param userdata the app-defined pointer provided to SetWindowsMessageHook.
  * @param msg a pointer to a Win32 event structure to process.
  * @returns true to let event continue on, false to drop it.
  *
@@ -83988,8 +83880,6 @@ using WindowsMessageHook = SDL_WindowsMessageHook;
  * As this is processing a message directly from the Windows event loop, this
  * callback should do the minimum required work and return quickly.
  *
- * @param userdata the app-defined pointer provided to
- *                 SetWindowsMessageHook.
  * @param msg a pointer to a Win32 event structure to process.
  * @returns true to let event continue on, false to drop it.
  *
@@ -84120,7 +84010,6 @@ using X11EventHook = SDL_X11EventHook;
  * As this is processing an event directly from the X11 event loop, this
  * callback should do the minimum required work and return quickly.
  *
- * @param userdata the app-defined pointer provided to SetX11EventHook.
  * @param xevent a pointer to an Xlib XEvent union to process.
  * @returns true to let event continue on, false to drop it.
  *
@@ -84130,6 +84019,7 @@ using X11EventHook = SDL_X11EventHook;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa SetX11EventHook
+ *
  * @sa X11EventHook
  */
 using X11EventHookCB = std::function<bool(XEvent*)>;
@@ -84137,8 +84027,8 @@ using X11EventHookCB = std::function<bool(XEvent*)>;
 /**
  * Set a callback for every X11 event.
  *
- * The callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
+ * The callback may modify the event, and should return true if the event should
+ * continue to be processed, or false to prevent further processing.
  *
  * @param callback the X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
@@ -84153,8 +84043,8 @@ inline void SetX11EventHook(X11EventHook callback, void* userdata)
 /**
  * Set a callback for every X11 event.
  *
- * The callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
+ * The callback may modify the event, and should return true if the event should
+ * continue to be processed, or false to prevent further processing.
  *
  * @param callback the X11EventHook function to call.
  *
@@ -84218,12 +84108,11 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
  *
  * This datatype is only useful on Apple iOS.
  *
- * After passing a function pointer of this type to
- * SetiOSAnimationCallback, the system will call that function pointer at
- * a regular interval.
+ * After passing a function pointer of this type to SetiOSAnimationCallback, the
+ * system will call that function pointer at a regular interval.
  *
- * @param userdata what was passed as `callbackParam` to
- *                 SetiOSAnimationCallback as `callbackParam`.
+ * @param userdata what was passed as `callbackParam` to SetiOSAnimationCallback
+ *                 as `callbackParam`.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -84236,16 +84125,13 @@ using iOSAnimationCallback = SDL_iOSAnimationCallback;
  *
  * This datatype is only useful on Apple iOS.
  *
- * After passing a function pointer of this type to
- * SetiOSAnimationCallback, the system will call that function pointer at
- * a regular interval.
- *
- * @param userdata what was passed as `callbackParam` to
- *                 SetiOSAnimationCallback as `callbackParam`.
+ * After passing a function pointer of this type to SetiOSAnimationCallback, the
+ * system will call that function pointer at a regular interval.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa SetiOSAnimationCallback
+ *
  * @sa iOSAnimationCallback
  */
 using iOSAnimationCB = std::function<void()>;
@@ -84276,8 +84162,7 @@ using iOSAnimationCB = std::function<void()>;
  * https://wiki.libsdl.org/SDL3/README/main-functions
  *
  * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be
- *                 called.
+ * @param interval the number of frames after which **callback** will be called.
  * @param callback the function to call for every frame.
  * @param callbackParam a pointer that is passed to `callback`.
  * @throws Error on failure.
@@ -84321,8 +84206,7 @@ inline void SetiOSAnimationCallback(WindowParam window,
  * https://wiki.libsdl.org/SDL3/README/main-functions
  *
  * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be
- *                 called.
+ * @param interval the number of frames after which **callback** will be called.
  * @param callback the function to call for every frame.
  * @throws Error on failure.
  *
@@ -84365,12 +84249,12 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  * code, and is needed for many Android APIs to be usable from C.
  *
  * The prototype of the function in SDL's code actually declare a void* return
- * type, even if the implementation returns a pointer to a JNIEnv. The
- * rationale being that the SDL headers can avoid including jni.h.
+ * type, even if the implementation returns a pointer to a JNIEnv. The rationale
+ * being that the SDL headers can avoid including jni.h.
  *
  * @returns a pointer to Java native interface object (JNIEnv) to which the
- *          current thread is attached, or nullptr on failure; call
- *          GetError() for more information.
+ *          current thread is attached, or nullptr on failure; call GetError()
+ *          for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84383,9 +84267,9 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
 /**
  * Retrieve the Java instance of the Android activity class.
  *
- * The prototype of the function in SDL's code actually declares a void*
- * return type, even if the implementation returns a jobject. The rationale
- * being that the SDL headers can avoid including jni.h.
+ * The prototype of the function in SDL's code actually declares a void* return
+ * type, even if the implementation returns a jobject. The rationale being that
+ * the SDL headers can avoid including jni.h.
  *
  * The jobject returned by the function is a local reference and must be
  * released by the caller. See the PushLocalFrame() and PopLocalFrame() or
@@ -84394,8 +84278,8 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  * https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html
  *
  * @returns the jobject representing the instance of the Activity class of the
- *          Android application, or nullptr on failure; call GetError() for
- *          more information.
+ *          Android application, or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84492,8 +84376,7 @@ constexpr Uint32 ANDROID_EXTERNAL_STORAGE_WRITE =
  * This path is unique to your application and cannot be written to by other
  * applications.
  *
- * Your internal storage path is typically:
- * `/data/data/your.app.package/files`.
+ * Your internal storage path is typically: `/data/data/your.app.package/files`.
  *
  * This is a C wrapper over `android.content.Context.getFilesDir()`:
  *
@@ -84535,8 +84418,8 @@ inline Uint32 GetAndroidExternalStorageState()
 /**
  * Get the path used for external storage for this Android application.
  *
- * This path is unique to your application, but is public and can be written
- * to by other applications.
+ * This path is unique to your application, but is public and can be written to
+ * by other applications.
  *
  * Your external storage path is typically:
  * `/storage/sdcard0/Android/data/your.app.package/files`.
@@ -84546,6 +84429,7 @@ inline Uint32 GetAndroidExternalStorageState()
  * https://developer.android.com/reference/android/content/Context#getExternalFilesDir()
  *
  * @returns the path used for external storage for this application on success.
+ *
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -84562,8 +84446,8 @@ inline const char* GetAndroidExternalStoragePath()
 /**
  * Get the path used for caching data for this Android application.
  *
- * This path is unique to your application, but is public and can be written
- * to by other applications.
+ * This path is unique to your application, but is public and can be written to
+ * by other applications.
  *
  * Your cache path is typically: `/data/data/your.app.package/cache/`.
  *
@@ -84572,6 +84456,7 @@ inline const char* GetAndroidExternalStoragePath()
  * https://developer.android.com/reference/android/content/Context#getCacheDir()
  *
  * @returns the path used for caches for this application on success.
+ *
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -84619,12 +84504,12 @@ using RequestAndroidPermissionCB =
  * from a microphone or reading images from a camera, using standard SDL APIs,
  * will manage permission requests for you.
  *
- * This function never blocks. Instead, the app-supplied callback will be
- * called when a decision has been made. This callback may happen on a
- * different thread, and possibly much later, as it might wait on a user to
- * respond to a system dialog. If permission has already been granted for a
- * specific entitlement, the callback will still fire, probably on the current
- * thread and before this function returns.
+ * This function never blocks. Instead, the app-supplied callback will be called
+ * when a decision has been made. This callback may happen on a different
+ * thread, and possibly much later, as it might wait on a user to respond to a
+ * system dialog. If permission has already been granted for a specific
+ * entitlement, the callback will still fire, probably on the current thread and
+ * before this function returns.
  *
  * If the request submission fails, this function returns -1 and the callback
  * will NOT be called, but this should only happen in catastrophic conditions,
@@ -84639,8 +84524,8 @@ using RequestAndroidPermissionCB =
  * @param cb the callback to trigger when the request has a response.
  * @param userdata an app-controlled pointer that is passed to the callback.
  * @returns true if the request was submitted, false if there was an error
- *          submitting. The result of the request is only ever reported
- *          through the callback, not this return value.
+ *          submitting. The result of the request is only ever reported through
+ *          the callback, not this return value.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84660,12 +84545,12 @@ inline bool RequestAndroidPermission(StringParam permission,
  * from a microphone or reading images from a camera, using standard SDL APIs,
  * will manage permission requests for you.
  *
- * This function never blocks. Instead, the app-supplied callback will be
- * called when a decision has been made. This callback may happen on a
- * different thread, and possibly much later, as it might wait on a user to
- * respond to a system dialog. If permission has already been granted for a
- * specific entitlement, the callback will still fire, probably on the current
- * thread and before this function returns.
+ * This function never blocks. Instead, the app-supplied callback will be called
+ * when a decision has been made. This callback may happen on a different
+ * thread, and possibly much later, as it might wait on a user to respond to a
+ * system dialog. If permission has already been granted for a specific
+ * entitlement, the callback will still fire, probably on the current thread and
+ * before this function returns.
  *
  * If the request submission fails, this function returns -1 and the callback
  * will NOT be called, but this should only happen in catastrophic conditions,
@@ -84679,8 +84564,8 @@ inline bool RequestAndroidPermission(StringParam permission,
  * @param permission the permission to request.
  * @param cb the callback to trigger when the request has a response.
  * @returns true if the request was submitted, false if there was an error
- *          submitting. The result of the request is only ever reported
- *          through the callback, not this return value.
+ *          submitting. The result of the request is only ever reported through
+ *          the callback, not this return value.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84803,15 +84688,14 @@ constexpr Sandbox SANDBOX_MACOS = SDL_SANDBOX_MACOS; ///< MACOS
 inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
 
 /**
- * Let iOS apps with external event handling report
- * onApplicationWillTerminate.
+ * Let iOS apps with external event handling report onApplicationWillTerminate.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84824,11 +84708,11 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * onApplicationDidReceiveMemoryWarning.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84844,11 +84728,11 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * onApplicationWillResignActive.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84864,11 +84748,11 @@ inline void OnApplicationWillEnterBackground()
  * onApplicationDidEnterBackground.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84884,11 +84768,11 @@ inline void OnApplicationDidEnterBackground()
  * onApplicationWillEnterForeground.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84904,11 +84788,11 @@ inline void OnApplicationWillEnterForeground()
  * onApplicationDidBecomeActive.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84926,11 +84810,11 @@ inline void OnApplicationDidEnterForeground()
  * onApplicationDidChangeStatusBarOrientation.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -84952,12 +84836,11 @@ using XTaskQueueHandle = ::XTaskQueueHandle;
 using XUserHandle = ::XUserHandle;
 
 /**
- * Gets a reference to the global async task queue handle for GDK,
- * initializing if needed.
+ * Gets a reference to the global async task queue handle for GDK, initializing
+ * if needed.
  *
- * Once you are done with the task queue, you should call
- * XTaskQueueCloseHandle to reduce the reference count to avoid a resource
- * leak.
+ * Once you are done with the task queue, you should call XTaskQueueCloseHandle
+ * to reduce the reference count to avoid a resource leak.
  *
  * @param outTaskQueue a pointer to be filled in with task queue handle.
  * @throws Error on failure.
@@ -84975,8 +84858,7 @@ inline void GetGDKTaskQueue(XTaskQueueHandle* outTaskQueue)
  * This is effectively a synchronous version of XUserAddAsync, which always
  * prefers the default user and allows a sign-in UI.
  *
- * @param outUserHandle a pointer to be filled in with the default user
- *                      handle.
+ * @param outUserHandle a pointer to be filled in with the default user handle.
  * @returns true if success or false on failure; call GetError() for more
  *          information.
  *

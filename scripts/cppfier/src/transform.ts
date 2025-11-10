@@ -1341,7 +1341,9 @@ function expandTypes(sourceEntries: Dict<ApiEntry>, file: ApiFileTransform, cont
     }
     const after = transform.after;
     if (after) context.includeAfter(targetName, after);
-    const since = transform.since ?? resolveVersionDoc(sourceEntry.doc ?? "", context);
+    const since = transform.since
+      ?? resolveVersionDoc(sourceEntry.doc, context)
+      ?? resolveVersionParsedDoc(sourceEntry.parsedDoc, context);
 
     for (const value of values) {
       const valueSource = sourceEntries[value];
@@ -1935,7 +1937,8 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
       if (entry.static) addHints(entry, { static: true });
       delete entry.static;
       delete entry.explicit;
-      if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
+      if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context)
+        ?? resolveVersionParsedDoc(entry.parsedDoc, context);
       delete entry.doc;
       delete entry.parsedDoc;
     }
@@ -2215,7 +2218,10 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
       if (!entry.since) entry.since = resolveVersionDoc(entry.doc, context);
       entry.doc = resolveDocRefs(entry.doc, context);
     }
-    if (entry.parsedDoc) entry.parsedDoc = resolveParsedDocRefs(entry.parsedDoc, context);
+    if (entry.parsedDoc) {
+      entry.parsedDoc = resolveParsedDocRefs(entry.parsedDoc, context);
+      if (!entry.since) entry.since = resolveVersionParsedDoc(entry.parsedDoc, context);
+    }
     if (entry.entries) transformEntriesDocRefs(entry.entries, context);
     if (entry.overload) transformEntryDoc(entry.overload);
   }
@@ -2223,6 +2229,20 @@ function transformEntriesDocRefs(entries: ApiEntries, context: ApiContext) {
 
 function resolveVersionDoc(doc: string, context: ApiContext) {
   const m = /^[@\\]since\s*.*\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(doc);
+  if (!m) return undefined;
+  const version: VersionTag = {
+    tag: m[1].toUpperCase(),
+    major: +m[2],
+    minor: +m[3],
+    patch: +m[4],
+  };
+  if (context.isAfterMinVersion(version)) return version;
+}
+
+function resolveVersionParsedDoc(doc: ParsedDoc, context: ApiContext) {
+  const sinceTag = getTagInGroup(doc, '@since');
+  if (!sinceTag) return;
+  const m = /\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(sinceTag.content);
   if (!m) return undefined;
   const version: VersionTag = {
     tag: m[1].toUpperCase(),
