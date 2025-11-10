@@ -33,7 +33,7 @@ Replace parse and parse-xml for a antlr parser, convert to typescript
     - [x] SDL_GetGamepadMappings
     - [x] SDL_GetGamepadMappingForGUID
     - [x] SDL_GetGamepadMapping
-- [ ] Reflow documentation paragraphs.
+- [x] Reflow documentation paragraphs.
 
 Backlog
 =======
