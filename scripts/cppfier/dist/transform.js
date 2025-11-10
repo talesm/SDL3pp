@@ -49,8 +49,7 @@ function transformApi(config) {
         includes.push(qualifiedSourceFile);
         files.push({
             name: targetName,
-            doc: fileConfig.doc ?? transformFileDoc(sourceFile.doc, context) ?? "",
-            parsedDoc: transformFileParsedDoc(sourceFile.parsedDoc, context),
+            parsedDoc: transformFileDoc(sourceFile.parsedDoc, context),
             entries: transformEntries(sourceFile.entries, fileConfig, context),
             includes,
             localIncludes: fileConfig.localIncludes,
@@ -63,8 +62,6 @@ function transformApi(config) {
     }
     // Step 4: Transform docs
     for (const file of files) {
-        if (file.doc)
-            file.doc = resolveDocRefs(file.doc, context);
         if (file.parsedDoc)
             file.parsedDoc = resolveParsedDocRefs(file.parsedDoc, context);
         if (file.entries)
@@ -2158,13 +2155,7 @@ function checkSignatureRules(targetEntry, context) {
 function transformType(type, typeMap) {
     return typeMap[type] ?? type;
 }
-function transformFileDoc(docStr, context) {
-    if (!docStr)
-        return "";
-    docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
-    return transformDoc(docStr, context);
-}
-function transformFileParsedDoc(doc, context) {
+function transformFileDoc(doc, context) {
     if (!doc?.length)
         return;
     const title = doc[0];

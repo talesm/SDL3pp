@@ -51,7 +51,7 @@ function generateFile(targetFile, config) {
         ...(targetFile.includes ?? []).sort().map(s => `#include <${s}>`),
         ...(targetFile.localIncludes ?? []).sort().map(s => `#include "${s}"`),
     ];
-    const doc = generateFileDocString(targetFile.parsedDoc) ?? generateDocString(targetFile.doc + "\n\n@{");
+    const doc = generateFileDocString(targetFile.parsedDoc);
     return [
         `#ifndef ${guardName}\n#define ${guardName}\n`,
         ...includes,

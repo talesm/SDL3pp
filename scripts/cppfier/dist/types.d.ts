@@ -8,7 +8,6 @@ export interface Api {
 }
 export interface ApiFile {
     name: string;
-    doc?: string;
     parsedDoc?: ParsedDoc;
     entries?: ApiEntries;
     namespace?: string;
