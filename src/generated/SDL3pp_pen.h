@@ -99,24 +99,24 @@ constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
 using PenAxis = SDL_PenAxis;
 
 constexpr PenAxis PEN_AXIS_PRESSURE =
-  SDL_PEN_AXIS_PRESSURE; ///< Pen pressure.  Unidirectional: 0 to 1.0
+  SDL_PEN_AXIS_PRESSURE; ///< Pen pressure. Unidirectional: 0 to 1.0
 
-/// Pen horizontal tilt angle.  Bidirectional: -90.0 to 90.0 (left-to-right).
+/// Pen horizontal tilt angle. Bidirectional: -90.0 to 90.0 (left-to-right).
 constexpr PenAxis PEN_AXIS_XTILT = SDL_PEN_AXIS_XTILT;
 
-/// Pen vertical tilt angle.  Bidirectional: -90.0 to 90.0 (top-to-down).
+/// Pen vertical tilt angle. Bidirectional: -90.0 to 90.0 (top-to-down).
 constexpr PenAxis PEN_AXIS_YTILT = SDL_PEN_AXIS_YTILT;
 
-/// Pen distance to drawing surface.  Unidirectional: 0.0 to 1.0
+/// Pen distance to drawing surface. Unidirectional: 0.0 to 1.0
 constexpr PenAxis PEN_AXIS_DISTANCE = SDL_PEN_AXIS_DISTANCE;
 
 /**
- * Pen barrel rotation.  Bidirectional: -180 to 179.9 (clockwise, 0 is facing
- * up, -180.0 is facing down).
+ * Pen barrel rotation. Bidirectional: -180 to 179.9 (clockwise, 0 is facing up,
+ * -180.0 is facing down).
  */
 constexpr PenAxis PEN_AXIS_ROTATION = SDL_PEN_AXIS_ROTATION;
 
-/// Pen finger wheel or slider (e.g., Airbrush Pen).  Unidirectional: 0 to 1.0
+/// Pen finger wheel or slider (e.g., Airbrush Pen). Unidirectional: 0 to 1.0
 constexpr PenAxis PEN_AXIS_SLIDER = SDL_PEN_AXIS_SLIDER;
 
 /// Pressure from squeezing the pen ("barrel pressure").

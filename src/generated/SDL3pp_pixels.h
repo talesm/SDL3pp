@@ -844,10 +844,10 @@ constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT =
   SDL_PIXELFORMAT_ABGR128_FLOAT; ///< ABGR128_FLOAT
 
 constexpr PixelFormat PIXELFORMAT_YV12 =
-  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U  (3 planes)
+  SDL_PIXELFORMAT_YV12; ///< Planar mode: Y + V + U (3 planes)
 
 constexpr PixelFormat PIXELFORMAT_IYUV =
-  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V  (3 planes)
+  SDL_PIXELFORMAT_IYUV; ///< Planar mode: Y + U + V (3 planes)
 
 constexpr PixelFormat PIXELFORMAT_YUY2 =
   SDL_PIXELFORMAT_YUY2; ///< Packed mode: Y0+U0+Y1+V0 (1 plane)
@@ -859,13 +859,13 @@ constexpr PixelFormat PIXELFORMAT_YVYU =
   SDL_PIXELFORMAT_YVYU; ///< Packed mode: Y0+V0+Y1+U0 (1 plane)
 
 constexpr PixelFormat PIXELFORMAT_NV12 =
-  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved  (2 planes)
+  SDL_PIXELFORMAT_NV12; ///< Planar mode: Y + U/V interleaved (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_NV21 =
-  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved  (2 planes)
+  SDL_PIXELFORMAT_NV21; ///< Planar mode: Y + V/U interleaved (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_P010 =
-  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved  (2 planes)
+  SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
   SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format

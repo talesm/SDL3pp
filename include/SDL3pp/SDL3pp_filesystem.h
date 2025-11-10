@@ -261,7 +261,7 @@ constexpr Folder FOLDER_SCREENSHOTS =
 
 /**
  * Template files to be used when the user requests the desktop environment to
- * create a new file in a certain folder, such as "New Text File.txt".  Any file
+ * create a new file in a certain folder, such as "New Text File.txt". Any file
  * in the Templates folder can be used as a starting point for a new file.
  */
 constexpr Folder FOLDER_TEMPLATES = SDL_FOLDER_TEMPLATES;

@@ -84,33 +84,26 @@ using hid_bus_type = SDL_hid_bus_type;
 constexpr hid_bus_type HID_API_BUS_UNKNOWN =
   SDL_HID_API_BUS_UNKNOWN; ///< Unknown bus type
 
-/**
- * USB bus
- *        Specifications:
- *        https://usb.org/hid
- */
-constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
+constexpr hid_bus_type HID_API_BUS_USB =
+  SDL_HID_API_BUS_USB; ///< USB bus Specifications: https://usb.org/hid
 
 /**
- * Bluetooth or Bluetooth LE bus
- *        Specifications:
- *        https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
- *        https://www.bluetooth.com/specifications/specs/hid-service-1-0/
- *        https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
+ * Bluetooth or Bluetooth LE bus Specifications:
+ * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+ * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+ * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
  */
 constexpr hid_bus_type HID_API_BUS_BLUETOOTH = SDL_HID_API_BUS_BLUETOOTH;
 
 /**
- * I2C bus
- *        Specifications:
- *        https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
+ * I2C bus Specifications:
+ * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
  */
 constexpr hid_bus_type HID_API_BUS_I2C = SDL_HID_API_BUS_I2C;
 
 /**
- * SPI bus
- *        Specifications:
- *        https://www.microsoft.com/download/details.aspx?id=103325
+ * SPI bus Specifications:
+ * https://www.microsoft.com/download/details.aspx?id=103325
  */
 constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 

@@ -1331,9 +1331,9 @@ function expandTypes(sourceEntries, file, context) {
                 since,
             };
             (0, utils_1.combineObject)(valueTarget, valueTransform || {});
-            if (typeof valueTarget.doc !== "string" && !valueSource?.parsedDoc && !sourceEntry.entries?.[value]?.parsedDoc) {
-                const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
-                valueTarget.doc = sourceDoc || (value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name);
+            if (!valueSource?.parsedDoc) {
+                const sourceDoc = valueSource?.parsedDoc ?? sourceEntry.entries?.[value]?.parsedDoc;
+                valueTarget.parsedDoc = sourceDoc || ([value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name]);
             }
             context.addName(value, valueTarget.name);
             if (!valueSource)

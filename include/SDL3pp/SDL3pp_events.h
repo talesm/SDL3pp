@@ -438,8 +438,8 @@ constexpr EventType EVENT_POLL_SENTINEL =
   SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle
 
 /**
- * Events EVENT_USER through EVENT_LAST are for your use,
- *  and should be allocated with RegisterEvents()
+ * Events EVENT_USER through EVENT_LAST are for your use, and should be
+ * allocated with RegisterEvents()
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 

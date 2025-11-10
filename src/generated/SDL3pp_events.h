@@ -89,7 +89,7 @@ constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
 /**
  * The application is now interactive. This event must be handled in a callback
  * set with AddEventWatch(). Called on iOS in applicationDidBecomeActive()
- *                                      Called on Android in onResume()
+ * Called on Android in onResume()
  */
 constexpr EventType EVENT_DID_ENTER_FOREGROUND = SDL_EVENT_DID_ENTER_FOREGROUND;
 
@@ -210,7 +210,7 @@ constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
  * message is being handled in an event watcher, the window handle is still
  * valid and can still be used to retrieve any properties associated with the
  * window. Otherwise, the handle has already been destroyed and all resources
- *                                              associated with it are invalid
+ * associated with it are invalid
  */
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
@@ -233,9 +233,8 @@ constexpr EventType EVENT_TEXT_INPUT =
   SDL_EVENT_TEXT_INPUT; ///< Keyboard text input
 
 /**
- * Keymap changed due to a system event such as an
- *                                             input language or keyboard layout
- * change.
+ * Keymap changed due to a system event such as an input language or keyboard
+ * layout change.
  */
 constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
@@ -432,8 +431,8 @@ constexpr EventType EVENT_POLL_SENTINEL =
   SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle
 
 /**
- * Events EVENT_USER through EVENT_LAST are for your use,
- *  and should be allocated with RegisterEvents()
+ * Events EVENT_USER through EVENT_LAST are for your use, and should be
+ * allocated with RegisterEvents()
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 

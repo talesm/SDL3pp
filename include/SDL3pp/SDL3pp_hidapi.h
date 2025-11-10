@@ -87,7 +87,7 @@ constexpr hid_bus_type HID_API_BUS_UNKNOWN =
 /**
  * USB bus Specifications:
  *
- * * https://usb.org/hid
+ * - https://usb.org/hid
  */
 constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
 
@@ -108,10 +108,9 @@ constexpr hid_bus_type HID_API_BUS_BLUETOOTH = SDL_HID_API_BUS_BLUETOOTH;
 constexpr hid_bus_type HID_API_BUS_I2C = SDL_HID_API_BUS_I2C;
 
 /**
- * SPI bus
- * Specifications:
+ * SPI bus Specifications:
  *
- * * https://www.microsoft.com/download/details.aspx?id=103325
+ * - https://www.microsoft.com/download/details.aspx?id=103325
  */
 constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
 

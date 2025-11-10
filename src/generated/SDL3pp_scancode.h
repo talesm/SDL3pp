@@ -217,34 +217,23 @@ constexpr Scancode SCANCODE_RIGHTBRACKET =
   SDL_SCANCODE_RIGHTBRACKET; ///< RIGHTBRACKET
 
 /**
- * Located at the lower left of the return
- *   key on ISO keyboards and at the right end
- *   of the QWERTY row on ANSI keyboards.
- *   Produces REVERSE SOLIDUS (backslash) and
- *   VERTICAL LINE in a US layout, REVERSE
- *   SOLIDUS and VERTICAL LINE in a UK Mac
- *   layout, NUMBER SIGN and TILDE in a UK
- *   Windows layout, DOLLAR SIGN and POUND SIGN
- *   in a Swiss German layout, NUMBER SIGN and
- *   APOSTROPHE in a German layout, GRAVE
- *   ACCENT and POUND SIGN in a French Mac
- *   layout, and ASTERISK and MICRO SIGN in a
- *   French Windows layout.
+ * Located at the lower left of the return key on ISO keyboards and at the right
+ * end of the QWERTY row on ANSI keyboards. Produces REVERSE SOLIDUS (backslash)
+ * and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL LINE in a UK
+ * Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR SIGN and
+ * POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a German
+ * layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and ASTERISK and
+ * MICRO SIGN in a French Windows layout.
  */
 constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
 
 /**
- * ISO USB keyboards actually use this code
- *   instead of 49 for the same key, but all
- *   OSes I've seen treat the two codes
- *   identically. So, as an implementor, unless
- *   your keyboard generates both of those
- *   codes and your OS treats them differently,
- *   you should generate SCANCODE_BACKSLASH
- *   instead of this code. As a user, you
- *   should not rely on this code because SDL
- *   will never generate it with most (all?)
- *   keyboards.
+ * ISO USB keyboards actually use this code instead of 49 for the same key, but
+ * all OSes I've seen treat the two codes identically. So, as an implementor,
+ * unless your keyboard generates both of those codes and your OS treats them
+ * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
+ * a user, you should not rely on this code because SDL will never generate it
+ * with most (all?) keyboards.
  */
 constexpr Scancode SCANCODE_NONUSHASH = SDL_SCANCODE_NONUSHASH;
 
@@ -254,22 +243,16 @@ constexpr Scancode SCANCODE_APOSTROPHE =
   SDL_SCANCODE_APOSTROPHE; ///< APOSTROPHE
 
 /**
- * Located in the top left corner (on both ANSI
- *   and ISO keyboards). Produces GRAVE ACCENT and
- *   TILDE in a US Windows layout and in US and UK
- *   Mac layouts on ANSI keyboards, GRAVE ACCENT
- *   and NOT SIGN in a UK Windows layout, SECTION
- *   SIGN and PLUS-MINUS SIGN in US and UK Mac
- *   layouts on ISO keyboards, SECTION SIGN and
- *   DEGREE SIGN in a Swiss German layout (Mac:
- *   only on ISO keyboards), CIRCUMFLEX ACCENT and
- *   DEGREE SIGN in a German layout (Mac: only on
- *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a
- *   French Windows layout, COMMERCIAL AT and
- *   NUMBER SIGN in a French Mac layout on ISO
- *   keyboards, and LESS-THAN SIGN and GREATER-THAN
- *   SIGN in a Swiss German, German, or French Mac
- *   layout on ANSI keyboards.
+ * Located in the top left corner (on both ANSI and ISO keyboards). Produces
+ * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
+ * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
+ * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
+ * SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),
+ * CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO
+ * keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL
+ * AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN
+ * SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on
+ * ANSI keyboards.
  */
 constexpr Scancode SCANCODE_GRAVE = SDL_SCANCODE_GRAVE;
 
@@ -313,10 +296,7 @@ constexpr Scancode SCANCODE_SCROLLLOCK =
 
 constexpr Scancode SCANCODE_PAUSE = SDL_SCANCODE_PAUSE; ///< PAUSE
 
-/**
- * insert on PC, help on some Mac keyboards (but
- *                                    does send code 73, not 117)
- */
+/// insert on PC, help on some Mac keyboards (but does send code 73, not 117)
 constexpr Scancode SCANCODE_INSERT = SDL_SCANCODE_INSERT;
 
 constexpr Scancode SCANCODE_HOME = SDL_SCANCODE_HOME; ///< HOME
@@ -374,16 +354,11 @@ constexpr Scancode SCANCODE_KP_0 = SDL_SCANCODE_KP_0; ///< KP_0
 constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD; ///< KP_PERIOD
 
 /**
- * This is the additional key that ISO
- *   keyboards have over ANSI ones,
- *   located between left shift and Z.
- *   Produces GRAVE ACCENT and TILDE in a
- *   US or UK Mac layout, REVERSE SOLIDUS
- *   (backslash) and VERTICAL LINE in a
- *   US or UK Windows layout, and
- *   LESS-THAN SIGN and GREATER-THAN SIGN
- *   in a Swiss German, German, or French
- *   layout.
+ * This is the additional key that ISO keyboards have over ANSI ones, located
+ * between left shift and Z. Produces GRAVE ACCENT and TILDE in a US or UK Mac
+ * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
+ * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
+ * or French layout.
  */
 constexpr Scancode SCANCODE_NONUSBACKSLASH = SDL_SCANCODE_NONUSBACKSLASH;
 
@@ -391,9 +366,8 @@ constexpr Scancode SCANCODE_APPLICATION =
   SDL_SCANCODE_APPLICATION; ///< windows contextual menu, compose
 
 /**
- * The USB document says this is a status flag,
- *   not a physical key - but some Mac keyboards
- *   do have a power key.
+ * The USB document says this is a status flag, not a physical key - but some
+ * Mac keyboards do have a power key.
  */
 constexpr Scancode SCANCODE_POWER = SDL_SCANCODE_POWER;
 
@@ -458,11 +432,9 @@ constexpr Scancode SCANCODE_KP_COMMA = SDL_SCANCODE_KP_COMMA; ///< KP_COMMA
 constexpr Scancode SCANCODE_KP_EQUALSAS400 =
   SDL_SCANCODE_KP_EQUALSAS400; ///< KP_EQUALSAS400
 
-/**
- * used on Asian keyboards, see
- *                                             footnotes in USB doc
- */
-constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
+constexpr Scancode SCANCODE_INTERNATIONAL1 =
+  SDL_SCANCODE_INTERNATIONAL1; ///< used on Asian keyboards, see footnotes in
+                               ///< USB doc
 
 constexpr Scancode SCANCODE_INTERNATIONAL2 =
   SDL_SCANCODE_INTERNATIONAL2; ///< INTERNATIONAL2
@@ -668,9 +640,8 @@ constexpr Scancode SCANCODE_RGUI =
   SDL_SCANCODE_RGUI; ///< windows, command (apple), meta
 
 /**
- * I'm not sure if this is really not covered
- *   by any of the above, but since there's a
- *   special KMOD_MODE for it I'm adding it here
+ * I'm not sure if this is really not covered by any of the above, but since
+ * there's a special KMOD_MODE for it I'm adding it here
  */
 constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
 
@@ -746,18 +717,16 @@ constexpr Scancode SCANCODE_AC_BOOKMARKS =
   SDL_SCANCODE_AC_BOOKMARKS; ///< AC Bookmarks
 
 /**
- * Usually situated below the display on phones and
- *                                       used as a multi-function feature key
- * for selecting a software defined function shown on the bottom left of the
- * display.
+ * Usually situated below the display on phones and used as a multi-function
+ * feature key for selecting a software defined function shown on the bottom
+ * left of the display.
  */
 constexpr Scancode SCANCODE_SOFTLEFT = SDL_SCANCODE_SOFTLEFT;
 
 /**
- * Usually situated below the display on phones and
- *                                        used as a multi-function feature key
- * for selecting a software defined function shown on the bottom right of the
- * display.
+ * Usually situated below the display on phones and used as a multi-function
+ * feature key for selecting a software defined function shown on the bottom
+ * right of the display.
  */
 constexpr Scancode SCANCODE_SOFTRIGHT = SDL_SCANCODE_SOFTRIGHT;
 
