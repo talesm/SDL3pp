@@ -1,4 +1,4 @@
-const { parseApi, parseContent } = require("../src/parse.js");
+const { parseApi, parseContent } = require("../parse");
 const emptyApi = require("./samples/empty.json");
 const varsApi = require("./samples/vars.json");
 const functionsApi = require("./samples/functions.json");
@@ -11,49 +11,49 @@ const enumsAliasesApi = require("./samples/enums_aliases.json");
 
 test("parse empty.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["empty.h"]
   })).toEqual(emptyApi);
 });
 
 test("parse vars.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["vars.h"]
   })).toEqual(varsApi);
 });
 
 test("parse functions.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["functions.h"]
   })).toEqual(functionsApi);
 });
 
 test("parse structs.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["structs.h"]
   })).toEqual(structsApi);
 });
 
 test("parse structs_aliases.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["structs_aliases.h"]
   })).toEqual(structsAliasesApi);
 });
 
 test("parse structs_extends.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["structs_extends.h"]
   })).toEqual(structsExtendsApi);
 });
 
 test("parse structs_resources.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["structs_resources.h"]
   })).toEqual(structsResourcesApi);
 });
@@ -83,14 +83,14 @@ test("parse ends on trailing }", () => {
 
 test("parse enums.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["enums.h"]
   })).toEqual(enumsApi);
 });
 
 test("parse enums_aliases.h", () => {
   expect(parseApi({
-    baseDir: ["tests/samples/"],
+    baseDir: ["scripts/cppfier/tests/samples/"],
     sources: ["enums_aliases.h"]
   })).toEqual(enumsAliasesApi);
 });

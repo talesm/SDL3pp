@@ -2,6 +2,6 @@
   "sources": [
     "empty.h"
   ],
-  "api": "tests/samples/empty.json",
-  "baseDir": "tests/samples/"
+  "api": "scripts/cppfier/tests/samples/empty.json",
+  "baseDir": "scripts/cppfier/tests/samples/"
 }

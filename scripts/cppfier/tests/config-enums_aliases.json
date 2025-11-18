@@ -2,9 +2,9 @@
   "sources": [
     "enums_aliases.h"
   ],
-  "api": "tests/samples/enums_aliases.json",
-  "baseDir": "tests/samples/",
-  "sourceApi": "tests/samples/enums.json",
+  "api": "scripts/cppfier/tests/samples/enums_aliases.json",
+  "baseDir": "scripts/cppfier/tests/samples/",
+  "sourceApi": "scripts/cppfier/tests/samples/enums.json",
   "transform": {
     "prefixes": "My",
     "renameRules": [
