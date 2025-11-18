@@ -68,8 +68,10 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   const generatedEntries = generateEntries(targetFile.entries, "");
 
   const includes = [
-    ...(targetFile.includes ?? []).sort().map((s) => `#include <${s}>`),
-    ...(targetFile.localIncludes ?? []).sort().map((s) => `#include "${s}"`),
+    ...(targetFile.includes ?? []).toSorted().map((s) => `#include <${s}>`),
+    ...(targetFile.localIncludes ?? [])
+      .toSorted()
+      .map((s) => `#include "${s}"`),
   ];
 
   const doc = generateFileDocString(targetFile.doc);
@@ -87,10 +89,10 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     if (!prefix) prefix = "";
 
     const result: string[] = [];
-    Object.values(entries).forEach((entry) => doGenerateEntries(entry));
+    for (const entry of Object.values(entries)) doGenerateEntries(entry);
     return result.join("\n\n") + "\n";
 
-    function doGenerateEntries(entry) {
+    function doGenerateEntries(entry: ApiEntry) {
       result.push(generateEntry(entry, prefix));
       if (entry.overload) doGenerateEntries(entry.overload);
     }
@@ -102,9 +104,8 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     return generateDocString(doc);
   }
 
-  function generateDocString(doc: ParsedDoc, prefix?: string) {
+  function generateDocString(doc: ParsedDoc, prefix = "") {
     if (!doc?.length) return undefined;
-    prefix = prefix ?? "";
     if (doc.length === 1) {
       const docStr = doc[0];
       if (
@@ -158,8 +159,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     return result.join("\n" + prefix);
   }
 
-  function generateEntry(entry: ApiEntry, prefix?: string) {
-    prefix = prefix ?? "";
+  function generateEntry(entry: ApiEntry, prefix = "") {
     const doc = generateDocString(entry.doc, prefix) ?? "";
     const template = generateTemplateSignature(entry.template, prefix);
     const version = entry.since;
@@ -174,11 +174,12 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
     function doGenerate(entry: ApiEntry) {
       switch (entry.kind) {
-        case "alias":
+        case "alias": {
           if (!entry.type) return `${doc}\n${prefix}using ${entry.name};`;
           const target =
             entry.name === entry.type ? `::${entry.type}` : entry.type;
           return `${doc}\n${template}${prefix}using ${entry.name} = ${target};`;
+        }
         case "def":
           return `${doc}\n${generateDef(entry)}`;
         case "forward":
@@ -194,7 +195,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
           return doc + generateNS(entry);
         case "struct":
           return `${doc}\n${template}${generateStruct(entry, prefix)}`;
-        case "var":
+        case "var": {
           const varStr = generateVar(entry, prefix);
           if (entry?.doc?.length === 1) {
             const firstLine = entry.doc[0];
@@ -203,6 +204,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
             }
           }
           return `${doc}\n${template}${varStr}`;
+        }
         default:
           system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
           return `${doc}\n#${prefix}error "${entry.name} (${entry.kind})"`;
@@ -219,7 +221,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
   function generateDef(entry: ApiEntry) {
     const sourceName =
-      entry.sourceName != entry.name ? entry.sourceName : undefined;
+      entry.sourceName === entry.name ? undefined : entry.sourceName;
     if (!entry.parameters)
       return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
 
@@ -324,19 +326,16 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     const subEntriesStr = generateEntries(subEntries, prefix + "  ");
     return `${signature}${parent}\n${prefix}{${subEntriesStr}\n${prefix}};`;
   }
-
-  function generateStructSignature(entry: ApiEntry, prefix: string) {
-    if (entry.hints?.private) {
-      return `${prefix}class ${entry.name}`;
-    }
-    return `${prefix}struct ${entry.name}`;
+}
+function generateStructSignature(entry: ApiEntry, prefix: string) {
+  if (entry.hints?.private) {
+    return `${prefix}class ${entry.name}`;
   }
+  return `${prefix}struct ${entry.name}`;
+}
 
-  function generateTemplateSignature(template: ApiParameters, prefix: string) {
-    return !template
-      ? ""
-      : `${prefix}template<${generateParameters(template)}>\n`;
-  }
+function generateTemplateSignature(template: ApiParameters, prefix: string) {
+  return template ? `${prefix}template<${generateParameters(template)}>\n` : "";
 }
 
 export function generateCallParameters(
