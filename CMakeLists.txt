@@ -168,16 +168,37 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
-file(GLOB_RECURSE CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts scripts/cppfier/*.g4)
+file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts)
+
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/node_modules 
+    COMMAND npm install
+)
+
+set(CPPFIER_GRAMMAR_SOURCES 
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderLexer.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderListener.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderParser.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentLexer.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentListener.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentParser.ts
+)
+
+add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
+    COMMAND npm run antlr
+    DEPENDS ${PROJECT_SOURCE_DIR}/node_modules 
+            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeader.g4
+            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyComment.g4
+)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND npm run antlr
     COMMAND npm run check
     COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
             ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
             ${CPPFIER_SOURCES}
+            ${CPPFIER_GRAMMAR_SOURCES}
+            ${PROJECT_SOURCE_DIR}/node_modules 
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 

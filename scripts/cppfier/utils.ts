@@ -8,7 +8,6 @@ import {
  * Read a file as an array of lines
  * @param path
  */
-
 export function readLinesSync(path: PathOrFileDescriptor) {
   return readFileSync(path, "utf8").split(/\r?\n/);
 }
