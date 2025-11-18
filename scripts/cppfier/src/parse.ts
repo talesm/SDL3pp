@@ -247,45 +247,46 @@ function parseContent(name: string, content: string) {
 function extractDoc(name: string, text: string): ParsedDoc {
   text = extractDocText(text);
   if (text) return parseDoc(name, text);
-  function extractDocText(text: string): string {
-    if (text.includes("\\name")) return "";
-    if (text.startsWith("/**<")) {
-      return text
-        .slice(4, text.length - 2)
-        .replaceAll(/^[ \t]*\*[ \t]?/gm, "")
-        .trim();
-    }
-    if (text.startsWith("/**")) {
-      return text
-        .slice(3, text.length - 2)
-        .replaceAll(/^[ \t]*\*[ \t]?/gm, "")
-        .trim();
-    }
-    if (text.startsWith("///<")) {
-      text
-        .slice(4)
-        .replaceAll(/^[ \t]\/\/\/[ \t]?/gm, "")
-        .trim();
-    }
-    if (text.startsWith("///")) {
-      text
-        .slice(3)
-        .replaceAll(/^[ \t]\/\/\/[ \t]?/gm, "")
-        .trim();
-    }
-    return text;
+}
+
+function extractDocText(text: string): string {
+  if (text.includes("\\name")) return "";
+  if (text.startsWith("/**<")) {
+    return text
+      .slice(4, -2)
+      .replaceAll(/^[ \t]*\*[ \t]?/gm, "")
+      .trim();
   }
+  if (text.startsWith("/**")) {
+    return text
+      .slice(3, -2)
+      .replaceAll(/^[ \t]*\*[ \t]?/gm, "")
+      .trim();
+  }
+  if (text.startsWith("///<")) {
+    return text
+      .slice(4)
+      .replaceAll(/^[ \t]\/\/\/[ \t]?/gm, "")
+      .trim();
+  }
+  if (text.startsWith("///")) {
+    return text
+      .slice(3)
+      .replaceAll(/^[ \t]\/\/\/[ \t]?/gm, "")
+      .trim();
+  }
+  return text;
 }
 
 export function normalizeType(typeString: string) {
   if (!typeString) return "";
   return typeString
-    .replace(/(\w+)\s*([&*])/g, "$1 $2")
-    .replace(/([&*])\s*(\w+)/g, "$1 $2")
-    .replace(/([*&])\s+[*&]/g, "$1$2")
-    .replace(/([<(\[])\s+/g, "$1")
-    .replace(/\s+([>)\]])/g, "$1")
-    .replace(/\s\s+/g, " ");
+    .replaceAll(/(\w+)\s*([&*])/g, "$1 $2")
+    .replaceAll(/([&*])\s*(\w+)/g, "$1 $2")
+    .replaceAll(/([*&])\s+([*&])/g, "$1$2")
+    .replaceAll(/([<([])\s+/g, "$1")
+    .replaceAll(/\s+([>)\]])/g, "$1")
+    .replaceAll(/\s\s+/g, " ");
 }
 
 function extractType(ctx: TypeContext): string {
