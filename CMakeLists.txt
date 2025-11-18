@@ -172,6 +172,8 @@ file(GLOB_RECURSE CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts scripts
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
+    COMMAND npm run antlr
+    COMMAND npm run check
     COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
             ${PROJECT_SOURCE_DIR}/scripts/config-source.json 

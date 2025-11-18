@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "check": "tsc",
+    "dev": "tsc --watch",
+    "antlr": "antlr4ts scripts/cppfier/grammar/CHeader.g4 && antlr4ts scripts/cppfier/grammar/DoxyComment.g4"
+  },
   "devDependencies": {
     "@types/node": "^24.10.1",
     "antlr4ts-cli": "^0.5.0-alpha.4"
