@@ -108172,6 +108172,10 @@
               {
                 "tag": "\\param y",
                 "content": "the y offset of the upper left corner of this text in pixels."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
               }
             ],
             {
@@ -108220,6 +108224,10 @@
               {
                 "tag": "\\param y",
                 "content": "a pointer filled in with the y offset of the upper left corner of this text in pixels, may be NULL."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
               }
             ],
             {

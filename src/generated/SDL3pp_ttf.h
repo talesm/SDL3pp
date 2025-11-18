@@ -4844,6 +4844,7 @@ public:
    * @param text the Text to modify.
    * @param x the x offset of the upper left corner of this text in pixels.
    * @param y the y offset of the upper left corner of this text in pixels.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -4852,7 +4853,7 @@ public:
    *
    * @sa Text.GetPosition
    */
-  bool SetPosition(Point p);
+  void SetPosition(Point p);
 
   /**
    * Get the position of a text object.
@@ -4861,6 +4862,7 @@ public:
    *          this text in pixels, may be nullptr.
    * @param y a pointer filled in with the y offset of the upper left corner of
    *          this text in pixels, may be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -4869,7 +4871,7 @@ public:
    *
    * @sa Text.SetPosition
    */
-  bool GetPosition(int* x, int* y) const;
+  void GetPosition(int* x, int* y) const;
 
   /**
    * Get the position of a text object.
@@ -4878,6 +4880,7 @@ public:
    *          this text in pixels, may be nullptr.
    * @param y a pointer filled in with the y offset of the upper left corner of
    *          this text in pixels, may be nullptr.
+   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -6125,6 +6128,7 @@ inline FColor Text::GetColorFloat()
  * @param text the Text to modify.
  * @param x the x offset of the upper left corner of this text in pixels.
  * @param y the y offset of the upper left corner of this text in pixels.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               text.
@@ -6133,15 +6137,12 @@ inline FColor Text::GetColorFloat()
  *
  * @sa Text.GetPosition
  */
-inline bool SetTextPosition(TextParam text, Point p)
+inline void SetTextPosition(TextParam text, Point p)
 {
-  return TTF_SetTextPosition(text, p);
+  CheckError(TTF_SetTextPosition(text, p));
 }
 
-inline bool Text::SetPosition(Point p)
-{
-  return SDL::SetTextPosition(m_resource, p);
-}
+inline void Text::SetPosition(Point p) { SDL::SetTextPosition(m_resource, p); }
 
 /**
  * Get the position of a text object.
@@ -6151,6 +6152,7 @@ inline bool Text::SetPosition(Point p)
  *          this text in pixels, may be nullptr.
  * @param y a pointer filled in with the y offset of the upper left corner of
  *          this text in pixels, may be nullptr.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               text.
@@ -6159,9 +6161,9 @@ inline bool Text::SetPosition(Point p)
  *
  * @sa Text.SetPosition
  */
-inline bool GetTextPosition(TextConstParam text, int* x, int* y)
+inline void GetTextPosition(TextConstParam text, int* x, int* y)
 {
-  return TTF_GetTextPosition(text, x, y);
+  CheckError(TTF_GetTextPosition(text, x, y));
 }
 
 /**
@@ -6172,6 +6174,7 @@ inline bool GetTextPosition(TextConstParam text, int* x, int* y)
  *          this text in pixels, may be nullptr.
  * @param y a pointer filled in with the y offset of the upper left corner of
  *          this text in pixels, may be nullptr.
+ * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               text.
@@ -6185,9 +6188,9 @@ inline Point GetTextPosition(TextParam text)
   static_assert(false, "Not implemented");
 }
 
-inline bool Text::GetPosition(int* x, int* y) const
+inline void Text::GetPosition(int* x, int* y) const
 {
-  return SDL::GetTextPosition(m_resource, x, y);
+  SDL::GetTextPosition(m_resource, x, y);
 }
 
 inline Point Text::GetPosition() { return SDL::GetTextPosition(m_resource); }
