@@ -25,15 +25,31 @@
 79a90,91
 > #endif // SDL3PP_DOC
 > 
-141c153
+138c150
 <   return SDL_RunApp(argc, argv[], mainFunction, reserved);
 ---
 >   return SDL_RunApp(argc, argv, mainFunction, reserved);
-177c189
+174c186
 <     argc, argv[], appinit, appiter, appevent, appquit);
 ---
 >     argc, argv, appinit, appiter, appevent, appquit);
-188a201,224
+176a189,190
+> #if defined(SDL_PLATFORM_WINDOWS)
+> 
+189,191d202
+<  * If `name` is nullptr, SDL currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)`
+<  * for the style, regardless of what is specified here.
+<  *
+194c205,207
+<  * @param style the value to use in WNDCLASSEX::style.
+---
+>  * @param style the value to use in WNDCLASSEX::style. If `name` is nullptr, SDL
+>  *              currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)` regardless of
+>  *              what is specified here.
+223a237,238
+> #endif /* defined(SDL_PLATFORM_WINDOWS) */
+> 
+232a248,271
 > 
 > /**
 >  * Use this to define the callbacks for given class

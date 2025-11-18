@@ -11,8 +11,8 @@ namespace SDL {
  *
  * Defines keyboard scancodes.
  *
- * Please refer to the Best Keyboard Practices document for details on what
- * this information means and how best to use it.
+ * Please refer to the Best Keyboard Practices document for details on what this
+ * information means and how best to use it.
  *
  * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
  *
@@ -61,8 +61,8 @@ public:
    * Get a scancode from a human-readable name.
    *
    * @param name the human-readable scancode name.
-   * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't
-   *          recognized; call GetError() for more information.
+   * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't recognized;
+   *       call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -104,10 +104,9 @@ public:
    * e.g. the name for `SCANCODE_LGUI` is "Left GUI" under Linux but "Left
    * Windows" under Microsoft Windows, and some scancodes like
    * `SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even
-   * scancodes that share names, e.g. `SCANCODE_RETURN` and
-   * `SCANCODE_RETURN2` (both called "Return"). This function is therefore
-   * unsuitable for creating a stable cross-platform two-way mapping between
-   * strings and scancodes.
+   * scancodes that share names, e.g. `SCANCODE_RETURN` and `SCANCODE_RETURN2`
+   * (both called "Return"). This function is therefore unsuitable for creating
+   * a stable cross-platform two-way mapping between strings and scancodes.
    *
    * @returns a pointer to the name for the scancode. If the scancode doesn't
    *          have a name this function returns an empty string ("").
@@ -219,18 +218,18 @@ constexpr Scancode SCANCODE_RIGHTBRACKET =
 
 /**
  * Located at the lower left of the return key on ISO keyboards and at the right
- * end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS
- * (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL
- * LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR
- * SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a
- * German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and
- * ASTERISK and MICRO SIGN in a French Windows layout.
+ * end of the QWERTY row on ANSI keyboards. Produces REVERSE SOLIDUS (backslash)
+ * and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL LINE in a UK
+ * Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR SIGN and
+ * POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a German
+ * layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and ASTERISK and
+ * MICRO SIGN in a French Windows layout.
  */
 constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
 
 /**
  * ISO USB keyboards actually use this code instead of 49 for the same key, but
- * all OSes I've seen treat the two codes identically.  So, as an implementor,
+ * all OSes I've seen treat the two codes identically. So, as an implementor,
  * unless your keyboard generates both of those codes and your OS treats them
  * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
  * a user, you should not rely on this code because SDL will never generate it
@@ -244,7 +243,7 @@ constexpr Scancode SCANCODE_APOSTROPHE =
   SDL_SCANCODE_APOSTROPHE; ///< APOSTROPHE
 
 /**
- * Located in the top left corner (on both ANSI and ISO keyboards).  Produces
+ * Located in the top left corner (on both ANSI and ISO keyboards). Produces
  * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
  * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
  * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
@@ -356,7 +355,7 @@ constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD; ///< KP_PERIOD
 
 /**
  * This is the additional key that ISO keyboards have over ANSI ones, located
- * between left shift and Z.  Produces GRAVE ACCENT and TILDE in a US or UK Mac
+ * between left shift and Z. Produces GRAVE ACCENT and TILDE in a US or UK Mac
  * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
  * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
  * or French layout.
@@ -401,25 +400,25 @@ constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24; ///< F24
 constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE; ///< EXECUTE
 
 constexpr Scancode SCANCODE_HELP =
-  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
+  SDL_SCANCODE_HELP; ///< AL Integrated Help Center
 
 constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
 
 constexpr Scancode SCANCODE_SELECT = SDL_SCANCODE_SELECT; ///< SELECT
 
-constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop.
+constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop
 
-constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat.
+constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat
 
-constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo.
+constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo
 
-constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut.
+constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut
 
-constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy.
+constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy
 
-constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste.
+constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste
 
-constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find.
+constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find
 
 constexpr Scancode SCANCODE_MUTE = SDL_SCANCODE_MUTE; ///< MUTE
 
@@ -441,7 +440,7 @@ constexpr Scancode SCANCODE_INTERNATIONAL2 =
   SDL_SCANCODE_INTERNATIONAL2; ///< INTERNATIONAL2
 
 constexpr Scancode SCANCODE_INTERNATIONAL3 =
-  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
+  SDL_SCANCODE_INTERNATIONAL3; ///< Yen
 
 constexpr Scancode SCANCODE_INTERNATIONAL4 =
   SDL_SCANCODE_INTERNATIONAL4; ///< INTERNATIONAL4
@@ -462,15 +461,15 @@ constexpr Scancode SCANCODE_INTERNATIONAL9 =
   SDL_SCANCODE_INTERNATIONAL9; ///< INTERNATIONAL9
 
 constexpr Scancode SCANCODE_LANG1 =
-  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
+  SDL_SCANCODE_LANG1; ///< Hangul/English toggle
 
-constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
+constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion
 
-constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana.
+constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana
 
-constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana.
+constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana
 
-constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku.
+constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku
 
 constexpr Scancode SCANCODE_LANG6 = SDL_SCANCODE_LANG6; ///< reserved
 
@@ -480,11 +479,11 @@ constexpr Scancode SCANCODE_LANG8 = SDL_SCANCODE_LANG8; ///< reserved
 
 constexpr Scancode SCANCODE_LANG9 = SDL_SCANCODE_LANG9; ///< reserved
 
-constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze.
+constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze
 
 constexpr Scancode SCANCODE_SYSREQ = SDL_SCANCODE_SYSREQ; ///< SYSREQ
 
-constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel.
+constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel
 
 constexpr Scancode SCANCODE_CLEAR = SDL_SCANCODE_CLEAR; ///< CLEAR
 
@@ -642,80 +641,80 @@ constexpr Scancode SCANCODE_RGUI =
 
 /**
  * I'm not sure if this is really not covered by any of the above, but since
- * there's a special KMOD_MODE for it I'm adding it here.
+ * there's a special KMOD_MODE for it I'm adding it here
  */
 constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
 
-constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep.
+constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep
 
-constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake.
+constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake
 
 constexpr Scancode SCANCODE_CHANNEL_INCREMENT =
-  SDL_SCANCODE_CHANNEL_INCREMENT; ///< Channel Increment.
+  SDL_SCANCODE_CHANNEL_INCREMENT; ///< Channel Increment
 
 constexpr Scancode SCANCODE_CHANNEL_DECREMENT =
-  SDL_SCANCODE_CHANNEL_DECREMENT; ///< Channel Decrement.
+  SDL_SCANCODE_CHANNEL_DECREMENT; ///< Channel Decrement
 
-constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
+constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play
 
-constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
+constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause
 
 constexpr Scancode SCANCODE_MEDIA_RECORD =
-  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
+  SDL_SCANCODE_MEDIA_RECORD; ///< Record
 
 constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
-  SDL_SCANCODE_MEDIA_FAST_FORWARD; ///< Fast Forward.
+  SDL_SCANCODE_MEDIA_FAST_FORWARD; ///< Fast Forward
 
 constexpr Scancode SCANCODE_MEDIA_REWIND =
-  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
+  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind
 
 constexpr Scancode SCANCODE_MEDIA_NEXT_TRACK =
-  SDL_SCANCODE_MEDIA_NEXT_TRACK; ///< Next Track.
+  SDL_SCANCODE_MEDIA_NEXT_TRACK; ///< Next Track
 
 constexpr Scancode SCANCODE_MEDIA_PREVIOUS_TRACK =
-  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK; ///< Previous Track.
+  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK; ///< Previous Track
 
-constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop.
+constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop
 
-constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject.
+constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject
 
 constexpr Scancode SCANCODE_MEDIA_PLAY_PAUSE =
-  SDL_SCANCODE_MEDIA_PLAY_PAUSE; ///< Play / Pause.
+  SDL_SCANCODE_MEDIA_PLAY_PAUSE; ///< Play / Pause
 
 constexpr Scancode SCANCODE_MEDIA_SELECT =
   SDL_SCANCODE_MEDIA_SELECT; ///< MEDIA_SELECT
 
-constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New.
+constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New
 
-constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open.
+constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open
 
-constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close.
+constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close
 
-constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit.
+constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit
 
-constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save.
+constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save
 
-constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print.
+constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print
 
 constexpr Scancode SCANCODE_AC_PROPERTIES =
-  SDL_SCANCODE_AC_PROPERTIES; ///< AC Properties.
+  SDL_SCANCODE_AC_PROPERTIES; ///< AC Properties
 
-constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search.
+constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search
 
-constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
+constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home
 
-constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
+constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back
 
 constexpr Scancode SCANCODE_AC_FORWARD =
-  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
+  SDL_SCANCODE_AC_FORWARD; ///< AC Forward
 
-constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
+constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop
 
 constexpr Scancode SCANCODE_AC_REFRESH =
-  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
+  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh
 
 constexpr Scancode SCANCODE_AC_BOOKMARKS =
-  SDL_SCANCODE_AC_BOOKMARKS; ///< AC Bookmarks.
+  SDL_SCANCODE_AC_BOOKMARKS; ///< AC Bookmarks
 
 /**
  * Usually situated below the display on phones and used as a multi-function

@@ -19,22 +19,21 @@ namespace SDL {
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
  * examine any events that have occurred since the last time and process or
- * ignore them. This is generally done by calling PollEvent() in a loop
- * until it returns false (or, if using the main callbacks, events are
- * provided one at a time in calls to SDL_AppEvent() before the next call to
- * SDL_AppIterate(); in this scenario, the app does not call PollEvent()
- * at all).
+ * ignore them. This is generally done by calling PollEvent() in a loop until it
+ * returns false (or, if using the main callbacks, events are provided one at a
+ * time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in
+ * this scenario, the app does not call PollEvent() at all).
  *
- * There is other forms of control, too: PeepEvents() has more
- * functionality at the cost of more complexity, and WaitEvent() can block
- * the process until something interesting happens, which might be beneficial
- * for certain types of programs on low-power hardware. One may also call
- * AddEventWatch() to set a callback when new events arrive.
+ * There is other forms of control, too: PeepEvents() has more functionality at
+ * the cost of more complexity, and WaitEvent() can block the process until
+ * something interesting happens, which might be beneficial for certain types of
+ * programs on low-power hardware. One may also call AddEventWatch() to set a
+ * callback when new events arrive.
  *
- * The app is free to generate their own events, too: PushEvent allows the
- * app to put events onto the queue for later retrieval; RegisterEvents
- * can guarantee that these events have a type that isn't in use by other
- * parts of the system.
+ * The app is free to generate their own events, too: PushEvent allows the app
+ * to put events onto the queue for later retrieval; RegisterEvents can
+ * guarantee that these events have a type that isn't in use by other parts of
+ * the system.
  *
  * @{
  */
@@ -55,24 +54,24 @@ using EventType = SDL_EventType;
 
 constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST; ///< Unused (do not remove)
 
-constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT; ///< User-requested quit.
+constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT; ///< User-requested quit
 
 /**
- * The application is being terminated by the OS.  This event must be handled in
+ * The application is being terminated by the OS. This event must be handled in
  * a callback set with AddEventWatch(). Called on iOS in
  * applicationWillTerminate() Called on Android in onDestroy()
  */
 constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
 
 /**
- * The application is low on memory, free memory if possible.  This event must
- * be handled in a callback set with AddEventWatch(). Called on iOS in
+ * The application is low on memory, free memory if possible. This event must be
+ * handled in a callback set with AddEventWatch(). Called on iOS in
  * applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
  */
 constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
 
 /**
- * The application is about to enter the background.  This event must be handled
+ * The application is about to enter the background. This event must be handled
  * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillResignActive() Called on Android in onPause()
  */
@@ -87,7 +86,7 @@ constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
 constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
 
 /**
- * The application is about to enter the foreground.  This event must be handled
+ * The application is about to enter the foreground. This event must be handled
  * in a callback set with AddEventWatch(). Called on iOS in
  * applicationWillEnterForeground() Called on Android in onResume()
  */
@@ -95,7 +94,7 @@ constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
   SDL_EVENT_WILL_ENTER_FOREGROUND;
 
 /**
- * The application is now interactive.  This event must be handled in a callback
+ * The application is now interactive. This event must be handled in a callback
  * set with AddEventWatch(). Called on iOS in applicationDidBecomeActive()
  * Called on Android in onResume()
  */
@@ -105,35 +104,35 @@ constexpr EventType EVENT_LOCALE_CHANGED =
   SDL_EVENT_LOCALE_CHANGED; ///< The user's locale preferences have changed.
 
 constexpr EventType EVENT_SYSTEM_THEME_CHANGED =
-  SDL_EVENT_SYSTEM_THEME_CHANGED; ///< The system theme changed.
+  SDL_EVENT_SYSTEM_THEME_CHANGED; ///< The system theme changed
 
 constexpr EventType EVENT_DISPLAY_ORIENTATION =
-  SDL_EVENT_DISPLAY_ORIENTATION; ///< Display orientation has changed to data1.
+  SDL_EVENT_DISPLAY_ORIENTATION; ///< Display orientation has changed to data1
 
 constexpr EventType EVENT_DISPLAY_ADDED =
-  SDL_EVENT_DISPLAY_ADDED; ///< Display has been added to the system.
+  SDL_EVENT_DISPLAY_ADDED; ///< Display has been added to the system
 
 constexpr EventType EVENT_DISPLAY_REMOVED =
-  SDL_EVENT_DISPLAY_REMOVED; ///< Display has been removed from the system.
+  SDL_EVENT_DISPLAY_REMOVED; ///< Display has been removed from the system
 
 constexpr EventType EVENT_DISPLAY_MOVED =
-  SDL_EVENT_DISPLAY_MOVED; ///< Display has changed position.
+  SDL_EVENT_DISPLAY_MOVED; ///< Display has changed position
 
 constexpr EventType EVENT_DISPLAY_DESKTOP_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED; ///< Display has changed desktop mode.
+  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED; ///< Display has changed desktop mode
 
 constexpr EventType EVENT_DISPLAY_CURRENT_MODE_CHANGED =
-  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED; ///< Display has changed current mode.
+  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED; ///< Display has changed current mode
 
 constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
-                                           ///< scale.
+                                           ///< scale
 
 #if SDL_VERSION_ATLEAST(3, 3, 0)
 
 constexpr EventType EVENT_DISPLAY_USABLE_BOUNDS_CHANGED =
   SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED; ///< Display has changed usable
-                                           ///< bounds.
+                                           ///< bounds
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 0)
 
@@ -144,88 +143,86 @@ constexpr EventType EVENT_DISPLAY_LAST =
   SDL_EVENT_DISPLAY_LAST; ///< DISPLAY_LAST
 
 constexpr EventType EVENT_WINDOW_SHOWN =
-  SDL_EVENT_WINDOW_SHOWN; ///< Window has been shown.
+  SDL_EVENT_WINDOW_SHOWN; ///< Window has been shown
 
 constexpr EventType EVENT_WINDOW_HIDDEN =
-  SDL_EVENT_WINDOW_HIDDEN; ///< Window has been hidden.
+  SDL_EVENT_WINDOW_HIDDEN; ///< Window has been hidden
 
 /**
  * Window has been exposed and should be redrawn, and can be redrawn directly
- * from event watchers for this event.  data1 is 1 for live-resize expose
- * events, 0 otherwise.
+ * from event watchers for this event. data1 is 1 for live-resize expose events,
+ * 0 otherwise.
  */
 constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
 
 constexpr EventType EVENT_WINDOW_MOVED =
-  SDL_EVENT_WINDOW_MOVED; ///< Window has been moved to data1, data2.
+  SDL_EVENT_WINDOW_MOVED; ///< Window has been moved to data1, data2
 
 constexpr EventType EVENT_WINDOW_RESIZED =
-  SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2.
+  SDL_EVENT_WINDOW_RESIZED; ///< Window has been resized to data1xdata2
 
-/// The pixel size of the window has changed to data1xdata2.
+/// The pixel size of the window has changed to data1xdata2
 constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
   SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
 
-/// The pixel size of a Metal view associated with the window has changed.
+/// The pixel size of a Metal view associated with the window has changed
 constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
   SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
 
 constexpr EventType EVENT_WINDOW_MINIMIZED =
-  SDL_EVENT_WINDOW_MINIMIZED; ///< Window has been minimized.
+  SDL_EVENT_WINDOW_MINIMIZED; ///< Window has been minimized
 
 constexpr EventType EVENT_WINDOW_MAXIMIZED =
-  SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized.
+  SDL_EVENT_WINDOW_MAXIMIZED; ///< Window has been maximized
 
-/// Window has been restored to normal size and position.
+/// Window has been restored to normal size and position
 constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
 
 constexpr EventType EVENT_WINDOW_MOUSE_ENTER =
-  SDL_EVENT_WINDOW_MOUSE_ENTER; ///< Window has gained mouse focus.
+  SDL_EVENT_WINDOW_MOUSE_ENTER; ///< Window has gained mouse focus
 
 constexpr EventType EVENT_WINDOW_MOUSE_LEAVE =
-  SDL_EVENT_WINDOW_MOUSE_LEAVE; ///< Window has lost mouse focus.
+  SDL_EVENT_WINDOW_MOUSE_LEAVE; ///< Window has lost mouse focus
 
 constexpr EventType EVENT_WINDOW_FOCUS_GAINED =
-  SDL_EVENT_WINDOW_FOCUS_GAINED; ///< Window has gained keyboard focus.
+  SDL_EVENT_WINDOW_FOCUS_GAINED; ///< Window has gained keyboard focus
 
 constexpr EventType EVENT_WINDOW_FOCUS_LOST =
-  SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus.
+  SDL_EVENT_WINDOW_FOCUS_LOST; ///< Window has lost keyboard focus
 
-/// The window manager requests that the window be closed.
+/// The window manager requests that the window be closed
 constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
   SDL_EVENT_WINDOW_CLOSE_REQUESTED;
 
 constexpr EventType EVENT_WINDOW_HIT_TEST =
   SDL_EVENT_WINDOW_HIT_TEST; ///< Window had a hit test that wasn't
-                             ///< HITTEST_NORMAL.
+                             ///< HITTEST_NORMAL
 
-/// The ICC profile of the window's display has changed.
+/// The ICC profile of the window's display has changed
 constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
   SDL_EVENT_WINDOW_ICCPROF_CHANGED;
 
 constexpr EventType EVENT_WINDOW_DISPLAY_CHANGED =
-  SDL_EVENT_WINDOW_DISPLAY_CHANGED; ///< Window has been moved to display data1.
+  SDL_EVENT_WINDOW_DISPLAY_CHANGED; ///< Window has been moved to display data1
 
 constexpr EventType EVENT_WINDOW_DISPLAY_SCALE_CHANGED =
   SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED; ///< Window display scale has been
-                                          ///< changed.
+                                          ///< changed
 
 constexpr EventType EVENT_WINDOW_SAFE_AREA_CHANGED =
-  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED; ///< The window safe area has been
-                                      ///< changed.
+  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED; ///< The window safe area has been changed
 
 constexpr EventType EVENT_WINDOW_OCCLUDED =
-  SDL_EVENT_WINDOW_OCCLUDED; ///< The window has been occluded.
+  SDL_EVENT_WINDOW_OCCLUDED; ///< The window has been occluded
 
 constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
-  SDL_EVENT_WINDOW_ENTER_FULLSCREEN; ///< The window has entered fullscreen
-                                     ///< mode.
+  SDL_EVENT_WINDOW_ENTER_FULLSCREEN; ///< The window has entered fullscreen mode
 
 constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
-  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN; ///< The window has left fullscreen mode.
+  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN; ///< The window has left fullscreen mode
 
 /**
- * The window with the associated ID is being or has been destroyed.  If this
+ * The window with the associated ID is being or has been destroyed. If this
  * message is being handled in an event watcher, the window handle is still
  * valid and can still be used to retrieve any properties associated with the
  * window. Otherwise, the handle has already been destroyed and all resources
@@ -234,22 +231,22 @@ constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
 constexpr EventType EVENT_WINDOW_HDR_STATE_CHANGED =
-  SDL_EVENT_WINDOW_HDR_STATE_CHANGED; ///< Window HDR properties have changed.
+  SDL_EVENT_WINDOW_HDR_STATE_CHANGED; ///< Window HDR properties have changed
 
 constexpr EventType EVENT_WINDOW_FIRST =
   SDL_EVENT_WINDOW_FIRST; ///< WINDOW_FIRST
 
 constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST; ///< WINDOW_LAST
 
-constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN; ///< Key pressed.
+constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN; ///< Key pressed
 
-constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP; ///< Key released.
+constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP; ///< Key released
 
 constexpr EventType EVENT_TEXT_EDITING =
   SDL_EVENT_TEXT_EDITING; ///< Keyboard text editing (composition)
 
 constexpr EventType EVENT_TEXT_INPUT =
-  SDL_EVENT_TEXT_INPUT; ///< Keyboard text input.
+  SDL_EVENT_TEXT_INPUT; ///< Keyboard text input
 
 /**
  * Keymap changed due to a system event such as an input language or keyboard
@@ -259,105 +256,105 @@ constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
 constexpr EventType EVENT_KEYBOARD_ADDED =
   SDL_EVENT_KEYBOARD_ADDED; ///< A new keyboard has been inserted into the
-                            ///< system.
+                            ///< system
 
 constexpr EventType EVENT_KEYBOARD_REMOVED =
-  SDL_EVENT_KEYBOARD_REMOVED; ///< A keyboard has been removed.
+  SDL_EVENT_KEYBOARD_REMOVED; ///< A keyboard has been removed
 
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
-  SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates.
+  SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates
 
 #if SDL_VERSION_ATLEAST(3, 3, 0)
 
 constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
-  SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown.
+  SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown
 
 constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
-  SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden.
+  SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 0)
 
 constexpr EventType EVENT_MOUSE_MOTION =
-  SDL_EVENT_MOUSE_MOTION; ///< Mouse moved.
+  SDL_EVENT_MOUSE_MOTION; ///< Mouse moved
 
 constexpr EventType EVENT_MOUSE_BUTTON_DOWN =
-  SDL_EVENT_MOUSE_BUTTON_DOWN; ///< Mouse button pressed.
+  SDL_EVENT_MOUSE_BUTTON_DOWN; ///< Mouse button pressed
 
 constexpr EventType EVENT_MOUSE_BUTTON_UP =
-  SDL_EVENT_MOUSE_BUTTON_UP; ///< Mouse button released.
+  SDL_EVENT_MOUSE_BUTTON_UP; ///< Mouse button released
 
 constexpr EventType EVENT_MOUSE_WHEEL =
-  SDL_EVENT_MOUSE_WHEEL; ///< Mouse wheel motion.
+  SDL_EVENT_MOUSE_WHEEL; ///< Mouse wheel motion
 
 constexpr EventType EVENT_MOUSE_ADDED =
-  SDL_EVENT_MOUSE_ADDED; ///< A new mouse has been inserted into the system.
+  SDL_EVENT_MOUSE_ADDED; ///< A new mouse has been inserted into the system
 
 constexpr EventType EVENT_MOUSE_REMOVED =
-  SDL_EVENT_MOUSE_REMOVED; ///< A mouse has been removed.
+  SDL_EVENT_MOUSE_REMOVED; ///< A mouse has been removed
 
 constexpr EventType EVENT_JOYSTICK_AXIS_MOTION =
-  SDL_EVENT_JOYSTICK_AXIS_MOTION; ///< Joystick axis motion.
+  SDL_EVENT_JOYSTICK_AXIS_MOTION; ///< Joystick axis motion
 
 constexpr EventType EVENT_JOYSTICK_BALL_MOTION =
-  SDL_EVENT_JOYSTICK_BALL_MOTION; ///< Joystick trackball motion.
+  SDL_EVENT_JOYSTICK_BALL_MOTION; ///< Joystick trackball motion
 
 constexpr EventType EVENT_JOYSTICK_HAT_MOTION =
-  SDL_EVENT_JOYSTICK_HAT_MOTION; ///< Joystick hat position change.
+  SDL_EVENT_JOYSTICK_HAT_MOTION; ///< Joystick hat position change
 
 constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN =
-  SDL_EVENT_JOYSTICK_BUTTON_DOWN; ///< Joystick button pressed.
+  SDL_EVENT_JOYSTICK_BUTTON_DOWN; ///< Joystick button pressed
 
 constexpr EventType EVENT_JOYSTICK_BUTTON_UP =
-  SDL_EVENT_JOYSTICK_BUTTON_UP; ///< Joystick button released.
+  SDL_EVENT_JOYSTICK_BUTTON_UP; ///< Joystick button released
 
 constexpr EventType EVENT_JOYSTICK_ADDED =
   SDL_EVENT_JOYSTICK_ADDED; ///< A new joystick has been inserted into the
-                            ///< system.
+                            ///< system
 
 constexpr EventType EVENT_JOYSTICK_REMOVED =
-  SDL_EVENT_JOYSTICK_REMOVED; ///< An opened joystick has been removed.
+  SDL_EVENT_JOYSTICK_REMOVED; ///< An opened joystick has been removed
 
 constexpr EventType EVENT_JOYSTICK_BATTERY_UPDATED =
-  SDL_EVENT_JOYSTICK_BATTERY_UPDATED; ///< Joystick battery level change.
+  SDL_EVENT_JOYSTICK_BATTERY_UPDATED; ///< Joystick battery level change
 
 constexpr EventType EVENT_JOYSTICK_UPDATE_COMPLETE =
-  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE; ///< Joystick update is complete.
+  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE; ///< Joystick update is complete
 
 constexpr EventType EVENT_GAMEPAD_AXIS_MOTION =
-  SDL_EVENT_GAMEPAD_AXIS_MOTION; ///< Gamepad axis motion.
+  SDL_EVENT_GAMEPAD_AXIS_MOTION; ///< Gamepad axis motion
 
 constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN =
-  SDL_EVENT_GAMEPAD_BUTTON_DOWN; ///< Gamepad button pressed.
+  SDL_EVENT_GAMEPAD_BUTTON_DOWN; ///< Gamepad button pressed
 
 constexpr EventType EVENT_GAMEPAD_BUTTON_UP =
-  SDL_EVENT_GAMEPAD_BUTTON_UP; ///< Gamepad button released.
+  SDL_EVENT_GAMEPAD_BUTTON_UP; ///< Gamepad button released
 
 constexpr EventType EVENT_GAMEPAD_ADDED =
-  SDL_EVENT_GAMEPAD_ADDED; ///< A new gamepad has been inserted into the system.
+  SDL_EVENT_GAMEPAD_ADDED; ///< A new gamepad has been inserted into the system
 
 constexpr EventType EVENT_GAMEPAD_REMOVED =
-  SDL_EVENT_GAMEPAD_REMOVED; ///< A gamepad has been removed.
+  SDL_EVENT_GAMEPAD_REMOVED; ///< A gamepad has been removed
 
 constexpr EventType EVENT_GAMEPAD_REMAPPED =
-  SDL_EVENT_GAMEPAD_REMAPPED; ///< The gamepad mapping was updated.
+  SDL_EVENT_GAMEPAD_REMAPPED; ///< The gamepad mapping was updated
 
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_DOWN =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN; ///< Gamepad touchpad was touched.
+  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN; ///< Gamepad touchpad was touched
 
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_MOTION =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION; ///< Gamepad touchpad finger was moved.
+  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION; ///< Gamepad touchpad finger was moved
 
 constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP =
-  SDL_EVENT_GAMEPAD_TOUCHPAD_UP; ///< Gamepad touchpad finger was lifted.
+  SDL_EVENT_GAMEPAD_TOUCHPAD_UP; ///< Gamepad touchpad finger was lifted
 
 constexpr EventType EVENT_GAMEPAD_SENSOR_UPDATE =
-  SDL_EVENT_GAMEPAD_SENSOR_UPDATE; ///< Gamepad sensor was updated.
+  SDL_EVENT_GAMEPAD_SENSOR_UPDATE; ///< Gamepad sensor was updated
 
 constexpr EventType EVENT_GAMEPAD_UPDATE_COMPLETE =
-  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE; ///< Gamepad update is complete.
+  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE; ///< Gamepad update is complete
 
 constexpr EventType EVENT_GAMEPAD_STEAM_HANDLE_UPDATED =
-  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED; ///< Gamepad Steam handle has changed.
+  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED; ///< Gamepad Steam handle has changed
 
 constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN; ///< FINGER_DOWN
 
@@ -372,21 +369,21 @@ constexpr EventType EVENT_FINGER_CANCELED =
 #if SDL_VERSION_ATLEAST(3, 3, 0)
 
 constexpr EventType EVENT_PINCH_BEGIN =
-  SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started.
+  SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started
 
 constexpr EventType EVENT_PINCH_UPDATE =
-  SDL_EVENT_PINCH_UPDATE; ///< Pinch gesture updated.
+  SDL_EVENT_PINCH_UPDATE; ///< Pinch gesture updated
 
 constexpr EventType EVENT_PINCH_END =
-  SDL_EVENT_PINCH_END; ///< Pinch gesture ended.
+  SDL_EVENT_PINCH_END; ///< Pinch gesture ended
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 0)
 
 constexpr EventType EVENT_CLIPBOARD_UPDATE =
-  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard changed.
+  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard changed
 
 constexpr EventType EVENT_DROP_FILE =
-  SDL_EVENT_DROP_FILE; ///< The system requests a file open.
+  SDL_EVENT_DROP_FILE; ///< The system requests a file open
 
 constexpr EventType EVENT_DROP_TEXT =
   SDL_EVENT_DROP_TEXT; ///< text/plain drag-and-drop event
@@ -398,10 +395,10 @@ constexpr EventType EVENT_DROP_BEGIN =
 constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
 
 constexpr EventType EVENT_DROP_POSITION =
-  SDL_EVENT_DROP_POSITION; ///< Position while moving over the window.
+  SDL_EVENT_DROP_POSITION; ///< Position while moving over the window
 
 constexpr EventType EVENT_AUDIO_DEVICE_ADDED =
-  SDL_EVENT_AUDIO_DEVICE_ADDED; ///< A new audio device is available.
+  SDL_EVENT_AUDIO_DEVICE_ADDED; ///< A new audio device is available
 
 constexpr EventType EVENT_AUDIO_DEVICE_REMOVED =
   SDL_EVENT_AUDIO_DEVICE_REMOVED; ///< An audio device has been removed.
@@ -411,35 +408,35 @@ constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
   SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
 
 constexpr EventType EVENT_SENSOR_UPDATE =
-  SDL_EVENT_SENSOR_UPDATE; ///< A sensor was updated.
+  SDL_EVENT_SENSOR_UPDATE; ///< A sensor was updated
 
 constexpr EventType EVENT_PEN_PROXIMITY_IN =
-  SDL_EVENT_PEN_PROXIMITY_IN; ///< Pressure-sensitive pen has become available.
+  SDL_EVENT_PEN_PROXIMITY_IN; ///< Pressure-sensitive pen has become available
 
 constexpr EventType EVENT_PEN_PROXIMITY_OUT =
   SDL_EVENT_PEN_PROXIMITY_OUT; ///< Pressure-sensitive pen has become
-                               ///< unavailable.
+                               ///< unavailable
 
 constexpr EventType EVENT_PEN_DOWN =
-  SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface.
+  SDL_EVENT_PEN_DOWN; ///< Pressure-sensitive pen touched drawing surface
 
-/// Pressure-sensitive pen stopped touching drawing surface.
+/// Pressure-sensitive pen stopped touching drawing surface
 constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
 
 constexpr EventType EVENT_PEN_BUTTON_DOWN =
-  SDL_EVENT_PEN_BUTTON_DOWN; ///< Pressure-sensitive pen button pressed.
+  SDL_EVENT_PEN_BUTTON_DOWN; ///< Pressure-sensitive pen button pressed
 
 constexpr EventType EVENT_PEN_BUTTON_UP =
-  SDL_EVENT_PEN_BUTTON_UP; ///< Pressure-sensitive pen button released.
+  SDL_EVENT_PEN_BUTTON_UP; ///< Pressure-sensitive pen button released
 
 constexpr EventType EVENT_PEN_MOTION =
-  SDL_EVENT_PEN_MOTION; ///< Pressure-sensitive pen is moving on the tablet.
+  SDL_EVENT_PEN_MOTION; ///< Pressure-sensitive pen is moving on the tablet
 
 constexpr EventType EVENT_PEN_AXIS =
-  SDL_EVENT_PEN_AXIS; ///< Pressure-sensitive pen angle/pressure/etc changed.
+  SDL_EVENT_PEN_AXIS; ///< Pressure-sensitive pen angle/pressure/etc changed
 
 constexpr EventType EVENT_CAMERA_DEVICE_ADDED =
-  SDL_EVENT_CAMERA_DEVICE_ADDED; ///< A new camera device is available.
+  SDL_EVENT_CAMERA_DEVICE_ADDED; ///< A new camera device is available
 
 constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
   SDL_EVENT_CAMERA_DEVICE_REMOVED; ///< A camera device has been removed.
@@ -451,10 +448,10 @@ constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
 /// A camera device has been denied for use by the user.
 constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
 
-/// The render targets have been reset and their contents need to be updated.
+/// The render targets have been reset and their contents need to be updated
 constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
 
-/// The device has been reset and all textures need to be recreated.
+/// The device has been reset and all textures need to be recreated
 constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
 
 constexpr EventType EVENT_RENDER_DEVICE_LOST =
@@ -470,7 +467,7 @@ constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2; ///< PRIVATE2
 constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3; ///< PRIVATE3
 
 constexpr EventType EVENT_POLL_SENTINEL =
-  SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle.
+  SDL_EVENT_POLL_SENTINEL; ///< Signals the end of an event poll cycle
 
 /**
  * Events EVENT_USER through EVENT_LAST are for your use, and should be
@@ -478,7 +475,7 @@ constexpr EventType EVENT_POLL_SENTINEL =
  */
 constexpr EventType EVENT_USER = SDL_EVENT_USER;
 
-/// This last event is only for bounding internal arrays.
+/// This last event is only for bounding internal arrays
 constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
 
 constexpr EventType EVENT_ENUM_PADDING =
@@ -517,10 +514,10 @@ using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
 /**
  * Keyboard button event structure (event.key.*)
  *
- * The `key` is the base Keycode generated by pressing the `scancode`
- * using the current keyboard layout, applying any options specified in
- * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the
- * event scancode and modifiers directly from the keyboard layout, bypassing
+ * The `key` is the base Keycode generated by pressing the `scancode` using the
+ * current keyboard layout, applying any options specified in
+ * SDL_HINT_KEYCODE_OPTIONS. You can get the Keycode corresponding to the event
+ * scancode and modifiers directly from the keyboard layout, bypassing
  * SDL_HINT_KEYCODE_OPTIONS, by calling Keycode.Keycode().
  *
  * @since This struct is available since SDL 3.2.0.
@@ -533,8 +530,8 @@ using KeyboardEvent = SDL_KeyboardEvent;
 /**
  * Keyboard text editing event structure (event.edit.*)
  *
- * The start cursor is the position, in UTF-8 characters, where new typing
- * will be inserted into the editing text. The length is the number of UTF-8
+ * The start cursor is the position, in UTF-8 characters, where new typing will
+ * be inserted into the editing text. The length is the number of UTF-8
  * characters that will be replaced by new typing.
  *
  * @since This struct is available since SDL 3.2.0.
@@ -653,12 +650,12 @@ using GamepadButtonEvent = SDL_GamepadButtonEvent;
 /**
  * Gamepad device event structure (event.gdevice.*)
  *
- * Joysticks that are supported gamepads receive both an JoyDeviceEvent
- * and an GamepadDeviceEvent.
+ * Joysticks that are supported gamepads receive both an JoyDeviceEvent and an
+ * GamepadDeviceEvent.
  *
- * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged
- * in during Init() and are recognized as gamepads. It will also send
- * events for joysticks that get gamepad mappings at runtime.
+ * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged in
+ * during Init() and are recognized as gamepads. It will also send events for
+ * joysticks that get gamepad mappings at runtime.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -683,9 +680,9 @@ using GamepadSensorEvent = SDL_GamepadSensorEvent;
 /**
  * Audio device event structure (event.adevice.*)
  *
- * Note that SDL will send a EVENT_AUDIO_DEVICE_ADDED event for every
- * device it discovers during initialization. After that, this event will only
- * arrive when a device is hotplugged during the program's run.
+ * Note that SDL will send a EVENT_AUDIO_DEVICE_ADDED event for every device it
+ * discovers during initialization. After that, this event will only arrive when
+ * a device is hotplugged during the program's run.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -709,18 +706,17 @@ using RenderEvent = SDL_RenderEvent;
  * Touch finger event structure (event.tfinger.*)
  *
  * Coordinates in this event are normalized. `x` and `y` are normalized to a
- * range between 0.0f and 1.0f, relative to the window, so (0,0) is the top
- * left and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are
- * normalized in the ranges of -1.0f (traversed all the way from the bottom or
- * right to all the way up or left) to 1.0f (traversed all the way from the
- * top or left to all the way down or right).
+ * range between 0.0f and 1.0f, relative to the window, so (0,0) is the top left
+ * and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are normalized
+ * in the ranges of -1.0f (traversed all the way from the bottom or right to all
+ * the way up or left) to 1.0f (traversed all the way from the top or left to
+ * all the way down or right).
  *
  * Note that while the coordinates are _normalized_, they are not _clamped_,
- * which means in some circumstances you can get a value outside of this
- * range. For example, a renderer using logical presentation might give a
- * negative value when the touch is in the letterboxing. Some platforms might
- * report a touch outside of the window, which will also be outside of the
- * range.
+ * which means in some circumstances you can get a value outside of this range.
+ * For example, a renderer using logical presentation might give a negative
+ * value when the touch is in the letterboxing. Some platforms might report a
+ * touch outside of the window, which will also be outside of the range.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -733,14 +729,14 @@ using PinchFingerEvent = SDL_PinchFingerEvent;
  * Pressure-sensitive pen proximity event structure (event.pproximity.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
- * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's
- * ID. This ID is valid until the pen leaves proximity again (has been removed
- * from the tablet's area, the tablet has been unplugged, etc). If the same
- * pen reenters proximity again, it will be given a new ID.
+ * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's ID.
+ * This ID is valid until the pen leaves proximity again (has been removed from
+ * the tablet's area, the tablet has been unplugged, etc). If the same pen
+ * reenters proximity again, it will be given a new ID.
  *
- * Note that "proximity" means "close enough for the tablet to know the tool
- * is there." The pen touching and lifting off from the tablet while not
- * leaving the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
+ * Note that "proximity" means "close enough for the tablet to know the tool is
+ * there." The pen touching and lifting off from the tablet while not leaving
+ * the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -750,10 +746,9 @@ using PenProximityEvent = SDL_PenProximityEvent;
  * Pressure-sensitive pen motion event structure (event.pmotion.*)
  *
  * Depending on the hardware, you may get motion events when the pen is not
- * touching a tablet, for tracking a pen even when it isn't drawing. You
- * should listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check
- * `pen_state & PEN_INPUT_DOWN` to decide if a pen is "drawing" when
- * dealing with pen motion.
+ * touching a tablet, for tracking a pen even when it isn't drawing. You should
+ * listen for EVENT_PEN_DOWN and EVENT_PEN_UP events, or check `pen_state &
+ * PEN_INPUT_DOWN` to decide if a pen is "drawing" when dealing with pen motion.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -762,8 +757,8 @@ using PenMotionEvent = SDL_PenMotionEvent;
 /**
  * Pressure-sensitive pen touched event structure (event.ptouch.*)
  *
- * These events come when a pen touches a surface (a tablet, etc), or lifts
- * off from one.
+ * These events come when a pen touches a surface (a tablet, etc), or lifts off
+ * from one.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -782,8 +777,7 @@ using PenButtonEvent = SDL_PenButtonEvent;
 /**
  * Pressure-sensitive pen pressure / angle event structure (event.paxis.*)
  *
- * You might get some of these events even if the pen isn't touching the
- * tablet.
+ * You might get some of these events even if the pen isn't touching the tablet.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -823,10 +817,10 @@ using QuitEvent = SDL_QuitEvent;
  * A user-defined event type (event.user.*)
  *
  * This event is unique; it is never created by SDL, but only by the
- * application. The event can be pushed onto the event queue using
- * PushEvent(). The contents of the structure members are completely up to
- * the programmer; the only requirement is that '''type''' is a value obtained
- * from RegisterEvents().
+ * application. The event can be pushed onto the event queue using PushEvent().
+ * The contents of the structure members are completely up to the programmer;
+ * the only requirement is that '''type''' is a value obtained from
+ * RegisterEvents().
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -835,8 +829,8 @@ using UserEvent = SDL_UserEvent;
 /**
  * The structure for all events in SDL.
  *
- * The Event structure is the core of all event handling in SDL. Event
- * is a union of all event structures used in SDL.
+ * The Event structure is the core of all event handling in SDL. Event is a
+ * union of all event structures used in SDL.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -848,12 +842,12 @@ using Event = SDL_Event;
  * This function updates the event queue and internal input device state.
  *
  * PumpEvents() gathers all the pending input information from devices and
- * places it in the event queue. Without calls to PumpEvents() no events
- * would ever be placed on the queue. Often the need for calls to
- * PumpEvents() is hidden from the user since PollEvent() and
- * WaitEvent() implicitly call PumpEvents(). However, if you are not
- * polling or waiting for events (e.g. you are filtering them), then you must
- * call PumpEvents() to force an event queue update.
+ * places it in the event queue. Without calls to PumpEvents() no events would
+ * ever be placed on the queue. Often the need for calls to PumpEvents() is
+ * hidden from the user since PollEvent() and WaitEvent() implicitly call
+ * PumpEvents(). However, if you are not polling or waiting for events (e.g. you
+ * are filtering them), then you must call PumpEvents() to force an event queue
+ * update.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -895,32 +889,31 @@ constexpr EventAction GETEVENT = SDL_GETEVENT;
  *
  * ## remarks
  *
- * - `ADDEVENT`: up to `numevents` events will be added to the back of the
- *   event queue.
- * - `PEEKEVENT`: `numevents` events at the front of the event queue,
- *   within the specified minimum and maximum type, will be returned to the
- *   caller and will _not_ be removed from the queue. If you pass nullptr for
- *   `events`, then `numevents` is ignored and the total number of matching
- *   events will be returned.
+ * - `ADDEVENT`: up to `numevents` events will be added to the back of the event
+ *   queue.
+ * - `PEEKEVENT`: `numevents` events at the front of the event queue, within the
+ *   specified minimum and maximum type, will be returned to the caller and will
+ *   _not_ be removed from the queue. If you pass nullptr for `events`, then
+ *   `numevents` is ignored and the total number of matching events will be
+ *   returned.
  * - `GETEVENT`: up to `numevents` events at the front of the event queue,
  *   within the specified minimum and maximum type, will be returned to the
  *   caller and will be removed from the queue.
  *
- * You may have to call PumpEvents() before calling this function.
- * Otherwise, the events may not be ready to be filtered when you call
- * PeepEvents().
+ * You may have to call PumpEvents() before calling this function. Otherwise,
+ * the events may not be ready to be filtered when you call PeepEvents().
  *
  * @param events destination buffer for the retrieved events, may be nullptr to
  *               leave the events in the queue and return the number of events
  *               that would have been stored.
- * @param numevents if action is ADDEVENT, the number of events to add
- *                  back to the event queue; if action is PEEKEVENT or
- *                  GETEVENT, the maximum number of events to retrieve.
+ * @param numevents if action is ADDEVENT, the number of events to add back to
+ *                  the event queue; if action is PEEKEVENT or GETEVENT, the
+ *                  maximum number of events to retrieve.
  * @param action action to take; see [Remarks](#remarks) for details.
- * @param minType minimum value of the event type to be considered;
- *                EVENT_FIRST is a safe choice.
- * @param maxType maximum value of the event type to be considered;
- *                EVENT_LAST is a safe choice.
+ * @param minType minimum value of the event type to be considered; EVENT_FIRST
+ *                is a safe choice.
+ * @param maxType maximum value of the event type to be considered; EVENT_LAST
+ *                is a safe choice.
  * @returns the number of events actually stored or -1 on failure; call
  *          GetError() for more information.
  *
@@ -944,8 +937,7 @@ inline int PeepEvents(Event* events,
 /**
  * Check for the existence of a certain event type in the event queue.
  *
- * If you need to check for a range of event types, use HasEvents()
- * instead.
+ * If you need to check for a range of event types, use HasEvents() instead.
  *
  * @param type the type of event to be queried; see EventType for details.
  * @returns true if events matching `type` are present, or false if events
@@ -968,8 +960,8 @@ inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
  *                EventType for details.
  * @param maxType the high end of event type to be queried, inclusive; see
  *                EventType for details.
- * @returns true if events with type >= `minType` and <= `maxType` are
- *          present, or false if not.
+ * @returns true if events with type >= `minType` and <= `maxType` are present,
+ *          or false if not.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -985,20 +977,19 @@ inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
 /**
  * Clear events of a specific type from the event queue.
  *
- * This will unconditionally remove any events from the queue that match
- * `type`. If you need to remove a range of event types, use FlushEvents()
- * instead.
+ * This will unconditionally remove any events from the queue that match `type`.
+ * If you need to remove a range of event types, use FlushEvents() instead.
  *
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * If you have user events with custom data that needs to be freed, you should
- * use PeepEvents() to remove and clean up those events before calling
- * this function.
+ * use PeepEvents() to remove and clean up those events before calling this
+ * function.
  *
  * @param type the type of event to be cleared; see EventType for details.
  *
@@ -1020,9 +1011,9 @@ inline void FlushEvent(Uint32 type) { SDL_FlushEvent(type); }
  * It's also normal to just ignore events you don't care about in your event
  * loop without calling this function.
  *
- * This function only affects currently queued events. If you want to make
- * sure that all pending OS events are flushed, you can call PumpEvents()
- * on the main thread immediately before the flush call.
+ * This function only affects currently queued events. If you want to make sure
+ * that all pending OS events are flushed, you can call PumpEvents() on the main
+ * thread immediately before the flush call.
  *
  * @param minType the low end of event type to be cleared, inclusive; see
  *                EventType for details.
@@ -1046,18 +1037,18 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  *
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`. The 1 returned refers to
- * this event, immediately stored in the SDL Event structure -- not an event
- * to follow.
+ * this event, immediately stored in the SDL Event structure -- not an event to
+ * follow.
  *
  * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
  * but will not remove it from the queue.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that set the video mode.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that set the video mode.
  *
- * PollEvent() is the favored way of receiving system events since it can
- * be done from the main loop and does not suspend the main loop while waiting
- * on an event to be posted.
+ * PollEvent() is the favored way of receiving system events since it can be
+ * done from the main loop and does not suspend the main loop while waiting on
+ * an event to be posted.
  *
  * The common practice is to fully process the event queue once every frame,
  * usually as a first step before updating the game's state:
@@ -1075,13 +1066,13 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  *
  * Note that Windows (and possibly other platforms) has a quirk about how it
  * handles events while dragging/resizing a window, which can cause this
- * function to block for significant amounts of time. Technical explanations
- * and solutions are discussed on the wiki:
+ * function to block for significant amounts of time. Technical explanations and
+ * solutions are discussed on the wiki:
  *
  * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
  *
- * @param event the Event structure to be filled with the next event from
- *              the queue, or nullptr.
+ * @param event the Event structure to be filled with the next event from the
+ *              queue, or nullptr.
  * @returns true if this got an event or false if there are none available.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -1099,12 +1090,12 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *
  * The next event is removed from the queue and returned.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that set the video mode.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that set the video mode.
  *
- * PollEvent() is the favored way of receiving system events since it can
- * be done from the main loop and does not suspend the main loop while waiting
- * on an event to be posted.
+ * PollEvent() is the favored way of receiving system events since it can be
+ * done from the main loop and does not suspend the main loop while waiting on
+ * an event to be posted.
  *
  * The common practice is to fully process the event queue once every frame,
  * usually as a first step before updating the game's state:
@@ -1121,13 +1112,13 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *
  * Note that Windows (and possibly other platforms) has a quirk about how it
  * handles events while dragging/resizing a window, which can cause this
- * function to block for significant amounts of time. Technical explanations
- * and solutions are discussed on the wiki:
+ * function to block for significant amounts of time. Technical explanations and
+ * solutions are discussed on the wiki:
  *
  * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
  *
  * @returns Event if this got an event or std::nullopt if there are none
- * available.
+ *          available.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -1149,11 +1140,11 @@ inline std::optional<Event> PollEvent()
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
- * @param event the Event structure to be filled in with the next event
- *              from the queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -1171,10 +1162,11 @@ inline void WaitEvent(Event* event) { CheckError(SDL_WaitEvent(event)); }
  *
  * The next event is removed from the queue and returned.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * @returns Event on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -1199,14 +1191,14 @@ inline Event WaitEvent()
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event
- *              from the queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns true if this got an event or false if the timeout elapsed without
@@ -1229,8 +1221,8 @@ inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
  * Wait until the specified timeout (in milliseconds) for the next available
  * event.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
@@ -1261,14 +1253,14 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
  * If `event` is not nullptr, the next event is removed from the queue and
  * stored in the Event structure pointed to by `event`.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event
- *              from the queue, or nullptr.
+ * @param event the Event structure to be filled in with the next event from the
+ *              queue, or nullptr.
  * @param timeoutDuration the duration to wait for the next available event,
  *                        with millisecond precision
  * @returns true if this got an event or false if the timeout elapsed without
@@ -1294,8 +1286,8 @@ inline bool WaitEventTimeout(Event* event,
  *
  * The next event is removed from the queue and returned.
  *
- * As this function may implicitly call PumpEvents(), you can only call
- * this function in the thread that initialized the video subsystem.
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
  *
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
@@ -1303,7 +1295,7 @@ inline bool WaitEventTimeout(Event* event,
  * @param timeoutDuration the duration to wait for the next available event,
  *                        with millisecond precision.
  * @returns the Event if this got an event or std::nullopt if the timeout
- * elapsed without any events available.
+ *          elapsed without any events available.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -1323,21 +1315,21 @@ inline std::optional<Event> WaitEventTimeout(
 /**
  * Add an event to the event queue.
  *
- * The event queue can actually be used as a two way communication channel.
- * Not only can events be read from the queue, but the user can also push
- * their own events onto it. `event` is a pointer to the event structure you
- * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after PushEvent() returns.
+ * The event queue can actually be used as a two way communication channel. Not
+ * only can events be read from the queue, but the user can also push their own
+ * events onto it. `event` is a pointer to the event structure you wish to push
+ * onto the queue. The event is copied into the queue, and the caller may
+ * dispose of the memory pointed to after PushEvent() returns.
  *
- * Note: Pushing device input events onto the queue doesn't modify the state
- * of the device within SDL.
+ * Note: Pushing device input events onto the queue doesn't modify the state of
+ * the device within SDL.
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter but events added with PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use RegisterEvents() to
- * get an event type that does not conflict with other code that also wants
- * its own custom event types.
+ * For pushing application-specific events, please use RegisterEvents() to get
+ * an event type that does not conflict with other code that also wants its own
+ * custom event types.
  *
  * @param event the Event to be added to the queue.
  * @throws Error on failure.
@@ -1355,21 +1347,21 @@ inline void PushEvent(Event* event) { CheckError(SDL_PushEvent(event)); }
 /**
  * Add an event to the event queue.
  *
- * The event queue can actually be used as a two way communication channel.
- * Not only can events be read from the queue, but the user can also push
- * their own events onto it. `event` is a pointer to the event structure you
- * wish to push onto the queue. The event is copied into the queue, and the
- * caller may dispose of the memory pointed to after PushEvent() returns.
+ * The event queue can actually be used as a two way communication channel. Not
+ * only can events be read from the queue, but the user can also push their own
+ * events onto it. `event` is a pointer to the event structure you wish to push
+ * onto the queue. The event is copied into the queue, and the caller may
+ * dispose of the memory pointed to after PushEvent() returns.
  *
- * Note: Pushing device input events onto the queue doesn't modify the state
- * of the device within SDL.
+ * Note: Pushing device input events onto the queue doesn't modify the state of
+ * the device within SDL.
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter but events added with PeepEvents() do not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter but events added with PeepEvents() do not.
  *
- * For pushing application-specific events, please use RegisterEvents() to
- * get an event type that does not conflict with other code that also wants
- * its own custom event types.
+ * For pushing application-specific events, please use RegisterEvents() to get
+ * an event type that does not conflict with other code that also wants its own
+ * custom event types.
  *
  * @param event the Event to be added to the queue.
  * @throws Error on failure.
@@ -1393,9 +1385,8 @@ inline void PushEvent(const Event& event)
  * @param userdata what was passed as `userdata` to SetEventFilter() or
  *                 AddEventWatch, etc.
  * @param event the event that triggered the callback.
- * @returns true to permit event to be added to the queue, and false to
- *          disallow it. When used with AddEventWatch, the return value is
- *          ignored.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
  *
  * @threadsafety SDL may call this callback at any time from any thread; the
  *               application is responsible for locking resources the callback
@@ -1412,9 +1403,8 @@ using EventFilter = SDL_EventFilter;
  * A std::function used for callbacks that watch the event queue.
  *
  * @param event the event that triggered the callback.
- * @returns true to permit event to be added to the queue, and false to
- *          disallow it. When used with AddEventWatch, the return value is
- *          ignored.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
  *
  * @threadsafety SDL may call this callback at any time from any thread; the
  *               application is responsible for locking resources the callback
@@ -1445,30 +1435,28 @@ struct EventWatchHandle : CallbackHandle
  * Set up a filter to process all events before they are added to the internal
  * event queue.
  *
- * If you just want to see events without modifying them or preventing them
- * from being queued, you should use AddEventWatch() instead.
+ * If you just want to see events without modifying them or preventing them from
+ * being queued, you should use AddEventWatch() instead.
  *
- * If the filter function returns true when called, then the event will be
- * added to the internal queue. If it returns false, then the event will be
- * dropped from the queue, but the internal state will still be updated. This
- * allows selective filtering of dynamically arriving events.
+ * If the filter function returns true when called, then the event will be added
+ * to the internal queue. If it returns false, then the event will be dropped
+ * from the queue, but the internal state will still be updated. This allows
+ * selective filtering of dynamically arriving events.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread! The exception is handling of
- * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the
- * main thread and you are expected to redraw your window in response to this
- * event.
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread! The exception is handling of
+ * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the main
+ * thread and you are expected to redraw your window in response to this event.
  *
- * On platforms that support it, if the quit event is generated by an
- * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
- * application at the next event poll.
+ * On platforms that support it, if the quit event is generated by an interrupt
+ * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
+ * next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
  * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter, but events pushed onto the queue with PeepEvents() do
- * not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
  * @param filter a function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -1493,30 +1481,28 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * Set up a filter to process all events before they are added to the internal
  * event queue.
  *
- * If you just want to see events without modifying them or preventing them
- * from being queued, you should use AddEventWatch() instead.
+ * If you just want to see events without modifying them or preventing them from
+ * being queued, you should use AddEventWatch() instead.
  *
- * If the filter function returns true when called, then the event will be
- * added to the internal queue. If it returns false, then the event will be
- * dropped from the queue, but the internal state will still be updated. This
- * allows selective filtering of dynamically arriving events.
+ * If the filter function returns true when called, then the event will be added
+ * to the internal queue. If it returns false, then the event will be dropped
+ * from the queue, but the internal state will still be updated. This allows
+ * selective filtering of dynamically arriving events.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread! The exception is handling of
- * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the
- * main thread and you are expected to redraw your window in response to this
- * event.
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread! The exception is handling of
+ * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the main
+ * thread and you are expected to redraw your window in response to this event.
  *
- * On platforms that support it, if the quit event is generated by an
- * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
- * application at the next event poll.
+ * On platforms that support it, if the quit event is generated by an interrupt
+ * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
+ * next event poll.
  *
  * Note: Disabled events never make it to the event filter function; see
  * SetEventEnabled().
  *
- * Note: Events pushed onto the queue with PushEvent() get passed through
- * the event filter, but events pushed onto the queue with PeepEvents() do
- * not.
+ * Note: Events pushed onto the queue with PushEvent() get passed through the
+ * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
  * @param filter a function to call when an event happens.
  *
@@ -1570,8 +1556,7 @@ inline void GetEventFilter(EventFilter* filter, void** userdata)
  * This function can be used to "chain" filters, by saving the existing filter
  * before replacing it with a function that will call that saved filter.
  *
- * @returns EventFilterCB on success or false if there is no event filter
- *          set.
+ * @returns EventFilterCB on success or false if there is no event filter set.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1612,17 +1597,17 @@ inline bool EventWatchAuxCallback(void* userdata, Event* event)
  * `filter` will be called when an event happens, and its return value is
  * ignored.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread!
  *
- * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
- * the internal queue and be delivered to the watch callback immediately, and
- * arrive at the next event poll.
+ * If the quit event is generated by a signal (e.g. SIGINT), it will bypass the
+ * internal queue and be delivered to the watch callback immediately, and arrive
+ * at the next event poll.
  *
  * Note: the callback is called for events posted by the user through
- * PushEvent(), but not for disabled events, nor for events by a filter
- * callback set with SetEventFilter(), nor for events posted by the user
- * through PeepEvents().
+ * PushEvent(), but not for disabled events, nor for events by a filter callback
+ * set with SetEventFilter(), nor for events posted by the user through
+ * PeepEvents().
  *
  * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -1646,17 +1631,17 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * `filter` will be called when an event happens, and its return value is
  * ignored.
  *
- * **WARNING**: Be very careful of what you do in the event filter function,
- * as it may run in a different thread!
+ * **WARNING**: Be very careful of what you do in the event filter function, as
+ * it may run in a different thread!
  *
- * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
- * the internal queue and be delivered to the watch callback immediately, and
- * arrive at the next event poll.
+ * If the quit event is generated by a signal (e.g. SIGINT), it will bypass the
+ * internal queue and be delivered to the watch callback immediately, and arrive
+ * at the next event poll.
  *
  * Note: the callback is called for events posted by the user through
- * PushEvent(), but not for disabled events, nor for events by a filter
- * callback set with SetEventFilter(), nor for events posted by the user
- * through PeepEvents().
+ * PushEvent(), but not for disabled events, nor for events by a filter callback
+ * set with SetEventFilter(), nor for events posted by the user through
+ * PeepEvents().
  *
  * @param filter an EventFilterCB to call when an event happens.
  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
@@ -1686,8 +1671,8 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 /**
  * Remove an event watch callback added with AddEventWatch().
  *
- * This function takes the same input as AddEventWatch() to identify and
- * delete the corresponding callback.
+ * This function takes the same input as AddEventWatch() to identify and delete
+ * the corresponding callback.
  *
  * @param filter the function originally passed to AddEventWatch().
  * @param userdata the pointer originally passed to AddEventWatch().
@@ -1726,9 +1711,9 @@ inline void RemoveEventWatch(EventWatchHandle handle)
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SetEventFilter() for more information. Unlike SetEventFilter(),
- * this function does not change the filter permanently, it only uses the
- * supplied filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
  *
  * @param filter the EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
@@ -1749,9 +1734,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SetEventFilter() for more information. Unlike SetEventFilter(),
- * this function does not change the filter permanently, it only uses the
- * supplied filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
  *
  * @param filter the EventFilter function to call when an event happens.
  *
@@ -1806,12 +1791,12 @@ inline void SetEventEnabled(Uint32 type, bool enabled)
 inline bool EventEnabled(Uint32 type) { return SDL_EventEnabled(type); }
 
 /**
- * Allocate a set of user-defined events, and return the beginning event
- * number for that set of events.
+ * Allocate a set of user-defined events, and return the beginning event number
+ * for that set of events.
  *
  * @param numevents the number of events to be allocated.
- * @returns the beginning event number, or 0 if numevents is invalid or if
- *          there are not enough user-defined events left.
+ * @returns the beginning event number, or 0 if numevents is invalid or if there
+ *          are not enough user-defined events left.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1885,23 +1870,22 @@ inline int GetEventDescription(const Event& event, TargetBytes buf)
 /**
  * Generate an English description of an event.
  *
- * This will fill `buf` with a null-terminated string that might look
- * something like this:
+ * This will fill `buf` with a null-terminated string that might look something
+ * like this:
  *
  * ```
  * EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99
  * y=139.09 xrel=52 yrel=6)
  * ```
  *
- * The exact format of the string is not guaranteed; it is intended for
- * logging purposes, to be read by a human, and not parsed by a computer.
+ * The exact format of the string is not guaranteed; it is intended for logging
+ * purposes, to be read by a human, and not parsed by a computer.
  *
- * The returned value follows the same rules as snprintf(): `buf` will
- * always be nullptr-terminated (unless `buflen` is zero), and will be truncated
- * if `buflen` is too small. The return code is the number of bytes needed for
- * the complete string, not counting the nullptr-terminator, whether the string
- * was truncated or not. Unlike snprintf(), though, this function never
- * returns -1.
+ * The returned value follows the same rules as snprintf(): `buf` will always be
+ * nullptr-terminated (unless `buflen` is zero), and will be truncated if
+ * `buflen` is too small. The return code is the number of bytes needed for the
+ * complete string, not counting the nullptr-terminator, whether the string was
+ * truncated or not. Unlike snprintf(), though, this function never returns -1.
  *
  * @param event an event to describe
  * @returns a std::string containing the the description string

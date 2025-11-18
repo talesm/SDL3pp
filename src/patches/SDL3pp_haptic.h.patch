@@ -31,15 +31,15 @@
 407a420,421
 > /// @}
 > 
-1273,1274d1286
-<  * @param count a pointer filled in with the number of haptic devices
-<  *              returned, may be nullptr.
-1276,1277c1288
-<  *          failure; call GetError() for more information. This should be
-<  *          freed with free() when it is no longer needed.
+1270,1271d1283
+<  * @param count a pointer filled in with the number of haptic devices returned,
+<  *              may be nullptr.
+1273,1274c1285
+<  *          failure; call GetError() for more information. This should be freed
+<  *          with free() when it is no longer needed.
 ---
 >  *          failure; call GetError() for more information.
-1283c1294,1299
+1280c1291,1296
 < inline OwnArray<HapticID> GetHaptics() { return SDL_GetHaptics(); }
 ---
 > inline OwnArray<HapticID> GetHaptics()
@@ -48,7 +48,7 @@
 >   auto data = SDL_GetHaptics(&count);
 >   return OwnArray<HapticID>{data};
 > }
-1341c1357
+1337c1353
 <   return CheckError(SDL_GetHapticFromID(instance_id));
 ---
 >   return {CheckError(SDL_GetHapticFromID(instance_id))};

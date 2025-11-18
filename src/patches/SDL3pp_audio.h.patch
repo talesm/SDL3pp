@@ -2,34 +2,34 @@
 <  * @defgroup CategoryAudio Category Audio
 ---
 >  * @defgroup CategoryAudio Audio Playback, Recording, and Mixing
-200c200
+196c196
 <  * Generally one should use AudioFormat.GetBitSize instead of this macro
 ---
 >  * Generally one should use AudioFormat.GetBitSize instead of this constant
-210c210,211
+206c206,207
 <  * Generally one should use AudioFormat.IsFloat instead of this macro directly.
 ---
 >  * Generally one should use AudioFormat.IsFloat instead of this constant
 >  * directly.
-220c221
+216c217
 <  * AudioFormat.IsLittleEndian instead of this macro directly.
 ---
 >  * AudioFormat.IsLittleEndian instead of this constant directly.
-229c230,231
+225c226,227
 <  * Generally one should use AudioFormat.IsSigned instead of this macro directly.
 ---
 >  * Generally one should use AudioFormat.IsSigned instead of this constant
 >  * directly.
-286c288
+282c284
 <    * @param signed 1 for signed data, 0 for unsigned data.
 ---
 >    * @param sign 1 for signed data, 0 for unsigned data.
-297c299,300
+293c295,296
 <     : m_audioFormat(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size))
 ---
 >     : m_audioFormat(
 >         AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
-439a443,449
+434a438,444
 > // Unfortunate name clash with SDL_oldnames.h
 > #undef AUDIO_U8
 > #undef AUDIO_S8
@@ -37,49 +37,38 @@
 > #undef AUDIO_S32
 > #undef AUDIO_F32
 > 
-482c492
+477c487
 <  * @param signed 1 for signed data, 0 for unsigned data.
 ---
 >  * @param sign 1 for signed data, 0 for unsigned data.
-720,721d729
-<  * @param userdata a pointer provided by the app through
-<  *                 AudioDevice.SetPostmixCallback, for its own use.
-726d733
+719d728
 <  * @param buflen the size of `buffer` in bytes.
-808,809d814
-<  * @param userdata an opaque pointer provided by the app for their personal
-<  *                 use.
-990,991d994
-<    *              AudioDevice.AudioDevice().
-<    *
-1000,1001d1002
+986,987d994
 <   constexpr auto operator<=>(AudioDeviceParam other) const = default;
 < 
-1005,1006c1006,1007
+991,992c998,999
 <    * @returns the name of the audio device, or nullptr on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns the name of the audio device on success.
 >    * @throws Error on failure.
-1039d1039
+1025d1031
 <    * @param spec on return, will be filled with device details.
-1041a1042
+1027a1034
 >    * @returns the device format details on success.
-1059,1060d1059
+1045,1046d1051
 <    * @param count On output, set to number of channels in the map. Can be
-<    * nullptr.
-1062,1063c1061
+<    *              nullptr.
+1048,1049c1053
 <    *          the current output spec's channels, or nullptr if default. This
 <    *          should be freed with free() when it is no longer needed.
 ---
 >    *          the current output spec's channels, or nullptr if default
-1266d1263
+1251d1254
 <    * @param num_streams number streams listed in the `streams` array.
-1393d1389
+1378d1380
 <    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
-1440d1435
-<    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-1458,1460c1453,1455
+1442,1444c1444,1446
 <   AudioStreamRef OpenStream(const AudioSpec& spec,
 <                             AudioStreamCallback callback,
 <                             void* userdata);
@@ -87,29 +76,27 @@
 >   AudioStream OpenStream(OptionalRef<const AudioSpec> spec,
 >                          AudioStreamCallback callback,
 >                          void* userdata);
-1500d1494
-<    *              or AUDIO_DEVICE_DEFAULT_RECORDING.
-1503,1507c1497
+1486,1490c1488
 <    *                 playback, or receive new data for recording. Can be
-<    * nullptr, in which case the app will need to call AudioStream.PutData or
-<    * AudioStream.GetData as necessary.
+<    *                 nullptr, in which case the app will need to call
+<    *                 AudioStream.PutData or AudioStream.GetData as necessary.
 <    * @param userdata app-controlled pointer passed to callback. Can be nullptr.
 <    *                 Ignored if callback is nullptr.
 ---
 >    *                 playback, or receive new data for recording.
-1556c1546
+1539c1537
 < constexpr AudioDeviceRaw AUDIO_DEVICE_DEFAULT_PLAYBACK =
 ---
 > constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_PLAYBACK =
-1568c1558
+1551c1549
 < constexpr AudioDeviceRaw AUDIO_DEVICE_DEFAULT_RECORDING =
 ---
 > constexpr AudioDeviceID AUDIO_DEVICE_DEFAULT_RECORDING =
-1586c1576
+1569c1567
 <   return SDL_AUDIO_FRAMESIZE(&x);
 ---
 >   return SDL_AUDIO_FRAMESIZE(x);
-1740c1730,1782
+1723c1721,1773
 <   /// Default ctor
 ---
 >   /**
@@ -128,7 +115,7 @@
 >    * Also unlike other functions, the audio device begins paused. This is to map
 >    * more closely to SDL2-style behavior, since there is no extra step here to
 >    * bind a stream to begin audio flowing. The audio device should be resumed
->    * with `AudioStream.ResumeDevice(stream);`
+>    * with `AudioStream.ResumeDevice();`
 >    *
 >    * This function works with both playback and recording devices.
 >    *
@@ -165,9 +152,7 @@
 >    * @sa AudioStream.GetDevice
 >    * @sa AudioStream.ResumeDevice
 >    */
-1789d1830
-<    *
-1821c1862,1880
+1803c1853,1871
 <   AudioSpec GetInputFormat() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -189,7 +174,7 @@
 >     GetFormat(&spec, nullptr);
 >     return spec;
 >   }
-1823c1882,1900
+1805c1873,1891
 <   AudioSpec GetOutputFormat() const { static_assert(false, "Not implemented"); }
 ---
 >   /**
@@ -211,7 +196,7 @@
 >     GetFormat(nullptr, &spec);
 >     return spec;
 >   }
-1841,1844c1918,1948
+1823,1826c1909,1939
 <   void SetInputFormat(const AudioSpec& spec)
 <   {
 <     static_assert(false, "Not implemented");
@@ -248,7 +233,7 @@
 >    * @sa AudioStream.SetFrequencyRatio
 >    */
 >   void SetInputFormat(const AudioSpec& spec) { SetFormat(spec, std::nullopt); }
-1846,1849c1950,1980
+1828,1831c1941,1971
 <   void SetOutputFormat(const AudioSpec& spec)
 <   {
 <     static_assert(false, "Not implemented");
@@ -285,215 +270,218 @@
 >    * @sa AudioStream.SetFrequencyRatio
 >    */
 >   void SetOutputFormat(const AudioSpec& spec) { SetFormat(std::nullopt, spec); }
-1980,1981d2110
+1962,1963d2101
 <    * @param count On output, set to number of channels in the map. Can be
-<    * nullptr.
-1983,1984c2112
+<    *              nullptr.
+1965,1966c2103
 <    *          the current output spec's channels, or nullptr if default. This
 <    *          should be freed with free() when it is no longer needed.
 ---
 >    *          the current output spec's channels, or nullptr if default.
-2004,2005d2131
+1986,1987d2122
 <    * @param count On output, set to number of channels in the map. Can be
-<    * nullptr.
-2007,2008c2133
+<    *              nullptr.
+1989,1990c2124
 <    *          the current output spec's channels, or nullptr if default. This
 <    *          should be freed with free() when it is no longer needed.
 ---
 >    *          the current output spec's channels, or nullptr if default.
-2063d2187
+2045d2178
 <    * @param count The number of channels in the map.
-2119d2242
+2101d2233
 <    * @param count The number of channels in the map.
-2145d2267
+2127d2258
 <    * @param len the number of bytes to write to the stream.
-2174d2295
+2156d2286
 <    * @param len the maximum number of bytes to fill.
-2468,2469d2588
+2450,2451d2579
 <    * @param userdata an opaque pointer provided to the callback for its own
 <    *                 personal use.
-2562,2563d2680
+2544,2545d2671
 <    * @param userdata an opaque pointer provided to the callback for its own
 <    *                 personal use.
-2659,2662d2775
+2640,2643d2765
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-2827,2831c2940,2941
-<  * @param count a pointer filled in with the number of devices returned, may
-<  *              be nullptr.
+2807,2811c2929,2930
+<  * @param count a pointer filled in with the number of devices returned, may be
+<  *              nullptr.
 <  * @returns a 0 terminated array of device instance IDs or nullptr on error;
-<  * call GetError() for more information. This should be freed with free() when
-<  * it is no longer needed.
+<  *          call GetError() for more information. This should be freed with
+<  *          free() when it is no longer needed.
 ---
 >  * @returns a 0 terminated array of device instance IDs on success.
 >  * @throws Error on failure.
-2842c2952,2955
+2822c2941,2944
 <   return SDL_GetAudioPlaybackDevices();
 ---
 >   int count;
 >   auto data = CheckError(SDL_GetAudioPlaybackDevices(&count));
 >   return OwnArray<AudioDeviceRef>{reinterpret_cast<AudioDeviceRef*>(data),
 >                                   size_t(count)};
-2859,2863c2972,2973
-<  * @param count a pointer filled in with the number of devices returned, may
-<  *              be nullptr.
+2839,2843c2961,2962
+<  * @param count a pointer filled in with the number of devices returned, may be
+<  *              nullptr.
 <  * @returns a 0 terminated array of device instance IDs, or nullptr on failure;
-<  *          call GetError() for more information. This should be freed
-<  *          with free() when it is no longer needed.
+<  *          call GetError() for more information. This should be freed with
+<  *          free() when it is no longer needed.
 ---
 >  * @returns a 0 terminated array of device instance IDs on success.
 >  * @throws Error on failure.
-2874c2984,2987
+2854c2973,2976
 <   return SDL_GetAudioRecordingDevices();
 ---
 >   int count;
 >   auto data = CheckError(SDL_GetAudioRecordingDevices(&count));
 >   return OwnArray<AudioDeviceRef>{reinterpret_cast<AudioDeviceRef*>(data),
 >                                   size_t(count)};
-2881,2882c2994,2995
-<  * @returns the name of the audio device, or nullptr on failure; call
-<  *          GetError() for more information.
+2861,2862c2983,2984
+<  * @returns the name of the audio device, or nullptr on failure; call GetError()
+<  *          for more information.
 ---
 >  * @returns the name of the audio device on success.
 >  * @throws Error on failure.
-2893c3006
+2873c2995
 <   return SDL_GetAudioDeviceName(devid);
 ---
 >   return CheckError(SDL_GetAudioDeviceName(devid));
-2924d3036
+2903d3024
 <  * @param spec on return, will be filled with device details.
-2936c3048,3050
+2915c3036,3038
 <   return CheckError(SDL_GetAudioDeviceFormat(devid, sample_frames));
 ---
 >   AudioSpec spec;
 >   CheckError(SDL_GetAudioDeviceFormat(devid, &spec, sample_frames));
 >   return spec;
-2954d3067
+2933d3055
 <  * @param count On output, set to number of channels in the map. Can be nullptr.
-2956,2957c3069
+2935,2936c3057
 <  *          the current output spec's channels, or nullptr if default. This
 <  *          should be freed with free() when it is no longer needed.
 ---
 >  *          the current output spec's channels, or nullptr if default
-2967c3079,3081
+2946c3067,3069
 <   return SDL_GetAudioDeviceChannelMap(devid);
 ---
 >   int count;
 >   auto data = SDL_GetAudioDeviceChannelMap(devid, &count);
 >   return OwnArray<int>{data, size_t(count)};
-3050c3164
+3025c3148
 <                                    const AudioSpec& spec)
 ---
 >                                    OptionalRef<const AudioSpec> spec)
-3332d3445
+3306d3428
 <  * @param num_streams number streams listed in the `streams` array.
-3346c3459,3462
+3320c3442,3445
 <   CheckError(SDL_BindAudioStreams(devid, streams));
 ---
 >   CheckError(SDL_BindAudioStreams(
 >     devid,
 >     reinterpret_cast<SDL_AudioStream* const*>(streams.data()),
 >     streams.size()));
-3393d3508
+3367d3491
 <  * @param num_streams number streams listed in the `streams` array.
-3403c3518,3519
+3377c3501,3502
 <   SDL_UnbindAudioStreams(streams);
 ---
 >   SDL_UnbindAudioStreams(
 >     reinterpret_cast<SDL_AudioStream* const*>(streams.data()), streams.size());
-3448c3564
+3421c3546
 <   return SDL_GetAudioStreamDevice(stream);
 ---
 >   return {SDL_GetAudioStreamDevice(stream)};
-3476,3477c3592,3593
+3449,3450c3574,3575
 < inline AudioStream CreateAudioStream(const AudioSpec& src_spec,
 <                                      const AudioSpec& dst_spec)
 ---
 > inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
 >                                      OptionalRef<const AudioSpec> dst_spec)
-3506c3622
+3479c3604
 <   return CheckError(SDL_GetAudioStreamProperties(stream));
 ---
 >   return {CheckError(SDL_GetAudioStreamProperties(stream))};
-3730d3845
+3703d3827
 <  * @param count On output, set to number of channels in the map. Can be nullptr.
-3732,3733c3847
+3705,3706c3829
 <  *          the current output spec's channels, or nullptr if default. This
 <  *          should be freed with free() when it is no longer needed.
 ---
 >  *          the current output spec's channels, or nullptr if default.
-3744c3858,3861
+3717c3840,3843
 <   return SDL_GetAudioStreamInputChannelMap(stream);
 ---
 >   int count;
 >   auto data = SDL_GetAudioStreamInputChannelMap(stream, &count);
 >   if (!data) return {};
 >   return OwnArray<int>{data, size_t(count)};
-3762d3878
+3735d3860
 <  * @param count On output, set to number of channels in the map. Can be nullptr.
-3764,3765c3880
+3737,3738c3862
 <  *          the current output spec's channels, or nullptr if default. This
 <  *          should be freed with free() when it is no longer needed.
 ---
 >  *          the current output spec's channels, or nullptr if default.
-3776c3891,3894
+3749c3873,3876
 <   return SDL_GetAudioStreamOutputChannelMap(stream);
 ---
 >   int count;
 >   auto data = SDL_GetAudioStreamOutputChannelMap(stream, &count);
 >   if (!data) return {};
 >   return OwnArray<int>{data, size_t(count)};
-3829d3946
+3802d3928
 <  * @param count The number of channels in the map.
-3844c3961,3962
+3817c3943,3944
 <   CheckError(SDL_SetAudioStreamInputChannelMap(stream, chmap));
 ---
 >   CheckError(
 >     SDL_SetAudioStreamInputChannelMap(stream, chmap.data(), chmap.size()));
-3895d4012
+3868d3994
 <  * @param count The number of channels in the map.
-3910c4027,4028
+3883c4009,4010
 <   CheckError(SDL_SetAudioStreamOutputChannelMap(stream, chmap));
 ---
 >   CheckError(
 >     SDL_SetAudioStreamOutputChannelMap(stream, chmap.data(), chmap.size()));
-3931d4048
+3904d4030
 <  * @param len the number of bytes to write to the stream.
-3987,3990d4103
+3958,3961d4083
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-4022,4025d4134
+3971a4094,4095
+>  * @param userdata an opaque pointer provided by the app for their personal
+>  *                 use.
+3990,3993d4113
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-4080,4083d4188
+4048,4051d4167
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-4092,4095d4196
+4060,4063d4175
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-4155,4158d4255
+4121,4124d4232
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-4183d4279
+4149d4256
 <  * @param len the maximum number of bytes to fill.
-4524a4621
+4486a4594
 >   KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(stream);
-4561,4562d4657
+4521,4522d4628
 <  * @param userdata an opaque pointer provided to the callback for its own
 <  *                 personal use.
-4574c4669,4681
+4534c4640,4652
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
@@ -509,12 +497,12 @@
 >     Wrapper::release(stream);
 >     throw Error{};
 >   }
-4637a4745
+4596a4715
 >   KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(stream);
-4677,4678d4784
+4635,4636d4753
 <  * @param userdata an opaque pointer provided to the callback for its own
 <  *                 personal use.
-4690c4796,4808
+4648c4765,4777
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
@@ -530,7 +518,7 @@
 >     Wrapper::release(stream);
 >     throw Error{};
 >   }
-4789,4791c4907,4909
+4745,4747c4874,4876
 <                                          const AudioSpec& spec,
 <                                          AudioStreamCallback callback,
 <                                          void* userdata)
@@ -538,16 +526,15 @@
 >                                          OptionalRef<const AudioSpec> spec,
 >                                          AudioStreamCallback callback = nullptr,
 >                                          void* userdata = nullptr)
-4838,4843c4956
-<  *                 playback, or receive new data for recording. Can be nullptr,
-<  *                 in which case the app will need to call
-<  *                 AudioStream.PutData or AudioStream.GetData as
-<  *                 necessary.
+4794,4798c4923
+<  *                 or receive new data for recording. Can be nullptr, in which
+<  *                 case the app will need to call AudioStream.PutData or
+<  *                 AudioStream.GetData as necessary.
 <  * @param userdata app-controlled pointer passed to callback. Can be nullptr.
 <  *                 Ignored if callback is nullptr.
 ---
->  *                 playback, or receive new data for recording.
-4861,4863c4974,4976
+>  *                 or receive new data for recording.
+4816,4818c4941,4943
 < inline AudioStreamRef AudioDevice::OpenStream(const AudioSpec& spec,
 <                                               AudioStreamCallback callback,
 <                                               void* userdata)
@@ -555,23 +542,23 @@
 > inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
 >                                            AudioStreamCallback callback,
 >                                            void* userdata)
-4871c4984
+4826c4951
 <   return SDL::OpenAudioDeviceStream(m_resource, spec, callback);
 ---
 >   return AudioStream(m_resource, spec, callback);
-4876a4990
+4831a4957
 >   : AudioStream(devid, spec)
-4877a4992,4996
+4832a4959,4963
 >   if (IsAudioDevicePlayback(devid)) {
 >     SetGetCallback(std::move(callback));
 >   } else {
 >     SetPutCallback(std::move(callback));
 >   }
-4934a5054
+4889a5021
 >   KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>::release(devid);
-4982d5101
+4937d5068
 <  * @param userdata app-controlled pointer passed to callback. Can be nullptr.
-4992c5111,5124
+4947c5078,5091
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>;
@@ -588,82 +575,80 @@
 >     Wrapper::release(devid);
 >     throw Error{};
 >   }
-5046,5047c5178,5179
+5000,5001c5144,5145
 <  * ```c
 <  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), true, &spec, &buf, &len);
 ---
 >  * ```cpp
 >  * LoadWAV(IOStream.FromFile("sample.wav", "rb"), spec);
-5053,5054c5185,5186
+5007,5008c5151,5152
 <  * ```c
 <  * LoadWAV("sample.wav", &spec, &buf, &len);
 ---
 >  * ```cpp
 >  * LoadWAV("sample.wav", &spec);
-5058,5059d5189
+5012,5013d5155
 <  * @param closeio if true, calls IOStream.Close() on `src` before returning,
-<  * even in the case of an error.
-5062,5065c5192,5193
+<  *                even in the case of an error.
+5016,5019c5158,5159
 <  * @param audio_buf a pointer filled with the audio data, allocated by the
 <  *                  function.
-<  * @param audio_len a pointer filled with the length of the audio data buffer
-<  *                  in bytes.
+<  * @param audio_len a pointer filled with the length of the audio data buffer in
+<  *                  bytes.
 ---
 >  * @param closeio if true, calls IOStream.Close() on `src` before returning,
 >  *                even in the case of an error.
-5068,5073c5196,5197
-<  *          This function returns false if the .WAV file cannot be opened,
-<  *          uses an unknown data format, or is corrupt; call GetError()
-<  *          for more information.
+5022,5026c5162,5163
+<  * This function returns false if the .WAV file cannot be opened, uses an
+<  * unknown data format, or is corrupt; call GetError() for more information.
 <  *
-<  *          When the application is done with the data returned in
-<  *          `audio_buf`, it should call free() to dispose of it.
+<  * When the application is done with the data returned in `audio_buf`, it should
+<  * call free() to dispose of it.
 ---
 >  * This function throws if the .WAV file cannot be opened, uses an unknown data
 >  * format, or is corrupt; call GetError() for more information.
-5079d5202
+5032d5168
 <  * @sa free
-5086c5209,5212
+5039c5175,5178
 <   return CheckError(SDL_LoadWAV_IO(src, spec, closeio));
 ---
 >   Uint8* buf;
 >   Uint32 len;
 >   if (!SDL_LoadWAV_IO(src, closeio, spec, &buf, &len)) return {};
 >   return OwnArray<Uint8>{buf, size_t(len)};
-5101,5104d5226
+5054,5057d5192
 <  * @param audio_buf a pointer filled with the audio data, allocated by the
 <  *                  function.
-<  * @param audio_len a pointer filled with the length of the audio data buffer
-<  *                  in bytes.
-5107,5112c5229,5230
-<  *          This function returns false if the .WAV file cannot be opened,
-<  *          uses an unknown data format, or is corrupt; call GetError()
-<  *          for more information.
+<  * @param audio_len a pointer filled with the length of the audio data buffer in
+<  *                  bytes.
+5060,5064c5195,5196
+<  * This function returns false if the .WAV file cannot be opened, uses an
+<  * unknown data format, or is corrupt; call GetError() for more information.
 <  *
-<  *          When the application is done with the data returned in
-<  *          `audio_buf`, it should call free() to dispose of it.
+<  * When the application is done with the data returned in `audio_buf`, it should
+<  * call free() to dispose of it.
 ---
 >  * This function throws if the .WAV file cannot be opened, uses an unknown data
 >  * format, or is corrupt,
-5118d5235
+5070d5201
 <  * @sa free
-5123c5240,5243
+5075c5206,5209
 <   return CheckError(SDL_LoadWAV(path, spec));
 ---
 >   Uint8* buf;
 >   Uint32 len;
 >   if (!SDL_LoadWAV(path, spec, &buf, &len)) return {};
 >   return OwnArray<Uint8>{buf, size_t(len)};
-5150d5269
+5101d5234
 <  * @param len the length of the audio buffer in bytes.
-5164c5283,5284
+5115c5248,5249
 <   CheckError(SDL_MixAudio(dst, src.data(), src.size_bytes(), format, volume));
 ---
 >   CheckError(
 >     SDL_MixAudio(dst, src.data_as<Uint8>(), format, src.size_bytes(), volume));
-5191d5310
+5141d5274
 <  * @param len the length of the audio buffer in bytes.
-5205c5324,5330
+5155c5288,5294
 <   static_assert(false, "Not implemented");
 ---
 >   if (dst.size_bytes() < src.size_bytes()) {
@@ -673,14 +658,13 @@
 >              volume);
 >   } else
 >     MixAudio(dst.data_as<Uint8>(), src, format, volume);
-5223d5347
+5173d5311
 <  * @param src_len the len of src_data.
-5225,5228d5348
-<  * @param dst_data will be filled with a pointer to converted audio data,
-<  *                 which should be freed with free(). On error, it will be
-<  *                 nullptr.
+5175,5177d5312
+<  * @param dst_data will be filled with a pointer to converted audio data, which
+<  *                 should be freed with free(). On error, it will be nullptr.
 <  * @param dst_len will be filled with the len of dst_data.
-5239,5240c5359,5367
+5188,5189c5323,5331
 <   return CheckError(SDL_ConvertAudioSamples(
 <     &src_spec, src_data.data(), src_data.size_bytes(), &dst_spec));
 ---

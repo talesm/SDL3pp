@@ -2,7 +2,7 @@
 <  * @defgroup CategoryMouse Category Mouse
 ---
 >  * @defgroup CategoryMouse Mouse Support
-241,246c241,243
+240,245c240,242
 <    * @param w the width of the cursor.
 <    * @param h the height of the cursor.
 <    * @param hot_x the x-axis offset from the left of the cursor image to the
@@ -13,69 +13,68 @@
 >    * @param size the width and height of the cursor.
 >    * @param hot the x position of the cursor hot spot, from the top-left, in the
 >    *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
-264c261,262
+263c260,261
 <     : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
 ---
 >     : m_resource(
 >         CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
-283,284c281
+282,283c280
 <    * @param hot_x the x position of the cursor hot spot.
 <    * @param hot_y the y position of the cursor hot spot.
 ---
 >    * @param hot the x, y position of the cursor hot spot.
-300c297
+299c296
 <     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
 ---
 >     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
-440a438,441
+438a436,439
 > /**
 >  * Represents a button index.
 >  *
 >  */
-443c444
+441c442
 < constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< LEFT
 ---
 > constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
-445c446
+443c444
 < constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< MIDDLE
 ---
 > constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
-447c448
+445c446
 < constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< RIGHT
 ---
 > constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
-449c450
+447c448
 < constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1
 ---
 > constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
-451c452
+449c450
 < constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2
 ---
 > constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
-479a481
+477a479
 > /** Returns mask for button */
-520,523d521
+517,520d518
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-530,531d527
-<  * @param userdata what was passed as `userdata` to
-<  *                 SetRelativeMouseTransform().
-557c553
+549d546
+<  *
+553c550
 <   std::function<void(Uint64, SDL_Window*, SDL_MouseID, float*, float*)>;
 ---
 >   std::function<void(Uint64, WindowRaw, SDL_MouseID, float*, float*)>;
-582,586c578,579
+577,581c574,575
 <  * @param count a pointer filled in with the number of mice returned, may be
 <  *              nullptr.
 <  * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
-<  *          call GetError() for more information. This should be freed
-<  *          with free() when it is no longer needed.
+<  *          call GetError() for more information. This should be freed with
+<  *          free() when it is no longer needed.
 ---
 >  * @returns a 0 terminated array of mouse instance IDs.
 >  * @throws Error on failure.
-595c588,593
+590c584,589
 < inline OwnArray<MouseID> GetMice() { return SDL_GetMice(); }
 ---
 > inline OwnArray<MouseID> GetMice()
@@ -84,44 +83,44 @@
 >   auto data = CheckError(SDL_GetMice(&count));
 >   return OwnArray<MouseID>{data, size_t(count)};
 > }
-626c624
+621c620
 < inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
 ---
 > inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
-744c742
+739c738
 <   SDL_WarpMouseInWindow(m_resource, p);
 ---
 >   SDL_WarpMouseInWindow(m_resource, p.x, p.y);
-758,759c756
+753,754c752
 <  * @param x the x coordinate.
 <  * @param y the y coordinate.
 ---
 >  * @param p the x, y coordinates;
-770c767
+765c763
 <   CheckError(SDL_WarpMouseGlobal(p));
 ---
 >   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
-884,889c881,883
+878,883c876,878
 <  * @param w the width of the cursor.
 <  * @param h the height of the cursor.
-<  * @param hot_x the x-axis offset from the left of the cursor image to the
-<  *              mouse x position, in the range of 0 to `w` - 1.
-<  * @param hot_y the y-axis offset from the top of the cursor image to the
-<  *              mouse y position, in the range of 0 to `h` - 1.
+<  * @param hot_x the x-axis offset from the left of the cursor image to the mouse
+<  *              x position, in the range of 0 to `w` - 1.
+<  * @param hot_y the y-axis offset from the top of the cursor image to the mouse
+<  *              y position, in the range of 0 to `h` - 1.
 ---
 >  * @param size the width and height of the cursor.
 >  * @param hot the x position of the cursor hot spot, from the top-left, in the
 >  *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
-926,927c920
+919,920c914
 <  * @param hot_x the x position of the cursor hot spot.
 <  * @param hot_y the y position of the cursor hot spot.
 ---
 >  * @param hot the position of the cursor hot spot.
-1056c1049
+1047c1041
 < inline CursorRef GetCursor() { return SDL_GetCursor(); }
 ---
 > inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
-1073c1066
+1065c1059
 <   return CheckError(SDL_GetDefaultCursor());
 ---
 >   return {CheckError(SDL_GetDefaultCursor())};

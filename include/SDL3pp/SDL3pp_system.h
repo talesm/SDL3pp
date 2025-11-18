@@ -11,8 +11,8 @@ namespace SDL {
 /**
  * @defgroup CategorySystem Platform-specific Functionality
  *
- * Platform-specific SDL API functions. These are functions that deal with
- * needs of specific operating systems, that didn't make sense to offer as
+ * Platform-specific SDL API functions. These are functions that deal with needs
+ * of specific operating systems, that didn't make sense to offer as
  * platform-independent, generic APIs.
  *
  * Most apps can make do without these functions, but they can be useful for
@@ -39,8 +39,7 @@ using MSG = ::MSG;
  * As this is processing a message directly from the Windows event loop, this
  * callback should do the minimum required work and return quickly.
  *
- * @param userdata the app-defined pointer provided to
- *                 SetWindowsMessageHook.
+ * @param userdata the app-defined pointer provided to SetWindowsMessageHook.
  * @param msg a pointer to a Win32 event structure to process.
  * @returns true to let event continue on, false to drop it.
  *
@@ -63,8 +62,6 @@ using WindowsMessageHook = SDL_WindowsMessageHook;
  * As this is processing a message directly from the Windows event loop, this
  * callback should do the minimum required work and return quickly.
  *
- * @param userdata the app-defined pointer provided to
- *                 SetWindowsMessageHook.
  * @param msg a pointer to a Win32 event structure to process.
  * @returns true to let event continue on, false to drop it.
  *
@@ -195,7 +192,6 @@ using X11EventHook = SDL_X11EventHook;
  * As this is processing an event directly from the X11 event loop, this
  * callback should do the minimum required work and return quickly.
  *
- * @param userdata the app-defined pointer provided to SetX11EventHook.
  * @param xevent a pointer to an Xlib XEvent union to process.
  * @returns true to let event continue on, false to drop it.
  *
@@ -205,6 +201,7 @@ using X11EventHook = SDL_X11EventHook;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa SetX11EventHook
+ *
  * @sa X11EventHook
  */
 using X11EventHookCB = std::function<bool(XEvent*)>;
@@ -212,8 +209,8 @@ using X11EventHookCB = std::function<bool(XEvent*)>;
 /**
  * Set a callback for every X11 event.
  *
- * The callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
+ * The callback may modify the event, and should return true if the event should
+ * continue to be processed, or false to prevent further processing.
  *
  * @param callback the X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
@@ -228,8 +225,8 @@ inline void SetX11EventHook(X11EventHook callback, void* userdata)
 /**
  * Set a callback for every X11 event.
  *
- * The callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
+ * The callback may modify the event, and should return true if the event should
+ * continue to be processed, or false to prevent further processing.
  *
  * @param callback the X11EventHook function to call.
  *
@@ -293,12 +290,11 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
  *
  * This datatype is only useful on Apple iOS.
  *
- * After passing a function pointer of this type to
- * SetiOSAnimationCallback, the system will call that function pointer at
- * a regular interval.
+ * After passing a function pointer of this type to SetiOSAnimationCallback, the
+ * system will call that function pointer at a regular interval.
  *
- * @param userdata what was passed as `callbackParam` to
- *                 SetiOSAnimationCallback as `callbackParam`.
+ * @param userdata what was passed as `callbackParam` to SetiOSAnimationCallback
+ *                 as `callbackParam`.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -311,16 +307,13 @@ using iOSAnimationCallback = SDL_iOSAnimationCallback;
  *
  * This datatype is only useful on Apple iOS.
  *
- * After passing a function pointer of this type to
- * SetiOSAnimationCallback, the system will call that function pointer at
- * a regular interval.
- *
- * @param userdata what was passed as `callbackParam` to
- *                 SetiOSAnimationCallback as `callbackParam`.
+ * After passing a function pointer of this type to SetiOSAnimationCallback, the
+ * system will call that function pointer at a regular interval.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa SetiOSAnimationCallback
+ *
  * @sa iOSAnimationCallback
  */
 using iOSAnimationCB = std::function<void()>;
@@ -351,8 +344,7 @@ using iOSAnimationCB = std::function<void()>;
  * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be
- *                 called.
+ * @param interval the number of frames after which **callback** will be called.
  * @param callback the function to call for every frame.
  * @param callbackParam a pointer that is passed to `callback`.
  * @throws Error on failure.
@@ -396,8 +388,7 @@ inline void SetiOSAnimationCallback(WindowParam window,
  * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be
- *                 called.
+ * @param interval the number of frames after which **callback** will be called.
  * @param callback the function to call for every frame.
  * @throws Error on failure.
  *
@@ -440,12 +431,12 @@ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  * code, and is needed for many Android APIs to be usable from C.
  *
  * The prototype of the function in SDL's code actually declare a void* return
- * type, even if the implementation returns a pointer to a JNIEnv. The
- * rationale being that the SDL headers can avoid including jni.h.
+ * type, even if the implementation returns a pointer to a JNIEnv. The rationale
+ * being that the SDL headers can avoid including jni.h.
  *
  * @returns a pointer to Java native interface object (JNIEnv) to which the
- *          current thread is attached, or nullptr on failure; call
- *          GetError() for more information.
+ *          current thread is attached, or nullptr on failure; call GetError()
+ *          for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -458,9 +449,9 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
 /**
  * Retrieve the Java instance of the Android activity class.
  *
- * The prototype of the function in SDL's code actually declares a void*
- * return type, even if the implementation returns a jobject. The rationale
- * being that the SDL headers can avoid including jni.h.
+ * The prototype of the function in SDL's code actually declares a void* return
+ * type, even if the implementation returns a jobject. The rationale being that
+ * the SDL headers can avoid including jni.h.
  *
  * The jobject returned by the function is a local reference and must be
  * released by the caller. See the PushLocalFrame() and PopLocalFrame() or
@@ -469,8 +460,8 @@ inline void* GetAndroidJNIEnv() { return SDL_GetAndroidJNIEnv(); }
  * https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/functions.html
  *
  * @returns the jobject representing the instance of the Activity class of the
- *          Android application, or nullptr on failure; call GetError() for
- *          more information.
+ *          Android application, or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -567,8 +558,7 @@ constexpr Uint32 ANDROID_EXTERNAL_STORAGE_WRITE =
  * This path is unique to your application and cannot be written to by other
  * applications.
  *
- * Your internal storage path is typically:
- * `/data/data/your.app.package/files`.
+ * Your internal storage path is typically: `/data/data/your.app.package/files`.
  *
  * This is a C wrapper over `android.content.Context.getFilesDir()`:
  *
@@ -610,8 +600,8 @@ inline Uint32 GetAndroidExternalStorageState()
 /**
  * Get the path used for external storage for this Android application.
  *
- * This path is unique to your application, but is public and can be written
- * to by other applications.
+ * This path is unique to your application, but is public and can be written to
+ * by other applications.
  *
  * Your external storage path is typically:
  * `/storage/sdcard0/Android/data/your.app.package/files`.
@@ -621,6 +611,7 @@ inline Uint32 GetAndroidExternalStorageState()
  * https://developer.android.com/reference/android/content/Context#getExternalFilesDir()
  *
  * @returns the path used for external storage for this application on success.
+ *
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -637,8 +628,8 @@ inline const char* GetAndroidExternalStoragePath()
 /**
  * Get the path used for caching data for this Android application.
  *
- * This path is unique to your application, but is public and can be written
- * to by other applications.
+ * This path is unique to your application, but is public and can be written to
+ * by other applications.
  *
  * Your cache path is typically: `/data/data/your.app.package/cache/`.
  *
@@ -647,6 +638,7 @@ inline const char* GetAndroidExternalStoragePath()
  * https://developer.android.com/reference/android/content/Context#getCacheDir()
  *
  * @returns the path used for caches for this application on success.
+ *
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -694,12 +686,12 @@ using RequestAndroidPermissionCB =
  * from a microphone or reading images from a camera, using standard SDL APIs,
  * will manage permission requests for you.
  *
- * This function never blocks. Instead, the app-supplied callback will be
- * called when a decision has been made. This callback may happen on a
- * different thread, and possibly much later, as it might wait on a user to
- * respond to a system dialog. If permission has already been granted for a
- * specific entitlement, the callback will still fire, probably on the current
- * thread and before this function returns.
+ * This function never blocks. Instead, the app-supplied callback will be called
+ * when a decision has been made. This callback may happen on a different
+ * thread, and possibly much later, as it might wait on a user to respond to a
+ * system dialog. If permission has already been granted for a specific
+ * entitlement, the callback will still fire, probably on the current thread and
+ * before this function returns.
  *
  * If the request submission fails, this function returns -1 and the callback
  * will NOT be called, but this should only happen in catastrophic conditions,
@@ -714,8 +706,8 @@ using RequestAndroidPermissionCB =
  * @param cb the callback to trigger when the request has a response.
  * @param userdata an app-controlled pointer that is passed to the callback.
  * @returns true if the request was submitted, false if there was an error
- *          submitting. The result of the request is only ever reported
- *          through the callback, not this return value.
+ *          submitting. The result of the request is only ever reported through
+ *          the callback, not this return value.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -735,12 +727,12 @@ inline bool RequestAndroidPermission(StringParam permission,
  * from a microphone or reading images from a camera, using standard SDL APIs,
  * will manage permission requests for you.
  *
- * This function never blocks. Instead, the app-supplied callback will be
- * called when a decision has been made. This callback may happen on a
- * different thread, and possibly much later, as it might wait on a user to
- * respond to a system dialog. If permission has already been granted for a
- * specific entitlement, the callback will still fire, probably on the current
- * thread and before this function returns.
+ * This function never blocks. Instead, the app-supplied callback will be called
+ * when a decision has been made. This callback may happen on a different
+ * thread, and possibly much later, as it might wait on a user to respond to a
+ * system dialog. If permission has already been granted for a specific
+ * entitlement, the callback will still fire, probably on the current thread and
+ * before this function returns.
  *
  * If the request submission fails, this function returns -1 and the callback
  * will NOT be called, but this should only happen in catastrophic conditions,
@@ -754,8 +746,8 @@ inline bool RequestAndroidPermission(StringParam permission,
  * @param permission the permission to request.
  * @param cb the callback to trigger when the request has a response.
  * @returns true if the request was submitted, false if there was an error
- *          submitting. The result of the request is only ever reported
- *          through the callback, not this return value.
+ *          submitting. The result of the request is only ever reported through
+ *          the callback, not this return value.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -878,15 +870,14 @@ constexpr Sandbox SANDBOX_MACOS = SDL_SANDBOX_MACOS; ///< MACOS
 inline Sandbox GetSandbox() { return SDL_GetSandbox(); }
 
 /**
- * Let iOS apps with external event handling report
- * onApplicationWillTerminate.
+ * Let iOS apps with external event handling report onApplicationWillTerminate.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -899,11 +890,11 @@ inline void OnApplicationWillTerminate() { SDL_OnApplicationWillTerminate(); }
  * onApplicationDidReceiveMemoryWarning.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -919,11 +910,11 @@ inline void OnApplicationDidReceiveMemoryWarning()
  * onApplicationWillResignActive.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -939,11 +930,11 @@ inline void OnApplicationWillEnterBackground()
  * onApplicationDidEnterBackground.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -959,11 +950,11 @@ inline void OnApplicationDidEnterBackground()
  * onApplicationWillEnterForeground.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -979,11 +970,11 @@ inline void OnApplicationWillEnterForeground()
  * onApplicationDidBecomeActive.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1001,11 +992,11 @@ inline void OnApplicationDidEnterForeground()
  * onApplicationDidChangeStatusBarOrientation.
  *
  * This functions allows iOS apps that have their own event handling to hook
- * into SDL to generate SDL events. This maps directly to an iOS-specific
- * event, but since it doesn't do anything iOS-specific internally, it is
- * available on all platforms, in case it might be useful for some specific
- * paradigm. Most apps do not need to use this directly; SDL's internal event
- * code will handle all this for windows created by Window.Window!
+ * into SDL to generate SDL events. This maps directly to an iOS-specific event,
+ * but since it doesn't do anything iOS-specific internally, it is available on
+ * all platforms, in case it might be useful for some specific paradigm. Most
+ * apps do not need to use this directly; SDL's internal event code will handle
+ * all this for windows created by Window.Window!
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1027,12 +1018,11 @@ using XTaskQueueHandle = ::XTaskQueueHandle;
 using XUserHandle = ::XUserHandle;
 
 /**
- * Gets a reference to the global async task queue handle for GDK,
- * initializing if needed.
+ * Gets a reference to the global async task queue handle for GDK, initializing
+ * if needed.
  *
- * Once you are done with the task queue, you should call
- * XTaskQueueCloseHandle to reduce the reference count to avoid a resource
- * leak.
+ * Once you are done with the task queue, you should call XTaskQueueCloseHandle
+ * to reduce the reference count to avoid a resource leak.
  *
  * @param outTaskQueue a pointer to be filled in with task queue handle.
  * @throws Error on failure.
@@ -1050,8 +1040,7 @@ inline void GetGDKTaskQueue(XTaskQueueHandle* outTaskQueue)
  * This is effectively a synchronous version of XUserAddAsync, which always
  * prefers the default user and allows a sign-in UI.
  *
- * @param outUserHandle a pointer to be filled in with the default user
- *                      handle.
+ * @param outUserHandle a pointer to be filled in with the default user handle.
  * @returns true if success or false on failure; call GetError() for more
  *          information.
  *

@@ -11,28 +11,25 @@ namespace SDL {
 /**
  * @defgroup CategoryVideo Category Video
  *
- * SDL's video subsystem is largely interested in abstracting window
- * management from the underlying operating system. You can create windows,
- * manage them in various ways, set them fullscreen, and get events when
- * interesting things happen with them, such as the mouse or keyboard
- * interacting with a window.
+ * SDL's video subsystem is largely interested in abstracting window management
+ * from the underlying operating system. You can create windows, manage them in
+ * various ways, set them fullscreen, and get events when interesting things
+ * happen with them, such as the mouse or keyboard interacting with a window.
  *
  * The video subsystem is also interested in abstracting away some
- * platform-specific differences in OpenGL: context creation, swapping
- * buffers, etc. This may be crucial to your app, but also you are not
- * required to use OpenGL at all. In fact, SDL can provide rendering to those
- * windows as well, either with an easy-to-use
- * [2D API](https://wiki.libsdl.org/SDL3/CategoryRender)
- * or with a more-powerful
- * [GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)
- * . Of course, it can simply get out of your way and give you the window
- * handles you need to use Vulkan, Direct3D, Metal, or whatever else you like
- * directly, too.
+ * platform-specific differences in OpenGL: context creation, swapping buffers,
+ * etc. This may be crucial to your app, but also you are not required to use
+ * OpenGL at all. In fact, SDL can provide rendering to those windows as well,
+ * either with an easy-to-use [2D
+ * API](https://wiki.libsdl.org/SDL3/CategoryRender) or with a more-powerful
+ * [GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU) . Of course, it can
+ * simply get out of your way and give you the window handles you need to use
+ * Vulkan, Direct3D, Metal, or whatever else you like directly, too.
  *
- * The video subsystem covers a lot of functionality, out of necessity, so it
- * is worth perusing the list of functions just to see what's available, but
- * most apps can get by with simply creating a window and listening for
- * events, so start with Window.Window() and PollEvent().
+ * The video subsystem covers a lot of functionality, out of necessity, so it is
+ * worth perusing the list of functions just to see what's available, but most
+ * apps can get by with simply creating a window and listening for events, so
+ * start with Window.Window() and PollEvent().
  *
  * @{
  */
@@ -126,27 +123,27 @@ struct RendererRef;
 using DisplayOrientation = SDL_DisplayOrientation;
 
 constexpr DisplayOrientation ORIENTATION_UNKNOWN =
-  SDL_ORIENTATION_UNKNOWN; ///< The display orientation can't be determined.
+  SDL_ORIENTATION_UNKNOWN; ///< The display orientation can't be determined
 
 /**
  * The display is in landscape mode, with the right side up, relative to
- * portrait mode.
+ * portrait mode
  */
 constexpr DisplayOrientation ORIENTATION_LANDSCAPE = SDL_ORIENTATION_LANDSCAPE;
 
 /**
  * The display is in landscape mode, with the left side up, relative to portrait
- * mode.
+ * mode
  */
 constexpr DisplayOrientation ORIENTATION_LANDSCAPE_FLIPPED =
   SDL_ORIENTATION_LANDSCAPE_FLIPPED;
 
 constexpr DisplayOrientation ORIENTATION_PORTRAIT =
-  SDL_ORIENTATION_PORTRAIT; ///< The display is in portrait mode.
+  SDL_ORIENTATION_PORTRAIT; ///< The display is in portrait mode
 
 constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
   SDL_ORIENTATION_PORTRAIT_FLIPPED; ///< The display is in portrait mode, upside
-                                    ///< down.
+                                    ///< down
 
 /**
  * The structure that defines a display mode.
@@ -162,8 +159,8 @@ constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
 using DisplayMode = SDL_DisplayMode;
 
 /**
- * This is a unique ID for a display for the time it is connected to the
- * system, and is never reused for the lifetime of the application.
+ * This is a unique ID for a display for the time it is connected to the system,
+ * and is never reused for the lifetime of the application.
  *
  * If the display is disconnected and reconnected, it will get a new ID.
  *
@@ -197,6 +194,7 @@ public:
    * Return the primary display.
    *
    * @returns the instance ID of the primary display on success.
+   *
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -228,8 +226,8 @@ public:
    *
    * @param rect the rect to query.
    * @returns the instance ID of the display entirely containing the rect or
-   *          closest to the center of the rect on success or 0 on failure; call
-   *          GetError() for more information.
+   *          closest to the center of the rect on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -245,23 +243,23 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR
-   *   headroom above the SDR white point. This is for informational and
-   *   diagnostic purposes only, as not all platforms provide this information
-   *   at the display level.
+   * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
+   *   above the SDR white point. This is for informational and diagnostic
+   *   purposes only, as not all platforms provide this information at the
+   *   display level.
    *
    * On KMS/DRM:
    *
-   * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel
-   *   orientation" property for the display in degrees of clockwise rotation.
-   *   Note that this is provided only as a hint, and the application is
-   *   responsible for any coordinate transformations needed to conform to the
-   *   requested display orientation.
+   * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
+   *   property for the display in degrees of clockwise rotation. Note that this
+   *   is provided only as a hint, and the application is responsible for any
+   *   coordinate transformations needed to conform to the requested display
+   *   orientation.
    *
    * On Wayland:
    *
-   * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated
-   *   with the display
+   * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
+   *   the display
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -364,11 +362,11 @@ public:
    * display scale, which means that the user expects UI elements to be twice as
    * big on this display, to aid in readability.
    *
-   * After window creation, Window.GetDisplayScale() should be used to query
-   * the content scale factor for individual windows instead of querying the
-   * display for a window and calling this function, as the per-window content
-   * scale factor may differ from the base value of the display it is on,
-   * particularly on high-DPI and/or multi-monitor desktop configurations.
+   * After window creation, Window.GetDisplayScale() should be used to query the
+   * content scale factor for individual windows instead of querying the display
+   * for a window and calling this function, as the per-window content scale
+   * factor may differ from the base value of the display it is on, particularly
+   * on high-DPI and/or multi-monitor desktop configurations.
    *
    * @returns the content scale of the display, or 0.0f on failure; call
    *          GetError() for more information.
@@ -397,9 +395,9 @@ public:
    * @param count a pointer filled in with the number of display modes returned,
    *              may be nullptr.
    * @returns a nullptr terminated array of display mode pointers or nullptr on
-   *          failure; call GetError() for more information. This is a
-   *          single allocation that should be freed with free() when it is
-   *          no longer needed.
+   *          failure; call GetError() for more information. This is a single
+   *          allocation that should be freed with free() when it is no longer
+   *          needed.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -499,11 +497,10 @@ namespace prop::Global {
  * Can be set before the video subsystem is initialized to import an external
  * `wl_display` object from an application or toolkit for use in SDL, or read
  * after initialization to export the `wl_display` used by the Wayland video
- * backend. Setting this property after the video subsystem has been
- * initialized has no effect, and reading it when the video subsystem is
- * uninitialized will either return the user provided value, if one was set
- * prior to initialization, or nullptr. See docs/README-wayland.md for more
- * information.
+ * backend. Setting this property after the video subsystem has been initialized
+ * has no effect, and reading it when the video subsystem is uninitialized will
+ * either return the user provided value, if one was set prior to
+ * initialization, or nullptr. See docs/README-wayland.md for more information.
  */
 constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
   SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER;
@@ -518,13 +515,13 @@ constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
 using SystemTheme = SDL_SystemTheme;
 
 constexpr SystemTheme SYSTEM_THEME_UNKNOWN =
-  SDL_SYSTEM_THEME_UNKNOWN; ///< Unknown system theme.
+  SDL_SYSTEM_THEME_UNKNOWN; ///< Unknown system theme
 
 constexpr SystemTheme SYSTEM_THEME_LIGHT =
-  SDL_SYSTEM_THEME_LIGHT; ///< Light colored system theme.
+  SDL_SYSTEM_THEME_LIGHT; ///< Light colored system theme
 
 constexpr SystemTheme SYSTEM_THEME_DARK =
-  SDL_SYSTEM_THEME_DARK; ///< Dark colored system theme.
+  SDL_SYSTEM_THEME_DARK; ///< Dark colored system theme
 
 /**
  * Internal display mode data.
@@ -541,15 +538,15 @@ using DisplayModeData = SDL_DisplayModeData;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through Window.Window(), some of it can be
- * changed on existing windows by the app, and some of it might be altered by
- * the user or system outside of the app's control.
+ * immutable after being set through Window.Window(), some of it can be changed
+ * on existing windows by the app, and some of it might be altered by the user
+ * or system outside of the app's control.
  *
- * When creating windows with `WINDOW_RESIZABLE`, SDL will constrain
- * resizable windows to the dimensions recommended by the compositor to fit it
- * within the usable desktop space, although some compositors will do this
- * automatically without intervention as well. Use `Window.SetResizable`
- * after creation instead if you wish to create a window with a specific size.
+ * When creating windows with `WINDOW_RESIZABLE`, SDL will constrain resizable
+ * windows to the dimensions recommended by the compositor to fit it within the
+ * usable desktop space, although some compositors will do this automatically
+ * without intervention as well. Use `Window.SetResizable` after creation
+ * instead if you wish to create a window with a specific size.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -648,13 +645,13 @@ constexpr WindowFlags WINDOW_NOT_FOCUSABLE =
 using FlashOperation = SDL_FlashOperation;
 
 constexpr FlashOperation FLASH_CANCEL =
-  SDL_FLASH_CANCEL; ///< Cancel any window flash state.
+  SDL_FLASH_CANCEL; ///< Cancel any window flash state
 
 constexpr FlashOperation FLASH_BRIEFLY =
-  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention.
+  SDL_FLASH_BRIEFLY; ///< Flash the window briefly to get attention
 
 constexpr FlashOperation FLASH_UNTIL_FOCUSED =
-  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus.
+  SDL_FLASH_UNTIL_FOCUSED; ///< Flash the window until it gets focus
 
 /**
  * Possible return values from the HitTest callback.
@@ -668,7 +665,7 @@ constexpr FlashOperation FLASH_UNTIL_FOCUSED =
 using HitTestResult = SDL_HitTestResult;
 
 constexpr HitTestResult HITTEST_NORMAL =
-  SDL_HITTEST_NORMAL; ///< Region is normal.  No special properties.
+  SDL_HITTEST_NORMAL; ///< Region is normal. No special properties.
 
 constexpr HitTestResult HITTEST_DRAGGABLE =
   SDL_HITTEST_DRAGGABLE; ///< Region can drag entire window.
@@ -713,8 +710,9 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  */
 using HitTest = SDL_HitTest;
 
-///@sa HitTest
-using HitTestCB = HitTest;
+/// @sa HitTest
+using HitTestCB =
+  std::function<HitTestResult(WindowRaw window, const Point& area)>;
 
 /**
  * Opaque type for an EGL surface.
@@ -744,36 +742,36 @@ constexpr ProgressState PROGRESS_STATE_INVALID = SDL_PROGRESS_STATE_INVALID;
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr ProgressState PROGRESS_STATE_NONE =
-  SDL_PROGRESS_STATE_NONE; ///< No progress bar is shown.
+  SDL_PROGRESS_STATE_NONE; ///< No progress bar is shown
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
-/// The progress bar is shown in a indeterminate state.
 constexpr ProgressState PROGRESS_STATE_INDETERMINATE =
-  SDL_PROGRESS_STATE_INDETERMINATE;
+  SDL_PROGRESS_STATE_INDETERMINATE; ///< The progress bar is shown in a
+                                    ///< indeterminate state
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr ProgressState PROGRESS_STATE_NORMAL =
-  SDL_PROGRESS_STATE_NORMAL; ///< The progress bar is shown in a normal state.
+  SDL_PROGRESS_STATE_NORMAL; ///< The progress bar is shown in a normal state
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr ProgressState PROGRESS_STATE_PAUSED =
-  SDL_PROGRESS_STATE_PAUSED; ///< The progress bar is shown in a paused state.
+  SDL_PROGRESS_STATE_PAUSED; ///< The progress bar is shown in a paused state
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
 /**
- * The progress bar is shown in a state indicating the application had an error.
+ * The progress bar is shown in a state indicating the application had an error
  */
 constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
 
@@ -842,41 +840,40 @@ public:
    * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
    * - `WINDOW_EXTERNAL`: window not created by SDL
    * - `WINDOW_MODAL`: window is modal
-   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back
-   *   buffer if possible
+   * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer
+   *   if possible
    * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
    *   MOUSE_GRABBED)
    * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
    * - `WINDOW_UTILITY`: window should be treated as a utility window, not
    *   showing in the task bar and window list
-   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not
-   *   get mouse or keyboard focus, requires a parent window
-   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu,
-   *   requires a parent window
+   * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get
+   *   mouse or keyboard focus, requires a parent window
+   * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a
+   *   parent window
    * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
    * - `WINDOW_VULKAN`: window usable with a Vulkan instance
    * - `WINDOW_METAL`: window usable with a Metal instance
    * - `WINDOW_TRANSPARENT`: window with transparent buffer
    * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
    *
-   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at
-   * creation time, Window.Show() can be used to show it later.
+   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
+   * time, Window.Show() can be used to show it later.
    *
    * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
    * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
    *
    * The window pixel size may differ from its window coordinate size if the
    * window is on a high pixel density display. Use Window.GetSize() to query
-   * the client area's size in window coordinates, and
-   * Window.GetSizeInPixels() or Renderer.GetOutputSize() to query the
-   * drawable size in pixels. Note that the drawable size can vary after the
-   * window is created and should be queried again if you get an
-   * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+   * the client area's size in window coordinates, and Window.GetSizeInPixels()
+   * or Renderer.GetOutputSize() to query the drawable size in pixels. Note that
+   * the drawable size can vary after the window is created and should be
+   * queried again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
    *
-   * If the window is created with any of the WINDOW_OPENGL or
-   * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
-   * (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the
-   * corresponding UnloadLibrary function is called by Window.Destroy().
+   * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
+   * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
+   * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function
+   * is called by Window.Destroy().
    *
    * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
    * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
@@ -896,8 +893,8 @@ public:
    * @param w the width of the window.
    * @param h the height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
-   * @post the window that was created or nullptr on failure; call
-   *          GetError() for more information.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -924,8 +921,8 @@ public:
    *
    * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
    *   input events.
-   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost
-   *   popup menu will implicitly gain the keyboard focus.
+   * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup
+   *   menu will implicitly gain the keyboard focus.
    *
    * The following flags are not relevant to popup window creation and will be
    * ignored:
@@ -959,8 +956,8 @@ public:
    * By default, popup menus will automatically grab keyboard focus from the
    * parent when shown. This behavior can be overridden by setting the
    * `WINDOW_NOT_FOCUSABLE` flag, setting the
-   * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling
-   * it after creation via the `Window.SetFocusable()` function.
+   * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+   * after creation via the `Window.SetFocusable()` function.
    *
    * If a parent window is hidden or destroyed, any child popup windows will be
    * recursively hidden or destroyed as well. Child popup windows not explicitly
@@ -975,8 +972,8 @@ public:
    * @param h the height of the window.
    * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
    *              additional WindowFlags OR'd together.
-   * @post the window that was created or nullptr on failure; call
-   *          GetError() for more information.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1004,41 +1001,41 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
-   *   be always on top
+   * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+   *   always on top
    * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
    *   window decoration
-   * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip"
-   *   and "menu" window types should be automatically constrained to be
-   *   entirely within display bounds (default), false if no constraints on the
-   *   position are desired.
+   * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+   *   "menu" window types should be automatically constrained to be entirely
+   *   within display bounds (default), false if no constraints on the position
+   *   are desired.
    * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
    *   window will be used with an externally managed graphics context.
-   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should
-   *   accept keyboard input (defaults true)
-   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should
-   *   start in fullscreen mode at desktop resolution
+   * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+   *   keyboard input (defaults true)
+   * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
+   *   in fullscreen mode at desktop resolution
    * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
    * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
    *   hidden
-   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
-   *   uses a high pixel density buffer if possible
-   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should
-   *   start maximized
+   * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses
+   *   a high pixel density buffer if possible
+   * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+   *   maximized
    * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
-   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used
-   *   with Metal rendering
-   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should
-   *   start minimized
-   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to
-   *   its parent
+   * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+   *   Metal rendering
+   * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+   *   minimized
+   * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+   *   parent
    * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
    *   with grabbed mouse focus
    * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
    *   with OpenGL rendering
-   * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the
-   *   parent of this window, required for windows with the "tooltip", "menu",
-   *   and "modal" properties
+   * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the parent
+   *   of this window, required for windows with the "tooltip", "menu", and
+   *   "modal" properties
    * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
    *   resizable
    * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
@@ -1052,27 +1049,25 @@ public:
    *   with Vulkan rendering
    * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
    * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
-   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
-   *   relative to the parent for windows with the "tooltip" or "menu" property
-   *   set.
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+   *   to the parent for windows with the "tooltip" or "menu" property set.
    * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
-   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
-   *   relative to the parent for windows with the "tooltip" or "menu" property
-   *   set.
+   *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+   *   to the parent for windows with the "tooltip" or "menu" property set.
    *
    * These are additional supported properties on macOS:
    *
-   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the
-   *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
-   *   to wrap an existing window.
+   * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   *   NSWindow associated with the window, if you want to wrap an existing
+   *   window.
    * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
    * These are additional supported properties on Wayland:
    *
-   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
-   *   the application wants to use the Wayland surface for a custom role and
-   *   does not want it attached to an XDG toplevel window. See
+   * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+   *   application wants to use the Wayland surface for a custom role and does
+   *   not want it attached to an XDG toplevel window. See
    *   [README-wayland](README-wayland) for more information on using custom
    *   surfaces.
    * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
@@ -1087,13 +1082,13 @@ public:
    *
    * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
    *   window, if you want to wrap an existing window.
-   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
-   *   another window to share pixel format with, useful for OpenGL windows
+   * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+   *   window to share pixel format with, useful for OpenGL windows
    *
    * These are additional supported properties with X11:
    *
-   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
-   *   with the window, if you want to wrap an existing window.
+   * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with
+   *   the window, if you want to wrap an existing window.
    *
    * The window is implicitly shown if the "hidden" property is not set.
    *
@@ -1101,15 +1096,14 @@ public:
    *
    * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
    *   canvas element. This should start with a '#' sign
-   * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make
-   *   the canvas element fill the entire document. Resize events will be
-   *   generated as the browser window is resized, as that will adjust the
-   *   canvas size as well. The canvas will cover anything else on the page,
-   *   including any controls provided by Emscripten in its generated HTML file.
-   *   Often times this is desirable for a browser-based game, but it means
-   *   several things that we expect of an SDL window on other platforms might
-   *   not work as expected, such as minimum window sizes and aspect ratios.
-   *   Default false.
+   * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the
+   *   canvas element fill the entire document. Resize events will be generated
+   *   as the browser window is resized, as that will adjust the canvas size as
+   *   well. The canvas will cover anything else on the page, including any
+   *   controls provided by Emscripten in its generated HTML file. Often times
+   *   this is desirable for a browser-based game, but it means several things
+   *   that we expect of an SDL window on other platforms might not work as
+   *   expected, such as minimum window sizes and aspect ratios. Default false.
    * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
    *   binding element for keyboard inputs for this canvas. The variable can be
    *   one of:
@@ -1123,19 +1117,18 @@ public:
    *   popup windows and have the behaviors and guidelines outlined in
    *   Window.Window().
    *
-   * If this window is being created to be used with an Renderer, you should
-   * not add a graphics API specific property
-   * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
-   * internally when it chooses a renderer. However, SDL might need to recreate
-   * your window at that point, which may cause the window to appear briefly,
-   * and then flicker as it is recreated. The correct approach to this is to
-   * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
-   * set to true, then create the renderer, then show the window with
-   * Window.Show().
+   * If this window is being created to be used with an Renderer, you should not
+   * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
+   * etc), as SDL will handle that internally when it chooses a renderer.
+   * However, SDL might need to recreate your window at that point, which may
+   * cause the window to appear briefly, and then flicker as it is recreated.
+   * The correct approach to this is to create the window with the
+   * `prop::Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+   * renderer, then show the window with Window.Show().
    *
    * @param props the properties to use.
-   * @post the window that was created or nullptr on failure; call
-   *          GetError() for more information.
+   * @post the window that was created or nullptr on failure; call GetError()
+   *       for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1193,7 +1186,6 @@ public:
    * from the screen until the SDL event loop is pumped again, even though the
    * Window is no longer valid after this call.
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1212,7 +1204,7 @@ public:
    *
    * @param id the ID of the window.
    * @returns the window associated with `id` or nullptr if it doesn't exist;
-   * call GetError() for more information.
+   *          call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1240,8 +1232,8 @@ public:
    * Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
-   *          on success or 0 on failure; call GetError() for more
-   *          information.
+   *          on success.
+   * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1284,8 +1276,8 @@ public:
    * updated when that setting is changed, or the window moves to a display with
    * a different scale setting.
    *
-   * @returns the display scale, or 0.0f on failure; call GetError() for
-   *          more information.
+   * @returns the display scale, or 0.0f on failure; call GetError() for more
+   *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1402,41 +1394,40 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped
-   *   window
-   * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR
-   *   headroom above the SDR white point. This property can change dynamically
-   *   when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
-   *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the
-   *   SDR white level in scRGB colorspace, and on Apple platforms this is
-   *   always 1.0 for EDR content. This property can change dynamically when
+   * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped window
+   * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
+   *   above the SDR white point. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
-   * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range
-   *   that can be displayed, in terms of the SDR white point. When HDR is not
+   * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+   *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
+   *   white level in scRGB colorspace, and on Apple platforms this is always
+   *   1.0 for EDR content. This property can change dynamically when
+   *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+   *   can be displayed, in terms of the SDR white point. When HDR is not
    *   enabled, this will be 1.0. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    *
    * On Android:
    *
-   * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated
-   *   with the window
+   * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
+   *   the window
    * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with
    *   the window
    *
    * On iOS:
    *
-   * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`
-   *   UIWindow associated with the window
-   * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
-   *   associated with metal views on the window
+   * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
+   *   associated with the window
+   * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+   *   with metal views on the window
    * - `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
    *   framebuffer object. It must be bound when rendering to the screen using
    *   OpenGL.
    * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
    *   renderbuffer object. It must be bound when Window.GL_Swap is called.
-   * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
-   *   view's resolve framebuffer, when MSAA is used.
+   * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
+   *   resolve framebuffer, when MSAA is used.
    *
    * On KMS/DRM:
    *
@@ -1444,27 +1435,27 @@ public:
    *   with the window (e.g. the X in /dev/dri/cardX)
    * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the
    *   window
-   * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated
-   *   with the window
+   * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
+   *   the window
    *
    * On macOS:
    *
-   * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
-   *   NSWindow associated with the window
-   * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
-   *   associated with metal views on the window
+   * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
+   *   associated with the window
+   * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+   *   with metal views on the window
    *
    * On OpenVR:
    *
-   * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID
-   *   for the associated overlay window.
+   * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+   *   the associated overlay window.
    *
    * On Vivante:
    *
    * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
    *   associated with the window
-   * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType
-   *   associated with the window
+   * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
+   *   with the window
    * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with
    *   the window
    *
@@ -1472,8 +1463,8 @@ public:
    *
    * - `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window
    * - `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window
-   * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with
-   *   the window
+   * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
+   *   window
    *
    * On Wayland:
    *
@@ -1485,27 +1476,27 @@ public:
    *   the window
    * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with
    *   the window
-   * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated
+   * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
+   *   the window
+   * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
    *   with the window
-   * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window
-   *   associated with the window
    * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
    *   with the window
    * - `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
    *   associated with the window
    * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
    *   handle associated with the window
-   * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role
-   *   associated with the window
+   * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
+   *   with the window
    * - `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
    *   associated with the window, in popup mode
    *
    * On X11:
    *
-   * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with
-   *   the window
-   * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with
-   *   the window
+   * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
+   *   window
+   * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with the
+   *   window
    * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
    *   window
    *
@@ -1516,8 +1507,8 @@ public:
    * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is
    *   set to consume the entire browser window, bypassing some SDL window
    *   functionality.
-   * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard
-   *   element that associates keyboard events to this window
+   * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
+   *   that associates keyboard events to this window
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -1581,8 +1572,8 @@ public:
    * Set the icon for a window.
    *
    * If this function is passed a surface with alternate representations added
-   * using Surface.AddAlternateImage(), the surface will be interpreted as
-   * the content to be used for 100% display scale, and the alternate
+   * using Surface.AddAlternateImage(), the surface will be interpreted as the
+   * content to be used for 100% display scale, and the alternate
    * representations will be used for high DPI situations. For example, if the
    * original surface is 32x32, then on a 2x macOS display or 200% display scale
    * on Windows, a 64x64 version of the image will be used, if available. If a
@@ -1673,7 +1664,6 @@ public:
    * If you do not need the value for one of the positions a nullptr may be
    * passed in the `x` or `y` parameter.
    *
-   * @param window the window to query.
    * @param x a pointer filled in with the x position of the window, may be
    *          nullptr.
    * @param y a pointer filled in with the y position of the window, may be
@@ -1699,15 +1689,15 @@ public:
    *
    * On some windowing systems, this request is asynchronous and the new window
    * size may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to
-   * block until the changes have taken effect.
+   * function. If an immediate change is required, call Window.Sync() to block
+   * until the changes have taken effect.
    *
-   * When the window size changes, an EVENT_WINDOW_RESIZED event will be
-   * emitted with the new window dimensions. Note that the new dimensions may
-   * not match the exact size requested, as some windowing systems can restrict
-   * the window size in certain scenarios (e.g. constraining the size of the
-   * content area to remain within the usable desktop bounds). Additionally, as
-   * this is just a request, it can be denied by the windowing system.
+   * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
+   * with the new window dimensions. Note that the new dimensions may not match
+   * the exact size requested, as some windowing systems can restrict the window
+   * size in certain scenarios (e.g. constraining the size of the content area
+   * to remain within the usable desktop bounds). Additionally, as this is just
+   * a request, it can be denied by the windowing system.
    *
    * @param w the width of the window, must be > 0.
    * @param h the height of the window, must be > 0.
@@ -1727,8 +1717,8 @@ public:
    * Get the size of a window's client area.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use Window.GetSizeInPixels()
-   * or Renderer.GetOutputSize() to get the real client area size in pixels.
+   * window is on a high pixel density display. Use Window.GetSizeInPixels() or
+   * Renderer.GetOutputSize() to get the real client area size in pixels.
    *
    * @param w a pointer filled in with the width of the window, may be nullptr.
    * @param h a pointer filled in with the height of the window, may be nullptr.
@@ -1748,10 +1738,9 @@ public:
    * Get the size of a window's client area.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use Window.GetSizeInPixels()
-   * or Renderer.GetOutputSize() to get the real client area size in pixels.
+   * window is on a high pixel density display. Use Window.GetSizeInPixels() or
+   * Renderer.GetOutputSize() to get the real client area size in pixels.
    *
-   * @param window the window to query the width and height from.
    * @param w a pointer filled in with the width of the window, may be nullptr.
    * @param h a pointer filled in with the height of the window, may be nullptr.
    * @throws Error on failure.
@@ -1806,13 +1795,12 @@ public:
    * this function. If an immediate change is required, call Window.Sync() to
    * block until the changes have taken effect.
    *
-   * When the window size changes, an EVENT_WINDOW_RESIZED event will be
-   * emitted with the new window dimensions. Note that the new dimensions may
-   * not match the exact aspect ratio requested, as some windowing systems can
-   * restrict the window size in certain scenarios (e.g. constraining the size
-   * of the content area to remain within the usable desktop bounds).
-   * Additionally, as this is just a request, it can be denied by the windowing
-   * system.
+   * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
+   * with the new window dimensions. Note that the new dimensions may not match
+   * the exact aspect ratio requested, as some windowing systems can restrict
+   * the window size in certain scenarios (e.g. constraining the size of the
+   * content area to remain within the usable desktop bounds). Additionally, as
+   * this is just a request, it can be denied by the windowing system.
    *
    * @param min_aspect the minimum aspect ratio of the window, or 0.0f for no
    *                   limit.
@@ -1855,16 +1843,15 @@ public:
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * Window.Window). It is recommended that you wait at least until the
-   * window has been presented and composited, so that the window system has a
-   * chance to decorate the window and provide the border dimensions to SDL.
+   * Window.Window). It is recommended that you wait at least until the window
+   * has been presented and composited, so that the window system has a chance
+   * to decorate the window and provide the border dimensions to SDL.
    *
    * This function also returns false if getting the information is not
    * supported.
    *
-   *               (decorations) from.
    * @param top pointer to variable for storing the size of the top border;
-   * nullptr is permitted.
+   *            nullptr is permitted.
    * @param left pointer to variable for storing the size of the left border;
    *             nullptr is permitted.
    * @param bottom pointer to variable for storing the size of the bottom
@@ -1902,7 +1889,6 @@ public:
   /**
    * Get the size of a window's client area, in pixels.
    *
-   * @param window the window from which the drawable size should be queried.
    * @param w a pointer to variable for storing the width in pixels, may be
    *          nullptr.
    * @param h a pointer to variable for storing the height in pixels, may be
@@ -1989,9 +1975,9 @@ public:
   /**
    * Set the border state of a window.
    *
-   * This will add or remove the window's `WINDOW_BORDERLESS` flag and add
-   * or remove the border from the actual window. This is a no-op if the
-   * window's border already matches the requested state.
+   * This will add or remove the window's `WINDOW_BORDERLESS` flag and add or
+   * remove the border from the actual window. This is a no-op if the window's
+   * border already matches the requested state.
    *
    * You can't change the border state of a fullscreen window.
    *
@@ -2029,8 +2015,8 @@ public:
   /**
    * Set the window to always be above the others.
    *
-   * This will add or remove the window's `WINDOW_ALWAYS_ON_TOP` flag. This
-   * will bring the window to the front and keep the window above the rest.
+   * This will add or remove the window's `WINDOW_ALWAYS_ON_TOP` flag. This will
+   * bring the window to the front and keep the window above the rest.
    *
    * @param on_top true to set the window always on top, false to disable.
    * @throws Error on failure.
@@ -2078,8 +2064,8 @@ public:
    * The result of this request is subject to desktop window manager policy,
    * particularly if raising the requested window would result in stealing focus
    * from another application. If the window is successfully raised and gains
-   * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
-   * the window will have the WINDOW_INPUT_FOCUS flag set.
+   * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and the
+   * window will have the WINDOW_INPUT_FOCUS flag set.
    *
    * @throws Error on failure.
    *
@@ -2097,8 +2083,8 @@ public:
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to
-   * block until the changes have taken effect.
+   * function. If an immediate change is required, call Window.Sync() to block
+   * until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
    * emitted. Note that, as this is just a request, the windowing system can
@@ -2129,8 +2115,8 @@ public:
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to
-   * block until the changes have taken effect.
+   * function. If an immediate change is required, call Window.Sync() to block
+   * until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
    * emitted. Note that, as this is just a request, the windowing system can
@@ -2157,8 +2143,8 @@ public:
    *
    * On some windowing systems this request is asynchronous and the new window
    * state may not have have been applied immediately upon the return of this
-   * function. If an immediate change is required, call Window.Sync() to
-   * block until the changes have taken effect.
+   * function. If an immediate change is required, call Window.Sync() to block
+   * until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_RESTORED event will be
    * emitted. Note that, as this is just a request, the windowing system can
@@ -2185,12 +2171,12 @@ public:
    *
    * On some windowing systems this request is asynchronous and the new
    * fullscreen state may not have have been applied immediately upon the return
-   * of this function. If an immediate change is required, call Window.Sync()
-   * to block until the changes have taken effect.
+   * of this function. If an immediate change is required, call Window.Sync() to
+   * block until the changes have taken effect.
    *
    * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
-   * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
-   * is just a request, it can be denied by the windowing system.
+   * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this is
+   * just a request, it can be denied by the windowing system.
    *
    * @param fullscreen true for fullscreen mode, false for windowed mode.
    * @throws Error on failure.
@@ -2218,7 +2204,6 @@ public:
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   *               applied.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2264,7 +2249,7 @@ public:
    * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
    *
    * @returns the surface associated with the window, or nullptr on failure;
-   * call GetError() for more information.
+   *          call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2285,10 +2270,10 @@ public:
    *
    * The `vsync` parameter can be 1 to synchronize present with every vertical
    * refresh, 2 to synchronize present with every second vertical refresh, etc.,
-   * WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),
-   * or WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is
-   * supported by every driver, so you should check the return value to see
-   * whether the requested setting is supported.
+   * WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
+   * WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is supported by
+   * every driver, so you should check the return value to see whether the
+   * requested setting is supported.
    *
    * @param vsync the vertical refresh sync interval.
    * @throws Error on failure.
@@ -2348,8 +2333,8 @@ public:
    * update more of the screen (or all of the screen!), depending on what method
    * SDL uses to send pixels to the system.
    *
-   * @param rects an array of Rect structures representing areas of the
-   *              surface to copy, in pixels.
+   * @param rects an array of Rect structures representing areas of the surface
+   *              to copy, in pixels.
    * @param numrects the number of rectangles.
    * @throws Error on failure.
    *
@@ -2478,7 +2463,7 @@ public:
    * Get the mouse confinement rectangle of a window.
    *
    * @returns a pointer to the mouse confinement rectangle of a window, or
-   * nullptr if there isn't one.
+   *          nullptr if there isn't one.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2712,7 +2697,7 @@ public:
    * The window must have been created with the WINDOW_TRANSPARENT flag.
    *
    * @param shape the surface representing the shape of the window, or nullptr
-   * to remove any current shape.
+   *              to remove any current shape.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2738,8 +2723,8 @@ public:
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.
    *
-   * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying
-   *              the progress bar.
+   * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying the
+   *              progress bar.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2755,8 +2740,8 @@ public:
   /**
    * Get the state of the progress bar for the given window’s taskbar icon.
    *
-   * @returns the progress state, or `PROGRESS_STATE_INVALID` on failure;
-   *          call GetError() for more information.
+   * @returns the progress state, or `PROGRESS_STATE_INVALID` on failure; call
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2805,8 +2790,8 @@ public:
    * The OpenGL context will be created with the current states set through
    * GL_SetAttribute().
    *
-   * The Window specified must have been created with the WINDOW_OPENGL
-   * flag, or context creation will fail.
+   * The Window specified must have been created with the WINDOW_OPENGL flag, or
+   * context creation will fail.
    *
    * Windows users new to OpenGL should note that, for historical reasons, GL
    * functions added after OpenGL version 1.1 are not available by default.
@@ -2916,24 +2901,24 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that
-   *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
-   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
-   *   that describes how text should be capitalized, defaults to
+   * - `prop::TextInput.TYPE_NUMBER` - an TextInputType value that describes
+   *   text being input, defaults to TEXTINPUT_TYPE_TEXT.
+   * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value that
+   *   describes how text should be capitalized, defaults to
    *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
-   *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
-   *   addresses, usernames, and passwords.
+   *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail addresses,
+   *   usernames, and passwords.
    * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
    *   and auto correction, defaults to true.
-   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
-   *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
-   *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
-   *   is "1".
+   * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text are
+   *   allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or
+   *   is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME is
+   *   "1".
    *
    * On Android you can directly specify the input type:
    *
-   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
-   *   use, overriding other properties. This is documented at
+   * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to use,
+   *   overriding other properties. This is documented at
    *   https://developer.android.com/reference/android/text/InputType
    *
    * @param props the properties to use.
@@ -3019,8 +3004,8 @@ public:
    *
    * This returns the values previously set by Window.SetTextInputArea().
    *
-   * @param rect a pointer to an Rect filled in with the text input area,
-   *             may be nullptr.
+   * @param rect a pointer to an Rect filled in with the text input area, may be
+   *             nullptr.
    * @param cursor a pointer to the offset of the current cursor location
    *               relative to `rect->x`, may be nullptr.
    * @throws Error on failure.
@@ -3056,7 +3041,6 @@ public:
    * Note that this function will appear to succeed, but not actually move the
    * mouse when used over Microsoft Remote Desktop.
    *
-   *               mouse focus.
    * @param x the x coordinate within the window.
    * @param y the y coordinate within the window.
    *
@@ -3077,9 +3061,9 @@ public:
    * the window.
    *
    * If you'd like to keep the mouse position fixed while in relative mode you
-   * can use Window.SetMouseRect(). If you'd like the cursor to be at a
-   * specific location when relative mode ends, you should use
-   * Window.WarpMouse() before disabling relative mode.
+   * can use Window.SetMouseRect(). If you'd like the cursor to be at a specific
+   * location when relative mode ends, you should use Window.WarpMouse() before
+   * disabling relative mode.
    *
    * This function will flush any pending mouse motion for this window.
    *
@@ -3160,8 +3144,8 @@ constexpr int WINDOWPOS_UNDEFINED_MASK = SDL_WINDOWPOS_UNDEFINED_MASK;
 /**
  * Used to indicate that you don't care what the window position is.
  *
- * If you _really_ don't care, WINDOWPOS_UNDEFINED is the same, but always
- * uses the primary display instead of specifying one.
+ * If you _really_ don't care, WINDOWPOS_UNDEFINED is the same, but always uses
+ * the primary display instead of specifying one.
  *
  * @param X the Display of the display to use.
  *
@@ -3214,8 +3198,8 @@ constexpr int WINDOWPOS_CENTERED_MASK = SDL_WINDOWPOS_CENTERED_MASK;
 /**
  * Used to indicate that the window position should be centered.
  *
- * WINDOWPOS_CENTERED is the same, but always uses the primary display
- * instead of specifying one.
+ * WINDOWPOS_CENTERED is the same, but always uses the primary display instead
+ * of specifying one.
  *
  * @param X the Display of the display to use.
  *
@@ -3298,8 +3282,8 @@ public:
    * The OpenGL context will be created with the current states set through
    * GL_SetAttribute().
    *
-   * The Window specified must have been created with the WINDOW_OPENGL
-   * flag, or context creation will fail.
+   * The Window specified must have been created with the WINDOW_OPENGL flag, or
+   * context creation will fail.
    *
    * Windows users new to OpenGL should note that, for historical reasons, GL
    * functions added after OpenGL version 1.1 are not available by default.
@@ -3311,7 +3295,7 @@ public:
    *
    * @param window the window to associate with the context.
    * @post the OpenGL context associated with `window` or nullptr on failure;
-   *          call GetError() for more information.
+   *       call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -3442,11 +3426,11 @@ using EGLint = SDL_EGLint;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window
- * process will fail gracefully.
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * will fail gracefully.
  *
- * The returned pointer should be allocated with malloc() and will be
- * passed to free().
+ * The returned pointer should be allocated with malloc() and will be passed to
+ * free().
  *
  * The arrays returned by each callback will be appended to the existing
  * attribute arrays defined by SDL.
@@ -3467,21 +3451,21 @@ using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
  * app add extra attributes to its eglGetPlatformDisplay() call.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window
- * process will fail gracefully.
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * will fail gracefully.
  *
- * The returned pointer should be allocated with malloc() and will be
- * passed to free().
+ * The returned pointer should be allocated with malloc() and will be passed to
+ * free().
  *
  * The arrays returned by each callback will be appended to the existing
  * attribute arrays defined by SDL.
  *
- * @param userdata an app-controlled pointer that is passed to the callback.
  * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa EGL_SetAttributeCallbacks
+ *
  * @sa EGLAttribArrayCallback
  */
 using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
@@ -3490,18 +3474,18 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  * EGL surface/context attribute initialization callback types.
  *
  * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or
- * eglCreateContext calls.
+ * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
+ * calls.
  *
  * For convenience, the EGLDisplay and EGLConfig to use are provided to the
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window
- * process will fail gracefully.
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * will fail gracefully.
  *
- * The returned pointer should be allocated with malloc() and will be
- * passed to free().
+ * The returned pointer should be allocated with malloc() and will be passed to
+ * free().
  *
  * The arrays returned by each callback will be appended to the existing
  * attribute arrays defined by SDL.
@@ -3521,23 +3505,22 @@ using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
  * EGL surface/context attribute initialization callback types.
  *
  * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or
- * eglCreateContext calls.
+ * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
+ * calls.
  *
  * For convenience, the EGLDisplay and EGLConfig to use are provided to the
  * callback.
  *
  * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window
- * process will fail gracefully.
+ * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
+ * will fail gracefully.
  *
- * The returned pointer should be allocated with malloc() and will be
- * passed to free().
+ * The returned pointer should be allocated with malloc() and will be passed to
+ * free().
  *
  * The arrays returned by each callback will be appended to the existing
  * attribute arrays defined by SDL.
  *
- * @param userdata an app-controlled pointer that is passed to the callback.
  * @param display the EGL display to be used.
  * @param config the EGL config to be used.
  * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
@@ -3545,6 +3528,7 @@ using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa EGL_SetAttributeCallbacks
+ *
  * @sa EGLIntArrayCallback
  */
 using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
@@ -3553,16 +3537,16 @@ using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
  * An enumeration of OpenGL configuration attributes.
  *
  * While you can set most OpenGL attributes normally, the attributes listed
- * above must be known before SDL creates the window that will be used with
- * the OpenGL context. These attributes are set and read with
- * GL_SetAttribute() and GL_GetAttribute().
+ * above must be known before SDL creates the window that will be used with the
+ * OpenGL context. These attributes are set and read with GL_SetAttribute() and
+ * GL_GetAttribute().
  *
- * In some cases, these attributes are minimum requests; the GL does not
- * promise to give you exactly what you asked for. It's possible to ask for a
- * 16-bit depth buffer and get a 24-bit one instead, for example, or to ask
- * for no stencil buffer and still have one available. Context creation should
- * fail if the GL can't provide your requested attributes at a minimum, but
- * you should check to see exactly what you got.
+ * In some cases, these attributes are minimum requests; the GL does not promise
+ * to give you exactly what you asked for. It's possible to ask for a 16-bit
+ * depth buffer and get a 24-bit one instead, for example, or to ask for no
+ * stencil buffer and still have one available. Context creation should fail if
+ * the GL can't provide your requested attributes at a minimum, but you should
+ * check to see exactly what you got.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -3665,7 +3649,7 @@ constexpr GLAttr GL_CONTEXT_MINOR_VERSION =
 constexpr GLAttr GL_CONTEXT_FLAGS = SDL_GL_CONTEXT_FLAGS;
 
 /**
- * type of GL context (Core, Compatibility, ES).  See GLProfile; default value
+ * type of GL context (Core, Compatibility, ES). See GLProfile; default value
  * depends on platform.
  */
 constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
@@ -3678,13 +3662,13 @@ constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE =
                                    ///< to 0.
 
 /**
- * sets context the release behavior.  See GLContextReleaseFlag; defaults to
+ * sets context the release behavior. See GLContextReleaseFlag; defaults to
  * FLUSH.
  */
 constexpr GLAttr GL_CONTEXT_RELEASE_BEHAVIOR = SDL_GL_CONTEXT_RELEASE_BEHAVIOR;
 
 /**
- * set context reset notification.  See GLContextResetNotification; defaults to
+ * set context reset notification. See GLContextResetNotification; defaults to
  * NO_NOTIFICATION.
  */
 constexpr GLAttr GL_CONTEXT_RESET_NOTIFICATION =
@@ -3734,8 +3718,7 @@ constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
   SDL_GL_CONTEXT_RESET_ISOLATION_FLAG; ///< RESET_ISOLATION_FLAG
 
 /**
- * Possible values to be set for the GL_CONTEXT_RELEASE_BEHAVIOR
- * attribute.
+ * Possible values to be set for the GL_CONTEXT_RELEASE_BEHAVIOR attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -3780,8 +3763,8 @@ inline int GetNumVideoDrivers() { return SDL_GetNumVideoDrivers(); }
  * checked during initialization.
  *
  * The names of drivers are all simple, low-ASCII identifiers, like "cocoa",
- * "x11" or "windows". These never have Unicode characters, and are not meant
- * to be proper names.
+ * "x11" or "windows". These never have Unicode characters, and are not meant to
+ * be proper names.
  *
  * @param index the index of a video driver.
  * @returns the name of the video driver with the given **index**, or nullptr if
@@ -3802,11 +3785,11 @@ inline const char* GetVideoDriver(int index)
  * Get the name of the currently initialized video driver.
  *
  * The names of drivers are all simple, low-ASCII identifiers, like "cocoa",
- * "x11" or "windows". These never have Unicode characters, and are not meant
- * to be proper names.
+ * "x11" or "windows". These never have Unicode characters, and are not meant to
+ * be proper names.
  *
  * @returns the name of the current video driver or nullptr if no driver has
- * been initialized.
+ *          been initialized.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -3834,11 +3817,11 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of currently connected displays.
  *
- * @param count a pointer filled in with the number of displays returned, may
- *              be nullptr.
+ * @param count a pointer filled in with the number of displays returned, may be
+ *              nullptr.
  * @returns a 0 terminated array of display instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ *          call GetError() for more information. This should be freed with
+ *          free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -3850,6 +3833,7 @@ inline OwnArray<DisplayID> GetDisplays() { return SDL_GetDisplays(); }
  * Return the primary display.
  *
  * @returns the instance ID of the primary display on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3870,23 +3854,23 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR
- *   headroom above the SDR white point. This is for informational and
- *   diagnostic purposes only, as not all platforms provide this information
- *   at the display level.
+ * - `prop::Display.HDR_ENABLED_BOOLEAN`: true if the display has HDR headroom
+ *   above the SDR white point. This is for informational and diagnostic
+ *   purposes only, as not all platforms provide this information at the display
+ *   level.
  *
  * On KMS/DRM:
  *
- * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel
- *   orientation" property for the display in degrees of clockwise rotation.
- *   Note that this is provided only as a hint, and the application is
- *   responsible for any coordinate transformations needed to conform to the
- *   requested display orientation.
+ * - `prop::Display.KMSDRM_PANEL_ORIENTATION_NUMBER`: the "panel orientation"
+ *   property for the display in degrees of clockwise rotation. Note that this
+ *   is provided only as a hint, and the application is responsible for any
+ *   coordinate transformations needed to conform to the requested display
+ *   orientation.
  *
  * On Wayland:
  *
- * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated
- *   with the display
+ * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
+ *   the display
  *
  * @param displayID the instance ID of the display to query.
  * @returns a valid property ID on success.
@@ -3973,16 +3957,15 @@ inline Rect Display::GetBounds() const
 }
 
 /**
- * Get the usable desktop area represented by a display, in screen
- * coordinates.
+ * Get the usable desktop area represented by a display, in screen coordinates.
  *
  * This is the same area as Display.GetBounds() reports, but with portions
- * reserved by the system removed. For example, on Apple's macOS, this
- * subtracts the area occupied by the menu bar and dock.
+ * reserved by the system removed. For example, on Apple's macOS, this subtracts
+ * the area occupied by the menu bar and dock.
  *
- * Setting a window to be fullscreen generally bypasses these unusable areas,
- * so these are good guidelines for the maximum space available to a
- * non-fullscreen window.
+ * Setting a window to be fullscreen generally bypasses these unusable areas, so
+ * these are good guidelines for the maximum space available to a non-fullscreen
+ * window.
  *
  * @param displayID the instance ID of the display to query.
  * @param rect the Rect structure filled in with the display bounds.
@@ -4054,16 +4037,16 @@ inline DisplayOrientation Display::GetCurrentOrientation() const
 /**
  * Get the content scale of a display.
  *
- * The content scale is the expected scale for content based on the DPI
- * settings of the display. For example, a 4K display might have a 2.0 (200%)
- * display scale, which means that the user expects UI elements to be twice as
- * big on this display, to aid in readability.
+ * The content scale is the expected scale for content based on the DPI settings
+ * of the display. For example, a 4K display might have a 2.0 (200%) display
+ * scale, which means that the user expects UI elements to be twice as big on
+ * this display, to aid in readability.
  *
- * After window creation, Window.GetDisplayScale() should be used to query
- * the content scale factor for individual windows instead of querying the
- * display for a window and calling this function, as the per-window content
- * scale factor may differ from the base value of the display it is on,
- * particularly on high-DPI and/or multi-monitor desktop configurations.
+ * After window creation, Window.GetDisplayScale() should be used to query the
+ * content scale factor for individual windows instead of querying the display
+ * for a window and calling this function, as the per-window content scale
+ * factor may differ from the base value of the display it is on, particularly
+ * on high-DPI and/or multi-monitor desktop configurations.
  *
  * @param displayID the instance ID of the display to query.
  * @returns the content scale of the display, or 0.0f on failure; call
@@ -4102,9 +4085,9 @@ inline float Display::GetContentScale() const
  * @param count a pointer filled in with the number of display modes returned,
  *              may be nullptr.
  * @returns a nullptr terminated array of display mode pointers or nullptr on
- *          failure; call GetError() for more information. This is a
- *          single allocation that should be freed with free() when it is
- *          no longer needed.
+ *          failure; call GetError() for more information. This is a single
+ *          allocation that should be freed with free() when it is no longer
+ *          needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4127,20 +4110,20 @@ inline OwnArray<DisplayMode*> Display::GetFullscreenModes() const
  *
  * The available display modes are scanned and `closest` is filled in with the
  * closest mode matching the requested mode and returned. The mode format and
- * refresh rate default to the desktop mode if they are set to 0. The modes
- * are scanned with size being first priority, format being second priority,
- * and finally checking the refresh rate. If all the available modes are too
- * small, then false is returned.
+ * refresh rate default to the desktop mode if they are set to 0. The modes are
+ * scanned with size being first priority, format being second priority, and
+ * finally checking the refresh rate. If all the available modes are too small,
+ * then false is returned.
  *
  * @param displayID the instance ID of the display to query.
  * @param w the width in pixels of the desired display mode.
  * @param h the height in pixels of the desired display mode.
- * @param refresh_rate the refresh rate of the desired display mode, or 0.0f
- *                     for the desktop refresh rate.
+ * @param refresh_rate the refresh rate of the desired display mode, or 0.0f for
+ *                     the desktop refresh rate.
  * @param include_high_density_modes boolean to include high density modes in
  *                                   the search.
- * @param closest a pointer filled in with the closest display mode equal to
- *                or larger than the desired mode.
+ * @param closest a pointer filled in with the closest display mode equal to or
+ *                larger than the desired mode.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -4172,8 +4155,8 @@ inline DisplayMode Display::GetClosestFullscreenMode(
 /**
  * Get information about the desktop's display mode.
  *
- * There's a difference between this function and Display.GetCurrentMode()
- * when SDL runs fullscreen and has changed the resolution. In that case this
+ * There's a difference between this function and Display.GetCurrentMode() when
+ * SDL runs fullscreen and has changed the resolution. In that case this
  * function will return the previous native display mode, and not the current
  * display mode.
  *
@@ -4201,8 +4184,8 @@ inline const DisplayMode& Display::GetDesktopMode() const
 /**
  * Get information about the current display mode.
  *
- * There's a difference between this function and Display.GetDesktopMode()
- * when SDL runs fullscreen and has changed the resolution. In that case this
+ * There's a difference between this function and Display.GetDesktopMode() when
+ * SDL runs fullscreen and has changed the resolution. In that case this
  * function will return the current display mode, and not the previous native
  * display mode.
  *
@@ -4231,8 +4214,8 @@ inline const DisplayMode& Display::GetCurrentMode() const
  * Get the display containing a point.
  *
  * @param point the point to query.
- * @returns the instance ID of the display containing the point or 0 on
- *          failure; call GetError() for more information.
+ * @returns the instance ID of the display containing the point or 0 on failure;
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4256,8 +4239,8 @@ inline Display Display::GetForPoint(const PointRaw& point)
  *
  * @param rect the rect to query.
  * @returns the instance ID of the display entirely containing the rect or
- *          closest to the center of the rect on success or 0 on failure; call
- *          GetError() for more information.
+ *          closest to the center of the rect on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4268,7 +4251,7 @@ inline Display Display::GetForPoint(const PointRaw& point)
  */
 inline Display GetDisplayForRect(const RectRaw& rect)
 {
-  return SDL_GetDisplayForRect(rect);
+  return CheckError(SDL_GetDisplayForRect(rect));
 }
 
 inline Display Display::GetForRect(const RectRaw& rect)
@@ -4281,8 +4264,8 @@ inline Display Display::GetForRect(const RectRaw& rect)
  *
  * @param window the window to query.
  * @returns the instance ID of the display containing the center of the window
- *          on success or 0 on failure; call GetError() for more
- *          information.
+ *          on success.
+ * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4293,7 +4276,7 @@ inline Display Display::GetForRect(const RectRaw& rect)
  */
 inline Display GetDisplayForWindow(WindowParam window)
 {
-  return SDL_GetDisplayForWindow(window);
+  return CheckError(SDL_GetDisplayForWindow(window));
 }
 
 inline Display Window::GetDisplay() const
@@ -4305,8 +4288,8 @@ inline Display Window::GetDisplay() const
  * Get the pixel density of a window.
  *
  * This is a ratio of pixel size to window size. For example, if the window is
- * 1920x1080 and it has a high density back buffer of 3840x2160 pixels, it
- * would have a pixel density of 2.0.
+ * 1920x1080 and it has a high density back buffer of 3840x2160 pixels, it would
+ * have a pixel density of 2.0.
  *
  * @param window the window to query.
  * @returns the pixel density or 0.0f on failure; call GetError() for more
@@ -4334,17 +4317,16 @@ inline float Window::GetPixelDensity() const
  * This is a combination of the window pixel density and the display content
  * scale, and is the expected scale for displaying content in this window. For
  * example, if a 3840x2160 window had a display scale of 2.0, the user expects
- * the content to take twice as many pixels and be the same physical size as
- * if it were being displayed in a 1920x1080 window with a display scale of
- * 1.0.
+ * the content to take twice as many pixels and be the same physical size as if
+ * it were being displayed in a 1920x1080 window with a display scale of 1.0.
  *
  * Conceptually this value corresponds to the scale display setting, and is
- * updated when that setting is changed, or the window moves to a display with
- * a different scale setting.
+ * updated when that setting is changed, or the window moves to a display with a
+ * different scale setting.
  *
  * @param window the window to query.
- * @returns the display scale, or 0.0f on failure; call GetError() for
- *          more information.
+ * @returns the display scale, or 0.0f on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4368,10 +4350,9 @@ inline float Window::GetDisplayScale() const
  * Window.SetSize().
  *
  * If the window is currently in the fullscreen state, this request is
- * asynchronous on some windowing systems and the new mode dimensions may not
- * be applied immediately upon the return of this function. If an immediate
- * change is required, call Window.Sync() to block until the changes have
- * taken effect.
+ * asynchronous on some windowing systems and the new mode dimensions may not be
+ * applied immediately upon the return of this function. If an immediate change
+ * is required, call Window.Sync() to block until the changes have taken effect.
  *
  * When the new mode takes effect, an EVENT_WINDOW_RESIZED and/or an
  * EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode
@@ -4473,12 +4454,11 @@ inline PixelFormat Window::GetPixelFormat() const
 /**
  * Get a list of valid windows.
  *
- * @param count a pointer filled in with the number of windows returned, may
- *              be nullptr.
+ * @param count a pointer filled in with the number of windows returned, may be
+ *              nullptr.
  * @returns a nullptr terminated array of Window pointers or nullptr on failure;
- *          call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no
- *          longer needed.
+ *          call GetError() for more information. This is a single allocation
+ *          that should be freed with free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4489,8 +4469,8 @@ inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
 /**
  * Create a window with the specified dimensions and flags.
  *
- * The window size is a request and may be different than expected based on
- * the desktop layout and window manager policies. Your application should be
+ * The window size is a request and may be different than expected based on the
+ * desktop layout and window manager policies. Your application should be
  * prepared to handle a window of any size.
  *
  * `flags` may be any of the following OR'd together:
@@ -4507,41 +4487,40 @@ inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
  * - `WINDOW_MOUSE_FOCUS`: window has mouse focus
  * - `WINDOW_EXTERNAL`: window not created by SDL
  * - `WINDOW_MODAL`: window is modal
- * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back
- *   buffer if possible
+ * - `WINDOW_HIGH_PIXEL_DENSITY`: window uses high pixel density back buffer if
+ *   possible
  * - `WINDOW_MOUSE_CAPTURE`: window has mouse captured (unrelated to
  *   MOUSE_GRABBED)
  * - `WINDOW_ALWAYS_ON_TOP`: window should always be above others
- * - `WINDOW_UTILITY`: window should be treated as a utility window, not
- *   showing in the task bar and window list
- * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not
- *   get mouse or keyboard focus, requires a parent window
- * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu,
- *   requires a parent window
+ * - `WINDOW_UTILITY`: window should be treated as a utility window, not showing
+ *   in the task bar and window list
+ * - `WINDOW_TOOLTIP`: window should be treated as a tooltip and does not get
+ *   mouse or keyboard focus, requires a parent window
+ * - `WINDOW_POPUP_MENU`: window should be treated as a popup menu, requires a
+ *   parent window
  * - `WINDOW_KEYBOARD_GRABBED`: window has grabbed keyboard input
  * - `WINDOW_VULKAN`: window usable with a Vulkan instance
  * - `WINDOW_METAL`: window usable with a Metal instance
  * - `WINDOW_TRANSPARENT`: window with transparent buffer
  * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
  *
- * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at
- * creation time, Window.Show() can be used to show it later.
+ * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
+ * time, Window.Show() can be used to show it later.
  *
  * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
  * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
  *
  * The window pixel size may differ from its window coordinate size if the
- * window is on a high pixel density display. Use Window.GetSize() to query
- * the client area's size in window coordinates, and
- * Window.GetSizeInPixels() or Renderer.GetOutputSize() to query the
- * drawable size in pixels. Note that the drawable size can vary after the
- * window is created and should be queried again if you get an
- * EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+ * window is on a high pixel density display. Use Window.GetSize() to query the
+ * client area's size in window coordinates, and Window.GetSizeInPixels() or
+ * Renderer.GetOutputSize() to query the drawable size in pixels. Note that the
+ * drawable size can vary after the window is created and should be queried
+ * again if you get an EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
  *
- * If the window is created with any of the WINDOW_OPENGL or
- * WINDOW_VULKAN flags, then the corresponding LoadLibrary function
- * (GL_LoadLibrary or Vulkan_LoadLibrary) is called and the
- * corresponding UnloadLibrary function is called by Window.Destroy().
+ * If the window is created with any of the WINDOW_OPENGL or WINDOW_VULKAN
+ * flags, then the corresponding LoadLibrary function (GL_LoadLibrary or
+ * Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is
+ * called by Window.Destroy().
  *
  * If WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
  * Window.Window() will fail, because Vulkan_LoadLibrary() will fail.
@@ -4550,8 +4529,7 @@ inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
  * Window.Window() will fail.
  *
  * If you intend to use this window with an Renderer, you should use
- * CreateWindowAndRenderer() instead of this function, to avoid window
- * flicker.
+ * CreateWindowAndRenderer() instead of this function, to avoid window flicker.
  *
  * On non-Apple devices, SDL requires you to either not link to the Vulkan
  * loader or link to a dynamic library version. This limitation may be removed
@@ -4561,8 +4539,8 @@ inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
  * @param w the width of the window.
  * @param h the height of the window.
  * @param flags 0, or one or more WindowFlags OR'd together.
- * @returns the window that was created or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the window that was created or nullptr on failure; call GetError()
+ *          for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4583,16 +4561,16 @@ inline Window CreateWindow(StringParam title,
 /**
  * Create a child popup window of the specified parent window.
  *
- * The window size is a request and may be different than expected based on
- * the desktop layout and window manager policies. Your application should be
+ * The window size is a request and may be different than expected based on the
+ * desktop layout and window manager policies. Your application should be
  * prepared to handle a window of any size.
  *
  * The flags parameter **must** contain at least one of the following:
  *
- * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any
- *   input events.
- * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost
- *   popup menu will implicitly gain the keyboard focus.
+ * - `WINDOW_TOOLTIP`: The popup window is a tooltip and will not pass any input
+ *   events.
+ * - `WINDOW_POPUP_MENU`: The popup window is a popup menu. The topmost popup
+ *   menu will implicitly gain the keyboard focus.
  *
  * The following flags are not relevant to popup window creation and will be
  * ignored:
@@ -4608,42 +4586,42 @@ inline Window CreateWindow(StringParam title,
  * - `WINDOW_UTILITY`
  * - `WINDOW_MODAL`
  *
- * The parent parameter **must** be non-null and a valid window. The parent of
- * a popup window can be either a regular, toplevel window, or another popup
+ * The parent parameter **must** be non-null and a valid window. The parent of a
+ * popup window can be either a regular, toplevel window, or another popup
  * window.
  *
- * Popup windows cannot be minimized, maximized, made fullscreen, raised,
- * flash, be made a modal window, be the parent of a toplevel window, or grab
- * the mouse and/or keyboard. Attempts to do so will fail.
+ * Popup windows cannot be minimized, maximized, made fullscreen, raised, flash,
+ * be made a modal window, be the parent of a toplevel window, or grab the mouse
+ * and/or keyboard. Attempts to do so will fail.
  *
  * Popup windows implicitly do not have a border/decorations and do not appear
  * on the taskbar/dock or in lists of windows such as alt-tab menus.
  *
- * By default, popup window positions will automatically be constrained to
- * keep the entire window within display bounds. This can be overridden with
- * the `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
+ * By default, popup window positions will automatically be constrained to keep
+ * the entire window within display bounds. This can be overridden with the
+ * `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN` property.
  *
  * By default, popup menus will automatically grab keyboard focus from the
  * parent when shown. This behavior can be overridden by setting the
  * `WINDOW_NOT_FOCUSABLE` flag, setting the
- * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling
- * it after creation via the `Window.SetFocusable()` function.
+ * `prop::Window.CREATE_FOCUSABLE_BOOLEAN` property to false, or toggling it
+ * after creation via the `Window.SetFocusable()` function.
  *
  * If a parent window is hidden or destroyed, any child popup windows will be
  * recursively hidden or destroyed as well. Child popup windows not explicitly
  * hidden will be restored when the parent is shown.
  *
  * @param parent the parent of the window, must not be nullptr.
- * @param offset_x the x position of the popup window relative to the origin
- *                 of the parent.
- * @param offset_y the y position of the popup window relative to the origin
- *                 of the parent window.
+ * @param offset_x the x position of the popup window relative to the origin of
+ *                 the parent.
+ * @param offset_y the y position of the popup window relative to the origin of
+ *                 the parent window.
  * @param w the width of the window.
  * @param h the height of the window.
- * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
- *              additional WindowFlags OR'd together.
- * @returns the window that was created or nullptr on failure; call
- *          GetError() for more information.
+ * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more additional
+ *              WindowFlags OR'd together.
+ * @returns the window that was created or nullptr on failure; call GetError()
+ *          for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4665,47 +4643,47 @@ inline Window CreatePopupWindow(WindowParam parent,
 /**
  * Create a window with the specified properties.
  *
- * The window size is a request and may be different than expected based on
- * the desktop layout and window manager policies. Your application should be
+ * The window size is a request and may be different than expected based on the
+ * desktop layout and window manager policies. Your application should be
  * prepared to handle a window of any size.
  *
  * These are the supported properties:
  *
- * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
- *   be always on top
- * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no
- *   window decoration
- * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip"
- *   and "menu" window types should be automatically constrained to be
- *   entirely within display bounds (default), false if no constraints on the
- *   position are desired.
- * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
- *   window will be used with an externally managed graphics context.
- * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should
- *   accept keyboard input (defaults true)
- * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should
- *   start in fullscreen mode at desktop resolution
+ * - `prop::Window.CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should be
+ *   always on top
+ * - `prop::Window.CREATE_BORDERLESS_BOOLEAN`: true if the window has no window
+ *   decoration
+ * - `prop::Window.CREATE_CONSTRAIN_POPUP_BOOLEAN`: true if the "tooltip" and
+ *   "menu" window types should be automatically constrained to be entirely
+ *   within display bounds (default), false if no constraints on the position
+ *   are desired.
+ * - `prop::Window.CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the window
+ *   will be used with an externally managed graphics context.
+ * - `prop::Window.CREATE_FOCUSABLE_BOOLEAN`: true if the window should accept
+ *   keyboard input (defaults true)
+ * - `prop::Window.CREATE_FULLSCREEN_BOOLEAN`: true if the window should start
+ *   in fullscreen mode at desktop resolution
  * - `prop::Window.CREATE_HEIGHT_NUMBER`: the height of the window
  * - `prop::Window.CREATE_HIDDEN_BOOLEAN`: true if the window should start
  *   hidden
- * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
- *   uses a high pixel density buffer if possible
- * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should
- *   start maximized
+ * - `prop::Window.CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window uses a
+ *   high pixel density buffer if possible
+ * - `prop::Window.CREATE_MAXIMIZED_BOOLEAN`: true if the window should start
+ *   maximized
  * - `prop::Window.CREATE_MENU_BOOLEAN`: true if the window is a popup menu
- * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used
- *   with Metal rendering
- * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should
- *   start minimized
- * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to
- *   its parent
- * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
- *   with grabbed mouse focus
- * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used
- *   with OpenGL rendering
- * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the
- *   parent of this window, required for windows with the "tooltip", "menu",
- *   and "modal" properties
+ * - `prop::Window.CREATE_METAL_BOOLEAN`: true if the window will be used with
+ *   Metal rendering
+ * - `prop::Window.CREATE_MINIMIZED_BOOLEAN`: true if the window should start
+ *   minimized
+ * - `prop::Window.CREATE_MODAL_BOOLEAN`: true if the window is modal to its
+ *   parent
+ * - `prop::Window.CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts with
+ *   grabbed mouse focus
+ * - `prop::Window.CREATE_OPENGL_BOOLEAN`: true if the window will be used with
+ *   OpenGL rendering
+ * - `prop::Window.CREATE_PARENT_POINTER`: an Window that will be the parent of
+ *   this window, required for windows with the "tooltip", "menu", and "modal"
+ *   properties
  * - `prop::Window.CREATE_RESIZABLE_BOOLEAN`: true if the window should be
  *   resizable
  * - `prop::Window.CREATE_TITLE_STRING`: the title of the window, in UTF-8
@@ -4715,31 +4693,29 @@ inline Window CreatePopupWindow(WindowParam parent,
  * - `prop::Window.CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
  * - `prop::Window.CREATE_UTILITY_BOOLEAN`: true if the window is a utility
  *   window, not showing in the task bar and window list
- * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used
- *   with Vulkan rendering
+ * - `prop::Window.CREATE_VULKAN_BOOLEAN`: true if the window will be used with
+ *   Vulkan rendering
  * - `prop::Window.CREATE_WIDTH_NUMBER`: the width of the window
  * - `prop::Window.CREATE_X_NUMBER`: the x position of the window, or
- *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
- *   relative to the parent for windows with the "tooltip" or "menu" property
- *   set.
+ *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+ *   to the parent for windows with the "tooltip" or "menu" property set.
  * - `prop::Window.CREATE_Y_NUMBER`: the y position of the window, or
- *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is
- *   relative to the parent for windows with the "tooltip" or "menu" property
- *   set.
+ *   `WINDOWPOS_CENTERED`, defaults to `WINDOWPOS_UNDEFINED`. This is relative
+ *   to the parent for windows with the "tooltip" or "menu" property set.
  *
  * These are additional supported properties on macOS:
  *
- * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the
- *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
- *   to wrap an existing window.
+ * - `prop::Window.CREATE_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+ *   NSWindow associated with the window, if you want to wrap an existing
+ *   window.
  * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
  *   NSView associated with the window, defaults to `[window contentView]`
  *
  * These are additional supported properties on Wayland:
  *
- * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
- *   the application wants to use the Wayland surface for a custom role and
- *   does not want it attached to an XDG toplevel window. See
+ * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
+ *   application wants to use the Wayland surface for a custom role and does not
+ *   want it attached to an XDG toplevel window. See
  *   [README-wayland](README-wayland) for more information on using custom
  *   surfaces.
  * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
@@ -4754,13 +4730,13 @@ inline Window CreatePopupWindow(WindowParam parent,
  *
  * - `prop::Window.CREATE_WIN32_HWND_POINTER`: the HWND associated with the
  *   window, if you want to wrap an existing window.
- * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
- *   another window to share pixel format with, useful for OpenGL windows
+ * - `prop::Window.CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional, another
+ *   window to share pixel format with, useful for OpenGL windows
  *
  * These are additional supported properties with X11:
  *
- * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
- *   with the window, if you want to wrap an existing window.
+ * - `prop::Window.CREATE_X11_WINDOW_NUMBER`: the X11 Window associated with the
+ *   window, if you want to wrap an existing window.
  *
  * The window is implicitly shown if the "hidden" property is not set.
  *
@@ -4768,15 +4744,14 @@ inline Window CreatePopupWindow(WindowParam parent,
  *
  * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
  *   canvas element. This should start with a '#' sign
- * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make
- *   the canvas element fill the entire document. Resize events will be
- *   generated as the browser window is resized, as that will adjust the
- *   canvas size as well. The canvas will cover anything else on the page,
- *   including any controls provided by Emscripten in its generated HTML file.
- *   Often times this is desirable for a browser-based game, but it means
- *   several things that we expect of an SDL window on other platforms might
- *   not work as expected, such as minimum window sizes and aspect ratios.
- *   Default false.
+ * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the
+ *   canvas element fill the entire document. Resize events will be generated as
+ *   the browser window is resized, as that will adjust the canvas size as well.
+ *   The canvas will cover anything else on the page, including any controls
+ *   provided by Emscripten in its generated HTML file. Often times this is
+ *   desirable for a browser-based game, but it means several things that we
+ *   expect of an SDL window on other platforms might not work as expected, such
+ *   as minimum window sizes and aspect ratios. Default false.
  * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
  *   binding element for keyboard inputs for this canvas. The variable can be
  *   one of:
@@ -4790,19 +4765,18 @@ inline Window CreatePopupWindow(WindowParam parent,
  *   popup windows and have the behaviors and guidelines outlined in
  *   Window.Window().
  *
- * If this window is being created to be used with an Renderer, you should
- * not add a graphics API specific property
- * (`prop::Window.CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
- * internally when it chooses a renderer. However, SDL might need to recreate
- * your window at that point, which may cause the window to appear briefly,
- * and then flicker as it is recreated. The correct approach to this is to
- * create the window with the `prop::Window.CREATE_HIDDEN_BOOLEAN` property
- * set to true, then create the renderer, then show the window with
- * Window.Show().
+ * If this window is being created to be used with an Renderer, you should not
+ * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
+ * etc), as SDL will handle that internally when it chooses a renderer. However,
+ * SDL might need to recreate your window at that point, which may cause the
+ * window to appear briefly, and then flicker as it is recreated. The correct
+ * approach to this is to create the window with the
+ * `prop::Window.CREATE_HIDDEN_BOOLEAN` property set to true, then create the
+ * renderer, then show the window with Window.Show().
  *
  * @param props the properties to use.
- * @returns the window that was created or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the window that was created or nullptr on failure; call GetError()
+ *          for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -5054,8 +5028,8 @@ constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
 /**
  * Get the numeric ID of a window.
  *
- * The numeric ID is what WindowEvent references, and is necessary to map
- * these events to specific Window objects.
+ * The numeric ID is what WindowEvent references, and is necessary to map these
+ * events to specific Window objects.
  *
  * @param window the window to query.
  * @returns the ID of the window on success.
@@ -5077,8 +5051,8 @@ inline WindowID Window::GetID() const { return SDL::GetWindowID(m_resource); }
 /**
  * Get a window from a stored ID.
  *
- * The numeric ID is what WindowEvent references, and is necessary to map
- * these events to specific Window objects.
+ * The numeric ID is what WindowEvent references, and is necessary to map these
+ * events to specific Window objects.
  *
  * @param id the ID of the window.
  * @returns the window associated with `id` or nullptr if it doesn't exist; call
@@ -5128,78 +5102,76 @@ inline WindowRef Window::GetParent() const
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped
- *   window
- * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR
- *   headroom above the SDR white point. This property can change dynamically
- *   when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
- *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the
- *   SDR white level in scRGB colorspace, and on Apple platforms this is
- *   always 1.0 for EDR content. This property can change dynamically when
+ * - `prop::Window.SHAPE_POINTER`: the surface associated with a shaped window
+ * - `prop::Window.HDR_ENABLED_BOOLEAN`: true if the window has HDR headroom
+ *   above the SDR white point. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range
- *   that can be displayed, in terms of the SDR white point. When HDR is not
- *   enabled, this will be 1.0. This property can change dynamically when
+ * - `prop::Window.SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+ *   COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
+ *   white level in scRGB colorspace, and on Apple platforms this is always 1.0
+ *   for EDR content. This property can change dynamically when
+ *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+ * - `prop::Window.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+ *   can be displayed, in terms of the SDR white point. When HDR is not enabled,
+ *   this will be 1.0. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * On Android:
  *
- * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated
- *   with the window
- * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with
+ * - `prop::Window.ANDROID_WINDOW_POINTER`: the ANativeWindow associated with
  *   the window
+ * - `prop::Window.ANDROID_SURFACE_POINTER`: the EGLSurface associated with the
+ *   window
  *
  * On iOS:
  *
- * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`
- *   UIWindow associated with the window
- * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
- *   associated with metal views on the window
+ * - `prop::Window.UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)` UIWindow
+ *   associated with the window
+ * - `prop::Window.UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+ *   with metal views on the window
  * - `prop::Window.UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
  *   framebuffer object. It must be bound when rendering to the screen using
  *   OpenGL.
  * - `prop::Window.UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
  *   renderbuffer object. It must be bound when Window.GL_Swap is called.
- * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
- *   view's resolve framebuffer, when MSAA is used.
+ * - `prop::Window.UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL view's
+ *   resolve framebuffer, when MSAA is used.
  *
  * On KMS/DRM:
  *
- * - `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated
- *   with the window (e.g. the X in /dev/dri/cardX)
- * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the
- *   window
- * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated
- *   with the window
+ * - `prop::Window.KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated with
+ *   the window (e.g. the X in /dev/dri/cardX)
+ * - `prop::Window.KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the window
+ * - `prop::Window.KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated with
+ *   the window
  *
  * On macOS:
  *
- * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
- *   NSWindow associated with the window
- * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
- *   associated with metal views on the window
+ * - `prop::Window.COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)` NSWindow
+ *   associated with the window
+ * - `prop::Window.COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag associated
+ *   with metal views on the window
  *
  * On OpenVR:
  *
- * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID
- *   for the associated overlay window.
+ * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+ *   the associated overlay window.
  *
  * On Vivante:
  *
- * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
- *   associated with the window
- * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType
- *   associated with the window
- * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with
- *   the window
+ * - `prop::Window.VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType associated
+ *   with the window
+ * - `prop::Window.VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType associated
+ *   with the window
+ * - `prop::Window.VIVANTE_SURFACE_POINTER`: the EGLSurface associated with the
+ *   window
  *
  * On Windows:
  *
  * - `prop::Window.WIN32_HWND_POINTER`: the HWND associated with the window
  * - `prop::Window.WIN32_HDC_POINTER`: the HDC associated with the window
- * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with
- *   the window
+ * - `prop::Window.WIN32_INSTANCE_POINTER`: the HINSTANCE associated with the
+ *   window
  *
  * On Wayland:
  *
@@ -5207,43 +5179,42 @@ inline WindowRef Window::GetParent() const
  * show/hide calls. They will be null if the window is hidden and must be
  * queried each time it is shown.
  *
- * - `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with
+ * - `prop::Window.WAYLAND_DISPLAY_POINTER`: the wl_display associated with the
+ *   window
+ * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with the
+ *   window
+ * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated with
  *   the window
- * - `prop::Window.WAYLAND_SURFACE_POINTER`: the wl_surface associated with
+ * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window associated
+ *   with the window
+ * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated with
  *   the window
- * - `prop::Window.WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated
- *   with the window
- * - `prop::Window.WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window
- *   associated with the window
- * - `prop::Window.WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
- *   with the window
  * - `prop::Window.WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
  *   associated with the window
- * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
- *   handle associated with the window
- * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role
+ * - 'prop::Window.WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export handle
  *   associated with the window
+ * - `prop::Window.WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role associated
+ *   with the window
  * - `prop::Window.WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
  *   associated with the window, in popup mode
  *
  * On X11:
  *
- * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with
- *   the window
- * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with
- *   the window
- * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
+ * - `prop::Window.X11_DISPLAY_POINTER`: the X11 Display associated with the
  *   window
+ * - `prop::Window.X11_SCREEN_NUMBER`: the screen number associated with the
+ *   window
+ * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the window
  *
  * On Emscripten:
  *
- * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element
- *   will have
- * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is
- *   set to consume the entire browser window, bypassing some SDL window
+ * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
+ *   have
+ * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is set
+ *   to consume the entire browser window, bypassing some SDL window
  *   functionality.
- * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard
- *   element that associates keyboard events to this window
+ * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
+ *   that associates keyboard events to this window
  *
  * @param window the window to query.
  * @returns a valid property ID on success.
@@ -5320,8 +5291,7 @@ inline void Window::SetTitle(StringParam title)
  * Get the title of a window.
  *
  * @param window the window to query.
- * @returns the title of the window in UTF-8 format or "" if there is no
- *          title.
+ * @returns the title of the window in UTF-8 format or "" if there is no title.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -5343,15 +5313,14 @@ inline const char* Window::GetTitle() const
  * Set the icon for a window.
  *
  * If this function is passed a surface with alternate representations added
- * using Surface.AddAlternateImage(), the surface will be interpreted as
- * the content to be used for 100% display scale, and the alternate
- * representations will be used for high DPI situations. For example, if the
- * original surface is 32x32, then on a 2x macOS display or 200% display scale
- * on Windows, a 64x64 version of the image will be used, if available. If a
- * matching version of the image isn't available, the closest larger size
- * image will be downscaled to the appropriate size and be used instead, if
- * available. Otherwise, the closest smaller image will be upscaled and be
- * used instead.
+ * using Surface.AddAlternateImage(), the surface will be interpreted as the
+ * content to be used for 100% display scale, and the alternate representations
+ * will be used for high DPI situations. For example, if the original surface is
+ * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
+ * version of the image will be used, if available. If a matching version of the
+ * image isn't available, the closest larger size image will be downscaled to
+ * the appropriate size and be used instead, if available. Otherwise, the
+ * closest smaller image will be upscaled and be used instead.
  *
  * @param window the window to change.
  * @param icon an Surface structure containing the icon for the window.
@@ -5376,8 +5345,8 @@ inline void Window::SetIcon(SurfaceParam icon)
 /**
  * Request that the window's position be set.
  *
- * If the window is in an exclusive fullscreen or maximized state, this
- * request has no effect.
+ * If the window is in an exclusive fullscreen or maximized state, this request
+ * has no effect.
  *
  * This can be used to reposition fullscreen-desktop windows onto a different
  * display, however, as exclusive fullscreen windows are locked to a specific
@@ -5389,13 +5358,12 @@ inline void Window::SetIcon(SurfaceParam icon)
  * this function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window position changes, an EVENT_WINDOW_MOVED event will be
- * emitted with the window's new coordinates. Note that the new coordinates
- * may not match the exact coordinates requested, as some windowing systems
- * can restrict the position of the window in certain scenarios (e.g.
- * constraining the position so the window is always within desktop bounds).
- * Additionally, as this is just a request, it can be denied by the windowing
- * system.
+ * When the window position changes, an EVENT_WINDOW_MOVED event will be emitted
+ * with the window's new coordinates. Note that the new coordinates may not
+ * match the exact coordinates requested, as some windowing systems can restrict
+ * the position of the window in certain scenarios (e.g. constraining the
+ * position so the window is always within desktop bounds). Additionally, as
+ * this is just a request, it can be denied by the windowing system.
  *
  * @param window the window to reposition.
  * @param x the x coordinate of the window, or `WINDOWPOS_CENTERED` or
@@ -5424,8 +5392,8 @@ inline void Window::SetPosition(const PointRaw& p)
 /**
  * Get the position of a window.
  *
- * This is the current position of the window as last reported by the
- * windowing system.
+ * This is the current position of the window as last reported by the windowing
+ * system.
  *
  * If you do not need the value for one of the positions a nullptr may be passed
  * in the `x` or `y` parameter.
@@ -5451,8 +5419,8 @@ inline void GetWindowPosition(WindowParam window, int* x, int* y)
 /**
  * Get the position of a window.
  *
- * This is the current position of the window as last reported by the
- * windowing system.
+ * This is the current position of the window as last reported by the windowing
+ * system.
  *
  * If you do not need the value for one of the positions a nullptr may be passed
  * in the `x` or `y` parameter.
@@ -5496,15 +5464,15 @@ inline Point Window::GetPosition() const
  *
  * On some windowing systems, this request is asynchronous and the new window
  * size may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to
- * block until the changes have taken effect.
+ * function. If an immediate change is required, call Window.Sync() to block
+ * until the changes have taken effect.
  *
- * When the window size changes, an EVENT_WINDOW_RESIZED event will be
- * emitted with the new window dimensions. Note that the new dimensions may
- * not match the exact size requested, as some windowing systems can restrict
- * the window size in certain scenarios (e.g. constraining the size of the
- * content area to remain within the usable desktop bounds). Additionally, as
- * this is just a request, it can be denied by the windowing system.
+ * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
+ * with the new window dimensions. Note that the new dimensions may not match
+ * the exact size requested, as some windowing systems can restrict the window
+ * size in certain scenarios (e.g. constraining the size of the content area to
+ * remain within the usable desktop bounds). Additionally, as this is just a
+ * request, it can be denied by the windowing system.
  *
  * @param window the window to change.
  * @param w the width of the window, must be > 0.
@@ -5533,8 +5501,8 @@ inline void Window::SetSize(const PointRaw& size)
  * Get the size of a window's client area.
  *
  * The window pixel size may differ from its window coordinate size if the
- * window is on a high pixel density display. Use Window.GetSizeInPixels()
- * or Renderer.GetOutputSize() to get the real client area size in pixels.
+ * window is on a high pixel density display. Use Window.GetSizeInPixels() or
+ * Renderer.GetOutputSize() to get the real client area size in pixels.
  *
  * @param window the window to query the width and height from.
  * @param w a pointer filled in with the width of the window, may be nullptr.
@@ -5558,8 +5526,8 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * Get the size of a window's client area.
  *
  * The window pixel size may differ from its window coordinate size if the
- * window is on a high pixel density display. Use Window.GetSizeInPixels()
- * or Renderer.GetOutputSize() to get the real client area size in pixels.
+ * window is on a high pixel density display. Use Window.GetSizeInPixels() or
+ * Renderer.GetOutputSize() to get the real client area size in pixels.
  *
  * @param window the window to query the width and height from.
  * @param w a pointer filled in with the width of the window, may be nullptr.
@@ -5603,12 +5571,12 @@ inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
 /**
  * Get the safe area for this window.
  *
- * Some devices have portions of the screen which are partially obscured or
- * not interactive, possibly due to on-screen controls, curved edges, camera
+ * Some devices have portions of the screen which are partially obscured or not
+ * interactive, possibly due to on-screen controls, curved edges, camera
  * notches, TV overscan, etc. This function provides the area of the window
  * which is safe to have interactable content. You should continue rendering
- * into the rest of the window, but it should not contain visually important
- * or interactible content.
+ * into the rest of the window, but it should not contain visually important or
+ * interactible content.
  *
  * @param window the window to query.
  * @param rect a pointer filled in with the client area that is safe for
@@ -5637,21 +5605,20 @@ inline Rect Window::GetSafeArea() const
  * narrower.
  *
  * If, at the time of this request, the window in a fixed-size state, such as
- * maximized or fullscreen, the request will be deferred until the window
- * exits this state and becomes resizable again.
+ * maximized or fullscreen, the request will be deferred until the window exits
+ * this state and becomes resizable again.
  *
  * On some windowing systems, this request is asynchronous and the new window
  * aspect ratio may not have have been applied immediately upon the return of
  * this function. If an immediate change is required, call Window.Sync() to
  * block until the changes have taken effect.
  *
- * When the window size changes, an EVENT_WINDOW_RESIZED event will be
- * emitted with the new window dimensions. Note that the new dimensions may
- * not match the exact aspect ratio requested, as some windowing systems can
- * restrict the window size in certain scenarios (e.g. constraining the size
- * of the content area to remain within the usable desktop bounds).
- * Additionally, as this is just a request, it can be denied by the windowing
- * system.
+ * When the window size changes, an EVENT_WINDOW_RESIZED event will be emitted
+ * with the new window dimensions. Note that the new dimensions may not match
+ * the exact aspect ratio requested, as some windowing systems can restrict the
+ * window size in certain scenarios (e.g. constraining the size of the content
+ * area to remain within the usable desktop bounds). Additionally, as this is
+ * just a request, it can be denied by the windowing system.
  *
  * @param window the window to change.
  * @param min_aspect the minimum aspect ratio of the window, or 0.0f for no
@@ -5716,21 +5683,20 @@ inline void Window::GetAspectRatio(float* min_aspect, float* max_aspect) const
  *
  * Note: This function may fail on systems where the window has not yet been
  * decorated by the display server (for example, immediately after calling
- * Window.Window). It is recommended that you wait at least until the
- * window has been presented and composited, so that the window system has a
- * chance to decorate the window and provide the border dimensions to SDL.
+ * Window.Window). It is recommended that you wait at least until the window has
+ * been presented and composited, so that the window system has a chance to
+ * decorate the window and provide the border dimensions to SDL.
  *
- * This function also returns false if getting the information is not
- * supported.
+ * This function also returns false if getting the information is not supported.
  *
- * @param window the window to query the size values of the border
- *               (decorations) from.
+ * @param window the window to query the size values of the border (decorations)
+ *               from.
  * @param top pointer to variable for storing the size of the top border;
- * nullptr is permitted.
+ *            nullptr is permitted.
  * @param left pointer to variable for storing the size of the left border;
  *             nullptr is permitted.
- * @param bottom pointer to variable for storing the size of the bottom
- *               border; nullptr is permitted.
+ * @param bottom pointer to variable for storing the size of the bottom border;
+ *               nullptr is permitted.
  * @param right pointer to variable for storing the size of the right border;
  *              nullptr is permitted.
  * @throws Error on failure.
@@ -5919,9 +5885,9 @@ inline void Window::GetMaximumSize(int* w, int* h) const
 /**
  * Set the border state of a window.
  *
- * This will add or remove the window's `WINDOW_BORDERLESS` flag and add
- * or remove the border from the actual window. This is a no-op if the
- * window's border already matches the requested state.
+ * This will add or remove the window's `WINDOW_BORDERLESS` flag and add or
+ * remove the border from the actual window. This is a no-op if the window's
+ * border already matches the requested state.
  *
  * You can't change the border state of a fullscreen window.
  *
@@ -5977,8 +5943,8 @@ inline void Window::SetResizable(bool resizable)
 /**
  * Set the window to always be above the others.
  *
- * This will add or remove the window's `WINDOW_ALWAYS_ON_TOP` flag. This
- * will bring the window to the front and keep the window above the rest.
+ * This will add or remove the window's `WINDOW_ALWAYS_ON_TOP` flag. This will
+ * bring the window to the front and keep the window above the rest.
  *
  * @param window the window of which to change the always on top state.
  * @param on_top true to set the window always on top, false to disable.
@@ -6041,14 +6007,13 @@ inline void HideWindow(WindowParam window)
 inline void Window::Hide() { SDL::HideWindow(m_resource); }
 
 /**
- * Request that a window be raised above other windows and gain the input
- * focus.
+ * Request that a window be raised above other windows and gain the input focus.
  *
  * The result of this request is subject to desktop window manager policy,
  * particularly if raising the requested window would result in stealing focus
  * from another application. If the window is successfully raised and gains
- * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and
- * the window will have the WINDOW_INPUT_FOCUS flag set.
+ * input focus, an EVENT_WINDOW_FOCUS_GAINED event will be emitted, and the
+ * window will have the WINDOW_INPUT_FOCUS flag set.
  *
  * @param window the window to raise.
  * @throws Error on failure.
@@ -6072,12 +6037,12 @@ inline void Window::Raise() { SDL::RaiseWindow(m_resource); }
  *
  * On some windowing systems this request is asynchronous and the new window
  * state may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to
- * block until the changes have taken effect.
+ * function. If an immediate change is required, call Window.Sync() to block
+ * until the changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_MAXIMIZED event will be
- * emitted. Note that, as this is just a request, the windowing system can
- * deny the state change.
+ * emitted. Note that, as this is just a request, the windowing system can deny
+ * the state change.
  *
  * When maximizing a window, whether the constraints set via
  * Window.SetMaximumSize() are honored depends on the policy of the window
@@ -6105,17 +6070,17 @@ inline void Window::Maximize() { SDL::MaximizeWindow(m_resource); }
 /**
  * Request that the window be minimized to an iconic representation.
  *
- * If the window is in a fullscreen state, this request has no direct effect.
- * It may alter the state the window is returned to when leaving fullscreen.
+ * If the window is in a fullscreen state, this request has no direct effect. It
+ * may alter the state the window is returned to when leaving fullscreen.
  *
  * On some windowing systems this request is asynchronous and the new window
- * state may not have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to
- * block until the changes have taken effect.
+ * state may not have been applied immediately upon the return of this function.
+ * If an immediate change is required, call Window.Sync() to block until the
+ * changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_MINIMIZED event will be
- * emitted. Note that, as this is just a request, the windowing system can
- * deny the state change.
+ * emitted. Note that, as this is just a request, the windowing system can deny
+ * the state change.
  *
  * @param window the window to minimize.
  * @throws Error on failure.
@@ -6139,17 +6104,17 @@ inline void Window::Minimize() { SDL::MinimizeWindow(m_resource); }
  * Request that the size and position of a minimized or maximized window be
  * restored.
  *
- * If the window is in a fullscreen state, this request has no direct effect.
- * It may alter the state the window is returned to when leaving fullscreen.
+ * If the window is in a fullscreen state, this request has no direct effect. It
+ * may alter the state the window is returned to when leaving fullscreen.
  *
  * On some windowing systems this request is asynchronous and the new window
  * state may not have have been applied immediately upon the return of this
- * function. If an immediate change is required, call Window.Sync() to
- * block until the changes have taken effect.
+ * function. If an immediate change is required, call Window.Sync() to block
+ * until the changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_RESTORED event will be
- * emitted. Note that, as this is just a request, the windowing system can
- * deny the state change.
+ * emitted. Note that, as this is just a request, the windowing system can deny
+ * the state change.
  *
  * @param window the window to restore.
  * @throws Error on failure.
@@ -6176,14 +6141,14 @@ inline void Window::Restore() { SDL::RestoreWindow(m_resource); }
  * mode, but a specific exclusive display mode can be set using
  * Window.SetFullscreenMode().
  *
- * On some windowing systems this request is asynchronous and the new
- * fullscreen state may not have have been applied immediately upon the return
- * of this function. If an immediate change is required, call Window.Sync()
- * to block until the changes have taken effect.
+ * On some windowing systems this request is asynchronous and the new fullscreen
+ * state may not have have been applied immediately upon the return of this
+ * function. If an immediate change is required, call Window.Sync() to block
+ * until the changes have taken effect.
  *
  * When the window state changes, an EVENT_WINDOW_ENTER_FULLSCREEN or
- * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this
- * is just a request, it can be denied by the windowing system.
+ * EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this is
+ * just a request, it can be denied by the windowing system.
  *
  * @param window the window to change.
  * @param fullscreen true for fullscreen mode, false for windowed mode.
@@ -6211,12 +6176,12 @@ inline void Window::SetFullscreen(bool fullscreen)
 /**
  * Block until any pending window state is finalized.
  *
- * On asynchronous windowing systems, this acts as a synchronization barrier
- * for pending window state. It will attempt to wait until any pending window
- * state has been applied and is guaranteed to return within finite time. Note
- * that for how long it can potentially block depends on the underlying window
- * system, as window state changes may involve somewhat lengthy animations
- * that must complete before the window is in its final requested state.
+ * On asynchronous windowing systems, this acts as a synchronization barrier for
+ * pending window state. It will attempt to wait until any pending window state
+ * has been applied and is guaranteed to return within finite time. Note that
+ * for how long it can potentially block depends on the underlying window
+ * system, as window state changes may involve somewhat lengthy animations that
+ * must complete before the window is in its final requested state.
  *
  * On windowing systems where changes are immediate, this does nothing.
  *
@@ -6311,10 +6276,10 @@ inline Surface Window::GetSurface()
  *
  * The `vsync` parameter can be 1 to synchronize present with every vertical
  * refresh, 2 to synchronize present with every second vertical refresh, etc.,
- * WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync),
- * or WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is
- * supported by every driver, so you should check the return value to see
- * whether the requested setting is supported.
+ * WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
+ * WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is supported by
+ * every driver, so you should check the return value to see whether the
+ * requested setting is supported.
  *
  * @param window the window.
  * @param vsync the vertical refresh sync interval.
@@ -6392,19 +6357,19 @@ inline void Window::UpdateSurface() { SDL::UpdateWindowSurface(m_resource); }
 /**
  * Copy areas of the window surface to the screen.
  *
- * This is the function you use to reflect changes to portions of the surface
- * on the screen.
+ * This is the function you use to reflect changes to portions of the surface on
+ * the screen.
  *
  * This function is equivalent to the SDL 1.2 API SDL_UpdateRects().
  *
- * Note that this function will update _at least_ the rectangles specified,
- * but this is only intended as an optimization; in practice, this might
- * update more of the screen (or all of the screen!), depending on what method
- * SDL uses to send pixels to the system.
+ * Note that this function will update _at least_ the rectangles specified, but
+ * this is only intended as an optimization; in practice, this might update more
+ * of the screen (or all of the screen!), depending on what method SDL uses to
+ * send pixels to the system.
  *
  * @param window the window to update.
- * @param rects an array of Rect structures representing areas of the
- *              surface to copy, in pixels.
+ * @param rects an array of Rect structures representing areas of the surface to
+ *              copy, in pixels.
  * @param numrects the number of rectangles.
  * @throws Error on failure.
  *
@@ -6457,10 +6422,9 @@ inline void Window::DestroySurface() { SDL::DestroyWindowSurface(m_resource); }
  * or VM frontends. Normal games should not use keyboard grab.
  *
  * When keyboard grab is enabled, SDL will continue to handle Alt+Tab when the
- * window is full-screen to ensure the user is not trapped in your
- * application. If you have a custom keyboard shortcut to exit fullscreen
- * mode, you may suppress this behavior with
- * `SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED`.
+ * window is full-screen to ensure the user is not trapped in your application.
+ * If you have a custom keyboard shortcut to exit fullscreen mode, you may
+ * suppress this behavior with `SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED`.
  *
  * If the caller enables a grab while another window is currently grabbed, the
  * other window loses its grab in favor of the caller's window.
@@ -6579,8 +6543,8 @@ inline WindowRef Window::GetGrabbed() { return SDL::GetGrabbedWindow(); }
 /**
  * Confines the cursor to the specified area of a window.
  *
- * Note that this does NOT grab the cursor, it only defines the area a cursor
- * is restricted to when the window has mouse focus.
+ * Note that this does NOT grab the cursor, it only defines the area a cursor is
+ * restricted to when the window has mouse focus.
  *
  * @param window the window that will be associated with the barrier.
  * @param rect a rectangle area in window-relative coordinates. If nullptr the
@@ -6633,8 +6597,8 @@ inline const RectRaw* Window::GetMouseRect() const
 /**
  * Set the opacity for a window.
  *
- * The parameter `opacity` will be clamped internally between 0.0f
- * (transparent) and 1.0f (opaque).
+ * The parameter `opacity` will be clamped internally between 0.0f (transparent)
+ * and 1.0f (opaque).
  *
  * This function also returns false if setting the opacity isn't supported.
  *
@@ -6661,8 +6625,8 @@ inline void Window::SetOpacity(float opacity)
 /**
  * Get the opacity of a window.
  *
- * If transparency isn't supported on this platform, opacity will be returned
- * as 1.0f without error.
+ * If transparency isn't supported on this platform, opacity will be returned as
+ * 1.0f without error.
  *
  * @param window the window to get the current opacity value from.
  * @returns the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on
@@ -6691,14 +6655,14 @@ inline float Window::GetOpacity() const
  * reparented to the new owner. Setting the parent window to nullptr unparents
  * the window and removes child window status.
  *
- * If a parent window is hidden or destroyed, the operation will be
- * recursively applied to child windows. Child windows hidden with the parent
- * that did not have their hidden status explicitly set will be restored when
- * the parent is shown.
+ * If a parent window is hidden or destroyed, the operation will be recursively
+ * applied to child windows. Child windows hidden with the parent that did not
+ * have their hidden status explicitly set will be restored when the parent is
+ * shown.
  *
- * Attempting to set the parent of a window that is currently in the modal
- * state will fail. Use Window.SetModal() to cancel the modal status before
- * attempting to change the parent.
+ * Attempting to set the parent of a window that is currently in the modal state
+ * will fail. Use Window.SetModal() to cancel the modal status before attempting
+ * to change the parent.
  *
  * Popup windows cannot change parents and attempts to do so will fail.
  *
@@ -6833,9 +6797,9 @@ inline void Window::ShowSystemMenu(const PointRaw& p)
  * specific behavior (for example, on Windows, this certainly might fire when
  * the OS is deciding whether to drag your window, but it fires for lots of
  * other reasons, too, some unrelated to anything you probably care about _and
- * when the mouse isn't actually at the location it is testing_). Since this
- * can fire at any time, you should try to keep your callback efficient,
- * devoid of allocations, etc.
+ * when the mouse isn't actually at the location it is testing_). Since this can
+ * fire at any time, you should try to keep your callback efficient, devoid of
+ * allocations, etc.
  *
  * @param window the window to set hit-testing on.
  * @param callback the function to call when doing a hit-test.
@@ -6881,9 +6845,9 @@ inline void SetWindowHitTest(WindowParam window,
  * specific behavior (for example, on Windows, this certainly might fire when
  * the OS is deciding whether to drag your window, but it fires for lots of
  * other reasons, too, some unrelated to anything you probably care about _and
- * when the mouse isn't actually at the location it is testing_). Since this
- * can fire at any time, you should try to keep your callback efficient,
- * devoid of allocations, etc.
+ * when the mouse isn't actually at the location it is testing_). Since this can
+ * fire at any time, you should try to keep your callback efficient, devoid of
+ * allocations, etc.
  *
  * @param window the window to set hit-testing on.
  * @param callback the function to call when doing a hit-test.
@@ -6912,16 +6876,15 @@ inline void Window::SetHitTest(HitTestCB callback)
 /**
  * Set the shape of a transparent window.
  *
- * This sets the alpha channel of a transparent window and any fully
- * transparent areas are also transparent to mouse clicks. If you are using
- * something besides the SDL render API, then you are responsible for drawing
- * the alpha channel of the window to match the shape alpha channel to get
- * consistent cross-platform results.
+ * This sets the alpha channel of a transparent window and any fully transparent
+ * areas are also transparent to mouse clicks. If you are using something
+ * besides the SDL render API, then you are responsible for drawing the alpha
+ * channel of the window to match the shape alpha channel to get consistent
+ * cross-platform results.
  *
  * The shape is copied inside this function, so you can free it afterwards. If
- * your shape surface changes, you should call Window.SetShape() again to
- * update the window. This is an expensive operation, so should be done
- * sparingly.
+ * your shape surface changes, you should call Window.SetShape() again to update
+ * the window. This is an expensive operation, so should be done sparingly.
  *
  * The window must have been created with the WINDOW_TRANSPARENT flag.
  *
@@ -6971,8 +6934,8 @@ inline void Window::Flash(FlashOperation operation)
  * Sets the state of the progress bar for the given window’s taskbar icon.
  *
  * @param window the window whose progress state is to be modified.
- * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying
- *              the progress bar.
+ * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying the
+ *              progress bar.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -7001,8 +6964,8 @@ inline void Window::SetProgressState(ProgressState state)
  * Get the state of the progress bar for the given window’s taskbar icon.
  *
  * @param window the window to get the current progress state from.
- * @returns the progress state, or `PROGRESS_STATE_INVALID` on failure;
- *          call GetError() for more information.
+ * @returns the progress state, or `PROGRESS_STATE_INVALID` on failure; call
+ *          GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -7086,8 +7049,7 @@ inline float Window::GetProgressValue()
 /**
  * Destroy a window.
  *
- * Any child windows owned by the window will be recursively destroyed as
- * well.
+ * Any child windows owned by the window will be recursively destroyed as well.
  *
  * Note that on some platforms, the visible window may not actually be removed
  * from the screen until the SDL event loop is pumped again, even though the
@@ -7162,15 +7124,15 @@ inline void DisableScreenSaver() { CheckError(SDL_DisableScreenSaver()); }
 /**
  * Dynamically load an OpenGL library.
  *
- * This should be done after initializing the video driver, but before
- * creating any OpenGL windows. If no OpenGL library is loaded, the default
- * library will be loaded upon creation of the first OpenGL window.
+ * This should be done after initializing the video driver, but before creating
+ * any OpenGL windows. If no OpenGL library is loaded, the default library will
+ * be loaded upon creation of the first OpenGL window.
  *
  * If you do this, you need to retrieve all of the GL functions used in your
  * program from the dynamic library using GL_GetProcAddress().
  *
  * @param path the platform dependent OpenGL library name, or nullptr to open
- * the default OpenGL library.
+ *             the default OpenGL library.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -7188,47 +7150,47 @@ inline void GL_LoadLibrary(StringParam path)
 /**
  * Get an OpenGL function by name.
  *
- * If the GL library is loaded at runtime with GL_LoadLibrary(), then all
- * GL functions must be retrieved this way. Usually this is used to retrieve
+ * If the GL library is loaded at runtime with GL_LoadLibrary(), then all GL
+ * functions must be retrieved this way. Usually this is used to retrieve
  * function pointers to OpenGL extensions.
  *
- * There are some quirks to looking up OpenGL functions that require some
- * extra care from the application. If you code carefully, you can handle
- * these quirks without any platform-specific code, though:
+ * There are some quirks to looking up OpenGL functions that require some extra
+ * care from the application. If you code carefully, you can handle these quirks
+ * without any platform-specific code, though:
  *
- * - On Windows, function pointers are specific to the current GL context;
- *   this means you need to have created a GL context and made it current
- *   before calling GL_GetProcAddress(). If you recreate your context or
- *   create a second context, you should assume that any existing function
- *   pointers aren't valid to use with it. This is (currently) a
- *   Windows-specific limitation, and in practice lots of drivers don't suffer
- *   this limitation, but it is still the way the wgl API is documented to
- *   work and you should expect crashes if you don't respect it. Store a copy
- *   of the function pointers that comes and goes with context lifespan.
+ * - On Windows, function pointers are specific to the current GL context; this
+ *   means you need to have created a GL context and made it current before
+ *   calling GL_GetProcAddress(). If you recreate your context or create a
+ *   second context, you should assume that any existing function pointers
+ *   aren't valid to use with it. This is (currently) a Windows-specific
+ *   limitation, and in practice lots of drivers don't suffer this limitation,
+ *   but it is still the way the wgl API is documented to work and you should
+ *   expect crashes if you don't respect it. Store a copy of the function
+ *   pointers that comes and goes with context lifespan.
  * - On X11, function pointers returned by this function are valid for any
- *   context, and can even be looked up before a context is created at all.
- *   This means that, for at least some common OpenGL implementations, if you
- *   look up a function that doesn't exist, you'll get a non-nullptr result that
- *   is _NOT_ safe to call. You must always make sure the function is actually
+ *   context, and can even be looked up before a context is created at all. This
+ *   means that, for at least some common OpenGL implementations, if you look up
+ *   a function that doesn't exist, you'll get a non-nullptr result that is
+ *   _NOT_ safe to call. You must always make sure the function is actually
  *   available for a given GL context before calling it, by checking for the
- *   existence of the appropriate extension with GL_ExtensionSupported(),
- *   or verifying that the version of OpenGL you're using offers the function
- *   as core functionality.
+ *   existence of the appropriate extension with GL_ExtensionSupported(), or
+ *   verifying that the version of OpenGL you're using offers the function as
+ *   core functionality.
  * - Some OpenGL drivers, on all platforms, *will* return nullptr if a function
- *   isn't supported, but you can't count on this behavior. Check for
- *   extensions you use, and if you get a nullptr anyway, act as if that
- *   extension wasn't available. This is probably a bug in the driver, but you
- *   can code defensively for this scenario anyhow.
+ *   isn't supported, but you can't count on this behavior. Check for extensions
+ *   you use, and if you get a nullptr anyway, act as if that extension wasn't
+ *   available. This is probably a bug in the driver, but you can code
+ *   defensively for this scenario anyhow.
  * - Just because you're on Linux/Unix, don't assume you'll be using X11.
- *   Next-gen display servers are waiting to replace it, and may or may not
- *   make the same promises about function pointers.
+ *   Next-gen display servers are waiting to replace it, and may or may not make
+ *   the same promises about function pointers.
  * - OpenGL function pointers must be declared `APIENTRY` as in the example
  *   code. This will ensure the proper calling convention is followed on
  *   platforms where this matters (Win32) thereby avoiding stack corruption.
  *
  * @param proc the name of an OpenGL function.
- * @returns a pointer to the named OpenGL function. The returned pointer
- *          should be cast to the appropriate function signature.
+ * @returns a pointer to the named OpenGL function. The returned pointer should
+ *          be cast to the appropriate function signature.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -7251,8 +7213,8 @@ inline FunctionPointer GL_GetProcAddress(StringParam proc)
  * extension loader.
  *
  * @param proc the name of an EGL function.
- * @returns a pointer to the named EGL function. The returned pointer should
- *          be cast to the appropriate function signature.
+ * @returns a pointer to the named EGL function. The returned pointer should be
+ *          cast to the appropriate function signature.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -7281,14 +7243,13 @@ inline void GL_UnloadLibrary() { SDL_GL_UnloadLibrary(); }
  *
  * This function operates on the current GL context; you must have created a
  * context and it must be current before calling this function. Do not assume
- * that all contexts you create will have the same set of extensions
- * available, or that recreating an existing context will offer the same
- * extensions again.
+ * that all contexts you create will have the same set of extensions available,
+ * or that recreating an existing context will offer the same extensions again.
  *
  * While it's probably not a massive overhead, this function is not an O(1)
- * operation. Check the extensions you care about after creating the GL
- * context and save that information somewhere instead of calling the function
- * every time you need to know.
+ * operation. Check the extensions you care about after creating the GL context
+ * and save that information somewhere instead of calling the function every
+ * time you need to know.
  *
  * @param extension the name of the extension to check.
  * @returns true if the extension is supported, false otherwise.
@@ -7319,8 +7280,8 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  *
  * This function sets the OpenGL attribute `attr` to `value`. The requested
  * attributes should be set before creating an OpenGL window. You should use
- * GL_GetAttribute() to check the values after creating the OpenGL
- * context, since the values obtained can differ from the requested ones.
+ * GL_GetAttribute() to check the values after creating the OpenGL context,
+ * since the values obtained can differ from the requested ones.
  *
  * @param attr an enum value specifying the OpenGL attribute to set.
  * @param value the desired value for the attribute.
@@ -7342,8 +7303,7 @@ inline void GL_SetAttribute(GLAttr attr, int value)
 /**
  * Get the actual value for an attribute from the current context.
  *
- * @param attr an GLAttr enum value specifying the OpenGL attribute to
- *             get.
+ * @param attr an GLAttr enum value specifying the OpenGL attribute to get.
  * @param value a pointer filled in with the current value of `attr`.
  * @throws Error on failure.
  *
@@ -7365,12 +7325,12 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
  * The OpenGL context will be created with the current states set through
  * GL_SetAttribute().
  *
- * The Window specified must have been created with the WINDOW_OPENGL
- * flag, or context creation will fail.
+ * The Window specified must have been created with the WINDOW_OPENGL flag, or
+ * context creation will fail.
  *
  * Windows users new to OpenGL should note that, for historical reasons, GL
- * functions added after OpenGL version 1.1 are not available by default.
- * Those functions must be loaded at run-time, either with an OpenGL
+ * functions added after OpenGL version 1.1 are not available by default. Those
+ * functions must be loaded at run-time, either with an OpenGL
  * extension-handling library or with GL_GetProcAddress() and its related
  * functions.
  *
@@ -7428,6 +7388,7 @@ inline void GLContext::MakeCurrent(WindowParam window)
  * Get the currently active OpenGL window.
  *
  * @returns the currently active OpenGL window on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -7536,13 +7497,13 @@ inline void EGL_SetAttributeCallbacks(
 /**
  * Set the swap interval for the current OpenGL context.
  *
- * Some systems allow specifying -1 for the interval, to enable adaptive
- * vsync. Adaptive vsync works the same as vsync, but if you've already missed
- * the vertical retrace for a given frame, it swaps buffers immediately, which
- * might be less jarring for the user during occasional framerate drops. If an
- * application requests adaptive vsync and the system does not support it,
- * this function will fail and return false. In such a case, you should
- * probably retry the call with 1 for the interval.
+ * Some systems allow specifying -1 for the interval, to enable adaptive vsync.
+ * Adaptive vsync works the same as vsync, but if you've already missed the
+ * vertical retrace for a given frame, it swaps buffers immediately, which might
+ * be less jarring for the user during occasional framerate drops. If an
+ * application requests adaptive vsync and the system does not support it, this
+ * function will fail and return false. In such a case, you should probably
+ * retry the call with 1 for the interval.
  *
  * Adaptive vsync is implemented for some glX drivers with
  * GLX_EXT_swap_control_tear, and for some Windows drivers with
@@ -7551,8 +7512,8 @@ inline void EGL_SetAttributeCallbacks(
  * Read more on the Khronos wiki:
  * https://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync
  *
- * @param interval 0 for immediate updates, 1 for updates synchronized with
- *                 the vertical retrace, -1 for adaptive vsync.
+ * @param interval 0 for immediate updates, 1 for updates synchronized with the
+ *                 vertical retrace, -1 for adaptive vsync.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -7574,8 +7535,8 @@ inline void GL_SetSwapInterval(int interval)
  *
  * @param interval output interval value. 0 if there is no vertical retrace
  *                 synchronization, 1 if the buffer swap is synchronized with
- *                 the vertical retrace, and -1 if late swaps happen
- *                 immediately instead of waiting for the next retrace.
+ *                 the vertical retrace, and -1 if late swaps happen immediately
+ *                 instead of waiting for the next retrace.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.

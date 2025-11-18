@@ -12,10 +12,9 @@ namespace SDL {
  * SDL locale services.
  *
  * This provides a way to get a list of preferred locales (language plus
- * country) for the user. There is exactly one function:
- * GetPreferredLocales(), which handles all the heavy lifting, and offers
- * documentation on all the strange ways humans might have configured their
- * language settings.
+ * country) for the user. There is exactly one function: GetPreferredLocales(),
+ * which handles all the heavy lifting, and offers documentation on all the
+ * strange ways humans might have configured their language settings.
  *
  * @{
  */
@@ -38,16 +37,16 @@ using Locale = SDL_Locale;
  * Report the user's preferred locale.
  *
  * Returned language strings are in the format xx, where 'xx' is an ISO-639
- * language specifier (such as "en" for English, "de" for German, etc).
- * Country strings are in the format YY, where "YY" is an ISO-3166 country
- * code (such as "US" for the United States, "CA" for Canada, etc). Country
- * might be nullptr if there's no specific guidance on them (so you might get {
- * "en", "US" } for American English, but { "en", nullptr } means "English
- * language, generically"). Language strings are never nullptr, except to
- * terminate the array.
+ * language specifier (such as "en" for English, "de" for German, etc). Country
+ * strings are in the format YY, where "YY" is an ISO-3166 country code (such as
+ * "US" for the United States, "CA" for Canada, etc). Country might be nullptr
+ * if there's no specific guidance on them (so you might get { "en", "US" } for
+ * American English, but { "en", nullptr } means "English language,
+ * generically"). Language strings are never nullptr, except to terminate the
+ * array.
  *
- * Please note that not all of these strings are 2 characters; some are three
- * or more.
+ * Please note that not all of these strings are 2 characters; some are three or
+ * more.
  *
  * The returned list of locales are in the order of the user's preference. For
  * example, a German citizen that is fluent in US English and knows enough
@@ -59,18 +58,19 @@ using Locale = SDL_Locale;
  * This function returns nullptr on error, including when the platform does not
  * supply this information at all.
  *
- * This might be a "slow" call that has to query the operating system. It's
- * best to ask for this once and save the results. However, this list can
- * change, usually because the user has changed a system preference outside of
- * your program; SDL will send an EVENT_LOCALE_CHANGED event in this case,
- * if possible, and you can call this function again to get an updated copy of
+ * This might be a "slow" call that has to query the operating system. It's best
+ * to ask for this once and save the results. However, this list can change,
+ * usually because the user has changed a system preference outside of your
+ * program; SDL will send an EVENT_LOCALE_CHANGED event in this case, if
+ * possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
- * @param count a pointer filled in with the number of locales returned, may
- *              be nullptr.
+ * @param count a pointer filled in with the number of locales returned, may be
+ *              nullptr.
  * @returns a nullptr terminated array of locale pointers, or nullptr on
- * failure; call GetError() for more information. This is a single allocation
- * that should be freed with free() when it is no longer needed.
+ *          failure; call GetError() for more information. This is a single
+ *          allocation that should be freed with free() when it is no longer
+ *          needed.
  *
  * @since This function is available since SDL 3.2.0.
  */

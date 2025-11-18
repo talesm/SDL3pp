@@ -2,7 +2,7 @@
 <  * @defgroup CategoryEvents Category Events
 ---
 >  * @defgroup CategoryEvents Event Handling
-42a43,49
+41a42,48
 >  * @defgroup EventTypes Event Types
 >  *
 >  * Event types for Event.
@@ -10,85 +10,86 @@
 >  */
 > 
 > /**
-268,271d274
+265,268d271
 < #endif // SDL_VERSION_ATLEAST(3, 3, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 3, 0)
 < 
-374,377d376
+371,374d373
 < #endif // SDL_VERSION_ATLEAST(3, 3, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 3, 0)
 < 
-381,384d379
+378,381d376
 < #endif // SDL_VERSION_ATLEAST(3, 3, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 3, 0)
 < 
-491a487,488
+488a484,485
 > /// @}
 > 
-870a868,873
+864a862,867
 >  * @name EventActions
 >  * The type of action to request from PeepEvents().
 >  * @{
 >  */
 > 
 > /**
-885a889,890
+879a883,884
 > /// @}
 > 
-890a896,897
+884a890,891
 >  * ## remarks
 >  *
-1058c1065
+1049c1056
 <  * ```c
 ---
 >  * ```cpp
-1060,1061c1067,1068
+1051,1052c1058,1059
 <  *     Event event;
 <  *     while (PollEvent(&event)) {  // poll until all events are handled!
 ---
 >  *     SDL::Event event;
 >  *     while (SDL::PollEvent(&event)) {  // poll until all events are handled!
-1093,1099c1100
+1084,1090c1091
 <  * If `event` is not nullptr, the next event is removed from the queue and
 <  * stored in the Event structure pointed to by `event`. The 1 returned refers to
-<  * this event, immediately stored in the SDL Event structure -- not an event
-<  * to follow.
+<  * this event, immediately stored in the SDL Event structure -- not an event to
+<  * follow.
 <  *
 <  * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
 <  * but will not remove it from the queue.
 ---
 >  * The next event is removed from the queue and returned.
-1113,1114c1114
+1104,1105c1105
 <  *     Event event;
 <  *     while (PollEvent(&event)) {  // poll until all events are handled!
 ---
 >  *     while (auto event = SDL::PollEvent()) {
-1129,1131c1129,1130
-<  * @param event the Event structure to be filled with the next event from
-<  *              the queue, or nullptr.
+1120,1122c1120,1121
+<  * @param event the Event structure to be filled with the next event from the
+<  *              queue, or nullptr.
 <  * @returns true if this got an event or false if there are none available.
 ---
 >  * @returns Event if this got an event or std::nullopt if there are none
->  * available.
-1143c1142,1143
+>  *          available.
+1134c1133,1134
 <   static_assert(false, "Not implemented");
 ---
 >   if (Event event; PollEvent(&event)) return event;
 >   return std::nullopt;
-1172,1173c1172
+1163,1164c1163
 <  * If `event` is not nullptr, the next event is removed from the queue and
 <  * stored in the Event structure pointed to by `event`.
 ---
 >  * The next event is removed from the queue and returned.
-1178,1179c1177
-<  * @param event the Event structure to be filled in with the next event
-<  *              from the queue, or nullptr.
+1169,1170c1168,1169
+<  * @param event the Event structure to be filled in with the next event from the
+<  *              queue, or nullptr.
 ---
 >  * @returns Event on success.
-1190c1188,1193
+>  *
+1181c1180,1185
 < inline Event WaitEvent() { static_assert(false, "Not implemented"); }
 ---
 > inline Event WaitEvent()
@@ -97,42 +98,42 @@
 >   WaitEvent(&event);
 >   return event;
 > }
-1229,1231d1231
+1220,1222d1223
 <  * If `event` is not nullptr, the next event is removed from the queue and
 <  * stored in the Event structure pointed to by `event`.
 <  *
-1238,1239d1237
-<  * @param event the Event structure to be filled in with the next event
-<  *              from the queue, or nullptr.
-1242,1243c1240,1241
+1229,1230d1229
+<  * @param event the Event structure to be filled in with the next event from the
+<  *              queue, or nullptr.
+1233,1234c1232,1233
 <  * @returns true if this got an event or false if the timeout elapsed without
 <  *          any events available.
 ---
 >  * @returns the Event if this got an event or std::nullopt if the timeout
 >  * elapsed without any events available.
-1255c1253,1254
+1246c1245,1246
 <   static_assert(false, "Not implemented");
 ---
 >   if (Event event; WaitEventTimeout(&event, timeoutMS)) return event;
 >   return std::nullopt;
-1273,1274c1272,1273
+1264,1265c1264,1265
 <  * @param timeoutMS the maximum number of milliseconds to wait for the next
 <  *                  available event.
 ---
 >  * @param timeoutDuration the duration to wait for the next available event,
 >  *                        with millisecond precision
-1289c1288
+1280c1280
 <   static_assert(false, "Not implemented");
 ---
 >   return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
-1296,1297c1295
+1287,1288c1287
 <  * If `event` is not nullptr, the next event is removed from the queue and
 <  * stored in the Event structure pointed to by `event`.
 ---
 >  * The next event is removed from the queue and returned.
-1305,1310c1303,1306
-<  * @param event the Event structure to be filled in with the next event
-<  *              from the queue, or nullptr.
+1296,1301c1295,1298
+<  * @param event the Event structure to be filled in with the next event from the
+<  *              queue, or nullptr.
 <  * @param timeoutMS the maximum number of milliseconds to wait for the next
 <  *                  available event.
 <  * @returns true if this got an event or false if the timeout elapsed without
@@ -141,27 +142,24 @@
 >  * @param timeoutDuration the duration to wait for the next available event,
 >  *                        with millisecond precision.
 >  * @returns the Event if this got an event or std::nullopt if the timeout
->  * elapsed without any events available.
-1323c1319,1320
+>  *          elapsed without any events available.
+1314c1311,1312
 <   static_assert(false, "Not implemented");
 ---
 >   if (Event event; WaitEventTimeout(&event, timeoutDuration)) return event;
 >   return std::nullopt;
-1390c1387
+1381c1379
 <   static_assert(false, "Not implemented");
 ---
 >   PushEvent(const_cast<Event*>(&event));
-1415c1412
+1405c1403
 <  * A function pointer used for callbacks that watch the event queue.
 ---
 >  * A std::function used for callbacks that watch the event queue.
-1417,1418d1413
-<  * @param userdata what was passed as `userdata` to SetEventFilter() or
-<  *                 AddEventWatch, etc.
-1429a1425,1426
+1416a1415,1416
 >  * @cat listener-callback
 >  *
-1436c1433,1438
+1423c1423,1428
 < /// Handle returned by AddEventWatch()
 ---
 > /**
@@ -170,17 +168,17 @@
 >  * This can be used later to remove the event filter
 >  * RemoveEventWatch(EventFilterHandle).
 >  */
-1486c1488,1489
+1471c1476,1477
 <   SDL_SetEventFilter(filter, userdata);
 ---
 >   UniqueCallbackWrapper<EventFilterCB>::erase();
 >   return SDL_SetEventFilter(filter, userdata);
-1519d1521
+1502d1507
 <  * @param userdata a pointer that is passed to `filter`.
-1524a1527,1528
+1507a1513,1514
 >  * @cat listener-callback
 >  *
-1533c1537,1542
+1516c1523,1528
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
@@ -189,17 +187,16 @@
 >       return Wrapper::Call(userdata, *event);
 >     },
 >     Wrapper::Wrap(std::move(filter)));
-1564,1566c1573,1574
+1547,1549c1559
 <  * @param filter the current callback function will be stored here.
 <  * @param userdata the pointer that is passed to the current event filter will
 <  *                 be stored here.
 ---
->  * @returns EventFilterCB on success or false if there is no event filter
->  *          set.
-1572a1581,1582
+>  * @returns EventFilterCB on success or false if there is no event filter set.
+1555a1566,1567
 >  * @cat listener-callback
 >  *
-1577c1587,1599
+1560c1572,1584
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
@@ -215,24 +212,24 @@
 >   return [filter, userdata](const Event& event) {
 >     return filter(userdata, const_cast<Event*>(&event));
 >   };
-1579a1602
+1562a1587
 > /// @private
-1582c1605,1606
+1565c1590,1591
 <   static_assert(false, "Not implemented");
 ---
 >   auto& f = *static_cast<EventFilterCB*>(userdata);
 >   return f(*event);
-1637,1638c1661,1663
+1620,1621c1646,1648
 <  * @param filter an EventFilter function to call when an event happens.
 <  * @param userdata a pointer that is passed to `filter`.
 ---
 >  * @param filter an EventFilterCB to call when an event happens.
 >  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
 >  *          success.
-1644a1670,1671
+1627a1655,1656
 >  * @cat listener-callback
 >  *
-1650c1677,1683
+1633c1662,1668
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<EventFilterCB>;
@@ -242,31 +239,31 @@
 >     throw Error{};
 >   }
 >   return EventWatchHandle{cb};
-1676,1680c1709
-<  * This function takes the same input as AddEventWatch() to identify and
-<  * delete the corresponding callback.
+1659,1663c1694
+<  * This function takes the same input as AddEventWatch() to identify and delete
+<  * the corresponding callback.
 <  *
 <  * @param filter the function originally passed to AddEventWatch().
 <  * @param userdata the pointer originally passed to AddEventWatch().
 ---
 >  * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
-1686c1715,1717
+1669c1700,1702
 <  * @sa AddEventWatch
 ---
 >  * @cat listener-callback
 >  *
 >  * @sa AddEventWatch(EventFilterCB)
-1690c1721,1722
+1673c1706,1707
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<EventFilterCB>;
 >   Wrapper::release(handle);
-1725d1756
+1708d1741
 <  * @param userdata a pointer that is passed to `filter`.
-1730a1762,1763
+1713a1747,1748
 >  * @cat immediate-callback
 >  *
-1736c1769,1774
+1719c1754,1759
 <   static_assert(false, "Not implemented");
 ---
 >   return FilterEvents(
@@ -275,25 +272,50 @@
 >       return f(*event);
 >     },
 >     &filter);
-1806c1844
+1789c1829
 <   return CheckError(SDL_GetWindowFromEvent(&event));
 ---
 >   return {CheckError(SDL_GetWindowFromEvent(&event))};
-1832,1834c1870,1871
+1797,1798c1837,1838
+<  * This will fill `buf` with a null-terminated string that might look something
+<  * like this:
+---
+>  * This will fill `buf` with a null-terminated string that might look
+>  * something like this:
+1805,1806c1845,1846
+<  * The exact format of the string is not guaranteed; it is intended for logging
+<  * purposes, to be read by a human, and not parsed by a computer.
+---
+>  * The exact format of the string is not guaranteed; it is intended for
+>  * logging purposes, to be read by a human, and not parsed by a computer.
+1808,1812c1848,1853
+<  * The returned value follows the same rules as snprintf(): `buf` will always be
+<  * nullptr-terminated (unless `buflen` is zero), and will be truncated if
+<  * `buflen` is too small. The return code is the number of bytes needed for the
+<  * complete string, not counting the nullptr-terminator, whether the string was
+<  * truncated or not. Unlike snprintf(), though, this function never returns -1.
+---
+>  * The returned value follows the same rules as snprintf(): `buf` will
+>  * always be nullptr-terminated (unless `buflen` is zero), and will be truncated
+>  * if `buflen` is too small. The return code is the number of bytes needed for
+>  * the complete string, not counting the nullptr-terminator, whether the string
+>  * was truncated or not. Unlike snprintf(), though, this function never
+>  * returns -1.
+1814,1816c1855,1856
 <  * @param event an event to describe. May be nullptr.
 <  * @param buf the buffer to fill with the description string. May be nullptr.
 <  * @param buflen the maximum bytes that can be written to `buf`.
 ---
 >  * @param event an event to describe
 >  * @param buf the buffer to fill with the description string. May be empty.
-1843a1881
+1825a1866
 >   if (buf.size_bytes() == 0) return SDL_GetEventDescription(event, nullptr, 0);
-1847,1850d1884
+1829,1832d1869
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-1872,1876c1906,1907
+1853,1857c1890,1891
 <  * @param event an event to describe. May be nullptr.
 <  * @param buf the buffer to fill with the description string. May be nullptr.
 <  * @param buflen the maximum bytes that can be written to `buf`.
@@ -302,7 +324,7 @@
 ---
 >  * @param event an event to describe
 >  * @returns a std::string containing the the description string
-1884c1915,1919
+1865c1899,1903
 <   static_assert(false, "Not implemented");
 ---
 >   int sz = SDL_GetEventDescription(event, nullptr, 0);

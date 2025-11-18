@@ -10,18 +10,17 @@ namespace SDL {
 /**
  * @defgroup CategoryMessagebox Category Messagebox
  *
- * SDL offers a simple message box API, which is useful for simple alerts,
- * such as informing the user when something fatal happens at startup without
- * the need to build a UI for it (or informing the user _before_ your UI is
- * ready).
+ * SDL offers a simple message box API, which is useful for simple alerts, such
+ * as informing the user when something fatal happens at startup without the
+ * need to build a UI for it (or informing the user _before_ your UI is ready).
  *
  * These message boxes are native system dialogs where possible.
  *
- * There is both a customizable function (MessageBox.Show()) that offers
- * lots of options for what to display and reports on what choice the user
- * made, and also a much-simplified version (ShowSimpleMessageBox()),
- * merely takes a text message and title, and waits until the user presses a
- * single "OK" UI button. Often, this is all that is necessary.
+ * There is both a customizable function (MessageBox.Show()) that offers lots of
+ * options for what to display and reports on what choice the user made, and
+ * also a much-simplified version (ShowSimpleMessageBox()), merely takes a text
+ * message and title, and waits until the user presses a single "OK" UI button.
+ * Often, this is all that is necessary.
  *
  * @{
  */
@@ -85,10 +84,7 @@ using MessageBoxButtonData = SDL_MessageBoxButtonData;
  */
 using MessageBoxColor = SDL_MessageBoxColor;
 
-/**
- * An enumeration of indices inside the colors array of
- * MessageBoxColorScheme.
- */
+/// An enumeration of indices inside the colors array of MessageBoxColorScheme.
 using MessageBoxColorType = SDL_MessageBoxColorType;
 
 constexpr MessageBoxColorType MESSAGEBOX_COLOR_BACKGROUND =
@@ -150,8 +146,8 @@ struct MessageBox : MessageBoxRaw
                        const char* title,
                        const char* message,
                        int numbuttons,
-                       SDL_MessageBoxButtonData buttons,
-                       SDL_MessageBoxColorScheme colorScheme)
+                       const SDL_MessageBoxButtonData* buttons,
+                       const SDL_MessageBoxColorScheme* colorScheme)
     : MessageBoxRaw{flags,
                     window,
                     title,
@@ -269,7 +265,10 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current buttons value.
    */
-  constexpr SDL_MessageBoxButtonData GetButtons() const { return buttons; }
+  constexpr const SDL_MessageBoxButtonData* GetButtons() const
+  {
+    return buttons;
+  }
 
   /**
    * Set the buttons.
@@ -277,7 +276,7 @@ struct MessageBox : MessageBoxRaw
    * @param newButtons the new buttons value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetButtons(SDL_MessageBoxButtonData newButtons)
+  constexpr MessageBox& SetButtons(const SDL_MessageBoxButtonData* newButtons)
   {
     buttons = newButtons;
     return *this;
@@ -288,7 +287,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current colorScheme value.
    */
-  constexpr SDL_MessageBoxColorScheme GetColorScheme() const
+  constexpr const SDL_MessageBoxColorScheme* GetColorScheme() const
   {
     return colorScheme;
   }
@@ -299,7 +298,8 @@ struct MessageBox : MessageBoxRaw
    * @param newColorScheme the new colorScheme value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetColorScheme(SDL_MessageBoxColorScheme newColorScheme)
+  constexpr MessageBox& SetColorScheme(
+    const SDL_MessageBoxColorScheme* newColorScheme)
   {
     colorScheme = newColorScheme;
     return *this;
@@ -316,9 +316,9 @@ struct MessageBox : MessageBoxRaw
    * block execution of that thread until the user clicks a button or closes the
    * messagebox.
    *
-   * This function may be called at any time, even before Init(). This makes
-   * it useful for reporting errors like a failure to create a renderer or
-   * OpenGL context.
+   * This function may be called at any time, even before Init(). This makes it
+   * useful for reporting errors like a failure to create a renderer or OpenGL
+   * context.
    *
    * On X11, SDL rolls its own dialog box with X11 primitives instead of a
    * formal toolkit like GTK+ or Qt.
@@ -328,7 +328,6 @@ struct MessageBox : MessageBoxRaw
    * concern, check the return value from this function and fall back to writing
    * to stderr if you can.
    *
-   *                       other options.
    * @param buttonid the pointer to which user id of hit button should be
    *                 copied.
    * @throws Error on failure.
@@ -343,30 +342,28 @@ struct MessageBox : MessageBoxRaw
 /**
  * Create a modal message box.
  *
- * If your needs aren't complex, it might be easier to use
- * ShowSimpleMessageBox.
+ * If your needs aren't complex, it might be easier to use ShowSimpleMessageBox.
  *
- * This function should be called on the thread that created the parent
- * window, or on the main thread if the messagebox has no parent. It will
- * block execution of that thread until the user clicks a button or closes the
+ * This function should be called on the thread that created the parent window,
+ * or on the main thread if the messagebox has no parent. It will block
+ * execution of that thread until the user clicks a button or closes the
  * messagebox.
  *
- * This function may be called at any time, even before Init(). This makes
- * it useful for reporting errors like a failure to create a renderer or
- * OpenGL context.
+ * This function may be called at any time, even before Init(). This makes it
+ * useful for reporting errors like a failure to create a renderer or OpenGL
+ * context.
  *
- * On X11, SDL rolls its own dialog box with X11 primitives instead of a
- * formal toolkit like GTK+ or Qt.
+ * On X11, SDL rolls its own dialog box with X11 primitives instead of a formal
+ * toolkit like GTK+ or Qt.
  *
  * Note that if Init() would fail because there isn't any available video
  * target, this function is likely to fail for the same reasons. If this is a
  * concern, check the return value from this function and fall back to writing
  * to stderr if you can.
  *
- * @param messageboxdata the MessageBox structure with title, text and
- *                       other options.
- * @param buttonid the pointer to which user id of hit button should be
- *                 copied.
+ * @param messageboxdata the MessageBox structure with title, text and other
+ *                       options.
+ * @param buttonid the pointer to which user id of hit button should be copied.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -395,17 +392,17 @@ inline void MessageBox::Show(int* buttonid) const
  * - `MESSAGEBOX_WARNING`: warning dialog
  * - `MESSAGEBOX_INFORMATION`: informational dialog
  *
- * This function should be called on the thread that created the parent
- * window, or on the main thread if the messagebox has no parent. It will
- * block execution of that thread until the user clicks a button or closes the
+ * This function should be called on the thread that created the parent window,
+ * or on the main thread if the messagebox has no parent. It will block
+ * execution of that thread until the user clicks a button or closes the
  * messagebox.
  *
- * This function may be called at any time, even before Init(). This makes
- * it useful for reporting errors like a failure to create a renderer or
- * OpenGL context.
+ * This function may be called at any time, even before Init(). This makes it
+ * useful for reporting errors like a failure to create a renderer or OpenGL
+ * context.
  *
- * On X11, SDL rolls its own dialog box with X11 primitives instead of a
- * formal toolkit like GTK+ or Qt.
+ * On X11, SDL rolls its own dialog box with X11 primitives instead of a formal
+ * toolkit like GTK+ or Qt.
  *
  * Note that if Init() would fail because there isn't any available video
  * target, this function is likely to fail for the same reasons. If this is a

@@ -11,11 +11,11 @@ namespace SDL {
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
+ * offers implementations for files, memory, etc, and the app can provide their
+ * own implementations, too.
  *
- * IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
+ * IOStream is not related to the standard C++ iostream class, other than both
+ * are abstract interfaces to read/write data.
  *
  * @{
  */
@@ -67,18 +67,18 @@ constexpr IOStatus IO_STATUS_READY =
   SDL_IO_STATUS_READY; ///< Everything is ready (no errors and not EOF).
 
 constexpr IOStatus IO_STATUS_ERROR =
-  SDL_IO_STATUS_ERROR; ///< Read or write I/O error.
+  SDL_IO_STATUS_ERROR; ///< Read or write I/O error
 
-constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file.
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF; ///< End of file
 
 constexpr IOStatus IO_STATUS_NOT_READY =
-  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready.
+  SDL_IO_STATUS_NOT_READY; ///< Non blocking I/O, not ready
 
 constexpr IOStatus IO_STATUS_READONLY =
-  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer.
+  SDL_IO_STATUS_READONLY; ///< Tried to write a read-only buffer
 
 constexpr IOStatus IO_STATUS_WRITEONLY =
-  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer.
+  SDL_IO_STATUS_WRITEONLY; ///< Tried to read a write-only buffer
 
 /**
  * Possible `whence` values for IOStream seeking.
@@ -91,20 +91,20 @@ constexpr IOStatus IO_STATUS_WRITEONLY =
 using IOWhence = SDL_IOWhence;
 
 constexpr IOWhence IO_SEEK_SET =
-  SDL_IO_SEEK_SET; ///< Seek from the beginning of data.
+  SDL_IO_SEEK_SET; ///< Seek from the beginning of data
 
 constexpr IOWhence IO_SEEK_CUR =
-  SDL_IO_SEEK_CUR; ///< Seek relative to current read point.
+  SDL_IO_SEEK_CUR; ///< Seek relative to current read point
 
 constexpr IOWhence IO_SEEK_END =
-  SDL_IO_SEEK_END; ///< Seek relative to the end of data.
+  SDL_IO_SEEK_END; ///< Seek relative to the end of data
 
 /**
  * The function pointers that drive an IOStream.
  *
  * Applications can provide this struct to IOStream.Open() to create their own
- * implementation of IOStream. This is not necessarily required, as SDL
- * already offers several common types of I/O streams, via functions like
+ * implementation of IOStream. This is not necessarily required, as SDL already
+ * offers several common types of I/O streams, via functions like
  * IOStream.FromFile() and IOStream.FromMem().
  *
  * This structure should be initialized using InitInterface()
@@ -211,23 +211,23 @@ public:
    *
    * The following properties may be set at creation time by SDL:
    *
-   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this IOStream is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
+   * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+   *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
+   *   the program isn't running on Windows, or SDL used some other method to
+   *   access the filesystem, this property will not be set.
    * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this IOStream is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   stdio `FILE *`, that this IOStream is using to access the filesystem. If
+   *   SDL used some other method to access the filesystem, this property will
+   *   not be set. PLEASE NOTE that if SDL is using a different C runtime than
+   *   your app, trying to use this pointer will almost certainly result in a
+   *   crash! This is mostly a problem on Windows; make sure you build SDL and
    *   your app with the same compiler and settings to avoid it.
    * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
    *   IOStream is using to access the filesystem.
-   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this IOStream is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
+   * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to
+   *   an Android NDK `AAsset *`, that this IOStream is using to access the
+   *   filesystem. If SDL used some other method to access the filesystem, this
+   *   property will not be set.
    *
    * @param file a UTF-8 string representing the filename to open.
    * @param mode an ASCII string representing the mode to be used for opening
@@ -255,12 +255,12 @@ public:
    * This function sets up an IOStream struct based on a memory area of a
    * certain size, for both read and write access.
    *
-   * This memory buffer is not copied by the IOStream; the pointer you
-   * provide must remain valid until you close the stream.
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream.
    *
-   * If you need to make sure the IOStream never writes to the memory
-   * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
-   * memory instead.
+   * If you need to make sure the IOStream never writes to the memory buffer,
+   * you should use IOStream.FromConstMem() with a read-only buffer of memory
+   * instead.
    *
    * The following properties will be set at creation time by SDL:
    *
@@ -271,9 +271,9 @@ public:
    *
    * Additionally, the following properties are recognized:
    *
-   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
-   *   a non-nullptr value it will be interpreted as a function of free_func
-   *   type and called with the passed `mem` pointer when closing the stream. By
+   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
    *   default it is unset, i.e., the memory will not be freed.
    *
    * @param mem a buffer to feed an IOStream stream.
@@ -301,11 +301,11 @@ public:
    * This function sets up an IOStream struct based on a memory area of a
    * certain size. It assumes the memory area is not writable.
    *
-   * Attempting to write to this IOStream stream will report an error
-   * without writing to the memory buffer.
+   * Attempting to write to this IOStream stream will report an error without
+   * writing to the memory buffer.
    *
-   * This memory buffer is not copied by the IOStream; the pointer you
-   * provide must remain valid until you close the stream.
+   * This memory buffer is not copied by the IOStream; the pointer you provide
+   * must remain valid until you close the stream.
    *
    * If you need to write to a memory buffer, you should use IOStream.FromMem()
    * with a writable buffer of memory instead.
@@ -319,9 +319,9 @@ public:
    *
    * Additionally, the following properties are recognized:
    *
-   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
-   *   a non-nullptr value it will be interpreted as a function of free_func
-   *   type and called with the passed `mem` pointer when closing the stream. By
+   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
    *   default it is unset, i.e., the memory will not be freed.
    *
    * @param mem a read-only buffer to feed an IOStreamRef stream.
@@ -347,11 +347,10 @@ public:
    * This supports the following properties to provide access to the memory and
    * control over allocations:
    *
-   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
-   *   memory of the stream. This can be set to nullptr to transfer ownership of
-   *   the memory to the application, which should free the memory with
-   *   free(). If this is done, the next operation on the stream must be
-   *   IOStream.Close().
+   * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+   *   of the stream. This can be set to nullptr to transfer ownership of the
+   *   memory to the application, which should free the memory with free(). If
+   *   this is done, the next operation on the stream must be IOStream.Close().
    * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
@@ -382,8 +381,8 @@ public:
    * This function makes a copy of `iface` and the caller does not need to keep
    * it around after this call.
    *
-   * @param iface the interface that implements this IOStream, initialized
-   *              using InitInterface().
+   * @param iface the interface that implements this IOStream, initialized using
+   *              InitInterface().
    * @param userdata the pointer that will be passed to the interface functions.
    * @returns a valid stream on success.
    * @throws Error on failure.
@@ -437,9 +436,9 @@ public:
    * Close and free an allocated IOStream structure.
    *
    * IOStream.Close() closes and cleans up the IOStream stream. It releases any
-   * resources used by the stream and frees the IOStream itself. This
-   * returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
+   * resources used by the stream and frees the IOStream itself. This returns
+   * true on success, or false if the stream failed to flush to its output (e.g.
+   * to disk).
    *
    * Note that if this fails to flush the stream for any reason, this function
    * reports an error, but the IOStream is still invalid once this function
@@ -522,8 +521,7 @@ public:
    *
    * @param offset an offset in bytes, relative to `whence` location; can be
    *               negative.
-   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
-   *               `IO_SEEK_END`.
+   * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`, `IO_SEEK_END`.
    * @returns the final offset in the data stream after the seek or -1 on
    *          failure; call GetError() for more information.
    *
@@ -539,8 +537,8 @@ public:
    * Determine the current read/write offset in an IOStream data stream.
    *
    * IOStream.Tell is actually a wrapper function that calls the IOStream's
-   * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to
-   * simplify application development.
+   * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify
+   * application development.
    *
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
@@ -599,9 +597,9 @@ public:
    * pointed at by `ptr`. This function may read less bytes than requested.
    *
    * This function will return zero when the data stream is completely read, and
-   * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, IOStream.GetStatus() will return a different
-   * error value and GetError() will offer a human-readable message.
+   * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and the
+   * stream is not at EOF, IOStream.GetStatus() will return a different error
+   * value and GetError() will offer a human-readable message.
    *
    * A request for zero bytes on a valid stream will return zero immediately
    * without accessing the stream, so the stream status (EOF, err, etc) will not
@@ -690,8 +688,8 @@ public:
    * @param fmt a printf() style format string.
    * @param ... additional parameters matching % tokens in the `fmt` string, if
    *            any.
-   * @returns the number of bytes written or 0 on failure; call GetError()
-   *          for more information.
+   * @returns the number of bytes written or 0 on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety Do not use the same IOStream from two threads at once.
    *
@@ -721,8 +719,8 @@ public:
    *
    * @param fmt a printf() style format string.
    * @param ap a variable argument list.
-   * @returns the number of bytes written or 0 on failure; call GetError()
-   *          for more information.
+   * @returns the number of bytes written or 0 on failure; call GetError() for
+   *          more information.
    *
    * @threadsafety Do not use the same IOStream from two threads at once.
    *
@@ -755,8 +753,7 @@ public:
    * Load all the data from an SDL data stream.
    *
    * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported on
-   * the returned string.
+   * convenience.
    *
    * @returns the data in bytes
    * @throws Error on failure.
@@ -846,8 +843,8 @@ public:
   Sint8 ReadS8();
 
   /**
-   * Use this function to read 16 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 16 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -867,8 +864,8 @@ public:
   Uint16 ReadU16LE();
 
   /**
-   * Use this function to read 16 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 16 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -888,8 +885,8 @@ public:
   Sint16 ReadS16LE();
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 16 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -909,8 +906,8 @@ public:
   Uint16 ReadU16BE();
 
   /**
-   * Use this function to read 16 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 16 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -930,8 +927,8 @@ public:
   Sint16 ReadS16BE();
 
   /**
-   * Use this function to read 32 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 32 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -951,8 +948,8 @@ public:
   Uint32 ReadU32LE();
 
   /**
-   * Use this function to read 32 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 32 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -972,8 +969,8 @@ public:
   Sint32 ReadS32LE();
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 32 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -993,8 +990,8 @@ public:
   Uint32 ReadU32BE();
 
   /**
-   * Use this function to read 32 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 32 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -1014,8 +1011,8 @@ public:
   Sint32 ReadS32BE();
 
   /**
-   * Use this function to read 64 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 64 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -1035,8 +1032,8 @@ public:
   Uint64 ReadU64LE();
 
   /**
-   * Use this function to read 64 bits of little-endian data from an
-   * IOStream and return in native format.
+   * Use this function to read 64 bits of little-endian data from an IOStream
+   * and return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -1056,8 +1053,8 @@ public:
   Sint64 ReadS64LE();
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 64 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -1077,8 +1074,8 @@ public:
   Uint64 ReadU64BE();
 
   /**
-   * Use this function to read 64 bits of big-endian data from an IOStream
-   * and return in native format.
+   * Use this function to read 64 bits of big-endian data from an IOStream and
+   * return in native format.
    *
    * SDL byteswaps the data only if necessary, so the data returned will be in
    * the native byte order.
@@ -1674,44 +1671,40 @@ struct IOStreamRef : IOStream
 };
 
 /**
- * Use this function to create a new IOStream structure for reading from
- * and/or writing to a named file.
+ * Use this function to create a new IOStream structure for reading from and/or
+ * writing to a named file.
  *
- * The `mode` string is treated roughly the same as in a call to the C
- * library's fopen(), even if SDL doesn't happen to use fopen() behind the
- * scenes.
+ * The `mode` string is treated roughly the same as in a call to the C library's
+ * fopen(), even if SDL doesn't happen to use fopen() behind the scenes.
  *
  * Available `mode` strings:
  *
  * - "r": Open a file for reading. The file must exist.
- * - "w": Create an empty file for writing. If a file with the same name
- *   already exists its content is erased and the file is treated as a new
- *   empty file.
+ * - "w": Create an empty file for writing. If a file with the same name already
+ *   exists its content is erased and the file is treated as a new empty file.
  * - "wx": Create an empty file for writing. If a file with the same name
  *   already exists, the call fails. (Supported since SDL 3.4.0)
  * - "a": Append to a file. Writing operations append data at the end of the
  *   file. The file is created if it does not exist.
- * - "r+": Open a file for update both reading and writing. The file must
- *   exist.
- * - "w+": Create an empty file for both reading and writing. If a file with
- *   the same name already exists its content is erased and the file is
- *   treated as a new empty file.
+ * - "r+": Open a file for update both reading and writing. The file must exist.
+ * - "w+": Create an empty file for both reading and writing. If a file with the
+ *   same name already exists its content is erased and the file is treated as a
+ *   new empty file.
  * - "w+x": Create an empty file for both reading and writing. If a file with
  *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
- *   anywhere in the file for reading, but writing operations will move it
- *   back to the end of file. The file is created if it does not exist.
+ *   anywhere in the file for reading, but writing operations will move it back
+ *   to the end of file. The file is created if it does not exist.
  *
- * **NOTE**: In order to open a file as a binary file, a "b" character has to
- * be included in the `mode` string. This additional "b" character can either
- * be appended at the end of the string (thus making the following compound
- * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
- * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
- * Additional characters may follow the sequence, although they should have no
- * effect. For example, "t" is sometimes appended to make explicit the file is
- * a text file.
+ * **NOTE**: In order to open a file as a binary file, a "b" character has to be
+ * included in the `mode` string. This additional "b" character can either be
+ * appended at the end of the string (thus making the following compound modes:
+ * "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the letter and
+ * the "+" sign for the mixed modes ("rb+", "wb+", "ab+"). Additional characters
+ * may follow the sequence, although they should have no effect. For example,
+ * "t" is sometimes appended to make explicit the file is a text file.
  *
  * This function supports Unicode filenames, but they must be encoded in UTF-8
  * format, regardless of the underlying operating system.
@@ -1724,27 +1717,27 @@ struct IOStreamRef : IOStream
  *
  * The following properties may be set at creation time by SDL:
  *
- * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
- *   to a win32 `HANDLE`, that this IOStream is using to access the
- *   filesystem. If the program isn't running on Windows, or SDL used some
- *   other method to access the filesystem, this property will not be set.
- * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a
- *   stdio `FILE *`, that this IOStream is using to access the filesystem.
- *   If SDL used some other method to access the filesystem, this property
- *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
- *   than your app, trying to use this pointer will almost certainly result in
- *   a crash! This is mostly a problem on Windows; make sure you build SDL and
- *   your app with the same compiler and settings to avoid it.
+ * - `prop::IOStream.WINDOWS_HANDLE_POINTER`: a pointer, that can be cast to a
+ *   win32 `HANDLE`, that this IOStream is using to access the filesystem. If
+ *   the program isn't running on Windows, or SDL used some other method to
+ *   access the filesystem, this property will not be set.
+ * - `prop::IOStream.STDIO_FILE_POINTER`: a pointer, that can be cast to a stdio
+ *   `FILE *`, that this IOStream is using to access the filesystem. If SDL used
+ *   some other method to access the filesystem, this property will not be set.
+ *   PLEASE NOTE that if SDL is using a different C runtime than your app,
+ *   trying to use this pointer will almost certainly result in a crash! This is
+ *   mostly a problem on Windows; make sure you build SDL and your app with the
+ *   same compiler and settings to avoid it.
  * - `prop::IOStream.FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
  *   IOStream is using to access the filesystem.
- * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast
- *   to an Android NDK `AAsset *`, that this IOStream is using to access
- *   the filesystem. If SDL used some other method to access the filesystem,
- *   this property will not be set.
+ * - `prop::IOStream.ANDROID_AASSET_POINTER`: a pointer, that can be cast to an
+ *   Android NDK `AAsset *`, that this IOStream is using to access the
+ *   filesystem. If SDL used some other method to access the filesystem, this
+ *   property will not be set.
  *
  * @param file a UTF-8 string representing the filename to open.
- * @param mode an ASCII string representing the mode to be used for opening
- *             the file.
+ * @param mode an ASCII string representing the mode to be used for opening the
+ *             file.
  * @returns a pointer to the IOStream structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
@@ -1805,28 +1798,27 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * Use this function to prepare a read-write memory buffer for use with
  * IOStream.
  *
- * This function sets up an IOStream struct based on a memory area of a
- * certain size, for both read and write access.
+ * This function sets up an IOStream struct based on a memory area of a certain
+ * size, for both read and write access.
  *
- * This memory buffer is not copied by the IOStream; the pointer you
- * provide must remain valid until you close the stream.
+ * This memory buffer is not copied by the IOStream; the pointer you provide
+ * must remain valid until you close the stream.
  *
- * If you need to make sure the IOStream never writes to the memory
- * buffer, you should use IOStream.FromConstMem() with a read-only buffer of
- * memory instead.
+ * If you need to make sure the IOStream never writes to the memory buffer, you
+ * should use IOStream.FromConstMem() with a read-only buffer of memory instead.
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+ * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ *   passed to this function.
+ * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
- *   that was passed to this function.
  *
  * Additionally, the following properties are recognized:
  *
- * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
- *   a non-nullptr value it will be interpreted as a function of free_func
- *   type and called with the passed `mem` pointer when closing the stream. By
+ * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ *   non-nullptr value it will be interpreted as a function of free_func type
+ *   and called with the passed `mem` pointer when closing the stream. By
  *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a buffer to feed an IOStream stream.
@@ -1856,33 +1848,32 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
 }
 
 /**
- * Use this function to prepare a read-only memory buffer for use with
- * IOStream.
+ * Use this function to prepare a read-only memory buffer for use with IOStream.
  *
- * This function sets up an IOStream struct based on a memory area of a
- * certain size. It assumes the memory area is not writable.
+ * This function sets up an IOStream struct based on a memory area of a certain
+ * size. It assumes the memory area is not writable.
  *
- * Attempting to write to this IOStream stream will report an error
- * without writing to the memory buffer.
+ * Attempting to write to this IOStream stream will report an error without
+ * writing to the memory buffer.
  *
- * This memory buffer is not copied by the IOStream; the pointer you
- * provide must remain valid until you close the stream.
+ * This memory buffer is not copied by the IOStream; the pointer you provide
+ * must remain valid until you close the stream.
  *
  * If you need to write to a memory buffer, you should use IOStream.FromMem()
  * with a writable buffer of memory instead.
  *
  * The following properties will be set at creation time by SDL:
  *
- * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that
+ * - `prop::IOStream.MEMORY_POINTER`: this will be the `mem` parameter that was
+ *   passed to this function.
+ * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
- * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
- *   that was passed to this function.
  *
  * Additionally, the following properties are recognized:
  *
- * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to
- *   a non-nullptr value it will be interpreted as a function of free_func
- *   type and called with the passed `mem` pointer when closing the stream. By
+ * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ *   non-nullptr value it will be interpreted as a function of free_func type
+ *   and called with the passed `mem` pointer when closing the stream. By
  *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a read-only buffer to feed an IOStreamRef stream.
@@ -1916,11 +1907,10 @@ inline IOStream IOStream::FromConstMem(SourceBytes mem)
  * This supports the following properties to provide access to the memory and
  * control over allocations:
  *
- * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal
- *   memory of the stream. This can be set to nullptr to transfer ownership of
- *   the memory to the application, which should free the memory with
- *   free(). If this is done, the next operation on the stream must be
- *   IOStream.Close().
+ * - `prop::IOStream.DYNAMIC_MEMORY_POINTER`: a pointer to the internal memory
+ *   of the stream. This can be set to nullptr to transfer ownership of the
+ *   memory to the application, which should free the memory with free(). If
+ *   this is done, the next operation on the stream must be IOStream.Close().
  * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
  *   multiples of this size, defaulting to 1024.
  *
@@ -1944,16 +1934,16 @@ inline IOStream IOStream::FromDynamicMem() { return SDL::IOFromDynamicMem(); }
 /**
  * Create a custom IOStream.
  *
- * Applications do not need to use this function unless they are providing
- * their own IOStream implementation. If you just need an IOStream to
- * read/write a common data source, you should use the built-in
- * implementations in SDL, like IOStream.FromFile() or IOStream.FromMem(), etc.
+ * Applications do not need to use this function unless they are providing their
+ * own IOStream implementation. If you just need an IOStream to read/write a
+ * common data source, you should use the built-in implementations in SDL, like
+ * IOStream.FromFile() or IOStream.FromMem(), etc.
  *
- * This function makes a copy of `iface` and the caller does not need to keep
- * it around after this call.
+ * This function makes a copy of `iface` and the caller does not need to keep it
+ * around after this call.
  *
- * @param iface the interface that implements this IOStream, initialized
- *              using InitInterface().
+ * @param iface the interface that implements this IOStream, initialized using
+ *              InitInterface().
  * @param userdata the pointer that will be passed to the interface functions.
  * @returns a pointer to the allocated memory on success.
  * @throws Error on failure.
@@ -1982,22 +1972,21 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  * Close and free an allocated IOStream structure.
  *
  * IOStream.Close() closes and cleans up the IOStream stream. It releases any
- * resources used by the stream and frees the IOStream itself. This
- * returns true on success, or false if the stream failed to flush to its
- * output (e.g. to disk).
+ * resources used by the stream and frees the IOStream itself. This returns true
+ * on success, or false if the stream failed to flush to its output (e.g. to
+ * disk).
  *
  * Note that if this fails to flush the stream for any reason, this function
  * reports an error, but the IOStream is still invalid once this function
  * returns.
  *
- * This call flushes any buffered writes to the operating system, but there
- * are no guarantees that those writes have gone to physical media; they might
- * be in the OS's file cache, waiting to go to disk later. If it's absolutely
- * crucial that writes go to disk immediately, so they are definitely stored
- * even if the power fails before the file cache would have caught up, one
- * should call IOStream.Flush() before closing. Note that flushing takes time
- * and makes the system and your app operate less efficiently, so do so
- * sparingly.
+ * This call flushes any buffered writes to the operating system, but there are
+ * no guarantees that those writes have gone to physical media; they might be in
+ * the OS's file cache, waiting to go to disk later. If it's absolutely crucial
+ * that writes go to disk immediately, so they are definitely stored even if the
+ * power fails before the file cache would have caught up, one should call
+ * IOStream.Flush() before closing. Note that flushing takes time and makes the
+ * system and your app operate less efficiently, so do so sparingly.
  *
  * @param context IOStream structure to close.
  * @throws Error on failure.
@@ -2036,8 +2025,8 @@ inline PropertiesRef IOStream::GetProperties() const
 /**
  * Query the stream status of an IOStream.
  *
- * This information can be useful to decide if a short read or write was due
- * to an error, an EOF, or a non-blocking operation that isn't yet ready to
+ * This information can be useful to decide if a short read or write was due to
+ * an error, an EOF, or a non-blocking operation that isn't yet ready to
  * complete.
  *
  * An IOStream's status is only expected to change after a IOStream.Read or
@@ -2095,10 +2084,9 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
  * @param context a pointer to an IOStream structure.
  * @param offset an offset in bytes, relative to `whence` location; can be
  *               negative.
- * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`,
- *               `IO_SEEK_END`.
- * @returns the final offset in the data stream after the seek or -1 on
- *          failure; call GetError() for more information.
+ * @param whence any of `IO_SEEK_SET`, `IO_SEEK_CUR`, `IO_SEEK_END`.
+ * @returns the final offset in the data stream after the seek or -1 on failure;
+ *          call GetError() for more information.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
  *
@@ -2119,12 +2107,12 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
 /**
  * Determine the current read/write offset in an IOStream data stream.
  *
- * IOStream.Tell is actually a wrapper function that calls the IOStream's
- * `seek` method, with an offset of 0 bytes from `IO_SEEK_CUR`, to
- * simplify application development.
+ * IOStream.Tell is actually a wrapper function that calls the IOStream's `seek`
+ * method, with an offset of 0 bytes from `IO_SEEK_CUR`, to simplify application
+ * development.
  *
- * @param context an IOStream data stream object from which to get the
- *                current offset.
+ * @param context an IOStream data stream object from which to get the current
+ *                offset.
  * @returns the current offset in the stream, or -1 if the information can not
  *          be determined.
  *
@@ -2141,12 +2129,12 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
 /**
  * Read from a data source.
  *
- * This function reads up `size` bytes from the data source to the area
- * pointed at by `ptr`. This function may read less bytes than requested.
+ * This function reads up `size` bytes from the data source to the area pointed
+ * at by `ptr`. This function may read less bytes than requested.
  *
  * This function will return zero when the data stream is completely read, and
- * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and
- * the stream is not at EOF, IOStream.GetStatus() will return a different error
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If zero is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
  * value and GetError() will offer a human-readable message.
  *
  * A request for zero bytes on a valid stream will return zero immediately
@@ -2155,8 +2143,8 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  *
  * @param context a pointer to an IOStream structure.
  * @param buf a pointer to a buffer to read data into.
- * @returns the number of bytes read, or 0 on end of file or other failure;
- *          call GetError() for more information.
+ * @returns the number of bytes read, or 0 on end of file or other failure; call
+ *          GetError() for more information.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
  *
@@ -2179,8 +2167,8 @@ inline size_t IOStream::Read(TargetBytes buf)
  * Write to an IOStream data stream.
  *
  * This function writes exactly `size` bytes from the area pointed at by `ptr`
- * to the stream. If this fails for any reason, it'll return less than `size`
- * to demonstrate how far the write progressed. On success, it returns `size`.
+ * to the stream. If this fails for any reason, it'll return less than `size` to
+ * demonstrate how far the write progressed. On success, it returns `size`.
  *
  * On error, this function still attempts to write as much as possible, so it
  * might return a positive value less than the requested write size.
@@ -2229,8 +2217,8 @@ inline size_t IOStream::Write(SourceBytes buf)
  * @param fmt a printf() style format string.
  * @param ... additional parameters matching % tokens in the `fmt` string, if
  *            any.
- * @returns the number of bytes written or 0 on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes written or 0 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
  *
@@ -2261,8 +2249,8 @@ inline size_t IOprintf(IOStreamParam context,
  * @param context a pointer to an IOStream structure.
  * @param fmt a printf() style format string.
  * @param ap a variable argument list.
- * @returns the number of bytes written or 0 on failure; call GetError()
- *          for more information.
+ * @returns the number of bytes written or 0 on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
  *
@@ -2316,7 +2304,7 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  *
  * @param src the IOStream to read all available data from.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
+ *                even in the case of an error.
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
@@ -2396,7 +2384,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @param src the IOStream to write all data to.
  * @param data the data to be written.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
- * even in the case of an error.
+ *                even in the case of an error.
  * @throws Error on failure.
  *
  * @threadsafety Do not use the same IOStream from two threads at once.
@@ -2438,10 +2426,10 @@ inline void IOStream::SaveFile(SourceBytes data)
 /**
  * Use this function to read a byte from an IOStream.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
  * @return the  data read.
@@ -2461,10 +2449,10 @@ inline Uint8 ReadU8(IOStreamParam src)
 /**
  * Use this function to read a signed byte from an IOStream.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the IOStream to read from.
  * @return the  data read.
@@ -2482,16 +2470,16 @@ inline Sint8 ReadS8(IOStreamParam src)
 }
 
 /**
- * Use this function to read 16 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 16 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2511,16 +2499,16 @@ inline Uint16 ReadU16LE(IOStreamParam src)
 inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
 
 /**
- * Use this function to read 16 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 16 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2540,16 +2528,16 @@ inline Sint16 ReadS16LE(IOStreamParam src)
 inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
 
 /**
- * Use this function to read 16 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 16 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2569,16 +2557,16 @@ inline Uint16 ReadU16BE(IOStreamParam src)
 inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
 
 /**
- * Use this function to read 16 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 16 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2598,16 +2586,16 @@ inline Sint16 ReadS16BE(IOStreamParam src)
 inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
 
 /**
- * Use this function to read 32 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 32 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2627,16 +2615,16 @@ inline Uint32 ReadU32LE(IOStreamParam src)
 inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
 
 /**
- * Use this function to read 32 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 32 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2656,16 +2644,16 @@ inline Sint32 ReadS32LE(IOStreamParam src)
 inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
 
 /**
- * Use this function to read 32 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 32 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2685,16 +2673,16 @@ inline Uint32 ReadU32BE(IOStreamParam src)
 inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
 
 /**
- * Use this function to read 32 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 32 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2714,16 +2702,16 @@ inline Sint32 ReadS32BE(IOStreamParam src)
 inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
 
 /**
- * Use this function to read 64 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 64 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2743,16 +2731,16 @@ inline Uint64 ReadU64LE(IOStreamParam src)
 inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
 
 /**
- * Use this function to read 64 bits of little-endian data from an
- * IOStream and return in native format.
+ * Use this function to read 64 bits of little-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2772,16 +2760,16 @@ inline Sint64 ReadS64LE(IOStreamParam src)
 inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
 
 /**
- * Use this function to read 64 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 64 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2801,16 +2789,16 @@ inline Uint64 ReadU64BE(IOStreamParam src)
 inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
 
 /**
- * Use this function to read 64 bits of big-endian data from an IOStream
- * and return in native format.
+ * Use this function to read 64 bits of big-endian data from an IOStream and
+ * return in native format.
  *
- * SDL byteswaps the data only if necessary, so the data returned will be in
- * the native byte order.
+ * SDL byteswaps the data only if necessary, so the data returned will be in the
+ * native byte order.
  *
- * This function will return false when the data stream is completely read,
- * and IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned
- * and the stream is not at EOF, IOStream.GetStatus() will return a different
- * error value and GetError() will offer a human-readable message.
+ * This function will return false when the data stream is completely read, and
+ * IOStream.GetStatus() will return IO_STATUS_EOF. If false is returned and the
+ * stream is not at EOF, IOStream.GetStatus() will return a different error
+ * value and GetError() will offer a human-readable message.
  *
  * @param src the stream from which to read data.
  * @return the  data read.
@@ -2869,9 +2857,8 @@ inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
  * Use this function to write 16 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -2895,9 +2882,8 @@ inline void IOStream::WriteU16LE(Uint16 value)
  * Use this function to write 16 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -2921,8 +2907,8 @@ inline void IOStream::WriteS16LE(Sint16 value)
  * Use this function to write 16 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -2946,8 +2932,8 @@ inline void IOStream::WriteU16BE(Uint16 value)
  * Use this function to write 16 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -2971,9 +2957,8 @@ inline void IOStream::WriteS16BE(Sint16 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -2997,9 +2982,8 @@ inline void IOStream::WriteU32LE(Uint32 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -3023,8 +3007,8 @@ inline void IOStream::WriteS32LE(Sint32 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -3048,8 +3032,8 @@ inline void IOStream::WriteU32BE(Uint32 value)
  * Use this function to write 32 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -3073,9 +3057,8 @@ inline void IOStream::WriteS32BE(Sint32 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -3099,9 +3082,8 @@ inline void IOStream::WriteU64LE(Uint64 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * little-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in little-endian
- * format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in little-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -3125,8 +3107,8 @@ inline void IOStream::WriteS64LE(Sint64 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.
@@ -3150,8 +3132,8 @@ inline void IOStream::WriteU64BE(Uint64 value)
  * Use this function to write 64 bits in native format to an IOStream as
  * big-endian data.
  *
- * SDL byteswaps the data only if necessary, so the application always
- * specifies native format, and the data written will be in big-endian format.
+ * SDL byteswaps the data only if necessary, so the application always specifies
+ * native format, and the data written will be in big-endian format.
  *
  * @param dst the stream to which data will be written.
  * @param value the data to be written, in native format.

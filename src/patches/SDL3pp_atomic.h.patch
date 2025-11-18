@@ -5,20 +5,20 @@
 91a92,93
 > #ifdef SDL3PP_DOC
 > 
-189a192,193
+186a189,190
 > #endif // SDL3PP_DOC
 > 
-218a223,227
+213a218,222
 >   /**
 >    * Wraps AtomicInt.
 >    *
 >    * @param value the value for value.
 >    */
-307d315
+302d310
 <    * @param a a pointer to an AtomicInt to increment.
-323d330
+318d325
 <    * @param a a pointer to an AtomicInt to decrement.
-499c506,510
+492c499,503
 < public:
 ---
 >   /**
@@ -26,34 +26,34 @@
 >    *
 >    * @param value the value to be wrapped
 >    */
-501c512
+494c505
 <     : m_value(value)
 ---
 >     : AtomicU32Raw(value)
-569a581
+577a589
+> /// A type representing an atomic of an arbitrary pointer.
+583a596
 >   /// Construcst from T
-590a603
->   /// Construcst from T
-606d618
+599d611
 <    * @param a a pointer to a pointer.
-627d638
+620d631
 <    * @param a a pointer to a pointer.
-646d656
+639d649
 <    * @param a a pointer to a pointer.
-756,759d765
+749,752d758
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-767c773
+760c766
 <   return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
 ---
 >   return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
-773c779
+766c772
 <   return SDL::SetAtomicPointer(&m_value, v);
 ---
 >   return SDL_SetAtomicPointer(&m_value, v);
-779c785
+772c778
 <   return SDL::GetAtomicPointer(&m_value);
 ---
 >   return SDL_GetAtomicPointer(&m_value);

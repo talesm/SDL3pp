@@ -13,8 +13,8 @@ namespace SDL {
  * Atomic operations.
  *
  * IMPORTANT: If you are not an expert in concurrent lockless programming, you
- * should not be using any functions in this file. You should be protecting
- * your data structures with full mutexes instead.
+ * should not be using any functions in this file. You should be protecting your
+ * data structures with full mutexes instead.
  *
  * ***Seriously, here be dragons!***
  *
@@ -54,10 +54,10 @@ struct AtomicU32;
  *
  * Please refer to SDL_MemoryBarrierRelease for details. This is a function
  * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this
- * function behind the scenes, where more heavy lifting can happen inside of
- * SDL. Generally, though, an app written in C/C++/etc should use the macro
- * version, as it will be more efficient.
+ * scripting language, etc. Also, some of the macro versions call this function
+ * behind the scenes, where more heavy lifting can happen inside of SDL.
+ * Generally, though, an app written in C/C++/etc should use the macro version,
+ * as it will be more efficient.
  *
  * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -74,10 +74,10 @@ inline void MemoryBarrierRelease() { SDL_MemoryBarrierReleaseFunction(); }
  *
  * Please refer to SDL_MemoryBarrierRelease for details. This is a function
  * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this
- * function behind the scenes, where more heavy lifting can happen inside of
- * SDL. Generally, though, an app written in C/C++/etc should use the macro
- * version, as it will be more efficient.
+ * scripting language, etc. Also, some of the macro versions call this function
+ * behind the scenes, where more heavy lifting can happen inside of SDL.
+ * Generally, though, an app written in C/C++/etc should use the macro version,
+ * as it will be more efficient.
  *
  * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -92,8 +92,8 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 /**
  * Mark a compiler barrier.
  *
- * A compiler barrier prevents the compiler from reordering reads and writes
- * to globally visible variables across the call.
+ * A compiler barrier prevents the compiler from reordering reads and writes to
+ * globally visible variables across the call.
  *
  * This macro only prevents the compiler from reordering reads and writes, it
  * does not prevent the CPU from reordering reads and writes. However, all of
@@ -110,29 +110,27 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 /**
  * Insert a memory release barrier (macro version).
  *
- * Memory barriers are designed to prevent reads and writes from being
- * reordered by the compiler and being seen out of order on multi-core CPUs.
+ * Memory barriers are designed to prevent reads and writes from being reordered
+ * by the compiler and being seen out of order on multi-core CPUs.
  *
  * A typical pattern would be for thread A to write some data and a flag, and
- * for thread B to read the flag and get the data. In this case you would
- * insert a release barrier between writing the data and the flag,
- * guaranteeing that the data write completes no later than the flag is
- * written, and you would insert an acquire barrier between reading the flag
- * and reading the data, to ensure that all the reads associated with the flag
- * have completed.
+ * for thread B to read the flag and get the data. In this case you would insert
+ * a release barrier between writing the data and the flag, guaranteeing that
+ * the data write completes no later than the flag is written, and you would
+ * insert an acquire barrier between reading the flag and reading the data, to
+ * ensure that all the reads associated with the flag have completed.
  *
  * In this pattern you should always see a release barrier paired with an
- * acquire barrier and you should gate the data reads/writes with a single
- * flag variable.
+ * acquire barrier and you should gate the data reads/writes with a single flag
+ * variable.
  *
  * For more information on these semantics, take a look at the blog post:
  * http://preshing.com/20120913/acquire-and-release-semantics
  *
  * This is the macro version of this functionality; if possible, SDL will use
- * compiler intrinsics or inline assembly, but some platforms might need to
- * call the function version of this, MemoryBarrierRelease to do
- * the heavy lifting. Apps that can use the macro should favor it over the
- * function.
+ * compiler intrinsics or inline assembly, but some platforms might need to call
+ * the function version of this, MemoryBarrierRelease to do the heavy lifting.
+ * Apps that can use the macro should favor it over the function.
  *
  * @threadsafety Obviously this macro is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -152,10 +150,9 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  * are and when to use them.
  *
  * This is the macro version of this functionality; if possible, SDL will use
- * compiler intrinsics or inline assembly, but some platforms might need to
- * call the function version of this, MemoryBarrierAcquire, to do
- * the heavy lifting. Apps that can use the macro should favor it over the
- * function.
+ * compiler intrinsics or inline assembly, but some platforms might need to call
+ * the function version of this, MemoryBarrierAcquire, to do the heavy lifting.
+ * Apps that can use the macro should favor it over the function.
  *
  * @threadsafety Obviously this macro is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
@@ -173,12 +170,12 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  *
  * This can be useful in busy-wait loops, as it serves as a hint to the CPU as
  * to the program's intent; some CPUs can use this to do more efficient
- * processing. On some platforms, this doesn't do anything, so using this
- * macro might just be a harmless no-op.
+ * processing. On some platforms, this doesn't do anything, so using this macro
+ * might just be a harmless no-op.
  *
- * Note that if you are busy-waiting, there are often more-efficient
- * approaches with other synchronization primitives: mutexes, semaphores,
- * condition variables, etc.
+ * Note that if you are busy-waiting, there are often more-efficient approaches
+ * with other synchronization primitives: mutexes, semaphores, condition
+ * variables, etc.
  *
  * @threadsafety This macro is safe to use from any thread.
  *
@@ -190,19 +187,17 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
 /**
  * A type representing an atomic integer value.
  *
- * This can be used to manage a value that is synchronized across multiple
- * CPUs without a race condition; when an app sets a value with
- * AtomicInt.Set all other threads, regardless of the CPU it is running on,
- * will see that value when retrieved with AtomicInt.Get, regardless of CPU
- * caches, etc.
+ * This can be used to manage a value that is synchronized across multiple CPUs
+ * without a race condition; when an app sets a value with AtomicInt.Set all
+ * other threads, regardless of the CPU it is running on, will see that value
+ * when retrieved with AtomicInt.Get, regardless of CPU caches, etc.
  *
  * This is also useful for atomic compare-and-swap operations: a thread can
- * change the value as long as its current value matches expectations. When
- * done in a loop, one can guarantee data consistency across threads without a
- * lock (but the usual warnings apply: if you don't know what you're doing, or
- * you don't do it carefully, you can confidently cause any number of
- * disasters with this, so in most cases, you _should_ use a mutex instead of
- * this!).
+ * change the value as long as its current value matches expectations. When done
+ * in a loop, one can guarantee data consistency across threads without a lock
+ * (but the usual warnings apply: if you don't know what you're doing, or you
+ * don't do it carefully, you can confidently cause any number of disasters with
+ * this, so in most cases, you _should_ use a mutex instead of this!).
  *
  * This is a struct so people don't accidentally use numeric operations on it
  * directly. You have to use SDL atomic functions.
@@ -471,19 +466,17 @@ inline bool AtomicInt::AtomicDecRef() { return SDL::AtomicDecRef(this); }
 /**
  * A type representing an atomic unsigned 32-bit value.
  *
- * This can be used to manage a value that is synchronized across multiple
- * CPUs without a race condition; when an app sets a value with
- * AtomicU32.Set all other threads, regardless of the CPU it is running on,
- * will see that value when retrieved with AtomicU32.Get, regardless of CPU
- * caches, etc.
+ * This can be used to manage a value that is synchronized across multiple CPUs
+ * without a race condition; when an app sets a value with AtomicU32.Set all
+ * other threads, regardless of the CPU it is running on, will see that value
+ * when retrieved with AtomicU32.Get, regardless of CPU caches, etc.
  *
  * This is also useful for atomic compare-and-swap operations: a thread can
- * change the value as long as its current value matches expectations. When
- * done in a loop, one can guarantee data consistency across threads without a
- * lock (but the usual warnings apply: if you don't know what you're doing, or
- * you don't do it carefully, you can confidently cause any number of
- * disasters with this, so in most cases, you _should_ use a mutex instead of
- * this!).
+ * change the value as long as its current value matches expectations. When done
+ * in a loop, one can guarantee data consistency across threads without a lock
+ * (but the usual warnings apply: if you don't know what you're doing, or you
+ * don't do it carefully, you can confidently cause any number of disasters with
+ * this, so in most cases, you _should_ use a mutex instead of this!).
  *
  * This is a struct so people don't accidentally use numeric operations on it
  * directly. You have to use SDL atomic functions.

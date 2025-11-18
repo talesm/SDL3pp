@@ -5,18 +5,18 @@
 27a28,29
 > #ifdef SDL3PP_DOC
 > 
-1372c1374
+1353c1355
 <  * The variable can also take the form of @file, in which case the named file
 ---
 >  * The variable can also take the form of file, in which case the named file
-4669a4672,4673
+4621a4624,4625
 > #endif // SDL3PP_DOC
 > 
-4886c4890
+4838c4842
 <  * @param userdata a pointer to pass to the callback function.
 ---
 >  * @returns a handle to be used on RemoveHintCallback()
-4897c4901,4907
+4849c4853,4859
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<HintCB>;
@@ -26,13 +26,13 @@
 >     throw Error{};
 >   }
 >   return HintCallbackHandle{cb};
-4925,4927c4935
-<  * @param callback an HintCallback function that will be called when the
-<  *                 hint value changes.
+4877,4879c4887
+<  * @param callback an HintCallback function that will be called when the hint
+<  *                 value changes.
 <  * @param userdata a pointer being passed to the callback function.
 ---
 >  * @param handle the handle for the HintCallback function to be removed
-4937c4945
+4889c4897
 <   static_assert(false, "Not implemented");
 ---
 >   CallbackWrapper<HintCB>::release(handle);

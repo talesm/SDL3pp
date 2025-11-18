@@ -11,18 +11,17 @@ namespace SDL {
 /**
  * @defgroup CategoryTouch Touch Support
  *
- * SDL offers touch input, on platforms that support it. It can manage
- * multiple touch devices and track multiple fingers on those devices.
+ * SDL offers touch input, on platforms that support it. It can manage multiple
+ * touch devices and track multiple fingers on those devices.
  *
  * Touches are mostly dealt with through the event system, in the
- * EVENT_FINGER_DOWN, EVENT_FINGER_MOTION, and EVENT_FINGER_UP
- * events, but there are also functions to query for hardware details, etc.
+ * EVENT_FINGER_DOWN, EVENT_FINGER_MOTION, and EVENT_FINGER_UP events, but there
+ * are also functions to query for hardware details, etc.
  *
  * The touch system, by default, will also send virtual mouse events; this can
- * be useful for making a some desktop apps work on a phone without
- * significant changes. For apps that care about mouse and touch input
- * separately, they should ignore mouse events that have a `which` field of
- * TOUCH_MOUSEID.
+ * be useful for making a some desktop apps work on a phone without significant
+ * changes. For apps that care about mouse and touch input separately, they
+ * should ignore mouse events that have a `which` field of TOUCH_MOUSEID.
  *
  * @{
  */
@@ -237,8 +236,8 @@ inline OwnArray<TouchID> GetTouchDevices()
  * Get the touch device name as reported from the driver.
  *
  * @param touchID the touch device instance ID.
- * @returns touch device name, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns touch device name, or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */

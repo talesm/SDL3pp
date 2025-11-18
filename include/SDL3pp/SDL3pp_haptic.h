@@ -237,8 +237,8 @@ constexpr HapticEffectType HAPTIC_RAMP = SDL_HAPTIC_RAMP;
 /**
  * Spring effect supported - uses axes position.
  *
- * Condition haptic effect that simulates a spring. Effect is based on the
- * axes position.
+ * Condition haptic effect that simulates a spring. Effect is based on the axes
+ * position.
  *
  * @since This constant is available since SDL 3.2.0.
  *
@@ -249,8 +249,8 @@ constexpr HapticEffectType HAPTIC_SPRING = SDL_HAPTIC_SPRING;
 /**
  * Damper effect supported - uses axes velocity.
  *
- * Condition haptic effect that simulates dampening. Effect is based on the
- * axes velocity.
+ * Condition haptic effect that simulates dampening. Effect is based on the axes
+ * velocity.
  *
  * @since This constant is available since SDL 3.2.0.
  *
@@ -273,8 +273,8 @@ constexpr HapticEffectType HAPTIC_INERTIA = SDL_HAPTIC_INERTIA;
 /**
  * Friction effect supported - uses axes movement.
  *
- * Condition haptic effect that simulates friction. Effect is based on the
- * axes movement.
+ * Condition haptic effect that simulates friction. Effect is based on the axes
+ * movement.
  *
  * @since This constant is available since SDL 3.2.0.
  *
@@ -431,8 +431,8 @@ constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
 /**
  * Structure that represents a haptic direction.
  *
- * This is the direction where the force comes from, instead of the direction
- * in which the force is exerted.
+ * This is the direction where the force comes from, instead of the direction in
+ * which the force is exerted.
  *
  * Directions can be specified by:
  *
@@ -473,17 +473,17 @@ constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
  * ```
  *
  * If type is HAPTIC_POLAR, direction is encoded by hundredths of a degree
- * starting north and turning clockwise. HAPTIC_POLAR only uses the first
- * `dir` parameter. The cardinal directions would be:
+ * starting north and turning clockwise. HAPTIC_POLAR only uses the first `dir`
+ * parameter. The cardinal directions would be:
  *
  * - North: 0 (0 degrees)
  * - East: 9000 (90 degrees)
  * - South: 18000 (180 degrees)
  * - West: 27000 (270 degrees)
  *
- * If type is HAPTIC_CARTESIAN, direction is encoded by three positions (X
- * axis, Y axis and Z axis (with 3 axes)). HAPTIC_CARTESIAN uses the first
- * three `dir` parameters. The cardinal directions would be:
+ * If type is HAPTIC_CARTESIAN, direction is encoded by three positions (X axis,
+ * Y axis and Z axis (with 3 axes)). HAPTIC_CARTESIAN uses the first three `dir`
+ * parameters. The cardinal directions would be:
  *
  * - North: 0,-1, 0
  * - East: 1, 0, 0
@@ -491,18 +491,18 @@ constexpr Uint32 HAPTIC_INFINITY = SDL_HAPTIC_INFINITY;
  * - West: -1, 0, 0
  *
  * The Z axis represents the height of the effect if supported, otherwise it's
- * unused. In cartesian encoding (1, 2) would be the same as (2, 4), you can
- * use any multiple you want, only the direction matters.
+ * unused. In cartesian encoding (1, 2) would be the same as (2, 4), you can use
+ * any multiple you want, only the direction matters.
  *
- * If type is HAPTIC_SPHERICAL, direction is encoded by two rotations. The
- * first two `dir` parameters are used. The `dir` parameters are as follows
- * (all values are in hundredths of degrees):
+ * If type is HAPTIC_SPHERICAL, direction is encoded by two rotations. The first
+ * two `dir` parameters are used. The `dir` parameters are as follows (all
+ * values are in hundredths of degrees):
  *
  * - Degrees from (1, 0) rotated towards (0, 1).
  * - Degrees towards (0, 0, 1) (device needs at least 3 axes).
  *
- * Example of force coming from the south with all encodings (force coming
- * from the south means the user will have to pull the stick to counteract):
+ * Example of force coming from the south with all encodings (force coming from
+ * the south means the user will have to pull the stick to counteract):
  *
  * ```c
  *  HapticDirection direction;
@@ -539,8 +539,8 @@ using HapticDirection = SDL_HapticDirection;
  *
  * This struct is exclusively for the HAPTIC_CONSTANT effect.
  *
- * A constant effect applies a constant force in the specified direction to
- * the joystick.
+ * A constant effect applies a constant force in the specified direction to the
+ * joystick.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -561,11 +561,11 @@ using HapticConstant = SDL_HapticConstant;
  * - HAPTIC_SAWTOOTHDOWN
  *
  * A periodic effect consists in a wave-shaped effect that repeats itself over
- * time. The type determines the shape of the wave and the parameters
- * determine the dimensions of the wave.
+ * time. The type determines the shape of the wave and the parameters determine
+ * the dimensions of the wave.
  *
- * Phase is given by hundredth of a degree meaning that giving the phase a
- * value of 9000 will displace it 25% of its period. Here are sample values:
+ * Phase is given by hundredth of a degree meaning that giving the phase a value
+ * of 9000 will displace it 25% of its period. Here are sample values:
  *
  * - 0: No phase displacement.
  * - 9000: Displaced 25% of its period.
@@ -624,12 +624,11 @@ using HapticPeriodic = SDL_HapticPeriodic;
  * - HAPTIC_FRICTION: Effect based on axes movement.
  *
  * Direction is handled by condition internals instead of a direction member.
- * The condition effect specific members have three parameters. The first
- * refers to the X axis, the second refers to the Y axis and the third refers
- * to the Z axis. The right terms refer to the positive side of the axis and
- * the left terms refer to the negative side of the axis. Please refer to the
- * HapticDirection diagram for which side is positive and which is
- * negative.
+ * The condition effect specific members have three parameters. The first refers
+ * to the X axis, the second refers to the Y axis and the third refers to the Z
+ * axis. The right terms refer to the positive side of the axis and the left
+ * terms refer to the negative side of the axis. Please refer to the
+ * HapticDirection diagram for which side is positive and which is negative.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -665,8 +664,8 @@ using HapticRamp = SDL_HapticRamp;
  * This struct is exclusively for the HAPTIC_LEFTRIGHT effect.
  *
  * The Left/Right effect is used to explicitly control the large and small
- * motors, commonly found in modern game controllers. The small (right) motor
- * is high frequency, and the large (left) motor is low frequency.
+ * motors, commonly found in modern game controllers. The small (right) motor is
+ * high frequency, and the large (left) motor is low frequency.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -707,8 +706,8 @@ using HapticCustom = SDL_HapticCustom;
  * Additionally, the HAPTIC_RAMP effect does not support a duration of
  * HAPTIC_INFINITY.
  *
- * Button triggers may not be supported on all devices, it is advised to not
- * use them if possible. Buttons start at index 1 instead of index 0 like the
+ * Button triggers may not be supported on all devices, it is advised to not use
+ * them if possible. Buttons start at index 1 instead of index 0 like the
  * joystick.
  *
  * If both attack_length and fade_level are 0, the envelope is not used,
@@ -754,8 +753,8 @@ using HapticCustom = SDL_HapticCustom;
  *  delay               length
  * ```
  *
- * Note either the attack_level or the fade_level may be above the actual
- * effect level.
+ * Note either the attack_level or the fade_level may be above the actual effect
+ * level.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -835,8 +834,8 @@ public:
    * and Haptic.SetAutocenter().
    *
    * @param instance_id the haptic device instance ID.
-   * @post the device identifier or nullptr on failure; call GetError() for
-   *          more information.
+   * @post the device identifier or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -925,7 +924,6 @@ public:
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
-   *
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1030,8 +1028,8 @@ public:
   /**
    * Create a new haptic effect on a specified device.
    *
-   * @param effect an HapticEffect structure containing the properties of
-   *               the effect to create.
+   * @param effect an HapticEffect structure containing the properties of the
+   *               effect to create.
    * @returns the ID of the effect on success.
    * @throws Error on failure.
    *
@@ -1052,8 +1050,8 @@ public:
    * running Haptic.UpdateEffect().
    *
    * @param effect the identifier of the effect to update.
-   * @param data an HapticEffect structure containing the new effect
-   *             properties to use.
+   * @param data an HapticEffect structure containing the new effect properties
+   *             to use.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1067,10 +1065,9 @@ public:
    * Run the haptic effect on its associated haptic device.
    *
    * To repeat the effect over and over indefinitely, set `iterations` to
-   * `HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make
-   * one instance of the effect last indefinitely (so the effect does not fade),
-   * set the effect's `length` in its structure/union to `HAPTIC_INFINITY`
-   * instead.
+   * `HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make one
+   * instance of the effect last indefinitely (so the effect does not fade), set
+   * the effect's `length` in its structure/union to `HAPTIC_INFINITY` instead.
    *
    * @param effect the ID of the haptic effect to run.
    * @param iterations the number of iterations to run the effect; use
@@ -1167,8 +1164,8 @@ public:
   /**
    * Pause a haptic device.
    *
-   * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume()
-   * to resume playback.
+   * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume() to
+   * resume playback.
    *
    * Do not modify the effects nor add new ones while the device is paused. That
    * can cause all sorts of weird errors.
@@ -1305,8 +1302,7 @@ inline OwnArray<HapticID> GetHaptics()
  *
  * @param instance_id the haptic device instance ID.
  * @returns the name of the selected haptic device. If no name can be found,
- *          this function returns nullptr; call GetError() for more
- *          information.
+ *          this function returns nullptr; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1324,9 +1320,9 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  * The index passed as an argument refers to the N'th haptic device on this
  * system.
  *
- * When opening a haptic device, its gain will be set to maximum and
- * autocenter will be disabled. To modify these values use Haptic.SetGain()
- * and Haptic.SetAutocenter().
+ * When opening a haptic device, its gain will be set to maximum and autocenter
+ * will be disabled. To modify these values use Haptic.SetGain() and
+ * Haptic.SetAutocenter().
  *
  * @param instance_id the haptic device instance ID.
  * @returns the device identifier or nullptr on failure; call GetError() for
@@ -1378,8 +1374,7 @@ inline HapticID Haptic::GetID() { return SDL::GetHapticID(m_resource); }
  *
  * @param haptic the Haptic obtained from JoystickID.OpenJoystick().
  * @returns the name of the selected haptic device. If no name can be found,
- *          this function returns nullptr; call GetError() for more
- *          information.
+ *          this function returns nullptr; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1406,8 +1401,8 @@ inline bool IsMouseHaptic() { return SDL_IsMouseHaptic(); }
 /**
  * Try to open a haptic device from the current mouse.
  *
- * @returns the haptic device identifier or nullptr on failure; call
- *          GetError() for more information.
+ * @returns the haptic device identifier or nullptr on failure; call GetError()
+ *          for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1439,8 +1434,8 @@ inline bool IsJoystickHaptic(JoystickParam joystick)
 /**
  * Open a haptic device for use from a joystick device.
  *
- * You must still close the haptic device separately. It will not be closed
- * with the joystick.
+ * You must still close the haptic device separately. It will not be closed with
+ * the joystick.
  *
  * When opened from a joystick you should first close the haptic device before
  * closing the joystick device. If not, on some implementations the haptic
@@ -1506,8 +1501,8 @@ inline int Haptic::GetMaxEffects()
  * This is not supported on all platforms, but will always return a value.
  *
  * @param haptic the Haptic device to query maximum playing effects.
- * @returns the number of effects the haptic device can play at the same time
- *          or -1 on failure; call GetError() for more information.
+ * @returns the number of effects the haptic device can play at the same time or
+ *          -1 on failure; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1549,8 +1544,8 @@ inline Uint32 Haptic::GetFeatures()
 /**
  * Get the number of haptic axes the device has.
  *
- * The number of haptic axes might be useful if working with the
- * HapticDirection effect.
+ * The number of haptic axes might be useful if working with the HapticDirection
+ * effect.
  *
  * @param haptic the Haptic device to query.
  * @returns the number of axes on success.
@@ -1592,8 +1587,8 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  * Create a new haptic effect on a specified device.
  *
  * @param haptic an Haptic device to create the effect on.
- * @param effect an HapticEffect structure containing the properties of
- *               the effect to create.
+ * @param effect an HapticEffect structure containing the properties of the
+ *               effect to create.
  * @returns the ID of the effect on success.
  * @throws Error on failure.
  *
@@ -1624,8 +1619,8 @@ inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
  *
  * @param haptic the Haptic device that has the effect.
  * @param effect the identifier of the effect to update.
- * @param data an HapticEffect structure containing the new effect
- *             properties to use.
+ * @param data an HapticEffect structure containing the new effect properties to
+ *             use.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1650,10 +1645,9 @@ inline void Haptic::UpdateEffect(HapticEffectID effect,
  * Run the haptic effect on its associated haptic device.
  *
  * To repeat the effect over and over indefinitely, set `iterations` to
- * `HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make
- * one instance of the effect last indefinitely (so the effect does not fade),
- * set the effect's `length` in its structure/union to `HAPTIC_INFINITY`
- * instead.
+ * `HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make one
+ * instance of the effect last indefinitely (so the effect does not fade), set
+ * the effect's `length` in its structure/union to `HAPTIC_INFINITY` instead.
  *
  * @param haptic the Haptic device to run the effect on.
  * @param effect the ID of the haptic effect to run.
@@ -1759,8 +1753,7 @@ inline bool Haptic::GetEffectStatus(HapticEffectID effect)
  * maximum.
  *
  * @param haptic the Haptic device to set the gain on.
- * @param gain value to set the gain to, should be between 0 and 100 (0 -
- *             100).
+ * @param gain value to set the gain to, should be between 0 and 100 (0 - 100).
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -1803,8 +1796,8 @@ inline void Haptic::SetAutocenter(int autocenter)
 /**
  * Pause a haptic device.
  *
- * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume()
- * to resume playback.
+ * Device must support the `HAPTIC_PAUSE` feature. Call Haptic.Resume() to
+ * resume playback.
  *
  * Do not modify the effects nor add new ones while the device is paused. That
  * can cause all sorts of weird errors.

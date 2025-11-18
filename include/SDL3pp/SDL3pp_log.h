@@ -12,11 +12,11 @@ namespace SDL {
 /**
  * @defgroup CategoryLog Log Handling
  *
- * Simple log messages with priorities and categories. A message's
- * LogPriority signifies how important the message is. A message's
- * LogCategory signifies from what domain it belongs to. Every category
- * has a minimum priority specified: when a message belongs to that category,
- * it will only be sent out if it has that minimum priority or higher.
+ * Simple log messages with priorities and categories. A message's LogPriority
+ * signifies how important the message is. A message's LogCategory signifies
+ * from what domain it belongs to. Every category has a minimum priority
+ * specified: when a message belongs to that category, it will only be sent out
+ * if it has that minimum priority or higher.
  *
  * SDL's own logs are sent below the default priority threshold, so they are
  * quiet by default.
@@ -31,8 +31,8 @@ namespace SDL {
  * "system", "audio", "video", "render", "input", "test", or `*` for any
  * unspecified category.
  *
- * The level can be a numeric level, one of "trace", "verbose", "debug",
- * "info", "warn", "error", "critical", or "quiet" to disable that category.
+ * The level can be a numeric level, one of "trace", "verbose", "debug", "info",
+ * "warn", "error", "critical", or "quiet" to disable that category.
  *
  * You can omit the category if you want to set the logging level for all
  * categories.
@@ -47,11 +47,11 @@ namespace SDL {
  * - Android: log output
  * - Others: standard error output (stderr)
  *
- * You don't need to have a newline (`@n`) on the end of messages, the
- * functions will do that for you. For consistent behavior cross-platform, you
- * shouldn't have any newlines in messages, such as to log multiple lines in
- * one call; unusual platform-specific behavior can be observed in such usage.
- * Do one log call per line instead, with no newlines in messages.
+ * You don't need to have a newline (`@n`) on the end of messages, the functions
+ * will do that for you. For consistent behavior cross-platform, you shouldn't
+ * have any newlines in messages, such as to log multiple lines in one call;
+ * unusual platform-specific behavior can be observed in such usage. Do one log
+ * call per line instead, with no newlines in messages.
  *
  * Each log call is atomic, so you won't see log messages cut off one another
  * when logging from multiple threads.
@@ -114,9 +114,9 @@ constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT; ///< COUNT
 /**
  * The predefined log categories
  *
- * By default the application and gpu categories are enabled at the INFO
- * level, the assert category is enabled at the WARN level, test is enabled at
- * the VERBOSE level and all other categories are enabled at the ERROR level.
+ * By default the application and gpu categories are enabled at the INFO level,
+ * the assert category is enabled at the WARN level, test is enabled at the
+ * VERBOSE level and all other categories are enabled at the ERROR level.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -558,9 +558,8 @@ inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
 /**
  * Set the text prepended to log messages of a given priority.
  *
- * By default LOG_PRIORITY_INFO and below have no prefix, and
- * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
- * "WARNING: ".
+ * By default LOG_PRIORITY_INFO and below have no prefix, and LOG_PRIORITY_WARN
+ * and higher have a prefix showing their priority, e.g. "WARNING: ".
  *
  * This function makes a copy of its string argument, **prefix**, so it is not
  * necessary to keep the value of **prefix** alive after the call returns.
@@ -675,7 +674,7 @@ inline void Log(std::string_view fmt, ARGS&&... args)
  * @param priority the priority of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -715,7 +714,7 @@ inline void LogCategory::LogMessage(LogPriority priority,
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -750,7 +749,7 @@ inline void LogCategory::LogTrace(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -785,7 +784,7 @@ inline void LogCategory::LogVerbose(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -819,7 +818,7 @@ inline void LogCategory::LogDebug(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -853,7 +852,7 @@ inline void LogCategory::LogInfo(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -887,7 +886,7 @@ inline void LogCategory::LogWarn(std::string_view fmt, ARGS&&... args) const
  * @param category the category of the message.
  * @param fmt a printf() style message format string.
  * @param args additional parameters matching % tokens in the **fmt** string,
- *            if any.
+ *             if any.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -958,8 +957,7 @@ inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
  * is held so that this function is never called by more than one thread at
  * once.
  *
- * @param userdata what was passed as `userdata` to
- *                 SetLogOutputFunction().
+ * @param userdata what was passed as `userdata` to SetLogOutputFunction().
  * @param category the category of the message.
  * @param priority the priority of the message.
  * @param message the message being output.

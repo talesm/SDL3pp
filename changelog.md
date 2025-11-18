@@ -1,6 +1,47 @@
 Changelog
 =========
 
+## Version 0.4
+
+This version had an overall review of documentation and the scripts that
+generate the bindings, which allowed me to fix some function signatures.
+
+On the binding generation side, we replaced the previous two source parsers to a
+single new more accurate one. Previously we had one based on doxygen generated
+XML which was very precise, but a missed a few functions; and one doing a ad-hoc
+parsing of source files, which was very buggy. The new one uses a grammar
+library and is way more reliable for our purposes.
+
+We also added a simplified grammar for the documentation blocks, which allowed
+to better transform them and fix formatting issues to make them more readable.
+This also allowed to fix the signature of a few functions.
+
+- Fix bug (#25) where the calling SDL::ReadAs<>() failed to compile on Clang.
+- Convert cppfier scripts to typescript;
+- Replace the XML and the adhoc header parser to a single, grammar based one;
+  - Removed the `xml` cppfier command and replaced the `parse` with the new one;
+- Parsing the documentation blocks content, so we can more accurately detect
+  their tags and better format them.
+- Add miss-detected functions:
+  - SDL_main.h:
+    - SDL_RegisterApp() (windows only);
+    - SDL_UnregisterApp() (windows only);
+  - SDL_gpu.h:
+    - SDL_GDKSuspendGPU() (GDK only);
+    - SDL_GDKResumeGPU() (GDK only);
+- Fix Signature:
+  - SDL_stdinc.h:
+    - SDL::lltoa
+    - SDL::ulltoa
+    - SDL::strtoll
+    - SDL::strtoull
+  - SDL_camera.h:
+    - SDL::GetCameraSupportedFormats
+  - SDL_gamepad.h
+    - SDL::GetGamepadMappings
+    - SDL::GetGamepadMappingForGUID
+    - SDL::GetGamepadMapping
+
 ## Version 0.3.1
 
 This version reviews install script, adds functions as constants for macros and

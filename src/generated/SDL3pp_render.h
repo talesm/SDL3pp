@@ -29,9 +29,9 @@ namespace SDL {
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as 3D polygons and particle effects, and in that case
- * you should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of
- * the many good 3D engines.
+ * functionality such as 3D polygons and particle effects, and in that case you
+ * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
+ * many good 3D engines.
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
@@ -216,13 +216,13 @@ using Vertex = SDL_Vertex;
 using TextureAccess = SDL_TextureAccess;
 
 constexpr TextureAccess TEXTUREACCESS_STATIC =
-  SDL_TEXTUREACCESS_STATIC; ///< Changes rarely, not lockable.
+  SDL_TEXTUREACCESS_STATIC; ///< Changes rarely, not lockable
 
 constexpr TextureAccess TEXTUREACCESS_STREAMING =
-  SDL_TEXTUREACCESS_STREAMING; ///< Changes frequently, lockable.
+  SDL_TEXTUREACCESS_STREAMING; ///< Changes frequently, lockable
 
 constexpr TextureAccess TEXTUREACCESS_TARGET =
-  SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target.
+  SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -232,8 +232,8 @@ constexpr TextureAccess TEXTUREACCESS_TARGET =
  * This affects how texture coordinates are interpreted outside of [0, 1]
  *
  * Texture wrapping is always supported for power of two texture sizes, and is
- * supported for other texture sizes if
- * prop::Renderer.TEXTURE_WRAPPING_BOOLEAN is set to true.
+ * supported for other texture sizes if prop::Renderer.TEXTURE_WRAPPING_BOOLEAN
+ * is set to true.
  *
  * @since This enum is available since SDL 3.4.0.
  */
@@ -241,36 +241,20 @@ using TextureAddressMode = SDL_TextureAddressMode;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 constexpr TextureAddressMode TEXTURE_ADDRESS_INVALID =
   SDL_TEXTURE_ADDRESS_INVALID; ///< TEXTURE_ADDRESS_INVALID
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * Wrapping is enabled if texture coordinates are outside [0, 1], this is the
- * default.
+ * default
  */
 constexpr TextureAddressMode TEXTURE_ADDRESS_AUTO = SDL_TEXTURE_ADDRESS_AUTO;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-/// Texture coordinates are clamped to the [0, 1] range.
+/// Texture coordinates are clamped to the [0, 1] range
 constexpr TextureAddressMode TEXTURE_ADDRESS_CLAMP = SDL_TEXTURE_ADDRESS_CLAMP;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr TextureAddressMode TEXTURE_ADDRESS_WRAP =
   SDL_TEXTURE_ADDRESS_WRAP; ///< The texture is repeated (tiled)
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * How the logical size is mapped to the output.
@@ -280,29 +264,29 @@ constexpr TextureAddressMode TEXTURE_ADDRESS_WRAP =
 using RendererLogicalPresentation = SDL_RendererLogicalPresentation;
 
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_DISABLED =
-  SDL_LOGICAL_PRESENTATION_DISABLED; ///< There is no logical size in effect.
+  SDL_LOGICAL_PRESENTATION_DISABLED; ///< There is no logical size in effect
 
-/// The rendered content is stretched to the output resolution.
+/// The rendered content is stretched to the output resolution
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_STRETCH =
   SDL_LOGICAL_PRESENTATION_STRETCH;
 
 /**
  * The rendered content is fit to the largest dimension and the other dimension
- * is letterboxed with the clear color.
+ * is letterboxed with the clear color
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_LETTERBOX =
   SDL_LOGICAL_PRESENTATION_LETTERBOX;
 
 /**
  * The rendered content is fit to the smallest dimension and the other dimension
- * extends beyond the output bounds.
+ * extends beyond the output bounds
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
   SDL_LOGICAL_PRESENTATION_OVERSCAN;
 
 /**
  * The rendered content is scaled up by integer multiples to fit the output
- * resolution.
+ * resolution
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
@@ -367,11 +351,10 @@ public:
    * Create a 2D rendering context for a window.
    *
    * If you want a specific renderer, you can specify its name here. A list of
-   * available renderers can be obtained by calling GetRenderDriver()
-   * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
-   * don't need a specific renderer, specify nullptr and SDL will attempt to
-   * choose the best option for you, based on what is available on the user's
-   * system.
+   * available renderers can be obtained by calling GetRenderDriver() multiple
+   * times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a
+   * specific renderer, specify nullptr and SDL will attempt to choose the best
+   * option for you, based on what is available on the user's system.
    *
    * If `name` is a comma-separated list, SDL will try each name, in the order
    * listed, until one succeeds or all of them fail.
@@ -382,9 +365,9 @@ public:
    *
    * @param window the window where rendering is displayed.
    * @param name the name of the rendering driver to initialize, or nullptr to
-   * let SDL choose one.
+   *             let SDL choose one.
    * @post a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -407,19 +390,19 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
-   *   to use, if a specific one is desired
+   * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+   *   use, if a specific one is desired
    * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
    *   displayed, required if this isn't a software renderer using a surface
-   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
-   *   is displayed, if you want a software renderer without a window
-   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
-   *   value describing the colorspace for output to the display, defaults to
-   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
-   *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
-   *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
-   *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
-   *   (linear) format textures can be used for HDR content.
+   * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+   *   displayed, if you want a software renderer without a window
+   * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+   *   describing the colorspace for output to the display, defaults to
+   *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
+   *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
+   *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
+   *   colorspace, but values can go beyond 1.0 and float (linear) format
+   *   textures can be used for HDR content.
    * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
    *   present synchronized with the refresh rate. This property can take any
    *   value that is supported by Renderer.SetVSync() for the renderer.
@@ -443,8 +426,8 @@ public:
    *   with the renderer, optional.
    * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
    *   VkPhysicalDevice to use with the renderer, optional.
-   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
-   *   with the renderer, optional.
+   * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with
+   *   the renderer, optional.
    * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
    *   queue family index used for rendering.
    * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
@@ -452,7 +435,7 @@ public:
    *
    * @param props the properties to use.
    * @post a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -472,15 +455,15 @@ public:
   /**
    * Create a 2D software rendering context for a surface.
    *
-   * Two other API which can be used to create Renderer:
-   * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
-   * create a software renderer, but they are intended to be used with an
-   * Window as the final destination and not an Surface.
+   * Two other API which can be used to create Renderer: Renderer.Renderer() and
+   * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
+   * they are intended to be used with an Window as the final destination and
+   * not an Surface.
    *
    * @param surface the Surface structure representing the surface where
    *                rendering is done.
    * @post a valid rendering context or nullptr if there was an error; call
-   *          GetError() for more information.
+   *       GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -531,7 +514,6 @@ public:
    * textures.
    *
    * This should be called before destroying the associated window.
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -590,24 +572,23 @@ public:
    * The following read-only properties are provided by SDL:
    *
    * - `prop::Renderer.NAME_STRING`: the name of the rendering driver
-   * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is
-   *   displayed, if any
+   * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is displayed,
+   *   if any
    * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is
    *   displayed, if this is a software renderer without a window
    * - `prop::Renderer.VSYNC_NUMBER`: the current vsync setting
-   * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width
-   *   and height
-   * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *)
-   *   array of pixel formats, terminated with PIXELFORMAT_UNKNOWN,
-   *   representing the available texture formats for this renderer.
-   * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer
-   *   supports TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
-   * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the colorspace for output to the display, defaults to
-   *   COLORSPACE_SRGB.
+   * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
+   *   height
+   * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array
+   *   of pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
+   *   available texture formats for this renderer.
+   * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+   *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
+   * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
+   *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
    * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
-   *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with
-   *   HDR enabled. This property can change dynamically when
+   *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with HDR
+   *   enabled. This property can change dynamically when
    *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
    * - `prop::Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
    *   COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is
@@ -625,30 +606,30 @@ public:
    *
    * With the direct3d11 renderer:
    *
-   * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated
-   *   with the renderer
-   * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1
-   *   associated with the renderer. This may change when the window is resized.
+   * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with
+   *   the renderer
+   * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
+   *   with the renderer. This may change when the window is resized.
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated
-   *   with the renderer
-   * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4
-   *   associated with the renderer.
+   * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with
+   *   the renderer
+   * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
+   *   with the renderer.
    * - `prop::Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
    *   associated with the renderer
    *
    * With the vulkan renderer:
    *
-   * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated
-   *   with the renderer
-   * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated
-   *   with the renderer
+   * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
+   *   the renderer
+   * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
+   *   the renderer
    * - `prop::Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
    *   associated with the renderer
-   * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with
-   *   the renderer
+   * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+   *   renderer
    * - `prop::Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
    *   family index used for rendering
    * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
@@ -659,8 +640,8 @@ public:
    *
    * With the gpu renderer:
    *
-   * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with
-   *   the renderer
+   * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
+   *   renderer
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -701,7 +682,6 @@ public:
    * For the output size of the current rendering target, with logical size
    * adjustments, use Renderer.GetCurrentOutputSize() instead.
    *
-   * @param renderer the rendering context.
    * @param w a pointer filled in with the width in pixels.
    * @param h a pointer filled in with the height in pixels.
    * @throws Error on failure.
@@ -744,7 +724,6 @@ public:
    * Rendering target or not, the output will be adjusted by the current logical
    * presentation state, dictated by Renderer.SetLogicalPresentation().
    *
-   * @param renderer the rendering context.
    * @param w a pointer filled in with the current width.
    * @param h a pointer filled in with the current height.
    * @throws Error on failure.
@@ -788,15 +767,14 @@ public:
    *
    * The surface is not modified or freed by this function.
    *
-   * The TextureAccess hint for the created texture is
-   * `TEXTUREACCESS_STATIC`.
+   * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
    * prop::Texture.FORMAT_NUMBER property.
    *
-   * @param surface the Surface structure containing pixel data used to fill
-   *                the texture.
+   * @param surface the Surface structure containing pixel data used to fill the
+   *                texture.
    * @returns the created texture or nullptr on failure; call GetError() for
    *          more information.
    *
@@ -815,33 +793,30 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
-   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
-   *   YUV textures.
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
+   *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
+   *   other RGB textures and COLORSPACE_JPEG for YUV textures.
    * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
    * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
-   *   pixels, required
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   *   required
    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
-   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with
-   *   palettized texture formats. This can be set later with
-   *   Texture.SetPalette()
+   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with Texture.SetPalette()
    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the maximum dynamic range used by the
-   *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
-   *   If this is defined, any values outside the range supported by the display
-   *   will be scaled into the available HDR headroom, otherwise they are
-   *   clipped.
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the maximum dynamic range used by the content, in
+   *   terms of the SDR white point. This would be equivalent to maxCLL /
+   *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   defined, any values outside the range supported by the display will be
+   *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
@@ -909,17 +884,17 @@ public:
    *
    * With the GPU renderer:
    *
-   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture
-   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
+   *   with the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
    *
    * @param props the properties to use.
    * @returns the created texture or nullptr on failure; call GetError() for
@@ -972,7 +947,7 @@ public:
    * and is reported a nullptr here.
    *
    * @returns the current render target or nullptr for the default render
-   * target.
+   *          target.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1199,8 +1174,8 @@ public:
    * Each render target has its own viewport. This function sets the viewport
    * for the current render target.
    *
-   * @param rect the Rect structure representing the drawing area, or nullptr
-   *             to set the viewport to the entire target.
+   * @param rect the Rect structure representing the drawing area, or nullptr to
+   *             set the viewport to the entire target.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1279,8 +1254,8 @@ public:
    * Each render target has its own clip rectangle. This function sets the
    * cliprect for the current render target.
    *
-   * @param rect an Rect structure representing the clip area, relative to
-   *             the viewport, or nullptr to disable clipping.
+   * @param rect an Rect structure representing the clip area, relative to the
+   *             viewport, or nullptr to disable clipping.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1300,8 +1275,8 @@ public:
    * Each render target has its own clip rectangle. This function gets the
    * cliprect for the current render target.
    *
-   * @param rect an Rect structure filled in with the current clipping area
-   *             or an empty rectangle if clipping is disabled.
+   * @param rect an Rect structure filled in with the current clipping area or
+   *             an empty rectangle if clipping is disabled.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1319,8 +1294,8 @@ public:
    * Each render target has its own clip rectangle. This function checks the
    * cliprect for the current render target.
    *
-   * @returns true if clipping is enabled or false if not; call GetError()
-   *          for more information.
+   * @returns true if clipping is enabled or false if not; call GetError() for
+   *          more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1381,7 +1356,6 @@ public:
    * Each render target has its own scale. This function gets the scale for the
    * current render target.
    *
-   * @param renderer the rendering context.
    * @param scaleX a pointer filled in with the horizontal scaling factor.
    * @param scaleY a pointer filled in with the vertical scaling factor.
    * @throws Error on failure.
@@ -1404,8 +1378,8 @@ public:
    * @param g the green value used to draw on the rendering target.
    * @param b the blue value used to draw on the rendering target.
    * @param a the alpha value used to draw on the rendering target; usually
-   *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
-   *          specify how the alpha channel is used.
+   *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to specify how
+   *          the alpha channel is used.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1465,7 +1439,6 @@ public:
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @param renderer the rendering context.
    * @param r a pointer filled in with the red value used to draw on the
    *          rendering target.
    * @param g a pointer filled in with the green value used to draw on the
@@ -1510,7 +1483,6 @@ public:
   /**
    * Get the color used for drawing operations (Rect, Line and Clear).
    *
-   * @param renderer the rendering context.
    * @param r a pointer filled in with the red value used to draw on the
    *          rendering target.
    * @param g a pointer filled in with the green value used to draw on the
@@ -1681,7 +1653,7 @@ public:
    * Draw a rectangle on the current rendering target at subpixel precision.
    *
    * @param rect a pointer to the destination rectangle, or nullptr to outline
-   * the entire rendering target.
+   *             the entire rendering target.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1713,7 +1685,7 @@ public:
    * subpixel precision.
    *
    * @param rect a pointer to the destination rectangle, or nullptr for the
-   * entire rendering target.
+   *             entire rendering target.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1808,7 +1780,7 @@ public:
    *              target's top-right corner.
    * @param down a pointer to a point indicating where the bottom-left corner of
    *             srcrect should be mapped to, or nullptr for the rendering
-   * target's bottom-left corner.
+   *             target's bottom-left corner.
    * @throws Error on failure.
    *
    * @threadsafety You may only call this function from the main thread.
@@ -1862,8 +1834,8 @@ public:
    * stretched into place to cover the remaining destination rectangle.
    *
    * @param texture the source texture.
-   * @param srcrect the Rect structure representing the rectangle to be used
-   *                for the 9-grid, or nullptr to use the entire texture.
+   * @param srcrect the Rect structure representing the rectangle to be used for
+   *                the 9-grid, or nullptr to use the entire texture.
    * @param left_width the width, in pixels, of the left corners in `srcrect`.
    * @param right_width the width, in pixels, of the right corners in `srcrect`.
    * @param top_height the height, in pixels, of the top corners in `srcrect`.
@@ -1904,8 +1876,8 @@ public:
    * tiled into place to cover the remaining destination rectangle.
    *
    * @param texture the source texture.
-   * @param srcrect the Rect structure representing the rectangle to be used
-   *                for the 9-grid, or nullptr to use the entire texture.
+   * @param srcrect the Rect structure representing the rectangle to be used for
+   *                the 9-grid, or nullptr to use the entire texture.
    * @param left_width the width, in pixels, of the left corners in `srcrect`.
    * @param right_width the width, in pixels, of the right corners in `srcrect`.
    * @param top_height the height, in pixels, of the top corners in `srcrect`.
@@ -1949,7 +1921,7 @@ public:
    * @param num_vertices number of vertices.
    * @param indices (optional) An array of integer indices into the 'vertices'
    *                array, if nullptr all vertices will be rendered in
-   * sequential order.
+   *                sequential order.
    * @param num_indices number of indices.
    * @throws Error on failure.
    *
@@ -1979,7 +1951,7 @@ public:
    * @param num_vertices number of vertices.
    * @param indices (optional) An array of indices into the 'vertices' arrays,
    *                if nullptr all vertices will be rendered in sequential
-   * order.
+   *                order.
    * @param num_indices number of indices.
    * @param size_indices index size: 1 (byte), 2 (short), 4 (int).
    * @throws Error on failure.
@@ -2030,12 +2002,12 @@ public:
   /**
    * Get the texture addressing mode used in Renderer.RenderGeometry().
    *
-   * @param u_mode a pointer filled in with the TextureAddressMode to use
-   *               for horizontal texture coordinates in
-   * Renderer.RenderGeometry(), may be nullptr.
-   * @param v_mode a pointer filled in with the TextureAddressMode to use
-   *               for vertical texture coordinates in
-   * Renderer.RenderGeometry(), may be nullptr.
+   * @param u_mode a pointer filled in with the TextureAddressMode to use for
+   *               horizontal texture coordinates in Renderer.RenderGeometry(),
+   *               may be nullptr.
+   * @param v_mode a pointer filled in with the TextureAddressMode to use for
+   *               vertical texture coordinates in Renderer.RenderGeometry(),
+   *               may be nullptr.
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.4.0.
@@ -2061,8 +2033,8 @@ public:
    * frequently. If you're using this on the main rendering target, it should be
    * called after rendering and before Renderer.Present().
    *
-   * @param rect an Rect structure representing the area to read, which will
-   *             be clipped to the current viewport, or nullptr for the entire
+   * @param rect an Rect structure representing the area to read, which will be
+   *             clipped to the current viewport, or nullptr for the entire
    *             viewport.
    * @returns a new Surface on success.
    * @throws Error on failure.
@@ -2228,9 +2200,9 @@ public:
    * The `vsync` parameter can be 1 to synchronize present with every vertical
    * refresh, 2 to synchronize present with every second vertical refresh, etc.,
    * RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
-   * RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
-   * every driver, so you should check the return value to see whether the
-   * requested setting is supported.
+   * RENDERER_VSYNC_DISABLED to disable. Not every value is supported by every
+   * driver, so you should check the return value to see whether the requested
+   * setting is supported.
    *
    * @param vsync the vertical refresh sync interval.
    * @throws Error on failure.
@@ -2261,9 +2233,9 @@ public:
   /**
    * Draw debug text to an Renderer.
    *
-   * This function will render a string of text to an Renderer. Note that
-   * this is a convenience function for debugging, with severe limitations, and
-   * not intended to be used for production apps and games.
+   * This function will render a string of text to an Renderer. Note that this
+   * is a convenience function for debugging, with severe limitations, and not
+   * intended to be used for production apps and games.
    *
    * Among these limitations:
    *
@@ -2351,9 +2323,9 @@ public:
   /**
    * Get default texture scale mode of the given renderer.
    *
-   * @param scale_mode a ScaleMode filled with current default scale mode.
-   *                   See Renderer.SetDefaultTextureScaleMode() for the meaning
-   * of the value.
+   * @param scale_mode a ScaleMode filled with current default scale mode. See
+   *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
+   *                   the value.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2397,7 +2369,7 @@ public:
    * allows using custom shaders with the GPU renderer.
    *
    * @param state the state to to use, or nullptr to clear custom GPU render
-   * state.
+   *              state.
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -2486,8 +2458,8 @@ public:
    * @param access one of the enumerated values in TextureAccess.
    * @param w the width of the texture in pixels.
    * @param h the height of the texture in pixels.
-   * @post the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @post the created texture or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2512,18 +2484,17 @@ public:
    *
    * The surface is not modified or freed by this function.
    *
-   * The TextureAccess hint for the created texture is
-   * `TEXTUREACCESS_STATIC`.
+   * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
    *
    * The pixel format of the created texture may be different from the pixel
    * format of the surface, and can be queried using the
    * prop::Texture.FORMAT_NUMBER property.
    *
    * @param renderer the rendering context.
-   * @param surface the Surface structure containing pixel data used to fill
-   *                the texture.
-   * @post the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @param surface the Surface structure containing pixel data used to fill the
+   *                texture.
+   * @post the created texture or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2543,33 +2514,30 @@ public:
    *
    * These are the supported properties:
    *
-   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
-   *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
-   *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
-   *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
-   *   YUV textures.
+   * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+   *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
+   *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
+   *   other RGB textures and COLORSPACE_JPEG for YUV textures.
    * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat, defaults to the best RGBA format for the renderer
    * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
    *   TextureAccess, defaults to TEXTUREACCESS_STATIC
-   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
-   *   pixels, required
+   * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+   *   required
    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
-   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with
-   *   palettized texture formats. This can be set later with
-   *   Texture.SetPalette()
+   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with Texture.SetPalette()
    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
    *   to 100 for HDR10 textures and 1.0 for floating point textures.
-   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
-   *   point textures, this defines the maximum dynamic range used by the
-   *   content, in terms of the SDR white point. This would be equivalent to
-   *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
-   *   If this is defined, any values outside the range supported by the display
-   *   will be scaled into the available HDR headroom, otherwise they are
-   *   clipped.
+   * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+   *   textures, this defines the maximum dynamic range used by the content, in
+   *   terms of the SDR white point. This would be equivalent to maxCLL /
+   *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+   *   defined, any values outside the range supported by the display will be
+   *   scaled into the available HDR headroom, otherwise they are clipped.
    *
    * With the direct3d11 renderer:
    *
@@ -2637,22 +2605,22 @@ public:
    *
    * With the GPU renderer:
    *
-   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture
-   *   associated with the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
+   *   with the texture, if you want to wrap an existing texture.
    * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
    *   associated with the UV plane of an NV12 texture, if you want to wrap an
    *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture
-   *   associated with the U plane of a YUV texture, if you want to wrap an
-   *   existing texture.
-   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture
-   *   associated with the V plane of a YUV texture, if you want to wrap an
-   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @post the created texture or nullptr on failure; call GetError() for
-   *          more information.
+   * @post the created texture or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2675,21 +2643,20 @@ public:
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after
-   * loading it.
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
    *
    * If the loaded image has transparency or a colorkey, a texture with an alpha
    * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image
-   * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
-   * RGBA).
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
    *
-   * There is a separate function to read files from an IOStream, if you
-   * need an i/o abstraction to provide data from anywhere instead of a simple
+   * There is a separate function to read files from an IOStream, if you need an
+   * i/o abstraction to provide data from anywhere instead of a simple
    * filesystem read; that function is Texture.Texture().
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels
-   * in CPU memory), call Surface.Surface() instead.
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call Surface.Surface() instead.
    *
    * When done with the returned texture, the app should dispose of it with a
    * call to Texture.Destroy().
@@ -2710,38 +2677,37 @@ public:
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
-   * Surface if you don't need to manipulate the image directly after
-   * loading it.
+   * Surface if you don't need to manipulate the image directly after loading
+   * it.
    *
    * If the loaded image has transparency or a colorkey, a texture with an alpha
    * channel will be created. Otherwise, SDL_image will attempt to create an
-   * Texture in the most format that most reasonably represents the image
-   * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
-   * RGBA).
+   * Texture in the most format that most reasonably represents the image data
+   * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
    *
    * If `closeio` is true, `src` will be closed before returning, whether this
    * function succeeds or not. SDL_image reads everything it needs from `src`
    * during this call in any case.
    *
    * There is a separate function to read files from disk without having to deal
-   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call
-   * this function and manage those details for you, determining the file type
-   * from the filename's extension.
+   * with IOStream: `Texture.Texture(renderer, "filename.jpg")` will call this
+   * function and manage those details for you, determining the file type from
+   * the filename's extension.
    *
-   * There is also LoadTextureTyped(), which is equivalent to this
-   * function except a file extension (like "BMP", "JPG", etc) can be specified,
-   * in case SDL_image cannot autodetect the file format.
+   * There is also LoadTextureTyped(), which is equivalent to this function
+   * except a file extension (like "BMP", "JPG", etc) can be specified, in case
+   * SDL_image cannot autodetect the file format.
    *
-   * If you would rather decode an image to an Surface (a buffer of pixels
-   * in CPU memory), call Surface.Surface() instead.
+   * If you would rather decode an image to an Surface (a buffer of pixels in
+   * CPU memory), call Surface.Surface() instead.
    *
    * When done with the returned texture, the app should dispose of it with a
    * call to Texture.Destroy().
    *
    * @param renderer the Renderer to use to create the GPU texture.
    * @param src an IOStream that data will be read from.
-   * @param closeio true to close/free the IOStream before returning, false
-   *                to leave it open.
+   * @param closeio true to close/free the IOStream before returning, false to
+   *                leave it open.
    * @post a new texture, or nullptr on error.
    *
    * @since This function is available since SDL_image 3.0.0.
@@ -2813,7 +2779,6 @@ public:
    * Passing nullptr or an otherwise invalid texture will set the SDL error
    * message to "Invalid texture".
    *
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2828,8 +2793,8 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing
-   *   the texture colorspace.
+   * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
+   *   texture colorspace.
    * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in
    *   PixelFormat.
    * - `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in
@@ -2852,15 +2817,15 @@ public:
    *
    * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
    *   with the texture
-   * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
-   *   associated with the U plane of a YUV texture
-   * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
-   *   associated with the V plane of a YUV texture
+   * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
+   *   with the U plane of a YUV texture
+   * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
+   *   with the V plane of a YUV texture
    *
    * With the direct3d12 renderer:
    *
-   * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
-   *   with the texture
+   * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
+   *   the texture
    * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated
    *   with the U plane of a YUV texture
    * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated
@@ -2873,44 +2838,44 @@ public:
    *
    * With the opengl renderer:
    *
-   * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
-   *   with the texture
-   * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
-   *   associated with the UV plane of an NV12 texture
+   * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
+   *   the texture
+   * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
+   *   with the UV plane of an NV12 texture
    * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated
    *   with the U plane of a YUV texture
    * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated
    *   with the V plane of a YUV texture
-   * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the
-   *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
-   * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of
-   *   the texture (0.0 - 1.0)
-   * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of
-   *   the texture (0.0 - 1.0)
+   * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+   *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
+   * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
+   *   texture (0.0 - 1.0)
+   * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
+   *   texture (0.0 - 1.0)
    *
    * With the opengles2 renderer:
    *
-   * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
-   *   associated with the texture
+   * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
+   *   with the texture
    * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
    *   associated with the UV plane of an NV12 texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
-   *   associated with the U plane of a YUV texture
-   * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
-   *   associated with the V plane of a YUV texture
+   * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
+   *   with the U plane of a YUV texture
+   * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
+   *   with the V plane of a YUV texture
    * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
    * With the gpu renderer:
    *
-   * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated
-   *   with the texture
-   * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated
-   *   with the UV plane of an NV12 texture
-   * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated
-   *   with the U plane of a YUV texture
-   * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated
-   *   with the V plane of a YUV texture
+   * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+   *   texture
+   * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with
+   *   the UV plane of an NV12 texture
+   * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
+   *   U plane of a YUV texture
+   * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
+   *   V plane of a YUV texture
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -2951,7 +2916,6 @@ public:
   /**
    * Get the size of a texture, as floating point values.
    *
-   * @param texture the texture to query.
    * @param w a pointer filled in with the width of the texture in pixels. This
    *          argument can be nullptr if you don't need this information.
    * @param h a pointer filled in with the height of the texture in pixels. This
@@ -3002,7 +2966,7 @@ public:
    * Get the palette used by a texture.
    *
    * @returns a pointer to the palette used by the texture, or nullptr if there
-   * is no palette used.
+   *          is no palette used.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -3394,10 +3358,8 @@ public:
    * need to keep a copy of the texture data you should do that at the
    * application level.
    *
-   * You must use Texture.Unlock() to unlock the pixels and apply any
-   * changes.
+   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
    *
-   *                `TEXTUREACCESS_STREAMING`.
    * @param rect an Rect structure representing the area to lock for access;
    *             nullptr to lock the entire texture.
    * @param pixels this is filled in with a pointer to the locked pixels,
@@ -3427,13 +3389,11 @@ public:
    * need to keep a copy of the texture data you should do that at the
    * application level.
    *
-   * You must use Texture.Unlock() to unlock the pixels and apply any
-   * changes.
+   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
    *
-   * The returned surface is freed internally after calling Texture.Unlock()
-   * or Texture.Destroy(). The caller should not free it.
+   * The returned surface is freed internally after calling Texture.Unlock() or
+   * Texture.Destroy(). The caller should not free it.
    *
-   *                `TEXTUREACCESS_STREAMING`.
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
    * @param surface a pointer to an SDL surface of size **rect**. Don't assume
@@ -3452,14 +3412,13 @@ public:
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
    *
-   * **Warning**: Please note that Texture.Lock() is intended to be
-   * write-only; it will not guarantee the previous contents of the texture will
-   * be provided. You must fully initialize any area of a texture that you lock
+   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * it will not guarantee the previous contents of the texture will be
+   * provided. You must fully initialize any area of a texture that you lock
    * before unlocking it, as the pixels might otherwise be uninitialized memory.
    *
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
-   *
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -3494,8 +3453,8 @@ inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
  * Use this function to get the name of a built in 2D rendering driver.
  *
  * The list of rendering drivers is given in the order that they are normally
- * initialized by default; the drivers that seem more reasonable to choose
- * first (as far as the SDL developers believe) are earlier in the list.
+ * initialized by default; the drivers that seem more reasonable to choose first
+ * (as far as the SDL developers believe) are earlier in the list.
  *
  * The names of drivers are all simple, low-ASCII identifiers, like "opengl",
  * "direct3d12" or "metal". These never have Unicode characters, and are not
@@ -3548,18 +3507,17 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
  * Create a 2D rendering context for a window.
  *
  * If you want a specific renderer, you can specify its name here. A list of
- * available renderers can be obtained by calling GetRenderDriver()
- * multiple times, with indices from 0 to GetNumRenderDrivers()-1. If you
- * don't need a specific renderer, specify nullptr and SDL will attempt to
- * choose the best option for you, based on what is available on the user's
- * system.
+ * available renderers can be obtained by calling GetRenderDriver() multiple
+ * times, with indices from 0 to GetNumRenderDrivers()-1. If you don't need a
+ * specific renderer, specify nullptr and SDL will attempt to choose the best
+ * option for you, based on what is available on the user's system.
  *
  * If `name` is a comma-separated list, SDL will try each name, in the order
  * listed, until one succeeds or all of them fail.
  *
- * By default the rendering size matches the window size in pixels, but you
- * can call Renderer.SetLogicalPresentation() to change the content size and
- * scaling options.
+ * By default the rendering size matches the window size in pixels, but you can
+ * call Renderer.SetLogicalPresentation() to change the content size and scaling
+ * options.
  *
  * @param window the window where rendering is displayed.
  * @param name the name of the rendering driver to initialize, or nullptr to let
@@ -3588,22 +3546,22 @@ inline Renderer CreateRenderer(WindowParam window, StringParam name)
  *
  * These are the supported properties:
  *
- * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver
- *   to use, if a specific one is desired
+ * - `prop::Renderer.CREATE_NAME_STRING`: the name of the rendering driver to
+ *   use, if a specific one is desired
  * - `prop::Renderer.CREATE_WINDOW_POINTER`: the window where rendering is
  *   displayed, required if this isn't a software renderer using a surface
- * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering
- *   is displayed, if you want a software renderer without a window
- * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace
- *   value describing the colorspace for output to the display, defaults to
- *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers
- *   support COLORSPACE_SRGB_LINEAR, which is a linear color space and
- *   supports HDR output. If you select COLORSPACE_SRGB_LINEAR, drawing
- *   still uses the sRGB colorspace, but values can go beyond 1.0 and float
- *   (linear) format textures can be used for HDR content.
- * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want
- *   present synchronized with the refresh rate. This property can take any
- *   value that is supported by Renderer.SetVSync() for the renderer.
+ * - `prop::Renderer.CREATE_SURFACE_POINTER`: the surface where rendering is
+ *   displayed, if you want a software renderer without a window
+ * - `prop::Renderer.CREATE_OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
+ *   describing the colorspace for output to the display, defaults to
+ *   COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers support
+ *   COLORSPACE_SRGB_LINEAR, which is a linear color space and supports HDR
+ *   output. If you select COLORSPACE_SRGB_LINEAR, drawing still uses the sRGB
+ *   colorspace, but values can go beyond 1.0 and float (linear) format textures
+ *   can be used for HDR content.
+ * - `prop::Renderer.CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want present
+ *   synchronized with the refresh rate. This property can take any value that
+ *   is supported by Renderer.SetVSync() for the renderer.
  *
  * With the SDL GPU renderer (since SDL 3.4.0):
  *
@@ -3613,23 +3571,23 @@ inline Renderer CreateRenderer(WindowParam window, StringParam name)
  *   provide SPIR-V shaders to GPURenderState, optional.
  * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
  *   provide DXIL shaders to GPURenderState, optional.
- * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
- *   provide MSL shaders to GPURenderState, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
+ *   MSL shaders to GPURenderState, optional.
  *
  * With the vulkan renderer:
  *
- * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
- *   with the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use
- *   with the renderer, optional.
+ * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
+ *   the renderer, optional.
+ * - `prop::Renderer.CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use with
+ *   the renderer, optional.
  * - `prop::Renderer.CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the
  *   VkPhysicalDevice to use with the renderer, optional.
- * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use
- *   with the renderer, optional.
+ * - `prop::Renderer.CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use with the
+ *   renderer, optional.
  * - `prop::Renderer.CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the
  *   queue family index used for rendering.
- * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the
- *   queue family index used for presentation.
+ * - `prop::Renderer.CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
+ *   family index used for presentation.
  *
  * @param props the properties to use.
  * @returns a valid rendering context or nullptr if there was an error; call
@@ -3796,14 +3754,14 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  * @param device the GPU device to use with the renderer, or nullptr to create a
  *               device.
  * @param window the window where rendering is displayed, or nullptr to create
- * an offscreen renderer.
+ *               an offscreen renderer.
  * @returns a valid rendering context or nullptr if there was an error; call
  *          GetError() for more information.
  *
  * @threadsafety If this function is called with a valid GPU device, it should
  *               be called on the thread that created the device. If this
- *               function is called with a valid window, it should be called
- *               on the thread that created the window.
+ *               function is called with a valid window, it should be called on
+ *               the thread that created the window.
  *
  * @since This function is available since SDL 3.4.0.
  *
@@ -3852,13 +3810,13 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
 /**
  * Create a 2D software rendering context for a surface.
  *
- * Two other API which can be used to create Renderer:
- * Renderer.Renderer() and CreateWindowAndRenderer(). These can _also_
- * create a software renderer, but they are intended to be used with an
- * Window as the final destination and not an Surface.
+ * Two other API which can be used to create Renderer: Renderer.Renderer() and
+ * CreateWindowAndRenderer(). These can _also_ create a software renderer, but
+ * they are intended to be used with an Window as the final destination and not
+ * an Surface.
  *
- * @param surface the Surface structure representing the surface where
- *                rendering is done.
+ * @param surface the Surface structure representing the surface where rendering
+ *                is done.
  * @returns a valid rendering context or nullptr if there was an error; call
  *          GetError() for more information.
  *
@@ -3929,77 +3887,76 @@ inline const char* Renderer::GetName() const
  * The following read-only properties are provided by SDL:
  *
  * - `prop::Renderer.NAME_STRING`: the name of the rendering driver
- * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is
- *   displayed, if any
- * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is
- *   displayed, if this is a software renderer without a window
+ * - `prop::Renderer.WINDOW_POINTER`: the window where rendering is displayed,
+ *   if any
+ * - `prop::Renderer.SURFACE_POINTER`: the surface where rendering is displayed,
+ *   if this is a software renderer without a window
  * - `prop::Renderer.VSYNC_NUMBER`: the current vsync setting
- * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width
- *   and height
- * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *)
- *   array of pixel formats, terminated with PIXELFORMAT_UNKNOWN,
- *   representing the available texture formats for this renderer.
- * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer
- *   supports TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
- * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value
- *   describing the colorspace for output to the display, defaults to
- *   COLORSPACE_SRGB.
+ * - `prop::Renderer.MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width and
+ *   height
+ * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
+ *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
+ *   available texture formats for this renderer.
+ * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+ *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
+ * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
+ *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
  * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
- *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with
- *   HDR enabled. This property can change dynamically when
+ *   COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with HDR
+ *   enabled. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  * - `prop::Renderer.SDR_WHITE_POINT_FLOAT`: the value of SDR white in the
  *   COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is
  *   automatically multiplied into the color scale. This property can change
  *   dynamically when EVENT_WINDOW_HDR_STATE_CHANGED is sent.
- * - `prop::Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range
- *   that can be displayed, in terms of the SDR white point. When HDR is not
- *   enabled, this will be 1.0. This property can change dynamically when
+ * - `prop::Renderer.HDR_HEADROOM_FLOAT`: the additional high dynamic range that
+ *   can be displayed, in terms of the SDR white point. When HDR is not enabled,
+ *   this will be 1.0. This property can change dynamically when
  *   EVENT_WINDOW_HDR_STATE_CHANGED is sent.
  *
  * With the direct3d renderer:
  *
- * - `prop::Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated
- *   with the renderer
+ * - `prop::Renderer.D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated with
+ *   the renderer
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated
- *   with the renderer
- * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1
- *   associated with the renderer. This may change when the window is resized.
+ * - `prop::Renderer.D3D11_DEVICE_POINTER`: the ID3D11Device associated with the
+ *   renderer
+ * - `prop::Renderer.D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1 associated
+ *   with the renderer. This may change when the window is resized.
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated
- *   with the renderer
- * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4
- *   associated with the renderer.
+ * - `prop::Renderer.D3D12_DEVICE_POINTER`: the ID3D12Device associated with the
+ *   renderer
+ * - `prop::Renderer.D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4 associated
+ *   with the renderer.
  * - `prop::Renderer.D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue
  *   associated with the renderer
  *
  * With the vulkan renderer:
  *
- * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated
- *   with the renderer
- * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated
- *   with the renderer
+ * - `prop::Renderer.VULKAN_INSTANCE_POINTER`: the VkInstance associated with
+ *   the renderer
+ * - `prop::Renderer.VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated with
+ *   the renderer
  * - `prop::Renderer.VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice
  *   associated with the renderer
- * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with
- *   the renderer
+ * - `prop::Renderer.VULKAN_DEVICE_POINTER`: the VkDevice associated with the
+ *   renderer
  * - `prop::Renderer.VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue
  *   family index used for rendering
- * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue
- *   family index used for presentation
+ * - `prop::Renderer.VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue family
+ *   index used for presentation
  * - `prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of
  *   swapchain images, or potential frames in flight, used by the Vulkan
  *   renderer
  *
  * With the gpu renderer:
  *
- * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with
- *   the renderer
+ * - `prop::Renderer.GPU_DEVICE_POINTER`: the GPUDevice associated with the
+ *   renderer
  *
  * @param renderer the rendering context.
  * @returns a valid property ID on success.
@@ -4149,8 +4106,8 @@ inline Point Renderer::GetCurrentOutputSize() const
  * @param access one of the enumerated values in TextureAccess.
  * @param w the width of the texture in pixels.
  * @param h the height of the texture in pixels.
- * @returns the created texture or nullptr on failure; call GetError() for
- *          more information.
+ * @returns the created texture or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4182,18 +4139,17 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
  *
  * The surface is not modified or freed by this function.
  *
- * The TextureAccess hint for the created texture is
- * `TEXTUREACCESS_STATIC`.
+ * The TextureAccess hint for the created texture is `TEXTUREACCESS_STATIC`.
  *
  * The pixel format of the created texture may be different from the pixel
  * format of the surface, and can be queried using the
  * prop::Texture.FORMAT_NUMBER property.
  *
  * @param renderer the rendering context.
- * @param surface the Surface structure containing pixel data used to fill
- *                the texture.
- * @returns the created texture or nullptr on failure; call GetError() for
- *          more information.
+ * @param surface the Surface structure containing pixel data used to fill the
+ *                texture.
+ * @returns the created texture or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4219,33 +4175,30 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *
  * These are the supported properties:
  *
- * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value
- *   describing the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR
- *   for floating point textures, COLORSPACE_HDR10 for 10-bit textures,
- *   COLORSPACE_SRGB for other RGB textures and COLORSPACE_JPEG for
- *   YUV textures.
+ * - `prop::Texture.CREATE_COLORSPACE_NUMBER`: an Colorspace value describing
+ *   the texture colorspace, defaults to COLORSPACE_SRGB_LINEAR for floating
+ *   point textures, COLORSPACE_HDR10 for 10-bit textures, COLORSPACE_SRGB for
+ *   other RGB textures and COLORSPACE_JPEG for YUV textures.
  * - `prop::Texture.CREATE_FORMAT_NUMBER`: one of the enumerated values in
  *   PixelFormat, defaults to the best RGBA format for the renderer
  * - `prop::Texture.CREATE_ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess, defaults to TEXTUREACCESS_STATIC
- * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in
- *   pixels, required
- * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
- *   pixels, required
- * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with
- *   palettized texture formats. This can be set later with
- *   Texture.SetPalette()
- * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
- *   point textures, this defines the value of 100% diffuse white, with higher
- *   values being displayed in the High Dynamic Range headroom. This defaults
- *   to 100 for HDR10 textures and 1.0 for floating point textures.
- * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating
- *   point textures, this defines the maximum dynamic range used by the
- *   content, in terms of the SDR white point. This would be equivalent to
- *   maxCLL / prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.
- *   If this is defined, any values outside the range supported by the display
- *   will be scaled into the available HDR headroom, otherwise they are
- *   clipped.
+ * - `prop::Texture.CREATE_WIDTH_NUMBER`: the width of the texture in pixels,
+ *   required
+ * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
+ *   required
+ * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+ *   texture formats. This can be set later with Texture.SetPalette()
+ * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
+ *   textures, this defines the value of 100% diffuse white, with higher values
+ *   being displayed in the High Dynamic Range headroom. This defaults to 100
+ *   for HDR10 textures and 1.0 for floating point textures.
+ * - `prop::Texture.CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point
+ *   textures, this defines the maximum dynamic range used by the content, in
+ *   terms of the SDR white point. This would be equivalent to maxCLL /
+ *   prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content. If this is
+ *   defined, any values outside the range supported by the display will be
+ *   scaled into the available HDR headroom, otherwise they are clipped.
  *
  * With the direct3d11 renderer:
  *
@@ -4260,8 +4213,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource
- *   associated with the texture, if you want to wrap an existing texture.
+ * - `prop::Texture.CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
+ *   with the texture, if you want to wrap an existing texture.
  * - `prop::Texture.CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource
  *   associated with the U plane of a YUV texture, if you want to wrap an
  *   existing texture.
@@ -4277,8 +4230,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *
  * With the opengl renderer:
  *
- * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture
- *   associated with the texture, if you want to wrap an existing texture.
+ * - `prop::Texture.CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
+ *   with the texture, if you want to wrap an existing texture.
  * - `prop::Texture.CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
  *   associated with the UV plane of an NV12 texture, if you want to wrap an
  *   existing texture.
@@ -4313,22 +4266,20 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *
  * With the GPU renderer:
  *
- * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture
- *   associated with the texture, if you want to wrap an existing texture.
- * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
- *   associated with the UV plane of an NV12 texture, if you want to wrap an
- *   existing texture.
- * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture
- *   associated with the U plane of a YUV texture, if you want to wrap an
- *   existing texture.
- * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture
- *   associated with the V plane of a YUV texture, if you want to wrap an
- *   existing texture.
+ * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+ *   the texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated
+ *   with the UV plane of an NV12 texture, if you want to wrap an existing
+ *   texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+ *   with the U plane of a YUV texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+ *   with the V plane of a YUV texture, if you want to wrap an existing texture.
  *
  * @param renderer the rendering context.
  * @param props the properties to use.
- * @returns the created texture or nullptr on failure; call GetError() for
- *          more information.
+ * @returns the created texture or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -4549,43 +4500,41 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing
- *   the texture colorspace.
- * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in
- *   PixelFormat.
+ * - `prop::Texture.COLORSPACE_NUMBER`: an Colorspace value describing the
+ *   texture colorspace.
+ * - `prop::Texture.FORMAT_NUMBER`: one of the enumerated values in PixelFormat.
  * - `prop::Texture.ACCESS_NUMBER`: one of the enumerated values in
  *   TextureAccess.
  * - `prop::Texture.WIDTH_NUMBER`: the width of the texture in pixels.
  * - `prop::Texture.HEIGHT_NUMBER`: the height of the texture in pixels.
  * - `prop::Texture.SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
- *   textures, this defines the value of 100% diffuse white, with higher
- *   values being displayed in the High Dynamic Range headroom. This defaults
- *   to 100 for HDR10 textures and 1.0 for other textures.
- * - `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point
- *   textures, this defines the maximum dynamic range used by the content, in
- *   terms of the SDR white point. If this is defined, any values outside the
- *   range supported by the display will be scaled into the available HDR
- *   headroom, otherwise they are clipped. This defaults to 1.0 for SDR
- *   textures, 4.0 for HDR10 textures, and no default for floating point
- *   textures.
+ *   textures, this defines the value of 100% diffuse white, with higher values
+ *   being displayed in the High Dynamic Range headroom. This defaults to 100
+ *   for HDR10 textures and 1.0 for other textures.
+ * - `prop::Texture.HDR_HEADROOM_FLOAT`: for HDR10 and floating point textures,
+ *   this defines the maximum dynamic range used by the content, in terms of the
+ *   SDR white point. If this is defined, any values outside the range supported
+ *   by the display will be scaled into the available HDR headroom, otherwise
+ *   they are clipped. This defaults to 1.0 for SDR textures, 4.0 for HDR10
+ *   textures, and no default for floating point textures.
  *
  * With the direct3d11 renderer:
  *
- * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated
- *   with the texture
- * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D
- *   associated with the U plane of a YUV texture
- * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D
- *   associated with the V plane of a YUV texture
+ * - `prop::Texture.D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated with
+ *   the texture
+ * - `prop::Texture.D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D associated
+ *   with the U plane of a YUV texture
+ * - `prop::Texture.D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D associated
+ *   with the V plane of a YUV texture
  *
  * With the direct3d12 renderer:
  *
- * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated
- *   with the texture
- * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated
- *   with the U plane of a YUV texture
- * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated
- *   with the V plane of a YUV texture
+ * - `prop::Texture.D3D12_TEXTURE_POINTER`: the ID3D12Resource associated with
+ *   the texture
+ * - `prop::Texture.D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated with
+ *   the U plane of a YUV texture
+ * - `prop::Texture.D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated with
+ *   the V plane of a YUV texture
  *
  * With the vulkan renderer:
  *
@@ -4594,44 +4543,44 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * With the opengl renderer:
  *
- * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated
- *   with the texture
- * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture
- *   associated with the UV plane of an NV12 texture
- * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated
- *   with the U plane of a YUV texture
- * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated
- *   with the V plane of a YUV texture
- * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the
- *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
- * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of
- *   the texture (0.0 - 1.0)
- * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of
- *   the texture (0.0 - 1.0)
+ * - `prop::Texture.OPENGL_TEXTURE_NUMBER`: the GLuint texture associated with
+ *   the texture
+ * - `prop::Texture.OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture associated
+ *   with the UV plane of an NV12 texture
+ * - `prop::Texture.OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated with
+ *   the U plane of a YUV texture
+ * - `prop::Texture.OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated with
+ *   the V plane of a YUV texture
+ * - `prop::Texture.OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+ *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)
+ * - `prop::Texture.OPENGL_TEX_W_FLOAT`: the texture coordinate width of the
+ *   texture (0.0 - 1.0)
+ * - `prop::Texture.OPENGL_TEX_H_FLOAT`: the texture coordinate height of the
+ *   texture (0.0 - 1.0)
  *
  * With the opengles2 renderer:
  *
- * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture
- *   associated with the texture
- * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture
- *   associated with the UV plane of an NV12 texture
- * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture
- *   associated with the U plane of a YUV texture
- * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture
- *   associated with the V plane of a YUV texture
- * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
- *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
+ * - `prop::Texture.OPENGLES2_TEXTURE_NUMBER`: the GLuint texture associated
+ *   with the texture
+ * - `prop::Texture.OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture associated
+ *   with the UV plane of an NV12 texture
+ * - `prop::Texture.OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture associated
+ *   with the U plane of a YUV texture
+ * - `prop::Texture.OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture associated
+ *   with the V plane of a YUV texture
+ * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
+ *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
  *
  * With the gpu renderer:
  *
- * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated
- *   with the texture
- * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated
- *   with the UV plane of an NV12 texture
- * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated
- *   with the U plane of a YUV texture
- * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated
- *   with the V plane of a YUV texture
+ * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+ *   texture
+ * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+ *   UV plane of an NV12 texture
+ * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
+ *   plane of a YUV texture
+ * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
+ *   plane of a YUV texture
  *
  * @param texture the texture to query.
  * @returns a valid property ID on success.
@@ -4765,8 +4714,8 @@ inline PixelFormat Texture::GetFormat() const
 /**
  * Set the palette used by a texture.
  *
- * Setting the palette keeps an internal reference to the palette, which can
- * be safely destroyed afterwards.
+ * Setting the palette keeps an internal reference to the palette, which can be
+ * safely destroyed afterwards.
  *
  * A single palette can be shared with many textures.
  *
@@ -5116,8 +5065,8 @@ inline FColor Texture::GetModFloat() const
 /**
  * Set the blend mode for a texture, used by Renderer.RenderTexture().
  *
- * If the blend mode is not supported, the closest supported mode is chosen
- * and this function returns false.
+ * If the blend mode is not supported, the closest supported mode is chosen and
+ * this function returns false.
  *
  * @param texture the texture to update.
  * @param blendMode the BlendMode to use for texture blending.
@@ -5218,17 +5167,17 @@ inline ScaleMode Texture::GetScaleMode() const
  * The pixel data must be in the pixel format of the texture, which can be
  * queried using the prop::Texture.FORMAT_NUMBER property.
  *
- * This is a fairly slow function, intended for use with static textures that
- * do not change often.
+ * This is a fairly slow function, intended for use with static textures that do
+ * not change often.
  *
- * If the texture is intended to be updated often, it is preferred to create
- * the texture as streaming and use the locking functions referenced below.
- * While this function will work with streaming textures, for optimization
- * reasons you may not get the pixels back if you lock the texture afterward.
+ * If the texture is intended to be updated often, it is preferred to create the
+ * texture as streaming and use the locking functions referenced below. While
+ * this function will work with streaming textures, for optimization reasons you
+ * may not get the pixels back if you lock the texture afterward.
  *
  * @param texture the texture to update.
- * @param rect an Rect structure representing the area to update, or nullptr
- *             to update the entire texture.
+ * @param rect an Rect structure representing the area to update, or nullptr to
+ *             update the entire texture.
  * @param pixels the raw pixel data in the format of the texture.
  * @param pitch the number of bytes in a row of pixel data, including padding
  *              between lines.
@@ -5257,17 +5206,17 @@ inline void UpdateTexture(TextureParam texture,
  * The pixel data must be in the pixel format of the texture, which can be
  * queried using the prop::Texture.FORMAT_NUMBER property.
  *
- * This is a fairly slow function, intended for use with static textures that
- * do not change often.
+ * This is a fairly slow function, intended for use with static textures that do
+ * not change often.
  *
- * If the texture is intended to be updated often, it is preferred to create
- * the texture as streaming and use the locking functions referenced below.
- * While this function will work with streaming textures, for optimization
- * reasons you may not get the pixels back if you lock the texture afterward.
+ * If the texture is intended to be updated often, it is preferred to create the
+ * texture as streaming and use the locking functions referenced below. While
+ * this function will work with streaming textures, for optimization reasons you
+ * may not get the pixels back if you lock the texture afterward.
  *
  * @param texture the texture to update.
- * @param rect an Rect structure representing the area to update, or nullptr
- *             to update the entire texture.
+ * @param rect an Rect structure representing the area to update, or nullptr to
+ *             update the entire texture.
  * @param pixels the raw pixel data in the format of the texture.
  * @param pitch the number of bytes in a row of pixel data, including padding
  *              between lines.
@@ -5303,25 +5252,21 @@ inline void Texture::Update(SurfaceConstParam surface,
 }
 
 /**
- * Update a rectangle within a planar YV12 or IYUV texture with new pixel
- * data.
+ * Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
  *
- * You can use Texture.Update() as long as your pixel data is a contiguous
- * block of Y and U/V planes in the proper order, but this function is
- * available if your pixel data is not contiguous.
+ * You can use Texture.Update() as long as your pixel data is a contiguous block
+ * of Y and U/V planes in the proper order, but this function is available if
+ * your pixel data is not contiguous.
  *
  * @param texture the texture to update.
  * @param rect a pointer to the rectangle of pixels to update, or nullptr to
  *             update the entire texture.
  * @param Yplane the raw pixel data for the Y plane.
- * @param Ypitch the number of bytes between rows of pixel data for the Y
- *               plane.
+ * @param Ypitch the number of bytes between rows of pixel data for the Y plane.
  * @param Uplane the raw pixel data for the U plane.
- * @param Upitch the number of bytes between rows of pixel data for the U
- *               plane.
+ * @param Upitch the number of bytes between rows of pixel data for the U plane.
  * @param Vplane the raw pixel data for the V plane.
- * @param Vpitch the number of bytes between rows of pixel data for the V
- *               plane.
+ * @param Vpitch the number of bytes between rows of pixel data for the V plane.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5359,16 +5304,15 @@ inline void Texture::UpdateYUV(OptionalRef<const RectRaw> rect,
 /**
  * Update a rectangle within a planar NV12 or NV21 texture with new pixels.
  *
- * You can use Texture.Update() as long as your pixel data is a contiguous
- * block of NV12/21 planes in the proper order, but this function is available
- * if your pixel data is not contiguous.
+ * You can use Texture.Update() as long as your pixel data is a contiguous block
+ * of NV12/21 planes in the proper order, but this function is available if your
+ * pixel data is not contiguous.
  *
  * @param texture the texture to update.
  * @param rect a pointer to the rectangle of pixels to update, or nullptr to
  *             update the entire texture.
  * @param Yplane the raw pixel data for the Y plane.
- * @param Ypitch the number of bytes between rows of pixel data for the Y
- *               plane.
+ * @param Ypitch the number of bytes between rows of pixel data for the Y plane.
  * @param UVplane the raw pixel data for the UV plane.
  * @param UVpitch the number of bytes between rows of pixel data for the UV
  *                plane.
@@ -5405,12 +5349,11 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
  * Lock a portion of the texture for **write-only** pixel access.
  *
  * As an optimization, the pixels made available for editing don't necessarily
- * contain the old texture data. This is a write-only operation, and if you
- * need to keep a copy of the texture data you should do that at the
- * application level.
+ * contain the old texture data. This is a write-only operation, and if you need
+ * to keep a copy of the texture data you should do that at the application
+ * level.
  *
- * You must use Texture.Unlock() to unlock the pixels and apply any
- * changes.
+ * You must use Texture.Unlock() to unlock the pixels and apply any changes.
  *
  * @param texture the texture to lock for access, which was created with
  *                `TEXTUREACCESS_STREAMING`.
@@ -5418,8 +5361,8 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
  *             nullptr to lock the entire texture.
  * @param pixels this is filled in with a pointer to the locked pixels,
  *               appropriately offset by the locked area.
- * @param pitch this is filled in with the pitch of the locked pixels; the
- *              pitch is the length of one row in bytes.
+ * @param pitch this is filled in with the pitch of the locked pixels; the pitch
+ *              is the length of one row in bytes.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5445,29 +5388,28 @@ inline void Texture::Lock(OptionalRef<const SDL_Rect> rect,
 }
 
 /**
- * Lock a portion of the texture for **write-only** pixel access, and expose
- * it as a SDL surface.
+ * Lock a portion of the texture for **write-only** pixel access, and expose it
+ * as a SDL surface.
  *
  * Besides providing an Surface instead of raw pixel data, this function
  * operates like Texture.Lock.
  *
  * As an optimization, the pixels made available for editing don't necessarily
- * contain the old texture data. This is a write-only operation, and if you
- * need to keep a copy of the texture data you should do that at the
- * application level.
+ * contain the old texture data. This is a write-only operation, and if you need
+ * to keep a copy of the texture data you should do that at the application
+ * level.
  *
- * You must use Texture.Unlock() to unlock the pixels and apply any
- * changes.
+ * You must use Texture.Unlock() to unlock the pixels and apply any changes.
  *
- * The returned surface is freed internally after calling Texture.Unlock()
- * or Texture.Destroy(). The caller should not free it.
+ * The returned surface is freed internally after calling Texture.Unlock() or
+ * Texture.Destroy(). The caller should not free it.
  *
  * @param texture the texture to lock for access, which must be created with
  *                `TEXTUREACCESS_STREAMING`.
  * @param rect a pointer to the rectangle to lock for access. If the rect is
  *             nullptr, the entire texture will be locked.
- * @param surface a pointer to an SDL surface of size **rect**. Don't assume
- *                any specific pixel content.
+ * @param surface a pointer to an SDL surface of size **rect**. Don't assume any
+ *                specific pixel content.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5492,10 +5434,10 @@ inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
 /**
  * Unlock a texture, uploading the changes to video memory, if needed.
  *
- * **Warning**: Please note that Texture.Lock() is intended to be
- * write-only; it will not guarantee the previous contents of the texture will
- * be provided. You must fully initialize any area of a texture that you lock
- * before unlocking it, as the pixels might otherwise be uninitialized memory.
+ * **Warning**: Please note that Texture.Lock() is intended to be write-only; it
+ * will not guarantee the previous contents of the texture will be provided. You
+ * must fully initialize any area of a texture that you lock before unlocking
+ * it, as the pixels might otherwise be uninitialized memory.
  *
  * Which is to say: locking and immediately unlocking a texture can result in
  * corrupted textures, depending on the renderer in use.
@@ -5519,10 +5461,10 @@ inline void Texture::Unlock() { SDL::UnlockTexture(m_resource); }
  * To stop rendering to a texture and render to the window again, call this
  * function with a nullptr `texture`.
  *
- * Viewport, cliprect, scale, and logical presentation are unique to each
- * render target. Get and set functions for these states apply to the current
- * render target set by this function, and those states persist on each target
- * when the current render target changes.
+ * Viewport, cliprect, scale, and logical presentation are unique to each render
+ * target. Get and set functions for these states apply to the current render
+ * target set by this function, and those states persist on each target when the
+ * current render target changes.
  *
  * @param renderer the rendering context.
  * @param texture the targeted texture, which must be created with the
@@ -5581,18 +5523,18 @@ inline Texture Renderer::GetTarget() const
 /**
  * Set a device-independent resolution and presentation mode for rendering.
  *
- * This function sets the width and height of the logical rendering output.
- * The renderer will act as if the current render target is always the
- * requested dimensions, scaling to the actual resolution as necessary.
+ * This function sets the width and height of the logical rendering output. The
+ * renderer will act as if the current render target is always the requested
+ * dimensions, scaling to the actual resolution as necessary.
  *
  * This can be useful for games that expect a fixed size, but would like to
- * scale the output to whatever is available, regardless of how a user resizes
- * a window, or if the display is high DPI.
+ * scale the output to whatever is available, regardless of how a user resizes a
+ * window, or if the display is high DPI.
  *
  * Logical presentation can be used with both render target textures and the
  * renderer's window; the state is unique to each render target, and this
- * function sets the state for the current render target. It might be useful
- * to draw to a texture that matches the window dimensions with logical
+ * function sets the state for the current render target. It might be useful to
+ * draw to a texture that matches the window dimensions with logical
  * presentation enabled, and then draw that texture across the entire window
  * with logical presentation disabled. Be careful not to render both with
  * logical presentation enabled, however, as this could produce
@@ -5638,17 +5580,16 @@ inline void Renderer::SetLogicalPresentation(const PointRaw& size,
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
- * This function gets the width and height of the logical rendering output, or
- * 0 if a logical resolution is not enabled.
+ * This function gets the width and height of the logical rendering output, or 0
+ * if a logical resolution is not enabled.
  *
- * Each render target has its own logical presentation state. This function
- * gets the state for the current render target.
+ * Each render target has its own logical presentation state. This function gets
+ * the state for the current render target.
  *
  * @param renderer the rendering context.
  * @param w an int filled with the logical presentation width.
  * @param h an int filled with the logical presentation height.
- * @param mode a variable filled with the logical presentation mode being
- *             used.
+ * @param mode a variable filled with the logical presentation mode being used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5668,17 +5609,16 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
- * This function gets the width and height of the logical rendering output, or
- * 0 if a logical resolution is not enabled.
+ * This function gets the width and height of the logical rendering output, or 0
+ * if a logical resolution is not enabled.
  *
- * Each render target has its own logical presentation state. This function
- * gets the state for the current render target.
+ * Each render target has its own logical presentation state. This function gets
+ * the state for the current render target.
  *
  * @param renderer the rendering context.
  * @param w an int filled with the logical presentation width.
  * @param h an int filled with the logical presentation height.
- * @param mode a variable filled with the logical presentation mode being
- *             used.
+ * @param mode a variable filled with the logical presentation mode being used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5711,17 +5651,16 @@ inline void Renderer::GetLogicalPresentation(PointRaw* size,
 /**
  * Get the final presentation rectangle for rendering.
  *
- * This function returns the calculated rectangle used for logical
- * presentation, based on the presentation mode and output size. If logical
- * presentation is disabled, it will fill the rectangle with the output size,
- * in pixels.
+ * This function returns the calculated rectangle used for logical presentation,
+ * based on the presentation mode and output size. If logical presentation is
+ * disabled, it will fill the rectangle with the output size, in pixels.
  *
- * Each render target has its own logical presentation state. This function
- * gets the rectangle for the current render target.
+ * Each render target has its own logical presentation state. This function gets
+ * the rectangle for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect a pointer filled in with the final presentation rectangle, may
- *             be nullptr.
+ * @param rect a pointer filled in with the final presentation rectangle, may be
+ *             nullptr.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5789,10 +5728,8 @@ inline FPoint Renderer::RenderCoordinatesFromWindow(
  * @param renderer the rendering context.
  * @param x the x coordinate in render coordinates.
  * @param y the y coordinate in render coordinates.
- * @param window_x a pointer filled with the x coordinate in window
- *                 coordinates.
- * @param window_y a pointer filled with the y coordinate in window
- *                 coordinates.
+ * @param window_x a pointer filled with the x coordinate in window coordinates.
+ * @param window_y a pointer filled with the y coordinate in window coordinates.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5824,14 +5761,13 @@ inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
  * - The scale (Renderer.SetScale)
  * - The viewport (Renderer.SetViewport)
  *
- * Various event types are converted with this function: mouse, touch, pen,
- * etc.
+ * Various event types are converted with this function: mouse, touch, pen, etc.
  *
- * Touch coordinates are converted from normalized coordinates in the window
- * to non-normalized rendering coordinates.
+ * Touch coordinates are converted from normalized coordinates in the window to
+ * non-normalized rendering coordinates.
  *
- * Relative mouse coordinates (xrel and yrel event fields) are _also_
- * converted. Applications that do not want these fields converted should use
+ * Relative mouse coordinates (xrel and yrel event fields) are _also_ converted.
+ * Applications that do not want these fields converted should use
  * Renderer.RenderCoordinatesFromWindow() on the specific event fields instead
  * of converting the entire event structure.
  *
@@ -5867,12 +5803,12 @@ inline void Renderer::ConvertEventToRenderCoordinates(Event* event) const
  *
  * The area's width and height must be >= 0.
  *
- * Each render target has its own viewport. This function sets the viewport
- * for the current render target.
+ * Each render target has its own viewport. This function sets the viewport for
+ * the current render target.
  *
  * @param renderer the rendering context.
- * @param rect the Rect structure representing the drawing area, or nullptr
- *             to set the viewport to the entire target.
+ * @param rect the Rect structure representing the drawing area, or nullptr to
+ *             set the viewport to the entire target.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5903,8 +5839,8 @@ inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
 /**
  * Get the drawing area for the current target.
  *
- * Each render target has its own viewport. This function gets the viewport
- * for the current render target.
+ * Each render target has its own viewport. This function gets the viewport for
+ * the current render target.
  *
  * @param renderer the rendering context.
  * @param rect an Rect structure filled in with the current drawing area.
@@ -5937,8 +5873,8 @@ inline Rect Renderer::GetViewport() const
  * for the current render target.
  *
  * @param renderer the rendering context.
- * @returns true if the viewport was set to a specific rectangle, or false if
- *          it was set to nullptr (the entire target).
+ * @returns true if the viewport was set to a specific rectangle, or false if it
+ *          was set to nullptr (the entire target).
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -5960,8 +5896,8 @@ inline bool Renderer::ViewportSet() const
 /**
  * Get the safe area for rendering within the current viewport.
  *
- * Some devices have portions of the screen which are partially obscured or
- * not interactive, possibly due to on-screen controls, curved edges, camera
+ * Some devices have portions of the screen which are partially obscured or not
+ * interactive, possibly due to on-screen controls, curved edges, camera
  * notches, TV overscan, etc. This function provides the area of the current
  * viewport which is safe to have interactible content. You should continue
  * rendering into the rest of the render target, but it should not contain
@@ -5993,8 +5929,8 @@ inline Rect Renderer::GetSafeArea() const
  * cliprect for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure representing the clip area, relative to
- *             the viewport, or nullptr to disable clipping.
+ * @param rect an Rect structure representing the clip area, relative to the
+ *             viewport, or nullptr to disable clipping.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6029,8 +5965,8 @@ inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
  * cliprect for the current render target.
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure filled in with the current clipping area
- *             or an empty rectangle if clipping is disabled.
+ * @param rect an Rect structure filled in with the current clipping area or an
+ *             empty rectangle if clipping is disabled.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6057,8 +5993,8 @@ inline Rect Renderer::GetClipRect() const
  * cliprect for the current render target.
  *
  * @param renderer the rendering context.
- * @returns true if clipping is enabled or false if not; call GetError()
- *          for more information.
+ * @returns true if clipping is enabled or false if not; call GetError() for
+ *          more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -6080,8 +6016,8 @@ inline bool Renderer::IsClipEnabled() const
 /**
  * Set the drawing scale for rendering on the current target.
  *
- * The drawing coordinates are scaled by the x/y scaling factors before they
- * are used by the renderer. This allows resolution independent drawing with a
+ * The drawing coordinates are scaled by the x/y scaling factors before they are
+ * used by the renderer. This allows resolution independent drawing with a
  * single coordinate system.
  *
  * If this results in scaling or subpixel drawing by the rendering backend, it
@@ -6177,8 +6113,8 @@ inline FPoint Renderer::GetScale() const
  * @param g the green value used to draw on the rendering target.
  * @param b the blue value used to draw on the rendering target.
  * @param a the alpha value used to draw on the rendering target; usually
- *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to
- *          specify how the alpha channel is used.
+ *          `ALPHA_OPAQUE` (255). Use Renderer.SetDrawBlendMode to specify how
+ *          the alpha channel is used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6209,8 +6145,7 @@ inline void Renderer::SetDrawColor(ColorRaw c)
  * @param g the green value used to draw on the rendering target.
  * @param b the blue value used to draw on the rendering target.
  * @param a the alpha value used to draw on the rendering target. Use
- *          Renderer.SetDrawBlendMode to specify how the alpha channel is
- *          used.
+ *          Renderer.SetDrawBlendMode to specify how the alpha channel is used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -6234,8 +6169,8 @@ inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
  * Get the color used for drawing operations (Rect, Line and Clear).
  *
  * @param renderer the rendering context.
- * @param r a pointer filled in with the red value used to draw on the
- *          rendering target.
+ * @param r a pointer filled in with the red value used to draw on the rendering
+ *          target.
  * @param g a pointer filled in with the green value used to draw on the
  *          rendering target.
  * @param b a pointer filled in with the blue value used to draw on the
@@ -6264,8 +6199,8 @@ inline void GetRenderDrawColor(RendererParam renderer,
  * Get the color used for drawing operations (Rect, Line and Clear).
  *
  * @param renderer the rendering context.
- * @param r a pointer filled in with the red value used to draw on the
- *          rendering target.
+ * @param r a pointer filled in with the red value used to draw on the rendering
+ *          target.
  * @param g a pointer filled in with the green value used to draw on the
  *          rendering target.
  * @param b a pointer filled in with the blue value used to draw on the
@@ -6300,8 +6235,8 @@ inline Color Renderer::GetDrawColor() const
  * Get the color used for drawing operations (Rect, Line and Clear).
  *
  * @param renderer the rendering context.
- * @param r a pointer filled in with the red value used to draw on the
- *          rendering target.
+ * @param r a pointer filled in with the red value used to draw on the rendering
+ *          target.
  * @param g a pointer filled in with the green value used to draw on the
  *          rendering target.
  * @param b a pointer filled in with the blue value used to draw on the
@@ -6330,8 +6265,8 @@ inline void GetRenderDrawColorFloat(RendererParam renderer,
  * Get the color used for drawing operations (Rect, Line and Clear).
  *
  * @param renderer the rendering context.
- * @param r a pointer filled in with the red value used to draw on the
- *          rendering target.
+ * @param r a pointer filled in with the red value used to draw on the rendering
+ *          target.
  * @param g a pointer filled in with the green value used to draw on the
  *          rendering target.
  * @param b a pointer filled in with the blue value used to draw on the
@@ -6368,13 +6303,12 @@ inline FColor Renderer::GetDrawColorFloat() const
 /**
  * Set the color scale used for render operations.
  *
- * The color scale is an additional scale multiplied into the pixel color
- * value while rendering. This can be used to adjust the brightness of colors
- * during HDR rendering, or changing HDR video brightness when playing on an
- * SDR display.
+ * The color scale is an additional scale multiplied into the pixel color value
+ * while rendering. This can be used to adjust the brightness of colors during
+ * HDR rendering, or changing HDR video brightness when playing on an SDR
+ * display.
  *
- * The color scale does not affect the alpha channel, only the color
- * brightness.
+ * The color scale does not affect the alpha channel, only the color brightness.
  *
  * @param renderer the rendering context.
  * @param scale the color scale value.
@@ -6471,8 +6405,8 @@ inline BlendMode Renderer::GetDrawBlendMode() const
  * Clear the current rendering target with the drawing color.
  *
  * This function clears the entire rendering target, ignoring the viewport and
- * the clip rectangle. Note, that clearing will also set/fill all pixels of
- * the rendering target to current renderer draw color, so make sure to invoke
+ * the clip rectangle. Note, that clearing will also set/fill all pixels of the
+ * rendering target to current renderer draw color, so make sure to invoke
  * Renderer.SetDrawColor() when needed.
  *
  * @param renderer the rendering context.
@@ -6569,8 +6503,8 @@ inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
 }
 
 /**
- * Draw a series of connected lines on the current rendering target at
- * subpixel precision.
+ * Draw a series of connected lines on the current rendering target at subpixel
+ * precision.
  *
  * @param renderer the renderer which should draw multiple lines.
  * @param points the points along the lines.
@@ -6740,9 +6674,9 @@ inline void Renderer::RenderTexture(TextureParam texture,
  *                entire rendering target.
  * @param angle an angle in degrees that indicates the rotation that will be
  *              applied to dstrect, rotating it in a clockwise direction.
- * @param center a pointer to a point indicating the point around which
- *               dstrect will be rotated (if nullptr, rotation will be done
- *               around dstrect.w/2, dstrect.h/2).
+ * @param center a pointer to a point indicating the point around which dstrect
+ *               will be rotated (if nullptr, rotation will be done around
+ *               dstrect.w/2, dstrect.h/2).
  * @param flip an FlipMode value stating which flipping actions should be
  *             performed on the texture.
  * @throws Error on failure.
@@ -6792,7 +6726,7 @@ inline void Renderer::RenderTextureRotated(TextureParam texture,
  *              target's top-right corner.
  * @param down a pointer to a point indicating where the bottom-left corner of
  *             srcrect should be mapped to, or nullptr for the rendering
- * target's bottom-left corner.
+ *             target's bottom-left corner.
  * @throws Error on failure.
  *
  * @threadsafety You may only call this function from the main thread.
@@ -6869,14 +6803,14 @@ inline void Renderer::RenderTextureTiled(TextureParam texture,
  *
  * The pixels in the texture are split into a 3x3 grid, using the different
  * corner sizes for each corner, and the sides and center making up the
- * remaining pixels. The corners are then scaled using `scale` and fit into
- * the corners of the destination rectangle. The sides and center are then
- * stretched into place to cover the remaining destination rectangle.
+ * remaining pixels. The corners are then scaled using `scale` and fit into the
+ * corners of the destination rectangle. The sides and center are then stretched
+ * into place to cover the remaining destination rectangle.
  *
  * @param renderer the renderer which should copy parts of a texture.
  * @param texture the source texture.
- * @param srcrect the Rect structure representing the rectangle to be used
- *                for the 9-grid, or nullptr to use the entire texture.
+ * @param srcrect the Rect structure representing the rectangle to be used for
+ *                the 9-grid, or nullptr to use the entire texture.
  * @param left_width the width, in pixels, of the left corners in `srcrect`.
  * @param right_width the width, in pixels, of the right corners in `srcrect`.
  * @param top_height the height, in pixels, of the top corners in `srcrect`.
@@ -6944,14 +6878,14 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  *
  * The pixels in the texture are split into a 3x3 grid, using the different
  * corner sizes for each corner, and the sides and center making up the
- * remaining pixels. The corners are then scaled using `scale` and fit into
- * the corners of the destination rectangle. The sides and center are then
- * tiled into place to cover the remaining destination rectangle.
+ * remaining pixels. The corners are then scaled using `scale` and fit into the
+ * corners of the destination rectangle. The sides and center are then tiled
+ * into place to cover the remaining destination rectangle.
  *
  * @param renderer the renderer which should copy parts of a texture.
  * @param texture the source texture.
- * @param srcrect the Rect structure representing the rectangle to be used
- *                for the 9-grid, or nullptr to use the entire texture.
+ * @param srcrect the Rect structure representing the rectangle to be used for
+ *                the 9-grid, or nullptr to use the entire texture.
  * @param left_width the width, in pixels, of the left corners in `srcrect`.
  * @param right_width the width, in pixels, of the right corners in `srcrect`.
  * @param top_height the height, in pixels, of the top corners in `srcrect`.
@@ -6962,8 +6896,8 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  * @param dstrect a pointer to the destination rectangle, or nullptr for the
  *                entire rendering target.
  * @param tileScale the scale used to transform the borders and center of
- *                  `srcrect` into the borders and middle of `dstrect`, or
- *                  1.0f for an unscaled copy.
+ *                  `srcrect` into the borders and middle of `dstrect`, or 1.0f
+ *                  for an unscaled copy.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -7075,8 +7009,8 @@ inline void Renderer::RenderGeometry(TextureParam texture,
  * @param uv vertex normalized texture coordinates.
  * @param uv_stride byte size to move from one element to the next element.
  * @param num_vertices number of vertices.
- * @param indices (optional) An array of indices into the 'vertices' arrays,
- *                if nullptr all vertices will be rendered in sequential order.
+ * @param indices (optional) An array of indices into the 'vertices' arrays, if
+ *                nullptr all vertices will be rendered in sequential order.
  * @param num_indices number of indices.
  * @param size_indices index size: 1 (byte), 2 (short), 4 (int).
  * @throws Error on failure.
@@ -7149,8 +7083,8 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
  * @param renderer the rendering context.
  * @param u_mode the TextureAddressMode to use for horizontal texture
  *               coordinates in Renderer.RenderGeometry().
- * @param v_mode the TextureAddressMode to use for vertical texture
- *               coordinates in Renderer.RenderGeometry().
+ * @param v_mode the TextureAddressMode to use for vertical texture coordinates
+ *               in Renderer.RenderGeometry().
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.4.0.
@@ -7184,12 +7118,12 @@ inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
  * Get the texture addressing mode used in Renderer.RenderGeometry().
  *
  * @param renderer the rendering context.
- * @param u_mode a pointer filled in with the TextureAddressMode to use
- *               for horizontal texture coordinates in
- * Renderer.RenderGeometry(), may be nullptr.
- * @param v_mode a pointer filled in with the TextureAddressMode to use
- *               for vertical texture coordinates in Renderer.RenderGeometry(),
- * may be nullptr.
+ * @param u_mode a pointer filled in with the TextureAddressMode to use for
+ *               horizontal texture coordinates in Renderer.RenderGeometry(),
+ *               may be nullptr.
+ * @param v_mode a pointer filled in with the TextureAddressMode to use for
+ *               vertical texture coordinates in Renderer.RenderGeometry(), may
+ *               be nullptr.
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.4.0.
@@ -7222,16 +7156,16 @@ inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
  * current viewport, and should be freed with Surface.Destroy().
  *
  * Note that this returns the actual pixels on the screen, so if you are using
- * logical presentation you should use Renderer.GetLogicalPresentationRect()
- * to get the area containing your content.
+ * logical presentation you should use Renderer.GetLogicalPresentationRect() to
+ * get the area containing your content.
  *
  * **WARNING**: This is a very slow operation, and should not be used
  * frequently. If you're using this on the main rendering target, it should be
  * called after rendering and before Renderer.Present().
  *
  * @param renderer the rendering context.
- * @param rect an Rect structure representing the area to read, which will
- *             be clipped to the current viewport, or nullptr for the entire
+ * @param rect an Rect structure representing the area to read, which will be
+ *             clipped to the current viewport, or nullptr for the entire
  *             viewport.
  * @returns a new Surface on success.
  * @throws Error on failure.
@@ -7260,22 +7194,21 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  * entire scene and *present* the composed backbuffer to the screen as a
  * complete picture.
  *
- * Therefore, when using SDL's rendering API, one does all drawing intended
- * for the frame, and then calls this function once per frame to present the
- * final drawing to the user.
+ * Therefore, when using SDL's rendering API, one does all drawing intended for
+ * the frame, and then calls this function once per frame to present the final
+ * drawing to the user.
  *
  * The backbuffer should be considered invalidated after each present; do not
  * assume that previous contents will exist between frames. You are strongly
  * encouraged to call Renderer.RenderClear() to initialize the backbuffer before
- * starting each new frame's drawing, even if you plan to overwrite every
- * pixel.
+ * starting each new frame's drawing, even if you plan to overwrite every pixel.
  *
- * Please note, that in case of rendering to a texture - there is **no need**
- * to call `Renderer.Present` after drawing needed objects to a texture, and
- * should not be done; you are only required to change back the rendering
- * target to default via `Renderer.SetTarget(renderer, nullptr)` afterwards, as
- * textures by themselves do not have a concept of backbuffers. Calling
- * Renderer.Present while rendering to a texture will fail.
+ * Please note, that in case of rendering to a texture - there is **no need** to
+ * call `Renderer.Present` after drawing needed objects to a texture, and should
+ * not be done; you are only required to change back the rendering target to
+ * default via `Renderer.SetTarget(renderer, nullptr)` afterwards, as textures
+ * by themselves do not have a concept of backbuffers. Calling Renderer.Present
+ * while rendering to a texture will fail.
  *
  * @param renderer the rendering context.
  * @throws Error on failure.
@@ -7324,8 +7257,7 @@ inline void DestroyTexture(TextureRaw texture) { SDL_DestroyTexture(texture); }
 inline void Texture::Destroy() { DestroyTexture(release()); }
 
 /**
- * Destroy the rendering context for a window and free all associated
- * textures.
+ * Destroy the rendering context for a window and free all associated textures.
  *
  * This should be called before destroying the associated window.
  *
@@ -7347,20 +7279,20 @@ inline void Renderer::Destroy() { DestroyRenderer(release()); }
 /**
  * Force the rendering context to flush any pending commands and state.
  *
- * You do not need to (and in fact, shouldn't) call this function unless you
- * are planning to call into OpenGL/Direct3D/Metal/whatever directly, in
- * addition to using an Renderer.
+ * You do not need to (and in fact, shouldn't) call this function unless you are
+ * planning to call into OpenGL/Direct3D/Metal/whatever directly, in addition to
+ * using an Renderer.
  *
- * This is for a very-specific case: if you are using SDL's render API, and
- * you plan to make OpenGL/D3D/whatever calls in addition to SDL render API
- * calls. If this applies, you should call this function between calls to
- * SDL's render API and the low-level API you're using in cooperation.
+ * This is for a very-specific case: if you are using SDL's render API, and you
+ * plan to make OpenGL/D3D/whatever calls in addition to SDL render API calls.
+ * If this applies, you should call this function between calls to SDL's render
+ * API and the low-level API you're using in cooperation.
  *
  * In all other cases, you can ignore this function.
  *
- * This call makes SDL flush any pending rendering work it was queueing up to
- * do later in a single batch, and marks any internal cached state as invalid,
- * so it'll prepare all its state again later, from scratch.
+ * This call makes SDL flush any pending rendering work it was queueing up to do
+ * later in a single batch, and marks any internal cached state as invalid, so
+ * it'll prepare all its state again later, from scratch.
  *
  * This means you do not need to save state in your rendering code to protect
  * the SDL renderer. However, there lots of arbitrary pieces of Direct3D and
@@ -7442,22 +7374,21 @@ inline void* Renderer::GetRenderMetalCommandEncoder()
  * Add a set of synchronization semaphores for the current frame.
  *
  * The Vulkan renderer will wait for `wait_semaphore` before submitting
- * rendering commands and signal `signal_semaphore` after rendering commands
- * are complete for this frame.
+ * rendering commands and signal `signal_semaphore` after rendering commands are
+ * complete for this frame.
  *
- * This should be called each frame that you want semaphore synchronization.
- * The Vulkan renderer may have multiple frames in flight on the GPU, so you
- * should have multiple semaphores that are used for synchronization. Querying
- * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the
- * maximum number of semaphores you'll need.
+ * This should be called each frame that you want semaphore synchronization. The
+ * Vulkan renderer may have multiple frames in flight on the GPU, so you should
+ * have multiple semaphores that are used for synchronization. Querying
+ * prop::Renderer.VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the maximum
+ * number of semaphores you'll need.
  *
  * @param renderer the rendering context.
  * @param wait_stage_mask the VkPipelineStageFlags for the wait.
  * @param wait_semaphore a VkSempahore to wait on before rendering the current
  *                       frame, or 0 if not needed.
- * @param signal_semaphore a VkSempahore that SDL will signal when rendering
- *                         for the current frame is complete, or 0 if not
- *                         needed.
+ * @param signal_semaphore a VkSempahore that SDL will signal when rendering for
+ *                         the current frame is complete, or 0 if not needed.
  * @throws Error on failure.
  *
  * @threadsafety It is **NOT** safe to call this function from two threads at
@@ -7490,9 +7421,9 @@ inline void Renderer::AddVulkanRenderSemaphores(Uint32 wait_stage_mask,
  * The `vsync` parameter can be 1 to synchronize present with every vertical
  * refresh, 2 to synchronize present with every second vertical refresh, etc.,
  * RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or
- * RENDERER_VSYNC_DISABLED to disable. Not every value is supported by
- * every driver, so you should check the return value to see whether the
- * requested setting is supported.
+ * RENDERER_VSYNC_DISABLED to disable. Not every value is supported by every
+ * driver, so you should check the return value to see whether the requested
+ * setting is supported.
  *
  * @param renderer the renderer to toggle.
  * @param vsync the vertical refresh sync interval.
@@ -7557,9 +7488,9 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
 /**
  * Draw debug text to an Renderer.
  *
- * This function will render a string of text to an Renderer. Note that
- * this is a convenience function for debugging, with severe limitations, and
- * not intended to be used for production apps and games.
+ * This function will render a string of text to an Renderer. Note that this is
+ * a convenience function for debugging, with severe limitations, and not
+ * intended to be used for production apps and games.
  *
  * Among these limitations:
  *
@@ -7571,11 +7502,11 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  * - It does no word-wrapping and does not treat newline characters as a line
  *   break. If the text goes out of the window, it's gone.
  *
- * For serious text rendering, there are several good options, such as
- * SDL_ttf, stb_truetype, or other external libraries.
+ * For serious text rendering, there are several good options, such as SDL_ttf,
+ * stb_truetype, or other external libraries.
  *
- * On first use, this will create an internal texture for rendering glyphs.
- * This texture will live until the renderer is destroyed.
+ * On first use, this will create an internal texture for rendering glyphs. This
+ * texture will live until the renderer is destroyed.
  *
  * The text is drawn in the color specified by Renderer.SetDrawColor().
  *
@@ -7607,9 +7538,9 @@ inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
 /**
  * Draw debug text to an Renderer.
  *
- * This function will render a printf()-style format string to a renderer.
- * Note that this is a convenience function for debugging, with severe
- * limitations, and is not intended to be used for production apps and games.
+ * This function will render a printf()-style format string to a renderer. Note
+ * that this is a convenience function for debugging, with severe limitations,
+ * and is not intended to be used for production apps and games.
  *
  * For the full list of limitations and other useful information, see
  * Renderer.RenderDebugText.
@@ -7686,9 +7617,9 @@ inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
  * Get default texture scale mode of the given renderer.
  *
  * @param renderer the renderer to get data from.
- * @param scale_mode a ScaleMode filled with current default scale mode.
- *                   See Renderer.SetDefaultTextureScaleMode() for the meaning
- * of the value.
+ * @param scale_mode a ScaleMode filled with current default scale mode. See
+ *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
+ *                   the value.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -7768,8 +7699,8 @@ public:
    *
    * @param renderer the renderer to use.
    * @param createinfo a struct describing the GPU render state to create.
-   * @post a custom GPU render state or nullptr on failure; call GetError()
-   *          for more information.
+   * @post a custom GPU render state or nullptr on failure; call GetError() for
+   *       more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               renderer.
@@ -7824,7 +7755,6 @@ public:
 
   /**
    * Destroy custom GPU render state.
-   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               renderer.
@@ -7894,8 +7824,8 @@ struct GPURenderStateRef : GPURenderState
  *
  * @param renderer the renderer to use.
  * @param createinfo a struct describing the GPU render state to create.
- * @returns a custom GPU render state or nullptr on failure; call GetError()
- *          for more information.
+ * @returns a custom GPU render state or nullptr on failure; call GetError() for
+ *          more information.
  *
  * @threadsafety This function should be called on the thread that created the
  *               renderer.
@@ -7975,7 +7905,7 @@ inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
  *
  * @param renderer the renderer to use.
  * @param state the state to to use, or nullptr to clear custom GPU render
- * state.
+ *              state.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the

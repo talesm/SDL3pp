@@ -17,47 +17,45 @@ namespace SDL {
  * ## Basic use (text)
  *
  * Obtaining and publishing simple text to the system clipboard is as easy as
- * calling GetClipboardText() and SetClipboardText(), respectively.
- * These deal with C strings in UTF-8 encoding. Data transmission and encoding
- * conversion is completely managed by SDL.
+ * calling GetClipboardText() and SetClipboardText(), respectively. These deal
+ * with C strings in UTF-8 encoding. Data transmission and encoding conversion
+ * is completely managed by SDL.
  *
  * ## Clipboard callbacks (data other than text)
  *
- * Things get more complicated when the clipboard contains something other
- * than text. Not only can the system clipboard contain data of any type, in
- * some cases it can contain the same data in different formats! For example,
- * an image painting app might let the user copy a graphic to the clipboard,
- * and offers it in .BMP, .JPG, or .PNG format for other apps to consume.
+ * Things get more complicated when the clipboard contains something other than
+ * text. Not only can the system clipboard contain data of any type, in some
+ * cases it can contain the same data in different formats! For example, an
+ * image painting app might let the user copy a graphic to the clipboard, and
+ * offers it in .BMP, .JPG, or .PNG format for other apps to consume.
  *
  * Obtaining clipboard data ("pasting") like this is a matter of calling
- * GetClipboardData() and telling it the mimetype of the data you want.
- * But how does one know if that format is available? HasClipboardData()
- * can report if a specific mimetype is offered, and
- * GetClipboardMimeTypes() can provide the entire list of mimetypes
- * available, so the app can decide what to do with the data and what formats
- * it can support.
+ * GetClipboardData() and telling it the mimetype of the data you want. But how
+ * does one know if that format is available? HasClipboardData() can report if a
+ * specific mimetype is offered, and GetClipboardMimeTypes() can provide the
+ * entire list of mimetypes available, so the app can decide what to do with the
+ * data and what formats it can support.
  *
  * Setting the clipboard ("copying") to arbitrary data is done with
- * SetClipboardData. The app does not provide the data in this call, but
- * rather the mimetypes it is willing to provide and a callback function.
- * During the callback, the app will generate the data. This allows massive
- * data sets to be provided to the clipboard, without any data being copied
- * before it is explicitly requested. More specifically, it allows an app to
- * offer data in multiple formats without providing a copy of all of them
- * upfront. If the app has an image that it could provide in PNG or JPG
- * format, it doesn't have to encode it to either of those unless and until
- * something tries to paste it.
+ * SetClipboardData. The app does not provide the data in this call, but rather
+ * the mimetypes it is willing to provide and a callback function. During the
+ * callback, the app will generate the data. This allows massive data sets to be
+ * provided to the clipboard, without any data being copied before it is
+ * explicitly requested. More specifically, it allows an app to offer data in
+ * multiple formats without providing a copy of all of them upfront. If the app
+ * has an image that it could provide in PNG or JPG format, it doesn't have to
+ * encode it to either of those unless and until something tries to paste it.
  *
  * ## Primary Selection
  *
  * The X11 and Wayland video targets have a concept of the "primary selection"
  * in addition to the usual clipboard. This is generally highlighted (but not
  * explicitly copied) text from various apps. SDL offers APIs for this through
- * GetPrimarySelectionText() and SetPrimarySelectionText(). SDL offers
- * these APIs on platforms without this concept, too, but only so far that it
- * will keep a copy of a string that the app sets for later retrieval; the
- * operating system will not ever attempt to change the string externally if
- * it doesn't support a primary selection.
+ * GetPrimarySelectionText() and SetPrimarySelectionText(). SDL offers these
+ * APIs on platforms without this concept, too, but only so far that it will
+ * keep a copy of a string that the app sets for later retrieval; the operating
+ * system will not ever attempt to change the string externally if it doesn't
+ * support a primary selection.
  *
  * @{
  */
@@ -83,10 +81,11 @@ inline void SetClipboardText(StringParam text)
 /**
  * Get UTF-8 text from the clipboard.
  *
- * This function returns an empty string if there is not enough memory left
- * for a copy of the clipboard's content.
+ * This function returns an empty string if there is not enough memory left for
+ * a copy of the clipboard's content.
  *
  * @returns the clipboard text on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -136,10 +135,11 @@ inline void SetPrimarySelectionText(StringParam text)
 /**
  * Get UTF-8 text from the primary selection.
  *
- * This function returns an empty string if there is not enough memory left
- * for a copy of the primary selection's content.
+ * This function returns an empty string if there is not enough memory left for
+ * a copy of the primary selection's content.
  *
  * @returns the primary selection text on success.
+ *
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -183,10 +183,10 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  * @param mime_type the requested mime-type.
  * @param size a pointer filled in with the length of the returned data.
  * @returns a pointer to the data for the provided mime-type. Returning nullptr
- *          or setting the length to 0 will cause zero length data to be sent
- *          to the "receiver", which should be able to handle this. The
- *          returned data will not be freed, so it needs to be retained and
- *          dealt with internally.
+ *          or setting the length to 0 will cause zero length data to be sent to
+ *          the "receiver", which should be able to handle this. The returned
+ *          data will not be freed, so it needs to be retained and dealt with
+ *          internally.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -195,8 +195,8 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
 using ClipboardDataCallback = SDL_ClipboardDataCallback;
 
 /**
- * Callback function that will be called when the clipboard is cleared, or
- * when new data is set.
+ * Callback function that will be called when the clipboard is cleared, or when
+ * new data is set.
  *
  * @param userdata a pointer to the provided user data.
  *
@@ -207,14 +207,13 @@ using ClipboardDataCallback = SDL_ClipboardDataCallback;
 using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
 
 /**
- * Callback function that will be called when the clipboard is cleared, or
- * when new data is set.
- *
- * @param userdata a pointer to the provided user data.
+ * Callback function that will be called when the clipboard is cleared, or when
+ * new data is set.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetClipboardData
+ *
  * @sa ClipboardCleanupCallback
  */
 using ClipboardCleanupCB = std::function<void()>;
@@ -222,13 +221,13 @@ using ClipboardCleanupCB = std::function<void()>;
 /**
  * Offer clipboard data to the OS.
  *
- * Tell the operating system that the application is offering clipboard data
- * for each of the provided mime-types. Once another application requests the
- * data the callback function will be called, allowing it to generate and
- * respond with the data for the requested mime-type.
+ * Tell the operating system that the application is offering clipboard data for
+ * each of the provided mime-types. Once another application requests the data
+ * the callback function will be called, allowing it to generate and respond
+ * with the data for the requested mime-type.
  *
- * The size of text data does not include any terminator, and the text does
- * not need to be null-terminated (e.g., you can directly copy a portion of a
+ * The size of text data does not include any terminator, and the text does not
+ * need to be null-terminated (e.g., you can directly copy a portion of a
  * document).
  *
  * @param callback a function pointer to the function that provides the
@@ -236,8 +235,8 @@ using ClipboardCleanupCB = std::function<void()>;
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered. SDL copies
- *                   the given list.
+ * @param mime_types a list of mime-types that are being offered. SDL copies the
+ *                   given list.
  * @param num_mime_types the number of mime-types in the mime_types list.
  * @throws Error on failure.
  *
@@ -260,13 +259,13 @@ inline void SetClipboardData(ClipboardDataCallback callback,
 /**
  * Offer clipboard data to the OS.
  *
- * Tell the operating system that the application is offering clipboard data
- * for each of the provided mime-types. Once another application requests the
- * data the callback function will be called, allowing it to generate and
- * respond with the data for the requested mime-type.
+ * Tell the operating system that the application is offering clipboard data for
+ * each of the provided mime-types. Once another application requests the data
+ * the callback function will be called, allowing it to generate and respond
+ * with the data for the requested mime-type.
  *
- * The size of text data does not include any terminator, and the text does
- * not need to be null-terminated (e.g., you can directly copy a portion of a
+ * The size of text data does not include any terminator, and the text does not
+ * need to be null-terminated (e.g., you can directly copy a portion of a
  * document).
  *
  * @param callback a function pointer to the function that provides the
@@ -274,8 +273,8 @@ inline void SetClipboardData(ClipboardDataCallback callback,
  * @param cleanup a function pointer to the function that cleans up the
  *                clipboard data.
  * @param userdata an opaque pointer that will be forwarded to the callbacks.
- * @param mime_types a list of mime-types that are being offered. SDL copies
- *                   the given list.
+ * @param mime_types a list of mime-types that are being offered. SDL copies the
+ *                   given list.
  * @param num_mime_types the number of mime-types in the mime_types list.
  * @throws Error on failure.
  *
@@ -315,9 +314,9 @@ inline void ClearClipboardData() { CheckError(SDL_ClearClipboardData()); }
  *
  * @param mime_type the mime type to read from the clipboard.
  * @param size a pointer filled in with the length of the returned data.
- * @returns the retrieved data buffer or nullptr on failure; call GetError()
- *          for more information. This should be freed with free() when it
- *          is no longer needed.
+ * @returns the retrieved data buffer or nullptr on failure; call GetError() for
+ *          more information. This should be freed with free() when it is no
+ *          longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -359,11 +358,11 @@ inline bool HasClipboardData(StringParam mime_type)
 /**
  * Retrieve the list of mime types available in the clipboard.
  *
- * @param num_mime_types a pointer filled with the number of mime types, may
- *                       be nullptr.
+ * @param num_mime_types a pointer filled with the number of mime types, may be
+ *                       nullptr.
  * @returns a null-terminated array of strings with mime types, or nullptr on
- *          failure; call GetError() for more information. This should be
- *          freed with free() when it is no longer needed.
+ *          failure; call GetError() for more information. This should be freed
+ *          with free() when it is no longer needed.
  *
  * @threadsafety This function should only be called on the main thread.
  *

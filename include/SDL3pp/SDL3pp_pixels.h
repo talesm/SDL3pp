@@ -13,20 +13,19 @@ namespace SDL {
  *
  * SDL offers facilities for pixel management.
  *
- * Largely these facilities deal with pixel _format_: what does this set of
- * bits represent?
+ * Largely these facilities deal with pixel _format_: what does this set of bits
+ * represent?
  *
  * If you mostly want to think of a pixel as some combination of red, green,
- * blue, and maybe alpha intensities, this is all pretty straightforward, and
- * in many cases, is enough information to build a perfectly fine game.
+ * blue, and maybe alpha intensities, this is all pretty straightforward, and in
+ * many cases, is enough information to build a perfectly fine game.
  *
  * However, the actual definition of a pixel is more complex than that:
  *
  * Pixels are a representation of a color in a particular color space.
  *
- * The first characteristic of a color space is the color type. SDL
- * understands two different color types, RGB and YCbCr, or in SDL also
- * referred to as YUV.
+ * The first characteristic of a color space is the color type. SDL understands
+ * two different color types, RGB and YCbCr, or in SDL also referred to as YUV.
  *
  * RGB colors consist of red, green, and blue channels of color that are added
  * together to represent the colors we see on the screen.
@@ -35,8 +34,8 @@ namespace SDL {
  *
  * YCbCr colors represent colors as a Y luma brightness component and red and
  * blue chroma color offsets. This color representation takes advantage of the
- * fact that the human eye is more sensitive to brightness than the color in
- * an image. The Cb and Cr components are often compressed and have lower
+ * fact that the human eye is more sensitive to brightness than the color in an
+ * image. The Cb and Cr components are often compressed and have lower
  * resolution than the luma component.
  *
  * https://en.wikipedia.org/wiki/YCbCr
@@ -46,19 +45,19 @@ namespace SDL {
  * information in a block of Y pixels. The chroma location determines where in
  * that block of pixels the color information is coming from.
  *
- * The color range defines how much of the pixel to use when converting a
- * pixel into a color on the display. When the full color range is used, the
- * entire numeric range of the pixel bits is significant. When narrow color
- * range is used, for historical reasons, the pixel uses only a portion of the
- * numeric range to represent colors.
+ * The color range defines how much of the pixel to use when converting a pixel
+ * into a color on the display. When the full color range is used, the entire
+ * numeric range of the pixel bits is significant. When narrow color range is
+ * used, for historical reasons, the pixel uses only a portion of the numeric
+ * range to represent colors.
  *
  * The color primaries and white point are a definition of the colors in the
  * color space relative to the standard XYZ color space.
  *
  * https://en.wikipedia.org/wiki/CIE_1931_color_space
  *
- * The transfer characteristic, or opto-electrical transfer function (OETF),
- * is the way a color is converted from mathematically linear space into a
+ * The transfer characteristic, or opto-electrical transfer function (OETF), is
+ * the way a color is converted from mathematically linear space into a
  * non-linear output signals.
  *
  * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
@@ -376,32 +375,30 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 =
  * - Names with a list of components and a single bit count, such as RGB24 and
  *   ABGR32, define a platform-independent encoding into bytes in the order
  *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
- *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
- *   encoded in 4 bytes (alpha, blue, green, red) in that order. Use these
- *   names if the property of a format that is important to you is the order
- *   of the bytes in memory or on disk.
+ *   (red, green, blue) in that order, and in ABGR32 data, each pixel is encoded
+ *   in 4 bytes (alpha, blue, green, red) in that order. Use these names if the
+ *   property of a format that is important to you is the order of the bytes in
+ *   memory or on disk.
  * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
  *   "packed" into an appropriately-sized integer in the platform's native
- *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in
- *   each integer, the most significant bits are alpha, and the least
- *   significant bits are blue. On a little-endian CPU such as x86, the least
- *   significant bits of each integer are arranged first in memory, but on a
- *   big-endian CPU such as s390x, the most significant bits are arranged
- *   first. Use these names if the property of a format that is important to
- *   you is the meaning of each bit position within a native-endianness
- *   integer.
- * - In indexed formats such as INDEX4LSB, each pixel is represented by
- *   encoding an index into the palette into the indicated number of bits,
- *   with multiple pixels packed into each byte if appropriate. In LSB
- *   formats, the first (leftmost) pixel is stored in the least-significant
- *   bits of the byte; in MSB formats, it's stored in the most-significant
- *   bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly
- *   fills one byte.
+ *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in each
+ *   integer, the most significant bits are alpha, and the least significant
+ *   bits are blue. On a little-endian CPU such as x86, the least significant
+ *   bits of each integer are arranged first in memory, but on a big-endian CPU
+ *   such as s390x, the most significant bits are arranged first. Use these
+ *   names if the property of a format that is important to you is the meaning
+ *   of each bit position within a native-endianness integer.
+ * - In indexed formats such as INDEX4LSB, each pixel is represented by encoding
+ *   an index into the palette into the indicated number of bits, with multiple
+ *   pixels packed into each byte if appropriate. In LSB formats, the first
+ *   (leftmost) pixel is stored in the least-significant bits of the byte; in
+ *   MSB formats, it's stored in the most-significant bits. INDEX8 does not need
+ *   LSB/MSB variants, because each pixel exactly fills one byte.
  *
  * The 32-bit byte-array encodings such as RGBA32 are aliases for the
- * appropriate 8888 encoding for the current platform. For example, RGBA32 is
- * an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
- * RGBA8888 on big-endian CPUs.
+ * appropriate 8888 encoding for the current platform. For example, RGBA32 is an
+ * alias for ABGR8888 on little-endian CPUs like x86, or an alias for RGBA8888
+ * on big-endian CPUs.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -438,8 +435,8 @@ public:
    * @param type the type of the new format, probably a PixelType value.
    * @param order the order of the new format, probably a BitmapOrder,
    *              PackedOrder, or ArrayOrder value.
-   * @param layout the layout of the new format, probably an PackedLayout
-   *               value or zero.
+   * @param layout the layout of the new format, probably an PackedLayout value
+   *               or zero.
    * @param bits the number of bits per pixel of the new format.
    * @param bytes the number of bytes per pixel of the new format.
    * @post a format value in the style of PixelFormat.
@@ -468,8 +465,7 @@ public:
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
    *
-   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't
-   * possible.
+   * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
    *
    * @param bpp a bits per pixel value; usually 15, 16, or 32.
    * @param Rmask the red mask for the format.
@@ -519,8 +515,8 @@ public:
   /**
    * Retrieve the order.
    *
-   * This is usually a value from the BitmapOrder, PackedOrder, or
-   * ArrayOrder enumerations, depending on the format type.
+   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+   * enumerations, depending on the format type.
    *
    * @returns the order.
    *
@@ -950,11 +946,11 @@ constexpr PixelFormat PIXELFORMAT_P010 =
   SDL_PIXELFORMAT_P010; ///< Planar mode: Y + U/V interleaved (2 planes)
 
 constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES =
-  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format.
+  SDL_PIXELFORMAT_EXTERNAL_OES; ///< Android video texture format
 
 #if SDL_VERSION_ATLEAST(3, 2, 10)
 
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG.
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG; ///< Motion JPEG
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 10)
 
@@ -1013,8 +1009,8 @@ constexpr Uint32 DefinePixelFourCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D)
  * @param type the type of the new format, probably a PixelType value.
  * @param order the order of the new format, probably a BitmapOrder,
  *              PackedOrder, or ArrayOrder value.
- * @param layout the layout of the new format, probably an PackedLayout
- *               value or zero.
+ * @param layout the layout of the new format, probably an PackedLayout value or
+ *               zero.
  * @param bits the number of bits per pixel of the new format.
  * @param bytes the number of bytes per pixel of the new format.
  * @returns a format value in the style of PixelFormat.
@@ -1080,8 +1076,8 @@ constexpr PixelType PixelFormat::GetType() const
 /**
  * A macro to retrieve the order of an PixelFormat.
  *
- * This is usually a value from the BitmapOrder, PackedOrder, or
- * ArrayOrder enumerations, depending on the format type.
+ * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+ * enumerations, depending on the format type.
  *
  * @param format an PixelFormat to check.
  * @returns the order of `format`.
@@ -1407,22 +1403,22 @@ constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN =
   SDL_COLOR_PRIMARIES_UNKNOWN; ///< COLOR_PRIMARIES_UNKNOWN
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT709 =
-  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6.
+  SDL_COLOR_PRIMARIES_BT709; ///< ITU-R BT.709-6
 
 constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
   SDL_COLOR_PRIMARIES_UNSPECIFIED; ///< COLOR_PRIMARIES_UNSPECIFIED
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT470M =
-  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M.
+  SDL_COLOR_PRIMARIES_BT470M; ///< ITU-R BT.470-6 System M
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG =
   SDL_COLOR_PRIMARIES_BT470BG; ///< ITU-R BT.470-6 System B, G / ITU-R BT.601-7
-                               ///< 625.
+                               ///< 625
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT601 =
-  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M.
+  SDL_COLOR_PRIMARIES_BT601; ///< ITU-R BT.601-7 525, SMPTE 170M
 
-/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601.
+/// SMPTE 240M, functionally the same as COLOR_PRIMARIES_BT601
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
   SDL_COLOR_PRIMARIES_SMPTE240;
 
@@ -1431,19 +1427,19 @@ constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
                                     ///< Illuminant C)
 
 constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 =
-  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0.
+  SDL_COLOR_PRIMARIES_BT2020; ///< ITU-R BT.2020-2 / ITU-R BT.2100-0
 
 constexpr ColorPrimaries COLOR_PRIMARIES_XYZ =
-  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1.
+  SDL_COLOR_PRIMARIES_XYZ; ///< SMPTE ST 428-1
 
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
-  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2.
+  SDL_COLOR_PRIMARIES_SMPTE431; ///< SMPTE RP 431-2
 
 constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
-  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3.
+  SDL_COLOR_PRIMARIES_SMPTE432; ///< SMPTE EG 432-1 / DCI P3
 
 constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 =
-  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech.  3213-E
+  SDL_COLOR_PRIMARIES_EBU3213; ///< EBU Tech. 3213-E
 
 constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
   SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
@@ -1468,24 +1464,24 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
   SDL_TRANSFER_CHARACTERISTICS_UNKNOWN; ///< TRANSFER_CHARACTERISTICS_UNKNOWN
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
-  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec.  ITU-R BT.709-6 / ITU-R BT1361
+  SDL_TRANSFER_CHARACTERISTICS_BT709; ///< Rec. ITU-R BT.709-6 / ITU-R BT1361
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
   SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED; ///< TRANSFER_CHARACTERISTICS_UNSPECIFIED
 
-/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.
+/// ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
   SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G.
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28; ///< ITU-R BT.470-6 System B, G
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
   SDL_TRANSFER_CHARACTERISTICS_BT601; ///< SMPTE ST 170M / ITU-R BT.601-7 525 or
-                                      ///< 625.
+                                      ///< 625
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M.
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240; ///< SMPTE ST 240M
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
   SDL_TRANSFER_CHARACTERISTICS_LINEAR; ///< TRANSFER_CHARACTERISTICS_LINEAR
@@ -1497,28 +1493,26 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
   SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10; ///< TRANSFER_CHARACTERISTICS_LOG100_SQRT10
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
-  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4.
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966; ///< IEC 61966-2-4
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
-  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut.
+  SDL_TRANSFER_CHARACTERISTICS_BT1361; ///< ITU-R BT1361 Extended Colour Gamut
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
   SDL_TRANSFER_CHARACTERISTICS_SRGB; ///< IEC 61966-2-1 (sRGB or sYCC)
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit
-                                             ///< system.
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT; ///< ITU-R BT2020 for 10-bit system
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit
-                                             ///< system.
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT; ///< ITU-R BT2020 for 12-bit system
 
-/// SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
-  SDL_TRANSFER_CHARACTERISTICS_PQ;
+  SDL_TRANSFER_CHARACTERISTICS_PQ; ///< SMPTE ST 2084 for 10-, 12-, 14- and
+                                   ///< 16-bit systems
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1.
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428; ///< SMPTE ST 428-1
 
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
   SDL_TRANSFER_CHARACTERISTICS_HLG; ///< ARIB STD-B67, known as "hybrid
@@ -1547,39 +1541,39 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
   SDL_MATRIX_COEFFICIENTS_IDENTITY; ///< MATRIX_COEFFICIENTS_IDENTITY
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
-  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6.
+  SDL_MATRIX_COEFFICIENTS_BT709; ///< ITU-R BT.709-6
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
   SDL_MATRIX_COEFFICIENTS_UNSPECIFIED; ///< MATRIX_COEFFICIENTS_UNSPECIFIED
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
-  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47.
+  SDL_MATRIX_COEFFICIENTS_FCC; ///< US FCC Title 47
 
 /**
  * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
- * MATRIX_COEFFICIENTS_BT601.
+ * MATRIX_COEFFICIENTS_BT601
  */
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
   SDL_MATRIX_COEFFICIENTS_BT470BG;
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
-  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525.
+  SDL_MATRIX_COEFFICIENTS_BT601; ///< ITU-R BT.601-7 525
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M.
+  SDL_MATRIX_COEFFICIENTS_SMPTE240; ///< SMPTE 240M
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
   SDL_MATRIX_COEFFICIENTS_YCGCO; ///< MATRIX_COEFFICIENTS_YCGCO
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
   SDL_MATRIX_COEFFICIENTS_BT2020_NCL; ///< ITU-R BT.2020-2 non-constant
-                                      ///< luminance.
+                                      ///< luminance
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance.
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL; ///< ITU-R BT.2020-2 constant luminance
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085.
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085; ///< SMPTE ST 2085
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
   SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL
@@ -1588,7 +1582,7 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
   SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL; ///< MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
-  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP.
+  SDL_MATRIX_COEFFICIENTS_ICTCP; ///< ITU-R BT.2100-0 ICTCP
 
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
   SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
@@ -1608,7 +1602,7 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
 using ChromaLocation = SDL_ChromaLocation;
 
 constexpr ChromaLocation CHROMA_LOCATION_NONE =
-  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling.
+  SDL_CHROMA_LOCATION_NONE; ///< RGB, no chroma sampling
 
 /**
  * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
@@ -1642,8 +1636,8 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  * Colorspace definitions.
  *
  * Since similar colorspaces may vary in their details (matrix, transfer
- * function, etc.), this is not an exhaustive list, but rather a
- * representative sample of the kinds of colorspaces supported in SDL.
+ * function, etc.), this is not an exhaustive list, but rather a representative
+ * sample of the kinds of colorspaces supported in SDL.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -1847,7 +1841,7 @@ public:
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN; ///< UNKNOWN
 
-/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.
+/// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
 constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
 
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
@@ -1856,31 +1850,31 @@ constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
 /// Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
 constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
 constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
 constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
 constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
 constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
 constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
 constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
 
-/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.
+/// Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
 constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
 
-/// The default colorspace for RGB surfaces if no colorspace is specified.
+/// The default colorspace for RGB surfaces if no colorspace is specified
 constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
 
-/// The default colorspace for YUV surfaces if no colorspace is specified.
+/// The default colorspace for YUV surfaces if no colorspace is specified
 constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
 
 /// @}
@@ -1901,8 +1895,8 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * @param type the type of the new format, probably an ColorType value.
  * @param range the range of the new format, probably a ColorRange value.
- * @param primaries the primaries of the new format, probably an
- *                  ColorPrimaries value.
+ * @param primaries the primaries of the new format, probably an ColorPrimaries
+ *                  value.
  * @param transfer the transfer characteristics of the new format, probably an
  *                 TransferCharacteristics value.
  * @param matrix the matrix coefficients of the new format, probably an
@@ -2090,8 +2084,7 @@ constexpr bool Colorspace::IsMatrixBT709() const
 }
 
 /**
- * A macro to determine if an Colorspace uses BT2020_NCL matrix
- * coefficients.
+ * Determine if an Colorspace uses BT2020_NCL matrix coefficients.
  *
  * @param cspace an Colorspace to check.
  * @returns true if BT2020_NCL, false otherwise.
@@ -2183,10 +2176,9 @@ constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
 /**
  * A structure that represents a color as RGBA components.
  *
- * The bits of this structure can be directly reinterpreted as an
- * integer-packed color which uses the PIXELFORMAT_RGBA32 format
- * (PIXELFORMAT_ABGR8888 on little-endian systems and
- * PIXELFORMAT_RGBA8888 on big-endian systems).
+ * The bits of this structure can be directly reinterpreted as an integer-packed
+ * color which uses the PIXELFORMAT_RGBA32 format (PIXELFORMAT_ABGR8888 on
+ * little-endian systems and PIXELFORMAT_RGBA8888 on big-endian systems).
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -2589,7 +2581,6 @@ public:
   /**
    * Free a palette created with Palette.Palette().
    *
-   *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    *
@@ -2689,8 +2680,7 @@ inline void PixelFormat::GetMasks(int* bpp,
 /**
  * Convert a bpp value and RGBA masks to an enumerated pixel format.
  *
- * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't
- * possible.
+ * This will return `PIXELFORMAT_UNKNOWN` if the conversion wasn't possible.
  *
  * @param bpp a bits per pixel value; usually 15, 16, or 32.
  * @param Rmask the red mask for the format.
@@ -2819,8 +2809,8 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * Map an RGB triple to an opaque pixel value for a given pixel format.
  *
  * This function maps the RGB color value to the specified pixel format and
- * returns the pixel value best approximating the given RGB color value for
- * the given pixel format.
+ * returns the pixel value best approximating the given RGB color value for the
+ * given pixel format.
  *
  * If the format has a palette (8-bit) the index of the closest matching color
  * in the palette will be returned.
@@ -2833,8 +2823,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r the red component of the pixel in the range 0-255.
  * @param g the green component of the pixel in the range 0-255.
@@ -2911,11 +2900,11 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  * Map an RGBA quadruple to a pixel value for a given pixel format.
  *
  * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for
- * the given pixel format.
+ * returns the pixel value best approximating the given RGBA color value for the
+ * given pixel format.
  *
- * If the specified pixel format has no alpha component the alpha value will
- * be ignored (as it will be in formats with a palette).
+ * If the specified pixel format has no alpha component the alpha value will be
+ * ignored (as it will be in formats with a palette).
  *
  * If the format has a palette (8-bit) the index of the closest matching color
  * in the palette will be returned.
@@ -2925,8 +2914,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  * format the return value can be assigned to a Uint16, and similarly a Uint8
  * for an 8-bpp format).
  *
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param c the color components of the pixel in the range 0-255.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @returns a pixel value.
@@ -2963,13 +2951,12 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  * Get RGB values from a pixel in the specified format.
  *
  * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ * components from pixel formats with less than 8-bits per RGB component (e.g.,
+ * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
+ * 0xff] not [0xf8, 0xfc, 0xf8]).
  *
  * @param pixelvalue a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
  * @param g a pointer filled in with the green component, may be nullptr.
@@ -2999,16 +2986,15 @@ inline void GetRGB(Uint32 pixelvalue,
  * Get RGBA values from a pixel in the specified format.
  *
  * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ * components from pixel formats with less than 8-bits per RGB component (e.g.,
+ * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
+ * 0xff] not [0xf8, 0xfc, 0xf8]).
  *
  * If the surface has no alpha component, the alpha will be returned as 0xff
  * (100% opaque).
  *
  * @param pixelvalue a pixel value.
- * @param format a pointer to PixelFormatDetails describing the pixel
- *               format.
+ * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
  * @param g a pointer filled in with the green component, may be nullptr.

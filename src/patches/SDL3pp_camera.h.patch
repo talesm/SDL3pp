@@ -2,22 +2,22 @@
 <  * @defgroup CategoryCamera Category Camera
 ---
 >  * @defgroup CategoryCamera Camera Support
-153,156d152
+152,155d151
 < #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 < 
 < #if SDL_VERSION_ATLEAST(3, 3, 2)
 < 
-160,163d155
+159,162d154
 < #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 < 
 < #if SDL_VERSION_ATLEAST(3, 3, 2)
 < 
-167,170d158
+166,169d157
 < #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 < 
 < #if SDL_VERSION_ATLEAST(3, 3, 2)
 < 
-172a161,170
+171a160,169
 > #else
 > 
 > /**
@@ -28,35 +28,38 @@
 >  * @sa Camera.GetPermissionState
 >  */
 > using CameraPermissionState = int;
-250,252c248,250
+248,250c246,248
 <    *             nullptr.
-<    * @post an Camera object or nullptr on failure; call GetError() for
-<    *          more information.
+<    * @post an Camera object or nullptr on failure; call GetError() for more
+<    *       information.
 ---
 >    *             std::nullopt.
 >    * @post an Camera object on success..
 >    * @throws Error on failure.
-386,387c384
+382,383c380
 <    * @param spec the CameraSpec to be initialized by this function.
 <    * @throws Error on failure.
 ---
 >    * @returns the CameraSpec or std::nullopt if waiting for user approval.
-428,429c425,426
+424,425c421,422
 <    * @returns a new frame of video on success.
 <    * @throws Error on failure.
 ---
 >    * @returns a new frame of video on success, nullptr if none is currently
 >    *          available.
-437c434
+433c430
 <   Surface AcquireFrame(Uint64* timestampNS);
 ---
 >   Surface AcquireFrame(Uint64* timestampNS = nullptr);
-567,568c564
-<  *          call GetError() for more information. This should be freed
-<  *          with free() when it is no longer needed.
+560,561d556
+<  * @param count a pointer filled in with the number of cameras returned, may be
+<  *              nullptr.
+563,564c558
+<  *          call GetError() for more information. This should be freed with
+<  *          free() when it is no longer needed.
 ---
 >  *          call GetError() for more information.
-576c572,577
+572c566,571
 < inline OwnArray<CameraID> GetCameras() { return SDL_GetCameras(); }
 ---
 > inline OwnArray<CameraID> GetCameras()
@@ -65,40 +68,55 @@
 >   auto data = SDL_GetCameras(&count);
 >   return OwnArray<CameraID>(data, count);
 > }
-695,697c696,698
+596,597d594
+<  * @param count a pointer filled in with the number of elements in the list, may
+<  *              be nullptr.
+599,601c596
+<  *          failure; call GetError() for more information. This is a single
+<  *          allocation that should be freed with free() when it is no longer
+<  *          needed.
+---
+>  *          failure; call GetError() for more information.
+612c607,609
+<   return SDL_GetCameraSupportedFormats(instance_id);
+---
+>   int count;
+>   auto data = SDL_GetCameraSupportedFormats(instance_id, &count);
+>   return OwnArray<CameraSpec*>(data, count);
+688,690c685,687
 <  *             nullptr.
-<  * @returns an Camera object or nullptr on failure; call GetError() for
-<  *          more information.
+<  * @returns an Camera object or nullptr on failure; call GetError() for more
+<  *          information.
 ---
 >  *             std::nullopt.
 >  * @returns an Camera object on success.
 >  * @throws Error on failure.
-788c789
+780c777
 <   return CheckError(SDL_GetCameraProperties(camera));
 ---
 >   return {CheckError(SDL_GetCameraProperties(camera))};
-810,811c811
+801,802c798
 <  * @param spec the CameraSpec to be initialized by this function.
 <  * @throws Error on failure.
 ---
 >  * @returns the CameraSpec or std::nullopt if waiting for user approval.
-821c821,822
+812c808,809
 <   return CheckError(SDL_GetCameraFormat(camera));
 ---
 >   if (CameraSpec spec; SDL_GetCameraFormat(camera, &spec)) return spec;
 >   return std::nullopt;
-861,862c862,863
+851,852c848,849
 <  * @returns a new frame of video on success.
 <  * @throws Error on failure.
 ---
 >  * @returns a new frame of video on success, nullptr if none is currently
 >  *          available.
-870c871,872
+860c857,858
 < inline Surface AcquireCameraFrame(CameraParam camera, Uint64* timestampNS)
 ---
 > inline Surface AcquireCameraFrame(CameraParam camera,
 >                                   Uint64* timestampNS = nullptr)
-872c874
+862c860
 <   return CheckError(SDL_AcquireCameraFrame(camera, timestampNS));
 ---
 >   return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));

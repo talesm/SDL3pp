@@ -1,7 +1,7 @@
-const { writeJSONSync } = require("./cppfier/dist/utils");
+import { writeJSONSync } from "./cppfier/src/utils.ts";
 
 /**
- * @import {ApiTransform} from "./cppfier/dist/types"
+ * @import {ApiTransform} from "./cppfier/src/types.ts"
  */
 
 /** @type {ApiTransform} */
@@ -11,8 +11,7 @@ const transform = {
   sourceIncludePrefix: 'SDL3/',
   namespace: "SDL",
   renameRules: [{
-    // @ts-ignore
-    pattern: "^SDL_(.*)\\.h$",
+    pattern: String.raw`^SDL_(.*)\.h$`,
     replacement: "SDL3pp_$1.h"
   }],
   minVersions: {
@@ -161,6 +160,8 @@ const transform = {
         "SDL_TryLockSpinlock",
         "SDL_LockSpinlock",
         "SDL_UnlockSpinlock",
+        "SDL_KernelMemoryBarrierFunc",
+        "SDL_MEMORY_BARRIER_USES_FUNCTION",
       ],
       transform: {
         "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease", after: "__begin" },
@@ -839,6 +840,11 @@ const transform = {
           type: "OwnArray<CameraID>",
           parameters: [],
         },
+        "SDL_GetCameraSupportedFormats": {
+          type: "OwnArray<CameraSpec *>",
+          parameters: [{}],
+
+        },
         "SDL_GetCameraFormat": {
           type: "std::optional<CameraSpec>",
           parameters: [{}],
@@ -1151,7 +1157,7 @@ const transform = {
               kind: "function",
               type: "",
               parameters: [],
-              doc: "Default ctor.",
+              doc: ["Default ctor."],
               hints: { init: ["m_message(SDL_GetError())"] }
             },
             "Error#2": {
@@ -1165,7 +1171,7 @@ const transform = {
               type: "const char *",
               immutable: true,
               parameters: [],
-              doc: "Returns the explanatory string.",
+              doc: ["Returns the explanatory string."],
               hints: { body: "return GetError();" }
             },
             "str": {
@@ -1368,7 +1374,7 @@ const transform = {
           ]
         },
         "EventWatchHandle": {
-          doc: "Handle returned by AddEventWatch()",
+          doc: ["Handle returned by AddEventWatch()"],
           kind: "struct",
           after: "SDL_EventFilter",
           type: "CallbackHandle",
@@ -1634,6 +1640,18 @@ const transform = {
         "SDL_GamepadAxis": { before: "SDL_Gamepad" },
         "SDL_GamepadBindingType": { before: "SDL_Gamepad" },
         "SDL_GamepadBinding": { before: "SDL_Gamepad" },
+        "SDL_GetGamepadMappings": {
+          type: "OwnArray<char *>",
+          parameters: [],
+        },
+        "SDL_GetGamepadMappingForGUID": {
+          type: "StringResult",
+          parameters: [{}],
+        },
+        "SDL_GetGamepadMapping": {
+          type: "StringResult",
+          parameters: [{}],
+        },
         "SDL_GetGamepads": {
           type: "OwnArray<JoystickID>",
           parameters: [],
@@ -1917,6 +1935,7 @@ const transform = {
         "SDL3pp_stdinc.h",
         "SDL3pp_rect.h",
       ],
+      ignoreEntries: ["SDL_joystick_lock"],
       namespacesMap: {
         "SDL_PROP_JOYSTICK_CAP_": "prop::JoystickCap",
       },
@@ -2153,7 +2172,7 @@ const transform = {
         },
         "HintCallbackHandle": {
           after: "SDL_HintCallback",
-          doc: "Handle returned by AddHintCallback()",
+          doc: ["Handle returned by AddHintCallback()"],
           kind: "struct",
           name: "HintCallbackHandle",
           type: "CallbackHandle",
@@ -2281,7 +2300,7 @@ const transform = {
             "print": {
               "kind": "function",
               "type": "size_t",
-              "doc": "@cat formatted-string",
+              doc: ["@cat formatted-string"],
               "parameters": [
                 {
                   "type": "std::string_view",
@@ -2296,7 +2315,7 @@ const transform = {
             "println": {
               "kind": "function",
               "type": "size_t",
-              "doc": "@cat formatted-string",
+              doc: ["@cat formatted-string"],
               "parameters": [
                 {
                   "type": "std::string_view",
@@ -3082,6 +3101,9 @@ const transform = {
         "SDL_main",
         "SDL_MAIN_AVAILABLE",
         "SDL_MAIN_NEEDED",
+        "SDL_PLATFORM_PRIVATE_MAIN",
+        "SDL_MAIN_EXPORTED",
+        "SDL_PS2_SKIP_IOP_RESET",
         "SDL_AppInit",
         "SDL_AppIterate",
         "SDL_AppEvent",
@@ -3827,7 +3849,7 @@ const transform = {
           type: "",
           parameters: [],
           immutable: true,
-          doc: "Same as GetDetails()",
+          doc: ["Same as GetDetails()"],
           hints: { delegate: "GetDetails" },
         },
         "MapRGBA": {
@@ -4243,7 +4265,7 @@ const transform = {
             },
             "operator FRect": {
               kind: "function",
-              doc: "@sa operator ToFRect()",
+              doc: ["@sa operator ToFRect()"],
               name: "operator FRect",
               static: false,
               immutable: true,
@@ -4255,7 +4277,7 @@ const transform = {
               constexpr: true
             },
             "operator bool": {
-              doc: "@sa Empty()",
+              doc: ["@sa Empty()"],
               kind: "function",
               immutable: true,
               explicit: true,
@@ -4477,7 +4499,7 @@ const transform = {
               constexpr: true
             },
             "operator bool": {
-              doc: "@sa Empty()",
+              doc: ["@sa Empty()"],
               kind: "function",
               immutable: true,
               explicit: true,
@@ -5375,7 +5397,7 @@ const transform = {
         "Keycode": { kind: "forward" },
         "SDL_Scancode": {
           wrapper: { ordered: true }
-        }
+        },
       }
     },
     "SDL_stdinc.h": {
@@ -5393,6 +5415,7 @@ const transform = {
         "bool",
         "__bool_true_false_are_defined",
         "false",
+        "SDL_INCLUDE_STDBOOL_H",
         "SDL_alignment_test",
         "SDL_const_cast",
         "SDL_DUMMY_ENUM",
@@ -5429,7 +5452,12 @@ const transform = {
         "SDL_static_cast",
         "SDL_WPRINTF_VARARG_FUNC",
         "SDL_WPRINTF_VARARG_FUNCV",
-        "true"
+        "true",
+        "strlcpy",
+        "strlcat",
+        "wcslcpy",
+        "wcslcat",
+        "strdup",
       ],
       transform: {
         "SDL_Environment": {
@@ -5497,19 +5525,19 @@ const transform = {
           before: "SDL_Time",
           kind: "alias",
           type: "std::chrono::duration<float>",
-          doc: "Duration in seconds (float)."
+          doc: ["Duration in seconds (float)."]
         },
         "Nanoseconds": {
           before: "SDL_Time",
           kind: "alias",
           type: "std::chrono::nanoseconds",
-          doc: "Duration in Nanoseconds (Uint64)."
+          doc: ["Duration in Nanoseconds (Uint64)."]
         },
         "Milliseconds": {
           before: "SDL_Time",
           kind: "alias",
           type: "std::chrono::milliseconds",
-          doc: "Duration in Miliseconds (Uint32)."
+          doc: ["Duration in Miliseconds (Uint32)."]
         },
         "ToSeconds": {
           before: "SDL_Time",
@@ -5520,7 +5548,7 @@ const transform = {
             type: "Seconds",
             name: "duration"
           }],
-          doc: "Converts a time duration to seconds (float)."
+          doc: ["Converts a time duration to seconds (float)."]
         },
         "FromSeconds": {
           before: "SDL_Time",
@@ -5531,7 +5559,7 @@ const transform = {
             type: "float",
             name: "duration"
           }],
-          doc: "Converts a float to seconds representation."
+          doc: ["Converts a float to seconds representation."]
         },
         "ToNS": {
           before: "SDL_Time",
@@ -5542,7 +5570,7 @@ const transform = {
             type: "std::chrono::nanoseconds",
             name: "duration"
           }],
-          doc: "Converts a time duration to seconds (float)."
+          doc: ["Converts a time duration to seconds (float)."]
         },
         "FromNS": {
           before: "SDL_Time",
@@ -5553,7 +5581,7 @@ const transform = {
             type: "Sint64",
             name: "duration"
           }],
-          doc: "Converts a float to seconds representation."
+          doc: ["Converts a float to seconds representation."]
         },
         "SDL_Time": {
           kind: "struct",
@@ -5606,7 +5634,7 @@ const transform = {
               constexpr: true,
               immutable: true,
               parameters: [],
-              doc: "Converts a time to seconds (float) since epoch."
+              doc: ["Converts a time to seconds (float) since epoch."]
             },
             "FromSeconds": {
               kind: "function",
@@ -5618,7 +5646,7 @@ const transform = {
                 type: "float",
                 name: "interval"
               }],
-              doc: "Converts a time to seconds (float) since epoch."
+              doc: ["Converts a time to seconds (float) since epoch."]
             },
             "operator+=": {
               "kind": "function",
@@ -7008,6 +7036,10 @@ const transform = {
       namespacesMap: {
         "SDL_PROP_THREAD_": "prop::thread"
       },
+      ignoreEntries: [
+        "SDL_CreateThreadRuntime",
+        "SDL_CreateThreadWithPropertiesRuntime",
+      ],
       transform: {
         "ThreadID": { after: "__begin" },
         "ThreadFunction": { after: "__begin" },
@@ -7471,8 +7503,8 @@ const transform = {
         "HitTestCB": {
           before: "SDL_Window",
           kind: "alias",
-          type: "HitTest",
-          doc: "@sa HitTest"
+          type: "std::function<HitTestResult(WindowRaw window, const Point& area)>",
+          doc: ["@sa HitTest"]
         },
         "SDL_EGLSurface": { before: "SDL_Window" },
         "SDL_ProgressState": {
@@ -7738,7 +7770,7 @@ const transform = {
     },
     "SDL_vulkan.h": {
       localIncludes: ["SDL3pp.h"],
-      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE"],
+      ignoreEntries: ["VK_DEFINE_HANDLE", "VK_DEFINE_NON_DISPATCHABLE_HANDLE", "NO_SDL_VULKAN_TYPEDEFS"],
       transform: {
         "SDL_Vulkan_GetInstanceExtensions": {
           type: "std::span<char const * const>",
@@ -8743,18 +8775,18 @@ const transform = {
             "TTF_GetNextTextSubString": "immutable",
             "TTF_UpdateText": "function",
             "GetText": {
-              "kind": "function",
-              "type": "const char *",
-              "immutable": true,
-              "doc": "A copy of the UTF-8 string that this text object represents, useful for layout, debugging and retrieving substring text",
-              "parameters": []
+              kind: "function",
+              type: "const char *",
+              immutable: true,
+              doc: ["A copy of the UTF-8 string that this text object represents, useful for layout, debugging and retrieving substring text"],
+              parameters: []
             },
             "GetNumLines": {
-              "kind": "function",
-              "type": "int",
-              "immutable": true,
-              "doc": "The number of lines in the text, 0 if it's empty",
-              "parameters": []
+              kind: "function",
+              type: "int",
+              immutable: true,
+              doc: ["The number of lines in the text, 0 if it's empty"],
+              parameters: []
             }
           }
         },

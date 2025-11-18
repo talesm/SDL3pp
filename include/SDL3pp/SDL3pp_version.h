@@ -128,8 +128,7 @@ namespace SDL {
 inline int GetVersion() { return SDL_GetVersion(); }
 
 /**
- * Get the code revision of the SDL library that is linked against your
- * program.
+ * Get the code revision of the SDL library that is linked against your program.
  *
  * This value is the revision of the code you are linking against and may be
  * different from the code you are compiling with, which is found in the
@@ -145,8 +144,8 @@ inline int GetVersion() { return SDL_GetVersion(); }
  * You shouldn't use this function for anything but logging it for debugging
  * purposes. The string is not intended to be reliable in any way.
  *
- * @returns an arbitrary string, uniquely identifying the exact revision of
- *          the SDL library in use.
+ * @returns an arbitrary string, uniquely identifying the exact revision of the
+ *          SDL library in use.
  *
  * @since This function is available since SDL 3.2.0.
  *

@@ -1,5 +1,5 @@
-import { readFileSync, writeSync, openSync, closeSync } from "fs";
-import { chdir } from "process";
+import { readFileSync, writeSync, openSync, closeSync } from "node:fs";
+import { chdir } from "node:process";
 
 /** @param {string[]} args  */
 function main(args) {

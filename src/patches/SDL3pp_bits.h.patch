@@ -2,11 +2,3 @@
 <  * @defgroup CategoryBits Category Bits
 ---
 >  * @defgroup CategoryBits Bit Manipulation
-34c34
-< inline int MostSignificantBitIndex32(Uint32 x)
----
-> constexpr int MostSignificantBitIndex32(Uint32 x)
-57c57
-< inline bool HasExactlyOneBitSet32(Uint32 x)
----
-> constexpr bool HasExactlyOneBitSet32(Uint32 x)

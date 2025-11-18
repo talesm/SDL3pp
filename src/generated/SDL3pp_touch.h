@@ -11,18 +11,17 @@ namespace SDL {
 /**
  * @defgroup CategoryTouch Category Touch
  *
- * SDL offers touch input, on platforms that support it. It can manage
- * multiple touch devices and track multiple fingers on those devices.
+ * SDL offers touch input, on platforms that support it. It can manage multiple
+ * touch devices and track multiple fingers on those devices.
  *
  * Touches are mostly dealt with through the event system, in the
- * EVENT_FINGER_DOWN, EVENT_FINGER_MOTION, and EVENT_FINGER_UP
- * events, but there are also functions to query for hardware details, etc.
+ * EVENT_FINGER_DOWN, EVENT_FINGER_MOTION, and EVENT_FINGER_UP events, but there
+ * are also functions to query for hardware details, etc.
  *
  * The touch system, by default, will also send virtual mouse events; this can
- * be useful for making a some desktop apps work on a phone without
- * significant changes. For apps that care about mouse and touch input
- * separately, they should ignore mouse events that have a `which` field of
- * TOUCH_MOUSEID.
+ * be useful for making a some desktop apps work on a phone without significant
+ * changes. For apps that care about mouse and touch input separately, they
+ * should ignore mouse events that have a `which` field of TOUCH_MOUSEID.
  *
  * @{
  */
@@ -221,11 +220,11 @@ constexpr TouchID MOUSE_TOUCHID = SDL_MOUSE_TOUCHID;
  * Therefore the returned list might be empty, although devices are available.
  * After using all devices at least once the number will be correct.
  *
- * @param count a pointer filled in with the number of devices returned, may
- *              be nullptr.
+ * @param count a pointer filled in with the number of devices returned, may be
+ *              nullptr.
  * @returns a 0 terminated array of touch device IDs or nullptr on failure; call
- *          GetError() for more information. This should be freed with
- *          free() when it is no longer needed.
+ *          GetError() for more information. This should be freed with free()
+ *          when it is no longer needed.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -235,8 +234,8 @@ inline OwnArray<TouchID> GetTouchDevices() { return SDL_GetTouchDevices(); }
  * Get the touch device name as reported from the driver.
  *
  * @param touchID the touch device instance ID.
- * @returns touch device name, or nullptr on failure; call GetError() for
- *          more information.
+ * @returns touch device name, or nullptr on failure; call GetError() for more
+ *          information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -262,12 +261,11 @@ inline TouchDeviceType GetTouchDeviceType(TouchID touchID)
  * Get a list of active fingers for a given touch device.
  *
  * @param touchID the ID of a touch device.
- * @param count a pointer filled in with the number of fingers returned, can
- *              be nullptr.
+ * @param count a pointer filled in with the number of fingers returned, can be
+ *              nullptr.
  * @returns a nullptr terminated array of Finger pointers or nullptr on failure;
- *          call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no
- *          longer needed.
+ *          call GetError() for more information. This is a single allocation
+ *          that should be freed with free() when it is no longer needed.
  *
  * @since This function is available since SDL 3.2.0.
  */

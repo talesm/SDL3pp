@@ -8,7 +8,7 @@ export interface Api {
 
 export interface ApiFile {
   name: string;
-  doc?: string;
+  doc?: ParsedDoc;
   entries?: ApiEntries;
   namespace?: string;
   includes?: string[];
@@ -19,12 +19,23 @@ export interface ApiFile {
   entriesEnd?: number;
 }
 
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | 'plc';
+export type ApiEntryKind =
+  | "alias"
+  | "callback"
+  | "def"
+  | "enum"
+  | "forward"
+  | "function"
+  | "struct"
+  | "union"
+  | "var"
+  | "ns"
+  | "plc";
 
 export interface ApiEntryBase {
   name?: string;
   kind?: ApiEntryKind;
-  doc?: string;
+  doc?: ParsedDoc;
   type?: string;
   parameters?: ApiParameters;
   template?: ApiParameters;
@@ -32,7 +43,7 @@ export interface ApiEntryBase {
   constexpr?: boolean;
   immutable?: boolean;
   reference?: number;
-  proto?: boolean
+  proto?: boolean;
   static?: boolean;
   since?: VersionTag;
   explicit?: boolean;
@@ -52,7 +63,7 @@ export interface EntryHint {
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;
-  changeAccess?: 'public' | 'private';
+  changeAccess?: "public" | "private";
   delegate?: string;
   methodName?: string;
 }
@@ -73,11 +84,11 @@ export interface ApiEntry extends ApiEntryBase {
   end?: number;
   entries?: ApiEntries;
   link?: ApiEntry;
-  overload?: ApiEntry
+  overload?: ApiEntry;
 }
 
 export interface ApiType extends ApiEntry {
-  kind: "struct" | "alias" | "ns"
+  kind: "struct" | "alias" | "ns";
 }
 
 export type ApiEntries = Dict<ApiEntry>;
@@ -128,7 +139,7 @@ export interface ApiFileTransform {
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | QuickTransform>;
 
 export interface ApiEntryTransform extends ApiEntryBase {
-  entries?: ApiEntryTransformMap,
+  entries?: ApiEntryTransformMap;
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
@@ -138,24 +149,23 @@ export interface ApiEntryTransform extends ApiEntryBase {
 }
 
 export interface ResourceDefinition {
-
   /**
    * The source name of constructors
-   * 
+   *
    * Anything marked as "ctor" is automatically added here
    */
-  ctors?: string[]
+  ctors?: string[];
 
   /**
    * The shared field name
    */
-  shared?: boolean | string
+  shared?: boolean | string;
 
   /**
    * Name of free function. By default it uses the first subentry with
    * containing "Destroy", "Close" or "free" substring, in that order.
    */
-  free?: string
+  free?: string;
 
   /**
    * Name of raw resource type
@@ -169,25 +179,25 @@ export interface ResourceDefinition {
 
   /**
    * If true allow member access with `->` arrow.
-   * 
+   *
    * Default true for non-opaque structs
    */
-  enableMemberAccess?: boolean
+  enableMemberAccess?: boolean;
 
   /**
    * Enable const parameters, defaults true if enableMemberAccess is true
    */
-  enableConstParam?: boolean
+  enableConstParam?: boolean;
 
   /**
    * Enable ref type. Default to false
    */
-  owning?: boolean
+  owning?: boolean;
 
   /**
    * Enable ref type. Default to true if non shared and owning are both false
    */
-  ref?: boolean
+  ref?: boolean;
 }
 
 export interface ApiLock extends ApiEntryTransform {
@@ -202,31 +212,31 @@ export interface WrapperDefinition {
   invalidState?: boolean;
 
   /** Defaults to {} */
-  defaultValue?: string
+  defaultValue?: string;
 
   /** Defaults to true if alias to pointer, false otherwise */
-  nullable?: boolean
+  nullable?: boolean;
 
   /** Defaults to true */
-  genCtor?: boolean
+  genCtor?: boolean;
 
   /** Defaults to true, relevant only to struct */
-  genMembers?: boolean
+  genMembers?: boolean;
 
-  /** 
+  /**
    * Defaults to true if alias to anything but `void *`, false otherwise.
    */
-  ordered?: boolean
+  ordered?: boolean;
 
-  /** 
+  /**
    * Defaults to true if ordered is false and not a struct
    */
-  comparable?: boolean
+  comparable?: boolean;
 
   /**
    * Param type for generated methods
    */
-  paramType?: string
+  paramType?: string;
 
   /**
    * Name of raw resource type
@@ -264,7 +274,7 @@ export interface FileToken {
   constexpr?: boolean;
   immutable?: boolean;
   reference?: number;
-  proto?: boolean
+  proto?: boolean;
   static?: boolean;
   explicit?: boolean;
   begin: number;
@@ -272,4 +282,23 @@ export interface FileToken {
   spaces: number;
   doc?: string;
   since?: VersionTag;
+}
+
+export type ParsedDoc = ParsedDocContent[];
+
+export type ParsedDocContent =
+  | string
+  | ListContent
+  | StaticContent
+  | TaggedContent;
+
+export type ListContent = TaggedContent[];
+export interface StaticContent {
+  tag?: undefined;
+  content: string;
+}
+
+export interface TaggedContent {
+  tag: string;
+  content: string;
 }

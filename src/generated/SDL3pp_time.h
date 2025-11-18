@@ -13,11 +13,11 @@ namespace SDL {
  *
  * There are two data types that are used in this category: Time, which
  * represents the nanoseconds since a specific moment (an "epoch"), and
- * DateTime, which breaks time down into human-understandable components:
- * years, months, days, hours, etc.
+ * DateTime, which breaks time down into human-understandable components: years,
+ * months, days, hours, etc.
  *
- * Much of the functionality is involved in converting those two types to
- * other useful forms.
+ * Much of the functionality is involved in converting those two types to other
+ * useful forms.
  *
  * @{
  */
@@ -29,8 +29,7 @@ using DateTimeRaw = SDL_DateTime;
 struct DateTime;
 
 /**
- * A structure holding a calendar date and time broken down into its
- * components.
+ * A structure holding a calendar date and time broken down into its components.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -81,14 +80,14 @@ struct DateTime : DateTimeRaw
   }
 
   /**
-   * Converts an Time in nanoseconds since the epoch to a calendar time in
-   * the DateTime format.
+   * Converts an Time in nanoseconds since the epoch to a calendar time in the
+   * DateTime format.
    *
    * @param ticks the Time to be converted.
    * @param dt the resulting DateTime.
-   * @param localTime the resulting DateTime will be expressed in local time
-   *                  if true, otherwise it will be in Universal Coordinated
-   *                  Time (UTC).
+   * @param localTime the resulting DateTime will be expressed in local time if
+   *                  true, otherwise it will be in Universal Coordinated Time
+   *                  (UTC).
    * @throws Error on failure.
    *
    * @since This function is available since SDL 3.2.0.
@@ -279,8 +278,8 @@ struct DateTime : DateTimeRaw
   /**
    * Converts a calendar time to an Time in nanoseconds since the epoch.
    *
-   * This function ignores the day_of_week member of the DateTime struct, so
-   * it may remain unset.
+   * This function ignores the day_of_week member of the DateTime struct, so it
+   * may remain unset.
    *
    * @param dt the source DateTime.
    * @param ticks the resulting Time.
@@ -301,13 +300,13 @@ struct DateTime : DateTimeRaw
 using DateFormat = SDL_DateFormat;
 
 constexpr DateFormat DATE_FORMAT_YYYYMMDD =
-  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day.
+  SDL_DATE_FORMAT_YYYYMMDD; ///< Year/Month/Day
 
 constexpr DateFormat DATE_FORMAT_DDMMYYYY =
-  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year.
+  SDL_DATE_FORMAT_DDMMYYYY; ///< Day/Month/Year
 
 constexpr DateFormat DATE_FORMAT_MMDDYYYY =
-  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year.
+  SDL_DATE_FORMAT_MMDDYYYY; ///< Month/Day/Year
 
 /**
  * The preferred time format of the current system locale.
@@ -325,10 +324,10 @@ constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR; ///< 12 hour time
 /**
  * Gets the current preferred date and time format for the system locale.
  *
- * This might be a "slow" call that has to query the operating system. It's
- * best to ask for this once and save the results. However, the preferred
- * formats can change, usually because the user has changed a system
- * preference outside of your program.
+ * This might be a "slow" call that has to query the operating system. It's best
+ * to ask for this once and save the results. However, the preferred formats can
+ * change, usually because the user has changed a system preference outside of
+ * your program.
  *
  * @param dateFormat a pointer to the DateFormat to hold the returned date
  *                   format, may be nullptr.
@@ -347,14 +346,14 @@ inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
 inline Time Time::Current() { return CheckError(SDL_GetCurrentTime(m_time)); }
 
 /**
- * Converts an Time in nanoseconds since the epoch to a calendar time in
- * the DateTime format.
+ * Converts an Time in nanoseconds since the epoch to a calendar time in the
+ * DateTime format.
  *
  * @param ticks the Time to be converted.
  * @param dt the resulting DateTime.
- * @param localTime the resulting DateTime will be expressed in local time
- *                  if true, otherwise it will be in Universal Coordinated
- *                  Time (UTC).
+ * @param localTime the resulting DateTime will be expressed in local time if
+ *                  true, otherwise it will be in Universal Coordinated Time
+ *                  (UTC).
  * @throws Error on failure.
  *
  * @since This function is available since SDL 3.2.0.
@@ -367,8 +366,8 @@ inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
 /**
  * Converts a calendar time to an Time in nanoseconds since the epoch.
  *
- * This function ignores the day_of_week member of the DateTime struct, so
- * it may remain unset.
+ * This function ignores the day_of_week member of the DateTime struct, so it
+ * may remain unset.
  *
  * @param dt the source DateTime.
  * @param ticks the resulting Time.
@@ -414,8 +413,8 @@ inline int GetDaysInMonth(int year, int month)
  * @param year the year component of the date.
  * @param month the month component of the date.
  * @param day the day component of the date.
- * @returns the day of year [0-365] if the date is valid or -1 on failure;
- *          call GetError() for more information.
+ * @returns the day of year [0-365] if the date is valid or -1 on failure; call
+ *          GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -430,8 +429,8 @@ inline int GetDayOfYear(int year, int month, int day)
  * @param year the year component of the date.
  * @param month the month component of the date.
  * @param day the day component of the date.
- * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or
- *          -1 on failure; call GetError() for more information.
+ * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or -1
+ *          on failure; call GetError() for more information.
  *
  * @since This function is available since SDL 3.2.0.
  */

@@ -18,7 +18,7 @@
 >  * @{
 >  */
 > 
-113a128,135
+110a125,132
 > /// @}
 > 
 > /**
@@ -27,38 +27,35 @@
 >  * @{
 >  */
 > 
-177a200,201
+173a196,197
 > /// @}
 > 
-320a345,349
+313a338,342
 >  * @name Callbacks for RunOnMainThread()
 >  * @{
 >  */
 > 
 > /**
-334,335d362
-<  * @param userdata an app-controlled pointer that is passed to the callback.
-<  *
-339a367,369
+331a361,363
 >  *
 >  * @cat result-callback
 >  *
-342a373,374
+334a367,368
 > /// @}
 > 
-385d416
+377d410
 <  * @param userdata a pointer that is passed to `callback`.
-394a426,428
+386a420,422
 >  * @sa result-callback
 >  *
 >  * @cat result-callback
-398c432,434
+390c426,428
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<MainThreadCB>;
 >   void* wrapped = Wrapper::Wrap(std::move(callback));
 >   RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
-550a587,799
+539a578,790
 > 
 > #ifndef SDL3PP_APPCLASS_LOG_PRIORITY
 > /**

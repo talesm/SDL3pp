@@ -4,24 +4,9 @@
 <  * File dialog support.
 ---
 >  * @defgroup CategoryDialog File Dialogs
-115d112
-<  * @param filter index of the selected filter.
-155,161c152,157
-<  * @param filters a list of filters, may be nullptr. See the
-<  *                [`DialogFileFilter` documentation for
-<  *                examples](DialogFileFilter#code-examples). Not all
-<  *                platforms support this option, and platforms that do support
-<  *                it may allow the user to ignore the filters. If non-nullptr,
-<  * it must remain valid at least until the callback is invoked.
+159d156
 <  * @param nfilters the number of filters. Ignored if filters is nullptr.
----
->  * @param filters a list of filters, may be nullptr. See the [`DialogFileFilter`
->  *                documentation for examples](DialogFileFilter#code-examples).
->  *                Not all platforms support this option, and platforms that do
->  *                support it may allow the user to ignore the filters. If
->  *                non-empty, it must remain valid at least until the callback is
->  *                invoked.
-183,185c179,181
+181,183c178,180
 <                                std::span<const DialogFileFilter> filters,
 <                                StringParam default_location,
 <                                bool allow_many)
@@ -29,7 +14,7 @@
 >                                std::span<const DialogFileFilter> filters = {},
 >                                StringParam default_location = {},
 >                                bool allow_many = false)
-187,188c183,189
+185,186c182,188
 <   SDL_ShowOpenFileDialog(
 <     callback, userdata, window, filters, default_location, allow_many);
 ---
@@ -40,25 +25,17 @@
 >                          filters.size(),
 >                          default_location,
 >                          allow_many);
-214,215d214
+211,212d212
 <  * @param userdata an optional pointer to pass extra data to the callback when
 <  *                 it will be invoked.
-218,224c217,222
-<  * @param filters a list of filters, may be nullptr. See the
-<  *                [`DialogFileFilter` documentation for
-<  *                examples](DialogFileFilter#code-examples). Not all
-<  *                platforms support this option, and platforms that do support
-<  *                it may allow the user to ignore the filters. If non-nullptr,
-<  * it must remain valid at least until the callback is invoked.
+219,221c219,220
+<  *                non-nullptr, it must remain valid at least until the callback
+<  *                is invoked.
 <  * @param nfilters the number of filters. Ignored if filters is nullptr.
 ---
->  * @param filters a list of filters, may be nullptr. See the [`DialogFileFilter`
->  *                documentation for examples](DialogFileFilter#code-examples).
->  *                Not all platforms support this option, and platforms that do
->  *                support it may allow the user to ignore the filters. If
 >  *                non-empty, it must remain valid at least until the callback is
 >  *                invoked.
-245,247c243,245
+242,244c241,243
 <                                std::span<const DialogFileFilter> filters,
 <                                StringParam default_location,
 <                                bool allow_many)
@@ -66,7 +43,7 @@
 >                                std::span<const DialogFileFilter> filters = {},
 >                                StringParam default_location = {},
 >                                bool allow_many = false)
-249c247,253
+246c245,251
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -76,9 +53,9 @@
 >                      filters,
 >                      std::move(default_location),
 >                      allow_many);
-283d286
+279d283
 <  * @param nfilters the number of filters. Ignored if filters is nullptr.
-302,304c305,307
+298,300c302,304
 <                                WindowParam window,
 <                                std::span<const DialogFileFilter> filters,
 <                                StringParam default_location)
@@ -86,7 +63,7 @@
 >                                WindowParam window = {},
 >                                std::span<const DialogFileFilter> filters = {},
 >                                StringParam default_location = {})
-306c309,314
+302c306,311
 <   SDL_ShowSaveFileDialog(callback, userdata, window, filters, default_location);
 ---
 >   SDL_ShowSaveFileDialog(callback,
@@ -95,12 +72,12 @@
 >                          filters.data(),
 >                          filters.size(),
 >                          default_location);
-332,333d339
+327,328d335
 <  * @param userdata an optional pointer to pass extra data to the callback when
 <  *                 it will be invoked.
-340d345
+335d341
 <  * @param nfilters the number of filters. Ignored if filters is nullptr.
-358,360c363,365
+353,355c359,361
 <                                WindowParam window,
 <                                std::span<const DialogFileFilter> filters,
 <                                StringParam default_location)
@@ -108,7 +85,7 @@
 >                                WindowParam window = {},
 >                                std::span<const DialogFileFilter> filters = {},
 >                                StringParam default_location = {})
-362c367,372
+357c363,368
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -117,7 +94,7 @@
 >                      window,
 >                      filters,
 >                      std::move(default_location));
-411,413c421,423
+405,407c416,418
 <                                  WindowParam window,
 <                                  StringParam default_location,
 <                                  bool allow_many)
@@ -125,10 +102,10 @@
 >                                  WindowParam window = {},
 >                                  StringParam default_location = {},
 >                                  bool allow_many = false)
-442,443d451
+435,436d445
 <  * @param userdata an optional pointer to pass extra data to the callback when
 <  *                 it will be invoked.
-464,466c472,474
+457,459c466,468
 <                                  WindowParam window,
 <                                  StringParam default_location,
 <                                  bool allow_many)
@@ -136,7 +113,7 @@
 >                                  WindowParam window = {},
 >                                  StringParam default_location = {},
 >                                  bool allow_many = false)
-468c476,481
+461c470,475
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<DialogFileCB>;
@@ -145,10 +122,10 @@
 >                        std::move(window),
 >                        std::move(default_location),
 >                        allow_many);
-577,578d589
+566,567d579
 <  * @param userdata an optional pointer to pass extra data to the callback when
 <  *                 it will be invoked.
-598c609,611
+587c599,601
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<DialogFileCB>;

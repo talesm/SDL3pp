@@ -23,33 +23,33 @@ namespace SDL {
  * instead.
  *
  * The term "instance_id" is the current instantiation of a joystick device in
- * the system. If the joystick is removed and then re-inserted then it will
- * get a new instance_id. instance_id's are monotonically increasing
- * identifiers of a joystick plugged in.
+ * the system, if the joystick is removed and then re-inserted then it will get
+ * a new instance_id, instance_id's are monotonically increasing identifiers of
+ * a joystick plugged in.
  *
  * The term "player_index" is the number assigned to a player on a specific
  * controller. For XInput controllers this returns the XInput user index. Many
  * joysticks will not be able to supply this information.
  *
- * GUID is used as a stable 128-bit identifier for a joystick device that
- * does not change over time. It identifies class of the device (a X360 wired
+ * GUID is used as a stable 128-bit identifier for a joystick device that does
+ * not change over time. It identifies class of the device (a X360 wired
  * controller for example). This identifier is platform dependent.
  *
  * In order to use these functions, Init() must have been called with the
- * INIT_JOYSTICK flag. This causes SDL to scan the system for joysticks,
- * and load appropriate drivers.
+ * INIT_JOYSTICK flag. This causes SDL to scan the system for joysticks, and
+ * load appropriate drivers.
  *
- * If you would like to receive joystick updates while the application is in
- * the background, you should set the following hint before calling
- * Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+ * If you would like to receive joystick updates while the application is in the
+ * background, you should set the following hint before calling Init():
+ * SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
  *
  * SDL can provide virtual joysticks as well: the app defines an imaginary
- * controller with AttachVirtualJoystick(), and then can provide inputs
- * for it via Joystick.SetVirtualAxis(), Joystick.SetVirtualButton(),
- * etc. As this data is supplied, it will look like a normal joystick to SDL,
- * just not backed by a hardware driver. This has been used to make unusual
- * devices, like VR headset controllers, look like normal joysticks, or
- * provide recording/playback of game inputs, etc.
+ * controller with AttachVirtualJoystick(), and then can provide inputs for it
+ * via Joystick.SetVirtualAxis(), Joystick.SetVirtualButton(), etc. As this data
+ * is supplied, it will look like a normal joystick to SDL, just not backed by a
+ * hardware driver. This has been used to make unusual devices, like VR headset
+ * controllers, look like normal joysticks, or provide recording/playback of
+ * game inputs, etc.
  *
  * @{
  */
@@ -99,15 +99,14 @@ struct JoystickID;
 /**
  * An enum of some common joystick types.
  *
- * In some cases, SDL can identify a low-level joystick as being a certain
- * type of device, and will report it through Joystick.GetType (or
+ * In some cases, SDL can identify a low-level joystick as being a certain type
+ * of device, and will report it through Joystick.GetType (or
  * JoystickID.GetJoystickTypeForID).
  *
- * This is by no means a complete list of everything that can be plugged into
- * a computer.
+ * This is by no means a complete list of everything that can be plugged into a
+ * computer.
  *
- * You may refer to
- * [XInput Controller
+ * You may refer to [XInput Controller
  * Types](https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes)
  * table for a general understanding of each joystick type.
  *
@@ -351,7 +350,6 @@ public:
   /**
    * Detach a virtual joystick.
    *
-   *                    AttachVirtualJoystick().
    * @throws Error on failure.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -518,7 +516,6 @@ public:
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
    *
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -533,8 +530,7 @@ public:
    * Please note that values set here will not be applied until the next call to
    * UpdateJoysticks, which can either be called directly, or can be called
    * indirectly through various other SDL APIs, including, but not limited to
-   * the following: PollEvent, PumpEvents, WaitEventTimeout,
-   * WaitEvent.
+   * the following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
    *
    * Note that when sending trigger axes, you should scale the value to the full
    * range of Sint16. For example, a trigger at rest would have the value of
@@ -562,8 +558,7 @@ public:
    * Please note that values set here will not be applied until the next call to
    * UpdateJoysticks, which can either be called directly, or can be called
    * indirectly through various other SDL APIs, including, but not limited to
-   * the following: PollEvent, PumpEvents, WaitEventTimeout,
-   * WaitEvent.
+   * the following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
    *
    * @param ball the index of the ball on the virtual joystick to update.
    * @param xrel the relative motion on the X axis.
@@ -588,8 +583,7 @@ public:
    * Please note that values set here will not be applied until the next call to
    * UpdateJoysticks, which can either be called directly, or can be called
    * indirectly through various other SDL APIs, including, but not limited to
-   * the following: PollEvent, PumpEvents, WaitEventTimeout,
-   * WaitEvent.
+   * the following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
    *
    * @param button the index of the button on the virtual joystick to update.
    * @param down true if the button is pressed, false otherwise.
@@ -613,8 +607,7 @@ public:
    * Please note that values set here will not be applied until the next call to
    * UpdateJoysticks, which can either be called directly, or can be called
    * indirectly through various other SDL APIs, including, but not limited to
-   * the following: PollEvent, PumpEvents, WaitEventTimeout,
-   * WaitEvent.
+   * the following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
    *
    * @param hat the index of the hat on the virtual joystick to update.
    * @param value the new value for the specified hat.
@@ -638,8 +631,7 @@ public:
    * Please note that values set here will not be applied until the next call to
    * UpdateJoysticks, which can either be called directly, or can be called
    * indirectly through various other SDL APIs, including, but not limited to
-   * the following: PollEvent, PumpEvents, WaitEventTimeout,
-   * WaitEvent.
+   * the following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
    *
    * @param touchpad the index of the touchpad on the virtual joystick to
    *                 update.
@@ -672,8 +664,7 @@ public:
    * Please note that values set here will not be applied until the next call to
    * UpdateJoysticks, which can either be called directly, or can be called
    * indirectly through various other SDL APIs, including, but not limited to
-   * the following: PollEvent, PumpEvents, WaitEventTimeout,
-   * WaitEvent.
+   * the following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
    *
    * @param type the type of the sensor on the virtual joystick to update.
    * @param sensor_timestamp a 64-bit timestamp in nanoseconds associated with
@@ -702,14 +693,14 @@ public:
    *
    * The following read-only properties are provided by SDL:
    *
-   * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an
-   *   LED that has adjustable brightness
+   * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED
+   *   that has adjustable brightness
    * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED
    *   that has adjustable color
    * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a
    *   player LED
-   * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has
-   *   left/right rumble
+   * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
+   *   rumble
    * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
    *   simple trigger rumble
    *
@@ -1087,8 +1078,8 @@ public:
    * Each call to this function cancels any previous rumble effect, and calling
    * it with 0 intensity stops any rumbling.
    *
-   * This function requires you to process SDL events or call
-   * UpdateJoysticks() to update rumble state.
+   * This function requires you to process SDL events or call UpdateJoysticks()
+   * to update rumble state.
    *
    * @param low_frequency_rumble the intensity of the low frequency (left)
    *                             rumble motor, from 0 to 0xFFFF.
@@ -1116,8 +1107,8 @@ public:
    * want the (more common) whole-controller rumble, use Joystick.Rumble()
    * instead.
    *
-   * This function requires you to process SDL events or call
-   * UpdateJoysticks() to update rumble state.
+   * This function requires you to process SDL events or call UpdateJoysticks()
+   * to update rumble state.
    *
    * @param left_rumble the intensity of the left trigger rumble motor, from 0
    *                    to 0xFFFF.
@@ -1194,8 +1185,8 @@ public:
    *                left, between 0 and 100, or nullptr to ignore. This will be
    *                filled in with -1 we can't determine a value or there is no
    *                battery.
-   * @returns the current battery state or `POWERSTATE_ERROR` on failure;
-   *          call GetError() for more information.
+   * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
+   *          GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1260,7 +1251,7 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void LockJoysticks(void) { SDL_LockJoysticks(); }
+inline void LockJoysticks() { SDL_LockJoysticks(); }
 
 /**
  * Unlocking for atomic access to the joystick API.
@@ -1270,7 +1261,7 @@ inline void LockJoysticks(void) { SDL_LockJoysticks(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void UnlockJoysticks(void) { SDL_UnlockJoysticks(); }
+inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
 
 /**
  * Return whether a joystick is currently connected.
@@ -1289,8 +1280,8 @@ inline bool HasJoystick() { return SDL_HasJoystick(); }
  * Get a list of currently connected joysticks.
  *
  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
- *          call GetError() for more information. This should be freed
- *          with free() when it is no longer needed.
+ *          call GetError() for more information. This should be freed with
+ *          free() when it is no longer needed.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1496,9 +1487,8 @@ inline Uint16 JoystickID::GetJoystickProductVersionForID()
  * This can be called before any joysticks are opened.
  *
  * @param instance_id the joystick instance ID.
- * @returns the JoystickType of the selected joystick. If called with an
- *          invalid instance_id, this function returns
- *          `JOYSTICK_TYPE_UNKNOWN`.
+ * @returns the JoystickType of the selected joystick. If called with an invalid
+ *          instance_id, this function returns `JOYSTICK_TYPE_UNKNOWN`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1601,8 +1591,8 @@ using VirtualJoystickSensorDesc = SDL_VirtualJoystickSensorDesc;
 /**
  * The structure that describes a virtual joystick.
  *
- * This structure should be initialized using InitInterface(). All
- * elements of this structure are optional.
+ * This structure should be initialized using InitInterface(). All elements of
+ * this structure are optional.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -1618,9 +1608,8 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  *
  * Apps can create virtual joysticks, that exist without hardware directly
  * backing them, and have program-supplied inputs. Once attached, a virtual
- * joystick looks like any other joystick that SDL can access. These can be
- * used to make other things look like joysticks, or provide pre-recorded
- * input, etc.
+ * joystick looks like any other joystick that SDL can access. These can be used
+ * to make other things look like joysticks, or provide pre-recorded input, etc.
  *
  * Once attached, the app can send joystick inputs to the new virtual joystick
  * using Joystick.SetVirtualAxis(), etc.
@@ -1629,8 +1618,8 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
  * JoystickID.DetachVirtualJoystick().
  *
  * @param desc joystick description, initialized using InitInterface().
- * @returns the joystick instance ID, or 0 on failure; call GetError() for
- *          more information.
+ * @returns the joystick instance ID, or 0 on failure; call GetError() for more
+ *          information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -1697,9 +1686,8 @@ inline bool JoystickID::IsJoystickVirtual()
  *
  * Please note that values set here will not be applied until the next call to
  * UpdateJoysticks, which can either be called directly, or can be called
- * indirectly through various other SDL APIs, including, but not limited to
- * the following: PollEvent, PumpEvents, WaitEventTimeout,
- * WaitEvent.
+ * indirectly through various other SDL APIs, including, but not limited to the
+ * following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
  *
  * Note that when sending trigger axes, you should scale the value to the full
  * range of Sint16. For example, a trigger at rest would have the value of
@@ -1737,9 +1725,8 @@ inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
  *
  * Please note that values set here will not be applied until the next call to
  * UpdateJoysticks, which can either be called directly, or can be called
- * indirectly through various other SDL APIs, including, but not limited to
- * the following: PollEvent, PumpEvents, WaitEventTimeout,
- * WaitEvent.
+ * indirectly through various other SDL APIs, including, but not limited to the
+ * following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
  *
  * @param joystick the virtual joystick on which to set state.
  * @param ball the index of the ball on the virtual joystick to update.
@@ -1775,9 +1762,8 @@ inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
  *
  * Please note that values set here will not be applied until the next call to
  * UpdateJoysticks, which can either be called directly, or can be called
- * indirectly through various other SDL APIs, including, but not limited to
- * the following: PollEvent, PumpEvents, WaitEventTimeout,
- * WaitEvent.
+ * indirectly through various other SDL APIs, including, but not limited to the
+ * following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
  *
  * @param joystick the virtual joystick on which to set state.
  * @param button the index of the button on the virtual joystick to update.
@@ -1811,9 +1797,8 @@ inline void Joystick::SetVirtualButton(int button, bool down)
  *
  * Please note that values set here will not be applied until the next call to
  * UpdateJoysticks, which can either be called directly, or can be called
- * indirectly through various other SDL APIs, including, but not limited to
- * the following: PollEvent, PumpEvents, WaitEventTimeout,
- * WaitEvent.
+ * indirectly through various other SDL APIs, including, but not limited to the
+ * following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
  *
  * @param joystick the virtual joystick on which to set state.
  * @param hat the index of the hat on the virtual joystick to update.
@@ -1845,13 +1830,11 @@ inline void Joystick::SetVirtualHat(int hat, Uint8 value)
  *
  * Please note that values set here will not be applied until the next call to
  * UpdateJoysticks, which can either be called directly, or can be called
- * indirectly through various other SDL APIs, including, but not limited to
- * the following: PollEvent, PumpEvents, WaitEventTimeout,
- * WaitEvent.
+ * indirectly through various other SDL APIs, including, but not limited to the
+ * following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
  *
  * @param joystick the virtual joystick on which to set state.
- * @param touchpad the index of the touchpad on the virtual joystick to
- *                 update.
+ * @param touchpad the index of the touchpad on the virtual joystick to update.
  * @param finger the index of the finger on the touchpad to set.
  * @param down true if the finger is pressed, false if the finger is released.
  * @param p the x, y coordinates of the finger on the touchpad, normalized 0 to
@@ -1895,14 +1878,13 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
  *
  * Please note that values set here will not be applied until the next call to
  * UpdateJoysticks, which can either be called directly, or can be called
- * indirectly through various other SDL APIs, including, but not limited to
- * the following: PollEvent, PumpEvents, WaitEventTimeout,
- * WaitEvent.
+ * indirectly through various other SDL APIs, including, but not limited to the
+ * following: PollEvent, PumpEvents, WaitEventTimeout, WaitEvent.
  *
  * @param joystick the virtual joystick on which to set state.
  * @param type the type of the sensor on the virtual joystick to update.
- * @param sensor_timestamp a 64-bit timestamp in nanoseconds associated with
- *                         the sensor reading.
+ * @param sensor_timestamp a 64-bit timestamp in nanoseconds associated with the
+ *                         sensor reading.
  * @param data the data associated with the sensor reading.
  * @param num_values the number of values pointed to by `data`.
  * @throws Error on failure.
@@ -1941,14 +1923,14 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  *
  * The following read-only properties are provided by SDL:
  *
- * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an
- *   LED that has adjustable brightness
- * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED
- *   that has adjustable color
- * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a
- *   player LED
- * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has
- *   left/right rumble
+ * - `prop::JoystickCap.MONO_LED_BOOLEAN`: true if this joystick has an LED that
+ *   has adjustable brightness
+ * - `prop::JoystickCap.RGB_LED_BOOLEAN`: true if this joystick has an LED that
+ *   has adjustable color
+ * - `prop::JoystickCap.PLAYER_LED_BOOLEAN`: true if this joystick has a player
+ *   LED
+ * - `prop::JoystickCap.RUMBLE_BOOLEAN`: true if this joystick has left/right
+ *   rumble
  * - `prop::JoystickCap.TRIGGER_RUMBLE_BOOLEAN`: true if this joystick has
  *   simple trigger rumble
  *
@@ -2086,9 +2068,8 @@ inline void Joystick::SetPlayerIndex(int player_index)
  * This function requires an open joystick.
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
- * @returns the GUID of the given joystick. If called on an invalid index,
- *          this function returns a zero GUID; call GetError() for more
- *          information.
+ * @returns the GUID of the given joystick. If called on an invalid index, this
+ *          function returns a zero GUID; call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2182,8 +2163,7 @@ inline Uint16 Joystick::GetProductVersion()
  * If the firmware version isn't available this function returns 0.
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
- * @returns the firmware version of the selected joystick, or 0 if
- *          unavailable.
+ * @returns the firmware version of the selected joystick, or 0 if unavailable.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2248,8 +2228,7 @@ inline JoystickType Joystick::GetType()
  * Get the device information encoded in a GUID structure.
  *
  * @param guid the GUID you wish to get info about.
- * @param vendor a pointer filled in with the device VID, or 0 if not
- *               available.
+ * @param vendor a pointer filled in with the device VID, or 0 if not available.
  * @param product a pointer filled in with the device PID, or 0 if not
  *                available.
  * @param version a pointer filled in with the device version, or 0 if not
@@ -2341,8 +2320,8 @@ inline int Joystick::GetNumAxes()
 /**
  * Get the number of trackballs on a joystick.
  *
- * Joystick trackballs have only relative motion events associated with them
- * and their state cannot be polled.
+ * Joystick trackballs have only relative motion events associated with them and
+ * their state cannot be polled.
  *
  * Most joysticks do not have trackballs.
  *
@@ -2424,9 +2403,8 @@ inline int Joystick::GetNumButtons()
 /**
  * Set the state of joystick event processing.
  *
- * If joystick events are disabled, you must call UpdateJoysticks()
- * yourself and check the state of the joystick when you want joystick
- * information.
+ * If joystick events are disabled, you must call UpdateJoysticks() yourself and
+ * check the state of the joystick when you want joystick information.
  *
  * @param enabled whether to process joystick events or not.
  *
@@ -2445,9 +2423,8 @@ inline void SetJoystickEventsEnabled(bool enabled)
 /**
  * Query the state of joystick event processing.
  *
- * If joystick events are disabled, you must call UpdateJoysticks()
- * yourself and check the state of the joystick when you want joystick
- * information.
+ * If joystick events are disabled, you must call UpdateJoysticks() yourself and
+ * check the state of the joystick when you want joystick information.
  *
  * @returns true if joystick events are being processed, false otherwise.
  *
@@ -2475,14 +2452,14 @@ inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
  * Get the current state of an axis control on a joystick.
  *
  * SDL makes no promises about what part of the joystick any given axis refers
- * to. Your game should have some sort of configuration UI to let users
- * specify what each axis should be bound to. Alternately, SDL's higher-level
- * Game Controller API makes a great effort to apply order to this lower-level
+ * to. Your game should have some sort of configuration UI to let users specify
+ * what each axis should be bound to. Alternately, SDL's higher-level Game
+ * Controller API makes a great effort to apply order to this lower-level
  * interface, so you know that a specific axis is the "left thumb stick," etc.
  *
  * The value returned by Joystick.GetAxis() is a signed integer (-32768 to
- * 32767) representing the current position of the axis. It may be necessary
- * to impose certain tolerances on these values to account for jitter.
+ * 32767) representing the current position of the axis. It may be necessary to
+ * impose certain tolerances on these values to account for jitter.
  *
  * @param joystick an Joystick structure containing joystick information.
  * @param axis the axis to query; the axis indices start at index 0.
@@ -2592,8 +2569,8 @@ inline Uint8 Joystick::GetHat(int hat)
  * Get the current state of a button on a joystick.
  *
  * @param joystick an Joystick structure containing joystick information.
- * @param button the button index to get the state from; indices start at
- *               index 0.
+ * @param button the button index to get the state from; indices start at index
+ *               0.
  * @returns true if the button is pressed, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -2615,15 +2592,15 @@ inline bool Joystick::GetButton(int button)
 /**
  * Start a rumble effect.
  *
- * Each call to this function cancels any previous rumble effect, and calling
- * it with 0 intensity stops any rumbling.
+ * Each call to this function cancels any previous rumble effect, and calling it
+ * with 0 intensity stops any rumbling.
  *
- * This function requires you to process SDL events or call
- * UpdateJoysticks() to update rumble state.
+ * This function requires you to process SDL events or call UpdateJoysticks() to
+ * update rumble state.
  *
  * @param joystick the joystick to vibrate.
- * @param low_frequency_rumble the intensity of the low frequency (left)
- *                             rumble motor, from 0 to 0xFFFF.
+ * @param low_frequency_rumble the intensity of the low frequency (left) rumble
+ *                             motor, from 0 to 0xFFFF.
  * @param high_frequency_rumble the intensity of the high frequency (right)
  *                              rumble motor, from 0 to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
@@ -2656,17 +2633,16 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
  * Each call to this function cancels any previous trigger rumble effect, and
  * calling it with 0 intensity stops any rumbling.
  *
- * Note that this is rumbling of the _triggers_ and not the game controller as
- * a whole. This is currently only supported on Xbox One controllers. If you
- * want the (more common) whole-controller rumble, use Joystick.Rumble()
- * instead.
+ * Note that this is rumbling of the _triggers_ and not the game controller as a
+ * whole. This is currently only supported on Xbox One controllers. If you want
+ * the (more common) whole-controller rumble, use Joystick.Rumble() instead.
  *
- * This function requires you to process SDL events or call
- * UpdateJoysticks() to update rumble state.
+ * This function requires you to process SDL events or call UpdateJoysticks() to
+ * update rumble state.
  *
  * @param joystick the joystick to vibrate.
- * @param left_rumble the intensity of the left trigger rumble motor, from 0
- *                    to 0xFFFF.
+ * @param left_rumble the intensity of the left trigger rumble motor, from 0 to
+ *                    0xFFFF.
  * @param right_rumble the intensity of the right trigger rumble motor, from 0
  *                     to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
@@ -2701,8 +2677,8 @@ inline void Joystick::RumbleTriggers(Uint16 left_rumble,
  * An example of a joystick LED is the light on the back of a PlayStation 4's
  * DualShock 4 controller.
  *
- * For joysticks with a single color LED, the maximum of the RGB values will
- * be used as the LED brightness.
+ * For joysticks with a single color LED, the maximum of the RGB values will be
+ * used as the LED brightness.
  *
  * @param joystick the joystick to update.
  * @param red the intensity of the red LED.
@@ -2792,18 +2768,17 @@ inline JoystickConnectionState Joystick::GetConnectionState()
  * Get the battery state of a joystick.
  *
  * You should never take a battery status as absolute truth. Batteries
- * (especially failing batteries) are delicate hardware, and the values
- * reported here are best estimates based on what that hardware reports. It's
- * not uncommon for older batteries to lose stored power much faster than it
+ * (especially failing batteries) are delicate hardware, and the values reported
+ * here are best estimates based on what that hardware reports. It's not
+ * uncommon for older batteries to lose stored power much faster than it
  * reports, or completely drain when reporting it has 20 percent left, etc.
  *
  * @param joystick the joystick to query.
- * @param percent a pointer filled in with the percentage of battery life
- *                left, between 0 and 100, or nullptr to ignore. This will be
- *                filled in with -1 we can't determine a value or there is no
- *                battery.
- * @returns the current battery state or `POWERSTATE_ERROR` on failure;
- *          call GetError() for more information.
+ * @param percent a pointer filled in with the percentage of battery life left,
+ *                between 0 and 100, or nullptr to ignore. This will be filled
+ *                in with -1 we can't determine a value or there is no battery.
+ * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
+ *          GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *

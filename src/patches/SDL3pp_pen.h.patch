@@ -2,28 +2,9 @@
 <  * @defgroup CategoryPen Category Pen
 ---
 >  * @defgroup CategoryPen Pen Support
-160,163d159
+158,159d157
 < #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 < 
-< #if SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-167,170d162
-< #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-< #if SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-174,177d165
-< #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-< #if SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-181,184d168
-< #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-< #if SDL_VERSION_ATLEAST(3, 4, 0)
-< 
-188,191d171
-< 
-< #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+172,173d169
 < 
 < #if SDL_VERSION_ATLEAST(3, 4, 0)

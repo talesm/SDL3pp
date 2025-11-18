@@ -58,11 +58,11 @@
 >     Path result(*this);
 >     result /= other;
 >     return result;
-174c200
+172c198
 <   return SDL_GetPrefPath(org, app);
 ---
 >   return Path{SDL_GetPrefPath(org, app)};
-186,198c212,224
+184,196c210,222
 <  * |             | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
 <  * | | ----------- | ------- | --------- | ---- | ---------- | ----- |
 <  * ---------- | | HOME        | X       | X         |      | X          | X | X
@@ -90,15 +90,13 @@
 >  * SCREENSHOTS | Vista+  |           |      |            |       |
 >  * TEMPLATES   | X       | X         |      | X          |       |
 >  * VIDEOS      | X       | X*        |      | X          |       |
-352c378
+346c372
 <   constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
 ---
 >   constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
-447d472
-<  * @param userdata an app-controlled pointer that is passed to the callback.
-504d528
+494d519
 <  * @param userdata a pointer that is passed to `callback`.
-513c537,543
+503c528,534
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateDirectory(
@@ -108,27 +106,25 @@
 >       return cb(dirname, fname);
 >     },
 >     &callback);
-517,527c547
+507,515c538
 <  * Enumerate a directory through a callback function.
 <  *
 <  * This function provides every directory entry through an app-provided
 <  * callback, called once for each directory entry, until all results have been
-<  * provided or the callback returns either ENUM_SUCCESS or
-<  * ENUM_FAILURE.
+<  * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
 <  *
 <  * This will return false if there was a system problem in general, or if a
-<  * callback returns ENUM_FAILURE. A successful return means a callback
-<  * returned ENUM_SUCCESS to halt enumeration, or all directory entries
-<  * were enumerated.
+<  * callback returns ENUM_FAILURE. A successful return means a callback returned
+<  * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
 ---
 >  * Enumerate a directory.
-530,532c550
+518,520c541
 <  * @param callback a function that is called for each entry in the directory.
 <  * @param userdata a pointer that is passed to `callback`.
 <  * @throws Error on failure.
 ---
 >  * @returns all the directory contents.
-540c558,563
+528c549,554
 <   static_assert(false, "Not implemented");
 ---
 >   std::vector<Path> r;
@@ -137,35 +133,35 @@
 >     return ENUM_CONTINUE;
 >   });
 >   return r;
-546c569
+534c560
 <  * Directories that are not empty will fail; this function will not recursely
 ---
 >  * Directories that are not empty will fail; this function will not recursively
-635,636c658
+622,623c648
 <  * @param info a pointer filled in with information about the path, or nullptr
-<  * to check for the existence of a file.
+<  *             to check for the existence of a file.
 ---
 >  * @returns the information about the path on success.
-645c667,669
+632c657,659
 <   return CheckError(SDL_GetPathInfo(path));
 ---
 >   PathInfo info;
 >   CheckError(SDL_GetPathInfo(path, &info));
 >   return info;
-669,670d692
+656,657d682
 <  * @param count on return, will be set to the number of items in the returned
 <  *              array. Can be nullptr.
-680c702
+667c692
 <                                      GlobFlags flags)
 ---
 >                                      GlobFlags flags = 0)
-682c704,706
+669c694,696
 <   return CheckError(SDL_GlobDirectory(path, pattern, flags));
 ---
 >   int count;
 >   auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
 >   return OwnArray<char*>{data, size_t(count)};
-706c730
+693c720
 < inline Path GetCurrentDirectory() { return SDL_GetCurrentDirectory(); }
 ---
 > inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
