@@ -1,7 +1,7 @@
-const { writeJSONSync } = require("./cppfier/dist/utils");
+import { writeJSONSync } from "./cppfier/src/utils.ts";
 
 /**
- * @import {ApiTransform} from "./cppfier/dist/types"
+ * @import {ApiTransform} from "./cppfier/src/types.ts"
  */
 
 /** @type {ApiTransform} */
@@ -11,8 +11,7 @@ const transform = {
   sourceIncludePrefix: 'SDL3/',
   namespace: "SDL",
   renameRules: [{
-    // @ts-ignore
-    pattern: "^SDL_(.*)\\.h$",
+    pattern: String.raw`^SDL_(.*)\.h$`,
     replacement: "SDL3pp_$1.h"
   }],
   minVersions: {

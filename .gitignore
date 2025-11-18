@@ -10,3 +10,4 @@ scripts/transform-legacy.json
 .antlr/
 *.tokens
 *.interp
+scripts/cppfier/dist/
