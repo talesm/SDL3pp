@@ -1,4 +1,4 @@
-// Generated from src/grammar/CHeader.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from grammar/CHeader.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";

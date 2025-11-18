@@ -168,7 +168,7 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
-file(GLOB_RECURSE CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/src/*.ts scripts/cppfier/src/*.g4)
+file(GLOB_RECURSE CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts scripts/cppfier/*.g4)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
