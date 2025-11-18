@@ -1,12 +1,7 @@
 import { generateApi } from "./generate";
 import { parseApi } from "./parse";
-import { transformApi } from "./transform.js";
-import {
-  readJSONSync,
-  system,
-  writeJSONSync,
-  writeLinesSync,
-} from "./utils.js";
+import { transformApi } from "./transform";
+import { readJSONSync, system, writeJSONSync, writeLinesSync } from "./utils";
 import { Api, ApiTransform, Dict } from "./types";
 
 /**

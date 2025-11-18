@@ -1,4 +1,4 @@
-import { writeJSONSync } from "./cppfier/utils";
+import { writeJSONSync } from "./cppfier/utils.ts";
 
 /**
  * @import {ApiTransform} from "./cppfier/types"

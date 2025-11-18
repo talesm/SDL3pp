@@ -9,7 +9,7 @@ import {
   ParsedDoc,
   ParsedDocContent,
 } from "./types.js";
-import { system, writeLinesSync } from "./utils.js";
+import { system, writeLinesSync } from "./utils";
 import { existsSync, mkdirSync } from "node:fs";
 
 export interface GenerateApiConfig {
