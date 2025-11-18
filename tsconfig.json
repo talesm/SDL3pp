@@ -1,6 +1,6 @@
 {
-  "include": ["./*.ts"],
-  "exclude": ["./dist"],
+  "include": ["scripts/**/*.ts"],
+  "exclude": ["scripts/**/dist/"],
   "compilerOptions": {
     "lib": [
       "ES2024"
