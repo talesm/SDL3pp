@@ -23,7 +23,7 @@ function readLinesSync(path) {
  * @param data
  */
 function writeLinesSync(path, data) {
-    return (0, node_fs_1.writeFileSync)(path, data.join('\n').trim() + "\n");
+    return (0, node_fs_1.writeFileSync)(path, data.join("\n").trim() + "\n");
 }
 /**
  * Read a file as a JSON
@@ -79,7 +79,9 @@ function combineObject(target, source) {
         return target;
     for (const [k, v] of Object.entries(source)) {
         const targetValue = target[k];
-        if (!Object.hasOwn(target, k) || targetValue === null || typeof targetValue !== "object") {
+        if (!Object.hasOwn(target, k) ||
+            targetValue === null ||
+            typeof targetValue !== "object") {
             target[k] = v;
         }
         else if (Array.isArray(targetValue)) {
@@ -96,8 +98,8 @@ function combineObject(target, source) {
  * @param name
  */
 function looksLikeFreeFunction(name) {
-    return /^[A-Z]+_([Dd]estroy|[Cc]lose|[Ff]ree)[A-Z]/.test(name)
-        || /_([Dd]estroy|[Cc]lose|[Ff]ree)$/.test(name);
+    return (/^[A-Z]+_([Dd]estroy|[Cc]lose|[Ff]ree)[A-Z]/.test(name) ||
+        /_([Dd]estroy|[Cc]lose|[Ff]ree)$/.test(name));
 }
 exports.system = {
     silent: true,
@@ -127,7 +129,7 @@ function deepClone(obj) {
     if (typeof obj !== "object" || obj === null)
         return obj;
     if (Array.isArray(obj))
-        return obj.map(el => deepClone(el));
+        return obj.map((el) => deepClone(el));
     // @ts-ignore
     if (typeof obj?.clone === "function")
         return obj.clone();

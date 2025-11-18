@@ -1,4 +1,4 @@
-import { Api } from './types';
+import { Api } from "./types";
 export interface ParseConfig {
     baseDir: string[];
     sources: string[];

@@ -18,7 +18,7 @@ export interface ApiFile {
     entriesBegin?: number;
     entriesEnd?: number;
 }
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | 'plc';
+export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | "plc";
 export interface ApiEntryBase {
     name?: string;
     kind?: ApiEntryKind;
@@ -49,7 +49,7 @@ export interface EntryHint {
     removeParamThis?: boolean;
     private?: boolean;
     wrapSelf?: boolean;
-    changeAccess?: 'public' | 'private';
+    changeAccess?: "public" | "private";
     delegate?: string;
     methodName?: string;
 }

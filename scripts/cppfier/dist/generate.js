@@ -4,7 +4,7 @@ exports.generateApi = generateApi;
 exports.generateCallParameters = generateCallParameters;
 exports.combineHints = combineHints;
 const utils_js_1 = require("./utils.js");
-const fs_1 = require("fs");
+const node_fs_1 = require("node:fs");
 /**
  * Generate api headers from config
  * @param {GenerateApiConfig} config
@@ -12,9 +12,9 @@ const fs_1 = require("fs");
 function generateApi(config) {
     const { api, baseDir } = config;
     const files = Object.keys(api.files);
-    if (!(0, fs_1.existsSync)(baseDir)) {
+    if (!(0, node_fs_1.existsSync)(baseDir)) {
         utils_js_1.system.warn(`target dir does not exist, creating it: ${baseDir}`);
-        (0, fs_1.mkdirSync)(baseDir);
+        (0, node_fs_1.mkdirSync)(baseDir);
     }
     let totalChanges = 0;
     for (const name of files) {
@@ -44,12 +44,12 @@ function generateApi(config) {
  */
 function generateFile(targetFile, config) {
     const targetName = targetFile.name;
-    const guardName = targetName.toUpperCase().replace('.', '_') + '_';
+    const guardName = targetName.toUpperCase().replace(".", "_") + "_";
     const namespace = "SDL";
-    const generatedEntries = generateEntries(targetFile.entries, '');
+    const generatedEntries = generateEntries(targetFile.entries, "");
     const includes = [
-        ...(targetFile.includes ?? []).sort().map(s => `#include <${s}>`),
-        ...(targetFile.localIncludes ?? []).sort().map(s => `#include "${s}"`),
+        ...(targetFile.includes ?? []).sort().map((s) => `#include <${s}>`),
+        ...(targetFile.localIncludes ?? []).sort().map((s) => `#include "${s}"`),
     ];
     const doc = generateFileDocString(targetFile.doc);
     return [
@@ -58,14 +58,14 @@ function generateFile(targetFile, config) {
         `\nnamespace ${namespace} {\n`,
         `${doc}\n`,
         generatedEntries,
-        `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`
+        `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`,
     ];
     function generateEntries(entries, prefix) {
         if (!prefix)
-            prefix = '';
+            prefix = "";
         const result = [];
-        Object.values(entries).forEach(entry => doGenerateEntries(entry));
-        return result.join('\n\n') + '\n';
+        Object.values(entries).forEach((entry) => doGenerateEntries(entry));
+        return result.join("\n\n") + "\n";
         function doGenerateEntries(entry) {
             result.push(generateEntry(entry, prefix));
             if (entry.overload)
@@ -81,26 +81,29 @@ function generateFile(targetFile, config) {
     function generateDocString(doc, prefix) {
         if (!doc?.length)
             return undefined;
-        prefix = (prefix ?? '');
+        prefix = prefix ?? "";
         if (doc.length === 1) {
             const docStr = doc[0];
-            if (typeof docStr === 'string' && docStr.length < (80 - 4 - prefix.length)) {
+            if (typeof docStr === "string" &&
+                docStr.length < 80 - 4 - prefix.length) {
                 return `\n${prefix} /// ${docStr}`;
             }
         }
         const internalPrefix = prefix + " * ";
         const maxLength = 80 - internalPrefix.length;
-        const docStr = doc.map(generateDocItem).join(`\n${prefix} *\n${internalPrefix}`);
+        const docStr = doc
+            .map(generateDocItem)
+            .join(`\n${prefix} *\n${internalPrefix}`);
         return `\n${prefix}/**\n${internalPrefix}${docStr}\n${prefix} */`;
         function generateDocItem(item) {
-            if (typeof item === 'string')
+            if (typeof item === "string")
                 return generateDocStringItem(item, internalPrefix, maxLength).trimEnd();
             if (Array.isArray(item))
-                return item.map(generateDocItem).join('\n' + internalPrefix);
+                return item.map(generateDocItem).join("\n" + internalPrefix);
             if (!item.tag)
-                return item.content.replaceAll('\n', '\n' + internalPrefix);
+                return item.content.replaceAll("\n", "\n" + internalPrefix);
             const tagLen = item.tag.length + 1;
-            const content = generateDocStringItem(item.content, internalPrefix + ' '.repeat(tagLen), maxLength - tagLen);
+            const content = generateDocStringItem(item.content, internalPrefix + " ".repeat(tagLen), maxLength - tagLen);
             return `${item.tag} ${content}`;
         }
     }
@@ -109,9 +112,9 @@ function generateFile(targetFile, config) {
             return docStr;
         const result = [];
         while (docStr.length > maxLength) {
-            let cutPoint = docStr.lastIndexOf(' ', maxLength);
+            let cutPoint = docStr.lastIndexOf(" ", maxLength);
             if (cutPoint === -1) {
-                cutPoint = docStr.indexOf(' ');
+                cutPoint = docStr.indexOf(" ");
                 if (cutPoint === -1)
                     break;
             }
@@ -121,14 +124,16 @@ function generateFile(targetFile, config) {
         docStr = docStr.trim();
         if (docStr)
             result.push(docStr);
-        return result.join('\n' + prefix);
+        return result.join("\n" + prefix);
     }
     function generateEntry(entry, prefix) {
-        prefix = prefix ?? '';
+        prefix = prefix ?? "";
         const doc = generateDocString(entry.doc, prefix) ?? "";
         const template = generateTemplateSignature(entry.template, prefix);
         const version = entry.since;
-        const accessMod = entry.hints?.changeAccess ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n` : '';
+        const accessMod = entry.hints?.changeAccess
+            ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n`
+            : "";
         if (!version)
             return accessMod + doGenerate(entry);
         const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
@@ -143,7 +148,10 @@ function generateFile(targetFile, config) {
                 case "def":
                     return `${doc}\n${generateDef(entry)}`;
                 case "forward":
-                    return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
+                    return ("// Forward decl\n" +
+                        template +
+                        generateStructSignature(entry, prefix) +
+                        ";");
                 case "function":
                     return `${doc}\n${template}${generateFunction(entry, prefix)}`;
                 case "ns":
@@ -154,7 +162,7 @@ function generateFile(targetFile, config) {
                     const varStr = generateVar(entry, prefix);
                     if (entry?.doc?.length === 1) {
                         const firstLine = entry.doc[0];
-                        if (typeof firstLine === 'string' && firstLine.length <= 50) {
+                        if (typeof firstLine === "string" && firstLine.length <= 50) {
                             return template + varStr + " ///< " + firstLine;
                         }
                     }
@@ -166,18 +174,18 @@ function generateFile(targetFile, config) {
         }
     }
     function generateVar(entry, prefix) {
-        let value = '';
+        let value = "";
         if (entry.hints?.body)
             value = ` = ${entry.hints?.body}`;
         else if (entry.sourceName)
             value = ` = ${entry.sourceName}`;
-        return generateDeclPrefix(entry, prefix) + value + ';';
+        return generateDeclPrefix(entry, prefix) + value + ";";
     }
     function generateDef(entry) {
         const sourceName = entry.sourceName != entry.name ? entry.sourceName : undefined;
         if (!entry.parameters)
             return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
-        const parameters = `(${entry.parameters.map(p => p.name).join(", ")})`;
+        const parameters = `(${entry.parameters.map((p) => p.name).join(", ")})`;
         const body = sourceName ? `${entry.sourceName}${parameters}` : entry.value;
         return `#define ${entry.name}${parameters} ${body ?? ""}`;
     }
@@ -196,7 +204,9 @@ function generateFile(targetFile, config) {
             }
         }
         const maybeDelegatedTo = hint?.delegate ?? entry.sourceName;
-        const delegatedTo = maybeDelegatedTo === entry.name ? ("::" + maybeDelegatedTo) : maybeDelegatedTo;
+        const delegatedTo = maybeDelegatedTo === entry.name
+            ? "::" + maybeDelegatedTo
+            : maybeDelegatedTo;
         if (!delegatedTo) {
             if (entry.proto)
                 return ";";
@@ -206,10 +216,13 @@ function generateFile(targetFile, config) {
         }
         if (entry.proto)
             return ";";
-        const paramReplacements = hint?.delegate ? config.delegatedReplacements : config.paramReplacements;
+        const paramReplacements = hint?.delegate
+            ? config.delegatedReplacements
+            : config.paramReplacements;
         const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
-        const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
-        const paramStr = selfStrPrefix + generateCallParameters(entry.parameters, paramReplacements);
+        const selfStrPrefix = (selfStr || "") + (entry.parameters?.length && selfStr ? ", " : "");
+        const paramStr = selfStrPrefix +
+            generateCallParameters(entry.parameters, paramReplacements);
         const internalCallStr = `${delegatedTo}(${paramStr})`;
         const callStr = wrapFailCheck(internalCallStr);
         if (!entry.type && !entry.name.includes("operator")) {
@@ -224,14 +237,18 @@ function generateFile(targetFile, config) {
         function wrapFailCheck(source) {
             if (!hint?.mayFail || hint?.delegate)
                 return source;
-            if (typeof hint.mayFail === 'string')
+            if (typeof hint.mayFail === "string")
                 return `CheckErrorIfNot(${internalCallStr}, ${hint.mayFail})`;
             return `CheckError(${internalCallStr})`;
         }
     }
     function generateFunction(entry, prefix) {
         const reference = entry.reference ? "&".repeat(entry.reference) : "";
-        const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
+        const specifier = entry.immutable
+            ? ` const${reference}`
+            : reference
+                ? " " + reference
+                : "";
         const parameters = generateParameters(entry.parameters ?? []);
         const body = generateBody(entry, prefix);
         return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}${body}`;
@@ -239,7 +256,7 @@ function generateFile(targetFile, config) {
     function generateDeclPrefix(entry, prefix) {
         const staticStr = entry.static ? "static " : "";
         const explicitStr = entry.explicit ? "explicit " : "";
-        const specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
+        const specifier = entry.constexpr ? "constexpr " : prefix ? "" : "inline ";
         return `${prefix}${staticStr}${specifier}${explicitStr}${entry.type ?? "auto"} ${entry.name}`;
     }
     function generateNS(entry) {
@@ -262,19 +279,19 @@ function generateFile(targetFile, config) {
         return `${prefix}struct ${entry.name}`;
     }
     function generateTemplateSignature(template, prefix) {
-        return !template ? "" : `${prefix}template<${generateParameters(template)}>\n`;
+        return !template
+            ? ""
+            : `${prefix}template<${generateParameters(template)}>\n`;
     }
 }
 function generateCallParameters(parameters, replacements) {
-    return parameters
-        ?.map(p => unwrap(p))
-        ?.join(", ") ?? "";
+    return parameters?.map((p) => unwrap(p))?.join(", ") ?? "";
     /** @param {ApiParameter} p  */
     function unwrap(p) {
         const m = replacements[p.type];
         if (!m)
             return p.name;
-        return m.replaceAll('$', p.name);
+        return m.replaceAll("$", p.name);
     }
 }
 function combineHints(entry) {
@@ -294,11 +311,11 @@ function combineHints(entry) {
     }
 }
 function generateParameters(parameters) {
-    return parameters.map(p => generateParameter(p)).join(', ');
+    return parameters.map((p) => generateParameter(p)).join(", ");
 }
 function generateParameter(parameter) {
     if (!parameter.type)
-        return parameter.name ?? '';
+        return parameter.name ?? "";
     if (!parameter.default)
         return `${parameter.type} ${parameter.name ?? ""}`;
     return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;

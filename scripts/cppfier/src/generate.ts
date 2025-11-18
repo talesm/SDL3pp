@@ -1,6 +1,16 @@
-import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters, Dict, ParsedDoc, ParsedDocContent } from "./types.js";
+import {
+  Api,
+  ApiEntries,
+  ApiEntry,
+  ApiFile,
+  ApiParameter,
+  ApiParameters,
+  Dict,
+  ParsedDoc,
+  ParsedDocContent,
+} from "./types.js";
 import { system, writeLinesSync } from "./utils.js";
-import { existsSync, mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "node:fs";
 
 export interface GenerateApiConfig {
   api?: Api;
@@ -9,7 +19,7 @@ export interface GenerateApiConfig {
 
 /**
  * Generate api headers from config
- * @param {GenerateApiConfig} config 
+ * @param {GenerateApiConfig} config
  */
 export function generateApi(config) {
   const { api, baseDir } = config;
@@ -47,19 +57,19 @@ export interface GenerateApiFileConfig {
 }
 
 /**
- * 
- * @param {ApiFile} targetFile 
- * @param {GenerateApiFileConfig} config 
+ *
+ * @param {ApiFile} targetFile
+ * @param {GenerateApiFileConfig} config
  */
 function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   const targetName = targetFile.name;
-  const guardName = targetName.toUpperCase().replace('.', '_') + '_';
+  const guardName = targetName.toUpperCase().replace(".", "_") + "_";
   const namespace = "SDL";
-  const generatedEntries = generateEntries(targetFile.entries, '');
+  const generatedEntries = generateEntries(targetFile.entries, "");
 
   const includes = [
-    ...(targetFile.includes ?? []).sort().map(s => `#include <${s}>`),
-    ...(targetFile.localIncludes ?? []).sort().map(s => `#include "${s}"`),
+    ...(targetFile.includes ?? []).sort().map((s) => `#include <${s}>`),
+    ...(targetFile.localIncludes ?? []).sort().map((s) => `#include "${s}"`),
   ];
 
   const doc = generateFileDocString(targetFile.doc);
@@ -70,15 +80,15 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     `\nnamespace ${namespace} {\n`,
     `${doc}\n`,
     generatedEntries,
-    `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`
+    `/// @}\n\n} // namespace ${namespace}\n\n#endif /* ${guardName} */`,
   ];
 
   function generateEntries(entries: ApiEntries, prefix: string) {
-    if (!prefix) prefix = '';
+    if (!prefix) prefix = "";
 
     const result: string[] = [];
-    Object.values(entries).forEach(entry => doGenerateEntries(entry));
-    return result.join('\n\n') + '\n';
+    Object.values(entries).forEach((entry) => doGenerateEntries(entry));
+    return result.join("\n\n") + "\n";
 
     function doGenerateEntries(entry) {
       result.push(generateEntry(entry, prefix));
@@ -94,35 +104,50 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
   function generateDocString(doc: ParsedDoc, prefix?: string) {
     if (!doc?.length) return undefined;
-    prefix = (prefix ?? '');
+    prefix = prefix ?? "";
     if (doc.length === 1) {
       const docStr = doc[0];
-      if (typeof docStr === 'string' && docStr.length < (80 - 4 - prefix.length)) {
+      if (
+        typeof docStr === "string" &&
+        docStr.length < 80 - 4 - prefix.length
+      ) {
         return `\n${prefix} /// ${docStr}`;
       }
     }
     const internalPrefix = prefix + " * ";
     const maxLength = 80 - internalPrefix.length;
-    const docStr = doc.map(generateDocItem).join(`\n${prefix} *\n${internalPrefix}`);
+    const docStr = doc
+      .map(generateDocItem)
+      .join(`\n${prefix} *\n${internalPrefix}`);
     return `\n${prefix}/**\n${internalPrefix}${docStr}\n${prefix} */`;
 
     function generateDocItem(item: ParsedDocContent): string {
-      if (typeof item === 'string') return generateDocStringItem(item, internalPrefix, maxLength).trimEnd();
-      if (Array.isArray(item)) return item.map(generateDocItem).join('\n' + internalPrefix);
-      if (!item.tag) return item.content.replaceAll('\n', '\n' + internalPrefix);
+      if (typeof item === "string")
+        return generateDocStringItem(item, internalPrefix, maxLength).trimEnd();
+      if (Array.isArray(item))
+        return item.map(generateDocItem).join("\n" + internalPrefix);
+      if (!item.tag)
+        return item.content.replaceAll("\n", "\n" + internalPrefix);
       const tagLen = item.tag.length + 1;
-      const content = generateDocStringItem(item.content, internalPrefix + ' '.repeat(tagLen), maxLength - tagLen);
+      const content = generateDocStringItem(
+        item.content,
+        internalPrefix + " ".repeat(tagLen),
+        maxLength - tagLen
+      );
       return `${item.tag} ${content}`;
     }
-
   }
-  function generateDocStringItem(docStr: string, prefix: string, maxLength: number) {
+  function generateDocStringItem(
+    docStr: string,
+    prefix: string,
+    maxLength: number
+  ) {
     if (docStr.length <= maxLength) return docStr;
     const result: string[] = [];
     while (docStr.length > maxLength) {
-      let cutPoint = docStr.lastIndexOf(' ', maxLength);
+      let cutPoint = docStr.lastIndexOf(" ", maxLength);
       if (cutPoint === -1) {
-        cutPoint = docStr.indexOf(' ');
+        cutPoint = docStr.indexOf(" ");
         if (cutPoint === -1) break;
       }
       result.push(docStr.slice(0, cutPoint));
@@ -130,29 +155,39 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     }
     docStr = docStr.trim();
     if (docStr) result.push(docStr);
-    return result.join('\n' + prefix);
+    return result.join("\n" + prefix);
   }
 
   function generateEntry(entry: ApiEntry, prefix?: string) {
-    prefix = prefix ?? '';
+    prefix = prefix ?? "";
     const doc = generateDocString(entry.doc, prefix) ?? "";
     const template = generateTemplateSignature(entry.template, prefix);
     const version = entry.since;
-    const accessMod = entry.hints?.changeAccess ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n` : '';
+    const accessMod = entry.hints?.changeAccess
+      ? `${prefix.slice(2)}${entry.hints?.changeAccess}:\n`
+      : "";
     if (!version) return accessMod + doGenerate(entry);
     const versionStr = `${version.tag}_VERSION_ATLEAST(${version.major}, ${version.minor}, ${version.patch})`;
-    return `${accessMod}#if ${versionStr}\n\n${doGenerate(entry)}\n\n#endif // ${versionStr}`;
+    return `${accessMod}#if ${versionStr}\n\n${doGenerate(
+      entry
+    )}\n\n#endif // ${versionStr}`;
 
     function doGenerate(entry: ApiEntry) {
       switch (entry.kind) {
         case "alias":
           if (!entry.type) return `${doc}\n${prefix}using ${entry.name};`;
-          const target = entry.name === entry.type ? `::${entry.type}` : entry.type;
+          const target =
+            entry.name === entry.type ? `::${entry.type}` : entry.type;
           return `${doc}\n${template}${prefix}using ${entry.name} = ${target};`;
         case "def":
           return `${doc}\n${generateDef(entry)}`;
         case "forward":
-          return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
+          return (
+            "// Forward decl\n" +
+            template +
+            generateStructSignature(entry, prefix) +
+            ";"
+          );
         case "function":
           return `${doc}\n${template}${generateFunction(entry, prefix)}`;
         case "ns":
@@ -163,7 +198,7 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
           const varStr = generateVar(entry, prefix);
           if (entry?.doc?.length === 1) {
             const firstLine = entry.doc[0];
-            if (typeof firstLine === 'string' && firstLine.length <= 50) {
+            if (typeof firstLine === "string" && firstLine.length <= 50) {
               return template + varStr + " ///< " + firstLine;
             }
           }
@@ -172,22 +207,23 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
           system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
           return `${doc}\n#${prefix}error "${entry.name} (${entry.kind})"`;
       }
-
     }
   }
 
   function generateVar(entry: ApiEntry, prefix: string) {
-    let value = '';
+    let value = "";
     if (entry.hints?.body) value = ` = ${entry.hints?.body}`;
     else if (entry.sourceName) value = ` = ${entry.sourceName}`;
-    return generateDeclPrefix(entry, prefix) + value + ';';
+    return generateDeclPrefix(entry, prefix) + value + ";";
   }
 
   function generateDef(entry: ApiEntry) {
-    const sourceName = entry.sourceName != entry.name ? entry.sourceName : undefined;
-    if (!entry.parameters) return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
+    const sourceName =
+      entry.sourceName != entry.name ? entry.sourceName : undefined;
+    if (!entry.parameters)
+      return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
 
-    const parameters = `(${entry.parameters.map(p => p.name).join(", ")})`;
+    const parameters = `(${entry.parameters.map((p) => p.name).join(", ")})`;
     const body = sourceName ? `${entry.sourceName}${parameters}` : entry.value;
     return `#define ${entry.name}${parameters} ${body ?? ""}`;
   }
@@ -198,24 +234,38 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     if (hint?.default) return " = default;";
     if (!entry.proto) {
       if (hint?.body) {
-        return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll("\n", `\n${prefix}  `)}\n${prefix}}`;
+        return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll(
+          "\n",
+          `\n${prefix}  `
+        )}\n${prefix}}`;
       }
       if (hint?.init?.length) {
-        return `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}\n${prefix}{}`;
+        return `\n${prefix}  : ${hint.init.join(
+          `\n${prefix}  , `
+        )}\n${prefix}{}`;
       }
     }
     const maybeDelegatedTo = hint?.delegate ?? entry.sourceName;
-    const delegatedTo = maybeDelegatedTo === entry.name ? ("::" + maybeDelegatedTo) : maybeDelegatedTo;
+    const delegatedTo =
+      maybeDelegatedTo === entry.name
+        ? "::" + maybeDelegatedTo
+        : maybeDelegatedTo;
     if (!delegatedTo) {
       if (entry.proto) return ";";
       if (entry.type === "" && !entry.name.startsWith("operator")) return "{}";
       return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
     }
     if (entry.proto) return ";";
-    const paramReplacements: Dict<string> = hint?.delegate ? config.delegatedReplacements : config.paramReplacements;
-    const selfStr = entry.type && !entry.static && !entry.hints?.static && hint?.self;
-    const selfStrPrefix = (selfStr || "") + ((entry.parameters?.length && selfStr) ? ", " : "");
-    const paramStr = selfStrPrefix + generateCallParameters(entry.parameters, paramReplacements);
+    const paramReplacements: Dict<string> = hint?.delegate
+      ? config.delegatedReplacements
+      : config.paramReplacements;
+    const selfStr =
+      entry.type && !entry.static && !entry.hints?.static && hint?.self;
+    const selfStrPrefix =
+      (selfStr || "") + (entry.parameters?.length && selfStr ? ", " : "");
+    const paramStr =
+      selfStrPrefix +
+      generateCallParameters(entry.parameters, paramReplacements);
     const internalCallStr = `${delegatedTo}(${paramStr})`;
     const callStr = wrapFailCheck(internalCallStr);
     if (!entry.type && !entry.name.includes("operator")) {
@@ -230,24 +280,34 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
 
     function wrapFailCheck(source: string) {
       if (!hint?.mayFail || hint?.delegate) return source;
-      if (typeof hint.mayFail === 'string') return `CheckErrorIfNot(${internalCallStr}, ${hint.mayFail})`;
+      if (typeof hint.mayFail === "string")
+        return `CheckErrorIfNot(${internalCallStr}, ${hint.mayFail})`;
       return `CheckError(${internalCallStr})`;
     }
   }
 
   function generateFunction(entry: ApiEntry, prefix: string) {
     const reference = entry.reference ? "&".repeat(entry.reference) : "";
-    const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
+    const specifier = entry.immutable
+      ? ` const${reference}`
+      : reference
+      ? " " + reference
+      : "";
     const parameters = generateParameters(entry.parameters ?? []);
     const body = generateBody(entry, prefix);
-    return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}${body}`;
+    return `${generateDeclPrefix(
+      entry,
+      prefix
+    )}(${parameters})${specifier}${body}`;
   }
 
   function generateDeclPrefix(entry: ApiEntry, prefix: string) {
     const staticStr = entry.static ? "static " : "";
     const explicitStr = entry.explicit ? "explicit " : "";
-    const specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
-    return `${prefix}${staticStr}${specifier}${explicitStr}${entry.type ?? "auto"} ${entry.name}`;
+    const specifier = entry.constexpr ? "constexpr " : prefix ? "" : "inline ";
+    return `${prefix}${staticStr}${specifier}${explicitStr}${
+      entry.type ?? "auto"
+    } ${entry.name}`;
   }
 
   function generateNS(entry: ApiEntry) {
@@ -273,21 +333,23 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   }
 
   function generateTemplateSignature(template: ApiParameters, prefix: string) {
-    return !template ? "" : `${prefix}template<${generateParameters(template)}>\n`;
+    return !template
+      ? ""
+      : `${prefix}template<${generateParameters(template)}>\n`;
   }
 }
 
-
-export function generateCallParameters(parameters: ApiParameters, replacements: Dict<string>) {
-  return parameters
-    ?.map(p => unwrap(p))
-    ?.join(", ") ?? "";
+export function generateCallParameters(
+  parameters: ApiParameters,
+  replacements: Dict<string>
+) {
+  return parameters?.map((p) => unwrap(p))?.join(", ") ?? "";
 
   /** @param {ApiParameter} p  */
   function unwrap(p) {
     const m = replacements[p.type];
     if (!m) return p.name;
-    return m.replaceAll('$', p.name);
+    return m.replaceAll("$", p.name);
   }
 }
 
@@ -306,11 +368,11 @@ export function combineHints(entry: ApiEntry) {
 }
 
 function generateParameters(parameters: ApiParameter[]) {
-  return parameters.map(p => generateParameter(p)).join(', ');
+  return parameters.map((p) => generateParameter(p)).join(", ");
 }
 
 function generateParameter(parameter: ApiParameter) {
-  if (!parameter.type) return parameter.name ?? '';
+  if (!parameter.type) return parameter.name ?? "";
   if (!parameter.default) return `${parameter.type} ${parameter.name ?? ""}`;
   return `${parameter.type} ${parameter.name ?? ""} = ${parameter.default}`;
 }

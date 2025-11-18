@@ -1,4 +1,4 @@
-export type Dict<T> = { [key: string]: T; };
+export type Dict<T> = { [key: string]: T };
 
 export interface Api {
   files: Dict<ApiFile>;
@@ -19,7 +19,18 @@ export interface ApiFile {
   entriesEnd?: number;
 }
 
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns" | 'plc';
+export type ApiEntryKind =
+  | "alias"
+  | "callback"
+  | "def"
+  | "enum"
+  | "forward"
+  | "function"
+  | "struct"
+  | "union"
+  | "var"
+  | "ns"
+  | "plc";
 
 export interface ApiEntryBase {
   name?: string;
@@ -52,7 +63,7 @@ export interface EntryHint {
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;
-  changeAccess?: 'public' | 'private';
+  changeAccess?: "public" | "private";
   delegate?: string;
   methodName?: string;
 }
@@ -128,7 +139,7 @@ export interface ApiFileTransform {
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | QuickTransform>;
 
 export interface ApiEntryTransform extends ApiEntryBase {
-  entries?: ApiEntryTransformMap,
+  entries?: ApiEntryTransformMap;
   link?: ApiEntryTransform;
   enum?: true | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
@@ -138,10 +149,9 @@ export interface ApiEntryTransform extends ApiEntryBase {
 }
 
 export interface ResourceDefinition {
-
   /**
    * The source name of constructors
-   * 
+   *
    * Anything marked as "ctor" is automatically added here
    */
   ctors?: string[];
@@ -169,7 +179,7 @@ export interface ResourceDefinition {
 
   /**
    * If true allow member access with `->` arrow.
-   * 
+   *
    * Default true for non-opaque structs
    */
   enableMemberAccess?: boolean;
@@ -213,12 +223,12 @@ export interface WrapperDefinition {
   /** Defaults to true, relevant only to struct */
   genMembers?: boolean;
 
-  /** 
+  /**
    * Defaults to true if alias to anything but `void *`, false otherwise.
    */
   ordered?: boolean;
 
-  /** 
+  /**
    * Defaults to true if ordered is false and not a struct
    */
   comparable?: boolean;
@@ -276,7 +286,11 @@ export interface FileToken {
 
 export type ParsedDoc = ParsedDocContent[];
 
-export type ParsedDocContent = string | ListContent | StaticContent | TaggedContent;
+export type ParsedDocContent =
+  | string
+  | ListContent
+  | StaticContent
+  | TaggedContent;
 
 export type ListContent = TaggedContent[];
 export interface StaticContent {
@@ -288,5 +302,3 @@ export interface TaggedContent {
   tag: string;
   content: string;
 }
-
-

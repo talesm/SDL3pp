@@ -75,50 +75,52 @@ function parse(args) {
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
         if (arg == "--") {
-            config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+            config.sources.push(...args.slice(i + 1).map((arg) => arg.replaceAll("\\", "/")));
             break;
         }
-        if (!arg.startsWith('-')) {
+        if (!arg.startsWith("-")) {
             if (arg.endsWith(".json")) {
-                mergeInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", '/')));
+                mergeInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", "/")));
             }
             else
-                config.sources.push(arg.replaceAll("\\", '/'));
+                config.sources.push(arg.replaceAll("\\", "/"));
             continue;
         }
         switch (arg) {
-            case '--outputFile':
-            case '-o':
-                config.outputFile = args[++i].replaceAll("\\", '/');
+            case "--outputFile":
+            case "-o":
+                config.outputFile = args[++i].replaceAll("\\", "/");
                 break;
-            case '--baseDir':
-            case '-d':
-                config.baseDir.push(args[++i].replaceAll("\\", '/'));
+            case "--baseDir":
+            case "-d":
+                config.baseDir.push(args[++i].replaceAll("\\", "/"));
                 break;
-            case '--config':
-            case '-c':
-                mergeInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/')));
+            case "--config":
+            case "-c":
+                mergeInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", "/")));
                 break;
-            case '--print-config':
+            case "--print-config":
                 printConfig = true;
                 break;
             default:
                 throw new Error(`Invalid option ${arg}`);
         }
     }
-    if (!config.baseDir?.length && config.sources.length && config.sources[0].includes('/')) {
+    if (!config.baseDir?.length &&
+        config.sources.length &&
+        config.sources[0].includes("/")) {
         let baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
         for (let i = 1; i < config.sources.length; i++) {
             const file = config.sources[i];
             while (!file.startsWith(baseDir)) {
-                const pos = baseDir.lastIndexOf('/');
+                const pos = baseDir.lastIndexOf("/");
                 baseDir = baseDir.slice(0, pos + 1);
             }
         }
         if (baseDir) {
             config.baseDir = [baseDir];
             const baseDirLen = baseDir.length;
-            config.sources = config.sources.map(file => file.startsWith(baseDir) ? file.slice(baseDirLen) : file);
+            config.sources = config.sources.map((file) => file.startsWith(baseDir) ? file.slice(baseDirLen) : file);
         }
     }
     if (!config.outputFile && typeof config.api == "string")
@@ -170,26 +172,26 @@ function generate(args) {
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
         if (arg == "--") {
-            config.targets.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+            config.targets.push(...args.slice(i + 1).map((arg) => arg.replaceAll("\\", "/")));
             break;
         }
-        if (!arg.startsWith('-')) {
+        if (!arg.startsWith("-")) {
             if (arg.endsWith(".json")) {
-                mergeInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", '/')));
+                mergeInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", "/")));
             }
             else
-                config.targets.push(arg.replaceAll("\\", '/'));
+                config.targets.push(arg.replaceAll("\\", "/"));
             continue;
         }
         switch (arg) {
-            case '-a':
-                config.api = (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/'));
+            case "-a":
+                config.api = (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", "/"));
                 break;
-            case '-d':
-                config.baseDir = args[++i].replaceAll("\\", '/');
+            case "-d":
+                config.baseDir = args[++i].replaceAll("\\", "/");
                 break;
-            case '-c':
-                mergeInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/')));
+            case "-c":
+                mergeInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", "/")));
                 break;
             default:
                 throw new Error(`Invalid option ${arg}`);
@@ -202,12 +204,12 @@ function generate(args) {
     const files = config.targets;
     delete config.targets;
     if (files?.length) {
-        if (!config.baseDir && files[0].includes('/')) {
+        if (!config.baseDir && files[0].includes("/")) {
             config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
             for (let i = 1; i < files?.length; i++) {
                 const file = files[i];
                 while (!file.startsWith(config.baseDir)) {
-                    const pos = config.baseDir.lastIndexOf('/');
+                    const pos = config.baseDir.lastIndexOf("/");
                     config.baseDir = config.baseDir.slice(0, pos + 1);
                 }
             }
@@ -216,7 +218,7 @@ function generate(args) {
             }
         }
         const baseDirLen = config.baseDir?.length ?? 0;
-        const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
+        const localFiles = new Set(files.map((file) => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
         for (const file of Object.keys(config.api?.files ?? {})) {
             if (!localFiles.has(file))
                 delete config.api.files[file];
@@ -244,44 +246,44 @@ function transform(args) {
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
         if (arg == "--") {
-            config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+            config.sources.push(...args.slice(i + 1).map((arg) => arg.replaceAll("\\", "/")));
             break;
         }
-        if (!arg.startsWith('-')) {
+        if (!arg.startsWith("-")) {
             if (arg.endsWith(".json")) {
-                mergeTransformInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", '/')));
+                mergeTransformInto(config, (0, utils_js_1.readJSONSync)(arg.replaceAll("\\", "/")));
             }
             else
-                config.sources.push(arg.replaceAll("\\", '/'));
+                config.sources.push(arg.replaceAll("\\", "/"));
             continue;
         }
         switch (arg) {
-            case '--sourceApi':
-            case '-s':
-                config.sourceApi = (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/'));
+            case "--sourceApi":
+            case "-s":
+                config.sourceApi = (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", "/"));
                 break;
-            case '--transform':
-            case '-t':
-                config.transform = (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/'));
+            case "--transform":
+            case "-t":
+                config.transform = (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", "/"));
                 break;
-            case '--outputFile':
-            case '-o':
-                config.api = args[++i].replaceAll("\\", '/');
+            case "--outputFile":
+            case "-o":
+                config.api = args[++i].replaceAll("\\", "/");
                 break;
-            case '--baseDir':
-            case '-d':
-                config.baseDir = args[++i].replaceAll("\\", '/');
+            case "--baseDir":
+            case "-d":
+                config.baseDir = args[++i].replaceAll("\\", "/");
                 break;
-            case '--config':
-            case '-c':
-                mergeTransformInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", '/')));
+            case "--config":
+            case "-c":
+                mergeTransformInto(config, (0, utils_js_1.readJSONSync)(args[++i].replaceAll("\\", "/")));
                 break;
-            case '--print-config':
-            case '-p':
+            case "--print-config":
+            case "-p":
                 printConfig = true;
                 break;
-            case '--store-line-numbers':
-            case '-l':
+            case "--store-line-numbers":
+            case "-l":
                 config.storeLineNumbers = true;
                 break;
             default:
@@ -290,12 +292,12 @@ function transform(args) {
     }
     if (config.sources?.length) {
         const files = config.sources;
-        if (!config.baseDir && files[0].includes('/')) {
+        if (!config.baseDir && files[0].includes("/")) {
             config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
             for (let i = 1; i < files?.length; i++) {
                 const file = files[i];
                 while (!file.startsWith(config.baseDir)) {
-                    const pos = config.baseDir.lastIndexOf('/');
+                    const pos = config.baseDir.lastIndexOf("/");
                     config.baseDir = config.baseDir.slice(0, pos + 1);
                 }
             }
@@ -304,7 +306,7 @@ function transform(args) {
             }
         }
         const baseDirLen = config.baseDir?.length ?? 0;
-        const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
+        const localFiles = new Set(files.map((file) => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
         for (const file of Object.keys(config.sourceApi?.files ?? {})) {
             if (!localFiles.has(file))
                 delete config.sourceApi.files[file];
@@ -328,7 +330,7 @@ function mergeTransformInto(destiny, source) {
 function help(args = []) {
     switch (args[0]) {
         case "parse":
-            printLog("Parse API from header files", "", wrapUsageText(`usage: node ${process.argv[1]} `, "parse [ [-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."), "", wrapText("If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (\" - \") it just outputs on stdout. If the first filename ends with \".json\" it interprets it as a config file, making the \" - c\" optional. Multiple configurations can be added and their content is merged."));
+            printLog("Parse API from header files", "", wrapUsageText(`usage: node ${process.argv[1]} `, "parse [ [-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."), "", wrapText('If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (" - ") it just outputs on stdout. If the first filename ends with ".json" it interprets it as a config file, making the " - c" optional. Multiple configurations can be added and their content is merged.'));
             break;
         default:
             printLog("Transform OO-like C APIs into actual C++ OO API\n", ...guideDoc);
@@ -373,7 +375,7 @@ function wrapText(text, config = {}) {
     }
     if (currentLine)
         result.push(currentLine);
-    return result.join('\n');
+    return result.join("\n");
 }
 /**
  * Print into error/log out

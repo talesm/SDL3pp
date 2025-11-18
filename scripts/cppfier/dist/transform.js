@@ -11,7 +11,7 @@ const utils_1 = require("./utils");
 function transformApi(config) {
     const source = config.sourceApi;
     const transform = config.transform ?? { namespace: "SDL" };
-    const sourceIncludePrefix = transform.sourceIncludePrefix ?? '';
+    const sourceIncludePrefix = transform.sourceIncludePrefix ?? "";
     const context = new ApiContext(transform, source);
     const files = [];
     const fileTransformMap = transform.files ?? {};
@@ -19,7 +19,7 @@ function transformApi(config) {
     for (const sourceName of Object.keys(source.files)) {
         const fileConfig = fileTransformMap[sourceName];
         if (fileTransformMap[sourceName]) {
-            fileConfig.ignoreEntries?.forEach(s => context.blacklist.add(s));
+            fileConfig.ignoreEntries?.forEach((s) => context.blacklist.add(s));
             if (!fileConfig.transform)
                 fileConfig.transform = {};
             if (!fileConfig.definitionPrefix)
@@ -28,7 +28,11 @@ function transformApi(config) {
                 fileConfig.sourceIncludePrefix = sourceIncludePrefix;
         }
         else {
-            fileTransformMap[sourceName] = { transform: {}, definitionPrefix: context.definitionPrefix, sourceIncludePrefix };
+            fileTransformMap[sourceName] = {
+                transform: {},
+                definitionPrefix: context.definitionPrefix,
+                sourceIncludePrefix,
+            };
         }
     }
     // Step 1: Expand types
@@ -73,19 +77,18 @@ function transformApi(config) {
         paramReplacements: context.paramReplacements,
         delegatedReplacements: context.delegatedReplacements,
     };
-    files.forEach(file => api.files[file.name] = file);
+    files.forEach((file) => (api.files[file.name] = file));
     return api;
 }
 class ApiContext {
     constructor(transform, source) {
         this.namespace = transform.namespace;
-        this.source = Object.fromEntries(Object.values(source.files)
-            .flatMap(f => Object.entries(/** @type {Dict<ApiEntry>} */ (f.entries) ?? {})));
+        this.source = Object.fromEntries(Object.values(source.files).flatMap((f) => Object.entries(/** @type {Dict<ApiEntry>} */ f.entries ?? {})));
         this.blacklist = new Set();
         this.minVersions = transform.minVersions ?? {};
         this.includeBeforeMap = {};
         this.includeAfterMap = {};
-        this.file = '';
+        this.file = "";
         this.currentIncludeBefore = null;
         this.currentIncludeAfter = null;
         this.paramTypeMap = {};
@@ -107,9 +110,9 @@ class ApiContext {
                 : RegExp(`\\b${transform.prefixes}\\w+`, "g");
         }
         this.renameRules = transform.renameRules ?? [];
-        this.renameRules.forEach(rule => rule.pattern = RegExp(rule.pattern));
+        this.renameRules.forEach((rule) => (rule.pattern = RegExp(rule.pattern)));
         this.docRules = transform.docRules ?? [];
-        this.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
+        this.docRules.forEach((rule) => (rule.pattern = RegExp(rule.pattern, "g")));
         this.definitionPrefix = transform.definitionPrefix ?? "";
         this.signatureRules = transform.signatureRules ?? [];
         this.types = {};
@@ -180,14 +183,14 @@ class ApiContext {
         const includeTarget = includeBefore[includeBeforeKey];
         if (Array.isArray(includeTarget))
             return includeTarget;
-        return includeBefore[includeBeforeKey] = [];
+        return (includeBefore[includeBeforeKey] = []);
     }
     getOrCreateIncludeAfter(includeAfterKey) {
         const includeAfter = this.currentIncludeAfter;
         const includeTarget = includeAfter[includeAfterKey];
         if (Array.isArray(includeTarget))
             return includeTarget;
-        return includeAfter[includeAfterKey] = [];
+        return (includeAfter[includeAfterKey] = []);
     }
     /**
      * Add to includeBefore field
@@ -198,7 +201,7 @@ class ApiContext {
             includeTarget.push(...entryOrName);
         }
         else {
-            includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+            includeTarget.push(typeof entryOrName === "string" ? { name: entryOrName } : entryOrName);
         }
     }
     /**
@@ -210,7 +213,7 @@ class ApiContext {
             includeTarget.unshift(...entryOrName);
         }
         else {
-            includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+            includeTarget.unshift(typeof entryOrName === "string" ? { name: entryOrName } : entryOrName);
         }
     }
     /**
@@ -218,14 +221,14 @@ class ApiContext {
      */
     includeAfter(entryOrName, includeAfterKey) {
         const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
-        includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+        includeTarget.push(typeof entryOrName === "string" ? { name: entryOrName } : entryOrName);
     }
     /**
      * Prepend to includeAfter field
      */
     prependIncludeAfter(entryOrName, includeAfterKey) {
         const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
-        includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+        includeTarget.unshift(typeof entryOrName === "string" ? { name: entryOrName } : entryOrName);
     }
 }
 function isType(kind) {
@@ -237,7 +240,8 @@ function isType(kind) {
         case "union":
         case "ns":
             return true;
-        default: return false;
+        default:
+            return false;
     }
 }
 function insertOrLink(entries, entry, key) {
@@ -301,10 +305,11 @@ function expandTypes(sourceEntries, file, context) {
      */
     function tryDetectOoLike(sourceEntry, targetDelta) {
         const sourceName = sourceEntry.name;
-        if (typeof targetDelta.resource !== "undefined" || typeof targetDelta.wrapper !== "undefined")
+        if (typeof targetDelta.resource !== "undefined" ||
+            typeof targetDelta.wrapper !== "undefined")
             return;
         let fCount = 0;
-        let free = '';
+        let free = "";
         const ctors = [];
         for (const functionEntry of Object.values(sourceEntries)) {
             if (functionEntry.kind !== "function")
@@ -312,7 +317,8 @@ function expandTypes(sourceEntries, file, context) {
             const param0 = functionEntry.parameters?.[0];
             if (typeof param0 !== "object")
                 continue;
-            if (param0.type.startsWith(sourceName) || param0.type.startsWith(`const ${sourceName}`)) {
+            if (param0.type.startsWith(sourceName) ||
+                param0.type.startsWith(`const ${sourceName}`)) {
                 fCount++;
                 if (functionEntry.name.match(/Close|Destroy|Free/))
                     free = functionEntry.name;
@@ -325,7 +331,7 @@ function expandTypes(sourceEntries, file, context) {
         }
         if (ctors.length && !targetDelta.entries) {
             targetDelta.entries = {};
-            ctors.forEach(n => targetDelta.entries[n] = "ctor");
+            ctors.forEach((n) => (targetDelta.entries[n] = "ctor"));
         }
         if (free) {
             targetDelta.resource = { free };
@@ -338,7 +344,7 @@ function expandTypes(sourceEntries, file, context) {
         const targetDelta = transformMap[sourceName];
         const name = transformName(sourceName, context);
         if (!targetDelta)
-            return transformMap[sourceName] = { name };
+            return (transformMap[sourceName] = { name });
         if (!targetDelta.name)
             targetDelta.name = name;
         return targetDelta;
@@ -348,8 +354,10 @@ function expandTypes(sourceEntries, file, context) {
         delete sourceEntry.parameters;
         for (let i = 0; i < parameters.length; i++) {
             const parameter = parameters[i];
-            if (typeof parameter !== "string" && parameter.type === "void *" && parameter.name === "userdata") {
-                const typeParams = parameters.map(p => (typeof p === "string") ? p : p.type);
+            if (typeof parameter !== "string" &&
+                parameter.type === "void *" &&
+                parameter.name === "userdata") {
+                const typeParams = parameters.map((p) => typeof p === "string" ? p : p.type);
                 const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
                 typeParams.splice(i, 1);
                 const doc = removeTagFromGroup(addToTagGroup(transformDoc(sourceEntry.doc ?? undefined, context), "@sa", name), "@param userdata");
@@ -374,29 +382,33 @@ function expandTypes(sourceEntries, file, context) {
         const isStruct = sourceEntry.kind === "struct" && !transform.type;
         if (!transform.kind)
             transform.kind = "struct";
-        const type = isStruct || !sourceEntry.type?.startsWith("struct ") ? sourceType : sourceType + " *";
+        const type = isStruct || !sourceEntry.type?.startsWith("struct ")
+            ? sourceType
+            : sourceType + " *";
         const constexpr = transform.constexpr !== false;
-        const paramName = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
+        const paramName = wrapper.attribute ?? targetType[0].toLowerCase() + targetType.slice(1);
         const rawType = wrapper.rawName || `${targetType}Raw`;
         const paramType = wrapper.paramType ?? (isStruct ? `${rawType} *` : targetType);
         const constParamType = wrapper.paramType ?? (isStruct ? `const ${rawType} &` : rawType);
         const attribute = "m_" + paramName;
         context.includeBefore({
             name: rawType,
-            kind: 'alias',
-            type: (sourceEntry.type && sourceEntry.type == `struct ${sourceType}`) ? `${sourceType} *` : sourceType,
+            kind: "alias",
+            type: sourceEntry.type && sourceEntry.type == `struct ${sourceType}`
+                ? `${sourceType} *`
+                : sourceType,
             doc: [`Alias to raw representation for ${targetType}.`],
-        }, '__begin');
+        }, "__begin");
         context.includeBefore({
             name: targetType,
-            kind: 'forward',
-        }, '__begin');
+            kind: "forward",
+        }, "__begin");
         const fields = [];
         if (isStruct) {
             for (const e of Object.values(sourceEntry.entries))
                 fields.push(e.name);
             addHints(transform, {
-                self: 'this',
+                self: "this",
             });
         }
         else {
@@ -421,22 +433,26 @@ function expandTypes(sourceEntries, file, context) {
                 name: targetType,
                 type: "",
                 constexpr,
-                parameters: [{
+                parameters: [
+                    {
                         type: constParamType,
                         name: paramName,
-                        default: wrapper.defaultValue ?? "{}"
-                    }],
+                        default: wrapper.defaultValue ?? "{}",
+                    },
+                ],
                 doc: [
                     `Wraps ${sourceType}.`,
-                    { tag: `@param ${paramName}`, content: 'the value to be wrapped' }
+                    { tag: `@param ${paramName}`, content: "the value to be wrapped" },
                 ],
                 hints: {
                     init: [`${isStruct ? rawType : attribute}(${paramName})`],
-                    changeAccess: isStruct ? undefined : 'public',
-                }
+                    changeAccess: isStruct ? undefined : "public",
+                },
             });
-        if (isStruct && wrapper.ordered || wrapper.comparable) {
-            const body = 'return ' + fields.map(f => `lhs.${f} == rhs.${f}`).join(' && ') + ';';
+        if ((isStruct && wrapper.ordered) || wrapper.comparable) {
+            const body = "return " +
+                fields.map((f) => `lhs.${f} == rhs.${f}`).join(" && ") +
+                ";";
             context.includeBefore({
                 before: sourceType,
                 kind: "function",
@@ -452,11 +468,13 @@ function expandTypes(sourceEntries, file, context) {
             }, sourceType);
             if (wrapper.ordered) {
                 const lastField = fields.length - 1;
-                const body = fields.map((f, i) => {
+                const body = fields
+                    .map((f, i) => {
                     if (i == lastField)
                         return `return lhs.${f} <=> rhs.${f}`;
                     return `if (lhs.${f} != rhs.${f}) return lhs.${f} <=> rhs.${f}`;
-                }).join(';\n') + ';';
+                })
+                    .join(";\n") + ";";
                 context.includeBefore({
                     before: sourceType,
                     kind: "function",
@@ -481,10 +499,13 @@ function expandTypes(sourceEntries, file, context) {
                 immutable: true,
                 parameters: [{ type: "std::nullptr_t", name: "_" }],
                 doc: [
-                    'Compare with nullptr.',
-                    { tag: '@returns', content: `True if invalid state, false otherwise.` }
+                    "Compare with nullptr.",
+                    {
+                        tag: "@returns",
+                        content: `True if invalid state, false otherwise.`,
+                    },
                 ],
-                hints: { body: "return !bool(*this);" }
+                hints: { body: "return !bool(*this);" },
             });
         if (!isStruct)
             insertTransform(entries, {
@@ -496,9 +517,9 @@ function expandTypes(sourceEntries, file, context) {
                 parameters: [],
                 doc: [
                     `Unwraps to the underlying ${sourceType}.`,
-                    { tag: '@returns', content: `the underlying ${rawType}.` }
+                    { tag: "@returns", content: `the underlying ${rawType}.` },
                 ],
-                hints: { body: `return ${attribute};` }
+                hints: { body: `return ${attribute};` },
             });
         if (wrapper.invalidState !== false && isStruct)
             insertTransform(entries, {
@@ -510,10 +531,14 @@ function expandTypes(sourceEntries, file, context) {
                 immutable: true,
                 parameters: [],
                 doc: [
-                    'Check if valid.',
-                    { tag: '@returns', content: 'True if valid state, false otherwise.' }
+                    "Check if valid.",
+                    { tag: "@returns", content: "True if valid state, false otherwise." },
                 ],
-                hints: { body: isStruct ? `return *this != ${rawType}{};` : `return ${attribute} != 0;` }
+                hints: {
+                    body: isStruct
+                        ? `return *this != ${rawType}{};`
+                        : `return ${attribute} != 0;`,
+                },
             });
         if (isStruct) {
             transform.type = rawType;
@@ -536,7 +561,7 @@ function expandTypes(sourceEntries, file, context) {
                         parameters: [],
                         doc: [
                             `Get the ${name}.`,
-                            { tag: '@returns', content: `current ${name} value.` }
+                            { tag: "@returns", content: `current ${name} value.` },
                         ],
                         hints: { body: `return ${name};` },
                     });
@@ -545,15 +570,20 @@ function expandTypes(sourceEntries, file, context) {
                         name: `Set${capName}`,
                         type: `${targetType} &`,
                         constexpr,
-                        parameters: [{
+                        parameters: [
+                            {
                                 type,
-                                name: `new${capName}`
-                            }],
+                                name: `new${capName}`,
+                            },
+                        ],
                         doc: [
                             `Set the ${name}.`,
                             [
-                                { tag: `@param new${capName}`, content: `the new ${name} value.` },
-                                { tag: '@returns', content: 'Reference to self.' },
+                                {
+                                    tag: `@param new${capName}`,
+                                    content: `the new ${name} value.`,
+                                },
+                                { tag: "@returns", content: "Reference to self." },
                             ],
                         ],
                         hints: { body: `${name} = new${capName};\nreturn *this;` },
@@ -569,9 +599,18 @@ function expandTypes(sourceEntries, file, context) {
                     type: "",
                     constexpr,
                     parameters,
-                    doc: ['Constructs from its fields.',
-                        [...parameters.map(p => ({ tag: `@param ${p.name}`, content: `the value for ${p.name}.` }))]],
-                    hints: { init: [`${rawType}{${parameters.map(p => p.name).join(", ")}}`] },
+                    doc: [
+                        "Constructs from its fields.",
+                        [
+                            ...parameters.map((p) => ({
+                                tag: `@param ${p.name}`,
+                                content: `the value for ${p.name}.`,
+                            })),
+                        ],
+                    ],
+                    hints: {
+                        init: [`${rawType}{${parameters.map((p) => p.name).join(", ")}}`],
+                    },
                 });
             }
         }
@@ -586,11 +625,15 @@ function expandTypes(sourceEntries, file, context) {
         const blockedNames = new Set(Object.keys(entries));
         blockedNames.add(targetType);
         if (transform.entries)
-            createBlockedNames(transform.entries).forEach(k => blockedNames.add(k));
+            createBlockedNames(transform.entries).forEach((k) => blockedNames.add(k));
         const detectedMethods = detectMethods(sourceType, targetType, rawType, `const ${rawType}`, blockedNames);
         mirrorMethods(sourceEntries, file.transform, transform.entries ?? {}, paramType, constParamType, targetType);
         mirrorMethods(sourceEntries, file.transform, detectedMethods, paramType, constParamType, targetType);
-        transform.entries = { ...entries, ...(transform.entries ?? {}), ...detectedMethods };
+        transform.entries = {
+            ...entries,
+            ...(transform.entries ?? {}),
+            ...detectedMethods,
+        };
         if (type !== sourceType) {
             context.addParamType(type, targetType);
             context.addReturnType(type, targetType);
@@ -615,22 +658,25 @@ function expandTypes(sourceEntries, file, context) {
         const paramType = `${targetName}Param`;
         const enableMemberAccess = resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
         const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
-        const constParamType = enableConstParam ? `${targetName}ConstParam` : paramType;
+        const constParamType = enableConstParam
+            ? `${targetName}ConstParam`
+            : paramType;
         if (!targetEntry.kind)
-            targetEntry.kind = 'struct';
+            targetEntry.kind = "struct";
         const hasShared = !!resourceEntry.shared;
         const hasScoped = resourceEntry.owning === false;
         const hasRef = resourceEntry.ref ?? !(hasShared || hasScoped);
         const refName = `${targetName}Ref`;
         const scopedName = `${targetName}Scoped`;
         const type = targetEntry.type ?? sourceName;
-        const isStruct = sourceEntry.kind === "struct" || (sourceEntry.kind === "alias" && sourceEntry.type.startsWith('struct '));
-        const pointerType = (isStruct ? `${type} *` : type);
+        const isStruct = sourceEntry.kind === "struct" ||
+            (sourceEntry.kind === "alias" && sourceEntry.type.startsWith("struct "));
+        const pointerType = isStruct ? `${type} *` : type;
         const constPointerType = `const ${pointerType}`;
-        const nullValue = isStruct ? 'nullptr' : '0';
+        const nullValue = isStruct ? "nullptr" : "0";
         const title = targetName[0].toLowerCase() + targetName.slice(1);
         if (sourceEntry.type && !targetEntry.type)
-            targetEntry.type = '';
+            targetEntry.type = "";
         context.addName(sourceName, targetName);
         const referenceAliases = [];
         referenceAliases.push({ name: targetName, kind: "forward" });
@@ -638,7 +684,7 @@ function expandTypes(sourceEntries, file, context) {
             name: rawName,
             kind: "alias",
             type: pointerType,
-            doc: [`Alias to raw representation for ${targetName}.`,]
+            doc: [`Alias to raw representation for ${targetName}.`],
         });
         if (hasRef)
             referenceAliases.push({ name: refName, kind: "forward" });
@@ -657,36 +703,38 @@ function expandTypes(sourceEntries, file, context) {
         }
         referenceAliases.push({
             name: paramType,
-            kind: 'struct',
+            kind: "struct",
             doc: [`Safely wrap ${targetName} for non owning parameters`],
             entries: {
-                'value': {
-                    kind: 'var',
-                    name: 'value',
+                value: {
+                    kind: "var",
+                    name: "value",
                     doc: [`parameter's ${rawName}`],
-                    type: rawName
+                    type: rawName,
                 },
                 [paramType]: {
-                    kind: 'function',
+                    kind: "function",
                     name: paramType,
                     doc: [`Constructs from ${rawName}`],
                     constexpr: true,
-                    type: '',
-                    parameters: [{ type: rawName, name: 'value' }],
-                    hints: { init: ['value(value)'] }
+                    type: "",
+                    parameters: [{ type: rawName, name: "value" }],
+                    hints: { init: ["value(value)"] },
                 },
                 [`${paramType}#2`]: {
-                    kind: 'function',
+                    kind: "function",
                     name: paramType,
                     doc: [`Constructs null/invalid`],
                     constexpr: true,
-                    type: '',
-                    parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
-                    hints: { init: [`value(${nullValue})`] }
+                    type: "",
+                    parameters: [
+                        { type: "std::nullptr_t", name: "_", default: "nullptr" },
+                    ],
+                    hints: { init: [`value(${nullValue})`] },
                 },
                 "operator bool": {
                     kind: "function",
-                    type: '',
+                    type: "",
                     immutable: true,
                     constexpr: true,
                     explicit: true,
@@ -696,7 +744,7 @@ function expandTypes(sourceEntries, file, context) {
                 },
                 "operator <=>": {
                     kind: "function",
-                    type: 'auto',
+                    type: "auto",
                     immutable: true,
                     constexpr: true,
                     parameters: [{ type: `const ${paramType} &`, name: "other" }],
@@ -704,14 +752,14 @@ function expandTypes(sourceEntries, file, context) {
                     doc: [`Comparison`],
                 },
                 [`operator ${rawName}`]: {
-                    kind: 'function',
+                    kind: "function",
                     name: `operator ${rawName}`,
                     doc: [`Converts to underlying ${rawName}`],
                     constexpr: true,
                     immutable: true,
-                    type: '',
+                    type: "",
                     parameters: [],
-                    hints: { body: 'return value;' }
+                    hints: { body: "return value;" },
                 },
                 ...memberAccess,
             },
@@ -719,45 +767,47 @@ function expandTypes(sourceEntries, file, context) {
         if (enableConstParam) {
             referenceAliases.push({
                 name: constParamType,
-                kind: 'struct',
+                kind: "struct",
                 doc: [`Safely wrap ${targetName} for non owning const parameters`],
                 entries: {
-                    'value': {
-                        kind: 'var',
-                        name: 'value',
+                    value: {
+                        kind: "var",
+                        name: "value",
                         doc: [`parameter's ${constRawName}`],
-                        type: constRawName
+                        type: constRawName,
                     },
                     [constParamType]: {
-                        kind: 'function',
+                        kind: "function",
                         name: constParamType,
                         doc: [`Constructs from ${constRawName}`],
                         constexpr: true,
-                        type: '',
-                        parameters: [{ type: constRawName, name: 'value' }],
-                        hints: { init: ['value(value)'] }
+                        type: "",
+                        parameters: [{ type: constRawName, name: "value" }],
+                        hints: { init: ["value(value)"] },
                     },
                     [`${constParamType}#2`]: {
-                        kind: 'function',
+                        kind: "function",
                         name: constParamType,
                         doc: [`Constructs from ${paramType}`],
                         constexpr: true,
-                        type: '',
-                        parameters: [{ type: paramType, name: 'value' }],
-                        hints: { init: ['value(value.value)'] }
+                        type: "",
+                        parameters: [{ type: paramType, name: "value" }],
+                        hints: { init: ["value(value.value)"] },
                     },
                     [`${constParamType}#3`]: {
-                        kind: 'function',
+                        kind: "function",
                         name: constParamType,
                         doc: [`Constructs null/invalid`],
                         constexpr: true,
-                        type: '',
-                        parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
-                        hints: { init: [`value(${nullValue})`] }
+                        type: "",
+                        parameters: [
+                            { type: "std::nullptr_t", name: "_", default: "nullptr" },
+                        ],
+                        hints: { init: [`value(${nullValue})`] },
                     },
                     "operator bool": {
                         kind: "function",
-                        type: '',
+                        type: "",
                         immutable: true,
                         constexpr: true,
                         explicit: true,
@@ -767,7 +817,7 @@ function expandTypes(sourceEntries, file, context) {
                     },
                     "operator <=>": {
                         kind: "function",
-                        type: 'auto',
+                        type: "auto",
                         immutable: true,
                         constexpr: true,
                         parameters: [{ type: `const ${constParamType} &`, name: "other" }],
@@ -775,14 +825,14 @@ function expandTypes(sourceEntries, file, context) {
                         doc: [`Comparison`],
                     },
                     [`operator ${constRawName}`]: {
-                        kind: 'function',
+                        kind: "function",
                         name: `operator ${constRawName}`,
                         doc: [`Converts to underlying ${constRawName}`],
                         constexpr: true,
                         immutable: true,
-                        type: '',
+                        type: "",
                         parameters: [],
-                        hints: { body: 'return value;' }
+                        hints: { body: "return value;" },
                     },
                     ...memberAccess,
                 },
@@ -806,7 +856,11 @@ function expandTypes(sourceEntries, file, context) {
             context.addReturnType(pointerType, rawName);
         }
         context.addReturnType(constPointerType, constRawName);
-        const ownershipDisclaimer = hasScoped ? [] : ["This assumes the ownership, call release() if you need to take back."];
+        const ownershipDisclaimer = hasScoped
+            ? []
+            : [
+                "This assumes the ownership, call release() if you need to take back.",
+            ];
         const ctors = {
             [targetName]: {
                 kind: "function",
@@ -814,7 +868,7 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [],
                 hints: { default: true, changeAccess: "public" },
-                doc: ["Default ctor"]
+                doc: ["Default ctor"],
             },
             [`${targetName}#2`]: {
                 kind: "function",
@@ -823,7 +877,11 @@ function expandTypes(sourceEntries, file, context) {
                 explicit: !hasScoped,
                 parameters: [{ name: "resource", type: constRawName }],
                 hints: { init: ["m_resource(resource)"] },
-                doc: [`Constructs from ${paramType}.`, { tag: '@param resource', content: `a ${rawName} to be wrapped.` }, ...ownershipDisclaimer],
+                doc: [
+                    `Constructs from ${paramType}.`,
+                    { tag: "@param resource", content: `a ${rawName} to be wrapped.` },
+                    ...ownershipDisclaimer,
+                ],
             },
             [`${targetName}#3`]: {
                 kind: "function",
@@ -839,10 +897,10 @@ function expandTypes(sourceEntries, file, context) {
                 constexpr: true,
                 parameters: [{ name: "other", type: `${targetName} &&` }],
                 hints: {
-                    init: [`${targetName}(other.release())`]
+                    init: [`${targetName}(other.release())`],
                 },
                 doc: ["Move constructor"],
-            }
+            },
         };
         if (hasShared) {
             const copyCtorHints = {};
@@ -856,11 +914,16 @@ function expandTypes(sourceEntries, file, context) {
                     constexpr: true,
                     type: targetName,
                     parameters: [{ name: "resource", type: paramType }],
-                    hints: { body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};` },
+                    hints: {
+                        body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};`,
+                    },
                     doc: [
                         `Safely borrows the from ${paramType}.`,
-                        { tag: '@param resource', content: `a ${rawName} or ${targetName}.` },
-                        'This does not takes ownership!'
+                        {
+                            tag: "@param resource",
+                            content: `a ${rawName} or ${targetName}.`,
+                        },
+                        "This does not takes ownership!",
                     ],
                 };
             }
@@ -888,14 +951,14 @@ function expandTypes(sourceEntries, file, context) {
         }
         const subEntries = targetEntry.entries || {};
         Object.keys(subEntries)
-            .filter(k => k === targetName || k.startsWith(targetName + "#"))
-            .map(k => {
+            .filter((k) => k === targetName || k.startsWith(targetName + "#"))
+            .map((k) => {
             const e = subEntries[k];
             delete subEntries[k];
             return e;
         })
-            .filter(e => typeof e === "object")
-            .forEach(e => insertTransform(ctors, e, targetName));
+            .filter((e) => typeof e === "object")
+            .forEach((e) => insertTransform(ctors, e, targetName));
         for (const sourceName of resourceEntry.ctors ?? []) {
             const entry = subEntries[sourceName] ?? {};
             delete subEntries[sourceName];
@@ -913,7 +976,10 @@ function expandTypes(sourceEntries, file, context) {
             addHints(entry, { wrapSelf: true });
             ctors[sourceName] = entry;
             if (!ctorTransform) {
-                file.transform[sourceName] = { type: targetName, hints: { wrapSelf: true } };
+                file.transform[sourceName] = {
+                    type: targetName,
+                    hints: { wrapSelf: true },
+                };
             }
             else if (!ctorTransform.type) {
                 file.transform[sourceName].type = targetName;
@@ -950,7 +1016,10 @@ function expandTypes(sourceEntries, file, context) {
             if (isCtor) {
                 delete subEntries[sourceName];
                 if (!ctorTransform) {
-                    file.transform[sourceName] = { type: targetName, hints: { wrapSelf: true } };
+                    file.transform[sourceName] = {
+                        type: targetName,
+                        hints: { wrapSelf: true },
+                    };
                 }
                 else if (!ctorTransform.type) {
                     ctorTransform.type = targetName;
@@ -958,15 +1027,22 @@ function expandTypes(sourceEntries, file, context) {
                 }
             }
         }
-        let freeFunction = (sourceEntries[resourceEntry.free ?? "reset"]) ?? scanFreeFunction(sourceEntries, targetName, pointerType);
+        let freeFunction = sourceEntries[resourceEntry.free ?? "reset"] ??
+            scanFreeFunction(sourceEntries, targetName, pointerType);
         if (freeFunction) {
             const sourceName = freeFunction.name;
             freeFunction = transformEntry(freeFunction, context);
-            const freeTransformEntry = (subEntries[sourceName]) ?? {};
+            const freeTransformEntry = subEntries[sourceName] ?? {};
             (0, utils_1.combineObject)(freeFunction, freeTransformEntry);
-            freeFunction.name = freeTransformEntry.name ?? makeNaturalName(transformName(sourceName, context), targetName);
-            freeFunction.doc = transformDoc(freeFunction.doc, context) ?? [`frees up ${title}.`];
-            const fileLevelEntry = file.transform[sourceName] ?? { parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)] };
+            freeFunction.name =
+                freeTransformEntry.name ??
+                    makeNaturalName(transformName(sourceName, context), targetName);
+            freeFunction.doc = transformDoc(freeFunction.doc, context) ?? [
+                `frees up ${title}.`,
+            ];
+            const fileLevelEntry = file.transform[sourceName] ?? {
+                parameters: [{ type: rawName }, ...freeFunction.parameters.slice(1)],
+            };
             file.transform[sourceName] = fileLevelEntry;
             const fileLevelName = fileLevelEntry.name ?? transformName(sourceName, context);
             if (!freeFunction.hints?.body) {
@@ -981,7 +1057,7 @@ function expandTypes(sourceEntries, file, context) {
             subEntries[sourceName] = freeFunction;
         }
         else {
-            subEntries['Destroy'] = freeFunction = {
+            subEntries["Destroy"] = freeFunction = {
                 kind: "function",
                 name: "Destroy",
                 doc: [`frees up ${title}.`],
@@ -992,7 +1068,7 @@ function expandTypes(sourceEntries, file, context) {
         if (resourceEntry.enableAutoMethods !== false) {
             const blockedNames = createBlockedNames(subEntries);
             blockedNames.add(targetName);
-            Object.keys(ctors).forEach(k => blockedNames.add(k));
+            Object.keys(ctors).forEach((k) => blockedNames.add(k));
             const detectedMethods = detectMethods(sourceName, targetName, paramType, constParamType, blockedNames);
             mirrorMethods(sourceEntries, file.transform, subEntries, paramType, constParamType, targetName);
             (0, utils_1.combineObject)(subEntries, detectedMethods);
@@ -1019,13 +1095,16 @@ function expandTypes(sourceEntries, file, context) {
             };
         }
         if (sourceEntry.doc) {
-            targetEntry.doc = [...transformDoc(sourceEntry.doc, context), '@cat resource'];
+            targetEntry.doc = [
+                ...transformDoc(sourceEntry.doc, context),
+                "@cat resource",
+            ];
         }
         else {
-            targetEntry.doc = [`Wraps ${title} resource.`, '@cat resource'];
+            targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
         }
         targetEntry.entries = {
-            "m_resource": {
+            m_resource: {
                 kind: "var",
                 type: rawName,
                 hints: { body: nullValue },
@@ -1036,16 +1115,22 @@ function expandTypes(sourceEntries, file, context) {
                 doc: ["Destructor"],
                 type: "",
                 parameters: [],
-                hints: { body: (freeFunction && !hasScoped) ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);` : '' }
+                hints: {
+                    body: freeFunction && !hasScoped
+                        ? `${freeFunction.sourceName ?? freeFunction.name}(m_resource);`
+                        : "",
+                },
             },
-            'operator=': {
+            "operator=": {
                 kind: "function",
                 type: `${targetName} &`,
-                parameters: [{ name: 'other', type: targetName }],
-                hints: { body: "std::swap(m_resource, other.m_resource);\nreturn *this;" },
+                parameters: [{ name: "other", type: targetName }],
+                hints: {
+                    body: "std::swap(m_resource, other.m_resource);\nreturn *this;",
+                },
                 doc: ["Assignment operator."],
             },
-            "get": {
+            get: {
                 kind: "function",
                 type: rawName,
                 immutable: true,
@@ -1054,17 +1139,19 @@ function expandTypes(sourceEntries, file, context) {
                 hints: { body: "return m_resource;" },
                 doc: [`Retrieves underlying ${rawName}.`],
             },
-            "release": {
+            release: {
                 kind: "function",
                 type: rawName,
                 constexpr: true,
                 parameters: [],
-                hints: { body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;` },
+                hints: {
+                    body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;`,
+                },
                 doc: [`Retrieves underlying ${rawName} and clear this.`],
             },
             "operator <=>": {
                 kind: "function",
-                type: 'auto',
+                type: "auto",
                 immutable: true,
                 constexpr: true,
                 parameters: [{ type: `const ${targetName} &`, name: "other" }],
@@ -1073,7 +1160,7 @@ function expandTypes(sourceEntries, file, context) {
             },
             "operator ==": {
                 kind: "function",
-                type: 'bool',
+                type: "bool",
                 immutable: true,
                 constexpr: true,
                 parameters: [{ type: `std::nullptr_t`, name: "_" }],
@@ -1082,7 +1169,7 @@ function expandTypes(sourceEntries, file, context) {
             },
             "operator bool": {
                 kind: "function",
-                type: '',
+                type: "",
                 immutable: true,
                 constexpr: true,
                 explicit: true,
@@ -1092,7 +1179,7 @@ function expandTypes(sourceEntries, file, context) {
             },
             [`operator ${paramType}`]: {
                 kind: "function",
-                type: '',
+                type: "",
                 immutable: true,
                 constexpr: true,
                 parameters: [],
@@ -1110,47 +1197,54 @@ function expandTypes(sourceEntries, file, context) {
         const derivedEntries = [];
         if (hasRef)
             derivedEntries.push({
-                kind: 'struct',
+                kind: "struct",
                 name: refName,
                 type: targetName,
                 doc: [`Semi-safe reference for ${targetName}.`],
                 entries: {
                     [refName]: {
-                        kind: 'function',
+                        kind: "function",
                         type: "",
-                        parameters: [{
+                        parameters: [
+                            {
                                 type: paramType,
-                                name: "resource"
-                            }],
+                                name: "resource",
+                            },
+                        ],
                         hints: { init: [`${targetName}(resource.value)`] },
                         doc: [
                             `Constructs from ${paramType}.`,
-                            { tag: '@param resource', content: `a ${rawName} or ${targetName}.` },
-                            'This does not takes ownership!'
+                            {
+                                tag: "@param resource",
+                                content: `a ${rawName} or ${targetName}.`,
+                            },
+                            "This does not takes ownership!",
                         ],
                     },
                     [`${refName}#2`]: {
-                        kind: 'function',
+                        kind: "function",
                         type: "",
-                        parameters: [{
+                        parameters: [
+                            {
                                 type: `const ${refName} &`,
-                                name: "other"
-                            }],
+                                name: "other",
+                            },
+                        ],
                         hints: { init: [`${targetName}(other.get())`] },
                         doc: ["Copy constructor."],
                     },
                     [`~${refName}`]: {
-                        kind: 'function',
+                        kind: "function",
                         doc: ["Destructor"],
                         type: "",
                         parameters: [],
-                        hints: { body: "release();" }
-                    }
-                }
+                        hints: { body: "release();" },
+                    },
+                },
             });
         if (hasScoped)
             derivedEntries.push({
-                kind: 'struct',
+                kind: "struct",
                 name: scopedName,
                 type: targetName,
                 doc: [`RAII owning version ${targetName}.`],
@@ -1170,20 +1264,20 @@ function expandTypes(sourceEntries, file, context) {
                         constexpr: true,
                         parameters: [{ name: "other", type: `${targetName} &&` }],
                         hints: {
-                            init: [`${targetName}(other.release())`]
-                        }
+                            init: [`${targetName}(other.release())`],
+                        },
                     },
                     [`~${scopedName}`]: {
-                        kind: 'function',
+                        kind: "function",
                         doc: ["Destructor"],
                         type: "",
                         parameters: [],
-                        hints: { body: `${freeFunction?.name ?? "Destroy"}();` }
-                    }
-                }
+                        hints: { body: `${freeFunction?.name ?? "Destroy"}();` },
+                    },
+                },
             });
-        context.includeBefore(referenceAliases, '__begin');
-        derivedEntries.forEach(e => context.includeAfter(e, targetName));
+        context.includeBefore(referenceAliases, "__begin");
+        derivedEntries.forEach((e) => context.includeAfter(e, targetName));
         delete targetEntry.resource;
     }
     function detectMethods(sourceType, targetType, paramType, constParamType, blockedNames) {
@@ -1200,14 +1294,18 @@ function expandTypes(sourceEntries, file, context) {
             const sourceEntry = sourceEntries[sourceName];
             if (sourceEntry)
                 lastKey = sourceName;
-            if (transformEntry.kind !== 'function' && (transformEntry.kind || sourceEntry?.kind !== 'function'))
+            if (transformEntry.kind !== "function" &&
+                (transformEntry.kind || sourceEntry?.kind !== "function"))
                 continue;
             const parameters = transformEntry.parameters;
             let param0 = parameters?.[0];
             if (!param0?.type) {
                 if (!hasPrefix)
                     continue;
-                param0 = { type: transformEntry.immutable ? constParamType : paramType, name: param0?.name };
+                param0 = {
+                    type: transformEntry.immutable ? constParamType : paramType,
+                    name: param0?.name,
+                };
             }
             const m = paramMatchesVariants(param0, [paramType, `${paramType} *`], [constParamType, `${constParamType} &`]);
             if (!m && !hasPrefix) {
@@ -1221,7 +1319,7 @@ function expandTypes(sourceEntries, file, context) {
                 }
                 foundEntries[sourceName] = {
                     ...(0, utils_1.deepClone)(transformEntry),
-                    immutable: m === 'immutable' || transformEntry.immutable,
+                    immutable: m === "immutable" || transformEntry.immutable,
                     name: transformEntry.hints?.methodName ?? undefined,
                 };
                 delete transformEntry.immutable;
@@ -1250,7 +1348,9 @@ function expandTypes(sourceEntries, file, context) {
                     name,
                     static: false,
                     parameters: parameters.slice(1),
-                    hints: { delegate: `${context.namespace}::${transformName(sourceName, context)}` }
+                    hints: {
+                        delegate: `${context.namespace}::${transformName(sourceName, context)}`,
+                    },
                 }, name);
                 delete transformEntry.immutable;
             }
@@ -1264,29 +1364,36 @@ function expandTypes(sourceEntries, file, context) {
             if (!parameters?.length)
                 continue;
             const param0 = parameters[0];
-            if (typeof param0 === 'string')
+            if (typeof param0 === "string")
                 continue;
             const m = paramMatchesVariants(param0, [sourceType, `${sourceType} *`], [`const ${sourceType}`, `const ${sourceType} *`]);
             if (!m)
                 continue;
             const transformEntry = transformMap[sourceName];
-            if (transformEntry?.name || transformEntry?.parameters || transformEntry?.type || transformEntry?.hints?.methodName) {
+            if (transformEntry?.name ||
+                transformEntry?.parameters ||
+                transformEntry?.type ||
+                transformEntry?.hints?.methodName) {
                 const e = {
                     ...(0, utils_1.deepClone)(transformEntry),
-                    immutable: m === 'immutable' || transformEntry.immutable,
+                    immutable: m === "immutable" || transformEntry.immutable,
                 };
                 e.name = transformEntry.hints?.methodName ?? undefined;
                 foundEntries[sourceName] = e;
-                if (transformEntry.immutable && !transformEntry.parameters && (!constParamType.startsWith("const ") || constParamType.endsWith("*"))) {
-                    transformEntry.parameters = sourceEntry.parameters.map(_ => ({}));
+                if (transformEntry.immutable &&
+                    !transformEntry.parameters &&
+                    (!constParamType.startsWith("const ") || constParamType.endsWith("*"))) {
+                    transformEntry.parameters = sourceEntry.parameters.map((_) => ({}));
                     transformEntry.parameters[0].type = constParamType;
                 }
                 delete transformEntry.immutable;
             }
             else if (transformEntry?.immutable) {
                 foundEntries[sourceName] = "immutable";
-                if (transformEntry.immutable && !transformEntry.parameters && (!constParamType.startsWith("const ") || constParamType.endsWith("*"))) {
-                    transformEntry.parameters = sourceEntry.parameters.map(_ => ({}));
+                if (transformEntry.immutable &&
+                    !transformEntry.parameters &&
+                    (!constParamType.startsWith("const ") || constParamType.endsWith("*"))) {
+                    transformEntry.parameters = sourceEntry.parameters.map((_) => ({}));
                     transformEntry.parameters[0].type = constParamType;
                 }
                 delete transformEntry.immutable;
@@ -1298,12 +1405,14 @@ function expandTypes(sourceEntries, file, context) {
                 transformMap[sourceName] = {};
         }
         const orderedEntries = {};
-        placeAfter.get("__begin")?.forEach(sKey => orderedEntries[sKey] = "plc");
-        Object.keys(sourceEntries).forEach(key => {
+        placeAfter
+            .get("__begin")
+            ?.forEach((sKey) => (orderedEntries[sKey] = "plc"));
+        Object.keys(sourceEntries).forEach((key) => {
             const value = foundEntries[key];
             if (value)
                 orderedEntries[key] = value;
-            placeAfter.get(key)?.forEach(sKey => {
+            placeAfter.get(key)?.forEach((sKey) => {
                 if (!orderedEntries[sKey])
                     orderedEntries[sKey] = "plc";
             });
@@ -1314,7 +1423,7 @@ function expandTypes(sourceEntries, file, context) {
         const definition = getEnumDefinition(transform) ?? {};
         const valueType = definition.valueType ?? targetName;
         if (!transform.kind && !transform.type) {
-            if (sourceEntry.kind === 'alias') {
+            if (sourceEntry.kind === "alias") {
                 transform.type = sourceEntry.type;
             }
             else {
@@ -1323,19 +1432,19 @@ function expandTypes(sourceEntries, file, context) {
             }
         }
         let values = definition.values ?? Object.keys(sourceEntry.entries ?? {});
-        const prefix = definition.prefix ?? (sourceName.toUpperCase() + "_");
+        const prefix = definition.prefix ?? sourceName.toUpperCase() + "_";
         const newNames = {};
         if (!values?.length) {
             values = Object.values(sourceEntries)
-                .filter(e => e.kind === "def"
-                && !e.parameters
-                && e.name.startsWith(prefix)
-                && !transformMap[e.name]?.type)
-                .map(e => e.name);
+                .filter((e) => e.kind === "def" &&
+                !e.parameters &&
+                e.name.startsWith(prefix) &&
+                !transformMap[e.name]?.type)
+                .map((e) => e.name);
             const newPrefix = definition.newPrefix;
             if (newPrefix) {
                 const oldPrefixLen = prefix.length;
-                values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
+                values.forEach((n) => (newNames[n] = newPrefix + n.slice(oldPrefixLen)));
             }
         }
         const after = transform.after;
@@ -1357,7 +1466,11 @@ function expandTypes(sourceEntries, file, context) {
             (0, utils_1.combineObject)(valueTarget, valueTransform || {});
             if (!valueSource?.doc) {
                 const sourceDoc = valueSource?.doc ?? sourceEntry.entries?.[value]?.doc;
-                valueTarget.doc = sourceDoc || ([value.startsWith(prefix) ? value.slice(prefix.length) : valueTarget.name]);
+                valueTarget.doc = sourceDoc || [
+                    value.startsWith(prefix)
+                        ? value.slice(prefix.length)
+                        : valueTarget.name,
+                ];
             }
             context.addName(value, valueTarget.name);
             if (!valueSource)
@@ -1381,11 +1494,11 @@ function transformEntries(sourceEntries, file, context) {
             (0, utils_1.combineObject)(targetEntry, targetDelta);
             delete targetEntry.link;
             if (targetEntry.parameters) {
-                targetEntry.parameters = targetEntry.parameters.filter(p => p.type || p.name);
+                targetEntry.parameters = targetEntry.parameters.filter((p) => p.type || p.name);
             }
         }
         if (sourceName)
-            context.addName(sourceName, targetEntry.name?.replaceAll('::', '.'));
+            context.addName(sourceName, targetEntry.name?.replaceAll("::", "."));
         insertEntryAndCheck(targetEntries, targetEntry, context, file);
     }
     return targetEntries;
@@ -1395,13 +1508,12 @@ function transformEntries(sourceEntries, file, context) {
         insertLinks(entry, link.link);
         delete link.link;
         const linkedEntry = (0, utils_1.deepClone)(entry);
-        if (link.kind || entry.kind !== 'def') {
+        if (link.kind || entry.kind !== "def") {
             (0, utils_1.combineObject)(linkedEntry, link);
             link = linkedEntry.link;
-            ;
             delete linkedEntry.link;
             if (linkedEntry.parameters) {
-                linkedEntry.parameters = linkedEntry.parameters.filter(p => typeof p === 'string' || (p.type && p.name));
+                linkedEntry.parameters = linkedEntry.parameters.filter((p) => typeof p === "string" || (p.type && p.name));
             }
             insertEntryAndCheck(targetEntries, linkedEntry, context, file);
         }
@@ -1463,12 +1575,12 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             targetEntry.kind = targetDelta.kind ?? targetEntry.kind;
             if (targetEntry.kind !== sourceEntry.kind && sourceEntry.kind === "def") {
                 let replacement = "constant";
-                if (typeof targetDelta.type === 'undefined')
+                if (typeof targetDelta.type === "undefined")
                     targetEntry.type = "auto";
                 if (targetEntry.kind === "function")
                     replacement = "function";
                 if (!targetDelta.doc && targetEntry.doc) {
-                    const macro = getTagInGroup(targetEntry.doc, '@since');
+                    const macro = getTagInGroup(targetEntry.doc, "@since");
                     if (macro)
                         macro.content = macro.content.replaceAll("macro", replacement);
                     const tSafety = getTagInGroup(targetEntry.doc, "@threadsafety");
@@ -1519,10 +1631,10 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             let checkSubIncludes = true;
             if (processedSourceNames.has(name)) {
                 checkSubIncludes = false;
-                if (transformEntry.kind !== 'function')
+                if (transformEntry.kind !== "function")
                     continue;
             }
-            else if (transformEntry.kind === 'forward') {
+            else if (transformEntry.kind === "forward") {
                 checkSubIncludes = false;
             }
             else
@@ -1537,13 +1649,15 @@ function makeSortedEntryArray(sourceEntries, file, context) {
     function addTransform(transformEntry) {
         const currEntry = sortedEntries[transformEntry.name];
         const currKind = currEntry?.kind;
-        const nextName = transformEntry.kind === 'forward' ? transformEntry.name + '#forward' : transformEntry.name;
-        const targetEntry = ({
+        const nextName = transformEntry.kind === "forward"
+            ? transformEntry.name + "#forward"
+            : transformEntry.name;
+        const targetEntry = {
             ...transformEntry,
             kind: transformEntry.kind ?? "plc",
             name: transformEntry.name ?? "",
             entries: undefined,
-        });
+        };
         if (transformEntry.entries)
             targetEntry.entries = transformSubEntries(transformEntry);
         if (!currKind) {
@@ -1551,8 +1665,8 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             return;
         }
         const nextKind = transformEntry.kind;
-        if (currKind === 'function') {
-            if (nextKind !== 'function')
+        if (currKind === "function") {
+            if (nextKind !== "function")
                 return;
             const n = (countInstance[nextName] ?? 1) + 1;
             countInstance[nextName] = n;
@@ -1605,13 +1719,18 @@ function makeSortedEntryArray(sourceEntries, file, context) {
             }
             const currLink = file.transform[key];
             const currLinkName = currLink?.name ?? transformName(key, context);
-            let isCtor = entry === "ctor" || (typeof entry !== "string" && !entry.name?.startsWith("operator") && entry.type === "");
+            let isCtor = entry === "ctor" ||
+                (typeof entry !== "string" &&
+                    !entry.name?.startsWith("operator") &&
+                    entry.type === "");
             if (isCtor || (typeof entry !== "string" && entry.proto === false)) {
                 nameChange.name = `${type}.${nameChange.name}`;
             }
             else {
                 nameChange.name = `${type}::${nameChange.name}`;
-                addHints(nameChange, { delegate: `${context.namespace}::${currLinkName}` });
+                addHints(nameChange, {
+                    delegate: `${context.namespace}::${currLinkName}`,
+                });
             }
             if (typeof entry !== "string")
                 delete nameChange.proto;
@@ -1635,14 +1754,16 @@ function insertTransform(entries, transformEntry, defaultName = undefined) {
         transformEntry.name = transformEntry.name ?? defaultName;
     const currEntry = entries[transformEntry.name];
     const currKind = currEntry?.kind;
-    const nextName = transformEntry.kind === 'forward' ? transformEntry.name + '#forward' : transformEntry.name;
+    const nextName = transformEntry.kind === "forward"
+        ? transformEntry.name + "#forward"
+        : transformEntry.name;
     if (!currKind) {
         entries[nextName] = transformEntry;
         return;
     }
     const nextKind = transformEntry.kind;
-    if (currKind === 'function') {
-        if (nextKind !== 'function')
+    if (currKind === "function") {
+        if (nextKind !== "function")
             return;
         const n = makeSignatureSuffix(transformEntry.parameters);
         entries[`${nextName}#${n}`] = transformEntry;
@@ -1651,19 +1772,18 @@ function insertTransform(entries, transformEntry, defaultName = undefined) {
     (0, utils_1.combineObject)(currEntry, transformEntry);
 }
 function makeSignatureSuffix(parameters) {
-    return parameters.map(p => p.type ?? "_").join(",");
+    return parameters.map((p) => p.type ?? "_").join(",");
 }
 function expandNamespaces(sourceEntries, file, context) {
     const namespacesMap = file.namespacesMap ?? {};
     for (const [prefix, nsName] of Object.entries(namespacesMap)) {
         const nsEntries = {};
-        const sourceEntriesListed = Object.entries(sourceEntries)
-            .filter(([key]) => key.startsWith(prefix));
+        const sourceEntriesListed = Object.entries(sourceEntries).filter(([key]) => key.startsWith(prefix));
         for (const [key, entry] of sourceEntriesListed) {
             const transformEntry = file.transform[key] || {};
             const localName = entry.name.slice(prefix.length);
             file.transform[key] = transformEntry;
-            transformEntry.name = nsName + '.' + localName;
+            transformEntry.name = nsName + "." + localName;
             if (entry.kind === "def" && !transformEntry.kind) {
                 transformEntry.kind = "var";
                 transformEntry.type = "auto";
@@ -1702,15 +1822,17 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
         const sourceEntry = sourceEntries[sourceName];
         if (!sourceEntry)
             continue;
-        if (sourceEntry.kind !== 'function' && typeof subEntry !== 'string' && subEntry.kind !== 'function')
+        if (sourceEntry.kind !== "function" &&
+            typeof subEntry !== "string" &&
+            subEntry.kind !== "function")
             continue;
         const transformEntry = transformEntries[sourceName];
         if (transformEntry?.type || transformEntry?.parameters)
             continue;
         let targetEntry;
-        if (typeof subEntry === 'string') {
+        if (typeof subEntry === "string") {
             targetEntry = {};
-            if (subEntry === 'immutable')
+            if (subEntry === "immutable")
                 targetEntry.immutable = true;
         }
         else {
@@ -1740,34 +1862,45 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
         let parametersChanged = false;
         const targetParam0 = targetParameters[0];
         const sourceParam0 = sourceEntry.parameters?.[0];
-        if (!targetParam0 || typeof targetParam0 === "string" || targetParam0.type) {
+        if (!targetParam0 ||
+            typeof targetParam0 === "string" ||
+            targetParam0.type) {
             switch (typeof sourceParam0) {
-                case 'object':
+                case "object":
                     const selfParam = { name: sourceParam0.name };
                     if (!sourceParam0.type) {
                         selfParam.type = targetEntry.immutable ? constParamType : paramType;
                     }
                     else if (sourceParam0.type.includes(resultType)) {
-                        if (!sourceParam0.type.startsWith("const ") && targetEntry.immutable)
+                        if (!sourceParam0.type.startsWith("const ") &&
+                            targetEntry.immutable)
                             selfParam.type = constParamType;
                     }
                     targetParameters.unshift(selfParam);
                     parametersChanged = true;
                     break;
-                case 'string':
-                    if (typeof targetParam0 !== "object" || sourceParam0 !== targetParam0.name) {
-                        targetParameters.unshift({ name: sourceParam0, type: constParamType });
+                case "string":
+                    if (typeof targetParam0 !== "object" ||
+                        sourceParam0 !== targetParam0.name) {
+                        targetParameters.unshift({
+                            name: sourceParam0,
+                            type: constParamType,
+                        });
                         parametersChanged = true;
                     }
                     break;
             }
         }
-        else if (typeof sourceParam0 !== 'object' || typeof targetParam0 !== "object") {
+        else if (typeof sourceParam0 !== "object" ||
+            typeof targetParam0 !== "object") {
             return;
         }
         else if (!targetParam0.name || targetParam0.name == sourceParam0.name) {
             if (sourceParam0.type?.includes(resultType) || sourceParam0.type === "") {
-                targetParam0.type = (targetEntry.immutable || sourceParam0.type.startsWith('const ')) ? constParamType : paramType;
+                targetParam0.type =
+                    targetEntry.immutable || sourceParam0.type.startsWith("const ")
+                        ? constParamType
+                        : paramType;
                 parametersChanged = true;
             }
         }
@@ -1778,30 +1911,38 @@ function mirrorMethods(sourceEntries, transformEntries, transformSubEntries, par
 function paramMatchesVariants(param0, variants, constVariants) {
     for (const variant of variants) {
         if (param0.type === variant)
-            return 'function';
+            return "function";
     }
     for (const variant of constVariants) {
         if (param0.type === variant)
-            return 'immutable';
+            return "immutable";
     }
     return false;
 }
 function getResourceDefinition(entry) {
     const resourceDef = entry.resource;
     switch (typeof resourceDef) {
-        case "string": return { shared: resourceDef };
-        case "boolean": return resourceDef ? {} : null;
-        case "object": return resourceDef;
-        default: return undefined;
+        case "string":
+            return { shared: resourceDef };
+        case "boolean":
+            return resourceDef ? {} : null;
+        case "object":
+            return resourceDef;
+        default:
+            return undefined;
     }
 }
 function getEnumDefinition(entry) {
     const enumDef = entry.enum;
     switch (typeof enumDef) {
-        case "string": return { prefix: enumDef };
-        case "boolean": return {};
-        case "object": return enumDef;
-        default: return undefined;
+        case "string":
+            return { prefix: enumDef };
+        case "boolean":
+            return {};
+        case "object":
+            return enumDef;
+        default:
+            return undefined;
     }
 }
 function scanFreeFunction(entries, uniqueType, pointerType) {
@@ -1812,7 +1953,9 @@ function scanFreeFunction(entries, uniqueType, pointerType) {
             if (sourceEntry?.parameters?.length !== 1)
                 continue;
             const firstParameter = sourceEntry.parameters[0];
-            if (sourceEntry.name.endsWith(uniqueType) || (typeof firstParameter !== 'string' && firstParameter.type === pointerType)) {
+            if (sourceEntry.name.endsWith(uniqueType) ||
+                (typeof firstParameter !== "string" &&
+                    firstParameter.type === pointerType)) {
                 candidates.push(sourceEntry);
             }
         }
@@ -1835,13 +1978,15 @@ function insertEntry(entries, entry, defaultName = "") {
     function doInsertEntry(entry) {
         if (!entry.name)
             entry.name = defaultName;
-        entry = /** @type {ApiEntry} */ (entry);
+        entry = /** @type {ApiEntry} */ entry;
         fixEntry(entry);
         const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
-        const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
+        const key = name.startsWith("ObjectRef")
+            ? name
+            : name.replace(/<[^>]*>::/, "::");
         if (entries[key]) {
             const currEntry = entries[key];
-            if (currEntry.kind !== 'function') {
+            if (currEntry.kind !== "function") {
                 if (entry.doc || !currEntry.doc) {
                     if (entry.kind === "def") {
                         currEntry.doc = [...entry.doc];
@@ -1851,7 +1996,7 @@ function insertEntry(entries, entry, defaultName = "") {
                     }
                 }
             }
-            else if (entry.kind === 'function') {
+            else if (entry.kind === "function") {
                 let e = currEntry;
                 while (e.overload)
                     e = e.overload;
@@ -1866,15 +2011,15 @@ function insertEntry(entries, entry, defaultName = "") {
         return entries;
     }
     /**
-   * Add missing fields
-   */
+     * Add missing fields
+     */
     function fixEntry(entry) {
         if (entry.entries) {
             for (const subEntry of Object.values(entry.entries)) {
                 if (Array.isArray(subEntry)) {
                     subEntry.forEach(fixEntry);
                 }
-                else if (typeof subEntry === 'object') {
+                else if (typeof subEntry === "object") {
                     fixEntry(subEntry);
                 }
             }
@@ -1883,7 +2028,7 @@ function insertEntry(entries, entry, defaultName = "") {
             entry.entries = {};
         }
         if (!entry.kind)
-            entry.kind = 'plc';
+            entry.kind = "plc";
     }
 }
 /**
@@ -1891,14 +2036,14 @@ function insertEntry(entries, entry, defaultName = "") {
  */
 function insertEntryAndCheck(entries, entry, context, file, defaultName) {
     insertEntry(entries, entry, defaultName);
-    if (entry.kind === 'ns' || entry.kind === "struct") {
+    if (entry.kind === "ns" || entry.kind === "struct") {
         const currType = context.types[entry.name];
         if (currType) {
             if (currType.kind !== "ns" && entry.kind !== "ns")
                 utils_1.system.warn(`Duplicate type definition ${entry.name}`);
         }
         else {
-            context.types[entry.name] = (entry);
+            context.types[entry.name] = entry;
         }
     }
 }
@@ -1911,7 +2056,8 @@ function transformHierarchy(targetEntries, context) {
             continue;
         const isMove = key.includes(".");
         const path = key.split(/\.|::/);
-        const obj = getTypeFromPath(path, context) ?? (isMove ? getTypeFromPath(key.split('.'), context) : null);
+        const obj = getTypeFromPath(path, context) ??
+            (isMove ? getTypeFromPath(key.split("."), context) : null);
         if (!obj)
             continue;
         let entry = targetEntries[key];
@@ -1938,13 +2084,13 @@ function transformHierarchy(targetEntries, context) {
             insertEntry(obj.entries, {
                 ...entry,
                 proto: true,
-                overload: undefined
+                overload: undefined,
             });
             entry.name = makeMemberName(key, obj.template);
             if (obj.template)
                 entry.template = obj.template;
             if (entry.parameters)
-                entry.parameters = entry.parameters.map(p => {
+                entry.parameters = entry.parameters.map((p) => {
                     p = (0, utils_1.deepClone)(p);
                     delete p.default;
                     return p;
@@ -1963,7 +2109,7 @@ function transformHierarchy(targetEntries, context) {
     function makeMemberName(key, template) {
         if (!template)
             return key;
-        const lastSeparator = key.lastIndexOf('::');
+        const lastSeparator = key.lastIndexOf("::");
         const args = (0, generate_1.generateCallParameters)(template, {});
         return `${key.slice(0, lastSeparator)}<${args}>${key.slice(lastSeparator)}`;
     }
@@ -1981,7 +2127,7 @@ function getTypeFromPath(path, context) {
         if (!el || !el.entries) {
             return null;
         }
-        obj = (el);
+        obj = el;
     }
     return obj;
 }
@@ -2006,15 +2152,24 @@ function makeRenameEntry(entry, name, typeName) {
         newEntry = { kind: "function", immutable: true };
     }
     else if (typeof entry !== "object") {
-        newEntry = { kind: (entry) };
+        newEntry = { kind: entry };
     }
     else if (entry.name === "ctor") {
-        newEntry = { ...entry, kind: "function", name: typeName, type: "", proto: false };
+        newEntry = {
+            ...entry,
+            kind: "function",
+            name: typeName,
+            type: "",
+            proto: false,
+        };
     }
     else {
         newEntry = entry;
     }
-    return { ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) };
+    return {
+        ...newEntry,
+        name: newEntry.name || makeNaturalName(name, typeName),
+    };
 }
 function transformMemberName(name, typeName, context) {
     return makeNaturalName(transformName(name, context), typeName);
@@ -2049,7 +2204,9 @@ function prepareForTypeInsert(entry, name, typeName) {
         return;
     const parameter = parameters[0];
     const type = parameter.type ?? "";
-    if ((type.includes(typeName) || entry.hints?.removeParamThis) && !entry.static && entry.sourceName) {
+    if ((type.includes(typeName) || entry.hints?.removeParamThis) &&
+        !entry.static &&
+        entry.sourceName) {
         parameters.shift();
         if (entry.doc)
             removeTagFromGroup(entry.doc, "@param");
@@ -2078,7 +2235,7 @@ function transformEntry(sourceEntry, context) {
     const sourceName = sourceEntry.name;
     targetEntry.sourceName = sourceName;
     switch (sourceEntry.kind) {
-        case 'function':
+        case "function":
             targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
             targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
             checkSignatureRules(targetEntry, context);
@@ -2112,15 +2269,15 @@ function transformEntry(sourceEntry, context) {
     return targetEntry;
 }
 function transformParameters(parameters, context) {
-    return parameters.map(parameter => {
+    return parameters.map((parameter) => {
         let { name, type, default: defaultValue } = parameter;
         type = transformType(type, context.paramTypeMap);
         return { name, type, default: defaultValue };
     });
 }
 function checkSignatureRules(targetEntry, context) {
-    const parameters = /** @type {ApiParameter[]}*/ (targetEntry.parameters);
-    if (parameters.some(p => typeof p === "string"))
+    const parameters = /** @type {ApiParameter[]}*/ targetEntry.parameters;
+    if (parameters.some((p) => typeof p === "string"))
         return;
     for (const signatureRule of context.signatureRules) {
         if (parameters.length < signatureRule.pattern.length)
@@ -2136,7 +2293,9 @@ function checkSignatureRules(targetEntry, context) {
                 }
             }
             if (matchParams) {
-                const replaceParams = signatureRule.replaceParams.map(p => ({ ...p }));
+                const replaceParams = signatureRule.replaceParams.map((p) => ({
+                    ...p,
+                }));
                 parameters.splice(i, signatureRule.pattern.length, ...replaceParams);
                 break;
             }
@@ -2150,28 +2309,28 @@ function transformFileDoc(doc, context) {
     if (!doc?.length)
         return;
     const title = doc[0];
-    if (typeof title === "object" && !Array.isArray(title) && title.tag === '#') {
+    if (typeof title === "object" && !Array.isArray(title) && title.tag === "#") {
         title.tag = `@defgroup ${title.content}`;
-        title.content = title.content.replace(/(Category)(\w+)/, '$1 $2');
+        title.content = title.content.replace(/(Category)(\w+)/, "$1 $2");
     }
     return transformDoc(doc, context);
 }
 function transformDoc(doc, context) {
     return doc?.map(transformDocItem);
     function transformDocItem(docStr) {
-        if (typeof docStr === 'string')
+        if (typeof docStr === "string")
             return transformDocStr(docStr);
         if (Array.isArray(docStr))
             return docStr.map(transformDocItem);
         const r = { ...docStr };
         r.content = transformDocStr(r.content);
         if (r.tag)
-            r.tag = r.tag.replace('\\', '@');
+            r.tag = r.tag.replace("\\", "@");
         return r;
     }
     function transformDocStr(docStr) {
         return transformString(docStr, context.docRules)
-            .replace(/\\(\w+)/g, '@$1')
+            .replace(/\\(\w+)/g, "@$1")
             .replaceAll("NULL", "nullptr");
     }
 }
@@ -2184,12 +2343,14 @@ function transformIncludeName(name, context) {
  * @param rules the replacements to apply
  */
 function transformString(str, rules) {
-    rules.forEach(rule => str = str.replace(rule.pattern, rule.replacement));
+    rules.forEach((rule) => (str = str.replace(rule.pattern, rule.replacement)));
     return str;
 }
 function transformName(name, context) {
     name = name.replace(/#.*$/, "");
-    return context?.prefixToRemove ? name.replace(context.prefixToRemove, '') : name;
+    return context?.prefixToRemove
+        ? name.replace(context.prefixToRemove, "")
+        : name;
 }
 function transformEntriesDocRefs(entries, context) {
     for (const entry of Object.values(entries)) {
@@ -2208,7 +2369,7 @@ function transformEntriesDocRefs(entries, context) {
     }
 }
 function resolveVersionDoc(doc, context) {
-    const sinceTag = getTagInGroup(doc, '@since');
+    const sinceTag = getTagInGroup(doc, "@since");
     if (!sinceTag)
         return;
     const m = /\b(\w+)\s*(\d+)\.(\d+)\.(\d+)\.$/m.exec(sinceTag.content);
@@ -2226,14 +2387,14 @@ function resolveVersionDoc(doc, context) {
 function resolveDocRefs(doc, context) {
     return doc?.map(resolveDocRefItem);
     function resolveDocRefItem(item) {
-        if (typeof item === 'string')
+        if (typeof item === "string")
             return resolveDocRefStr(item);
         if (Array.isArray(item))
             return item.map(resolveDocRefItem);
         return { ...item, content: resolveDocRefStr(item.content) };
     }
     function resolveDocRefStr(docStr) {
-        return docStr.replaceAll(context.referenceCandidate, ref => context.getName(ref));
+        return docStr.replaceAll(context.referenceCandidate, (ref) => context.getName(ref));
     }
 }
 function addToTagGroup(doc, tag, content) {
@@ -2269,7 +2430,7 @@ function removeItemFromGroup(doc, r) {
     if (!doc)
         return;
     if (Array.isArray(r)) {
-        const l = (doc[r[0]]);
+        const l = doc[r[0]];
         l.splice(r[1], 1);
     }
     else if (r !== -1) {
@@ -2280,7 +2441,9 @@ function removeItemFromGroup(doc, r) {
 function findTagInGroup(doc, tagOrFunction, count = 0) {
     if (!doc)
         return -1;
-    const test = (typeof tagOrFunction === "function") ? tagOrFunction : (item) => matchTag(item, tagOrFunction);
+    const test = typeof tagOrFunction === "function"
+        ? tagOrFunction
+        : (item) => matchTag(item, tagOrFunction);
     for (let i = 0; i < doc.length; i++) {
         const item = doc[i];
         if (typeof item !== "object")
@@ -2288,18 +2451,18 @@ function findTagInGroup(doc, tagOrFunction, count = 0) {
         if (Array.isArray(item)) {
             for (let j = 0; j < item.length; j++) {
                 const subItem = item[j];
-                if (test(subItem.tag) && (count--) === 0)
+                if (test(subItem.tag) && count-- === 0)
                     return [i, j];
             }
         }
-        else if (test(item.tag) && (count--) === 0)
+        else if (test(item.tag) && count-- === 0)
             return i;
     }
     return -1;
 }
 function getItemInGroup(doc, index) {
     if (Array.isArray(index)) {
-        const l = (doc?.[index[0]]);
+        const l = doc?.[index[0]];
         return l?.[index[1]];
     }
     else {
@@ -2311,5 +2474,5 @@ function getTagInGroup(doc, tagOrFunction, count = 0) {
     return getItemInGroup(doc, r);
 }
 function matchTag(item, tag) {
-    return tag === item || item?.startsWith(tag + ' ');
+    return tag === item || item?.startsWith(tag + " ");
 }
