@@ -564,6 +564,7 @@ struct AtomicU32 : AtomicU32Raw
   Uint32 Get();
 };
 
+/// A type representing an atomic of an arbitrary pointer.
 template<class T>
 class AtomicPointer
 {

@@ -1174,8 +1174,6 @@ inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
  * The timeout is not guaranteed, the actual wait time could be longer due to
  * system scheduling.
  *
- * @param event the Event structure to be filled in with the next event from the
- *              queue, or nullptr.
  * @param timeoutMS the maximum number of milliseconds to wait for the next
  *                  available event.
  * @returns the Event if this got an event or std::nullopt if the timeout

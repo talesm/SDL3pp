@@ -30,23 +30,25 @@
 <     : m_value(value)
 ---
 >     : AtomicU32Raw(value)
-561a573
+555a567
+> /// A type representing an atomic of an arbitrary pointer.
+561a574
 >   /// Construcst from T
-577d588
+577d589
 <    * @param a a pointer to a pointer.
-598d608
+598d609
 <    * @param a a pointer to a pointer.
-617d626
+617d627
 <    * @param a a pointer to a pointer.
-707c716
+707c717
 <   return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
 ---
 >   return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
-713c722
+713c723
 <   return SDL::SetAtomicPointer(&m_value, v);
 ---
 >   return SDL_SetAtomicPointer(&m_value, v);
-719c728
+719c729
 <   return SDL::GetAtomicPointer(&m_value);
 ---
 >   return SDL_GetAtomicPointer(&m_value);
