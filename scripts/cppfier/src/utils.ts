@@ -45,11 +45,9 @@ export function writeJSONSync(path: PathOrFileDescriptor, data: any) {
  * @param source
  * @returns
  */
-export function combineArray(target: any[], source: any) {
+export function combineArray<T>(target: T[], source: any) {
   if (Array.isArray(source)) {
-    if (source.length < target.length) {
-      target.length = source.length;
-    }
+    if (target.length > source.length) target.length = source.length;
     for (let i = 0; i < source.length; i++) {
       const targetValue = target[i];
       if (targetValue === null || typeof targetValue !== "object") {
@@ -107,7 +105,7 @@ export const system = {
   log(...data) {
     if (!system.silent) console.log(...data);
   },
-  warn(...data) {
+  warn(...data: any[]) {
     if (!system.silent) console.warn(...data);
     if (this.stopOnWarn) {
       let message = "Stopped on warning";
@@ -119,15 +117,15 @@ export const system = {
 
 /**
  * Clone object, using .clone() if provided
- * @template {any} T the type
- * @param {T} obj the object to bee cloned
- * @returns {T}
+ * @template T the type
+ * @param  obj the object to bee cloned
+ * @returns the cloned object
  */
 export function deepClone<T>(obj: T): T {
   if (typeof obj !== "object" || obj === null) return obj;
   if (Array.isArray(obj)) return obj.map((el) => deepClone(el)) as T;
-  // @ts-ignore
-  if (typeof obj?.clone === "function") return obj.clone() as T;
+  if (typeof (obj as any)?.clone === "function")
+    return (obj as any).clone() as T;
   const result = {};
   for (const [key, value] of Object.entries(obj)) {
     result[key] = deepClone(value);
