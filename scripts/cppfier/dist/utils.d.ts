@@ -1,4 +1,4 @@
-import { PathOrFileDescriptor } from "node:fs";
+import { type PathOrFileDescriptor } from "node:fs";
 /**
  * Read a file as an array of lines
  * @param path

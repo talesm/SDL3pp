@@ -127,13 +127,13 @@ function deepClone(obj) {
     if (typeof obj !== "object" || obj === null)
         return obj;
     if (Array.isArray(obj))
-        return (obj.map(el => deepClone(el)));
+        return obj.map(el => deepClone(el));
     // @ts-ignore
     if (typeof obj?.clone === "function")
-        return (obj.clone());
+        return obj.clone();
     const result = {};
     for (const [key, value] of Object.entries(obj)) {
         result[key] = deepClone(value);
     }
-    return (result);
+    return result;
 }

@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, PathOrFileDescriptor } from "node:fs";
+import { readFileSync, writeFileSync, type PathOrFileDescriptor } from "node:fs";
 
 /**
  * Read a file as an array of lines
@@ -115,12 +115,12 @@ export const system = {
  */
 export function deepClone<T>(obj: T): T {
   if (typeof obj !== "object" || obj === null) return obj;
-  if (Array.isArray(obj)) return <T>(obj.map(el => deepClone(el)));
+  if (Array.isArray(obj)) return obj.map(el => deepClone(el)) as T;
   // @ts-ignore
-  if (typeof obj?.clone === "function") return <T>(obj.clone());
+  if (typeof obj?.clone === "function") return obj.clone() as T;
   const result = {};
   for (const [key, value] of Object.entries(obj)) {
     result[key] = deepClone(value);
   }
-  return <T>(result);
+  return result as T;
 }
