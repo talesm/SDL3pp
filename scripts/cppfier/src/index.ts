@@ -161,10 +161,10 @@ function mergeInto(destiny: Dict<any>, source: Dict<any>) {
       if (value == null) {
         delete destiny[key];
       } else destiny[key] = value;
-    } else if (!prevValue) {
-      destiny[key] = value;
-    } else {
+    } else if (prevValue) {
       mergeInto(prevValue, value);
+    } else {
+      destiny[key] = value;
     }
   }
 }
@@ -355,32 +355,26 @@ function mergeTransformInto(destiny: Dict<any>, source: Dict<any>) {
 }
 
 function help(args: string[] = []) {
-  switch (args[0]) {
-    case "parse":
-      printLog(
-        "Parse API from header files",
-        "",
-        wrapUsageText(
-          `usage: node ${process.argv[1]} `,
-          "parse [ [-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."
-        ),
-        "",
-        wrapText(
-          'If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (" - ") it just outputs on stdout. If the first filename ends with ".json" it interprets it as a config file, making the " - c" optional. Multiple configurations can be added and their content is merged.'
-        )
-      );
-      break;
-    default:
-      printLog(
-        "Transform OO-like C APIs into actual C++ OO API\n",
-        ...guideDoc
-      );
-      break;
+  if (args[0] === "parse") {
+    printLog(
+      "Parse API from header files",
+      "",
+      wrapUsageText(
+        `usage: node ${process.argv[1]} `,
+        "parse [ [-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."
+      ),
+      "",
+      wrapText(
+        'If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (" - ") it just outputs on stdout. If the first filename ends with ".json" it interprets it as a config file, making the " - c" optional. Multiple configurations can be added and their content is merged.'
+      )
+    );
+  } else {
+    printLog("Transform OO-like C APIs into actual C++ OO API\n", ...guideDoc);
   }
 }
 
 function wrapUsageText(prefix: string, parameters: string = "") {
-  const wordRegex = /([^\[<\s]|\[[^\]]+\]|<[^>]+>)+/;
+  const wordRegex = /([^[<\s]|\[[^\]]+\]|<[^>]+>)+/;
   let margin = prefix.length;
   if (margin > 40) {
     margin = 8;
