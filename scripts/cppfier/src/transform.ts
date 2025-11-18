@@ -184,18 +184,22 @@ class ApiContext {
 
     if (transform.prefixes?.length) {
       this.prefixToRemove = Array.isArray(transform.prefixes)
-        ? RegExp(`^(${transform.prefixes.join("|")})`)
-        : RegExp("^" + transform.prefixes);
+        ? new RegExp(`^(${transform.prefixes.join("|")})`)
+        : new RegExp("^" + transform.prefixes);
       this.referenceCandidate = Array.isArray(transform.prefixes)
-        ? RegExp(`\\b(?:${transform.prefixes.join("|")})\\w+`, "g")
-        : RegExp(`\\b${transform.prefixes}\\w+`, "g");
+        ? new RegExp(`\\b(?:${transform.prefixes.join("|")})\\w+`, "g")
+        : new RegExp(`\\b${transform.prefixes}\\w+`, "g");
     }
 
     this.renameRules = transform.renameRules ?? [];
-    this.renameRules.forEach((rule) => (rule.pattern = RegExp(rule.pattern)));
+    this.renameRules.forEach(
+      (rule) => (rule.pattern = new RegExp(rule.pattern))
+    );
 
     this.docRules = transform.docRules ?? [];
-    this.docRules.forEach((rule) => (rule.pattern = RegExp(rule.pattern, "g")));
+    this.docRules.forEach(
+      (rule) => (rule.pattern = new RegExp(rule.pattern, "g"))
+    );
 
     this.definitionPrefix = transform.definitionPrefix ?? "";
 
@@ -247,21 +251,21 @@ class ApiContext {
     if (version.minor > tag.minor) return true;
     if (version.minor < tag.minor) return false;
     if (version.patch > tag.patch) return true;
-    /* if (version.patch <= tag.patch)*/ return false;
+    return false;
   }
 
   setFile(file: string) {
     const includeBefore = this.includeBeforeMap[file];
-    if (!includeBefore) {
-      this.currentIncludeBefore = this.includeBeforeMap[file] = {};
-    } else {
+    if (includeBefore) {
       this.currentIncludeBefore = includeBefore;
+    } else {
+      this.currentIncludeBefore = this.includeBeforeMap[file] = {};
     }
     const includeAfter = this.includeAfterMap[file];
-    if (!includeAfter) {
-      this.currentIncludeAfter = this.includeAfterMap[file] = {};
-    } else {
+    if (includeAfter) {
       this.currentIncludeAfter = includeAfter;
+    } else {
+      this.currentIncludeAfter = this.includeAfterMap[file] = {};
     }
   }
 
@@ -270,7 +274,8 @@ class ApiContext {
 
     const includeTarget = includeBefore[includeBeforeKey];
     if (Array.isArray(includeTarget)) return includeTarget;
-    return (includeBefore[includeBeforeKey] = []);
+    const r = (includeBefore[includeBeforeKey] = []);
+    return r;
   }
 
   getOrCreateIncludeAfter(includeAfterKey: string) {
@@ -278,7 +283,8 @@ class ApiContext {
 
     const includeTarget = includeAfter[includeAfterKey];
     if (Array.isArray(includeTarget)) return includeTarget;
-    return (includeAfter[includeAfterKey] = []);
+    const r = (includeAfter[includeAfterKey] = []);
+    return r;
   }
 
   /**
@@ -434,10 +440,7 @@ function expandTypes(
    */
   function tryDetectOoLike(sourceEntry, targetDelta) {
     const sourceName = sourceEntry.name;
-    if (
-      typeof targetDelta.resource !== "undefined" ||
-      typeof targetDelta.wrapper !== "undefined"
-    )
+    if (targetDelta.resource !== undefined || targetDelta.wrapper !== undefined)
       return;
 
     let fCount = 0;
@@ -480,7 +483,10 @@ function expandTypes(
   function getOrCreateDelta(sourceName): ApiEntryTransform {
     const targetDelta = transformMap[sourceName];
     const name = transformName(sourceName, context);
-    if (!targetDelta) return (transformMap[sourceName] = { name });
+    if (!targetDelta) {
+      const r = (transformMap[sourceName] = { name });
+      return r;
+    }
     if (!targetDelta.name) targetDelta.name = name;
     return targetDelta;
   }
@@ -517,7 +523,7 @@ function expandTypes(
           name: callbackName,
           type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
           doc,
-          ...(file.transform[callbackName] ?? {}),
+          ...file.transform[callbackName],
           before: undefined,
           after: undefined,
         };
@@ -780,12 +786,10 @@ function expandTypes(
           parameters,
           doc: [
             "Constructs from its fields.",
-            [
-              ...parameters.map((p) => ({
-                tag: `@param ${p.name}`,
-                content: `the value for ${p.name}.`,
-              })),
-            ],
+            parameters.map((p) => ({
+              tag: `@param ${p.name}`,
+              content: `the value for ${p.name}.`,
+            })),
           ],
           hints: {
             init: [`${rawType}{${parameters.map((p) => p.name).join(", ")}}`],
@@ -834,7 +838,7 @@ function expandTypes(
     );
     transform.entries = {
       ...entries,
-      ...(transform.entries ?? {}),
+      ...transform.entries,
       ...detectedMethods,
     };
     if (type !== sourceType) {
@@ -1864,7 +1868,7 @@ function makeSortedEntryArray(
       targetEntry.kind = targetDelta.kind ?? targetEntry.kind;
       if (targetEntry.kind !== sourceEntry.kind && sourceEntry.kind === "def") {
         let replacement = "constant";
-        if (typeof targetDelta.type === "undefined") targetEntry.type = "auto";
+        if (targetDelta.type === undefined) targetEntry.type = "auto";
         if (targetEntry.kind === "function") replacement = "function";
         if (!targetDelta.doc && targetEntry.doc) {
           const macro = getTagInGroup(targetEntry.doc, "@since");
@@ -1910,8 +1914,7 @@ function makeSortedEntryArray(
 
   function addIncluded(transformEntries?: ApiEntryTransform[]) {
     if (!transformEntries) return;
-    for (let i = 0; i < transformEntries.length; i++) {
-      const transformEntry = transformEntries[i];
+    for (const transformEntry of transformEntries) {
       const name = transformEntry.name;
       let checkSubIncludes = true;
       if (processedSourceNames.has(name)) {
@@ -2177,7 +2180,7 @@ function mirrorMethods(
       targetParam0.type
     ) {
       switch (typeof sourceParam0) {
-        case "object":
+        case "object": {
           const selfParam: ApiParameter = { name: sourceParam0.name };
           if (!sourceParam0.type) {
             selfParam.type = targetEntry.immutable ? constParamType : paramType;
@@ -2191,6 +2194,7 @@ function mirrorMethods(
           targetParameters.unshift(selfParam);
           parametersChanged = true;
           break;
+        }
         case "string":
           if (
             typeof targetParam0 !== "object" ||
@@ -2388,7 +2392,7 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
     if (!obj) continue;
     let entry = targetEntries[key];
     const typeName = obj.name;
-    const targetName = path[path.length - 1];
+    const targetName = path.at(-1);
     if (isMove) {
       delete targetEntries[key];
       while (entry) {
@@ -2428,13 +2432,12 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
       delete entry.doc;
     }
   }
-
-  function makeMemberName(key: string, template: ApiParameters) {
-    if (!template) return key;
-    const lastSeparator = key.lastIndexOf("::");
-    const args = generateCallParameters(template, {});
-    return `${key.slice(0, lastSeparator)}<${args}>${key.slice(lastSeparator)}`;
-  }
+}
+function makeMemberName(key: string, template: ApiParameters) {
+  if (!template) return key;
+  const lastSeparator = key.lastIndexOf("::");
+  const args = generateCallParameters(template, {});
+  return `${key.slice(0, lastSeparator)}<${args}>${key.slice(lastSeparator)}`;
 }
 
 /**
@@ -2442,11 +2445,11 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
  */
 function getTypeFromPath(path: string[], context: ApiContext) {
   let obj = context.types[path[0]];
-  if (!obj || !obj.entries) return null;
+  if (!obj?.entries) return null;
   let i = 1;
   for (; i < path.length - 1; i++) {
     const el = obj.entries[path[i]];
-    if (!el || !el.entries) {
+    if (!el?.entries) {
       return null;
     }
     obj = <ApiType>el;
@@ -2508,7 +2511,7 @@ function makeNaturalName(name: string, typeName: string) {
   if (!typeName.startsWith("F")) return name.replace(new RegExp(typeName), "");
   const replaceRegexp = new RegExp("F?" + typeName.slice(1));
   name = name.replace(replaceRegexp, "");
-  if (/Float$/.test(name)) name = name.slice(0, name.length - 5);
+  if (name.endsWith("Float")) name = name.slice(0, -5);
   return name;
 }
 
@@ -2544,7 +2547,7 @@ function prepareForTypeInsert(entry: ApiEntry, name: string, typeName: string) {
 }
 
 function normalizeTypeName(typeName: string) {
-  if (typeName.endsWith("Ref")) return typeName.slice(0, typeName.length - 3);
+  if (typeName.endsWith("Ref")) return typeName.slice(0, -3);
   return typeName;
 }
 
@@ -2668,7 +2671,7 @@ function transformDoc(doc: ParsedDoc, context: ApiContext): ParsedDoc {
   }
   function transformDocStr(docStr: string) {
     return transformString(docStr, context.docRules)
-      .replace(/\\(\w+)/g, "@$1")
+      .replaceAll(/\\(\w+)/g, "@$1")
       .replaceAll("NULL", "nullptr");
   }
 }
@@ -2801,10 +2804,12 @@ function findTagInGroup(
   return -1;
 }
 
-function getItemInGroup(doc: ParsedDoc, index: number | [number, number]) {
+function getItemInGroup(
+  doc: ParsedDoc,
+  index: number | [number, number]
+): ParsedDocContent {
   if (Array.isArray(index)) {
-    const l = <ListContent>doc?.[index[0]];
-    return l?.[index[1]];
+    return doc?.[index[0]]?.[index[1]];
   } else {
     return doc?.[index];
   }
@@ -2814,9 +2819,9 @@ function getTagInGroup(
   doc: ParsedDoc,
   tagOrFunction: string | ((tag: string) => boolean),
   count: number = 0
-): TaggedContent {
+) {
   const r = findTagInGroup(doc, tagOrFunction, count);
-  return <TaggedContent>getItemInGroup(doc, r);
+  return getItemInGroup(doc, r) as TaggedContent;
 }
 
 function matchTag(item: string, tag: string) {
