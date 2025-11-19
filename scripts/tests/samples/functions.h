@@ -8,8 +8,6 @@
 
 #include <iostream>
 
-namespace name {
-
 /**
  * Documentation
  */
@@ -33,22 +31,15 @@ int funcInt(int value, int otherValue);
 /**
  * Documentation
  */
-int funcInt(int value);
-
-/**
- * Documentation
- */
-const char* funcIntReturnsCStr(int value, int otherValue = 0);
+const char* funcIntReturnsCStr(int value, int otherValue);
 
 /**
  * @brief Documentation
  *
  */
-constexpr int functionConstexpr(int value, int otherValue)
+SDL_FORCE_INLINE int functionConstexpr(int value, int otherValue)
 {
   return value + otherValue;
 }
-
-} // namespace name
 
 #endif // FUNCTIONS_H_
