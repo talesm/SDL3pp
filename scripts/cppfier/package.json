@@ -2,7 +2,7 @@
   "name": "cppfier",
   "version": "1.0.0",
   "description": "turns c API into c++",
-  "main": "dist/index.js",
+  "main": "index.ts",
   "directories": {
     "test": "tests"
   },

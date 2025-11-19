@@ -76,7 +76,7 @@ function parse(args: string[]) {
     sources: <string[]>[],
     outputFile: "",
     api: <any>null,
-    baseDir: [],
+    baseDir: [] as string[],
     storeLineNumbers: false,
   };
   let printConfig = false;
