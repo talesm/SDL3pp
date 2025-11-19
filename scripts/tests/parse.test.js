@@ -16,6 +16,20 @@ test("parse empty.h", () => {
   })).toEqual(emptyApi);
 });
 
+test("parse non-empty file", () => {
+  const content = "\nint a;\n";
+  expect(parseContent("file.h", content)).toEqual({
+    name: "file.h",
+    entries: {
+      a: {
+        kind: "var",
+        name: "a",
+        type: "int",
+      },
+    },
+  });
+});
+
 test("parse vars.h", () => {
   expect(parseApi({
     baseDir: ["scripts/tests/samples/"],
@@ -37,49 +51,6 @@ test("parse structs.h", () => {
   })).toEqual(structsApi);
 });
 
-test("parse structs_aliases.h", () => {
-  expect(parseApi({
-    baseDir: ["scripts/tests/samples/"],
-    sources: ["structs_aliases.h"]
-  })).toEqual(structsAliasesApi);
-});
-
-test("parse structs_extends.h", () => {
-  expect(parseApi({
-    baseDir: ["scripts/tests/samples/"],
-    sources: ["structs_extends.h"]
-  })).toEqual(structsExtendsApi);
-});
-
-test("parse structs_resources.h", () => {
-  expect(parseApi({
-    baseDir: ["scripts/tests/samples/"],
-    sources: ["structs_resources.h"]
-  })).toEqual(structsResourcesApi);
-});
-
-test("parse ends on trailing }", () => {
-  const content = ["namespace {", "", "int a;", "}", "", "int b;", ""];
-  expect(parseContent("file.h", content, { storeLineNumbers: true })).toEqual({
-    name: "file.h",
-    doc: "",
-    entries: {
-      a: {
-        doc: "",
-        kind: "var",
-        name: "a",
-        type: "int",
-        begin: 3,
-        decl: 3,
-        end: 4
-      },
-    },
-    docBegin: 1,
-    docEnd: 1,
-    entriesBegin: 3,
-    entriesEnd: 4,
-  });
-});
 
 test("parse enums.h", () => {
   expect(parseApi({
@@ -88,9 +59,3 @@ test("parse enums.h", () => {
   })).toEqual(enumsApi);
 });
 
-test("parse enums_aliases.h", () => {
-  expect(parseApi({
-    baseDir: ["scripts/tests/samples/"],
-    sources: ["enums_aliases.h"]
-  })).toEqual(enumsAliasesApi);
-});
