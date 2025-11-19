@@ -5,34 +5,5 @@
   "main": "index.ts",
   "directories": {
     "test": "tests"
-  },
-  "scripts": {
-    "compile": "tsc",
-    "dev": "tsc --watch",
-    "antlr": "antlr4ts grammar/CHeader.g4 && antlr4ts grammar/DoxyComment.g4",
-    "parse": "node dist/index.js parse",
-    "update": "node dist/index.js update",
-    "transform": "node dist/index.js transform",
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/talesm/cppfier.git"
-  },
-  "author": "talesm",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/talesm/cppfier/issues"
-  },
-  "homepage": "https://github.com/talesm/cppfier#readme",
-  "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "@types/node": "^24.10.0",
-    "antlr4ts-cli": "^0.5.0-alpha.4",
-    "jest": "^29.7.0",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "antlr4ts": "^0.5.0-alpha.4"
   }
 }
