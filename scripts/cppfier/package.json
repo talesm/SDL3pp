@@ -1,9 +1,5 @@
 {
   "name": "cppfier",
-  "version": "1.0.0",
   "description": "turns c API into c++",
-  "main": "index.ts",
-  "directories": {
-    "test": "tests"
-  }
+  "main": "index.ts"
 }

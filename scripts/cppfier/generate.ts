@@ -8,7 +8,7 @@ import {
   Dict,
   ParsedDoc,
   ParsedDocContent,
-} from "./types.js";
+} from "./types";
 import { system, writeLinesSync } from "./utils";
 import { existsSync, mkdirSync } from "node:fs";
 

@@ -16,7 +16,8 @@
     "rootDir": "./scripts/",
     "noEmit": true,
     "noImplicitAny": false,
-    "strict": false
+    "strict": false,
+    "allowImportingTsExtensions": true,
   },
   "ts-node": {
     // It is faster to skip typechecking.

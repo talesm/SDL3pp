@@ -1263,7 +1263,7 @@ function expandTypes(
       const sourceName = freeFunction.name;
       freeFunction = transformEntry(freeFunction, context);
       const freeTransformEntry =
-        <ApiEntryTransform>subEntries[sourceName] ?? {};
+        (subEntries[sourceName] as ApiEntryTransform) ?? {};
       combineObject(freeFunction, freeTransformEntry);
       freeFunction.name =
         freeTransformEntry.name ??
@@ -1937,12 +1937,12 @@ function makeSortedEntryArray(
       transformEntry.kind === "forward"
         ? transformEntry.name + "#forward"
         : transformEntry.name;
-    const targetEntry = <ApiEntry>{
+    const targetEntry = {
       ...transformEntry,
       kind: transformEntry.kind ?? "plc",
       name: transformEntry.name ?? "",
       entries: undefined,
-    };
+    } as ApiEntry;
     if (transformEntry.entries)
       targetEntry.entries = transformSubEntries(transformEntry);
     if (!currKind) {
@@ -1995,7 +1995,7 @@ function makeSortedEntryArray(
             insertEntry(entries, { name: nameCandidate, kind: "plc" });
           }
         } else {
-          insertEntry(entries, <ApiEntry>entry, nameCandidate);
+          insertEntry(entries, entry as ApiEntry, nameCandidate);
         }
         return;
       }
@@ -2373,7 +2373,7 @@ function insertEntryAndCheck(
       if (currType.kind !== "ns" && entry.kind !== "ns")
         system.warn(`Duplicate type definition ${entry.name}`);
     } else {
-      context.types[entry.name] = <ApiType>entry;
+      context.types[entry.name] = entry as ApiType;
     }
   }
 }
@@ -2452,7 +2452,7 @@ function getTypeFromPath(path: string[], context: ApiContext) {
     if (!el?.entries) {
       return null;
     }
-    obj = <ApiType>el;
+    obj = el as ApiType;
   }
   return obj;
 }
@@ -2480,7 +2480,7 @@ function makeRenameEntry(
   } else if (entry === "immutable") {
     newEntry = { kind: "function", immutable: true };
   } else if (typeof entry !== "object") {
-    newEntry = { kind: <ApiEntryKind>entry };
+    newEntry = { kind: entry as ApiEntryKind };
   } else if (entry.name === "ctor") {
     newEntry = {
       ...entry,
@@ -2663,7 +2663,7 @@ function transformDoc(doc: ParsedDoc, context: ApiContext): ParsedDoc {
   function transformDocItem(docStr: ParsedDocContent): ParsedDocContent {
     if (typeof docStr === "string") return transformDocStr(docStr);
     if (Array.isArray(docStr))
-      return <ParsedDocContent>docStr.map(transformDocItem);
+      return docStr.map(transformDocItem) as ParsedDocContent;
     const r = { ...docStr };
     r.content = transformDocStr(r.content);
     if (r.tag) r.tag = r.tag.replace("\\", "@");
@@ -2732,7 +2732,7 @@ function resolveDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {
   function resolveDocRefItem(item: ParsedDocContent): ParsedDocContent {
     if (typeof item === "string") return resolveDocRefStr(item);
     if (Array.isArray(item))
-      return <ParsedDocContent>item.map(resolveDocRefItem);
+      return item.map(resolveDocRefItem) as ParsedDocContent;
     return { ...item, content: resolveDocRefStr(item.content) };
   }
 
@@ -2773,7 +2773,7 @@ function removeTagFromGroup(doc: ParsedDoc, tag: string, count: number = 0) {
 function removeItemFromGroup(doc: ParsedDoc, r: number | [number, number]) {
   if (!doc) return;
   if (Array.isArray(r)) {
-    const l = <ListContent>doc[r[0]];
+    const l = doc[r[0]] as ListContent;
     l.splice(r[1], 1);
   } else if (r !== -1) {
     doc.splice(r, 1);

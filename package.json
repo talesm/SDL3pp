@@ -3,9 +3,9 @@
     "check": "tsc",
     "dev": "tsc --watch",
     "antlr": "antlr4ts scripts/cppfier/grammar/CHeader.g4 && antlr4ts scripts/cppfier/grammar/DoxyComment.g4",
-    "parse": "ts-node scripts/cppfier/index.ts parse scripts/config-source.json",
-    "transform": "ts-node scripts/gen-transform scripts/transform.json && ts-node scripts/cppfier/index.ts transform scripts/config-target.json",
-    "generate": "ts-node scripts/cppfier/index.ts generate scripts/config-target.json",
+    "parse": "ts-node scripts/cppfier parse scripts/config-source.json",
+    "transform": "ts-node scripts/gen-transform scripts/transform.json && ts-node scripts/cppfier transform scripts/config-target.json",
+    "generate": "ts-node scripts/cppfier generate scripts/config-target.json",
     "test": "jest"
   },
   "devDependencies": {
