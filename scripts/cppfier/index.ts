@@ -1,13 +1,13 @@
-import { generateApi } from "./generate";
-import { parseApi } from "./parse";
-import { transformApi } from "./transform.js";
+import { generateApi } from "./generate.ts";
+import { parseApi } from "./parse.ts";
+import { transformApi } from "./transform.ts";
 import {
   readJSONSync,
   system,
   writeJSONSync,
   writeLinesSync,
-} from "./utils.js";
-import { Api, ApiTransform, Dict } from "./types";
+} from "./utils.ts";
+import { Api, ApiTransform, Dict } from "./types.ts";
 
 /**
  * Process the main
@@ -78,10 +78,10 @@ function parse(args: string[]) {
     return help(["parse"]);
   }
   const config = {
-    sources: <string[]>[],
+    sources: new Array<string>(),
     outputFile: "",
-    api: <any>null,
-    baseDir: [],
+    api: null as string,
+    baseDir: [] as string[],
     storeLineNumbers: false,
   };
   let printConfig = false;
@@ -254,11 +254,11 @@ function transform(args: string[]) {
     return help(["transform"]);
   }
   const config = {
-    sourceApi: <Api>null,
-    transform: <ApiTransform>null,
+    sourceApi: null as Api,
+    transform: null as ApiTransform,
     api: "",
     baseDir: "",
-    sources: <string[]>[],
+    sources: new Array<string>(),
     storeLineNumbers: false,
   };
   let printConfig = false;

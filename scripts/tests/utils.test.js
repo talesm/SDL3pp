@@ -1,4 +1,4 @@
-const { combineArray, combineObject } = require("../src/utils");
+const { combineArray, combineObject } = require("../cppfier/utils");
 
 test("combine into array", () => {
   expect(combineArray([1], [1])).toEqual([1]);

@@ -92,7 +92,7 @@ attribute: (
 doc: SHORT_DOC | LONG_DOC;
 trailingDoc: TRAILING_DOC;
 
-WS: [ \t\r\n]+ -> skip;
+WS: [ \t\r\n]+ -> channel(HIDDEN);
 LONG_COMMENT: '/*' ~'*' .*? '*/' -> skip;
 SHORT_COMMENT: '//' ~'/' .*? '\n' -> skip;
 

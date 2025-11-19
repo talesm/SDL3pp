@@ -228,7 +228,7 @@ class ProgListener implements CHeaderListener {
   // exitEveryRule(/*@NotNull*/ ctx: ParserRuleContext) {};
 }
 
-function parseContent(name: string, content: string) {
+export function parseContent(name: string, content: string) {
   // Create the lexer and parser
   let lexer = new CHeaderLexer(CharStreams.fromString(content, name));
   let tokenStream = new CommonTokenStream(lexer);

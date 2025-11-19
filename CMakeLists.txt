@@ -113,8 +113,8 @@ target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
-    COMMAND node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
-    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.js
+    COMMAND npx ts-node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.ts
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
@@ -168,14 +168,37 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
-file(GLOB_RECURSE CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/src/*.ts scripts/cppfier/src/*.g4)
+file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts)
+
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/node_modules 
+    COMMAND npm install
+)
+
+set(CPPFIER_GRAMMAR_SOURCES 
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderLexer.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderListener.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderParser.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentLexer.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentListener.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentParser.ts
+)
+
+add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
+    COMMAND npm run antlr
+    DEPENDS ${PROJECT_SOURCE_DIR}/node_modules 
+            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeader.g4
+            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyComment.g4
+)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
+    COMMAND npm run check
     COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
             ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
             ${CPPFIER_SOURCES}
+            ${CPPFIER_GRAMMAR_SOURCES}
+            ${PROJECT_SOURCE_DIR}/node_modules 
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 

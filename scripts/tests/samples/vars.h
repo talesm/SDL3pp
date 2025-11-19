@@ -9,13 +9,13 @@ namespace name {
  * @brief My Constant
  *
  */
-constexpr const int MyConstantInt = 42;
+const int MyConstantInt = 42;
 
 /**
  * @brief Bool constant
  *
  */
-constexpr const bool MyConstantBool = true;
+const bool MyConstantBool = true;
 
 } // namespace name
 

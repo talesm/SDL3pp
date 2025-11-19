@@ -1,15 +1,14 @@
 import { readFileSync, writeSync, openSync, closeSync } from "node:fs";
 import { chdir } from "node:process";
 
-/** @param {string[]} args  */
-function main(args) {
-  let targetName = '';
+function main(args: string[]) {
+  let targetName = "";
   let baseDir = "./include/SDL3pp";
   for (let i = 2; i < args.length; i++) {
     const arg = args[i];
-    if (!arg.startsWith('-')) {
+    if (!arg.startsWith("-")) {
       targetName = arg;
-    } else if (arg == '--base-dir') {
+    } else if (arg == "--base-dir") {
       baseDir = args[++i];
     } else {
       throw new Error("Invalid option " + arg);
@@ -20,7 +19,7 @@ function main(args) {
   const result = parseFileRecursive("SDL3pp.h");
 
   if (targetName) {
-    if (!(/^[~/]/.test(targetName))) {
+    if (!/^[~/]/.test(targetName)) {
       targetName = "../../" + targetName;
     }
     const fd = openSync(targetName, "w+");
@@ -33,12 +32,9 @@ function main(args) {
 
 /**
  * Writes everything
- * 
- * @param {number} fd 
- * @param {ParsedFileResult} result 
  */
-function writeHeader(fd, result) {
-  const files = sortHierarchy(result.files).filter(f => f.content?.length);
+function writeHeader(fd: number, result: ParsedFileResult) {
+  const files = sortHierarchy(result.files).filter((f) => f.content?.length);
 
   // Disclaimer
   writeSync(fd, "// Amalgamated SDL3pp\n");
@@ -49,42 +45,42 @@ function writeHeader(fd, result) {
   writeSync(fd, "#ifndef SDL3PP_H_\n#define SDL3PP_H_\n\n");
 
   // Includes
-  writeSync(fd, result.includes.map(inc => `#include <${inc}>`).join('\n') + "\n\n");
+  writeSync(
+    fd,
+    result.includes.map((inc) => `#include <${inc}>`).join("\n") + "\n\n"
+  );
 
   // Unconditional files
   writeSync(fd, "namespace SDL {\n\n");
-  for (const file of files.filter(f => !f.conditional)) {
-    writeSync(fd, file.content.join("\n").trim() + "\n\n");
+  for (const file of files.filter((f) => !f.conditional)) {
+    writeSync(fd, file.content?.join("\n").trim() + "\n\n");
   }
   writeSync(fd, "} // namespace SDL\n");
 
   // Conditional files
-  for (const file of files.filter(f => f.conditional)) {
-    writeSync(fd, file.content.join("\n").trim() + "\n\n");
+  for (const file of files.filter((f) => f.conditional)) {
+    writeSync(fd, file.content?.join("\n").trim() + "\n\n");
   }
 
   // End guard
   writeSync(fd, "#endif // SDL3PP_H_\n");
 }
 
-/**
- * 
- * @param {ParsedFile[]} files 
- */
-function sortHierarchy(files) {
-  /** @type {ParsedFile[]} */
-  const result = [];
+function sortHierarchy(files: ParsedFile[]) {
+  const result: ParsedFile[] = [];
   const foundSet = new Set();
 
   while (foundSet.size < files.length) {
-    const independentFiles = files.filter(file => {
+    const independentFiles = files.filter((file) => {
       if (foundSet.has(file.name)) return false;
       for (const dep of file.deps) {
         if (!foundSet.has(dep)) return false;
       }
       return true;
     });
-    independentFiles.sort((a, b) => (a.name < b.name ? -1 : (a.name > b.name ? +1 : 0)));
+    independentFiles.sort((a, b) =>
+      a.name < b.name ? -1 : a.name > b.name ? +1 : 0
+    );
     for (const file of independentFiles) {
       const name = file.name;
       result.push(file);
@@ -95,24 +91,19 @@ function sortHierarchy(files) {
   return result;
 }
 
-/**
- * @typedef {object} ParsedFileResult
- * @prop {string[]} includes
- * @prop {ParsedFile[]} files
- */
+interface ParsedFileResult {
+  includes: string[];
+  files: ParsedFile[];
+}
 
-/**
- * @param {string} filename 
- */
-function parseFileRecursive(filename) {
-  /** @type {ParsedFileResult} */
-  const result = {
+function parseFileRecursive(filename: string) {
+  const result: ParsedFileResult = {
     includes: [],
     files: [],
   };
   const queue = [filename];
-  const alreadyIncluded = new Set();
-  const alreadySet = new Set();
+  const alreadyIncluded = new Set<string>();
+  const alreadySet = new Set<string>();
   while (queue.length) {
     const name = queue.shift();
     if (!name) break;
@@ -123,7 +114,7 @@ function parseFileRecursive(filename) {
     queue.push(...fileInfo.deps);
     result.files.push(fileInfo);
 
-    if (!fileInfo.conditional) {
+    if (!fileInfo.conditional && fileInfo.includes) {
       for (const include of fileInfo.includes) {
         if (!alreadyIncluded.has(include)) {
           alreadyIncluded.add(include);
@@ -138,34 +129,26 @@ function parseFileRecursive(filename) {
   return result;
 }
 
-/**
- * @typedef {object} ParsedFile
- * @prop {string}       name
- * @prop {Set<string>}  deps
- * @prop {string[]}     includes
- * @prop {boolean=}     conditional
- * @prop {string[]=}    content
- */
+interface ParsedFile {
+  name: string;
+  deps: Set<string>;
+  includes?: string[];
+  conditional?: boolean;
+  content?: string[];
+}
 
-/**
- * 
- * @param {string} filename 
- */
-function parseFile(filename) {
-  const lines = readFileSync(filename, "utf8").split('\n');
-  /** @type {ParsedFile} */
-  const result = {
+function parseFile(filename: string) {
+  const lines = readFileSync(filename, "utf8").split("\n");
+  const result: ParsedFile = {
     name: filename,
     deps: new Set(),
     includes: [],
   };
-  /** @type {"begin"|"includes"|"content"} */
-  let state = "begin";
+  let state: "begin" | "includes" | "content" = "begin";
   let contentStart = 0;
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    /** @type {RegExpExecArray|null} */
-    let m = null;
+    let m: RegExpExecArray | null = null;
     switch (state) {
       case "begin":
         if (line.startsWith("#ifndef") && lines[i + 1].startsWith("#define")) {
@@ -174,11 +157,11 @@ function parseFile(filename) {
         }
         break;
       case "includes":
-        if (m = /^#include (["<])([\w./*-]+)[">]/.exec(line)) {
+        if ((m = /^#include (["<])([\w./*-]+)[">]/.exec(line))) {
           if (m[1] == '"') {
             result.deps.add(m[2]);
-          } else if (!(m[2].startsWith("SDL3/"))) {
-            result.includes.push(m[2]);
+          } else if (!m[2].startsWith("SDL3/")) {
+            result.includes?.push(m[2]);
           }
         } else if (line.startsWith("namespace SDL {")) {
           if (!result.conditional) contentStart = i + 1;
@@ -187,11 +170,14 @@ function parseFile(filename) {
           result.conditional = true;
           contentStart = i;
           state = "content";
-        };
+        }
         break;
       case "content":
         if (line.startsWith("} // namespace SDL")) {
-          result.content = lines.slice(contentStart, result.conditional ? lines.length - 2 : i);
+          result.content = lines.slice(
+            contentStart,
+            result.conditional ? lines.length - 2 : i
+          );
           return result;
         }
         break;
@@ -199,7 +185,8 @@ function parseFile(filename) {
         throw new Error(`Unknown state ${state}`);
     }
   }
-  if (state === "content") throw new Error(`Expected "} // namespace SDL" at file ${filename}`);
+  if (state === "content")
+    throw new Error(`Expected "} // namespace SDL" at file ${filename}`);
   return result;
 }
 

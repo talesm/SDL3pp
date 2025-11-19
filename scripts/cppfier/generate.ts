@@ -8,8 +8,8 @@ import {
   Dict,
   ParsedDoc,
   ParsedDocContent,
-} from "./types.js";
-import { system, writeLinesSync } from "./utils.js";
+} from "./types";
+import { system, writeLinesSync } from "./utils";
 import { existsSync, mkdirSync } from "node:fs";
 
 export interface GenerateApiConfig {

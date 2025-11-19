@@ -2,10 +2,15 @@
   "files": {
     "functions.h": {
       "name": "functions.h",
-      "doc": "@file functions.h\n\nDocumentation",
+      "doc": [
+        "@file functions.h",
+        "Documentation"
+      ],
       "entries": {
         "funcCStr": {
-          "doc": "Documentation",
+          "doc": [
+            "Documentation"
+          ],
           "name": "funcCStr",
           "kind": "function",
           "type": "int",
@@ -14,59 +19,48 @@
               "name": "value",
               "type": "const char *"
             }
-          ],
-          "proto": true
+          ]
         },
         "funcVoid": {
-          "doc": "Documentation",
+          "doc": [
+            "Documentation"
+          ],
           "name": "funcVoid",
           "kind": "function",
           "type": "int",
-          "parameters": [],
-          "proto": true
+          "parameters": []
         },
         "funcEmpty": {
-          "doc": "Documentation",
+          "doc": [
+            "Documentation"
+          ],
           "name": "funcEmpty",
           "kind": "function",
           "type": "int",
-          "parameters": [],
-          "proto": true
+          "parameters": []
         },
-        "funcInt": [
-          {
-            "doc": "Documentation",
-            "name": "funcInt",
-            "kind": "function",
-            "type": "int",
-            "parameters": [
-              {
-                "name": "value",
-                "type": "int"
-              },
-              {
-                "name": "otherValue",
-                "type": "int"
-              }
-            ],
-            "proto": true
-          },
-          {
-            "doc": "Documentation",
-            "name": "funcInt",
-            "kind": "function",
-            "type": "int",
-            "parameters": [
-              {
-                "name": "value",
-                "type": "int"
-              }
-            ],
-            "proto": true
-          }
-        ],
+        "funcInt": {
+          "doc": [
+            "Documentation"
+          ],
+          "name": "funcInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "int"
+            },
+            {
+              "name": "otherValue",
+              "type": "int"
+            }
+          ]
+        },
         "funcIntReturnsCStr": {
-          "doc": "Documentation",
+          "doc": [
+            "Documentation"
+          ],
           "name": "funcIntReturnsCStr",
           "kind": "function",
           "type": "const char *",
@@ -77,14 +71,14 @@
             },
             {
               "name": "otherValue",
-              "type": "int",
-              "default": "0"
+              "type": "int"
             }
-          ],
-          "proto": true
+          ]
         },
         "functionConstexpr": {
-          "doc": "@brief Documentation",
+          "doc": [
+            "@brief Documentation"
+          ],
           "name": "functionConstexpr",
           "kind": "function",
           "type": "int",

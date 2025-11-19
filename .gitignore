@@ -11,3 +11,4 @@ scripts/transform-legacy.json
 *.tokens
 *.interp
 scripts/cppfier/dist/
+node_modules/
