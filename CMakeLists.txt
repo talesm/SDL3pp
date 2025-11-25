@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.4.0
+    VERSION 0.4.1
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
@@ -86,7 +86,8 @@ file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/
 set(SDL3PP_COMPILE_FEATURES cxx_std_23)
 
 # The SDL3pp library
-add_library(SDL3pp INTERFACE ${SDL3pp_lib_HEADERS})
+add_library(SDL3pp INTERFACE)
+target_sources(SDL3pp INTERFACE FILE_SET sdl3pp_headers TYPE HEADERS BASE_DIRS include/ FILES ${SDL3pp_lib_HEADERS})
 add_library(SDL3pp::SDL3pp ALIAS SDL3pp)
 target_compile_features(SDL3pp INTERFACE ${SDL3PP_COMPILE_FEATURES})
 target_link_libraries(SDL3pp INTERFACE ${SDL3PP_DEPENDENCIES})
