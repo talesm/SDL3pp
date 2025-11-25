@@ -6,8 +6,6 @@
   "license": "MIT",
   "dependencies": [
     "sdl3",
-    "sdl3-image",
-    "sdl3-ttf",
     {
       "name": "vcpkg-cmake",
       "host": true
@@ -16,5 +14,23 @@
       "name": "vcpkg-cmake-config",
       "host": true
     }
-  ]
+  ],
+  "default-features": [
+    "image",
+    "ttf"
+  ],
+  "features": {
+    "image": {
+      "description": "SDL3_image support",
+      "dependencies": [
+        "sdl3-image"
+      ]
+    },
+    "ttf": {
+      "description": "SDL3_ttf support",
+      "dependencies": [
+        "sdl3-ttf"
+      ]
+    }
+  }
 }
