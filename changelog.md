@@ -4,7 +4,8 @@ Changelog
 ## Version 0.4.1
 
 This is a minor revision, with wrapper scripts improvements and the addition of
-vcpkg packaging support.
+vcpkg packaging support. We also started publishing an amalgamation in a zip, as
+we currently have 3 files to download.
 
 ## Version 0.4
 
