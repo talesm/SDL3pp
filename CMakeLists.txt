@@ -103,14 +103,13 @@ set(SDL3PP_AMALGAMATION_VULKAN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_vulkan.
 file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
 
 add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN} ${SDL3PP_AMALGAMATION_VULKAN})
-add_library(SDL3pp::SDL3pp_amalgamated ALIAS SDL3pp_amalgamated)
 target_compile_features(SDL3pp_amalgamated INTERFACE ${SDL3PP_COMPILE_FEATURES})
 target_include_directories(SDL3pp_amalgamated INTERFACE
     $<BUILD_INTERFACE:${SDL3PP_AMALGAMATION_DIR}>
     $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
-
+set_target_properties(SDL3pp_amalgamated PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
     COMMAND npx ts-node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
