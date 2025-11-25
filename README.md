@@ -13,7 +13,7 @@ memory management and wrappers for string and callbacks.
 - Download [the single header](./amalgamation/SDL3pp/) and add to your project;
 - Alternatively, download
   [the latest release](https://github.com/talesm/SDL3pp/releases) then follow:
-- [Build](#building) instructions; 
+- [Build](#building) instructions;
 - [Installation](#installing) instructions;
 - See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
 - See [Example](#example) and [Examples directory](./examples/).
@@ -32,9 +32,9 @@ memory management and wrappers for string and callbacks.
     functions, constants, etc) into SDL namespace;
 - Interfaces should accept both C structs and the C++ wraps, so you can adapt a
   codebase gradually or just choose to use only what you deem necessary.
-- Flexible, while we use [RAII](https://en.cppreference.com/w/cpp/language/raii)
-  idiom by default, you have the choice to not use it and, for example, manage
-  memory yourself.
+- Flexible, while we use
+  [RAII](https://en.cppreference.com/w/cpp/language/raii) idiom by default, you
+  have the choice to not use it and, for example, manage memory yourself.
 
 ## Documentation
 
@@ -44,8 +44,9 @@ memory management and wrappers for string and callbacks.
     to understand the strategies we adopt to map we do from C to C++;
   - See [Design notes](https://talesm.github.io/SDL3pp/group__DesignNotes.html)
     to understand the rationally behind some design patterns and choices we use.
-- See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
-  for some examples;
+- See the
+  [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples) for
+  some examples;
 - See our roadmap-ish [todo](todo.md).
 
 ## Example

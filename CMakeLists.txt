@@ -263,3 +263,17 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/SDL3ppConfig.cmake"
     DESTINATION lib/cmake/SDL3pp
 )
+
+############################
+## Zip amalgamated files  ##
+############################
+
+# Create zip for amalgamated files
+add_custom_target(SDL3pp_zip_amalgamation
+    COMMAND rm -f ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.tar.gz
+    COMMAND tar -czvf ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND zip -r ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip SDL3pp/
+    COMMAND zip -ju ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip ../LICENSE.txt ../README.md ../changelog.md
+    DEPENDS SDL3pp_amalgamated
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
+)
