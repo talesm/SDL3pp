@@ -10,11 +10,15 @@ memory management and wrappers for string and callbacks.
 
 ## Quick start / TLDR
 
-- Download [the single header](./amalgamation/SDL3pp/) and add to your project;
+- Download [the single header](./amalgamation/SDL3pp/) (as
+  [zip](https://github.com/talesm/SDL3pp/releases/download/0.4.1/SDL3pp_amalgamated.zip)
+  or
+  [tarball](https://github.com/talesm/SDL3pp/releases/download/0.4.1/SDL3pp_amalgamated.tar.gz))
+  and add to your project;
 - Alternatively, download
   [the latest release](https://github.com/talesm/SDL3pp/releases) then follow:
-- [Build](#building) instructions;
-- [Installation](#installing) instructions;
+  - [Build](#building) instructions;
+  - [Installation](#installing) instructions;
 - See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
 - See [Example](#example) and [Examples directory](./examples/).
 
