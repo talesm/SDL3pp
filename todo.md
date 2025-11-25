@@ -4,7 +4,7 @@ Todo for next version
 Replace parse and parse-xml for a antlr parser, convert to typescript
 
 - [x] Simplify TS workflow;
-- [ ] Add vcpkg support
+- [x] Add vcpkg support
 
 Backlog
 =======
