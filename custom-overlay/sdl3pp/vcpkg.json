@@ -1,0 +1,20 @@
+{
+  "name": "sdl3pp",
+  "version": "0.4.1",
+  "description": "A slim C++ wrapper for SDL3",
+  "homepage": "https://github.com/talesm/SDL3pp",
+  "license": "MIT",
+  "dependencies": [
+    "sdl3",
+    "sdl3-image",
+    "sdl3-ttf",
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ]
+}
