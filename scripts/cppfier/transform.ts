@@ -13,8 +13,10 @@ import {
   ApiParameters,
   ApiTransform,
   ApiType,
+  CallbackDefinition,
   Dict,
   EntryHint,
+  FunctorSupport,
   ListContent,
   ParsedDoc,
   ParsedDocContent,
@@ -376,6 +378,19 @@ function insertOrLink(
   currLink.link = entry;
 }
 
+function getCallbackDef(
+  callback: FunctorSupport | boolean | CallbackDefinition
+): CallbackDefinition {
+  switch (typeof callback) {
+    case "boolean":
+      return { functorSupport: "std" };
+    case "object":
+      return callback;
+    case "string":
+      return { functorSupport: callback };
+  }
+}
+
 function expandTypes(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
@@ -390,14 +405,14 @@ function expandTypes(
     if (!isType(sourceEntry.kind)) continue;
     const targetDelta = getOrCreateDelta(sourceName);
     const targetName = targetDelta.name;
-    tryDetectOoLike(sourceEntry, targetDelta);
-    if (sourceEntry.kind === "callback")
-      expandCallback(sourceName, sourceEntry, targetName);
+    tryDetectType(sourceEntry, targetDelta);
+    if (targetDelta.callback)
+      expandCallback(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.resource)
       expandResource(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.wrapper)
       expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
-    if (targetDelta.enum || sourceEntry.kind === "enum")
+    if (targetDelta.enum)
       expandEnumeration(sourceName, sourceEntry, targetName, targetDelta);
 
     if (!targetDelta.kind) {
@@ -433,16 +448,20 @@ function expandTypes(
       );
   }
 
-  /**
-   *
-   * @param {ApiEntry}          sourceEntry
-   * @param {ApiEntryTransform} targetDelta
-   */
-  function tryDetectOoLike(sourceEntry, targetDelta) {
-    const sourceName = sourceEntry.name;
+  function tryDetectType(
+    sourceEntry: ApiEntry,
+    targetDelta: ApiEntryTransform
+  ) {
+    if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
+      targetDelta.callback = true;
+      return;
+    }
+    if (targetDelta.enum === undefined && sourceEntry.kind === "enum")
+      targetDelta.enum = true;
     if (targetDelta.resource !== undefined || targetDelta.wrapper !== undefined)
       return;
 
+    const sourceName = sourceEntry.name;
     let fCount = 0;
     let free = "";
     const ctors = [];
@@ -494,10 +513,14 @@ function expandTypes(
   function expandCallback(
     sourceName: string,
     sourceEntry: ApiEntry,
-    name: string
+    name: string,
+    targetDelta: ApiEntryTransform
   ) {
     const parameters = sourceEntry.parameters;
+    const callback = getCallbackDef(targetDelta.callback);
     delete sourceEntry.parameters;
+    delete targetDelta.callback;
+    if (!callback.functorSupport) return;
     for (let i = 0; i < parameters.length; i++) {
       const parameter = parameters[i];
       if (
@@ -505,9 +528,7 @@ function expandTypes(
         parameter.type === "void *" &&
         parameter.name === "userdata"
       ) {
-        const typeParams = parameters.map((p) =>
-          typeof p === "string" ? p : p.type
-        );
+        const typeParams = parameters.map((p) => p.type);
         const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
         typeParams.splice(i, 1);
         const doc = removeTagFromGroup(

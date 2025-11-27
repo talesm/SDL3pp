@@ -141,11 +141,18 @@ export type ApiEntryTransformMap = Dict<ApiEntryTransform | QuickTransform>;
 export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiEntryTransformMap;
   link?: ApiEntryTransform;
-  enum?: true | string | EnumerationDefinition;
+  callback?: boolean | FunctorSupport | CallbackDefinition;
+  enum?: boolean | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
   resource?: boolean | string | ResourceDefinition;
   before?: string;
   after?: string;
+}
+
+export type FunctorSupport = "std" | "lightweight";
+
+export interface CallbackDefinition {
+  functorSupport?: false | FunctorSupport;
 }
 
 export interface ResourceDefinition {
