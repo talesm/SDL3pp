@@ -133,7 +133,7 @@ using ThreadID = SDL_ThreadID;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using ThreadFunction = SDL_ThreadFunction;
+using ThreadFunction = int(SDLCALL*)(void* data);
 
 /**
  * The function passed to Thread.Thread() as the new thread's entry point.
@@ -155,7 +155,7 @@ using ThreadCB = std::function<int()>;
  *
  * @sa SetTLS
  */
-using TLSDestructorCallback = SDL_TLSDestructorCallback;
+using TLSDestructorCallback = void(SDLCALL*)(void* value);
 
 /**
  * The SDL thread object.

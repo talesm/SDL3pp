@@ -35,7 +35,13 @@
 >    * @returns the closest display mode equal to or larger than the desired mode.
 652a647
 >  * @sa HitTestCB
-702c697,708
+700,701c695,696
+< using HitTest = SDL_HitTestResult(SDLCALL*)(WindowParam win,
+<                                             const PointRaw& area,
+---
+> using HitTest = SDL_HitTestResult(SDLCALL*)(WindowRaw win,
+>                                             const PointRaw* area,
+704c699,710
 < /// @sa HitTest
 ---
 > /**
@@ -50,22 +56,22 @@
 >  * @sa HitTest
 >  * @sa Window.SetHitTest
 >  */
-718,719d723
+720,721d725
 <  * @sa Window.Window
 <  *
-720a725,726
+722a727,728
 >  *
 >  * @sa Window.Window
-827,828c833
+829,830c835
 <    * @param w the width of the window.
 <    * @param h the height of the window.
 ---
 >    * @param size the width and height of the window.
-843c848
+845c850
 <     : m_resource(SDL_CreateWindow(title, size, flags))
 ---
 >     : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
-901,906c906,908
+903,908c908,910
 <    * @param offset_x the x position of the popup window relative to the origin
 <    *                 of the parent.
 <    * @param offset_y the y position of the popup window relative to the origin
@@ -76,7 +82,7 @@
 >    * @param offset the x, y position of the popup window relative to the origin
 >    *               of the parent.
 >    * @param size the width and height of the window.
-925c927,932
+927c929,934
 <     : m_resource(SDL_CreatePopupWindow(parent, offset, size, flags))
 ---
 >     : m_resource(SDL_CreatePopupWindow(parent,
@@ -85,36 +91,36 @@
 >                                        size.x,
 >                                        size.y,
 >                                        flags))
-1251d1257
+1253d1259
 <    * @param size the size of the ICC profile.
-1519,1521c1525
+1521,1523c1527
 <    * @param x the x coordinate of the window, or `WINDOWPOS_CENTERED` or
 <    *          `WINDOWPOS_UNDEFINED`.
 <    * @param y the y coordinate of the window, or `WINDOWPOS_CENTERED` or
 ---
 >    * @param p the coordinates of the window, or `WINDOWPOS_CENTERED` or
-1566,1569c1570
+1568,1571c1572
 <    * @param x a pointer filled in with the x position of the window, may be
 <    *          nullptr.
 <    * @param y a pointer filled in with the y position of the window, may be
 <    *          nullptr.
 ---
 >    * @returns the position on success.
-1576a1578
+1578a1580
 >    * @sa SetPosition(int *, int *)
-1601,1602c1603
+1603,1604c1605
 <    * @param w the width of the window, must be > 0.
 <    * @param h the height of the window, must be > 0.
 ---
 >    * @param size the width and height of the window, must be > 0.
-1643,1644c1644
+1645,1646c1646
 <    * @param w a pointer filled in with the width of the window, may be nullptr.
 <    * @param h a pointer filled in with the height of the window, may be nullptr.
 ---
 >    * @returns a point with width and height on success
-1653a1654
+1655a1656
 >    * @sa GetSize(int *, int *)
-1656a1658,1668
+1658a1660,1670
 >   /**
 >    * @brief Request the window's position and size to be set.
 >    *
@@ -126,7 +132,7 @@
 >    * @sa WindowRef.SetPosition()
 >    * @sa WindowRef.SetSize()
 >    */
-1658a1671,1683
+1660a1673,1685
 >   /**
 >    * Get the position and client size of a window.
 >    *
@@ -140,12 +146,12 @@
 >    * @return Rect with the position and size
 >    * @throws Error on failure.
 >    */
-1671,1672d1695
+1673,1674d1697
 <    * @param rect a pointer filled in with the client area that is safe for
 <    *             interactive content.
-1784a1808
+1786a1810
 >    * @sa GetSizeInPixels()
-1791,1794c1815,1816
+1793,1796c1817,1818
 <    * @param w a pointer to variable for storing the width in pixels, may be
 <    *          nullptr.
 <    * @param h a pointer to variable for storing the height in pixels, may be
@@ -153,27 +159,27 @@
 ---
 >    * @returns the size on success or std::nullopt on failure; call GetError()
 >    * for more information.
-1802a1825
+1804a1827
 >    * @sa GetSizeInPixels(int*, int*)
-1809,1810c1832
+1811,1812c1834
 <    * @param min_w the minimum width of the window, or 0 for no limit.
 <    * @param min_h the minimum height of the window, or 0 for no limit.
 ---
 >    * @param p the minimum width and heigh of the window, or 0 for no limit.
-1843,1844c1865
+1845,1846c1867
 <    * @param max_w the maximum width of the window, or 0 for no limit.
 <    * @param max_h the maximum height of the window, or 0 for no limit.
 ---
 >    * @param p the maximum width and height of the window, or 0 for no limit.
-2191,2192c2212,2213
+2193,2194c2214,2215
 <    * @param vsync an int filled with the current vertical refresh sync interval.
 <    *              See Window.SetSurfaceVSync() for the meaning of the value.
 ---
 >    * @returns the current vertical refresh sync interval. See
 >    *          Window.SetSurfaceVSync() for the meaning of the value.
-2237d2257
+2239d2259
 <    * @param numrects the number of rectangles.
-2487,2490c2507,2508
+2489,2492c2509,2510
 <    * @param x the x coordinate of the menu, relative to the origin (top-left) of
 <    *          the client area.
 <    * @param y the y coordinate of the menu, relative to the origin (top-left) of
@@ -181,31 +187,31 @@
 ---
 >    * @param p the x, y coordinates of the menu, relative to the origin
 >    *          (top-left) of the client area.
-2574d2591
+2576d2593
 <    * @param callback_data an app-defined void pointer passed to **callback**.
-2579a2597,2598
+2581a2599,2600
 >    *
 >    * @cat listener-callback
-2872,2873c2891
+2874,2875c2893
 <    * @param x the x coordinate within the window.
 <    * @param y the y coordinate within the window.
 ---
 >    * @param p the x, y coordinates within the window.
-3151,3153d3168
+3153,3155d3170
 <    * @returns true on success or false on failure; call GetError() for more
 <    *          information.
 <    *
-3168d3182
+3170d3184
 <    * @param context the OpenGL context to associate with the window.
-3622,3623d3635
+3626,3627d3639
 <  * @param count a pointer filled in with the number of displays returned, may be
 <  *              nullptr.
-3625,3626c3637
+3629,3630c3641
 <  *          call GetError() for more information. This should be freed with
 <  *          free() when it is no longer needed.
 ---
 >  *          call GetError() for more information.
-3632c3643,3648
+3636c3647,3652
 < inline OwnArray<DisplayID> GetDisplays() { return SDL_GetDisplays(); }
 ---
 > inline OwnArray<DisplayID> GetDisplays()
@@ -214,56 +220,56 @@
 >   auto data = reinterpret_cast<DisplayID*>(SDL_GetDisplays(&count));
 >   return OwnArray<DisplayID>{data, size_t(count)};
 > }
-3682c3698
+3686c3702
 <   return CheckError(SDL_GetDisplayProperties(displayID));
 ---
 >   return {CheckError(SDL_GetDisplayProperties(displayID))};
-3729c3745
+3733c3749
 <  * @param rect the Rect structure filled in with the display bounds.
 ---
 >  * @returns the Rect structure filled in with the display bounds.
-3741c3757,3759
+3745c3761,3763
 <   return CheckError(SDL_GetDisplayBounds(displayID));
 ---
 >   Rect bounds;
 >   SDL_GetDisplayBounds(displayID, &bounds);
 >   return bounds;
-3761c3779
+3765c3783
 <  * @param rect the Rect structure filled in with the display bounds.
 ---
 >  * @returns the Rect structure filled in with the display bounds.
-3773c3791,3793
+3777c3795,3797
 <   return CheckError(SDL_GetDisplayUsableBounds(displayID));
 ---
 >   Rect bounds;
 >   SDL_GetDisplayUsableBounds(displayID, &bounds);
 >   return bounds;
-3875,3876d3894
+3879,3880d3898
 <  * @param count a pointer filled in with the number of display modes returned,
 <  *              may be nullptr.
-3878,3880c3896
+3882,3884c3900
 <  *          failure; call GetError() for more information. This is a single
 <  *          allocation that should be freed with free() when it is no longer
 <  *          needed.
 ---
 >  *          failure; call GetError() for more information.
-3890c3906,3908
+3894c3910,3912
 <   return SDL_GetFullscreenDisplayModes(displayID);
 ---
 >   int count = 0;
 >   auto data = CheckError(SDL_GetFullscreenDisplayModes(displayID, &count));
 >   return OwnArray<DisplayMode*>{data, size_t(count)};
-3909,3910c3927
+3913,3914c3931
 <  * @param w the width in pixels of the desired display mode.
 <  * @param h the height in pixels of the desired display mode.
 ---
 >  * @param size the width and height in pixels of the desired display mode.
-3915,3916c3932
+3919,3920c3936
 <  * @param closest a pointer filled in with the closest display mode equal to or
 <  *                larger than the desired mode.
 ---
 >  * @returns the closest display mode equal to or larger than the desired mode.
-3932,3933c3948,3955
+3936,3937c3952,3959
 <   return CheckError(SDL_GetClosestFullscreenDisplayMode(
 <     displayID, size, refresh_rate, include_high_density_modes));
 ---
@@ -275,42 +281,42 @@
 >                                                  include_high_density_modes,
 >                                                  &mode));
 >   return mode;
-3966c3988
+3970c3992
 <   return SDL_GetDesktopDisplayMode(displayID);
 ---
 >   return *SDL_GetDesktopDisplayMode(displayID);
-3995c4017
+3999c4021
 <   return SDL_GetCurrentDisplayMode(displayID);
 ---
 >   return *SDL_GetCurrentDisplayMode(displayID);
-4019c4041
+4023c4045
 <   return SDL_GetDisplayForPoint(point);
 ---
 >   return SDL_GetDisplayForPoint(&point);
-4044c4066
+4048c4070
 <   return CheckError(SDL_GetDisplayForRect(rect));
 ---
 >   return CheckError(SDL_GetDisplayForRect(&rect));
-4193c4215
+4197c4219
 <   return SDL_GetWindowFullscreenMode(window);
 ---
 >   return *SDL_GetWindowFullscreenMode(window);
-4205d4226
+4209d4230
 <  * @param size the size of the ICC profile.
-4215c4236,4237
+4219c4240,4241
 <   return CheckError(SDL_GetWindowICCProfile(window));
 ---
 >   size_t size;
 >   return OwnPtr<void>{CheckError(SDL_GetWindowICCProfile(window, &size))};
-4247,4248d4268
+4251,4252d4272
 <  * @param count a pointer filled in with the number of windows returned, may be
 <  *              nullptr.
-4250,4251c4270
+4254,4255c4274
 <  *          call GetError() for more information. This is a single allocation
 <  *          that should be freed with free() when it is no longer needed.
 ---
 >  *          call GetError() for more information.
-4257c4276,4281
+4261c4280,4285
 < inline OwnArray<WindowRef> GetWindows() { return SDL_GetWindows(); }
 ---
 > inline OwnArray<WindowRef> GetWindows()
@@ -319,12 +325,12 @@
 >   auto data = CheckError(SDL_GetWindows(&count));
 >   return OwnArray<WindowRef>{reinterpret_cast<WindowRef*>(data), size_t(count)};
 > }
-4330,4331c4354
+4334,4335c4358
 <  * @param w the width of the window.
 <  * @param h the height of the window.
 ---
 >  * @param size the width and height of the window.
-4406,4411c4429,4431
+4410,4415c4433,4435
 <  * @param offset_x the x position of the popup window relative to the origin of
 <  *                 the parent.
 <  * @param offset_y the y position of the popup window relative to the origin of
@@ -335,62 +341,62 @@
 >  * @param offset the x, y position of the popup window relative to the origin
 >  *               of the parent.
 >  * @param size the width and height of the window.
-4791c4811
+4795c4815
 <   return SDL_GetWindowFromID(id);
 ---
 >   return {SDL_GetWindowFromID(id)};
-4814c4834
+4818c4838
 <   return CheckError(SDL_GetWindowParent(window));
 ---
 >   return {CheckError(SDL_GetWindowParent(window))};
-4941c4961
+4945c4965
 <   return CheckError(SDL_GetWindowProperties(window));
 ---
 >   return {CheckError(SDL_GetWindowProperties(window))};
-5079,5081c5099
+5083,5085c5103
 <  * @param x the x coordinate of the window, or `WINDOWPOS_CENTERED` or
 <  *          `WINDOWPOS_UNDEFINED`.
 <  * @param y the y coordinate of the window, or `WINDOWPOS_CENTERED` or
 ---
 >  * @param p the coordinates of the window, or `WINDOWPOS_CENTERED` or
-5094c5112
+5098c5116
 <   CheckError(SDL_SetWindowPosition(window, p));
 ---
 >   CheckError(SDL_SetWindowPosition(window, p.x, p.y));
-5139,5142c5157
+5143,5146c5161
 <  * @param x a pointer filled in with the x position of the window, may be
 <  *          nullptr.
 <  * @param y a pointer filled in with the y position of the window, may be
 <  *          nullptr.
 ---
 >  * @returns the position on success.
-5153c5168,5170
+5157c5172,5174
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   GetWindowPosition(window, &p.x, &p.y);
 >   return p;
-5188,5189c5205
+5192,5193c5209
 <  * @param w the width of the window, must be > 0.
 <  * @param h the height of the window, must be > 0.
 ---
 >  * @param size the width and height of the window, must be > 0.
-5202c5218
+5206c5222
 <   CheckError(SDL_SetWindowSize(window, size));
 ---
 >   CheckError(SDL_SetWindowSize(window, size.x, size.y));
-5243,5244c5259
+5247,5248c5263
 <  * @param w a pointer filled in with the width of the window, may be nullptr.
 <  * @param h a pointer filled in with the height of the window, may be nullptr.
 ---
 >  * @returns a point with width and height on success
-5257c5272,5274
+5261c5276,5278
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   GetWindowSize(window, &p.x, &p.y);
 >   return p;
-5266a5284,5295
+5270a5288,5299
 > /**
 >  * @brief Request the window's position and size to be set.
 >  *
@@ -403,12 +409,12 @@
 >  * @sa WindowRef.SetPosition()
 >  * @sa WindowRef.SetSize()
 >  */
-5269c5298,5299
+5273c5302,5303
 <   static_assert(false, "Not implemented");
 ---
 >   SetWindowPosition(window, rect.GetTopLeft());
 >   SetWindowSize(window, rect.GetSize());
-5273a5304,5317
+5277a5308,5321
 > /**
 >  * Get the position and client size of a window.
 >  *
@@ -423,20 +429,20 @@
 >  * @return Rect with the position and size
 >  * @throws Error on failure.
 >  */
-5276c5320
+5280c5324
 <   static_assert(false, "Not implemented");
 ---
 >   return Rect{GetWindowPosition(window), GetWindowSize(window)};
-5292,5293d5335
+5296,5297d5339
 <  * @param rect a pointer filled in with the client area that is safe for
 <  *             interactive content.
-5302c5344,5346
+5306c5348,5350
 <   return CheckError(SDL_GetWindowSafeArea(window));
 ---
 >   Rect rect;
 >   CheckError(SDL_GetWindowSafeArea(window, &rect));
 >   return rect;
-5463,5466c5507,5508
+5467,5470c5511,5512
 <  * @param w a pointer to variable for storing the width in pixels, may be
 <  *          nullptr.
 <  * @param h a pointer to variable for storing the height in pixels, may be
@@ -444,77 +450,77 @@
 ---
 >  * @returns the size on success or std::nullopt on failure; call GetError()
 >  * for more information.
-5478c5520,5522
+5482c5524,5526
 <   static_assert(false, "Not implemented");
 ---
 >   Point p;
 >   GetWindowSizeInPixels(window, &p.x, &p.y);
 >   return p;
-5495,5496c5539
+5499,5500c5543
 <  * @param min_w the minimum width of the window, or 0 for no limit.
 <  * @param min_h the minimum height of the window, or 0 for no limit.
 ---
 >  * @param p the minimum width and height of the window, or 0 for no limit.
-5508c5551
+5512c5555
 <   CheckError(SDL_SetWindowMinimumSize(window, p));
 ---
 >   CheckError(SDL_SetWindowMinimumSize(window, p.x, p.y));
-5547,5548c5590
+5551,5552c5594
 <  * @param max_w the maximum width of the window, or 0 for no limit.
 <  * @param max_h the maximum height of the window, or 0 for no limit.
 ---
 >  * @param p the maximum width and height of the window, or 0 for no limit.
-5560c5602
+5564c5606
 <   CheckError(SDL_SetWindowMaximumSize(window, p));
 ---
 >   CheckError(SDL_SetWindowMaximumSize(window, p.x, p.y));
-5973c6015
+5977c6019
 <   return SDL_GetWindowSurface(window);
 ---
 >   return Surface::Borrow(SDL_GetWindowSurface(window));
-6013a6056
+6017a6060
 > /// Constant to disable vsync
-6015a6059
+6019a6063
 > /// Constant to enable adaptive vsync
-6022,6023d6065
+6026,6027d6069
 <  * @param vsync an int filled with the current vertical refresh sync interval.
 <  *              See Window.SetSurfaceVSync() for the meaning of the value.
-6034c6076,6078
+6038c6080,6082
 <   return CheckError(SDL_GetWindowSurfaceVSync(window));
 ---
 >   int vsync;
 >   CheckError(SDL_GetWindowSurfaceVSync(window, &vsync));
 >   return vsync;
-6083d6126
+6087d6130
 <  * @param numrects the number of rectangles.
-6096c6139
+6100c6143
 <   CheckError(SDL_UpdateWindowSurfaceRects(window, rects));
 ---
 >   CheckError(SDL_UpdateWindowSurfaceRects(window, rects.data(), rects.size()));
-6250c6293
+6254c6297
 < inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 ---
 > inline WindowRef GetGrabbedWindow() { return {SDL_GetGrabbedWindow()}; }
-6275c6318
+6279c6322
 <   CheckError(SDL_SetWindowMouseRect(window, rect));
 ---
 >   CheckError(SDL_SetWindowMouseRect(window, &rect));
-6463,6465c6506
+6467,6469c6510
 <  * @param x the x coordinate of the menu, relative to the origin (top-left) of
 <  *          the client area.
 <  * @param y the y coordinate of the menu, relative to the origin (top-left) of
 ---
 >  * @param p the coordinates of the menu, relative to the origin (top-left) of
-6475c6516
+6479c6520
 <   CheckError(SDL_ShowWindowSystemMenu(window, p));
 ---
 >   CheckError(SDL_ShowWindowSystemMenu(window, p.x, p.y));
-6527a6569,6570
+6531a6573,6574
 >   using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
 >   Wrapper::erase(window);
-6565d6607
+6569d6611
 <  * @param callback_data an app-defined void pointer passed to **callback**.
-6574c6616,6623
+6578c6620,6627
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
@@ -525,7 +531,7 @@
 >       return Wrapper::Call(data, win, Point(*area));
 >     },
 >     cbHandle);
-6661c6710,6715
+6665c6714,6719
 < inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 ---
 > inline void DestroyWindow(WindowRaw window)
@@ -534,15 +540,15 @@
 >   Wrapper::erase(window);
 >   SDL_DestroyWindow(window);
 > }
-6960c7014
+6964c7018
 <   CheckError(SDL_GL_MakeCurrent(window, context));
 ---
 >   CheckError(SDL_GL_MakeCurrent(window, context.get()));
-6970c7024
+6974c7028
 <   SDL::Window::MakeCurrent(m_resource, window);
 ---
 >   SDL::GL_MakeCurrent(window, m_resource);
-6986c7040
+6990c7044
 <   return CheckError(SDL_GL_GetCurrentWindow());
 ---
 >   return {CheckError(SDL_GL_GetCurrentWindow())};

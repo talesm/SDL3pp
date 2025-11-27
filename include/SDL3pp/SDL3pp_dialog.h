@@ -81,7 +81,9 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * @sa ShowOpenFolderDialog
  * @sa ShowFileDialogWithProperties
  */
-using DialogFileCallback = SDL_DialogFileCallback;
+using DialogFileCallback = void(SDLCALL*)(void* userdata,
+                                          const char* const* filelist,
+                                          int filter);
 
 /**
  * Callback used by file dialog functions.

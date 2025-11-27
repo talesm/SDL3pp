@@ -692,7 +692,9 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @sa Window.SetHitTest
  */
-using HitTest = SDL_HitTest;
+using HitTest = SDL_HitTestResult(SDLCALL*)(WindowRaw win,
+                                            const PointRaw* area,
+                                            void* data);
 
 /**
  * Callback used for hit-testing.
@@ -3259,7 +3261,7 @@ using EGLint = SDL_EGLint;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
+using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
  * EGL platform attribute initialization callback.
@@ -3316,7 +3318,9 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
+using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
+                                                  EGLDisplay display,
+                                                  EGLConfig config);
 
 /**
  * EGL surface/context attribute initialization callback types.

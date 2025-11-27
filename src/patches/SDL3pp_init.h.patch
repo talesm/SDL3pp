@@ -1,15 +1,15 @@
-14c14
+15c15
 <  * @defgroup CategoryInit Category Init
 ---
 >  * @defgroup CategoryInit Initialization and Shutdown
-42a43,48
+43a44,49
 >  * @defgroup InitFlags Initialization flags
 >  *
 >  * @{
 >  */
 > 
 > /**
-81a88,95
+82a89,96
 > /// @}
 > 
 > /**
@@ -18,7 +18,7 @@
 >  * @{
 >  */
 > 
-110a125,132
+111a126,133
 > /// @}
 > 
 > /**
@@ -27,35 +27,35 @@
 >  * @{
 >  */
 > 
-173a196,197
+176a199,200
 > /// @}
 > 
-313a338,342
+316a341,345
 >  * @name Callbacks for RunOnMainThread()
 >  * @{
 >  */
 > 
 > /**
-331a361,363
+334a364,366
 >  *
 >  * @cat result-callback
 >  *
-334a367,368
+337a370,371
 > /// @}
 > 
-377d410
+380d413
 <  * @param userdata a pointer that is passed to `callback`.
-386a420,422
+389a423,425
 >  * @sa result-callback
 >  *
 >  * @cat result-callback
-390c426,428
+393c429,431
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<MainThreadCB>;
 >   void* wrapped = Wrapper::Wrap(std::move(callback));
 >   RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
-539a578,790
+542a581,793
 > 
 > #ifndef SDL3PP_APPCLASS_LOG_PRIORITY
 > /**

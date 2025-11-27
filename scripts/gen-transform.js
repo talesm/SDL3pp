@@ -2147,7 +2147,7 @@ const transform = {
       }
     },
     "SDL_init.h": {
-      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_log.h", "SDL3pp_strings.h"],
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_events.h", "SDL3pp_log.h", "SDL3pp_strings.h"],
       includes: ["atomic"],
       namespacesMap: {
         "SDL_PROP_APP_METADATA_": "prop::appMetaData",

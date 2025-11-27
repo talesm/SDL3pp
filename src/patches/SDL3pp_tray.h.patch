@@ -6,6 +6,10 @@
 > struct TrayMenu;
 > 
 > /// Alias to raw representation for TrayMenu.
+138c141
+< using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntry entry);
+---
+> using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 398,399d400
 <    * @param count An optional pointer to obtain the number of entries in the
 <    *              menu.

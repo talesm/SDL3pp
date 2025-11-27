@@ -67,7 +67,7 @@
 523,524d554
 < #error "RequestAndroidPermissionCB (plc)"
 < 
-637a668,682
+639a670,684
 >  * Callback that presents a response from a RequestAndroidPermission call.
 >  *
 >  * @param userdata an app-controlled pointer that is passed to the callback.
@@ -83,9 +83,9 @@
 >   std::function<void(const char* permission, bool granted)>;
 > 
 > /**
-703d747
+705d749
 <  * @param userdata an app-controlled pointer that is passed to the callback.
-715c759,764
+717c761,766
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
@@ -94,19 +94,19 @@
 >         std::move(permission), &Wrapper::CallOnce, callback)) {
 >     Wrapper::release(callback);
 >   }
-770a820,821
+772a822,823
 > #endif // defined(SDL_PLATFORM_ANDROID)
 > 
-936a988,989
+938a990,991
 > #if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
 > 
-956a1010,1014
+958a1012,1016
 > #endif // defined(SDL_PLATFORM_IOS)
 > 
 > #if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
 > 
 > /// XTaskQueueHandle
-958a1017
+960a1019
 > /// XUserHandle
-993a1053
+995a1055
 > #endif // defined(SDL_PLATFORM_GDK)

@@ -867,7 +867,10 @@ inline void LogUnformatted(StringParam message) { SDL_LogMessageV(message); }
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using LogOutputFunction = SDL_LogOutputFunction;
+using LogOutputFunction = void(SDLCALL*)(void* userdata,
+                                         int category,
+                                         LogPriority priority,
+                                         StringParam message);
 
 /**
  * The prototype for the log output callback function.

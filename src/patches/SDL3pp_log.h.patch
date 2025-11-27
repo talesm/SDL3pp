@@ -565,20 +565,24 @@
 > {
 >   SDL::LogCritical(m_category, fmt, args...);
 > }
-884a981,982
+873c969
+<                                          StringParam message);
+---
+>                                          const char* message);
+887a984,985
 >  * @cat listener-callback
 >  *
-928,930c1026
+931,933c1029
 <  * @param callback an LogOutputFunction filled in with the current log callback.
 <  * @param userdata a pointer filled in with the pointer that is passed to
 <  *                 `callback`.
 ---
 >  * @returns the LogOutputCB currently set
-935a1032,1034
+938a1035,1037
 >  * @cat listener-callback
 >  *
 >  * @sa listener-callback
-941c1040,1052
+944c1043,1055
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
@@ -594,22 +598,22 @@
 >   return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
 >     cb(userdata, c, p, m);
 >   };
-955a1067
+958a1070
 >  * @sa ResetLogOutputFunction
-959c1071,1072
+962c1074,1075
 <   SDL_SetLogOutputFunction(callback, userdata);
 ---
 >   UniqueCallbackWrapper<LogOutputCB>::erase();
 >   return SDL_SetLogOutputFunction(callback, userdata);
-966d1078
+969d1081
 <  * @param userdata a pointer that is passed to `callback`.
-971a1084,1086
+974a1087,1089
 >  * @cat listener-callback
 >  *
 >  * @sa listener-callback
-973a1089
+976a1092
 >  * @sa ResetLogOutputFunction
-977c1093,1099
+980c1096,1102
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
@@ -619,7 +623,7 @@
 >       return Wrapper::Call(userdata, LogCategory{category}, priority, message);
 >     },
 >     Wrapper::Wrap(std::move(callback)));
-979a1102,1111
+982a1105,1114
 > /**
 >  * Replace the current log output function with the default one
 >  *
@@ -630,7 +634,7 @@
 >  * @sa GetDefaultLogOutputFunction
 >  * @sa GetLogOutputFunction
 >  */
-982c1114
+985c1117
 <   static_assert(false, "Not implemented");
 ---
 >   return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);

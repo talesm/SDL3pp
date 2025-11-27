@@ -1342,7 +1342,7 @@ inline void PushEvent(const Event& event)
  * @sa SetEventFilter
  * @sa AddEventWatch
  */
-using EventFilter = SDL_EventFilter;
+using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
 
 /**
  * A std::function used for callbacks that watch the event queue.

@@ -99,7 +99,7 @@ namespace SDL {
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using main_func = SDL_main_func;
+using main_func = int(SDLCALL*)(int argc, char* argv[]);
 
 /**
  * Circumvent failure of Init() when not using SDL_main() as an entry point.

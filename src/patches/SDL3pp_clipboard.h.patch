@@ -13,7 +13,11 @@
 157,158d156
 < #error "ClipboardDataCB (plc)"
 < 
-197a196,218
+196c194
+<                                                     StringParam mime_type,
+---
+>                                                     const char* mime_type,
+199a198,220
 >  * Callback function that will be called when data for the specified mime-type
 >  * is requested by the OS.
 >  *
@@ -37,18 +41,18 @@
 > using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
 > 
 > /**
-240d260
+242d262
 <  * @param num_mime_types the number of mime-types in the mime_types list.
-256c276,277
+258c278,279
 <   CheckError(SDL_SetClipboardData(callback, cleanup, userdata, mime_types));
 ---
 >   CheckError(SDL_SetClipboardData(
 >     callback, cleanup, userdata, mime_types.data(), mime_types.size()));
-275d295
+277d297
 <  * @param userdata an opaque pointer that will be forwarded to the callbacks.
-278d297
+280d299
 <  * @param num_mime_types the number of mime-types in the mime_types list.
-293c312,327
+295c314,329
 <   static_assert(false, "Not implemented");
 ---
 >   static ClipboardDataCB s_callback;
@@ -67,7 +71,7 @@
 >     },
 >     nullptr,
 >     mime_types);
-316,319c350,351
+318,321c352,353
 <  * @param size a pointer filled in with the length of the returned data.
 <  * @returns the retrieved data buffer or nullptr on failure; call GetError() for
 <  *          more information. This should be freed with free() when it is no
@@ -75,14 +79,14 @@
 ---
 >  * @returns the retrieved data buffer or nullptr on failure; call GetError()
 >  *          for more information.
-330c362,365
+332c364,367
 <   return SDL_GetClipboardData(mime_type);
 ---
 >   size_t count = 0;
 >   auto data = SDL_GetClipboardData(mime_type, &count);
 >   if (!data) return {};
 >   return StringResult{static_cast<char*>(data), count};
-332a368,384
+334a370,386
 > /**
 >  * Get the data from the clipboard for a given mime type.
 >  *
@@ -100,14 +104,14 @@
 >  * @sa HasClipboardData
 >  * @sa SetClipboardData
 >  */
-336c388,391
+338c390,393
 <   static_assert(false, "Not implemented");
 ---
 >   size_t count = 0;
 >   auto data = SDL_GetClipboardData(mime_type, &count);
 >   if (!data) return {};
 >   return OwnArray<T>{static_cast<T*>(data), count / sizeof(T)};
-361,365c416,417
+363,367c418,419
 <  * @param num_mime_types a pointer filled with the number of mime types, may be
 <  *                       nullptr.
 <  * @returns a null-terminated array of strings with mime types, or nullptr on
@@ -116,7 +120,7 @@
 ---
 >  * @returns a null terminated array of strings with mime types, or empty on
 >  *          failure; call GetError() for more information.
-375c427,430
+377c429,432
 <   return SDL_GetClipboardMimeTypes();
 ---
 >   size_t count = 0;

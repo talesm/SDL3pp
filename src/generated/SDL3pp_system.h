@@ -43,7 +43,7 @@ using MSG = ::MSG;
  * @sa SetWindowsMessageHook
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  */
-using WindowsMessageHook = SDL_WindowsMessageHook;
+using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
 
 /**
  * A callback to be used with SetWindowsMessageHook.
@@ -166,7 +166,7 @@ using XEvent = ::XEvent;
  *
  * @sa SetX11EventHook
  */
-using X11EventHook = SDL_X11EventHook;
+using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
 
 /**
  * A callback to be used with SetX11EventHook.
@@ -275,7 +275,7 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
  *
  * @sa SetiOSAnimationCallback
  */
-using iOSAnimationCallback = SDL_iOSAnimationCallback;
+using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * The prototype for an Apple iOS animation callback.
@@ -632,7 +632,9 @@ inline const char* GetAndroidCachePath()
  *
  * @sa RequestAndroidPermission
  */
-using RequestAndroidPermissionCallback = SDL_RequestAndroidPermissionCallback;
+using RequestAndroidPermissionCallback = void(SDLCALL*)(void* userdata,
+                                                        StringParam permission,
+                                                        bool granted);
 
 /**
  * Request permissions at runtime, asynchronously.

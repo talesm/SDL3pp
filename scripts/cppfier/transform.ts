@@ -383,7 +383,7 @@ function getCallbackDef(
 ): CallbackDefinition {
   switch (typeof callback) {
     case "boolean":
-      return { functorSupport: "std" };
+      return {};
     case "object":
       return callback;
     case "string":
@@ -453,7 +453,11 @@ function expandTypes(
     targetDelta: ApiEntryTransform
   ) {
     if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
-      targetDelta.callback = true;
+      targetDelta.callback = sourceEntry.parameters.some(
+        (p) => p.type.endsWith("void *") && p.name === "userdata"
+      )
+        ? "std"
+        : true;
       return;
     }
     if (targetDelta.enum === undefined && sourceEntry.kind === "enum")
@@ -518,7 +522,7 @@ function expandTypes(
   ) {
     const parameters = sourceEntry.parameters;
     const callback = getCallbackDef(targetDelta.callback);
-    delete sourceEntry.parameters;
+    targetDelta.kind = "alias";
     delete targetDelta.callback;
     if (!callback.functorSupport) return;
     for (let i = 0; i < parameters.length; i++) {
@@ -2616,10 +2620,19 @@ function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
     case "def":
       targetEntry.parameters = sourceEntry.parameters;
       break;
+    case "callback": {
+      const params = transformParameters(sourceEntry.parameters, context)
+        .map((p) => `${p.type} ${p.name}`)
+        .join(", ");
+      targetEntry.type += ` (SDLCALL *)(${params})`;
+      delete targetEntry.parameters;
+      break;
+    }
     default:
-      delete targetEntry.entries;
+      delete targetEntry.parameters;
       break;
   }
+  delete targetEntry.entries;
   return targetEntry;
 }
 

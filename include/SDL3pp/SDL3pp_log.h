@@ -963,7 +963,10 @@ inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using LogOutputFunction = SDL_LogOutputFunction;
+using LogOutputFunction = void(SDLCALL*)(void* userdata,
+                                         int category,
+                                         LogPriority priority,
+                                         const char* message);
 
 /**
  * The prototype for the log output callback function.
