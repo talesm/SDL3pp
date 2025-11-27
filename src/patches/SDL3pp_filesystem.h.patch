@@ -94,10 +94,6 @@
 <   constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
 ---
 >   constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
-411c437
-<   SDLCALL*)(void* userdata, StringParam dirname, StringParam fname);
----
->   SDLCALL*)(void* userdata, const char* dirname, const char* fname);
 479d504
 <  * @param userdata a pointer that is passed to `callback`.
 486c511,517

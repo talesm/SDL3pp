@@ -145,7 +145,9 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = SDL_NSTimerCallback;
+using TimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                       TimerID timerID,
+                                       Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.

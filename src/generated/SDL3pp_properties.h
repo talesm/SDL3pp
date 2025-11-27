@@ -114,7 +114,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @sa Properties.Enumerate
  */
-using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+using EnumeratePropertiesCallback = void(SDLCALL*)(void* userdata,
+                                                   PropertiesID props,
+                                                   const char* name);
 
 /**
  * A callback used to enumerate all the properties in a group of properties.
@@ -160,7 +162,7 @@ using EnumeratePropertiesCB =
  *
  * @sa Properties.SetPointerPropertyWithCleanup
  */
-using CleanupPropertyCallback = SDL_EnumeratePropertiesCallback;
+using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 
 /**
  * A callback used to free resources when a property is deleted.

@@ -7,27 +7,23 @@
 ---
 >  * Properties.Destroy function, but the Properties destructor probably will do
 >  * what you want to, automatically.
-134,135d134
+136,137d136
 <  *
 <  * @sa EnumeratePropertiesCallback
-163c162
-< using CleanupPropertyCallback = SDL_EnumeratePropertiesCallback;
----
-> using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
-196a196,197
+198a198,199
 >  *
 >  * @sa Properties.Create
-236,237c237,238
+238,239c239,240
 <    * @returns an ID for a new group of properties, or 0 on failure; call
 <    *          GetError() for more information.
 ---
 >    * @returns a valid ID for a new group of properties on success;
 >    * @throws Error on failure.
-398d398
+400d400
 <    * @param userdata a pointer that is passed to the cleanup function.
-681d680
+683d682
 <    * @param userdata a pointer that is passed to `callback`.
-689a689,695
+691a691,697
 >   /**
 >    * Returns the number of properties this has
 >    *
@@ -35,23 +31,23 @@
 >    *
 >    * @return Uint64
 >    */
-729c735
+731c737
 <   return CheckError(SDL_GetGlobalProperties());
 ---
 >   return {CheckError(SDL_GetGlobalProperties())};
-737,738c743,744
+739,740c745,746
 <  * @returns an ID for a new group of properties, or 0 on failure; call
 <  *          GetError() for more information.
 ---
 >  * @returns a valid ID for a new group of properties on success;
 >  * @throws Error on failure.
-748c754
+750c756
 <   return Properties(SDL_CreateProperties());
 ---
 >   return Properties(CheckError(SDL_CreateProperties()));
-882d887
+884d889
 <  * @param userdata a pointer that is passed to the cleanup function.
-898c903,908
+900c905,910
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<CleanupPropertyCB>;
@@ -60,9 +56,9 @@
 >                                     value,
 >                                     &Wrapper::CallOnce,
 >                                     Wrapper::Wrap(std::move(cleanup)));
-1334d1343
+1336d1345
 <  * @param userdata a pointer that is passed to `callback`.
-1344c1353,1359
+1346c1355,1361
 <   static_assert(false, "Not implemented");
 ---
 >   return EnumerateProperties(
@@ -72,7 +68,7 @@
 >       f(props, name);
 >     },
 >     &callback);
-1357a1373,1380
+1359a1375,1382
 > /**
 >  * Returns the number of properties this has
 >  *
@@ -81,7 +77,7 @@
 >  * @param props
 >  * @return Uint64
 >  */
-1360c1383,1385
+1362c1385,1387
 <   static_assert(false, "Not implemented");
 ---
 >   Uint64 count = 0;

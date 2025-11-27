@@ -26,10 +26,6 @@
 <  * A callback that fires when an SDL assertion fails.
 ---
 >  * A @ref callback that fires when an SDL assertion fails.
-393c401
-< using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData& data,
----
-> using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData* data,
 397c405
 <  * A callback that fires when an SDL assertion fails.
 ---

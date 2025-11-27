@@ -565,10 +565,6 @@
 > {
 >   SDL::LogCritical(m_category, fmt, args...);
 > }
-873c969
-<                                          StringParam message);
----
->                                          const char* message);
 887a984,985
 >  * @cat listener-callback
 >  *

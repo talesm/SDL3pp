@@ -259,6 +259,11 @@ class ApiContext {
   }
 
   getCallbackType(type: string) {
+    if (type.endsWith(" *"))
+      return (
+        this.callbackTypeMap[type] ??
+        this.getCallbackType(type.slice(0, -2)) + " *"
+      );
     return this.callbackTypeMap[type] ?? type;
   }
 
@@ -542,6 +547,10 @@ function expandTypes(
     const callback = getCallbackDef(targetDelta.callback);
     targetDelta.kind = "alias";
     delete targetDelta.callback;
+    targetDelta.type = `${sourceEntry.type} (SDLCALL *)(${parameters
+      .map((p) => p.type + " " + p.name)
+      .join(", ")})`;
+
     const userdataIndex = parameters.findIndex(
       (p) => p.type.endsWith("void *") && p.name === "userdata"
     );
@@ -908,8 +917,6 @@ function expandTypes(
     const resourceEntry = getResourceDefinition(targetEntry) ?? {};
 
     const rawName = resourceEntry.rawName || `${targetName}Raw`;
-    context.addCallbackType(sourceName, rawName);
-
     const constRawName = `const ${rawName}`;
     const paramType = `${targetName}Param`;
     const enableMemberAccess =
@@ -936,6 +943,7 @@ function expandTypes(
     const title = targetName[0].toLowerCase() + targetName.slice(1);
     if (sourceEntry.type && !targetEntry.type) targetEntry.type = "";
     context.addName(sourceName, targetName);
+    context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
     const referenceAliases: ApiEntryTransform[] = [];
     referenceAliases.push({ name: targetName, kind: "forward" });
@@ -2636,14 +2644,6 @@ function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
     case "def":
       targetEntry.parameters = sourceEntry.parameters;
       break;
-    case "callback": {
-      const params = transformParameters(sourceEntry.parameters, context)
-        .map((p) => `${p.type} ${p.name}`)
-        .join(", ");
-      targetEntry.type += ` (SDLCALL *)(${params})`;
-      delete targetEntry.parameters;
-      break;
-    }
     default:
       delete targetEntry.parameters;
       break;
@@ -2670,14 +2670,18 @@ function transformCbParameters(
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
     if (type) {
-      type = type.replace(
-        /^(const\s+)?(\w+)/,
-        (_, ct: string, type: string) =>
-          (ct ?? "") + context.getCallbackType(type)
-      );
+      type = transformCbParameter(type);
     }
     return { name, type, default: defaultValue };
   });
+
+  function transformCbParameter(type: string): string {
+    return type.replace(
+      /^(const\s+)?(\w+(\s+\*)?)/,
+      (_, ct: string, type: string) =>
+        (ct ?? "") + context.getCallbackType(type)
+    );
+  }
 }
 
 function checkSignatureRules(targetEntry: ApiEntry, context: ApiContext) {

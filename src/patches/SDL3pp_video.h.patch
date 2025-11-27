@@ -35,12 +35,6 @@
 >    * @returns the closest display mode equal to or larger than the desired mode.
 652a647
 >  * @sa HitTestCB
-700,701c695,696
-< using HitTest = SDL_HitTestResult(SDLCALL*)(WindowParam win,
-<                                             const PointRaw& area,
----
-> using HitTest = SDL_HitTestResult(SDLCALL*)(WindowRaw win,
->                                             const PointRaw* area,
 704c699,710
 < /// @sa HitTest
 ---

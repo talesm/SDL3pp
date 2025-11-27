@@ -135,7 +135,7 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  *
  * @sa TrayEntry.SetCallback
  */
-using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntry entry);
+using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 
 /**
  * A callback that is invoked when a tray entry is selected.

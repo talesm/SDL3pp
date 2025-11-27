@@ -4435,9 +4435,9 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
  * @sa AddHintCallback
  */
 using HintCallback = void(SDLCALL*)(void* userdata,
-                                    StringParam name,
-                                    StringParam oldValue,
-                                    StringParam newValue);
+                                    const char* name,
+                                    const char* oldValue,
+                                    const char* newValue);
 
 /**
  * A callback used to send notifications of hint value changes.

@@ -408,7 +408,7 @@ constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
  * @sa EnumerateDirectory
  */
 using EnumerateDirectoryCallback = SDL_EnumerationResult(
-  SDLCALL*)(void* userdata, StringParam dirname, StringParam fname);
+  SDLCALL*)(void* userdata, const char* dirname, const char* fname);
 
 /**
  * Callback for directory enumeration.

@@ -633,7 +633,7 @@ inline const char* GetAndroidCachePath()
  * @sa RequestAndroidPermission
  */
 using RequestAndroidPermissionCallback = void(SDLCALL*)(void* userdata,
-                                                        StringParam permission,
+                                                        const char* permission,
                                                         bool granted);
 
 /**

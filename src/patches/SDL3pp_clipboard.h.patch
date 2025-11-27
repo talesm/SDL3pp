@@ -13,10 +13,6 @@
 157,158d156
 < #error "ClipboardDataCB (plc)"
 < 
-196c194
-<                                                     StringParam mime_type,
----
->                                                     const char* mime_type,
 199a198,220
 >  * Callback function that will be called when data for the specified mime-type
 >  * is requested by the OS.

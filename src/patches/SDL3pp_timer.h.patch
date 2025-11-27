@@ -80,41 +80,41 @@
 <   SDL_DelayPrecise(duration);
 ---
 >   SDL_DelayPrecise(duration.count());
-169a177,178
+171a179,180
 >  * @cat listener-callback
 >  *
-196,197c205,207
+198,199c207,209
 <  * @param interval the timer delay, in nanoseconds, passed to `callback`.
 <  * @param callback the SDL_TimerCallback function to call when the specified
 ---
 >  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
 >  *                 `callback`.
 >  * @param callback the NSTimerCallback function to call when the specified
-200c210,211
+202c212,213
 <  * @returns a timer ID or 0 on failure; call GetError() for more information.
 ---
 >  * @returns a timer ID.
 >  * @throws Error on failure.
-206d216
+208d218
 <  * @sa SDL_AddTimer
-213c223
+215c225
 <   return SDL_AddTimerNS(interval, callback, userdata);
 ---
 >   return CheckError(SDL_AddTimerNS(interval.count(), callback, userdata));
-235,236c245,247
+237,238c247,249
 <  * @param interval the timer delay, in nanoseconds, passed to `callback`.
 <  * @param callback the SDL_TimerCallback function to call when the specified
 ---
 >  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
 >  * `callback`.
 >  * @param callback the TimerCB function to call when the specified
-238,239c249,250
+240,241c251,252
 <  * @param userdata a pointer that is passed to `callback`.
 <  * @returns a timer ID or 0 on failure; call GetError() for more information.
 ---
 >  * @returns a timer ID.
 >  * @throws Error on failure.
-245,246c256,259
+247,248c258,261
 <  * @sa SDL_AddTimer
 <  * @sa RemoveTimer
 ---
@@ -122,7 +122,7 @@
 >  *
 >  * @sa listener-callback
 >  * @sa RemoveTimer()
-250c263,282
+252c265,284
 <   static_assert(false, "Not implemented");
 ---
 >   using Wrapper = CallbackWrapper<TimerCB>;
@@ -145,7 +145,7 @@
 >   }
 >   delete cb;
 >   throw Error{};
-265c297,301
+267c299,303
 < inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
 ---
 > inline void RemoveTimer(TimerID id)

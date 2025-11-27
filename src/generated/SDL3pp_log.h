@@ -870,7 +870,7 @@ inline void LogUnformatted(StringParam message) { SDL_LogMessageV(message); }
 using LogOutputFunction = void(SDLCALL*)(void* userdata,
                                          int category,
                                          LogPriority priority,
-                                         StringParam message);
+                                         const char* message);
 
 /**
  * The prototype for the log output callback function.

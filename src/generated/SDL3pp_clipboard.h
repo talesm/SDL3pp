@@ -193,7 +193,7 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  * @sa SetClipboardData
  */
 using ClipboardDataCallback = const void*(SDLCALL*)(void* userdata,
-                                                    StringParam mime_type,
+                                                    const char* mime_type,
                                                     size_t* size);
 
 /**

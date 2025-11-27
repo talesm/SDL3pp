@@ -12,14 +12,6 @@
 4279a4282,4283
 > #endif // SDL3PP_DOC
 > 
-4438,4440c4442,4444
-<                                     StringParam name,
-<                                     StringParam oldValue,
-<                                     StringParam newValue);
----
->                                     const char* name,
->                                     const char* oldValue,
->                                     const char* newValue);
 4505c4509
 <  * @param userdata a pointer to pass to the callback function.
 ---

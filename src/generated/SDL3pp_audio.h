@@ -692,7 +692,7 @@ constexpr bool AudioFormat::IsUnsigned() const
  * @sa AudioDevice.SetPostmixCallback
  */
 using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
-                                            const AudioSpec& spec,
+                                            const AudioSpec* spec,
                                             float* buffer,
                                             int buflen);
 
@@ -774,7 +774,7 @@ using AudioPostmixCB =
  * @sa AudioStream.SetPutCallback
  */
 using AudioStreamCallback = void(SDLCALL*)(void* userdata,
-                                           AudioStreamParam stream,
+                                           AudioStreamRaw stream,
                                            int additional_amount,
                                            int total_amount);
 

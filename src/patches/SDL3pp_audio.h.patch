@@ -41,16 +41,8 @@
 <  * @param signed 1 for signed data, 0 for unsigned data.
 ---
 >  * @param sign 1 for signed data, 0 for unsigned data.
-695c705
-<                                             const AudioSpec& spec,
----
->                                             const AudioSpec* spec,
 722d731
 <  * @param buflen the size of `buffer` in bytes.
-777c786
-<                                            AudioStreamParam stream,
----
->                                            AudioStreamRaw stream,
 992,993d1000
 <   constexpr auto operator<=>(AudioDeviceParam other) const = default;
 < 
