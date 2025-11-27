@@ -524,37 +524,32 @@ function expandTypes(
     const callback = getCallbackDef(targetDelta.callback);
     targetDelta.kind = "alias";
     delete targetDelta.callback;
-    if (!callback.functorSupport) return;
-    for (let i = 0; i < parameters.length; i++) {
-      const parameter = parameters[i];
-      if (
-        typeof parameter !== "string" &&
-        parameter.type === "void *" &&
-        parameter.name === "userdata"
-      ) {
-        const typeParams = parameters.map((p) => p.type);
-        const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
-        typeParams.splice(i, 1);
-        const doc = removeTagFromGroup(
-          addToTagGroup(
-            transformDoc(sourceEntry.doc ?? undefined, context),
-            "@sa",
-            name
-          ),
-          "@param userdata"
-        );
-        const callbackEntry: ApiEntryTransform = {
-          kind: "alias",
-          name: callbackName,
-          type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
-          doc,
-          ...file.transform[callbackName],
-          before: undefined,
-          after: undefined,
-        };
-        context.prependIncludeAfter(callbackEntry, name);
-        break;
-      }
+    const userdataIndex = parameters.findIndex(
+      (p) => p.type.endsWith("void *") && p.name === "userdata"
+    );
+    if (userdataIndex < 0) return;
+    if (callback.functorSupport === "std") {
+      const typeParams = parameters.map((p) => p.type);
+      const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
+      typeParams.splice(userdataIndex, 1);
+      const doc = removeTagFromGroup(
+        addToTagGroup(
+          transformDoc(sourceEntry.doc ?? undefined, context),
+          "@sa",
+          name
+        ),
+        "@param userdata"
+      );
+      const callbackEntry: ApiEntryTransform = {
+        kind: "alias",
+        name: callbackName,
+        type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
+        doc,
+        ...file.transform[callbackName],
+        before: undefined,
+        after: undefined,
+      };
+      context.prependIncludeAfter(callbackEntry, name);
     }
   }
 
