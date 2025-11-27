@@ -4459,7 +4459,8 @@ using HintCallback = void(SDLCALL*)(void* userdata,
  *
  * @sa HintCallback
  */
-using HintCB = std::function<void(const char*, const char*, const char*)>;
+using HintCB = std::function<
+  void(const char* name, const char* oldValue, const char* newValue)>;
 
 /// Handle returned by AddHintCallback()
 struct HintCallbackHandle : CallbackHandle

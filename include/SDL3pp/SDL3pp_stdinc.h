@@ -1612,7 +1612,7 @@ using CompareCallback_r = int(SDLCALL*)(void* userdata,
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void* a, const void* b)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.

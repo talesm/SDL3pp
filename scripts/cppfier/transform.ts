@@ -141,6 +141,7 @@ class ApiContext {
   currentIncludeAfter: Dict<ApiEntryTransform[]>;
   paramTypeMap: StringMap;
   returnTypeMap: StringMap;
+  callbackTypeMap: StringMap;
   nameMap: StringMap;
   glossary: Dict<ApiEntry>;
   prefixToRemove: RegExp;
@@ -177,6 +178,7 @@ class ApiContext {
     Object.assign(this.returnTypeMap, transform.returnTypeMap ?? {});
 
     this.nameMap = {};
+    this.callbackTypeMap = {};
 
     /**
      * @type {Dict<ApiEntry>}
@@ -241,8 +243,23 @@ class ApiContext {
   }
 
   addReturnType(originalType: string, targetType: string) {
-    if (!this.returnTypeMap[originalType])
+    if (!this.returnTypeMap[originalType]) {
       this.returnTypeMap[originalType] = targetType;
+      return true;
+    }
+    return false;
+  }
+
+  addCallbackType(originalType: string, targetType: string) {
+    if (!this.callbackTypeMap[originalType]) {
+      this.callbackTypeMap[originalType] = targetType;
+      return true;
+    }
+    return false;
+  }
+
+  getCallbackType(type: string) {
+    return this.callbackTypeMap[type] ?? type;
   }
 
   isAfterMinVersion(version: VersionTag) {
@@ -423,6 +440,7 @@ function expandTypes(
       context.blacklist.add(sourceName);
       continue;
     }
+    context.addCallbackType(sourceName, targetName);
     context.addName(sourceName, targetName);
     context.addParamType(sourceName, targetName);
     context.addParamType(`${sourceName} *`, `${targetName} *`);
@@ -520,7 +538,7 @@ function expandTypes(
     name: string,
     targetDelta: ApiEntryTransform
   ) {
-    const parameters = sourceEntry.parameters;
+    const parameters = transformCbParameters(sourceEntry.parameters, context);
     const callback = getCallbackDef(targetDelta.callback);
     targetDelta.kind = "alias";
     delete targetDelta.callback;
@@ -529,7 +547,7 @@ function expandTypes(
     );
     if (userdataIndex < 0) return;
     if (callback.functorSupport === "std") {
-      const typeParams = parameters.map((p) => p.type);
+      const typeParams = parameters.map((p) => `${p.type} ${p.name}`);
       const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
       typeParams.splice(userdataIndex, 1);
       const doc = removeTagFromGroup(
@@ -793,6 +811,7 @@ function expandTypes(
             ],
             hints: { body: `${name} = new${capName};\nreturn *this;` },
           });
+          context.addCallbackType(sourceType, rawType);
           context.addParamType(sourceType, rawType);
           context.addParamType(`${sourceType} *`, `${rawType} *`);
           context.addParamType(`const ${sourceType}`, `const ${rawType}`);
@@ -889,6 +908,8 @@ function expandTypes(
     const resourceEntry = getResourceDefinition(targetEntry) ?? {};
 
     const rawName = resourceEntry.rawName || `${targetName}Raw`;
+    context.addCallbackType(sourceName, rawName);
+
     const constRawName = `const ${rawName}`;
     const paramType = `${targetName}Param`;
     const enableMemberAccess =
@@ -2638,6 +2659,23 @@ function transformParameters(
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
     type = transformType(type, context.paramTypeMap);
+    return { name, type, default: defaultValue };
+  });
+}
+
+function transformCbParameters(
+  parameters: ApiParameters,
+  context: ApiContext
+): ApiParameters {
+  return parameters.map((parameter) => {
+    let { name, type, default: defaultValue } = parameter;
+    if (type) {
+      type = type.replace(
+        /^(const\s+)?(\w+)/,
+        (_, ct: string, type: string) =>
+          (ct ?? "") + context.getCallbackType(type)
+      );
+    }
     return { name, type, default: defaultValue };
   });
 }

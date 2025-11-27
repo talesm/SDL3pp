@@ -185,7 +185,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa CleanupPropertyCallback
  */
-using CleanupPropertyCB = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
  * SDL properties ID

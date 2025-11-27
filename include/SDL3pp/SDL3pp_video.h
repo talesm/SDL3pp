@@ -3352,7 +3352,8 @@ using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
  *
  * @sa EGLIntArrayCallback
  */
-using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
+using EGLIntArrayCB =
+  std::function<SDL_EGLint*(EGLDisplay display, EGLConfig config)>;
 
 /**
  * An enumeration of OpenGL configuration attributes.

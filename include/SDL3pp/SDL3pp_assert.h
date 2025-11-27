@@ -416,7 +416,7 @@ using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData* data,
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  std::function<SDL_AssertState(const SDL_AssertData*)>;
+  std::function<SDL_AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.

@@ -2435,7 +2435,7 @@ using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData* data,
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  std::function<SDL_AssertState(const SDL_AssertData*)>;
+  std::function<SDL_AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -7379,7 +7379,8 @@ using HintCallback = void(SDLCALL*)(void* userdata,
  *
  * @sa HintCallback
  */
-using HintCB = std::function<void(const char*, const char*, const char*)>;
+using HintCB = std::function<
+  void(const char* name, const char* oldValue, const char* newValue)>;
 
 /// Handle returned by AddHintCallback()
 struct HintCallbackHandle : CallbackHandle
@@ -11832,7 +11833,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa CleanupPropertyCallback
  */
-using CleanupPropertyCB = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
  * SDL properties ID
@@ -14662,7 +14663,7 @@ using CompareCallback_r = int(SDLCALL*)(void* userdata,
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void* a, const void* b)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.
@@ -53166,7 +53167,8 @@ using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
  *
  * @sa EGLIntArrayCallback
  */
-using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
+using EGLIntArrayCB =
+  std::function<SDL_EGLint*(EGLDisplay display, EGLConfig config)>;
 
 /**
  * An enumeration of OpenGL configuration attributes.
@@ -57167,7 +57169,8 @@ using DialogFileCallback = void(SDLCALL*)(void* userdata,
  * @sa ShowFileDialogWithProperties
  * @sa DialogFileCallback
  */
-using DialogFileCB = std::function<void(const char* const*, int)>;
+using DialogFileCB =
+  std::function<void(const char* const* filelist, int filter)>;
 
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
@@ -83975,7 +83978,7 @@ using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
  *
  * @sa X11EventHook
  */
-using X11EventHookCB = std::function<bool(XEvent*)>;
+using X11EventHookCB = std::function<bool(XEvent* xevent)>;
 
 /**
  * Set a callback for every X11 event.

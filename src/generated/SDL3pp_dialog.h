@@ -124,7 +124,8 @@ using DialogFileCallback = void(SDLCALL*)(void* userdata,
  * @sa ShowFileDialogWithProperties
  * @sa DialogFileCallback
  */
-using DialogFileCB = std::function<void(const char* const*, int)>;
+using DialogFileCB =
+  std::function<void(const char* const* filelist, int filter)>;
 
 /**
  * Displays a dialog that lets the user select a file on their filesystem.

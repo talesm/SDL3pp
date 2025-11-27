@@ -204,7 +204,7 @@ using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
  *
  * @sa X11EventHook
  */
-using X11EventHookCB = std::function<bool(XEvent*)>;
+using X11EventHookCB = std::function<bool(XEvent* xevent)>;
 
 /**
  * Set a callback for every X11 event.
