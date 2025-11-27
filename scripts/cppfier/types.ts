@@ -21,6 +21,7 @@ export interface ApiFile {
 
 export type ApiEntryKind =
   | "alias"
+  | "concept"
   | "callback"
   | "def"
   | "enum"
@@ -149,7 +150,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   after?: string;
 }
 
-export type FunctorSupport = "std" | "lightweight";
+export type FunctorSupport = "std" | "lightweight" | "concept";
 
 export interface CallbackDefinition {
   functorSupport?: false | FunctorSupport;

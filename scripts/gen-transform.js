@@ -457,9 +457,9 @@ const transform = {
           immutable: true,
           hints: { methodName: "GetSilenceValue" },
         },
-        "SDL_AudioPostmixCallback": { before: "SDL_AudioDeviceID" },
-        "AudioPostmixCB": {
-          type: "std::function<void(const AudioSpec &spec, std::span<float> buffer)>",
+        "SDL_AudioPostmixCallback": {
+          before: "SDL_AudioDeviceID",
+          callback: "lightweight",
         },
         "SDL_AudioDeviceID": {
           name: "AudioDevice",
@@ -536,9 +536,9 @@ const transform = {
           }],
           hints: { methodName: "SetPostmixCallback" }
         },
-        "SDL_AudioStreamCallback": { before: "SDL_AudioDeviceID" },
-        "AudioStreamCB": {
-          type: "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>",
+        "SDL_AudioStreamCallback": {
+          before: "SDL_AudioDeviceID",
+          callback: "lightweight",
         },
         "SDL_AudioStream": {
           resource: true,
@@ -931,6 +931,7 @@ const transform = {
         "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"
       },
       transform: {
+        "SDL_DialogFileCallback": { callback: "std" },
         "ShowOpenFileDialog": {
           "after": "SDL_ShowOpenFileDialog",
           "kind": "function",
@@ -1510,6 +1511,7 @@ const transform = {
             },
           }
         },
+        "SDL_EnumerateDirectoryCallback": { callback: "std" },
         "EnumerateDirectoryCB": {
           kind: "alias",
           type: "std::function<EnumerationResult(const char *dirname, const char *fname)>",

@@ -476,11 +476,7 @@ function expandTypes(
     targetDelta: ApiEntryTransform
   ) {
     if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
-      targetDelta.callback = sourceEntry.parameters.some(
-        (p) => p.type.endsWith("void *") && p.name === "userdata"
-      )
-        ? "std"
-        : true;
+      targetDelta.callback = "std";
       return;
     }
     if (targetDelta.enum === undefined && sourceEntry.kind === "enum")
@@ -547,30 +543,52 @@ function expandTypes(
     const callback = getCallbackDef(targetDelta.callback);
     targetDelta.kind = "alias";
     delete targetDelta.callback;
-    targetDelta.type = `${sourceEntry.type} (SDLCALL *)(${parameters
+    const resultType = sourceEntry.type;
+    targetDelta.type = `${resultType} (SDLCALL *)(${parameters
       .map((p) => p.type + " " + p.name)
       .join(", ")})`;
-
+    if (!callback.functorSupport) return;
     const userdataIndex = parameters.findIndex(
       (p) => p.type.endsWith("void *") && p.name === "userdata"
     );
     if (userdataIndex < 0) return;
-    if (callback.functorSupport === "std") {
+    const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
+    const doc = removeTagFromGroup(
+      addToTagGroup(
+        transformDoc(sourceEntry.doc ?? undefined, context),
+        "@sa",
+        name
+      ),
+      "@param userdata"
+    );
+    if (
+      callback.functorSupport === "std" ||
+      callback.functorSupport === "lightweight"
+    ) {
+      const wrapper =
+        callback.functorSupport === "std"
+          ? "std::function"
+          : "MakeFrontCallback";
       const typeParams = parameters.map((p) => `${p.type} ${p.name}`);
-      const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
       typeParams.splice(userdataIndex, 1);
-      const doc = removeTagFromGroup(
-        addToTagGroup(
-          transformDoc(sourceEntry.doc ?? undefined, context),
-          "@sa",
-          name
-        ),
-        "@param userdata"
-      );
       const callbackEntry: ApiEntryTransform = {
         kind: "alias",
         name: callbackName,
-        type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
+        type: `${wrapper}<${resultType}(${typeParams.join(", ")})>`,
+        doc,
+        ...file.transform[callbackName],
+        before: undefined,
+        after: undefined,
+      };
+      context.prependIncludeAfter(callbackEntry, name);
+    } else if (callback.functorSupport === "concept") {
+      const typeParams = parameters.map((p) => `, ${p.type}`);
+      typeParams.splice(userdataIndex, 1);
+      const callbackEntry: ApiEntryTransform = {
+        kind: "concept",
+        name: callbackName,
+        template: [{ type: "class", name: "F" }],
+        type: `LightCallback<F, ${resultType}${typeParams.join("")}>`,
         doc,
         ...file.transform[callbackName],
         before: undefined,

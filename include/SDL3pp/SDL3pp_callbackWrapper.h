@@ -132,6 +132,39 @@ struct CallbackWrapper<std::function<Result(Args...)>>
   }
 };
 
+template<class F>
+struct MakeFrontCallback;
+
+/**
+ * Make Front Callback
+ *
+ * @tparam R
+ * @tparam PARAMS
+ */
+template<class R, class... PARAMS>
+struct MakeFrontCallback<R(PARAMS...)>
+{
+  R (*wrapper)(void*, PARAMS...);
+  void* data;
+
+  /// ctor
+  explicit(false) MakeFrontCallback(R (*func)(PARAMS...))
+    : wrapper([](void* userdata, PARAMS... params) {
+      auto f = static_cast<R (*)(PARAMS...)>(userdata);
+      return f(params...);
+    })
+    , data(static_cast<void*>(func))
+  {
+  }
+
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  explicit(false) MakeFrontCallback(const F& func)
+  {
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit data");
+  }
+};
+
 /**
  * @brief Wrapper key to value [result callbacks](#result-callback).
  *
