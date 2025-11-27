@@ -4,8 +4,8 @@ Todo for next version
 Reword callback handling.
 
 - [ ] Remove hacky and leaky stored callback wrapping, except for the safer
-  callOnce;
-- [ ] Make std::function's *CB generation explicit;
+  callOnce, and use a more lightweight function wrapper that fit in a single
+  pointer.
 - [ ] Make templated version of callback, where the userdata can be any pointer
   type;
 
