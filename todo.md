@@ -1,13 +1,16 @@
 Todo for next version
 =====================
 
-Replace parse and parse-xml for a antlr parser, convert to typescript
+Reword callback handling.
 
-- [x] Simplify TS workflow;
-- [x] Add vcpkg support
+- [ ] Remove hacky and leaky stored callback wrapping, except for the safer
+  callOnce;
+- [ ] Make std::function's *CB generation explicit;
+- [ ] Make templated version of callback, where the userdata can be any pointer
+  type;
 
 Backlog
-=======
+-------
 
 - [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
   several APIS;
@@ -26,6 +29,8 @@ Backlog
   - [ ] SDL_gfx
 
 Think about
-===========
+-----------
 
 - Build and test on github
+- Check if possible to make std::function based callbacks could be made a
+  concept.
