@@ -1911,3 +1911,96 @@
 <   return SDL::GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
 ---
 >   return SDL::GetRectAndLineIntersectionFloat(*this, X1, Y1, X2, Y2);
+1435a2520,2611
+> 
+> constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
+> 
+> constexpr FPoint Point::operator/(float value) const
+> {
+>   return FPoint(*this) / value;
+> }
+> constexpr FPoint Point::operator*(float value) const
+> {
+>   return FPoint(*this) * value;
+> }
+> 
+> constexpr Point Point::GetClamped(const Rect& rect) const
+> {
+>   Point p = *this;
+>   p.Clamp(rect);
+>   return p;
+> }
+> 
+> constexpr Point& Point::Clamp(const Rect& rect)
+> {
+>   if (x < rect.x) x = rect.x;
+>   if (x > rect.GetX2()) x = rect.GetX2();
+>   if (y < rect.y) y = rect.y;
+>   if (y > rect.GetY2()) y = rect.GetY2();
+>   return *this;
+> }
+> 
+> constexpr Point Point::GetWrapped(const Rect& rect) const
+> {
+>   Point p = *this;
+>   p.Wrap(rect);
+>   return p;
+> }
+> 
+> constexpr Point& Point::Wrap(const Rect& rect)
+> {
+>   if (x < rect.x)
+>     x = rect.x + rect.w - 1 - (rect.x - x + rect.w - 1) % rect.w;
+>   else if (x >= rect.x + rect.w)
+>     x = rect.x + (x - rect.x - rect.w) % rect.w;
+> 
+>   if (y < rect.y)
+>     y = rect.y + rect.h - 1 - (rect.y - y + rect.h - 1) % rect.h;
+>   else if (y >= rect.y + rect.h)
+>     y = rect.y + (y - rect.y - rect.h) % rect.h;
+> 
+>   return *this;
+> }
+> 
+> constexpr FPoint FPoint::GetClamped(const FRect& rect) const
+> {
+>   FPoint p = *this;
+>   p.Clamp(rect);
+>   return p;
+> }
+> 
+> constexpr FPoint& FPoint::Clamp(const FRect& rect)
+> {
+>   if (x < rect.x) x = rect.x;
+>   if (x > rect.GetX2()) x = rect.GetX2();
+>   if (y < rect.y) y = rect.y;
+>   if (y > rect.GetY2()) y = rect.GetY2();
+>   return *this;
+> }
+> 
+> constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
+> {
+>   FPoint p = *this;
+>   p.Wrap(rect);
+>   return p;
+> }
+> 
+> constexpr FPoint& FPoint::Wrap(const FRect& rect)
+> {
+>   if (x < rect.x)
+>     x = rect.x + rect.w - 1 - SDL_fmod(rect.x - x + rect.w - 1, rect.w);
+>   else if (x >= rect.x + rect.w)
+>     x = rect.x + SDL_fmod(x - rect.x - rect.w, rect.w);
+> 
+>   if (y < rect.y)
+>     y = rect.y + rect.h - 1 - SDL_fmod(rect.y - y + rect.h - 1, rect.h);
+>   else if (y >= rect.y + rect.h)
+>     y = rect.y + SDL_fmod(y - rect.y - rect.h, rect.h);
+> 
+>   return *this;
+> }
+> 
+> constexpr Rect::operator FRect() const
+> {
+>   return {float(x), float(y), float(w), float(h)};
+> }

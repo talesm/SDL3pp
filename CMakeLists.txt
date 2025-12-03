@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.4.0
+    VERSION 0.4.2
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
@@ -42,15 +42,20 @@ else(SDL3PP_DISABLE_IMAGE)
     if (SDL3PP_FORCE_BUNDLED)
         set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
         add_subdirectory(external/SDL_image)
+        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
     else ()
         find_package(SDL3_image QUIET)
         set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
-        if (NOT TARGET SDL3_image::SDL3_image)
+        if (TARGET SDL3_image::SDL3_image)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        else ()
             set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
-            add_subdirectory(external/SDL_image)
+            if (EXISTS external/SDL_image/CMakeLists.txt)
+                add_subdirectory(external/SDL_image)
+                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+            endif()
         endif ()
     endif ()
-    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
 endif(SDL3PP_DISABLE_IMAGE)
 
 # SDL_ttf
@@ -61,15 +66,20 @@ else(SDL3PP_DISABLE_TTF)
     if (SDL3PP_FORCE_BUNDLED)
         set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
         add_subdirectory(external/SDL_ttf)
+        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
     else ()
         find_package(SDL3_ttf QUIET)
         set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
-        if (NOT TARGET SDL3_ttf::SDL3_ttf)
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+        else()
             set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
-            add_subdirectory(external/SDL_ttf)
+            if (EXISTS external/SDL_ttf/CMakeLists.txt)
+                add_subdirectory(external/SDL_ttf)
+                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+            endif()
         endif ()
     endif ()
-    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
 endif(SDL3PP_DISABLE_TTF)
 
 # use StringParam
@@ -86,7 +96,8 @@ file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/
 set(SDL3PP_COMPILE_FEATURES cxx_std_23)
 
 # The SDL3pp library
-add_library(SDL3pp INTERFACE ${SDL3pp_lib_HEADERS})
+add_library(SDL3pp INTERFACE)
+target_sources(SDL3pp INTERFACE FILE_SET sdl3pp_headers TYPE HEADERS BASE_DIRS include/ FILES ${SDL3pp_lib_HEADERS})
 add_library(SDL3pp::SDL3pp ALIAS SDL3pp)
 target_compile_features(SDL3pp INTERFACE ${SDL3PP_COMPILE_FEATURES})
 target_link_libraries(SDL3pp INTERFACE ${SDL3PP_DEPENDENCIES})
@@ -103,18 +114,17 @@ set(SDL3PP_AMALGAMATION_VULKAN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_vulkan.
 file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
 
 add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_MAIN} ${SDL3PP_AMALGAMATION_VULKAN})
-add_library(SDL3pp::SDL3pp_amalgamated ALIAS SDL3pp_amalgamated)
 target_compile_features(SDL3pp_amalgamated INTERFACE ${SDL3PP_COMPILE_FEATURES})
 target_include_directories(SDL3pp_amalgamated INTERFACE
     $<BUILD_INTERFACE:${SDL3PP_AMALGAMATION_DIR}>
     $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
-
+set_target_properties(SDL3pp_amalgamated PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
-    COMMAND node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
-    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.js
+    COMMAND npx ts-node scripts/amalgamate --base-dir include/SDL3pp/ ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.ts
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
@@ -130,7 +140,7 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 
 # Examples
 option(BUILD_EXAMPLES "Build the examples" ON)
-option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
+option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" OFF)
 if (BUILD_EXAMPLES)
     if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
         add_library(SDL3pp_ExampleBase ALIAS SDL3pp_amalgamated)
@@ -168,14 +178,37 @@ endif (DOXYGEN_FOUND)
 #########################
 ## Refresh the headers ##
 #########################
-file(GLOB_RECURSE CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/src/*.ts scripts/cppfier/src/*.g4)
+file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts)
+
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/node_modules 
+    COMMAND npm install
+)
+
+set(CPPFIER_GRAMMAR_SOURCES 
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderLexer.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderListener.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeaderParser.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentLexer.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentListener.ts
+    ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyCommentParser.ts
+)
+
+add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
+    COMMAND npm run antlr
+    DEPENDS ${PROJECT_SOURCE_DIR}/node_modules 
+            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/CHeader.g4
+            ${PROJECT_SOURCE_DIR}/scripts/cppfier/grammar/DoxyComment.g4
+)
 
 # Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
+    COMMAND npm run check
     COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
             ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
             ${CPPFIER_SOURCES}
+            ${CPPFIER_GRAMMAR_SOURCES}
+            ${PROJECT_SOURCE_DIR}/node_modules 
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
@@ -239,4 +272,41 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/SDL3ppConfigVersion.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/SDL3ppConfig.cmake"
     DESTINATION lib/cmake/SDL3pp
+)
+
+############################
+## Zip amalgamated files  ##
+############################
+
+# Create zip for amalgamated files
+set(SDL3PP_AMALGAMATION_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_amalgamated-${PROJECT_VERSION}")
+add_custom_target(SDL3pp_zip_amalgamation
+    COMMAND rm -f ${SDL3PP_AMALGAMATION_FILEBASE}.zip ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND zip -r ${SDL3PP_AMALGAMATION_FILEBASE}.zip SDL3pp/
+    COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
+    DEPENDS SDL3pp_amalgamated
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
+)
+
+set(SDL3PP_FULL_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_full-${PROJECT_VERSION}")
+set(SDL3PP_FULL_FILES 
+    include/
+    assets/
+    cmake/
+    external/
+    docs/
+    examples/
+    test/
+    CMakeLists.txt
+    LICENSE.txt
+    README.md
+    changelog.md
+)
+
+add_custom_target(SDL3pp_zip_full
+    COMMAND rm -f ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_FULL_FILEBASE}.tar.gz ${SDL3PP_FULL_FILES}
+    COMMAND zip -r ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILES}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )

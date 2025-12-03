@@ -1,0 +1,24 @@
+{
+  "files": {
+    "vars.h": {
+      "name": "vars.h",
+      "doc": "",
+      "entries": {
+        "MyConstantInt": {
+          "doc": "@brief My Constant",
+          "name": "MyConstantInt",
+          "kind": "var",
+          "type": "const int",
+          "constexpr": true
+        },
+        "MyConstantBool": {
+          "doc": "@brief Bool constant",
+          "name": "MyConstantBool",
+          "kind": "var",
+          "type": "const bool",
+          "constexpr": true
+        }
+      }
+    }
+  }
+}

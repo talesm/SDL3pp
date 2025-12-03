@@ -1,7 +1,7 @@
-import { writeJSONSync } from "./cppfier/src/utils.ts";
+import { writeJSONSync } from "./cppfier/utils.ts";
 
 /**
- * @import {ApiTransform} from "./cppfier/src/types.ts"
+ * @import {ApiTransform} from "./cppfier/types"
  */
 
 /** @type {ApiTransform} */
@@ -7384,6 +7384,16 @@ const transform = {
           }
         },
       }
+    },
+    "SDL_version.h": {
+      transform: {
+        "SDL_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_MICRO_VERSION": {
+          value: ""
+        },
+      },
     },
     "SDL_video.h": {
       localIncludes: [

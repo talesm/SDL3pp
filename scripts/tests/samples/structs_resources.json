@@ -1,0 +1,106 @@
+{
+  "files": {
+    "structs_resources.h": {
+      "name": "structs_resources.h",
+      "doc": "",
+      "entries": {
+        "Type1Ref": {
+          "doc": "",
+          "name": "Type1Ref",
+          "kind": "struct",
+          "type": "T",
+          "entries": {
+            "T::T": {
+              "doc": "",
+              "name": "T::T",
+              "kind": "alias"
+            },
+            "Type1Ref": {
+              "doc": "",
+              "name": "Type1Ref",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "var1",
+                  "type": "int"
+                },
+                {
+                  "name": "var2",
+                  "type": "const char *"
+                }
+              ]
+            },
+            "Check": {
+              "doc": "",
+              "name": "Check",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true
+            },
+            "GetVar1": {
+              "doc": "",
+              "name": "GetVar1",
+              "kind": "function",
+              "type": "int",
+              "parameters": [],
+              "immutable": true
+            },
+            "SetVar1": {
+              "doc": "",
+              "name": "SetVar1",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "var1",
+                  "type": "int"
+                }
+              ]
+            },
+            "GetVar2": {
+              "doc": "",
+              "name": "GetVar2",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "immutable": true
+            },
+            "SetVar2": {
+              "doc": "",
+              "name": "SetVar2",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "var2",
+                  "type": "const char *"
+                }
+              ]
+            }
+          },
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ]
+        },
+        "Byte": {
+          "doc": "",
+          "name": "Byte",
+          "kind": "alias",
+          "type": "MyByte"
+        },
+        "Type2": {
+          "doc": "",
+          "name": "Type2",
+          "kind": "struct",
+          "type": "MyType2",
+          "entries": {}
+        }
+      }
+    }
+  }
+}

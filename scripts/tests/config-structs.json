@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "structs.h"
+  ],
+  "api": "tests/samples/structs.json",
+  "baseDir": "tests/samples/"
+}

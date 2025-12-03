@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "empty.h"
+  ],
+  "api": "scripts/cppfier/tests/samples/empty.json",
+  "baseDir": "scripts/cppfier/tests/samples/"
+}

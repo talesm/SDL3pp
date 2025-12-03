@@ -1,0 +1,20 @@
+vcpkg_from_github(
+    OUT_SOURCE_PATH SOURCE_PATH
+    REPO talesm/SDL3pp
+    REF "${VERSION}"
+    SHA512 78631a6906fbfb19a68f674af74da1b3249947bcbb7fa208d76f1f1433ffee88ab3b482f2224a5e25bdf5e69a64bb51a760f9319dbb08db78b8bbc2ed976e56f
+    HEAD_REF main
+)
+
+vcpkg_cmake_configure(
+    SOURCE_PATH "${SOURCE_PATH}"
+    OPTIONS
+        -DBUILD_EXAMPLES=OFF
+        -DSDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION=OFF
+)
+
+vcpkg_cmake_install()
+
+file(INSTALL "${SOURCE_PATH}/include/SDL3pp" DESTINATION "${CURRENT_PACKAGES_DIR}/include/")
+file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE.txt")

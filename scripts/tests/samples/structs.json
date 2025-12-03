@@ -1,0 +1,144 @@
+{
+  "files": {
+    "structs.h": {
+      "name": "structs.h",
+      "doc": "",
+      "entries": {
+        "MyType1": {
+          "doc": "",
+          "name": "MyType1",
+          "kind": "struct",
+          "entries": {
+            "var1": {
+              "doc": "",
+              "name": "var1",
+              "kind": "var",
+              "type": "int"
+            },
+            "var2": {
+              "doc": "",
+              "name": "var2",
+              "kind": "var",
+              "type": "const char *"
+            }
+          }
+        },
+        "MyType1Check": {
+          "doc": "",
+          "name": "MyType1Check",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const MyType1 *"
+            }
+          ],
+          "proto": true
+        },
+        "MyGetType1Var1": {
+          "doc": "",
+          "name": "MyGetType1Var1",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const MyType1 *"
+            }
+          ],
+          "proto": true
+        },
+        "MySetType1Var1": {
+          "doc": "",
+          "name": "MySetType1Var1",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "MyType1 *"
+            },
+            {
+              "name": "var1",
+              "type": "int"
+            }
+          ],
+          "proto": true
+        },
+        "MyType1GetVar2": {
+          "doc": "",
+          "name": "MyType1GetVar2",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const MyType1 *"
+            }
+          ],
+          "proto": true
+        },
+        "MyType1SetVar2": {
+          "doc": "",
+          "name": "MyType1SetVar2",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "MyType1 *"
+            },
+            {
+              "name": "var2",
+              "type": "const char *"
+            }
+          ],
+          "proto": true
+        },
+        "MyCreateType1": {
+          "doc": "",
+          "name": "MyCreateType1",
+          "kind": "function",
+          "type": "MyType1 *",
+          "parameters": [
+            {
+              "name": "var1",
+              "type": "int"
+            },
+            {
+              "name": "var2",
+              "type": "const char *"
+            }
+          ],
+          "proto": true
+        },
+        "MyByte": {
+          "doc": "",
+          "name": "MyByte",
+          "kind": "alias",
+          "type": "unsigned char"
+        },
+        "MyType2": {
+          "doc": "",
+          "name": "MyType2",
+          "kind": "struct",
+          "entries": {
+            "var1": {
+              "doc": "",
+              "name": "var1",
+              "kind": "var",
+              "type": "MyType1"
+            },
+            "var2": {
+              "doc": "",
+              "name": "var2",
+              "kind": "var",
+              "type": "int *"
+            }
+          }
+        }
+      }
+    }
+  }
+}

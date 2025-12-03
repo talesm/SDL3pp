@@ -30589,18 +30589,6 @@ struct FRect : FRectRaw
   {
   }
 
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRectRaw& other) const
-  {
-    return Equal(other);
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRect& other) const
-  {
-    return *this == (const FRectRaw&)(other);
-  }
-
   /// @sa Empty()
   constexpr operator bool() const { return !Empty(); }
 

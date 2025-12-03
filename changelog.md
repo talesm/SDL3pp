@@ -1,5 +1,15 @@
-Changelog
-=========
+# Changelog
+
+## Version 0.4.2
+
+This a bugfix, that adds the SDL3pp_full.zip and tar.gz to ease the installation
+on windows systems.
+
+## Version 0.4.1
+
+This is a minor revision, with wrapper scripts improvements and the addition of
+vcpkg packaging support. We also started publishing an amalgamation in a zip, as
+we currently have 3 files to download.
 
 ## Version 0.4
 
@@ -50,7 +60,7 @@ fix errors with retro-compatibility:
 - Make install script (contrib from @brccabral);
 - Fix constants not properly guarded by SDL_VERSION_ATLEAST();
 - Review macros that could be constexpr function or constant.
-  - SDL_audio.h macros turned constexpr constants: 
+  - SDL_audio.h macros turned constexpr constants:
     - SDL_AUDIO_MASK_BITSIZE;
     - SDL_AUDIO_MASK_FLOAT;
     - SDL_AUDIO_MASK_BIG_ENDIAN;
@@ -97,8 +107,8 @@ fix errors with retro-compatibility:
 
 ## Version 0.3
 
-This version reviews the API and add missing free-standing functions. 
-Also does a general clean up on the code.
+This version reviews the API and add missing free-standing functions. Also does
+a general clean up on the code.
 
 - Remove generated docs from repository
   - use actions to generate and upload;
@@ -142,18 +152,16 @@ This versions wraps all API and simplifies the way resources are handled.
   - Resources without refcount have the copy disallowed;
     - a derived type with Ref suffix allows copy, but won't destroy the
       resource;
-  - on weak resources, it instead allows copy, but won't destroy the
-    resource;
+  - on weak resources, it instead allows copy, but won't destroy the resource;
     - a derived type with Scope suffix does not allow copy and destroy the
       resource;
   - a class Param suffix (like WindowParam) allows taking both wrapped and
     unwrapped resource as parameters seamlessly;
-- Wrap both resources and wrappers now have the underlying type aliased
-  with the Raw suffix (as in WindowRaw);
+- Wrap both resources and wrappers now have the underlying type aliased with the
+  Raw suffix (as in WindowRaw);
 - Keep freestanding versions of methods-like functions alongside the class
   function versions;
-- Automatically detect struct-like and classify as either resources or
-  wrappers;
+- Automatically detect struct-like and classify as either resources or wrappers;
   - wrap functions having the struct as first parameter automatically;
   - Wrap structs with methods looking like *Destroy* function as resource;
   - wrap others as wrappers;
@@ -173,23 +181,30 @@ This versions wraps all API and simplifies the way resources are handled.
 
 ## Version 0.1
 
-This version is a proof of concept with most used features by this author and most of the low hanging fruits to wrap to.
+This version is a proof of concept with most used features by this author and
+most of the low hanging fruits to wrap to.
 
 - C++ helpers and shims to better express the API intent:
-  - Implement [resource management](https://talesm.github.io/SDL3pp/group__CategoryObjectWrapper.html);
-  - Implement [helper](https://talesm.github.io/SDL3pp/classSDL_1_1StringParam.html)
-    to transform `std::string`, `std::string_view` into `const char *`;
-  - Implement [helpers](https://talesm.github.io/SDL3pp/group__CategoryCallbackWrapper.html)
-    to use C++ lambdas and function objects as [callbacks](https://talesm.github.io/SDL3pp/callback.html)
-    on SDL;
-  - Wrap [RAII interface to SDL allocated pointers](https://talesm.github.io/SDL3pp/group__CategoryOwnPtr.html)
+  - Implement
+    [resource management](https://talesm.github.io/SDL3pp/group__CategoryObjectWrapper.html);
+  - Implement
+    [helper](https://talesm.github.io/SDL3pp/classSDL_1_1StringParam.html) to
+    transform `std::string`, `std::string_view` into `const char *`;
+  - Implement
+    [helpers](https://talesm.github.io/SDL3pp/group__CategoryCallbackWrapper.html)
+    to use C++ lambdas and function objects as
+    [callbacks](https://talesm.github.io/SDL3pp/callback.html) on SDL;
+  - Wrap
+    [RAII interface to SDL allocated pointers](https://talesm.github.io/SDL3pp/group__CategoryOwnPtr.html)
     returned by some SDL APIs;
-  - Implement [Optional reference-like type](https://talesm.github.io/SDL3pp/classSDL_1_1OptionalRef.html)
+  - Implement
+    [Optional reference-like type](https://talesm.github.io/SDL3pp/classSDL_1_1OptionalRef.html)
     for simulating an `std::optional<T&>`;
-  - Implement [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
+  - Implement
+    [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
     compatible with our empty-derived structs we use to add methods to things
     like SDL_Rect.
-- Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
+- Wrap SDL [categories](https://wiki.libsdl.org/SDL3/APIByCategory):
   - Basics;
   - Video;
   - Event handling:

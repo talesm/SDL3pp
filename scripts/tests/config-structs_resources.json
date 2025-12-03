@@ -1,0 +1,44 @@
+{
+  "sources": [
+    "structs_resources.h"
+  ],
+  "api": "tests/samples/structs_resources.json",
+  "baseDir": "tests/samples/",
+  "sourceApi": "tests/samples/structs.json",
+  "transform": {
+    "prefixes": "My",
+    "renameRules": [
+      {
+        "pattern": "^([^.]*)",
+        "replacement": "$1_resources"
+      }
+    ],
+    "files": {
+      "structs.h": {
+        "transform": {
+          "MyType1": {
+            "name": "Type1Base",
+            "type": "T",
+            "kind": "struct",
+            "entries": {
+              "T::T": {
+                "kind": "alias"
+              },
+              "MyCreateType1": "ctor",
+              "MyType1Check": "function",
+              "MyGetType1Var1": "function",
+              "MySetType1Var1": "function",
+              "MyType1GetVar2": "function",
+              "MyType1SetVar2": "function"
+            }
+          },
+          "MyType2": {
+            "type": "MyType2",
+            "kind": "struct",
+            "entries": {}
+          }
+        }
+      }
+    }
+  }
+}

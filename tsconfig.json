@@ -1,0 +1,32 @@
+{
+  "extends": "ts-node/node16/tsconfig.json",
+  "include": ["scripts/**/*.ts"],
+  "exclude": ["build/scripts/"],
+  "compilerOptions": {
+    "lib": [
+      "ES2024"
+    ],
+    "resolveJsonModule": true,
+    "checkJs": true,
+    "module": "commonjs",
+    "outDir": "dist/",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "declaration": false,
+    "rootDir": "./scripts/",
+    "noEmit": true,
+    "noImplicitAny": false,
+    "strict": false,
+    "allowImportingTsExtensions": true,
+  },
+  "ts-node": {
+    // It is faster to skip typechecking.
+    // Remove if you want ts-node to do typechecking.
+    "transpileOnly": true,
+    "compilerHost": true,
+
+    "files": true,
+    "compilerOptions": {
+    }
+  }
+}
