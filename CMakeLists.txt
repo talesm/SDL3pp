@@ -278,3 +278,24 @@ add_custom_target(SDL3pp_zip_amalgamation
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
 )
+
+set(SDL3PP_FULL_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_full-${PROJECT_VERSION}")
+set(SDL3PP_FULL_FILES 
+    include/
+    cmake/
+    external/
+    docs/
+    examples/
+    test/
+    CMakeLists.txt
+    LICENSE.txt
+    README.md
+    changelog.md
+)
+
+add_custom_target(SDL3pp_zip_full
+    COMMAND rm -f ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_FULL_FILEBASE}.tar.gz ${SDL3PP_FULL_FILES}
+    COMMAND zip -r ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILES}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
