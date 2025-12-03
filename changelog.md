@@ -1,5 +1,9 @@
-Changelog
-=========
+# Changelog
+
+## Version 0.4.2
+
+This a bugfix, that adds the SDL3pp_full.zip and tar.gz to ease the installation
+on windows systems.
 
 ## Version 0.4.1
 
@@ -200,7 +204,7 @@ most of the low hanging fruits to wrap to.
     [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
     compatible with our empty-derived structs we use to add methods to things
     like SDL_Rect.
-- Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:
+- Wrap SDL [categories](https://wiki.libsdl.org/SDL3/APIByCategory):
   - Basics;
   - Video;
   - Event handling:

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.4.1
+    VERSION 0.4.2
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
@@ -42,15 +42,20 @@ else(SDL3PP_DISABLE_IMAGE)
     if (SDL3PP_FORCE_BUNDLED)
         set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
         add_subdirectory(external/SDL_image)
+        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
     else ()
         find_package(SDL3_image QUIET)
         set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
-        if (NOT TARGET SDL3_image::SDL3_image)
+        if (TARGET SDL3_image::SDL3_image)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        else ()
             set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
-            add_subdirectory(external/SDL_image)
+            if (EXISTS external/SDL_image/CMakeLists.txt)
+                add_subdirectory(external/SDL_image)
+                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+            endif()
         endif ()
     endif ()
-    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
 endif(SDL3PP_DISABLE_IMAGE)
 
 # SDL_ttf
@@ -61,15 +66,20 @@ else(SDL3PP_DISABLE_TTF)
     if (SDL3PP_FORCE_BUNDLED)
         set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
         add_subdirectory(external/SDL_ttf)
+        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
     else ()
         find_package(SDL3_ttf QUIET)
         set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
-        if (NOT TARGET SDL3_ttf::SDL3_ttf)
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+        else()
             set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
-            add_subdirectory(external/SDL_ttf)
+            if (EXISTS external/SDL_ttf/CMakeLists.txt)
+                add_subdirectory(external/SDL_ttf)
+                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+            endif()
         endif ()
     endif ()
-    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
 endif(SDL3PP_DISABLE_TTF)
 
 # use StringParam
@@ -130,7 +140,7 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 
 # Examples
 option(BUILD_EXAMPLES "Build the examples" ON)
-option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
+option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" OFF)
 if (BUILD_EXAMPLES)
     if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
         add_library(SDL3pp_ExampleBase ALIAS SDL3pp_amalgamated)
@@ -269,11 +279,34 @@ install(FILES
 ############################
 
 # Create zip for amalgamated files
+set(SDL3PP_AMALGAMATION_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_amalgamated-${PROJECT_VERSION}")
 add_custom_target(SDL3pp_zip_amalgamation
-    COMMAND rm -f ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.tar.gz
-    COMMAND tar -czvf ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
-    COMMAND zip -r ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip SDL3pp/
-    COMMAND zip -ju ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND rm -f ${SDL3PP_AMALGAMATION_FILEBASE}.zip ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND zip -r ${SDL3PP_AMALGAMATION_FILEBASE}.zip SDL3pp/
+    COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
+)
+
+set(SDL3PP_FULL_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_full-${PROJECT_VERSION}")
+set(SDL3PP_FULL_FILES 
+    include/
+    assets/
+    cmake/
+    external/
+    docs/
+    examples/
+    test/
+    CMakeLists.txt
+    LICENSE.txt
+    README.md
+    changelog.md
+)
+
+add_custom_target(SDL3pp_zip_full
+    COMMAND rm -f ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_FULL_FILEBASE}.tar.gz ${SDL3PP_FULL_FILES}
+    COMMAND zip -r ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILES}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
