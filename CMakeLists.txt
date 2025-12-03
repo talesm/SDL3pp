@@ -292,6 +292,7 @@ add_custom_target(SDL3pp_zip_amalgamation
 set(SDL3PP_FULL_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_full-${PROJECT_VERSION}")
 set(SDL3PP_FULL_FILES 
     include/
+    assets/
     cmake/
     external/
     docs/
