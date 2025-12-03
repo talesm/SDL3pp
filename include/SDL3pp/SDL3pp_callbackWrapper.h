@@ -162,6 +162,17 @@ struct MakeFrontCallback<R(PARAMS...)>
   explicit(false) MakeFrontCallback(const F& func)
   {
     static_assert(sizeof(func) <= sizeof(data), "Function must fit data");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](void* userdata, PARAMS... params) {
+      PunAux aux{.ptr = userdata};
+      return aux.func(params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
