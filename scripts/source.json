@@ -90103,7 +90103,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "27"
+          "value": "29"
         },
         "SDL_VERSIONNUM": {
           "doc": [
