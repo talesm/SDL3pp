@@ -2949,6 +2949,18 @@ struct WindowRef : Window
   {
   }
 
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
+  WindowRef(WindowRaw resource)
+    : Window(resource)
+  {
+  }
+
   /// Copy constructor.
   WindowRef(const WindowRef& other)
     : Window(other.get())

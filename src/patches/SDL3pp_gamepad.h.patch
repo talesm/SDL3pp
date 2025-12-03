@@ -7,16 +7,16 @@
 <    *          freed with free() when it is no longer needed.
 ---
 >    *          is available; call GetError() for more information.
-1223,1224d1221
+1235,1236d1233
 <  * @param count a pointer filled in with the number of mappings returned, can be
 <  *              nullptr.
-1226,1228c1223
+1238,1240c1235
 <  *          failure; call GetError() for more information. This is a single
 <  *          allocation that should be freed with free() when it is no longer
 <  *          needed.
 ---
 >  *          failure; call GetError() for more information.
-1232c1227,1232
+1244c1239,1244
 < inline OwnArray<char*> GetGamepadMappings() { return SDL_GetGamepadMappings(); }
 ---
 > inline OwnArray<char*> GetGamepadMappings()
@@ -25,33 +25,33 @@
 >   auto data = SDL_GetGamepadMappings(&count);
 >   return OwnArray<char*>(data);
 > }
-1239,1240c1239
+1251,1252c1251
 <  *          information. This should be freed with free() when it is no longer
 <  *          needed.
 ---
 >  *          information.
-1249c1248
+1261c1260
 <   return SDL_GetGamepadMappingForGUID(guid);
 ---
 >   return StringResult(SDL_GetGamepadMappingForGUID(guid));
-1259,1260c1258
+1271,1272c1270
 <  *          available; call GetError() for more information. This should be
 <  *          freed with free() when it is no longer needed.
 ---
 >  *          available; call GetError() for more information.
-1271c1269
+1283c1281
 <   return SDL_GetGamepadMapping(gamepad);
 ---
 >   return StringResult(SDL_GetGamepadMapping(gamepad));
-1313,1314d1310
+1325,1326d1322
 <  * @param count a pointer filled in with the number of gamepads returned, may be
 <  *              nullptr.
-1316,1317c1312
+1328,1329c1324
 <  *          call GetError() for more information. This should be freed with
 <  *          free() when it is no longer needed.
 ---
 >  *          call GetError() for more information.
-1324c1319,1324
+1336c1331,1336
 < inline OwnArray<JoystickID> GetGamepads() { return SDL_GetGamepads(); }
 ---
 > inline OwnArray<JoystickID> GetGamepads()
@@ -60,19 +60,19 @@
 >   auto r = reinterpret_cast<JoystickID*>(SDL_GetGamepads(&count));
 >   return OwnArray<JoystickID>(r, count);
 > }
-1564c1564
+1576c1576
 <   return CheckError(SDL_GetGamepadFromID(instance_id));
 ---
 >   return {CheckError(SDL_GetGamepadFromID(instance_id))};
-1580c1580
+1592c1592
 <   return SDL_GetGamepadFromPlayerIndex(player_index);
 ---
 >   return {SDL_GetGamepadFromPlayerIndex(player_index)};
-1609c1609
+1621c1621
 <   return CheckError(SDL_GetGamepadProperties(gamepad));
 ---
 >   return {CheckError(SDL_GetGamepadProperties(gamepad))};
-1980c1980
+1992c1992
 <   return SDL_GetGamepadJoystick(gamepad);
 ---
 >   return {SDL_GetGamepadJoystick(gamepad)};

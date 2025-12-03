@@ -438,6 +438,18 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from CameraParam.
+   *
+   * @param resource a CameraRaw or Camera.
+   *
+   * This does not takes ownership!
+   */
+  CameraRef(CameraRaw resource)
+    : Camera(resource)
+  {
+  }
+
   /// Copy constructor.
   CameraRef(const CameraRef& other)
     : Camera(other.get())

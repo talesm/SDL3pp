@@ -369,6 +369,18 @@ struct MutexRef : Mutex
   {
   }
 
+  /**
+   * Constructs from MutexParam.
+   *
+   * @param resource a MutexRaw or Mutex.
+   *
+   * This does not takes ownership!
+   */
+  MutexRef(MutexRaw resource)
+    : Mutex(resource)
+  {
+  }
+
   /// Copy constructor.
   MutexRef(const MutexRef& other)
     : Mutex(other.get())
@@ -789,6 +801,18 @@ struct RWLockRef : RWLock
    */
   RWLockRef(RWLockParam resource)
     : RWLock(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from RWLockParam.
+   *
+   * @param resource a RWLockRaw or RWLock.
+   *
+   * This does not takes ownership!
+   */
+  RWLockRef(RWLockRaw resource)
+    : RWLock(resource)
   {
   }
 
@@ -1251,6 +1275,18 @@ struct SemaphoreRef : Semaphore
   {
   }
 
+  /**
+   * Constructs from SemaphoreParam.
+   *
+   * @param resource a SemaphoreRaw or Semaphore.
+   *
+   * This does not takes ownership!
+   */
+  SemaphoreRef(SemaphoreRaw resource)
+    : Semaphore(resource)
+  {
+  }
+
   /// Copy constructor.
   SemaphoreRef(const SemaphoreRef& other)
     : Semaphore(other.get())
@@ -1613,6 +1649,18 @@ struct ConditionRef : Condition
    */
   ConditionRef(ConditionParam resource)
     : Condition(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from ConditionParam.
+   *
+   * @param resource a ConditionRaw or Condition.
+   *
+   * This does not takes ownership!
+   */
+  ConditionRef(ConditionRaw resource)
+    : Condition(resource)
   {
   }
 

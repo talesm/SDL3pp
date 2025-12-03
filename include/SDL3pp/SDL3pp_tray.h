@@ -358,6 +358,18 @@ struct TrayRef : Tray
   {
   }
 
+  /**
+   * Constructs from TrayParam.
+   *
+   * @param resource a TrayRaw or Tray.
+   *
+   * This does not takes ownership!
+   */
+  TrayRef(TrayRaw resource)
+    : Tray(resource)
+  {
+  }
+
   /// Copy constructor.
   TrayRef(const TrayRef& other)
     : Tray(other.get())

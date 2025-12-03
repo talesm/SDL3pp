@@ -1523,6 +1523,18 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource)
+    : AudioDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   AudioDeviceRef(const AudioDeviceRef& other)
     : AudioDevice(other.get())
@@ -2595,6 +2607,18 @@ struct AudioStreamRef : AudioStream
    */
   AudioStreamRef(AudioStreamParam resource)
     : AudioStream(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioStreamParam.
+   *
+   * @param resource a AudioStreamRaw or AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  AudioStreamRef(AudioStreamRaw resource)
+    : AudioStream(resource)
   {
   }
 

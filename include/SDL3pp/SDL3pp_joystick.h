@@ -1064,6 +1064,18 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from JoystickParam.
+   *
+   * @param resource a JoystickRaw or Joystick.
+   *
+   * This does not takes ownership!
+   */
+  JoystickRef(JoystickRaw resource)
+    : Joystick(resource)
+  {
+  }
+
   /// Copy constructor.
   JoystickRef(const JoystickRef& other)
     : Joystick(other.get())

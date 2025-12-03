@@ -6,47 +6,47 @@
 <   /// Default ctor
 <   constexpr Mutex() = default;
 < 
-524,526d520
+536,538d532
 <   /// Default ctor
 <   constexpr RWLock() = default;
 < 
-1212,1213c1206,1207
+1236,1237c1230,1231
 <    * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
 <    *                  indefinitely.
 ---
 >    * @param timeout the length of the timeout, in milliseconds, or -1 to wait
 >    *                indefinitely.
-1367,1368c1361,1362
+1403,1404c1397,1398
 <  * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
 <  *                  indefinitely.
 ---
 >  * @param timeout the length of the timeout, in milliseconds, or -1 to wait
 >  *                indefinitely.
-1380c1374
+1416c1410
 <   return SDL_WaitSemaphoreTimeout(sem, timeout);
 ---
 >   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
-1441,1443d1434
+1477,1479d1470
 <   /// Default ctor
 <   constexpr Condition() = default;
 < 
-1597,1598c1588,1589
+1633,1634c1624,1625
 <    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
 <    *                  indefinitely.
 ---
 >    * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
 >    *                indefinitely.
-1755,1756c1746,1747
+1803,1804c1794,1795
 <  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
 <  *                  indefinitely.
 ---
 >  * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
 >  *                indefinitely.
-1772c1763
+1820c1811
 <   return SDL_WaitConditionTimeout(cond, mutex, timeout);
 ---
 >   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
-1805,1806c1796,1797
+1853,1854c1844,1845
 <  * ```c
 <  *    static SDL_AtomicInitState init;
 ---

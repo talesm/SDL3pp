@@ -1521,6 +1521,18 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource)
+    : AudioDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   AudioDeviceRef(const AudioDeviceRef& other)
     : AudioDevice(other.get())

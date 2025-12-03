@@ -187,6 +187,18 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalViewParam.
+   *
+   * @param resource a MetalViewRaw or MetalView.
+   *
+   * This does not takes ownership!
+   */
+  MetalViewRef(MetalViewRaw resource)
+    : MetalView(resource)
+  {
+  }
+
   /// Copy constructor.
   MetalViewRef(const MetalViewRef& other)
     : MetalView(other.get())

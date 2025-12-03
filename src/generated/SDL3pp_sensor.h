@@ -323,6 +323,18 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from SensorParam.
+   *
+   * @param resource a SensorRaw or Sensor.
+   *
+   * This does not takes ownership!
+   */
+  SensorRef(SensorRaw resource)
+    : Sensor(resource)
+  {
+  }
+
   /// Copy constructor.
   SensorRef(const SensorRef& other)
     : Sensor(other.get())

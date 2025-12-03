@@ -1069,6 +1069,18 @@ struct GamepadRef : Gamepad
   {
   }
 
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw or Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  GamepadRef(GamepadRaw resource)
+    : Gamepad(resource)
+  {
+  }
+
   /// Copy constructor.
   GamepadRef(const GamepadRef& other)
     : Gamepad(other.get())

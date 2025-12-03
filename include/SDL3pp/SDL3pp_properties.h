@@ -713,6 +713,18 @@ struct PropertiesRef : Properties
   {
   }
 
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
+  PropertiesRef(PropertiesID resource)
+    : Properties(resource)
+  {
+  }
+
   /// Copy constructor.
   PropertiesRef(const PropertiesRef& other)
     : Properties(other.get())

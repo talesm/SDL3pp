@@ -41,24 +41,24 @@
 >     if (data.empty()) return {};
 >     size_t sz = data.size() / sizeof(T);
 >     return OwnArray{static_cast<T*>(data.release()), sz};
-699c724
+711c736
 <   return CheckError(SDL_GetProcessProperties(process));
 ---
 >   return {CheckError(SDL_GetProcessProperties(process))};
-721,722d745
+733,734d757
 <  * @param datasize a pointer filled in with the number of bytes read, may be
 <  *                 nullptr.
-738c761,763
+750c773,775
 <   return SDL_ReadProcess(process, exitcode);
 ---
 >   size_t size = 0;
 >   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
 >   return StringResult(CheckError(data), size);
-772c797
+784c809
 <   return SDL_GetProcessInput(process);
 ---
 >   return {SDL_GetProcessInput(process)};
-804c829
+816c841
 <   return SDL_GetProcessOutput(process);
 ---
 >   return {SDL_GetProcessOutput(process)};

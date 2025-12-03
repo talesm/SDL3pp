@@ -3849,6 +3849,18 @@ struct GPUDeviceRef : GPUDevice
   {
   }
 
+  /**
+   * Constructs from GPUDeviceParam.
+   *
+   * @param resource a GPUDeviceRaw or GPUDevice.
+   *
+   * This does not takes ownership!
+   */
+  GPUDeviceRef(GPUDeviceRaw resource)
+    : GPUDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   GPUDeviceRef(const GPUDeviceRef& other)
     : GPUDevice(other.get())

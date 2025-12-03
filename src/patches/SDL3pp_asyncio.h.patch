@@ -16,18 +16,18 @@
 <   bool Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata);
 ---
 >   bool Close(bool flush, AsyncIOQueueParam queue, void* userdata);
-511,513d516
+523,525d528
 <   /// Default ctor
 <   constexpr AsyncIOQueue() = default;
 < 
-634,636c637,638
+646,648c649,650
 <    * @param outcome details of a finished task will be written here. May not be
 <    *                nullptr.
 <    * @returns true if a task has completed, false otherwise.
 ---
 >    * @returns details of a finished task if a task has completed, std::nullopt
 >    *          otherwise.
-675,679c677,679
+687,691c689,691
 <    * @param outcome details of a finished task will be written here. May not be
 <    *                nullptr.
 <    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -37,7 +37,7 @@
 >    * @param timeout the maximum time to wait, in milliseconds.
 >    * @returns details of a finished task if a task has completed, std::nullopt
 >    *          otherwise.
-718,722c718,719
+730,734c730,731
 <    * @param outcome details of a finished task will be written here. May not be
 <    *                nullptr.
 <    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -46,46 +46,46 @@
 ---
 >    * @returns details of a finished task if a task has completed, std::nullopt
 >    *          otherwise.
-987c984,985
+1011c1008,1009
 <  * @throws Error on failure.
 ---
 >  * @returns true on success or false on failure; call GetError() for more
 >  *          information.
-994c992
+1018c1016
 < inline void CloseAsyncIO(AsyncIORaw asyncio,
 ---
 > inline bool CloseAsyncIO(AsyncIORaw asyncio,
-996c994
+1020c1018
 <                          SDL_AsyncIOQueue* queue,
 ---
 >                          AsyncIOQueueParam queue,
-999c997
+1023c1021
 <   CheckError(SDL_CloseAsyncIO(asyncio, flush, queue, userdata));
 ---
 >   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
-1002c1000
+1026c1024
 < inline bool AsyncIO::Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata)
 ---
 > inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
-1004c1002
+1028c1026
 <   return CloseAsyncIO(release());
 ---
 >   return CloseAsyncIO(release(), flush, queue, userdata);
-1074,1076c1072,1073
+1098,1100c1096,1097
 <  * @param outcome details of a finished task will be written here. May not be
 <  *                nullptr.
 <  * @returns true if a task has completed, false otherwise.
 ---
 >  * @returns details of a finished task if a task has completed, std::nullopt
 >  *          otherwise.
-1086c1083,1086
+1110c1107,1110
 <   return SDL_GetAsyncIOResult(queue);
 ---
 >   if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
 >     return outcome;
 >   }
 >   return std::nullopt;
-1123,1127c1123,1125
+1147,1151c1147,1149
 <  * @param outcome details of a finished task will be written here. May not be
 <  *                nullptr.
 <  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -95,7 +95,7 @@
 >  * @param timeout the maximum time to wait, in milliseconds.
 >  * @returns details of a finished task if a task has completed, std::nullopt
 >  *          otherwise.
-1138c1136,1140
+1162c1160,1164
 <   return SDL_WaitAsyncIOResult(queue, timeout);
 ---
 >   if (AsyncIOOutcome outcome;
@@ -103,7 +103,7 @@
 >     return outcome;
 >   }
 >   return std::nullopt;
-1170,1174c1172,1173
+1194,1198c1196,1197
 <  * @param outcome details of a finished task will be written here. May not be
 <  *                nullptr.
 <  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
@@ -112,7 +112,7 @@
 ---
 >  * @returns details of a finished task if a task has completed, std::nullopt
 >  *          otherwise.
-1184c1183,1186
+1208c1207,1210
 <   static_assert(false, "Not implemented");
 ---
 >   if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {

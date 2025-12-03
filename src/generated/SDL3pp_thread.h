@@ -467,6 +467,18 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from ThreadParam.
+   *
+   * @param resource a ThreadRaw or Thread.
+   *
+   * This does not takes ownership!
+   */
+  ThreadRef(ThreadRaw resource)
+    : Thread(resource)
+  {
+  }
+
   /// Copy constructor.
   ThreadRef(const ThreadRef& other)
     : Thread(other.get())

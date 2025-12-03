@@ -10,11 +10,11 @@
 <   void Metal_DestroyView();
 ---
 >   void Destroy();
-215c215
+227c227
 <  * @sa MetalView.Metal_DestroyView
 ---
 >  * @sa MetalView.Destroy
-240c240
+252c252
 < inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
 ---
 > inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }

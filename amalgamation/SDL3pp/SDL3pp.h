@@ -12394,6 +12394,18 @@ struct PropertiesRef : Properties
   {
   }
 
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
+  PropertiesRef(PropertiesID resource)
+    : Properties(resource)
+  {
+  }
+
   /// Copy constructor.
   PropertiesRef(const PropertiesRef& other)
     : Properties(other.get())
@@ -14260,6 +14272,18 @@ struct EnvironmentRef : Environment
    */
   EnvironmentRef(EnvironmentParam resource)
     : Environment(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
+  EnvironmentRef(EnvironmentRaw resource)
+    : Environment(resource)
   {
   }
 
@@ -19083,6 +19107,18 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvRaw resource)
+    : IConv(resource)
+  {
+  }
+
   /// Copy constructor.
   IConvRef(const IConvRef& other)
     : IConv(other.get())
@@ -19791,6 +19827,18 @@ struct AsyncIORef : AsyncIO
   {
   }
 
+  /**
+   * Constructs from AsyncIOParam.
+   *
+   * @param resource a AsyncIORaw or AsyncIO.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIORef(AsyncIORaw resource)
+    : AsyncIO(resource)
+  {
+  }
+
   /// Copy constructor.
   AsyncIORef(const AsyncIORef& other)
     : AsyncIO(other.get())
@@ -20110,6 +20158,18 @@ struct AsyncIOQueueRef : AsyncIOQueue
    */
   AsyncIOQueueRef(AsyncIOQueueParam resource)
     : AsyncIOQueue(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AsyncIOQueueParam.
+   *
+   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIOQueueRef(AsyncIOQueueRaw resource)
+    : AsyncIOQueue(resource)
   {
   }
 
@@ -23661,6 +23721,18 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDeviceParam.
+   *
+   * @param resource a HidDeviceRaw or HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  HidDeviceRef(HidDeviceRaw resource)
+    : HidDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   HidDeviceRef(const HidDeviceRef& other)
     : HidDevice(other.get())
@@ -25810,6 +25882,18 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw or IOStream.
+   *
+   * This does not takes ownership!
+   */
+  IOStreamRef(IOStreamRaw resource)
+    : IOStream(resource)
+  {
+  }
+
   /// Copy constructor.
   IOStreamRef(const IOStreamRef& other)
     : IOStream(other.get())
@@ -27495,6 +27579,18 @@ struct SharedObjectRef : SharedObject
    */
   SharedObjectRef(SharedObjectParam resource)
     : SharedObject(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw or SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  SharedObjectRef(SharedObjectRaw resource)
+    : SharedObject(resource)
   {
   }
 
@@ -31447,6 +31543,18 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from SensorParam.
+   *
+   * @param resource a SensorRaw or Sensor.
+   *
+   * This does not takes ownership!
+   */
+  SensorRef(SensorRaw resource)
+    : Sensor(resource)
+  {
+  }
+
   /// Copy constructor.
   SensorRef(const SensorRef& other)
     : Sensor(other.get())
@@ -33938,6 +34046,18 @@ struct AudioDeviceRef : AudioDevice
    */
   AudioDeviceRef(AudioDeviceParam resource)
     : AudioDevice(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource)
+    : AudioDevice(resource)
   {
   }
 
@@ -38874,6 +38994,18 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from ProcessParam.
+   *
+   * @param resource a ProcessRaw or Process.
+   *
+   * This does not takes ownership!
+   */
+  ProcessRef(ProcessRaw resource)
+    : Process(resource)
+  {
+  }
+
   /// Copy constructor.
   ProcessRef(const ProcessRef& other)
     : Process(other.get())
@@ -40043,6 +40175,18 @@ struct StorageRef : Storage
    */
   StorageRef(StorageParam resource)
     : Storage(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from StorageParam.
+   *
+   * @param resource a StorageRaw or Storage.
+   *
+   * This does not takes ownership!
+   */
+  StorageRef(StorageRaw resource)
+    : Storage(resource)
   {
   }
 
@@ -45184,6 +45328,18 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from ThreadParam.
+   *
+   * @param resource a ThreadRaw or Thread.
+   *
+   * This does not takes ownership!
+   */
+  ThreadRef(ThreadRaw resource)
+    : Thread(resource)
+  {
+  }
+
   /// Copy constructor.
   ThreadRef(const ThreadRef& other)
     : Thread(other.get())
@@ -45989,6 +46145,18 @@ struct CameraRef : Camera
    */
   CameraRef(CameraParam resource)
     : Camera(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from CameraParam.
+   *
+   * @param resource a CameraRaw or Camera.
+   *
+   * This does not takes ownership!
+   */
+  CameraRef(CameraRaw resource)
+    : Camera(resource)
   {
   }
 
@@ -46800,6 +46968,18 @@ struct MutexRef : Mutex
   {
   }
 
+  /**
+   * Constructs from MutexParam.
+   *
+   * @param resource a MutexRaw or Mutex.
+   *
+   * This does not takes ownership!
+   */
+  MutexRef(MutexRaw resource)
+    : Mutex(resource)
+  {
+  }
+
   /// Copy constructor.
   MutexRef(const MutexRef& other)
     : Mutex(other.get())
@@ -47220,6 +47400,18 @@ struct RWLockRef : RWLock
    */
   RWLockRef(RWLockParam resource)
     : RWLock(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from RWLockParam.
+   *
+   * @param resource a RWLockRaw or RWLock.
+   *
+   * This does not takes ownership!
+   */
+  RWLockRef(RWLockRaw resource)
+    : RWLock(resource)
   {
   }
 
@@ -47682,6 +47874,18 @@ struct SemaphoreRef : Semaphore
   {
   }
 
+  /**
+   * Constructs from SemaphoreParam.
+   *
+   * @param resource a SemaphoreRaw or Semaphore.
+   *
+   * This does not takes ownership!
+   */
+  SemaphoreRef(SemaphoreRaw resource)
+    : Semaphore(resource)
+  {
+  }
+
   /// Copy constructor.
   SemaphoreRef(const SemaphoreRef& other)
     : Semaphore(other.get())
@@ -48044,6 +48248,18 @@ struct ConditionRef : Condition
    */
   ConditionRef(ConditionParam resource)
     : Condition(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from ConditionParam.
+   *
+   * @param resource a ConditionRaw or Condition.
+   *
+   * This does not takes ownership!
+   */
+  ConditionRef(ConditionRaw resource)
+    : Condition(resource)
   {
   }
 
@@ -48769,6 +48985,18 @@ struct TrayRef : Tray
    */
   TrayRef(TrayParam resource)
     : Tray(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from TrayParam.
+   *
+   * @param resource a TrayRaw or Tray.
+   *
+   * This does not takes ownership!
+   */
+  TrayRef(TrayRaw resource)
+    : Tray(resource)
   {
   }
 
@@ -52788,6 +53016,18 @@ struct WindowRef : Window
    */
   WindowRef(WindowParam resource)
     : Window(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
+  WindowRef(WindowRaw resource)
+    : Window(resource)
   {
   }
 
@@ -63287,6 +63527,18 @@ struct GPUDeviceRef : GPUDevice
   {
   }
 
+  /**
+   * Constructs from GPUDeviceParam.
+   *
+   * @param resource a GPUDeviceRaw or GPUDevice.
+   *
+   * This does not takes ownership!
+   */
+  GPUDeviceRef(GPUDeviceRaw resource)
+    : GPUDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   GPUDeviceRef(const GPUDeviceRef& other)
     : GPUDevice(other.get())
@@ -67999,6 +68251,18 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from JoystickParam.
+   *
+   * @param resource a JoystickRaw or Joystick.
+   *
+   * This does not takes ownership!
+   */
+  JoystickRef(JoystickRaw resource)
+    : Joystick(resource)
+  {
+  }
+
   /// Copy constructor.
   JoystickRef(const JoystickRef& other)
     : Joystick(other.get())
@@ -70397,6 +70661,18 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalViewParam.
+   *
+   * @param resource a MetalViewRaw or MetalView.
+   *
+   * This does not takes ownership!
+   */
+  MetalViewRef(MetalViewRaw resource)
+    : MetalView(resource)
+  {
+  }
+
   /// Copy constructor.
   MetalViewRef(const MetalViewRef& other)
     : MetalView(other.get())
@@ -70850,6 +71126,18 @@ struct CursorRef : Cursor
    */
   CursorRef(CursorParam resource)
     : Cursor(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw or Cursor.
+   *
+   * This does not takes ownership!
+   */
+  CursorRef(CursorRaw resource)
+    : Cursor(resource)
   {
   }
 
@@ -72500,6 +72788,18 @@ struct GamepadRef : Gamepad
    */
   GamepadRef(GamepadParam resource)
     : Gamepad(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw or Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  GamepadRef(GamepadRaw resource)
+    : Gamepad(resource)
   {
   }
 
@@ -75382,6 +75682,18 @@ struct HapticRef : Haptic
    */
   HapticRef(HapticParam resource)
     : Haptic(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw or Haptic.
+   *
+   * This does not takes ownership!
+   */
+  HapticRef(HapticRaw resource)
+    : Haptic(resource)
   {
   }
 
@@ -78928,6 +79240,18 @@ struct RendererRef : Renderer
    */
   RendererRef(RendererParam resource)
     : Renderer(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from RendererParam.
+   *
+   * @param resource a RendererRaw or Renderer.
+   *
+   * This does not takes ownership!
+   */
+  RendererRef(RendererRaw resource)
+    : Renderer(resource)
   {
   }
 
@@ -87495,6 +87819,18 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from AnimationParam.
+   *
+   * @param resource a AnimationRaw or Animation.
+   *
+   * This does not takes ownership!
+   */
+  AnimationRef(AnimationRaw resource)
+    : Animation(resource)
+  {
+  }
+
   /// Copy constructor.
   AnimationRef(const AnimationRef& other)
     : Animation(other.get())
@@ -89647,6 +89983,18 @@ struct FontRef : Font
    */
   FontRef(FontParam resource)
     : Font(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from FontParam.
+   *
+   * @param resource a FontRaw or Font.
+   *
+   * This does not takes ownership!
+   */
+  FontRef(FontRaw resource)
+    : Font(resource)
   {
   }
 
@@ -92924,6 +93272,18 @@ struct TextRef : Text
    */
   TextRef(TextParam resource = nullptr)
     : Text(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from TextParam.
+   *
+   * @param resource a TextRaw or Text.
+   *
+   * This does not takes ownership!
+   */
+  TextRef(TextRaw resource)
+    : Text(resource)
   {
   }
 

@@ -1177,6 +1177,18 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
+  EnvironmentRef(EnvironmentRaw resource)
+    : Environment(resource)
+  {
+  }
+
   /// Copy constructor.
   EnvironmentRef(const EnvironmentRef& other)
     : Environment(other.get())
@@ -5994,6 +6006,18 @@ struct IConvRef : IConv
    */
   IConvRef(IConvParam resource)
     : IConv(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvRaw resource)
+    : IConv(resource)
   {
   }
 

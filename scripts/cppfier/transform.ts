@@ -1546,6 +1546,25 @@ function expandTypes(
             type: "",
             parameters: [
               {
+                type: rawName,
+                name: "resource",
+              },
+            ],
+            hints: { init: [`${targetName}(resource)`] },
+            doc: [
+              `Constructs from ${paramType}.`,
+              {
+                tag: "@param resource",
+                content: `a ${rawName} or ${targetName}.`,
+              },
+              "This does not takes ownership!",
+            ],
+          },
+          [`${refName}#3`]: {
+            kind: "function",
+            type: "",
+            parameters: [
+              {
                 type: `const ${refName} &`,
                 name: "other",
               },

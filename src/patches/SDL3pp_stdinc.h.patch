@@ -265,31 +265,31 @@
 >     for (auto& var : GetVariables()) count += 1;
 >     return count;
 >   }
-1246c1288
+1258c1300
 <   return SDL_GetEnvironmentVariables(env);
 ---
 >   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
-1381,1382c1423
+1393,1394c1435
 <  * @returns 0 on success.
 <  * @throws Error on failure.
 ---
 >  * @returns 0 on success, -1 on error.
-1393c1434
+1405c1446
 <   return CheckError(SDL_setenv_unsafe(name, value, overwrite));
 ---
 >   return SDL_setenv_unsafe(name, value, overwrite);
-1400,1401c1441
+1412,1413c1453
 <  * @returns 0 on success.
 <  * @throws Error on failure.
 ---
 >  * @returns 0 on success, -1 on error.
-1412c1452
+1424c1464
 <   return CheckError(SDL_unsetenv_unsafe(name));
 ---
 >   return SDL_unsetenv_unsafe(name);
-1681d1720
+1693d1732
 <  * @param userdata a pointer to pass to the compare function.
-1692c1731,1739
+1704c1743,1751
 <   static_assert(false, "Not implemented");
 ---
 >   return qsort_r(
@@ -301,9 +301,9 @@
 >       return cb(a, b);
 >     },
 >     &compare);
-1808d1854
+1820d1866
 <  * @param userdata a pointer to pass to the compare function.
-1825c1871,1880
+1837c1883,1892
 <   static_assert(false, "Not implemented");
 ---
 >   return bsearch_r(
@@ -316,54 +316,54 @@
 >       return cb(a, b);
 >     },
 >     &compare);
-1932c1987
+1944c1999
 <  * This macro will produce incorrect results if `b` is less than `a`.
 ---
 >  * This function will produce incorrect results if `b` is less than `a`.
-1934c1989
+1946c2001
 <  * This is a helper macro that might be more clear than writing out the
 ---
 >  * This is a helper function that might be more clear than writing out the
-2286a2342
+2298a2354
 > #ifdef SDL_SLOW_MEMCPY
-2287a2344,2346
+2299a2356,2358
 > #else
 >   return ::memcpy(dst, src, len);
 > #endif // SDL_SLOW_MEMCPY
-2317c2376,2377
+2329c2388,2389
 <   return SDL_copyp(dst, src);
 ---
 >   SDL_copyp(dst, src);
 >   return dst;
-2338a2399
+2350a2411
 > #ifdef SDL_SLOW_MEMMOVE
-2339a2401,2403
+2351a2413,2415
 > #else
 >   return ::memmove(dst, src, len);
 > #endif // SDL_SLOW_MEMMOVE
-2361a2426
+2373a2438
 > #ifdef SDL_SLOW_MEMSET
-2362a2428,2430
+2374a2440,2442
 > #else
 >   return ::memset(dst, c, len);
 > #endif // SDL_SLOW_MEMSET
-2454c2522
+2466c2534
 <   SDL_zeroa((&x)[N]);
 ---
 >   SDL_zeroa(x);
-3400a3469,3470
+3412a3481,3482
 > #ifndef SDL_NOLONGLONG
 > 
-3460a3531,3532
+3472a3543,3544
 > #endif // SDL_NOLONGLONG
 > 
-3575a3648,3649
+3587a3660,3661
 > #ifndef SDL_NOLONGLONG
 > 
-3645a3720,3721
+3657a3732,3733
 > #endif // SDL_NOLONGLONG
 > 
-3968c4044,4049
+3980c4056,4061
 <   return SDL_sscanf(text, fmt, ...);
 ---
 >   int rc;
@@ -372,7 +372,7 @@
 >   rc = SDL_vsscanf(text, fmt, ap);
 >   va_end(ap);
 >   return rc;
-4029c4110,4117
+4041c4122,4129
 <   return SDL_snprintf(text, maxlen, fmt, ...);
 ---
 >   va_list ap;
@@ -383,7 +383,7 @@
 >   va_end(ap);
 > 
 >   return result;
-4068c4156,4163
+4080c4168,4175
 <   return SDL_swprintf(text, maxlen, fmt, ...);
 ---
 >   va_list ap;
@@ -394,7 +394,7 @@
 >   va_end(ap);
 > 
 >   return result;
-4152c4247,4254
+4164c4259,4266
 <   return SDL_asprintf(strp, fmt, ...);
 ---
 >   va_list ap;
@@ -405,11 +405,11 @@
 >   va_end(ap);
 > 
 >   return result;
-4255c4357
+4267c4369
 <  * You likely want to use rand() to get a psuedo-random number instead.
 ---
 >  * You likely want to use rand() to get a pseudo-random number instead.
-4275c4377,4387
+4287c4389,4399
 < struct Random
 ---
 > /**
@@ -423,7 +423,7 @@
 >  * @sa wrap-state
 >  */
 > class Random
-4279c4391,4395
+4291c4403,4407
 <   constexpr Random() {}
 ---
 > public:
@@ -431,7 +431,7 @@
 >     : m_state(0)
 >   {
 >   }
-4281c4397,4403
+4293c4409,4415
 <   constexpr explicit Random(Uint64 state) {}
 ---
 >   /**
@@ -441,124 +441,124 @@
 >     : m_state(state)
 >   {
 >   }
-4283c4405,4406
+4295c4417,4418
 <   constexpr operator Uint64() { static_assert(false, "Not implemented"); }
 ---
 >   /// Convert to the underlying type
 >   constexpr operator Uint64() { return m_state; }
-4292c4415
+4304c4427
 <    * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
 ---
 >    * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
-4296c4419
+4308c4431
 <    * you should use: (Sint32)Random.rand_bits(state)
 ---
 >    * you should use: (Sint32)state.rand_bits()
-4304,4305d4426
+4316,4317d4438
 <    * @param state a pointer to the current random number state, this may not be
 <    *              nullptr.
-4309c4430
+4321c4442
 <    * @threadsafety This function is thread-safe, as long as the state pointer
 ---
 >    * @threadsafety This function is thread-safe, as long as this object
-4318c4439
+4330c4451
 <   Sint32 rand(Sint32 n);
 ---
 >   Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
-4331,4332d4451
+4343,4344d4463
 <    * @param state a pointer to the current random number state, this may not be
 <    *              nullptr.
-4335c4454
+4347c4466
 <    * @threadsafety This function is thread-safe, as long as the state pointer
 ---
 >    * @threadsafety This function is thread-safe, as long as this object
-4344c4463
+4356c4475
 <   float randf();
 ---
 >   float randf() { return SDL_randf_r(&m_state); }
-4349c4468
+4361c4480
 <    * You likely want to use Random.rand() to get a psuedo-random number instead.
 ---
 >    * You likely want to use Random.rand() to get a pseudo-random number instead.
-4357,4358d4475
+4369,4370d4487
 <    * @param state a pointer to the current random number state, this may not be
 <    *              nullptr.
-4361c4478
+4373c4490
 <    * @threadsafety This function is thread-safe, as long as the state pointer
 ---
 >    * @threadsafety This function is thread-safe, as long as this object
-4369c4486
+4381c4498
 <   Uint32 rand_bits();
 ---
 >   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
-4407,4408d4523
+4419,4420d4535
 < inline Sint32 Random::rand(Sint32 n) { return SDL::rand_r(n); }
 < 
-4435,4436d4549
+4447,4448d4561
 < inline float Random::randf() { return SDL::randf_r(); }
 < 
-4462,4463d4574
+4474,4475d4586
 < inline Uint32 Random::rand_bits() { return SDL::rand_bits_r(); }
 < 
-4689d4799
+4701d4811
 <  * @sa atan2
-5730,5731d5839
+5742,5743d5851
 <  * @sa IConv.IConv
 <  *
-5732a5841,5842
+5744a5853,5854
 >  *
 >  * @sa IConv.IConv
-5773,5774c5883
+5785,5786c5895
 <    * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
 <    *       failure.
 ---
 >    * @post a valid handle or falsy on failure.
-5815c5924,5927
+5827c5936,5939
 <   constexpr explicit operator bool() const { return !!m_resource; }
 ---
 >   constexpr explicit operator bool() const
 >   {
 >     return m_resource != IConvRaw(SDL_ICONV_ERROR);
 >   }
-5823d5934
+5835d5946
 <    * @param cd The character set conversion handle.
-5969c6080
+5993c6104
 < inline size_t iconv(IConv cd,
 ---
 > inline size_t iconv(IConvRaw cd,
-6007,6009d6117
+6031,6033d6141
 <  * The returned string is owned by the caller, and should be passed to free when
 <  * no longer needed.
 <  *
-6014d6121
+6038d6145
 <  * @param inbytesleft the size of the input string _in bytes_.
-6027c6134,6135
+6051c6158,6159
 <   return SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes());
 ---
 >   return OwnArray<char>{
 >     SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes())};
-6044c6152
+6068c6176
 <   return SDL_iconv_utf8_locale(S);
 ---
 >   return iconv_string("", "UTF-8", S);
-6061c6169,6170
+6085c6193,6194
 <   return SDL_iconv_utf8_ucs2(S);
 ---
 >   auto data = SDL_iconv_string("UCS-2", "UTF-8", S.data(), S.size());
 >   return OwnArray<Uint16>(reinterpret_cast<Uint16*>(data));
-6078c6187,6188
+6102c6211,6212
 <   return SDL_iconv_utf8_ucs4(S);
 ---
 >   auto data = SDL_iconv_string("UCS-4", "UTF-8", S.data(), S.size());
 >   return OwnArray<Uint32>(reinterpret_cast<Uint32*>(data));
-6095c6205
+6119c6229
 <   return SDL_iconv_wchar_utf8(S);
 ---
 >   return iconv_string("UTF-8", "WCHAR_T", S);
-6157c6267
+6181c6291
 < using FunctionPointer = void(SDLCALL*)();
 ---
 > using FunctionPointer = SDL_FunctionPointer;
-6159a6270,6271
+6183a6294,6295
 > 
 > inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
