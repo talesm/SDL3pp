@@ -7252,6 +7252,16 @@ const transform = {
         },
       }
     },
+    "SDL_version.h": {
+      transform: {
+        "SDL_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_MICRO_VERSION": {
+          value: ""
+        },
+      },
+    },
     "SDL_video.h": {
       localIncludes: [
         "SDL3pp_properties.h",

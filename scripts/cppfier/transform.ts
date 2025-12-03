@@ -1613,23 +1613,23 @@ function expandTypes(
     const prefix = `${targetType}::`;
     let lastKey = "__begin";
     const placeAfter = new Map<string, string[]>();
-    for (let [sourceName, transformEntry] of Object.entries(transformMap)) {
+    for (let [sourceName, entryDelta] of Object.entries(transformMap)) {
       const hasPrefix = sourceName.startsWith(prefix);
       if (hasPrefix) sourceName = sourceName.slice(prefix.length);
       if (blockedNames.has(sourceName)) continue;
       const sourceEntry = sourceEntries[sourceName];
       if (sourceEntry) lastKey = sourceName;
       if (
-        transformEntry.kind !== "function" &&
-        (transformEntry.kind || sourceEntry?.kind !== "function")
+        entryDelta.kind !== "function" &&
+        (entryDelta.kind || sourceEntry?.kind !== "function")
       )
         continue;
-      const parameters = transformEntry.parameters;
+      const parameters = entryDelta.parameters;
       let param0 = parameters?.[0];
       if (!param0?.type) {
         if (!hasPrefix) continue;
         param0 = {
-          type: transformEntry.immutable ? constParamType : paramType,
+          type: entryDelta.immutable ? constParamType : paramType,
           name: param0?.name,
         };
       }
@@ -1648,30 +1648,30 @@ function expandTypes(
           blockedNames.add(sourceName);
         }
         foundEntries[sourceName] = {
-          ...deepClone(transformEntry),
-          immutable: m === "immutable" || transformEntry.immutable,
-          name: transformEntry.hints?.methodName ?? undefined,
+          ...deepClone(entryDelta),
+          immutable: m === "immutable" || entryDelta.immutable,
+          name: entryDelta.hints?.methodName ?? undefined,
         };
-        delete transformEntry.immutable;
+        delete entryDelta.immutable;
       } else if (hasPrefix) {
         if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(sourceName);
         else placeAfter.set(lastKey, [sourceName]);
         blockedNames.add(sourceName);
       } else if (!sourceName.includes("::")) {
         const methodName = transformMemberName(
-          transformEntry.hints?.methodName ?? transformEntry.name ?? sourceName,
+          entryDelta.hints?.methodName ?? entryDelta.name ?? sourceName,
           targetType,
           context
         );
         if (blockedNames.has(methodName)) continue;
-        if (transformEntry.after) lastKey = transformEntry.after;
+        if (entryDelta.after) lastKey = entryDelta.after;
         if (placeAfter.has(lastKey)) placeAfter.get(lastKey).push(methodName);
         else placeAfter.set(lastKey, [methodName]);
         const name = `${targetType}::${methodName}`;
         insertOrLink(
           transformMap,
           {
-            ...deepClone(transformEntry),
+            ...deepClone(entryDelta),
             after: sourceName,
             name,
             static: false,
@@ -1685,7 +1685,7 @@ function expandTypes(
           },
           name
         );
-        delete transformEntry.immutable;
+        delete entryDelta.immutable;
       }
     }
     for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -1701,43 +1701,43 @@ function expandTypes(
         [`const ${sourceType}`, `const ${sourceType} *`]
       );
       if (!m) continue;
-      const transformEntry = transformMap[sourceName];
+      const entryDelta = transformMap[sourceName];
       if (
-        transformEntry?.name ||
-        transformEntry?.parameters ||
-        transformEntry?.type ||
-        transformEntry?.hints?.methodName
+        entryDelta?.name ||
+        entryDelta?.parameters ||
+        entryDelta?.type ||
+        entryDelta?.hints?.methodName
       ) {
         const e: ApiEntryTransform = {
-          ...deepClone(transformEntry),
-          immutable: m === "immutable" || transformEntry.immutable,
+          ...deepClone(entryDelta),
+          immutable: m === "immutable" || entryDelta.immutable,
         };
-        e.name = transformEntry.hints?.methodName ?? undefined;
+        e.name = entryDelta.hints?.methodName ?? undefined;
         foundEntries[sourceName] = e;
         if (
-          transformEntry.immutable &&
-          !transformEntry.parameters &&
+          entryDelta.immutable &&
+          !entryDelta.parameters &&
           (!constParamType.startsWith("const ") || constParamType.endsWith("*"))
         ) {
-          transformEntry.parameters = sourceEntry.parameters.map((_) => ({}));
-          transformEntry.parameters[0].type = constParamType;
+          entryDelta.parameters = sourceEntry.parameters.map((_) => ({}));
+          entryDelta.parameters[0].type = constParamType;
         }
-        delete transformEntry.immutable;
-      } else if (transformEntry?.immutable) {
+        delete entryDelta.immutable;
+      } else if (entryDelta?.immutable) {
         foundEntries[sourceName] = "immutable";
         if (
-          transformEntry.immutable &&
-          !transformEntry.parameters &&
+          entryDelta.immutable &&
+          !entryDelta.parameters &&
           (!constParamType.startsWith("const ") || constParamType.endsWith("*"))
         ) {
-          transformEntry.parameters = sourceEntry.parameters.map((_) => ({}));
-          transformEntry.parameters[0].type = constParamType;
+          entryDelta.parameters = sourceEntry.parameters.map((_) => ({}));
+          entryDelta.parameters[0].type = constParamType;
         }
-        delete transformEntry.immutable;
+        delete entryDelta.immutable;
       } else {
         foundEntries[sourceName] = m;
       }
-      if (!transformEntry) transformMap[sourceName] = {};
+      if (!entryDelta) transformMap[sourceName] = {};
     }
     const orderedEntries: Dict<ApiEntryTransform | QuickTransform> = {};
     placeAfter
@@ -1883,29 +1883,32 @@ function makeSortedEntryArray(
   const transformEntries = file.transform ?? {};
 
   let lastSourceName = "__begin";
-  for (const [sourceName, transformEntry] of Object.entries(transformEntries)) {
+  for (const [sourceName, entryDelta] of Object.entries(transformEntries)) {
     if (sourceEntries[sourceName]) {
       lastSourceName = sourceName;
-      const targetName =
-        transformEntry.name ?? transformName(sourceName, context);
-      transformEntry.name = targetName;
-      if (transformEntry.before) {
-        context.includeBefore(targetName, transformEntry.before);
-      } else if (transformEntry.after) {
-        context.includeAfter(targetName, transformEntry.after);
+      const kind = entryDelta.kind ?? sourceEntries[sourceName].kind;
+      if (kind !== "def") {
+        const targetName =
+          entryDelta.name ?? transformName(sourceName, context);
+        entryDelta.name = targetName;
+        if (entryDelta.before) {
+          context.includeBefore(targetName, entryDelta.before);
+        } else if (entryDelta.after) {
+          context.includeAfter(targetName, entryDelta.after);
+        }
       }
     } else {
-      if (!transformEntry.name) transformEntry.name = sourceName;
-      if (transformEntry.before) {
-        lastSourceName = transformEntry.before;
-        context.includeBefore(transformEntry, lastSourceName);
+      if (!entryDelta.name) entryDelta.name = sourceName;
+      if (entryDelta.before) {
+        lastSourceName = entryDelta.before;
+        context.includeBefore(entryDelta, lastSourceName);
       } else {
-        lastSourceName = transformEntry.after ?? lastSourceName;
-        context.includeAfter(transformEntry, lastSourceName);
+        lastSourceName = entryDelta.after ?? lastSourceName;
+        context.includeAfter(entryDelta, lastSourceName);
       }
     }
-    delete transformEntry.before;
-    delete transformEntry.after;
+    delete entryDelta.before;
+    delete entryDelta.after;
   }
 
   const sortedEntries: Dict<ApiEntry> = {};
@@ -1931,7 +1934,7 @@ function makeSortedEntryArray(
     };
     const targetDelta = transformEntries[sourceName];
     if (targetDelta) {
-      targetEntry.name = targetDelta.name ?? targetEntry.name;
+      if (targetDelta.name) targetEntry.name = targetDelta.name;
       targetEntry.kind = targetDelta.kind ?? targetEntry.kind;
       if (targetEntry.kind !== sourceEntry.kind && sourceEntry.kind === "def") {
         let replacement = "constant";
@@ -1958,7 +1961,6 @@ function makeSortedEntryArray(
     if (firstAppearance) addIncluded(includeBefore[targetName]);
 
     if (targetEntry.kind === "def") {
-      const targetName = targetEntry.name;
       if (!targetName.startsWith(defPrefix)) {
         targetEntry.name = defPrefix + targetName;
       }
@@ -1981,42 +1983,42 @@ function makeSortedEntryArray(
 
   function addIncluded(transformEntries?: ApiEntryTransform[]) {
     if (!transformEntries) return;
-    for (const transformEntry of transformEntries) {
-      const name = transformEntry.name;
+    for (const entryDelta of transformEntries) {
+      const name = entryDelta.name;
       let checkSubIncludes = true;
       if (processedSourceNames.has(name)) {
         checkSubIncludes = false;
-        if (transformEntry.kind !== "function") continue;
-      } else if (transformEntry.kind === "forward") {
+        if (entryDelta.kind !== "function") continue;
+      } else if (entryDelta.kind === "forward") {
         checkSubIncludes = false;
       } else processedSourceNames.add(name);
 
       if (checkSubIncludes) addIncluded(includeBefore[name]);
-      addTransform(transformEntry);
+      addTransform(entryDelta);
       if (checkSubIncludes) addIncluded(includeAfter[name]);
     }
   }
 
-  function addTransform(transformEntry: ApiEntryTransform) {
-    const currEntry = sortedEntries[transformEntry.name];
+  function addTransform(entryDelta: ApiEntryTransform) {
+    const currEntry = sortedEntries[entryDelta.name];
     const currKind = currEntry?.kind;
     const nextName =
-      transformEntry.kind === "forward"
-        ? transformEntry.name + "#forward"
-        : transformEntry.name;
+      entryDelta.kind === "forward"
+        ? entryDelta.name + "#forward"
+        : entryDelta.name;
     const targetEntry = {
-      ...transformEntry,
-      kind: transformEntry.kind ?? "plc",
-      name: transformEntry.name ?? "",
+      ...entryDelta,
+      kind: entryDelta.kind ?? "plc",
+      name: entryDelta.name ?? "",
       entries: undefined,
     } as ApiEntry;
-    if (transformEntry.entries)
-      targetEntry.entries = transformSubEntries(transformEntry);
+    if (entryDelta.entries)
+      targetEntry.entries = transformSubEntries(entryDelta);
     if (!currKind) {
       sortedEntries[nextName] = targetEntry;
       return;
     }
-    const nextKind = transformEntry.kind;
+    const nextKind = entryDelta.kind;
     if (currKind === "function") {
       if (nextKind !== "function") return;
       const n = (countInstance[nextName] ?? 1) + 1;
@@ -2105,28 +2107,28 @@ function makeSortedEntryArray(
 
 function insertTransform(
   entries: Dict<ApiEntryTransform>,
-  transformEntry: ApiEntryTransform,
+  entryDelta: ApiEntryTransform,
   defaultName: string = undefined
 ) {
-  if (defaultName) transformEntry.name = transformEntry.name ?? defaultName;
-  const currEntry = entries[transformEntry.name];
+  if (defaultName) entryDelta.name = entryDelta.name ?? defaultName;
+  const currEntry = entries[entryDelta.name];
   const currKind = currEntry?.kind;
   const nextName =
-    transformEntry.kind === "forward"
-      ? transformEntry.name + "#forward"
-      : transformEntry.name;
+    entryDelta.kind === "forward"
+      ? entryDelta.name + "#forward"
+      : entryDelta.name;
   if (!currKind) {
-    entries[nextName] = transformEntry;
+    entries[nextName] = entryDelta;
     return;
   }
-  const nextKind = transformEntry.kind;
+  const nextKind = entryDelta.kind;
   if (currKind === "function") {
     if (nextKind !== "function") return;
-    const n = makeSignatureSuffix(transformEntry.parameters);
-    entries[`${nextName}#${n}`] = transformEntry;
+    const n = makeSignatureSuffix(entryDelta.parameters);
+    entries[`${nextName}#${n}`] = entryDelta;
     return;
   }
-  combineObject(currEntry, transformEntry);
+  combineObject(currEntry, entryDelta);
 }
 
 function makeSignatureSuffix(parameters: ApiParameter[]) {
@@ -2145,15 +2147,15 @@ function expandNamespaces(
       key.startsWith(prefix)
     );
     for (const [key, entry] of sourceEntriesListed) {
-      const transformEntry = file.transform[key] || {};
+      const entryDelta = file.transform[key] || {};
       const localName = entry.name.slice(prefix.length);
-      file.transform[key] = transformEntry;
-      transformEntry.name = nsName + "." + localName;
+      file.transform[key] = entryDelta;
+      entryDelta.name = nsName + "." + localName;
 
-      if (entry.kind === "def" && !transformEntry.kind) {
-        transformEntry.kind = "var";
-        transformEntry.type = "auto";
-        transformEntry.constexpr = true;
+      if (entry.kind === "def" && !entryDelta.kind) {
+        entryDelta.kind = "var";
+        entryDelta.type = "auto";
+        entryDelta.constexpr = true;
       }
       context.addName(key, `${nsName}.${localName}`);
     }
@@ -2205,8 +2207,8 @@ function mirrorMethods(
     )
       continue;
 
-    const transformEntry = transformEntries[sourceName];
-    if (transformEntry?.type || transformEntry?.parameters) continue;
+    const entryDelta = transformEntries[sourceName];
+    if (entryDelta?.type || entryDelta?.parameters) continue;
     let targetEntry: ApiEntryTransform;
     if (typeof subEntry === "string") {
       targetEntry = {};
@@ -2222,7 +2224,7 @@ function mirrorMethods(
     delete targetEntry.immutable;
     delete targetEntry.proto;
     delete targetEntry.hints?.delegate;
-    if (transformEntry) combineObject(targetEntry, transformEntry);
+    if (entryDelta) combineObject(targetEntry, entryDelta);
     transformEntries[sourceName] = targetEntry;
   }
 

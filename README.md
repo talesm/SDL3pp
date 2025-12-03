@@ -1,5 +1,4 @@
-SDL3pp
-======
+# SDL3pp
 
 A "port" of SDL3 in C++.
 
@@ -21,7 +20,6 @@ memory management and wrappers for string and callbacks.
   - [Installation](#installing) instructions;
 - See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
 - See [Example](#example) and [Examples directory](./examples/).
-
 
 ## Goals
 
@@ -96,11 +94,27 @@ int main(int argc, char** argv)
 
 ## Building
 
+If aren't using the "full" version, ensure you have the necessary dependencies
+installed:
+
+- SDL3
+- SDL3_image (optional)
+- SDL3_ttf (optional)
+
 Assuming you are on the source dir, you can build with:
 
 ```sh
 cmake -S . -B build
 cmake --build build
+```
+
+If CMake can't find the dependencies, you might have to pass them through
+cmake-gui or using the following:
+
+```sh
+cmake -DSDL3_DIR=path-to-SDL3-dir build
+cmake -DSDL3_image_DIR=path-to-SDL3_image-dir build
+cmake -DSDL3_ttf_DIR=path-to-SDL3_ttf-dir build
 ```
 
 ## Installing
@@ -113,7 +127,7 @@ The most basic way is to copy the contents of
 [amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/) directly
 to your project.
 
-### System installation:
+### System installation
 
 After [build](#building), you can install on you system with cmake:
 
