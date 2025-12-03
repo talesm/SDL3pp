@@ -130,7 +130,7 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 
 # Examples
 option(BUILD_EXAMPLES "Build the examples" ON)
-option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" ON)
+option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" OFF)
 if (BUILD_EXAMPLES)
     if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
         add_library(SDL3pp_ExampleBase ALIAS SDL3pp_amalgamated)
