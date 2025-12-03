@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.4.1
+    VERSION 0.4.2
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
@@ -42,15 +42,20 @@ else(SDL3PP_DISABLE_IMAGE)
     if (SDL3PP_FORCE_BUNDLED)
         set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
         add_subdirectory(external/SDL_image)
+        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
     else ()
         find_package(SDL3_image QUIET)
         set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
-        if (NOT TARGET SDL3_image::SDL3_image)
+        if (TARGET SDL3_image::SDL3_image)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        else ()
             set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
-            add_subdirectory(external/SDL_image)
+            if (EXISTS external/SDL_image/CMakeLists.txt)
+                add_subdirectory(external/SDL_image)
+                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+            endif()
         endif ()
     endif ()
-    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
 endif(SDL3PP_DISABLE_IMAGE)
 
 # SDL_ttf
@@ -61,15 +66,20 @@ else(SDL3PP_DISABLE_TTF)
     if (SDL3PP_FORCE_BUNDLED)
         set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
         add_subdirectory(external/SDL_ttf)
+        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
     else ()
         find_package(SDL3_ttf QUIET)
         set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
-        if (NOT TARGET SDL3_ttf::SDL3_ttf)
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+        else()
             set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
-            add_subdirectory(external/SDL_ttf)
+            if (EXISTS external/SDL_ttf/CMakeLists.txt)
+                add_subdirectory(external/SDL_ttf)
+                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+            endif()
         endif ()
     endif ()
-    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
 endif(SDL3PP_DISABLE_TTF)
 
 # use StringParam
