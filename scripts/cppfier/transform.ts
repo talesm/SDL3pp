@@ -1819,12 +1819,16 @@ function makeSortedEntryArray(
   for (const [sourceName, entryDelta] of Object.entries(transformEntries)) {
     if (sourceEntries[sourceName]) {
       lastSourceName = sourceName;
-      const targetName = entryDelta.name ?? transformName(sourceName, context);
-      entryDelta.name = targetName;
-      if (entryDelta.before) {
-        context.includeBefore(targetName, entryDelta.before);
-      } else if (entryDelta.after) {
-        context.includeAfter(targetName, entryDelta.after);
+      const kind = entryDelta.kind ?? sourceEntries[sourceName].kind;
+      if (kind !== "def") {
+        const targetName =
+          entryDelta.name ?? transformName(sourceName, context);
+        entryDelta.name = targetName;
+        if (entryDelta.before) {
+          context.includeBefore(targetName, entryDelta.before);
+        } else if (entryDelta.after) {
+          context.includeAfter(targetName, entryDelta.after);
+        }
       }
     } else {
       if (!entryDelta.name) entryDelta.name = sourceName;
@@ -1863,7 +1867,7 @@ function makeSortedEntryArray(
     };
     const targetDelta = transformEntries[sourceName];
     if (targetDelta) {
-      targetEntry.name = targetDelta.name ?? targetEntry.name;
+      if (targetDelta.name) targetEntry.name = targetDelta.name;
       targetEntry.kind = targetDelta.kind ?? targetEntry.kind;
       if (targetEntry.kind !== sourceEntry.kind && sourceEntry.kind === "def") {
         let replacement = "constant";
@@ -1890,7 +1894,6 @@ function makeSortedEntryArray(
     if (firstAppearance) addIncluded(includeBefore[targetName]);
 
     if (targetEntry.kind === "def") {
-      const targetName = targetEntry.name;
       if (!targetName.startsWith(defPrefix)) {
         targetEntry.name = defPrefix + targetName;
       }
