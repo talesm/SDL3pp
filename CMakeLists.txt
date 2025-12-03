@@ -269,11 +269,12 @@ install(FILES
 ############################
 
 # Create zip for amalgamated files
+set(SDL3PP_AMALGAMATION_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_amalgamated-${PROJECT_VERSION}")
 add_custom_target(SDL3pp_zip_amalgamation
-    COMMAND rm -f ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.tar.gz
-    COMMAND tar -czvf ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
-    COMMAND zip -r ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip SDL3pp/
-    COMMAND zip -ju ${PROJECT_BINARY_DIR}/SDL3pp_amalgamated.zip ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND rm -f ${SDL3PP_AMALGAMATION_FILEBASE}.zip ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_AMALGAMATION_FILEBASE}.tar.gz SDL3pp/ ../LICENSE.txt ../README.md ../changelog.md
+    COMMAND zip -r ${SDL3PP_AMALGAMATION_FILEBASE}.zip SDL3pp/
+    COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
 )
