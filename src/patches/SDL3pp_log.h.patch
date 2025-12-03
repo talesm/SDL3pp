@@ -565,61 +565,9 @@
 > {
 >   SDL::LogCritical(m_category, fmt, args...);
 > }
-887a984,985
->  * @cat listener-callback
->  *
-931,933c1029
-<  * @param callback an LogOutputFunction filled in with the current log callback.
-<  * @param userdata a pointer filled in with the pointer that is passed to
-<  *                 `callback`.
----
->  * @returns the LogOutputCB currently set
-938a1035,1037
->  * @cat listener-callback
->  *
->  * @sa listener-callback
-944c1043,1055
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
->   LogOutputFunction cb;
->   void* userdata;
->   GetLogOutputFunction(&cb, &userdata);
->   if (userdata == nullptr) {
->     return [cb](LogCategory c, LogPriority p, StringParam m) {
->       cb(nullptr, c, p, m);
->     };
->   }
->   if (auto cb = Wrapper::at(userdata)) return cb;
->   return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
->     cb(userdata, c, p, m);
->   };
-958a1070
+922a1019
 >  * @sa ResetLogOutputFunction
-962c1074,1075
-<   SDL_SetLogOutputFunction(callback, userdata);
----
->   UniqueCallbackWrapper<LogOutputCB>::erase();
->   return SDL_SetLogOutputFunction(callback, userdata);
-969d1081
-<  * @param userdata a pointer that is passed to `callback`.
-974a1087,1089
->  * @cat listener-callback
->  *
->  * @sa listener-callback
-976a1092
->  * @sa ResetLogOutputFunction
-980c1096,1102
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
->   SDL_SetLogOutputFunction(
->     [](
->       void* userdata, int category, LogPriority priority, const char* message) {
->       return Wrapper::Call(userdata, LogCategory{category}, priority, message);
->     },
->     Wrapper::Wrap(std::move(callback)));
-982a1105,1114
+928a1026,1035
 > /**
 >  * Replace the current log output function with the default one
 >  *
@@ -630,7 +578,7 @@
 >  * @sa GetDefaultLogOutputFunction
 >  * @sa GetLogOutputFunction
 >  */
-985c1117
+931c1038
 <   static_assert(false, "Not implemented");
 ---
 >   return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);

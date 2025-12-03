@@ -26,48 +26,17 @@
 <  * A callback that fires when an SDL assertion fails.
 ---
 >  * A @ref callback that fires when an SDL assertion fails.
-397c405
-<  * A callback that fires when an SDL assertion fails.
----
->  * A @ref callback that fires when an SDL assertion fails.
-438c446,447
+421c429
 <   SDL_SetAssertionHandler(handler, userdata);
 ---
->   UniqueCallbackWrapper<AssertionHandlerCB>::erase();
 >   return SDL_SetAssertionHandler(handler, userdata);
-454,456c463
-<  * @param handler the AssertionHandler function to call when an assertion fails
-<  *                or nullptr for the default handler.
-<  * @param userdata a pointer that is passed to `handler`.
----
->  * @param handler the AssertionHandler function to call when an assertion fails.
-466c473,475
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
->   SetAssertionHandler(&Wrapper::CallSuffixed,
->                       Wrapper::Wrap(std::move(handler)));
-468d476
+472d479
 < 
-531,533c539
-<  * @param puserdata pointer which is filled with the "userdata" pointer that was
-<  *                  passed to SetAssertionHandler().
-<  * @returns the AssertionHandler that is called when an assert triggers.
----
->  * @returns the AssertionHandlerCB that is called when an assert triggers.
-543c549,553
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
->   void* userdata = nullptr;
->   auto cb = GetAssertionHandler(&userdata);
->   if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
->   return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-554c564
+481c488
 <  * ```c
 ---
 >  * ```cpp
-580c590
+507c514
 <   return SDL_GetAssertionReport();
 ---
 >   return *SDL_GetAssertionReport();

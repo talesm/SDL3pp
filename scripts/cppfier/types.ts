@@ -150,7 +150,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   after?: string;
 }
 
-export type FunctorSupport = "std" | "lightweight" | "concept";
+export type FunctorSupport = "std" | "lightweight";
 
 export interface CallbackDefinition {
   functorSupport?: false | FunctorSupport;

@@ -148,7 +148,7 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
  *
  * @sa TrayCallback
  */
-using TrayCB = std::function<void(TrayEntryRaw)>;
+using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
  * An opaque handle representing a toplevel system tray object.

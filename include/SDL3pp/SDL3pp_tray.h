@@ -151,7 +151,7 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
  *
  * @sa TrayCallback
  */
-using TrayCB = std::function<void(TrayEntryRaw)>;
+using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
  * An opaque handle representing a toplevel system tray object.
@@ -1424,10 +1424,7 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 
 inline void TrayEntry::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
-  SetCallback([](void* userdata,
-                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
-              Wrapper::Wrap(get(), std::move(callback)));
+  SetCallback(callback.wrapper, callback.data);
 }
 
 } // namespace SDL

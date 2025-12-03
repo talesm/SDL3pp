@@ -169,121 +169,18 @@
 >  * @sa listener-callback
 >  * @sa SetEventFilter()
 >  * @sa AddEventWatch()
-1357c1369,1374
-< /// Handle returned by AddEventWatch()
----
-> /**
->  * Handle returned by AddEventWatch(EventFilterCB)
->  *
->  * This can be used later to remove the event filter
->  * RemoveEventWatch(EventFilterHandle).
->  */
-1403c1420,1421
+1397c1409,1410
 <   SDL_SetEventFilter(filter, userdata);
 ---
 >   UniqueCallbackWrapper<EventFilterCB>::erase();
 >   return SDL_SetEventFilter(filter, userdata);
-1431,1432c1449
-<  * @param filter an EventFilter function to call when an event happens.
+1508d1520
 <  * @param userdata a pointer that is passed to `filter`.
----
->  * @param filter an EventFilterCB function to call when an event happens.
-1437a1455,1457
->  * @cat listener-callback
->  *
->  * @sa listener-callback
-1446c1466,1471
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
->   SDL_SetEventFilter(
->     [](void* userdata, SDL_Event* event) {
->       return Wrapper::Call(userdata, *event);
->     },
->     Wrapper::Wrap(std::move(filter)));
-1477,1480c1502,1503
-<  * @param filter the current callback function will be stored here.
-<  * @param userdata the pointer that is passed to the current event filter will
-<  *                 be stored here.
-<  * @throws Error on failure.
----
->  * @returns EventFilterCB on success or false if there is no event filter
->  * set.
-1485a1509,1511
->  * @cat listener-callback
->  *
->  * @sa listener-callback
-1490c1516,1528
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-> 
->   EventFilter filter;
->   void* userdata;
->   GetEventFilter(&filter, &userdata);
->   if (!userdata)
->     return [filter](const Event& event) {
->       return filter(nullptr, const_cast<Event*>(&event));
->     };
->   if (auto cb = Wrapper::at(userdata)) return cb;
->   return [filter, userdata](const Event& event) {
->     return filter(userdata, const_cast<Event*>(&event));
->   };
-1492a1531
-> /// @private
-1495c1534,1535
-<   static_assert(false, "Not implemented");
----
->   auto& f = *static_cast<EventFilterCB*>(userdata);
->   return f(*event);
-1550,1551c1590,1592
-<  * @param filter an EventFilter function to call when an event happens.
-<  * @param userdata a pointer that is passed to `filter`.
----
->  * @param filter an EventFilterCB to call when an event happens.
->  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
->  *          success.
-1557a1599,1601
->  * @cat listener-callback
->  *
->  * @sa listener-callback
-1563c1607,1613
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = CallbackWrapper<EventFilterCB>;
->   auto cb = Wrapper::Wrap(std::move(filter));
->   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
->     Wrapper::release(cb);
->     throw Error{};
->   }
->   return EventWatchHandle{cb};
-1589,1593c1639
-<  * This function takes the same input as AddEventWatch() to identify and delete
-<  * the corresponding callback.
-<  *
-<  * @param filter the function originally passed to AddEventWatch().
-<  * @param userdata the pointer originally passed to AddEventWatch().
----
->  * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
-1599c1645,1648
-<  * @sa AddEventWatch
----
->  * @cat listener-callback
->  *
->  * @sa listener-callback
->  * @sa AddEventWatch(EventFilterCB)
-1603c1652,1653
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = CallbackWrapper<EventFilterCB>;
->   Wrapper::release(handle);
-1638d1687
-<  * @param userdata a pointer that is passed to `filter`.
-1643a1693,1695
+1513a1526,1528
 >  * @cat immediate-callback
 >  *
 >  * @sa immediate-callback
-1649c1701,1706
+1519c1534,1539
 <   static_assert(false, "Not implemented");
 ---
 >   return FilterEvents(
@@ -292,7 +189,7 @@
 >       return f(*event);
 >     },
 >     &filter);
-1719c1776
+1589c1609
 <   return CheckError(SDL_GetWindowFromEvent(&event));
 ---
 >   return {CheckError(SDL_GetWindowFromEvent(&event))};

@@ -4444,35 +4444,6 @@ using HintCallback = void(SDLCALL*)(void* userdata,
                                     const char* newValue);
 
 /**
- * A callback used to send notifications of hint value changes.
- *
- * This is called an initial time during AddHintCallback with the hint's current
- * value, and then again each time the hint's value changes.
- *
- * @param name what was passed as `name` to AddHintCallback().
- * @param oldValue the previous hint value.
- * @param newValue the new value hint is to be set to.
- *
- * @threadsafety This callback is fired from whatever thread is setting a new
- *               hint value. SDL holds a lock on the hint subsystem when calling
- *               this callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- *
- * @sa HintCallback
- */
-using HintCB = std::function<
-  void(const char* name, const char* oldValue, const char* newValue)>;
-
-/// Handle returned by AddHintCallback()
-struct HintCallbackHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
-
-/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an
@@ -4498,35 +4469,6 @@ inline void AddHintCallback(StringParam name,
 }
 
 /**
- * Add a function to watch a particular hint.
- *
- * The callback function is called _during_ this function, to provide it an
- * initial value, and again each time the hint's value changes.
- *
- * @param name the hint to watch.
- * @param callback An HintCallback function that will be called when the hint
- *                 value changes.
- * @returns a handle to be used on RemoveHintCallback()
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveHintCallback
- */
-inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
-{
-  using Wrapper = CallbackWrapper<HintCB>;
-  auto cb = Wrapper::Wrap(std::move(callback));
-  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return HintCallbackHandle{cb};
-}
-
-/**
  * Remove a function watching a particular hint.
  *
  * @param name the hint being watched.
@@ -4545,23 +4487,6 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param handle the handle for the HintCallback function to be removed
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
-{
-  CallbackWrapper<HintCB>::release(handle);
 }
 
 /// @}

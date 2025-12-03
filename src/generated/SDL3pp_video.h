@@ -3262,32 +3262,6 @@ using EGLint = SDL_EGLint;
 using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
- * EGL platform attribute initialization callback.
- *
- * This is called when SDL is attempting to create an EGL context, to let the
- * app add extra attributes to its eglGetPlatformDisplay() call.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLAttribArrayCallback
- */
-using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
-
-/**
  * EGL surface/context attribute initialization callback types.
  *
  * This is called when SDL is attempting to create an EGL surface, to let the
@@ -3319,39 +3293,6 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
 using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
                                                   EGLDisplay display,
                                                   EGLConfig config);
-
-/**
- * EGL surface/context attribute initialization callback types.
- *
- * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
- * calls.
- *
- * For convenience, the EGLDisplay and EGLConfig to use are provided to the
- * callback.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @param display the EGL display to be used.
- * @param config the EGL config to be used.
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLIntArrayCallback
- */
-using EGLIntArrayCB =
-  std::function<SDL_EGLint*(EGLDisplay display, EGLConfig config)>;
 
 /**
  * An enumeration of OpenGL configuration attributes.

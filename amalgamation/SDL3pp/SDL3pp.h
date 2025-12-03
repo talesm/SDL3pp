@@ -468,6 +468,50 @@ struct MakeFrontCallback<R(PARAMS...)>
   }
 };
 
+template<class F>
+struct MakeBackCallback;
+
+/**
+ * Make Back Callback
+ *
+ * @tparam R
+ * @tparam PARAMS
+ */
+template<class R, class... PARAMS>
+struct MakeBackCallback<R(PARAMS...)>
+{
+  R (*wrapper)(PARAMS..., void*);
+  void* data;
+
+  /// ctor
+  explicit(false) MakeBackCallback(R (*func)(PARAMS...))
+    : wrapper([](PARAMS... params, void* userdata) {
+      auto f = static_cast<R (*)(PARAMS...)>(userdata);
+      return f(params...);
+    })
+    , data(static_cast<void*>(func))
+  {
+  }
+
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  explicit(false) MakeBackCallback(const F& func)
+  {
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit data");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](PARAMS... params, void* userdata) {
+      PunAux aux{.ptr = userdata};
+      return aux.func(params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
+  }
+};
+
 /**
  * @brief Wrapper key to value [result callbacks](#result-callback).
  *
@@ -2465,23 +2509,6 @@ using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData* data,
                                                    void* userdata);
 
 /**
- * A @ref callback that fires when an SDL assertion fails.
- *
- * @param data a pointer to the AssertData structure corresponding to the
- *             current assertion.
- * @returns an AssertState value indicating how to handle the failure.
- *
- * @threadsafety This callback may be called from any thread that triggers an
- *               assert at any time.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AssertionHandler
- */
-using AssertionHandlerCB =
-  std::function<SDL_AssertState(const AssertData* data)>;
-
-/**
  * Set an application-defined assertion handler.
  *
  * This function allows an application to show its own assertion UI and/or force
@@ -2506,37 +2533,9 @@ using AssertionHandlerCB =
  */
 inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
-  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
   return SDL_SetAssertionHandler(handler, userdata);
 }
 
-/**
- * Set an application-defined assertion handler.
- *
- * This function allows an application to show its own assertion UI and/or force
- * the response to an assertion failure. If the application doesn't provide
- * this, SDL will try to do the right thing, popping up a system-specific GUI
- * dialog, and probably minimizing any fullscreen windows.
- *
- * This callback may fire from any thread, but it runs wrapped in a mutex, so it
- * will only fire from one thread at a time.
- *
- * This callback is NOT reset to SDL's internal handler upon Quit()!
- *
- * @param handler the AssertionHandler function to call when an assertion fails.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAssertionHandler
- */
-inline void SetAssertionHandler(AssertionHandlerCB handler)
-{
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  SetAssertionHandler(&Wrapper::CallSuffixed,
-                      Wrapper::Wrap(std::move(handler)));
-}
 /**
  * Get the default assertion handler.
  *
@@ -2585,37 +2584,6 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
 {
   return SDL_GetAssertionHandler(puserdata);
 }
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to SetAssertionHandler(), or
- * if no application-specified function is set, is equivalent to calling
- * GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SetAssertionHandler(). This value will
- * always be nullptr for the default handler. If you don't care about this data,
- * it is safe to pass a nullptr pointer to this function to ignore it.
- *
- * @returns the AssertionHandlerCB that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAssertionHandler
- */
-inline AssertionHandlerCB GetAssertionHandler()
-{
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  void* userdata = nullptr;
-  auto cb = GetAssertionHandler(&userdata);
-  if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
-  return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-}
-
 /**
  * Get a list of all assertion failures.
  *
@@ -7404,35 +7372,6 @@ using HintCallback = void(SDLCALL*)(void* userdata,
                                     const char* newValue);
 
 /**
- * A callback used to send notifications of hint value changes.
- *
- * This is called an initial time during AddHintCallback with the hint's current
- * value, and then again each time the hint's value changes.
- *
- * @param name what was passed as `name` to AddHintCallback().
- * @param oldValue the previous hint value.
- * @param newValue the new value hint is to be set to.
- *
- * @threadsafety This callback is fired from whatever thread is setting a new
- *               hint value. SDL holds a lock on the hint subsystem when calling
- *               this callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- *
- * @sa HintCallback
- */
-using HintCB = std::function<
-  void(const char* name, const char* oldValue, const char* newValue)>;
-
-/// Handle returned by AddHintCallback()
-struct HintCallbackHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
-
-/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an
@@ -7458,35 +7397,6 @@ inline void AddHintCallback(StringParam name,
 }
 
 /**
- * Add a function to watch a particular hint.
- *
- * The callback function is called _during_ this function, to provide it an
- * initial value, and again each time the hint's value changes.
- *
- * @param name the hint to watch.
- * @param callback An HintCallback function that will be called when the hint
- *                 value changes.
- * @returns a handle to be used on RemoveHintCallback()
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveHintCallback
- */
-inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
-{
-  using Wrapper = CallbackWrapper<HintCB>;
-  auto cb = Wrapper::Wrap(std::move(callback));
-  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return HintCallbackHandle{cb};
-}
-
-/**
  * Remove a function watching a particular hint.
  *
  * @param name the hint being watched.
@@ -7505,23 +7415,6 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param handle the handle for the HintCallback function to be removed
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
-{
-  CallbackWrapper<HintCB>::release(handle);
 }
 
 /// @}
@@ -8486,25 +8379,6 @@ using LogOutputFunction = void(SDLCALL*)(void* userdata,
                                          const char* message);
 
 /**
- * The prototype for the log output callback function.
- *
- * This function is called by SDL when there is new text to be logged. A mutex
- * is held so that this function is never called by more than one thread at
- * once.
- *
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param message the message being output.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa LogOutputFunction
- */
-using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
-
-/**
  * Get the default log output function.
  *
  * @returns the default log output callback.
@@ -8541,38 +8415,6 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 }
 
 /**
- * Get the current log output function.
- *
- * @returns the LogOutputCB currently set
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction
- * @sa SetLogOutputFunction
- */
-inline LogOutputCB GetLogOutputFunction()
-{
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  LogOutputFunction cb;
-  void* userdata;
-  GetLogOutputFunction(&cb, &userdata);
-  if (userdata == nullptr) {
-    return [cb](LogCategory c, LogPriority p, StringParam m) {
-      cb(nullptr, c, p, m);
-    };
-  }
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-    cb(userdata, c, p, m);
-  };
-}
-
-/**
  * Replace the default log output function with one of your own.
  *
  * @param callback an LogOutputFunction to call instead of the default.
@@ -8588,35 +8430,7 @@ inline LogOutputCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueCallbackWrapper<LogOutputCB>::erase();
-  return SDL_SetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Replace the default log output function with one of your own.
- *
- * @param callback an LogOutputFunction to call instead of the default.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction
- * @sa GetLogOutputFunction
- * @sa ResetLogOutputFunction
- */
-inline void SetLogOutputFunction(LogOutputCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  SDL_SetLogOutputFunction(
-    [](
-      void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::Call(userdata, LogCategory{category}, priority, message);
-    },
-    Wrapper::Wrap(std::move(callback)));
+  SDL_SetLogOutputFunction(callback, userdata);
 }
 
 /**
@@ -48792,7 +48606,7 @@ using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
  *
  * @sa TrayCallback
  */
-using TrayCB = std::function<void(TrayEntryRaw)>;
+using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
  * An opaque handle representing a toplevel system tray object.
@@ -50065,10 +49879,7 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 
 inline void TrayEntry::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
-  SetCallback([](void* userdata,
-                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
-              Wrapper::Wrap(get(), std::move(callback)));
+  SetCallback(callback.wrapper, callback.data);
 }
 
 /**
@@ -53339,32 +53150,6 @@ using EGLint = SDL_EGLint;
 using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
- * EGL platform attribute initialization callback.
- *
- * This is called when SDL is attempting to create an EGL context, to let the
- * app add extra attributes to its eglGetPlatformDisplay() call.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLAttribArrayCallback
- */
-using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
-
-/**
  * EGL surface/context attribute initialization callback types.
  *
  * This is called when SDL is attempting to create an EGL surface, to let the
@@ -53396,39 +53181,6 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
 using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
                                                   EGLDisplay display,
                                                   EGLConfig config);
-
-/**
- * EGL surface/context attribute initialization callback types.
- *
- * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
- * calls.
- *
- * For convenience, the EGLDisplay and EGLConfig to use are provided to the
- * callback.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @param display the EGL display to be used.
- * @param config the EGL config to be used.
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLIntArrayCallback
- */
-using EGLIntArrayCB =
-  std::function<SDL_EGLint*(EGLDisplay display, EGLConfig config)>;
 
 /**
  * An enumeration of OpenGL configuration attributes.
@@ -59289,17 +59041,6 @@ using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
 using EventFilterCB = std::function<bool(const Event&)>;
 
 /**
- * Handle returned by AddEventWatch(EventFilterCB)
- *
- * This can be used later to remove the event filter
- * RemoveEventWatch(EventFilterHandle).
- */
-struct EventWatchHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
-
-/**
  * Set up a filter to process all events before they are added to the internal
  * event queue.
  *
@@ -59344,56 +59085,6 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
 }
 
 /**
- * Set up a filter to process all events before they are added to the internal
- * event queue.
- *
- * If you just want to see events without modifying them or preventing them from
- * being queued, you should use AddEventWatch() instead.
- *
- * If the filter function returns true when called, then the event will be added
- * to the internal queue. If it returns false, then the event will be dropped
- * from the queue, but the internal state will still be updated. This allows
- * selective filtering of dynamically arriving events.
- *
- * **WARNING**: Be very careful of what you do in the event filter function, as
- * it may run in a different thread!
- *
- * On platforms that support it, if the quit event is generated by an interrupt
- * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
- * next event poll.
- *
- * Note: Disabled events never make it to the event filter function; see
- * SetEventEnabled().
- *
- * Note: Events pushed onto the queue with PushEvent() get passed through the
- * event filter, but events pushed onto the queue with PeepEvents() do not.
- *
- * @param filter an EventFilterCB function to call when an event happens.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa AddEventWatch
- * @sa SetEventEnabled
- * @sa GetEventFilter
- * @sa PeepEvents
- * @sa PushEvent
- */
-inline void SetEventFilter(EventFilterCB filter = {})
-{
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-  SDL_SetEventFilter(
-    [](void* userdata, SDL_Event* event) {
-      return Wrapper::Call(userdata, *event);
-    },
-    Wrapper::Wrap(std::move(filter)));
-}
-
-/**
  * Query the current event filter.
  *
  * This function can be used to "chain" filters, by saving the existing filter
@@ -59413,48 +59104,6 @@ inline void SetEventFilter(EventFilterCB filter = {})
 inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
   CheckError(SDL_GetEventFilter(filter, userdata));
-}
-
-/**
- * Query the current event filter.
- *
- * This function can be used to "chain" filters, by saving the existing filter
- * before replacing it with a function that will call that saved filter.
- *
- * @returns EventFilterCB on success or false if there is no event filter
- * set.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa SetEventFilter
- */
-inline EventFilterCB GetEventFilter()
-{
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-
-  EventFilter filter;
-  void* userdata;
-  GetEventFilter(&filter, &userdata);
-  if (!userdata)
-    return [filter](const Event& event) {
-      return filter(nullptr, const_cast<Event*>(&event));
-    };
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [filter, userdata](const Event& event) {
-    return filter(userdata, const_cast<Event*>(&event));
-  };
-}
-
-/// @private
-inline bool EventWatchAuxCallback(void* userdata, Event* event)
-{
-  auto& f = *static_cast<EventFilterCB*>(userdata);
-  return f(*event);
 }
 
 /**
@@ -59492,50 +59141,6 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
 }
 
 /**
- * Add a callback to be triggered when an event is added to the event queue.
- *
- * `filter` will be called when an event happens, and its return value is
- * ignored.
- *
- * **WARNING**: Be very careful of what you do in the event filter function, as
- * it may run in a different thread!
- *
- * If the quit event is generated by a signal (e.g. SIGINT), it will bypass the
- * internal queue and be delivered to the watch callback immediately, and arrive
- * at the next event poll.
- *
- * Note: the callback is called for events posted by the user through
- * PushEvent(), but not for disabled events, nor for events by a filter callback
- * set with SetEventFilter(), nor for events posted by the user through
- * PeepEvents().
- *
- * @param filter an EventFilterCB to call when an event happens.
- * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
- *          success.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa RemoveEventWatch
- * @sa SetEventFilter
- */
-inline EventWatchHandle AddEventWatch(EventFilterCB filter)
-{
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  auto cb = Wrapper::Wrap(std::move(filter));
-  if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return EventWatchHandle{cb};
-}
-
-/**
  * Remove an event watch callback added with AddEventWatch().
  *
  * This function takes the same input as AddEventWatch() to identify and delete
@@ -59553,26 +59158,6 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
   SDL_RemoveEventWatch(filter, userdata);
-}
-
-/**
- * Remove an event watch callback added with AddEventWatch().
- *
- * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa AddEventWatch(EventFilterCB)
- */
-inline void RemoveEventWatch(EventWatchHandle handle)
-{
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  Wrapper::release(handle);
 }
 
 /**
@@ -84172,29 +83757,6 @@ using MSG = ::MSG;
 using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
 
 /**
- * A callback to be used with SetWindowsMessageHook.
- *
- * This callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing a message directly from the Windows event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param msg a pointer to a Win32 event structure to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               Windows event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetWindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- * @sa WindowsMessageHook
- */
-using WindowsMessageHookCB = std::function<bool(MSG* msg)>;
-
-/**
  * Set a callback for every Windows message, run before TranslateMessage().
  *
  * The callback may modify the message, and should return true if the message
@@ -84213,29 +83775,11 @@ inline void SetWindowsMessageHook(WindowsMessageHook callback, void* userdata)
   SDL_SetWindowsMessageHook(callback, userdata);
 }
 
-/**
- * Set a callback for every Windows message, run before TranslateMessage().
- *
- * The callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * @param callback the WindowsMessageHook function to call.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- */
-inline void SetWindowsMessageHook(WindowsMessageHookCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<WindowsMessageHookCB>;
-  SetWindowsMessageHook(&Wrapper::CallSuffixed,
-                        Wrapper::Wrap(std::move(callback)));
-}
 #endif // SDL_PLATFORM_WINDOWS
 
 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
   defined(SDL3PP_DOC)
+
 /**
  * Get the D3D9 adapter index that matches the specified display.
  *
@@ -84302,29 +83846,6 @@ using XEvent = ::XEvent;
 using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
 
 /**
- * A callback to be used with SetX11EventHook.
- *
- * This callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing an event directly from the X11 event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param xevent a pointer to an Xlib XEvent union to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               X11 event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetX11EventHook
- *
- * @sa X11EventHook
- */
-using X11EventHookCB = std::function<bool(XEvent* xevent)>;
-
-/**
  * Set a callback for every X11 event.
  *
  * The callback may modify the event, and should return true if the event should
@@ -84338,22 +83859,6 @@ using X11EventHookCB = std::function<bool(XEvent* xevent)>;
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
 {
   SDL_SetX11EventHook(callback, userdata);
-}
-
-/**
- * Set a callback for every X11 event.
- *
- * The callback may modify the event, and should return true if the event should
- * continue to be processed, or false to prevent further processing.
- *
- * @param callback the X11EventHook function to call.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void SetX11EventHook(X11EventHookCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<X11EventHookCB>;
-  SDL_SetX11EventHook(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
 }
 
 /* Platform specific functions for Linux*/
@@ -84421,22 +83926,6 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
 using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
 
 /**
- * The prototype for an Apple iOS animation callback.
- *
- * This datatype is only useful on Apple iOS.
- *
- * After passing a function pointer of this type to SetiOSAnimationCallback, the
- * system will call that function pointer at a regular interval.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetiOSAnimationCallback
- *
- * @sa iOSAnimationCallback
- */
-using iOSAnimationCB = std::function<void()>;
-
-/**
  * Use this function to set the animation callback on Apple iOS.
  *
  * The function prototype for `callback` is:
@@ -84478,48 +83967,6 @@ inline void SetiOSAnimationCallback(WindowParam window,
 {
   CheckError(
     SDL_SetiOSAnimationCallback(window, interval, callback, callbackParam));
-}
-
-/**
- * Use this function to set the animation callback on Apple iOS.
- *
- * The function prototype for `callback` is:
- *
- * ```c
- * void callback(void *callbackParam);
- * ```
- *
- * Where its parameter, `callbackParam`, is what was passed as `callbackParam`
- * to SetiOSAnimationCallback().
- *
- * This function is only available on Apple iOS.
- *
- * For more information see:
- *
- * https://wiki.libsdl.org/SDL3/README/ios
- *
- * Note that if you use the "main callbacks" instead of a standard C `main`
- * function, you don't have to use this API, as SDL will manage this for you.
- *
- * Details on main callbacks are here:
- *
- * https://wiki.libsdl.org/SDL3/README/main-functions
- *
- * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be called.
- * @param callback the function to call for every frame.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetiOSEventPump
- */
-inline void SetiOSAnimationCallback(WindowParam window,
-                                    int interval,
-                                    iOSAnimationCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<iOSAnimationCB>;
-  SetiOSAnimationCallback(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
 }
 
 /**

@@ -476,7 +476,7 @@ function expandTypes(
     targetDelta: ApiEntryTransform
   ) {
     if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
-      targetDelta.callback = "std";
+      targetDelta.callback = true;
       return;
     }
     if (targetDelta.enum === undefined && sourceEntry.kind === "enum")
@@ -568,27 +568,15 @@ function expandTypes(
       const wrapper =
         callback.functorSupport === "std"
           ? "std::function"
-          : "MakeFrontCallback";
+          : parameters[0].type === "void *"
+          ? "MakeFrontCallback"
+          : "MakeBackCallback";
       const typeParams = parameters.map((p) => `${p.type} ${p.name}`);
       typeParams.splice(userdataIndex, 1);
       const callbackEntry: ApiEntryTransform = {
         kind: "alias",
         name: callbackName,
         type: `${wrapper}<${resultType}(${typeParams.join(", ")})>`,
-        doc,
-        ...file.transform[callbackName],
-        before: undefined,
-        after: undefined,
-      };
-      context.prependIncludeAfter(callbackEntry, name);
-    } else if (callback.functorSupport === "concept") {
-      const typeParams = parameters.map((p) => `, ${p.type}`);
-      typeParams.splice(userdataIndex, 1);
-      const callbackEntry: ApiEntryTransform = {
-        kind: "concept",
-        name: callbackName,
-        template: [{ type: "class", name: "F" }],
-        type: `LightCallback<F, ${resultType}${typeParams.join("")}>`,
         doc,
         ...file.transform[callbackName],
         before: undefined,

@@ -176,6 +176,50 @@ struct MakeFrontCallback<R(PARAMS...)>
   }
 };
 
+template<class F>
+struct MakeBackCallback;
+
+/**
+ * Make Back Callback
+ *
+ * @tparam R
+ * @tparam PARAMS
+ */
+template<class R, class... PARAMS>
+struct MakeBackCallback<R(PARAMS...)>
+{
+  R (*wrapper)(PARAMS..., void*);
+  void* data;
+
+  /// ctor
+  explicit(false) MakeBackCallback(R (*func)(PARAMS...))
+    : wrapper([](PARAMS... params, void* userdata) {
+      auto f = static_cast<R (*)(PARAMS...)>(userdata);
+      return f(params...);
+    })
+    , data(static_cast<void*>(func))
+  {
+  }
+
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  explicit(false) MakeBackCallback(const F& func)
+  {
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit data");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](PARAMS... params, void* userdata) {
+      PunAux aux{.ptr = userdata};
+      return aux.func(params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
+  }
+};
+
 /**
  * @brief Wrapper key to value [result callbacks](#result-callback).
  *

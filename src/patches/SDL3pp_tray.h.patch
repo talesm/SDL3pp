@@ -57,7 +57,7 @@
 >   auto entries = SDL_GetTrayEntries(menu, &count);
 >   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
 >                               size_t(count)};
-1378a1419,1431
+1378a1419,1428
 > 
 > inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 > {
@@ -66,8 +66,5 @@
 > 
 > inline void TrayEntry::SetCallback(TrayCB callback)
 > {
->   using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
->   SetCallback([](void* userdata,
->                  SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
->               Wrapper::Wrap(get(), std::move(callback)));
+>   SetCallback(callback.wrapper, callback.data);
 > }

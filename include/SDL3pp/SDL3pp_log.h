@@ -969,25 +969,6 @@ using LogOutputFunction = void(SDLCALL*)(void* userdata,
                                          const char* message);
 
 /**
- * The prototype for the log output callback function.
- *
- * This function is called by SDL when there is new text to be logged. A mutex
- * is held so that this function is never called by more than one thread at
- * once.
- *
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param message the message being output.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa LogOutputFunction
- */
-using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
-
-/**
  * Get the default log output function.
  *
  * @returns the default log output callback.
@@ -1024,38 +1005,6 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 }
 
 /**
- * Get the current log output function.
- *
- * @returns the LogOutputCB currently set
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction
- * @sa SetLogOutputFunction
- */
-inline LogOutputCB GetLogOutputFunction()
-{
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  LogOutputFunction cb;
-  void* userdata;
-  GetLogOutputFunction(&cb, &userdata);
-  if (userdata == nullptr) {
-    return [cb](LogCategory c, LogPriority p, StringParam m) {
-      cb(nullptr, c, p, m);
-    };
-  }
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-    cb(userdata, c, p, m);
-  };
-}
-
-/**
  * Replace the default log output function with one of your own.
  *
  * @param callback an LogOutputFunction to call instead of the default.
@@ -1071,35 +1020,7 @@ inline LogOutputCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueCallbackWrapper<LogOutputCB>::erase();
-  return SDL_SetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Replace the default log output function with one of your own.
- *
- * @param callback an LogOutputFunction to call instead of the default.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction
- * @sa GetLogOutputFunction
- * @sa ResetLogOutputFunction
- */
-inline void SetLogOutputFunction(LogOutputCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  SDL_SetLogOutputFunction(
-    [](
-      void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::Call(userdata, LogCategory{category}, priority, message);
-    },
-    Wrapper::Wrap(std::move(callback)));
+  SDL_SetLogOutputFunction(callback, userdata);
 }
 
 /**
