@@ -8,6 +8,7 @@ Reword callback handling.
   pointer.
 - [ ] Make templated version of callback, where the userdata can be any pointer
   type;
+- [x] Use less error prone unified diffs to patch the API.
 
 Backlog
 -------
