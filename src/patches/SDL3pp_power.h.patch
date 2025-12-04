@@ -1,15 +1,37 @@
-4a5
-> #include "SDL3pp_stdinc.h"
-9c10
-<  * @defgroup CategoryPower Category Power
----
->  * @defgroup CategoryPower Power Management Status
-25a27,31
->  * @name Power States
->  * @{
->  */
-> 
-> /**
-50a57,58
-> 
-> /// @}
+--- src/generated/SDL3pp_power.h
++++ include/SDL3pp/SDL3pp_power.h
+@@ -2,11 +2,12 @@
+ #define SDL3PP_POWER_H_
+ 
+ #include <SDL3/SDL_power.h>
++#include "SDL3pp_stdinc.h"
+ 
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryPower Category Power
++ * @defgroup CategoryPower Power Management Status
+  *
+  * SDL power management routines.
+  *
+@@ -23,6 +24,11 @@
+  */
+ 
+ /**
++ * @name Power States
++ * @{
++ */
++
++/**
+  * The basic state for the system's power supply.
+  *
+  * These are results returned by GetPowerInfo().
+@@ -49,6 +55,8 @@
+ constexpr PowerState POWERSTATE_CHARGED =
+   SDL_POWERSTATE_CHARGED; ///< Plugged in, battery charged
+ 
++/// @}
++
+ /**
+  * Get the current power supply details.
+  *

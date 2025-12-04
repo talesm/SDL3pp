@@ -1,564 +1,1014 @@
-16c16
-<  * @defgroup CategoryStdinc Category Stdinc
----
->  * @defgroup CategoryStdinc Standard Library Functionality
-86c86
-< using IConvRaw = SDL_iconv_t*;
----
-> using IConvRaw = SDL_iconv_t;
-117a118,119
-> #ifdef SDL3PP_DOC
-> 
-184a187,188
-> #endif // SDL3PP_DOC
-> 
-191,194d194
-<  * This macro looks like it double-evaluates the argument, but it does so inside
-<  * of `sizeof`, so there are no side-effects here, as expressions do not
-<  * actually run any code in these cases.
-<  *
-200c200
-<   return SDL_arraysize((&array)[N]);
----
->   return SDL_arraysize(array);
-202a203,204
-> #ifdef SDL3PP_DOC
-> 
-218a221,222
-> #endif // SDL3PP_DOC
-> 
-222,225c226,229
-<  * @param A the first ASCII character.
-<  * @param B the second ASCII character.
-<  * @param C the third ASCII character.
-<  * @param D the fourth ASCII character.
----
->  * @param a the first ASCII character.
->  * @param b the second ASCII character.
->  * @param c the third ASCII character.
->  * @param d the fourth ASCII character.
-236a241,242
-> #ifdef SDL3PP_DOC
-> 
-262a269,270
-> #endif // SDL3PP_DOC
-> 
-269a278
-> /// Max representable value
-271a281
-> /// Min representable value
-280a291
-> /// Max representable value
-282a294
-> /// Min representable value
-291a304
-> /// Max representable value
-293a307
-> /// Min representable value
-302a317
-> /// Max representable value
-304a320
-> /// Min representable value
-313a330
-> /// Max representable value
-315a333
-> /// Min representable value
-324a343
-> /// Max representable value
-326a346
-> /// Min representable value
-337a358
-> /// Max representable value
-339a361
-> /// Min representable value
-350a373
-> /// Max representable value
-352a376
-> /// Min representable value
-365,368c389
-< constexpr float ToSeconds(Seconds duration)
-< {
-<   static_assert(false, "Not implemented");
-< }
----
-> constexpr float ToSeconds(Seconds duration) { return duration.count(); }
-371,374c392
-< constexpr Seconds FromSeconds(float duration)
-< {
-<   static_assert(false, "Not implemented");
-< }
----
-> constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
-376,380c394,395
-< /// Converts a time duration to seconds (float).
-< constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
-< {
-<   static_assert(false, "Not implemented");
-< }
----
-> /// Converts a time duration to nanoseconds (Sint64);
-> constexpr Sint64 ToNS(Nanoseconds duration) { return duration.count(); }
-382,386c397,398
-< /// Converts a float to seconds representation.
-< constexpr Nanoseconds FromNS(Sint64 duration)
-< {
-<   static_assert(false, "Not implemented");
-< }
----
-> /// Converts a Sint64 to nanoseconds representation.
-> constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
-396c408
-<  * @since This macro is available since SDL 3.2.0.
----
->  * @since This type is available since SDL 3.2.0.
-403c415
-<   TimeRaw m_time;
----
->   Nanoseconds m_time;
-405a418,419
->   constexpr Time() = default;
-> 
-411c425
-<   constexpr Time(TimeRaw time = {})
----
->   constexpr explicit Time(TimeRaw time)
-421,428c435,438
-<   constexpr Time(std::chrono::nanoseconds time) {}
-< 
-<   /**
-<    * Unwraps to the underlying Time.
-<    *
-<    * @returns the underlying TimeRaw.
-<    */
-<   constexpr operator TimeRaw() const { return m_time; }
----
->   constexpr Time(std::chrono::nanoseconds time)
->     : m_time(time)
->   {
->   }
-430c440,441
-<   constexpr operator std::chrono::nanoseconds() const
----
->   /// True if not zero
->   constexpr explicit operator bool() const
-432c443
-<     static_assert(false, "Not implemented");
----
->     return m_time != std::chrono::nanoseconds{};
-434a446,448
->   /// Converts to nanoseconds period
->   constexpr operator std::chrono::nanoseconds() const { return m_time; }
-> 
-443c457
-<   Time Current();
----
->   static Time Current();
-444a459
->   /// Create from a nanoseconds Sint64.
-447c462
-<     static_assert(false, "Not implemented");
----
->     return Time{std::chrono::nanoseconds{time}};
-450c465,466
-<   constexpr Sint64 ToNS() const { static_assert(false, "Not implemented"); }
----
->   /// Converts to nanoseconds Sint64
->   constexpr Sint64 ToNS() const { return m_time.count(); }
-457,458c473,474
-<    * @param S the number of seconds to convert.
-<    * @returns S, expressed in nanoseconds.
----
->    * @param time the number of seconds to convert.
->    * @returns the converted Time.
-469,470c485
-<    * This performs a division, so the results can be dramatically different if
-<    * `NS` is an integer or floating point value.
----
->    * This only converts whole numbers, not fractional seconds.
-472,473c487
-<    * @param NS the number of nanoseconds to convert.
-<    * @returns NS, expressed in seconds.
----
->    * @returns Posix time (in seconds).
-512c526
-<   constexpr float ToSeconds() const { static_assert(false, "Not implemented"); }
----
->   constexpr float ToSeconds() const { return Seconds(m_time).count(); }
-515c529
-<   static constexpr Time Time.FromSeconds(float interval)
----
->   static constexpr Time FromSeconds(float interval)
-517c531,532
-<     static_assert(false, "Not implemented");
----
->     return std::chrono::duration_cast<std::chrono::nanoseconds>(
->       Seconds(interval));
-519a535
->   /// Increment time
-522c538,539
-<     static_assert(false, "Not implemented");
----
->     m_time += interval;
->     return *this;
-524a542
->   /// Decrement
-527c545,546
-<     static_assert(false, "Not implemented");
----
->     m_time -= interval;
->     return *this;
-531c550,551
-< constexpr Time MAX_TIME = SDL_MAX_TIME;
----
-> /// Max allowed time representation
-> constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
-533c553,554
-< constexpr Time MIN_TIME = SDL_MIN_TIME;
----
-> /// Min allowed time representation
-> constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
-545a567,574
->  * Concept of interface
->  *
->  * @tparam I the interface type
->  */
-> template<class I>
-> concept Interface = requires(I* iface) { (iface)->version = sizeof(I); };
-> 
-> /**
-553c582
-<  * ```c
----
->  * ```cpp
-567c596
-<  * ```c
----
->  * ```cpp
-926a956,957
->  * @cat resource
->  *
-934,935d964
-<  *
-<  * @cat resource
-1063,1065c1092,1095
-<    *          the form "variable=value" or nullptr on failure; call GetError()
-<    *          for more information. This is a single allocation that should be
-<    *          freed with free() when it is no longer needed.
----
->    *          the form "variable=value" on success. This is wrapped to be
->    *          auto-deleted, use FreeWrapper.release() if you want to manage
->    *          manually.
->    * @throws Error on failure
-1079c1109,1121
-<   Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
----
->   /**
->    * Get the Variables count.
->    *
->    * @return the number of existing environment variables
->    *
->    * This might be slow.
->    */
->   Uint64 GetVariableCount()
->   {
->     Uint64 count = 0;
->     for (auto& var : GetVariables()) count += 1;
->     return count;
->   }
-1258c1300
-<   return SDL_GetEnvironmentVariables(env);
----
->   return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
-1393,1394c1435
-<  * @returns 0 on success.
-<  * @throws Error on failure.
----
->  * @returns 0 on success, -1 on error.
-1405c1446
-<   return CheckError(SDL_setenv_unsafe(name, value, overwrite));
----
->   return SDL_setenv_unsafe(name, value, overwrite);
-1412,1413c1453
-<  * @returns 0 on success.
-<  * @throws Error on failure.
----
->  * @returns 0 on success, -1 on error.
-1424c1464
-<   return CheckError(SDL_unsetenv_unsafe(name));
----
->   return SDL_unsetenv_unsafe(name);
-1693d1732
-<  * @param userdata a pointer to pass to the compare function.
-1704c1743,1751
-<   static_assert(false, "Not implemented");
----
->   return qsort_r(
->     base,
->     nmemb,
->     size,
->     [](void* userdata, const void* a, const void* b) {
->       auto& cb = *static_cast<CompareCB*>(userdata);
->       return cb(a, b);
->     },
->     &compare);
-1820d1866
-<  * @param userdata a pointer to pass to the compare function.
-1837c1883,1892
-<   static_assert(false, "Not implemented");
----
->   return bsearch_r(
->     key,
->     base,
->     nmemb,
->     size,
->     [](void* userdata, const void* a, const void* b) {
->       auto& cb = *static_cast<CompareCB*>(userdata);
->       return cb(a, b);
->     },
->     &compare);
-1944c1999
-<  * This macro will produce incorrect results if `b` is less than `a`.
----
->  * This function will produce incorrect results if `b` is less than `a`.
-1946c2001
-<  * This is a helper macro that might be more clear than writing out the
----
->  * This is a helper function that might be more clear than writing out the
-2298a2354
-> #ifdef SDL_SLOW_MEMCPY
-2299a2356,2358
-> #else
->   return ::memcpy(dst, src, len);
-> #endif // SDL_SLOW_MEMCPY
-2329c2388,2389
-<   return SDL_copyp(dst, src);
----
->   SDL_copyp(dst, src);
->   return dst;
-2350a2411
-> #ifdef SDL_SLOW_MEMMOVE
-2351a2413,2415
-> #else
->   return ::memmove(dst, src, len);
-> #endif // SDL_SLOW_MEMMOVE
-2373a2438
-> #ifdef SDL_SLOW_MEMSET
-2374a2440,2442
-> #else
->   return ::memset(dst, c, len);
-> #endif // SDL_SLOW_MEMSET
-2466c2534
-<   SDL_zeroa((&x)[N]);
----
->   SDL_zeroa(x);
-3412a3481,3482
-> #ifndef SDL_NOLONGLONG
-> 
-3472a3543,3544
-> #endif // SDL_NOLONGLONG
-> 
-3587a3660,3661
-> #ifndef SDL_NOLONGLONG
-> 
-3657a3732,3733
-> #endif // SDL_NOLONGLONG
-> 
-3980c4056,4061
-<   return SDL_sscanf(text, fmt, ...);
----
->   int rc;
->   va_list ap;
->   va_start(ap, fmt);
->   rc = SDL_vsscanf(text, fmt, ap);
->   va_end(ap);
->   return rc;
-4041c4122,4129
-<   return SDL_snprintf(text, maxlen, fmt, ...);
----
->   va_list ap;
->   int result;
-> 
->   va_start(ap, fmt);
->   result = SDL_vsnprintf(text, maxlen, fmt, ap);
->   va_end(ap);
-> 
->   return result;
-4080c4168,4175
-<   return SDL_swprintf(text, maxlen, fmt, ...);
----
->   va_list ap;
->   int result;
-> 
->   va_start(ap, fmt);
->   result = SDL_vswprintf(text, maxlen, fmt, ap);
->   va_end(ap);
-> 
->   return result;
-4164c4259,4266
-<   return SDL_asprintf(strp, fmt, ...);
----
->   va_list ap;
->   int result;
-> 
->   va_start(ap, fmt);
->   result = SDL_vasprintf(strp, fmt, ap);
->   va_end(ap);
-> 
->   return result;
-4267c4369
-<  * You likely want to use rand() to get a psuedo-random number instead.
----
->  * You likely want to use rand() to get a pseudo-random number instead.
-4287c4389,4399
-< struct Random
----
-> /**
->  * A independent pseudo random state
->  *
->  * This can be instantiated in any thread and as long as it is not shared with
->  * another thread all members are safe to call.
->  *
->  * @cat wrap-state
->  *
->  * @sa wrap-state
->  */
-> class Random
-4291c4403,4407
-<   constexpr Random() {}
----
-> public:
->   constexpr Random()
->     : m_state(0)
->   {
->   }
-4293c4409,4415
-<   constexpr explicit Random(Uint64 state) {}
----
->   /**
->    * Init state with the given value
->    */
->   constexpr explicit Random(Uint64 state)
->     : m_state(state)
->   {
->   }
-4295c4417,4418
-<   constexpr operator Uint64() { static_assert(false, "Not implemented"); }
----
->   /// Convert to the underlying type
->   constexpr operator Uint64() { return m_state; }
-4304c4427
-<    * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
----
->    * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
-4308c4431
-<    * you should use: (Sint32)Random.rand_bits(state)
----
->    * you should use: (Sint32)state.rand_bits()
-4316,4317d4438
-<    * @param state a pointer to the current random number state, this may not be
-<    *              nullptr.
-4321c4442
-<    * @threadsafety This function is thread-safe, as long as the state pointer
----
->    * @threadsafety This function is thread-safe, as long as this object
-4330c4451
-<   Sint32 rand(Sint32 n);
----
->   Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
-4343,4344d4463
-<    * @param state a pointer to the current random number state, this may not be
-<    *              nullptr.
-4347c4466
-<    * @threadsafety This function is thread-safe, as long as the state pointer
----
->    * @threadsafety This function is thread-safe, as long as this object
-4356c4475
-<   float randf();
----
->   float randf() { return SDL_randf_r(&m_state); }
-4361c4480
-<    * You likely want to use Random.rand() to get a psuedo-random number instead.
----
->    * You likely want to use Random.rand() to get a pseudo-random number instead.
-4369,4370d4487
-<    * @param state a pointer to the current random number state, this may not be
-<    *              nullptr.
-4373c4490
-<    * @threadsafety This function is thread-safe, as long as the state pointer
----
->    * @threadsafety This function is thread-safe, as long as this object
-4381c4498
-<   Uint32 rand_bits();
----
->   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
-4419,4420d4535
-< inline Sint32 Random::rand(Sint32 n) { return SDL::rand_r(n); }
-< 
-4447,4448d4561
-< inline float Random::randf() { return SDL::randf_r(); }
-< 
-4474,4475d4586
-< inline Uint32 Random::rand_bits() { return SDL::rand_bits_r(); }
-< 
-4701d4811
-<  * @sa atan2
-5742,5743d5851
-<  * @sa IConv.IConv
-<  *
-5744a5853,5854
->  *
->  * @sa IConv.IConv
-5785,5786c5895
-<    * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
-<    *       failure.
----
->    * @post a valid handle or falsy on failure.
-5827c5936,5939
-<   constexpr explicit operator bool() const { return !!m_resource; }
----
->   constexpr explicit operator bool() const
->   {
->     return m_resource != IConvRaw(SDL_ICONV_ERROR);
->   }
-5835d5946
-<    * @param cd The character set conversion handle.
-5993c6104
-< inline size_t iconv(IConv cd,
----
-> inline size_t iconv(IConvRaw cd,
-6031,6033d6141
-<  * The returned string is owned by the caller, and should be passed to free when
-<  * no longer needed.
-<  *
-6038d6145
-<  * @param inbytesleft the size of the input string _in bytes_.
-6051c6158,6159
-<   return SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes());
----
->   return OwnArray<char>{
->     SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes())};
-6068c6176
-<   return SDL_iconv_utf8_locale(S);
----
->   return iconv_string("", "UTF-8", S);
-6085c6193,6194
-<   return SDL_iconv_utf8_ucs2(S);
----
->   auto data = SDL_iconv_string("UCS-2", "UTF-8", S.data(), S.size());
->   return OwnArray<Uint16>(reinterpret_cast<Uint16*>(data));
-6102c6211,6212
-<   return SDL_iconv_utf8_ucs4(S);
----
->   auto data = SDL_iconv_string("UCS-4", "UTF-8", S.data(), S.size());
->   return OwnArray<Uint32>(reinterpret_cast<Uint32*>(data));
-6119c6229
-<   return SDL_iconv_wchar_utf8(S);
----
->   return iconv_string("UTF-8", "WCHAR_T", S);
-6181c6291
-< using FunctionPointer = void(SDLCALL*)();
----
-> using FunctionPointer = SDL_FunctionPointer;
-6183a6294,6295
-> 
-> inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
+--- src/generated/SDL3pp_stdinc.h
++++ include/SDL3pp/SDL3pp_stdinc.h
+@@ -13,7 +13,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryStdinc Category Stdinc
++ * @defgroup CategoryStdinc Standard Library Functionality
+  *
+  * SDL provides its own implementation of some of the most important C runtime
+  * functions.
+@@ -83,7 +83,7 @@
+ struct IConv;
+ 
+ /// Alias to raw representation for IConv.
+-using IConvRaw = SDL_iconv_t*;
++using IConvRaw = SDL_iconv_t;
+ 
+ // Forward decl
+ struct IConvRef;
+@@ -115,6 +115,8 @@
+   constexpr operator IConvRaw() const { return value; }
+ };
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Don't let SDL use "long long" C types.
+  *
+@@ -182,24 +184,24 @@
+  */
+ #define SDL_COMPILE_TIME_ASSERT(name, x) FailToCompileIf_x_IsFalse(x)
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * The number of elements in a static array.
+  *
+  * This will compile but return incorrect results for a pointer to an array; it
+  * has to be an array the compiler knows the size of.
+  *
+- * This macro looks like it double-evaluates the argument, but it does so inside
+- * of `sizeof`, so there are no side-effects here, as expressions do not
+- * actually run any code in these cases.
+- *
+  * @since This function is available since SDL 3.2.0.
+  */
+ template<class T, std::size_t N>
+ constexpr std::size_t arraysize(const T (&array)[N])
+ {
+-  return SDL_arraysize((&array)[N]);
++  return SDL_arraysize(array);
+ }
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Macro useful for building other macros with strings in them.
+  *
+@@ -216,13 +218,15 @@
+  */
+ #define SDL_STRINGIFY_ARG(arg) #arg
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * Define a four character code as a Uint32.
+  *
+- * @param A the first ASCII character.
+- * @param B the second ASCII character.
+- * @param C the third ASCII character.
+- * @param D the fourth ASCII character.
++ * @param a the first ASCII character.
++ * @param b the second ASCII character.
++ * @param c the third ASCII character.
++ * @param d the fourth ASCII character.
+  * @returns the four characters converted into a Uint32, one character per-byte.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -234,6 +238,8 @@
+   return SDL_FOURCC(a, b, c, d);
+ }
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Append the 64 bit integer suffix to a signed integer literal.
+  *
+@@ -260,6 +266,8 @@
+  */
+ #define SDL_UINT64_C(c) c##ULL /* or whatever the current compiler uses. */
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * A signed 8-bit integer type.
+  *
+@@ -267,8 +275,10 @@
+  */
+ using Sint8 = ::Sint8;
+ 
++/// Max representable value
+ constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
+ 
++/// Min representable value
+ constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
+ 
+ /**
+@@ -278,8 +288,10 @@
+  */
+ using Uint8 = ::Uint8;
+ 
++/// Max representable value
+ constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
+ 
++/// Min representable value
+ constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
+ 
+ /**
+@@ -289,8 +301,10 @@
+  */
+ using Sint16 = ::Sint16;
+ 
++/// Max representable value
+ constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
+ 
++/// Min representable value
+ constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
+ 
+ /**
+@@ -300,8 +314,10 @@
+  */
+ using Uint16 = ::Uint16;
+ 
++/// Max representable value
+ constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
+ 
++/// Min representable value
+ constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
+ 
+ /**
+@@ -311,8 +327,10 @@
+  */
+ using Sint32 = ::Sint32;
+ 
++/// Max representable value
+ constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
+ 
++/// Min representable value
+ constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
+ 
+ /**
+@@ -322,8 +340,10 @@
+  */
+ using Uint32 = ::Uint32;
+ 
++/// Max representable value
+ constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
+ 
++/// Min representable value
+ constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
+ 
+ /**
+@@ -335,8 +355,10 @@
+  */
+ using Sint64 = ::Sint64;
+ 
++/// Max representable value
+ constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
+ 
++/// Min representable value
+ constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
+ 
+ /**
+@@ -348,8 +370,10 @@
+  */
+ using Uint64 = ::Uint64;
+ 
++/// Max representable value
+ constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
+ 
++/// Min representable value
+ constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
+ 
+ /// Duration in seconds (float).
+@@ -362,28 +386,16 @@
+ using Milliseconds = std::chrono::milliseconds;
+ 
+ /// Converts a time duration to seconds (float).
+-constexpr float ToSeconds(Seconds duration)
+-{
+-  static_assert(false, "Not implemented");
+-}
++constexpr float ToSeconds(Seconds duration) { return duration.count(); }
+ 
+ /// Converts a float to seconds representation.
+-constexpr Seconds FromSeconds(float duration)
+-{
+-  static_assert(false, "Not implemented");
+-}
++constexpr Seconds FromSeconds(float duration) { return Seconds(duration); }
+ 
+-/// Converts a time duration to seconds (float).
+-constexpr Sint64 ToNS(std::chrono::nanoseconds duration)
+-{
+-  static_assert(false, "Not implemented");
+-}
++/// Converts a time duration to nanoseconds (Sint64);
++constexpr Sint64 ToNS(Nanoseconds duration) { return duration.count(); }
+ 
+-/// Converts a float to seconds representation.
+-constexpr Nanoseconds FromNS(Sint64 duration)
+-{
+-  static_assert(false, "Not implemented");
+-}
++/// Converts a Sint64 to nanoseconds representation.
++constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
+ 
+ /**
+  * SDL times are signed, 64-bit integers representing nanoseconds since the Unix
+@@ -393,22 +405,24 @@
+  * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
+  * and Time.FromWindows().
+  *
+- * @since This macro is available since SDL 3.2.0.
++ * @since This type is available since SDL 3.2.0.
+  *
+  * @sa MAX_SINT64
+  * @sa MIN_SINT64
+  */
+ class Time
+ {
+-  TimeRaw m_time;
++  Nanoseconds m_time;
+ 
+ public:
++  constexpr Time() = default;
++
+   /**
+    * Wraps Time.
+    *
+    * @param time the value to be wrapped
+    */
+-  constexpr Time(TimeRaw time = {})
++  constexpr explicit Time(TimeRaw time)
+     : m_time(time)
+   {
+   }
+@@ -418,20 +432,20 @@
+    *
+    * @param time the value to be wrapped
+    */
+-  constexpr Time(std::chrono::nanoseconds time) {}
+-
+-  /**
+-   * Unwraps to the underlying Time.
+-   *
+-   * @returns the underlying TimeRaw.
+-   */
+-  constexpr operator TimeRaw() const { return m_time; }
++  constexpr Time(std::chrono::nanoseconds time)
++    : m_time(time)
++  {
++  }
+ 
+-  constexpr operator std::chrono::nanoseconds() const
++  /// True if not zero
++  constexpr explicit operator bool() const
+   {
+-    static_assert(false, "Not implemented");
++    return m_time != std::chrono::nanoseconds{};
+   }
+ 
++  /// Converts to nanoseconds period
++  constexpr operator std::chrono::nanoseconds() const { return m_time; }
++
+   /**
+    * Gets the current value of the system realtime clock in nanoseconds since
+    * Jan 1, 1970 in Universal Coordinated Time (UTC).
+@@ -440,22 +454,24 @@
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+-  Time Current();
++  static Time Current();
+ 
++  /// Create from a nanoseconds Sint64.
+   static constexpr Time FromNS(Sint64 time)
+   {
+-    static_assert(false, "Not implemented");
++    return Time{std::chrono::nanoseconds{time}};
+   }
+ 
+-  constexpr Sint64 ToNS() const { static_assert(false, "Not implemented"); }
++  /// Converts to nanoseconds Sint64
++  constexpr Sint64 ToNS() const { return m_time.count(); }
+ 
+   /**
+    * Convert seconds to nanoseconds.
+    *
+    * This only converts whole numbers, not fractional seconds.
+    *
+-   * @param S the number of seconds to convert.
+-   * @returns S, expressed in nanoseconds.
++   * @param time the number of seconds to convert.
++   * @returns the converted Time.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -466,11 +482,9 @@
+   /**
+    * Convert nanoseconds to seconds.
+    *
+-   * This performs a division, so the results can be dramatically different if
+-   * `NS` is an integer or floating point value.
++   * This only converts whole numbers, not fractional seconds.
+    *
+-   * @param NS the number of nanoseconds to convert.
+-   * @returns NS, expressed in seconds.
++   * @returns Posix time (in seconds).
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -509,28 +523,35 @@
+   void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
+ 
+   /// Converts a time to seconds (float) since epoch.
+-  constexpr float ToSeconds() const { static_assert(false, "Not implemented"); }
++  constexpr float ToSeconds() const { return Seconds(m_time).count(); }
+ 
+   /// Converts a time to seconds (float) since epoch.
+-  static constexpr Time Time.FromSeconds(float interval)
++  static constexpr Time FromSeconds(float interval)
+   {
+-    static_assert(false, "Not implemented");
++    return std::chrono::duration_cast<std::chrono::nanoseconds>(
++      Seconds(interval));
+   }
+ 
++  /// Increment time
+   constexpr Time& operator+=(std::chrono::nanoseconds interval)
+   {
+-    static_assert(false, "Not implemented");
++    m_time += interval;
++    return *this;
+   }
+ 
++  /// Decrement
+   constexpr Time& operator-=(std::chrono::nanoseconds interval)
+   {
+-    static_assert(false, "Not implemented");
++    m_time -= interval;
++    return *this;
+   }
+ };
+ 
+-constexpr Time MAX_TIME = SDL_MAX_TIME;
++/// Max allowed time representation
++constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
+ 
+-constexpr Time MIN_TIME = SDL_MIN_TIME;
++/// Min allowed time representation
++constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
+ 
+ /**
+  * Epsilon constant, used for comparing floating-point numbers.
+@@ -543,6 +564,14 @@
+ constexpr float FLT_EPSILON = SDL_FLT_EPSILON;
+ 
+ /**
++ * Concept of interface
++ *
++ * @tparam I the interface type
++ */
++template<class I>
++concept Interface = requires(I* iface) { (iface)->version = sizeof(I); };
++
++/**
+  * A macro to initialize an SDL interface.
+  *
+  * This macro will initialize an SDL interface structure and should be called
+@@ -550,7 +579,7 @@
+  *
+  * You can use it like this:
+  *
+- * ```c
++ * ```cpp
+  * IOStreamInterface iface;
+  *
+  * InitInterface(&iface);
+@@ -564,7 +593,7 @@
+  * If you are using designated initializers, you can use the size of the
+  * interface as the version, e.g.
+  *
+- * ```c
++ * ```cpp
+  * IOStreamInterface iface = {
+  *     .version = sizeof(iface),
+  *     .seek = ...
+@@ -924,6 +953,8 @@
+  *
+  * @since This struct is available since SDL 3.2.0.
+  *
++ * @cat resource
++ *
+  * @sa GetEnvironment
+  * @sa Environment.Environment
+  * @sa Environment.GetVariable
+@@ -931,8 +962,6 @@
+  * @sa Environment.SetVariable
+  * @sa Environment.UnsetVariable
+  * @sa Environment.Destroy
+- *
+- * @cat resource
+  */
+ class Environment
+ {
+@@ -1060,9 +1089,10 @@
+    * Get all variables in the environment.
+    *
+    * @returns a nullptr terminated array of pointers to environment variables in
+-   *          the form "variable=value" or nullptr on failure; call GetError()
+-   *          for more information. This is a single allocation that should be
+-   *          freed with free() when it is no longer needed.
++   *          the form "variable=value" on success. This is wrapped to be
++   *          auto-deleted, use FreeWrapper.release() if you want to manage
++   *          manually.
++   * @throws Error on failure
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -1076,7 +1106,19 @@
+    */
+   OwnArray<char*> GetVariables();
+ 
+-  Uint64 GetVariableCount() { static_assert(false, "Not implemented"); }
++  /**
++   * Get the Variables count.
++   *
++   * @return the number of existing environment variables
++   *
++   * This might be slow.
++   */
++  Uint64 GetVariableCount()
++  {
++    Uint64 count = 0;
++    for (auto& var : GetVariables()) count += 1;
++    return count;
++  }
+ 
+   /**
+    * Set the value of a variable in the environment.
+@@ -1255,7 +1297,7 @@
+  */
+ inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+ {
+-  return SDL_GetEnvironmentVariables(env);
++  return OwnArray<char*>{CheckError(SDL_GetEnvironmentVariables(env))};
+ }
+ 
+ inline OwnArray<char*> Environment::GetVariables()
+@@ -1390,8 +1432,7 @@
+  * @param value the value of the variable to set.
+  * @param overwrite 1 to overwrite the variable if it exists, 0 to return
+  *                  success without setting the variable if it already exists.
+- * @returns 0 on success.
+- * @throws Error on failure.
++ * @returns 0 on success, -1 on error.
+  *
+  * @threadsafety This function is not thread safe, consider using
+  *               Environment.SetVariable() instead.
+@@ -1402,15 +1443,14 @@
+  */
+ inline int setenv_unsafe(StringParam name, StringParam value, int overwrite)
+ {
+-  return CheckError(SDL_setenv_unsafe(name, value, overwrite));
++  return SDL_setenv_unsafe(name, value, overwrite);
+ }
+ 
+ /**
+  * Clear a variable from the environment.
+  *
+  * @param name the name of the variable to unset.
+- * @returns 0 on success.
+- * @throws Error on failure.
++ * @returns 0 on success, -1 on error.
+  *
+  * @threadsafety This function is not thread safe, consider using
+  *               Environment.UnsetVariable() instead.
+@@ -1421,7 +1461,7 @@
+  */
+ inline int unsetenv_unsafe(StringParam name)
+ {
+-  return CheckError(SDL_unsetenv_unsafe(name));
++  return SDL_unsetenv_unsafe(name);
+ }
+ 
+ /**
+@@ -1690,7 +1730,6 @@
+  * @param nmemb the number of elements in the array.
+  * @param size the size of the elements in the array.
+  * @param compare a function used to compare elements in the array.
+- * @param userdata a pointer to pass to the compare function.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1701,7 +1740,15 @@
+  */
+ inline void qsort_r(void* base, size_t nmemb, size_t size, CompareCB compare)
+ {
+-  static_assert(false, "Not implemented");
++  return qsort_r(
++    base,
++    nmemb,
++    size,
++    [](void* userdata, const void* a, const void* b) {
++      auto& cb = *static_cast<CompareCB*>(userdata);
++      return cb(a, b);
++    },
++    &compare);
+ }
+ 
+ /**
+@@ -1817,7 +1864,6 @@
+  * @param nmemb the number of elements in the array.
+  * @param size the size of the elements in the array.
+  * @param compare a function used to compare elements in the array.
+- * @param userdata a pointer to pass to the compare function.
+  * @returns a pointer to the matching element in the array, or nullptr if not
+  *          found.
+  *
+@@ -1834,7 +1880,16 @@
+                        size_t size,
+                        CompareCB compare)
+ {
+-  static_assert(false, "Not implemented");
++  return bsearch_r(
++    key,
++    base,
++    nmemb,
++    size,
++    [](void* userdata, const void* a, const void* b) {
++      auto& cb = *static_cast<CompareCB*>(userdata);
++      return cb(a, b);
++    },
++    &compare);
+ }
+ 
+ /**
+@@ -1941,9 +1996,9 @@
+  * If `x` is outside the range a values between `a` and `b`, the returned value
+  * will be `a` or `b` as appropriate. Otherwise, `x` is returned.
+  *
+- * This macro will produce incorrect results if `b` is less than `a`.
++ * This function will produce incorrect results if `b` is less than `a`.
+  *
+- * This is a helper macro that might be more clear than writing out the
++ * This is a helper function that might be more clear than writing out the
+  * comparisons directly, and works with any type that can be compared with the
+  * `<` and `>` operators. However, it double-evaluates all its parameters, so do
+  * not use expressions with side-effects here.
+@@ -2296,7 +2351,11 @@
+  */
+ inline void* memcpy(void* dst, const void* src, size_t len)
+ {
++#ifdef SDL_SLOW_MEMCPY
+   return SDL_memcpy(dst, src, len);
++#else
++  return ::memcpy(dst, src, len);
++#endif // SDL_SLOW_MEMCPY
+ }
+ 
+ /**
+@@ -2326,7 +2385,8 @@
+ template<typename T, typename U>
+ constexpr T* copyp(T* dst, const U* src)
+ {
+-  return SDL_copyp(dst, src);
++  SDL_copyp(dst, src);
++  return dst;
+ }
+ 
+ /**
+@@ -2348,7 +2408,11 @@
+  */
+ inline void* memmove(void* dst, const void* src, size_t len)
+ {
++#ifdef SDL_SLOW_MEMMOVE
+   return SDL_memmove(dst, src, len);
++#else
++  return ::memmove(dst, src, len);
++#endif // SDL_SLOW_MEMMOVE
+ }
+ 
+ /**
+@@ -2371,7 +2435,11 @@
+  */
+ inline void* memset(void* dst, int c, size_t len)
+ {
++#ifdef SDL_SLOW_MEMSET
+   return SDL_memset(dst, c, len);
++#else
++  return ::memset(dst, c, len);
++#endif // SDL_SLOW_MEMSET
+ }
+ 
+ /**
+@@ -2463,7 +2531,7 @@
+ template<class T, std::size_t N>
+ inline void zeroa(T (&x)[N])
+ {
+-  SDL_zeroa((&x)[N]);
++  SDL_zeroa(x);
+ }
+ 
+ /**
+@@ -3410,6 +3478,8 @@
+   return SDL_ultoa(value, str, radix);
+ }
+ 
++#ifndef SDL_NOLONGLONG
++
+ /**
+  * Convert a long long integer into a string.
+  *
+@@ -3470,6 +3540,8 @@
+   return SDL_ulltoa(value, str, radix);
+ }
+ 
++#endif // SDL_NOLONGLONG
++
+ /**
+  * Parse an `int` from a string.
+  *
+@@ -3585,6 +3657,8 @@
+   return SDL_strtoul(str, endp, base);
+ }
+ 
++#ifndef SDL_NOLONGLONG
++
+ /**
+  * Parse a `long long` from a string.
+  *
+@@ -3655,6 +3729,8 @@
+   return SDL_strtoull(str, endp, base);
+ }
+ 
++#endif // SDL_NOLONGLONG
++
+ /**
+  * Parse a `double` from a string.
+  *
+@@ -3977,7 +4053,12 @@
+                   SDL_SCANF_FORMAT_STRING const char* fmt,
+                   ...)
+ {
+-  return SDL_sscanf(text, fmt, ...);
++  int rc;
++  va_list ap;
++  va_start(ap, fmt);
++  rc = SDL_vsscanf(text, fmt, ap);
++  va_end(ap);
++  return rc;
+ }
+ 
+ /**
+@@ -4038,7 +4119,14 @@
+                     SDL_PRINTF_FORMAT_STRING const char* fmt,
+                     ...)
+ {
+-  return SDL_snprintf(text, maxlen, fmt, ...);
++  va_list ap;
++  int result;
++
++  va_start(ap, fmt);
++  result = SDL_vsnprintf(text, maxlen, fmt, ap);
++  va_end(ap);
++
++  return result;
+ }
+ 
+ /**
+@@ -4077,7 +4165,14 @@
+                     SDL_PRINTF_FORMAT_STRING const wchar_t* fmt,
+                     ...)
+ {
+-  return SDL_swprintf(text, maxlen, fmt, ...);
++  va_list ap;
++  int result;
++
++  va_start(ap, fmt);
++  result = SDL_vswprintf(text, maxlen, fmt, ap);
++  va_end(ap);
++
++  return result;
+ }
+ 
+ /**
+@@ -4161,7 +4256,14 @@
+  */
+ inline int asprintf(char** strp, SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+ {
+-  return SDL_asprintf(strp, fmt, ...);
++  va_list ap;
++  int result;
++
++  va_start(ap, fmt);
++  result = SDL_vasprintf(strp, fmt, ap);
++  va_end(ap);
++
++  return result;
+ }
+ 
+ /**
+@@ -4264,7 +4366,7 @@
+ /**
+  * Generate 32 pseudo-random bits.
+  *
+- * You likely want to use rand() to get a psuedo-random number instead.
++ * You likely want to use rand() to get a pseudo-random number instead.
+  *
+  * There are no guarantees as to the quality of the random sequence produced,
+  * and this should not be used for security (cryptography, passwords) or where
+@@ -4284,15 +4386,36 @@
+  */
+ inline Uint32 rand_bits() { return SDL_rand_bits(); }
+ 
+-struct Random
++/**
++ * A independent pseudo random state
++ *
++ * This can be instantiated in any thread and as long as it is not shared with
++ * another thread all members are safe to call.
++ *
++ * @cat wrap-state
++ *
++ * @sa wrap-state
++ */
++class Random
+ {
+   Uint64 m_state;
+ 
+-  constexpr Random() {}
++public:
++  constexpr Random()
++    : m_state(0)
++  {
++  }
+ 
+-  constexpr explicit Random(Uint64 state) {}
++  /**
++   * Init state with the given value
++   */
++  constexpr explicit Random(Uint64 state)
++    : m_state(state)
++  {
++  }
+ 
+-  constexpr operator Uint64() { static_assert(false, "Not implemented"); }
++  /// Convert to the underlying type
++  constexpr operator Uint64() { return m_state; }
+ 
+   /**
+    * Generate a pseudo-random number less than n for positive n
+@@ -4301,11 +4424,11 @@
+    * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+    * much worse as n gets bigger.
+    *
+-   * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
++   * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
+    * 0..5 to 1..6
+    *
+    * If you want to generate a pseudo-random number in the full range of Sint32,
+-   * you should use: (Sint32)Random.rand_bits(state)
++   * you should use: (Sint32)state.rand_bits()
+    *
+    * There are no guarantees as to the quality of the random sequence produced,
+    * and this should not be used for security (cryptography, passwords) or where
+@@ -4313,12 +4436,10 @@
+    * libraries available with different characteristics and you should pick one
+    * of those to meet any serious needs.
+    *
+-   * @param state a pointer to the current random number state, this may not be
+-   *              nullptr.
+    * @param n the number of possible outcomes. n must be positive.
+    * @returns a random value in the range of [0 .. n-1].
+    *
+-   * @threadsafety This function is thread-safe, as long as the state pointer
++   * @threadsafety This function is thread-safe, as long as this object
+    *               isn't shared between threads.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -4327,7 +4448,7 @@
+    * @sa Random.rand_bits
+    * @sa Random.randf
+    */
+-  Sint32 rand(Sint32 n);
++  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
+ 
+   /**
+    * Generate a uniform pseudo-random floating point number less than 1.0
+@@ -4340,11 +4461,9 @@
+    * libraries available with different characteristics and you should pick one
+    * of those to meet any serious needs.
+    *
+-   * @param state a pointer to the current random number state, this may not be
+-   *              nullptr.
+    * @returns a random value in the range of [0.0, 1.0).
+    *
+-   * @threadsafety This function is thread-safe, as long as the state pointer
++   * @threadsafety This function is thread-safe, as long as this object
+    *               isn't shared between threads.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -4353,12 +4472,12 @@
+    * @sa Random.rand
+    * @sa randf
+    */
+-  float randf();
++  float randf() { return SDL_randf_r(&m_state); }
+ 
+   /**
+    * Generate 32 pseudo-random bits.
+    *
+-   * You likely want to use Random.rand() to get a psuedo-random number instead.
++   * You likely want to use Random.rand() to get a pseudo-random number instead.
+    *
+    * There are no guarantees as to the quality of the random sequence produced,
+    * and this should not be used for security (cryptography, passwords) or where
+@@ -4366,11 +4485,9 @@
+    * libraries available with different characteristics and you should pick one
+    * of those to meet any serious needs.
+    *
+-   * @param state a pointer to the current random number state, this may not be
+-   *              nullptr.
+    * @returns a random value in the range of [0-MAX_UINT32].
+    *
+-   * @threadsafety This function is thread-safe, as long as the state pointer
++   * @threadsafety This function is thread-safe, as long as this object
+    *               isn't shared between threads.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -4378,7 +4495,7 @@
+    * @sa Random.rand
+    * @sa Random.randf
+    */
+-  Uint32 rand_bits();
++  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
+ };
+ 
+ /**
+@@ -4416,8 +4533,6 @@
+  */
+ inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
+ 
+-inline Sint32 Random::rand(Sint32 n) { return SDL::rand_r(n); }
+-
+ /**
+  * Generate a uniform pseudo-random floating point number less than 1.0
+  *
+@@ -4444,8 +4559,6 @@
+  */
+ inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
+ 
+-inline float Random::randf() { return SDL::randf_r(); }
+-
+ /**
+  * Generate 32 pseudo-random bits.
+  *
+@@ -4471,8 +4584,6 @@
+  */
+ inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+ 
+-inline Uint32 Random::rand_bits() { return SDL::rand_bits_r(); }
+-
+ /**
+  * The value of Pi, as a double-precision floating point literal.
+  *
+@@ -4698,7 +4809,6 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+- * @sa atan2
+  * @sa atan
+  * @sa tan
+  */
+@@ -5739,9 +5849,9 @@
+  *
+  * @since This datatype is available since SDL 3.2.0.
+  *
+- * @sa IConv.IConv
+- *
+  * @cat resource
++ *
++ * @sa IConv.IConv
+  */
+ class IConv
+ {
+@@ -5782,8 +5892,7 @@
+    *
+    * @param tocode The target character encoding, must not be nullptr.
+    * @param fromcode The source character encoding, must not be nullptr.
+-   * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
+-   *       failure.
++   * @post a valid handle or falsy on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+@@ -5824,7 +5933,10 @@
+   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+ 
+   /// Converts to bool
+-  constexpr explicit operator bool() const { return !!m_resource; }
++  constexpr explicit operator bool() const
++  {
++    return m_resource != IConvRaw(SDL_ICONV_ERROR);
++  }
+ 
+   /// Converts to IConvParam
+   constexpr operator IConvParam() const { return {m_resource}; }
+@@ -5832,7 +5944,6 @@
+   /**
+    * This function frees a context used for character set conversion.
+    *
+-   * @param cd The character set conversion handle.
+    * @returns 0 on success, or -1 on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -5990,7 +6101,7 @@
+  * @sa IConv.close
+  * @sa iconv_string
+  */
+-inline size_t iconv(IConv cd,
++inline size_t iconv(IConvRaw cd,
+                     const char** inbuf,
+                     size_t* inbytesleft,
+                     char** outbuf,
+@@ -6028,14 +6139,10 @@
+  * the number of bytes specified in `inbytesleft` whether there is a nullptr
+  * character anywhere in the buffer.
+  *
+- * The returned string is owned by the caller, and should be passed to free when
+- * no longer needed.
+- *
+  * @param tocode the character encoding of the output string. Examples are
+  *               "UTF-8", "UCS-4", etc.
+  * @param fromcode the character encoding of data in `inbuf`.
+  * @param inbuf the string to convert to a different encoding.
+- * @param inbytesleft the size of the input string _in bytes_.
+  * @returns a new string, converted to the new encoding, or nullptr on error.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -6048,7 +6155,8 @@
+                                    StringParam fromcode,
+                                    SourceBytes inbuf)
+ {
+-  return SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes());
++  return OwnArray<char>{
++    SDL_iconv_string(tocode, fromcode, inbuf.data(), inbuf.size_bytes())};
+ }
+ 
+ /**
+@@ -6065,7 +6173,7 @@
+  */
+ inline OwnArray<char> iconv_utf8_locale(std::string_view S)
+ {
+-  return SDL_iconv_utf8_locale(S);
++  return iconv_string("", "UTF-8", S);
+ }
+ 
+ /**
+@@ -6082,7 +6190,8 @@
+  */
+ inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
+ {
+-  return SDL_iconv_utf8_ucs2(S);
++  auto data = SDL_iconv_string("UCS-2", "UTF-8", S.data(), S.size());
++  return OwnArray<Uint16>(reinterpret_cast<Uint16*>(data));
+ }
+ 
+ /**
+@@ -6099,7 +6208,8 @@
+  */
+ inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
+ {
+-  return SDL_iconv_utf8_ucs4(S);
++  auto data = SDL_iconv_string("UCS-4", "UTF-8", S.data(), S.size());
++  return OwnArray<Uint32>(reinterpret_cast<Uint32*>(data));
+ }
+ 
+ /**
+@@ -6116,7 +6226,7 @@
+  */
+ inline OwnArray<char> iconv_wchar_utf8(std::wstring_view S)
+ {
+-  return SDL_iconv_wchar_utf8(S);
++  return iconv_string("UTF-8", "WCHAR_T", S);
+ }
+ 
+ /**
+@@ -6178,10 +6288,12 @@
+  *
+  * @since This datatype is available since SDL 3.2.0.
+  */
+-using FunctionPointer = void(SDLCALL*)();
++using FunctionPointer = SDL_FunctionPointer;
+ 
+ /// @}
+ 
++inline void PtrDeleter::operator()(void* ptr) const { SDL_free(ptr); }
++
+ } // namespace SDL
+ 
+ #endif /* SDL3PP_STDINC_H_ */

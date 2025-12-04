@@ -1,271 +1,335 @@
-15c15
-<  * @defgroup CategoryInit Category Init
----
->  * @defgroup CategoryInit Initialization and Shutdown
-43a44,49
->  * @defgroup InitFlags Initialization flags
->  *
->  * @{
->  */
-> 
-> /**
-82a89,96
-> /// @}
-> 
-> /**
->  * @name AppResult
->  * App result for Main callback
->  * @{
->  */
-> 
-111a126,133
-> /// @}
-> 
-> /**
->  * @name Callbacks for EnterAppMainCallbacks()
->  *
->  * @{
->  */
-> 
-176a199,200
-> /// @}
-> 
-316a341,345
->  * @name Callbacks for RunOnMainThread()
->  * @{
->  */
-> 
-> /**
-334a364,366
->  *
->  * @cat result-callback
->  *
-337a370,371
-> /// @}
-> 
-380d413
-<  * @param userdata a pointer that is passed to `callback`.
-389a423,425
->  * @sa result-callback
->  *
->  * @cat result-callback
-393c429,431
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = CallbackWrapper<MainThreadCB>;
->   void* wrapped = Wrapper::Wrap(std::move(callback));
->   RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
-542a581,793
-> 
-> #ifndef SDL3PP_APPCLASS_LOG_PRIORITY
-> /**
->  * The default log priority for app class.
->  */
-> #define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
-> #endif // SDL3PP_APPCLASS_LOG_PRIORITY
-> 
-> /**
->  * Represents application parameters
->  */
-> using AppArgs = std::span<char const* const>;
-> 
-> /**
->  * @{
->  *
->  * Allocate and initialize state with new.
->  *
->  * If possible, pass the args to constructor, otherwise expects a default ctor;
->  *
->  * @tparam T the state class
->  * @param state the state to initialize
->  * @param args the program arguments
->  * @return the app status
->  */
-> template<class T>
-> inline AppResult DefaultCreateClass(T** state, AppArgs args)
-> {
->   static_assert(std::is_default_constructible_v<T>);
->   *state = new T{};
->   return APP_CONTINUE;
-> }
-> 
-> template<class T>
->   requires std::convertible_to<AppArgs, T>
-> inline AppResult DefaultCreateClass(T** state, AppArgs args)
-> {
->   *state = new T{args};
->   return APP_CONTINUE;
-> }
-> /// @}
-> 
-> /// @private
-> template<class T>
-> concept HasInitFunction = requires(T** state) {
->   { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
-> };
-> 
-> /**
->  * @{
->  *
->  * Init state with arguments.
->  *
->  * This will call T::Init() if available, otherwise it delegates to
->  * DefaultCreateClass().
->  *
->  * @tparam T the state class
->  * @param state the state to initialize
->  * @param args the program arguments
->  * @return the app status
->  */
-> template<class T>
-> inline AppResult InitClass(T** state, AppArgs args)
-> {
->   try {
->     return DefaultCreateClass(state, args);
->   } catch (std::exception& e) {
->     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
->                                             e.what());
->   } catch (...) {
->   }
->   return APP_FAILURE;
-> }
-> 
-> template<HasInitFunction T>
-> inline AppResult InitClass(T** state, AppArgs args)
-> {
->   *state = nullptr;
->   try {
->     AppResult result = T::Init(state, args);
->     if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
->     return result;
->   } catch (std::exception& e) {
->     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
->                                             e.what());
->   } catch (...) {
->   }
->   return APP_FAILURE;
-> }
-> /// @}
-> 
-> /// @private
-> template<class T>
-> concept HasIterateFunction = requires(T* state) { state->Iterate(); };
-> 
-> /**
->  * Iterate the state
->  *
->  * @tparam T the state class
->  * @param state the state
->  * @return the app status
->  */
-> template<HasIterateFunction T>
-> inline AppResult IterateClass(T* state)
-> {
->   try {
->     return state->Iterate();
->   } catch (std::exception& e) {
->     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
->                                             e.what());
->   } catch (...) {
->   }
->   return APP_FAILURE;
-> }
-> 
-> /// @private
-> template<class T>
-> concept HasEventFunction =
->   requires(T* state, const SDL_Event& event) { state->Event(event); };
-> 
-> /**
->  * Default handle by finishing if QUIT is requested
->  *
->  * @tparam T the state class
->  * @param state the state
->  * @param event the event
->  * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
->  */
-> template<class T>
-> inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
-> {
->   if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
->   return APP_CONTINUE;
-> }
-> 
-> /**
->  * @{
->  * Iterate the state
->  *
->  * @tparam T the state class
->  * @param state the state
->  * @param event the event to handle
->  * @return the app status
->  */
-> template<class T>
-> inline AppResult EventClass(T* state, const SDL_Event& event)
-> {
->   try {
->     return DefaultEventClass(state, event);
->   } catch (std::exception& e) {
->     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
->                                             e.what());
->   } catch (...) {
->   }
->   return APP_FAILURE;
-> }
-> 
-> template<HasEventFunction T>
-> inline AppResult EventClass(T* state, const SDL_Event& event)
-> {
->   try {
->     return state->Event(event);
->   } catch (std::exception& e) {
->     LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
->                                             e.what());
->   } catch (...) {
->   }
->   return APP_FAILURE;
-> }
-> 
-> /// @}
-> 
-> /**
->  * Destroy state with delete;
->  *
->  * @tparam T
->  * @param state
->  */
-> template<class T>
-> inline void DefaultClassDestroy(T* state)
-> {
->   delete state;
-> }
-> 
-> /// @private
-> template<class T>
-> concept HasQuitFunction =
->   requires(T* state, AppResult result) { T::Quit(state, result); };
-> 
-> /**
->  * @{
->  * Destroy state with given result
->  *
->  * This is responsible to destroy and deallocate the state. It tries to call
->  * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
->  * calls delete directly.
->  *
->  * @tparam T the state class.
->  * @param state the state to destroy.
->  * @param result the app result.
->  */
-> template<class T>
-> inline void QuitClass(T* state, AppResult result)
-> {
->   DefaultClassDestroy(state);
-> }
-> 
-> template<HasQuitFunction T>
-> inline void QuitClass(T* state, AppResult result)
-> {
->   T::Quit(state, result);
-> }
-> /// @}
+--- src/generated/SDL3pp_init.h
++++ include/SDL3pp/SDL3pp_init.h
+@@ -12,7 +12,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryInit Category Init
++ * @defgroup CategoryInit Initialization and Shutdown
+  *
+  * All SDL programs need to initialize the library before starting to work with
+  * it.
+@@ -41,6 +41,12 @@
+  */
+ 
+ /**
++ * @defgroup InitFlags Initialization flags
++ *
++ * @{
++ */
++
++/**
+  * Initialization flags for Init and/or InitSubSystem
+  *
+  * These are the flags which may be passed to Init(). You should specify the
+@@ -80,6 +86,14 @@
+ constexpr InitFlags INIT_CAMERA =
+   SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
+ 
++/// @}
++
++/**
++ * @name AppResult
++ * App result for Main callback
++ * @{
++ */
++
+ /**
+  * Return values for optional main callbacks.
+  *
+@@ -109,6 +123,14 @@
+ /// Value that requests termination with error from the main callbacks.
+ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+ 
++/// @}
++
++/**
++ * @name Callbacks for EnterAppMainCallbacks()
++ *
++ * @{
++ */
++
+ /**
+  * Function pointer typedef for SDL_AppInit.
+  *
+@@ -174,6 +196,8 @@
+  */
+ using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
+ 
++/// @}
++
+ /**
+  * Initialize the SDL library.
+  *
+@@ -314,6 +338,11 @@
+ inline bool IsMainThread() { return SDL_IsMainThread(); }
+ 
+ /**
++ * @name Callbacks for RunOnMainThread()
++ * @{
++ */
++
++/**
+  * Callback run on the main thread.
+  *
+  * @param userdata an app-controlled pointer that is passed to the callback.
+@@ -332,9 +361,14 @@
+  * @sa RunOnMainThread
+  *
+  * @sa MainThreadCallback
++ *
++ * @cat result-callback
++ *
+  */
+ using MainThreadCB = std::function<void()>;
+ 
++/// @}
++
+ /**
+  * Call a function on the main thread during event processing.
+  *
+@@ -377,7 +411,6 @@
+  * called with `wait_complete` true.
+  *
+  * @param callback the callback to call on the main thread.
+- * @param userdata a pointer that is passed to `callback`.
+  * @param wait_complete true to wait for the callback to complete, false to
+  *                      return immediately.
+  * @throws Error on failure.
+@@ -387,10 +420,15 @@
+  * @since This function is available since SDL 3.2.0.
+  *
+  * @sa IsMainThread
++ * @sa result-callback
++ *
++ * @cat result-callback
+  */
+ inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
+ {
+-  static_assert(false, "Not implemented");
++  using Wrapper = CallbackWrapper<MainThreadCB>;
++  void* wrapped = Wrapper::Wrap(std::move(callback));
++  RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
+ }
+ 
+ /**
+@@ -541,6 +579,219 @@
+   return SDL_GetAppMetadataProperty(name);
+ }
+ 
++#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
++/**
++ * The default log priority for app class.
++ */
++#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
++#endif // SDL3PP_APPCLASS_LOG_PRIORITY
++
++/**
++ * Represents application parameters
++ */
++using AppArgs = std::span<char const* const>;
++
++/**
++ * @{
++ *
++ * Allocate and initialize state with new.
++ *
++ * If possible, pass the args to constructor, otherwise expects a default ctor;
++ *
++ * @tparam T the state class
++ * @param state the state to initialize
++ * @param args the program arguments
++ * @return the app status
++ */
++template<class T>
++inline AppResult DefaultCreateClass(T** state, AppArgs args)
++{
++  static_assert(std::is_default_constructible_v<T>);
++  *state = new T{};
++  return APP_CONTINUE;
++}
++
++template<class T>
++  requires std::convertible_to<AppArgs, T>
++inline AppResult DefaultCreateClass(T** state, AppArgs args)
++{
++  *state = new T{args};
++  return APP_CONTINUE;
++}
++/// @}
++
++/// @private
++template<class T>
++concept HasInitFunction = requires(T** state) {
++  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
++};
++
++/**
++ * @{
++ *
++ * Init state with arguments.
++ *
++ * This will call T::Init() if available, otherwise it delegates to
++ * DefaultCreateClass().
++ *
++ * @tparam T the state class
++ * @param state the state to initialize
++ * @param args the program arguments
++ * @return the app status
++ */
++template<class T>
++inline AppResult InitClass(T** state, AppArgs args)
++{
++  try {
++    return DefaultCreateClass(state, args);
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++  }
++  return APP_FAILURE;
++}
++
++template<HasInitFunction T>
++inline AppResult InitClass(T** state, AppArgs args)
++{
++  *state = nullptr;
++  try {
++    AppResult result = T::Init(state, args);
++    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
++    return result;
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++  }
++  return APP_FAILURE;
++}
++/// @}
++
++/// @private
++template<class T>
++concept HasIterateFunction = requires(T* state) { state->Iterate(); };
++
++/**
++ * Iterate the state
++ *
++ * @tparam T the state class
++ * @param state the state
++ * @return the app status
++ */
++template<HasIterateFunction T>
++inline AppResult IterateClass(T* state)
++{
++  try {
++    return state->Iterate();
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++  }
++  return APP_FAILURE;
++}
++
++/// @private
++template<class T>
++concept HasEventFunction =
++  requires(T* state, const SDL_Event& event) { state->Event(event); };
++
++/**
++ * Default handle by finishing if QUIT is requested
++ *
++ * @tparam T the state class
++ * @param state the state
++ * @param event the event
++ * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
++ */
++template<class T>
++inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
++{
++  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
++  return APP_CONTINUE;
++}
++
++/**
++ * @{
++ * Iterate the state
++ *
++ * @tparam T the state class
++ * @param state the state
++ * @param event the event to handle
++ * @return the app status
++ */
++template<class T>
++inline AppResult EventClass(T* state, const SDL_Event& event)
++{
++  try {
++    return DefaultEventClass(state, event);
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++  }
++  return APP_FAILURE;
++}
++
++template<HasEventFunction T>
++inline AppResult EventClass(T* state, const SDL_Event& event)
++{
++  try {
++    return state->Event(event);
++  } catch (std::exception& e) {
++    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
++                                            e.what());
++  } catch (...) {
++  }
++  return APP_FAILURE;
++}
++
++/// @}
++
++/**
++ * Destroy state with delete;
++ *
++ * @tparam T
++ * @param state
++ */
++template<class T>
++inline void DefaultClassDestroy(T* state)
++{
++  delete state;
++}
++
++/// @private
++template<class T>
++concept HasQuitFunction =
++  requires(T* state, AppResult result) { T::Quit(state, result); };
++
++/**
++ * @{
++ * Destroy state with given result
++ *
++ * This is responsible to destroy and deallocate the state. It tries to call
++ * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
++ * calls delete directly.
++ *
++ * @tparam T the state class.
++ * @param state the state to destroy.
++ * @param result the app result.
++ */
++template<class T>
++inline void QuitClass(T* state, AppResult result)
++{
++  DefaultClassDestroy(state);
++}
++
++template<HasQuitFunction T>
++inline void QuitClass(T* state, AppResult result)
++{
++  T::Quit(state, result);
++}
++/// @}
++
+ /// @}
+ 
+ } // namespace SDL

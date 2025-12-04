@@ -1,42 +1,103 @@
-11c11
-<  * @defgroup CategoryAssert Category Assert
----
->  * @defgroup CategoryAssert Assertions
-52a53,54
-> #ifdef SDL3PP_DOC
-> 
-127c129
-<  * do { SomethingOnce(); } while (SDL_nullptr_WHILE_LOOP_CONDITION (0));
----
->  * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
-152a155,156
-> #endif // SDL3PP_DOC
-> 
-216a221,222
-> #ifdef SDL3PP_DOC
-> 
-318c324
-<  * instead of risking a bad UI interaction (deadlock, etc) in the application. *
----
->  * instead of risking a bad UI interaction (deadlock, etc) in the application.
-379a386,387
-> #endif // SDL3PP_DOC
-> 
-381c389
-<  * A callback that fires when an SDL assertion fails.
----
->  * A @ref callback that fires when an SDL assertion fails.
-421c429
-<   SDL_SetAssertionHandler(handler, userdata);
----
->   return SDL_SetAssertionHandler(handler, userdata);
-472d479
-< 
-481c488
-<  * ```c
----
->  * ```cpp
-507c514
-<   return SDL_GetAssertionReport();
----
->   return *SDL_GetAssertionReport();
+--- src/generated/SDL3pp_assert.h
++++ include/SDL3pp/SDL3pp_assert.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryAssert Category Assert
++ * @defgroup CategoryAssert Assertions
+  *
+  * A helpful assertion macro!
+  *
+@@ -50,6 +50,8 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * The level of assertion aggressiveness.
+  *
+@@ -124,7 +126,7 @@
+  * To use:
+  *
+  * ```c
+- * do { SomethingOnce(); } while (SDL_nullptr_WHILE_LOOP_CONDITION (0));
++ * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
+  * ```
+  *
+  * @since This macro is available since SDL 3.2.0.
+@@ -150,6 +152,8 @@
+     (void)sizeof((condition));                                                 \
+   } while (SDL_NULL_WHILE_LOOP_CONDITION)
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * Possible outcomes from a triggered assertion.
+  *
+@@ -214,6 +218,8 @@
+   return SDL_ReportAssertion(data, func, file, line);
+ }
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * The macro used when an assertion triggers a breakpoint.
+  *
+@@ -315,7 +321,7 @@
+  * requires GUI interfaces to happen on the main thread but you're debugging an
+  * assertion in a background thread, it might be desirable to set this to
+  * "break" so that your debugger takes control as soon as assert is triggered,
+- * instead of risking a bad UI interaction (deadlock, etc) in the application. *
++ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+  *
+  * @param condition boolean value to test.
+  *
+@@ -377,8 +383,10 @@
+  */
+ #define SDL_assert_always(condition) SDL_enabled_assert(condition)
+ 
++#endif // SDL3PP_DOC
++
+ /**
+- * A callback that fires when an SDL assertion fails.
++ * A @ref callback that fires when an SDL assertion fails.
+  *
+  * @param data a pointer to the AssertData structure corresponding to the
+  *             current assertion.
+@@ -418,7 +426,7 @@
+  */
+ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+ {
+-  SDL_SetAssertionHandler(handler, userdata);
++  return SDL_SetAssertionHandler(handler, userdata);
+ }
+ 
+ /**
+@@ -469,7 +477,6 @@
+ {
+   return SDL_GetAssertionHandler(puserdata);
+ }
+-
+ /**
+  * Get a list of all assertion failures.
+  *
+@@ -478,7 +485,7 @@
+  *
+  * The proper way to examine this data looks something like this:
+  *
+- * ```c
++ * ```cpp
+  * const AssertData *item = GetAssertionReport();
+  * while (item) {
+  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
+@@ -504,7 +511,7 @@
+  */
+ inline const AssertData& GetAssertionReport()
+ {
+-  return SDL_GetAssertionReport();
++  return *SDL_GetAssertionReport();
+ }
+ 
+ /**

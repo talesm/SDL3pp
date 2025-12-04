@@ -1,20 +1,47 @@
-10c10
-<  * @defgroup CategoryMetal Category Metal
----
->  * @defgroup CategoryMetal Metal Support
-112c112
-<    * @sa MetalView.Metal_DestroyView
----
->    * @sa MetalView.Destroy
-163c163
-<   void Metal_DestroyView();
----
->   void Destroy();
-227c227
-<  * @sa MetalView.Metal_DestroyView
----
->  * @sa MetalView.Destroy
-252c252
-< inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
----
-> inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
+--- src/generated/SDL3pp_metal.h
++++ include/SDL3pp/SDL3pp_metal.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryMetal Category Metal
++ * @defgroup CategoryMetal Metal Support
+  *
+  * Functions to creating Metal layers and views on SDL windows.
+  *
+@@ -109,7 +109,7 @@
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+-   * @sa MetalView.Metal_DestroyView
++   * @sa MetalView.Destroy
+    * @sa MetalView.GetLayer
+    */
+   MetalView(WindowParam window)
+@@ -160,7 +160,7 @@
+    *
+    * @sa MetalView.MetalView
+    */
+-  void Metal_DestroyView();
++  void Destroy();
+ 
+   /**
+    * Get a pointer to the backing CAMetalLayer for the given view.
+@@ -224,7 +224,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+- * @sa MetalView.Metal_DestroyView
++ * @sa MetalView.Destroy
+  * @sa MetalView.GetLayer
+  */
+ inline MetalView Metal_CreateView(WindowParam window)
+@@ -249,7 +249,7 @@
+   SDL_Metal_DestroyView(view);
+ }
+ 
+-inline void MetalView::Metal_DestroyView() { Metal_DestroyView(release()); }
++inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
+ 
+ /**
+  * Get a pointer to the backing CAMetalLayer for the given view.

@@ -1,29 +1,52 @@
-13c13
-<  * @defgroup CategorySensor Category Sensor
----
->  * @defgroup CategorySensor Sensors
-363,364d362
-<  * @param count a pointer filled in with the number of sensors returned, may be
-<  *              nullptr.
-366,367c364
-<  *          call GetError() for more information. This should be freed with
-<  *          free() when it is no longer needed.
----
->  *          call GetError() for more information.
-371c368,373
-< inline OwnArray<SensorID> GetSensors() { return SDL_GetSensors(); }
----
-> inline OwnArray<SensorID> GetSensors()
-> {
->   int count = 0;
->   auto data = SDL_GetSensors(&count);
->   return OwnArray<SensorID>(data, size_t(count));
-> }
-441c443
-<   return SDL_GetSensorFromID(instance_id);
----
->   return {SDL_GetSensorFromID(instance_id)};
-455c457
-<   return CheckError(SDL_GetSensorProperties(sensor));
----
->   return {CheckError(SDL_GetSensorProperties(sensor))};
+--- src/generated/SDL3pp_sensor.h
++++ include/SDL3pp/SDL3pp_sensor.h
+@@ -10,7 +10,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategorySensor Category Sensor
++ * @defgroup CategorySensor Sensors
+  *
+  * SDL sensor management.
+  *
+@@ -360,15 +360,17 @@
+ /**
+  * Get a list of currently connected sensors.
+  *
+- * @param count a pointer filled in with the number of sensors returned, may be
+- *              nullptr.
+  * @returns a 0 terminated array of sensor instance IDs or nullptr on failure;
+- *          call GetError() for more information. This should be freed with
+- *          free() when it is no longer needed.
++ *          call GetError() for more information.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline OwnArray<SensorID> GetSensors() { return SDL_GetSensors(); }
++inline OwnArray<SensorID> GetSensors()
++{
++  int count = 0;
++  auto data = SDL_GetSensors(&count);
++  return OwnArray<SensorID>(data, size_t(count));
++}
+ 
+ /**
+  * Get the implementation dependent name of a sensor.
+@@ -438,7 +440,7 @@
+  */
+ inline SensorRef GetSensorFromID(SensorID instance_id)
+ {
+-  return SDL_GetSensorFromID(instance_id);
++  return {SDL_GetSensorFromID(instance_id)};
+ }
+ 
+ /**
+@@ -452,7 +454,7 @@
+  */
+ inline PropertiesRef GetSensorProperties(SensorParam sensor)
+ {
+-  return CheckError(SDL_GetSensorProperties(sensor));
++  return {CheckError(SDL_GetSensorProperties(sensor))};
+ }
+ 
+ inline PropertiesRef Sensor::GetProperties()

@@ -1,76 +1,169 @@
-4a5
-> #include "SDL3pp_keyboard.h"
-5a7
-> #include "SDL3pp_video.h"
-10c12
-<  * @defgroup CategorySystem Category System
----
->  * @defgroup CategorySystem Platform-specific Functionality
-22a25,30
-> /*
->  * Platform specific functions for Windows
->  */
-> #if defined(SDL_PLATFORM_WINDOWS) || defined(SDL3PP_DOC)
-> 
-> /// MSG
-66a75,79
-> #endif // SDL_PLATFORM_WINDOWS
-> 
-> #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
->   defined(SDL3PP_DOC)
-> 
-104a118,120
-> #endif // defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
-> 
-> /// this is defined in Xlib's headers, just need a simple declaration here
-144a161,163
-> /* Platform specific functions for Linux*/
-> #if defined(SDL_PLATFORM_LINUX) || defined(SDL3PP_DOC)
-> 
-181a201,207
-> #endif // SDL_PLATFORM_LINUX
-> 
-> /*
->  * Platform specific functions for iOS
->  */
-> #if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
-> 
-255a282,288
-> #endif // defined(SDL_PLATFORM_IOS)
-> 
-> /*
->  * Platform specific functions for Android
->  */
-> #if defined(SDL_PLATFORM_ANDROID) || defined(SDL3PP_DOC)
-> 
-500a534
->  * @param userdata an app-controlled pointer that is passed to the callback.
-507d540
-<  *
-579d611
-<  * @param userdata an app-controlled pointer that is passed to the callback.
-591c623,628
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
->   auto callback = Wrapper::Wrap(std::move(cb));
->   if (!RequestAndroidPermission(
->         std::move(permission), &Wrapper::CallOnce, callback)) {
->     Wrapper::release(callback);
->   }
-646a684,685
-> #endif // defined(SDL_PLATFORM_ANDROID)
-> 
-812a852,853
-> #if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
-> 
-832a874,878
-> #endif // defined(SDL_PLATFORM_IOS)
-> 
-> #if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
-> 
-> /// XTaskQueueHandle
-834a881
-> /// XUserHandle
-869a917
-> #endif // defined(SDL_PLATFORM_GDK)
+--- src/generated/SDL3pp_system.h
++++ include/SDL3pp/SDL3pp_system.h
+@@ -2,12 +2,14 @@
+ #define SDL3PP_SYSTEM_H_
+ 
+ #include <SDL3/SDL_system.h>
++#include "SDL3pp_keyboard.h"
+ #include "SDL3pp_stdinc.h"
++#include "SDL3pp_video.h"
+ 
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategorySystem Category System
++ * @defgroup CategorySystem Platform-specific Functionality
+  *
+  * Platform-specific SDL API functions. These are functions that deal with needs
+  * of specific operating systems, that didn't make sense to offer as
+@@ -20,6 +22,12 @@
+  * @{
+  */
+ 
++/*
++ * Platform specific functions for Windows
++ */
++#if defined(SDL_PLATFORM_WINDOWS) || defined(SDL3PP_DOC)
++
++/// MSG
+ using MSG = ::MSG;
+ 
+ /**
+@@ -64,6 +72,11 @@
+   SDL_SetWindowsMessageHook(callback, userdata);
+ }
+ 
++#endif // SDL_PLATFORM_WINDOWS
++
++#if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
++  defined(SDL3PP_DOC)
++
+ /**
+  * Get the D3D9 adapter index that matches the specified display.
+  *
+@@ -102,6 +115,9 @@
+   CheckError(SDL_GetDXGIOutputInfo(displayID, adapterIndex, outputIndex));
+ }
+ 
++#endif // defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK)
++
++/// this is defined in Xlib's headers, just need a simple declaration here
+ using XEvent = ::XEvent;
+ 
+ /**
+@@ -142,6 +158,9 @@
+   SDL_SetX11EventHook(callback, userdata);
+ }
+ 
++/* Platform specific functions for Linux*/
++#if defined(SDL_PLATFORM_LINUX) || defined(SDL3PP_DOC)
++
+ /**
+  * Sets the UNIX nice value for a thread.
+  *
+@@ -179,6 +198,13 @@
+     SDL_SetLinuxThreadPriorityAndPolicy(threadID, sdlPriority, schedPolicy));
+ }
+ 
++#endif // SDL_PLATFORM_LINUX
++
++/*
++ * Platform specific functions for iOS
++ */
++#if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
++
+ /**
+  * The prototype for an Apple iOS animation callback.
+  *
+@@ -253,6 +279,13 @@
+  */
+ inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
+ 
++#endif // defined(SDL_PLATFORM_IOS)
++
++/*
++ * Platform specific functions for Android
++ */
++#if defined(SDL_PLATFORM_ANDROID) || defined(SDL3PP_DOC)
++
+ /**
+  * Get the Android Java Native Interface Environment of the current thread.
+  *
+@@ -498,13 +531,13 @@
+ /**
+  * Callback that presents a response from a RequestAndroidPermission call.
+  *
++ * @param userdata an app-controlled pointer that is passed to the callback.
+  * @param permission the Android-specific permission name that was requested.
+  * @param granted true if permission is granted, false if denied.
+  *
+  * @since This datatype is available since SDL 3.2.0.
+  *
+  * @sa RequestAndroidPermission
+- *
+  * @sa RequestAndroidPermissionCallback
+  */
+ using RequestAndroidPermissionCB =
+@@ -576,7 +609,6 @@
+  *
+  * @param permission the permission to request.
+  * @param cb the callback to trigger when the request has a response.
+- * @param userdata an app-controlled pointer that is passed to the callback.
+  * @returns true if the request was submitted, false if there was an error
+  *          submitting. The result of the request is only ever reported through
+  *          the callback, not this return value.
+@@ -588,7 +620,12 @@
+ inline bool RequestAndroidPermission(StringParam permission,
+                                      RequestAndroidPermissionCB cb)
+ {
+-  static_assert(false, "Not implemented");
++  using Wrapper = CallbackWrapper<RequestAndroidPermissionCB>;
++  auto callback = Wrapper::Wrap(std::move(cb));
++  if (!RequestAndroidPermission(
++        std::move(permission), &Wrapper::CallOnce, callback)) {
++    Wrapper::release(callback);
++  }
+ }
+ 
+ /**
+@@ -644,6 +681,8 @@
+   CheckError(SDL_SendAndroidMessage(command, param));
+ }
+ 
++#endif // defined(SDL_PLATFORM_ANDROID)
++
+ /**
+  * Query if the current device is a tablet.
+  *
+@@ -810,6 +849,8 @@
+   SDL_OnApplicationDidEnterForeground();
+ }
+ 
++#if defined(SDL_PLATFORM_IOS) || defined(SDL3PP_DOC)
++
+ /**
+  * Let iOS apps with external event handling report
+  * onApplicationDidChangeStatusBarOrientation.
+@@ -830,8 +871,14 @@
+   SDL_OnApplicationDidChangeStatusBarOrientation();
+ }
+ 
++#endif // defined(SDL_PLATFORM_IOS)
++
++#if defined(SDL_PLATFORM_GDK) || defined(SDL3PP_DOC)
++
++/// XTaskQueueHandle
+ using XTaskQueueHandle = ::XTaskQueueHandle;
+ 
++/// XUserHandle
+ using XUserHandle = ::XUserHandle;
+ 
+ /**
+@@ -867,6 +914,7 @@
+ {
+   return SDL_GetGDKDefaultUser(outUserHandle);
+ }
++#endif // defined(SDL_PLATFORM_GDK)
+ 
+ /// @}
+ 

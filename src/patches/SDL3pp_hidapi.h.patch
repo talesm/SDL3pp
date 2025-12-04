@@ -1,201 +1,456 @@
-12c12
-<  * @defgroup CategoryHIDAPI Category HIDAPI
----
->  * @defgroup CategoryHIDAPI HIDAPI
-87,88c87,92
-< constexpr hid_bus_type HID_API_BUS_USB =
-<   SDL_HID_API_BUS_USB; ///< USB bus Specifications: https://usb.org/hid
----
-> /**
->  * USB bus Specifications:
->  *
->  * - https://usb.org/hid
->  */
-> constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
-92,94c96,99
-<  * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
-<  * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
-<  * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
----
->  *
->  * * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
->  * * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
->  * * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
-100c105,106
-<  * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
----
->  *
->  * * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
-106c112,113
-<  * https://www.microsoft.com/download/details.aspx?id=103325
----
->  *
->  * - https://www.microsoft.com/download/details.aspx?id=103325
-168d174
-<    * @post a pointer to a HidDevice object on success.
-187d192
-<    * @post a pointer to a HidDevice object on success.
-233,234c238
-<    * @returns 0 on success or a negative error code on failure; call GetError()
-<    *          for more information.
----
->    * @throws Error on failure.
-258d261
-<    * @param length the length in bytes of the data to send.
-274,277c277
-<    * @param length the number of bytes to read. For devices with multiple
-<    *               reports, make sure to read an extra byte for the report
-<    *               number.
-<    * @param milliseconds timeout in milliseconds or -1 for blocking wait.
----
->    * @param timeout timeout in milliseconds
-294,296d293
-<    * @param length the number of bytes to read. For devices with multiple
-<    *               reports, make sure to read an extra byte for the report
-<    *               number.
-315,317c312,313
-<    * @param nonblock enable or not the nonblocking reads - 1 to enable
-<    *                 nonblocking - 0 to disable nonblocking.
-<    * @returns 0 on success.
----
->    * @param nonblock enable or not the nonblocking reads - true to enable
->    *                 nonblocking - false to disable nonblocking.
-339,340d334
-<    * @param length the length in bytes of the data to send, including the report
-<    *               number.
-360,361d353
-<    * @param length the number of bytes to read, including an extra byte for the
-<    *               report ID. The buffer can be longer than the actual report.
-382,383d373
-<    * @param length the number of bytes to read, including an extra byte for the
-<    *               report ID. The buffer can be longer than the actual report.
-397d386
-<    * @returns 0 on success.
-409d397
-<    * @returns 0 on success.
-421d408
-<    * @returns 0 on success.
-434d420
-<    * @returns 0 on success.
-444,446c430,433
-<    * @returns a pointer to the hid_device_info for this hid_device or nullptr on
-<    *          failure; call GetError() for more information. This struct is
-<    *          valid until the device is closed with HidDevice.close().
----
->    * @returns a pointer to the hid_device_info for this hid_device on success.
->    *          This struct is valid until the device is closed with
->    *          HidDevice.close().
->    * @throws Error on failure.
-459d445
-<    * @param buf_size the size of the buffer in bytes.
-516,517d501
-<  * @returns 0 on success.
-<  *
-532,533d515
-<  * @returns 0 on success.
-<  *
-584,586c566,568
-<  *          information about the HID devices attached to the system, or nullptr
-<  *          in the case of failure. Free this linked list by calling
-<  *          hid_free_enumeration().
----
->  *          information about the HID devices attached to the system on success.
->  *          Free this linked list by calling hid_free_enumeration().
->  * @throws Error on failure.
-623c605
-<  * @returns a pointer to a HidDevice object on success.
----
->  * @returns a HidDevice object on success.
-642c624
-<  * @returns a pointer to a HidDevice object on success.
----
->  * @returns a HidDevice object on success.
-669d650
-<  * @param length the length in bytes of the data to send.
-677c658
-<   return SDL_hid_write(dev, data.data(), data.size_bytes());
----
->   return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
-694,696c675
-<  * @param length the number of bytes to read. For devices with multiple reports,
-<  *               make sure to read an extra byte for the report number.
-<  * @param milliseconds timeout in milliseconds or -1 for blocking wait.
----
->  * @param timeout timeout in milliseconds
-707c686,687
-<   return SDL_hid_read_timeout(dev, data.data(), data.size_bytes(), timeout);
----
->   return SDL_hid_read_timeout(
->     dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
-724,725d703
-<  * @param length the number of bytes to read. For devices with multiple reports,
-<  *               make sure to read an extra byte for the report number.
-734c712
-<   return SDL_hid_read(dev, data.data(), data.size_bytes());
----
->   return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
-752,754c730,731
-<  * @param nonblock enable or not the nonblocking reads - 1 to enable nonblocking
-<  *                 - 0 to disable nonblocking.
-<  * @returns 0 on success.
----
->  * @param nonblock enable or not the nonblocking reads - true to enable
->  *                 nonblocking - false to disable nonblocking.
-784,785d760
-<  * @param length the length in bytes of the data to send, including the report
-<  *               number.
-793c768,769
-<   return SDL_hid_send_feature_report(dev, data.data(), data.size_bytes());
----
->   return SDL_hid_send_feature_report(
->     dev, data.data_as<Uint8>(), data.size_bytes());
-814,815d789
-<  * @param length the number of bytes to read, including an extra byte for the
-<  *               report ID. The buffer can be longer than the actual report.
-824c798,799
-<   return SDL_hid_get_feature_report(dev, data.data(), data.size_bytes());
----
->   return SDL_hid_get_feature_report(
->     dev, data.data_as<Uint8>(), data.size_bytes());
-845,846d819
-<  * @param length the number of bytes to read, including an extra byte for the
-<  *               report ID. The buffer can be longer than the actual report.
-855c828,829
-<   return SDL_hid_get_input_report(dev, data.data(), data.size_bytes());
----
->   return SDL_hid_get_input_report(
->     dev, data.data_as<Uint8>(), data.size_bytes());
-867d840
-<  * @returns 0 on success.
-872c845
-< inline int hid_close(HidDeviceRaw dev)
----
-> inline void hid_close(HidDeviceRaw dev)
-874c847
-<   return CheckError(SDL_hid_close(dev));
----
->   CheckErrorIfNot(SDL_hid_close(dev), 0);
-885d857
-<  * @returns 0 on success.
-908d879
-<  * @returns 0 on success.
-931d901
-<  * @returns 0 on success.
-955d924
-<  * @returns 0 on success.
-980,982c949,952
-<  * @returns a pointer to the hid_device_info for this hid_device or nullptr on
-<  *          failure; call GetError() for more information. This struct is valid
-<  *          until the device is closed with HidDevice.close().
----
->  * @returns a pointer to the hid_device_info for this hid_device on success.
->  *          This struct is valid until the device is closed with
->  *          HidDevice.close().
->  * @throws Error on failure.
-1004d973
-<  * @param buf_size the size of the buffer in bytes.
-1012c981,982
-<   return SDL_hid_get_report_descriptor(dev, buf.data(), buf.size_bytes());
----
->   return SDL_hid_get_report_descriptor(
->     dev, buf.data_as<Uint8>(), buf.size_bytes());
+--- src/generated/SDL3pp_hidapi.h
++++ include/SDL3pp/SDL3pp_hidapi.h
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryHIDAPI Category HIDAPI
++ * @defgroup CategoryHIDAPI HIDAPI
+  *
+  * Header file for SDL HIDAPI functions.
+  *
+@@ -84,26 +84,33 @@
+ constexpr hid_bus_type HID_API_BUS_UNKNOWN =
+   SDL_HID_API_BUS_UNKNOWN; ///< Unknown bus type
+ 
+-constexpr hid_bus_type HID_API_BUS_USB =
+-  SDL_HID_API_BUS_USB; ///< USB bus Specifications: https://usb.org/hid
++/**
++ * USB bus Specifications:
++ *
++ * - https://usb.org/hid
++ */
++constexpr hid_bus_type HID_API_BUS_USB = SDL_HID_API_BUS_USB;
+ 
+ /**
+  * Bluetooth or Bluetooth LE bus Specifications:
+- * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
+- * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
+- * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
++ *
++ * * https://www.bluetooth.com/specifications/specs/human-interface-device-profile-1-1-1/
++ * * https://www.bluetooth.com/specifications/specs/hid-service-1-0/
++ * * https://www.bluetooth.com/specifications/specs/hid-over-gatt-profile-1-0/
+  */
+ constexpr hid_bus_type HID_API_BUS_BLUETOOTH = SDL_HID_API_BUS_BLUETOOTH;
+ 
+ /**
+  * I2C bus Specifications:
+- * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
++ *
++ * * https://docs.microsoft.com/previous-versions/windows/hardware/design/dn642101(v=vs.85)
+  */
+ constexpr hid_bus_type HID_API_BUS_I2C = SDL_HID_API_BUS_I2C;
+ 
+ /**
+  * SPI bus Specifications:
+- * https://www.microsoft.com/download/details.aspx?id=103325
++ *
++ * - https://www.microsoft.com/download/details.aspx?id=103325
+  */
+ constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
+ 
+@@ -165,7 +172,6 @@
+    * @param product_id the Product ID (PID) of the device to open.
+    * @param serial_number the Serial Number of the device to open (Optionally
+    *                      nullptr).
+-   * @post a pointer to a HidDevice object on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -184,7 +190,6 @@
+    * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
+    *
+    * @param path the path name of the device to open.
+-   * @post a pointer to a HidDevice object on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -230,8 +235,7 @@
+   /**
+    * Close a HID device.
+    *
+-   * @returns 0 on success or a negative error code on failure; call GetError()
+-   *          for more information.
++   * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+@@ -255,7 +259,6 @@
+    *
+    * @param data the data to send, including the report number as the first
+    *             byte.
+-   * @param length the length in bytes of the data to send.
+    * @returns the actual number of bytes written and -1 on on failure; call
+    *          GetError() for more information.
+    *
+@@ -271,10 +274,7 @@
+    * reports.
+    *
+    * @param data a buffer to put the read data into.
+-   * @param length the number of bytes to read. For devices with multiple
+-   *               reports, make sure to read an extra byte for the report
+-   *               number.
+-   * @param milliseconds timeout in milliseconds or -1 for blocking wait.
++   * @param timeout timeout in milliseconds
+    * @returns the actual number of bytes read and -1 on on failure; call
+    *          GetError() for more information. If no packet was available to be
+    *          read within the timeout period, this function returns 0.
+@@ -291,9 +291,6 @@
+    * reports.
+    *
+    * @param data a buffer to put the read data into.
+-   * @param length the number of bytes to read. For devices with multiple
+-   *               reports, make sure to read an extra byte for the report
+-   *               number.
+    * @returns the actual number of bytes read and -1 on failure; call GetError()
+    *          for more information. If no packet was available to be read and
+    *          the handle is in non-blocking mode, this function returns 0.
+@@ -312,9 +309,8 @@
+    *
+    * Nonblocking can be turned on and off at any time.
+    *
+-   * @param nonblock enable or not the nonblocking reads - 1 to enable
+-   *                 nonblocking - 0 to disable nonblocking.
+-   * @returns 0 on success.
++   * @param nonblock enable or not the nonblocking reads - true to enable
++   *                 nonblocking - false to disable nonblocking.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -336,8 +332,6 @@
+    *
+    * @param data the data to send, including the report number as the first
+    *             byte.
+-   * @param length the length in bytes of the data to send, including the report
+-   *               number.
+    * @returns the actual number of bytes written and -1 on failure; call
+    *          GetError() for more information.
+    *
+@@ -357,8 +351,6 @@
+    *             Set the first byte of `data` to the Report ID of the report to
+    *             be read, or set it to zero if your device does not use numbered
+    *             reports.
+-   * @param length the number of bytes to read, including an extra byte for the
+-   *               report ID. The buffer can be longer than the actual report.
+    * @returns the number of bytes read plus one for the report ID (which is
+    *          still in the first byte), or -1 on on failure; call GetError() for
+    *          more information.
+@@ -379,8 +371,6 @@
+    *             Set the first byte of `data` to the Report ID of the report to
+    *             be read, or set it to zero if your device does not use numbered
+    *             reports.
+-   * @param length the number of bytes to read, including an extra byte for the
+-   *               report ID. The buffer can be longer than the actual report.
+    * @returns the number of bytes read plus one for the report ID (which is
+    *          still in the first byte), or -1 on on failure; call GetError() for
+    *          more information.
+@@ -394,7 +384,6 @@
+    *
+    * @param string a wide string buffer to put the data into.
+    * @param maxlen the length of the buffer in multiples of wchar_t.
+-   * @returns 0 on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -406,7 +395,6 @@
+    *
+    * @param string a wide string buffer to put the data into.
+    * @param maxlen the length of the buffer in multiples of wchar_t.
+-   * @returns 0 on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -418,7 +406,6 @@
+    *
+    * @param string a wide string buffer to put the data into.
+    * @param maxlen the length of the buffer in multiples of wchar_t.
+-   * @returns 0 on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -431,7 +418,6 @@
+    * @param string_index the index of the string to get.
+    * @param string a wide string buffer to put the data into.
+    * @param maxlen the length of the buffer in multiples of wchar_t.
+-   * @returns 0 on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -441,9 +427,10 @@
+   /**
+    * Get the device info from a HID device.
+    *
+-   * @returns a pointer to the hid_device_info for this hid_device or nullptr on
+-   *          failure; call GetError() for more information. This struct is
+-   *          valid until the device is closed with HidDevice.close().
++   * @returns a pointer to the hid_device_info for this hid_device on success.
++   *          This struct is valid until the device is closed with
++   *          HidDevice.close().
++   * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+@@ -456,7 +443,6 @@
+    * to. The recommended size for a preallocated buffer is 4096 bytes.
+    *
+    * @param buf the buffer to copy descriptor into.
+-   * @param buf_size the size of the buffer in bytes.
+    * @returns the number of bytes actually copied or -1 on failure; call
+    *          GetError() for more information.
+    *
+@@ -513,8 +499,6 @@
+  *
+  * Each call to this function should have a matching call to hid_exit()
+  *
+- * @returns 0 on success.
+- *
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -529,8 +513,6 @@
+  * This function frees all of the static data associated with HIDAPI. It should
+  * be called at the end of execution to avoid memory leaks.
+  *
+- * @returns 0 on success.
+- *
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -581,9 +563,9 @@
+  * @param product_id the Product ID (PID) of the types of device to open, or 0
+  *                   to match any product.
+  * @returns a pointer to a linked list of type hid_device_info, containing
+- *          information about the HID devices attached to the system, or nullptr
+- *          in the case of failure. Free this linked list by calling
+- *          hid_free_enumeration().
++ *          information about the HID devices attached to the system on success.
++ *          Free this linked list by calling hid_free_enumeration().
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+@@ -620,7 +602,7 @@
+  * @param product_id the Product ID (PID) of the device to open.
+  * @param serial_number the Serial Number of the device to open (Optionally
+  *                      nullptr).
+- * @returns a pointer to a HidDevice object on success.
++ * @returns a HidDevice object on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -639,7 +621,7 @@
+  * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
+  *
+  * @param path the path name of the device to open.
+- * @returns a pointer to a HidDevice object on success.
++ * @returns a HidDevice object on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -666,7 +648,6 @@
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param data the data to send, including the report number as the first byte.
+- * @param length the length in bytes of the data to send.
+  * @returns the actual number of bytes written and -1 on on failure; call
+  *          GetError() for more information.
+  *
+@@ -674,7 +655,7 @@
+  */
+ inline int hid_write(HidDeviceParam dev, SourceBytes data)
+ {
+-  return SDL_hid_write(dev, data.data(), data.size_bytes());
++  return SDL_hid_write(dev, data.data_as<Uint8>(), data.size_bytes());
+ }
+ 
+ inline int HidDevice::write(SourceBytes data)
+@@ -691,9 +672,7 @@
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param data a buffer to put the read data into.
+- * @param length the number of bytes to read. For devices with multiple reports,
+- *               make sure to read an extra byte for the report number.
+- * @param milliseconds timeout in milliseconds or -1 for blocking wait.
++ * @param timeout timeout in milliseconds
+  * @returns the actual number of bytes read and -1 on on failure; call
+  *          GetError() for more information. If no packet was available to be
+  *          read within the timeout period, this function returns 0.
+@@ -704,7 +683,8 @@
+                             TargetBytes data,
+                             Milliseconds timeout)
+ {
+-  return SDL_hid_read_timeout(dev, data.data(), data.size_bytes(), timeout);
++  return SDL_hid_read_timeout(
++    dev, data.data_as<Uint8>(), data.size_bytes(), timeout.count());
+ }
+ 
+ inline int HidDevice::read_timeout(TargetBytes data, Milliseconds timeout)
+@@ -721,8 +701,6 @@
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param data a buffer to put the read data into.
+- * @param length the number of bytes to read. For devices with multiple reports,
+- *               make sure to read an extra byte for the report number.
+  * @returns the actual number of bytes read and -1 on failure; call GetError()
+  *          for more information. If no packet was available to be read and the
+  *          handle is in non-blocking mode, this function returns 0.
+@@ -731,7 +709,7 @@
+  */
+ inline int hid_read(HidDeviceParam dev, TargetBytes data)
+ {
+-  return SDL_hid_read(dev, data.data(), data.size_bytes());
++  return SDL_hid_read(dev, data.data_as<Uint8>(), data.size_bytes());
+ }
+ 
+ inline int HidDevice::read(TargetBytes data)
+@@ -749,9 +727,8 @@
+  * Nonblocking can be turned on and off at any time.
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+- * @param nonblock enable or not the nonblocking reads - 1 to enable nonblocking
+- *                 - 0 to disable nonblocking.
+- * @returns 0 on success.
++ * @param nonblock enable or not the nonblocking reads - true to enable
++ *                 nonblocking - false to disable nonblocking.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -781,8 +758,6 @@
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param data the data to send, including the report number as the first byte.
+- * @param length the length in bytes of the data to send, including the report
+- *               number.
+  * @returns the actual number of bytes written and -1 on failure; call
+  *          GetError() for more information.
+  *
+@@ -790,7 +765,8 @@
+  */
+ inline int hid_send_feature_report(HidDeviceParam dev, SourceBytes data)
+ {
+-  return SDL_hid_send_feature_report(dev, data.data(), data.size_bytes());
++  return SDL_hid_send_feature_report(
++    dev, data.data_as<Uint8>(), data.size_bytes());
+ }
+ 
+ inline int HidDevice::send_feature_report(SourceBytes data)
+@@ -811,8 +787,6 @@
+  *             the first byte of `data` to the Report ID of the report to be
+  *             read, or set it to zero if your device does not use numbered
+  *             reports.
+- * @param length the number of bytes to read, including an extra byte for the
+- *               report ID. The buffer can be longer than the actual report.
+  * @returns the number of bytes read plus one for the report ID (which is still
+  *          in the first byte), or -1 on on failure; call GetError() for more
+  *          information.
+@@ -821,7 +795,8 @@
+  */
+ inline int hid_get_feature_report(HidDeviceParam dev, TargetBytes data)
+ {
+-  return SDL_hid_get_feature_report(dev, data.data(), data.size_bytes());
++  return SDL_hid_get_feature_report(
++    dev, data.data_as<Uint8>(), data.size_bytes());
+ }
+ 
+ inline int HidDevice::get_feature_report(TargetBytes data)
+@@ -842,8 +817,6 @@
+  *             the first byte of `data` to the Report ID of the report to be
+  *             read, or set it to zero if your device does not use numbered
+  *             reports.
+- * @param length the number of bytes to read, including an extra byte for the
+- *               report ID. The buffer can be longer than the actual report.
+  * @returns the number of bytes read plus one for the report ID (which is still
+  *          in the first byte), or -1 on on failure; call GetError() for more
+  *          information.
+@@ -852,7 +825,8 @@
+  */
+ inline int hid_get_input_report(HidDeviceParam dev, TargetBytes data)
+ {
+-  return SDL_hid_get_input_report(dev, data.data(), data.size_bytes());
++  return SDL_hid_get_input_report(
++    dev, data.data_as<Uint8>(), data.size_bytes());
+ }
+ 
+ inline int HidDevice::get_input_report(TargetBytes data)
+@@ -864,14 +838,13 @@
+  * Close a HID device.
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+- * @returns 0 on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline int hid_close(HidDeviceRaw dev)
++inline void hid_close(HidDeviceRaw dev)
+ {
+-  return CheckError(SDL_hid_close(dev));
++  CheckErrorIfNot(SDL_hid_close(dev), 0);
+ }
+ 
+ inline void HidDevice::close() { hid_close(release()); }
+@@ -882,7 +855,6 @@
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param string a wide string buffer to put the data into.
+  * @param maxlen the length of the buffer in multiples of wchar_t.
+- * @returns 0 on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -905,7 +877,6 @@
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param string a wide string buffer to put the data into.
+  * @param maxlen the length of the buffer in multiples of wchar_t.
+- * @returns 0 on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -928,7 +899,6 @@
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param string a wide string buffer to put the data into.
+  * @param maxlen the length of the buffer in multiples of wchar_t.
+- * @returns 0 on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -952,7 +922,6 @@
+  * @param string_index the index of the string to get.
+  * @param string a wide string buffer to put the data into.
+  * @param maxlen the length of the buffer in multiples of wchar_t.
+- * @returns 0 on success.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -977,9 +946,10 @@
+  * Get the device info from a HID device.
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+- * @returns a pointer to the hid_device_info for this hid_device or nullptr on
+- *          failure; call GetError() for more information. This struct is valid
+- *          until the device is closed with HidDevice.close().
++ * @returns a pointer to the hid_device_info for this hid_device on success.
++ *          This struct is valid until the device is closed with
++ *          HidDevice.close().
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+@@ -1001,7 +971,6 @@
+  *
+  * @param dev a device handle returned from HidDevice.HidDevice().
+  * @param buf the buffer to copy descriptor into.
+- * @param buf_size the size of the buffer in bytes.
+  * @returns the number of bytes actually copied or -1 on failure; call
+  *          GetError() for more information.
+  *
+@@ -1009,7 +978,8 @@
+  */
+ inline int hid_get_report_descriptor(HidDeviceParam dev, TargetBytes buf)
+ {
+-  return SDL_hid_get_report_descriptor(dev, buf.data(), buf.size_bytes());
++  return SDL_hid_get_report_descriptor(
++    dev, buf.data_as<Uint8>(), buf.size_bytes());
+ }
+ 
+ inline int HidDevice::get_report_descriptor(TargetBytes buf)

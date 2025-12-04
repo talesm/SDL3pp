@@ -1,169 +1,267 @@
-11c11
-<  * @defgroup CategoryMouse Category Mouse
----
->  * @defgroup CategoryMouse Mouse Support
-240,245c240,242
-<    * @param w the width of the cursor.
-<    * @param h the height of the cursor.
-<    * @param hot_x the x-axis offset from the left of the cursor image to the
-<    *              mouse x position, in the range of 0 to `w` - 1.
-<    * @param hot_y the y-axis offset from the top of the cursor image to the
-<    *              mouse y position, in the range of 0 to `h` - 1.
----
->    * @param size the width and height of the cursor.
->    * @param hot the x position of the cursor hot spot, from the top-left, in the
->    *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
-262c259,260
-<     : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
----
->     : m_resource(
->         CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
-280,281c278
-<    * @param hot_x the x position of the cursor hot spot.
-<    * @param hot_y the y position of the cursor hot spot.
----
->    * @param hot the x, y position of the cursor hot spot.
-295c292
-<     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
----
->     : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
-434a432,435
-> /**
->  * Represents a button index.
->  *
->  */
-437c438
-< constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< LEFT
----
-> constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
-439c440
-< constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< MIDDLE
----
-> constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
-441c442
-< constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< RIGHT
----
-> constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
-443c444
-< constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1
----
-> constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
-445c446
-< constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2
----
-> constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
-473a475
-> /** Returns mask for button */
-499,503c501,502
-<  * @param count a pointer filled in with the number of mice returned, may be
-<  *              nullptr.
-<  * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
-<  *          call GetError() for more information. This should be freed with
-<  *          free() when it is no longer needed.
----
->  * @returns a 0 terminated array of mouse instance IDs.
->  * @throws Error on failure.
-512c511,516
-< inline OwnArray<MouseID> GetMice() { return SDL_GetMice(); }
----
-> inline OwnArray<MouseID> GetMice()
-> {
->   int count;
->   auto data = CheckError(SDL_GetMice(&count));
->   return OwnArray<MouseID>{data, size_t(count)};
-> }
-543c547
-< inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
----
-> inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
-661c665
-<   SDL_WarpMouseInWindow(m_resource, p);
----
->   SDL_WarpMouseInWindow(m_resource, p.x, p.y);
-675,676c679
-<  * @param x the x coordinate.
-<  * @param y the y coordinate.
----
->  * @param p the x, y coordinates;
-687c690
-<   CheckError(SDL_WarpMouseGlobal(p));
----
->   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
-689a693,716
-> /**
->  * Set relative mouse mode for a window.
->  *
->  * While the window has focus and relative mouse mode is enabled, the cursor
->  * is hidden, the mouse position is constrained to the window, and SDL will
->  * report continuous relative mouse motion even if the mouse is at the edge of
->  * the window.
->  *
->  * If you'd like to keep the mouse position fixed while in relative mode you
->  * can use Window.SetMouseRect(). If you'd like the cursor to be at a
->  * specific location when relative mode ends, you should use
->  * Window.WarpMouse() before disabling relative mode.
->  *
->  * This function will flush any pending mouse motion for this window.
->  *
->  * @param enabled true to enable relative mode, false to disable.
->  * @throws Error on failure.
->  *
->  * @threadsafety This function should only be called on the main thread.
->  *
->  * @since This function is available since SDL 3.2.0.
->  *
->  * @sa Window.GetRelativeMouseMode
->  */
-694a722,732
-> /**
->  * Query whether relative mouse mode is enabled for a window.
->  *
->  * @returns true if relative mode is enabled for a window or false otherwise.
->  *
->  * @threadsafety This function should only be called on the main thread.
->  *
->  * @since This function is available since SDL 3.2.0.
->  *
->  * @sa Window.SetRelativeMouseMode
->  */
-775,780c813,815
-<  * @param w the width of the cursor.
-<  * @param h the height of the cursor.
-<  * @param hot_x the x-axis offset from the left of the cursor image to the mouse
-<  *              x position, in the range of 0 to `w` - 1.
-<  * @param hot_y the y-axis offset from the top of the cursor image to the mouse
-<  *              y position, in the range of 0 to `h` - 1.
----
->  * @param size the width and height of the cursor.
->  * @param hot the x position of the cursor hot spot, from the top-left, in the
->  *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
-796,797c831
-<                            int hot_x,
-<                            int hot_y)
----
->                            const PointRaw& hot)
-799c833
-<   return Cursor(data, mask, size, hot_x, hot_y);
----
->   return Cursor(data, mask, size, hot);
-816,817c850
-<  * @param hot_x the x position of the cursor hot spot.
-<  * @param hot_y the y position of the cursor hot spot.
----
->  * @param hot the position of the cursor hot spot.
-830c863
-< inline Cursor CreateColorCursor(SurfaceParam surface, int hot_x, int hot_y)
----
-> inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
-832c865
-<   return Cursor(surface, hot_x, hot_y);
----
->   return Cursor(surface, hot);
-885c918
-< inline CursorRef GetCursor() { return SDL_GetCursor(); }
----
-> inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
-903c936
-<   return CheckError(SDL_GetDefaultCursor());
----
->   return {CheckError(SDL_GetDefaultCursor())};
+--- src/generated/SDL3pp_mouse.h
++++ include/SDL3pp/SDL3pp_mouse.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryMouse Category Mouse
++ * @defgroup CategoryMouse Mouse Support
+  *
+  * Any GUI application has to deal with the mouse, and SDL provides functions to
+  * manage mouse input and the displayed cursor.
+@@ -237,12 +237,9 @@
+    *
+    * @param data the color value for each pixel of the cursor.
+    * @param mask the mask value for each pixel of the cursor.
+-   * @param w the width of the cursor.
+-   * @param h the height of the cursor.
+-   * @param hot_x the x-axis offset from the left of the cursor image to the
+-   *              mouse x position, in the range of 0 to `w` - 1.
+-   * @param hot_y the y-axis offset from the top of the cursor image to the
+-   *              mouse y position, in the range of 0 to `h` - 1.
++   * @param size the width and height of the cursor.
++   * @param hot the x position of the cursor hot spot, from the top-left, in the
++   *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
+    * @post a new cursor with the specified parameters on success.
+    * @throws Error on failure.
+    *
+@@ -259,7 +256,8 @@
+          const Uint8* mask,
+          const PointRaw& size,
+          const PointRaw& hot)
+-    : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
++    : m_resource(
++        CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
+   {
+   }
+ 
+@@ -277,8 +275,7 @@
+    * smaller image will be upscaled and be used instead.
+    *
+    * @param surface an Surface structure representing the cursor image.
+-   * @param hot_x the x position of the cursor hot spot.
+-   * @param hot_y the y position of the cursor hot spot.
++   * @param hot the x, y position of the cursor hot spot.
+    * @post the new cursor on success.
+    * @throws Error on failure.
+    *
+@@ -292,7 +289,7 @@
+    * @sa Cursor.Set
+    */
+   Cursor(SurfaceParam surface, const PointRaw& hot)
+-    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
++    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+   {
+   }
+ 
+@@ -432,17 +429,21 @@
+ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
+   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
+ 
++/**
++ * Represents a button index.
++ *
++ */
+ using MouseButton = Uint8;
+ 
+-constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< LEFT
++constexpr MouseButton BUTTON_LEFT = SDL_BUTTON_LEFT; ///< Left button
+ 
+-constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< MIDDLE
++constexpr MouseButton BUTTON_MIDDLE = SDL_BUTTON_MIDDLE; ///< Middle button
+ 
+-constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< RIGHT
++constexpr MouseButton BUTTON_RIGHT = SDL_BUTTON_RIGHT; ///< Right button
+ 
+-constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1
++constexpr MouseButton BUTTON_X1 = SDL_BUTTON_X1; ///< X1 button
+ 
+-constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2
++constexpr MouseButton BUTTON_X2 = SDL_BUTTON_X2; ///< X2 button
+ 
+ /**
+  * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
+@@ -471,6 +472,7 @@
+ 
+ constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
+ 
++/** Returns mask for button */
+ constexpr MouseButtonFlags ButtonMask(MouseButton button)
+ {
+   return SDL_BUTTON_MASK(button);
+@@ -496,11 +498,8 @@
+  * functionality, including some game controllers, KVM switches, etc. You should
+  * wait for input from a device before you consider it actively in use.
+  *
+- * @param count a pointer filled in with the number of mice returned, may be
+- *              nullptr.
+- * @returns a 0 terminated array of mouse instance IDs or nullptr on failure;
+- *          call GetError() for more information. This should be freed with
+- *          free() when it is no longer needed.
++ * @returns a 0 terminated array of mouse instance IDs.
++ * @throws Error on failure.
+  *
+  * @threadsafety This function should only be called on the main thread.
+  *
+@@ -509,7 +508,12 @@
+  * @sa GetMouseNameForID
+  * @sa HasMouse
+  */
+-inline OwnArray<MouseID> GetMice() { return SDL_GetMice(); }
++inline OwnArray<MouseID> GetMice()
++{
++  int count;
++  auto data = CheckError(SDL_GetMice(&count));
++  return OwnArray<MouseID>{data, size_t(count)};
++}
+ 
+ /**
+  * Get the name of a mouse.
+@@ -540,7 +544,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline WindowRef GetMouseFocus() { return SDL_GetMouseFocus(); }
++inline WindowRef GetMouseFocus() { return {SDL_GetMouseFocus()}; }
+ 
+ /**
+  * Query SDL's cache for the synchronous mouse button state and the
+@@ -658,7 +662,7 @@
+ 
+ inline void Window::WarpMouse(const FPointRaw& p)
+ {
+-  SDL_WarpMouseInWindow(m_resource, p);
++  SDL_WarpMouseInWindow(m_resource, p.x, p.y);
+ }
+ 
+ /**
+@@ -672,8 +676,7 @@
+  * Note that this function will appear to succeed, but not actually move the
+  * mouse when used over Microsoft Remote Desktop.
+  *
+- * @param x the x coordinate.
+- * @param y the y coordinate.
++ * @param p the x, y coordinates;
+  * @throws Error on failure.
+  *
+  * @threadsafety This function should only be called on the main thread.
+@@ -684,14 +687,49 @@
+  */
+ inline void WarpMouse(const FPointRaw& p)
+ {
+-  CheckError(SDL_WarpMouseGlobal(p));
++  CheckError(SDL_WarpMouseGlobal(p.x, p.y));
+ }
+ 
++/**
++ * Set relative mouse mode for a window.
++ *
++ * While the window has focus and relative mouse mode is enabled, the cursor
++ * is hidden, the mouse position is constrained to the window, and SDL will
++ * report continuous relative mouse motion even if the mouse is at the edge of
++ * the window.
++ *
++ * If you'd like to keep the mouse position fixed while in relative mode you
++ * can use Window.SetMouseRect(). If you'd like the cursor to be at a
++ * specific location when relative mode ends, you should use
++ * Window.WarpMouse() before disabling relative mode.
++ *
++ * This function will flush any pending mouse motion for this window.
++ *
++ * @param enabled true to enable relative mode, false to disable.
++ * @throws Error on failure.
++ *
++ * @threadsafety This function should only be called on the main thread.
++ *
++ * @since This function is available since SDL 3.2.0.
++ *
++ * @sa Window.GetRelativeMouseMode
++ */
+ inline void Window::SetRelativeMouseMode(bool enabled)
+ {
+   CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
+ }
+ 
++/**
++ * Query whether relative mouse mode is enabled for a window.
++ *
++ * @returns true if relative mode is enabled for a window or false otherwise.
++ *
++ * @threadsafety This function should only be called on the main thread.
++ *
++ * @since This function is available since SDL 3.2.0.
++ *
++ * @sa Window.SetRelativeMouseMode
++ */
+ inline bool Window::GetRelativeMouseMode() const
+ {
+   return SDL_GetWindowRelativeMouseMode(m_resource);
+@@ -772,12 +810,9 @@
+  *
+  * @param data the color value for each pixel of the cursor.
+  * @param mask the mask value for each pixel of the cursor.
+- * @param w the width of the cursor.
+- * @param h the height of the cursor.
+- * @param hot_x the x-axis offset from the left of the cursor image to the mouse
+- *              x position, in the range of 0 to `w` - 1.
+- * @param hot_y the y-axis offset from the top of the cursor image to the mouse
+- *              y position, in the range of 0 to `h` - 1.
++ * @param size the width and height of the cursor.
++ * @param hot the x position of the cursor hot spot, from the top-left, in the
++ *            range of 0 to `size.x` - 1 and 0 to `size.y` - 1.
+  * @returns a new cursor with the specified parameters on success.
+  * @throws Error on failure.
+  *
+@@ -793,10 +828,9 @@
+ inline Cursor CreateCursor(const Uint8* data,
+                            const Uint8* mask,
+                            const PointRaw& size,
+-                           int hot_x,
+-                           int hot_y)
++                           const PointRaw& hot)
+ {
+-  return Cursor(data, mask, size, hot_x, hot_y);
++  return Cursor(data, mask, size, hot);
+ }
+ 
+ /**
+@@ -813,8 +847,7 @@
+  * and be used instead.
+  *
+  * @param surface an Surface structure representing the cursor image.
+- * @param hot_x the x position of the cursor hot spot.
+- * @param hot_y the y position of the cursor hot spot.
++ * @param hot the position of the cursor hot spot.
+  * @returns the new cursor on success.
+  * @throws Error on failure.
+  *
+@@ -827,9 +860,9 @@
+  * @sa Cursor.Destroy
+  * @sa Cursor.Set
+  */
+-inline Cursor CreateColorCursor(SurfaceParam surface, int hot_x, int hot_y)
++inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
+ {
+-  return Cursor(surface, hot_x, hot_y);
++  return Cursor(surface, hot);
+ }
+ 
+ /**
+@@ -882,7 +915,7 @@
+  *
+  * @sa Cursor.Set
+  */
+-inline CursorRef GetCursor() { return SDL_GetCursor(); }
++inline CursorRef GetCursor() { return {SDL_GetCursor()}; }
+ 
+ /**
+  * Get the default cursor.
+@@ -900,7 +933,7 @@
+  */
+ inline CursorRef GetDefaultCursor()
+ {
+-  return CheckError(SDL_GetDefaultCursor());
++  return {CheckError(SDL_GetDefaultCursor())};
+ }
+ 
+ /**

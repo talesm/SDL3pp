@@ -1,14 +1,38 @@
-12c12
-<  * @defgroup CategoryHints Category Hints
----
->  * @defgroup CategoryHints Configuration Variables
-27a28,29
-> #ifdef SDL3PP_DOC
-> 
-1272c1274
-<  * The variable can also take the form of @file, in which case the named file
----
->  * The variable can also take the form of file, in which case the named file
-4278a4281,4282
-> 
-> #endif // SDL3PP_DOC
+--- src/generated/SDL3pp_hints.h
++++ include/SDL3pp/SDL3pp_hints.h
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryHints Category Hints
++ * @defgroup CategoryHints Configuration Variables
+  *
+  * This file contains functions to set and get configuration hints, as well as
+  * listing each of them alphabetically.
+@@ -25,6 +25,8 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Specify the behavior of Alt+Tab while the keyboard is grabbed.
+  *
+@@ -1269,7 +1271,7 @@
+  *
+  * `0xAAAA/0xBBBB,0xCCCC/0xDDDD`
+  *
+- * The variable can also take the form of @file, in which case the named file
++ * The variable can also take the form of file, in which case the named file
+  * will be loaded and interpreted as the value of the variable.
+  *
+  * This hint can be set anytime.
+@@ -4277,6 +4279,8 @@
+  */
+ #define SDL_HINT_PEN_TOUCH_EVENTS "SDL_PEN_TOUCH_EVENTS"
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * An enumeration of hint priorities.
+  *

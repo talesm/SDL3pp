@@ -1,4 +1,11 @@
-10c10
-<  * @defgroup CategoryCPUInfo Category CPUInfo
----
->  * @defgroup CategoryCPUInfo CPU Feature Detection
+--- src/generated/SDL3pp_cpuinfo.h
++++ include/SDL3pp/SDL3pp_cpuinfo.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryCPUInfo Category CPUInfo
++ * @defgroup CategoryCPUInfo CPU Feature Detection
+  *
+  * CPU feature detection for SDL.
+  *

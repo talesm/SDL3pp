@@ -1,4 +1,11 @@
-9c9
-<  * @defgroup CategoryBits Category Bits
----
->  * @defgroup CategoryBits Bit Manipulation
+--- src/generated/SDL3pp_bits.h
++++ include/SDL3pp/SDL3pp_bits.h
+@@ -6,7 +6,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryBits Category Bits
++ * @defgroup CategoryBits Bit Manipulation
+  *
+  * Functions for fiddling with bits and bitmasks.
+  *

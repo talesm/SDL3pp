@@ -1,18 +1,46 @@
-10c10
-<  * @defgroup CategoryEndian Category Endian
----
->  * @defgroup CategoryEndian Byte Order and Byte Swapping
-27a28,29
-> #ifdef SDL3PP_DOC
-> 
-34c36
-<  * ```c
----
->  * ```cpp
-53c55
-<  * ```c
----
->  * ```cpp
-104a107,108
-> 
-> #endif // SDL3PP_DOC
+--- src/generated/SDL3pp_endian.h
++++ include/SDL3pp/SDL3pp_endian.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryEndian Category Endian
++ * @defgroup CategoryEndian Byte Order and Byte Swapping
+  *
+  * Functions converting endian-specific values to different byte orders.
+  *
+@@ -25,13 +25,15 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * A value to represent littleendian byteorder.
+  *
+  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+  * platform's byte ordering:
+  *
+- * ```c
++ * ```cpp
+  * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
+  * Log("This system is littleendian.");
+  * #endif
+@@ -50,7 +52,7 @@
+  * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+  * platform's byte ordering:
+  *
+- * ```c
++ * ```cpp
+  * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  * Log("This system is bigendian.");
+  * #endif
+@@ -103,6 +105,8 @@
+  */
+ #define SDL_FLOATWORDORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * Byte-swap an unsigned 16-bit number.
+  *
