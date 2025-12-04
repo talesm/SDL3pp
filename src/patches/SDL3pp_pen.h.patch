@@ -1,4 +1,11 @@
-11c11
-<  * @defgroup CategoryPen Category Pen
----
->  * @defgroup CategoryPen Pen Support
+--- src/generated/SDL3pp_pen.h
++++ include/SDL3pp/SDL3pp_pen.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryPen Category Pen
++ * @defgroup CategoryPen Pen Support
+  *
+  * SDL pen event handling.
+  *

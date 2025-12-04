@@ -1,64 +1,114 @@
-5c5
-< #include "SDL3pp_iostream"
----
-> #include "SDL3pp_iostream.h"
-12c12
-<  * @defgroup CategoryProcess Category Process
----
->  * @defgroup CategoryProcess Process Control
-371,372d370
-<    * @param datasize a pointer filled in with the number of bytes read, may be
-<    *                 nullptr.
-387a386,409
->   /**
->    * Read all the output from a process.
->    *
->    * If a process was created with I/O enabled, you can use this function to
->    * read the output. This function blocks until the process is complete,
->    * capturing all output, and providing the process exit code.
->    *
->    * The data is allocated with a zero byte at the end (null terminated) for
->    * convenience. This extra byte is not included in the value reported via
->    * `datasize`.
->    *
->    * The data should be freed with free().
->    *
->    * @param exitcode a pointer filled in with the process exit code if the
->    *                 process has exited, may be nullptr.
->    * @returns the data or nullptr on failure; call GetError() for more
->    *          information.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    *
->    * @sa ProcessRef.Create
->    */
-391c413,416
-<     static_assert(false, "Not implemented");
----
->     StringResult data = Read(exitcode);
->     if (data.empty()) return {};
->     size_t sz = data.size() / sizeof(T);
->     return OwnArray{static_cast<T*>(data.release()), sz};
-699c724
-<   return CheckError(SDL_GetProcessProperties(process));
----
->   return {CheckError(SDL_GetProcessProperties(process))};
-721,722d745
-<  * @param datasize a pointer filled in with the number of bytes read, may be
-<  *                 nullptr.
-738c761,763
-<   return SDL_ReadProcess(process, exitcode);
----
->   size_t size = 0;
->   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
->   return StringResult(CheckError(data), size);
-772c797
-<   return SDL_GetProcessInput(process);
----
->   return {SDL_GetProcessInput(process)};
-804c829
-<   return SDL_GetProcessOutput(process);
----
->   return {SDL_GetProcessOutput(process)};
+--- src/generated/SDL3pp_process.h
++++ include/SDL3pp/SDL3pp_process.h
+@@ -2,14 +2,14 @@
+ #define SDL3PP_PROCESS_H_
+ 
+ #include <SDL3/SDL_process.h>
+-#include "SDL3pp_iostream"
++#include "SDL3pp_iostream.h"
+ #include "SDL3pp_properties.h"
+ #include "SDL3pp_stdinc.h"
+ 
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryProcess Category Process
++ * @defgroup CategoryProcess Process Control
+  *
+  * Process control support.
+  *
+@@ -368,8 +368,6 @@
+    *
+    * The data should be freed with free().
+    *
+-   * @param datasize a pointer filled in with the number of bytes read, may be
+-   *                 nullptr.
+    * @param exitcode a pointer filled in with the process exit code if the
+    *                 process has exited, may be nullptr.
+    * @returns the data or nullptr on failure; call GetError() for more
+@@ -385,10 +383,37 @@
+    */
+   StringResult Read(int* exitcode = nullptr);
+ 
++  /**
++   * Read all the output from a process.
++   *
++   * If a process was created with I/O enabled, you can use this function to
++   * read the output. This function blocks until the process is complete,
++   * capturing all output, and providing the process exit code.
++   *
++   * The data is allocated with a zero byte at the end (null terminated) for
++   * convenience. This extra byte is not included in the value reported via
++   * `datasize`.
++   *
++   * The data should be freed with free().
++   *
++   * @param exitcode a pointer filled in with the process exit code if the
++   *                 process has exited, may be nullptr.
++   * @returns the data or nullptr on failure; call GetError() for more
++   *          information.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   *
++   * @sa ProcessRef.Create
++   */
+   template<class T>
+   OwnArray<T> ReadAs(int* exitcode = nullptr)
+   {
+-    static_assert(false, "Not implemented");
++    StringResult data = Read(exitcode);
++    if (data.empty()) return {};
++    size_t sz = data.size() / sizeof(T);
++    return OwnArray{static_cast<T*>(data.release()), sz};
+   }
+ 
+   /**
+@@ -696,7 +721,7 @@
+  */
+ inline PropertiesRef GetProcessProperties(ProcessParam process)
+ {
+-  return CheckError(SDL_GetProcessProperties(process));
++  return {CheckError(SDL_GetProcessProperties(process))};
+ }
+ 
+ inline PropertiesRef Process::GetProperties() const
+@@ -718,8 +743,6 @@
+  * The data should be freed with free().
+  *
+  * @param process The process to read.
+- * @param datasize a pointer filled in with the number of bytes read, may be
+- *                 nullptr.
+  * @param exitcode a pointer filled in with the process exit code if the process
+  *                 has exited, may be nullptr.
+  * @returns the data or nullptr on failure; call GetError() for more
+@@ -735,7 +758,9 @@
+  */
+ inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
+ {
+-  return SDL_ReadProcess(process, exitcode);
++  size_t size = 0;
++  auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
++  return StringResult(CheckError(data), size);
+ }
+ 
+ inline StringResult Process::Read(int* exitcode)
+@@ -769,7 +794,7 @@
+  */
+ inline IOStreamRef GetProcessInput(ProcessParam process)
+ {
+-  return SDL_GetProcessInput(process);
++  return {SDL_GetProcessInput(process)};
+ }
+ 
+ inline IOStreamRef Process::GetInput()
+@@ -801,7 +826,7 @@
+  */
+ inline IOStreamRef GetProcessOutput(ProcessParam process)
+ {
+-  return SDL_GetProcessOutput(process);
++  return {SDL_GetProcessOutput(process)};
+ }
+ 
+ inline IOStreamRef Process::GetOutput()

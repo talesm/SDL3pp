@@ -1,96 +1,172 @@
-14c14
-<  * @defgroup CategoryCamera Category Camera
----
->  * @defgroup CategoryCamera Camera Support
-214,216c214,216
-<    *             nullptr.
-<    * @post an Camera object or nullptr on failure; call GetError() for more
-<    *       information.
----
->    *             std::nullopt.
->    * @post an Camera object on success..
->    * @throws Error on failure.
-346,347c346
-<    * @param spec the CameraSpec to be initialized by this function.
-<    * @throws Error on failure.
----
->    * @returns the CameraSpec or std::nullopt if waiting for user approval.
-388,389c387,388
-<    * @returns a new frame of video on success.
-<    * @throws Error on failure.
----
->    * @returns a new frame of video on success, nullptr if none is currently
->    *          available.
-397c396
-<   Surface AcquireFrame(Uint64* timestampNS);
----
->   Surface AcquireFrame(Uint64* timestampNS = nullptr);
-524,525d522
-<  * @param count a pointer filled in with the number of cameras returned, may be
-<  *              nullptr.
-527,528c524
-<  *          call GetError() for more information. This should be freed with
-<  *          free() when it is no longer needed.
----
->  *          call GetError() for more information.
-536c532,537
-< inline OwnArray<CameraID> GetCameras() { return SDL_GetCameras(); }
----
-> inline OwnArray<CameraID> GetCameras()
-> {
->   int count;
->   auto data = SDL_GetCameras(&count);
->   return OwnArray<CameraID>(data, count);
-> }
-560,561d560
-<  * @param count a pointer filled in with the number of elements in the list, may
-<  *              be nullptr.
-563,565c562
-<  *          failure; call GetError() for more information. This is a single
-<  *          allocation that should be freed with free() when it is no longer
-<  *          needed.
----
->  *          failure; call GetError() for more information.
-576c573,575
-<   return SDL_GetCameraSupportedFormats(instance_id);
----
->   int count;
->   auto data = SDL_GetCameraSupportedFormats(instance_id, &count);
->   return OwnArray<CameraSpec*>(data, count);
-652,654c651,653
-<  *             nullptr.
-<  * @returns an Camera object or nullptr on failure; call GetError() for more
-<  *          information.
----
->  *             std::nullopt.
->  * @returns an Camera object on success.
->  * @throws Error on failure.
-743c742
-<   return CheckError(SDL_GetCameraProperties(camera));
----
->   return {CheckError(SDL_GetCameraProperties(camera))};
-764,765c763
-<  * @param spec the CameraSpec to be initialized by this function.
-<  * @throws Error on failure.
----
->  * @returns the CameraSpec or std::nullopt if waiting for user approval.
-775c773,774
-<   return CheckError(SDL_GetCameraFormat(camera));
----
->   if (CameraSpec spec; SDL_GetCameraFormat(camera, &spec)) return spec;
->   return std::nullopt;
-814,815c813,814
-<  * @returns a new frame of video on success.
-<  * @throws Error on failure.
----
->  * @returns a new frame of video on success, nullptr if none is currently
->  *          available.
-823c822,823
-< inline Surface AcquireCameraFrame(CameraParam camera, Uint64* timestampNS)
----
-> inline Surface AcquireCameraFrame(CameraParam camera,
->                                   Uint64* timestampNS = nullptr)
-825c825
-<   return CheckError(SDL_AcquireCameraFrame(camera, timestampNS));
----
->   return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
+--- src/generated/SDL3pp_camera.h
++++ include/SDL3pp/SDL3pp_camera.h
+@@ -11,7 +11,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryCamera Category Camera
++ * @defgroup CategoryCamera Camera Support
+  *
+  * Video capture for the SDL library.
+  *
+@@ -211,9 +211,9 @@
+    *
+    * @param instance_id the camera device instance ID.
+    * @param spec the desired format for data the device will provide. Can be
+-   *             nullptr.
+-   * @post an Camera object or nullptr on failure; call GetError() for more
+-   *       information.
++   *             std::nullopt.
++   * @post an Camera object on success..
++   * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -343,8 +343,7 @@
+    * (or EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
+    * occasionally until it returns non-zero.
+    *
+-   * @param spec the CameraSpec to be initialized by this function.
+-   * @throws Error on failure.
++   * @returns the CameraSpec or std::nullopt if waiting for user approval.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -385,8 +384,8 @@
+    *
+    * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
+    *                    error. Can be nullptr.
+-   * @returns a new frame of video on success.
+-   * @throws Error on failure.
++   * @returns a new frame of video on success, nullptr if none is currently
++   *          available.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -394,7 +393,7 @@
+    *
+    * @sa Camera.ReleaseFrame
+    */
+-  Surface AcquireFrame(Uint64* timestampNS);
++  Surface AcquireFrame(Uint64* timestampNS = nullptr);
+ 
+   /**
+    * Release a frame of video acquired from a camera.
+@@ -521,11 +520,8 @@
+ /**
+  * Get a list of currently connected camera devices.
+  *
+- * @param count a pointer filled in with the number of cameras returned, may be
+- *              nullptr.
+  * @returns a 0 terminated array of camera instance IDs or nullptr on failure;
+- *          call GetError() for more information. This should be freed with
+- *          free() when it is no longer needed.
++ *          call GetError() for more information.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -533,7 +529,12 @@
+  *
+  * @sa Camera.Camera
+  */
+-inline OwnArray<CameraID> GetCameras() { return SDL_GetCameras(); }
++inline OwnArray<CameraID> GetCameras()
++{
++  int count;
++  auto data = SDL_GetCameras(&count);
++  return OwnArray<CameraID>(data, count);
++}
+ 
+ /**
+  * Get the list of native formats/sizes a camera supports.
+@@ -557,12 +558,8 @@
+  * warning popup.
+  *
+  * @param instance_id the camera device instance ID.
+- * @param count a pointer filled in with the number of elements in the list, may
+- *              be nullptr.
+  * @returns a nullptr terminated array of pointers to CameraSpec or nullptr on
+- *          failure; call GetError() for more information. This is a single
+- *          allocation that should be freed with free() when it is no longer
+- *          needed.
++ *          failure; call GetError() for more information.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -573,7 +570,9 @@
+  */
+ inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
+ {
+-  return SDL_GetCameraSupportedFormats(instance_id);
++  int count;
++  auto data = SDL_GetCameraSupportedFormats(instance_id, &count);
++  return OwnArray<CameraSpec*>(data, count);
+ }
+ 
+ /**
+@@ -649,9 +648,9 @@
+  *
+  * @param instance_id the camera device instance ID.
+  * @param spec the desired format for data the device will provide. Can be
+- *             nullptr.
+- * @returns an Camera object or nullptr on failure; call GetError() for more
+- *          information.
++ *             std::nullopt.
++ * @returns an Camera object on success.
++ * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -740,7 +739,7 @@
+  */
+ inline PropertiesRef GetCameraProperties(CameraParam camera)
+ {
+-  return CheckError(SDL_GetCameraProperties(camera));
++  return {CheckError(SDL_GetCameraProperties(camera))};
+ }
+ 
+ inline PropertiesRef Camera::GetProperties()
+@@ -761,8 +760,7 @@
+  * occasionally until it returns non-zero.
+  *
+  * @param camera opened camera device.
+- * @param spec the CameraSpec to be initialized by this function.
+- * @throws Error on failure.
++ * @returns the CameraSpec or std::nullopt if waiting for user approval.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -772,7 +770,8 @@
+  */
+ inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
+ {
+-  return CheckError(SDL_GetCameraFormat(camera));
++  if (CameraSpec spec; SDL_GetCameraFormat(camera, &spec)) return spec;
++  return std::nullopt;
+ }
+ 
+ inline std::optional<CameraSpec> Camera::GetFormat()
+@@ -811,8 +810,8 @@
+  * @param camera opened camera device.
+  * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
+  *                    error. Can be nullptr.
+- * @returns a new frame of video on success.
+- * @throws Error on failure.
++ * @returns a new frame of video on success, nullptr if none is currently
++ *          available.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -820,9 +819,10 @@
+  *
+  * @sa Camera.ReleaseFrame
+  */
+-inline Surface AcquireCameraFrame(CameraParam camera, Uint64* timestampNS)
++inline Surface AcquireCameraFrame(CameraParam camera,
++                                  Uint64* timestampNS = nullptr)
+ {
+-  return CheckError(SDL_AcquireCameraFrame(camera, timestampNS));
++  return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
+ }
+ 
+ inline Surface Camera::AcquireFrame(Uint64* timestampNS)

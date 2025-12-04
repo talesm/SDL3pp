@@ -1,81 +1,159 @@
-17c17
-<  * @defgroup CategoryJoystick Category Joystick
----
->  * @defgroup CategoryJoystick Joystick Support
-299,300c299,300
-<    * @returns a joystick identifier or nullptr on failure; call GetError() for
-<    *          more information.
----
->    * @returns an Joystick on success.
->    * @throws Error on failure.
-360a361,364
-> /**
->  * Represents tbe HatState for a Joystick.
->  *
->  */
-430,431c434
-<    * @post a joystick identifier or nullptr on failure; call GetError() for more
-<    *       information.
----
->    * @throws Error on failure.
-438c441
-<     : m_resource(SDL_OpenJoystick(instance_id))
----
->     : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
-565,568c568,569
-<    * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
-<    *          with the origin in the upper left.
-<    * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
-<    *          with the origin in the upper left.
----
->    * @param p the x, y coordinates of the finger on the touchpad, normalized 0
->    *          to 1, with the origin in the upper left.
-1128,1129d1128
-<  * @param count a pointer filled in with the number of joysticks returned, may
-<  *              be nullptr.
-1139c1138,1143
-< inline OwnArray<JoystickID> GetJoysticks() { return SDL_GetJoysticks(); }
----
-> inline OwnArray<JoystickID> GetJoysticks()
-> {
->   int count;
->   auto r = reinterpret_cast<JoystickID*>(SDL_GetJoysticks(&count));
->   return OwnArray<JoystickID>(r, count);
-> }
-1342,1343c1346,1347
-<  * @returns a joystick identifier or nullptr on failure; call GetError() for
-<  *          more information.
----
->  * @returns an Joystick on success.
->  * @throws Error on failure.
-1354,1357c1358
-< inline Joystick JoystickID::OpenJoystick()
-< {
-<   return SDL::Joystick.Joystick(m_joystickID);
-< }
----
-> inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
-1370c1371
-<   return CheckError(SDL_GetJoystickFromID(instance_id));
----
->   return {CheckError(SDL_GetJoystickFromID(instance_id))};
-1392c1393
-<   return CheckError(SDL_GetJoystickFromPlayerIndex(player_index));
----
->   return {CheckError(SDL_GetJoystickFromPlayerIndex(player_index))};
-1607,1610c1608,1609
-<  * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
-<  *          with the origin in the upper left.
-<  * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
-<  *          with the origin in the upper left.
----
->  * @param p the x, y coordinates of the finger on the touchpad, normalized 0 to
->  *          1, with the origin in the upper left.
-1624c1623
-<     joystick, touchpad, finger, down, p, pressure));
----
->     joystick, touchpad, finger, down, p.x, p.y, pressure));
-1698c1697
-<   return CheckError(SDL_GetJoystickProperties(joystick));
----
->   return {CheckError(SDL_GetJoystickProperties(joystick))};
+--- src/generated/SDL3pp_joystick.h
++++ include/SDL3pp/SDL3pp_joystick.h
+@@ -14,7 +14,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryJoystick Category Joystick
++ * @defgroup CategoryJoystick Joystick Support
+  *
+  * SDL joystick support.
+  *
+@@ -296,8 +296,8 @@
+    * The joystick subsystem must be initialized before a joystick can be opened
+    * for use.
+    *
+-   * @returns a joystick identifier or nullptr on failure; call GetError() for
+-   *          more information.
++   * @returns an Joystick on success.
++   * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+@@ -358,6 +358,10 @@
+ constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRELESS =
+   SDL_JOYSTICK_CONNECTION_WIRELESS; ///< JOYSTICK_CONNECTION_WIRELESS
+ 
++/**
++ * Represents tbe HatState for a Joystick.
++ *
++ */
+ using HatState = Uint8;
+ 
+ constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED; ///< CENTERED
+@@ -427,15 +431,14 @@
+    * for use.
+    *
+    * @param instance_id the joystick instance ID.
+-   * @post a joystick identifier or nullptr on failure; call GetError() for more
+-   *       information.
++   * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+    * @sa Joystick.Close
+    */
+   Joystick(JoystickID instance_id)
+-    : m_resource(SDL_OpenJoystick(instance_id))
++    : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+   {
+   }
+ 
+@@ -562,10 +565,8 @@
+    *                 update.
+    * @param finger the index of the finger on the touchpad to set.
+    * @param down true if the finger is pressed, false if the finger is released.
+-   * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
+-   *          with the origin in the upper left.
+-   * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
+-   *          with the origin in the upper left.
++   * @param p the x, y coordinates of the finger on the touchpad, normalized 0
++   *          to 1, with the origin in the upper left.
+    * @param pressure the pressure of the finger.
+    * @throws Error on failure.
+    *
+@@ -1125,8 +1126,6 @@
+ /**
+  * Get a list of currently connected joysticks.
+  *
+- * @param count a pointer filled in with the number of joysticks returned, may
+- *              be nullptr.
+  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
+  *          call GetError() for more information. This should be freed with
+  *          free() when it is no longer needed.
+@@ -1136,7 +1135,12 @@
+  * @sa HasJoystick
+  * @sa JoystickID.OpenJoystick
+  */
+-inline OwnArray<JoystickID> GetJoysticks() { return SDL_GetJoysticks(); }
++inline OwnArray<JoystickID> GetJoysticks()
++{
++  int count;
++  auto r = reinterpret_cast<JoystickID*>(SDL_GetJoysticks(&count));
++  return OwnArray<JoystickID>(r, count);
++}
+ 
+ /**
+  * Get the implementation dependent name of a joystick.
+@@ -1339,8 +1343,8 @@
+  * for use.
+  *
+  * @param instance_id the joystick instance ID.
+- * @returns a joystick identifier or nullptr on failure; call GetError() for
+- *          more information.
++ * @returns an Joystick on success.
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+@@ -1351,10 +1355,7 @@
+   return Joystick(instance_id);
+ }
+ 
+-inline Joystick JoystickID::OpenJoystick()
+-{
+-  return SDL::Joystick.Joystick(m_joystickID);
+-}
++inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
+ 
+ /**
+  * Get the Joystick associated with an instance ID, if it has been opened.
+@@ -1367,7 +1368,7 @@
+  */
+ inline JoystickRef GetJoystickFromID(JoystickID instance_id)
+ {
+-  return CheckError(SDL_GetJoystickFromID(instance_id));
++  return {CheckError(SDL_GetJoystickFromID(instance_id))};
+ }
+ 
+ inline JoystickRef JoystickID::GetJoystickFromID()
+@@ -1389,7 +1390,7 @@
+  */
+ inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
+ {
+-  return CheckError(SDL_GetJoystickFromPlayerIndex(player_index));
++  return {CheckError(SDL_GetJoystickFromPlayerIndex(player_index))};
+ }
+ 
+ /**
+@@ -1604,10 +1605,8 @@
+  * @param touchpad the index of the touchpad on the virtual joystick to update.
+  * @param finger the index of the finger on the touchpad to set.
+  * @param down true if the finger is pressed, false if the finger is released.
+- * @param x the x coordinate of the finger on the touchpad, normalized 0 to 1,
+- *          with the origin in the upper left.
+- * @param y the y coordinate of the finger on the touchpad, normalized 0 to 1,
+- *          with the origin in the upper left.
++ * @param p the x, y coordinates of the finger on the touchpad, normalized 0 to
++ *          1, with the origin in the upper left.
+  * @param pressure the pressure of the finger.
+  * @throws Error on failure.
+  *
+@@ -1621,7 +1620,7 @@
+                                        float pressure)
+ {
+   CheckError(SDL_SetJoystickVirtualTouchpad(
+-    joystick, touchpad, finger, down, p, pressure));
++    joystick, touchpad, finger, down, p.x, p.y, pressure));
+ }
+ 
+ inline void Joystick::SetVirtualTouchpad(int touchpad,
+@@ -1695,7 +1694,7 @@
+  */
+ inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
+ {
+-  return CheckError(SDL_GetJoystickProperties(joystick));
++  return {CheckError(SDL_GetJoystickProperties(joystick))};
+ }
+ 
+ inline PropertiesRef Joystick::GetProperties()

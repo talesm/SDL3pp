@@ -1,78 +1,144 @@
-17c17
-<  * @defgroup CategoryGamepad Category Gamepad
----
->  * @defgroup CategoryGamepad Gamepad Support
-494,495c494
-<    *          is available; call GetError() for more information. This should be
-<    *          freed with free() when it is no longer needed.
----
->    *          is available; call GetError() for more information.
-1223,1224d1221
-<  * @param count a pointer filled in with the number of mappings returned, can be
-<  *              nullptr.
-1226,1228c1223
-<  *          failure; call GetError() for more information. This is a single
-<  *          allocation that should be freed with free() when it is no longer
-<  *          needed.
----
->  *          failure; call GetError() for more information.
-1232c1227,1232
-< inline OwnArray<char*> GetGamepadMappings() { return SDL_GetGamepadMappings(); }
----
-> inline OwnArray<char*> GetGamepadMappings()
-> {
->   int count;
->   auto data = SDL_GetGamepadMappings(&count);
->   return OwnArray<char*>(data);
-> }
-1239,1240c1239
-<  *          information. This should be freed with free() when it is no longer
-<  *          needed.
----
->  *          information.
-1249c1248
-<   return SDL_GetGamepadMappingForGUID(guid);
----
->   return StringResult(SDL_GetGamepadMappingForGUID(guid));
-1259,1260c1258
-<  *          available; call GetError() for more information. This should be
-<  *          freed with free() when it is no longer needed.
----
->  *          available; call GetError() for more information.
-1271c1269
-<   return SDL_GetGamepadMapping(gamepad);
----
->   return StringResult(SDL_GetGamepadMapping(gamepad));
-1313,1314d1310
-<  * @param count a pointer filled in with the number of gamepads returned, may be
-<  *              nullptr.
-1316,1317c1312
-<  *          call GetError() for more information. This should be freed with
-<  *          free() when it is no longer needed.
----
->  *          call GetError() for more information.
-1324c1319,1324
-< inline OwnArray<JoystickID> GetGamepads() { return SDL_GetGamepads(); }
----
-> inline OwnArray<JoystickID> GetGamepads()
-> {
->   int count;
->   auto r = reinterpret_cast<JoystickID*>(SDL_GetGamepads(&count));
->   return OwnArray<JoystickID>(r, count);
-> }
-1564c1564
-<   return CheckError(SDL_GetGamepadFromID(instance_id));
----
->   return {CheckError(SDL_GetGamepadFromID(instance_id))};
-1580c1580
-<   return SDL_GetGamepadFromPlayerIndex(player_index);
----
->   return {SDL_GetGamepadFromPlayerIndex(player_index)};
-1609c1609
-<   return CheckError(SDL_GetGamepadProperties(gamepad));
----
->   return {CheckError(SDL_GetGamepadProperties(gamepad))};
-1980c1980
-<   return SDL_GetGamepadJoystick(gamepad);
----
->   return {SDL_GetGamepadJoystick(gamepad)};
+--- src/generated/SDL3pp_gamepad.h
++++ include/SDL3pp/SDL3pp_gamepad.h
+@@ -14,7 +14,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryGamepad Category Gamepad
++ * @defgroup CategoryGamepad Gamepad Support
+  *
+  * SDL provides a low-level joystick API, which just treats joysticks as an
+  * arbitrary pile of buttons, axes, and hat switches. If you're planning to
+@@ -491,8 +491,7 @@
+    * Details about mappings are discussed with AddGamepadMapping().
+    *
+    * @returns a string that has the gamepad's mapping or nullptr if no mapping
+-   *          is available; call GetError() for more information. This should be
+-   *          freed with free() when it is no longer needed.
++   *          is available; call GetError() for more information.
+    *
+    * @since This function is available since SDL 3.2.0.
+    *
+@@ -1220,24 +1219,24 @@
+ /**
+  * Get the current gamepad mappings.
+  *
+- * @param count a pointer filled in with the number of mappings returned, can be
+- *              nullptr.
+  * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
+- *          failure; call GetError() for more information. This is a single
+- *          allocation that should be freed with free() when it is no longer
+- *          needed.
++ *          failure; call GetError() for more information.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline OwnArray<char*> GetGamepadMappings() { return SDL_GetGamepadMappings(); }
++inline OwnArray<char*> GetGamepadMappings()
++{
++  int count;
++  auto data = SDL_GetGamepadMappings(&count);
++  return OwnArray<char*>(data);
++}
+ 
+ /**
+  * Get the gamepad mapping string for a given GUID.
+  *
+  * @param guid a structure containing the GUID for which a mapping is desired.
+  * @returns a mapping string or nullptr on failure; call GetError() for more
+- *          information. This should be freed with free() when it is no longer
+- *          needed.
++ *          information.
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+@@ -1246,7 +1245,7 @@
+  */
+ inline StringResult GetGamepadMappingForGUID(GUID guid)
+ {
+-  return SDL_GetGamepadMappingForGUID(guid);
++  return StringResult(SDL_GetGamepadMappingForGUID(guid));
+ }
+ 
+ /**
+@@ -1256,8 +1255,7 @@
+  *
+  * @param gamepad the gamepad you want to get the current mapping for.
+  * @returns a string that has the gamepad's mapping or nullptr if no mapping is
+- *          available; call GetError() for more information. This should be
+- *          freed with free() when it is no longer needed.
++ *          available; call GetError() for more information.
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+@@ -1268,7 +1266,7 @@
+  */
+ inline StringResult GetGamepadMapping(GamepadParam gamepad)
+ {
+-  return SDL_GetGamepadMapping(gamepad);
++  return StringResult(SDL_GetGamepadMapping(gamepad));
+ }
+ 
+ inline StringResult Gamepad::GetMapping()
+@@ -1310,18 +1308,20 @@
+ /**
+  * Get a list of currently connected gamepads.
+  *
+- * @param count a pointer filled in with the number of gamepads returned, may be
+- *              nullptr.
+  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
+- *          call GetError() for more information. This should be freed with
+- *          free() when it is no longer needed.
++ *          call GetError() for more information.
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+  * @sa HasGamepad
+  * @sa Gamepad.Gamepad
+  */
+-inline OwnArray<JoystickID> GetGamepads() { return SDL_GetGamepads(); }
++inline OwnArray<JoystickID> GetGamepads()
++{
++  int count;
++  auto r = reinterpret_cast<JoystickID*>(SDL_GetGamepads(&count));
++  return OwnArray<JoystickID>(r, count);
++}
+ 
+ /**
+  * Check if the given joystick is supported by the gamepad interface.
+@@ -1561,7 +1561,7 @@
+  */
+ inline GamepadRef GetGamepadFromID(JoystickID instance_id)
+ {
+-  return CheckError(SDL_GetGamepadFromID(instance_id));
++  return {CheckError(SDL_GetGamepadFromID(instance_id))};
+ }
+ 
+ /**
+@@ -1577,7 +1577,7 @@
+  */
+ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
+ {
+-  return SDL_GetGamepadFromPlayerIndex(player_index);
++  return {SDL_GetGamepadFromPlayerIndex(player_index)};
+ }
+ 
+ /**
+@@ -1606,7 +1606,7 @@
+  */
+ inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
+ {
+-  return CheckError(SDL_GetGamepadProperties(gamepad));
++  return {CheckError(SDL_GetGamepadProperties(gamepad))};
+ }
+ 
+ inline PropertiesRef Gamepad::GetProperties()
+@@ -1977,7 +1977,7 @@
+  */
+ inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
+ {
+-  return SDL_GetGamepadJoystick(gamepad);
++  return {SDL_GetGamepadJoystick(gamepad)};
+ }
+ 
+ inline JoystickRef Gamepad::GetJoystick()

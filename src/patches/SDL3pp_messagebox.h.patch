@@ -1,106 +1,177 @@
-11c11
-<  * @defgroup CategoryMessagebox Category Messagebox
----
->  * @defgroup CategoryMessagebox Message Boxes
-34a35,39
->  * @name MessageBoxFlags
->  * @{
->  */
-> 
-> /**
-57a63,69
-> /// @}
-> 
-> /**
->  * @name MessageBoxButtonFlags
->  * @{
->  */
-> 
-72a85,86
-> /// @}
-> 
-86a101,105
-> /**
->  * @name MessageBoxColorTypes
->  * @{
->  */
-> 
-107a127
-> /// @}
-140d159
-<    * @param numbuttons the value for numbuttons.
-144,145c163,164
-<   constexpr MessageBox(SDL_MessageBoxFlags flags,
-<                        SDL_Window* window,
----
->   constexpr MessageBox(MessageBoxFlags flags,
->                        WindowRef window,
-148,150c167,168
-<                        int numbuttons,
-<                        const SDL_MessageBoxButtonData* buttons,
-<                        const SDL_MessageBoxColorScheme* colorScheme)
----
->                        std::span<const MessageBoxButtonData> buttons,
->                        OptionalRef<const MessageBoxColorScheme> colorScheme)
-152c170
-<                     window,
----
->                     window.get(),
-155,156c173,174
-<                     numbuttons,
-<                     buttons,
----
->                     int(buttons.size()),
->                     buttons.data(),
-162,168d179
-<    * Check if valid.
-<    *
-<    * @returns True if valid state, false otherwise.
-<    */
-<   constexpr explicit operator bool() const { return *this != MessageBoxRaw{}; }
-< 
-<   /**
-266c277
-<    * @returns current buttons value.
----
->    * @returns current buttons.
-268c279
-<   constexpr const SDL_MessageBoxButtonData* GetButtons() const
----
->   constexpr std::span<const MessageBoxButtonData> GetButtons() const
-270c281,282
-<     return buttons;
----
->     if (numbuttons == 0) return {};
->     return std::span(buttons, size_t(numbuttons));
-279c291,292
-<   constexpr MessageBox& SetButtons(const SDL_MessageBoxButtonData* newButtons)
----
->   constexpr MessageBox& SetButtons(
->     std::span<const MessageBoxButtonData> newButtons)
-281c294,300
-<     buttons = newButtons;
----
->     if (newButtons.empty()) {
->       numbuttons = 0;
->       buttons = nullptr;
->     } else {
->       numbuttons = newButtons.size();
->       buttons = newButtons.data();
->     }
-290c309
-<   constexpr const SDL_MessageBoxColorScheme* GetColorScheme() const
----
->   constexpr const MessageBoxColorScheme* GetColorScheme() const
-302c321
-<     const SDL_MessageBoxColorScheme* newColorScheme)
----
->     OptionalRef<const MessageBoxColorScheme> newColorScheme)
-375c394
-<   CheckError(SDL_ShowMessageBox(messageboxdata, buttonid));
----
->   CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
-380c399
-<   SDL::ShowMessageBox(this, buttonid);
----
->   SDL::ShowMessageBox(*this, buttonid);
+--- src/generated/SDL3pp_messagebox.h
++++ include/SDL3pp/SDL3pp_messagebox.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryMessagebox Category Messagebox
++ * @defgroup CategoryMessagebox Message Boxes
+  *
+  * SDL offers a simple message box API, which is useful for simple alerts, such
+  * as informing the user when something fatal happens at startup without the
+@@ -32,6 +32,11 @@
+ struct MessageBox;
+ 
+ /**
++ * @name MessageBoxFlags
++ * @{
++ */
++
++/**
+  * Message box flags.
+  *
+  * If supported will display warning icon, etc.
+@@ -55,6 +60,13 @@
+ constexpr MessageBoxFlags MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT =
+   SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT; ///< buttons placed right to left
+ 
++/// @}
++
++/**
++ * @name MessageBoxButtonFlags
++ * @{
++ */
++
+ /**
+  * MessageBoxButtonData flags.
+  *
+@@ -70,6 +82,8 @@
+   SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT; ///< Marks the default button when
+                                            ///< escape is hit
+ 
++/// @}
++
+ /**
+  * Individual button data.
+  *
+@@ -84,6 +98,11 @@
+  */
+ using MessageBoxColor = SDL_MessageBoxColor;
+ 
++/**
++ * @name MessageBoxColorTypes
++ * @{
++ */
++
+ /// An enumeration of indices inside the colors array of MessageBoxColorScheme.
+ using MessageBoxColorType = SDL_MessageBoxColorType;
+ 
+@@ -105,6 +124,7 @@
+ constexpr MessageBoxColorType MESSAGEBOX_COLOR_COUNT =
+   SDL_MESSAGEBOX_COLOR_COUNT; ///< Size of the colors array of
+                               ///< MessageBoxColorScheme.
++/// @}
+ 
+ /**
+  * A set of colors to use for message box dialogs
+@@ -137,35 +157,26 @@
+    * @param window the value for window.
+    * @param title the value for title.
+    * @param message the value for message.
+-   * @param numbuttons the value for numbuttons.
+    * @param buttons the value for buttons.
+    * @param colorScheme the value for colorScheme.
+    */
+-  constexpr MessageBox(SDL_MessageBoxFlags flags,
+-                       SDL_Window* window,
++  constexpr MessageBox(MessageBoxFlags flags,
++                       WindowRef window,
+                        const char* title,
+                        const char* message,
+-                       int numbuttons,
+-                       const SDL_MessageBoxButtonData* buttons,
+-                       const SDL_MessageBoxColorScheme* colorScheme)
++                       std::span<const MessageBoxButtonData> buttons,
++                       OptionalRef<const MessageBoxColorScheme> colorScheme)
+     : MessageBoxRaw{flags,
+-                    window,
++                    window.get(),
+                     title,
+                     message,
+-                    numbuttons,
+-                    buttons,
++                    int(buttons.size()),
++                    buttons.data(),
+                     colorScheme}
+   {
+   }
+ 
+   /**
+-   * Check if valid.
+-   *
+-   * @returns True if valid state, false otherwise.
+-   */
+-  constexpr explicit operator bool() const { return *this != MessageBoxRaw{}; }
+-
+-  /**
+    * Get the flags.
+    *
+    * @returns current flags value.
+@@ -263,11 +274,12 @@
+   /**
+    * Get the buttons.
+    *
+-   * @returns current buttons value.
++   * @returns current buttons.
+    */
+-  constexpr const SDL_MessageBoxButtonData* GetButtons() const
++  constexpr std::span<const MessageBoxButtonData> GetButtons() const
+   {
+-    return buttons;
++    if (numbuttons == 0) return {};
++    return std::span(buttons, size_t(numbuttons));
+   }
+ 
+   /**
+@@ -276,9 +288,16 @@
+    * @param newButtons the new buttons value.
+    * @returns Reference to self.
+    */
+-  constexpr MessageBox& SetButtons(const SDL_MessageBoxButtonData* newButtons)
++  constexpr MessageBox& SetButtons(
++    std::span<const MessageBoxButtonData> newButtons)
+   {
+-    buttons = newButtons;
++    if (newButtons.empty()) {
++      numbuttons = 0;
++      buttons = nullptr;
++    } else {
++      numbuttons = newButtons.size();
++      buttons = newButtons.data();
++    }
+     return *this;
+   }
+ 
+@@ -287,7 +306,7 @@
+    *
+    * @returns current colorScheme value.
+    */
+-  constexpr const SDL_MessageBoxColorScheme* GetColorScheme() const
++  constexpr const MessageBoxColorScheme* GetColorScheme() const
+   {
+     return colorScheme;
+   }
+@@ -299,7 +318,7 @@
+    * @returns Reference to self.
+    */
+   constexpr MessageBox& SetColorScheme(
+-    const SDL_MessageBoxColorScheme* newColorScheme)
++    OptionalRef<const MessageBoxColorScheme> newColorScheme)
+   {
+     colorScheme = newColorScheme;
+     return *this;
+@@ -372,12 +391,12 @@
+  */
+ inline void ShowMessageBox(const MessageBoxRaw& messageboxdata, int* buttonid)
+ {
+-  CheckError(SDL_ShowMessageBox(messageboxdata, buttonid));
++  CheckError(SDL_ShowMessageBox(&messageboxdata, buttonid));
+ }
+ 
+ inline void MessageBox::Show(int* buttonid) const
+ {
+-  SDL::ShowMessageBox(this, buttonid);
++  SDL::ShowMessageBox(*this, buttonid);
+ }
+ 
+ /**

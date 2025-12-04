@@ -1,12 +1,25 @@
-12c12
-<  * @defgroup CategoryThread Category Thread
----
->  * @defgroup CategoryThread Thread Management
-137a138,144
-> /**
->  * The function passed to Thread.Thread() as the new thread's entry point.
->  *
->  * @returns a value that can be reported through Thread.Wait().
->  *
->  * @since This datatype is available since SDL 3.2.0.
->  */
+--- src/generated/SDL3pp_thread.h
++++ include/SDL3pp/SDL3pp_thread.h
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryThread Category Thread
++ * @defgroup CategoryThread Thread Management
+  *
+  * SDL offers cross-platform thread management functions. These are mostly
+  * concerned with starting threads, setting their priority, and dealing with
+@@ -135,6 +135,13 @@
+  */
+ using ThreadFunction = SDL_ThreadFunction;
+ 
++/**
++ * The function passed to Thread.Thread() as the new thread's entry point.
++ *
++ * @returns a value that can be reported through Thread.Wait().
++ *
++ * @since This datatype is available since SDL 3.2.0.
++ */
+ using ThreadCB = std::function<int()>;
+ 
+ /**

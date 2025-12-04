@@ -1,38 +1,82 @@
-12c12
-<  * @defgroup CategoryHints Category Hints
----
->  * @defgroup CategoryHints Configuration Variables
-27a28,29
-> #ifdef SDL3PP_DOC
-> 
-1272c1274
-<  * The variable can also take the form of @file, in which case the named file
----
->  * The variable can also take the form of file, in which case the named file
-4279a4282,4283
-> #endif // SDL3PP_DOC
-> 
-4501c4505
-<  * @param userdata a pointer to pass to the callback function.
----
->  * @returns a handle to be used on RemoveHintCallback()
-4512c4516,4522
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = CallbackWrapper<HintCB>;
->   auto cb = Wrapper::Wrap(std::move(callback));
->   if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
->     Wrapper::release(cb);
->     throw Error{};
->   }
->   return HintCallbackHandle{cb};
-4540,4542c4550
-<  * @param callback an HintCallback function that will be called when the hint
-<  *                 value changes.
-<  * @param userdata a pointer being passed to the callback function.
----
->  * @param handle the handle for the HintCallback function to be removed
-4552c4560
-<   static_assert(false, "Not implemented");
----
->   CallbackWrapper<HintCB>::release(handle);
+--- src/generated/SDL3pp_hints.h
++++ include/SDL3pp/SDL3pp_hints.h
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryHints Category Hints
++ * @defgroup CategoryHints Configuration Variables
+  *
+  * This file contains functions to set and get configuration hints, as well as
+  * listing each of them alphabetically.
+@@ -25,6 +25,8 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Specify the behavior of Alt+Tab while the keyboard is grabbed.
+  *
+@@ -1269,7 +1271,7 @@
+  *
+  * `0xAAAA/0xBBBB,0xCCCC/0xDDDD`
+  *
+- * The variable can also take the form of @file, in which case the named file
++ * The variable can also take the form of file, in which case the named file
+  * will be loaded and interpreted as the value of the variable.
+  *
+  * This hint can be set anytime.
+@@ -4277,6 +4279,8 @@
+  */
+ #define SDL_HINT_PEN_TOUCH_EVENTS "SDL_PEN_TOUCH_EVENTS"
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * An enumeration of hint priorities.
+  *
+@@ -4498,7 +4502,7 @@
+  * @param name the hint to watch.
+  * @param callback An HintCallback function that will be called when the hint
+  *                 value changes.
+- * @param userdata a pointer to pass to the callback function.
++ * @returns a handle to be used on RemoveHintCallback()
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -4509,7 +4513,13 @@
+  */
+ inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  using Wrapper = CallbackWrapper<HintCB>;
++  auto cb = Wrapper::Wrap(std::move(callback));
++  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
++    Wrapper::release(cb);
++    throw Error{};
++  }
++  return HintCallbackHandle{cb};
+ }
+ 
+ /**
+@@ -4537,9 +4547,7 @@
+  * Remove a function watching a particular hint.
+  *
+  * @param name the hint being watched.
+- * @param callback an HintCallback function that will be called when the hint
+- *                 value changes.
+- * @param userdata a pointer being passed to the callback function.
++ * @param handle the handle for the HintCallback function to be removed
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -4549,7 +4557,7 @@
+  */
+ inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
+ {
+-  static_assert(false, "Not implemented");
++  CallbackWrapper<HintCB>::release(handle);
+ }
+ 
+ /// @}

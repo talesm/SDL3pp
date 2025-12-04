@@ -1,54 +1,135 @@
-10c10
-<  * @defgroup CategoryAtomic Category Atomic
----
->  * @defgroup CategoryAtomic Atomic Operations
-90a91,92
-> #ifdef SDL3PP_DOC
-> 
-185a188,189
-> #endif // SDL3PP_DOC
-> 
-212a217,221
->   /**
->    * Wraps AtomicInt.
->    *
->    * @param value the value for value.
->    */
-301d309
-<    * @param a a pointer to an AtomicInt to increment.
-317d324
-<    * @param a a pointer to an AtomicInt to decrement.
-491c498,502
-< public:
----
->   /**
->    * Wraps value.
->    *
->    * @param value the value to be wrapped
->    */
-493c504
-<     : m_value(value)
----
->     : AtomicU32Raw(value)
-555a567
-> /// A type representing an atomic of an arbitrary pointer.
-561a574
->   /// Construcst from T
-577d589
-<    * @param a a pointer to a pointer.
-598d609
-<    * @param a a pointer to a pointer.
-617d627
-<    * @param a a pointer to a pointer.
-707c717
-<   return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
----
->   return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
-713c723
-<   return SDL::SetAtomicPointer(&m_value, v);
----
->   return SDL_SetAtomicPointer(&m_value, v);
-719c729
-<   return SDL::GetAtomicPointer(&m_value);
----
->   return SDL_GetAtomicPointer(&m_value);
+--- src/generated/SDL3pp_atomic.h
++++ include/SDL3pp/SDL3pp_atomic.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryAtomic Category Atomic
++ * @defgroup CategoryAtomic Atomic Operations
+  *
+  * Atomic operations.
+  *
+@@ -88,6 +88,8 @@
+  */
+ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Mark a compiler barrier.
+  *
+@@ -183,6 +185,8 @@
+ #define SDL_CPUPauseInstruction()                                              \
+   DoACPUPauseInACompilerAndArchitectureSpecificWay
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * A type representing an atomic integer value.
+  *
+@@ -210,6 +214,11 @@
+  */
+ struct AtomicInt : AtomicIntRaw
+ {
++  /**
++   * Wraps AtomicInt.
++   *
++   * @param value the value for value.
++   */
+   constexpr AtomicInt(int value)
+     : AtomicIntRaw(value)
+   {
+@@ -298,7 +307,6 @@
+    *
+    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+    *
+-   * @param a a pointer to an AtomicInt to increment.
+    * @returns the previous value of the atomic variable.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -314,7 +322,6 @@
+    *
+    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+    *
+-   * @param a a pointer to an AtomicInt to decrement.
+    * @returns true if the variable reached zero after decrementing, false
+    *          otherwise.
+    *
+@@ -488,9 +495,13 @@
+  */
+ struct AtomicU32 : AtomicU32Raw
+ {
+-public:
++  /**
++   * Wraps value.
++   *
++   * @param value the value to be wrapped
++   */
+   constexpr AtomicU32(Uint32 value)
+-    : m_value(value)
++    : AtomicU32Raw(value)
+   {
+   }
+ 
+@@ -553,12 +564,14 @@
+   Uint32 Get();
+ };
+ 
++/// A type representing an atomic of an arbitrary pointer.
+ template<class T>
+ class AtomicPointer
+ {
+   T* m_value;
+ 
+ public:
++  /// Construcst from T
+   constexpr AtomicPointer(T* value)
+     : m_value(value)
+   {
+@@ -574,7 +587,6 @@
+    * ***Note: If you don't know what this function is for, you shouldn't use
+    * it!***
+    *
+-   * @param a a pointer to a pointer.
+    * @param oldval the old pointer value.
+    * @param newval the new pointer value.
+    * @returns true if the pointer was set, false otherwise.
+@@ -595,7 +607,6 @@
+    * ***Note: If you don't know what this function is for, you shouldn't use
+    * it!***
+    *
+-   * @param a a pointer to a pointer.
+    * @param v the desired pointer value.
+    * @returns the previous value of the pointer.
+    *
+@@ -614,7 +625,6 @@
+    * ***Note: If you don't know what this function is for, you shouldn't use
+    * it!***
+    *
+-   * @param a a pointer to a pointer.
+    * @returns the current value of a pointer.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -704,19 +714,19 @@
+ template<class T>
+ inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
+ {
+-  return SDL::CompareAndSwapAtomicPointer(&m_value, oldval, newval);
++  return SDL_CompareAndSwapAtomicPointer(&m_value, oldval, newval);
+ }
+ 
+ template<class T>
+ inline T* AtomicPointer<T>::Set(T* v)
+ {
+-  return SDL::SetAtomicPointer(&m_value, v);
++  return SDL_SetAtomicPointer(&m_value, v);
+ }
+ 
+ template<class T>
+ inline T* AtomicPointer<T>::Get()
+ {
+-  return SDL::GetAtomicPointer(&m_value);
++  return SDL_GetAtomicPointer(&m_value);
+ }
+ 
+ /// @}
