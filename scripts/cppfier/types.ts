@@ -153,7 +153,13 @@ export interface ApiEntryTransform extends ApiEntryBase {
 export type FunctorSupport = "std" | "lightweight";
 
 export interface CallbackDefinition {
-  functorSupport?: false | FunctorSupport;
+  functorSupport?: boolean | FunctorSupport;
+
+  /// The return type. By default the raw callback's return type
+  type?: string;
+
+  /// The parameters. By default the raw callback's return type
+  parameters?: ApiParameters;
 }
 
 export interface ResourceDefinition {

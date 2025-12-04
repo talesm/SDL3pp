@@ -173,8 +173,7 @@ using TimerCallback = Uint64(SDLCALL*)(void* userdata,
  *
  * @sa TimerCallback
  */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+using TimerCB = MakeFrontCallback<Uint64(TimerID timerID, Uint64 interval)>;
 
 /**
  * Call a callback function at a future time.

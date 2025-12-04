@@ -6900,10 +6900,17 @@ const transform = {
           name: "TimerCallback",
           type: "SDL_NSTimerCallback",
           kind: "alias",
-          callback: "std",
-        },
-        "TimerCB": {
-          type: "std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>"
+          callback: {
+            functorSupport: "lightweight",
+            type: "std::chrono::nanoseconds",
+            parameters: [{
+              name: "timerID",
+              type: "TimerID"
+            }, {
+              name: "interval",
+              type: "std::chrono::nanoseconds"
+            }]
+          },
         },
         "SDL_AddTimerNS": {
           name: "AddTimer",
