@@ -132,6 +132,75 @@ struct CallbackWrapper<std::function<Result(Args...)>>
   }
 };
 
+template<class SELF, class TARGET>
+struct LightweightCallbackT;
+
+/**
+ * Lightweight wrapper.
+ *
+ * @tparam SELF a CRTP class
+ */
+template<class SELF, class R, class... PARAMS>
+struct LightweightCallbackT<SELF, R (*)(void*, PARAMS...)>
+{
+  /// The wrapper function
+  R (*wrapper)(void*, PARAMS...);
+
+  /// The wrapped data
+  void* data;
+
+  /// ctor
+  template<class F>
+  LightweightCallbackT(const F& func)
+  {
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](void* userdata, PARAMS... params) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
+  }
+};
+
+/**
+ * Lightweight wrapper.
+ *
+ * @tparam SELF a CRTP class
+ */
+template<class SELF, class R, class... PARAMS>
+struct LightweightCallbackT<SELF, R (*)(PARAMS..., void*)>
+{
+  /// The wrapper function
+  R (*wrapper)(PARAMS..., void*);
+
+  /// The wrapped data
+  void* data;
+
+  /// ctor
+  template<class F>
+  LightweightCallbackT(const F& func)
+  {
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](PARAMS... params, void* userdata) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
+  }
+};
+
 template<class F>
 struct MakeFrontCallback;
 
@@ -143,36 +212,22 @@ struct MakeFrontCallback;
  */
 template<class R, class... PARAMS>
 struct MakeFrontCallback<R(PARAMS...)>
+  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
+                         R (*)(void*, PARAMS...)>
 {
-  R (*wrapper)(void*, PARAMS...);
-  void* data;
-
   /// ctor
-  explicit(false) MakeFrontCallback(R (*func)(PARAMS...))
-    : wrapper([](void* userdata, PARAMS... params) {
-      auto f = static_cast<R (*)(PARAMS...)>(userdata);
-      return f(params...);
-    })
-    , data(static_cast<void*>(func))
+  template<std::invocable<PARAMS...> F>
+  MakeFrontCallback(const F& func)
+    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
+                           R (*)(void*, PARAMS...)>(func)
   {
   }
 
-  /// ctor
+  /// @private
   template<std::invocable<PARAMS...> F>
-  explicit(false) MakeFrontCallback(const F& func)
+  static R doCall(F& func, PARAMS... params)
   {
-    static_assert(sizeof(func) <= sizeof(data), "Function must fit data");
-    union PunAux
-    {
-      void* ptr;
-      F func;
-    };
-    wrapper = [](void* userdata, PARAMS... params) {
-      PunAux aux{.ptr = userdata};
-      return aux.func(params...);
-    };
-    PunAux aux{.func = func};
-    data = aux.ptr;
+    return func(params...);
   }
 };
 
@@ -187,36 +242,22 @@ struct MakeBackCallback;
  */
 template<class R, class... PARAMS>
 struct MakeBackCallback<R(PARAMS...)>
+  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
+                         R (*)(PARAMS..., void*)>
 {
-  R (*wrapper)(PARAMS..., void*);
-  void* data;
-
   /// ctor
-  explicit(false) MakeBackCallback(R (*func)(PARAMS...))
-    : wrapper([](PARAMS... params, void* userdata) {
-      auto f = static_cast<R (*)(PARAMS...)>(userdata);
-      return f(params...);
-    })
-    , data(static_cast<void*>(func))
+  template<std::invocable<PARAMS...> F>
+  MakeBackCallback(const F& func)
+    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
+                           R (*)(PARAMS..., void*)>(func)
   {
   }
 
-  /// ctor
+  /// @private
   template<std::invocable<PARAMS...> F>
-  explicit(false) MakeBackCallback(const F& func)
+  static R doCall(const F& func, PARAMS... params)
   {
-    static_assert(sizeof(func) <= sizeof(data), "Function must fit data");
-    union PunAux
-    {
-      void* ptr;
-      F func;
-    };
-    wrapper = [](PARAMS... params, void* userdata) {
-      PunAux aux{.ptr = userdata};
-      return aux.func(params...);
-    };
-    PunAux aux{.func = func};
-    data = aux.ptr;
+    return func(params...);
   }
 };
 
