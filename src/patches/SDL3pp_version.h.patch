@@ -1,14 +1,38 @@
-9c9
-<  * @defgroup CategoryVersion Category Version
----
->  * @defgroup CategoryVersion Querying SDL Version
-16a17,18
-> #ifdef SDL3PP_DOC
-> 
-24c26
-< #define SDL_MAJOR_VERSION 3
----
-> #define SDL_MAJOR_VERSION
-106a109,110
-> 
-> #endif // SDL3PP_DOC
+--- src/generated/SDL3pp_version.h
++++ include/SDL3pp/SDL3pp_version.h
+@@ -6,7 +6,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryVersion Category Version
++ * @defgroup CategoryVersion Querying SDL Version
+  *
+  * Functionality to query the current SDL version, both as headers the app was
+  * compiled against, and a library the app is linked to.
+@@ -14,6 +14,8 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * The current major version of SDL headers.
+  *
+@@ -21,7 +23,7 @@
+  *
+  * @since This macro is available since SDL 3.2.0.
+  */
+-#define SDL_MAJOR_VERSION 3
++#define SDL_MAJOR_VERSION
+ 
+ /**
+  * The current minor version of the SDL headers.
+@@ -105,6 +107,8 @@
+  */
+ #define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * Get the version of SDL that is linked against your program.
+  *

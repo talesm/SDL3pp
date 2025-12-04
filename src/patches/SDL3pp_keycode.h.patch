@@ -1,79 +1,118 @@
-11c11
-<  * @defgroup CategoryKeycode Category Keycode
----
->  * @defgroup CategoryKeycode Keyboard Keycodes
-35a36,54
-> // To remove clash with old names:
-> #undef KMOD_ALT
-> #undef KMOD_CAPS
-> #undef KMOD_CTRL
-> #undef KMOD_GUI
-> #undef KMOD_LALT
-> #undef KMOD_LCTRL
-> #undef KMOD_LGUI
-> #undef KMOD_LSHIFT
-> #undef KMOD_MODE
-> #undef KMOD_NONE
-> #undef KMOD_NUM
-> #undef KMOD_RALT
-> #undef KMOD_RCTRL
-> #undef KMOD_RGUI
-> #undef KMOD_RSHIFT
-> #undef KMOD_SCROLL
-> #undef KMOD_SHIFT
-> 
-160a180
->   /// Has Extended flag.
-162a183
->   /// Has Scancode flag.
-207c228
-< constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
----
-> constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
-209c230
-< constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
----
-> constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
-211c232
-< constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
----
-> constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
-213c234
-< constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
----
-> constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
-283c304
-< constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
----
-> constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
-353c374
-< constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
----
-> constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
-355c376
-< constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
----
-> constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
-864c885
-< constexpr bool SDLK_EXTENDED_MASK() { return ::SDLK_EXTENDED_MASK(); }
----
-> constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
-868c889
-<   return SDL::SDLK_EXTENDED_MASK(m_keycode);
----
->   return m_keycode & SDLK_EXTENDED_MASK;
-871c892
-< constexpr bool SDLK_SCANCODE_MASK() { return ::SDLK_SCANCODE_MASK(); }
----
-> constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
-875c896
-<   return SDL::SDLK_SCANCODE_MASK(m_keycode);
----
->   return m_keycode & SDLK_SCANCODE_MASK;
-877a899,904
-> /**
->  * Transform scancode to keycode
->  *
->  * @param x scancode
->  * @return keycode
->  */
+--- src/generated/SDL3pp_keycode.h
++++ include/SDL3pp/SDL3pp_keycode.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryKeycode Category Keycode
++ * @defgroup CategoryKeycode Keyboard Keycodes
+  *
+  * Defines constants which identify keyboard keys and modifiers.
+  *
+@@ -33,6 +33,25 @@
+  */
+ using Keymod = Uint16;
+ 
++// To remove clash with old names:
++#undef KMOD_ALT
++#undef KMOD_CAPS
++#undef KMOD_CTRL
++#undef KMOD_GUI
++#undef KMOD_LALT
++#undef KMOD_LCTRL
++#undef KMOD_LGUI
++#undef KMOD_LSHIFT
++#undef KMOD_MODE
++#undef KMOD_NONE
++#undef KMOD_NUM
++#undef KMOD_RALT
++#undef KMOD_RCTRL
++#undef KMOD_RGUI
++#undef KMOD_RSHIFT
++#undef KMOD_SCROLL
++#undef KMOD_SHIFT
++
+ constexpr Keymod KMOD_NONE = SDL_KMOD_NONE; ///< no modifier is applicable.
+ 
+ constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT; ///< the left Shift key is down.
+@@ -158,8 +177,10 @@
+    */
+   constexpr operator KeycodeRaw() const { return m_keycode; }
+ 
++  /// Has Extended flag.
+   constexpr bool IsExtended() const;
+ 
++  /// Has Scancode flag.
+   constexpr bool IsScancode() const;
+ 
+   /**
+@@ -204,13 +225,13 @@
+ 
+ constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
+ 
+-constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
++constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '\\r'
+ 
+-constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
++constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '\\x1B'
+ 
+-constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
++constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '\\b'
+ 
+-constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
++constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '\\t'
+ 
+ constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
+ 
+@@ -280,7 +301,7 @@
+ 
+ constexpr Keycode KEYCODE_LEFTBRACKET = SDLK_LEFTBRACKET; ///< '['
+ 
+-constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
++constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\b'
+ 
+ constexpr Keycode KEYCODE_RIGHTBRACKET = SDLK_RIGHTBRACKET; ///< ']'
+ 
+@@ -350,9 +371,9 @@
+ 
+ constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
+ 
+-constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
++constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '\\x7F'
+ 
+-constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
++constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '\\xB1'
+ 
+ constexpr Keycode KEYCODE_CAPSLOCK =
+   SDLK_CAPSLOCK; ///< ScancodeToKeycode(SCANCODE_CAPSLOCK)
+@@ -861,20 +882,26 @@
+ 
+ constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
+ 
+-constexpr bool SDLK_EXTENDED_MASK() { return ::SDLK_EXTENDED_MASK(); }
++constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK; ///< EXTENDED_MASK
+ 
+ constexpr bool Keycode::IsExtended() const
+ {
+-  return SDL::SDLK_EXTENDED_MASK(m_keycode);
++  return m_keycode & SDLK_EXTENDED_MASK;
+ }
+ 
+-constexpr bool SDLK_SCANCODE_MASK() { return ::SDLK_SCANCODE_MASK(); }
++constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK; ///< SCANCODE_MASK
+ 
+ constexpr bool Keycode::IsScancode() const
+ {
+-  return SDL::SDLK_SCANCODE_MASK(m_keycode);
++  return m_keycode & SDLK_SCANCODE_MASK;
+ }
+ 
++/**
++ * Transform scancode to keycode
++ *
++ * @param x scancode
++ * @return keycode
++ */
+ constexpr Keycode ScancodeToKeycode(Scancode x)
+ {
+   return SDL_SCANCODE_TO_KEYCODE(x);

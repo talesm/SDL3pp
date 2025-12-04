@@ -1,10 +1,29 @@
-9c9
-<  * @defgroup CategoryIntrinsics Category Intrinsics
----
->  * @defgroup CategoryIntrinsics Compiler Intrinsics Detection
-34a35,36
-> #ifdef SDL3PP_DOC
-> 
-251a254,255
-> 
-> #endif // SDL3PP_DOC
+--- src/generated/SDL3pp_intrin.h
++++ include/SDL3pp/SDL3pp_intrin.h
+@@ -6,7 +6,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryIntrinsics Category Intrinsics
++ * @defgroup CategoryIntrinsics Compiler Intrinsics Detection
+  *
+  * SDL does some preprocessor gymnastics to determine if any CPU-specific
+  * compiler intrinsics are available, as this is not necessarily an easy thing
+@@ -32,6 +32,8 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
+  *
+@@ -250,6 +252,8 @@
+  */
+ #define SDL_TARGETING(x) __attribute__((target(x)))
+ 
++#endif // SDL3PP_DOC
++
+ /// @}
+ 
+ } // namespace SDL

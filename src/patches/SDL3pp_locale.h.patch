@@ -1,20 +1,35 @@
-10c10
-<  * @defgroup CategoryLocale Category Locale
----
->  * @defgroup CategoryLocale Locale Info
-68,73c68,69
-<  * @param count a pointer filled in with the number of locales returned, may be
-<  *              nullptr.
-<  * @returns a nullptr terminated array of locale pointers, or nullptr on
-<  *          failure; call GetError() for more information. This is a single
-<  *          allocation that should be freed with free() when it is no longer
-<  *          needed.
----
->  * @returns a nullptr terminated array of locale pointers on success.
->  * @throws Error on failure.
-79c75,77
-<   return SDL_GetPreferredLocales();
----
->   int count = 0;
->   auto data = SDL_GetPreferredLocales(&count);
->   return OwnArray<Locale*>{CheckError(data), size_t(count)};
+--- src/generated/SDL3pp_locale.h
++++ include/SDL3pp/SDL3pp_locale.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryLocale Category Locale
++ * @defgroup CategoryLocale Locale Info
+  *
+  * SDL locale services.
+  *
+@@ -65,18 +65,16 @@
+  * possible, and you can call this function again to get an updated copy of
+  * preferred locales.
+  *
+- * @param count a pointer filled in with the number of locales returned, may be
+- *              nullptr.
+- * @returns a nullptr terminated array of locale pointers, or nullptr on
+- *          failure; call GetError() for more information. This is a single
+- *          allocation that should be freed with free() when it is no longer
+- *          needed.
++ * @returns a nullptr terminated array of locale pointers on success.
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+ inline OwnArray<Locale*> GetPreferredLocales()
+ {
+-  return SDL_GetPreferredLocales();
++  int count = 0;
++  auto data = SDL_GetPreferredLocales(&count);
++  return OwnArray<Locale*>{CheckError(data), size_t(count)};
+ }
+ 
+ /// @}

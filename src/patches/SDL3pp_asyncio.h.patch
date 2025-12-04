@@ -1,121 +1,196 @@
-11c11
-<  * @defgroup CategoryAsyncIO Category AsyncIO
----
->  * @defgroup CategoryAsyncIO Async I/O
-249c249,255
-<   ~AsyncIO() { SDL_CloseAsyncIO(m_resource); }
----
->   ~AsyncIO()
->   {
->     if (m_resource) {
->       LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
->                                   (void*)(m_resource));
->     }
->   }
-327c333
-<   bool Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata);
----
->   bool Close(bool flush, AsyncIOQueueParam queue, void* userdata);
-511,513d516
-<   /// Default ctor
-<   constexpr AsyncIOQueue() = default;
-< 
-634,636c637,638
-<    * @param outcome details of a finished task will be written here. May not be
-<    *                nullptr.
-<    * @returns true if a task has completed, false otherwise.
----
->    * @returns details of a finished task if a task has completed, std::nullopt
->    *          otherwise.
-675,679c677,679
-<    * @param outcome details of a finished task will be written here. May not be
-<    *                nullptr.
-<    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-<    *                  indefinitely.
-<    * @returns true if task has completed, false otherwise.
----
->    * @param timeout the maximum time to wait, in milliseconds.
->    * @returns details of a finished task if a task has completed, std::nullopt
->    *          otherwise.
-718,722c718,719
-<    * @param outcome details of a finished task will be written here. May not be
-<    *                nullptr.
-<    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-<    *                  indefinitely.
-<    * @returns true if task has completed, false otherwise.
----
->    * @returns details of a finished task if a task has completed, std::nullopt
->    *          otherwise.
-987c984,985
-<  * @throws Error on failure.
----
->  * @returns true on success or false on failure; call GetError() for more
->  *          information.
-994c992
-< inline void CloseAsyncIO(AsyncIORaw asyncio,
----
-> inline bool CloseAsyncIO(AsyncIORaw asyncio,
-996c994
-<                          SDL_AsyncIOQueue* queue,
----
->                          AsyncIOQueueParam queue,
-999c997
-<   CheckError(SDL_CloseAsyncIO(asyncio, flush, queue, userdata));
----
->   return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
-1002c1000
-< inline bool AsyncIO::Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata)
----
-> inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
-1004c1002
-<   return CloseAsyncIO(release());
----
->   return CloseAsyncIO(release(), flush, queue, userdata);
-1074,1076c1072,1073
-<  * @param outcome details of a finished task will be written here. May not be
-<  *                nullptr.
-<  * @returns true if a task has completed, false otherwise.
----
->  * @returns details of a finished task if a task has completed, std::nullopt
->  *          otherwise.
-1086c1083,1086
-<   return SDL_GetAsyncIOResult(queue);
----
->   if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
->     return outcome;
->   }
->   return std::nullopt;
-1123,1127c1123,1125
-<  * @param outcome details of a finished task will be written here. May not be
-<  *                nullptr.
-<  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-<  *                  indefinitely.
-<  * @returns true if task has completed, false otherwise.
----
->  * @param timeout the maximum time to wait, in milliseconds.
->  * @returns details of a finished task if a task has completed, std::nullopt
->  *          otherwise.
-1138c1136,1140
-<   return SDL_WaitAsyncIOResult(queue, timeout);
----
->   if (AsyncIOOutcome outcome;
->       SDL_WaitAsyncIOResult(queue, &outcome, timeout.count())) {
->     return outcome;
->   }
->   return std::nullopt;
-1170,1174c1172,1173
-<  * @param outcome details of a finished task will be written here. May not be
-<  *                nullptr.
-<  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-<  *                  indefinitely.
-<  * @returns true if task has completed, false otherwise.
----
->  * @returns details of a finished task if a task has completed, std::nullopt
->  *          otherwise.
-1184c1183,1186
-<   static_assert(false, "Not implemented");
----
->   if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {
->     return outcome;
->   }
->   return std::nullopt;
+--- src/generated/SDL3pp_asyncio.h
++++ include/SDL3pp/SDL3pp_asyncio.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryAsyncIO Category AsyncIO
++ * @defgroup CategoryAsyncIO Async I/O
+  *
+  * SDL offers a way to perform I/O asynchronously. This allows an app to read or
+  * write files without waiting for data to actually transfer; the functions that
+@@ -246,7 +246,13 @@
+   }
+ 
+   /// Destructor
+-  ~AsyncIO() { SDL_CloseAsyncIO(m_resource); }
++  ~AsyncIO()
++  {
++    if (m_resource) {
++      LOG_CATEGORY_ERROR.LogDebug("AsyncIO ID was not properly Destroyed: {}",
++                                  (void*)(m_resource));
++    }
++  }
+ 
+   /// Assignment operator.
+   AsyncIO& operator=(AsyncIO other)
+@@ -324,7 +330,7 @@
+    *
+    * @since This function is available since SDL 3.2.0.
+    */
+-  bool Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata);
++  bool Close(bool flush, AsyncIOQueueParam queue, void* userdata);
+ 
+   /**
+    * Use this function to get the size of the data stream in an AsyncIO.
+@@ -508,9 +514,6 @@
+   AsyncIOQueueRaw m_resource = nullptr;
+ 
+ public:
+-  /// Default ctor
+-  constexpr AsyncIOQueue() = default;
+-
+   /**
+    * Constructs from AsyncIOQueueParam.
+    *
+@@ -631,9 +634,8 @@
+    * It is safe for multiple threads to call this function on the same queue at
+    * once; a completed task will only go to one of the threads.
+    *
+-   * @param outcome details of a finished task will be written here. May not be
+-   *                nullptr.
+-   * @returns true if a task has completed, false otherwise.
++   * @returns details of a finished task if a task has completed, std::nullopt
++   *          otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -672,11 +674,9 @@
+    * polling, it is possible to have a timeout of -1 to wait forever, and use
+    * AsyncIOQueue.Signal() to wake up the waiting threads later.
+    *
+-   * @param outcome details of a finished task will be written here. May not be
+-   *                nullptr.
+-   * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+-   *                  indefinitely.
+-   * @returns true if task has completed, false otherwise.
++   * @param timeout the maximum time to wait, in milliseconds.
++   * @returns details of a finished task if a task has completed, std::nullopt
++   *          otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -715,11 +715,8 @@
+    * polling, it is possible to have a timeout of -1 to wait forever, and use
+    * AsyncIOQueue.Signal() to wake up the waiting threads later.
+    *
+-   * @param outcome details of a finished task will be written here. May not be
+-   *                nullptr.
+-   * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+-   *                  indefinitely.
+-   * @returns true if task has completed, false otherwise.
++   * @returns details of a finished task if a task has completed, std::nullopt
++   *          otherwise.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -984,24 +981,25 @@
+  * @param queue a queue to add the new AsyncIO to.
+  * @param userdata an app-defined pointer that will be provided with the task
+  *                 results.
+- * @throws Error on failure.
++ * @returns true on success or false on failure; call GetError() for more
++ *          information.
+  *
+  * @threadsafety It is safe to call this function from any thread, but two
+  *               threads should not attempt to close the same object.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline void CloseAsyncIO(AsyncIORaw asyncio,
++inline bool CloseAsyncIO(AsyncIORaw asyncio,
+                          bool flush,
+-                         SDL_AsyncIOQueue* queue,
++                         AsyncIOQueueParam queue,
+                          void* userdata)
+ {
+-  CheckError(SDL_CloseAsyncIO(asyncio, flush, queue, userdata));
++  return SDL_CloseAsyncIO(asyncio, flush, queue, userdata);
+ }
+ 
+-inline bool AsyncIO::Close(bool flush, SDL_AsyncIOQueue* queue, void* userdata)
++inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
+ {
+-  return CloseAsyncIO(release());
++  return CloseAsyncIO(release(), flush, queue, userdata);
+ }
+ 
+ /**
+@@ -1071,9 +1069,8 @@
+  * once; a completed task will only go to one of the threads.
+  *
+  * @param queue the async I/O task queue to query.
+- * @param outcome details of a finished task will be written here. May not be
+- *                nullptr.
+- * @returns true if a task has completed, false otherwise.
++ * @returns details of a finished task if a task has completed, std::nullopt
++ *          otherwise.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1083,7 +1080,10 @@
+  */
+ inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueParam queue)
+ {
+-  return SDL_GetAsyncIOResult(queue);
++  if (AsyncIOOutcome outcome; SDL_GetAsyncIOResult(queue, &outcome)) {
++    return outcome;
++  }
++  return std::nullopt;
+ }
+ 
+ inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
+@@ -1120,11 +1120,9 @@
+  * AsyncIOQueue.Signal() to wake up the waiting threads later.
+  *
+  * @param queue the async I/O task queue to wait on.
+- * @param outcome details of a finished task will be written here. May not be
+- *                nullptr.
+- * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+- *                  indefinitely.
+- * @returns true if task has completed, false otherwise.
++ * @param timeout the maximum time to wait, in milliseconds.
++ * @returns details of a finished task if a task has completed, std::nullopt
++ *          otherwise.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1135,7 +1133,11 @@
+ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
+                                                        Milliseconds timeout)
+ {
+-  return SDL_WaitAsyncIOResult(queue, timeout);
++  if (AsyncIOOutcome outcome;
++      SDL_WaitAsyncIOResult(queue, &outcome, timeout.count())) {
++    return outcome;
++  }
++  return std::nullopt;
+ }
+ 
+ /**
+@@ -1167,11 +1169,8 @@
+  * AsyncIOQueue.Signal() to wake up the waiting threads later.
+  *
+  * @param queue the async I/O task queue to wait on.
+- * @param outcome details of a finished task will be written here. May not be
+- *                nullptr.
+- * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+- *                  indefinitely.
+- * @returns true if task has completed, false otherwise.
++ * @returns details of a finished task if a task has completed, std::nullopt
++ *          otherwise.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1181,7 +1180,10 @@
+  */
+ inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue)
+ {
+-  static_assert(false, "Not implemented");
++  if (AsyncIOOutcome outcome; SDL_WaitAsyncIOResult(queue, &outcome, -1)) {
++    return outcome;
++  }
++  return std::nullopt;
+ }
+ 
+ inline std::optional<AsyncIOOutcome> AsyncIOQueue::WaitResult(

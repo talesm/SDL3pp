@@ -1,73 +1,121 @@
-11c11
-<  * @defgroup CategoryTray Category Tray
----
->  * @defgroup CategoryTray System Tray
-57a58,60
-> struct TrayMenu;
-> 
-> /// Alias to raw representation for TrayMenu.
-398,399d400
-<    * @param count An optional pointer to obtain the number of entries in the
-<    *              menu.
-440a442,465
->   /**
->    * Appends a tray entry.
->    *
->    * If label is nullptr, the entry will be a separator. Many functions won't
->    * work for an entry that is a separator.
->    *
->    * An entry does not need to be destroyed; it will be destroyed with the tray.
->    *
->    * @param label the text to be displayed on the entry, in UTF-8 encoding, or
->    *              nullptr for a separator.
->    * @param flags a combination of flags, some of which are mandatory.
->    * @returns the newly created entry, or nullptr if pos is out of bounds.
->    *
->    * @threadsafety This function should be called on the thread that created the
->    *               tray.
->    *
->    * @since This function is available since SDL 3.2.0.
->    *
->    * @sa TrayMenu.InsertEntry
->    * @sa TrayEntryFlags
->    * @sa TrayMenu.GetEntries
->    * @sa TrayEntry.Remove
->    * @sa TrayEntry.GetParent
->    */
-714a740,752
->   /**
->    * Sets a callback to be invoked when the entry is selected.
->    *
->    * @param callback a callback to be invoked when the entry is selected.
->    *
->    * @threadsafety This function should be called on the thread that created the
->    *               tray.
->    *
->    * @since This function is available since SDL 3.2.0.
->    *
->    * @sa TrayMenu.GetEntries
->    * @sa TrayMenu.InsertEntry
->    */
-973d1010
-<  * @param count An optional pointer to obtain the number of entries in the menu.
-988c1025,1028
-<   return SDL_GetTrayEntries(menu);
----
->   int count;
->   auto entries = SDL_GetTrayEntries(menu, &count);
->   return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
->                               size_t(count)};
-1366a1407,1419
-> 
-> inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
-> {
->   return InsertEntry(-1, std::move(label), flags);
-> }
-> 
-> inline void TrayEntry::SetCallback(TrayCB callback)
-> {
->   using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
->   SetCallback([](void* userdata,
->                  SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
->               Wrapper::Wrap(get(), std::move(callback)));
-> }
+--- src/generated/SDL3pp_tray.h
++++ include/SDL3pp/SDL3pp_tray.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryTray Category Tray
++ * @defgroup CategoryTray System Tray
+  *
+  * SDL offers a way to add items to the "system tray" (more correctly called the
+  * "notification area" on Windows). On platforms that offer this concept, an SDL
+@@ -55,6 +55,9 @@
+ };
+ 
+ /// Alias to raw representation for TrayMenu.
++struct TrayMenu;
++
++/// Alias to raw representation for TrayMenu.
+ using TrayMenuRaw = SDL_TrayMenu*;
+ 
+ // Forward decl
+@@ -395,8 +398,6 @@
+   /**
+    * Returns a list of entries in the menu, in order.
+    *
+-   * @param count An optional pointer to obtain the number of entries in the
+-   *              menu.
+    * @returns a nullptr-terminated list of entries within the given menu. The
+    *          pointer becomes invalid when any function that inserts or deletes
+    *          entries in the menu is called.
+@@ -438,6 +439,30 @@
+    */
+   TrayEntry InsertEntry(int pos, StringParam label, TrayEntryFlags flags);
+ 
++  /**
++   * Appends a tray entry.
++   *
++   * If label is nullptr, the entry will be a separator. Many functions won't
++   * work for an entry that is a separator.
++   *
++   * An entry does not need to be destroyed; it will be destroyed with the tray.
++   *
++   * @param label the text to be displayed on the entry, in UTF-8 encoding, or
++   *              nullptr for a separator.
++   * @param flags a combination of flags, some of which are mandatory.
++   * @returns the newly created entry, or nullptr if pos is out of bounds.
++   *
++   * @threadsafety This function should be called on the thread that created the
++   *               tray.
++   *
++   * @since This function is available since SDL 3.2.0.
++   *
++   * @sa TrayMenu.InsertEntry
++   * @sa TrayEntryFlags
++   * @sa TrayMenu.GetEntries
++   * @sa TrayEntry.Remove
++   * @sa TrayEntry.GetParent
++   */
+   TrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
+ 
+   /**
+@@ -712,6 +737,19 @@
+    */
+   bool GetEnabled() const;
+ 
++  /**
++   * Sets a callback to be invoked when the entry is selected.
++   *
++   * @param callback a callback to be invoked when the entry is selected.
++   *
++   * @threadsafety This function should be called on the thread that created the
++   *               tray.
++   *
++   * @since This function is available since SDL 3.2.0.
++   *
++   * @sa TrayMenu.GetEntries
++   * @sa TrayMenu.InsertEntry
++   */
+   void SetCallback(TrayCB callback);
+ 
+   /**
+@@ -970,7 +1008,6 @@
+  * Returns a list of entries in the menu, in order.
+  *
+  * @param menu The menu to get entries from.
+- * @param count An optional pointer to obtain the number of entries in the menu.
+  * @returns a nullptr-terminated list of entries within the given menu. The
+  *          pointer becomes invalid when any function that inserts or deletes
+  *          entries in the menu is called.
+@@ -985,7 +1022,10 @@
+  */
+ inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
+ {
+-  return SDL_GetTrayEntries(menu);
++  int count;
++  auto entries = SDL_GetTrayEntries(menu, &count);
++  return std::span<TrayEntry>{reinterpret_cast<TrayEntry*>(entries),
++                              size_t(count)};
+ }
+ 
+ inline std::span<TrayEntry> TrayMenu::GetEntries()
+@@ -1365,6 +1405,19 @@
+ 
+ /// @}
+ 
++inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
++{
++  return InsertEntry(-1, std::move(label), flags);
++}
++
++inline void TrayEntry::SetCallback(TrayCB callback)
++{
++  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
++  SetCallback([](void* userdata,
++                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
++              Wrapper::Wrap(get(), std::move(callback)));
++}
++
+ } // namespace SDL
+ 
+ #endif /* SDL3PP_TRAY_H_ */

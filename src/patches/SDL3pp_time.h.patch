@@ -1,88 +1,165 @@
-10c10
-<  * @defgroup CategoryTime Category Time
----
->  * @defgroup CategoryTime Date and Time
-87d86
-<    * @param dt the resulting DateTime.
-96d94
-<     : DateTimeRaw(CheckError(SDL_TimeToDateTime(ticks, localTime)))
-97a96
->     CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
-105c104,108
-<   constexpr explicit operator bool() const { return *this != DateTimeRaw{}; }
----
->   constexpr explicit operator bool() const
->   {
->     return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
->            second != 0 || nanosecond != 0;
->   }
-284,285c287
-<    * @param dt the source DateTime.
-<    * @param ticks the resulting Time.
----
->    * @returns time on success.
-346c348,353
-< inline Time Time::Current() { return CheckError(SDL_GetCurrentTime(m_time)); }
----
-> inline Time Time::Current()
-> {
->   SDL_Time t;
->   CheckError(SDL_GetCurrentTime(&t));
->   return Time::FromNS(t);
-> }
-353d359
-<  * @param dt the resulting DateTime.
-356a363
->  * @returns the resulting DateTime.
-373c380
-<  * @param ticks the resulting Time.
----
->  * @returns the resulting Time.
-380c387,389
-<   return CheckError(SDL_DateTimeToTime(dt));
----
->   SDL_Time t;
->   CheckError(SDL_DateTimeToTime(&dt, &t));
->   return Time::FromNS(t);
-383c392
-< inline DateTime::operator Time() const { return SDL::DateTimeToTime(); }
----
-> inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
-387c396
-<   SDL_TimeToWindows(m_time, dwLowDateTime, dwHighDateTime);
----
->   SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
-392c401
-<   return SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime);
----
->   return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));
-400,401c409,410
-<  * @returns the number of days in the requested month or -1 on failure; call
-<  *          GetError() for more information.
----
->  * @returns the number of days in the requested month.
->  * @throws Error on failure.
-407c416
-<   return SDL_GetDaysInMonth(year, month);
----
->   return CheckError(SDL_GetDaysInMonth(year, month), -1);
-416,417c425,426
-<  * @returns the day of year [0-365] if the date is valid or -1 on failure; call
-<  *          GetError() for more information.
----
->  * @returns the day of year [0-365] if the date is valid.
->  * @throws Error on failure.
-423c432
-<   return SDL_GetDayOfYear(year, month, day);
----
->   return CheckError(SDL_GetDayOfYear(year, month, day), -1);
-432,433c441,442
-<  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or -1
-<  *          on failure; call GetError() for more information.
----
->  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
->  * @throws Error on failure.
-439c448
-<   return SDL_GetDayOfWeek(year, month, day);
----
->   return CheckError(SDL_GetDayOfWeek(year, month, day), -1);
+--- src/generated/SDL3pp_time.h
++++ include/SDL3pp/SDL3pp_time.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryTime Category Time
++ * @defgroup CategoryTime Date and Time
+  *
+  * SDL realtime clock and date/time routines.
+  *
+@@ -84,7 +84,6 @@
+    * DateTime format.
+    *
+    * @param ticks the Time to be converted.
+-   * @param dt the resulting DateTime.
+    * @param localTime the resulting DateTime will be expressed in local time if
+    *                  true, otherwise it will be in Universal Coordinated Time
+    *                  (UTC).
+@@ -93,8 +92,8 @@
+    * @since This function is available since SDL 3.2.0.
+    */
+   DateTime(Time ticks, bool localTime = true)
+-    : DateTimeRaw(CheckError(SDL_TimeToDateTime(ticks, localTime)))
+   {
++    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
+   }
+ 
+   /**
+@@ -102,7 +101,11 @@
+    *
+    * @returns True if valid state, false otherwise.
+    */
+-  constexpr explicit operator bool() const { return *this != DateTimeRaw{}; }
++  constexpr explicit operator bool() const
++  {
++    return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
++           second != 0 || nanosecond != 0;
++  }
+ 
+   /**
+    * Get the year.
+@@ -281,8 +284,7 @@
+    * This function ignores the day_of_week member of the DateTime struct, so it
+    * may remain unset.
+    *
+-   * @param dt the source DateTime.
+-   * @param ticks the resulting Time.
++   * @returns time on success.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -343,17 +345,22 @@
+   CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
+ }
+ 
+-inline Time Time::Current() { return CheckError(SDL_GetCurrentTime(m_time)); }
++inline Time Time::Current()
++{
++  SDL_Time t;
++  CheckError(SDL_GetCurrentTime(&t));
++  return Time::FromNS(t);
++}
+ 
+ /**
+  * Converts an Time in nanoseconds since the epoch to a calendar time in the
+  * DateTime format.
+  *
+  * @param ticks the Time to be converted.
+- * @param dt the resulting DateTime.
+  * @param localTime the resulting DateTime will be expressed in local time if
+  *                  true, otherwise it will be in Universal Coordinated Time
+  *                  (UTC).
++ * @returns the resulting DateTime.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -370,26 +377,28 @@
+  * may remain unset.
+  *
+  * @param dt the source DateTime.
+- * @param ticks the resulting Time.
++ * @returns the resulting Time.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+ inline Time DateTimeToTime(const DateTimeRaw& dt)
+ {
+-  return CheckError(SDL_DateTimeToTime(dt));
++  SDL_Time t;
++  CheckError(SDL_DateTimeToTime(&dt, &t));
++  return Time::FromNS(t);
+ }
+ 
+-inline DateTime::operator Time() const { return SDL::DateTimeToTime(); }
++inline DateTime::operator Time() const { return SDL::DateTimeToTime(*this); }
+ 
+ inline void Time::ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const
+ {
+-  SDL_TimeToWindows(m_time, dwLowDateTime, dwHighDateTime);
++  SDL_TimeToWindows(ToNS(), dwLowDateTime, dwHighDateTime);
+ }
+ 
+ inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
+ {
+-  return SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime);
++  return Time::FromNS(SDL_TimeFromWindows(dwLowDateTime, dwHighDateTime));
+ }
+ 
+ /**
+@@ -397,14 +406,14 @@
+  *
+  * @param year the year.
+  * @param month the month [1-12].
+- * @returns the number of days in the requested month or -1 on failure; call
+- *          GetError() for more information.
++ * @returns the number of days in the requested month.
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+ inline int GetDaysInMonth(int year, int month)
+ {
+-  return SDL_GetDaysInMonth(year, month);
++  return CheckError(SDL_GetDaysInMonth(year, month), -1);
+ }
+ 
+ /**
+@@ -413,14 +422,14 @@
+  * @param year the year component of the date.
+  * @param month the month component of the date.
+  * @param day the day component of the date.
+- * @returns the day of year [0-365] if the date is valid or -1 on failure; call
+- *          GetError() for more information.
++ * @returns the day of year [0-365] if the date is valid.
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+ inline int GetDayOfYear(int year, int month, int day)
+ {
+-  return SDL_GetDayOfYear(year, month, day);
++  return CheckError(SDL_GetDayOfYear(year, month, day), -1);
+ }
+ 
+ /**
+@@ -429,14 +438,14 @@
+  * @param year the year component of the date.
+  * @param month the month component of the date.
+  * @param day the day component of the date.
+- * @returns a value between 0 and 6 (0 being Sunday) if the date is valid or -1
+- *          on failure; call GetError() for more information.
++ * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
++ * @throws Error on failure.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+ inline int GetDayOfWeek(int year, int month, int day)
+ {
+-  return SDL_GetDayOfWeek(year, month, day);
++  return CheckError(SDL_GetDayOfWeek(year, month, day), -1);
+ }
+ 
+ /// @}

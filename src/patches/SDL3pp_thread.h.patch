@@ -1,16 +1,34 @@
-12c12
-<  * @defgroup CategoryThread Category Thread
----
->  * @defgroup CategoryThread Thread Management
-27c27
-<  * mechanisms are handled by the functions in SDL_mutex.h.
----
->  * mechanisms are handled by the functions in SDL3pp_mutex.h.
-138a139,145
-> /**
->  * The function passed to Thread.Thread() as the new thread's entry point.
->  *
->  * @returns a value that can be reported through Thread.Wait().
->  *
->  * @since This datatype is available since SDL 3.2.0.
->  */
+--- src/generated/SDL3pp_thread.h
++++ include/SDL3pp/SDL3pp_thread.h
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryThread Category Thread
++ * @defgroup CategoryThread Thread Management
+  *
+  * SDL offers cross-platform thread management functions. These are mostly
+  * concerned with starting threads, setting their priority, and dealing with
+@@ -24,7 +24,7 @@
+  *
+  * If you're going to work with threads, you almost certainly need to have a
+  * good understanding of thread safety measures: locking and synchronization
+- * mechanisms are handled by the functions in SDL_mutex.h.
++ * mechanisms are handled by the functions in SDL3pp_mutex.h.
+  *
+  * @{
+  */
+@@ -136,6 +136,13 @@
+  */
+ using ThreadFunction = SDL_ThreadFunction;
+ 
++/**
++ * The function passed to Thread.Thread() as the new thread's entry point.
++ *
++ * @returns a value that can be reported through Thread.Wait().
++ *
++ * @since This datatype is available since SDL 3.2.0.
++ */
+ using ThreadCB = std::function<int()>;
+ 
+ /**

@@ -1,900 +1,1305 @@
-11c11
-<  * @defgroup CategoryIOStream Category IOStream
----
->  * @defgroup CategoryIOStream I/O Streams
-178c178
-<    *   already exists, the call fails.
----
->    *   already exists, the call fails. (Supported since SDL 3.4.0)
-187c187
-<    *   the same name already exists, the call fails.
----
->    *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
-279,282c279,281
-<    * @param mem a pointer to a buffer to feed an IOStream stream.
-<    * @param size the buffer size, in bytes.
-<    * @returns a pointer to a new IOStream structure or nullptr on failure; call
-<    *          GetError() for more information.
----
->    * @param mem a buffer to feed an IOStream stream.
->    * @returns a valid IOStream on success.
->    * @throws Error on failure.
-328,331c327,329
-<    * @param mem a pointer to a read-only buffer to feed an IOStream stream.
-<    * @param size the buffer size, in bytes.
-<    * @returns a pointer to a new IOStream structure or nullptr on failure; call
-<    *          GetError() for more information.
----
->    * @param mem a read-only buffer to feed an IOStreamRef stream.
->    * @returns a valid IOStream on success.
->    * @throws Error on failure.
-359,360c357,358
-<    * @returns a pointer to a new IOStream structure or nullptr on failure; call
-<    *          GetError() for more information.
----
->    * @returns a valid IOStream on success.
->    * @throws Error on failure.
-389c387
-<    * @returns a pointer to the allocated memory on success.
----
->    * @returns a valid stream on success.
-458,459c456
-<    * @returns true on success or false on failure; call GetError() for more
-<    *          information.
----
->    * @throws Error on failure.
-556a554,575
->   /**
->    * Read from a data source.
->    *
->    * This function reads up `size` bytes from the data source to the area
->    * pointed at by `ptr`. This function may read less bytes than requested.
->    *
->    * This function will return zero when the data stream is completely read, and
->    * IOStreamRef.GetStatus() will return IO_STATUS_EOF. If zero is returned and
->    * the stream is not at EOF, IOStreamRef.GetStatus() will return a different
->    * error value and GetError() will offer a human-readable message.
->    *
->    * @param size the number of bytes to read from the data source.
->    * @returns the bytes, or empty string on end of file or other failure;
->    *          call GetError() for more information.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    *
->    * @sa IOStream.Write
->    * @sa IOStream.GetStatus
->    */
-559c578,590
-<     static_assert(false, "Not implemented");
----
->     Sint64 pos = Tell();
->     auto curSize = SDL_GetIOSize(get());
->     if ((curSize < 0 || pos < 0)) {
->       if (size == size_t(-1)) return {};
->     } else if (curSize - pos <= 0) {
->       return {};
->     } else if (curSize - pos < size) {
->       size = curSize - pos;
->     }
->     std::string result(size, 0);
->     auto actualSize = Read(result);
->     if (actualSize < size) result.resize(actualSize);
->     return result;
-577,578c608
-<    * @param ptr a pointer to a buffer to read data into.
-<    * @param size the number of bytes to read from the data source.
----
->    * @param buf a pointer to a buffer to read data into.
-609,610c639
-<    * @param ptr a pointer to a buffer containing data to write.
-<    * @param size the number of bytes to write.
----
->    * @param buf the bytes to write to
-626c655,661
-<   /// @cat formatted-string
----
->   /**
->    * Prints formatted string.
->    *
->    * @param fmt a std::format like format string
->    * @param args the arguments to be formatted
->    * @cat formatted-string
->    */
-629c664
-<     static_assert(false, "Not implemented");
----
->     return Write(std::vformat(fmt, std::make_format_args(args...)));
-632c667,673
-<   /// @cat formatted-string
----
->   /**
->    * Prints formatted string.
->    *
->    * @param fmt a std::format like format string
->    * @param args the arguments to be formatted
->    * @cat formatted-string
->    */
-635c676,678
-<     static_assert(false, "Not implemented");
----
->     std::string result =
->       std::vformat(fmt, std::make_format_args(args...)) + "\n";
->     return Write(result);
-640a684,685
->    * @warning this is not typesafe! Prefer using print() and println()
->    *
-658c703,710
-<     return SDL_IOprintf(m_resource, fmt, ...);
----
->     va_list ap;
->     size_t result;
-> 
->     va_start(ap, fmt);
->     result = vprintf(fmt, ap);
->     va_end(ap);
-> 
->     return result;
-663a716,717
->    * @warning this is not typesafe! Prefer using print() and println()
->    *
-702,703c756
-<    * convenience. This extra byte is not included in the value reported via
-<    * `datasize`.
----
->    * convenience.
-705,712c758,759
-<    * The data should be freed with free().
-<    *
-<    * @param datasize a pointer filled in with the number of bytes read, may be
-<    *                 nullptr.
-<    * @param closeio if true, calls IOStream.Close() on `src` before returning,
-<    *                even in the case of an error.
-<    * @returns the data or nullptr on failure; call GetError() for more
-<    *          information.
----
->    * @returns the data in bytes
->    * @throws Error on failure.
-722a770,786
->   /**
->    * Load all the data from an SDL data stream.
->    *
->    * The data is allocated with a zero byte at the end (null terminated) for
->    * convenience. This extra byte is not included in the value reported on
->    * the returned string.
->    *
->    * @returns the data in bytes
->    * @throws Error on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    *
->    * @sa LoadFile
->    * @sa IOStream.SaveFile
->    */
-726c790,792
-<     static_assert(false, "Not implemented");
----
->     size_t datasize = 0;
->     auto data = static_cast<T*>(SDL_LoadFile_IO(get(), &datasize, false));
->     return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
-734,736d799
-<    * @param datasize the number of bytes to be written.
-<    * @param closeio if true, calls IOStream.Close() on `src` before returning,
-<    *                even in the case of an error.
-756,757c819
-<    * @param src the IOStream to read from.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-774,775c836
-<    * @param src the IOStream to read from.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-796,797c857
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-818,819c878
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-840,841c899
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-862,863c920
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-884,885c941
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-906,907c962
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-928,929c983
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-950,951c1004
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-972,973c1025
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-994,995c1046
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-1016,1017c1067
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-1038,1039c1088
-<    * @param src the stream from which to read data.
-<    * @param value a pointer filled in with the data read.
----
->    * @returns the data read on success.
-1048c1097,1115
-<   std::optional<Uint8> TryReadU8() { static_assert(false, "Not implemented"); }
----
->   /**
->    * Use this function to read a byte from an IOStreamRef.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
->   std::optional<Uint8> TryReadU8()
->   {
->     if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
->     return {};
->   }
-1050c1117,1135
-<   std::optional<Sint8> TryReadS8() { static_assert(false, "Not implemented"); }
----
->   /**
->    * Use this function to read a byte from an IOStreamRef.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
->   std::optional<Sint8> TryReadS8()
->   {
->     if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
->     return {};
->   }
-1051a1137,1154
->   /**
->    * Use this function to read 16 bits of little-endian data from an
->    * IOStreamRef and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1054c1157,1158
-<     static_assert(false, "Not implemented");
----
->     if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
->     return {};
-1056a1161,1178
->   /**
->    * Use this function to read 16 bits of little-endian data from an
->    * IOStreamRef and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1059c1181,1182
-<     static_assert(false, "Not implemented");
----
->     if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
->     return {};
-1061a1185,1202
->   /**
->    * Use this function to read 16 bits of big-endian data from an IOStreamRef
->    * and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1064c1205,1206
-<     static_assert(false, "Not implemented");
----
->     if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
->     return {};
-1066a1209,1226
->   /**
->    * Use this function to read 16 bits of big-endian data from an IOStreamRef
->    * and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1069c1229,1230
-<     static_assert(false, "Not implemented");
----
->     if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
->     return {};
-1071a1233,1250
->   /**
->    * Use this function to read 32 bits of little-endian data from an
->    * IOStreamRef and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1074c1253,1254
-<     static_assert(false, "Not implemented");
----
->     if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
->     return {};
-1076a1257,1274
->   /**
->    * Use this function to read 32 bits of little-endian data from an
->    * IOStreamRef and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1079c1277,1278
-<     static_assert(false, "Not implemented");
----
->     if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
->     return {};
-1081a1281,1298
->   /**
->    * Use this function to read 32 bits of big-endian data from an IOStreamRef
->    * and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1084c1301,1302
-<     static_assert(false, "Not implemented");
----
->     if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
->     return {};
-1086a1305,1322
->   /**
->    * Use this function to read 32 bits of big-endian data from an IOStreamRef
->    * and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1089c1325,1326
-<     static_assert(false, "Not implemented");
----
->     if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
->     return {};
-1091a1329,1346
->   /**
->    * Use this function to read 64 bits of little-endian data from an
->    * IOStreamRef and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1094c1349,1350
-<     static_assert(false, "Not implemented");
----
->     if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
->     return {};
-1096a1353,1370
->   /**
->    * Use this function to read 64 bits of little-endian data from an
->    * IOStreamRef and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1099c1373,1374
-<     static_assert(false, "Not implemented");
----
->     if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
->     return {};
-1101a1377,1394
->   /**
->    * Use this function to read 64 bits of big-endian data from an IOStreamRef
->    * and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1104c1397,1398
-<     static_assert(false, "Not implemented");
----
->     if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
->     return {};
-1106a1401,1418
->   /**
->    * Use this function to read 64 bits of big-endian data from an IOStreamRef
->    * and return in native format.
->    *
->    * SDL byteswaps the data only if necessary, so the data returned will be in
->    * the native byte order.
->    *
->    * This function will return false when the data stream is completely read,
->    * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
->    * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
->    * a different error value and GetError() will offer a human-readable message.
->    *
->    * @returns the data read on success, std::nullopt on failure.
->    *
->    * @threadsafety This function is not thread safe.
->    *
->    * @since This function is available since SDL 3.2.0.
->    */
-1109c1421,1422
-<     static_assert(false, "Not implemented");
----
->     if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
->     return {};
-1373c1686
-<  *   already exists, the call fails.
----
->  *   already exists, the call fails. (Supported since SDL 3.4.0)
-1381c1694
-<  *   the same name already exists, the call fails.
----
->  *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
-1511,1514c1824,1826
-<  * @param mem a pointer to a buffer to feed an IOStream stream.
-<  * @param size the buffer size, in bytes.
-<  * @returns a pointer to a new IOStream structure or nullptr on failure; call
-<  *          GetError() for more information.
----
->  * @param mem a buffer to feed an IOStream stream.
->  * @returns a valid IOStream on success.
->  * @throws Error on failure.
-1528c1840
-< inline IOStream IOFromMem(void* mem, size_t size)
----
-> inline IOStream IOFromMem(TargetBytes mem)
-1530c1842
-<   return IOStream(SDL_IOFromMem(mem, size));
----
->   return IOStream(CheckError(SDL_IOFromMem(mem.data(), mem.size_bytes())));
-1567,1570c1879,1881
-<  * @param mem a pointer to a read-only buffer to feed an IOStream stream.
-<  * @param size the buffer size, in bytes.
-<  * @returns a pointer to a new IOStream structure or nullptr on failure; call
-<  *          GetError() for more information.
----
->  * @param mem a read-only buffer to feed an IOStreamRef stream.
->  * @returns a valid IOStream on success.
->  * @throws Error on failure.
-1582c1893
-< inline IOStream IOFromConstMem(const void* mem, size_t size)
----
-> inline IOStream IOFromConstMem(SourceBytes mem)
-1584c1895
-<   return IOStream(SDL_IOFromConstMem(mem, size));
----
->   return IOStream(CheckError(SDL_IOFromConstMem(mem.data(), mem.size_bytes())));
-1706c2017
-<   return CheckError(SDL_GetIOProperties(context));
----
->   return {CheckError(SDL_GetIOProperties(context))};
-1834,1835c2145
-<  * @param ptr a pointer to a buffer to read data into.
-<  * @param size the number of bytes to read from the data source.
----
->  * @param buf a pointer to a buffer to read data into.
-1875,1876c2185
-<  * @param ptr a pointer to a buffer containing data to write.
-<  * @param size the number of bytes to write.
----
->  * @param buf a pointer to a buffer containing data to write.
-1902a2212,2213
->  * @warning this is not typesafe! Prefer using print() and println()
->  *
-1920c2231,2232
-<                        SDL_PRINTF_FORMAT_STRING const char* fmt)
----
->                        SDL_PRINTF_FORMAT_STRING const char* fmt,
->                        ...)
-1922c2234,2241
-<   return SDL_IOprintf(context, fmt);
----
->   va_list ap;
->   size_t result;
-> 
->   va_start(ap, fmt);
->   result = SDL_IOvprintf(context, fmt, ap);
->   va_end(ap);
-> 
->   return result;
-1981,1982c2300,2301
-<  * convenience. This extra byte is not included in the value reported via
-<  * `datasize`.
----
->  * convenience. This extra byte is not included in the value reported on
->  * the returned string.
-1987,1988d2305
-<  * @param datasize a pointer filled in with the number of bytes read, may be
-<  *                 nullptr.
-2003c2320,2322
-<   return SDL_LoadFile_IO(src, closeio);
----
->   size_t datasize = 0;
->   auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
->   return StringResult{CheckError(data), datasize};
-2010,2013c2329,2330
-<  * convenience. This extra byte is not included in the value reported via
-<  * `datasize`.
-<  *
-<  * The data should be freed with free().
----
->  * convenience. This extra byte is not included in the value reported on
->  * the returned string.
-2016,2018c2333,2334
-<  * @param datasize if not nullptr, will store the number of bytes read.
-<  * @returns the data or nullptr on failure; call GetError() for more
-<  *          information.
----
->  * @returns the data.
->  * @throws Error on failure.
-2027c2343,2348
-< inline StringResult LoadFile(StringParam file) { return SDL_LoadFile(file); }
----
-> inline StringResult LoadFile(StringParam file)
-> {
->   size_t datasize = 0;
->   auto data = static_cast<char*>(SDL_LoadFile(file, &datasize));
->   return StringResult{CheckError(data), datasize};
-> }
-2029c2350,2353
-< inline StringResult IOStream::LoadFile() { return SDL::LoadFile(m_resource); }
----
-> inline StringResult IOStream::LoadFile()
-> {
->   return SDL::LoadFile(m_resource, false);
-> }
-2030a2355,2372
-> /**
->  * Load all the data from a file path.
->  *
->  * The data is allocated with a zero byte at the end (null terminated) for
->  * convenience. This extra byte is not included in the value reported on
->  * the returned string.
->  *
->  * @param file the path to read all available data from.
->  * @returns the data.
->  * @throws Error on failure.
->  *
->  * @threadsafety This function is not thread safe.
->  *
->  * @since This function is available since SDL 3.2.0.
->  *
->  * @sa IOStream.LoadFile
->  * @sa SaveFile
->  */
-2034c2376,2378
-<   static_assert(false, "Not implemented");
----
->   size_t datasize = 0;
->   auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
->   return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
-2041,2043c2385
-<  * @param data the data to be written. If datasize is 0, may be nullptr or a
-<  *             invalid pointer.
-<  * @param datasize the number of bytes to be written.
----
->  * @param data the data to be written.
-2055c2397
-< inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
----
-> inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
-2064,2066c2406
-<  * @param data the data to be written. If datasize is 0, may be nullptr or a
-<  *             invalid pointer.
-<  * @param datasize the number of bytes to be written.
----
->  * @param data the data to be written.
-2095c2435
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2102,2104c2442,2447
-< inline Uint8 ReadU8(IOStreamParam src) { return CheckError(SDL_ReadU8(src)); }
-< 
-< inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(m_resource); }
----
-> inline Uint8 ReadU8(IOStreamParam src)
-> {
->   Uint8 value;
->   CheckError(SDL_ReadU8(src, &value));
->   return value;
-> }
-2115c2458
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2122,2124c2465,2470
-< inline Sint8 ReadS8(IOStreamParam src) { return CheckError(SDL_ReadS8(src)); }
-< 
-< inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(m_resource); }
----
-> inline Sint8 ReadS8(IOStreamParam src)
-> {
->   Sint8 value;
->   CheckError(SDL_ReadS8(src, &value));
->   return value;
-> }
-2139c2485
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2148c2494,2496
-<   return CheckError(SDL_ReadU16LE(src));
----
->   Uint16 value;
->   CheckError(SDL_ReadU16LE(src, &value));
->   return value;
-2166c2514
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2175c2523,2525
-<   return CheckError(SDL_ReadS16LE(src));
----
->   Sint16 value;
->   CheckError(SDL_ReadS16LE(src, &value));
->   return value;
-2193c2543
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2202c2552,2554
-<   return CheckError(SDL_ReadU16BE(src));
----
->   Uint16 value;
->   CheckError(SDL_ReadU16BE(src, &value));
->   return value;
-2220c2572
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2229c2581,2583
-<   return CheckError(SDL_ReadS16BE(src));
----
->   Sint16 value;
->   CheckError(SDL_ReadS16BE(src, &value));
->   return value;
-2247c2601
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2256c2610,2612
-<   return CheckError(SDL_ReadU32LE(src));
----
->   Uint32 value;
->   CheckError(SDL_ReadU32LE(src, &value));
->   return value;
-2274c2630
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2283c2639,2641
-<   return CheckError(SDL_ReadS32LE(src));
----
->   Sint32 value;
->   CheckError(SDL_ReadS32LE(src, &value));
->   return value;
-2301c2659
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2310c2668,2670
-<   return CheckError(SDL_ReadU32BE(src));
----
->   Uint32 value;
->   CheckError(SDL_ReadU32BE(src, &value));
->   return value;
-2328c2688
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2337c2697,2699
-<   return CheckError(SDL_ReadS32BE(src));
----
->   Sint32 value;
->   CheckError(SDL_ReadS32BE(src, &value));
->   return value;
-2355c2717
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2364c2726,2728
-<   return CheckError(SDL_ReadU64LE(src));
----
->   Uint64 value;
->   CheckError(SDL_ReadU64LE(src, &value));
->   return value;
-2382c2746
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2391c2755,2757
-<   return CheckError(SDL_ReadS64LE(src));
----
->   Sint64 value;
->   CheckError(SDL_ReadS64LE(src, &value));
->   return value;
-2409c2775
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2418c2784,2786
-<   return CheckError(SDL_ReadU64BE(src));
----
->   Uint64 value;
->   CheckError(SDL_ReadU64BE(src, &value));
->   return value;
-2436c2804
-<  * @param value a pointer filled in with the data read.
----
->  * @return the  data read.
-2445c2813,2815
-<   return CheckError(SDL_ReadS64BE(src));
----
->   Sint64 value;
->   CheckError(SDL_ReadS64BE(src, &value));
->   return value;
+--- src/generated/SDL3pp_iostream.h
++++ include/SDL3pp/SDL3pp_iostream.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryIOStream Category IOStream
++ * @defgroup CategoryIOStream I/O Streams
+  *
+  * SDL provides an abstract interface for reading and writing data streams. It
+  * offers implementations for files, memory, etc, and the app can provide their
+@@ -175,7 +175,7 @@
+    *   already exists its content is erased and the file is treated as a new
+    *   empty file.
+    * - "wx": Create an empty file for writing. If a file with the same name
+-   *   already exists, the call fails.
++   *   already exists, the call fails. (Supported since SDL 3.4.0)
+    * - "a": Append to a file. Writing operations append data at the end of the
+    *   file. The file is created if it does not exist.
+    * - "r+": Open a file for update both reading and writing. The file must
+@@ -184,7 +184,7 @@
+    *   the same name already exists its content is erased and the file is
+    *   treated as a new empty file.
+    * - "w+x": Create an empty file for both reading and writing. If a file with
+-   *   the same name already exists, the call fails.
++   *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
+    * - "a+": Open a file for reading and appending. All writing operations are
+    *   performed at the end of the file, protecting the previous content to be
+    *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+@@ -276,10 +276,9 @@
+    *   and called with the passed `mem` pointer when closing the stream. By
+    *   default it is unset, i.e., the memory will not be freed.
+    *
+-   * @param mem a pointer to a buffer to feed an IOStream stream.
+-   * @param size the buffer size, in bytes.
+-   * @returns a pointer to a new IOStream structure or nullptr on failure; call
+-   *          GetError() for more information.
++   * @param mem a buffer to feed an IOStream stream.
++   * @returns a valid IOStream on success.
++   * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -325,10 +324,9 @@
+    *   and called with the passed `mem` pointer when closing the stream. By
+    *   default it is unset, i.e., the memory will not be freed.
+    *
+-   * @param mem a pointer to a read-only buffer to feed an IOStream stream.
+-   * @param size the buffer size, in bytes.
+-   * @returns a pointer to a new IOStream structure or nullptr on failure; call
+-   *          GetError() for more information.
++   * @param mem a read-only buffer to feed an IOStreamRef stream.
++   * @returns a valid IOStream on success.
++   * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -356,8 +354,8 @@
+    * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+    *   multiples of this size, defaulting to 1024.
+    *
+-   * @returns a pointer to a new IOStream structure or nullptr on failure; call
+-   *          GetError() for more information.
++   * @returns a valid IOStream on success.
++   * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -386,7 +384,7 @@
+    * @param iface the interface that implements this IOStream, initialized using
+    *              InitInterface().
+    * @param userdata the pointer that will be passed to the interface functions.
+-   * @returns a pointer to the allocated memory on success.
++   * @returns a valid stream on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -455,8 +453,7 @@
+    * and makes the system and your app operate less efficiently, so do so
+    * sparingly.
+    *
+-   * @returns true on success or false on failure; call GetError() for more
+-   *          information.
++   * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+    *
+@@ -554,9 +551,43 @@
+    */
+   Sint64 Tell() const;
+ 
++  /**
++   * Read from a data source.
++   *
++   * This function reads up `size` bytes from the data source to the area
++   * pointed at by `ptr`. This function may read less bytes than requested.
++   *
++   * This function will return zero when the data stream is completely read, and
++   * IOStreamRef.GetStatus() will return IO_STATUS_EOF. If zero is returned and
++   * the stream is not at EOF, IOStreamRef.GetStatus() will return a different
++   * error value and GetError() will offer a human-readable message.
++   *
++   * @param size the number of bytes to read from the data source.
++   * @returns the bytes, or empty string on end of file or other failure;
++   *          call GetError() for more information.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   *
++   * @sa IOStream.Write
++   * @sa IOStream.GetStatus
++   */
+   std::string Read(size_t size = -1)
+   {
+-    static_assert(false, "Not implemented");
++    Sint64 pos = Tell();
++    auto curSize = SDL_GetIOSize(get());
++    if ((curSize < 0 || pos < 0)) {
++      if (size == size_t(-1)) return {};
++    } else if (curSize - pos <= 0) {
++      return {};
++    } else if (curSize - pos < size) {
++      size = curSize - pos;
++    }
++    std::string result(size, 0);
++    auto actualSize = Read(result);
++    if (actualSize < size) result.resize(actualSize);
++    return result;
+   }
+ 
+   /**
+@@ -574,8 +605,7 @@
+    * without accessing the stream, so the stream status (EOF, err, etc) will not
+    * change.
+    *
+-   * @param ptr a pointer to a buffer to read data into.
+-   * @param size the number of bytes to read from the data source.
++   * @param buf a pointer to a buffer to read data into.
+    * @returns the number of bytes read, or 0 on end of file or other failure;
+    *          call GetError() for more information.
+    *
+@@ -606,8 +636,7 @@
+    * without accessing the stream, so the stream status (EOF, err, etc) will not
+    * change.
+    *
+-   * @param ptr a pointer to a buffer containing data to write.
+-   * @param size the number of bytes to write.
++   * @param buf the bytes to write to
+    * @returns the number of bytes written, which will be less than `size` on
+    *          failure; call GetError() for more information.
+    *
+@@ -623,21 +652,37 @@
+    */
+   size_t Write(SourceBytes buf);
+ 
+-  /// @cat formatted-string
++  /**
++   * Prints formatted string.
++   *
++   * @param fmt a std::format like format string
++   * @param args the arguments to be formatted
++   * @cat formatted-string
++   */
+   size_t print(std::string_view fmt, auto... args)
+   {
+-    static_assert(false, "Not implemented");
++    return Write(std::vformat(fmt, std::make_format_args(args...)));
+   }
+ 
+-  /// @cat formatted-string
++  /**
++   * Prints formatted string.
++   *
++   * @param fmt a std::format like format string
++   * @param args the arguments to be formatted
++   * @cat formatted-string
++   */
+   size_t println(std::string_view fmt, auto... args)
+   {
+-    static_assert(false, "Not implemented");
++    std::string result =
++      std::vformat(fmt, std::make_format_args(args...)) + "\n";
++    return Write(result);
+   }
+ 
+   /**
+    * Print to an IOStream data stream.
+    *
++   * @warning this is not typesafe! Prefer using print() and println()
++   *
+    * This function does formatted printing to the stream.
+    *
+    * @param fmt a printf() style format string.
+@@ -655,12 +700,21 @@
+    */
+   size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+   {
+-    return SDL_IOprintf(m_resource, fmt, ...);
++    va_list ap;
++    size_t result;
++
++    va_start(ap, fmt);
++    result = vprintf(fmt, ap);
++    va_end(ap);
++
++    return result;
+   }
+ 
+   /**
+    * Print to an IOStream data stream.
+    *
++   * @warning this is not typesafe! Prefer using print() and println()
++   *
+    * This function does formatted printing to the stream.
+    *
+    * @param fmt a printf() style format string.
+@@ -699,17 +753,10 @@
+    * Load all the data from an SDL data stream.
+    *
+    * The data is allocated with a zero byte at the end (null terminated) for
+-   * convenience. This extra byte is not included in the value reported via
+-   * `datasize`.
++   * convenience.
+    *
+-   * The data should be freed with free().
+-   *
+-   * @param datasize a pointer filled in with the number of bytes read, may be
+-   *                 nullptr.
+-   * @param closeio if true, calls IOStream.Close() on `src` before returning,
+-   *                even in the case of an error.
+-   * @returns the data or nullptr on failure; call GetError() for more
+-   *          information.
++   * @returns the data in bytes
++   * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+    *
+@@ -720,10 +767,29 @@
+    */
+   StringResult LoadFile();
+ 
++  /**
++   * Load all the data from an SDL data stream.
++   *
++   * The data is allocated with a zero byte at the end (null terminated) for
++   * convenience. This extra byte is not included in the value reported on
++   * the returned string.
++   *
++   * @returns the data in bytes
++   * @throws Error on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   *
++   * @sa LoadFile
++   * @sa IOStream.SaveFile
++   */
+   template<class T>
+   OwnArray<T> LoadFileAs()
+   {
+-    static_assert(false, "Not implemented");
++    size_t datasize = 0;
++    auto data = static_cast<T*>(SDL_LoadFile_IO(get(), &datasize, false));
++    return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
+   }
+ 
+   /**
+@@ -731,9 +797,6 @@
+    *
+    * @param data the data to be written. If datasize is 0, may be nullptr or a
+    *             invalid pointer.
+-   * @param datasize the number of bytes to be written.
+-   * @param closeio if true, calls IOStream.Close() on `src` before returning,
+-   *                even in the case of an error.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -753,8 +816,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the IOStream to read from.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -771,8 +833,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the IOStream to read from.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -793,8 +854,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -815,8 +875,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -837,8 +896,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -859,8 +917,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -881,8 +938,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -903,8 +959,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -925,8 +980,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -947,8 +1001,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -969,8 +1022,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -991,8 +1043,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -1013,8 +1064,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -1035,8 +1085,7 @@
+    * and the stream is not at EOF, IOStream.GetStatus() will return a different
+    * error value and GetError() will offer a human-readable message.
+    *
+-   * @param src the stream from which to read data.
+-   * @param value a pointer filled in with the data read.
++   * @returns the data read on success.
+    * @throws Error on failure.
+    *
+    * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -1045,68 +1094,332 @@
+    */
+   Sint64 ReadS64BE();
+ 
+-  std::optional<Uint8> TryReadU8() { static_assert(false, "Not implemented"); }
++  /**
++   * Use this function to read a byte from an IOStreamRef.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
++  std::optional<Uint8> TryReadU8()
++  {
++    if (Uint8 value; SDL_ReadU8(get(), &value)) return value;
++    return {};
++  }
+ 
+-  std::optional<Sint8> TryReadS8() { static_assert(false, "Not implemented"); }
++  /**
++   * Use this function to read a byte from an IOStreamRef.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
++  std::optional<Sint8> TryReadS8()
++  {
++    if (Sint8 value; SDL_ReadS8(get(), &value)) return value;
++    return {};
++  }
+ 
++  /**
++   * Use this function to read 16 bits of little-endian data from an
++   * IOStreamRef and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Uint16> TryReadU16LE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Uint16 value; SDL_ReadU16LE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 16 bits of little-endian data from an
++   * IOStreamRef and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Sint16> TryReadS16LE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Sint16 value; SDL_ReadS16LE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 16 bits of big-endian data from an IOStreamRef
++   * and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Uint16> TryReadU16BE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Uint16 value; SDL_ReadU16BE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 16 bits of big-endian data from an IOStreamRef
++   * and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Sint16> TryReadS16BE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Sint16 value; SDL_ReadS16BE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 32 bits of little-endian data from an
++   * IOStreamRef and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Uint32> TryReadU32LE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Uint32 value; SDL_ReadU32LE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 32 bits of little-endian data from an
++   * IOStreamRef and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Sint32> TryReadS32LE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Sint32 value; SDL_ReadS32LE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 32 bits of big-endian data from an IOStreamRef
++   * and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Uint32> TryReadU32BE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Uint32 value; SDL_ReadU32BE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 32 bits of big-endian data from an IOStreamRef
++   * and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Sint32> TryReadS32BE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Sint32 value; SDL_ReadS32BE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 64 bits of little-endian data from an
++   * IOStreamRef and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Uint64> TryReadU64LE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Uint64 value; SDL_ReadU64LE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 64 bits of little-endian data from an
++   * IOStreamRef and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Sint64> TryReadS64LE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Sint64 value; SDL_ReadS64LE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 64 bits of big-endian data from an IOStreamRef
++   * and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Uint64> TryReadU64BE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Uint64 value; SDL_ReadU64BE(get(), &value)) return value;
++    return {};
+   }
+ 
++  /**
++   * Use this function to read 64 bits of big-endian data from an IOStreamRef
++   * and return in native format.
++   *
++   * SDL byteswaps the data only if necessary, so the data returned will be in
++   * the native byte order.
++   *
++   * This function will return false when the data stream is completely read,
++   * and IOStreamRef.GetStatus() will return IO_STATUS_EOF. If false is
++   * returned and the stream is not at EOF, IOStreamRef.GetStatus() will return
++   * a different error value and GetError() will offer a human-readable message.
++   *
++   * @returns the data read on success, std::nullopt on failure.
++   *
++   * @threadsafety This function is not thread safe.
++   *
++   * @since This function is available since SDL 3.2.0.
++   */
+   std::optional<Sint64> TryReadS64BE()
+   {
+-    static_assert(false, "Not implemented");
++    if (Sint64 value; SDL_ReadS64BE(get(), &value)) return value;
++    return {};
+   }
+ 
+   /**
+@@ -1370,7 +1683,7 @@
+  * - "w": Create an empty file for writing. If a file with the same name already
+  *   exists its content is erased and the file is treated as a new empty file.
+  * - "wx": Create an empty file for writing. If a file with the same name
+- *   already exists, the call fails.
++ *   already exists, the call fails. (Supported since SDL 3.4.0)
+  * - "a": Append to a file. Writing operations append data at the end of the
+  *   file. The file is created if it does not exist.
+  * - "r+": Open a file for update both reading and writing. The file must exist.
+@@ -1378,7 +1691,7 @@
+  *   same name already exists its content is erased and the file is treated as a
+  *   new empty file.
+  * - "w+x": Create an empty file for both reading and writing. If a file with
+- *   the same name already exists, the call fails.
++ *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
+  * - "a+": Open a file for reading and appending. All writing operations are
+  *   performed at the end of the file, protecting the previous content to be
+  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+@@ -1508,10 +1821,9 @@
+  *   and called with the passed `mem` pointer when closing the stream. By
+  *   default it is unset, i.e., the memory will not be freed.
+  *
+- * @param mem a pointer to a buffer to feed an IOStream stream.
+- * @param size the buffer size, in bytes.
+- * @returns a pointer to a new IOStream structure or nullptr on failure; call
+- *          GetError() for more information.
++ * @param mem a buffer to feed an IOStream stream.
++ * @returns a valid IOStream on success.
++ * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1525,9 +1837,9 @@
+  * @sa IOStream.Tell
+  * @sa IOStream.Write
+  */
+-inline IOStream IOFromMem(void* mem, size_t size)
++inline IOStream IOFromMem(TargetBytes mem)
+ {
+-  return IOStream(SDL_IOFromMem(mem, size));
++  return IOStream(CheckError(SDL_IOFromMem(mem.data(), mem.size_bytes())));
+ }
+ 
+ inline IOStream IOStream::FromMem(TargetBytes mem)
+@@ -1564,10 +1876,9 @@
+  *   and called with the passed `mem` pointer when closing the stream. By
+  *   default it is unset, i.e., the memory will not be freed.
+  *
+- * @param mem a pointer to a read-only buffer to feed an IOStream stream.
+- * @param size the buffer size, in bytes.
+- * @returns a pointer to a new IOStream structure or nullptr on failure; call
+- *          GetError() for more information.
++ * @param mem a read-only buffer to feed an IOStreamRef stream.
++ * @returns a valid IOStream on success.
++ * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1579,9 +1890,9 @@
+  * @sa IOStream.Seek
+  * @sa IOStream.Tell
+  */
+-inline IOStream IOFromConstMem(const void* mem, size_t size)
++inline IOStream IOFromConstMem(SourceBytes mem)
+ {
+-  return IOStream(SDL_IOFromConstMem(mem, size));
++  return IOStream(CheckError(SDL_IOFromConstMem(mem.data(), mem.size_bytes())));
+ }
+ 
+ inline IOStream IOStream::FromConstMem(SourceBytes mem)
+@@ -1703,7 +2014,7 @@
+  */
+ inline PropertiesRef GetIOProperties(IOStreamParam context)
+ {
+-  return CheckError(SDL_GetIOProperties(context));
++  return {CheckError(SDL_GetIOProperties(context))};
+ }
+ 
+ inline PropertiesRef IOStream::GetProperties() const
+@@ -1831,8 +2142,7 @@
+  * change.
+  *
+  * @param context a pointer to an IOStream structure.
+- * @param ptr a pointer to a buffer to read data into.
+- * @param size the number of bytes to read from the data source.
++ * @param buf a pointer to a buffer to read data into.
+  * @returns the number of bytes read, or 0 on end of file or other failure; call
+  *          GetError() for more information.
+  *
+@@ -1872,8 +2182,7 @@
+  * change.
+  *
+  * @param context a pointer to an IOStream structure.
+- * @param ptr a pointer to a buffer containing data to write.
+- * @param size the number of bytes to write.
++ * @param buf a pointer to a buffer containing data to write.
+  * @returns the number of bytes written, which will be less than `size` on
+  *          failure; call GetError() for more information.
+  *
+@@ -1900,6 +2209,8 @@
+ /**
+  * Print to an IOStream data stream.
+  *
++ * @warning this is not typesafe! Prefer using print() and println()
++ *
+  * This function does formatted printing to the stream.
+  *
+  * @param context a pointer to an IOStream structure.
+@@ -1917,9 +2228,17 @@
+  * @sa IOStream.Write
+  */
+ inline size_t IOprintf(IOStreamParam context,
+-                       SDL_PRINTF_FORMAT_STRING const char* fmt)
++                       SDL_PRINTF_FORMAT_STRING const char* fmt,
++                       ...)
+ {
+-  return SDL_IOprintf(context, fmt);
++  va_list ap;
++  size_t result;
++
++  va_start(ap, fmt);
++  result = SDL_IOvprintf(context, fmt, ap);
++  va_end(ap);
++
++  return result;
+ }
+ 
+ /**
+@@ -1978,14 +2297,12 @@
+  * Load all the data from an SDL data stream.
+  *
+  * The data is allocated with a zero byte at the end (null terminated) for
+- * convenience. This extra byte is not included in the value reported via
+- * `datasize`.
++ * convenience. This extra byte is not included in the value reported on
++ * the returned string.
+  *
+  * The data should be freed with free().
+  *
+  * @param src the IOStream to read all available data from.
+- * @param datasize a pointer filled in with the number of bytes read, may be
+- *                 nullptr.
+  * @param closeio if true, calls IOStream.Close() on `src` before returning,
+  *                even in the case of an error.
+  * @returns the data or nullptr on failure; call GetError() for more
+@@ -2000,22 +2317,21 @@
+  */
+ inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
+ {
+-  return SDL_LoadFile_IO(src, closeio);
++  size_t datasize = 0;
++  auto data = static_cast<char*>(SDL_LoadFile_IO(src, &datasize, closeio));
++  return StringResult{CheckError(data), datasize};
+ }
+ 
+ /**
+  * Load all the data from a file path.
+  *
+  * The data is allocated with a zero byte at the end (null terminated) for
+- * convenience. This extra byte is not included in the value reported via
+- * `datasize`.
+- *
+- * The data should be freed with free().
++ * convenience. This extra byte is not included in the value reported on
++ * the returned string.
+  *
+  * @param file the path to read all available data from.
+- * @param datasize if not nullptr, will store the number of bytes read.
+- * @returns the data or nullptr on failure; call GetError() for more
+- *          information.
++ * @returns the data.
++ * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -2024,23 +2340,49 @@
+  * @sa IOStream.LoadFile
+  * @sa SaveFile
+  */
+-inline StringResult LoadFile(StringParam file) { return SDL_LoadFile(file); }
++inline StringResult LoadFile(StringParam file)
++{
++  size_t datasize = 0;
++  auto data = static_cast<char*>(SDL_LoadFile(file, &datasize));
++  return StringResult{CheckError(data), datasize};
++}
+ 
+-inline StringResult IOStream::LoadFile() { return SDL::LoadFile(m_resource); }
++inline StringResult IOStream::LoadFile()
++{
++  return SDL::LoadFile(m_resource, false);
++}
+ 
++/**
++ * Load all the data from a file path.
++ *
++ * The data is allocated with a zero byte at the end (null terminated) for
++ * convenience. This extra byte is not included in the value reported on
++ * the returned string.
++ *
++ * @param file the path to read all available data from.
++ * @returns the data.
++ * @throws Error on failure.
++ *
++ * @threadsafety This function is not thread safe.
++ *
++ * @since This function is available since SDL 3.2.0.
++ *
++ * @sa IOStream.LoadFile
++ * @sa SaveFile
++ */
+ template<class T>
+ inline OwnArray<T> LoadFileAs(StringParam file)
+ {
+-  static_assert(false, "Not implemented");
++  size_t datasize = 0;
++  auto data = static_cast<T*>(SDL_LoadFile(file, &datasize));
++  return OwnArray<T>{CheckError(data), datasize / sizeof(T)};
+ }
+ 
+ /**
+  * Save all the data into an SDL data stream.
+  *
+  * @param src the IOStream to write all data to.
+- * @param data the data to be written. If datasize is 0, may be nullptr or a
+- *             invalid pointer.
+- * @param datasize the number of bytes to be written.
++ * @param data the data to be written.
+  * @param closeio if true, calls IOStream.Close() on `src` before returning,
+  *                even in the case of an error.
+  * @throws Error on failure.
+@@ -2052,7 +2394,7 @@
+  * @sa SaveFile
+  * @sa IOStream.LoadFile
+  */
+-inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
++inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
+ {
+   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
+ }
+@@ -2061,9 +2403,7 @@
+  * Save all the data into a file path.
+  *
+  * @param file the path to write all available data into.
+- * @param data the data to be written. If datasize is 0, may be nullptr or a
+- *             invalid pointer.
+- * @param datasize the number of bytes to be written.
++ * @param data the data to be written.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -2092,16 +2432,19 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the IOStream to read from.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline Uint8 ReadU8(IOStreamParam src) { return CheckError(SDL_ReadU8(src)); }
+-
+-inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(m_resource); }
++inline Uint8 ReadU8(IOStreamParam src)
++{
++  Uint8 value;
++  CheckError(SDL_ReadU8(src, &value));
++  return value;
++}
+ 
+ /**
+  * Use this function to read a signed byte from an IOStream.
+@@ -2112,16 +2455,19 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the IOStream to read from.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline Sint8 ReadS8(IOStreamParam src) { return CheckError(SDL_ReadS8(src)); }
+-
+-inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(m_resource); }
++inline Sint8 ReadS8(IOStreamParam src)
++{
++  Sint8 value;
++  CheckError(SDL_ReadS8(src, &value));
++  return value;
++}
+ 
+ /**
+  * Use this function to read 16 bits of little-endian data from an IOStream and
+@@ -2136,7 +2482,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2145,7 +2491,9 @@
+  */
+ inline Uint16 ReadU16LE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadU16LE(src));
++  Uint16 value;
++  CheckError(SDL_ReadU16LE(src, &value));
++  return value;
+ }
+ 
+ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
+@@ -2163,7 +2511,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2172,7 +2520,9 @@
+  */
+ inline Sint16 ReadS16LE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadS16LE(src));
++  Sint16 value;
++  CheckError(SDL_ReadS16LE(src, &value));
++  return value;
+ }
+ 
+ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
+@@ -2190,7 +2540,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2199,7 +2549,9 @@
+  */
+ inline Uint16 ReadU16BE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadU16BE(src));
++  Uint16 value;
++  CheckError(SDL_ReadU16BE(src, &value));
++  return value;
+ }
+ 
+ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
+@@ -2217,7 +2569,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2226,7 +2578,9 @@
+  */
+ inline Sint16 ReadS16BE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadS16BE(src));
++  Sint16 value;
++  CheckError(SDL_ReadS16BE(src, &value));
++  return value;
+ }
+ 
+ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
+@@ -2244,7 +2598,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2253,7 +2607,9 @@
+  */
+ inline Uint32 ReadU32LE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadU32LE(src));
++  Uint32 value;
++  CheckError(SDL_ReadU32LE(src, &value));
++  return value;
+ }
+ 
+ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
+@@ -2271,7 +2627,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2280,7 +2636,9 @@
+  */
+ inline Sint32 ReadS32LE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadS32LE(src));
++  Sint32 value;
++  CheckError(SDL_ReadS32LE(src, &value));
++  return value;
+ }
+ 
+ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
+@@ -2298,7 +2656,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2307,7 +2665,9 @@
+  */
+ inline Uint32 ReadU32BE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadU32BE(src));
++  Uint32 value;
++  CheckError(SDL_ReadU32BE(src, &value));
++  return value;
+ }
+ 
+ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
+@@ -2325,7 +2685,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2334,7 +2694,9 @@
+  */
+ inline Sint32 ReadS32BE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadS32BE(src));
++  Sint32 value;
++  CheckError(SDL_ReadS32BE(src, &value));
++  return value;
+ }
+ 
+ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
+@@ -2352,7 +2714,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2361,7 +2723,9 @@
+  */
+ inline Uint64 ReadU64LE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadU64LE(src));
++  Uint64 value;
++  CheckError(SDL_ReadU64LE(src, &value));
++  return value;
+ }
+ 
+ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
+@@ -2379,7 +2743,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2388,7 +2752,9 @@
+  */
+ inline Sint64 ReadS64LE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadS64LE(src));
++  Sint64 value;
++  CheckError(SDL_ReadS64LE(src, &value));
++  return value;
+ }
+ 
+ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
+@@ -2406,7 +2772,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2415,7 +2781,9 @@
+  */
+ inline Uint64 ReadU64BE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadU64BE(src));
++  Uint64 value;
++  CheckError(SDL_ReadU64BE(src, &value));
++  return value;
+ }
+ 
+ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
+@@ -2433,7 +2801,7 @@
+  * value and GetError() will offer a human-readable message.
+  *
+  * @param src the stream from which to read data.
+- * @param value a pointer filled in with the data read.
++ * @return the  data read.
+  * @throws Error on failure.
+  *
+  * @threadsafety Do not use the same IOStream from two threads at once.
+@@ -2442,7 +2810,9 @@
+  */
+ inline Sint64 ReadS64BE(IOStreamParam src)
+ {
+-  return CheckError(SDL_ReadS64BE(src));
++  Sint64 value;
++  CheckError(SDL_ReadS64BE(src, &value));
++  return value;
+ }
+ 
+ inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }

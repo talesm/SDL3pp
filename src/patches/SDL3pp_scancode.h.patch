@@ -1,4 +1,11 @@
-10c10
-<  * @defgroup CategoryScancode Category Scancode
----
->  * @defgroup CategoryScancode Keyboard Scancodes
+--- src/generated/SDL3pp_scancode.h
++++ include/SDL3pp/SDL3pp_scancode.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryScancode Category Scancode
++ * @defgroup CategoryScancode Keyboard Scancodes
+  *
+  * Defines keyboard scancodes.
+  *

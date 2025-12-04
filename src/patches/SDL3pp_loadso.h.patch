@@ -1,4 +1,11 @@
-10c10
-<  * @defgroup CategorySharedObject Category SharedObject
----
->  * @defgroup CategorySharedObject Shared Object/DLL Management
+--- src/generated/SDL3pp_loadso.h
++++ include/SDL3pp/SDL3pp_loadso.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategorySharedObject Category SharedObject
++ * @defgroup CategorySharedObject Shared Object/DLL Management
+  *
+  * System-dependent library loading routines.
+  *

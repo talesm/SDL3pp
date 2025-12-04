@@ -1,14 +1,33 @@
-9c9
-<  * @defgroup CategoryBlendmode Category Blendmode
----
->  * @defgroup CategoryBlendmode Blend modes
-18a19,24
->  * @name BlendModes
->  *
->  * @{
->  */
-> 
-> /**
-59a66,67
-> 
-> ///@}
+--- src/generated/SDL3pp_blendmode.h
++++ include/SDL3pp/SDL3pp_blendmode.h
+@@ -6,7 +6,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryBlendmode Category Blendmode
++ * @defgroup CategoryBlendmode Blend modes
+  *
+  * Blend modes decide how two colors will mix together. There are both standard
+  * modes for basic needs and a means to create custom modes, dictating what sort
+@@ -16,6 +16,12 @@
+  */
+ 
+ /**
++ * @name BlendModes
++ *
++ * @{
++ */
++
++/**
+  * A set of blend modes used in drawing operations.
+  *
+  * These predefined blend modes are supported everywhere.
+@@ -58,6 +64,8 @@
+ 
+ constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID; ///< INVALID
+ 
++///@}
++
+ /**
+  * The blend operation used when combining source and destination pixel
+  * components.

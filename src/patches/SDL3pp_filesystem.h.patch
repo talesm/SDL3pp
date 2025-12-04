@@ -1,167 +1,243 @@
-10c10
-<  * @defgroup CategoryFilesystem Category Filesystem
----
->  * @defgroup CategoryFilesystem Filesystem Access
-38a39,42
-> /**
->  * Convenience representation of a path under SDL
->  *
->  */
-40a45
->   /// Use parent ctors
-42a48
->   /// Append
-45c51,52
-<     static_assert(false, "Not implemented");
----
->     StringResult::operator+=(other);
->     return *this;
-48c55,60
-<   Path& operator+=(char ch) { static_assert(false, "Not implemented"); }
----
->   /// Append
->   Path& operator+=(char ch)
->   {
->     StringResult::operator+=(ch);
->     return *this;
->   }
-49a62
->   /// Append
-52c65,67
-<     static_assert(false, "Not implemented");
----
->     Path result(*this);
->     result += other;
->     return result;
-55c70,76
-<   Path operator+(char ch) const { static_assert(false, "Not implemented"); }
----
->   /// Append
->   Path operator+(char ch) const
->   {
->     Path result(*this);
->     result += ch;
->     return result;
->   }
-56a78
->   /// Append path component.
-59c81,82
-<     static_assert(false, "Not implemented");
----
->     if (!empty() && back() != '/' && back() != '\\') this->operator+=('/');
->     return this->operator+=(other);
-61a85
->   /// Append path component.
-64c88,90
-<     static_assert(false, "Not implemented");
----
->     Path result(*this);
->     result /= other;
->     return result;
-172c198
-<   return SDL_GetPrefPath(org, app);
----
->   return Path{SDL_GetPrefPath(org, app)};
-184,196c210,222
-<  * |             | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
-<  * | | ----------- | ------- | --------- | ---- | ---------- | ----- |
-<  * ---------- | | HOME        | X       | X         |      | X          | X | X
-<  * | | DESKTOP     | X       | X         |      | X          | X     | | |
-<  * DOCUMENTS   | X       | X         |      | X          |       |            |
-<  * | DOWNLOADS   | Vista+  | X         |      | X          |       | | | MUSIC
-<  * | X       | X         |      | X          |       |            | | PICTURES
-<  * | X       | X         |      | X          |       |            | |
-<  * PUBLICSHARE |         | X         |      | X          |       |            |
-<  * | SAVEDGAMES  | Vista+  |           |      |            |       | | |
-<  * SCREENSHOTS | Vista+  |           |      |            |       |            |
-<  * | TEMPLATES   | X       | X         |      | X          |       | | | VIDEOS
-<  * | X       | X*        |      | X          |       |            |
----
->  *             | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
->  * ----------- | ------- | --------- | ---- | ---------- | ----- | ----------
->  * HOME        | X       | X         |      | X          | X     | X
->  * DESKTOP     | X       | X         |      | X          | X     |
->  * DOCUMENTS   | X       | X         |      | X          |       |
->  * DOWNLOADS   | Vista+  | X         |      | X          |       |
->  * MUSIC       | X       | X         |      | X          |       |
->  * PICTURES    | X       | X         |      | X          |       |
->  * PUBLICSHARE |         | X         |      | X          |       |
->  * SAVEDGAMES  | Vista+  |           |      |            |       |
->  * SCREENSHOTS | Vista+  |           |      |            |       |
->  * TEMPLATES   | X       | X         |      | X          |       |
->  * VIDEOS      | X       | X*        |      | X          |       |
-346c372
-<   constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
----
->   constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
-494d519
-<  * @param userdata a pointer that is passed to `callback`.
-503c528,534
-<   static_assert(false, "Not implemented");
----
->   return EnumerateDirectory(
->     std::move(path),
->     [](void* userdata, const char* dirname, const char* fname) {
->       auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
->       return cb(dirname, fname);
->     },
->     &callback);
-507,515c538
-<  * Enumerate a directory through a callback function.
-<  *
-<  * This function provides every directory entry through an app-provided
-<  * callback, called once for each directory entry, until all results have been
-<  * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
-<  *
-<  * This will return false if there was a system problem in general, or if a
-<  * callback returns ENUM_FAILURE. A successful return means a callback returned
-<  * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
----
->  * Enumerate a directory.
-518,520c541
-<  * @param callback a function that is called for each entry in the directory.
-<  * @param userdata a pointer that is passed to `callback`.
-<  * @throws Error on failure.
----
->  * @returns all the directory contents.
-528c549,554
-<   static_assert(false, "Not implemented");
----
->   std::vector<Path> r;
->   EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
->     r.emplace_back(fname);
->     return ENUM_CONTINUE;
->   });
->   return r;
-534c560
-<  * Directories that are not empty will fail; this function will not recursely
----
->  * Directories that are not empty will fail; this function will not recursively
-622,623c648
-<  * @param info a pointer filled in with information about the path, or nullptr
-<  *             to check for the existence of a file.
----
->  * @returns the information about the path on success.
-632c657,659
-<   return CheckError(SDL_GetPathInfo(path));
----
->   PathInfo info;
->   CheckError(SDL_GetPathInfo(path, &info));
->   return info;
-656,657d682
-<  * @param count on return, will be set to the number of items in the returned
-<  *              array. Can be nullptr.
-667c692
-<                                      GlobFlags flags)
----
->                                      GlobFlags flags = 0)
-669c694,696
-<   return CheckError(SDL_GlobDirectory(path, pattern, flags));
----
->   int count;
->   auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
->   return OwnArray<char*>{data, size_t(count)};
-693c720
-< inline Path GetCurrentDirectory() { return SDL_GetCurrentDirectory(); }
----
-> inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
+--- src/generated/SDL3pp_filesystem.h
++++ include/SDL3pp/SDL3pp_filesystem.h
+@@ -7,7 +7,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryFilesystem Category Filesystem
++ * @defgroup CategoryFilesystem Filesystem Access
+  *
+  * SDL offers an API for examining and manipulating the system's filesystem.
+  * This covers most things one would need to do with directories, except for
+@@ -36,32 +36,58 @@
+ // Forward decl
+ struct PathInfo;
+ 
++/**
++ * Convenience representation of a path under SDL
++ *
++ */
+ struct Path : StringResult
+ {
++  /// Use parent ctors
+   using StringResult::StringResult;
+ 
++  /// Append
+   Path& operator+=(std::string_view other)
+   {
+-    static_assert(false, "Not implemented");
++    StringResult::operator+=(other);
++    return *this;
+   }
+ 
+-  Path& operator+=(char ch) { static_assert(false, "Not implemented"); }
++  /// Append
++  Path& operator+=(char ch)
++  {
++    StringResult::operator+=(ch);
++    return *this;
++  }
+ 
++  /// Append
+   Path operator+(std::string_view other) const
+   {
+-    static_assert(false, "Not implemented");
++    Path result(*this);
++    result += other;
++    return result;
+   }
+ 
+-  Path operator+(char ch) const { static_assert(false, "Not implemented"); }
++  /// Append
++  Path operator+(char ch) const
++  {
++    Path result(*this);
++    result += ch;
++    return result;
++  }
+ 
++  /// Append path component.
+   Path& operator/=(std::string_view other)
+   {
+-    static_assert(false, "Not implemented");
++    if (!empty() && back() != '/' && back() != '\\') this->operator+=('/');
++    return this->operator+=(other);
+   }
+ 
++  /// Append path component.
+   Path operator/(std::string_view other) const
+   {
+-    static_assert(false, "Not implemented");
++    Path result(*this);
++    result /= other;
++    return result;
+   }
+ };
+ 
+@@ -169,7 +195,7 @@
+  */
+ inline Path GetPrefPath(StringParam org, StringParam app)
+ {
+-  return SDL_GetPrefPath(org, app);
++  return Path{SDL_GetPrefPath(org, app)};
+ }
+ 
+ /**
+@@ -181,19 +207,19 @@
+  *
+  * The folders supported per platform are:
+  *
+- * |             | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
+- * | | ----------- | ------- | --------- | ---- | ---------- | ----- |
+- * ---------- | | HOME        | X       | X         |      | X          | X | X
+- * | | DESKTOP     | X       | X         |      | X          | X     | | |
+- * DOCUMENTS   | X       | X         |      | X          |       |            |
+- * | DOWNLOADS   | Vista+  | X         |      | X          |       | | | MUSIC
+- * | X       | X         |      | X          |       |            | | PICTURES
+- * | X       | X         |      | X          |       |            | |
+- * PUBLICSHARE |         | X         |      | X          |       |            |
+- * | SAVEDGAMES  | Vista+  |           |      |            |       | | |
+- * SCREENSHOTS | Vista+  |           |      |            |       |            |
+- * | TEMPLATES   | X       | X         |      | X          |       | | | VIDEOS
+- * | X       | X*        |      | X          |       |            |
++ *             | Windows | macOS/iOS | tvOS | Unix (XDG) | Haiku | Emscripten
++ * ----------- | ------- | --------- | ---- | ---------- | ----- | ----------
++ * HOME        | X       | X         |      | X          | X     | X
++ * DESKTOP     | X       | X         |      | X          | X     |
++ * DOCUMENTS   | X       | X         |      | X          |       |
++ * DOWNLOADS   | Vista+  | X         |      | X          |       |
++ * MUSIC       | X       | X         |      | X          |       |
++ * PICTURES    | X       | X         |      | X          |       |
++ * PUBLICSHARE |         | X         |      | X          |       |
++ * SAVEDGAMES  | Vista+  |           |      |            |       |
++ * SCREENSHOTS | Vista+  |           |      |            |       |
++ * TEMPLATES   | X       | X         |      | X          |       |
++ * VIDEOS      | X       | X*        |      | X          |       |
+  *
+  * Note that on macOS/iOS, the Videos folder is called "Movies".
+  *
+@@ -343,7 +369,7 @@
+    *
+    * @returns True if valid state, false otherwise.
+    */
+-  constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
++  constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
+ };
+ 
+ /**
+@@ -491,7 +517,6 @@
+  *
+  * @param path the path of the directory to enumerate.
+  * @param callback a function that is called for each entry in the directory.
+- * @param userdata a pointer that is passed to `callback`.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -500,24 +525,20 @@
+  */
+ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  return EnumerateDirectory(
++    std::move(path),
++    [](void* userdata, const char* dirname, const char* fname) {
++      auto& cb = *static_cast<EnumerateDirectoryCB*>(userdata);
++      return cb(dirname, fname);
++    },
++    &callback);
+ }
+ 
+ /**
+- * Enumerate a directory through a callback function.
+- *
+- * This function provides every directory entry through an app-provided
+- * callback, called once for each directory entry, until all results have been
+- * provided or the callback returns either ENUM_SUCCESS or ENUM_FAILURE.
+- *
+- * This will return false if there was a system problem in general, or if a
+- * callback returns ENUM_FAILURE. A successful return means a callback returned
+- * ENUM_SUCCESS to halt enumeration, or all directory entries were enumerated.
++ * Enumerate a directory.
+  *
+  * @param path the path of the directory to enumerate.
+- * @param callback a function that is called for each entry in the directory.
+- * @param userdata a pointer that is passed to `callback`.
+- * @throws Error on failure.
++ * @returns all the directory contents.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -525,13 +546,18 @@
+  */
+ inline std::vector<Path> EnumerateDirectory(StringParam path)
+ {
+-  static_assert(false, "Not implemented");
++  std::vector<Path> r;
++  EnumerateDirectory(std::move(path), [&](const char*, const char* fname) {
++    r.emplace_back(fname);
++    return ENUM_CONTINUE;
++  });
++  return r;
+ }
+ 
+ /**
+  * Remove a file or an empty directory.
+  *
+- * Directories that are not empty will fail; this function will not recursely
++ * Directories that are not empty will fail; this function will not recursively
+  * delete directory trees.
+  *
+  * @param path the path to remove from the filesystem.
+@@ -619,8 +645,7 @@
+  * Get information about a filesystem path.
+  *
+  * @param path the path to query.
+- * @param info a pointer filled in with information about the path, or nullptr
+- *             to check for the existence of a file.
++ * @returns the information about the path on success.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -629,7 +654,9 @@
+  */
+ inline PathInfo GetPathInfo(StringParam path)
+ {
+-  return CheckError(SDL_GetPathInfo(path));
++  PathInfo info;
++  CheckError(SDL_GetPathInfo(path, &info));
++  return info;
+ }
+ 
+ /**
+@@ -653,8 +680,6 @@
+  * @param pattern the pattern that files in the directory must match. Can be
+  *                nullptr.
+  * @param flags `SDL_GLOB_*` bitflags that affect this search.
+- * @param count on return, will be set to the number of items in the returned
+- *              array. Can be nullptr.
+  * @returns an array of strings on success.
+  * @throws Error on failure.
+  *
+@@ -664,9 +689,11 @@
+  */
+ inline OwnArray<char*> GlobDirectory(StringParam path,
+                                      StringParam pattern,
+-                                     GlobFlags flags)
++                                     GlobFlags flags = 0)
+ {
+-  return CheckError(SDL_GlobDirectory(path, pattern, flags));
++  int count;
++  auto data = CheckError(SDL_GlobDirectory(path, pattern, flags, &count));
++  return OwnArray<char*>{data, size_t(count)};
+ }
+ 
+ /**
+@@ -690,7 +717,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline Path GetCurrentDirectory() { return SDL_GetCurrentDirectory(); }
++inline Path GetCurrentDirectory() { return Path{SDL_GetCurrentDirectory()}; }
+ 
+ /// @}
+ 

@@ -1,7 +1,17 @@
-4a5,6
-> #include "SDL3pp_error.h"
-> #include "SDL3pp_stdinc.h"
-9c11
-<  * @defgroup CategoryMisc Category Misc
----
->  * @defgroup CategoryMisc Miscellaneous
+--- src/generated/SDL3pp_misc.h
++++ include/SDL3pp/SDL3pp_misc.h
+@@ -2,11 +2,13 @@
+ #define SDL3PP_MISC_H_
+ 
+ #include <SDL3/SDL_misc.h>
++#include "SDL3pp_error.h"
++#include "SDL3pp_stdinc.h"
+ 
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryMisc Category Misc
++ * @defgroup CategoryMisc Miscellaneous
+  *
+  * SDL API functions that don't fit elsewhere.
+  *

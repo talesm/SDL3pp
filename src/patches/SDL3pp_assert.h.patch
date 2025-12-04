@@ -1,70 +1,151 @@
-11c11
-<  * @defgroup CategoryAssert Category Assert
----
->  * @defgroup CategoryAssert Assertions
-52a53,54
-> #ifdef SDL3PP_DOC
-> 
-151c153
-<  * do { SomethingOnce(); } while (SDL_nullptr_WHILE_LOOP_CONDITION (0));
----
->  * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
-176a179,180
-> #endif // SDL3PP_DOC
-> 
-240a245,246
-> #ifdef SDL3PP_DOC
-> 
-342c348
-<  * instead of risking a bad UI interaction (deadlock, etc) in the application. *
----
->  * instead of risking a bad UI interaction (deadlock, etc) in the application.
-403a410,411
-> #endif // SDL3PP_DOC
-> 
-405c413
-<  * A callback that fires when an SDL assertion fails.
----
->  * A @ref callback that fires when an SDL assertion fails.
-420c428
-<  * A callback that fires when an SDL assertion fails.
----
->  * A @ref callback that fires when an SDL assertion fails.
-460a469
->   UniqueCallbackWrapper<AssertionHandlerCB>::erase();
-477,479c486
-<  * @param handler the AssertionHandler function to call when an assertion fails
-<  *                or nullptr for the default handler.
-<  * @param userdata a pointer that is passed to `handler`.
----
->  * @param handler the AssertionHandler function to call when an assertion fails.
-489c496,498
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
->   SetAssertionHandler(&Wrapper::CallSuffixed,
->                       Wrapper::Wrap(std::move(handler)));
-554,556c563
-<  * @param puserdata pointer which is filled with the "userdata" pointer that was
-<  *                  passed to SetAssertionHandler().
-<  * @returns the AssertionHandler that is called when an assert triggers.
----
->  * @returns the AssertionHandlerCB that is called when an assert triggers.
-566c573,577
-<   static_assert(false, "Not implemented");
----
->   using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
->   void* userdata = nullptr;
->   auto cb = GetAssertionHandler(&userdata);
->   if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
->   return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-577,578c588,589
-<  * ```c
-<  * const AssertData *item = GetAssertionReport();
----
->  * ```cpp
->  * const AssertData *item = &GetAssertionReport();
-603c614
-<   return SDL_GetAssertionReport();
----
->   return *SDL_GetAssertionReport();
+--- src/generated/SDL3pp_assert.h
++++ include/SDL3pp/SDL3pp_assert.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryAssert Category Assert
++ * @defgroup CategoryAssert Assertions
+  *
+  * A helpful assertion macro!
+  *
+@@ -50,6 +50,8 @@
+  * @{
+  */
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * The level of assertion aggressiveness.
+  *
+@@ -148,7 +150,7 @@
+  * To use:
+  *
+  * ```c
+- * do { SomethingOnce(); } while (SDL_nullptr_WHILE_LOOP_CONDITION (0));
++ * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
+  * ```
+  *
+  * @since This macro is available since SDL 3.2.0.
+@@ -174,6 +176,8 @@
+     (void)sizeof((condition));                                                 \
+   } while (SDL_NULL_WHILE_LOOP_CONDITION)
+ 
++#endif // SDL3PP_DOC
++
+ /**
+  * Possible outcomes from a triggered assertion.
+  *
+@@ -238,6 +242,8 @@
+   return SDL_ReportAssertion(data, func, file, line);
+ }
+ 
++#ifdef SDL3PP_DOC
++
+ /**
+  * The macro used when an assertion triggers a breakpoint.
+  *
+@@ -339,7 +345,7 @@
+  * requires GUI interfaces to happen on the main thread but you're debugging an
+  * assertion in a background thread, it might be desirable to set this to
+  * "break" so that your debugger takes control as soon as assert is triggered,
+- * instead of risking a bad UI interaction (deadlock, etc) in the application. *
++ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+  *
+  * @param condition boolean value to test.
+  *
+@@ -401,8 +407,10 @@
+  */
+ #define SDL_assert_always(condition) SDL_enabled_assert(condition)
+ 
++#endif // SDL3PP_DOC
++
+ /**
+- * A callback that fires when an SDL assertion fails.
++ * A @ref callback that fires when an SDL assertion fails.
+  *
+  * @param data a pointer to the AssertData structure corresponding to the
+  *             current assertion.
+@@ -417,7 +425,7 @@
+ using AssertionHandler = SDL_AssertionHandler;
+ 
+ /**
+- * A callback that fires when an SDL assertion fails.
++ * A @ref callback that fires when an SDL assertion fails.
+  *
+  * @param data a pointer to the AssertData structure corresponding to the
+  *             current assertion.
+@@ -458,6 +466,7 @@
+  */
+ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+ {
++  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
+   SDL_SetAssertionHandler(handler, userdata);
+ }
+ 
+@@ -474,9 +483,7 @@
+  *
+  * This callback is NOT reset to SDL's internal handler upon Quit()!
+  *
+- * @param handler the AssertionHandler function to call when an assertion fails
+- *                or nullptr for the default handler.
+- * @param userdata a pointer that is passed to `handler`.
++ * @param handler the AssertionHandler function to call when an assertion fails.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -486,7 +493,9 @@
+  */
+ inline void SetAssertionHandler(AssertionHandlerCB handler)
+ {
+-  static_assert(false, "Not implemented");
++  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
++  SetAssertionHandler(&Wrapper::CallSuffixed,
++                      Wrapper::Wrap(std::move(handler)));
+ }
+ 
+ /**
+@@ -551,9 +560,7 @@
+  * always be nullptr for the default handler. If you don't care about this data,
+  * it is safe to pass a nullptr pointer to this function to ignore it.
+  *
+- * @param puserdata pointer which is filled with the "userdata" pointer that was
+- *                  passed to SetAssertionHandler().
+- * @returns the AssertionHandler that is called when an assert triggers.
++ * @returns the AssertionHandlerCB that is called when an assert triggers.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -563,7 +570,11 @@
+  */
+ inline AssertionHandlerCB GetAssertionHandler()
+ {
+-  static_assert(false, "Not implemented");
++  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
++  void* userdata = nullptr;
++  auto cb = GetAssertionHandler(&userdata);
++  if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
++  return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
+ }
+ 
+ /**
+@@ -574,8 +585,8 @@
+  *
+  * The proper way to examine this data looks something like this:
+  *
+- * ```c
+- * const AssertData *item = GetAssertionReport();
++ * ```cpp
++ * const AssertData *item = &GetAssertionReport();
+  * while (item) {
+  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
+  *           item->condition, item->function, item->filename,
+@@ -600,7 +611,7 @@
+  */
+ inline const AssertData& GetAssertionReport()
+ {
+-  return SDL_GetAssertionReport();
++  return *SDL_GetAssertionReport();
+ }
+ 
+ /**

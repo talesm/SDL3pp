@@ -1,54 +1,114 @@
-11c11
-<  * @defgroup CategoryMutex Category Mutex
----
->  * @defgroup CategoryMutex Thread Synchronization Primitives
-199,201d198
-<   /// Default ctor
-<   constexpr Mutex() = default;
-< 
-524,526d520
-<   /// Default ctor
-<   constexpr RWLock() = default;
-< 
-1212,1213c1206,1207
-<    * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
-<    *                  indefinitely.
----
->    * @param timeout the length of the timeout, in milliseconds, or -1 to wait
->    *                indefinitely.
-1367,1368c1361,1362
-<  * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
-<  *                  indefinitely.
----
->  * @param timeout the length of the timeout, in milliseconds, or -1 to wait
->  *                indefinitely.
-1380c1374
-<   return SDL_WaitSemaphoreTimeout(sem, timeout);
----
->   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
-1441,1443d1434
-<   /// Default ctor
-<   constexpr Condition() = default;
-< 
-1597,1598c1588,1589
-<    * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-<    *                  indefinitely.
----
->    * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
->    *                indefinitely.
-1755,1756c1746,1747
-<  * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
-<  *                  indefinitely.
----
->  * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
->  *                indefinitely.
-1772c1763
-<   return SDL_WaitConditionTimeout(cond, mutex, timeout);
----
->   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
-1805,1806c1796,1797
-<  * ```c
-<  *    static InitState init;
----
->  * ```cpp
->  *    static SDL::InitState init;
+--- src/generated/SDL3pp_mutex.h
++++ include/SDL3pp/SDL3pp_mutex.h
+@@ -8,7 +8,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryMutex Category Mutex
++ * @defgroup CategoryMutex Thread Synchronization Primitives
+  *
+  * SDL offers several thread synchronization primitives. This document can't
+  * cover the complicated topic of thread safety, but reading up on what each of
+@@ -196,9 +196,6 @@
+   MutexRaw m_resource = nullptr;
+ 
+ public:
+-  /// Default ctor
+-  constexpr Mutex() = default;
+-
+   /**
+    * Constructs from MutexParam.
+    *
+@@ -521,9 +518,6 @@
+   RWLockRaw m_resource = nullptr;
+ 
+ public:
+-  /// Default ctor
+-  constexpr RWLock() = default;
+-
+   /**
+    * Constructs from RWLockParam.
+    *
+@@ -1209,8 +1203,8 @@
+    * pointed to by `sem` has a positive value or the specified time has elapsed.
+    * If the call is successful it will atomically decrement the semaphore value.
+    *
+-   * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
+-   *                  indefinitely.
++   * @param timeout the length of the timeout, in milliseconds, or -1 to wait
++   *                indefinitely.
+    * @returns true if the wait succeeds or false if the wait times out.
+    *
+    * @since This function is available since SDL 3.2.0.
+@@ -1364,8 +1358,8 @@
+  * call is successful it will atomically decrement the semaphore value.
+  *
+  * @param sem the semaphore to wait on.
+- * @param timeoutMS the length of the timeout, in milliseconds, or -1 to wait
+- *                  indefinitely.
++ * @param timeout the length of the timeout, in milliseconds, or -1 to wait
++ *                indefinitely.
+  * @returns true if the wait succeeds or false if the wait times out.
+  *
+  * @since This function is available since SDL 3.2.0.
+@@ -1377,7 +1371,7 @@
+ inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
+                                  std::chrono::milliseconds timeout)
+ {
+-  return SDL_WaitSemaphoreTimeout(sem, timeout);
++  return SDL_WaitSemaphoreTimeout(sem, timeout.count());
+ }
+ 
+ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
+@@ -1438,9 +1432,6 @@
+   ConditionRaw m_resource = nullptr;
+ 
+ public:
+-  /// Default ctor
+-  constexpr Condition() = default;
+-
+   /**
+    * Constructs from ConditionParam.
+    *
+@@ -1594,8 +1585,8 @@
+    * behavior.
+    *
+    * @param mutex the mutex used to coordinate thread access.
+-   * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+-   *                  indefinitely.
++   * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
++   *                indefinitely.
+    * @returns true if the condition variable is signaled, false if the condition
+    *          is not signaled in the allotted time.
+    *
+@@ -1752,8 +1743,8 @@
+  *
+  * @param cond the condition variable to wait on.
+  * @param mutex the mutex used to coordinate thread access.
+- * @param timeoutMS the maximum time to wait, in milliseconds, or -1 to wait
+- *                  indefinitely.
++ * @param timeout the maximum time to wait, in milliseconds, or -1 to wait
++ *                indefinitely.
+  * @returns true if the condition variable is signaled, false if the condition
+  *          is not signaled in the allotted time.
+  *
+@@ -1769,7 +1760,7 @@
+                                  MutexParam mutex,
+                                  std::chrono::milliseconds timeout)
+ {
+-  return SDL_WaitConditionTimeout(cond, mutex, timeout);
++  return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
+ }
+ 
+ inline bool Condition::WaitTimeout(MutexParam mutex,
+@@ -1802,8 +1793,8 @@
+  *
+  * Here is an example of using this:
+  *
+- * ```c
+- *    static InitState init;
++ * ```cpp
++ *    static SDL::InitState init;
+  *
+  *    bool InitSystem(void)
+  *    {

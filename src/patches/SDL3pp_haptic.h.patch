@@ -1,54 +1,95 @@
-12c12
-<  * @defgroup CategoryHaptic Category Haptic
----
->  * @defgroup CategoryHaptic Force Feedback Support
-143a144,148
->  * @name Haptic effects
->  * @{
->  */
-> 
-> /**
-150c155
-< using HapticEffectID = SDL_HapticEffectID;
----
-> using HapticEffectID = int;
-153c158
-< using HapticEffectType = SDL_HapticEffectType;
----
-> using HapticEffectType = Uint32;
-365a371,377
-> /// @}
-> 
-> /**
->  * @name Direction encodings
->  * @{
->  */
-> 
-367c379
-< using HapticDirectionType = SDL_HapticDirectionType;
----
-> using HapticDirectionType = Uint8;
-407a420,421
-> /// @}
-> 
-1270,1271d1283
-<  * @param count a pointer filled in with the number of haptic devices returned,
-<  *              may be nullptr.
-1273,1274c1285
-<  *          failure; call GetError() for more information. This should be freed
-<  *          with free() when it is no longer needed.
----
->  *          failure; call GetError() for more information.
-1280c1291,1296
-< inline OwnArray<HapticID> GetHaptics() { return SDL_GetHaptics(); }
----
-> inline OwnArray<HapticID> GetHaptics()
-> {
->   int count;
->   auto data = SDL_GetHaptics(&count);
->   return OwnArray<HapticID>{data};
-> }
-1337c1353
-<   return CheckError(SDL_GetHapticFromID(instance_id));
----
->   return {CheckError(SDL_GetHapticFromID(instance_id))};
+--- src/generated/SDL3pp_haptic.h
++++ include/SDL3pp/SDL3pp_haptic.h
+@@ -9,7 +9,7 @@
+ namespace SDL {
+ 
+ /**
+- * @defgroup CategoryHaptic Category Haptic
++ * @defgroup CategoryHaptic Force Feedback Support
+  *
+  * The SDL haptic subsystem manages haptic (force feedback) devices.
+  *
+@@ -141,16 +141,21 @@
+ };
+ 
+ /**
++ * @name Haptic effects
++ * @{
++ */
++
++/**
+  * ID for haptic effects.
+  *
+  * This is -1 if the ID is invalid.
+  *
+  * @sa Haptic.CreateEffect
+  */
+-using HapticEffectID = SDL_HapticEffectID;
++using HapticEffectID = int;
+ 
+ /// Type of haptic effect.
+-using HapticEffectType = SDL_HapticEffectType;
++using HapticEffectType = Uint32;
+ 
+ /**
+  * Constant effect supported.
+@@ -363,8 +368,15 @@
+  */
+ constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
+ 
++/// @}
++
++/**
++ * @name Direction encodings
++ * @{
++ */
++
+ /// Type of coordinates used for haptic direction.
+-using HapticDirectionType = SDL_HapticDirectionType;
++using HapticDirectionType = Uint8;
+ 
+ /**
+  * Uses polar coordinates for the direction.
+@@ -405,6 +417,8 @@
+  */
+ constexpr HapticDirectionType HAPTIC_STEERING_AXIS = SDL_HAPTIC_STEERING_AXIS;
+ 
++/// @}
++
+ /**
+  * Used to play a device an infinite number of times.
+  *
+@@ -1267,17 +1281,19 @@
+ /**
+  * Get a list of currently connected haptic devices.
+  *
+- * @param count a pointer filled in with the number of haptic devices returned,
+- *              may be nullptr.
+  * @returns a 0 terminated array of haptic device instance IDs or nullptr on
+- *          failure; call GetError() for more information. This should be freed
+- *          with free() when it is no longer needed.
++ *          failure; call GetError() for more information.
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
+  * @sa Haptic.Haptic
+  */
+-inline OwnArray<HapticID> GetHaptics() { return SDL_GetHaptics(); }
++inline OwnArray<HapticID> GetHaptics()
++{
++  int count;
++  auto data = SDL_GetHaptics(&count);
++  return OwnArray<HapticID>{data};
++}
+ 
+ /**
+  * Get the implementation dependent name of a haptic device.
+@@ -1334,7 +1350,7 @@
+  */
+ inline HapticRef GetHapticFromID(HapticID instance_id)
+ {
+-  return CheckError(SDL_GetHapticFromID(instance_id));
++  return {CheckError(SDL_GetHapticFromID(instance_id))};
+ }
+ 
+ /**
