@@ -111,7 +111,7 @@
  }
  
  /**
-@@ -169,11 +176,28 @@
+@@ -169,6 +176,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -120,28 +120,16 @@
   * @sa AddTimer
   *
   * @sa TimerCallback
-  */
--using TimerCB = MakeFrontCallback<Uint64(TimerID timerID, Uint64 interval)>;
-+struct TimerCB : LightweightCallbackT<TimerCB, TimerCallback>
-+{
-+  /// ctor
-+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
-+  TimerCB(const F& func)
-+    : LightweightCallbackT<TimerCB, TimerCallback>(func)
-+  {
-+  }
-+
-+  /// @private
-+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
-+  static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
-+  {
+@@ -186,7 +195,7 @@
+   template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+   static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+   {
+-    static_assert(false, "Not implemented");
 +    return func(timerID, std::chrono::nanoseconds(interval)).count();
-+  }
-+};
+   }
+ };
  
- /**
-  * Call a callback function at a future time.
-@@ -194,24 +218,25 @@
+@@ -209,24 +218,25 @@
   * with GetTicks() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
@@ -172,7 +160,7 @@
  }
  
  /**
-@@ -233,22 +258,25 @@
+@@ -248,22 +258,25 @@
   * with GetTicks() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *

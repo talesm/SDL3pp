@@ -574,12 +574,64 @@ function expandTypes(
           callback.type ?? resultType,
           callback.parameters ?? typeParams
         );
-      } else {
+      } else if (
+        callback.type === undefined &&
+        callback.parameters === undefined
+      ) {
         makeCallbackAlias(
           userdataIndex === 0 ? "MakeFrontCallback" : "MakeBackCallback",
           resultType,
           typeParams
         );
+      } else {
+        const parameters = (callback.parameters ?? typeParams)
+          .map((p) => p.type)
+          .join(", ");
+        const type = `LightweightCallbackT<${callbackName}, ${name}>`;
+        const template = [
+          {
+            type: `std::invocable<${parameters}>`,
+            name: "F",
+          },
+        ];
+        const callbackEntry: ApiEntryTransform = {
+          kind: "struct",
+          name: callbackName,
+          type,
+          doc,
+          entries: {
+            [callbackName]: {
+              kind: "function",
+              doc: ["ctor"],
+              type: "",
+              template,
+              parameters: [
+                {
+                  type: "const F &",
+                  name: "func",
+                },
+              ],
+              hints: {
+                init: [`${type}(func)`],
+              },
+            },
+            doCall: {
+              kind: "function",
+              doc: ["@private"],
+              type: resultType,
+              static: true,
+              template,
+              parameters: [
+                {
+                  type: "F &",
+                  name: "func",
+                },
+                ...typeParams,
+              ],
+            },
+          },
+        };
+        context.prependIncludeAfter(callbackEntry, name);
       }
     }
 

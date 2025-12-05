@@ -173,7 +173,22 @@ using TimerCallback = Uint64(SDLCALL*)(void* userdata,
  *
  * @sa TimerCallback
  */
-using TimerCB = MakeFrontCallback<Uint64(TimerID timerID, Uint64 interval)>;
+struct TimerCB : LightweightCallbackT<TimerCB, TimerCallback>
+{
+  /// ctor
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  TimerCB(const F& func)
+    : LightweightCallbackT<TimerCB, TimerCallback>(func)
+  {
+  }
+
+  /// @private
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+  {
+    static_assert(false, "Not implemented");
+  }
+};
 
 /**
  * Call a callback function at a future time.
