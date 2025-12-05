@@ -125,9 +125,9 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppInit_func = SDL_AppResult(SDLCALL*)(void** appstate,
-                                             int argc,
-                                             char* argv[]);
+using AppInit_func = AppResult(SDLCALL*)(void** appstate,
+                                         int argc,
+                                         char* argv[]);
 
 /**
  * Function pointer typedef for SDL_AppIterate.
@@ -142,7 +142,7 @@ using AppInit_func = SDL_AppResult(SDLCALL*)(void** appstate,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppIterate_func = SDL_AppResult(SDLCALL*)(void* appstate);
+using AppIterate_func = AppResult(SDLCALL*)(void* appstate);
 
 /**
  * Function pointer typedef for SDL_AppEvent.
@@ -158,7 +158,7 @@ using AppIterate_func = SDL_AppResult(SDLCALL*)(void* appstate);
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppEvent_func = SDL_AppResult(SDLCALL*)(void* appstate, Event* event);
+using AppEvent_func = AppResult(SDLCALL*)(void* appstate, Event* event);
 
 /**
  * Function pointer typedef for SDL_AppQuit.

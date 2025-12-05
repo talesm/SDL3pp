@@ -1352,7 +1352,7 @@ using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
  * @sa AddEventWatch
  * @sa EventFilter
  */
-using EventFilterCB = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(const Event& event)>;
 
 /**
  * Set up a filter to process all events before they are added to the internal

@@ -697,11 +697,22 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @sa Window.SetHitTest
  */
-using HitTest = SDL_HitTestResult(SDLCALL*)(WindowRaw win,
-                                            const PointRaw* area,
-                                            void* data);
+using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
+                                        const PointRaw* area,
+                                        void* data);
 
-/// @sa HitTest
+/**
+ * Callback used for hit-testing.
+ *
+ * @param win the Window where hit-testing was set on.
+ * @param area an Point which should be hit-tested.
+ * @param data what was passed as `callback_data` to Window.SetHitTest().
+ * @returns an HitTestResult value.
+ *
+ * @sa Window.SetHitTest
+ *
+ * @sa HitTest
+ */
 using HitTestCB =
   std::function<HitTestResult(WindowRaw window, const Point& area)>;
 
@@ -3259,7 +3270,7 @@ using EGLint = SDL_EGLint;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
+using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
  * EGL surface/context attribute initialization callback types.
@@ -3290,9 +3301,9 @@ using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
-                                                  EGLDisplay display,
-                                                  EGLConfig config);
+using EGLIntArrayCallback = EGLint*(SDLCALL*)(void* userdata,
+                                              EGLDisplay display,
+                                              EGLConfig config);
 
 /**
  * An enumeration of OpenGL configuration attributes.

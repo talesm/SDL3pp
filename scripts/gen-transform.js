@@ -838,9 +838,12 @@ const transform = {
         "SDL_GetClipboardText": { type: "StringResult" },
         "SDL_GetPrimarySelectionText": { type: "StringResult" },
         "SDL_ClipboardCleanupCallback": { callback: "std" },
-        "SDL_ClipboardDataCallback": { callback: "std" },
-        "ClipboardDataCB": {
-          type: "std::function<SourceBytes(const char *mime_type)>"
+        "SDL_ClipboardDataCallback": {
+          callback: {
+            functorSupport: "std",
+            type: "SourceBytes",
+            parameters: [{ type: "const char *", name: "mime_type" }]
+          }
         },
         "SDL_SetClipboardData": {
           parameters: [
@@ -1368,11 +1371,12 @@ const transform = {
         "SDL_EventType": {
           enum: "SDL_EVENT_"
         },
-        "SDL_EventFilter": { callback: "std" },
-        "EventFilterCB": {
-          kind: "alias",
-          type: "std::function<bool(const Event &)>",
-          after: "EventFilter",
+        "SDL_EventFilter": {
+          callback: {
+            functorSupport: "std",
+            type: "bool",
+            parameters: [{ type: "const Event &", name: "event" }]
+          }
         },
         "SDL_GetWindowFromEvent": {
           parameters: [{ type: "const Event &" }]
@@ -1442,11 +1446,6 @@ const transform = {
           }
         },
         "SDL_EnumerateDirectoryCallback": { callback: "std" },
-        "EnumerateDirectoryCB": {
-          kind: "alias",
-          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>",
-          after: "SDL_EnumerateDirectoryCallback",
-        },
         "EnumerateDirectory": {
           kind: "function",
           type: "void",
@@ -3794,11 +3793,6 @@ const transform = {
           kind: "alias",
           before: "SDL_PropertiesID",
           callback: "std",
-        },
-        "EnumeratePropertiesCB": {
-          kind: "alias",
-          type: "std::function<void(PropertiesID props, const char *name)>",
-          before: "SDL_PropertiesID",
         },
         "SDL_CleanupPropertyCallback": {
           kind: "alias",
@@ -6727,7 +6721,6 @@ const transform = {
           constexpr: true,
         },
         "SDL_RequestAndroidPermissionCallback": { callback: "std" },
-        "RequestAndroidPermissionCB": { type: "std::function<void(const char *permission, bool granted)>" },
       }
     },
     "SDL_thread.h": {
@@ -6745,11 +6738,12 @@ const transform = {
       ],
       transform: {
         "ThreadID": { after: "__begin" },
-        "ThreadFunction": { after: "__begin" },
-        "ThreadCB": {
+        "SDL_ThreadFunction": {
           after: "__begin",
-          kind: "alias",
-          type: "std::function<int()>"
+          callback: {
+            functorSupport: "std",
+            userdataIndex: 0,
+          },
         },
         "SDL_TLSDestructorCallback": { after: "__begin" },
         "SDL_ThreadPriority": {
@@ -7215,12 +7209,20 @@ const transform = {
         },
         "SDL_FlashOperation": { before: "SDL_Window" },
         "SDL_HitTestResult": { before: "SDL_Window" },
-        "SDL_HitTest": { before: "SDL_Window" },
-        "HitTestCB": {
+        "SDL_HitTest": {
           before: "SDL_Window",
-          kind: "alias",
-          type: "std::function<HitTestResult(WindowRaw window, const Point& area)>",
-          doc: ["@sa HitTest"]
+          callback: {
+            functorSupport: "std",
+            userdataIndex: 2,
+            type: "HitTestResult",
+            parameters: [{
+              type: "WindowRaw",
+              name: "window"
+            }, {
+              type: "const Point &",
+              name: "area"
+            }]
+          }
         },
         "SDL_EGLSurface": { before: "SDL_Window" },
         "SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN": {

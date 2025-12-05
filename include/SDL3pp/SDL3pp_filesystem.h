@@ -433,7 +433,7 @@ constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
  *
  * @sa EnumerateDirectory
  */
-using EnumerateDirectoryCallback = SDL_EnumerationResult(
+using EnumerateDirectoryCallback = EnumerationResult(
   SDLCALL*)(void* userdata, const char* dirname, const char* fname);
 
 /**

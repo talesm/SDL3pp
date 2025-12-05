@@ -398,8 +398,8 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData* data,
-                                                   void* userdata);
+using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
+                                               void* userdata);
 
 /**
  * Set an application-defined assertion handler.

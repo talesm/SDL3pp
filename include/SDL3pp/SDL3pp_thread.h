@@ -141,6 +141,8 @@ using ThreadFunction = int(SDLCALL*)(void* data);
  * @returns a value that can be reported through Thread.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadFunction
  */
 using ThreadCB = std::function<int()>;
 

@@ -155,6 +155,8 @@ export type FunctorSupport = "std" | "lightweight";
 export interface CallbackDefinition {
   functorSupport?: boolean | FunctorSupport;
 
+  userdataIndex?: number;
+
   /// The return type. By default the raw callback's return type
   type?: string;
 

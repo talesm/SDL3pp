@@ -543,14 +543,16 @@ function expandTypes(
     const callback = getCallbackDef(targetDelta.callback);
     targetDelta.kind = "alias";
     delete targetDelta.callback;
-    const resultType = sourceEntry.type;
+    const resultType = transformCbType(sourceEntry.type, context);
     targetDelta.type = `${resultType} (SDLCALL *)(${parameters
       .map((p) => p.type + " " + p.name)
       .join(", ")})`;
     if (!callback.functorSupport) return;
-    const userdataIndex = parameters.findIndex(
-      (p) => p.type.endsWith("void *") && p.name === "userdata"
-    );
+    const userdataIndex =
+      callback.userdataIndex ??
+      parameters.findIndex(
+        (p) => p.type.endsWith("void *") && p.name === "userdata"
+      );
     if (userdataIndex < 0) return;
     const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
     const doc = removeTagFromGroup(
@@ -565,18 +567,34 @@ function expandTypes(
       callback.functorSupport === "std" ||
       callback.functorSupport === "lightweight"
     ) {
-      const wrapper =
-        callback.functorSupport === "std"
-          ? "std::function"
-          : parameters[0].type === "void *"
-          ? "MakeFrontCallback"
-          : "MakeBackCallback";
-      const typeParams = parameters.map((p) => `${p.type} ${p.name}`);
-      typeParams.splice(userdataIndex, 1);
+      const typeParams = parameters.toSpliced(userdataIndex, 1);
+      if (callback.functorSupport === "std") {
+        makeCallbackAlias(
+          "std::function",
+          callback.type ?? resultType,
+          callback.parameters ?? typeParams
+        );
+      } else {
+        makeCallbackAlias(
+          userdataIndex === 0 ? "MakeFrontCallback" : "MakeBackCallback",
+          resultType,
+          typeParams
+        );
+      }
+    }
+
+    function makeCallbackAlias(
+      wrapper: string,
+      resultType: string,
+      typeParams: ApiParameters
+    ) {
+      const parameters = typeParams
+        .map((p) => `${p.type} ${p.name}`)
+        .join(", ");
       const callbackEntry: ApiEntryTransform = {
         kind: "alias",
         name: callbackName,
-        type: `${wrapper}<${resultType}(${typeParams.join(", ")})>`,
+        type: `${wrapper}<${resultType}(${parameters})>`,
         doc,
         ...file.transform[callbackName],
         before: undefined,
@@ -2697,18 +2715,16 @@ function transformCbParameters(
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
     if (type) {
-      type = transformCbParameter(type);
+      type = transformCbType(type, context);
     }
     return { name, type, default: defaultValue };
   });
-
-  function transformCbParameter(type: string): string {
-    return type.replace(
-      /^(const\s+)?(\w+(\s+\*)?)/,
-      (_, ct: string, type: string) =>
-        (ct ?? "") + context.getCallbackType(type)
-    );
-  }
+}
+function transformCbType(type: string, context: ApiContext): string {
+  return type.replace(
+    /^(const\s+)?(\w+(\s+\*)?)/,
+    (_, ct: string, type: string) => (ct ?? "") + context.getCallbackType(type)
+  );
 }
 
 function checkSignatureRules(targetEntry: ApiEntry, context: ApiContext) {

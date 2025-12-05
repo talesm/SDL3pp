@@ -2546,8 +2546,8 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AssertionHandler = SDL_AssertState(SDLCALL*)(const AssertData* data,
-                                                   void* userdata);
+using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
+                                               void* userdata);
 
 /**
  * Set an application-defined assertion handler.
@@ -22747,7 +22747,7 @@ constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
  *
  * @sa EnumerateDirectory
  */
-using EnumerateDirectoryCallback = SDL_EnumerationResult(
+using EnumerateDirectoryCallback = EnumerationResult(
   SDLCALL*)(void* userdata, const char* dirname, const char* fname);
 
 /**
@@ -44852,6 +44852,8 @@ using ThreadFunction = int(SDLCALL*)(void* data);
  * @returns a value that can be reported through Thread.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadFunction
  */
 using ThreadCB = std::function<int()>;
 
@@ -50598,21 +50600,21 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @sa Window.SetHitTest
  */
-using HitTest = SDL_HitTestResult(SDLCALL*)(WindowRaw win,
-                                            const PointRaw* area,
-                                            void* data);
+using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
+                                        const PointRaw* area,
+                                        void* data);
 
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowRef where hit-testing was set on.
- * @param area a Point const reference which should be hit-tested.
- * @returns an SDL::HitTestResult value.
+ * @param win the Window where hit-testing was set on.
+ * @param area an Point which should be hit-tested.
+ * @returns an HitTestResult value.
  *
  * @cat listener-callback
  *
- * @sa HitTest
  * @sa Window.SetHitTest
+ * @sa HitTest
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRaw window, const Point& area)>;
@@ -53179,7 +53181,7 @@ using EGLint = SDL_EGLint;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
+using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
  * EGL surface/context attribute initialization callback types.
@@ -53210,9 +53212,9 @@ using EGLAttribArrayCallback = SDL_EGLAttrib*(SDLCALL*)(void* userdata);
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLIntArrayCallback = SDL_EGLint*(SDLCALL*)(void* userdata,
-                                                  EGLDisplay display,
-                                                  EGLConfig config);
+using EGLIntArrayCallback = EGLint*(SDLCALL*)(void* userdata,
+                                              EGLDisplay display,
+                                              EGLConfig config);
 
 /**
  * An enumeration of OpenGL configuration attributes.
@@ -59070,7 +59072,7 @@ using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
  * @sa AddEventWatch()
  * @sa EventFilter
  */
-using EventFilterCB = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(const Event& event)>;
 
 /**
  * Set up a filter to process all events before they are added to the internal
@@ -76123,9 +76125,9 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppInit_func = SDL_AppResult(SDLCALL*)(void** appstate,
-                                             int argc,
-                                             char* argv[]);
+using AppInit_func = AppResult(SDLCALL*)(void** appstate,
+                                         int argc,
+                                         char* argv[]);
 
 /**
  * Function pointer typedef for SDL_AppIterate.
@@ -76140,7 +76142,7 @@ using AppInit_func = SDL_AppResult(SDLCALL*)(void** appstate,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppIterate_func = SDL_AppResult(SDLCALL*)(void* appstate);
+using AppIterate_func = AppResult(SDLCALL*)(void* appstate);
 
 /**
  * Function pointer typedef for SDL_AppEvent.
@@ -76156,7 +76158,7 @@ using AppIterate_func = SDL_AppResult(SDLCALL*)(void* appstate);
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppEvent_func = SDL_AppResult(SDLCALL*)(void* appstate, Event* event);
+using AppEvent_func = AppResult(SDLCALL*)(void* appstate, Event* event);
 
 /**
  * Function pointer typedef for SDL_AppQuit.

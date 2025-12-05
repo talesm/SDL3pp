@@ -135,6 +135,16 @@ using ThreadID = SDL_ThreadID;
  */
 using ThreadFunction = int(SDLCALL*)(void* data);
 
+/**
+ * The function passed to Thread.Thread() as the new thread's entry point.
+ *
+ * @param data what was passed as `data` to Thread.Thread().
+ * @returns a value that can be reported through Thread.Wait().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadFunction
+ */
 using ThreadCB = std::function<int()>;
 
 /**

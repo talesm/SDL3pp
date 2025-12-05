@@ -306,7 +306,7 @@
 + * @sa AddEventWatch()
   * @sa EventFilter
   */
- using EventFilterCB = std::function<bool(const Event&)>;
+ using EventFilterCB = std::function<bool(const Event& event)>;
 @@ -1394,7 +1406,8 @@
   */
  inline void SetEventFilter(EventFilter filter, void* userdata)
