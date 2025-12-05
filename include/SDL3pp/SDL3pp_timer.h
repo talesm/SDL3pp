@@ -182,12 +182,12 @@ using TimerCallback = Uint64(SDLCALL*)(void* userdata,
  *
  * @sa TimerCallback
  */
-struct TimerCB : LightweightCallbackT<TimerCB, TimerCallback>
+struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
 {
   /// ctor
   template<std::invocable<TimerID, std::chrono::nanoseconds> F>
   TimerCB(const F& func)
-    : LightweightCallbackT<TimerCB, TimerCallback>(func)
+    : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>(func)
   {
   }
 

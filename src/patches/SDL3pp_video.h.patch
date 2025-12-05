@@ -956,16 +956,7 @@
  }
  
  inline void Window::ShowSystemMenu(const PointRaw& p)
-@@ -6494,6 +6524,8 @@
-                              HitTest callback,
-                              void* callback_data)
- {
-+  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-+  Wrapper::erase(window);
-   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
- }
- 
-@@ -6531,7 +6563,6 @@
+@@ -6531,7 +6561,6 @@
   *
   * @param window the window to set hit-testing on.
   * @param callback the function to call when doing a hit-test.
@@ -973,37 +964,16 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6540,7 +6571,14 @@
+@@ -6540,7 +6569,7 @@
   */
  inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
  {
 -  static_assert(false, "Not implemented");
-+  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-+  void* cbHandle = Wrapper::Wrap(window, std::move(callback));
-+  SetWindowHitTest(
-+    window,
-+    [](SDL_Window* win, const SDL_Point* area, void* data) {
-+      return Wrapper::Call(data, win, Point(*area));
-+    },
-+    cbHandle);
++  SetWindowHitTest(window, callback.wrapper, callback.data);
  }
  
  inline void Window::SetHitTest(HitTest callback, void* callback_data)
-@@ -6627,7 +6665,12 @@
-  * @sa Window.Window
-  * @sa Window.Window
-  */
--inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
-+inline void DestroyWindow(WindowRaw window)
-+{
-+  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-+  Wrapper::erase(window);
-+  SDL_DestroyWindow(window);
-+}
- 
- inline void Window::Destroy() { DestroyWindow(release()); }
- 
-@@ -6926,7 +6969,7 @@
+@@ -6926,7 +6955,7 @@
   */
  inline void GL_MakeCurrent(WindowParam window, GLContext context)
  {
@@ -1012,7 +982,7 @@
  }
  
  inline void Window::MakeCurrent(GLContext context)
-@@ -6936,7 +6979,7 @@
+@@ -6936,7 +6965,7 @@
  
  inline void GLContext::MakeCurrent(WindowParam window)
  {
@@ -1021,7 +991,7 @@
  }
  
  /**
-@@ -6952,7 +6995,7 @@
+@@ -6952,7 +6981,7 @@
   */
  inline WindowRef GL_GetCurrentWindow()
  {

@@ -584,13 +584,18 @@ function expandTypes(
           typeParams
         );
       } else {
-        const parameters = (callback.parameters ?? typeParams)
+        const templateType =
+          userdataIndex === 0
+            ? "LightweightCallbackT"
+            : "LightweightTrailingCallbackT";
+        const type = `${templateType}<${callbackName}, ${resultType}, ${typeParams
           .map((p) => p.type)
-          .join(", ");
-        const type = `LightweightCallbackT<${callbackName}, ${name}>`;
+          .join(", ")}>`;
         const template = [
           {
-            type: `std::invocable<${parameters}>`,
+            type: `std::invocable<${(callback.parameters ?? typeParams)
+              .map((p) => p.type)
+              .join(", ")}>`,
             name: "F",
           },
         ];

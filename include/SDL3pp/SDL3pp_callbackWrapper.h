@@ -132,16 +132,13 @@ struct CallbackWrapper<std::function<Result(Args...)>>
   }
 };
 
-template<class SELF, class TARGET>
-struct LightweightCallbackT;
-
 /**
  * Lightweight wrapper.
  *
  * @tparam SELF a CRTP class
  */
 template<class SELF, class R, class... PARAMS>
-struct LightweightCallbackT<SELF, R (*)(void*, PARAMS...)>
+struct LightweightCallbackT
 {
   /// The wrapper function
   R (*wrapper)(void*, PARAMS...);
@@ -212,14 +209,12 @@ struct MakeFrontCallback;
  */
 template<class R, class... PARAMS>
 struct MakeFrontCallback<R(PARAMS...)>
-  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
-                         R (*)(void*, PARAMS...)>
+  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>
 {
   /// ctor
   template<std::invocable<PARAMS...> F>
   MakeFrontCallback(const F& func)
-    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
-                           R (*)(void*, PARAMS...)>(func)
+    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>(func)
   {
   }
 
