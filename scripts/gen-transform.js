@@ -7212,16 +7212,8 @@ const transform = {
         "SDL_HitTest": {
           before: "SDL_Window",
           callback: {
-            functorSupport: "std",
+            functorSupport: "lightweight",
             userdataIndex: 2,
-            type: "HitTestResult",
-            parameters: [{
-              type: "WindowRaw",
-              name: "window"
-            }, {
-              type: "const Point &",
-              name: "area"
-            }]
           }
         },
         "SDL_EGLSurface": { before: "SDL_Window" },

@@ -714,7 +714,7 @@ using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
  * @sa HitTest
  */
 using HitTestCB =
-  std::function<HitTestResult(WindowRaw window, const Point& area)>;
+  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.

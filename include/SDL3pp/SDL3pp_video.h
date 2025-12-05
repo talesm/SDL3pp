@@ -709,7 +709,7 @@ using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
  * @sa HitTest
  */
 using HitTestCB =
-  std::function<HitTestResult(WindowRaw window, const Point& area)>;
+  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.
@@ -6524,8 +6524,6 @@ inline void SetWindowHitTest(WindowParam window,
                              HitTest callback,
                              void* callback_data)
 {
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  Wrapper::erase(window);
   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
 }
 
@@ -6571,14 +6569,7 @@ inline void SetWindowHitTest(WindowParam window,
  */
 inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  void* cbHandle = Wrapper::Wrap(window, std::move(callback));
-  SetWindowHitTest(
-    window,
-    [](SDL_Window* win, const SDL_Point* area, void* data) {
-      return Wrapper::Call(data, win, Point(*area));
-    },
-    cbHandle);
+  SetWindowHitTest(window, callback.wrapper, callback.data);
 }
 
 inline void Window::SetHitTest(HitTest callback, void* callback_data)
@@ -6665,12 +6656,7 @@ inline void Window::Flash(FlashOperation operation)
  * @sa Window.Window
  * @sa Window.Window
  */
-inline void DestroyWindow(WindowRaw window)
-{
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  Wrapper::erase(window);
-  SDL_DestroyWindow(window);
-}
+inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
 inline void Window::Destroy() { DestroyWindow(release()); }
 
