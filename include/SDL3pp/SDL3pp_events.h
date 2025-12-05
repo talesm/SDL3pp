@@ -1406,7 +1406,6 @@ using EventFilterCB = std::function<bool(const Event& event)>;
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueCallbackWrapper<EventFilterCB>::erase();
   return SDL_SetEventFilter(filter, userdata);
 }
 
