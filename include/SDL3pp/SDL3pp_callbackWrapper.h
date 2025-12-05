@@ -174,7 +174,7 @@ struct LightweightCallbackT<SELF, R (*)(void*, PARAMS...)>
  * @tparam SELF a CRTP class
  */
 template<class SELF, class R, class... PARAMS>
-struct LightweightCallbackT<SELF, R (*)(PARAMS..., void*)>
+struct LightweightTrailingCallbackT
 {
   /// The wrapper function
   R (*wrapper)(PARAMS..., void*);
@@ -184,7 +184,7 @@ struct LightweightCallbackT<SELF, R (*)(PARAMS..., void*)>
 
   /// ctor
   template<class F>
-  LightweightCallbackT(const F& func)
+  LightweightTrailingCallbackT(const F& func)
   {
     static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
     union PunAux
@@ -242,14 +242,14 @@ struct MakeBackCallback;
  */
 template<class R, class... PARAMS>
 struct MakeBackCallback<R(PARAMS...)>
-  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
-                         R (*)(PARAMS..., void*)>
+  : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>, R, PARAMS...>
 {
   /// ctor
   template<std::invocable<PARAMS...> F>
   MakeBackCallback(const F& func)
-    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>,
-                           R (*)(PARAMS..., void*)>(func)
+    : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>,
+                                   R,
+                                   PARAMS...>(func)
   {
   }
 
