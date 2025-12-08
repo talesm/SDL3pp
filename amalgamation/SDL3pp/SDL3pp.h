@@ -8321,6 +8321,8 @@ using LogOutputFunction = void(SDLCALL*)(void* userdata,
  *
  * @since This datatype is available since SDL 3.2.0.
  *
+ * @cat listener-callback
+ *
  * @sa LogOutputFunction
  */
 using LogOutputCB = MakeFrontCallback<
