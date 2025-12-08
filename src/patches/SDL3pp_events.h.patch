@@ -307,17 +307,16 @@
   * @sa EventFilter
   */
  using EventFilterCB = std::function<bool(const Event& event)>;
-@@ -1394,7 +1406,8 @@
+@@ -1394,7 +1406,7 @@
   */
  inline void SetEventFilter(EventFilter filter, void* userdata)
  {
 -  SDL_SetEventFilter(filter, userdata);
-+  UniqueCallbackWrapper<EventFilterCB>::erase();
 +  return SDL_SetEventFilter(filter, userdata);
  }
  
  /**
-@@ -1505,18 +1518,25 @@
+@@ -1505,18 +1517,25 @@
   * filter until this function returns.
   *
   * @param filter the EventFilter function to call when an event happens.
@@ -345,7 +344,7 @@
  }
  
  /**
-@@ -1586,7 +1606,7 @@
+@@ -1586,7 +1605,7 @@
   */
  inline WindowRef GetWindowFromEvent(const Event& event)
  {
