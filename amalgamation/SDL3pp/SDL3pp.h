@@ -2350,6 +2350,23 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
                                                void* userdata);
 
 /**
+ * A callback that fires when an SDL assertion fails.
+ *
+ * @param data a pointer to the AssertData structure corresponding to the
+ *             current assertion.
+ * @returns an AssertState value indicating how to handle the failure.
+ *
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AssertionHandler
+ */
+using AssertionHandlerCB =
+  MakeBackCallback<AssertState(const AssertData* data)>;
+
+/**
  * Set an application-defined assertion handler.
  *
  * This function allows an application to show its own assertion UI and/or force
@@ -2375,6 +2392,33 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
 inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
   return SDL_SetAssertionHandler(handler, userdata);
+}
+
+/**
+ * Set an application-defined assertion handler.
+ *
+ * This function allows an application to show its own assertion UI and/or force
+ * the response to an assertion failure. If the application doesn't provide
+ * this, SDL will try to do the right thing, popping up a system-specific GUI
+ * dialog, and probably minimizing any fullscreen windows.
+ *
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so it
+ * will only fire from one thread at a time.
+ *
+ * This callback is NOT reset to SDL's internal handler upon Quit()!
+ *
+ * @param handler the AssertionHandler function to call when an assertion fails
+ *                or nullptr for the default handler.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAssertionHandler
+ */
+inline void SetAssertionHandler(AssertionHandlerCB handler)
+{
+  SetAssertionHandler(handler.wrapper, handler.data);
 }
 
 /**
@@ -7213,6 +7257,29 @@ using HintCallback = void(SDLCALL*)(void* userdata,
                                     const char* newValue);
 
 /**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during AddHintCallback with the hint's current
+ * value, and then again each time the hint's value changes.
+ *
+ * @param name what was passed as `name` to AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when calling
+ *               this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddHintCallback
+ *
+ * @sa HintCallback
+ */
+using HintCB = MakeFrontCallback<
+  void(const char* name, const char* oldValue, const char* newValue)>;
+
+/**
  * Add a function to watch a particular hint.
  *
  * The callback function is called _during_ this function, to provide it an
@@ -7235,6 +7302,28 @@ inline void AddHintCallback(StringParam name,
                             void* userdata)
 {
   CheckError(SDL_AddHintCallback(name, callback, userdata));
+}
+
+/**
+ * Add a function to watch a particular hint.
+ *
+ * The callback function is called _during_ this function, to provide it an
+ * initial value, and again each time the hint's value changes.
+ *
+ * @param name the hint to watch.
+ * @param callback An HintCallback function that will be called when the hint
+ *                 value changes.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveHintCallback
+ */
+inline void AddHintCallback(StringParam name, HintCB callback)
+{
+  AddHintCallback(std::move(name), callback.wrapper, callback.data);
 }
 
 /**
@@ -8220,6 +8309,24 @@ using LogOutputFunction = void(SDLCALL*)(void* userdata,
                                          const char* message);
 
 /**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa LogOutputFunction
+ */
+using LogOutputCB = MakeFrontCallback<
+  void(int category, LogPriority priority, const char* message)>;
+
+/**
  * Get the default log output function.
  *
  * @returns the default log output callback.
@@ -8272,6 +8379,24 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
   SDL_SetLogOutputFunction(callback, userdata);
+}
+
+/**
+ * Replace the default log output function with one of your own.
+ *
+ * @param callback an LogOutputFunction to call instead of the default.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction
+ * @sa GetLogOutputFunction
+ * @sa ResetLogOutputFunction
+ */
+inline void SetLogOutputFunction(LogOutputCB callback)
+{
+  SetLogOutputFunction(callback.wrapper, callback.data);
 }
 
 /**

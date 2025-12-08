@@ -36,3 +36,20 @@
  /**
   * An enumeration of hint priorities.
   *
+@@ -4496,7 +4500,6 @@
+  * @param name the hint to watch.
+  * @param callback An HintCallback function that will be called when the hint
+  *                 value changes.
+- * @param userdata a pointer to pass to the callback function.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -4507,7 +4510,7 @@
+  */
+ inline void AddHintCallback(StringParam name, HintCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  AddHintCallback(std::move(name), callback.wrapper, callback.data);
+ }
+ 
+ /**

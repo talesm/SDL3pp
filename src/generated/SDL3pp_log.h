@@ -873,6 +873,24 @@ using LogOutputFunction = void(SDLCALL*)(void* userdata,
                                          const char* message);
 
 /**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa LogOutputFunction
+ */
+using LogOutputCB = MakeFrontCallback<
+  void(int category, LogPriority priority, const char* message)>;
+
+/**
  * Get the default log output function.
  *
  * @returns the default log output callback.
@@ -924,6 +942,24 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
   SDL_SetLogOutputFunction(callback, userdata);
+}
+
+/**
+ * Replace the default log output function with one of your own.
+ *
+ * @param callback an LogOutputFunction to call instead of the default.
+ * @param userdata a pointer that is passed to `callback`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction
+ * @sa GetLogOutputFunction
+ */
+inline void SetLogOutputFunction(LogOutputCB callback)
+{
+  static_assert(false, "Not implemented");
 }
 
 inline void ResetLogOutputFunction()

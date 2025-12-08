@@ -402,6 +402,23 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
                                                void* userdata);
 
 /**
+ * A callback that fires when an SDL assertion fails.
+ *
+ * @param data a pointer to the AssertData structure corresponding to the
+ *             current assertion.
+ * @returns an AssertState value indicating how to handle the failure.
+ *
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AssertionHandler
+ */
+using AssertionHandlerCB =
+  MakeBackCallback<AssertState(const AssertData* data)>;
+
+/**
  * Set an application-defined assertion handler.
  *
  * This function allows an application to show its own assertion UI and/or force
@@ -427,6 +444,33 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
 inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
   return SDL_SetAssertionHandler(handler, userdata);
+}
+
+/**
+ * Set an application-defined assertion handler.
+ *
+ * This function allows an application to show its own assertion UI and/or force
+ * the response to an assertion failure. If the application doesn't provide
+ * this, SDL will try to do the right thing, popping up a system-specific GUI
+ * dialog, and probably minimizing any fullscreen windows.
+ *
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so it
+ * will only fire from one thread at a time.
+ *
+ * This callback is NOT reset to SDL's internal handler upon Quit()!
+ *
+ * @param handler the AssertionHandler function to call when an assertion fails
+ *                or nullptr for the default handler.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAssertionHandler
+ */
+inline void SetAssertionHandler(AssertionHandlerCB handler)
+{
+  SetAssertionHandler(handler.wrapper, handler.data);
 }
 
 /**

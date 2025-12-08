@@ -66,7 +66,7 @@
   *
   * @param data a pointer to the AssertData structure corresponding to the
   *             current assertion.
-@@ -418,7 +426,7 @@
+@@ -435,7 +443,7 @@
   */
  inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  {
@@ -75,7 +75,24 @@
  }
  
  /**
-@@ -469,7 +477,6 @@
+@@ -453,7 +461,6 @@
+  *
+  * @param handler the AssertionHandler function to call when an assertion fails
+  *                or nullptr for the default handler.
+- * @param userdata a pointer that is passed to `handler`.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -463,7 +470,7 @@
+  */
+ inline void SetAssertionHandler(AssertionHandlerCB handler)
+ {
+-  static_assert(false, "Not implemented");
++  SetAssertionHandler(handler.wrapper, handler.data);
+ }
+ 
+ /**
+@@ -514,7 +521,6 @@
  {
    return SDL_GetAssertionHandler(puserdata);
  }
@@ -83,7 +100,7 @@
  /**
   * Get a list of all assertion failures.
   *
-@@ -478,7 +485,7 @@
+@@ -523,7 +529,7 @@
   *
   * The proper way to examine this data looks something like this:
   *
@@ -92,7 +109,7 @@
   * const AssertData *item = GetAssertionReport();
   * while (item) {
   *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
-@@ -504,7 +511,7 @@
+@@ -549,7 +555,7 @@
   */
  inline const AssertData& GetAssertionReport()
  {

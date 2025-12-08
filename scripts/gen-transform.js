@@ -106,6 +106,15 @@ const transform = {
             }
           ]
         },
+        "SDL_AssertionHandler": {
+          callback: "lightweight"
+        },
+        "SetAssertionHandler": {
+          kind: "function",
+          after: "SDL_SetAssertionHandler",
+          type: "void",
+          parameters: [{ type: "AssertionHandlerCB", name: "handler" }]
+        },
       }
     },
     "SDL_asyncio.h": {
@@ -2042,6 +2051,19 @@ const transform = {
             ]
           }
         },
+        "SDL_HintCallback": { callback: "lightweight" },
+        "AddHintCallback": {
+          kind: "function",
+          after: "SDL_AddHintCallback",
+          type: "void",
+          parameters: [{
+            type: "StringParam",
+            name: "name"
+          }, {
+            type: "HintCB",
+            name: "callback"
+          }]
+        },
       }
     },
     "SDL_init.h": {
@@ -2907,7 +2929,14 @@ const transform = {
               "name": "message"
             }
           ]
-        }
+        },
+        "SDL_LogOutputFunction": { callback: "lightweight" },
+        "SetLogOutputFunction": {
+          kind: "function",
+          after: "SDL_SetLogOutputFunction",
+          type: "void",
+          parameters: [{ type: "LogOutputCB", name: "callback" }]
+        },
       }
     },
     "SDL_main.h": {
