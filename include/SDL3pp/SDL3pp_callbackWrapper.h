@@ -16,24 +16,6 @@ namespace SDL {
  * @{
  */
 
-/** A typesafe handle for callback */
-class CallbackHandle
-{
-  void* id;
-
-public:
-  /// @private
-  constexpr explicit CallbackHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
-};
-
 /// Base class for callback wrappers
 template<class Result, class... Args>
 struct CallbackWrapperBase
@@ -123,12 +105,6 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     ValueType value{std::move(*ptr)};
     delete ptr;
     return value;
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType release(CallbackHandle handle)
-  {
-    return release(handle.get());
   }
 };
 
