@@ -792,6 +792,18 @@ struct StorageRef : Storage
   {
   }
 
+  /**
+   * Constructs from StorageParam.
+   *
+   * @param resource a StorageRaw or Storage.
+   *
+   * This does not takes ownership!
+   */
+  StorageRef(StorageRaw resource)
+    : Storage(resource)
+  {
+  }
+
   /// Copy constructor.
   StorageRef(const StorageRef& other)
     : Storage(other.get())

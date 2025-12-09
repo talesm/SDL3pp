@@ -9,17 +9,11 @@
   *
   * SDL offers cross-platform thread management functions. These are mostly
   * concerned with starting threads, setting their priority, and dealing with
-@@ -135,6 +135,13 @@
-  */
- using ThreadFunction = SDL_ThreadFunction;
- 
-+/**
-+ * The function passed to Thread.Thread() as the new thread's entry point.
-+ *
-+ * @returns a value that can be reported through Thread.Wait().
-+ *
-+ * @since This datatype is available since SDL 3.2.0.
-+ */
- using ThreadCB = std::function<int()>;
- 
+@@ -138,7 +138,6 @@
  /**
+  * The function passed to Thread.Thread() as the new thread's entry point.
+  *
+- * @param data what was passed as `data` to Thread.Thread().
+  * @returns a value that can be reported through Thread.Wait().
+  *
+  * @since This datatype is available since SDL 3.2.0.

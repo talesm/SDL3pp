@@ -1636,6 +1636,18 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw or IOStream.
+   *
+   * This does not takes ownership!
+   */
+  IOStreamRef(IOStreamRaw resource)
+    : IOStream(resource)
+  {
+  }
+
   /// Copy constructor.
   IOStreamRef(const IOStreamRef& other)
     : IOStream(other.get())

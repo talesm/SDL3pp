@@ -33,7 +33,7 @@ struct Main
   SDL::AudioStream stream{
     SDL::AUDIO_DEVICE_DEFAULT_PLAYBACK,
     SDL::AudioSpec{.format = SDL::AUDIO_F32, .channels = 1, .freq = 8000},
-    [this](SDL::AudioStreamRef stream,
+    [this](SDL::AudioStreamRaw stream,
            int additional_amount,
            int total_amount) {
       FeedTheAudioStreamMore(stream, additional_amount, total_amount);

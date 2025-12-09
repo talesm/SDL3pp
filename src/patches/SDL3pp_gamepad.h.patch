@@ -19,7 +19,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
-@@ -1220,24 +1219,24 @@
+@@ -1232,24 +1231,24 @@
  /**
   * Get the current gamepad mappings.
   *
@@ -52,7 +52,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1246,7 +1245,7 @@
+@@ -1258,7 +1257,7 @@
   */
  inline StringResult GetGamepadMappingForGUID(GUID guid)
  {
@@ -61,7 +61,7 @@
  }
  
  /**
-@@ -1256,8 +1255,7 @@
+@@ -1268,8 +1267,7 @@
   *
   * @param gamepad the gamepad you want to get the current mapping for.
   * @returns a string that has the gamepad's mapping or nullptr if no mapping is
@@ -71,7 +71,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1268,7 +1266,7 @@
+@@ -1280,7 +1278,7 @@
   */
  inline StringResult GetGamepadMapping(GamepadParam gamepad)
  {
@@ -80,7 +80,7 @@
  }
  
  inline StringResult Gamepad::GetMapping()
-@@ -1310,18 +1308,20 @@
+@@ -1322,18 +1320,20 @@
  /**
   * Get a list of currently connected gamepads.
   *
@@ -106,7 +106,7 @@
  
  /**
   * Check if the given joystick is supported by the gamepad interface.
-@@ -1561,7 +1561,7 @@
+@@ -1573,7 +1573,7 @@
   */
  inline GamepadRef GetGamepadFromID(JoystickID instance_id)
  {
@@ -115,7 +115,7 @@
  }
  
  /**
-@@ -1577,7 +1577,7 @@
+@@ -1589,7 +1589,7 @@
   */
  inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  {
@@ -124,7 +124,7 @@
  }
  
  /**
-@@ -1606,7 +1606,7 @@
+@@ -1618,7 +1618,7 @@
   */
  inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
  {
@@ -133,7 +133,7 @@
  }
  
  inline PropertiesRef Gamepad::GetProperties()
-@@ -1977,7 +1977,7 @@
+@@ -1989,7 +1989,7 @@
   */
  inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
  {

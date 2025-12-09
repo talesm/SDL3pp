@@ -1333,7 +1333,7 @@ inline void PushEvent(const Event& event)
  * @sa SetEventFilter
  * @sa AddEventWatch
  */
-using EventFilter = SDL_EventFilter;
+using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
 
 /**
  * A function pointer used for callbacks that watch the event queue.
@@ -1352,13 +1352,9 @@ using EventFilter = SDL_EventFilter;
  * @sa AddEventWatch
  * @sa EventFilter
  */
-using EventFilterCB = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(Event* event)>;
 
-/// Handle returned by AddEventWatch()
-struct EventWatchHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
 
 /**
  * Set up a filter to process all events before they are added to the internal
@@ -1441,7 +1437,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * @sa PeepEvents
  * @sa PushEvent
  */
-inline void SetEventFilter(EventFilterCB filter = {})
+inline void SetEventFilter(EventFilterCB filter)
 {
   static_assert(false, "Not implemented");
 }
@@ -1466,33 +1462,6 @@ inline void SetEventFilter(EventFilterCB filter = {})
 inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
   CheckError(SDL_GetEventFilter(filter, userdata));
-}
-
-/**
- * Query the current event filter.
- *
- * This function can be used to "chain" filters, by saving the existing filter
- * before replacing it with a function that will call that saved filter.
- *
- * @param filter the current callback function will be stored here.
- * @param userdata the pointer that is passed to the current event filter will
- *                 be stored here.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetEventFilter
- */
-inline EventFilterCB GetEventFilter()
-{
-  static_assert(false, "Not implemented");
-}
-
-inline bool EventWatchAuxCallback(void* userdata, Event* event)
-{
-  static_assert(false, "Not implemented");
 }
 
 /**
@@ -1558,7 +1527,7 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * @sa RemoveEventWatch
  * @sa SetEventFilter
  */
-inline EventWatchHandle AddEventWatch(EventFilterCB filter)
+inline void AddEventWatch(EventWatcherCB filter)
 {
   static_assert(false, "Not implemented");
 }
@@ -1581,26 +1550,6 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
   SDL_RemoveEventWatch(filter, userdata);
-}
-
-/**
- * Remove an event watch callback added with AddEventWatch().
- *
- * This function takes the same input as AddEventWatch() to identify and delete
- * the corresponding callback.
- *
- * @param filter the function originally passed to AddEventWatch().
- * @param userdata the pointer originally passed to AddEventWatch().
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddEventWatch
- */
-inline void RemoveEventWatch(EventWatchHandle handle)
-{
-  static_assert(false, "Not implemented");
 }
 
 /**

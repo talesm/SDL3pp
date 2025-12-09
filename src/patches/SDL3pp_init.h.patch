@@ -1,6 +1,6 @@
 --- src/generated/SDL3pp_init.h
 +++ include/SDL3pp/SDL3pp_init.h
-@@ -11,7 +11,7 @@
+@@ -12,7 +12,7 @@
  namespace SDL {
  
  /**
@@ -9,7 +9,7 @@
   *
   * All SDL programs need to initialize the library before starting to work with
   * it.
-@@ -40,6 +40,12 @@
+@@ -41,6 +41,12 @@
   */
  
  /**
@@ -22,7 +22,7 @@
   * Initialization flags for Init and/or InitSubSystem
   *
   * These are the flags which may be passed to Init(). You should specify the
-@@ -79,6 +85,14 @@
+@@ -80,6 +86,14 @@
  constexpr InitFlags INIT_CAMERA =
    SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
  
@@ -37,7 +37,7 @@
  /**
   * Return values for optional main callbacks.
   *
-@@ -108,6 +122,14 @@
+@@ -109,6 +123,14 @@
  /// Value that requests termination with error from the main callbacks.
  constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
  
@@ -52,16 +52,16 @@
  /**
   * Function pointer typedef for SDL_AppInit.
   *
-@@ -171,6 +193,8 @@
+@@ -174,6 +196,8 @@
   */
- using AppQuit_func = SDL_AppQuit_func;
+ using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
  
 +/// @}
 +
  /**
   * Initialize the SDL library.
   *
-@@ -311,6 +335,11 @@
+@@ -314,6 +338,11 @@
  inline bool IsMainThread() { return SDL_IsMainThread(); }
  
  /**
@@ -73,7 +73,7 @@
   * Callback run on the main thread.
   *
   * @param userdata an app-controlled pointer that is passed to the callback.
-@@ -329,9 +358,14 @@
+@@ -332,9 +361,14 @@
   * @sa RunOnMainThread
   *
   * @sa MainThreadCallback
@@ -88,7 +88,7 @@
  /**
   * Call a function on the main thread during event processing.
   *
-@@ -374,7 +408,6 @@
+@@ -377,7 +411,6 @@
   * called with `wait_complete` true.
   *
   * @param callback the callback to call on the main thread.
@@ -96,7 +96,7 @@
   * @param wait_complete true to wait for the callback to complete, false to
   *                      return immediately.
   * @throws Error on failure.
-@@ -384,10 +417,15 @@
+@@ -387,10 +420,15 @@
   * @since This function is available since SDL 3.2.0.
   *
   * @sa IsMainThread
@@ -113,7 +113,7 @@
  }
  
  /**
-@@ -538,6 +576,219 @@
+@@ -541,6 +579,219 @@
    return SDL_GetAppMetadataProperty(name);
  }
  

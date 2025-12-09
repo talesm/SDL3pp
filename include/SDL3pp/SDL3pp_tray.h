@@ -138,7 +138,7 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  *
  * @sa TrayEntry.SetCallback
  */
-using TrayCallback = SDL_TrayCallback;
+using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 
 /**
  * A callback that is invoked when a tray entry is selected.
@@ -151,7 +151,7 @@ using TrayCallback = SDL_TrayCallback;
  *
  * @sa TrayCallback
  */
-using TrayCB = std::function<void(TrayEntryRaw)>;
+using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
  * An opaque handle representing a toplevel system tray object.
@@ -355,6 +355,18 @@ struct TrayRef : Tray
    */
   TrayRef(TrayParam resource)
     : Tray(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from TrayParam.
+   *
+   * @param resource a TrayRaw or Tray.
+   *
+   * This does not takes ownership!
+   */
+  TrayRef(TrayRaw resource)
+    : Tray(resource)
   {
   }
 
@@ -1412,10 +1424,7 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 
 inline void TrayEntry::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
-  SetCallback([](void* userdata,
-                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
-              Wrapper::Wrap(get(), std::move(callback)));
+  SetCallback(callback.wrapper, callback.data);
 }
 
 } // namespace SDL

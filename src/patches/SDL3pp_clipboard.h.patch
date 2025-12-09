@@ -18,7 +18,7 @@
  }
  
  /**
-@@ -151,11 +151,9 @@
+@@ -151,7 +151,7 @@
   */
  inline StringResult GetPrimarySelectionText()
  {
@@ -26,42 +26,28 @@
 +  return StringResult{CheckError(SDL_GetPrimarySelectionText())};
  }
  
--#error "ClipboardDataCB (plc)"
--
  /**
-  * Query whether the primary selection exists and contains a non-empty text
-  * string.
-@@ -195,6 +193,29 @@
- using ClipboardDataCallback = SDL_ClipboardDataCallback;
- 
- /**
-+ * Callback function that will be called when data for the specified mime-type
-+ * is requested by the OS.
-+ *
-+ * The callback function is called with nullptr as the mime_type when the
-+ * clipboard is cleared or new data is set. The clipboard is automatically
-+ * cleared in Quit().
-+ *
-+ * @param mime_type the requested mime-type.
-+ * @param size a pointer filled in with the length of the returned data.
-+ * @returns a pointer to the data for the provided mime-type. Returning nullptr
+@@ -205,15 +205,14 @@
+  * @param mime_type the requested mime-type.
+  * @param size a pointer filled in with the length of the returned data.
+  * @returns a pointer to the data for the provided mime-type. Returning nullptr
+- *          or setting the length to 0 will cause zero length data to be sent to
+- *          the "receiver", which should be able to handle this. The returned
+- *          data will not be freed, so it needs to be retained and dealt with
+- *          internally.
 + *          or setting the length to 0 will cause zero length data to be sent
 + *          to the "receiver", which should be able to handle this. The
 + *          returned data will not be freed, so it needs to be retained and
 + *          dealt with internally.
-+ *
-+ * @since This function is available since SDL 3.2.0.
-+ *
-+ * @sa SetClipboardData
-+ * @sa ClipboardDataCallback
-+ */
-+using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
-+
-+/**
-  * Callback function that will be called when the clipboard is cleared, or when
-  * new data is set.
   *
-@@ -237,7 +258,6 @@
+  * @since This function is available since SDL 3.2.0.
+  *
+  * @sa SetClipboardData
+- *
+  * @sa ClipboardDataCallback
+  */
+ using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
+@@ -261,7 +260,6 @@
   * @param userdata an opaque pointer that will be forwarded to the callbacks.
   * @param mime_types a list of mime-types that are being offered. SDL copies the
   *                   given list.
@@ -69,7 +55,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -253,7 +273,8 @@
+@@ -277,7 +275,8 @@
                               void* userdata,
                               std::span<const char*> mime_types)
  {
@@ -79,7 +65,7 @@
  }
  
  /**
-@@ -272,10 +293,8 @@
+@@ -296,10 +295,8 @@
   *                 clipboard data.
   * @param cleanup a function pointer to the function that cleans up the
   *                clipboard data.
@@ -90,7 +76,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -290,7 +309,22 @@
+@@ -314,7 +311,22 @@
                               ClipboardCleanupCB cleanup,
                               std::span<const char*> mime_types)
  {
@@ -114,7 +100,7 @@
  }
  
  /**
-@@ -313,10 +347,8 @@
+@@ -337,10 +349,8 @@
   * guaranteed to be null-terminated.
   *
   * @param mime_type the mime type to read from the clipboard.
@@ -127,7 +113,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -327,13 +359,36 @@
+@@ -351,13 +361,36 @@
   */
  inline StringResult GetClipboardData(StringParam mime_type)
  {
@@ -166,7 +152,7 @@
  }
  
  /**
-@@ -358,11 +413,8 @@
+@@ -382,11 +415,8 @@
  /**
   * Retrieve the list of mime types available in the clipboard.
   *
@@ -180,7 +166,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -372,7 +424,10 @@
+@@ -396,7 +426,10 @@
   */
  inline OwnArray<char*> GetClipboardMimeTypes()
  {

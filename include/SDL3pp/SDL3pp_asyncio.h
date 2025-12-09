@@ -442,6 +442,18 @@ struct AsyncIORef : AsyncIO
   {
   }
 
+  /**
+   * Constructs from AsyncIOParam.
+   *
+   * @param resource a AsyncIORaw or AsyncIO.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIORef(AsyncIORaw resource)
+    : AsyncIO(resource)
+  {
+  }
+
   /// Copy constructor.
   AsyncIORef(const AsyncIORef& other)
     : AsyncIO(other.get())
@@ -761,6 +773,18 @@ struct AsyncIOQueueRef : AsyncIOQueue
    */
   AsyncIOQueueRef(AsyncIOQueueParam resource)
     : AsyncIOQueue(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AsyncIOQueueParam.
+   *
+   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIOQueueRef(AsyncIOQueueRaw resource)
+    : AsyncIOQueue(resource)
   {
   }
 

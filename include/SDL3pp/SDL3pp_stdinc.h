@@ -745,7 +745,7 @@ inline void free(void* mem) { SDL_free(mem); }
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using malloc_func = SDL_malloc_func;
+using malloc_func = void*(SDLCALL*)(size_t size);
 
 /**
  * A callback used to implement calloc().
@@ -766,7 +766,7 @@ using malloc_func = SDL_malloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using calloc_func = SDL_calloc_func;
+using calloc_func = void*(SDLCALL*)(size_t nmemb, size_t size);
 
 /**
  * A callback used to implement realloc().
@@ -787,7 +787,7 @@ using calloc_func = SDL_calloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using realloc_func = SDL_realloc_func;
+using realloc_func = void*(SDLCALL*)(void* mem, size_t size);
 
 /**
  * A callback used to implement free().
@@ -805,7 +805,7 @@ using realloc_func = SDL_realloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using free_func = SDL_free_func;
+using free_func = void(SDLCALL*)(void* mem);
 
 /**
  * Get the original set of SDL memory functions.
@@ -1177,6 +1177,18 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
+  EnvironmentRef(EnvironmentRaw resource)
+    : Environment(resource)
+  {
+  }
+
   /// Copy constructor.
   EnvironmentRef(const EnvironmentRef& other)
     : Environment(other.get())
@@ -1466,7 +1478,7 @@ inline int unsetenv_unsafe(StringParam name)
  * @sa bsearch
  * @sa qsort
  */
-using CompareCallback = SDL_CompareCallback;
+using CompareCallback = int(SDLCALL*)(const void* a, const void* b);
 
 /**
  * Sort an array.
@@ -1593,7 +1605,9 @@ inline void* bsearch(const void* key,
  * @sa qsort_r
  * @sa bsearch_r
  */
-using CompareCallback_r = SDL_CompareCallback_r;
+using CompareCallback_r = int(SDLCALL*)(void* userdata,
+                                        const void* a,
+                                        const void* b);
 
 /**
  * A callback used with SDL sorting and binary search functions.
@@ -1610,7 +1624,7 @@ using CompareCallback_r = SDL_CompareCallback_r;
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void* a, const void* b)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.
@@ -5992,6 +6006,18 @@ struct IConvRef : IConv
    */
   IConvRef(IConvParam resource)
     : IConv(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvRaw resource)
+    : IConv(resource)
   {
   }
 

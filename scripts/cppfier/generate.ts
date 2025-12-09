@@ -189,6 +189,8 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
             generateStructSignature(entry, prefix) +
             ";"
           );
+        case "concept":
+          return `${doc}\n${template}${generateConcept(entry, prefix)}`;
         case "function":
           return `${doc}\n${template}${generateFunction(entry, prefix)}`;
         case "ns":
@@ -286,6 +288,10 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
         return `CheckErrorIfNot(${internalCallStr}, ${hint.mayFail})`;
       return `CheckError(${internalCallStr})`;
     }
+  }
+
+  function generateConcept(entry: ApiEntry, prefix: string) {
+    return `${prefix}concept ${entry.name} = ${entry.type};`;
   }
 
   function generateFunction(entry: ApiEntry, prefix: string) {

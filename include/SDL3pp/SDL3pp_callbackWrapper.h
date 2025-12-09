@@ -16,27 +16,21 @@ namespace SDL {
  * @{
  */
 
-/** A typesafe handle for callback */
-class CallbackHandle
-{
-  void* id;
+template<class F>
+struct CallbackWrapper;
 
-public:
-  /// @private
-  constexpr explicit CallbackHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
-};
-
-/// Base class for callback wrappers
+/**
+ * @brief Wrapper [result callbacks](#result-callback).
+ *
+ * @tparam F the function type.
+ *
+ * For the simpler case, where no transformation is done on the parameters, you
+ * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
+ *
+ * In all cases, use Wrap to change the callback into a void* pointer.
+ */
 template<class Result, class... Args>
-struct CallbackWrapperBase
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   /// The wrapped std::function type
   using ValueType = std::function<Result(Args...)>;
@@ -60,29 +54,8 @@ struct CallbackWrapperBase
     auto& f = Unwrap(handle);
     return f(args...);
   }
-};
 
-template<class F>
-struct CallbackWrapper;
-
-/**
- * @brief Wrapper [result callbacks](#result-callback).
- *
- * @tparam F the function type.
- *
- * For the simpler case, where no transformation is done on the parameters, you
- * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
- *
- * In all cases, use Wrap to change the callback into a void* pointer.
- */
-template<class Result, class... Args>
-struct CallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
-{
   CallbackWrapper() = delete;
-
-  /// The wrapped std::function type
-  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the callback into a void* pointer.
@@ -124,206 +97,129 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     delete ptr;
     return value;
   }
+};
 
-  /// Return unwrapped value of handle.
-  static const ValueType release(CallbackHandle handle)
+/**
+ * Lightweight wrapper.
+ *
+ * @tparam SELF a CRTP class
+ */
+template<class SELF, class R, class... PARAMS>
+struct LightweightCallbackT
+{
+  /// The wrapper function
+  R (*wrapper)(void*, PARAMS...);
+
+  /// The wrapped data
+  void* data;
+
+  /// ctor
+  template<class F>
+  LightweightCallbackT(const F& func)
   {
-    return release(handle.get());
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](void* userdata, PARAMS... params) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
 /**
- * @brief Wrapper key to value [result callbacks](#result-callback).
+ * Lightweight wrapper.
  *
- * @tparam KEY the key type.
- * @tparam VALUE the value type.
- * @tparam VARIANT the variant, if more than one listener type is associated.
- *
+ * @tparam SELF a CRTP class
  */
-template<class KEY, class VALUE, size_t VARIANT = 0>
-struct KeyValueWrapper
+template<class SELF, class R, class... PARAMS>
+struct LightweightTrailingCallbackT
 {
-  static_assert(sizeof(KEY) <= sizeof(void*));
-  KeyValueWrapper() = delete;
+  /// The wrapper function
+  R (*wrapper)(PARAMS..., void*);
 
-  /// Key type
-  using KeyType = KEY;
+  /// The wrapped data
+  void* data;
 
-  /// Value type.
-  using ValueType = VALUE;
-
-  /**
-   * @brief Change the value into a void* pointer held by key.
-   *
-   * @param key
-   * @param value
-   * @return void*
-   */
-  static ValueType* Wrap(KeyType key, ValueType&& value)
+  /// ctor
+  template<class F>
+  LightweightTrailingCallbackT(const F& func)
   {
-    auto lockGuard = lock();
-    return &Values().insert_or_assign(key, std::move(value)).first->second;
-  }
-
-  /// True if handle is stored.
-  static bool contains(KeyType handle)
-  {
-    auto lockGuard = lock();
-    return Values().contains(handle);
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& at(KeyType handle)
-  {
-    auto lockGuard = lock();
-    return Values().at(handle);
-  }
-
-  /// Return unwrapped value associated by key and remove association.
-  static ValueType release(KeyType key)
-  {
-    auto lockGuard = lock();
-    auto& values = Values();
-    auto it = values.find(key);
-    if (it == values.end()) return {};
-    ValueType value{std::move(it->second)};
-    values.erase(it);
-    return value;
-  }
-
-  /**
-   * Remove association.
-   *
-   * @param key the key associated.
-   * @return true if the key was associated and was erased, false otherwise.
-   */
-  static bool erase(KeyType key)
-  {
-    auto lockGuard = lock();
-    return Values().erase(key);
-  }
-
-private:
-  static std::map<KeyType, ValueType>& Values()
-  {
-    static std::map<KeyType, ValueType> values;
-    return values;
-  }
-
-  static std::lock_guard<std::mutex> lock()
-  {
-    static std::mutex uniqueMutex;
-    return std::lock_guard{uniqueMutex};
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](PARAMS... params, void* userdata) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
-/// Store callbacks by key
-template<class KEY, class VALUE, size_t VARIANT = 0>
-struct KeyValueCallbackWrapper;
+template<class F>
+struct MakeFrontCallback;
 
-/// Store callbacks by key
-template<class KEY, class Result, class... Args, size_t VARIANT>
-struct KeyValueCallbackWrapper<KEY, std::function<Result(Args...)>, VARIANT>
-  : CallbackWrapperBase<Result, Args...>
-  , KeyValueWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+/**
+ * Make Front Callback
+ *
+ * @tparam R
+ * @tparam PARAMS
+ */
+template<class R, class... PARAMS>
+struct MakeFrontCallback<R(PARAMS...)>
+  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>
 {
-  KeyValueCallbackWrapper() = delete;
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  MakeFrontCallback(const F& func)
+    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>(func)
+  {
+  }
 
-  /// Wrapped type.
-  using ValueType = std::function<Result(Args...)>;
+  /// @private
+  template<std::invocable<PARAMS...> F>
+  static R doCall(F& func, PARAMS... params)
+  {
+    return func(params...);
+  }
 };
 
+template<class F>
+struct MakeBackCallback;
+
 /**
- * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
+ * Make Back Callback
  *
- * @tparam VALUE the function type.
+ * @tparam R
+ * @tparam PARAMS
  */
-template<class VALUE>
-struct UniqueCallbackWrapper;
-
-/**
- * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
- */
-template<class Result, class... Args>
-struct UniqueCallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
+template<class R, class... PARAMS>
+struct MakeBackCallback<R(PARAMS...)>
+  : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>, R, PARAMS...>
 {
-  UniqueCallbackWrapper() = delete;
-
-  /// Wrapped type.
-  using ValueType = std::function<Result(Args...)>;
-
-  /**
-   * @brief Change the value into a void* pointer held uniquely by this type.
-   *
-   * @param value
-   * @return void*
-   */
-  static ValueType* Wrap(ValueType&& value)
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  MakeBackCallback(const F& func)
+    : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>,
+                                   R,
+                                   PARAMS...>(func)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    v = std::move(value);
-    return &v;
   }
 
-  /// True if handle equals to wrapped value.
-  static bool contains(void* handle)
+  /// @private
+  template<std::invocable<PARAMS...> F>
+  static R doCall(const F& func, PARAMS... params)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    return bool(v) && &v == handle;
-  }
-
-  /// Return wrapped type, if handle is contained.
-  static ValueType at(void* handle)
-  {
-    if (&get() == handle) {
-      return CallbackWrapperBase<Result, Args...>::Unwrap(handle);
-    }
-    return {};
-  }
-
-  /// Return wrapped type, if handle is contained.
-  static const ValueType& get()
-  {
-    auto lockGuard = lock();
-    return Value();
-  }
-
-  /// Return wrapped type and erase it from store.
-  static ValueType release()
-  {
-    auto lockGuard = lock();
-    ValueType value{std::move(Value())};
-    return value;
-  }
-
-  /// Return wrapped type and erase it from store.
-  static ValueType release(void* handle)
-  {
-    SDL_assert_paranoid(&get() == handle);
-    return release();
-  }
-
-  /// Erase value from store.
-  static void erase()
-  {
-    auto lockGuard = lock();
-    Value() = {};
-  }
-
-private:
-  static ValueType& Value()
-  {
-    static ValueType value;
-    return value;
-  }
-
-  static std::lock_guard<std::mutex> lock()
-  {
-    static std::mutex uniqueMutex;
-    return std::lock_guard{uniqueMutex};
+    return func(params...);
   }
 };
 

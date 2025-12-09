@@ -1243,6 +1243,18 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw or Haptic.
+   *
+   * This does not takes ownership!
+   */
+  HapticRef(HapticRaw resource)
+    : Haptic(resource)
+  {
+  }
+
   /// Copy constructor.
   HapticRef(const HapticRef& other)
     : Haptic(other.get())

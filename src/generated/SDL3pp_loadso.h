@@ -230,6 +230,18 @@ struct SharedObjectRef : SharedObject
   {
   }
 
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw or SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  SharedObjectRef(SharedObjectRaw resource)
+    : SharedObject(resource)
+  {
+  }
+
   /// Copy constructor.
   SharedObjectRef(const SharedObjectRef& other)
     : SharedObject(other.get())

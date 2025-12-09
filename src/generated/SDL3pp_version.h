@@ -21,7 +21,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_MAJOR_VERSION 3
+#define SDL_MAJOR_VERSION
 
 /**
  * The current minor version of the SDL headers.
@@ -148,6 +148,20 @@ inline int GetVersion() { return SDL_GetVersion(); }
  * @sa GetVersion
  */
 inline const char* GetRevision() { return SDL_GetRevision(); }
+
+/// The current major version of SDL3pp wrapper.
+#define SDL3PP_MAJOR_VERSION 0
+
+/// The current minor version of SDL3pp wrapper.
+#define SDL3PP_MINOR_VERSION 5
+
+/// The current patch version of SDL3pp wrapper.
+#define SDL3PP_PATCH_VERSION 0
+
+/// This is the version number macro for the current SDL3pp wrapper version.
+#define SDL3PP_VERSION                                                         \
+  SDL_VERSIONNUM(                                                              \
+    SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)
 
 /// @}
 

@@ -36,47 +36,20 @@
  /**
   * An enumeration of hint priorities.
   *
-@@ -4498,7 +4502,7 @@
+@@ -4496,7 +4500,6 @@
   * @param name the hint to watch.
   * @param callback An HintCallback function that will be called when the hint
   *                 value changes.
 - * @param userdata a pointer to pass to the callback function.
-+ * @returns a handle to be used on RemoveHintCallback()
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -4509,7 +4513,13 @@
+@@ -4507,7 +4510,7 @@
   */
- inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+ inline void AddHintCallback(StringParam name, HintCB callback)
  {
 -  static_assert(false, "Not implemented");
-+  using Wrapper = CallbackWrapper<HintCB>;
-+  auto cb = Wrapper::Wrap(std::move(callback));
-+  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
-+    Wrapper::release(cb);
-+    throw Error{};
-+  }
-+  return HintCallbackHandle{cb};
++  AddHintCallback(std::move(name), callback.wrapper, callback.data);
  }
  
  /**
-@@ -4537,9 +4547,7 @@
-  * Remove a function watching a particular hint.
-  *
-  * @param name the hint being watched.
-- * @param callback an HintCallback function that will be called when the hint
-- *                 value changes.
-- * @param userdata a pointer being passed to the callback function.
-+ * @param handle the handle for the HintCallback function to be removed
-  *
-  * @threadsafety It is safe to call this function from any thread.
-  *
-@@ -4549,7 +4557,7 @@
-  */
- inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
- {
--  static_assert(false, "Not implemented");
-+  CallbackWrapper<HintCB>::release(handle);
- }
- 
- /// @}

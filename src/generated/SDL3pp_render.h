@@ -2089,6 +2089,18 @@ struct RendererRef : Renderer
   {
   }
 
+  /**
+   * Constructs from RendererParam.
+   *
+   * @param resource a RendererRaw or Renderer.
+   *
+   * This does not takes ownership!
+   */
+  RendererRef(RendererRaw resource)
+    : Renderer(resource)
+  {
+  }
+
   /// Copy constructor.
   RendererRef(const RendererRef& other)
     : Renderer(other.get())

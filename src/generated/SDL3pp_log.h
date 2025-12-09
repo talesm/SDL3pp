@@ -867,7 +867,10 @@ inline void LogUnformatted(StringParam message) { SDL_LogMessageV(message); }
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using LogOutputFunction = SDL_LogOutputFunction;
+using LogOutputFunction = void(SDLCALL*)(void* userdata,
+                                         int category,
+                                         LogPriority priority,
+                                         const char* message);
 
 /**
  * The prototype for the log output callback function.
@@ -884,7 +887,8 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @sa LogOutputFunction
  */
-using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
+using LogOutputCB = MakeFrontCallback<
+  void(int category, LogPriority priority, const char* message)>;
 
 /**
  * Get the default log output function.
@@ -920,25 +924,6 @@ inline LogOutputFunction GetDefaultLogOutputFunction()
 inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 {
   SDL_GetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Get the current log output function.
- *
- * @param callback an LogOutputFunction filled in with the current log callback.
- * @param userdata a pointer filled in with the pointer that is passed to
- *                 `callback`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction
- * @sa SetLogOutputFunction
- */
-inline LogOutputCB GetLogOutputFunction()
-{
-  static_assert(false, "Not implemented");
 }
 
 /**

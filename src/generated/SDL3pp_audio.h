@@ -691,7 +691,10 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @sa AudioDevice.SetPostmixCallback
  */
-using AudioPostmixCallback = SDL_AudioPostmixCallback;
+using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
+                                            const AudioSpec* spec,
+                                            float* buffer,
+                                            int buflen);
 
 /**
  * A callback that fires when data is about to be fed to an audio device.
@@ -729,7 +732,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
-  std::function<void(const AudioSpec& spec, std::span<float> buffer)>;
+  MakeFrontCallback<void(const AudioSpec* spec, float* buffer, int buflen)>;
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -770,7 +773,10 @@ using AudioPostmixCB =
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
  */
-using AudioStreamCallback = SDL_AudioStreamCallback;
+using AudioStreamCallback = void(SDLCALL*)(void* userdata,
+                                           AudioStreamRaw stream,
+                                           int additional_amount,
+                                           int total_amount);
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -811,8 +817,8 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
  * @sa AudioStream.SetPutCallback
  * @sa AudioStreamCallback
  */
-using AudioStreamCB = std::function<
-  void(AudioStreamRef stream, int additional_amount, int total_amount)>;
+using AudioStreamCB = MakeFrontCallback<
+  void(AudioStreamRaw stream, int additional_amount, int total_amount)>;
 
 /**
  * SDL Audio Device instance IDs.
@@ -1514,6 +1520,18 @@ struct AudioDeviceRef : AudioDevice
    */
   AudioDeviceRef(AudioDeviceParam resource)
     : AudioDevice(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource)
+    : AudioDevice(resource)
   {
   }
 
@@ -2589,6 +2607,18 @@ struct AudioStreamRef : AudioStream
    */
   AudioStreamRef(AudioStreamParam resource)
     : AudioStream(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioStreamParam.
+   *
+   * @param resource a AudioStreamRaw or AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  AudioStreamRef(AudioStreamRaw resource)
+    : AudioStream(resource)
   {
   }
 

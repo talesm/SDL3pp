@@ -152,7 +152,9 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = SDL_NSTimerCallback;
+using TimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                       TimerID timerID,
+                                       Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.
@@ -180,8 +182,22 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @sa TimerCallback
  */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
+{
+  /// ctor
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  TimerCB(const F& func)
+    : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>(func)
+  {
+  }
+
+  /// @private
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+  {
+    return func(timerID, std::chrono::nanoseconds(interval)).count();
+  }
+};
 
 /**
  * Call a callback function at a future time.
@@ -260,26 +276,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 {
-  using Wrapper = CallbackWrapper<TimerCB>;
-  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-
-  auto cb = Wrapper::Wrap(std::move(callback));
-
-  if (TimerID id = SDL_AddTimerNS(
-        interval.count(),
-        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerCB*>(userdata);
-          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-          // If ask to removal, then remove it
-          if (next == 0) delete Store::release(timerID);
-          return next;
-        },
-        cb)) {
-    Store::Wrap(id, std::move(cb));
-    return id;
-  }
-  delete cb;
-  throw Error{};
+  return SDL_AddTimerNS(interval.count(), callback.wrapper, callback.data);
 }
 
 /**
@@ -294,11 +291,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @sa SDL_AddTimer
  */
-inline void RemoveTimer(TimerID id)
-{
-  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-  CheckError(SDL_RemoveTimer(id));
-}
+inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
 
 /// @}
 

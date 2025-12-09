@@ -397,6 +397,18 @@ struct CursorRef : Cursor
   {
   }
 
+  /**
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw or Cursor.
+   *
+   * This does not takes ownership!
+   */
+  CursorRef(CursorRaw resource)
+    : Cursor(resource)
+  {
+  }
+
   /// Copy constructor.
   CursorRef(const CursorRef& other)
     : Cursor(other.get())

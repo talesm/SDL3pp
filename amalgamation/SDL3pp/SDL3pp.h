@@ -308,27 +308,21 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
  * @{
  */
 
-/** A typesafe handle for callback */
-class CallbackHandle
-{
-  void* id;
+template<class F>
+struct CallbackWrapper;
 
-public:
-  /// @private
-  constexpr explicit CallbackHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
-};
-
-/// Base class for callback wrappers
+/**
+ * @brief Wrapper [result callbacks](#result-callback).
+ *
+ * @tparam F the function type.
+ *
+ * For the simpler case, where no transformation is done on the parameters, you
+ * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
+ *
+ * In all cases, use Wrap to change the callback into a void* pointer.
+ */
 template<class Result, class... Args>
-struct CallbackWrapperBase
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   /// The wrapped std::function type
   using ValueType = std::function<Result(Args...)>;
@@ -352,29 +346,8 @@ struct CallbackWrapperBase
     auto& f = Unwrap(handle);
     return f(args...);
   }
-};
 
-template<class F>
-struct CallbackWrapper;
-
-/**
- * @brief Wrapper [result callbacks](#result-callback).
- *
- * @tparam F the function type.
- *
- * For the simpler case, where no transformation is done on the parameters, you
- * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
- *
- * In all cases, use Wrap to change the callback into a void* pointer.
- */
-template<class Result, class... Args>
-struct CallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
-{
   CallbackWrapper() = delete;
-
-  /// The wrapped std::function type
-  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the callback into a void* pointer.
@@ -416,206 +389,129 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     delete ptr;
     return value;
   }
+};
 
-  /// Return unwrapped value of handle.
-  static const ValueType release(CallbackHandle handle)
+/**
+ * Lightweight wrapper.
+ *
+ * @tparam SELF a CRTP class
+ */
+template<class SELF, class R, class... PARAMS>
+struct LightweightCallbackT
+{
+  /// The wrapper function
+  R (*wrapper)(void*, PARAMS...);
+
+  /// The wrapped data
+  void* data;
+
+  /// ctor
+  template<class F>
+  LightweightCallbackT(const F& func)
   {
-    return release(handle.get());
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](void* userdata, PARAMS... params) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
 /**
- * @brief Wrapper key to value [result callbacks](#result-callback).
+ * Lightweight wrapper.
  *
- * @tparam KEY the key type.
- * @tparam VALUE the value type.
- * @tparam VARIANT the variant, if more than one listener type is associated.
- *
+ * @tparam SELF a CRTP class
  */
-template<class KEY, class VALUE, size_t VARIANT = 0>
-struct KeyValueWrapper
+template<class SELF, class R, class... PARAMS>
+struct LightweightTrailingCallbackT
 {
-  static_assert(sizeof(KEY) <= sizeof(void*));
-  KeyValueWrapper() = delete;
+  /// The wrapper function
+  R (*wrapper)(PARAMS..., void*);
 
-  /// Key type
-  using KeyType = KEY;
+  /// The wrapped data
+  void* data;
 
-  /// Value type.
-  using ValueType = VALUE;
-
-  /**
-   * @brief Change the value into a void* pointer held by key.
-   *
-   * @param key
-   * @param value
-   * @return void*
-   */
-  static ValueType* Wrap(KeyType key, ValueType&& value)
+  /// ctor
+  template<class F>
+  LightweightTrailingCallbackT(const F& func)
   {
-    auto lockGuard = lock();
-    return &Values().insert_or_assign(key, std::move(value)).first->second;
-  }
-
-  /// True if handle is stored.
-  static bool contains(KeyType handle)
-  {
-    auto lockGuard = lock();
-    return Values().contains(handle);
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& at(KeyType handle)
-  {
-    auto lockGuard = lock();
-    return Values().at(handle);
-  }
-
-  /// Return unwrapped value associated by key and remove association.
-  static ValueType release(KeyType key)
-  {
-    auto lockGuard = lock();
-    auto& values = Values();
-    auto it = values.find(key);
-    if (it == values.end()) return {};
-    ValueType value{std::move(it->second)};
-    values.erase(it);
-    return value;
-  }
-
-  /**
-   * Remove association.
-   *
-   * @param key the key associated.
-   * @return true if the key was associated and was erased, false otherwise.
-   */
-  static bool erase(KeyType key)
-  {
-    auto lockGuard = lock();
-    return Values().erase(key);
-  }
-
-private:
-  static std::map<KeyType, ValueType>& Values()
-  {
-    static std::map<KeyType, ValueType> values;
-    return values;
-  }
-
-  static std::lock_guard<std::mutex> lock()
-  {
-    static std::mutex uniqueMutex;
-    return std::lock_guard{uniqueMutex};
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](PARAMS... params, void* userdata) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
-/// Store callbacks by key
-template<class KEY, class VALUE, size_t VARIANT = 0>
-struct KeyValueCallbackWrapper;
+template<class F>
+struct MakeFrontCallback;
 
-/// Store callbacks by key
-template<class KEY, class Result, class... Args, size_t VARIANT>
-struct KeyValueCallbackWrapper<KEY, std::function<Result(Args...)>, VARIANT>
-  : CallbackWrapperBase<Result, Args...>
-  , KeyValueWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+/**
+ * Make Front Callback
+ *
+ * @tparam R
+ * @tparam PARAMS
+ */
+template<class R, class... PARAMS>
+struct MakeFrontCallback<R(PARAMS...)>
+  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>
 {
-  KeyValueCallbackWrapper() = delete;
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  MakeFrontCallback(const F& func)
+    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>(func)
+  {
+  }
 
-  /// Wrapped type.
-  using ValueType = std::function<Result(Args...)>;
+  /// @private
+  template<std::invocable<PARAMS...> F>
+  static R doCall(F& func, PARAMS... params)
+  {
+    return func(params...);
+  }
 };
 
+template<class F>
+struct MakeBackCallback;
+
 /**
- * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
+ * Make Back Callback
  *
- * @tparam VALUE the function type.
+ * @tparam R
+ * @tparam PARAMS
  */
-template<class VALUE>
-struct UniqueCallbackWrapper;
-
-/**
- * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
- */
-template<class Result, class... Args>
-struct UniqueCallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
+template<class R, class... PARAMS>
+struct MakeBackCallback<R(PARAMS...)>
+  : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>, R, PARAMS...>
 {
-  UniqueCallbackWrapper() = delete;
-
-  /// Wrapped type.
-  using ValueType = std::function<Result(Args...)>;
-
-  /**
-   * @brief Change the value into a void* pointer held uniquely by this type.
-   *
-   * @param value
-   * @return void*
-   */
-  static ValueType* Wrap(ValueType&& value)
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  MakeBackCallback(const F& func)
+    : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>,
+                                   R,
+                                   PARAMS...>(func)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    v = std::move(value);
-    return &v;
   }
 
-  /// True if handle equals to wrapped value.
-  static bool contains(void* handle)
+  /// @private
+  template<std::invocable<PARAMS...> F>
+  static R doCall(const F& func, PARAMS... params)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    return bool(v) && &v == handle;
-  }
-
-  /// Return wrapped type, if handle is contained.
-  static ValueType at(void* handle)
-  {
-    if (&get() == handle) {
-      return CallbackWrapperBase<Result, Args...>::Unwrap(handle);
-    }
-    return {};
-  }
-
-  /// Return wrapped type, if handle is contained.
-  static const ValueType& get()
-  {
-    auto lockGuard = lock();
-    return Value();
-  }
-
-  /// Return wrapped type and erase it from store.
-  static ValueType release()
-  {
-    auto lockGuard = lock();
-    ValueType value{std::move(Value())};
-    return value;
-  }
-
-  /// Return wrapped type and erase it from store.
-  static ValueType release(void* handle)
-  {
-    SDL_assert_paranoid(&get() == handle);
-    return release();
-  }
-
-  /// Erase value from store.
-  static void erase()
-  {
-    auto lockGuard = lock();
-    Value() = {};
-  }
-
-private:
-  static ValueType& Value()
-  {
-    static ValueType value;
-    return value;
-  }
-
-  static std::lock_guard<std::mutex> lock()
-  {
-    static std::mutex uniqueMutex;
-    return std::lock_guard{uniqueMutex};
+    return func(params...);
   }
 };
 
@@ -1614,6 +1510,20 @@ inline int GetVersion() { return SDL_GetVersion(); }
  */
 inline const char* GetRevision() { return SDL_GetRevision(); }
 
+/// The current major version of SDL3pp wrapper.
+#define SDL3PP_MAJOR_VERSION 0
+
+/// The current minor version of SDL3pp wrapper.
+#define SDL3PP_MINOR_VERSION 5
+
+/// The current patch version of SDL3pp wrapper.
+#define SDL3PP_PATCH_VERSION 0
+
+/// This is the version number macro for the current SDL3pp wrapper version.
+#define SDL3PP_VERSION                                                         \
+  SDL_VERSIONNUM(                                                              \
+    SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)
+
 /// @}
 
 /**
@@ -2417,10 +2327,11 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AssertionHandler = SDL_AssertionHandler;
+using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
+                                               void* userdata);
 
 /**
- * A @ref callback that fires when an SDL assertion fails.
+ * A callback that fires when an SDL assertion fails.
  *
  * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
@@ -2434,7 +2345,7 @@ using AssertionHandler = SDL_AssertionHandler;
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  std::function<SDL_AssertState(const SDL_AssertData*)>;
+  MakeBackCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -2461,7 +2372,6 @@ using AssertionHandlerCB =
  */
 inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
-  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
   return SDL_SetAssertionHandler(handler, userdata);
 }
 
@@ -2478,7 +2388,8 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the AssertionHandler function to call when an assertion fails.
+ * @param handler the AssertionHandler function to call when an assertion fails
+ *                or nullptr for the default handler.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2488,10 +2399,9 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  */
 inline void SetAssertionHandler(AssertionHandlerCB handler)
 {
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  SetAssertionHandler(&Wrapper::CallSuffixed,
-                      Wrapper::Wrap(std::move(handler)));
+  SetAssertionHandler(handler.wrapper, handler.data);
 }
+
 /**
  * Get the default assertion handler.
  *
@@ -2540,37 +2450,6 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
 {
   return SDL_GetAssertionHandler(puserdata);
 }
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to SetAssertionHandler(), or
- * if no application-specified function is set, is equivalent to calling
- * GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SetAssertionHandler(). This value will
- * always be nullptr for the default handler. If you don't care about this data,
- * it is safe to pass a nullptr pointer to this function to ignore it.
- *
- * @returns the AssertionHandlerCB that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAssertionHandler
- */
-inline AssertionHandlerCB GetAssertionHandler()
-{
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  void* userdata = nullptr;
-  auto cb = GetAssertionHandler(&userdata);
-  if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
-  return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-}
-
 /**
  * Get a list of all assertion failures.
  *
@@ -7353,7 +7232,10 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
  *
  * @sa AddHintCallback
  */
-using HintCallback = SDL_HintCallback;
+using HintCallback = void(SDLCALL*)(void* userdata,
+                                    const char* name,
+                                    const char* oldValue,
+                                    const char* newValue);
 
 /**
  * A callback used to send notifications of hint value changes.
@@ -7375,13 +7257,8 @@ using HintCallback = SDL_HintCallback;
  *
  * @sa HintCallback
  */
-using HintCB = std::function<void(const char*, const char*, const char*)>;
-
-/// Handle returned by AddHintCallback()
-struct HintCallbackHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using HintCB = MakeFrontCallback<
+  void(const char* name, const char* oldValue, const char* newValue)>;
 
 /**
  * Add a function to watch a particular hint.
@@ -7417,7 +7294,6 @@ inline void AddHintCallback(StringParam name,
  * @param name the hint to watch.
  * @param callback An HintCallback function that will be called when the hint
  *                 value changes.
- * @returns a handle to be used on RemoveHintCallback()
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -7426,15 +7302,9 @@ inline void AddHintCallback(StringParam name,
  *
  * @sa RemoveHintCallback
  */
-inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+inline void AddHintCallback(StringParam name, HintCB callback)
 {
-  using Wrapper = CallbackWrapper<HintCB>;
-  auto cb = Wrapper::Wrap(std::move(callback));
-  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return HintCallbackHandle{cb};
+  AddHintCallback(std::move(name), callback.wrapper, callback.data);
 }
 
 /**
@@ -7456,23 +7326,6 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param handle the handle for the HintCallback function to be removed
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
-{
-  CallbackWrapper<HintCB>::release(handle);
 }
 
 /// @}
@@ -8431,7 +8284,10 @@ inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using LogOutputFunction = SDL_LogOutputFunction;
+using LogOutputFunction = void(SDLCALL*)(void* userdata,
+                                         int category,
+                                         LogPriority priority,
+                                         const char* message);
 
 /**
  * The prototype for the log output callback function.
@@ -8450,7 +8306,8 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @sa LogOutputFunction
  */
-using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
+using LogOutputCB = MakeFrontCallback<
+  void(int category, LogPriority priority, const char* message)>;
 
 /**
  * Get the default log output function.
@@ -8489,38 +8346,6 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 }
 
 /**
- * Get the current log output function.
- *
- * @returns the LogOutputCB currently set
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction
- * @sa SetLogOutputFunction
- */
-inline LogOutputCB GetLogOutputFunction()
-{
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  LogOutputFunction cb;
-  void* userdata;
-  GetLogOutputFunction(&cb, &userdata);
-  if (userdata == nullptr) {
-    return [cb](LogCategory c, LogPriority p, StringParam m) {
-      cb(nullptr, c, p, m);
-    };
-  }
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-    cb(userdata, c, p, m);
-  };
-}
-
-/**
  * Replace the default log output function with one of your own.
  *
  * @param callback an LogOutputFunction to call instead of the default.
@@ -8536,8 +8361,7 @@ inline LogOutputCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueCallbackWrapper<LogOutputCB>::erase();
-  return SDL_SetLogOutputFunction(callback, userdata);
+  SDL_SetLogOutputFunction(callback, userdata);
 }
 
 /**
@@ -8549,22 +8373,13 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @cat listener-callback
- *
- * @sa listener-callback
  * @sa GetDefaultLogOutputFunction
  * @sa GetLogOutputFunction
  * @sa ResetLogOutputFunction
  */
 inline void SetLogOutputFunction(LogOutputCB callback)
 {
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  SDL_SetLogOutputFunction(
-    [](
-      void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::Call(userdata, LogCategory{category}, priority, message);
-    },
-    Wrapper::Wrap(std::move(callback)));
+  SetLogOutputFunction(callback.wrapper, callback.data);
 }
 
 /**
@@ -11755,7 +11570,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @sa Properties.Enumerate
  */
-using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+using EnumeratePropertiesCallback = void(SDLCALL*)(void* userdata,
+                                                   PropertiesID props,
+                                                   const char* name);
 
 /**
  * A callback used to enumerate all the properties in a group of properties.
@@ -11799,7 +11616,7 @@ using EnumeratePropertiesCB =
  *
  * @sa Properties.SetPointerPropertyWithCleanup
  */
-using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 
 /**
  * A callback used to free resources when a property is deleted.
@@ -11825,7 +11642,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa CleanupPropertyCallback
  */
-using CleanupPropertyCB = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
  * SDL properties ID
@@ -12348,6 +12165,18 @@ struct PropertiesRef : Properties
    */
   PropertiesRef(PropertiesParam resource)
     : Properties(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
+  PropertiesRef(PropertiesID resource)
+    : Properties(resource)
   {
   }
 
@@ -13788,7 +13617,7 @@ inline void free(void* mem) { SDL_free(mem); }
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using malloc_func = SDL_malloc_func;
+using malloc_func = void*(SDLCALL*)(size_t size);
 
 /**
  * A callback used to implement calloc().
@@ -13809,7 +13638,7 @@ using malloc_func = SDL_malloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using calloc_func = SDL_calloc_func;
+using calloc_func = void*(SDLCALL*)(size_t nmemb, size_t size);
 
 /**
  * A callback used to implement realloc().
@@ -13830,7 +13659,7 @@ using calloc_func = SDL_calloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using realloc_func = SDL_realloc_func;
+using realloc_func = void*(SDLCALL*)(void* mem, size_t size);
 
 /**
  * A callback used to implement free().
@@ -13848,7 +13677,7 @@ using realloc_func = SDL_realloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using free_func = SDL_free_func;
+using free_func = void(SDLCALL*)(void* mem);
 
 /**
  * Get the original set of SDL memory functions.
@@ -14220,6 +14049,18 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
+  EnvironmentRef(EnvironmentRaw resource)
+    : Environment(resource)
+  {
+  }
+
   /// Copy constructor.
   EnvironmentRef(const EnvironmentRef& other)
     : Environment(other.get())
@@ -14509,7 +14350,7 @@ inline int unsetenv_unsafe(StringParam name)
  * @sa bsearch
  * @sa qsort
  */
-using CompareCallback = SDL_CompareCallback;
+using CompareCallback = int(SDLCALL*)(const void* a, const void* b);
 
 /**
  * Sort an array.
@@ -14636,7 +14477,9 @@ inline void* bsearch(const void* key,
  * @sa qsort_r
  * @sa bsearch_r
  */
-using CompareCallback_r = SDL_CompareCallback_r;
+using CompareCallback_r = int(SDLCALL*)(void* userdata,
+                                        const void* a,
+                                        const void* b);
 
 /**
  * A callback used with SDL sorting and binary search functions.
@@ -14653,7 +14496,7 @@ using CompareCallback_r = SDL_CompareCallback_r;
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void* a, const void* b)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.
@@ -19038,6 +18881,18 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvRaw resource)
+    : IConv(resource)
+  {
+  }
+
   /// Copy constructor.
   IConvRef(const IConvRef& other)
     : IConv(other.get())
@@ -19746,6 +19601,18 @@ struct AsyncIORef : AsyncIO
   {
   }
 
+  /**
+   * Constructs from AsyncIOParam.
+   *
+   * @param resource a AsyncIORaw or AsyncIO.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIORef(AsyncIORaw resource)
+    : AsyncIO(resource)
+  {
+  }
+
   /// Copy constructor.
   AsyncIORef(const AsyncIORef& other)
     : AsyncIO(other.get())
@@ -20065,6 +19932,18 @@ struct AsyncIOQueueRef : AsyncIOQueue
    */
   AsyncIOQueueRef(AsyncIOQueueParam resource)
     : AsyncIOQueue(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AsyncIOQueueParam.
+   *
+   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIOQueueRef(AsyncIOQueueRaw resource)
+    : AsyncIOQueue(resource)
   {
   }
 
@@ -21477,7 +21356,9 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  *
  * @sa SetClipboardData
  */
-using ClipboardDataCallback = SDL_ClipboardDataCallback;
+using ClipboardDataCallback = const void*(SDLCALL*)(void* userdata,
+                                                    const char* mime_type,
+                                                    size_t* size);
 
 /**
  * Callback function that will be called when data for the specified mime-type
@@ -21512,7 +21393,7 @@ using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
  *
  * @sa SetClipboardData
  */
-using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
+using ClipboardCleanupCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Callback function that will be called when the clipboard is cleared, or when
@@ -22774,7 +22655,8 @@ constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
  *
  * @sa EnumerateDirectory
  */
-using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
+using EnumerateDirectoryCallback = EnumerationResult(
+  SDLCALL*)(void* userdata, const char* dirname, const char* fname);
 
 /**
  * Callback for directory enumeration.
@@ -23613,6 +23495,18 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDeviceParam.
+   *
+   * @param resource a HidDeviceRaw or HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  HidDeviceRef(HidDeviceRaw resource)
+    : HidDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   HidDeviceRef(const HidDeviceRef& other)
     : HidDevice(other.get())
@@ -24130,787 +24024,6 @@ inline int HidDevice::get_report_descriptor(TargetBytes buf)
  * @since This function is available since SDL 3.2.0.
  */
 inline void hid_ble_scan(bool active) { SDL_hid_ble_scan(active); }
-
-/// @}
-
-/**
- * @defgroup CategoryInit Initialization and Shutdown
- *
- * All SDL programs need to initialize the library before starting to work with
- * it.
- *
- * Almost everything can simply call Init() near startup, with a handful of
- * flags to specify subsystems to touch. These are here to make sure SDL does
- * not even attempt to touch low-level pieces of the operating system that you
- * don't intend to use. For example, you might be using SDL for video and input
- * but chose an external library for audio, and in this case you would just need
- * to leave off the `INIT_AUDIO` flag to make sure that external library has
- * complete control.
- *
- * Most apps, when terminating, should call Quit(). This will clean up (nearly)
- * everything that SDL might have allocated, and crucially, it'll make sure that
- * the display's resolution is back to what the user expects if you had
- * previously changed it for your game.
- *
- * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
- * in details about the program. This is completely optional, but it helps in
- * small ways (we can provide an About dialog box for the macOS menu, we can
- * name the app in the system's audio mixer, etc). Those that want to provide a
- * _lot_ of information should look at the more-detailed
- * SetAppMetadataProperty().
- *
- * @{
- */
-
-/**
- * @defgroup InitFlags Initialization flags
- *
- * @{
- */
-
-/**
- * Initialization flags for Init and/or InitSubSystem
- *
- * These are the flags which may be passed to Init(). You should specify the
- * subsystems which you will be using in your application.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa Quit
- * @sa InitSubSystem
- * @sa QuitSubSystem
- * @sa WasInit
- */
-using InitFlags = Uint32;
-
-constexpr InitFlags INIT_AUDIO =
-  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
-
-/**
- * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
- */
-constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
-
-constexpr InitFlags INIT_JOYSTICK =
-  SDL_INIT_JOYSTICK; ///< `INIT_JOYSTICK` implies `INIT_EVENTS`
-
-constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
-
-constexpr InitFlags INIT_GAMEPAD =
-  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
-
-constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
-
-constexpr InitFlags INIT_SENSOR =
-  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
-
-constexpr InitFlags INIT_CAMERA =
-  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
-
-/// @}
-
-/**
- * @name AppResult
- * App result for Main callback
- * @{
- */
-
-/**
- * Return values for optional main callbacks.
- *
- * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or
- * SDL_AppIterate will terminate the program and report success/failure to the
- * operating system. What that means is platform-dependent. On Unix, for
- * example, on success, the process error code will be zero, and on failure it
- * will be 1. This interface doesn't allow you to return specific exit codes,
- * just whether there was an error generally or not.
- *
- * Returning APP_CONTINUE from these functions will let the app continue to run.
- *
- * See [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
- * for complete details.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AppResult = SDL_AppResult;
-
-/// Value that requests that the app continue from the main callbacks.
-constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
-
-/// Value that requests termination with success from the main callbacks.
-constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
-
-/// Value that requests termination with error from the main callbacks.
-constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
-
-/// @}
-
-/**
- * @name Callbacks for EnterAppMainCallbacks()
- *
- * @{
- */
-
-/**
- * Function pointer typedef for SDL_AppInit.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppInit directly.
- *
- * @param appstate a place where the app can optionally store a pointer for
- *                 future use.
- * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line arguments.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
- *          with success, APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppInit_func = SDL_AppInit_func;
-
-/**
- * Function pointer typedef for SDL_AppIterate.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppIterate directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
- *          with success, APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppIterate_func = SDL_AppIterate_func;
-
-/**
- * Function pointer typedef for SDL_AppEvent.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param event the new event for the app to examine.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
- *          with success, APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppEvent_func = SDL_AppEvent_func;
-
-/**
- * Function pointer typedef for SDL_AppQuit.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param result the result code that terminated the app (success or failure).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppQuit_func = SDL_AppQuit_func;
-
-/// @}
-
-/**
- * Initialize the SDL library.
- *
- * Init() simply forwards to calling InitSubSystem(). Therefore, the two may be
- * used interchangeably. Though for readability of your code InitSubSystem()
- * might be preferred.
- *
- * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
- * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
- * also attempt to work without initializing the video subsystem, in hopes of
- * being useful in showing an error dialog when Init fails. You must
- * specifically initialize other subsystems if you use them in your application.
- *
- * Logging (such as Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the joystick
- *   subsystem
- * - `INIT_EVENTS`: events subsystem
- * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- *
- * Subsystem initialization is ref-counted, you must call QuitSubSystem() for
- * each InitSubSystem() to correctly shutdown a subsystem manually (or call
- * Quit() to force shutdown). If a subsystem is already loaded then this call
- * will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before calling
- * Init, using either SetAppMetadata() or SetAppMetadataProperty().
- *
- * @param flags subsystem initialization flags.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata
- * @sa SetAppMetadataProperty
- * @sa InitSubSystem
- * @sa Quit
- * @sa SetMainReady
- * @sa WasInit
- */
-inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }
-
-/**
- * Compatibility function to initialize the SDL library.
- *
- * This function and Init() are interchangeable.
- *
- * @param flags any of the flags used by Init(); see Init for details.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa Quit
- * @sa QuitSubSystem
- */
-inline void InitSubSystem(InitFlags flags)
-{
-  CheckError(SDL_InitSubSystem(flags));
-}
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call Quit() even if you close all open subsystems with
- * QuitSubSystem().
- *
- * @param flags any of the flags used by Init(); see Init for details.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa InitSubSystem
- * @sa Quit
- */
-inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
-
-/**
- * Get a mask of the specified subsystems which are currently initialized.
- *
- * @param flags any of the flags used by Init(); see Init for details.
- * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
- *          returns the initialization status of the specified subsystems.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa InitSubSystem
- */
-inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
-
-/**
- * Clean up all initialized subsystems.
- *
- * You should call this function even if you have already shutdown each
- * initialized subsystem with QuitSubSystem(). It is safe to call this function
- * even in the case of errors in initialization.
- *
- * You can use this function with atexit() to ensure that it is run when your
- * application is shutdown, but it is not wise to do this from a library or
- * other dynamically loaded code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa QuitSubSystem
- */
-inline void Quit() { SDL_Quit(); }
-
-/**
- * Return whether this is the main thread.
- *
- * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that calls
- * Init(INIT_VIDEO), which should usually be the one that runs your program's
- * main() entry point. If you are using the main callbacks, SDL_AppInit(),
- * SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.
- *
- * @returns true if this thread is the main thread, or false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread
- */
-inline bool IsMainThread() { return SDL_IsMainThread(); }
-
-/**
- * @name Callbacks for RunOnMainThread()
- * @{
- */
-
-/**
- * Callback run on the main thread.
- *
- * @param userdata an app-controlled pointer that is passed to the callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread
- */
-using MainThreadCallback = SDL_MainThreadCallback;
-
-/**
- * Callback run on the main thread.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread
- *
- * @sa MainThreadCallback
- *
- * @cat result-callback
- *
- */
-using MainThreadCB = std::function<void()>;
-
-/// @}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution on
- * the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param userdata a pointer that is passed to `callback`.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread
- */
-inline void RunOnMainThread(MainThreadCallback callback,
-                            void* userdata,
-                            bool wait_complete)
-{
-  CheckError(SDL_RunOnMainThread(callback, userdata, wait_complete));
-}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution on
- * the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread
- * @sa result-callback
- *
- * @cat result-callback
- */
-inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
-{
-  using Wrapper = CallbackWrapper<MainThreadCB>;
-  void* wrapped = Wrapper::Wrap(std::move(callback));
-  RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
-}
-
-/**
- * Specify basic metadata about your app.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
- * detail doesn't make sense for the app.
- *
- * This function should be called as early as possible, before Init. Multiple
- * calls to this function are allowed, but various state might not change once
- * it has been set up with a previous call to this function.
- *
- * Passing a nullptr removes any previous metadata.
- *
- * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with SetAppMetadataProperty().
- *
- * @param appname The name of the application ("My Game 2: Bad Guy's Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git hash,
- *                   or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that identifies
- *                      this app ("com.example.mygame2").
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadataProperty
- */
-inline void SetAppMetadata(StringParam appname,
-                           StringParam appversion,
-                           StringParam appidentifier)
-{
-  CheckError(SDL_SetAppMetadata(appname, appversion, appidentifier));
-}
-
-/**
- * Specify metadata about your app through a set of properties.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left out, if a specific detail
- * doesn't make sense for the app.
- *
- * This function should be called as early as possible, before Init. Multiple
- * calls to this function are allowed, but various state might not change once
- * it has been set up with a previous call to this function.
- *
- * Once set, this metadata can be read using GetAppMetadataProperty().
- *
- * These are the supported properties:
- *
- * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `prop::appMetaData.VERSION_STRING`: The version of the app that is running;
- *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
- *   git hash are all valid options. This has no default.
- * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
- *   app. This must be in reverse-domain format, like "com.example.mygame2".
- *   This string is used by desktop compositors to identify and group windows
- *   together, as well as match applications with associated desktop settings
- *   and icons. If you plan to package your application in a container such as
- *   Flatpak, the app ID should match the name of your Flatpak container as
- *   well. This has no default.
- * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
- *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
- *   like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
- *   line, don't paste a copy of a whole software license in here. This has no
- *   default.
- * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `prop::appMetaData.TYPE_STRING`: The type of application this is. Currently
- *   this string can be "game" for a video game, "mediaplayer" for a media
- *   player, or generically "application" if nothing else applies. Future
- *   versions of SDL might add new types. This defaults to "application".
- *
- * @param name the name of the metadata property to set.
- * @param value the value of the property, or nullptr to remove that property.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAppMetadataProperty
- * @sa SetAppMetadata
- */
-inline void SetAppMetadataProperty(StringParam name, StringParam value)
-{
-  CheckError(SDL_SetAppMetadataProperty(name, value));
-}
-
-namespace prop::appMetaData {
-
-constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
-
-constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
-
-constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
-
-constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
-
-constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
-
-constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
-
-constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
-
-} // namespace prop::appMetaData
-
-/**
- * Get metadata about your app.
- *
- * This returns metadata previously set using SetAppMetadata() or
- * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list of
- * available properties and their meanings.
- *
- * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it is
- *          not set, nullptr for properties with no default.
- *
- * @threadsafety It is safe to call this function from any thread, although the
- *               string returned is not protected and could potentially be freed
- *               if you call SetAppMetadataProperty() to set that property from
- *               another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata
- * @sa SetAppMetadataProperty
- */
-inline const char* GetAppMetadataProperty(StringParam name)
-{
-  return SDL_GetAppMetadataProperty(name);
-}
-
-#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
-/**
- * The default log priority for app class.
- */
-#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
-#endif // SDL3PP_APPCLASS_LOG_PRIORITY
-
-/**
- * Represents application parameters
- */
-using AppArgs = std::span<char const* const>;
-
-/**
- * @{
- *
- * Allocate and initialize state with new.
- *
- * If possible, pass the args to constructor, otherwise expects a default ctor;
- *
- * @tparam T the state class
- * @param state the state to initialize
- * @param args the program arguments
- * @return the app status
- */
-template<class T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  static_assert(std::is_default_constructible_v<T>);
-  *state = new T{};
-  return APP_CONTINUE;
-}
-
-template<class T>
-  requires std::convertible_to<AppArgs, T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  *state = new T{args};
-  return APP_CONTINUE;
-}
-/// @}
-
-/// @private
-template<class T>
-concept HasInitFunction = requires(T** state) {
-  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
-};
-
-/**
- * @{
- *
- * Init state with arguments.
- *
- * This will call T::Init() if available, otherwise it delegates to
- * DefaultCreateClass().
- *
- * @tparam T the state class
- * @param state the state to initialize
- * @param args the program arguments
- * @return the app status
- */
-template<class T>
-inline AppResult InitClass(T** state, AppArgs args)
-{
-  try {
-    return DefaultCreateClass(state, args);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-template<HasInitFunction T>
-inline AppResult InitClass(T** state, AppArgs args)
-{
-  *state = nullptr;
-  try {
-    AppResult result = T::Init(state, args);
-    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
-    return result;
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-/// @}
-
-/// @private
-template<class T>
-concept HasIterateFunction = requires(T* state) { state->Iterate(); };
-
-/**
- * Iterate the state
- *
- * @tparam T the state class
- * @param state the state
- * @return the app status
- */
-template<HasIterateFunction T>
-inline AppResult IterateClass(T* state)
-{
-  try {
-    return state->Iterate();
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-/// @private
-template<class T>
-concept HasEventFunction =
-  requires(T* state, const SDL_Event& event) { state->Event(event); };
-
-/**
- * Default handle by finishing if QUIT is requested
- *
- * @tparam T the state class
- * @param state the state
- * @param event the event
- * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
- */
-template<class T>
-inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
-{
-  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
-  return APP_CONTINUE;
-}
-
-/**
- * @{
- * Iterate the state
- *
- * @tparam T the state class
- * @param state the state
- * @param event the event to handle
- * @return the app status
- */
-template<class T>
-inline AppResult EventClass(T* state, const SDL_Event& event)
-{
-  try {
-    return DefaultEventClass(state, event);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-template<HasEventFunction T>
-inline AppResult EventClass(T* state, const SDL_Event& event)
-{
-  try {
-    return state->Event(event);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-/// @}
-
-/**
- * Destroy state with delete;
- *
- * @tparam T
- * @param state
- */
-template<class T>
-inline void DefaultClassDestroy(T* state)
-{
-  delete state;
-}
-
-/// @private
-template<class T>
-concept HasQuitFunction =
-  requires(T* state, AppResult result) { T::Quit(state, result); };
-
-/**
- * @{
- * Destroy state with given result
- *
- * This is responsible to destroy and deallocate the state. It tries to call
- * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
- * calls delete directly.
- *
- * @tparam T the state class.
- * @param state the state to destroy.
- * @param result the app result.
- */
-template<class T>
-inline void QuitClass(T* state, AppResult result)
-{
-  DefaultClassDestroy(state);
-}
-
-template<HasQuitFunction T>
-inline void QuitClass(T* state, AppResult result)
-{
-  T::Quit(state, result);
-}
-/// @}
 
 /// @}
 
@@ -26540,6 +25653,18 @@ struct IOStreamRef : IOStream
    */
   IOStreamRef(IOStreamParam resource)
     : IOStream(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw or IOStream.
+   *
+   * This does not takes ownership!
+   */
+  IOStreamRef(IOStreamRaw resource)
+    : IOStream(resource)
   {
   }
 
@@ -28228,6 +27353,18 @@ struct SharedObjectRef : SharedObject
    */
   SharedObjectRef(SharedObjectParam resource)
     : SharedObject(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw or SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  SharedObjectRef(SharedObjectRaw resource)
+    : SharedObject(resource)
   {
   }
 
@@ -32180,6 +31317,18 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from SensorParam.
+   *
+   * @param resource a SensorRaw or Sensor.
+   *
+   * This does not takes ownership!
+   */
+  SensorRef(SensorRaw resource)
+    : Sensor(resource)
+  {
+  }
+
   /// Copy constructor.
   SensorRef(const SensorRef& other)
     : Sensor(other.get())
@@ -33009,7 +32158,9 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = SDL_NSTimerCallback;
+using TimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                       TimerID timerID,
+                                       Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.
@@ -33037,8 +32188,22 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @sa TimerCallback
  */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
+{
+  /// ctor
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  TimerCB(const F& func)
+    : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>(func)
+  {
+  }
+
+  /// @private
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+  {
+    return func(timerID, std::chrono::nanoseconds(interval)).count();
+  }
+};
 
 /**
  * Call a callback function at a future time.
@@ -33117,26 +32282,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 {
-  using Wrapper = CallbackWrapper<TimerCB>;
-  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-
-  auto cb = Wrapper::Wrap(std::move(callback));
-
-  if (TimerID id = SDL_AddTimerNS(
-        interval.count(),
-        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerCB*>(userdata);
-          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-          // If ask to removal, then remove it
-          if (next == 0) delete Store::release(timerID);
-          return next;
-        },
-        cb)) {
-    Store::Wrap(id, std::move(cb));
-    return id;
-  }
-  delete cb;
-  throw Error{};
+  return SDL_AddTimerNS(interval.count(), callback.wrapper, callback.data);
 }
 
 /**
@@ -33151,11 +32297,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @sa SDL_AddTimer
  */
-inline void RemoveTimer(TimerID id)
-{
-  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-  CheckError(SDL_RemoveTimer(id));
-}
+inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
 
 /// @}
 
@@ -33852,7 +32994,10 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @sa AudioDevice.SetPostmixCallback
  */
-using AudioPostmixCallback = SDL_AudioPostmixCallback;
+using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
+                                            const AudioSpec* spec,
+                                            float* buffer,
+                                            int buflen);
 
 /**
  * A callback that fires when data is about to be fed to an audio device.
@@ -33889,7 +33034,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
-  std::function<void(const AudioSpec& spec, std::span<float> buffer)>;
+  MakeFrontCallback<void(const AudioSpec* spec, float* buffer, int buflen)>;
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -33930,7 +33075,10 @@ using AudioPostmixCB =
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
  */
-using AudioStreamCallback = SDL_AudioStreamCallback;
+using AudioStreamCallback = void(SDLCALL*)(void* userdata,
+                                           AudioStreamRaw stream,
+                                           int additional_amount,
+                                           int total_amount);
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -33971,8 +33119,8 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
  * @sa AudioStream.SetPutCallback
  * @sa AudioStreamCallback
  */
-using AudioStreamCB = std::function<
-  void(AudioStreamRef stream, int additional_amount, int total_amount)>;
+using AudioStreamCB = MakeFrontCallback<
+  void(AudioStreamRaw stream, int additional_amount, int total_amount)>;
 
 /**
  * SDL Audio Device instance IDs.
@@ -34663,6 +33811,18 @@ struct AudioDeviceRef : AudioDevice
    */
   AudioDeviceRef(AudioDeviceParam resource)
     : AudioDevice(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource)
+    : AudioDevice(resource)
   {
   }
 
@@ -35866,6 +35026,18 @@ struct AudioStreamRef : AudioStream
    */
   AudioStreamRef(AudioStreamParam resource)
     : AudioStream(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioStreamParam.
+   *
+   * @param resource a AudioStreamRaw or AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  AudioStreamRef(AudioStreamRaw resource)
+    : AudioStream(resource)
   {
   }
 
@@ -37416,7 +36588,6 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
-  KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(stream);
   CheckError(SDL_SetAudioStreamGetCallback(stream, callback, userdata));
 }
 
@@ -37462,19 +36633,7 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
 inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                       AudioStreamCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
-  if (!SDL_SetAudioStreamGetCallback(
-        stream,
-        [](void* userdata,
-           SDL_AudioStream* stream,
-           int additional_amount,
-           int total_amount) {
-          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
-        },
-        Wrapper::Wrap(stream, std::move(callback)))) {
-    Wrapper::release(stream);
-    throw Error{};
-  }
+  SetAudioStreamGetCallback(stream, callback.wrapper, callback.data);
 }
 
 inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
@@ -37537,7 +36696,6 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
-  KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(stream);
   CheckError(SDL_SetAudioStreamPutCallback(stream, callback, userdata));
 }
 
@@ -37587,19 +36745,7 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
 inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                       AudioStreamCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
-  if (!SDL_SetAudioStreamPutCallback(
-        stream,
-        [](void* userdata,
-           SDL_AudioStream* stream,
-           int additional_amount,
-           int total_amount) {
-          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
-        },
-        Wrapper::Wrap(stream, std::move(callback)))) {
-    Wrapper::release(stream);
-    throw Error{};
-  }
+  SetAudioStreamPutCallback(stream, callback.wrapper, callback.data);
 }
 
 inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
@@ -37843,7 +36989,6 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                     AudioPostmixCallback callback,
                                     void* userdata)
 {
-  KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>::release(devid);
   CheckError(SDL_SetAudioPostmixCallback(devid, callback, userdata));
 }
 
@@ -37900,20 +37045,7 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
 inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                     AudioPostmixCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>;
-  if (!SDL_SetAudioPostmixCallback(
-        devid,
-        [](void* userdata,
-           const SDL_AudioSpec* spec,
-           float* buffer,
-           int buflen) {
-          Wrapper::Call(
-            userdata, *spec, std::span<float>(buffer, size_t(buflen)));
-        },
-        Wrapper::Wrap(devid, std::move(callback)))) {
-    Wrapper::release(devid);
-    throw Error{};
-  }
+  SetAudioPostmixCallback(devid, callback.wrapper, callback.data);
 }
 
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
@@ -39627,6 +38759,18 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from ProcessParam.
+   *
+   * @param resource a ProcessRaw or Process.
+   *
+   * This does not takes ownership!
+   */
+  ProcessRef(ProcessRaw resource)
+    : Process(resource)
+  {
+  }
+
   /// Copy constructor.
   ProcessRef(const ProcessRef& other)
     : Process(other.get())
@@ -40796,6 +39940,18 @@ struct StorageRef : Storage
    */
   StorageRef(StorageParam resource)
     : Storage(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from StorageParam.
+   *
+   * @param resource a StorageRaw or Storage.
+   *
+   * This does not takes ownership!
+   */
+  StorageRef(StorageRaw resource)
+    : Storage(resource)
   {
   }
 
@@ -45596,7 +44752,7 @@ using ThreadID = SDL_ThreadID;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using ThreadFunction = SDL_ThreadFunction;
+using ThreadFunction = int(SDLCALL*)(void* data);
 
 /**
  * The function passed to Thread.Thread() as the new thread's entry point.
@@ -45604,6 +44760,8 @@ using ThreadFunction = SDL_ThreadFunction;
  * @returns a value that can be reported through Thread.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadFunction
  */
 using ThreadCB = std::function<int()>;
 
@@ -45618,7 +44776,7 @@ using ThreadCB = std::function<int()>;
  *
  * @sa SetTLS
  */
-using TLSDestructorCallback = SDL_TLSDestructorCallback;
+using TLSDestructorCallback = void(SDLCALL*)(void* value);
 
 /**
  * The SDL thread object.
@@ -45934,6 +45092,18 @@ struct ThreadRef : Thread
    */
   ThreadRef(ThreadParam resource)
     : Thread(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from ThreadParam.
+   *
+   * @param resource a ThreadRaw or Thread.
+   *
+   * This does not takes ownership!
+   */
+  ThreadRef(ThreadRaw resource)
+    : Thread(resource)
   {
   }
 
@@ -46745,6 +45915,18 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from CameraParam.
+   *
+   * @param resource a CameraRaw or Camera.
+   *
+   * This does not takes ownership!
+   */
+  CameraRef(CameraRaw resource)
+    : Camera(resource)
+  {
+  }
+
   /// Copy constructor.
   CameraRef(const CameraRef& other)
     : Camera(other.get())
@@ -47553,6 +46735,18 @@ struct MutexRef : Mutex
   {
   }
 
+  /**
+   * Constructs from MutexParam.
+   *
+   * @param resource a MutexRaw or Mutex.
+   *
+   * This does not takes ownership!
+   */
+  MutexRef(MutexRaw resource)
+    : Mutex(resource)
+  {
+  }
+
   /// Copy constructor.
   MutexRef(const MutexRef& other)
     : Mutex(other.get())
@@ -47973,6 +47167,18 @@ struct RWLockRef : RWLock
    */
   RWLockRef(RWLockParam resource)
     : RWLock(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from RWLockParam.
+   *
+   * @param resource a RWLockRaw or RWLock.
+   *
+   * This does not takes ownership!
+   */
+  RWLockRef(RWLockRaw resource)
+    : RWLock(resource)
   {
   }
 
@@ -48435,6 +47641,18 @@ struct SemaphoreRef : Semaphore
   {
   }
 
+  /**
+   * Constructs from SemaphoreParam.
+   *
+   * @param resource a SemaphoreRaw or Semaphore.
+   *
+   * This does not takes ownership!
+   */
+  SemaphoreRef(SemaphoreRaw resource)
+    : Semaphore(resource)
+  {
+  }
+
   /// Copy constructor.
   SemaphoreRef(const SemaphoreRef& other)
     : Semaphore(other.get())
@@ -48797,6 +48015,18 @@ struct ConditionRef : Condition
    */
   ConditionRef(ConditionParam resource)
     : Condition(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from ConditionParam.
+   *
+   * @param resource a ConditionRaw or Condition.
+   *
+   * This does not takes ownership!
+   */
+  ConditionRef(ConditionRaw resource)
+    : Condition(resource)
   {
   }
 
@@ -49305,7 +48535,7 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  *
  * @sa TrayEntry.SetCallback
  */
-using TrayCallback = SDL_TrayCallback;
+using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 
 /**
  * A callback that is invoked when a tray entry is selected.
@@ -49318,7 +48548,7 @@ using TrayCallback = SDL_TrayCallback;
  *
  * @sa TrayCallback
  */
-using TrayCB = std::function<void(TrayEntryRaw)>;
+using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
  * An opaque handle representing a toplevel system tray object.
@@ -49522,6 +48752,18 @@ struct TrayRef : Tray
    */
   TrayRef(TrayParam resource)
     : Tray(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from TrayParam.
+   *
+   * @param resource a TrayRaw or Tray.
+   *
+   * This does not takes ownership!
+   */
+  TrayRef(TrayRaw resource)
+    : Tray(resource)
   {
   }
 
@@ -50579,10 +49821,7 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 
 inline void TrayEntry::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
-  SetCallback([](void* userdata,
-                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
-              Wrapper::Wrap(get(), std::move(callback)));
+  SetCallback(callback.wrapper, callback.data);
 }
 
 /**
@@ -51269,22 +50508,24 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @sa Window.SetHitTest
  */
-using HitTest = SDL_HitTest;
+using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
+                                        const PointRaw* area,
+                                        void* data);
 
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowRef where hit-testing was set on.
- * @param area a Point const reference which should be hit-tested.
- * @returns an SDL::HitTestResult value.
+ * @param win the Window where hit-testing was set on.
+ * @param area an Point which should be hit-tested.
+ * @returns an HitTestResult value.
  *
  * @cat listener-callback
  *
- * @sa HitTest
  * @sa Window.SetHitTest
+ * @sa HitTest
  */
 using HitTestCB =
-  std::function<HitTestResult(WindowRaw window, const Point& area)>;
+  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.
@@ -53542,6 +52783,18 @@ struct WindowRef : Window
   {
   }
 
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
+  WindowRef(WindowRaw resource)
+    : Window(resource)
+  {
+  }
+
   /// Copy constructor.
   WindowRef(const WindowRef& other)
     : Window(other.get())
@@ -53836,33 +53089,7 @@ using EGLint = SDL_EGLint;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
-
-/**
- * EGL platform attribute initialization callback.
- *
- * This is called when SDL is attempting to create an EGL context, to let the
- * app add extra attributes to its eglGetPlatformDisplay() call.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLAttribArrayCallback
- */
-using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
+using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
  * EGL surface/context attribute initialization callback types.
@@ -53893,39 +53120,9 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
-
-/**
- * EGL surface/context attribute initialization callback types.
- *
- * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
- * calls.
- *
- * For convenience, the EGLDisplay and EGLConfig to use are provided to the
- * callback.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @param display the EGL display to be used.
- * @param config the EGL config to be used.
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLIntArrayCallback
- */
-using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
+using EGLIntArrayCallback = EGLint*(SDLCALL*)(void* userdata,
+                                              EGLDisplay display,
+                                              EGLConfig config);
 
 /**
  * An enumeration of OpenGL configuration attributes.
@@ -57143,8 +56340,6 @@ inline void SetWindowHitTest(WindowParam window,
                              HitTest callback,
                              void* callback_data)
 {
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  Wrapper::erase(window);
   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
 }
 
@@ -57190,14 +56385,7 @@ inline void SetWindowHitTest(WindowParam window,
  */
 inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  void* cbHandle = Wrapper::Wrap(window, std::move(callback));
-  SetWindowHitTest(
-    window,
-    [](SDL_Window* win, const SDL_Point* area, void* data) {
-      return Wrapper::Call(data, win, Point(*area));
-    },
-    cbHandle);
+  SetWindowHitTest(window, callback.wrapper, callback.data);
 }
 
 inline void Window::SetHitTest(HitTest callback, void* callback_data)
@@ -57284,12 +56472,7 @@ inline void Window::Flash(FlashOperation operation)
  * @sa Window.Window
  * @sa Window.Window
  */
-inline void DestroyWindow(WindowRaw window)
-{
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  Wrapper::erase(window);
-  SDL_DestroyWindow(window);
-}
+inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
 inline void Window::Destroy() { DestroyWindow(release()); }
 
@@ -57885,7 +57068,9 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * @sa ShowOpenFolderDialog
  * @sa ShowFileDialogWithProperties
  */
-using DialogFileCallback = SDL_DialogFileCallback;
+using DialogFileCallback = void(SDLCALL*)(void* userdata,
+                                          const char* const* filelist,
+                                          int filter);
 
 /**
  * Callback used by file dialog functions.
@@ -57924,7 +57109,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * @sa ShowFileDialogWithProperties
  * @sa DialogFileCallback
  */
-using DialogFileCB = std::function<void(const char* const*, int)>;
+using DialogFileCB =
+  std::function<void(const char* const* filelist, int filter)>;
 
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
@@ -59758,7 +58944,7 @@ inline void PushEvent(const Event& event)
  * @sa SetEventFilter
  * @sa AddEventWatch
  */
-using EventFilter = SDL_EventFilter;
+using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
 
 /**
  * A std::function used for callbacks that watch the event queue.
@@ -59780,18 +58966,29 @@ using EventFilter = SDL_EventFilter;
  * @sa AddEventWatch()
  * @sa EventFilter
  */
-using EventFilterCB = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(Event* event)>;
 
 /**
- * Handle returned by AddEventWatch(EventFilterCB)
+ * A std::function used for callbacks that watch the event queue.
  *
- * This can be used later to remove the event filter
- * RemoveEventWatch(EventFilterHandle).
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa SetEventFilter()
+ * @sa AddEventWatch()
+ * @sa EventFilter
  */
-struct EventWatchHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
 
 /**
  * Set up a filter to process all events before they are added to the internal
@@ -59833,8 +59030,7 @@ struct EventWatchHandle : CallbackHandle
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueCallbackWrapper<EventFilterCB>::erase();
-  return SDL_SetEventFilter(filter, userdata);
+  SDL_SetEventFilter(filter, userdata);
 }
 
 /**
@@ -59862,29 +59058,24 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * Note: Events pushed onto the queue with PushEvent() get passed through the
  * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
- * @param filter an EventFilterCB function to call when an event happens.
+ * @param filter an EventFilter function to call when an event happens.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @cat listener-callback
- *
- * @sa listener-callback
  * @sa AddEventWatch
  * @sa SetEventEnabled
  * @sa GetEventFilter
  * @sa PeepEvents
  * @sa PushEvent
  */
-inline void SetEventFilter(EventFilterCB filter = {})
+inline void SetEventFilter(EventFilterCB filter)
 {
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-  SDL_SetEventFilter(
-    [](void* userdata, SDL_Event* event) {
-      return Wrapper::Call(userdata, *event);
-    },
-    Wrapper::Wrap(std::move(filter)));
+  static EventFilterCB staticFilter;
+  staticFilter = filter;
+  SetEventFilter([](void*, Event* event) { return staticFilter(event); },
+                 nullptr);
 }
 
 /**
@@ -59907,48 +59098,6 @@ inline void SetEventFilter(EventFilterCB filter = {})
 inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
   CheckError(SDL_GetEventFilter(filter, userdata));
-}
-
-/**
- * Query the current event filter.
- *
- * This function can be used to "chain" filters, by saving the existing filter
- * before replacing it with a function that will call that saved filter.
- *
- * @returns EventFilterCB on success or false if there is no event filter
- * set.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa SetEventFilter
- */
-inline EventFilterCB GetEventFilter()
-{
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-
-  EventFilter filter;
-  void* userdata;
-  GetEventFilter(&filter, &userdata);
-  if (!userdata)
-    return [filter](const Event& event) {
-      return filter(nullptr, const_cast<Event*>(&event));
-    };
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [filter, userdata](const Event& event) {
-    return filter(userdata, const_cast<Event*>(&event));
-  };
-}
-
-/// @private
-inline bool EventWatchAuxCallback(void* userdata, Event* event)
-{
-  auto& f = *static_cast<EventFilterCB*>(userdata);
-  return f(*event);
 }
 
 /**
@@ -60003,30 +59152,19 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * set with SetEventFilter(), nor for events posted by the user through
  * PeepEvents().
  *
- * @param filter an EventFilterCB to call when an event happens.
- * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
- *          success.
+ * @param filter an EventFilter function to call when an event happens.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @cat listener-callback
- *
- * @sa listener-callback
  * @sa RemoveEventWatch
  * @sa SetEventFilter
  */
-inline EventWatchHandle AddEventWatch(EventFilterCB filter)
+inline void AddEventWatch(EventWatcherCB filter)
 {
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  auto cb = Wrapper::Wrap(std::move(filter));
-  if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return EventWatchHandle{cb};
+  AddEventWatch(filter.wrapper, filter.data);
 }
 
 /**
@@ -60047,26 +59185,6 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
   SDL_RemoveEventWatch(filter, userdata);
-}
-
-/**
- * Remove an event watch callback added with AddEventWatch().
- *
- * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa AddEventWatch(EventFilterCB)
- */
-inline void RemoveEventWatch(EventWatchHandle handle)
-{
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  Wrapper::release(handle);
 }
 
 /**
@@ -60115,9 +59233,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
 inline void FilterEvents(EventFilterCB filter)
 {
   return FilterEvents(
-    [](void* userdata, SDL_Event* event) {
-      auto& f = *static_cast<EventFilterCB*>(userdata);
-      return f(*event);
+    [](void* userdata, Event* event) {
+      const auto& f = *static_cast<EventFilterCB*>(userdata);
+      return f(event);
     },
     &filter);
 }
@@ -64029,6 +63147,18 @@ struct GPUDeviceRef : GPUDevice
    */
   GPUDeviceRef(GPUDeviceParam resource)
     : GPUDevice(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from GPUDeviceParam.
+   *
+   * @param resource a GPUDeviceRaw or GPUDevice.
+   *
+   * This does not takes ownership!
+   */
+  GPUDeviceRef(GPUDeviceRaw resource)
+    : GPUDevice(resource)
   {
   }
 
@@ -68744,6 +67874,18 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from JoystickParam.
+   *
+   * @param resource a JoystickRaw or Joystick.
+   *
+   * This does not takes ownership!
+   */
+  JoystickRef(JoystickRaw resource)
+    : Joystick(resource)
+  {
+  }
+
   /// Copy constructor.
   JoystickRef(const JoystickRef& other)
     : Joystick(other.get())
@@ -71142,6 +70284,18 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalViewParam.
+   *
+   * @param resource a MetalViewRaw or MetalView.
+   *
+   * This does not takes ownership!
+   */
+  MetalViewRef(MetalViewRaw resource)
+    : MetalView(resource)
+  {
+  }
+
   /// Copy constructor.
   MetalViewRef(const MetalViewRef& other)
     : MetalView(other.get())
@@ -71595,6 +70749,18 @@ struct CursorRef : Cursor
    */
   CursorRef(CursorParam resource)
     : Cursor(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw or Cursor.
+   *
+   * This does not takes ownership!
+   */
+  CursorRef(CursorRaw resource)
+    : Cursor(resource)
   {
   }
 
@@ -73245,6 +72411,18 @@ struct GamepadRef : Gamepad
    */
   GamepadRef(GamepadParam resource)
     : Gamepad(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw or Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  GamepadRef(GamepadRaw resource)
+    : Gamepad(resource)
   {
   }
 
@@ -76130,6 +75308,18 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw or Haptic.
+   *
+   * This does not takes ownership!
+   */
+  HapticRef(HapticRaw resource)
+    : Haptic(resource)
+  {
+  }
+
   /// Copy constructor.
   HapticRef(const HapticRef& other)
     : Haptic(other.get())
@@ -76789,6 +75979,789 @@ inline void StopHapticRumble(HapticParam haptic)
 }
 
 inline void Haptic::StopRumble() { SDL::StopHapticRumble(m_resource); }
+
+/// @}
+
+/**
+ * @defgroup CategoryInit Initialization and Shutdown
+ *
+ * All SDL programs need to initialize the library before starting to work with
+ * it.
+ *
+ * Almost everything can simply call Init() near startup, with a handful of
+ * flags to specify subsystems to touch. These are here to make sure SDL does
+ * not even attempt to touch low-level pieces of the operating system that you
+ * don't intend to use. For example, you might be using SDL for video and input
+ * but chose an external library for audio, and in this case you would just need
+ * to leave off the `INIT_AUDIO` flag to make sure that external library has
+ * complete control.
+ *
+ * Most apps, when terminating, should call Quit(). This will clean up (nearly)
+ * everything that SDL might have allocated, and crucially, it'll make sure that
+ * the display's resolution is back to what the user expects if you had
+ * previously changed it for your game.
+ *
+ * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
+ * in details about the program. This is completely optional, but it helps in
+ * small ways (we can provide an About dialog box for the macOS menu, we can
+ * name the app in the system's audio mixer, etc). Those that want to provide a
+ * _lot_ of information should look at the more-detailed
+ * SetAppMetadataProperty().
+ *
+ * @{
+ */
+
+/**
+ * @defgroup InitFlags Initialization flags
+ *
+ * @{
+ */
+
+/**
+ * Initialization flags for Init and/or InitSubSystem
+ *
+ * These are the flags which may be passed to Init(). You should specify the
+ * subsystems which you will be using in your application.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa Quit
+ * @sa InitSubSystem
+ * @sa QuitSubSystem
+ * @sa WasInit
+ */
+using InitFlags = Uint32;
+
+constexpr InitFlags INIT_AUDIO =
+  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
+
+/**
+ * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
+ */
+constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
+
+constexpr InitFlags INIT_JOYSTICK =
+  SDL_INIT_JOYSTICK; ///< `INIT_JOYSTICK` implies `INIT_EVENTS`
+
+constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
+
+constexpr InitFlags INIT_GAMEPAD =
+  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
+
+constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
+
+constexpr InitFlags INIT_SENSOR =
+  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
+
+constexpr InitFlags INIT_CAMERA =
+  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
+
+/// @}
+
+/**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
+ * Return values for optional main callbacks.
+ *
+ * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or
+ * SDL_AppIterate will terminate the program and report success/failure to the
+ * operating system. What that means is platform-dependent. On Unix, for
+ * example, on success, the process error code will be zero, and on failure it
+ * will be 1. This interface doesn't allow you to return specific exit codes,
+ * just whether there was an error generally or not.
+ *
+ * Returning APP_CONTINUE from these functions will let the app continue to run.
+ *
+ * See [Main callbacks in
+ * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * for complete details.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AppResult = SDL_AppResult;
+
+/// Value that requests that the app continue from the main callbacks.
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/// Value that requests termination with success from the main callbacks.
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/// Value that requests termination with error from the main callbacks.
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
+
+/**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line arguments.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppInit_func = AppResult(SDLCALL*)(void** appstate,
+                                         int argc,
+                                         char* argv[]);
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppIterate_func = AppResult(SDLCALL*)(void* appstate);
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppEvent_func = AppResult(SDLCALL*)(void* appstate, Event* event);
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
+
+/// @}
+
+/**
+ * Initialize the SDL library.
+ *
+ * Init() simply forwards to calling InitSubSystem(). Therefore, the two may be
+ * used interchangeably. Though for readability of your code InitSubSystem()
+ * might be preferred.
+ *
+ * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
+ * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
+ * also attempt to work without initializing the video subsystem, in hopes of
+ * being useful in showing an error dialog when Init fails. You must
+ * specifically initialize other subsystems if you use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the joystick
+ *   subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem() for
+ * each InitSubSystem() to correctly shutdown a subsystem manually (or call
+ * Quit() to force shutdown). If a subsystem is already loaded then this call
+ * will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before calling
+ * Init, using either SetAppMetadata() or SetAppMetadataProperty().
+ *
+ * @param flags subsystem initialization flags.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
+ * @sa InitSubSystem
+ * @sa Quit
+ * @sa SetMainReady
+ * @sa WasInit
+ */
+inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }
+
+/**
+ * Compatibility function to initialize the SDL library.
+ *
+ * This function and Init() are interchangeable.
+ *
+ * @param flags any of the flags used by Init(); see Init for details.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa Quit
+ * @sa QuitSubSystem
+ */
+inline void InitSubSystem(InitFlags flags)
+{
+  CheckError(SDL_InitSubSystem(flags));
+}
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @param flags any of the flags used by Init(); see Init for details.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem
+ * @sa Quit
+ */
+inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
+
+/**
+ * Get a mask of the specified subsystems which are currently initialized.
+ *
+ * @param flags any of the flags used by Init(); see Init for details.
+ * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
+ *          returns the initialization status of the specified subsystems.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa InitSubSystem
+ */
+inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
+
+/**
+ * Clean up all initialized subsystems.
+ *
+ * You should call this function even if you have already shutdown each
+ * initialized subsystem with QuitSubSystem(). It is safe to call this function
+ * even in the case of errors in initialization.
+ *
+ * You can use this function with atexit() to ensure that it is run when your
+ * application is shutdown, but it is not wise to do this from a library or
+ * other dynamically loaded code.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa QuitSubSystem
+ */
+inline void Quit() { SDL_Quit(); }
+
+/**
+ * Return whether this is the main thread.
+ *
+ * On Apple platforms, the main thread is the thread that runs your program's
+ * main() entry point. On other platforms, the main thread is the one that calls
+ * Init(INIT_VIDEO), which should usually be the one that runs your program's
+ * main() entry point. If you are using the main callbacks, SDL_AppInit(),
+ * SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.
+ *
+ * @returns true if this thread is the main thread, or false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ */
+inline bool IsMainThread() { return SDL_IsMainThread(); }
+
+/**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ */
+using MainThreadCallback = void(SDLCALL*)(void* userdata);
+
+/**
+ * Callback run on the main thread.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ *
+ * @sa MainThreadCallback
+ *
+ * @cat result-callback
+ *
+ */
+using MainThreadCB = std::function<void()>;
+
+/// @}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution on
+ * the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param userdata a pointer that is passed to `callback`.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread
+ */
+inline void RunOnMainThread(MainThreadCallback callback,
+                            void* userdata,
+                            bool wait_complete)
+{
+  CheckError(SDL_RunOnMainThread(callback, userdata, wait_complete));
+}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution on
+ * the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
+{
+  using Wrapper = CallbackWrapper<MainThreadCB>;
+  void* wrapped = Wrapper::Wrap(std::move(callback));
+  RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
+}
+
+/**
+ * Specify basic metadata about your app.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
+ * detail doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before Init. Multiple
+ * calls to this function are allowed, but various state might not change once
+ * it has been set up with a previous call to this function.
+ *
+ * Passing a nullptr removes any previous metadata.
+ *
+ * This is a simplified interface for the most important information. You can
+ * supply significantly more detailed metadata with SetAppMetadataProperty().
+ *
+ * @param appname The name of the application ("My Game 2: Bad Guy's Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git hash,
+ *                   or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that identifies
+ *                      this app ("com.example.mygame2").
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadataProperty
+ */
+inline void SetAppMetadata(StringParam appname,
+                           StringParam appversion,
+                           StringParam appidentifier)
+{
+  CheckError(SDL_SetAppMetadata(appname, appversion, appidentifier));
+}
+
+/**
+ * Specify metadata about your app through a set of properties.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left out, if a specific detail
+ * doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before Init. Multiple
+ * calls to this function are allowed, but various state might not change once
+ * it has been set up with a previous call to this function.
+ *
+ * Once set, this metadata can be read using GetAppMetadataProperty().
+ *
+ * These are the supported properties:
+ *
+ * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
+ *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+ *   anywhere the OS shows the name of the application separately from window
+ *   titles, such as volume control applets, etc. This defaults to "SDL
+ *   Application".
+ * - `prop::appMetaData.VERSION_STRING`: The version of the app that is running;
+ *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
+ *   git hash are all valid options. This has no default.
+ * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
+ *   app. This must be in reverse-domain format, like "com.example.mygame2".
+ *   This string is used by desktop compositors to identify and group windows
+ *   together, as well as match applications with associated desktop settings
+ *   and icons. If you plan to package your application in a container such as
+ *   Flatpak, the app ID should match the name of your Flatpak container as
+ *   well. This has no default.
+ * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
+ *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+ * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
+ *   like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
+ *   line, don't paste a copy of a whole software license in here. This has no
+ *   default.
+ * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
+ *   product page, or a storefront, or even a GitHub repository, for user's
+ *   further information This has no default.
+ * - `prop::appMetaData.TYPE_STRING`: The type of application this is. Currently
+ *   this string can be "game" for a video game, "mediaplayer" for a media
+ *   player, or generically "application" if nothing else applies. Future
+ *   versions of SDL might add new types. This defaults to "application".
+ *
+ * @param name the name of the metadata property to set.
+ * @param value the value of the property, or nullptr to remove that property.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAppMetadataProperty
+ * @sa SetAppMetadata
+ */
+inline void SetAppMetadataProperty(StringParam name, StringParam value)
+{
+  CheckError(SDL_SetAppMetadataProperty(name, value));
+}
+
+namespace prop::appMetaData {
+
+constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+
+constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
+
+constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
+
+constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
+
+constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
+
+constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
+
+constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
+
+} // namespace prop::appMetaData
+
+/**
+ * Get metadata about your app.
+ *
+ * This returns metadata previously set using SetAppMetadata() or
+ * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list of
+ * available properties and their meanings.
+ *
+ * @param name the name of the metadata property to get.
+ * @returns the current value of the metadata property, or the default if it is
+ *          not set, nullptr for properties with no default.
+ *
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               string returned is not protected and could potentially be freed
+ *               if you call SetAppMetadataProperty() to set that property from
+ *               another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
+ */
+inline const char* GetAppMetadataProperty(StringParam name)
+{
+  return SDL_GetAppMetadataProperty(name);
+}
+
+#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
+/**
+ * The default log priority for app class.
+ */
+#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
+#endif // SDL3PP_APPCLASS_LOG_PRIORITY
+
+/**
+ * Represents application parameters
+ */
+using AppArgs = std::span<char const* const>;
+
+/**
+ * @{
+ *
+ * Allocate and initialize state with new.
+ *
+ * If possible, pass the args to constructor, otherwise expects a default ctor;
+ *
+ * @tparam T the state class
+ * @param state the state to initialize
+ * @param args the program arguments
+ * @return the app status
+ */
+template<class T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  static_assert(std::is_default_constructible_v<T>);
+  *state = new T{};
+  return APP_CONTINUE;
+}
+
+template<class T>
+  requires std::convertible_to<AppArgs, T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  *state = new T{args};
+  return APP_CONTINUE;
+}
+/// @}
+
+/// @private
+template<class T>
+concept HasInitFunction = requires(T** state) {
+  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
+};
+
+/**
+ * @{
+ *
+ * Init state with arguments.
+ *
+ * This will call T::Init() if available, otherwise it delegates to
+ * DefaultCreateClass().
+ *
+ * @tparam T the state class
+ * @param state the state to initialize
+ * @param args the program arguments
+ * @return the app status
+ */
+template<class T>
+inline AppResult InitClass(T** state, AppArgs args)
+{
+  try {
+    return DefaultCreateClass(state, args);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+template<HasInitFunction T>
+inline AppResult InitClass(T** state, AppArgs args)
+{
+  *state = nullptr;
+  try {
+    AppResult result = T::Init(state, args);
+    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
+    return result;
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+/// @}
+
+/// @private
+template<class T>
+concept HasIterateFunction = requires(T* state) { state->Iterate(); };
+
+/**
+ * Iterate the state
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @return the app status
+ */
+template<HasIterateFunction T>
+inline AppResult IterateClass(T* state)
+{
+  try {
+    return state->Iterate();
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+/// @private
+template<class T>
+concept HasEventFunction =
+  requires(T* state, const SDL_Event& event) { state->Event(event); };
+
+/**
+ * Default handle by finishing if QUIT is requested
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @param event the event
+ * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
+ */
+template<class T>
+inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
+{
+  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
+  return APP_CONTINUE;
+}
+
+/**
+ * @{
+ * Iterate the state
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @param event the event to handle
+ * @return the app status
+ */
+template<class T>
+inline AppResult EventClass(T* state, const SDL_Event& event)
+{
+  try {
+    return DefaultEventClass(state, event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+template<HasEventFunction T>
+inline AppResult EventClass(T* state, const SDL_Event& event)
+{
+  try {
+    return state->Event(event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+/// @}
+
+/**
+ * Destroy state with delete;
+ *
+ * @tparam T
+ * @param state
+ */
+template<class T>
+inline void DefaultClassDestroy(T* state)
+{
+  delete state;
+}
+
+/// @private
+template<class T>
+concept HasQuitFunction =
+  requires(T* state, AppResult result) { T::Quit(state, result); };
+
+/**
+ * @{
+ * Destroy state with given result
+ *
+ * This is responsible to destroy and deallocate the state. It tries to call
+ * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
+ * calls delete directly.
+ *
+ * @tparam T the state class.
+ * @param state the state to destroy.
+ * @param result the app result.
+ */
+template<class T>
+inline void QuitClass(T* state, AppResult result)
+{
+  DefaultClassDestroy(state);
+}
+
+template<HasQuitFunction T>
+inline void QuitClass(T* state, AppResult result)
+{
+  T::Quit(state, result);
+}
+/// @}
 
 /// @}
 
@@ -78890,6 +78863,18 @@ struct RendererRef : Renderer
    */
   RendererRef(RendererParam resource)
     : Renderer(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from RendererParam.
+   *
+   * @param resource a RendererRaw or Renderer.
+   *
+   * This does not takes ownership!
+   */
+  RendererRef(RendererRaw resource)
+    : Renderer(resource)
   {
   }
 
@@ -83796,30 +83781,7 @@ using MSG = ::MSG;
  * @sa SetWindowsMessageHook
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  */
-using WindowsMessageHook = SDL_WindowsMessageHook;
-
-/**
- * A callback to be used with SetWindowsMessageHook.
- *
- * This callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing a message directly from the Windows event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param msg a pointer to a Win32 event structure to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               Windows event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetWindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- * @sa WindowsMessageHook
- */
-using WindowsMessageHookCB = std::function<bool(MSG* msg)>;
+using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
 
 /**
  * Set a callback for every Windows message, run before TranslateMessage().
@@ -83840,29 +83802,11 @@ inline void SetWindowsMessageHook(WindowsMessageHook callback, void* userdata)
   SDL_SetWindowsMessageHook(callback, userdata);
 }
 
-/**
- * Set a callback for every Windows message, run before TranslateMessage().
- *
- * The callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * @param callback the WindowsMessageHook function to call.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- */
-inline void SetWindowsMessageHook(WindowsMessageHookCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<WindowsMessageHookCB>;
-  SetWindowsMessageHook(&Wrapper::CallSuffixed,
-                        Wrapper::Wrap(std::move(callback)));
-}
 #endif // SDL_PLATFORM_WINDOWS
 
 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
   defined(SDL3PP_DOC)
+
 /**
  * Get the D3D9 adapter index that matches the specified display.
  *
@@ -83926,30 +83870,7 @@ using XEvent = ::XEvent;
  *
  * @sa SetX11EventHook
  */
-using X11EventHook = SDL_X11EventHook;
-
-/**
- * A callback to be used with SetX11EventHook.
- *
- * This callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing an event directly from the X11 event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param xevent a pointer to an Xlib XEvent union to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               X11 event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetX11EventHook
- *
- * @sa X11EventHook
- */
-using X11EventHookCB = std::function<bool(XEvent*)>;
+using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
 
 /**
  * Set a callback for every X11 event.
@@ -83965,22 +83886,6 @@ using X11EventHookCB = std::function<bool(XEvent*)>;
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
 {
   SDL_SetX11EventHook(callback, userdata);
-}
-
-/**
- * Set a callback for every X11 event.
- *
- * The callback may modify the event, and should return true if the event should
- * continue to be processed, or false to prevent further processing.
- *
- * @param callback the X11EventHook function to call.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void SetX11EventHook(X11EventHookCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<X11EventHookCB>;
-  SDL_SetX11EventHook(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
 }
 
 /* Platform specific functions for Linux*/
@@ -84045,23 +83950,7 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
  *
  * @sa SetiOSAnimationCallback
  */
-using iOSAnimationCallback = SDL_iOSAnimationCallback;
-
-/**
- * The prototype for an Apple iOS animation callback.
- *
- * This datatype is only useful on Apple iOS.
- *
- * After passing a function pointer of this type to SetiOSAnimationCallback, the
- * system will call that function pointer at a regular interval.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetiOSAnimationCallback
- *
- * @sa iOSAnimationCallback
- */
-using iOSAnimationCB = std::function<void()>;
+using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Use this function to set the animation callback on Apple iOS.
@@ -84105,48 +83994,6 @@ inline void SetiOSAnimationCallback(WindowParam window,
 {
   CheckError(
     SDL_SetiOSAnimationCallback(window, interval, callback, callbackParam));
-}
-
-/**
- * Use this function to set the animation callback on Apple iOS.
- *
- * The function prototype for `callback` is:
- *
- * ```c
- * void callback(void *callbackParam);
- * ```
- *
- * Where its parameter, `callbackParam`, is what was passed as `callbackParam`
- * to SetiOSAnimationCallback().
- *
- * This function is only available on Apple iOS.
- *
- * For more information see:
- *
- * https://wiki.libsdl.org/SDL3/README/ios
- *
- * Note that if you use the "main callbacks" instead of a standard C `main`
- * function, you don't have to use this API, as SDL will manage this for you.
- *
- * Details on main callbacks are here:
- *
- * https://wiki.libsdl.org/SDL3/README/main-functions
- *
- * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be called.
- * @param callback the function to call for every frame.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetiOSEventPump
- */
-inline void SetiOSAnimationCallback(WindowParam window,
-                                    int interval,
-                                    iOSAnimationCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<iOSAnimationCB>;
-  SetiOSAnimationCallback(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
 }
 
 /**
@@ -84407,7 +84254,9 @@ inline const char* GetAndroidCachePath()
  *
  * @sa RequestAndroidPermission
  */
-using RequestAndroidPermissionCallback = SDL_RequestAndroidPermissionCallback;
+using RequestAndroidPermissionCallback = void(SDLCALL*)(void* userdata,
+                                                        const char* permission,
+                                                        bool granted);
 
 /**
  * Callback that presents a response from a RequestAndroidPermission call.
@@ -87455,6 +87304,18 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from AnimationParam.
+   *
+   * @param resource a AnimationRaw or Animation.
+   *
+   * This does not takes ownership!
+   */
+  AnimationRef(AnimationRaw resource)
+    : Animation(resource)
+  {
+  }
+
   /// Copy constructor.
   AnimationRef(const AnimationRef& other)
     : Animation(other.get())
@@ -89607,6 +89468,18 @@ struct FontRef : Font
    */
   FontRef(FontParam resource)
     : Font(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from FontParam.
+   *
+   * @param resource a FontRaw or Font.
+   *
+   * This does not takes ownership!
+   */
+  FontRef(FontRaw resource)
+    : Font(resource)
   {
   }
 
@@ -92884,6 +92757,18 @@ struct TextRef : Text
    */
   TextRef(TextParam resource = nullptr)
     : Text(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from TextParam.
+   *
+   * @param resource a TextRaw or Text.
+   *
+   * This does not takes ownership!
+   */
+  TextRef(TextRaw resource)
+    : Text(resource)
   {
   }
 

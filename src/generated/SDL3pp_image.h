@@ -2223,6 +2223,18 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from AnimationParam.
+   *
+   * @param resource a AnimationRaw or Animation.
+   *
+   * This does not takes ownership!
+   */
+  AnimationRef(AnimationRaw resource)
+    : Animation(resource)
+  {
+  }
+
   /// Copy constructor.
   AnimationRef(const AnimationRef& other)
     : Animation(other.get())

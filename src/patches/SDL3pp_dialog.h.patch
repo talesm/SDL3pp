@@ -11,7 +11,7 @@
   *
   * SDL offers file dialogs, to let users select files with native GUI
   * interfaces. There are "open" dialogs, "save" dialogs, and folder selection
-@@ -154,7 +152,6 @@
+@@ -157,7 +155,6 @@
   *                this option, and platforms that do support it may allow the
   *                user to ignore the filters. If non-nullptr, it must remain
   *                valid at least until the callback is invoked.
@@ -19,7 +19,7 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -176,12 +173,17 @@
+@@ -179,12 +176,17 @@
  inline void ShowOpenFileDialog(DialogFileCallback callback,
                                 void* userdata,
                                 WindowParam window,
@@ -42,7 +42,7 @@
  }
  
  /**
-@@ -206,15 +208,12 @@
+@@ -209,15 +211,12 @@
   *
   * @param callback a function pointer to be invoked when the user selects a file
   *                 and accepts, or cancels the dialog, or an error occurs.
@@ -58,7 +58,7 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -235,11 +234,17 @@
+@@ -238,11 +237,17 @@
   */
  inline void ShowOpenFileDialog(DialogFileCB callback,
                                 WindowParam window,
@@ -80,7 +80,7 @@
  }
  
  /**
-@@ -272,7 +277,6 @@
+@@ -275,7 +280,6 @@
   *                this option, and platforms that do support it may allow the
   *                user to ignore the filters. If non-nullptr, it must remain
   *                valid at least until the callback is invoked.
@@ -88,7 +88,7 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -291,11 +295,16 @@
+@@ -294,11 +298,16 @@
   */
  inline void ShowSaveFileDialog(DialogFileCallback callback,
                                 void* userdata,
@@ -109,7 +109,7 @@
  }
  
  /**
-@@ -320,15 +329,12 @@
+@@ -323,15 +332,12 @@
   *
   * @param callback a function pointer to be invoked when the user selects a file
   *                 and accepts, or cancels the dialog, or an error occurs.
@@ -125,7 +125,7 @@
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.
-@@ -346,11 +352,16 @@
+@@ -349,11 +355,16 @@
   * @sa ShowFileDialogWithProperties
   */
  inline void ShowSaveFileDialog(DialogFileCB callback,
@@ -146,7 +146,7 @@
  }
  
  /**
-@@ -398,9 +409,9 @@
+@@ -401,9 +412,9 @@
   */
  inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                   void* userdata,
@@ -159,7 +159,7 @@
  {
    SDL_ShowOpenFolderDialog(
      callback, userdata, window, default_location, allow_many);
-@@ -428,8 +439,6 @@
+@@ -431,8 +442,6 @@
   *
   * @param callback a function pointer to be invoked when the user selects a file
   *                 and accepts, or cancels the dialog, or an error occurs.
@@ -168,7 +168,7 @@
   * @param window the window that the dialog should be modal for, may be nullptr.
   *               Not all platforms support this option.
   * @param default_location the default folder or file to start the dialog at,
-@@ -450,11 +459,16 @@
+@@ -453,11 +462,16 @@
   * @sa ShowFileDialogWithProperties
   */
  inline void ShowOpenFolderDialog(DialogFileCB callback,
@@ -189,7 +189,7 @@
  }
  
  /**
-@@ -559,8 +573,6 @@
+@@ -562,8 +576,6 @@
   * @param type the type of file dialog.
   * @param callback a function pointer to be invoked when the user selects a file
   *                 and accepts, or cancels the dialog, or an error occurs.
@@ -198,7 +198,7 @@
   * @param props the properties to use.
   *
   * @threadsafety This function should be called only from the main thread. The
-@@ -580,7 +592,9 @@
+@@ -583,7 +595,9 @@
                                           DialogFileCB callback,
                                           PropertiesID props)
  {

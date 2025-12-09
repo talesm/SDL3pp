@@ -13,8 +13,10 @@ import {
   ApiParameters,
   ApiTransform,
   ApiType,
+  CallbackDefinition,
   Dict,
   EntryHint,
+  FunctorSupport,
   ListContent,
   ParsedDoc,
   ParsedDocContent,
@@ -139,6 +141,7 @@ class ApiContext {
   currentIncludeAfter: Dict<ApiEntryTransform[]>;
   paramTypeMap: StringMap;
   returnTypeMap: StringMap;
+  callbackTypeMap: StringMap;
   nameMap: StringMap;
   glossary: Dict<ApiEntry>;
   prefixToRemove: RegExp;
@@ -175,6 +178,7 @@ class ApiContext {
     Object.assign(this.returnTypeMap, transform.returnTypeMap ?? {});
 
     this.nameMap = {};
+    this.callbackTypeMap = {};
 
     /**
      * @type {Dict<ApiEntry>}
@@ -239,8 +243,28 @@ class ApiContext {
   }
 
   addReturnType(originalType: string, targetType: string) {
-    if (!this.returnTypeMap[originalType])
+    if (!this.returnTypeMap[originalType]) {
       this.returnTypeMap[originalType] = targetType;
+      return true;
+    }
+    return false;
+  }
+
+  addCallbackType(originalType: string, targetType: string) {
+    if (!this.callbackTypeMap[originalType]) {
+      this.callbackTypeMap[originalType] = targetType;
+      return true;
+    }
+    return false;
+  }
+
+  getCallbackType(type: string) {
+    if (type.endsWith(" *"))
+      return (
+        this.callbackTypeMap[type] ??
+        this.getCallbackType(type.slice(0, -2)) + " *"
+      );
+    return this.callbackTypeMap[type] ?? type;
   }
 
   isAfterMinVersion(version: VersionTag) {
@@ -376,6 +400,19 @@ function insertOrLink(
   currLink.link = entry;
 }
 
+function getCallbackDef(
+  callback: FunctorSupport | boolean | CallbackDefinition
+): CallbackDefinition {
+  switch (typeof callback) {
+    case "boolean":
+      return {};
+    case "object":
+      return callback;
+    case "string":
+      return { functorSupport: callback };
+  }
+}
+
 function expandTypes(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
@@ -390,14 +427,14 @@ function expandTypes(
     if (!isType(sourceEntry.kind)) continue;
     const targetDelta = getOrCreateDelta(sourceName);
     const targetName = targetDelta.name;
-    tryDetectOoLike(sourceEntry, targetDelta);
-    if (sourceEntry.kind === "callback")
-      expandCallback(sourceName, sourceEntry, targetName);
+    tryDetectType(sourceEntry, targetDelta);
+    if (targetDelta.callback)
+      expandCallback(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.resource)
       expandResource(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.wrapper)
       expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
-    if (targetDelta.enum || sourceEntry.kind === "enum")
+    if (targetDelta.enum)
       expandEnumeration(sourceName, sourceEntry, targetName, targetDelta);
 
     if (!targetDelta.kind) {
@@ -408,6 +445,7 @@ function expandTypes(
       context.blacklist.add(sourceName);
       continue;
     }
+    context.addCallbackType(sourceName, targetName);
     context.addName(sourceName, targetName);
     context.addParamType(sourceName, targetName);
     context.addParamType(`${sourceName} *`, `${targetName} *`);
@@ -433,16 +471,20 @@ function expandTypes(
       );
   }
 
-  /**
-   *
-   * @param {ApiEntry}          sourceEntry
-   * @param {ApiEntryTransform} targetDelta
-   */
-  function tryDetectOoLike(sourceEntry, targetDelta) {
-    const sourceName = sourceEntry.name;
+  function tryDetectType(
+    sourceEntry: ApiEntry,
+    targetDelta: ApiEntryTransform
+  ) {
+    if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
+      targetDelta.callback = true;
+      return;
+    }
+    if (targetDelta.enum === undefined && sourceEntry.kind === "enum")
+      targetDelta.enum = true;
     if (targetDelta.resource !== undefined || targetDelta.wrapper !== undefined)
       return;
 
+    const sourceName = sourceEntry.name;
     let fCount = 0;
     let free = "";
     const ctors = [];
@@ -494,42 +536,129 @@ function expandTypes(
   function expandCallback(
     sourceName: string,
     sourceEntry: ApiEntry,
-    name: string
+    name: string,
+    targetDelta: ApiEntryTransform
   ) {
-    const parameters = sourceEntry.parameters;
-    delete sourceEntry.parameters;
-    for (let i = 0; i < parameters.length; i++) {
-      const parameter = parameters[i];
-      if (
-        typeof parameter !== "string" &&
-        parameter.type === "void *" &&
-        parameter.name === "userdata"
+    const parameters = transformCbParameters(sourceEntry.parameters, context);
+    const callback = getCallbackDef(targetDelta.callback);
+    targetDelta.kind = "alias";
+    delete targetDelta.callback;
+    const resultType = transformCbType(sourceEntry.type, context);
+    targetDelta.type = `${resultType} (SDLCALL *)(${parameters
+      .map((p) => p.type + " " + p.name)
+      .join(", ")})`;
+    if (!callback.functorSupport) return;
+    const userdataIndex =
+      callback.userdataIndex ??
+      parameters.findIndex(
+        (p) => p.type.endsWith("void *") && p.name === "userdata"
+      );
+    if (userdataIndex < 0) return;
+    const callbackName =
+      callback.wrapper ?? name.replace(/(Function|Callback)$/, "") + "CB";
+    const doc = removeTagFromGroup(
+      addToTagGroup(
+        transformDoc(sourceEntry.doc ?? undefined, context),
+        "@sa",
+        name
+      ),
+      "@param userdata"
+    );
+    if (
+      callback.functorSupport === "std" ||
+      callback.functorSupport === "lightweight"
+    ) {
+      const typeParams = parameters.toSpliced(userdataIndex, 1);
+      if (callback.functorSupport === "std") {
+        makeCallbackAlias(
+          "std::function",
+          callback.type ?? resultType,
+          callback.parameters ?? typeParams
+        );
+      } else if (
+        callback.type === undefined &&
+        callback.parameters === undefined
       ) {
-        const typeParams = parameters.map((p) =>
-          typeof p === "string" ? p : p.type
+        makeCallbackAlias(
+          userdataIndex === 0 ? "MakeFrontCallback" : "MakeBackCallback",
+          resultType,
+          typeParams
         );
-        const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
-        typeParams.splice(i, 1);
-        const doc = removeTagFromGroup(
-          addToTagGroup(
-            transformDoc(sourceEntry.doc ?? undefined, context),
-            "@sa",
-            name
-          ),
-          "@param userdata"
-        );
+      } else {
+        const templateType =
+          userdataIndex === 0
+            ? "LightweightCallbackT"
+            : "LightweightTrailingCallbackT";
+        const type = `${templateType}<${callbackName}, ${resultType}, ${typeParams
+          .map((p) => p.type)
+          .join(", ")}>`;
+        const template = [
+          {
+            type: `std::invocable<${(callback.parameters ?? typeParams)
+              .map((p) => p.type)
+              .join(", ")}>`,
+            name: "F",
+          },
+        ];
         const callbackEntry: ApiEntryTransform = {
-          kind: "alias",
+          kind: "struct",
           name: callbackName,
-          type: `std::function<${sourceEntry.type}(${typeParams.join(", ")})>`,
+          type,
           doc,
-          ...file.transform[callbackName],
-          before: undefined,
-          after: undefined,
+          entries: {
+            [callbackName]: {
+              kind: "function",
+              doc: ["ctor"],
+              type: "",
+              template,
+              parameters: [
+                {
+                  type: "const F &",
+                  name: "func",
+                },
+              ],
+              hints: {
+                init: [`${type}(func)`],
+              },
+            },
+            doCall: {
+              kind: "function",
+              doc: ["@private"],
+              type: resultType,
+              static: true,
+              template,
+              parameters: [
+                {
+                  type: "F &",
+                  name: "func",
+                },
+                ...typeParams,
+              ],
+            },
+          },
         };
         context.prependIncludeAfter(callbackEntry, name);
-        break;
       }
+    }
+
+    function makeCallbackAlias(
+      wrapper: string,
+      resultType: string,
+      typeParams: ApiParameters
+    ) {
+      const parameters = typeParams
+        .map((p) => `${p.type} ${p.name}`)
+        .join(", ");
+      const callbackEntry: ApiEntryTransform = {
+        kind: "alias",
+        name: callbackName,
+        type: `${wrapper}<${resultType}(${parameters})>`,
+        doc,
+        ...file.transform[callbackName],
+        before: undefined,
+        after: undefined,
+      };
+      context.prependIncludeAfter(callbackEntry, name);
     }
   }
 
@@ -773,6 +902,7 @@ function expandTypes(
             ],
             hints: { body: `${name} = new${capName};\nreturn *this;` },
           });
+          context.addCallbackType(sourceType, rawType);
           context.addParamType(sourceType, rawType);
           context.addParamType(`${sourceType} *`, `${rawType} *`);
           context.addParamType(`const ${sourceType}`, `const ${rawType}`);
@@ -895,6 +1025,7 @@ function expandTypes(
     const title = targetName[0].toLowerCase() + targetName.slice(1);
     if (sourceEntry.type && !targetEntry.type) targetEntry.type = "";
     context.addName(sourceName, targetName);
+    context.addCallbackType(isStruct ? `${sourceName} *` : sourceName, rawName);
 
     const referenceAliases: ApiEntryTransform[] = [];
     referenceAliases.push({ name: targetName, kind: "forward" });
@@ -1475,6 +1606,25 @@ function expandTypes(
             ],
           },
           [`${refName}#2`]: {
+            kind: "function",
+            type: "",
+            parameters: [
+              {
+                type: rawName,
+                name: "resource",
+              },
+            ],
+            hints: { init: [`${targetName}(resource)`] },
+            doc: [
+              `Constructs from ${paramType}.`,
+              {
+                tag: "@param resource",
+                content: `a ${rawName} or ${targetName}.`,
+              },
+              "This does not takes ownership!",
+            ],
+          },
+          [`${refName}#3`]: {
             kind: "function",
             type: "",
             parameters: [
@@ -2598,9 +2748,10 @@ function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
       targetEntry.parameters = sourceEntry.parameters;
       break;
     default:
-      delete targetEntry.entries;
+      delete targetEntry.parameters;
       break;
   }
+  delete targetEntry.entries;
   return targetEntry;
 }
 
@@ -2613,6 +2764,25 @@ function transformParameters(
     type = transformType(type, context.paramTypeMap);
     return { name, type, default: defaultValue };
   });
+}
+
+function transformCbParameters(
+  parameters: ApiParameters,
+  context: ApiContext
+): ApiParameters {
+  return parameters.map((parameter) => {
+    let { name, type, default: defaultValue } = parameter;
+    if (type) {
+      type = transformCbType(type, context);
+    }
+    return { name, type, default: defaultValue };
+  });
+}
+function transformCbType(type: string, context: ApiContext): string {
+  return type.replace(
+    /^(const\s+)?(\w+(\s+\*)?)/,
+    (_, ct: string, type: string) => (ct ?? "") + context.getCallbackType(type)
+  );
 }
 
 function checkSignatureRules(targetEntry: ApiEntry, context: ApiContext) {

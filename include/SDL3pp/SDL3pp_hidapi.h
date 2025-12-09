@@ -466,6 +466,18 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDeviceParam.
+   *
+   * @param resource a HidDeviceRaw or HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  HidDeviceRef(HidDeviceRaw resource)
+    : HidDevice(resource)
+  {
+  }
+
   /// Copy constructor.
   HidDeviceRef(const HidDeviceRef& other)
     : HidDevice(other.get())

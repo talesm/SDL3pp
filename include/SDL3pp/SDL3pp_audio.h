@@ -701,7 +701,10 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @sa AudioDevice.SetPostmixCallback
  */
-using AudioPostmixCallback = SDL_AudioPostmixCallback;
+using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
+                                            const AudioSpec* spec,
+                                            float* buffer,
+                                            int buflen);
 
 /**
  * A callback that fires when data is about to be fed to an audio device.
@@ -738,7 +741,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
-  std::function<void(const AudioSpec& spec, std::span<float> buffer)>;
+  MakeFrontCallback<void(const AudioSpec* spec, float* buffer, int buflen)>;
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -779,7 +782,10 @@ using AudioPostmixCB =
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
  */
-using AudioStreamCallback = SDL_AudioStreamCallback;
+using AudioStreamCallback = void(SDLCALL*)(void* userdata,
+                                           AudioStreamRaw stream,
+                                           int additional_amount,
+                                           int total_amount);
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -820,8 +826,8 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
  * @sa AudioStream.SetPutCallback
  * @sa AudioStreamCallback
  */
-using AudioStreamCB = std::function<
-  void(AudioStreamRef stream, int additional_amount, int total_amount)>;
+using AudioStreamCB = MakeFrontCallback<
+  void(AudioStreamRaw stream, int additional_amount, int total_amount)>;
 
 /**
  * SDL Audio Device instance IDs.
@@ -1512,6 +1518,18 @@ struct AudioDeviceRef : AudioDevice
    */
   AudioDeviceRef(AudioDeviceParam resource)
     : AudioDevice(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource)
+    : AudioDevice(resource)
   {
   }
 
@@ -2715,6 +2733,18 @@ struct AudioStreamRef : AudioStream
    */
   AudioStreamRef(AudioStreamParam resource)
     : AudioStream(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from AudioStreamParam.
+   *
+   * @param resource a AudioStreamRaw or AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  AudioStreamRef(AudioStreamRaw resource)
+    : AudioStream(resource)
   {
   }
 
@@ -4265,7 +4295,6 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
-  KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(stream);
   CheckError(SDL_SetAudioStreamGetCallback(stream, callback, userdata));
 }
 
@@ -4311,19 +4340,7 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
 inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                       AudioStreamCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
-  if (!SDL_SetAudioStreamGetCallback(
-        stream,
-        [](void* userdata,
-           SDL_AudioStream* stream,
-           int additional_amount,
-           int total_amount) {
-          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
-        },
-        Wrapper::Wrap(stream, std::move(callback)))) {
-    Wrapper::release(stream);
-    throw Error{};
-  }
+  SetAudioStreamGetCallback(stream, callback.wrapper, callback.data);
 }
 
 inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
@@ -4386,7 +4403,6 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
-  KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(stream);
   CheckError(SDL_SetAudioStreamPutCallback(stream, callback, userdata));
 }
 
@@ -4436,19 +4452,7 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
 inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                       AudioStreamCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
-  if (!SDL_SetAudioStreamPutCallback(
-        stream,
-        [](void* userdata,
-           SDL_AudioStream* stream,
-           int additional_amount,
-           int total_amount) {
-          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
-        },
-        Wrapper::Wrap(stream, std::move(callback)))) {
-    Wrapper::release(stream);
-    throw Error{};
-  }
+  SetAudioStreamPutCallback(stream, callback.wrapper, callback.data);
 }
 
 inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
@@ -4692,7 +4696,6 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                     AudioPostmixCallback callback,
                                     void* userdata)
 {
-  KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>::release(devid);
   CheckError(SDL_SetAudioPostmixCallback(devid, callback, userdata));
 }
 
@@ -4749,20 +4752,7 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
 inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                     AudioPostmixCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>;
-  if (!SDL_SetAudioPostmixCallback(
-        devid,
-        [](void* userdata,
-           const SDL_AudioSpec* spec,
-           float* buffer,
-           int buflen) {
-          Wrapper::Call(
-            userdata, *spec, std::span<float>(buffer, size_t(buflen)));
-        },
-        Wrapper::Wrap(devid, std::move(callback)))) {
-    Wrapper::release(devid);
-    throw Error{};
-  }
+  SetAudioPostmixCallback(devid, callback.wrapper, callback.data);
 }
 
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,

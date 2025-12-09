@@ -83,7 +83,9 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * @sa ShowOpenFolderDialog
  * @sa ShowFileDialogWithProperties
  */
-using DialogFileCallback = SDL_DialogFileCallback;
+using DialogFileCallback = void(SDLCALL*)(void* userdata,
+                                          const char* const* filelist,
+                                          int filter);
 
 /**
  * Callback used by file dialog functions.
@@ -122,7 +124,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * @sa ShowFileDialogWithProperties
  * @sa DialogFileCallback
  */
-using DialogFileCB = std::function<void(const char* const*, int)>;
+using DialogFileCB =
+  std::function<void(const char* const* filelist, int filter)>;
 
 /**
  * Displays a dialog that lets the user select a file on their filesystem.

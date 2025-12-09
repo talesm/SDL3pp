@@ -1943,6 +1943,18 @@ struct FontRef : Font
   {
   }
 
+  /**
+   * Constructs from FontParam.
+   *
+   * @param resource a FontRaw or Font.
+   *
+   * This does not takes ownership!
+   */
+  FontRef(FontRaw resource)
+    : Font(resource)
+  {
+  }
+
   /// Copy constructor.
   FontRef(const FontRef& other)
     : Font(other.get())
@@ -5217,6 +5229,18 @@ struct TextRef : Text
    */
   TextRef(TextParam resource = nullptr)
     : Text(resource.value)
+  {
+  }
+
+  /**
+   * Constructs from TextParam.
+   *
+   * @param resource a TextRaw or Text.
+   *
+   * This does not takes ownership!
+   */
+  TextRef(TextRaw resource)
+    : Text(resource)
   {
   }
 

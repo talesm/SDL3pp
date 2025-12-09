@@ -533,6 +533,18 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from ProcessParam.
+   *
+   * @param resource a ProcessRaw or Process.
+   *
+   * This does not takes ownership!
+   */
+  ProcessRef(ProcessRaw resource)
+    : Process(resource)
+  {
+  }
+
   /// Copy constructor.
   ProcessRef(const ProcessRef& other)
     : Process(other.get())
