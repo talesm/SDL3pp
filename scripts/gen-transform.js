@@ -4,6 +4,8 @@ import { writeJSONSync } from "./cppfier/utils.ts";
  * @import {ApiTransform} from "./cppfier/types"
  */
 
+const currentVersion = ["0", "4", "1"];
+
 /** @type {ApiTransform} */
 const transform = {
   prefixes: ["SDL_", "IMG_", "TTF_"],
@@ -7128,11 +7130,35 @@ const transform = {
     },
     "SDL_version.h": {
       transform: {
+        "SDL_MAJOR_VERSION": {
+          value: ""
+        },
         "SDL_MINOR_VERSION": {
           value: ""
         },
         "SDL_MICRO_VERSION": {
           value: ""
+        },
+        "SDL3PP_MAJOR_VERSION": {
+          after: "SDL_GetRevision",
+          kind: "def",
+          value: currentVersion[0],
+          doc: ["The current major version of SDL3pp wrapper."]
+        },
+        "SDL3PP_MINOR_VERSION": {
+          kind: "def",
+          value: currentVersion[1],
+          doc: ["The current minor version of SDL3pp wrapper."]
+        },
+        "SDL3PP_PATCH_VERSION": {
+          kind: "def",
+          value: currentVersion[2],
+          doc: ["The current patch version of SDL3pp wrapper."]
+        },
+        "SDL3PP_VERSION": {
+          kind: "def",
+          value: "SDL_VERSIONNUM(SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)",
+          doc: ["This is the version number macro for the current SDL3pp wrapper version."]
         },
       },
     },
