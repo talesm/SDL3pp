@@ -331,16 +331,27 @@
  using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
  
  /**
-@@ -1396,7 +1428,7 @@
+@@ -1425,7 +1457,6 @@
+  * event filter, but events pushed onto the queue with PeepEvents() do not.
+  *
+  * @param filter an EventFilter function to call when an event happens.
+- * @param userdata a pointer that is passed to `filter`.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1439,7 +1470,10 @@
   */
- inline void SetEventFilter(EventFilter filter, void* userdata)
+ inline void SetEventFilter(EventFilterCB filter)
  {
--  SDL_SetEventFilter(filter, userdata);
-+  return SDL_SetEventFilter(filter, userdata);
+-  static_assert(false, "Not implemented");
++  static EventFilterCB staticFilter;
++  staticFilter = filter;
++  SetEventFilter([](void*, Event* event) { return staticFilter(event); },
++                 nullptr);
  }
  
  /**
-@@ -1474,7 +1506,6 @@
+@@ -1517,7 +1551,6 @@
   * PeepEvents().
   *
   * @param filter an EventFilter function to call when an event happens.
@@ -348,7 +359,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1486,7 +1517,7 @@
+@@ -1529,7 +1562,7 @@
   */
  inline void AddEventWatch(EventWatcherCB filter)
  {
@@ -357,7 +368,7 @@
  }
  
  /**
-@@ -1541,18 +1572,25 @@
+@@ -1584,18 +1617,25 @@
   * filter until this function returns.
   *
   * @param filter the EventFilter function to call when an event happens.
@@ -385,7 +396,7 @@
  }
  
  /**
-@@ -1622,7 +1660,7 @@
+@@ -1665,7 +1705,7 @@
   */
  inline WindowRef GetWindowFromEvent(const Event& event)
  {

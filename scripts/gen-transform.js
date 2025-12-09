@@ -1366,6 +1366,18 @@ const transform = {
             }
           ]
         },
+        "SetEventFilter": {
+          after: "SDL_SetEventFilter",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "EventFilterCB", name: "filter" }]
+        },
+        "AddEventWatch": {
+          after: "SDL_AddEventWatch",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "EventWatcherCB", name: "filter" }]
+        },
         "FilterEvents": {
           "kind": "function",
           "after": "SDL_FilterEvents",
@@ -1391,12 +1403,6 @@ const transform = {
           parameters: [{ type: "const Event &" }]
         },
         "SDL_Event": { wrapper: false },
-        "AddEventWatch": {
-          after: "SDL_AddEventWatch",
-          kind: "function",
-          type: "void",
-          parameters: [{ type: "EventWatcherCB", name: "filter" }]
-        }
       }
     },
     "SDL_filesystem.h": {
