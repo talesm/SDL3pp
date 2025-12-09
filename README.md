@@ -9,15 +9,17 @@ memory management and wrappers for string and callbacks.
 
 ## Quick start / TLDR
 
-- Download [the single header](./amalgamation/SDL3pp/) (as
-  [zip](https://github.com/talesm/SDL3pp/releases/download/0.4.1/SDL3pp_amalgamated.zip)
-  or
-  [tarball](https://github.com/talesm/SDL3pp/releases/download/0.4.1/SDL3pp_amalgamated.tar.gz))
-  and add to your project;
-- Alternatively, download
-  [the latest release](https://github.com/talesm/SDL3pp/releases) then follow:
-  - [Build](#building) instructions;
-  - [Installation](#installing) instructions;
+- You have 3 options to add SDL3pp to your project:
+  1. Download [the single header](./amalgamation/SDL3pp/) (as
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.0/SDL3pp_amalgamated.zip)
+     or
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.0/SDL3pp_amalgamated.tar.gz))
+     and add to your project;
+  2. You can also download the
+     [the latest release](https://github.com/talesm/SDL3pp/releases) then
+     [build](#building) and [install](#installing) the project;
+  3. If you use CMake, you can also set up an
+     [ExternalProject](#using-cmakes-externalproject);
 - See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
 - See [Example](#example) and [Examples directory](./examples/).
 
@@ -119,17 +121,14 @@ cmake -DSDL3_ttf_DIR=path-to-SDL3_ttf-dir build
 
 ## Installing
 
-There are a few ways to install SDL3pp:
-
-### Copy into project
-
-The most basic way is to copy the contents of
-[amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/) directly
-to your project.
+If you have SDL3 already set up on your project, you can just copy the contents
+of [amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/)
+directly to your project.
 
 ### System installation
 
-After [build](#building), you can install on you system with cmake:
+If you like to have a whole system intallation, you can checkout the project
+[build](#building), and then you can install on you system with cmake:
 
 ```sh
 cmake --install build
@@ -140,3 +139,22 @@ Alteratively can move into a custom location with:
 ```sh
 cmake --install build --install-prefix <directory>
 ```
+
+## Using Cmake's ExternalProject
+
+If you are already using CMake for your project, you can use the following
+command to download from git automatically:
+
+```cmake
+ExternalProject_Add(SDL3pp
+  GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
+  GIT_TAG 0.5.0
+  GIT_SUBMODULES_RECURSE OFF
+  GIT_SHALLOW ON # Optional, just allow download a bit faster
+  GIT_PROGRESS ON
+  CMAKE_ARGS -DSDL3PP_FORCE_BUNDLED=ON -DSDL_INSTALL=OFF
+)
+```
+
+If you have SDL3 installed on your system and want use that version, you can
+omit the `-DSDL3PP_FORCE_BUNDLED=ON` above.
