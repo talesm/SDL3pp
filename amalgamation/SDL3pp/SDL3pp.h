@@ -308,9 +308,21 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
  * @{
  */
 
-/// Base class for callback wrappers
+template<class F>
+struct CallbackWrapper;
+
+/**
+ * @brief Wrapper [result callbacks](#result-callback).
+ *
+ * @tparam F the function type.
+ *
+ * For the simpler case, where no transformation is done on the parameters, you
+ * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
+ *
+ * In all cases, use Wrap to change the callback into a void* pointer.
+ */
 template<class Result, class... Args>
-struct CallbackWrapperBase
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   /// The wrapped std::function type
   using ValueType = std::function<Result(Args...)>;
@@ -334,29 +346,8 @@ struct CallbackWrapperBase
     auto& f = Unwrap(handle);
     return f(args...);
   }
-};
 
-template<class F>
-struct CallbackWrapper;
-
-/**
- * @brief Wrapper [result callbacks](#result-callback).
- *
- * @tparam F the function type.
- *
- * For the simpler case, where no transformation is done on the parameters, you
- * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
- *
- * In all cases, use Wrap to change the callback into a void* pointer.
- */
-template<class Result, class... Args>
-struct CallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
-{
   CallbackWrapper() = delete;
-
-  /// The wrapped std::function type
-  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the callback into a void* pointer.
