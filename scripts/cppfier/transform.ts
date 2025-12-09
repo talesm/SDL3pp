@@ -554,7 +554,8 @@ function expandTypes(
         (p) => p.type.endsWith("void *") && p.name === "userdata"
       );
     if (userdataIndex < 0) return;
-    const callbackName = name.replace(/(Function|Callback)$/, "") + "CB";
+    const callbackName =
+      callback.wrapper ?? name.replace(/(Function|Callback)$/, "") + "CB";
     const doc = removeTagFromGroup(
       addToTagGroup(
         transformDoc(sourceEntry.doc ?? undefined, context),

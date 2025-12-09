@@ -1381,16 +1381,22 @@ const transform = {
           enum: "SDL_EVENT_"
         },
         "SDL_EventFilter": {
-          callback: {
-            functorSupport: "std",
-            type: "bool",
-            parameters: [{ type: "const Event &", name: "event" }]
-          }
+          callback: "std"
+        },
+        "EventWatcherCB": {
+          kind: "alias",
+          type: "MakeFrontCallback<bool(Event *event)>"
         },
         "SDL_GetWindowFromEvent": {
           parameters: [{ type: "const Event &" }]
         },
         "SDL_Event": { wrapper: false },
+        "AddEventWatch": {
+          after: "SDL_AddEventWatch",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "EventWatcherCB", name: "filter" }]
+        }
       }
     },
     "SDL_filesystem.h": {

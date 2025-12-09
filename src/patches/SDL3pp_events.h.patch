@@ -293,7 +293,7 @@
   *
   * @param event the event that triggered the callback.
   * @returns true to permit event to be added to the queue, and false to disallow
-@@ -1348,8 +1357,11 @@
+@@ -1348,12 +1357,35 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -306,8 +306,32 @@
 + * @sa AddEventWatch()
   * @sa EventFilter
   */
- using EventFilterCB = std::function<bool(const Event& event)>;
-@@ -1394,7 +1406,7 @@
+ using EventFilterCB = std::function<bool(Event* event)>;
+ 
++/**
++ * A std::function used for callbacks that watch the event queue.
++ *
++ * @param event the event that triggered the callback.
++ * @returns true to permit event to be added to the queue, and false to disallow
++ *          it. When used with AddEventWatch, the return value is ignored.
++ *
++ * @threadsafety SDL may call this callback at any time from any thread; the
++ *               application is responsible for locking resources the callback
++ *               touches that need to be protected.
++ *
++ * @since This datatype is available since SDL 3.2.0.
++ *
++ * @cat listener-callback
++ *
++ * @sa listener-callback
++ * @sa SetEventFilter()
++ * @sa AddEventWatch()
++ * @sa EventFilter
++ */
+ using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
+ 
+ /**
+@@ -1396,7 +1428,7 @@
   */
  inline void SetEventFilter(EventFilter filter, void* userdata)
  {
@@ -316,7 +340,24 @@
  }
  
  /**
-@@ -1505,18 +1517,25 @@
+@@ -1474,7 +1506,6 @@
+  * PeepEvents().
+  *
+  * @param filter an EventFilter function to call when an event happens.
+- * @param userdata a pointer that is passed to `filter`.
+  * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+@@ -1486,7 +1517,7 @@
+  */
+ inline void AddEventWatch(EventWatcherCB filter)
+ {
+-  static_assert(false, "Not implemented");
++  AddEventWatch(filter.wrapper, filter.data);
+ }
+ 
+ /**
+@@ -1541,18 +1572,25 @@
   * filter until this function returns.
   *
   * @param filter the EventFilter function to call when an event happens.
@@ -336,15 +377,15 @@
  {
 -  static_assert(false, "Not implemented");
 +  return FilterEvents(
-+    [](void* userdata, SDL_Event* event) {
-+      auto& f = *static_cast<EventFilterCB*>(userdata);
-+      return f(*event);
++    [](void* userdata, Event* event) {
++      const auto& f = *static_cast<EventFilterCB*>(userdata);
++      return f(event);
 +    },
 +    &filter);
  }
  
  /**
-@@ -1586,7 +1605,7 @@
+@@ -1622,7 +1660,7 @@
   */
  inline WindowRef GetWindowFromEvent(const Event& event)
  {

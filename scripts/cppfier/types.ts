@@ -162,6 +162,9 @@ export interface CallbackDefinition {
 
   /// The parameters. By default the raw callback's return type
   parameters?: ApiParameters;
+
+  /// Wrapped name
+  wrapper?: string;
 }
 
 export interface ResourceDefinition {
