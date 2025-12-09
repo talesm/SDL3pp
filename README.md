@@ -157,7 +157,6 @@ ExternalProject_Add(SDL3ppExternal
 )
 # find_package(SDL3pp)
 ExternalProject_Get_property(SDL3ppExternal INSTALL_DIR)
-message("Source dir of myExtProj = ${INSTALL_DIR}")
 add_library(SDL3pp INTERFACE)
 add_dependencies(SDL3pp SDL3ppExternal)
 set_target_properties(SDL3pp PROPERTIES
