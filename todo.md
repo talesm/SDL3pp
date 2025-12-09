@@ -3,11 +3,9 @@ Todo for next version
 
 Reword callback handling.
 
-- [ ] Remove hacky and leaky stored callback wrapping, except for the safer
+- [x] Remove hacky and leaky stored callback wrapping, except for the safer
   callOnce, and use a more lightweight function wrapper that fit in a single
   pointer.
-- [ ] Make templated version of callback, where the userdata can be any pointer
-  type;
 - [x] Use less error prone unified diffs to patch the API.
 
 Backlog
