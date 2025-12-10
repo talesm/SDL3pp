@@ -984,7 +984,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetA(float newA)
-@@ -2394,16 +2590,16 @@
+@@ -2403,16 +2599,16 @@
     */
    void Destroy();
  
@@ -1007,7 +1007,7 @@
    }
  
    /**
-@@ -2411,13 +2607,14 @@
+@@ -2420,13 +2616,14 @@
     *
     * @param colors an array of Color structures to copy into the palette.
     * @param firstcolor the index of the first palette entry to modify.
@@ -1023,7 +1023,7 @@
     */
    void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
  };
-@@ -2525,8 +2722,8 @@
+@@ -2534,8 +2731,8 @@
   * errors such as `Blit combination not supported` may occur.
   *
   * @param format one of the PixelFormat values.
@@ -1034,7 +1034,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2534,7 +2731,7 @@
+@@ -2543,7 +2740,7 @@
   */
  inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
  {
@@ -1043,7 +1043,7 @@
  }
  
  inline const PixelFormatDetails& PixelFormat::GetDetails() const
-@@ -2572,7 +2769,6 @@
+@@ -2581,7 +2778,6 @@
   * @param palette the Palette structure to modify.
   * @param colors an array of Color structures to copy into the palette.
   * @param firstcolor the index of the first palette entry to modify.
@@ -1051,7 +1051,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2584,7 +2780,8 @@
+@@ -2593,7 +2789,8 @@
                               SpanRef<const ColorRaw> colors,
                               int firstcolor = 0)
  {
@@ -1061,7 +1061,7 @@
  }
  
  inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-@@ -2652,6 +2849,43 @@
+@@ -2661,6 +2858,43 @@
    return SDL_MapRGB(&format, palette, r, g, b);
  }
  
@@ -1105,7 +1105,7 @@
  inline Uint32 MapRGBA(const PixelFormatDetails& format,
                        Uint8 r,
                        Uint8 g,
-@@ -2659,7 +2893,7 @@
+@@ -2668,7 +2902,7 @@
                        Uint8 a,
                        PaletteConstParam palette = {})
  {
@@ -1114,7 +1114,7 @@
  }
  
  /**
-@@ -2681,11 +2915,8 @@
+@@ -2690,11 +2924,8 @@
   * for an 8-bpp format).
   *
   * @param format a pointer to PixelFormatDetails describing the pixel format.
@@ -1127,7 +1127,7 @@
   * @returns a pixel value.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2702,18 +2933,18 @@
+@@ -2711,18 +2942,18 @@
                         ColorRaw c,
                         PaletteConstParam palette = {})
  {
@@ -1149,7 +1149,7 @@
  }
  
  /**
-@@ -2791,23 +3022,52 @@
+@@ -2800,23 +3031,52 @@
    SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
  }
  

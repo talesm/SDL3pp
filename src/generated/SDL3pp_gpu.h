@@ -3082,12 +3082,21 @@ public:
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
 
   /// Assignment operator.
-  GPUDevice& operator=(GPUDevice other)
+  constexpr GPUDevice& operator=(GPUDevice&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GPUDevice& operator=(const GPUDevice& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying GPUDeviceRaw.
   constexpr GPUDeviceRaw get() const { return m_resource; }
 
@@ -3859,6 +3868,8 @@ public:
 /// Semi-safe reference for GPUDevice.
 struct GPUDeviceRef : GPUDevice
 {
+  using GPUDevice::GPUDevice;
+
   /**
    * Constructs from GPUDeviceParam.
    *

@@ -389,12 +389,21 @@ public:
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
-  IOStream& operator=(IOStream other)
+  constexpr IOStream& operator=(IOStream&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IOStream& operator=(const IOStream& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const { return m_resource; }
 
@@ -1311,6 +1320,8 @@ public:
 /// Semi-safe reference for IOStream.
 struct IOStreamRef : IOStream
 {
+  using IOStream::IOStream;
+
   /**
    * Constructs from IOStreamParam.
    *

@@ -121,12 +121,21 @@ public:
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
 
   /// Assignment operator.
-  MetalView& operator=(MetalView other)
+  constexpr MetalView& operator=(MetalView&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr MetalView& operator=(const MetalView& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying MetalViewRaw.
   constexpr MetalViewRaw get() const { return m_resource; }
 
@@ -175,6 +184,8 @@ public:
 /// Semi-safe reference for MetalView.
 struct MetalViewRef : MetalView
 {
+  using MetalView::MetalView;
+
   /**
    * Constructs from MetalViewParam.
    *

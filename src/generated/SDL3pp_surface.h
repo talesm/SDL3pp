@@ -445,12 +445,21 @@ public:
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.
-  Surface& operator=(Surface other)
+  constexpr Surface& operator=(Surface&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Surface& operator=(const Surface& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const { return m_resource; }
 

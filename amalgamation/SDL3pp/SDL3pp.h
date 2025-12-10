@@ -10940,12 +10940,21 @@ public:
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.
-  Palette& operator=(Palette other)
+  constexpr Palette& operator=(Palette&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Palette& operator=(const Palette& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const { return m_resource; }
 
@@ -11706,12 +11715,21 @@ public:
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
-  Properties& operator=(Properties other)
+  constexpr Properties& operator=(Properties&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Properties& operator=(const Properties& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const { return m_resource; }
 
@@ -12156,6 +12174,8 @@ public:
 /// Semi-safe reference for Properties.
 struct PropertiesRef : Properties
 {
+  using Properties::Properties;
+
   /**
    * Constructs from PropertiesParam.
    *
@@ -13897,12 +13917,21 @@ public:
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
-  Environment& operator=(Environment other)
+  constexpr Environment& operator=(Environment&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Environment& operator=(const Environment& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const { return m_resource; }
 
@@ -14037,6 +14066,8 @@ public:
 /// Semi-safe reference for Environment.
 struct EnvironmentRef : Environment
 {
+  using Environment::Environment;
+
   /**
    * Constructs from EnvironmentParam.
    *
@@ -18781,12 +18812,21 @@ public:
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
-  IConv& operator=(IConv other)
+  constexpr IConv& operator=(IConv&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IConv& operator=(const IConv& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const { return m_resource; }
 
@@ -18869,6 +18909,8 @@ public:
 /// Semi-safe reference for IConv.
 struct IConvRef : IConv
 {
+  using IConv::IConv;
+
   /**
    * Constructs from IConvParam.
    *
@@ -19414,12 +19456,21 @@ public:
   }
 
   /// Assignment operator.
-  AsyncIO& operator=(AsyncIO other)
+  constexpr AsyncIO& operator=(AsyncIO&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AsyncIO& operator=(const AsyncIO& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AsyncIORaw.
   constexpr AsyncIORaw get() const { return m_resource; }
 
@@ -19589,6 +19640,8 @@ public:
 /// Semi-safe reference for AsyncIO.
 struct AsyncIORef : AsyncIO
 {
+  using AsyncIO::AsyncIO;
+
   /**
    * Constructs from AsyncIOParam.
    *
@@ -19736,12 +19789,21 @@ public:
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
 
   /// Assignment operator.
-  AsyncIOQueue& operator=(AsyncIOQueue other)
+  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AsyncIOQueueRaw.
   constexpr AsyncIOQueueRaw get() const { return m_resource; }
 
@@ -19923,6 +19985,8 @@ public:
 /// Semi-safe reference for AsyncIOQueue.
 struct AsyncIOQueueRef : AsyncIOQueue
 {
+  using AsyncIOQueue::AsyncIOQueue;
+
   /**
    * Constructs from AsyncIOQueueParam.
    *
@@ -23232,12 +23296,21 @@ public:
   ~HidDevice() { SDL_hid_close(m_resource); }
 
   /// Assignment operator.
-  HidDevice& operator=(HidDevice other)
+  constexpr HidDevice& operator=(HidDevice&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr HidDevice& operator=(const HidDevice& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying HidDeviceRaw.
   constexpr HidDeviceRaw get() const { return m_resource; }
 
@@ -23483,6 +23556,8 @@ public:
 /// Semi-safe reference for HidDevice.
 struct HidDeviceRef : HidDevice
 {
+  using HidDevice::HidDevice;
+
   /**
    * Constructs from HidDeviceParam.
    *
@@ -24407,12 +24482,21 @@ public:
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
-  IOStream& operator=(IOStream other)
+  constexpr IOStream& operator=(IOStream&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IOStream& operator=(const IOStream& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying IOStreamRaw.
   constexpr IOStreamRaw get() const { return m_resource; }
 
@@ -25644,6 +25728,8 @@ public:
 /// Semi-safe reference for IOStream.
 struct IOStreamRef : IOStream
 {
+  using IOStream::IOStream;
+
   /**
    * Constructs from IOStreamParam.
    *
@@ -27269,12 +27355,21 @@ public:
   ~SharedObject() { SDL_UnloadObject(m_resource); }
 
   /// Assignment operator.
-  SharedObject& operator=(SharedObject other)
+  constexpr SharedObject& operator=(SharedObject&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr SharedObject& operator=(const SharedObject& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SharedObjectRaw.
   constexpr SharedObjectRaw get() const { return m_resource; }
 
@@ -27344,6 +27439,8 @@ public:
 /// Semi-safe reference for SharedObject.
 struct SharedObjectRef : SharedObject
 {
+  using SharedObject::SharedObject;
+
   /**
    * Constructs from SharedObjectParam.
    *
@@ -31204,12 +31301,21 @@ public:
   ~Sensor() { SDL_CloseSensor(m_resource); }
 
   /// Assignment operator.
-  Sensor& operator=(Sensor other)
+  constexpr Sensor& operator=(Sensor&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Sensor& operator=(const Sensor& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SensorRaw.
   constexpr SensorRaw get() const { return m_resource; }
 
@@ -31305,6 +31411,8 @@ public:
 /// Semi-safe reference for Sensor.
 struct SensorRef : Sensor
 {
+  using Sensor::Sensor;
+
   /**
    * Constructs from SensorParam.
    *
@@ -33244,12 +33352,21 @@ public:
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
 
   /// Assignment operator.
-  AudioDevice& operator=(AudioDevice other)
+  constexpr AudioDevice& operator=(AudioDevice&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioDevice& operator=(const AudioDevice& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AudioDeviceID.
   constexpr AudioDeviceID get() const { return m_resource; }
 
@@ -33802,6 +33919,8 @@ public:
 /// Semi-safe reference for AudioDevice.
 struct AudioDeviceRef : AudioDevice
 {
+  using AudioDevice::AudioDevice;
+
   /**
    * Constructs from AudioDeviceParam.
    *
@@ -34090,12 +34209,21 @@ public:
   ~AudioStream() { SDL_DestroyAudioStream(m_resource); }
 
   /// Assignment operator.
-  AudioStream& operator=(AudioStream other)
+  constexpr AudioStream& operator=(AudioStream&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioStream& operator=(const AudioStream& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AudioStreamRaw.
   constexpr AudioStreamRaw get() const { return m_resource; }
 
@@ -35017,6 +35145,8 @@ public:
 /// Semi-safe reference for AudioStream.
 struct AudioStreamRef : AudioStream
 {
+  using AudioStream::AudioStream;
+
   /**
    * Constructs from AudioStreamParam.
    *
@@ -38506,12 +38636,21 @@ public:
   ~Process() { SDL_DestroyProcess(m_resource); }
 
   /// Assignment operator.
-  Process& operator=(Process other)
+  constexpr Process& operator=(Process&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Process& operator=(const Process& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying ProcessRaw.
   constexpr ProcessRaw get() const { return m_resource; }
 
@@ -38747,6 +38886,8 @@ public:
 /// Semi-safe reference for Process.
 struct ProcessRef : Process
 {
+  using Process::Process;
+
   /**
    * Constructs from ProcessParam.
    *
@@ -39586,12 +39727,21 @@ public:
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
 
   /// Assignment operator.
-  Storage& operator=(Storage other)
+  constexpr Storage& operator=(Storage&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Storage& operator=(const Storage& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying StorageRaw.
   constexpr StorageRaw get() const { return m_resource; }
 
@@ -39931,6 +40081,8 @@ public:
 /// Semi-safe reference for Storage.
 struct StorageRef : Storage
 {
+  using Storage::Storage;
+
   /**
    * Constructs from StorageParam.
    *
@@ -40998,12 +41150,21 @@ public:
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.
-  Surface& operator=(Surface other)
+  constexpr Surface& operator=(Surface&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Surface& operator=(const Surface& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const { return m_resource; }
 
@@ -44932,12 +45093,21 @@ public:
   ~Thread() { SDL_DetachThread(m_resource); }
 
   /// Assignment operator.
-  Thread& operator=(Thread other)
+  constexpr Thread& operator=(Thread&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Thread& operator=(const Thread& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying ThreadRaw.
   constexpr ThreadRaw get() const { return m_resource; }
 
@@ -45083,6 +45253,8 @@ public:
 /// Semi-safe reference for Thread.
 struct ThreadRef : Thread
 {
+  using Thread::Thread;
+
   /**
    * Constructs from ThreadParam.
    *
@@ -45708,12 +45880,21 @@ public:
   ~Camera() { SDL_CloseCamera(m_resource); }
 
   /// Assignment operator.
-  Camera& operator=(Camera other)
+  constexpr Camera& operator=(Camera&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Camera& operator=(const Camera& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying CameraRaw.
   constexpr CameraRaw get() const { return m_resource; }
 
@@ -45903,6 +46084,8 @@ public:
 /// Semi-safe reference for Camera.
 struct CameraRef : Camera
 {
+  using Camera::Camera;
+
   /**
    * Constructs from CameraParam.
    *
@@ -46616,12 +46799,21 @@ public:
   ~Mutex() { SDL_DestroyMutex(m_resource); }
 
   /// Assignment operator.
-  Mutex& operator=(Mutex other)
+  constexpr Mutex& operator=(Mutex&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Mutex& operator=(const Mutex& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying MutexRaw.
   constexpr MutexRaw get() const { return m_resource; }
 
@@ -46723,6 +46915,8 @@ public:
 /// Semi-safe reference for Mutex.
 struct MutexRef : Mutex
 {
+  using Mutex::Mutex;
+
   /**
    * Constructs from MutexParam.
    *
@@ -46970,12 +47164,21 @@ public:
   ~RWLock() { SDL_DestroyRWLock(m_resource); }
 
   /// Assignment operator.
-  RWLock& operator=(RWLock other)
+  constexpr RWLock& operator=(RWLock&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr RWLock& operator=(const RWLock& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying RWLockRaw.
   constexpr RWLockRaw get() const { return m_resource; }
 
@@ -47158,6 +47361,8 @@ public:
 /// Semi-safe reference for RWLock.
 struct RWLockRef : RWLock
 {
+  using RWLock::RWLock;
+
   /**
    * Constructs from RWLockParam.
    *
@@ -47509,12 +47714,21 @@ public:
   ~Semaphore() { SDL_DestroySemaphore(m_resource); }
 
   /// Assignment operator.
-  Semaphore& operator=(Semaphore other)
+  constexpr Semaphore& operator=(Semaphore&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Semaphore& operator=(const Semaphore& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SemaphoreRaw.
   constexpr SemaphoreRaw get() const { return m_resource; }
 
@@ -47629,6 +47843,8 @@ public:
 /// Semi-safe reference for Semaphore.
 struct SemaphoreRef : Semaphore
 {
+  using Semaphore::Semaphore;
+
   /**
    * Constructs from SemaphoreParam.
    *
@@ -47882,12 +48098,21 @@ public:
   ~Condition() { SDL_DestroyCondition(m_resource); }
 
   /// Assignment operator.
-  Condition& operator=(Condition other)
+  constexpr Condition& operator=(Condition&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Condition& operator=(const Condition& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying ConditionRaw.
   constexpr ConditionRaw get() const { return m_resource; }
 
@@ -48006,6 +48231,8 @@ public:
 /// Semi-safe reference for Condition.
 struct ConditionRef : Condition
 {
+  using Condition::Condition;
+
   /**
    * Constructs from ConditionParam.
    *
@@ -48622,12 +48849,21 @@ public:
   ~Tray() { SDL_DestroyTray(m_resource); }
 
   /// Assignment operator.
-  Tray& operator=(Tray other)
+  constexpr Tray& operator=(Tray&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Tray& operator=(const Tray& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TrayRaw.
   constexpr TrayRaw get() const { return m_resource; }
 
@@ -48743,6 +48979,8 @@ public:
 /// Semi-safe reference for Tray.
 struct TrayRef : Tray
 {
+  using Tray::Tray;
+
   /**
    * Constructs from TrayParam.
    *
@@ -48951,12 +49189,21 @@ public:
   ~TrayEntry() {}
 
   /// Assignment operator.
-  TrayEntry& operator=(TrayEntry other)
+  constexpr TrayEntry& operator=(TrayEntry&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr TrayEntry& operator=(const TrayEntry& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const { return m_resource; }
 
@@ -50884,12 +51131,21 @@ public:
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
-  Window& operator=(Window other)
+  constexpr Window& operator=(Window&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Window& operator=(const Window& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const { return m_resource; }
 
@@ -52771,6 +53027,8 @@ public:
 /// Semi-safe reference for Window.
 struct WindowRef : Window
 {
+  using Window::Window;
+
   /**
    * Constructs from WindowParam.
    *
@@ -52964,12 +53222,21 @@ public:
   ~GLContext() {}
 
   /// Assignment operator.
-  GLContext& operator=(GLContext other)
+  constexpr GLContext& operator=(GLContext&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GLContext& operator=(const GLContext& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const { return m_resource; }
 
@@ -62359,12 +62626,21 @@ public:
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
 
   /// Assignment operator.
-  GPUDevice& operator=(GPUDevice other)
+  constexpr GPUDevice& operator=(GPUDevice&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GPUDevice& operator=(const GPUDevice& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying GPUDeviceRaw.
   constexpr GPUDeviceRaw get() const { return m_resource; }
 
@@ -63138,6 +63414,8 @@ public:
 /// Semi-safe reference for GPUDevice.
 struct GPUDeviceRef : GPUDevice
 {
+  using GPUDevice::GPUDevice;
+
   /**
    * Constructs from GPUDeviceParam.
    *
@@ -67256,12 +67534,21 @@ public:
   ~Joystick() { SDL_CloseJoystick(m_resource); }
 
   /// Assignment operator.
-  Joystick& operator=(Joystick other)
+  constexpr Joystick& operator=(Joystick&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Joystick& operator=(const Joystick& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying JoystickRaw.
   constexpr JoystickRaw get() const { return m_resource; }
 
@@ -67862,6 +68149,8 @@ public:
 /// Semi-safe reference for Joystick.
 struct JoystickRef : Joystick
 {
+  using Joystick::Joystick;
+
   /**
    * Constructs from JoystickParam.
    *
@@ -70218,12 +70507,21 @@ public:
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
 
   /// Assignment operator.
-  MetalView& operator=(MetalView other)
+  constexpr MetalView& operator=(MetalView&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr MetalView& operator=(const MetalView& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying MetalViewRaw.
   constexpr MetalViewRaw get() const { return m_resource; }
 
@@ -70272,6 +70570,8 @@ public:
 /// Semi-safe reference for MetalView.
 struct MetalViewRef : MetalView
 {
+  using MetalView::MetalView;
+
   /**
    * Constructs from MetalViewParam.
    *
@@ -70673,12 +70973,21 @@ public:
   ~Cursor() { SDL_DestroyCursor(m_resource); }
 
   /// Assignment operator.
-  Cursor& operator=(Cursor other)
+  constexpr Cursor& operator=(Cursor&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Cursor& operator=(const Cursor& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying CursorRaw.
   constexpr CursorRaw get() const { return m_resource; }
 
@@ -70740,6 +71049,8 @@ public:
 /// Semi-safe reference for Cursor.
 struct CursorRef : Cursor
 {
+  using Cursor::Cursor;
+
   /**
    * Constructs from CursorParam.
    *
@@ -71793,12 +72104,21 @@ public:
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
 
   /// Assignment operator.
-  Gamepad& operator=(Gamepad other)
+  constexpr Gamepad& operator=(Gamepad&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Gamepad& operator=(const Gamepad& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying GamepadRaw.
   constexpr GamepadRaw get() const { return m_resource; }
 
@@ -72402,6 +72722,8 @@ public:
 /// Semi-safe reference for Gamepad.
 struct GamepadRef : Gamepad
 {
+  using Gamepad::Gamepad;
+
   /**
    * Constructs from GamepadParam.
    *
@@ -74933,12 +75255,21 @@ public:
   ~Haptic() { SDL_CloseHaptic(m_resource); }
 
   /// Assignment operator.
-  Haptic& operator=(Haptic other)
+  constexpr Haptic& operator=(Haptic&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Haptic& operator=(const Haptic& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying HapticRaw.
   constexpr HapticRaw get() const { return m_resource; }
 
@@ -75296,6 +75627,8 @@ public:
 /// Semi-safe reference for Haptic.
 struct HapticRef : Haptic
 {
+  using Haptic::Haptic;
+
   /**
    * Constructs from HapticParam.
    *
@@ -77163,12 +77496,21 @@ public:
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
 
   /// Assignment operator.
-  Renderer& operator=(Renderer other)
+  constexpr Renderer& operator=(Renderer&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Renderer& operator=(const Renderer& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying RendererRaw.
   constexpr RendererRaw get() const { return m_resource; }
 
@@ -78854,6 +79196,8 @@ public:
 /// Semi-safe reference for Renderer.
 struct RendererRef : Renderer
 {
+  using Renderer::Renderer;
+
   /**
    * Constructs from RendererParam.
    *
@@ -79199,12 +79543,21 @@ public:
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
   /// Assignment operator.
-  Texture& operator=(Texture other)
+  constexpr Texture& operator=(Texture&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Texture& operator=(const Texture& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const { return m_resource; }
 
@@ -87221,12 +87574,21 @@ public:
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
   /// Assignment operator.
-  Animation& operator=(Animation other)
+  constexpr Animation& operator=(Animation&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Animation& operator=(const Animation& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AnimationRaw.
   constexpr AnimationRaw get() const { return m_resource; }
 
@@ -87292,6 +87654,8 @@ public:
 /// Semi-safe reference for Animation.
 struct AnimationRef : Animation
 {
+  using Animation::Animation;
+
   /**
    * Constructs from AnimationParam.
    *
@@ -88113,12 +88477,21 @@ public:
   ~Font() { TTF_CloseFont(m_resource); }
 
   /// Assignment operator.
-  Font& operator=(Font other)
+  constexpr Font& operator=(Font&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Font& operator=(const Font& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying FontRaw.
   constexpr FontRaw get() const { return m_resource; }
 
@@ -89459,6 +89832,8 @@ public:
 /// Semi-safe reference for Font.
 struct FontRef : Font
 {
+  using Font::Font;
+
   /**
    * Constructs from FontParam.
    *
@@ -91550,15 +91925,21 @@ public:
   virtual ~TextEngine() = default;
 
   /// Assignment operator.
-  TextEngine& operator=(TextEngine&& other)
+  constexpr TextEngine& operator=(TextEngine&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
   /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = delete;
+  constexpr TextEngine& operator=(const TextEngine& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
 
+public:
   /// Retrieves underlying TextEngineRaw.
   constexpr TextEngineRaw get() const { return m_resource; }
 
@@ -91924,12 +92305,21 @@ public:
   ~Text() { TTF_DestroyText(m_resource); }
 
   /// Assignment operator.
-  Text& operator=(Text other)
+  constexpr Text& operator=(Text&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Text& operator=(const Text& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TextRaw.
   constexpr TextRaw get() const { return m_resource; }
 
@@ -92748,6 +93138,8 @@ public:
 /// Semi-safe reference for Text.
 struct TextRef : Text
 {
+  using Text::Text;
+
   /**
    * Constructs from TextParam.
    *

@@ -250,12 +250,21 @@ public:
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
-  Properties& operator=(Properties other)
+  constexpr Properties& operator=(Properties&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Properties& operator=(const Properties& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying PropertiesID.
   constexpr PropertiesID get() const { return m_resource; }
 
@@ -695,6 +704,8 @@ public:
 /// Semi-safe reference for Properties.
 struct PropertiesRef : Properties
 {
+  using Properties::Properties;
+
   /**
    * Constructs from PropertiesParam.
    *

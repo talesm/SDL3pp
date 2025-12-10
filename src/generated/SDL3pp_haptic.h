@@ -868,12 +868,21 @@ public:
   ~Haptic() { SDL_CloseHaptic(m_resource); }
 
   /// Assignment operator.
-  Haptic& operator=(Haptic other)
+  constexpr Haptic& operator=(Haptic&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Haptic& operator=(const Haptic& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying HapticRaw.
   constexpr HapticRaw get() const { return m_resource; }
 
@@ -1231,6 +1240,8 @@ public:
 /// Semi-safe reference for Haptic.
 struct HapticRef : Haptic
 {
+  using Haptic::Haptic;
+
   /**
    * Constructs from HapticParam.
    *

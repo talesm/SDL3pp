@@ -19,7 +19,7 @@
  using TrayMenuRaw = SDL_TrayMenu*;
  
  // Forward decl
-@@ -407,8 +410,6 @@
+@@ -418,8 +421,6 @@
    /**
     * Returns a list of entries in the menu, in order.
     *
@@ -28,7 +28,7 @@
     * @returns a nullptr-terminated list of entries within the given menu. The
     *          pointer becomes invalid when any function that inserts or deletes
     *          entries in the menu is called.
-@@ -450,6 +451,30 @@
+@@ -461,6 +462,30 @@
     */
    TrayEntry InsertEntry(int pos, StringParam label, TrayEntryFlags flags);
  
@@ -59,7 +59,7 @@
    TrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
  
    /**
-@@ -724,6 +749,19 @@
+@@ -744,6 +769,19 @@
     */
    bool GetEnabled() const;
  
@@ -79,7 +79,7 @@
    void SetCallback(TrayCB callback);
  
    /**
-@@ -982,7 +1020,6 @@
+@@ -1002,7 +1040,6 @@
   * Returns a list of entries in the menu, in order.
   *
   * @param menu The menu to get entries from.
@@ -87,7 +87,7 @@
   * @returns a nullptr-terminated list of entries within the given menu. The
   *          pointer becomes invalid when any function that inserts or deletes
   *          entries in the menu is called.
-@@ -997,7 +1034,10 @@
+@@ -1017,7 +1054,10 @@
   */
  inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
  {
@@ -99,7 +99,7 @@
  }
  
  inline std::span<TrayEntry> TrayMenu::GetEntries()
-@@ -1377,6 +1417,16 @@
+@@ -1397,6 +1437,16 @@
  
  /// @}
  

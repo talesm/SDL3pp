@@ -210,12 +210,21 @@ public:
   ~Sensor() { SDL_CloseSensor(m_resource); }
 
   /// Assignment operator.
-  Sensor& operator=(Sensor other)
+  constexpr Sensor& operator=(Sensor&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Sensor& operator=(const Sensor& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SensorRaw.
   constexpr SensorRaw get() const { return m_resource; }
 
@@ -311,6 +320,8 @@ public:
 /// Semi-safe reference for Sensor.
 struct SensorRef : Sensor
 {
+  using Sensor::Sensor;
+
   /**
    * Constructs from SensorParam.
    *

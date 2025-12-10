@@ -433,12 +433,21 @@ public:
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
 
   /// Assignment operator.
-  Storage& operator=(Storage other)
+  constexpr Storage& operator=(Storage&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Storage& operator=(const Storage& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying StorageRaw.
   constexpr StorageRaw get() const { return m_resource; }
 
@@ -778,6 +787,8 @@ public:
 /// Semi-safe reference for Storage.
 struct StorageRef : Storage
 {
+  using Storage::Storage;
+
   /**
    * Constructs from StorageParam.
    *

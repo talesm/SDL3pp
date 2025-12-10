@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.5.0
+    VERSION 0.5.1
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )

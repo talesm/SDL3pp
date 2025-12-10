@@ -2153,12 +2153,21 @@ public:
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
   /// Assignment operator.
-  Animation& operator=(Animation other)
+  constexpr Animation& operator=(Animation&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Animation& operator=(const Animation& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AnimationRaw.
   constexpr AnimationRaw get() const { return m_resource; }
 
@@ -2211,6 +2220,8 @@ public:
 /// Semi-safe reference for Animation.
 struct AnimationRef : Animation
 {
+  using Animation::Animation;
+
   /**
    * Constructs from AnimationParam.
    *

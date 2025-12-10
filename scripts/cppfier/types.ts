@@ -64,7 +64,7 @@ export interface EntryHint {
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;
-  changeAccess?: "public" | "private";
+  changeAccess?: "public" | "private" | "protected";
   delegate?: string;
   methodName?: string;
 }

@@ -22,7 +22,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -343,8 +343,7 @@
+@@ -352,8 +352,7 @@
     * (or EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
     * occasionally until it returns non-zero.
     *
@@ -32,7 +32,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -385,8 +384,8 @@
+@@ -394,8 +393,8 @@
     *
     * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
     *                    error. Can be nullptr.
@@ -43,7 +43,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -394,7 +393,7 @@
+@@ -403,7 +402,7 @@
     *
     * @sa Camera.ReleaseFrame
     */
@@ -52,7 +52,7 @@
  
    /**
     * Release a frame of video acquired from a camera.
-@@ -533,11 +532,8 @@
+@@ -544,11 +543,8 @@
  /**
   * Get a list of currently connected camera devices.
   *
@@ -65,7 +65,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -545,7 +541,12 @@
+@@ -556,7 +552,12 @@
   *
   * @sa Camera.Camera
   */
@@ -79,7 +79,7 @@
  
  /**
   * Get the list of native formats/sizes a camera supports.
-@@ -569,12 +570,8 @@
+@@ -580,12 +581,8 @@
   * warning popup.
   *
   * @param instance_id the camera device instance ID.
@@ -93,7 +93,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -585,7 +582,9 @@
+@@ -596,7 +593,9 @@
   */
  inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
  {
@@ -104,7 +104,7 @@
  }
  
  /**
-@@ -661,9 +660,9 @@
+@@ -672,9 +671,9 @@
   *
   * @param instance_id the camera device instance ID.
   * @param spec the desired format for data the device will provide. Can be
@@ -117,7 +117,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -752,7 +751,7 @@
+@@ -763,7 +762,7 @@
   */
  inline PropertiesRef GetCameraProperties(CameraParam camera)
  {
@@ -126,7 +126,7 @@
  }
  
  inline PropertiesRef Camera::GetProperties()
-@@ -773,8 +772,7 @@
+@@ -784,8 +783,7 @@
   * occasionally until it returns non-zero.
   *
   * @param camera opened camera device.
@@ -136,7 +136,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -784,7 +782,8 @@
+@@ -795,7 +793,8 @@
   */
  inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
  {
@@ -146,7 +146,7 @@
  }
  
  inline std::optional<CameraSpec> Camera::GetFormat()
-@@ -823,8 +822,8 @@
+@@ -834,8 +833,8 @@
   * @param camera opened camera device.
   * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
   *                    error. Can be nullptr.
@@ -157,7 +157,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -832,9 +831,10 @@
+@@ -843,9 +842,10 @@
   *
   * @sa Camera.ReleaseFrame
   */

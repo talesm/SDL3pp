@@ -143,12 +143,21 @@ public:
   ~SharedObject() { SDL_UnloadObject(m_resource); }
 
   /// Assignment operator.
-  SharedObject& operator=(SharedObject other)
+  constexpr SharedObject& operator=(SharedObject&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr SharedObject& operator=(const SharedObject& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SharedObjectRaw.
   constexpr SharedObjectRaw get() const { return m_resource; }
 
@@ -218,6 +227,8 @@ public:
 /// Semi-safe reference for SharedObject.
 struct SharedObjectRef : SharedObject
 {
+  using SharedObject::SharedObject;
+
   /**
    * Constructs from SharedObjectParam.
    *

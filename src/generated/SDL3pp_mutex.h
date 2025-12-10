@@ -253,12 +253,21 @@ public:
   ~Mutex() { SDL_DestroyMutex(m_resource); }
 
   /// Assignment operator.
-  Mutex& operator=(Mutex other)
+  constexpr Mutex& operator=(Mutex&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Mutex& operator=(const Mutex& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying MutexRaw.
   constexpr MutexRaw get() const { return m_resource; }
 
@@ -360,6 +369,8 @@ public:
 /// Semi-safe reference for Mutex.
 struct MutexRef : Mutex
 {
+  using Mutex::Mutex;
+
   /**
    * Constructs from MutexParam.
    *
@@ -610,12 +621,21 @@ public:
   ~RWLock() { SDL_DestroyRWLock(m_resource); }
 
   /// Assignment operator.
-  RWLock& operator=(RWLock other)
+  constexpr RWLock& operator=(RWLock&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr RWLock& operator=(const RWLock& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying RWLockRaw.
   constexpr RWLockRaw get() const { return m_resource; }
 
@@ -798,6 +818,8 @@ public:
 /// Semi-safe reference for RWLock.
 struct RWLockRef : RWLock
 {
+  using RWLock::RWLock;
+
   /**
    * Constructs from RWLockParam.
    *
@@ -1149,12 +1171,21 @@ public:
   ~Semaphore() { SDL_DestroySemaphore(m_resource); }
 
   /// Assignment operator.
-  Semaphore& operator=(Semaphore other)
+  constexpr Semaphore& operator=(Semaphore&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Semaphore& operator=(const Semaphore& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying SemaphoreRaw.
   constexpr SemaphoreRaw get() const { return m_resource; }
 
@@ -1269,6 +1300,8 @@ public:
 /// Semi-safe reference for Semaphore.
 struct SemaphoreRef : Semaphore
 {
+  using Semaphore::Semaphore;
+
   /**
    * Constructs from SemaphoreParam.
    *
@@ -1525,12 +1558,21 @@ public:
   ~Condition() { SDL_DestroyCondition(m_resource); }
 
   /// Assignment operator.
-  Condition& operator=(Condition other)
+  constexpr Condition& operator=(Condition&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Condition& operator=(const Condition& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying ConditionRaw.
   constexpr ConditionRaw get() const { return m_resource; }
 
@@ -1649,6 +1691,8 @@ public:
 /// Semi-safe reference for Condition.
 struct ConditionRef : Condition
 {
+  using Condition::Condition;
+
   /**
    * Constructs from ConditionParam.
    *

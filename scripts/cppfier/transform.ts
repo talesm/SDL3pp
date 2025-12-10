@@ -1506,9 +1506,21 @@ function expandTypes(
       "operator=": {
         kind: "function",
         type: `${targetName} &`,
-        parameters: [{ name: "other", type: targetName }],
+        parameters: [{ name: "other", type: `${targetName} &&` }],
+        constexpr: true,
         hints: {
           body: "std::swap(m_resource, other.m_resource);\nreturn *this;",
+        },
+        doc: ["Assignment operator."],
+      },
+      "operator=#2": {
+        kind: "function",
+        type: `${targetName} &`,
+        parameters: [{ name: "other", type: `const ${targetName} &` }],
+        constexpr: true,
+        hints: {
+          body: "m_resource = other.m_resource;\nreturn *this;",
+          changeAccess: "protected",
         },
         doc: ["Assignment operator."],
       },
@@ -1518,7 +1530,10 @@ function expandTypes(
         immutable: true,
         constexpr: true,
         parameters: [],
-        hints: { body: "return m_resource;" },
+        hints: {
+          body: "return m_resource;",
+          changeAccess: "public",
+        },
         doc: [`Retrieves underlying ${rawName}.`],
       },
       release: {
@@ -1586,6 +1601,7 @@ function expandTypes(
         type: targetName,
         doc: [`Semi-safe reference for ${targetName}.`],
         entries: {
+          [`${targetName}::${targetName}`]: "alias",
           [refName]: {
             kind: "function",
             type: "",

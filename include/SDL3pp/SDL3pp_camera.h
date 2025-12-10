@@ -231,12 +231,21 @@ public:
   ~Camera() { SDL_CloseCamera(m_resource); }
 
   /// Assignment operator.
-  Camera& operator=(Camera other)
+  constexpr Camera& operator=(Camera&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Camera& operator=(const Camera& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying CameraRaw.
   constexpr CameraRaw get() const { return m_resource; }
 
@@ -426,6 +435,8 @@ public:
 /// Semi-safe reference for Camera.
 struct CameraRef : Camera
 {
+  using Camera::Camera;
+
   /**
    * Constructs from CameraParam.
    *

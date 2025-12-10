@@ -19,7 +19,7 @@
    /**
     * Constructs from MutexParam.
     *
-@@ -533,9 +530,6 @@
+@@ -544,9 +541,6 @@
    RWLockRaw m_resource = nullptr;
  
  public:
@@ -29,7 +29,7 @@
    /**
     * Constructs from RWLockParam.
     *
-@@ -1233,8 +1227,8 @@
+@@ -1264,8 +1258,8 @@
     * pointed to by `sem` has a positive value or the specified time has elapsed.
     * If the call is successful it will atomically decrement the semaphore value.
     *
@@ -40,7 +40,7 @@
     * @returns true if the wait succeeds or false if the wait times out.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -1400,8 +1394,8 @@
+@@ -1433,8 +1427,8 @@
   * call is successful it will atomically decrement the semaphore value.
   *
   * @param sem the semaphore to wait on.
@@ -51,7 +51,7 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1413,7 +1407,7 @@
+@@ -1446,7 +1440,7 @@
  inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
                                   std::chrono::milliseconds timeout)
  {
@@ -60,7 +60,7 @@
  }
  
  inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1474,9 +1468,6 @@
+@@ -1507,9 +1501,6 @@
    ConditionRaw m_resource = nullptr;
  
  public:
@@ -70,7 +70,7 @@
    /**
     * Constructs from ConditionParam.
     *
-@@ -1630,8 +1621,8 @@
+@@ -1672,8 +1663,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -81,7 +81,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -1800,8 +1791,8 @@
+@@ -1844,8 +1835,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -92,7 +92,7 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -1817,7 +1808,7 @@
+@@ -1861,7 +1852,7 @@
                                   MutexParam mutex,
                                   std::chrono::milliseconds timeout)
  {
@@ -101,7 +101,7 @@
  }
  
  inline bool Condition::WaitTimeout(MutexParam mutex,
-@@ -1850,8 +1841,8 @@
+@@ -1894,8 +1885,8 @@
   *
   * Here is an example of using this:
   *

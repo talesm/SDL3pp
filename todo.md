@@ -7,7 +7,7 @@ New Version checklist:
 - [ ] Update
   [README Quick start links for amalgamation](README.md#quick-start--tldr) to
   new tag link;
-- [ ] Update README ExternalProject instructiont to the new tag;
+- [ ] Update README ExternalProject instructions to the new tag;
 - [ ] Update [changelog](changelog.md);
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_full;
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>

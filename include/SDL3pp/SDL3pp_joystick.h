@@ -446,12 +446,21 @@ public:
   ~Joystick() { SDL_CloseJoystick(m_resource); }
 
   /// Assignment operator.
-  Joystick& operator=(Joystick other)
+  constexpr Joystick& operator=(Joystick&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Joystick& operator=(const Joystick& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying JoystickRaw.
   constexpr JoystickRaw get() const { return m_resource; }
 
@@ -1052,6 +1061,8 @@ public:
 /// Semi-safe reference for Joystick.
 struct JoystickRef : Joystick
 {
+  using Joystick::Joystick;
+
   /**
    * Constructs from JoystickParam.
    *

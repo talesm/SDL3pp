@@ -447,12 +447,21 @@ public:
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
 
   /// Assignment operator.
-  Gamepad& operator=(Gamepad other)
+  constexpr Gamepad& operator=(Gamepad&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Gamepad& operator=(const Gamepad& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying GamepadRaw.
   constexpr GamepadRaw get() const { return m_resource; }
 
@@ -1056,6 +1065,8 @@ public:
 /// Semi-safe reference for Gamepad.
 struct GamepadRef : Gamepad
 {
+  using Gamepad::Gamepad;
+
   /**
    * Constructs from GamepadParam.
    *

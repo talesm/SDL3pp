@@ -942,12 +942,21 @@ public:
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
 
   /// Assignment operator.
-  AudioDevice& operator=(AudioDevice other)
+  constexpr AudioDevice& operator=(AudioDevice&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioDevice& operator=(const AudioDevice& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AudioDeviceID.
   constexpr AudioDeviceID get() const { return m_resource; }
 
@@ -1511,6 +1520,8 @@ public:
 /// Semi-safe reference for AudioDevice.
 struct AudioDeviceRef : AudioDevice
 {
+  using AudioDevice::AudioDevice;
+
   /**
    * Constructs from AudioDeviceParam.
    *
@@ -1747,12 +1758,21 @@ public:
   ~AudioStream() { SDL_DestroyAudioStream(m_resource); }
 
   /// Assignment operator.
-  AudioStream& operator=(AudioStream other)
+  constexpr AudioStream& operator=(AudioStream&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioStream& operator=(const AudioStream& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AudioStreamRaw.
   constexpr AudioStreamRaw get() const { return m_resource; }
 
@@ -2598,6 +2618,8 @@ public:
 /// Semi-safe reference for AudioStream.
 struct AudioStreamRef : AudioStream
 {
+  using AudioStream::AudioStream;
+
   /**
    * Constructs from AudioStreamParam.
    *

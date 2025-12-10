@@ -255,12 +255,21 @@ public:
   }
 
   /// Assignment operator.
-  AsyncIO& operator=(AsyncIO other)
+  constexpr AsyncIO& operator=(AsyncIO&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AsyncIO& operator=(const AsyncIO& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AsyncIORaw.
   constexpr AsyncIORaw get() const { return m_resource; }
 
@@ -430,6 +439,8 @@ public:
 /// Semi-safe reference for AsyncIO.
 struct AsyncIORef : AsyncIO
 {
+  using AsyncIO::AsyncIO;
+
   /**
    * Constructs from AsyncIOParam.
    *
@@ -577,12 +588,21 @@ public:
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
 
   /// Assignment operator.
-  AsyncIOQueue& operator=(AsyncIOQueue other)
+  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying AsyncIOQueueRaw.
   constexpr AsyncIOQueueRaw get() const { return m_resource; }
 
@@ -764,6 +784,8 @@ public:
 /// Semi-safe reference for AsyncIOQueue.
 struct AsyncIOQueueRef : AsyncIOQueue
 {
+  using AsyncIOQueue::AsyncIOQueue;
+
   /**
    * Constructs from AsyncIOQueueParam.
    *

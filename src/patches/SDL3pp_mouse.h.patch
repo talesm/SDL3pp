@@ -54,7 +54,7 @@
    {
    }
  
-@@ -432,17 +429,21 @@
+@@ -443,17 +440,21 @@
  constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
    SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
  
@@ -81,7 +81,7 @@
  
  /**
   * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
-@@ -471,6 +472,7 @@
+@@ -482,6 +483,7 @@
  
  constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
  
@@ -89,7 +89,7 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -496,11 +498,8 @@
+@@ -507,11 +509,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -103,7 +103,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -509,7 +508,12 @@
+@@ -520,7 +519,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -117,7 +117,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -540,7 +544,7 @@
+@@ -551,7 +555,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -126,7 +126,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -658,7 +662,7 @@
+@@ -669,7 +673,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -135,7 +135,7 @@
  }
  
  /**
-@@ -672,8 +676,7 @@
+@@ -683,8 +687,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -145,7 +145,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -684,14 +687,49 @@
+@@ -695,14 +698,49 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -196,7 +196,7 @@
  inline bool Window::GetRelativeMouseMode() const
  {
    return SDL_GetWindowRelativeMouseMode(m_resource);
-@@ -772,12 +810,9 @@
+@@ -783,12 +821,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -212,7 +212,7 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -793,10 +828,9 @@
+@@ -804,10 +839,9 @@
  inline Cursor CreateCursor(const Uint8* data,
                             const Uint8* mask,
                             const PointRaw& size,
@@ -225,7 +225,7 @@
  }
  
  /**
-@@ -813,8 +847,7 @@
+@@ -824,8 +858,7 @@
   * and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -235,7 +235,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -827,9 +860,9 @@
+@@ -838,9 +871,9 @@
   * @sa Cursor.Destroy
   * @sa Cursor.Set
   */
@@ -247,7 +247,7 @@
  }
  
  /**
-@@ -882,7 +915,7 @@
+@@ -893,7 +926,7 @@
   *
   * @sa Cursor.Set
   */
@@ -256,7 +256,7 @@
  
  /**
   * Get the default cursor.
-@@ -900,7 +933,7 @@
+@@ -911,7 +944,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

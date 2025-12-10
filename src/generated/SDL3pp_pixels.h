@@ -2353,12 +2353,21 @@ public:
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.
-  Palette& operator=(Palette other)
+  constexpr Palette& operator=(Palette&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Palette& operator=(const Palette& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const { return m_resource; }
 

@@ -280,12 +280,21 @@ public:
   ~Process() { SDL_DestroyProcess(m_resource); }
 
   /// Assignment operator.
-  Process& operator=(Process other)
+  constexpr Process& operator=(Process&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Process& operator=(const Process& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying ProcessRaw.
   constexpr ProcessRaw get() const { return m_resource; }
 
@@ -521,6 +530,8 @@ public:
 /// Semi-safe reference for Process.
 struct ProcessRef : Process
 {
+  using Process::Process;
+
   /**
    * Constructs from ProcessParam.
    *

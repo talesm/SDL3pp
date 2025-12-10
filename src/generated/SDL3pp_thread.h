@@ -314,12 +314,21 @@ public:
   ~Thread() { SDL_DetachThread(m_resource); }
 
   /// Assignment operator.
-  Thread& operator=(Thread other)
+  constexpr Thread& operator=(Thread&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Thread& operator=(const Thread& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying ThreadRaw.
   constexpr ThreadRaw get() const { return m_resource; }
 
@@ -465,6 +474,8 @@ public:
 /// Semi-safe reference for Thread.
 struct ThreadRef : Thread
 {
+  using Thread::Thread;
+
   /**
    * Constructs from ThreadParam.
    *

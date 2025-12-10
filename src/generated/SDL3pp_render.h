@@ -377,12 +377,21 @@ public:
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
 
   /// Assignment operator.
-  Renderer& operator=(Renderer other)
+  constexpr Renderer& operator=(Renderer&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Renderer& operator=(const Renderer& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying RendererRaw.
   constexpr RendererRaw get() const { return m_resource; }
 
@@ -2077,6 +2086,8 @@ public:
 /// Semi-safe reference for Renderer.
 struct RendererRef : Renderer
 {
+  using Renderer::Renderer;
+
   /**
    * Constructs from RendererParam.
    *
@@ -2432,12 +2443,21 @@ public:
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
   /// Assignment operator.
-  Texture& operator=(Texture other)
+  constexpr Texture& operator=(Texture&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Texture& operator=(const Texture& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const { return m_resource; }
 

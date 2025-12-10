@@ -1072,12 +1072,21 @@ public:
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
-  Window& operator=(Window other)
+  constexpr Window& operator=(Window&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Window& operator=(const Window& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying WindowRaw.
   constexpr WindowRaw get() const { return m_resource; }
 
@@ -2948,6 +2957,8 @@ public:
 /// Semi-safe reference for Window.
 struct WindowRef : Window
 {
+  using Window::Window;
+
   /**
    * Constructs from WindowParam.
    *
@@ -3141,12 +3152,21 @@ public:
   ~GLContext() {}
 
   /// Assignment operator.
-  GLContext& operator=(GLContext other)
+  constexpr GLContext& operator=(GLContext&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GLContext& operator=(const GLContext& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const { return m_resource; }
 

@@ -225,12 +225,21 @@ public:
   ~Tray() { SDL_DestroyTray(m_resource); }
 
   /// Assignment operator.
-  Tray& operator=(Tray other)
+  constexpr Tray& operator=(Tray&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Tray& operator=(const Tray& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TrayRaw.
   constexpr TrayRaw get() const { return m_resource; }
 
@@ -346,6 +355,8 @@ public:
 /// Semi-safe reference for Tray.
 struct TrayRef : Tray
 {
+  using Tray::Tray;
+
   /**
    * Constructs from TrayParam.
    *
@@ -554,12 +565,21 @@ public:
   ~TrayEntry() {}
 
   /// Assignment operator.
-  TrayEntry& operator=(TrayEntry other)
+  constexpr TrayEntry& operator=(TrayEntry&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr TrayEntry& operator=(const TrayEntry& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const { return m_resource; }
 

@@ -198,12 +198,21 @@ public:
   ~HidDevice() { SDL_hid_close(m_resource); }
 
   /// Assignment operator.
-  HidDevice& operator=(HidDevice other)
+  constexpr HidDevice& operator=(HidDevice&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr HidDevice& operator=(const HidDevice& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying HidDeviceRaw.
   constexpr HidDeviceRaw get() const { return m_resource; }
 
@@ -468,6 +477,8 @@ public:
 /// Semi-safe reference for HidDevice.
 struct HidDeviceRef : HidDevice
 {
+  using HidDevice::HidDevice;
+
   /**
    * Constructs from HidDeviceParam.
    *

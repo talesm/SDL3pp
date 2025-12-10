@@ -318,12 +318,21 @@ public:
   ~Cursor() { SDL_DestroyCursor(m_resource); }
 
   /// Assignment operator.
-  Cursor& operator=(Cursor other)
+  constexpr Cursor& operator=(Cursor&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Cursor& operator=(const Cursor& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying CursorRaw.
   constexpr CursorRaw get() const { return m_resource; }
 
@@ -385,6 +394,8 @@ public:
 /// Semi-safe reference for Cursor.
 struct CursorRef : Cursor
 {
+  using Cursor::Cursor;
+
   /**
    * Constructs from CursorParam.
    *

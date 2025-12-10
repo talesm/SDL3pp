@@ -567,12 +567,21 @@ public:
   ~Font() { TTF_CloseFont(m_resource); }
 
   /// Assignment operator.
-  Font& operator=(Font other)
+  constexpr Font& operator=(Font&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Font& operator=(const Font& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying FontRaw.
   constexpr FontRaw get() const { return m_resource; }
 
@@ -1910,6 +1919,8 @@ public:
 /// Semi-safe reference for Font.
 struct FontRef : Font
 {
+  using Font::Font;
+
   /**
    * Constructs from FontParam.
    *
@@ -4058,12 +4069,21 @@ public:
   ~TextEngine() { Destroy(m_resource); }
 
   /// Assignment operator.
-  TextEngine& operator=(TextEngine other)
+  constexpr TextEngine& operator=(TextEngine&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr TextEngine& operator=(const TextEngine& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TextEngineRaw.
   constexpr TextEngineRaw get() const { return m_resource; }
 
@@ -4444,12 +4464,21 @@ public:
   ~Text() { TTF_DestroyText(m_resource); }
 
   /// Assignment operator.
-  Text& operator=(Text other)
+  constexpr Text& operator=(Text&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Text& operator=(const Text& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying TextRaw.
   constexpr TextRaw get() const { return m_resource; }
 
@@ -5274,6 +5303,8 @@ public:
 /// Semi-safe reference for Text.
 struct TextRef : Text
 {
+  using Text::Text;
+
   /**
    * Constructs from TextParam.
    *

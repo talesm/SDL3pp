@@ -996,12 +996,21 @@ public:
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
-  Environment& operator=(Environment other)
+  constexpr Environment& operator=(Environment&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Environment& operator=(const Environment& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying EnvironmentRaw.
   constexpr EnvironmentRaw get() const { return m_resource; }
 
@@ -1123,6 +1132,8 @@ public:
 /// Semi-safe reference for Environment.
 struct EnvironmentRef : Environment
 {
+  using Environment::Environment;
+
   /**
    * Constructs from EnvironmentParam.
    *
@@ -5800,12 +5811,21 @@ public:
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
-  IConv& operator=(IConv other)
+  constexpr IConv& operator=(IConv&& other)
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IConv& operator=(const IConv& other)
+  {
+    m_resource = other.m_resource;
+    return *this;
+  }
+
+public:
   /// Retrieves underlying IConvRaw.
   constexpr IConvRaw get() const { return m_resource; }
 
@@ -5886,6 +5906,8 @@ public:
 /// Semi-safe reference for IConv.
 struct IConvRef : IConv
 {
+  using IConv::IConv;
+
   /**
    * Constructs from IConvParam.
    *

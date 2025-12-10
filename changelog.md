@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.1
+
+Fix assignment error for SDL::RendererRef and other resources.
+
 ## Version 0.5.0
 
 Reword callback handling.
