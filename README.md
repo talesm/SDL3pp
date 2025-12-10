@@ -146,6 +146,8 @@ If you are already using CMake for your project, you can use the following
 command to download from git automatically:
 
 ```cmake
+include(ExternalProject)
+
 ExternalProject_Add(SDL3ppExternal
   GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
   GIT_TAG 0.5.0
