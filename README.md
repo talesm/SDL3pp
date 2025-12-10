@@ -152,6 +152,7 @@ ExternalProject_Add(SDL3ppExternal
   GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
   GIT_TAG 0.5.0
   GIT_SUBMODULES_RECURSE OFF
+  GIT_SHALLOW ON # Optional, just allow download a bit faster
   GIT_PROGRESS ON
   CMAKE_ARGS -DSDL3PP_FORCE_BUNDLED=ON
   INSTALL_COMMAND ${CMAKE_COMMAND} --install . --prefix <INSTALL_DIR> 
