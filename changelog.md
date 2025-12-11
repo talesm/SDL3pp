@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.5.2
+
+Strengthen class types
+
+- Make resource constructors, comparison operators noexcept;
+- Make wrapper constructors, comparison operators noexcept;
+- Make resource accept std::nullptr_t.
+
 ## Version 0.5.1
 
 Fix assignment error for SDL::RendererRef and other resources.

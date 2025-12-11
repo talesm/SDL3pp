@@ -11,9 +11,9 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [the single header](./amalgamation/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.1/SDL3pp_amalgamated.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.2/SDL3pp_amalgamated.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.1/SDL3pp_amalgamated.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.2/SDL3pp_amalgamated.tar.gz))
      and add to your project;
   2. You can also download the
      [the latest release](https://github.com/talesm/SDL3pp/releases) then
@@ -150,7 +150,7 @@ include(ExternalProject)
 
 ExternalProject_Add(SDL3ppExternal
   GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
-  GIT_TAG 0.5.1
+  GIT_TAG 0.5.2
   GIT_SUBMODULES_RECURSE ON
   GIT_SHALLOW ON # Optional, just allow download a bit faster
   GIT_PROGRESS ON

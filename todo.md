@@ -5,9 +5,10 @@ New Version checklist:
 
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update
-  [README Quick start links for amalgamation](README.md#quick-start--tldr) to
-  new tag link;
-- [ ] Update README ExternalProject instructions to the new tag;
+  [README Quick start links for amalgamation](README.md#using-cmakes-externalproject)
+  to new tag link;
+- [ ] Update [README ExternalProject](README.md#quick-start--tldr) instructions
+  to the new tag;
 - [ ] Update [changelog](changelog.md);
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_full;
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>
