@@ -225,7 +225,10 @@ class Renderer
 
 public:
   /// Default ctor
-  constexpr Renderer() = default;
+  constexpr Renderer(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from RendererParam.
@@ -431,9 +434,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Renderer& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -2157,7 +2157,10 @@ class Texture
 
 public:
   /// Default ctor
-  constexpr Texture() = default;
+  constexpr Texture(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextureParam.
@@ -2474,9 +2477,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Texture& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

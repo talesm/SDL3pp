@@ -40,7 +40,7 @@
   */
  class Surface
  {
-@@ -231,11 +231,9 @@
+@@ -234,11 +234,9 @@
     *
     * The pixels of the new surface are initialized to zero.
     *
@@ -54,7 +54,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -245,7 +243,7 @@
+@@ -248,7 +246,7 @@
     * @sa Surface.Destroy
     */
    Surface(const PointRaw& size, PixelFormat format)
@@ -63,7 +63,7 @@
    {
    }
  
-@@ -262,13 +260,11 @@
+@@ -265,13 +263,11 @@
     * You may pass nullptr for pixels and 0 for pitch to create a surface that
     * you will fill in with valid values later.
     *
@@ -79,7 +79,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -278,7 +274,8 @@
+@@ -281,7 +277,8 @@
     * @sa Surface.Destroy
     */
    Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch)
@@ -89,7 +89,7 @@
    {
    }
  
-@@ -310,9 +307,6 @@
+@@ -313,9 +310,6 @@
     * load images directly into an Texture for use by the GPU without using a
     * software surface: call Texture.Texture() instead.
     *
@@ -99,7 +99,7 @@
     * @param file a path on the filesystem to load an image from.
     * @post a new SDL surface, or nullptr on error.
     *
-@@ -361,9 +355,6 @@
+@@ -364,9 +358,6 @@
     * load images directly into an Texture for use by the GPU without using a
     * software surface: call Texture.Texture() instead.
     *
@@ -109,7 +109,7 @@
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
     *                leave it open.
-@@ -375,7 +366,7 @@
+@@ -378,7 +369,7 @@
     * @sa LoadSurfaceTyped
     * @sa Surface.Destroy
     */

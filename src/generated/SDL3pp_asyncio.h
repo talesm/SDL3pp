@@ -176,7 +176,10 @@ class AsyncIO
 
 public:
   /// Default ctor
-  constexpr AsyncIO() = default;
+  constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AsyncIOParam.
@@ -273,9 +276,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const AsyncIO& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -528,7 +528,10 @@ class AsyncIOQueue
 
 public:
   /// Default ctor
-  constexpr AsyncIOQueue() = default;
+  constexpr AsyncIOQueue(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AsyncIOQueueParam.
@@ -607,9 +610,6 @@ public:
   /// Comparison
   constexpr auto operator<=>(const AsyncIOQueue& other) const noexcept =
     default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

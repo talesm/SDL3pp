@@ -21,7 +21,7 @@ Strengthen class types
 
 - [x] Make resource constructors, comparison operators noexcept;
 - [ ] Make wrapper constructors, comparison operators noexcept;
-- [ ] Make resource accept std::nullptr_t.
+- [x] Make resource accept std::nullptr_t.
 
 Backlog
 -------

@@ -9,7 +9,7 @@
   *
   * SDL provides an abstract interface for reading and writing data streams. It
   * offers implementations for files, memory, etc, and the app can provide their
-@@ -266,10 +266,9 @@
+@@ -269,10 +269,9 @@
     * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
     *   that was passed to this function.
     *
@@ -23,7 +23,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -309,10 +308,9 @@
+@@ -312,10 +311,9 @@
     * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
     *   that was passed to this function.
     *
@@ -37,7 +37,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -340,8 +338,8 @@
+@@ -343,8 +341,8 @@
     * - `prop::IOStream.DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
     *   multiples of this size, defaulting to 1024.
     *
@@ -48,7 +48,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -370,7 +368,7 @@
+@@ -373,7 +371,7 @@
     * @param iface the interface that implements this IOStream, initialized using
     *              InitInterface().
     * @param userdata the pointer that will be passed to the interface functions.

@@ -196,6 +196,12 @@ class Mutex
   MutexRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr Mutex(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from MutexParam.
    *
@@ -274,9 +280,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Mutex& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -537,6 +540,12 @@ class RWLock
   RWLockRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr RWLock(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from RWLockParam.
    *
@@ -635,9 +644,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const RWLock& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -1099,7 +1105,10 @@ class Semaphore
 
 public:
   /// Default ctor
-  constexpr Semaphore() = default;
+  constexpr Semaphore(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SemaphoreParam.
@@ -1181,9 +1190,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Semaphore& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -1489,6 +1495,12 @@ class Condition
   ConditionRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr Condition(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from ConditionParam.
    *
@@ -1561,9 +1573,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Condition& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

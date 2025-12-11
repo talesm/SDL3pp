@@ -9,7 +9,7 @@
   *
   * Any GUI application has to deal with the mouse, and SDL provides functions to
   * manage mouse input and the displayed cursor.
-@@ -237,12 +237,9 @@
+@@ -240,12 +240,9 @@
     *
     * @param data the color value for each pixel of the cursor.
     * @param mask the mask value for each pixel of the cursor.
@@ -25,7 +25,7 @@
     * @post a new cursor with the specified parameters on success.
     * @throws Error on failure.
     *
-@@ -259,7 +256,8 @@
+@@ -262,7 +259,8 @@
           const Uint8* mask,
           const PointRaw& size,
           const PointRaw& hot)
@@ -35,7 +35,7 @@
    {
    }
  
-@@ -277,8 +275,7 @@
+@@ -280,8 +278,7 @@
     * smaller image will be upscaled and be used instead.
     *
     * @param surface an Surface structure representing the cursor image.
@@ -45,7 +45,7 @@
     * @post the new cursor on success.
     * @throws Error on failure.
     *
-@@ -292,7 +289,7 @@
+@@ -295,7 +292,7 @@
     * @sa Cursor.Set
     */
    Cursor(SurfaceParam surface, const PointRaw& hot)

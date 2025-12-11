@@ -1218,8 +1218,12 @@ function expandTypes(
         kind: "function",
         type: "",
         constexpr: true,
-        parameters: [],
-        hints: { default: true, changeAccess: "public" },
+        parameters: [{ name: "", type: "std::nullptr_t", default: "nullptr" }],
+        hints: {
+          init: ["m_resource(0)"],
+          noexcept: true,
+          changeAccess: "public",
+        },
         doc: ["Default ctor"],
       },
       [`${targetName}#2`]: {
@@ -1561,15 +1565,6 @@ function expandTypes(
         constexpr: true,
         parameters: [{ type: `const ${targetName} &`, name: "other" }],
         hints: { default: true, noexcept: true },
-        doc: [`Comparison`],
-      },
-      "operator ==": {
-        kind: "function",
-        type: "bool",
-        immutable: true,
-        constexpr: true,
-        parameters: [{ type: `std::nullptr_t`, name: "_" }],
-        hints: { body: "return !m_resource;" },
         doc: [`Comparison`],
       },
       "operator bool": {

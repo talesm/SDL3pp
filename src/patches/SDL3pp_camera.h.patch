@@ -9,7 +9,7 @@
   *
   * Video capture for the SDL library.
   *
-@@ -211,9 +211,9 @@
+@@ -214,9 +214,9 @@
     *
     * @param instance_id the camera device instance ID.
     * @param spec the desired format for data the device will provide. Can be

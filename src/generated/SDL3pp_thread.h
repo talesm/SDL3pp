@@ -178,7 +178,10 @@ class Thread
 
 public:
   /// Default ctor
-  constexpr Thread() = default;
+  constexpr Thread(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from ThreadParam.
@@ -338,9 +341,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Thread& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

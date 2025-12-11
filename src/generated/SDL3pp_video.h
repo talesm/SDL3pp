@@ -738,7 +738,10 @@ class Window
 
 public:
   /// Default ctor
-  constexpr Window() = default;
+  constexpr Window(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from WindowParam.
@@ -1096,9 +1099,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Window& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -3096,7 +3096,10 @@ class GLContext
 
 public:
   /// Default ctor
-  constexpr GLContext() = default;
+  constexpr GLContext(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GLContextParam.
@@ -3170,9 +3173,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const GLContext& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

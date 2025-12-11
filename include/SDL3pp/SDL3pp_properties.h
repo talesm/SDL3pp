@@ -204,7 +204,10 @@ class Properties
 
 public:
   /// Default ctor
-  constexpr Properties() = default;
+  constexpr Properties(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from PropertiesParam.
@@ -275,9 +278,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Properties& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

@@ -116,7 +116,7 @@
   *
   * @since This struct is available since SDL 3.2.0.
   *
-@@ -436,7 +430,7 @@
+@@ -439,7 +433,7 @@
    }
  
    /// Destructor

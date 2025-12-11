@@ -455,7 +455,10 @@ class Font
 
 public:
   /// Default ctor
-  constexpr Font() = default;
+  constexpr Font(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from FontParam.
@@ -609,9 +612,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Font& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -4002,7 +4002,10 @@ class TextEngine
 
 public:
   /// Default ctor
-  constexpr TextEngine() = default;
+  constexpr TextEngine(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextEngineParam.
@@ -4053,9 +4056,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const TextEngine& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -4346,7 +4346,10 @@ class Text
 
 public:
   /// Default ctor
-  constexpr Text() = default;
+  constexpr Text(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextParam.
@@ -4429,9 +4432,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Text& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

@@ -10869,7 +10869,10 @@ class Palette
 
 public:
   /// Default ctor
-  constexpr Palette() = default;
+  constexpr Palette(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from PaletteParam.
@@ -10964,9 +10967,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Palette& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -11664,7 +11664,10 @@ class Properties
 
 public:
   /// Default ctor
-  constexpr Properties() = default;
+  constexpr Properties(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from PropertiesParam.
@@ -11735,9 +11738,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Properties& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -13853,7 +13853,10 @@ class Environment
 
 public:
   /// Default ctor
-  constexpr Environment() = default;
+  constexpr Environment(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from EnvironmentParam.
@@ -13933,9 +13936,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Environment& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -18750,7 +18750,10 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv() = default;
+  constexpr IConv(std::nullptr_t = nullptr) noexcept
+    : m_resource(IConvRaw(SDL_ICONV_ERROR))
+  {
+  }
 
   /**
    * Constructs from IConvParam.
@@ -18824,9 +18827,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const IConv& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept
@@ -19361,7 +19361,10 @@ class AsyncIO
 
 public:
   /// Default ctor
-  constexpr AsyncIO() = default;
+  constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AsyncIOParam.
@@ -19464,9 +19467,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const AsyncIO& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -19718,6 +19718,12 @@ class AsyncIOQueue
   AsyncIOQueueRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr AsyncIOQueue(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from AsyncIOQueueParam.
    *
@@ -19795,9 +19801,6 @@ public:
   /// Comparison
   constexpr auto operator<=>(const AsyncIOQueue& other) const noexcept =
     default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -23205,7 +23208,10 @@ class HidDevice
 
 public:
   /// Default ctor
-  constexpr HidDevice() = default;
+  constexpr HidDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from HidDeviceParam.
@@ -23298,9 +23304,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const HidDevice& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -24202,7 +24205,10 @@ class IOStream
 
 public:
   /// Default ctor
-  constexpr IOStream() = default;
+  constexpr IOStream(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from IOStreamParam.
@@ -24480,9 +24486,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const IOStream& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -27275,7 +27278,10 @@ class SharedObject
 
 public:
   /// Default ctor
-  constexpr SharedObject() = default;
+  constexpr SharedObject(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SharedObjectParam.
@@ -27351,9 +27357,6 @@ public:
   /// Comparison
   constexpr auto operator<=>(const SharedObject& other) const noexcept =
     default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -31224,7 +31227,10 @@ class Sensor
 
 public:
   /// Default ctor
-  constexpr Sensor() = default;
+  constexpr Sensor(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SensorParam.
@@ -31293,9 +31299,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Sensor& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -33209,7 +33212,10 @@ class AudioDevice
 
 public:
   /// Default ctor
-  constexpr AudioDevice() = default;
+  constexpr AudioDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioDeviceParam.
@@ -33340,9 +33346,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const AudioDevice& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -33989,7 +33992,10 @@ class AudioStream
 
 public:
   /// Default ctor
-  constexpr AudioStream() = default;
+  constexpr AudioStream(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioStreamParam.
@@ -34193,9 +34199,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const AudioStream& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -38451,7 +38454,10 @@ class Process
 
 public:
   /// Default ctor
-  constexpr Process() = default;
+  constexpr Process(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from ProcessParam.
@@ -38616,9 +38622,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Process& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -39540,7 +39543,10 @@ class Storage
 
 public:
   /// Default ctor
-  constexpr Storage() = default;
+  constexpr Storage(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from StorageParam.
@@ -39703,9 +39709,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Storage& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -40865,7 +40868,10 @@ class Surface
 
 public:
   /// Default ctor
-  constexpr Surface() = default;
+  constexpr Surface(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SurfaceParam.
@@ -41122,9 +41128,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Surface& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -44901,7 +44904,10 @@ class Thread
 
 public:
   /// Default ctor
-  constexpr Thread() = default;
+  constexpr Thread(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from ThreadParam.
@@ -45061,9 +45067,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Thread& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -45740,7 +45743,10 @@ class Camera
 
 public:
   /// Default ctor
-  constexpr Camera() = default;
+  constexpr Camera(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from CameraParam.
@@ -45844,9 +45850,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Camera& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -46681,6 +46684,12 @@ class Mutex
   MutexRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr Mutex(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from MutexParam.
    *
@@ -46759,9 +46768,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Mutex& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -47022,6 +47028,12 @@ class RWLock
   RWLockRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr RWLock(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from RWLockParam.
    *
@@ -47120,9 +47132,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const RWLock& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -47584,7 +47593,10 @@ class Semaphore
 
 public:
   /// Default ctor
-  constexpr Semaphore() = default;
+  constexpr Semaphore(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SemaphoreParam.
@@ -47666,9 +47678,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Semaphore& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -47974,6 +47983,12 @@ class Condition
   ConditionRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr Condition(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from ConditionParam.
    *
@@ -48046,9 +48061,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Condition& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -48710,7 +48722,10 @@ class Tray
 
 public:
   /// Default ctor
-  constexpr Tray() = default;
+  constexpr Tray(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TrayParam.
@@ -48793,9 +48808,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Tray& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -49080,7 +49092,10 @@ class TrayEntry
 
 public:
   /// Default ctor
-  constexpr TrayEntry() = default;
+  constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TrayEntryParam.
@@ -49127,9 +49142,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -50706,7 +50718,10 @@ class Window
 
 public:
   /// Default ctor
-  constexpr Window() = default;
+  constexpr Window(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from WindowParam.
@@ -51065,9 +51080,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Window& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -53076,7 +53088,10 @@ class GLContext
 
 public:
   /// Default ctor
-  constexpr GLContext() = default;
+  constexpr GLContext(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GLContextParam.
@@ -53150,9 +53165,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const GLContext& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -62423,7 +62435,10 @@ class GPUDevice
 
 public:
   /// Default ctor
-  constexpr GPUDevice() = default;
+  constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GPUDeviceParam.
@@ -62550,9 +62565,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const GPUDevice& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -67381,7 +67393,10 @@ class Joystick
 
 public:
   /// Default ctor
-  constexpr Joystick() = default;
+  constexpr Joystick(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from JoystickParam.
@@ -67454,9 +67469,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Joystick& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -70345,7 +70357,10 @@ class MetalView
 
 public:
   /// Default ctor
-  constexpr MetalView() = default;
+  constexpr MetalView(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from MetalViewParam.
@@ -70423,9 +70438,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const MetalView& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -70730,7 +70742,10 @@ class Cursor
 
 public:
   /// Default ctor
-  constexpr Cursor() = default;
+  constexpr Cursor(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from CursorParam.
@@ -70885,9 +70900,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Cursor& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -71940,7 +71952,10 @@ class Gamepad
 
 public:
   /// Default ctor
-  constexpr Gamepad() = default;
+  constexpr Gamepad(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GamepadParam.
@@ -72012,9 +72027,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Gamepad& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -75038,7 +75050,10 @@ class Haptic
 
 public:
   /// Default ctor
-  constexpr Haptic() = default;
+  constexpr Haptic(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from HapticParam.
@@ -75159,9 +75174,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Haptic& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -77190,7 +77202,10 @@ class Renderer
 
 public:
   /// Default ctor
-  constexpr Renderer() = default;
+  constexpr Renderer(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from RendererParam.
@@ -77396,9 +77411,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Renderer& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -79122,7 +79134,10 @@ class Texture
 
 public:
   /// Default ctor
-  constexpr Texture() = default;
+  constexpr Texture(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextureParam.
@@ -79439,9 +79454,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Texture& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -87363,7 +87375,10 @@ class Animation
 
 public:
   /// Default ctor
-  constexpr Animation() = default;
+  constexpr Animation(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AnimationParam.
@@ -87469,9 +87484,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Animation& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -88214,7 +88226,10 @@ class Font
 
 public:
   /// Default ctor
-  constexpr Font() = default;
+  constexpr Font(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from FontParam.
@@ -88368,9 +88383,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Font& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -91761,7 +91773,10 @@ class TextEngine
 
 public:
   /// Default ctor
-  constexpr TextEngine() = default;
+  constexpr TextEngine(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextEngineParam.
@@ -91812,9 +91827,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const TextEngine& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -92105,7 +92117,10 @@ class Text
 
 public:
   /// Default ctor
-  constexpr Text() = default;
+  constexpr Text(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextParam.
@@ -92188,9 +92203,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Text& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

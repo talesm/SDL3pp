@@ -896,7 +896,16 @@
   */
  class IConv
  {
-@@ -5789,8 +5899,7 @@
+@@ -5757,7 +5867,7 @@
+ public:
+   /// Default ctor
+   constexpr IConv(std::nullptr_t = nullptr) noexcept
+-    : m_resource(0)
++    : m_resource(IConvRaw(SDL_ICONV_ERROR))
+   {
+   }
+ 
+@@ -5792,8 +5902,7 @@
     *
     * @param tocode The target character encoding, must not be nullptr.
     * @param fromcode The source character encoding, must not be nullptr.
@@ -907,7 +916,7 @@
     * @since This function is available since SDL 3.2.0.
     *
 @@ -5836,7 +5945,10 @@
-   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+   constexpr auto operator<=>(const IConv& other) const noexcept = default;
  
    /// Converts to bool
 -  constexpr explicit operator bool() const noexcept { return !!m_resource; }

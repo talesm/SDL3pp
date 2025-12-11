@@ -940,7 +940,10 @@ class Environment
 
 public:
   /// Default ctor
-  constexpr Environment() = default;
+  constexpr Environment(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from EnvironmentParam.
@@ -1020,9 +1023,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Environment& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -5756,7 +5756,10 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv() = default;
+  constexpr IConv(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from IConvParam.
@@ -5831,9 +5834,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const IConv& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

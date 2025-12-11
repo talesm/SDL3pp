@@ -101,7 +101,7 @@
   */
  class Window
  {
-@@ -837,8 +832,7 @@
+@@ -840,8 +835,7 @@
     * in a future version of SDL.
     *
     * @param title the title of the window, in UTF-8 encoding.
@@ -111,7 +111,7 @@
     * @param flags 0, or one or more WindowFlags OR'd together.
     * @post the window that was created or nullptr on failure; call GetError()
     *       for more information.
-@@ -853,7 +847,7 @@
+@@ -856,7 +850,7 @@
     * @sa Window.Destroy
     */
    Window(StringParam title, const PointRaw& size, WindowFlags flags = 0)
@@ -120,7 +120,7 @@
    {
    }
  
-@@ -911,12 +905,9 @@
+@@ -914,12 +908,9 @@
     * hidden will be restored when the parent is shown.
     *
     * @param parent the parent of the window, must not be nullptr.
@@ -136,7 +136,7 @@
     * @param flags WINDOW_TOOLTIP or WINDOW_POPUP_MENU, and zero or more
     *              additional WindowFlags OR'd together.
     * @post the window that was created or nullptr on failure; call GetError()
-@@ -935,7 +926,12 @@
+@@ -938,7 +929,12 @@
           const PointRaw& offset,
           const PointRaw& size,
           WindowFlags flags = 0)

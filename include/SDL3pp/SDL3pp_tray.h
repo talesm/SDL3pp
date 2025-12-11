@@ -166,7 +166,10 @@ class Tray
 
 public:
   /// Default ctor
-  constexpr Tray() = default;
+  constexpr Tray(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TrayParam.
@@ -249,9 +252,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Tray& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -536,7 +536,10 @@ class TrayEntry
 
 public:
   /// Default ctor
-  constexpr TrayEntry() = default;
+  constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TrayEntryParam.
@@ -583,9 +586,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

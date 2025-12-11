@@ -300,7 +300,10 @@ class Storage
 
 public:
   /// Default ctor
-  constexpr Storage() = default;
+  constexpr Storage(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from StorageParam.
@@ -463,9 +466,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Storage& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

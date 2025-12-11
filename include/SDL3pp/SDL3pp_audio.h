@@ -844,7 +844,10 @@ class AudioDevice
 
 public:
   /// Default ctor
-  constexpr AudioDevice() = default;
+  constexpr AudioDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioDeviceParam.
@@ -975,9 +978,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const AudioDevice& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
@@ -1624,7 +1624,10 @@ class AudioStream
 
 public:
   /// Default ctor
-  constexpr AudioStream() = default;
+  constexpr AudioStream(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioStreamParam.
@@ -1828,9 +1831,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const AudioStream& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

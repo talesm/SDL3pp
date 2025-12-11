@@ -139,7 +139,10 @@ class Process
 
 public:
   /// Default ctor
-  constexpr Process() = default;
+  constexpr Process(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from ProcessParam.
@@ -304,9 +307,6 @@ public:
 
   /// Comparison
   constexpr auto operator<=>(const Process& other) const noexcept = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }

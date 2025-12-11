@@ -83,7 +83,7 @@
   *
   * @since This enum is available since SDL_ttf 3.0.0.
   *
-@@ -467,8 +489,6 @@
+@@ -470,8 +492,6 @@
     * size becomes the index of choosing which size. If the value is too high,
     * the last indexed size will be the default.
     *
@@ -92,7 +92,7 @@
     * @param file path to font file.
     * @param ptsize point size to use for the newly-opened font.
     * @post a valid Font on success.
-@@ -495,12 +515,10 @@
+@@ -498,12 +518,10 @@
     * If `closeio` is true, `src` will be automatically closed once the font is
     * closed. Otherwise you should keep `src` open until the font is closed.
     *
@@ -106,7 +106,7 @@
     * @post a valid Font on success.
     * @throws Error on failure.
     *
-@@ -511,7 +529,7 @@
+@@ -514,7 +532,7 @@
     * @sa Font.Close
     */
    Font(IOStreamParam src, float ptsize, bool closeio = false)
@@ -735,7 +735,7 @@
  }
  
  inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
-@@ -4062,7 +4026,7 @@
+@@ -4065,7 +4029,7 @@
    }
  
    /// Destructor
@@ -914,7 +914,7 @@
  };
  
  /**
-@@ -4429,8 +4380,6 @@
+@@ -4432,8 +4383,6 @@
     *               nullptr.
     * @param font the font to render with.
     * @param text the text to use, in UTF-8 encoding.
@@ -923,7 +923,7 @@
     * @post a Text object or nullptr on failure; call GetError() for more
     *       information.
     *
-@@ -4442,7 +4391,7 @@
+@@ -4445,7 +4394,7 @@
     * @sa Text.Destroy
     */
    Text(TextEngineParam engine, FontParam font, std::string_view text)

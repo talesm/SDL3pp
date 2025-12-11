@@ -31,7 +31,7 @@
  using HatState = Uint8;
  
  constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED; ///< CENTERED
-@@ -427,15 +431,14 @@
+@@ -430,15 +434,14 @@
     * for use.
     *
     * @param instance_id the joystick instance ID.

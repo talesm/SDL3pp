@@ -9,7 +9,7 @@
   *
   * Header file for SDL 2D rendering functions.
   *
-@@ -252,8 +252,41 @@
+@@ -255,8 +255,41 @@
  
    constexpr Renderer(RendererRef&& other) = delete;
  
@@ -53,7 +53,7 @@
  
    /**
     * Create a 2D rendering context for a window.
-@@ -274,8 +307,7 @@
+@@ -277,8 +310,7 @@
     * @param window the window where rendering is displayed.
     * @param name the name of the rendering driver to initialize, or nullptr to
     *             let SDL choose one.
@@ -63,7 +63,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -289,7 +321,7 @@
+@@ -292,7 +324,7 @@
     * @sa Renderer.GetName
     */
    Renderer(WindowParam window, StringParam name)
@@ -72,7 +72,7 @@
    {
    }
  
-@@ -331,8 +363,7 @@
+@@ -334,8 +366,7 @@
     *   queue family index used for presentation.
     *
     * @param props the properties to use.
@@ -82,7 +82,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -345,7 +376,7 @@
+@@ -348,7 +379,7 @@
     * @sa Renderer.GetName
     */
    Renderer(PropertiesParam props)
@@ -91,7 +91,7 @@
    {
    }
  
-@@ -359,8 +390,7 @@
+@@ -362,8 +393,7 @@
     *
     * @param surface the Surface structure representing the surface where
     *                rendering is done.
@@ -101,7 +101,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -369,7 +399,7 @@
+@@ -372,7 +402,7 @@
     * @sa Renderer.Destroy
     */
    Renderer(SurfaceParam surface)
@@ -604,7 +604,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -2167,10 +2188,8 @@
+@@ -2170,10 +2191,8 @@
     * @param renderer the rendering context.
     * @param format one of the enumerated values in PixelFormat.
     * @param access one of the enumerated values in TextureAccess.
@@ -617,7 +617,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -2186,7 +2205,8 @@
+@@ -2189,7 +2208,8 @@
            PixelFormat format,
            TextureAccess access,
            const PointRaw& size)
@@ -627,7 +627,7 @@
    {
    }
  
-@@ -2204,19 +2224,17 @@
+@@ -2207,19 +2227,17 @@
     * @param renderer the rendering context.
     * @param surface the Surface structure containing pixel data used to fill the
     *                texture.
@@ -649,7 +649,7 @@
    {
    }
  
-@@ -2314,8 +2332,7 @@
+@@ -2317,8 +2335,7 @@
     *
     * @param renderer the rendering context.
     * @param props the properties to use.
@@ -659,7 +659,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -2329,7 +2346,7 @@
+@@ -2332,7 +2349,7 @@
     * @sa Texture.Update
     */
    Texture(RendererParam renderer, PropertiesParam props)
@@ -668,7 +668,7 @@
    {
    }
  
-@@ -2353,9 +2370,6 @@
+@@ -2356,9 +2373,6 @@
     * If you would rather decode an image to an Surface (a buffer of pixels in
     * CPU memory), call Surface.Surface() instead.
     *
@@ -678,7 +678,7 @@
     * @param renderer the Renderer to use to create the GPU texture.
     * @param file a path on the filesystem to load an image from.
     * @post a new texture, or nullptr on error.
-@@ -2396,9 +2410,6 @@
+@@ -2399,9 +2413,6 @@
     * If you would rather decode an image to an Surface (a buffer of pixels in
     * CPU memory), call Surface.Surface() instead.
     *
@@ -688,7 +688,7 @@
     * @param renderer the Renderer to use to create the GPU texture.
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
-@@ -2411,7 +2422,7 @@
+@@ -2414,7 +2425,7 @@
     * @sa LoadTextureTyped
     * @sa Texture.Destroy
     */

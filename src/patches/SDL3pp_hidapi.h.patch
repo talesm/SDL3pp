@@ -50,7 +50,7 @@
   */
  constexpr hid_bus_type HID_API_BUS_SPI = SDL_HID_API_BUS_SPI;
  
-@@ -165,7 +172,6 @@
+@@ -168,7 +175,6 @@
     * @param product_id the Product ID (PID) of the device to open.
     * @param serial_number the Serial Number of the device to open (Optionally
     *                      nullptr).
@@ -58,7 +58,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -184,7 +190,6 @@
+@@ -187,7 +193,6 @@
     * platform-specific path name can be used (eg: /dev/hidraw0 on Linux).
     *
     * @param path the path name of the device to open.
