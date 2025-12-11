@@ -154,8 +154,6 @@ inline StringResult GetPrimarySelectionText()
   return CheckError(SDL_GetPrimarySelectionText());
 }
 
-#error "ClipboardDataCB (plc)"
-
 /**
  * Query whether the primary selection exists and contains a non-empty text
  * string.
@@ -192,7 +190,33 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  *
  * @sa SetClipboardData
  */
-using ClipboardDataCallback = SDL_ClipboardDataCallback;
+using ClipboardDataCallback = const void*(SDLCALL*)(void* userdata,
+                                                    const char* mime_type,
+                                                    size_t* size);
+
+/**
+ * Callback function that will be called when data for the specified mime-type
+ * is requested by the OS.
+ *
+ * The callback function is called with nullptr as the mime_type when the
+ * clipboard is cleared or new data is set. The clipboard is automatically
+ * cleared in Quit().
+ *
+ * @param mime_type the requested mime-type.
+ * @param size a pointer filled in with the length of the returned data.
+ * @returns a pointer to the data for the provided mime-type. Returning nullptr
+ *          or setting the length to 0 will cause zero length data to be sent to
+ *          the "receiver", which should be able to handle this. The returned
+ *          data will not be freed, so it needs to be retained and dealt with
+ *          internally.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetClipboardData
+ *
+ * @sa ClipboardDataCallback
+ */
+using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
 
 /**
  * Callback function that will be called when the clipboard is cleared, or when
@@ -204,7 +228,7 @@ using ClipboardDataCallback = SDL_ClipboardDataCallback;
  *
  * @sa SetClipboardData
  */
-using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
+using ClipboardCleanupCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Callback function that will be called when the clipboard is cleared, or when

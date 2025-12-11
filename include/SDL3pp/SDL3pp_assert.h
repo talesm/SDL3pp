@@ -422,10 +422,11 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AssertionHandler = SDL_AssertionHandler;
+using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
+                                               void* userdata);
 
 /**
- * A @ref callback that fires when an SDL assertion fails.
+ * A callback that fires when an SDL assertion fails.
  *
  * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
@@ -439,7 +440,7 @@ using AssertionHandler = SDL_AssertionHandler;
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  std::function<SDL_AssertState(const SDL_AssertData*)>;
+  MakeBackCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -466,8 +467,7 @@ using AssertionHandlerCB =
  */
 inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
-  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
-  SDL_SetAssertionHandler(handler, userdata);
+  return SDL_SetAssertionHandler(handler, userdata);
 }
 
 /**
@@ -483,7 +483,8 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the AssertionHandler function to call when an assertion fails.
+ * @param handler the AssertionHandler function to call when an assertion fails
+ *                or nullptr for the default handler.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -493,9 +494,7 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  */
 inline void SetAssertionHandler(AssertionHandlerCB handler)
 {
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  SetAssertionHandler(&Wrapper::CallSuffixed,
-                      Wrapper::Wrap(std::move(handler)));
+  SetAssertionHandler(handler.wrapper, handler.data);
 }
 
 /**
@@ -546,37 +545,6 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
 {
   return SDL_GetAssertionHandler(puserdata);
 }
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to SetAssertionHandler(), or
- * if no application-specified function is set, is equivalent to calling
- * GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SetAssertionHandler(). This value will
- * always be nullptr for the default handler. If you don't care about this data,
- * it is safe to pass a nullptr pointer to this function to ignore it.
- *
- * @returns the AssertionHandlerCB that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAssertionHandler
- */
-inline AssertionHandlerCB GetAssertionHandler()
-{
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  void* userdata = nullptr;
-  auto cb = GetAssertionHandler(&userdata);
-  if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
-  return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-}
-
 /**
  * Get a list of all assertion failures.
  *

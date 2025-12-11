@@ -1,5 +1,31 @@
 # Changelog
 
+## Version 0.5.3
+
+Quick-fix for copy constructor being protected on SDL::Surface.
+
+## Version 0.5.2
+
+Strengthen class types
+
+- Make resource constructors, comparison operators noexcept;
+- Make wrapper constructors, comparison operators noexcept;
+- Make resource accept std::nullptr_t.
+
+## Version 0.5.1
+
+Fix assignment error for SDL::RendererRef and other resources.
+
+## Version 0.5.0
+
+Reword callback handling.
+
+- Remove hacky and leaky stored callback wrapping, except for the safer
+  callOnce, and replace by a more lightweight function wrapper that fit in a
+  single pointer;
+- Use less error prone unified diffs to patch the API;
+- Add macros for wrapper version;
+
 ## Version 0.4.2
 
 This a bugfix, that adds the SDL3pp_full.zip and tar.gz to ease the installation

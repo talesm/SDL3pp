@@ -145,7 +145,9 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = SDL_NSTimerCallback;
+using TimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                       TimerID timerID,
+                                       Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.
@@ -171,8 +173,22 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @sa TimerCallback
  */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
+{
+  /// ctor
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  TimerCB(const F& func)
+    : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>(func)
+  {
+  }
+
+  /// @private
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+  {
+    static_assert(false, "Not implemented");
+  }
+};
 
 /**
  * Call a callback function at a future time.

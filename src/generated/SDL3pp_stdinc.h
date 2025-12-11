@@ -428,7 +428,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr Time(TimeRaw time = {})
+  constexpr Time(TimeRaw time = {}) noexcept
     : m_time(time)
   {
   }
@@ -445,7 +445,7 @@ public:
    *
    * @returns the underlying TimeRaw.
    */
-  constexpr operator TimeRaw() const { return m_time; }
+  constexpr operator TimeRaw() const noexcept { return m_time; }
 
   constexpr operator std::chrono::nanoseconds() const
   {
@@ -736,7 +736,7 @@ inline void free(void* mem) { SDL_free(mem); }
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using malloc_func = SDL_malloc_func;
+using malloc_func = void*(SDLCALL*)(size_t size);
 
 /**
  * A callback used to implement calloc().
@@ -757,7 +757,7 @@ using malloc_func = SDL_malloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using calloc_func = SDL_calloc_func;
+using calloc_func = void*(SDLCALL*)(size_t nmemb, size_t size);
 
 /**
  * A callback used to implement realloc().
@@ -778,7 +778,7 @@ using calloc_func = SDL_calloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using realloc_func = SDL_realloc_func;
+using realloc_func = void*(SDLCALL*)(void* mem, size_t size);
 
 /**
  * A callback used to implement free().
@@ -796,7 +796,7 @@ using realloc_func = SDL_realloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using free_func = SDL_free_func;
+using free_func = void(SDLCALL*)(void* mem);
 
 /**
  * Get the original set of SDL memory functions.
@@ -960,7 +960,10 @@ class Environment
 
 public:
   /// Default ctor
-  constexpr Environment() = default;
+  constexpr Environment(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from EnvironmentParam.
@@ -969,7 +972,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource)
+  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -978,7 +981,7 @@ public:
   constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
-  constexpr Environment(Environment&& other)
+  constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
   {
   }
@@ -1016,17 +1019,22 @@ public:
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
-  Environment& operator=(Environment other)
+  constexpr Environment& operator=(Environment&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Environment& operator=(const Environment& other) noexcept = default;
+
+public:
   /// Retrieves underlying EnvironmentRaw.
-  constexpr EnvironmentRaw get() const { return m_resource; }
+  constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying EnvironmentRaw and clear this.
-  constexpr EnvironmentRaw release()
+  constexpr EnvironmentRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -1034,16 +1042,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Environment& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Environment& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const { return {m_resource}; }
+  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -1143,6 +1148,8 @@ public:
 /// Semi-safe reference for Environment.
 struct EnvironmentRef : Environment
 {
+  using Environment::Environment;
+
   /**
    * Constructs from EnvironmentParam.
    *
@@ -1150,13 +1157,25 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentParam resource)
+  EnvironmentRef(EnvironmentParam resource) noexcept
     : Environment(resource.value)
   {
   }
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
+  EnvironmentRef(EnvironmentRaw resource) noexcept
+    : Environment(resource)
+  {
+  }
+
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other)
+  EnvironmentRef(const EnvironmentRef& other) noexcept
     : Environment(other.get())
   {
   }
@@ -1446,7 +1465,7 @@ inline int unsetenv_unsafe(StringParam name)
  * @sa bsearch
  * @sa qsort
  */
-using CompareCallback = SDL_CompareCallback;
+using CompareCallback = int(SDLCALL*)(const void* a, const void* b);
 
 /**
  * Sort an array.
@@ -1573,7 +1592,9 @@ inline void* bsearch(const void* key,
  * @sa qsort_r
  * @sa bsearch_r
  */
-using CompareCallback_r = SDL_CompareCallback_r;
+using CompareCallback_r = int(SDLCALL*)(void* userdata,
+                                        const void* a,
+                                        const void* b);
 
 /**
  * A callback used with SDL sorting and binary search functions.
@@ -1590,7 +1611,7 @@ using CompareCallback_r = SDL_CompareCallback_r;
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void* a, const void* b)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.
@@ -5755,7 +5776,10 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv() = default;
+  constexpr IConv(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from IConvParam.
@@ -5764,7 +5788,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource)
+  constexpr explicit IConv(const IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -5773,7 +5797,7 @@ public:
   constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
-  constexpr IConv(IConv&& other)
+  constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
   {
   }
@@ -5806,17 +5830,22 @@ public:
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
-  IConv& operator=(IConv other)
+  constexpr IConv& operator=(IConv&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IConv& operator=(const IConv& other) noexcept = default;
+
+public:
   /// Retrieves underlying IConvRaw.
-  constexpr IConvRaw get() const { return m_resource; }
+  constexpr IConvRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IConvRaw and clear this.
-  constexpr IConvRaw release()
+  constexpr IConvRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -5824,16 +5853,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IConv& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const IConv& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to IConvParam
-  constexpr operator IConvParam() const { return {m_resource}; }
+  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -5892,6 +5918,8 @@ public:
 /// Semi-safe reference for IConv.
 struct IConvRef : IConv
 {
+  using IConv::IConv;
+
   /**
    * Constructs from IConvParam.
    *
@@ -5899,13 +5927,25 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvParam resource)
+  IConvRef(IConvParam resource) noexcept
     : IConv(resource.value)
   {
   }
 
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvRaw resource) noexcept
+    : IConv(resource)
+  {
+  }
+
   /// Copy constructor.
-  IConvRef(const IConvRef& other)
+  IConvRef(const IConvRef& other) noexcept
     : IConv(other.get())
   {
   }
@@ -6172,7 +6212,7 @@ constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using FunctionPointer = SDL_FunctionPointer;
+using FunctionPointer = void(SDLCALL*)();
 
 /// @}
 

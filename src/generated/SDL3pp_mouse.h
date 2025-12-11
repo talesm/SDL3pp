@@ -184,7 +184,10 @@ class Cursor
 
 public:
   /// Default ctor
-  constexpr Cursor() = default;
+  constexpr Cursor(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from CursorParam.
@@ -193,7 +196,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource)
+  constexpr explicit Cursor(const CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -202,7 +205,7 @@ public:
   constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
-  constexpr Cursor(Cursor&& other)
+  constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
   {
   }
@@ -322,17 +325,22 @@ public:
   ~Cursor() { SDL_DestroyCursor(m_resource); }
 
   /// Assignment operator.
-  Cursor& operator=(Cursor other)
+  constexpr Cursor& operator=(Cursor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+
+public:
   /// Retrieves underlying CursorRaw.
-  constexpr CursorRaw get() const { return m_resource; }
+  constexpr CursorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CursorRaw and clear this.
-  constexpr CursorRaw release()
+  constexpr CursorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -340,16 +348,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Cursor& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Cursor& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CursorParam
-  constexpr operator CursorParam() const { return {m_resource}; }
+  constexpr operator CursorParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
@@ -390,6 +395,8 @@ public:
 /// Semi-safe reference for Cursor.
 struct CursorRef : Cursor
 {
+  using Cursor::Cursor;
+
   /**
    * Constructs from CursorParam.
    *
@@ -397,13 +404,25 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorParam resource)
+  CursorRef(CursorParam resource) noexcept
     : Cursor(resource.value)
   {
   }
 
+  /**
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw or Cursor.
+   *
+   * This does not takes ownership!
+   */
+  CursorRef(CursorRaw resource) noexcept
+    : Cursor(resource)
+  {
+  }
+
   /// Copy constructor.
-  CursorRef(const CursorRef& other)
+  CursorRef(const CursorRef& other) noexcept
     : Cursor(other.get())
   {
   }
@@ -512,45 +531,12 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
  *
  * @sa SetRelativeMouseTransform
  */
-using MouseMotionTransformCallback = SDL_MouseMotionTransformCallback;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-/**
- * A callback used to transform mouse motion delta from raw values.
- *
- * This is called during SDL's handling of platform mouse events to scale the
- * values of the resulting motion delta.
- *
- * @param timestamp the associated time at which this mouse motion event was
- *                  received.
- * @param window the associated window to which this mouse motion event was
- *               addressed.
- * @param mouseID the associated mouse from which this mouse motion event was
- *                emitted.
- * @param x pointer to a variable that will be treated as the resulting x-axis
- *          motion.
- * @param y pointer to a variable that will be treated as the resulting y-axis
- *          motion.
- *
- * @threadsafety This callback is called by SDL's internal mouse input
- *               processing procedure, which may be a thread separate from the
- *               main event loop that is run at realtime priority. Stalling this
- *               thread with too much work in the callback can therefore
- *               potentially freeze the entire system. Care should be taken with
- *               proper synchronization practices when adding other side effects
- *               beyond mutation of the x and y values.
- *
- * @since This datatype is available since SDL 3.4.0.
- *
- * @sa SetRelativeMouseTransform
- *
- * @sa MouseMotionTransformCallback
- */
-using MouseMotionTransformCB =
-  std::function<void(Uint64, SDL_Window*, SDL_MouseID, float*, float*)>;
+using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
+                                                    Uint64 timestamp,
+                                                    SDL_Window* window,
+                                                    MouseID mouseID,
+                                                    float* x,
+                                                    float* y);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 

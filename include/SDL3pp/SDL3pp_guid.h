@@ -47,7 +47,7 @@ struct GUID : GUIDRaw
    *
    * @param gUID the value to be wrapped
    */
-  constexpr GUID(const GUIDRaw& gUID = {})
+  constexpr GUID(const GUIDRaw& gUID = {}) noexcept
     : GUIDRaw(gUID)
   {
   }

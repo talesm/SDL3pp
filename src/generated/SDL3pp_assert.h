@@ -414,7 +414,8 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AssertionHandler = SDL_AssertionHandler;
+using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
+                                               void* userdata);
 
 /**
  * A callback that fires when an SDL assertion fails.
@@ -431,7 +432,7 @@ using AssertionHandler = SDL_AssertionHandler;
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  std::function<SDL_AssertState(const SDL_AssertData*)>;
+  MakeBackCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -536,34 +537,6 @@ inline AssertionHandler GetDefaultAssertionHandler()
 inline AssertionHandler GetAssertionHandler(void** puserdata)
 {
   return SDL_GetAssertionHandler(puserdata);
-}
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to SetAssertionHandler(), or
- * if no application-specified function is set, is equivalent to calling
- * GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SetAssertionHandler(). This value will
- * always be nullptr for the default handler. If you don't care about this data,
- * it is safe to pass a nullptr pointer to this function to ignore it.
- *
- * @param puserdata pointer which is filled with the "userdata" pointer that was
- *                  passed to SetAssertionHandler().
- * @returns the AssertionHandler that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAssertionHandler
- */
-inline AssertionHandlerCB GetAssertionHandler()
-{
-  static_assert(false, "Not implemented");
 }
 
 /**

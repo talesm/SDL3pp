@@ -178,7 +178,7 @@ public:
    *
    * @param displayID the value to be wrapped
    */
-  constexpr Display(DisplayID displayID = {})
+  constexpr Display(DisplayID displayID = {}) noexcept
     : m_displayID(displayID)
   {
   }
@@ -188,7 +188,7 @@ public:
    *
    * @returns the underlying DisplayID.
    */
-  constexpr operator DisplayID() const { return m_displayID; }
+  constexpr operator DisplayID() const noexcept { return m_displayID; }
 
   /**
    * Return the primary display.
@@ -708,11 +708,24 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @sa Window.SetHitTest
  */
-using HitTest = SDL_HitTest;
+using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
+                                        const PointRaw* area,
+                                        void* data);
 
-/// @sa HitTest
+/**
+ * Callback used for hit-testing.
+ *
+ * @param win the Window where hit-testing was set on.
+ * @param area an Point which should be hit-tested.
+ * @param data what was passed as `callback_data` to Window.SetHitTest().
+ * @returns an HitTestResult value.
+ *
+ * @sa Window.SetHitTest
+ *
+ * @sa HitTest
+ */
 using HitTestCB =
-  std::function<HitTestResult(WindowRaw window, const Point& area)>;
+  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.
@@ -792,7 +805,10 @@ class Window
 
 public:
   /// Default ctor
-  constexpr Window() = default;
+  constexpr Window(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from WindowParam.
@@ -801,7 +817,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource)
+  constexpr explicit Window(const WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -810,7 +826,7 @@ public:
   constexpr Window(const Window& other) = delete;
 
   /// Move constructor
-  constexpr Window(Window&& other)
+  constexpr Window(Window&& other) noexcept
     : Window(other.release())
   {
   }
@@ -1147,17 +1163,22 @@ public:
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
-  Window& operator=(Window other)
+  constexpr Window& operator=(Window&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Window& operator=(const Window& other) noexcept = default;
+
+public:
   /// Retrieves underlying WindowRaw.
-  constexpr WindowRaw get() const { return m_resource; }
+  constexpr WindowRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying WindowRaw and clear this.
-  constexpr WindowRaw release()
+  constexpr WindowRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -1165,16 +1186,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Window& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Window& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to WindowParam
-  constexpr operator WindowParam() const { return {m_resource}; }
+  constexpr operator WindowParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a window.
@@ -3107,6 +3125,8 @@ public:
 /// Semi-safe reference for Window.
 struct WindowRef : Window
 {
+  using Window::Window;
+
   /**
    * Constructs from WindowParam.
    *
@@ -3114,13 +3134,25 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowParam resource)
+  WindowRef(WindowParam resource) noexcept
     : Window(resource.value)
   {
   }
 
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
+  WindowRef(WindowRaw resource) noexcept
+    : Window(resource)
+  {
+  }
+
   /// Copy constructor.
-  WindowRef(const WindowRef& other)
+  WindowRef(const WindowRef& other) noexcept
     : Window(other.get())
   {
   }
@@ -3255,14 +3287,17 @@ class GLContext
 
 public:
   /// Default ctor
-  constexpr GLContext() = default;
+  constexpr GLContext(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GLContextParam.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource)
+  constexpr GLContext(const GLContextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -3271,7 +3306,7 @@ public:
   constexpr GLContext(const GLContext& other) = default;
 
   /// Move constructor
-  constexpr GLContext(GLContext&& other)
+  constexpr GLContext(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -3313,17 +3348,20 @@ public:
   ~GLContext() {}
 
   /// Assignment operator.
-  GLContext& operator=(GLContext other)
+  constexpr GLContext& operator=(GLContext&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
+
   /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const { return m_resource; }
+  constexpr GLContextRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release()
+  constexpr GLContextRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -3331,16 +3369,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GLContextParam
-  constexpr operator GLContextParam() const { return {m_resource}; }
+  constexpr operator GLContextParam() const noexcept { return {m_resource}; }
 
   /**
    * Delete an OpenGL context.
@@ -3382,7 +3417,7 @@ struct GLContextScoped : GLContext
   constexpr GLContextScoped(const GLContext& other) = delete;
 
   /// Move constructor
-  constexpr GLContextScoped(GLContext&& other)
+  constexpr GLContextScoped(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -3442,33 +3477,7 @@ using EGLint = SDL_EGLint;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
-
-/**
- * EGL platform attribute initialization callback.
- *
- * This is called when SDL is attempting to create an EGL context, to let the
- * app add extra attributes to its eglGetPlatformDisplay() call.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLAttribArrayCallback
- */
-using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
+using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
  * EGL surface/context attribute initialization callback types.
@@ -3499,39 +3508,9 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
-
-/**
- * EGL surface/context attribute initialization callback types.
- *
- * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
- * calls.
- *
- * For convenience, the EGLDisplay and EGLConfig to use are provided to the
- * callback.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @param display the EGL display to be used.
- * @param config the EGL config to be used.
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLIntArrayCallback
- */
-using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
+using EGLIntArrayCallback = EGLint*(SDLCALL*)(void* userdata,
+                                              EGLDisplay display,
+                                              EGLConfig config);
 
 /**
  * An enumeration of OpenGL configuration attributes.

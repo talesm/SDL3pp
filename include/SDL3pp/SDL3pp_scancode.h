@@ -52,7 +52,7 @@ public:
    *
    * @param scancode the value to be wrapped
    */
-  constexpr Scancode(ScancodeRaw scancode = {})
+  constexpr Scancode(ScancodeRaw scancode = {}) noexcept
     : m_scancode(scancode)
   {
   }
@@ -79,7 +79,7 @@ public:
    *
    * @returns the underlying ScancodeRaw.
    */
-  constexpr operator ScancodeRaw() const { return m_scancode; }
+  constexpr operator ScancodeRaw() const noexcept { return m_scancode; }
 
   /**
    * Set a human-readable name for a scancode.

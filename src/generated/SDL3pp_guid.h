@@ -47,7 +47,7 @@ struct GUID : GUIDRaw
    *
    * @param gUID the value to be wrapped
    */
-  constexpr GUID(const GUIDRaw& gUID = {})
+  constexpr GUID(const GUIDRaw& gUID = {}) noexcept
     : GUIDRaw(gUID)
   {
   }
@@ -78,7 +78,10 @@ struct GUID : GUIDRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != GUIDRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != GUIDRaw{};
+  }
 
   /**
    * Get an ASCII string representation for a given GUID.

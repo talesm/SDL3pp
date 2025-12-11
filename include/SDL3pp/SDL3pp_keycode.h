@@ -124,7 +124,7 @@ public:
    *
    * @param keycode the value to be wrapped
    */
-  constexpr Keycode(KeycodeRaw keycode = {})
+  constexpr Keycode(KeycodeRaw keycode = {}) noexcept
     : m_keycode(keycode)
   {
   }
@@ -175,7 +175,7 @@ public:
    *
    * @returns the underlying KeycodeRaw.
    */
-  constexpr operator KeycodeRaw() const { return m_keycode; }
+  constexpr operator KeycodeRaw() const noexcept { return m_keycode; }
 
   /// Has Extended flag.
   constexpr bool IsExtended() const;

@@ -190,7 +190,9 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  *
  * @sa SetClipboardData
  */
-using ClipboardDataCallback = SDL_ClipboardDataCallback;
+using ClipboardDataCallback = const void*(SDLCALL*)(void* userdata,
+                                                    const char* mime_type,
+                                                    size_t* size);
 
 /**
  * Callback function that will be called when data for the specified mime-type
@@ -225,7 +227,7 @@ using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
  *
  * @sa SetClipboardData
  */
-using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
+using ClipboardCleanupCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Callback function that will be called when the clipboard is cleared, or when

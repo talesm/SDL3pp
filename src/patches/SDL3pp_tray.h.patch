@@ -19,7 +19,7 @@
  using TrayMenuRaw = SDL_TrayMenu*;
  
  // Forward decl
-@@ -395,8 +398,6 @@
+@@ -414,8 +417,6 @@
    /**
     * Returns a list of entries in the menu, in order.
     *
@@ -28,7 +28,7 @@
     * @returns a nullptr-terminated list of entries within the given menu. The
     *          pointer becomes invalid when any function that inserts or deletes
     *          entries in the menu is called.
-@@ -438,6 +439,30 @@
+@@ -457,6 +458,30 @@
     */
    TrayEntry InsertEntry(int pos, StringParam label, TrayEntryFlags flags);
  
@@ -59,7 +59,7 @@
    TrayEntry AppendEntry(StringParam label, TrayEntryFlags flags);
  
    /**
-@@ -712,6 +737,19 @@
+@@ -734,6 +759,19 @@
     */
    bool GetEnabled() const;
  
@@ -79,7 +79,7 @@
    void SetCallback(TrayCB callback);
  
    /**
-@@ -970,7 +1008,6 @@
+@@ -992,7 +1030,6 @@
   * Returns a list of entries in the menu, in order.
   *
   * @param menu The menu to get entries from.
@@ -87,7 +87,7 @@
   * @returns a nullptr-terminated list of entries within the given menu. The
   *          pointer becomes invalid when any function that inserts or deletes
   *          entries in the menu is called.
-@@ -985,7 +1022,10 @@
+@@ -1007,7 +1044,10 @@
   */
  inline std::span<TrayEntry> GetTrayEntries(TrayMenu menu)
  {
@@ -99,7 +99,7 @@
  }
  
  inline std::span<TrayEntry> TrayMenu::GetEntries()
-@@ -1365,6 +1405,19 @@
+@@ -1387,6 +1427,16 @@
  
  /// @}
  
@@ -110,10 +110,7 @@
 +
 +inline void TrayEntry::SetCallback(TrayCB callback)
 +{
-+  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
-+  SetCallback([](void* userdata,
-+                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
-+              Wrapper::Wrap(get(), std::move(callback)));
++  SetCallback(callback.wrapper, callback.data);
 +}
 +
  } // namespace SDL

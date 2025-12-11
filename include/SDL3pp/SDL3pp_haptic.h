@@ -796,7 +796,10 @@ class Haptic
 
 public:
   /// Default ctor
-  constexpr Haptic() = default;
+  constexpr Haptic(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from HapticParam.
@@ -805,7 +808,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource)
+  constexpr explicit Haptic(const HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -814,7 +817,7 @@ public:
   constexpr Haptic(const Haptic& other) = delete;
 
   /// Move constructor
-  constexpr Haptic(Haptic&& other)
+  constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
   {
   }
@@ -893,17 +896,22 @@ public:
   ~Haptic() { SDL_CloseHaptic(m_resource); }
 
   /// Assignment operator.
-  Haptic& operator=(Haptic other)
+  constexpr Haptic& operator=(Haptic&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
+
+public:
   /// Retrieves underlying HapticRaw.
-  constexpr HapticRaw get() const { return m_resource; }
+  constexpr HapticRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying HapticRaw and clear this.
-  constexpr HapticRaw release()
+  constexpr HapticRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -911,16 +919,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Haptic& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Haptic& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to HapticParam
-  constexpr operator HapticParam() const { return {m_resource}; }
+  constexpr operator HapticParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
@@ -1256,6 +1261,8 @@ public:
 /// Semi-safe reference for Haptic.
 struct HapticRef : Haptic
 {
+  using Haptic::Haptic;
+
   /**
    * Constructs from HapticParam.
    *
@@ -1263,13 +1270,25 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticParam resource)
+  HapticRef(HapticParam resource) noexcept
     : Haptic(resource.value)
   {
   }
 
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw or Haptic.
+   *
+   * This does not takes ownership!
+   */
+  HapticRef(HapticRaw resource) noexcept
+    : Haptic(resource)
+  {
+  }
+
   /// Copy constructor.
-  HapticRef(const HapticRef& other)
+  HapticRef(const HapticRef& other) noexcept
     : Haptic(other.get())
   {
   }

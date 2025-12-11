@@ -261,7 +261,7 @@ public:
    *
    * @param audioFormat the value to be wrapped
    */
-  constexpr AudioFormat(AudioFormatRaw audioFormat = {})
+  constexpr AudioFormat(AudioFormatRaw audioFormat = {}) noexcept
     : m_audioFormat(audioFormat)
   {
   }
@@ -299,7 +299,7 @@ public:
    *
    * @returns the underlying AudioFormatRaw.
    */
-  constexpr operator AudioFormatRaw() const { return m_audioFormat; }
+  constexpr operator AudioFormatRaw() const noexcept { return m_audioFormat; }
 
   /**
    * Retrieve the size, in bits, from an AudioFormat.
@@ -691,7 +691,10 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @sa AudioDevice.SetPostmixCallback
  */
-using AudioPostmixCallback = SDL_AudioPostmixCallback;
+using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
+                                            const AudioSpec* spec,
+                                            float* buffer,
+                                            int buflen);
 
 /**
  * A callback that fires when data is about to be fed to an audio device.
@@ -729,7 +732,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
-  std::function<void(const AudioSpec& spec, std::span<float> buffer)>;
+  MakeFrontCallback<void(const AudioSpec* spec, float* buffer, int buflen)>;
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -770,7 +773,10 @@ using AudioPostmixCB =
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
  */
-using AudioStreamCallback = SDL_AudioStreamCallback;
+using AudioStreamCallback = void(SDLCALL*)(void* userdata,
+                                           AudioStreamRaw stream,
+                                           int additional_amount,
+                                           int total_amount);
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -811,8 +817,8 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
  * @sa AudioStream.SetPutCallback
  * @sa AudioStreamCallback
  */
-using AudioStreamCB = std::function<
-  void(AudioStreamRef stream, int additional_amount, int total_amount)>;
+using AudioStreamCB = MakeFrontCallback<
+  void(AudioStreamRaw stream, int additional_amount, int total_amount)>;
 
 /**
  * SDL Audio Device instance IDs.
@@ -829,7 +835,10 @@ class AudioDevice
 
 public:
   /// Default ctor
-  constexpr AudioDevice() = default;
+  constexpr AudioDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioDeviceParam.
@@ -838,7 +847,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource)
+  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -847,7 +856,7 @@ public:
   constexpr AudioDevice(const AudioDevice& other) = delete;
 
   /// Move constructor
-  constexpr AudioDevice(AudioDevice&& other)
+  constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
   {
   }
@@ -936,17 +945,22 @@ public:
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
 
   /// Assignment operator.
-  AudioDevice& operator=(AudioDevice other)
+  constexpr AudioDevice& operator=(AudioDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept = default;
+
+public:
   /// Retrieves underlying AudioDeviceID.
-  constexpr AudioDeviceID get() const { return m_resource; }
+  constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AudioDeviceID and clear this.
-  constexpr AudioDeviceID release()
+  constexpr AudioDeviceID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -954,16 +968,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AudioDevice& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const AudioDevice& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AudioDeviceParam
-  constexpr operator AudioDeviceParam() const { return {m_resource}; }
+  constexpr operator AudioDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a previously-opened audio device.
@@ -1505,6 +1516,8 @@ public:
 /// Semi-safe reference for AudioDevice.
 struct AudioDeviceRef : AudioDevice
 {
+  using AudioDevice::AudioDevice;
+
   /**
    * Constructs from AudioDeviceParam.
    *
@@ -1512,13 +1525,25 @@ struct AudioDeviceRef : AudioDevice
    *
    * This does not takes ownership!
    */
-  AudioDeviceRef(AudioDeviceParam resource)
+  AudioDeviceRef(AudioDeviceParam resource) noexcept
     : AudioDevice(resource.value)
   {
   }
 
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource) noexcept
+    : AudioDevice(resource)
+  {
+  }
+
   /// Copy constructor.
-  AudioDeviceRef(const AudioDeviceRef& other)
+  AudioDeviceRef(const AudioDeviceRef& other) noexcept
     : AudioDevice(other.get())
   {
   }
@@ -1601,7 +1626,10 @@ class AudioStream
 
 public:
   /// Default ctor
-  constexpr AudioStream() = default;
+  constexpr AudioStream(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioStreamParam.
@@ -1610,7 +1638,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource)
+  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -1619,7 +1647,7 @@ public:
   constexpr AudioStream(const AudioStream& other) = delete;
 
   /// Move constructor
-  constexpr AudioStream(AudioStream&& other)
+  constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
   {
   }
@@ -1729,17 +1757,22 @@ public:
   ~AudioStream() { SDL_DestroyAudioStream(m_resource); }
 
   /// Assignment operator.
-  AudioStream& operator=(AudioStream other)
+  constexpr AudioStream& operator=(AudioStream&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioStream& operator=(const AudioStream& other) noexcept = default;
+
+public:
   /// Retrieves underlying AudioStreamRaw.
-  constexpr AudioStreamRaw get() const { return m_resource; }
+  constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AudioStreamRaw and clear this.
-  constexpr AudioStreamRaw release()
+  constexpr AudioStreamRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -1747,16 +1780,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AudioStream& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const AudioStream& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AudioStreamParam
-  constexpr operator AudioStreamParam() const { return {m_resource}; }
+  constexpr operator AudioStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Free an audio stream.
@@ -2699,6 +2729,8 @@ public:
 /// Semi-safe reference for AudioStream.
 struct AudioStreamRef : AudioStream
 {
+  using AudioStream::AudioStream;
+
   /**
    * Constructs from AudioStreamParam.
    *
@@ -2706,13 +2738,25 @@ struct AudioStreamRef : AudioStream
    *
    * This does not takes ownership!
    */
-  AudioStreamRef(AudioStreamParam resource)
+  AudioStreamRef(AudioStreamParam resource) noexcept
     : AudioStream(resource.value)
   {
   }
 
+  /**
+   * Constructs from AudioStreamParam.
+   *
+   * @param resource a AudioStreamRaw or AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  AudioStreamRef(AudioStreamRaw resource) noexcept
+    : AudioStream(resource)
+  {
+  }
+
   /// Copy constructor.
-  AudioStreamRef(const AudioStreamRef& other)
+  AudioStreamRef(const AudioStreamRef& other) noexcept
     : AudioStream(other.get())
   {
   }
@@ -3953,39 +3997,9 @@ inline void AudioStream::PutData(SourceBytes buf)
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
  */
-using AudioStreamDataCompleteCallback = SDL_AudioStreamDataCompleteCallback;
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-/**
- * A callback that fires for completed AudioStream.PutDataNoCopy() data.
- *
- * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
- * it's not safe to dispose of the data until the stream has completely consumed
- * it. Often times it's difficult to know exactly when this has happened.
- *
- * This callback fires once when the stream no longer needs the buffer, allowing
- * the app to easily free or reuse it.
- *
- * @param buf the pointer provided to AudioStream.PutDataNoCopy().
- * @param buflen the size of buffer, in bytes, provided to
- *               AudioStream.PutDataNoCopy().
- *
- * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
- *               serialize access; this lock will be held before your callback
- *               is called, so your callback does not need to manage the lock
- *               explicitly.
- *
- * @since This datatype is available since SDL 3.4.0.
- *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
- * @sa AudioStreamDataCompleteCallback
- */
-using AudioStreamDataCompleteCB = std::function<void(const void*, int)>;
+using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
+                                                       const void* buf,
+                                                       int buflen);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 

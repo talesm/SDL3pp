@@ -1397,7 +1397,7 @@ inline void PushEvent(const Event& event)
  * @sa SetEventFilter
  * @sa AddEventWatch
  */
-using EventFilter = SDL_EventFilter;
+using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
 
 /**
  * A std::function used for callbacks that watch the event queue.
@@ -1418,18 +1418,29 @@ using EventFilter = SDL_EventFilter;
  * @sa AddEventWatch
  * @sa EventFilter
  */
-using EventFilterCB = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(Event* event)>;
 
 /**
- * Handle returned by AddEventWatch(EventFilterCB)
+ * A std::function used for callbacks that watch the event queue.
  *
- * This can be used later to remove the event filter
- * RemoveEventWatch(EventFilterHandle).
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa SetEventFilter()
+ * @sa AddEventWatch()
+ * @sa EventFilter
  */
-struct EventWatchHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
 
 /**
  * Set up a filter to process all events before they are added to the internal
@@ -1473,8 +1484,7 @@ struct EventWatchHandle : CallbackHandle
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueCallbackWrapper<EventFilterCB>::erase();
-  return SDL_SetEventFilter(filter, userdata);
+  SDL_SetEventFilter(filter, userdata);
 }
 
 /**
@@ -1518,14 +1528,12 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * @sa PeepEvents
  * @sa PushEvent
  */
-inline void SetEventFilter(EventFilterCB filter = {})
+inline void SetEventFilter(EventFilterCB filter)
 {
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-  SDL_SetEventFilter(
-    [](void* userdata, SDL_Event* event) {
-      return Wrapper::Call(userdata, *event);
-    },
-    Wrapper::Wrap(std::move(filter)));
+  static EventFilterCB staticFilter;
+  staticFilter = filter;
+  SetEventFilter([](void*, Event* event) { return staticFilter(event); },
+                 nullptr);
 }
 
 /**
@@ -1548,47 +1556,6 @@ inline void SetEventFilter(EventFilterCB filter = {})
 inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
   CheckError(SDL_GetEventFilter(filter, userdata));
-}
-
-/**
- * Query the current event filter.
- *
- * This function can be used to "chain" filters, by saving the existing filter
- * before replacing it with a function that will call that saved filter.
- *
- * @returns EventFilterCB on success or false if there is no event filter set.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa SetEventFilter
- */
-inline EventFilterCB GetEventFilter()
-{
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-
-  EventFilter filter;
-  void* userdata;
-  GetEventFilter(&filter, &userdata);
-  if (!userdata)
-    return [filter](const Event& event) {
-      return filter(nullptr, const_cast<Event*>(&event));
-    };
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [filter, userdata](const Event& event) {
-    return filter(userdata, const_cast<Event*>(&event));
-  };
-}
-
-/// @private
-inline bool EventWatchAuxCallback(void* userdata, Event* event)
-{
-  auto& f = *static_cast<EventFilterCB*>(userdata);
-  return f(*event);
 }
 
 /**
@@ -1643,9 +1610,7 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * set with SetEventFilter(), nor for events posted by the user through
  * PeepEvents().
  *
- * @param filter an EventFilterCB to call when an event happens.
- * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
- *          success.
+ * @param filter an EventFilter function to call when an event happens.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1657,15 +1622,9 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * @sa RemoveEventWatch
  * @sa SetEventFilter
  */
-inline EventWatchHandle AddEventWatch(EventFilterCB filter)
+inline void AddEventWatch(EventWatcherCB filter)
 {
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  auto cb = Wrapper::Wrap(std::move(filter));
-  if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return EventWatchHandle{cb};
+  AddEventWatch(filter.wrapper, filter.data);
 }
 
 /**
@@ -1686,25 +1645,6 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
   SDL_RemoveEventWatch(filter, userdata);
-}
-
-/**
- * Remove an event watch callback added with AddEventWatch().
- *
- * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa AddEventWatch(EventFilterCB)
- */
-inline void RemoveEventWatch(EventWatchHandle handle)
-{
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  Wrapper::release(handle);
 }
 
 /**
@@ -1752,9 +1692,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
 inline void FilterEvents(EventFilterCB filter)
 {
   return FilterEvents(
-    [](void* userdata, SDL_Event* event) {
-      auto& f = *static_cast<EventFilterCB*>(userdata);
-      return f(*event);
+    [](void* userdata, Event* event) {
+      const auto& f = *static_cast<EventFilterCB*>(userdata);
+      return f(event);
     },
     &filter);
 }

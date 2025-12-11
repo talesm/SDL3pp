@@ -21,6 +21,7 @@ export interface ApiFile {
 
 export type ApiEntryKind =
   | "alias"
+  | "concept"
   | "callback"
   | "def"
   | "enum"
@@ -63,9 +64,10 @@ export interface EntryHint {
   removeParamThis?: boolean;
   private?: boolean;
   wrapSelf?: boolean;
-  changeAccess?: "public" | "private";
+  changeAccess?: "public" | "private" | "protected";
   delegate?: string;
   methodName?: string;
+  noexcept?: boolean;
 }
 
 export interface VersionTag {
@@ -141,11 +143,29 @@ export type ApiEntryTransformMap = Dict<ApiEntryTransform | QuickTransform>;
 export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiEntryTransformMap;
   link?: ApiEntryTransform;
-  enum?: true | string | EnumerationDefinition;
+  callback?: boolean | FunctorSupport | CallbackDefinition;
+  enum?: boolean | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
   resource?: boolean | string | ResourceDefinition;
   before?: string;
   after?: string;
+}
+
+export type FunctorSupport = "std" | "lightweight";
+
+export interface CallbackDefinition {
+  functorSupport?: boolean | FunctorSupport;
+
+  userdataIndex?: number;
+
+  /// The return type. By default the raw callback's return type
+  type?: string;
+
+  /// The parameters. By default the raw callback's return type
+  parameters?: ApiParameters;
+
+  /// Wrapped name
+  wrapper?: string;
 }
 
 export interface ResourceDefinition {

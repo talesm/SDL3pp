@@ -29,31 +29,19 @@
  using MSG = ::MSG;
  
  /**
-@@ -94,7 +102,6 @@
-  * should continue to be processed, or false to prevent further processing.
-  *
-  * @param callback the WindowsMessageHook function to call.
-- * @param userdata a pointer to pass to every iteration of `callback`.
-  *
-  * @since This function is available since SDL 3.2.0.
-  *
-@@ -103,9 +110,14 @@
-  */
- inline void SetWindowsMessageHook(WindowsMessageHookCB callback)
- {
--  static_assert(false, "Not implemented");
-+  using Wrapper = UniqueCallbackWrapper<WindowsMessageHookCB>;
-+  SetWindowsMessageHook(&Wrapper::CallSuffixed,
-+                        Wrapper::Wrap(std::move(callback)));
+@@ -64,6 +72,11 @@
+   SDL_SetWindowsMessageHook(callback, userdata);
  }
-+#endif // SDL_PLATFORM_WINDOWS
  
++#endif // SDL_PLATFORM_WINDOWS
++
 +#if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
 +  defined(SDL3PP_DOC)
++
  /**
   * Get the D3D9 adapter index that matches the specified display.
   *
-@@ -144,6 +156,9 @@
+@@ -102,6 +115,9 @@
    CheckError(SDL_GetDXGIOutputInfo(displayID, adapterIndex, outputIndex));
  }
  
@@ -63,19 +51,8 @@
  using XEvent = ::XEvent;
  
  /**
-@@ -214,15 +229,18 @@
-  * continue to be processed, or false to prevent further processing.
-  *
-  * @param callback the X11EventHook function to call.
-- * @param userdata a pointer to pass to every iteration of `callback`.
-  *
-  * @since This function is available since SDL 3.2.0.
-  */
- inline void SetX11EventHook(X11EventHookCB callback)
- {
--  static_assert(false, "Not implemented");
-+  using Wrapper = UniqueCallbackWrapper<X11EventHookCB>;
-+  SDL_SetX11EventHook(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
+@@ -142,6 +158,9 @@
+   SDL_SetX11EventHook(callback, userdata);
  }
  
 +/* Platform specific functions for Linux*/
@@ -84,7 +61,7 @@
  /**
   * Sets the UNIX nice value for a thread.
   *
-@@ -260,6 +278,13 @@
+@@ -179,6 +198,13 @@
      SDL_SetLinuxThreadPriorityAndPolicy(threadID, sdlPriority, schedPolicy));
  }
  
@@ -98,25 +75,7 @@
  /**
   * The prototype for an Apple iOS animation callback.
   *
-@@ -365,7 +390,6 @@
-  * @param window the window for which the animation callback should be set.
-  * @param interval the number of frames after which **callback** will be called.
-  * @param callback the function to call for every frame.
-- * @param callbackParam a pointer that is passed to `callback`.
-  * @throws Error on failure.
-  *
-  * @since This function is available since SDL 3.2.0.
-@@ -376,7 +400,8 @@
-                                     int interval,
-                                     iOSAnimationCB callback)
- {
--  static_assert(false, "Not implemented");
-+  using Wrapper = UniqueCallbackWrapper<iOSAnimationCB>;
-+  SetiOSAnimationCallback(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
- }
- 
- /**
-@@ -392,6 +417,13 @@
+@@ -253,6 +279,13 @@
   */
  inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  
@@ -130,38 +89,22 @@
  /**
   * Get the Android Java Native Interface Environment of the current thread.
   *
-@@ -520,8 +552,6 @@
- constexpr Uint32 ANDROID_EXTERNAL_STORAGE_WRITE =
-   SDL_ANDROID_EXTERNAL_STORAGE_WRITE;
- 
--#error "RequestAndroidPermissionCB (plc)"
--
+@@ -498,13 +531,13 @@
  /**
-  * Get the path used for internal storage for this Android application.
+  * Callback that presents a response from a RequestAndroidPermission call.
   *
-@@ -635,6 +665,21 @@
- using RequestAndroidPermissionCallback = SDL_RequestAndroidPermissionCallback;
- 
- /**
-+ * Callback that presents a response from a RequestAndroidPermission call.
-+ *
 + * @param userdata an app-controlled pointer that is passed to the callback.
-+ * @param permission the Android-specific permission name that was requested.
-+ * @param granted true if permission is granted, false if denied.
-+ *
-+ * @since This datatype is available since SDL 3.2.0.
-+ *
-+ * @sa RequestAndroidPermission
-+ * @sa RequestAndroidPermissionCallback
-+ */
-+using RequestAndroidPermissionCB =
-+  std::function<void(const char* permission, bool granted)>;
-+
-+/**
-  * Request permissions at runtime, asynchronously.
+  * @param permission the Android-specific permission name that was requested.
+  * @param granted true if permission is granted, false if denied.
   *
-  * You do not need to call this for built-in functionality of SDL; recording
-@@ -700,7 +745,6 @@
+  * @since This datatype is available since SDL 3.2.0.
+  *
+  * @sa RequestAndroidPermission
+- *
+  * @sa RequestAndroidPermissionCallback
+  */
+ using RequestAndroidPermissionCB =
+@@ -576,7 +609,6 @@
   *
   * @param permission the permission to request.
   * @param cb the callback to trigger when the request has a response.
@@ -169,7 +112,7 @@
   * @returns true if the request was submitted, false if there was an error
   *          submitting. The result of the request is only ever reported through
   *          the callback, not this return value.
-@@ -712,7 +756,12 @@
+@@ -588,7 +620,12 @@
  inline bool RequestAndroidPermission(StringParam permission,
                                       RequestAndroidPermissionCB cb)
  {
@@ -183,7 +126,7 @@
  }
  
  /**
-@@ -768,6 +817,8 @@
+@@ -644,6 +681,8 @@
    CheckError(SDL_SendAndroidMessage(command, param));
  }
  
@@ -192,7 +135,7 @@
  /**
   * Query if the current device is a tablet.
   *
-@@ -934,6 +985,8 @@
+@@ -810,6 +849,8 @@
    SDL_OnApplicationDidEnterForeground();
  }
  
@@ -201,7 +144,7 @@
  /**
   * Let iOS apps with external event handling report
   * onApplicationDidChangeStatusBarOrientation.
-@@ -954,8 +1007,14 @@
+@@ -830,8 +871,14 @@
    SDL_OnApplicationDidChangeStatusBarOrientation();
  }
  
@@ -216,7 +159,7 @@
  using XUserHandle = ::XUserHandle;
  
  /**
-@@ -991,6 +1050,7 @@
+@@ -867,6 +914,7 @@
  {
    return SDL_GetGDKDefaultUser(outUserHandle);
  }

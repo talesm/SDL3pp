@@ -5,6 +5,7 @@
 #include <SDL3/SDL_init.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
+#include "SDL3pp_events.h"
 #include "SDL3pp_log.h"
 #include "SDL3pp_strings.h"
 
@@ -146,7 +147,9 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppInit_func = SDL_AppInit_func;
+using AppInit_func = AppResult(SDLCALL*)(void** appstate,
+                                         int argc,
+                                         char* argv[]);
 
 /**
  * Function pointer typedef for SDL_AppIterate.
@@ -161,7 +164,7 @@ using AppInit_func = SDL_AppInit_func;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppIterate_func = SDL_AppIterate_func;
+using AppIterate_func = AppResult(SDLCALL*)(void* appstate);
 
 /**
  * Function pointer typedef for SDL_AppEvent.
@@ -177,7 +180,7 @@ using AppIterate_func = SDL_AppIterate_func;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppEvent_func = SDL_AppEvent_func;
+using AppEvent_func = AppResult(SDLCALL*)(void* appstate, Event* event);
 
 /**
  * Function pointer typedef for SDL_AppQuit.
@@ -191,7 +194,7 @@ using AppEvent_func = SDL_AppEvent_func;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AppQuit_func = SDL_AppQuit_func;
+using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
 
 /// @}
 
@@ -348,7 +351,7 @@ inline bool IsMainThread() { return SDL_IsMainThread(); }
  *
  * @sa RunOnMainThread
  */
-using MainThreadCallback = SDL_MainThreadCallback;
+using MainThreadCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Callback run on the main thread.

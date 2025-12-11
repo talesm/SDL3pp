@@ -4771,7 +4771,10 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
  *
  * @sa AddHintCallback
  */
-using HintCallback = SDL_HintCallback;
+using HintCallback = void(SDLCALL*)(void* userdata,
+                                    const char* name,
+                                    const char* oldValue,
+                                    const char* newValue);
 
 /**
  * A callback used to send notifications of hint value changes.
@@ -4793,13 +4796,8 @@ using HintCallback = SDL_HintCallback;
  *
  * @sa HintCallback
  */
-using HintCB = std::function<void(const char*, const char*, const char*)>;
-
-/// Handle returned by AddHintCallback()
-struct HintCallbackHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using HintCB = MakeFrontCallback<
+  void(const char* name, const char* oldValue, const char* newValue)>;
 
 /**
  * Add a function to watch a particular hint.
@@ -4844,7 +4842,7 @@ inline void AddHintCallback(StringParam name,
  *
  * @sa RemoveHintCallback
  */
-inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+inline void AddHintCallback(StringParam name, HintCB callback)
 {
   static_assert(false, "Not implemented");
 }
@@ -4868,25 +4866,6 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param callback an HintCallback function that will be called when the hint
- *                 value changes.
- * @param userdata a pointer being passed to the callback function.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
-{
-  static_assert(false, "Not implemented");
 }
 
 /// @}

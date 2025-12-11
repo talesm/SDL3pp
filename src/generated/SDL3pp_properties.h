@@ -115,7 +115,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @sa Properties.Enumerate
  */
-using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+using EnumeratePropertiesCallback = void(SDLCALL*)(void* userdata,
+                                                   PropertiesID props,
+                                                   const char* name);
 
 /**
  * A callback used to enumerate all the properties in a group of properties.
@@ -161,7 +163,7 @@ using EnumeratePropertiesCB =
  *
  * @sa Properties.SetPointerPropertyWithCleanup
  */
-using CleanupPropertyCallback = SDL_EnumeratePropertiesCallback;
+using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 
 /**
  * A callback used to free resources when a property is deleted.
@@ -187,7 +189,7 @@ using CleanupPropertyCallback = SDL_EnumeratePropertiesCallback;
  *
  * @sa CleanupPropertyCallback
  */
-using CleanupPropertyCB = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
  * An ID that represents a properties set.
@@ -202,7 +204,10 @@ class Properties
 
 public:
   /// Default ctor
-  constexpr Properties() = default;
+  constexpr Properties(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from PropertiesParam.
@@ -211,7 +216,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource)
+  constexpr explicit Properties(const PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -220,7 +225,7 @@ public:
   constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
-  constexpr Properties(Properties&& other)
+  constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
   {
   }
@@ -249,17 +254,22 @@ public:
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
-  Properties& operator=(Properties other)
+  constexpr Properties& operator=(Properties&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Properties& operator=(const Properties& other) noexcept = default;
+
+public:
   /// Retrieves underlying PropertiesID.
-  constexpr PropertiesID get() const { return m_resource; }
+  constexpr PropertiesID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PropertiesID and clear this.
-  constexpr PropertiesID release()
+  constexpr PropertiesID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -267,16 +277,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Properties& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Properties& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const { return {m_resource}; }
+  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -696,6 +703,8 @@ public:
 /// Semi-safe reference for Properties.
 struct PropertiesRef : Properties
 {
+  using Properties::Properties;
+
   /**
    * Constructs from PropertiesParam.
    *
@@ -703,13 +712,25 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesParam resource)
+  PropertiesRef(PropertiesParam resource) noexcept
     : Properties(resource.value)
   {
   }
 
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
+  PropertiesRef(PropertiesID resource) noexcept
+    : Properties(resource)
+  {
+  }
+
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other)
+  PropertiesRef(const PropertiesRef& other) noexcept
     : Properties(other.get())
   {
   }

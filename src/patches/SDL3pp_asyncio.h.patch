@@ -9,7 +9,7 @@
   *
   * SDL offers a way to perform I/O asynchronously. This allows an app to read or
   * write files without waiting for data to actually transfer; the functions that
-@@ -246,7 +246,13 @@
+@@ -249,7 +249,13 @@
    }
  
    /// Destructor
@@ -23,8 +23,8 @@
 +  }
  
    /// Assignment operator.
-   AsyncIO& operator=(AsyncIO other)
-@@ -324,7 +330,7 @@
+   constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
+@@ -329,7 +335,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     */
@@ -33,17 +33,16 @@
  
    /**
     * Use this function to get the size of the data stream in an AsyncIO.
-@@ -508,9 +514,6 @@
-   AsyncIOQueueRaw m_resource = nullptr;
+@@ -528,7 +534,7 @@
  
  public:
--  /// Default ctor
--  constexpr AsyncIOQueue() = default;
--
-   /**
-    * Constructs from AsyncIOQueueParam.
-    *
-@@ -631,9 +634,8 @@
+   /// Default ctor
+-  constexpr AsyncIOQueue(std::nullptr_t = nullptr) noexcept
++  constexpr AsyncIOQueue(std::nullptr_t) noexcept
+     : m_resource(0)
+   {
+   }
+@@ -657,9 +663,8 @@
     * It is safe for multiple threads to call this function on the same queue at
     * once; a completed task will only go to one of the threads.
     *
@@ -55,7 +54,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -672,11 +674,9 @@
+@@ -698,11 +703,9 @@
     * polling, it is possible to have a timeout of -1 to wait forever, and use
     * AsyncIOQueue.Signal() to wake up the waiting threads later.
     *
@@ -70,7 +69,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -715,11 +715,8 @@
+@@ -741,11 +744,8 @@
     * polling, it is possible to have a timeout of -1 to wait forever, and use
     * AsyncIOQueue.Signal() to wake up the waiting threads later.
     *
@@ -84,7 +83,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -984,24 +981,25 @@
+@@ -1024,24 +1024,25 @@
   * @param queue a queue to add the new AsyncIO to.
   * @param userdata an app-defined pointer that will be provided with the task
   *                 results.
@@ -116,7 +115,7 @@
  }
  
  /**
-@@ -1071,9 +1069,8 @@
+@@ -1111,9 +1112,8 @@
   * once; a completed task will only go to one of the threads.
   *
   * @param queue the async I/O task queue to query.
@@ -128,7 +127,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1083,7 +1080,10 @@
+@@ -1123,7 +1123,10 @@
   */
  inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueParam queue)
  {
@@ -140,7 +139,7 @@
  }
  
  inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
-@@ -1120,11 +1120,9 @@
+@@ -1160,11 +1163,9 @@
   * AsyncIOQueue.Signal() to wake up the waiting threads later.
   *
   * @param queue the async I/O task queue to wait on.
@@ -155,7 +154,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1135,7 +1133,11 @@
+@@ -1175,7 +1176,11 @@
  inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
                                                         Milliseconds timeout)
  {
@@ -168,7 +167,7 @@
  }
  
  /**
-@@ -1167,11 +1169,8 @@
+@@ -1207,11 +1212,8 @@
   * AsyncIOQueue.Signal() to wake up the waiting threads later.
   *
   * @param queue the async I/O task queue to wait on.
@@ -182,7 +181,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1181,7 +1180,10 @@
+@@ -1221,7 +1223,10 @@
   */
  inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue)
  {

@@ -321,7 +321,10 @@ class Renderer
 
 public:
   /// Default ctor
-  constexpr Renderer() = default;
+  constexpr Renderer(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from RendererParam.
@@ -330,7 +333,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource)
+  constexpr explicit Renderer(const RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -339,7 +342,7 @@ public:
   constexpr Renderer(const Renderer& other) = delete;
 
   /// Move constructor
-  constexpr Renderer(Renderer&& other)
+  constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
   {
   }
@@ -514,17 +517,22 @@ public:
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
 
   /// Assignment operator.
-  Renderer& operator=(Renderer other)
+  constexpr Renderer& operator=(Renderer&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
+
+public:
   /// Retrieves underlying RendererRaw.
-  constexpr RendererRaw get() const { return m_resource; }
+  constexpr RendererRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying RendererRaw and clear this.
-  constexpr RendererRaw release()
+  constexpr RendererRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -532,16 +540,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Renderer& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Renderer& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to RendererParam
-  constexpr operator RendererParam() const { return {m_resource}; }
+  constexpr operator RendererParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -2399,6 +2404,8 @@ public:
 /// Semi-safe reference for Renderer.
 struct RendererRef : Renderer
 {
+  using Renderer::Renderer;
+
   /**
    * Constructs from RendererParam.
    *
@@ -2406,13 +2413,25 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererParam resource)
+  RendererRef(RendererParam resource) noexcept
     : Renderer(resource.value)
   {
   }
 
+  /**
+   * Constructs from RendererParam.
+   *
+   * @param resource a RendererRaw or Renderer.
+   *
+   * This does not takes ownership!
+   */
+  RendererRef(RendererRaw resource) noexcept
+    : Renderer(resource)
+  {
+  }
+
   /// Copy constructor.
-  RendererRef(const RendererRef& other)
+  RendererRef(const RendererRef& other) noexcept
     : Renderer(other.get())
   {
   }
@@ -2439,7 +2458,10 @@ class Texture
 
 public:
   /// Default ctor
-  constexpr Texture() = default;
+  constexpr Texture(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextureParam.
@@ -2448,7 +2470,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource)
+  constexpr explicit Texture(const TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2457,7 +2479,7 @@ public:
   constexpr Texture(const Texture& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Texture(Texture&& other)
+  constexpr Texture(Texture&& other) noexcept
     : Texture(other.release())
   {
   }
@@ -2739,26 +2761,29 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const { return m_resource; }
+  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
-  constexpr TextureRaw operator->() { return m_resource; }
+  constexpr TextureRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
   /// Assignment operator.
-  Texture& operator=(Texture other)
+  constexpr Texture& operator=(Texture&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr Texture& operator=(const Texture& other) noexcept = default;
+
   /// Retrieves underlying TextureRaw.
-  constexpr TextureRaw get() const { return m_resource; }
+  constexpr TextureRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextureRaw and clear this.
-  constexpr TextureRaw release()
+  constexpr TextureRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -2766,16 +2791,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Texture& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Texture& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextureParam
-  constexpr operator TextureParam() const { return {m_resource}; }
+  constexpr operator TextureParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the specified texture.

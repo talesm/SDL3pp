@@ -308,27 +308,21 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
  * @{
  */
 
-/** A typesafe handle for callback */
-class CallbackHandle
-{
-  void* id;
+template<class F>
+struct CallbackWrapper;
 
-public:
-  /// @private
-  constexpr explicit CallbackHandle(void* id = nullptr)
-    : id(id)
-  {
-  }
-  /// Get Internal id
-  constexpr void* get() const { return id; }
-
-  /// True if has a valid id
-  constexpr operator bool() const { return id != 0; }
-};
-
-/// Base class for callback wrappers
+/**
+ * @brief Wrapper [result callbacks](#result-callback).
+ *
+ * @tparam F the function type.
+ *
+ * For the simpler case, where no transformation is done on the parameters, you
+ * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
+ *
+ * In all cases, use Wrap to change the callback into a void* pointer.
+ */
 template<class Result, class... Args>
-struct CallbackWrapperBase
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   /// The wrapped std::function type
   using ValueType = std::function<Result(Args...)>;
@@ -352,29 +346,8 @@ struct CallbackWrapperBase
     auto& f = Unwrap(handle);
     return f(args...);
   }
-};
 
-template<class F>
-struct CallbackWrapper;
-
-/**
- * @brief Wrapper [result callbacks](#result-callback).
- *
- * @tparam F the function type.
- *
- * For the simpler case, where no transformation is done on the parameters, you
- * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
- *
- * In all cases, use Wrap to change the callback into a void* pointer.
- */
-template<class Result, class... Args>
-struct CallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
-{
   CallbackWrapper() = delete;
-
-  /// The wrapped std::function type
-  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the callback into a void* pointer.
@@ -416,206 +389,129 @@ struct CallbackWrapper<std::function<Result(Args...)>>
     delete ptr;
     return value;
   }
+};
 
-  /// Return unwrapped value of handle.
-  static const ValueType release(CallbackHandle handle)
+/**
+ * Lightweight wrapper.
+ *
+ * @tparam SELF a CRTP class
+ */
+template<class SELF, class R, class... PARAMS>
+struct LightweightCallbackT
+{
+  /// The wrapper function
+  R (*wrapper)(void*, PARAMS...);
+
+  /// The wrapped data
+  void* data;
+
+  /// ctor
+  template<class F>
+  LightweightCallbackT(const F& func)
   {
-    return release(handle.get());
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](void* userdata, PARAMS... params) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
 /**
- * @brief Wrapper key to value [result callbacks](#result-callback).
+ * Lightweight wrapper.
  *
- * @tparam KEY the key type.
- * @tparam VALUE the value type.
- * @tparam VARIANT the variant, if more than one listener type is associated.
- *
+ * @tparam SELF a CRTP class
  */
-template<class KEY, class VALUE, size_t VARIANT = 0>
-struct KeyValueWrapper
+template<class SELF, class R, class... PARAMS>
+struct LightweightTrailingCallbackT
 {
-  static_assert(sizeof(KEY) <= sizeof(void*));
-  KeyValueWrapper() = delete;
+  /// The wrapper function
+  R (*wrapper)(PARAMS..., void*);
 
-  /// Key type
-  using KeyType = KEY;
+  /// The wrapped data
+  void* data;
 
-  /// Value type.
-  using ValueType = VALUE;
-
-  /**
-   * @brief Change the value into a void* pointer held by key.
-   *
-   * @param key
-   * @param value
-   * @return void*
-   */
-  static ValueType* Wrap(KeyType key, ValueType&& value)
+  /// ctor
+  template<class F>
+  LightweightTrailingCallbackT(const F& func)
   {
-    auto lockGuard = lock();
-    return &Values().insert_or_assign(key, std::move(value)).first->second;
-  }
-
-  /// True if handle is stored.
-  static bool contains(KeyType handle)
-  {
-    auto lockGuard = lock();
-    return Values().contains(handle);
-  }
-
-  /// Return unwrapped value of handle.
-  static const ValueType& at(KeyType handle)
-  {
-    auto lockGuard = lock();
-    return Values().at(handle);
-  }
-
-  /// Return unwrapped value associated by key and remove association.
-  static ValueType release(KeyType key)
-  {
-    auto lockGuard = lock();
-    auto& values = Values();
-    auto it = values.find(key);
-    if (it == values.end()) return {};
-    ValueType value{std::move(it->second)};
-    values.erase(it);
-    return value;
-  }
-
-  /**
-   * Remove association.
-   *
-   * @param key the key associated.
-   * @return true if the key was associated and was erased, false otherwise.
-   */
-  static bool erase(KeyType key)
-  {
-    auto lockGuard = lock();
-    return Values().erase(key);
-  }
-
-private:
-  static std::map<KeyType, ValueType>& Values()
-  {
-    static std::map<KeyType, ValueType> values;
-    return values;
-  }
-
-  static std::lock_guard<std::mutex> lock()
-  {
-    static std::mutex uniqueMutex;
-    return std::lock_guard{uniqueMutex};
+    static_assert(sizeof(func) <= sizeof(data), "Function must fit size_t");
+    union PunAux
+    {
+      void* ptr;
+      F func;
+    };
+    wrapper = [](PARAMS... params, void* userdata) {
+      PunAux aux{.ptr = userdata};
+      return SELF::doCall(aux.func, params...);
+    };
+    PunAux aux{.func = func};
+    data = aux.ptr;
   }
 };
 
-/// Store callbacks by key
-template<class KEY, class VALUE, size_t VARIANT = 0>
-struct KeyValueCallbackWrapper;
+template<class F>
+struct MakeFrontCallback;
 
-/// Store callbacks by key
-template<class KEY, class Result, class... Args, size_t VARIANT>
-struct KeyValueCallbackWrapper<KEY, std::function<Result(Args...)>, VARIANT>
-  : CallbackWrapperBase<Result, Args...>
-  , KeyValueWrapper<KEY, std::function<Result(Args...)>, VARIANT>
+/**
+ * Make Front Callback
+ *
+ * @tparam R
+ * @tparam PARAMS
+ */
+template<class R, class... PARAMS>
+struct MakeFrontCallback<R(PARAMS...)>
+  : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>
 {
-  KeyValueCallbackWrapper() = delete;
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  MakeFrontCallback(const F& func)
+    : LightweightCallbackT<MakeFrontCallback<R(PARAMS...)>, R, PARAMS...>(func)
+  {
+  }
 
-  /// Wrapped type.
-  using ValueType = std::function<Result(Args...)>;
+  /// @private
+  template<std::invocable<PARAMS...> F>
+  static R doCall(F& func, PARAMS... params)
+  {
+    return func(params...);
+  }
 };
 
+template<class F>
+struct MakeBackCallback;
+
 /**
- * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
+ * Make Back Callback
  *
- * @tparam VALUE the function type.
+ * @tparam R
+ * @tparam PARAMS
  */
-template<class VALUE>
-struct UniqueCallbackWrapper;
-
-/**
- * @brief Stored Wrapper unique by type [result callbacks](#result-callback).
- */
-template<class Result, class... Args>
-struct UniqueCallbackWrapper<std::function<Result(Args...)>>
-  : CallbackWrapperBase<Result, Args...>
+template<class R, class... PARAMS>
+struct MakeBackCallback<R(PARAMS...)>
+  : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>, R, PARAMS...>
 {
-  UniqueCallbackWrapper() = delete;
-
-  /// Wrapped type.
-  using ValueType = std::function<Result(Args...)>;
-
-  /**
-   * @brief Change the value into a void* pointer held uniquely by this type.
-   *
-   * @param value
-   * @return void*
-   */
-  static ValueType* Wrap(ValueType&& value)
+  /// ctor
+  template<std::invocable<PARAMS...> F>
+  MakeBackCallback(const F& func)
+    : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>,
+                                   R,
+                                   PARAMS...>(func)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    v = std::move(value);
-    return &v;
   }
 
-  /// True if handle equals to wrapped value.
-  static bool contains(void* handle)
+  /// @private
+  template<std::invocable<PARAMS...> F>
+  static R doCall(const F& func, PARAMS... params)
   {
-    auto lockGuard = lock();
-    auto& v = Value();
-    return bool(v) && &v == handle;
-  }
-
-  /// Return wrapped type, if handle is contained.
-  static ValueType at(void* handle)
-  {
-    if (&get() == handle) {
-      return CallbackWrapperBase<Result, Args...>::Unwrap(handle);
-    }
-    return {};
-  }
-
-  /// Return wrapped type, if handle is contained.
-  static const ValueType& get()
-  {
-    auto lockGuard = lock();
-    return Value();
-  }
-
-  /// Return wrapped type and erase it from store.
-  static ValueType release()
-  {
-    auto lockGuard = lock();
-    ValueType value{std::move(Value())};
-    return value;
-  }
-
-  /// Return wrapped type and erase it from store.
-  static ValueType release(void* handle)
-  {
-    SDL_assert_paranoid(&get() == handle);
-    return release();
-  }
-
-  /// Erase value from store.
-  static void erase()
-  {
-    auto lockGuard = lock();
-    Value() = {};
-  }
-
-private:
-  static ValueType& Value()
-  {
-    static ValueType value;
-    return value;
-  }
-
-  static std::lock_guard<std::mutex> lock()
-  {
-    static std::mutex uniqueMutex;
-    return std::lock_guard{uniqueMutex};
+    return func(params...);
   }
 };
 
@@ -1614,6 +1510,20 @@ inline int GetVersion() { return SDL_GetVersion(); }
  */
 inline const char* GetRevision() { return SDL_GetRevision(); }
 
+/// The current major version of SDL3pp wrapper.
+#define SDL3PP_MAJOR_VERSION 0
+
+/// The current minor version of SDL3pp wrapper.
+#define SDL3PP_MINOR_VERSION 5
+
+/// The current patch version of SDL3pp wrapper.
+#define SDL3PP_PATCH_VERSION 3
+
+/// This is the version number macro for the current SDL3pp wrapper version.
+#define SDL3PP_VERSION                                                         \
+  SDL_VERSIONNUM(                                                              \
+    SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)
+
 /// @}
 
 /**
@@ -2441,10 +2351,11 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using AssertionHandler = SDL_AssertionHandler;
+using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
+                                               void* userdata);
 
 /**
- * A @ref callback that fires when an SDL assertion fails.
+ * A callback that fires when an SDL assertion fails.
  *
  * @param data a pointer to the AssertData structure corresponding to the
  *             current assertion.
@@ -2458,7 +2369,7 @@ using AssertionHandler = SDL_AssertionHandler;
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  std::function<SDL_AssertState(const SDL_AssertData*)>;
+  MakeBackCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -2485,8 +2396,7 @@ using AssertionHandlerCB =
  */
 inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
-  UniqueCallbackWrapper<AssertionHandlerCB>::erase();
-  SDL_SetAssertionHandler(handler, userdata);
+  return SDL_SetAssertionHandler(handler, userdata);
 }
 
 /**
@@ -2502,7 +2412,8 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  *
  * This callback is NOT reset to SDL's internal handler upon Quit()!
  *
- * @param handler the AssertionHandler function to call when an assertion fails.
+ * @param handler the AssertionHandler function to call when an assertion fails
+ *                or nullptr for the default handler.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2512,9 +2423,7 @@ inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  */
 inline void SetAssertionHandler(AssertionHandlerCB handler)
 {
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  SetAssertionHandler(&Wrapper::CallSuffixed,
-                      Wrapper::Wrap(std::move(handler)));
+  SetAssertionHandler(handler.wrapper, handler.data);
 }
 
 /**
@@ -2565,37 +2474,6 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
 {
   return SDL_GetAssertionHandler(puserdata);
 }
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to SetAssertionHandler(), or
- * if no application-specified function is set, is equivalent to calling
- * GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SetAssertionHandler(). This value will
- * always be nullptr for the default handler. If you don't care about this data,
- * it is safe to pass a nullptr pointer to this function to ignore it.
- *
- * @returns the AssertionHandlerCB that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAssertionHandler
- */
-inline AssertionHandlerCB GetAssertionHandler()
-{
-  using Wrapper = UniqueCallbackWrapper<AssertionHandlerCB>;
-  void* userdata = nullptr;
-  auto cb = GetAssertionHandler(&userdata);
-  if (Wrapper::contains(userdata)) return Wrapper::Unwrap(userdata);
-  return [cb, userdata](const AssertData* data) { return cb(data, userdata); };
-}
-
 /**
  * Get a list of all assertion failures.
  *
@@ -7715,7 +7593,10 @@ inline bool GetHintBoolean(StringParam name, bool default_value)
  *
  * @sa AddHintCallback
  */
-using HintCallback = SDL_HintCallback;
+using HintCallback = void(SDLCALL*)(void* userdata,
+                                    const char* name,
+                                    const char* oldValue,
+                                    const char* newValue);
 
 /**
  * A callback used to send notifications of hint value changes.
@@ -7737,13 +7618,8 @@ using HintCallback = SDL_HintCallback;
  *
  * @sa HintCallback
  */
-using HintCB = std::function<void(const char*, const char*, const char*)>;
-
-/// Handle returned by AddHintCallback()
-struct HintCallbackHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using HintCB = MakeFrontCallback<
+  void(const char* name, const char* oldValue, const char* newValue)>;
 
 /**
  * Add a function to watch a particular hint.
@@ -7779,7 +7655,6 @@ inline void AddHintCallback(StringParam name,
  * @param name the hint to watch.
  * @param callback An HintCallback function that will be called when the hint
  *                 value changes.
- * @returns a handle to be used on RemoveHintCallback()
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -7788,15 +7663,9 @@ inline void AddHintCallback(StringParam name,
  *
  * @sa RemoveHintCallback
  */
-inline HintCallbackHandle AddHintCallback(StringParam name, HintCB callback)
+inline void AddHintCallback(StringParam name, HintCB callback)
 {
-  using Wrapper = CallbackWrapper<HintCB>;
-  auto cb = Wrapper::Wrap(std::move(callback));
-  if (!SDL_AddHintCallback(name, &Wrapper::Call, cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return HintCallbackHandle{cb};
+  AddHintCallback(std::move(name), callback.wrapper, callback.data);
 }
 
 /**
@@ -7818,23 +7687,6 @@ inline void RemoveHintCallback(StringParam name,
                                void* userdata)
 {
   SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param handle the handle for the HintCallback function to be removed
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name, HintCallbackHandle handle)
-{
-  CallbackWrapper<HintCB>::release(handle);
 }
 
 /// @}
@@ -7964,7 +7816,8 @@ public:
    *
    * @param category the value to be wrapped
    */
-  constexpr LogCategory(LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION)
+  constexpr LogCategory(
+    LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION) noexcept
     : m_category(category)
   {
   }
@@ -7984,7 +7837,7 @@ public:
    *
    * @returns the underlying LogCategoryRaw.
    */
-  constexpr operator LogCategoryRaw() const { return m_category; }
+  constexpr operator LogCategoryRaw() const noexcept { return m_category; }
 
   /**
    * Set the priority of a particular log category.
@@ -8794,7 +8647,10 @@ inline void LogCategory::LogCritical(std::string_view fmt, ARGS&&... args) const
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using LogOutputFunction = SDL_LogOutputFunction;
+using LogOutputFunction = void(SDLCALL*)(void* userdata,
+                                         int category,
+                                         LogPriority priority,
+                                         const char* message);
 
 /**
  * The prototype for the log output callback function.
@@ -8813,7 +8669,8 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @sa LogOutputFunction
  */
-using LogOutputCB = std::function<void(LogCategory, LogPriority, const char*)>;
+using LogOutputCB = MakeFrontCallback<
+  void(int category, LogPriority priority, const char* message)>;
 
 /**
  * Get the default log output function.
@@ -8852,38 +8709,6 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 }
 
 /**
- * Get the current log output function.
- *
- * @returns the LogOutputCB currently set
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction
- * @sa SetLogOutputFunction
- */
-inline LogOutputCB GetLogOutputFunction()
-{
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  LogOutputFunction cb;
-  void* userdata;
-  GetLogOutputFunction(&cb, &userdata);
-  if (userdata == nullptr) {
-    return [cb](LogCategory c, LogPriority p, StringParam m) {
-      cb(nullptr, c, p, m);
-    };
-  }
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-    cb(userdata, c, p, m);
-  };
-}
-
-/**
  * Replace the default log output function with one of your own.
  *
  * @param callback an LogOutputFunction to call instead of the default.
@@ -8899,8 +8724,7 @@ inline LogOutputCB GetLogOutputFunction()
  */
 inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
 {
-  UniqueCallbackWrapper<LogOutputCB>::erase();
-  return SDL_SetLogOutputFunction(callback, userdata);
+  SDL_SetLogOutputFunction(callback, userdata);
 }
 
 /**
@@ -8912,22 +8736,13 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @cat listener-callback
- *
- * @sa listener-callback
  * @sa GetDefaultLogOutputFunction
  * @sa GetLogOutputFunction
  * @sa ResetLogOutputFunction
  */
 inline void SetLogOutputFunction(LogOutputCB callback)
 {
-  using Wrapper = UniqueCallbackWrapper<LogOutputCB>;
-  SDL_SetLogOutputFunction(
-    [](
-      void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::Call(userdata, LogCategory{category}, priority, message);
-    },
-    Wrapper::Wrap(std::move(callback)));
+  SetLogOutputFunction(callback.wrapper, callback.data);
 }
 
 /**
@@ -9356,7 +9171,7 @@ public:
    *
    * @param format the value to be wrapped
    */
-  constexpr PixelFormat(PixelFormatRaw format = {})
+  constexpr PixelFormat(PixelFormatRaw format = {}) noexcept
     : m_format(format)
   {
   }
@@ -9399,7 +9214,7 @@ public:
    *
    * @returns the underlying PixelFormatRaw.
    */
-  constexpr operator PixelFormatRaw() const { return m_format; }
+  constexpr operator PixelFormatRaw() const noexcept { return m_format; }
 
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -10599,7 +10414,7 @@ public:
    *
    * @param cspace the value to be wrapped
    */
-  constexpr Colorspace(ColorspaceRaw cspace = {})
+  constexpr Colorspace(ColorspaceRaw cspace = {}) noexcept
     : m_cspace(cspace)
   {
   }
@@ -10654,7 +10469,7 @@ public:
    *
    * @returns the underlying ColorspaceRaw.
    */
-  constexpr operator ColorspaceRaw() const { return m_cspace; }
+  constexpr operator ColorspaceRaw() const noexcept { return m_cspace; }
 
   /**
    * Retrieve the type of a Colorspace.
@@ -11083,19 +10898,19 @@ constexpr bool Colorspace::IsFullRange() const
 }
 
 /// Comparison operator for Color.
-constexpr bool operator==(ColorRaw lhs, ColorRaw rhs)
+constexpr bool operator==(ColorRaw lhs, ColorRaw rhs) noexcept
 {
   return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
 /// Comparison operator for FColor.
-constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs)
+constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
 {
   return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
 /// Spaceship operator for Color.
-constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
+constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs) noexcept
 {
   if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
   if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
@@ -11104,7 +10919,7 @@ constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
 }
 
 /// Spaceship operator for FColor.
-constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
+constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
 {
   if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
   if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
@@ -11131,7 +10946,7 @@ struct Color : ColorRaw
    *
    * @param color the value to be wrapped
    */
-  constexpr Color(ColorRaw color = {})
+  constexpr Color(ColorRaw color = {}) noexcept
     : ColorRaw(color)
   {
   }
@@ -11144,7 +10959,7 @@ struct Color : ColorRaw
    * @param b the value for channel b.
    * @param a the value for channel a.
    */
-  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255) noexcept
     : ColorRaw{r, g, b, a}
   {
   }
@@ -11154,7 +10969,7 @@ struct Color : ColorRaw
    *
    * @returns The red component from the color.
    */
-  constexpr Uint8 GetR() const { return r; }
+  constexpr Uint8 GetR() const noexcept { return r; }
 
   /**
    * Set the red component from the color.
@@ -11162,7 +10977,7 @@ struct Color : ColorRaw
    * @param newR New red component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetR(Uint8 newR)
+  constexpr Color& SetR(Uint8 newR) noexcept
   {
     r = newR;
     return *this;
@@ -11174,7 +10989,7 @@ struct Color : ColorRaw
    * @returns The green component from the color.
    *
    */
-  constexpr Uint8 GetG() const { return g; }
+  constexpr Uint8 GetG() const noexcept { return g; }
 
   /**
    * Set the green component from the color.
@@ -11182,7 +10997,7 @@ struct Color : ColorRaw
    * @param newG New green component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetG(Uint8 newG)
+  constexpr Color& SetG(Uint8 newG) noexcept
   {
     g = newG;
     return *this;
@@ -11194,7 +11009,7 @@ struct Color : ColorRaw
    * @returns The blue component from the color.
    *
    */
-  constexpr Uint8 GetB() const { return b; }
+  constexpr Uint8 GetB() const noexcept { return b; }
 
   /**
    * Set the blue component from the color.
@@ -11202,7 +11017,7 @@ struct Color : ColorRaw
    * @param newB New blue component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetB(Uint8 newB)
+  constexpr Color& SetB(Uint8 newB) noexcept
   {
     b = newB;
     return *this;
@@ -11214,7 +11029,7 @@ struct Color : ColorRaw
    * @returns The alpha component from the color.
    *
    */
-  constexpr Uint8 GetA() const { return a; }
+  constexpr Uint8 GetA() const noexcept { return a; }
 
   /**
    * Set the alpha component from the color.
@@ -11222,7 +11037,7 @@ struct Color : ColorRaw
    * @param newA New alpha component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetA(Uint8 newA)
+  constexpr Color& SetA(Uint8 newA) noexcept
   {
     a = newA;
     return *this;
@@ -11304,7 +11119,7 @@ struct FColor : FColorRaw
    *
    * @param color the value to be wrapped
    */
-  constexpr FColor(const FColorRaw& color = {})
+  constexpr FColor(const FColorRaw& color = {}) noexcept
     : FColorRaw(color)
   {
   }
@@ -11317,7 +11132,7 @@ struct FColor : FColorRaw
    * @param b the value for b.
    * @param a the value for a.
    */
-  constexpr FColor(float r, float g, float b, float a = 1)
+  constexpr FColor(float r, float g, float b, float a = 1) noexcept
     : FColorRaw{r, g, b, a}
   {
   }
@@ -11327,7 +11142,7 @@ struct FColor : FColorRaw
    *
    * @returns The red component from the color.
    */
-  constexpr float GetR() const { return r; }
+  constexpr float GetR() const noexcept { return r; }
 
   /**
    * Set the red component from the color.
@@ -11335,7 +11150,7 @@ struct FColor : FColorRaw
    * @param newR New red component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetR(float newR)
+  constexpr FColor& SetR(float newR) noexcept
   {
     r = newR;
     return *this;
@@ -11347,7 +11162,7 @@ struct FColor : FColorRaw
    * @returns The green component from the color.
    *
    */
-  constexpr float GetG() const { return g; }
+  constexpr float GetG() const noexcept { return g; }
 
   /**
    * Set the green component from the color.
@@ -11355,7 +11170,7 @@ struct FColor : FColorRaw
    * @param newG New green component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetG(float newG)
+  constexpr FColor& SetG(float newG) noexcept
   {
     g = newG;
     return *this;
@@ -11367,7 +11182,7 @@ struct FColor : FColorRaw
    * @returns The blue component from the color.
    *
    */
-  constexpr float GetB() const { return b; }
+  constexpr float GetB() const noexcept { return b; }
 
   /**
    * Set the blue component from the color.
@@ -11375,7 +11190,7 @@ struct FColor : FColorRaw
    * @param newB New blue component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetB(float newB)
+  constexpr FColor& SetB(float newB) noexcept
   {
     b = newB;
     return *this;
@@ -11387,7 +11202,7 @@ struct FColor : FColorRaw
    * @returns The alpha component from the color.
    *
    */
-  constexpr float GetA() const { return a; }
+  constexpr float GetA() const noexcept { return a; }
 
   /**
    * Set the alpha component from the color.
@@ -11395,7 +11210,7 @@ struct FColor : FColorRaw
    * @param newA New alpha component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetA(float newA)
+  constexpr FColor& SetA(float newA) noexcept
   {
     a = newA;
     return *this;
@@ -11417,7 +11232,10 @@ class Palette
 
 public:
   /// Default ctor
-  constexpr Palette() = default;
+  constexpr Palette(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from PaletteParam.
@@ -11426,7 +11244,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Palette(const PaletteRaw resource)
+  constexpr explicit Palette(const PaletteRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -11435,7 +11253,7 @@ public:
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Palette(Palette&& other)
+  constexpr Palette(Palette&& other) noexcept
     : Palette(other.release())
   {
   }
@@ -11479,26 +11297,29 @@ public:
   }
 
   /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const { return m_resource; }
+  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying PaletteRaw.
-  constexpr PaletteRaw operator->() { return m_resource; }
+  constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.
-  Palette& operator=(Palette other)
+  constexpr Palette& operator=(Palette&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr Palette& operator=(const Palette& other) noexcept = default;
+
   /// Retrieves underlying PaletteRaw.
-  constexpr PaletteRaw get() const { return m_resource; }
+  constexpr PaletteRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PaletteRaw and clear this.
-  constexpr PaletteRaw release()
+  constexpr PaletteRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -11506,16 +11327,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Palette& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Palette& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PaletteParam
-  constexpr operator PaletteParam() const { return {m_resource}; }
+  constexpr operator PaletteParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a palette created with Palette.Palette().
@@ -12118,7 +11936,9 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN =
  *
  * @sa Properties.Enumerate
  */
-using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+using EnumeratePropertiesCallback = void(SDLCALL*)(void* userdata,
+                                                   PropertiesID props,
+                                                   const char* name);
 
 /**
  * A callback used to enumerate all the properties in a group of properties.
@@ -12162,7 +11982,7 @@ using EnumeratePropertiesCB =
  *
  * @sa Properties.SetPointerPropertyWithCleanup
  */
-using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 
 /**
  * A callback used to free resources when a property is deleted.
@@ -12188,7 +12008,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa CleanupPropertyCallback
  */
-using CleanupPropertyCB = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
  * An ID that represents a properties set.
@@ -12205,7 +12025,10 @@ class Properties
 
 public:
   /// Default ctor
-  constexpr Properties() = default;
+  constexpr Properties(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from PropertiesParam.
@@ -12214,7 +12037,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource)
+  constexpr explicit Properties(const PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -12223,7 +12046,7 @@ public:
   constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
-  constexpr Properties(Properties&& other)
+  constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
   {
   }
@@ -12252,17 +12075,22 @@ public:
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
-  Properties& operator=(Properties other)
+  constexpr Properties& operator=(Properties&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Properties& operator=(const Properties& other) noexcept = default;
+
+public:
   /// Retrieves underlying PropertiesID.
-  constexpr PropertiesID get() const { return m_resource; }
+  constexpr PropertiesID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PropertiesID and clear this.
-  constexpr PropertiesID release()
+  constexpr PropertiesID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -12270,16 +12098,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Properties& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Properties& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const { return {m_resource}; }
+  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -12704,6 +12529,8 @@ public:
 /// Semi-safe reference for Properties.
 struct PropertiesRef : Properties
 {
+  using Properties::Properties;
+
   /**
    * Constructs from PropertiesParam.
    *
@@ -12711,13 +12538,25 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesParam resource)
+  PropertiesRef(PropertiesParam resource) noexcept
     : Properties(resource.value)
   {
   }
 
+  /**
+   * Constructs from PropertiesParam.
+   *
+   * @param resource a PropertiesID or Properties.
+   *
+   * This does not takes ownership!
+   */
+  PropertiesRef(PropertiesID resource) noexcept
+    : Properties(resource)
+  {
+  }
+
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other)
+  PropertiesRef(const PropertiesRef& other) noexcept
     : Properties(other.get())
   {
   }
@@ -13860,7 +13699,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr explicit Time(TimeRaw time)
+  constexpr explicit Time(TimeRaw time) noexcept
     : m_time(time)
   {
   }
@@ -13870,7 +13709,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr Time(std::chrono::nanoseconds time)
+  constexpr Time(std::chrono::nanoseconds time) noexcept
     : m_time(time)
   {
   }
@@ -14183,7 +14022,7 @@ inline void free(void* mem) { SDL_free(mem); }
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using malloc_func = SDL_malloc_func;
+using malloc_func = void*(SDLCALL*)(size_t size);
 
 /**
  * A callback used to implement calloc().
@@ -14204,7 +14043,7 @@ using malloc_func = SDL_malloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using calloc_func = SDL_calloc_func;
+using calloc_func = void*(SDLCALL*)(size_t nmemb, size_t size);
 
 /**
  * A callback used to implement realloc().
@@ -14225,7 +14064,7 @@ using calloc_func = SDL_calloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using realloc_func = SDL_realloc_func;
+using realloc_func = void*(SDLCALL*)(void* mem, size_t size);
 
 /**
  * A callback used to implement free().
@@ -14243,7 +14082,7 @@ using realloc_func = SDL_realloc_func;
  * @sa GetMemoryFunctions
  * @sa SetMemoryFunctions
  */
-using free_func = SDL_free_func;
+using free_func = void(SDLCALL*)(void* mem);
 
 /**
  * Get the original set of SDL memory functions.
@@ -14407,7 +14246,10 @@ class Environment
 
 public:
   /// Default ctor
-  constexpr Environment() = default;
+  constexpr Environment(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from EnvironmentParam.
@@ -14416,7 +14258,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource)
+  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -14425,7 +14267,7 @@ public:
   constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
-  constexpr Environment(Environment&& other)
+  constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
   {
   }
@@ -14463,17 +14305,22 @@ public:
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
-  Environment& operator=(Environment other)
+  constexpr Environment& operator=(Environment&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Environment& operator=(const Environment& other) noexcept = default;
+
+public:
   /// Retrieves underlying EnvironmentRaw.
-  constexpr EnvironmentRaw get() const { return m_resource; }
+  constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying EnvironmentRaw and clear this.
-  constexpr EnvironmentRaw release()
+  constexpr EnvironmentRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -14481,16 +14328,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Environment& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Environment& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const { return {m_resource}; }
+  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -14603,6 +14447,8 @@ public:
 /// Semi-safe reference for Environment.
 struct EnvironmentRef : Environment
 {
+  using Environment::Environment;
+
   /**
    * Constructs from EnvironmentParam.
    *
@@ -14610,13 +14456,25 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentParam resource)
+  EnvironmentRef(EnvironmentParam resource) noexcept
     : Environment(resource.value)
   {
   }
 
+  /**
+   * Constructs from EnvironmentParam.
+   *
+   * @param resource a EnvironmentRaw or Environment.
+   *
+   * This does not takes ownership!
+   */
+  EnvironmentRef(EnvironmentRaw resource) noexcept
+    : Environment(resource)
+  {
+  }
+
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other)
+  EnvironmentRef(const EnvironmentRef& other) noexcept
     : Environment(other.get())
   {
   }
@@ -14904,7 +14762,7 @@ inline int unsetenv_unsafe(StringParam name)
  * @sa bsearch
  * @sa qsort
  */
-using CompareCallback = SDL_CompareCallback;
+using CompareCallback = int(SDLCALL*)(const void* a, const void* b);
 
 /**
  * Sort an array.
@@ -15031,7 +14889,9 @@ inline void* bsearch(const void* key,
  * @sa qsort_r
  * @sa bsearch_r
  */
-using CompareCallback_r = SDL_CompareCallback_r;
+using CompareCallback_r = int(SDLCALL*)(void* userdata,
+                                        const void* a,
+                                        const void* b);
 
 /**
  * A callback used with SDL sorting and binary search functions.
@@ -15048,7 +14908,7 @@ using CompareCallback_r = SDL_CompareCallback_r;
  * @sa bsearch_r
  * @sa CompareCallback_r
  */
-using CompareCB = std::function<int(const void*, const void*)>;
+using CompareCB = std::function<int(const void* a, const void* b)>;
 
 /**
  * Sort an array, passing a userdata pointer to the compare function.
@@ -19283,7 +19143,10 @@ class IConv
 
 public:
   /// Default ctor
-  constexpr IConv() = default;
+  constexpr IConv(std::nullptr_t = nullptr) noexcept
+    : m_resource(IConvRaw(SDL_ICONV_ERROR))
+  {
+  }
 
   /**
    * Constructs from IConvParam.
@@ -19292,7 +19155,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource)
+  constexpr explicit IConv(const IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -19301,7 +19164,7 @@ public:
   constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
-  constexpr IConv(IConv&& other)
+  constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
   {
   }
@@ -19333,17 +19196,22 @@ public:
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
-  IConv& operator=(IConv other)
+  constexpr IConv& operator=(IConv&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IConv& operator=(const IConv& other) noexcept = default;
+
+public:
   /// Retrieves underlying IConvRaw.
-  constexpr IConvRaw get() const { return m_resource; }
+  constexpr IConvRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IConvRaw and clear this.
-  constexpr IConvRaw release()
+  constexpr IConvRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -19351,19 +19219,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IConv& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const IConv& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const
+  constexpr explicit operator bool() const noexcept
   {
     return m_resource != IConvRaw(SDL_ICONV_ERROR);
   }
 
   /// Converts to IConvParam
-  constexpr operator IConvParam() const { return {m_resource}; }
+  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -19421,6 +19286,8 @@ public:
 /// Semi-safe reference for IConv.
 struct IConvRef : IConv
 {
+  using IConv::IConv;
+
   /**
    * Constructs from IConvParam.
    *
@@ -19428,13 +19295,25 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvParam resource)
+  IConvRef(IConvParam resource) noexcept
     : IConv(resource.value)
   {
   }
 
+  /**
+   * Constructs from IConvParam.
+   *
+   * @param resource a IConvRaw or IConv.
+   *
+   * This does not takes ownership!
+   */
+  IConvRef(IConvRaw resource) noexcept
+    : IConv(resource)
+  {
+  }
+
   /// Copy constructor.
-  IConvRef(const IConvRef& other)
+  IConvRef(const IConvRef& other) noexcept
     : IConv(other.get())
   {
   }
@@ -19875,7 +19754,10 @@ class AsyncIO
 
 public:
   /// Default ctor
-  constexpr AsyncIO() = default;
+  constexpr AsyncIO(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AsyncIOParam.
@@ -19884,7 +19766,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIO(const AsyncIORaw resource)
+  constexpr explicit AsyncIO(const AsyncIORaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -19893,7 +19775,7 @@ public:
   constexpr AsyncIO(const AsyncIO& other) = delete;
 
   /// Move constructor
-  constexpr AsyncIO(AsyncIO&& other)
+  constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
   {
   }
@@ -19954,17 +19836,22 @@ public:
   }
 
   /// Assignment operator.
-  AsyncIO& operator=(AsyncIO other)
+  constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
+
+public:
   /// Retrieves underlying AsyncIORaw.
-  constexpr AsyncIORaw get() const { return m_resource; }
+  constexpr AsyncIORaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AsyncIORaw and clear this.
-  constexpr AsyncIORaw release()
+  constexpr AsyncIORaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -19972,16 +19859,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AsyncIO& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const AsyncIO& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AsyncIOParam
-  constexpr operator AsyncIOParam() const { return {m_resource}; }
+  constexpr operator AsyncIOParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -20129,6 +20013,8 @@ public:
 /// Semi-safe reference for AsyncIO.
 struct AsyncIORef : AsyncIO
 {
+  using AsyncIO::AsyncIO;
+
   /**
    * Constructs from AsyncIOParam.
    *
@@ -20136,13 +20022,25 @@ struct AsyncIORef : AsyncIO
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIOParam resource)
+  AsyncIORef(AsyncIOParam resource) noexcept
     : AsyncIO(resource.value)
   {
   }
 
+  /**
+   * Constructs from AsyncIOParam.
+   *
+   * @param resource a AsyncIORaw or AsyncIO.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIORef(AsyncIORaw resource) noexcept
+    : AsyncIO(resource)
+  {
+  }
+
   /// Copy constructor.
-  AsyncIORef(const AsyncIORef& other)
+  AsyncIORef(const AsyncIORef& other) noexcept
     : AsyncIO(other.get())
   {
   }
@@ -20213,6 +20111,12 @@ class AsyncIOQueue
   AsyncIOQueueRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr AsyncIOQueue(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from AsyncIOQueueParam.
    *
@@ -20220,7 +20124,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource)
+  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -20229,7 +20133,7 @@ public:
   constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
 
   /// Move constructor
-  constexpr AsyncIOQueue(AsyncIOQueue&& other)
+  constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
   {
   }
@@ -20264,17 +20168,23 @@ public:
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
 
   /// Assignment operator.
-  AsyncIOQueue& operator=(AsyncIOQueue other)
+  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
+    default;
+
+public:
   /// Retrieves underlying AsyncIOQueueRaw.
-  constexpr AsyncIOQueueRaw get() const { return m_resource; }
+  constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AsyncIOQueueRaw and clear this.
-  constexpr AsyncIOQueueRaw release()
+  constexpr AsyncIOQueueRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -20282,16 +20192,14 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueue& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const AsyncIOQueue& other) const noexcept =
+    default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AsyncIOQueueParam
-  constexpr operator AsyncIOQueueParam() const { return {m_resource}; }
+  constexpr operator AsyncIOQueueParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -20451,6 +20359,8 @@ public:
 /// Semi-safe reference for AsyncIOQueue.
 struct AsyncIOQueueRef : AsyncIOQueue
 {
+  using AsyncIOQueue::AsyncIOQueue;
+
   /**
    * Constructs from AsyncIOQueueParam.
    *
@@ -20458,13 +20368,25 @@ struct AsyncIOQueueRef : AsyncIOQueue
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueParam resource)
+  AsyncIOQueueRef(AsyncIOQueueParam resource) noexcept
     : AsyncIOQueue(resource.value)
   {
   }
 
+  /**
+   * Constructs from AsyncIOQueueParam.
+   *
+   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
+   *
+   * This does not takes ownership!
+   */
+  AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
+    : AsyncIOQueue(resource)
+  {
+  }
+
   /// Copy constructor.
-  AsyncIOQueueRef(const AsyncIOQueueRef& other)
+  AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
     : AsyncIOQueue(other.get())
   {
   }
@@ -21920,7 +21842,9 @@ inline bool HasPrimarySelectionText() { return SDL_HasPrimarySelectionText(); }
  *
  * @sa SetClipboardData
  */
-using ClipboardDataCallback = SDL_ClipboardDataCallback;
+using ClipboardDataCallback = const void*(SDLCALL*)(void* userdata,
+                                                    const char* mime_type,
+                                                    size_t* size);
 
 /**
  * Callback function that will be called when data for the specified mime-type
@@ -21955,7 +21879,7 @@ using ClipboardDataCB = std::function<SourceBytes(const char* mime_type)>;
  *
  * @sa SetClipboardData
  */
-using ClipboardCleanupCallback = SDL_ClipboardCleanupCallback;
+using ClipboardCleanupCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Callback function that will be called when the clipboard is cleared, or when
@@ -23161,7 +23085,7 @@ struct PathInfo : PathInfoRaw
    *
    * @param pathInfo the value to be wrapped
    */
-  constexpr PathInfo(const PathInfoRaw& pathInfo = {})
+  constexpr PathInfo(const PathInfoRaw& pathInfo = {}) noexcept
     : PathInfoRaw(pathInfo)
   {
   }
@@ -23171,14 +23095,20 @@ struct PathInfo : PathInfoRaw
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t _) const { return !bool(*this); }
+  constexpr bool operator==(std::nullptr_t _) const noexcept
+  {
+    return !bool(*this);
+  }
 
   /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return type != PATHTYPE_NONE;
+  }
 };
 
 /**
@@ -23256,7 +23186,8 @@ constexpr EnumerationResult ENUM_FAILURE = SDL_ENUM_FAILURE;
  *
  * @sa EnumerateDirectory
  */
-using EnumerateDirectoryCallback = SDL_EnumerateDirectoryCallback;
+using EnumerateDirectoryCallback = EnumerationResult(
+  SDLCALL*)(void* userdata, const char* dirname, const char* fname);
 
 /**
  * Callback for directory enumeration.
@@ -23571,7 +23502,7 @@ struct GUID : GUIDRaw
    *
    * @param gUID the value to be wrapped
    */
-  constexpr GUID(const GUIDRaw& gUID = {})
+  constexpr GUID(const GUIDRaw& gUID = {}) noexcept
     : GUIDRaw(gUID)
   {
   }
@@ -23781,7 +23712,10 @@ class HidDevice
 
 public:
   /// Default ctor
-  constexpr HidDevice() = default;
+  constexpr HidDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from HidDeviceParam.
@@ -23790,7 +23724,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource)
+  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -23799,7 +23733,7 @@ public:
   constexpr HidDevice(const HidDevice& other) = delete;
 
   /// Move constructor
-  constexpr HidDevice(HidDevice&& other)
+  constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
   {
   }
@@ -23850,17 +23784,22 @@ public:
   ~HidDevice() { SDL_hid_close(m_resource); }
 
   /// Assignment operator.
-  HidDevice& operator=(HidDevice other)
+  constexpr HidDevice& operator=(HidDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
+
+public:
   /// Retrieves underlying HidDeviceRaw.
-  constexpr HidDeviceRaw get() const { return m_resource; }
+  constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying HidDeviceRaw and clear this.
-  constexpr HidDeviceRaw release()
+  constexpr HidDeviceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -23868,16 +23807,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const HidDevice& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const HidDevice& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to HidDeviceParam
-  constexpr operator HidDeviceParam() const { return {m_resource}; }
+  constexpr operator HidDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a HID device.
@@ -24120,6 +24056,8 @@ public:
 /// Semi-safe reference for HidDevice.
 struct HidDeviceRef : HidDevice
 {
+  using HidDevice::HidDevice;
+
   /**
    * Constructs from HidDeviceParam.
    *
@@ -24127,13 +24065,25 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceParam resource)
+  HidDeviceRef(HidDeviceParam resource) noexcept
     : HidDevice(resource.value)
   {
   }
 
+  /**
+   * Constructs from HidDeviceParam.
+   *
+   * @param resource a HidDeviceRaw or HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  HidDeviceRef(HidDeviceRaw resource) noexcept
+    : HidDevice(resource)
+  {
+  }
+
   /// Copy constructor.
-  HidDeviceRef(const HidDeviceRef& other)
+  HidDeviceRef(const HidDeviceRef& other) noexcept
     : HidDevice(other.get())
   {
   }
@@ -24692,787 +24642,6 @@ inline void hid_ble_scan(bool active) { SDL_hid_ble_scan(active); }
 /// @}
 
 /**
- * @defgroup CategoryInit Initialization and Shutdown
- *
- * All SDL programs need to initialize the library before starting to work with
- * it.
- *
- * Almost everything can simply call Init() near startup, with a handful of
- * flags to specify subsystems to touch. These are here to make sure SDL does
- * not even attempt to touch low-level pieces of the operating system that you
- * don't intend to use. For example, you might be using SDL for video and input
- * but chose an external library for audio, and in this case you would just need
- * to leave off the `INIT_AUDIO` flag to make sure that external library has
- * complete control.
- *
- * Most apps, when terminating, should call Quit(). This will clean up (nearly)
- * everything that SDL might have allocated, and crucially, it'll make sure that
- * the display's resolution is back to what the user expects if you had
- * previously changed it for your game.
- *
- * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
- * in details about the program. This is completely optional, but it helps in
- * small ways (we can provide an About dialog box for the macOS menu, we can
- * name the app in the system's audio mixer, etc). Those that want to provide a
- * _lot_ of information should look at the more-detailed
- * SetAppMetadataProperty().
- *
- * @{
- */
-
-/**
- * @defgroup InitFlags Initialization flags
- *
- * @{
- */
-
-/**
- * Initialization flags for Init and/or InitSubSystem
- *
- * These are the flags which may be passed to Init(). You should specify the
- * subsystems which you will be using in your application.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa Quit
- * @sa InitSubSystem
- * @sa QuitSubSystem
- * @sa WasInit
- */
-using InitFlags = Uint32;
-
-constexpr InitFlags INIT_AUDIO =
-  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
-
-/**
- * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
- */
-constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
-
-constexpr InitFlags INIT_JOYSTICK =
-  SDL_INIT_JOYSTICK; ///< `INIT_JOYSTICK` implies `INIT_EVENTS`
-
-constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
-
-constexpr InitFlags INIT_GAMEPAD =
-  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
-
-constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
-
-constexpr InitFlags INIT_SENSOR =
-  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
-
-constexpr InitFlags INIT_CAMERA =
-  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
-
-/// @}
-
-/**
- * @name AppResult
- * App result for Main callback
- * @{
- */
-
-/**
- * Return values for optional main callbacks.
- *
- * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or
- * SDL_AppIterate will terminate the program and report success/failure to the
- * operating system. What that means is platform-dependent. On Unix, for
- * example, on success, the process error code will be zero, and on failure it
- * will be 1. This interface doesn't allow you to return specific exit codes,
- * just whether there was an error generally or not.
- *
- * Returning APP_CONTINUE from these functions will let the app continue to run.
- *
- * See [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README-main-functions#main-callbacks-in-sdl3)
- * for complete details.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AppResult = SDL_AppResult;
-
-/// Value that requests that the app continue from the main callbacks.
-constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
-
-/// Value that requests termination with success from the main callbacks.
-constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
-
-/// Value that requests termination with error from the main callbacks.
-constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
-
-/// @}
-
-/**
- * @name Callbacks for EnterAppMainCallbacks()
- *
- * @{
- */
-
-/**
- * Function pointer typedef for SDL_AppInit.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppInit directly.
- *
- * @param appstate a place where the app can optionally store a pointer for
- *                 future use.
- * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line arguments.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
- *          with success, APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppInit_func = SDL_AppInit_func;
-
-/**
- * Function pointer typedef for SDL_AppIterate.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppIterate directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
- *          with success, APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppIterate_func = SDL_AppIterate_func;
-
-/**
- * Function pointer typedef for SDL_AppEvent.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param event the new event for the app to examine.
- * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
- *          with success, APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppEvent_func = SDL_AppEvent_func;
-
-/**
- * Function pointer typedef for SDL_AppQuit.
- *
- * These are used by EnterAppMainCallbacks. This mechanism operates behind the
- * scenes for apps using the optional main callbacks. Apps that want to use this
- * should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param result the result code that terminated the app (success or failure).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppQuit_func = SDL_AppQuit_func;
-
-/// @}
-
-/**
- * Initialize the SDL library.
- *
- * Init() simply forwards to calling InitSubSystem(). Therefore, the two may be
- * used interchangeably. Though for readability of your code InitSubSystem()
- * might be preferred.
- *
- * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
- * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
- * also attempt to work without initializing the video subsystem, in hopes of
- * being useful in showing an error dialog when Init fails. You must
- * specifically initialize other subsystems if you use them in your application.
- *
- * Logging (such as Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the joystick
- *   subsystem
- * - `INIT_EVENTS`: events subsystem
- * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- *
- * Subsystem initialization is ref-counted, you must call QuitSubSystem() for
- * each InitSubSystem() to correctly shutdown a subsystem manually (or call
- * Quit() to force shutdown). If a subsystem is already loaded then this call
- * will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before calling
- * Init, using either SetAppMetadata() or SetAppMetadataProperty().
- *
- * @param flags subsystem initialization flags.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata
- * @sa SetAppMetadataProperty
- * @sa InitSubSystem
- * @sa Quit
- * @sa SetMainReady
- * @sa WasInit
- */
-inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }
-
-/**
- * Compatibility function to initialize the SDL library.
- *
- * This function and Init() are interchangeable.
- *
- * @param flags any of the flags used by Init(); see Init for details.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa Quit
- * @sa QuitSubSystem
- */
-inline void InitSubSystem(InitFlags flags)
-{
-  CheckError(SDL_InitSubSystem(flags));
-}
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call Quit() even if you close all open subsystems with
- * QuitSubSystem().
- *
- * @param flags any of the flags used by Init(); see Init for details.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa InitSubSystem
- * @sa Quit
- */
-inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
-
-/**
- * Get a mask of the specified subsystems which are currently initialized.
- *
- * @param flags any of the flags used by Init(); see Init for details.
- * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
- *          returns the initialization status of the specified subsystems.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa InitSubSystem
- */
-inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
-
-/**
- * Clean up all initialized subsystems.
- *
- * You should call this function even if you have already shutdown each
- * initialized subsystem with QuitSubSystem(). It is safe to call this function
- * even in the case of errors in initialization.
- *
- * You can use this function with atexit() to ensure that it is run when your
- * application is shutdown, but it is not wise to do this from a library or
- * other dynamically loaded code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init
- * @sa QuitSubSystem
- */
-inline void Quit() { SDL_Quit(); }
-
-/**
- * Return whether this is the main thread.
- *
- * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that calls
- * Init(INIT_VIDEO), which should usually be the one that runs your program's
- * main() entry point. If you are using the main callbacks, SDL_AppInit(),
- * SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.
- *
- * @returns true if this thread is the main thread, or false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread
- */
-inline bool IsMainThread() { return SDL_IsMainThread(); }
-
-/**
- * @name Callbacks for RunOnMainThread()
- * @{
- */
-
-/**
- * Callback run on the main thread.
- *
- * @param userdata an app-controlled pointer that is passed to the callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread
- */
-using MainThreadCallback = SDL_MainThreadCallback;
-
-/**
- * Callback run on the main thread.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread
- *
- * @sa MainThreadCallback
- *
- * @cat result-callback
- *
- */
-using MainThreadCB = std::function<void()>;
-
-/// @}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution on
- * the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param userdata a pointer that is passed to `callback`.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread
- */
-inline void RunOnMainThread(MainThreadCallback callback,
-                            void* userdata,
-                            bool wait_complete)
-{
-  CheckError(SDL_RunOnMainThread(callback, userdata, wait_complete));
-}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution on
- * the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread
- * @sa result-callback
- *
- * @cat result-callback
- */
-inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
-{
-  using Wrapper = CallbackWrapper<MainThreadCB>;
-  void* wrapped = Wrapper::Wrap(std::move(callback));
-  RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
-}
-
-/**
- * Specify basic metadata about your app.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
- * detail doesn't make sense for the app.
- *
- * This function should be called as early as possible, before Init. Multiple
- * calls to this function are allowed, but various state might not change once
- * it has been set up with a previous call to this function.
- *
- * Passing a nullptr removes any previous metadata.
- *
- * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with SetAppMetadataProperty().
- *
- * @param appname The name of the application ("My Game 2: Bad Guy's Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git hash,
- *                   or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that identifies
- *                      this app ("com.example.mygame2").
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadataProperty
- */
-inline void SetAppMetadata(StringParam appname,
-                           StringParam appversion,
-                           StringParam appidentifier)
-{
-  CheckError(SDL_SetAppMetadata(appname, appversion, appidentifier));
-}
-
-/**
- * Specify metadata about your app through a set of properties.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left out, if a specific detail
- * doesn't make sense for the app.
- *
- * This function should be called as early as possible, before Init. Multiple
- * calls to this function are allowed, but various state might not change once
- * it has been set up with a previous call to this function.
- *
- * Once set, this metadata can be read using GetAppMetadataProperty().
- *
- * These are the supported properties:
- *
- * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `prop::appMetaData.VERSION_STRING`: The version of the app that is running;
- *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
- *   git hash are all valid options. This has no default.
- * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
- *   app. This must be in reverse-domain format, like "com.example.mygame2".
- *   This string is used by desktop compositors to identify and group windows
- *   together, as well as match applications with associated desktop settings
- *   and icons. If you plan to package your application in a container such as
- *   Flatpak, the app ID should match the name of your Flatpak container as
- *   well. This has no default.
- * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
- *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
- *   like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
- *   line, don't paste a copy of a whole software license in here. This has no
- *   default.
- * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `prop::appMetaData.TYPE_STRING`: The type of application this is. Currently
- *   this string can be "game" for a video game, "mediaplayer" for a media
- *   player, or generically "application" if nothing else applies. Future
- *   versions of SDL might add new types. This defaults to "application".
- *
- * @param name the name of the metadata property to set.
- * @param value the value of the property, or nullptr to remove that property.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAppMetadataProperty
- * @sa SetAppMetadata
- */
-inline void SetAppMetadataProperty(StringParam name, StringParam value)
-{
-  CheckError(SDL_SetAppMetadataProperty(name, value));
-}
-
-namespace prop::appMetaData {
-
-constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
-
-constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
-
-constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
-
-constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
-
-constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
-
-constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
-
-constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
-
-} // namespace prop::appMetaData
-
-/**
- * Get metadata about your app.
- *
- * This returns metadata previously set using SetAppMetadata() or
- * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list of
- * available properties and their meanings.
- *
- * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it is
- *          not set, nullptr for properties with no default.
- *
- * @threadsafety It is safe to call this function from any thread, although the
- *               string returned is not protected and could potentially be freed
- *               if you call SetAppMetadataProperty() to set that property from
- *               another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata
- * @sa SetAppMetadataProperty
- */
-inline const char* GetAppMetadataProperty(StringParam name)
-{
-  return SDL_GetAppMetadataProperty(name);
-}
-
-#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
-/**
- * The default log priority for app class.
- */
-#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
-#endif // SDL3PP_APPCLASS_LOG_PRIORITY
-
-/**
- * Represents application parameters
- */
-using AppArgs = std::span<char const* const>;
-
-/**
- * @{
- *
- * Allocate and initialize state with new.
- *
- * If possible, pass the args to constructor, otherwise expects a default ctor;
- *
- * @tparam T the state class
- * @param state the state to initialize
- * @param args the program arguments
- * @return the app status
- */
-template<class T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  static_assert(std::is_default_constructible_v<T>);
-  *state = new T{};
-  return APP_CONTINUE;
-}
-
-template<class T>
-  requires std::convertible_to<AppArgs, T>
-inline AppResult DefaultCreateClass(T** state, AppArgs args)
-{
-  *state = new T{args};
-  return APP_CONTINUE;
-}
-/// @}
-
-/// @private
-template<class T>
-concept HasInitFunction = requires(T** state) {
-  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
-};
-
-/**
- * @{
- *
- * Init state with arguments.
- *
- * This will call T::Init() if available, otherwise it delegates to
- * DefaultCreateClass().
- *
- * @tparam T the state class
- * @param state the state to initialize
- * @param args the program arguments
- * @return the app status
- */
-template<class T>
-inline AppResult InitClass(T** state, AppArgs args)
-{
-  try {
-    return DefaultCreateClass(state, args);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-template<HasInitFunction T>
-inline AppResult InitClass(T** state, AppArgs args)
-{
-  *state = nullptr;
-  try {
-    AppResult result = T::Init(state, args);
-    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
-    return result;
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-/// @}
-
-/// @private
-template<class T>
-concept HasIterateFunction = requires(T* state) { state->Iterate(); };
-
-/**
- * Iterate the state
- *
- * @tparam T the state class
- * @param state the state
- * @return the app status
- */
-template<HasIterateFunction T>
-inline AppResult IterateClass(T* state)
-{
-  try {
-    return state->Iterate();
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-/// @private
-template<class T>
-concept HasEventFunction =
-  requires(T* state, const SDL_Event& event) { state->Event(event); };
-
-/**
- * Default handle by finishing if QUIT is requested
- *
- * @tparam T the state class
- * @param state the state
- * @param event the event
- * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
- */
-template<class T>
-inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
-{
-  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
-  return APP_CONTINUE;
-}
-
-/**
- * @{
- * Iterate the state
- *
- * @tparam T the state class
- * @param state the state
- * @param event the event to handle
- * @return the app status
- */
-template<class T>
-inline AppResult EventClass(T* state, const SDL_Event& event)
-{
-  try {
-    return DefaultEventClass(state, event);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-template<HasEventFunction T>
-inline AppResult EventClass(T* state, const SDL_Event& event)
-{
-  try {
-    return state->Event(event);
-  } catch (std::exception& e) {
-    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
-                                            e.what());
-  } catch (...) {
-  }
-  return APP_FAILURE;
-}
-
-/// @}
-
-/**
- * Destroy state with delete;
- *
- * @tparam T
- * @param state
- */
-template<class T>
-inline void DefaultClassDestroy(T* state)
-{
-  delete state;
-}
-
-/// @private
-template<class T>
-concept HasQuitFunction =
-  requires(T* state, AppResult result) { T::Quit(state, result); };
-
-/**
- * @{
- * Destroy state with given result
- *
- * This is responsible to destroy and deallocate the state. It tries to call
- * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
- * calls delete directly.
- *
- * @tparam T the state class.
- * @param state the state to destroy.
- * @param result the app result.
- */
-template<class T>
-inline void QuitClass(T* state, AppResult result)
-{
-  DefaultClassDestroy(state);
-}
-
-template<HasQuitFunction T>
-inline void QuitClass(T* state, AppResult result)
-{
-  T::Quit(state, result);
-}
-/// @}
-
-/// @}
-
-/**
  * @defgroup CategoryIOStream I/O Streams
  *
  * SDL provides an abstract interface for reading and writing data streams. It
@@ -25598,7 +24767,10 @@ class IOStream
 
 public:
   /// Default ctor
-  constexpr IOStream() = default;
+  constexpr IOStream(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from IOStreamParam.
@@ -25607,7 +24779,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource)
+  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -25616,7 +24788,7 @@ public:
   constexpr IOStream(const IOStream& other) = delete;
 
   /// Move constructor
-  constexpr IOStream(IOStream&& other)
+  constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
   {
   }
@@ -25868,17 +25040,22 @@ public:
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
-  IOStream& operator=(IOStream other)
+  constexpr IOStream& operator=(IOStream&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
+
+public:
   /// Retrieves underlying IOStreamRaw.
-  constexpr IOStreamRaw get() const { return m_resource; }
+  constexpr IOStreamRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IOStreamRaw and clear this.
-  constexpr IOStreamRaw release()
+  constexpr IOStreamRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -25886,16 +25063,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IOStream& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const IOStream& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to IOStreamParam
-  constexpr operator IOStreamParam() const { return {m_resource}; }
+  constexpr operator IOStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free an allocated IOStream structure.
@@ -27113,6 +26287,8 @@ public:
 /// Semi-safe reference for IOStream.
 struct IOStreamRef : IOStream
 {
+  using IOStream::IOStream;
+
   /**
    * Constructs from IOStreamParam.
    *
@@ -27120,13 +26296,25 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamParam resource)
+  IOStreamRef(IOStreamParam resource) noexcept
     : IOStream(resource.value)
   {
   }
 
+  /**
+   * Constructs from IOStreamParam.
+   *
+   * @param resource a IOStreamRaw or IOStream.
+   *
+   * This does not takes ownership!
+   */
+  IOStreamRef(IOStreamRaw resource) noexcept
+    : IOStream(resource)
+  {
+  }
+
   /// Copy constructor.
-  IOStreamRef(const IOStreamRef& other)
+  IOStreamRef(const IOStreamRef& other) noexcept
     : IOStream(other.get())
   {
   }
@@ -28707,7 +27895,10 @@ class SharedObject
 
 public:
   /// Default ctor
-  constexpr SharedObject() = default;
+  constexpr SharedObject(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SharedObjectParam.
@@ -28716,7 +27907,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource)
+  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -28725,7 +27916,7 @@ public:
   constexpr SharedObject(const SharedObject& other) = delete;
 
   /// Move constructor
-  constexpr SharedObject(SharedObject&& other)
+  constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
   {
   }
@@ -28757,17 +27948,23 @@ public:
   ~SharedObject() { SDL_UnloadObject(m_resource); }
 
   /// Assignment operator.
-  SharedObject& operator=(SharedObject other)
+  constexpr SharedObject& operator=(SharedObject&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
+    default;
+
+public:
   /// Retrieves underlying SharedObjectRaw.
-  constexpr SharedObjectRaw get() const { return m_resource; }
+  constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SharedObjectRaw and clear this.
-  constexpr SharedObjectRaw release()
+  constexpr SharedObjectRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -28775,16 +27972,14 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const SharedObject& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const SharedObject& other) const noexcept =
+    default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SharedObjectParam
-  constexpr operator SharedObjectParam() const { return {m_resource}; }
+  constexpr operator SharedObjectParam() const noexcept { return {m_resource}; }
 
   /**
    * Unload a shared object from memory.
@@ -28832,6 +28027,8 @@ public:
 /// Semi-safe reference for SharedObject.
 struct SharedObjectRef : SharedObject
 {
+  using SharedObject::SharedObject;
+
   /**
    * Constructs from SharedObjectParam.
    *
@@ -28839,13 +28036,25 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectParam resource)
+  SharedObjectRef(SharedObjectParam resource) noexcept
     : SharedObject(resource.value)
   {
   }
 
+  /**
+   * Constructs from SharedObjectParam.
+   *
+   * @param resource a SharedObjectRaw or SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  SharedObjectRef(SharedObjectRaw resource) noexcept
+    : SharedObject(resource)
+  {
+  }
+
   /// Copy constructor.
-  SharedObjectRef(const SharedObjectRef& other)
+  SharedObjectRef(const SharedObjectRef& other) noexcept
     : SharedObject(other.get())
   {
   }
@@ -29168,25 +28377,25 @@ using FRectRaw = SDL_FRect;
 struct FRect;
 
 /// Comparison operator for Point.
-constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs)
+constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs) noexcept
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 /// Comparison operator for FPoint.
-constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs)
+constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 /// Comparison operator for Rect.
-constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
 {
   return SDL_RectsEqual(&lhs, &rhs);
 }
 
 /// Comparison operator for FRect.
-constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
 {
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
@@ -29211,7 +28420,7 @@ struct Point : PointRaw
    *
    * @param p the value to be wrapped
    */
-  constexpr Point(const PointRaw& p = {})
+  constexpr Point(const PointRaw& p = {}) noexcept
     : PointRaw(p)
   {
   }
@@ -29222,7 +28431,7 @@ struct Point : PointRaw
    * @param x the value for x.
    * @param y the value for y.
    */
-  constexpr Point(int x, int y)
+  constexpr Point(int x, int y) noexcept
     : PointRaw{x, y}
   {
   }
@@ -29242,14 +28451,17 @@ struct Point : PointRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != PointRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != PointRaw{};
+  }
 
   /**
    * Get x coordinate
    *
    * @returns x coordinate
    */
-  constexpr int GetX() const { return x; }
+  constexpr int GetX() const noexcept { return x; }
 
   /**
    * Set the x coordinate.
@@ -29257,7 +28469,7 @@ struct Point : PointRaw
    * @param newX the new x coordinate.
    * @returns Reference to self.
    */
-  constexpr Point& SetX(int newX)
+  constexpr Point& SetX(int newX) noexcept
   {
     x = newX;
     return *this;
@@ -29268,7 +28480,7 @@ struct Point : PointRaw
    *
    * @returns y coordinate
    */
-  constexpr int GetY() const { return y; }
+  constexpr int GetY() const noexcept { return y; }
 
   /**
    * Set the y coordinate.
@@ -29276,7 +28488,7 @@ struct Point : PointRaw
    * @param newY the new y coordinate.
    * @returns Reference to self.
    */
-  constexpr Point& SetY(int newY)
+  constexpr Point& SetY(int newY) noexcept
   {
     y = newY;
     return *this;
@@ -29637,7 +28849,7 @@ struct FPoint : FPointRaw
    *
    * @param p the value to be wrapped
    */
-  constexpr FPoint(const FPointRaw& p = {})
+  constexpr FPoint(const FPointRaw& p = {}) noexcept
     : FPointRaw(p)
   {
   }
@@ -29648,7 +28860,7 @@ struct FPoint : FPointRaw
    * @param x the value for x.
    * @param y the value for y.
    */
-  constexpr FPoint(float x, float y)
+  constexpr FPoint(float x, float y) noexcept
     : FPointRaw{x, y}
   {
   }
@@ -29658,14 +28870,17 @@ struct FPoint : FPointRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != FPointRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != FPointRaw{};
+  }
 
   /**
    * Get the x coordinate.
    *
    * @returns current x value.
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the x coordinate.
@@ -29673,7 +28888,7 @@ struct FPoint : FPointRaw
    * @param newX the new x coordinate.
    * @returns Reference to self.
    */
-  constexpr FPoint& SetX(float newX)
+  constexpr FPoint& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -29684,7 +28899,7 @@ struct FPoint : FPointRaw
    *
    * @returns current y coordinate.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the y coordinate.
@@ -29692,7 +28907,7 @@ struct FPoint : FPointRaw
    * @param newY the new y coordinate.
    * @returns Reference to self.
    */
-  constexpr FPoint& SetY(float newY)
+  constexpr FPoint& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -29967,7 +29182,7 @@ struct Rect : RectRaw
    *
    * @param r the value to be wrapped
    */
-  constexpr Rect(const RectRaw& r = {})
+  constexpr Rect(const RectRaw& r = {}) noexcept
     : RectRaw(r)
   {
   }
@@ -29980,7 +29195,7 @@ struct Rect : RectRaw
    * @param w the width.
    * @param h the height.
    */
-  constexpr Rect(int x, int y, int w, int h)
+  constexpr Rect(int x, int y, int w, int h) noexcept
     : RectRaw{x, y, w, h}
   {
   }
@@ -30013,7 +29228,7 @@ struct Rect : RectRaw
    *
    * @returns coordinate of the left x
    */
-  constexpr int GetX() const { return x; }
+  constexpr int GetX() const noexcept { return x; }
 
   /**
    * Set the left x coordinate.
@@ -30021,7 +29236,7 @@ struct Rect : RectRaw
    * @param newX the new left x.
    * @returns Reference to self.
    */
-  constexpr Rect& SetX(int newX)
+  constexpr Rect& SetX(int newX) noexcept
   {
     x = newX;
     return *this;
@@ -30032,7 +29247,7 @@ struct Rect : RectRaw
    *
    * @returns coordinate of the top y.
    */
-  constexpr int GetY() const { return y; }
+  constexpr int GetY() const noexcept { return y; }
 
   /**
    * Set the top y coordinate.
@@ -30040,7 +29255,7 @@ struct Rect : RectRaw
    * @param newY the new top y.
    * @returns Reference to self.
    */
-  constexpr Rect& SetY(int newY)
+  constexpr Rect& SetY(int newY) noexcept
   {
     y = newY;
     return *this;
@@ -30051,7 +29266,7 @@ struct Rect : RectRaw
    *
    * @returns Width of the rect
    */
-  constexpr int GetW() const { return w; }
+  constexpr int GetW() const noexcept { return w; }
 
   /**
    * Set the width of the rect.
@@ -30059,7 +29274,7 @@ struct Rect : RectRaw
    * @param newW the new width.
    * @returns Reference to self.
    */
-  constexpr Rect& SetW(int newW)
+  constexpr Rect& SetW(int newW) noexcept
   {
     w = newW;
     return *this;
@@ -30070,7 +29285,7 @@ struct Rect : RectRaw
    *
    * @returns Height of the rect
    */
-  constexpr int GetH() const { return h; }
+  constexpr int GetH() const noexcept { return h; }
 
   /**
    * Set the height of the rect.
@@ -30078,7 +29293,7 @@ struct Rect : RectRaw
    * @param newH the new height.
    * @returns Reference to self.
    */
-  constexpr Rect& SetH(int newH)
+  constexpr Rect& SetH(int newH) noexcept
   {
     h = newH;
     return *this;
@@ -30563,7 +29778,7 @@ struct FRect : FRectRaw
    *
    * @param r the value to be wrapped
    */
-  constexpr FRect(const FRectRaw& r = {})
+  constexpr FRect(const FRectRaw& r = {}) noexcept
     : FRectRaw(r)
   {
   }
@@ -30576,7 +29791,7 @@ struct FRect : FRectRaw
    * @param w the width.
    * @param h the height.
    */
-  constexpr FRect(float x, float y, float w, float h)
+  constexpr FRect(float x, float y, float w, float h) noexcept
     : FRectRaw{x, y, w, h}
   {
   }
@@ -30597,7 +29812,7 @@ struct FRect : FRectRaw
    *
    * @returns coordinate of the left x
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the left x coordinate.
@@ -30605,7 +29820,7 @@ struct FRect : FRectRaw
    * @param newX the new left x.
    * @returns Reference to self.
    */
-  constexpr FRect& SetX(float newX)
+  constexpr FRect& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -30616,7 +29831,7 @@ struct FRect : FRectRaw
    *
    * @returns coordinate of the top y.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the top y coordinate.
@@ -30624,7 +29839,7 @@ struct FRect : FRectRaw
    * @param newY the new top y.
    * @returns Reference to self.
    */
-  constexpr FRect& SetY(float newY)
+  constexpr FRect& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -30635,7 +29850,7 @@ struct FRect : FRectRaw
    *
    * @returns Width of the rect
    */
-  constexpr float GetW() const { return w; }
+  constexpr float GetW() const noexcept { return w; }
 
   /**
    * Set the width of the rect.
@@ -30643,7 +29858,7 @@ struct FRect : FRectRaw
    * @param newW the new width.
    * @returns Reference to self.
    */
-  constexpr FRect& SetW(float newW)
+  constexpr FRect& SetW(float newW) noexcept
   {
     w = newW;
     return *this;
@@ -30654,7 +29869,7 @@ struct FRect : FRectRaw
    *
    * @returns Height of the rect
    */
-  constexpr float GetH() const { return h; }
+  constexpr float GetH() const noexcept { return h; }
 
   /**
    * Set the height of the rect.
@@ -30662,7 +29877,7 @@ struct FRect : FRectRaw
    * @param newH the new height.
    * @returns Reference to self.
    */
-  constexpr FRect& SetH(float newH)
+  constexpr FRect& SetH(float newH) noexcept
   {
     h = newH;
     return *this;
@@ -31781,7 +30996,7 @@ public:
    *
    * @param scancode the value to be wrapped
    */
-  constexpr Scancode(ScancodeRaw scancode = {})
+  constexpr Scancode(ScancodeRaw scancode = {}) noexcept
     : m_scancode(scancode)
   {
   }
@@ -31808,7 +31023,7 @@ public:
    *
    * @returns the underlying ScancodeRaw.
    */
-  constexpr operator ScancodeRaw() const { return m_scancode; }
+  constexpr operator ScancodeRaw() const noexcept { return m_scancode; }
 
   /**
    * Set a human-readable name for a scancode.
@@ -32629,7 +31844,10 @@ class Sensor
 
 public:
   /// Default ctor
-  constexpr Sensor() = default;
+  constexpr Sensor(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SensorParam.
@@ -32638,7 +31856,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource)
+  constexpr explicit Sensor(const SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -32647,7 +31865,7 @@ public:
   constexpr Sensor(const Sensor& other) = delete;
 
   /// Move constructor
-  constexpr Sensor(Sensor&& other)
+  constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
   {
   }
@@ -32674,17 +31892,22 @@ public:
   ~Sensor() { SDL_CloseSensor(m_resource); }
 
   /// Assignment operator.
-  Sensor& operator=(Sensor other)
+  constexpr Sensor& operator=(Sensor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
+
+public:
   /// Retrieves underlying SensorRaw.
-  constexpr SensorRaw get() const { return m_resource; }
+  constexpr SensorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SensorRaw and clear this.
-  constexpr SensorRaw release()
+  constexpr SensorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -32692,16 +31915,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Sensor& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Sensor& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SensorParam
-  constexpr operator SensorParam() const { return {m_resource}; }
+  constexpr operator SensorParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a sensor previously opened with Sensor.Sensor().
@@ -32775,6 +31995,8 @@ public:
 /// Semi-safe reference for Sensor.
 struct SensorRef : Sensor
 {
+  using Sensor::Sensor;
+
   /**
    * Constructs from SensorParam.
    *
@@ -32782,13 +32004,25 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorParam resource)
+  SensorRef(SensorParam resource) noexcept
     : Sensor(resource.value)
   {
   }
 
+  /**
+   * Constructs from SensorParam.
+   *
+   * @param resource a SensorRaw or Sensor.
+   *
+   * This does not takes ownership!
+   */
+  SensorRef(SensorRaw resource) noexcept
+    : Sensor(resource)
+  {
+  }
+
   /// Copy constructor.
-  SensorRef(const SensorRef& other)
+  SensorRef(const SensorRef& other) noexcept
     : Sensor(other.get())
   {
   }
@@ -33060,7 +32294,7 @@ struct DateTime : DateTimeRaw
    *
    * @param dateTime the value to be wrapped
    */
-  constexpr DateTime(const DateTimeRaw& dateTime = {})
+  constexpr DateTime(const DateTimeRaw& dateTime = {}) noexcept
     : DateTimeRaw(dateTime)
   {
   }
@@ -33086,7 +32320,7 @@ struct DateTime : DateTimeRaw
                      int second,
                      int nanosecond,
                      int day_of_week,
-                     int utc_offset)
+                     int utc_offset) noexcept
     : DateTimeRaw{year,
                   month,
                   day,
@@ -33121,7 +32355,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const
+  constexpr explicit operator bool() const noexcept
   {
     return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
            second != 0 || nanosecond != 0;
@@ -33132,7 +32366,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current year value.
    */
-  constexpr int GetYear() const { return year; }
+  constexpr int GetYear() const noexcept { return year; }
 
   /**
    * Set the year.
@@ -33140,7 +32374,7 @@ struct DateTime : DateTimeRaw
    * @param newYear the new year value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetYear(int newYear)
+  constexpr DateTime& SetYear(int newYear) noexcept
   {
     year = newYear;
     return *this;
@@ -33151,7 +32385,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current month value.
    */
-  constexpr int GetMonth() const { return month; }
+  constexpr int GetMonth() const noexcept { return month; }
 
   /**
    * Set the month.
@@ -33159,7 +32393,7 @@ struct DateTime : DateTimeRaw
    * @param newMonth the new month value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetMonth(int newMonth)
+  constexpr DateTime& SetMonth(int newMonth) noexcept
   {
     month = newMonth;
     return *this;
@@ -33170,7 +32404,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current day value.
    */
-  constexpr int GetDay() const { return day; }
+  constexpr int GetDay() const noexcept { return day; }
 
   /**
    * Set the day.
@@ -33178,7 +32412,7 @@ struct DateTime : DateTimeRaw
    * @param newDay the new day value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetDay(int newDay)
+  constexpr DateTime& SetDay(int newDay) noexcept
   {
     day = newDay;
     return *this;
@@ -33189,7 +32423,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current hour value.
    */
-  constexpr int GetHour() const { return hour; }
+  constexpr int GetHour() const noexcept { return hour; }
 
   /**
    * Set the hour.
@@ -33197,7 +32431,7 @@ struct DateTime : DateTimeRaw
    * @param newHour the new hour value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetHour(int newHour)
+  constexpr DateTime& SetHour(int newHour) noexcept
   {
     hour = newHour;
     return *this;
@@ -33208,7 +32442,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current minute value.
    */
-  constexpr int GetMinute() const { return minute; }
+  constexpr int GetMinute() const noexcept { return minute; }
 
   /**
    * Set the minute.
@@ -33216,7 +32450,7 @@ struct DateTime : DateTimeRaw
    * @param newMinute the new minute value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetMinute(int newMinute)
+  constexpr DateTime& SetMinute(int newMinute) noexcept
   {
     minute = newMinute;
     return *this;
@@ -33227,7 +32461,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current second value.
    */
-  constexpr int GetSecond() const { return second; }
+  constexpr int GetSecond() const noexcept { return second; }
 
   /**
    * Set the second.
@@ -33235,7 +32469,7 @@ struct DateTime : DateTimeRaw
    * @param newSecond the new second value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetSecond(int newSecond)
+  constexpr DateTime& SetSecond(int newSecond) noexcept
   {
     second = newSecond;
     return *this;
@@ -33246,7 +32480,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current nanosecond value.
    */
-  constexpr int GetNanosecond() const { return nanosecond; }
+  constexpr int GetNanosecond() const noexcept { return nanosecond; }
 
   /**
    * Set the nanosecond.
@@ -33254,7 +32488,7 @@ struct DateTime : DateTimeRaw
    * @param newNanosecond the new nanosecond value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetNanosecond(int newNanosecond)
+  constexpr DateTime& SetNanosecond(int newNanosecond) noexcept
   {
     nanosecond = newNanosecond;
     return *this;
@@ -33265,7 +32499,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current day_of_week value.
    */
-  constexpr int GetDay_of_week() const { return day_of_week; }
+  constexpr int GetDay_of_week() const noexcept { return day_of_week; }
 
   /**
    * Set the day_of_week.
@@ -33273,7 +32507,7 @@ struct DateTime : DateTimeRaw
    * @param newDay_of_week the new day_of_week value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetDay_of_week(int newDay_of_week)
+  constexpr DateTime& SetDay_of_week(int newDay_of_week) noexcept
   {
     day_of_week = newDay_of_week;
     return *this;
@@ -33284,7 +32518,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current utc_offset value.
    */
-  constexpr int GetUtc_offset() const { return utc_offset; }
+  constexpr int GetUtc_offset() const noexcept { return utc_offset; }
 
   /**
    * Set the utc_offset.
@@ -33292,7 +32526,7 @@ struct DateTime : DateTimeRaw
    * @param newUtc_offset the new utc_offset value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetUtc_offset(int newUtc_offset)
+  constexpr DateTime& SetUtc_offset(int newUtc_offset) noexcept
   {
     utc_offset = newUtc_offset;
     return *this;
@@ -33616,7 +32850,9 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = SDL_NSTimerCallback;
+using TimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                       TimerID timerID,
+                                       Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.
@@ -33644,8 +32880,22 @@ using TimerCallback = SDL_NSTimerCallback;
  *
  * @sa TimerCallback
  */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
+{
+  /// ctor
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  TimerCB(const F& func)
+    : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>(func)
+  {
+  }
+
+  /// @private
+  template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+  static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+  {
+    return func(timerID, std::chrono::nanoseconds(interval)).count();
+  }
+};
 
 /**
  * Call a callback function at a future time.
@@ -33724,26 +32974,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 {
-  using Wrapper = CallbackWrapper<TimerCB>;
-  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-
-  auto cb = Wrapper::Wrap(std::move(callback));
-
-  if (TimerID id = SDL_AddTimerNS(
-        interval.count(),
-        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerCB*>(userdata);
-          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-          // If ask to removal, then remove it
-          if (next == 0) delete Store::release(timerID);
-          return next;
-        },
-        cb)) {
-    Store::Wrap(id, std::move(cb));
-    return id;
-  }
-  delete cb;
-  throw Error{};
+  return SDL_AddTimerNS(interval.count(), callback.wrapper, callback.data);
 }
 
 /**
@@ -33758,11 +32989,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @sa SDL_AddTimer
  */
-inline void RemoveTimer(TimerID id)
-{
-  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-  CheckError(SDL_RemoveTimer(id));
-}
+inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
 
 /// @}
 
@@ -34021,7 +33248,7 @@ public:
    *
    * @param audioFormat the value to be wrapped
    */
-  constexpr AudioFormat(AudioFormatRaw audioFormat = {})
+  constexpr AudioFormat(AudioFormatRaw audioFormat = {}) noexcept
     : m_audioFormat(audioFormat)
   {
   }
@@ -34060,7 +33287,7 @@ public:
    *
    * @returns the underlying AudioFormatRaw.
    */
-  constexpr operator AudioFormatRaw() const { return m_audioFormat; }
+  constexpr operator AudioFormatRaw() const noexcept { return m_audioFormat; }
 
   /**
    * Retrieve the size, in bits, from an AudioFormat.
@@ -34459,7 +33686,10 @@ constexpr bool AudioFormat::IsUnsigned() const
  *
  * @sa AudioDevice.SetPostmixCallback
  */
-using AudioPostmixCallback = SDL_AudioPostmixCallback;
+using AudioPostmixCallback = void(SDLCALL*)(void* userdata,
+                                            const AudioSpec* spec,
+                                            float* buffer,
+                                            int buflen);
 
 /**
  * A callback that fires when data is about to be fed to an audio device.
@@ -34496,7 +33726,7 @@ using AudioPostmixCallback = SDL_AudioPostmixCallback;
  * @sa AudioPostmixCallback
  */
 using AudioPostmixCB =
-  std::function<void(const AudioSpec& spec, std::span<float> buffer)>;
+  MakeFrontCallback<void(const AudioSpec* spec, float* buffer, int buflen)>;
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -34537,7 +33767,10 @@ using AudioPostmixCB =
  * @sa AudioStream.SetGetCallback
  * @sa AudioStream.SetPutCallback
  */
-using AudioStreamCallback = SDL_AudioStreamCallback;
+using AudioStreamCallback = void(SDLCALL*)(void* userdata,
+                                           AudioStreamRaw stream,
+                                           int additional_amount,
+                                           int total_amount);
 
 /**
  * A callback that fires when data passes through an AudioStream.
@@ -34578,8 +33811,8 @@ using AudioStreamCallback = SDL_AudioStreamCallback;
  * @sa AudioStream.SetPutCallback
  * @sa AudioStreamCallback
  */
-using AudioStreamCB = std::function<
-  void(AudioStreamRef stream, int additional_amount, int total_amount)>;
+using AudioStreamCB = MakeFrontCallback<
+  void(AudioStreamRaw stream, int additional_amount, int total_amount)>;
 
 /**
  * SDL Audio Device instance IDs.
@@ -34596,7 +33829,10 @@ class AudioDevice
 
 public:
   /// Default ctor
-  constexpr AudioDevice() = default;
+  constexpr AudioDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioDeviceParam.
@@ -34605,7 +33841,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource)
+  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -34614,7 +33850,7 @@ public:
   constexpr AudioDevice(const AudioDevice& other) = delete;
 
   /// Move constructor
-  constexpr AudioDevice(AudioDevice&& other)
+  constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
   {
   }
@@ -34703,17 +33939,22 @@ public:
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
 
   /// Assignment operator.
-  AudioDevice& operator=(AudioDevice other)
+  constexpr AudioDevice& operator=(AudioDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept = default;
+
+public:
   /// Retrieves underlying AudioDeviceID.
-  constexpr AudioDeviceID get() const { return m_resource; }
+  constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AudioDeviceID and clear this.
-  constexpr AudioDeviceID release()
+  constexpr AudioDeviceID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -34721,16 +33962,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AudioDevice& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const AudioDevice& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AudioDeviceParam
-  constexpr operator AudioDeviceParam() const { return {m_resource}; }
+  constexpr operator AudioDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a previously-opened audio device.
@@ -35261,6 +34499,8 @@ public:
 /// Semi-safe reference for AudioDevice.
 struct AudioDeviceRef : AudioDevice
 {
+  using AudioDevice::AudioDevice;
+
   /**
    * Constructs from AudioDeviceParam.
    *
@@ -35268,13 +34508,25 @@ struct AudioDeviceRef : AudioDevice
    *
    * This does not takes ownership!
    */
-  AudioDeviceRef(AudioDeviceParam resource)
+  AudioDeviceRef(AudioDeviceParam resource) noexcept
     : AudioDevice(resource.value)
   {
   }
 
+  /**
+   * Constructs from AudioDeviceParam.
+   *
+   * @param resource a AudioDeviceID or AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  AudioDeviceRef(AudioDeviceID resource) noexcept
+    : AudioDevice(resource)
+  {
+  }
+
   /// Copy constructor.
-  AudioDeviceRef(const AudioDeviceRef& other)
+  AudioDeviceRef(const AudioDeviceRef& other) noexcept
     : AudioDevice(other.get())
   {
   }
@@ -35357,7 +34609,10 @@ class AudioStream
 
 public:
   /// Default ctor
-  constexpr AudioStream() = default;
+  constexpr AudioStream(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AudioStreamParam.
@@ -35366,7 +34621,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource)
+  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -35375,7 +34630,7 @@ public:
   constexpr AudioStream(const AudioStream& other) = delete;
 
   /// Move constructor
-  constexpr AudioStream(AudioStream&& other)
+  constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
   {
   }
@@ -35537,17 +34792,22 @@ public:
   ~AudioStream() { SDL_DestroyAudioStream(m_resource); }
 
   /// Assignment operator.
-  AudioStream& operator=(AudioStream other)
+  constexpr AudioStream& operator=(AudioStream&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr AudioStream& operator=(const AudioStream& other) noexcept = default;
+
+public:
   /// Retrieves underlying AudioStreamRaw.
-  constexpr AudioStreamRaw get() const { return m_resource; }
+  constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AudioStreamRaw and clear this.
-  constexpr AudioStreamRaw release()
+  constexpr AudioStreamRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -35555,16 +34815,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AudioStream& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const AudioStream& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AudioStreamParam
-  constexpr operator AudioStreamParam() const { return {m_resource}; }
+  constexpr operator AudioStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Free an audio stream.
@@ -36579,6 +35836,8 @@ public:
 /// Semi-safe reference for AudioStream.
 struct AudioStreamRef : AudioStream
 {
+  using AudioStream::AudioStream;
+
   /**
    * Constructs from AudioStreamParam.
    *
@@ -36586,13 +35845,25 @@ struct AudioStreamRef : AudioStream
    *
    * This does not takes ownership!
    */
-  AudioStreamRef(AudioStreamParam resource)
+  AudioStreamRef(AudioStreamParam resource) noexcept
     : AudioStream(resource.value)
   {
   }
 
+  /**
+   * Constructs from AudioStreamParam.
+   *
+   * @param resource a AudioStreamRaw or AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  AudioStreamRef(AudioStreamRaw resource) noexcept
+    : AudioStream(resource)
+  {
+  }
+
   /// Copy constructor.
-  AudioStreamRef(const AudioStreamRef& other)
+  AudioStreamRef(const AudioStreamRef& other) noexcept
     : AudioStream(other.get())
   {
   }
@@ -38349,7 +37620,6 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
-  KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>::release(stream);
   CheckError(SDL_SetAudioStreamGetCallback(stream, callback, userdata));
 }
 
@@ -38395,19 +37665,7 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
 inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                       AudioStreamCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 0>;
-  if (!SDL_SetAudioStreamGetCallback(
-        stream,
-        [](void* userdata,
-           SDL_AudioStream* stream,
-           int additional_amount,
-           int total_amount) {
-          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
-        },
-        Wrapper::Wrap(stream, std::move(callback)))) {
-    Wrapper::release(stream);
-    throw Error{};
-  }
+  SetAudioStreamGetCallback(stream, callback.wrapper, callback.data);
 }
 
 inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
@@ -38470,7 +37728,6 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
-  KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>::release(stream);
   CheckError(SDL_SetAudioStreamPutCallback(stream, callback, userdata));
 }
 
@@ -38520,19 +37777,7 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
 inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                       AudioStreamCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_AudioStream*, AudioStreamCB, 1>;
-  if (!SDL_SetAudioStreamPutCallback(
-        stream,
-        [](void* userdata,
-           SDL_AudioStream* stream,
-           int additional_amount,
-           int total_amount) {
-          Wrapper::Call(userdata, {stream}, additional_amount, total_amount);
-        },
-        Wrapper::Wrap(stream, std::move(callback)))) {
-    Wrapper::release(stream);
-    throw Error{};
-  }
+  SetAudioStreamPutCallback(stream, callback.wrapper, callback.data);
 }
 
 inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
@@ -38776,7 +38021,6 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                     AudioPostmixCallback callback,
                                     void* userdata)
 {
-  KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>::release(devid);
   CheckError(SDL_SetAudioPostmixCallback(devid, callback, userdata));
 }
 
@@ -38833,20 +38077,7 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
 inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                     AudioPostmixCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<AudioDeviceParam, AudioPostmixCB>;
-  if (!SDL_SetAudioPostmixCallback(
-        devid,
-        [](void* userdata,
-           const SDL_AudioSpec* spec,
-           float* buffer,
-           int buflen) {
-          Wrapper::Call(
-            userdata, *spec, std::span<float>(buffer, size_t(buflen)));
-        },
-        Wrapper::Wrap(devid, std::move(callback)))) {
-    Wrapper::release(devid);
-    throw Error{};
-  }
+  SetAudioPostmixCallback(devid, callback.wrapper, callback.data);
 }
 
 inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
@@ -39252,7 +38483,7 @@ public:
    *
    * @param keycode the value to be wrapped
    */
-  constexpr Keycode(KeycodeRaw keycode = {})
+  constexpr Keycode(KeycodeRaw keycode = {}) noexcept
     : m_keycode(keycode)
   {
   }
@@ -39303,7 +38534,7 @@ public:
    *
    * @returns the underlying KeycodeRaw.
    */
-  constexpr operator KeycodeRaw() const { return m_keycode; }
+  constexpr operator KeycodeRaw() const noexcept { return m_keycode; }
 
   /// Has Extended flag.
   constexpr bool IsExtended() const;
@@ -40168,7 +39399,10 @@ class Process
 
 public:
   /// Default ctor
-  constexpr Process() = default;
+  constexpr Process(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from ProcessParam.
@@ -40177,7 +39411,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource)
+  constexpr explicit Process(const ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -40186,7 +39420,7 @@ public:
   constexpr Process(const Process& other) = delete;
 
   /// Move constructor
-  constexpr Process(Process&& other)
+  constexpr Process(Process&& other) noexcept
     : Process(other.release())
   {
   }
@@ -40318,17 +39552,22 @@ public:
   ~Process() { SDL_DestroyProcess(m_resource); }
 
   /// Assignment operator.
-  Process& operator=(Process other)
+  constexpr Process& operator=(Process&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Process& operator=(const Process& other) noexcept = default;
+
+public:
   /// Retrieves underlying ProcessRaw.
-  constexpr ProcessRaw get() const { return m_resource; }
+  constexpr ProcessRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ProcessRaw and clear this.
-  constexpr ProcessRaw release()
+  constexpr ProcessRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -40336,16 +39575,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Process& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Process& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ProcessParam
-  constexpr operator ProcessParam() const { return {m_resource}; }
+  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -40559,6 +39795,8 @@ public:
 /// Semi-safe reference for Process.
 struct ProcessRef : Process
 {
+  using Process::Process;
+
   /**
    * Constructs from ProcessParam.
    *
@@ -40566,13 +39804,25 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessParam resource)
+  ProcessRef(ProcessParam resource) noexcept
     : Process(resource.value)
   {
   }
 
+  /**
+   * Constructs from ProcessParam.
+   *
+   * @param resource a ProcessRaw or Process.
+   *
+   * This does not takes ownership!
+   */
+  ProcessRef(ProcessRaw resource) noexcept
+    : Process(resource)
+  {
+  }
+
   /// Copy constructor.
-  ProcessRef(const ProcessRef& other)
+  ProcessRef(const ProcessRef& other) noexcept
     : Process(other.get())
   {
   }
@@ -41269,7 +40519,10 @@ class Storage
 
 public:
   /// Default ctor
-  constexpr Storage() = default;
+  constexpr Storage(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from StorageParam.
@@ -41278,7 +40531,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource)
+  constexpr explicit Storage(const StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -41287,7 +40540,7 @@ public:
   constexpr Storage(const Storage& other) = delete;
 
   /// Move constructor
-  constexpr Storage(Storage&& other)
+  constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
   {
   }
@@ -41412,17 +40665,22 @@ public:
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
 
   /// Assignment operator.
-  Storage& operator=(Storage other)
+  constexpr Storage& operator=(Storage&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Storage& operator=(const Storage& other) noexcept = default;
+
+public:
   /// Retrieves underlying StorageRaw.
-  constexpr StorageRaw get() const { return m_resource; }
+  constexpr StorageRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying StorageRaw and clear this.
-  constexpr StorageRaw release()
+  constexpr StorageRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -41430,16 +40688,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Storage& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Storage& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to StorageParam
-  constexpr operator StorageParam() const { return {m_resource}; }
+  constexpr operator StorageParam() const noexcept { return {m_resource}; }
 
   /**
    * Closes and frees a storage container.
@@ -41757,6 +41012,8 @@ public:
 /// Semi-safe reference for Storage.
 struct StorageRef : Storage
 {
+  using Storage::Storage;
+
   /**
    * Constructs from StorageParam.
    *
@@ -41764,13 +41021,25 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageParam resource)
+  StorageRef(StorageParam resource) noexcept
     : Storage(resource.value)
   {
   }
 
+  /**
+   * Constructs from StorageParam.
+   *
+   * @param resource a StorageRaw or Storage.
+   *
+   * This does not takes ownership!
+   */
+  StorageRef(StorageRaw resource) noexcept
+    : Storage(resource)
+  {
+  }
+
   /// Copy constructor.
-  StorageRef(const StorageRef& other)
+  StorageRef(const StorageRef& other) noexcept
     : Storage(other.get())
   {
   }
@@ -42603,7 +41872,10 @@ class Surface
 
 public:
   /// Default ctor
-  constexpr Surface() = default;
+  constexpr Surface(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SurfaceParam.
@@ -42612,7 +41884,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource)
+  constexpr explicit Surface(const SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -42621,7 +41893,7 @@ public:
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Surface(Surface&& other)
+  constexpr Surface(Surface&& other) noexcept
     : Surface(other.release())
   {
   }
@@ -42873,26 +42145,29 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const { return m_resource; }
+  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRaw operator->() { return m_resource; }
+  constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.
-  Surface& operator=(Surface other)
+  constexpr Surface& operator=(Surface&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr Surface& operator=(const Surface& other) noexcept = default;
+
   /// Retrieves underlying SurfaceRaw.
-  constexpr SurfaceRaw get() const { return m_resource; }
+  constexpr SurfaceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SurfaceRaw and clear this.
-  constexpr SurfaceRaw release()
+  constexpr SurfaceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -42900,16 +42175,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Surface& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Surface& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SurfaceParam
-  constexpr operator SurfaceParam() const { return {m_resource}; }
+  constexpr operator SurfaceParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a surface.
@@ -46909,7 +46181,7 @@ using ThreadID = SDL_ThreadID;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using ThreadFunction = SDL_ThreadFunction;
+using ThreadFunction = int(SDLCALL*)(void* data);
 
 /**
  * The function passed to Thread.Thread() as the new thread's entry point.
@@ -46917,6 +46189,8 @@ using ThreadFunction = SDL_ThreadFunction;
  * @returns a value that can be reported through Thread.Wait().
  *
  * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa ThreadFunction
  */
 using ThreadCB = std::function<int()>;
 
@@ -46931,7 +46205,7 @@ using ThreadCB = std::function<int()>;
  *
  * @sa SetTLS
  */
-using TLSDestructorCallback = SDL_TLSDestructorCallback;
+using TLSDestructorCallback = void(SDLCALL*)(void* value);
 
 /**
  * The SDL thread object.
@@ -46951,7 +46225,10 @@ class Thread
 
 public:
   /// Default ctor
-  constexpr Thread() = default;
+  constexpr Thread(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from ThreadParam.
@@ -46960,7 +46237,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Thread(const ThreadRaw resource)
+  constexpr explicit Thread(const ThreadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -46969,7 +46246,7 @@ public:
   constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
-  constexpr Thread(Thread&& other)
+  constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
   {
   }
@@ -47087,17 +46364,22 @@ public:
   ~Thread() { SDL_DetachThread(m_resource); }
 
   /// Assignment operator.
-  Thread& operator=(Thread other)
+  constexpr Thread& operator=(Thread&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Thread& operator=(const Thread& other) noexcept = default;
+
+public:
   /// Retrieves underlying ThreadRaw.
-  constexpr ThreadRaw get() const { return m_resource; }
+  constexpr ThreadRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ThreadRaw and clear this.
-  constexpr ThreadRaw release()
+  constexpr ThreadRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -47105,16 +46387,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Thread& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Thread& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ThreadParam
-  constexpr operator ThreadParam() const { return {m_resource}; }
+  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -47238,6 +46517,8 @@ public:
 /// Semi-safe reference for Thread.
 struct ThreadRef : Thread
 {
+  using Thread::Thread;
+
   /**
    * Constructs from ThreadParam.
    *
@@ -47245,13 +46526,25 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadParam resource)
+  ThreadRef(ThreadParam resource) noexcept
     : Thread(resource.value)
   {
   }
 
+  /**
+   * Constructs from ThreadParam.
+   *
+   * @param resource a ThreadRaw or Thread.
+   *
+   * This does not takes ownership!
+   */
+  ThreadRef(ThreadRaw resource) noexcept
+    : Thread(resource)
+  {
+  }
+
   /// Copy constructor.
-  ThreadRef(const ThreadRef& other)
+  ThreadRef(const ThreadRef& other) noexcept
     : Thread(other.get())
   {
   }
@@ -47803,7 +47096,10 @@ class Camera
 
 public:
   /// Default ctor
-  constexpr Camera() = default;
+  constexpr Camera(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from CameraParam.
@@ -47812,7 +47108,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource)
+  constexpr explicit Camera(const CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -47821,7 +47117,7 @@ public:
   constexpr Camera(const Camera& other) = delete;
 
   /// Move constructor
-  constexpr Camera(Camera&& other)
+  constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
   {
   }
@@ -47883,17 +47179,22 @@ public:
   ~Camera() { SDL_CloseCamera(m_resource); }
 
   /// Assignment operator.
-  Camera& operator=(Camera other)
+  constexpr Camera& operator=(Camera&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Camera& operator=(const Camera& other) noexcept = default;
+
+public:
   /// Retrieves underlying CameraRaw.
-  constexpr CameraRaw get() const { return m_resource; }
+  constexpr CameraRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CameraRaw and clear this.
-  constexpr CameraRaw release()
+  constexpr CameraRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -47901,16 +47202,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Camera& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Camera& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CameraParam
-  constexpr operator CameraParam() const { return {m_resource}; }
+  constexpr operator CameraParam() const noexcept { return {m_resource}; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -48080,6 +47378,8 @@ public:
 /// Semi-safe reference for Camera.
 struct CameraRef : Camera
 {
+  using Camera::Camera;
+
   /**
    * Constructs from CameraParam.
    *
@@ -48087,13 +47387,25 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraParam resource)
+  CameraRef(CameraParam resource) noexcept
     : Camera(resource.value)
   {
   }
 
+  /**
+   * Constructs from CameraParam.
+   *
+   * @param resource a CameraRaw or Camera.
+   *
+   * This does not takes ownership!
+   */
+  CameraRef(CameraRaw resource) noexcept
+    : Camera(resource)
+  {
+  }
+
   /// Copy constructor.
-  CameraRef(const CameraRef& other)
+  CameraRef(const CameraRef& other) noexcept
     : Camera(other.get())
   {
   }
@@ -48728,6 +48040,12 @@ class Mutex
   MutexRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr Mutex(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from MutexParam.
    *
@@ -48735,7 +48053,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mutex(const MutexRaw resource)
+  constexpr explicit Mutex(const MutexRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -48744,7 +48062,7 @@ public:
   constexpr Mutex(const Mutex& other) = delete;
 
   /// Move constructor
-  constexpr Mutex(Mutex&& other)
+  constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
   {
   }
@@ -48782,17 +48100,22 @@ public:
   ~Mutex() { SDL_DestroyMutex(m_resource); }
 
   /// Assignment operator.
-  Mutex& operator=(Mutex other)
+  constexpr Mutex& operator=(Mutex&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
+
+public:
   /// Retrieves underlying MutexRaw.
-  constexpr MutexRaw get() const { return m_resource; }
+  constexpr MutexRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying MutexRaw and clear this.
-  constexpr MutexRaw release()
+  constexpr MutexRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -48800,16 +48123,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Mutex& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Mutex& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to MutexParam
-  constexpr operator MutexParam() const { return {m_resource}; }
+  constexpr operator MutexParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a mutex created with Mutex.Mutex().
@@ -48889,6 +48209,8 @@ public:
 /// Semi-safe reference for Mutex.
 struct MutexRef : Mutex
 {
+  using Mutex::Mutex;
+
   /**
    * Constructs from MutexParam.
    *
@@ -48896,13 +48218,25 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexParam resource)
+  MutexRef(MutexParam resource) noexcept
     : Mutex(resource.value)
   {
   }
 
+  /**
+   * Constructs from MutexParam.
+   *
+   * @param resource a MutexRaw or Mutex.
+   *
+   * This does not takes ownership!
+   */
+  MutexRef(MutexRaw resource) noexcept
+    : Mutex(resource)
+  {
+  }
+
   /// Copy constructor.
-  MutexRef(const MutexRef& other)
+  MutexRef(const MutexRef& other) noexcept
     : Mutex(other.get())
   {
   }
@@ -49050,6 +48384,12 @@ class RWLock
   RWLockRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr RWLock(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from RWLockParam.
    *
@@ -49057,7 +48397,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit RWLock(const RWLockRaw resource)
+  constexpr explicit RWLock(const RWLockRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -49066,7 +48406,7 @@ public:
   constexpr RWLock(const RWLock& other) = delete;
 
   /// Move constructor
-  constexpr RWLock(RWLock&& other)
+  constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
   {
   }
@@ -49124,17 +48464,22 @@ public:
   ~RWLock() { SDL_DestroyRWLock(m_resource); }
 
   /// Assignment operator.
-  RWLock& operator=(RWLock other)
+  constexpr RWLock& operator=(RWLock&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
+
+public:
   /// Retrieves underlying RWLockRaw.
-  constexpr RWLockRaw get() const { return m_resource; }
+  constexpr RWLockRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying RWLockRaw and clear this.
-  constexpr RWLockRaw release()
+  constexpr RWLockRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -49142,16 +48487,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const RWLock& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const RWLock& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to RWLockParam
-  constexpr operator RWLockParam() const { return {m_resource}; }
+  constexpr operator RWLockParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a read/write lock created with RWLock.RWLock().
@@ -49312,6 +48654,8 @@ public:
 /// Semi-safe reference for RWLock.
 struct RWLockRef : RWLock
 {
+  using RWLock::RWLock;
+
   /**
    * Constructs from RWLockParam.
    *
@@ -49319,13 +48663,25 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockParam resource)
+  RWLockRef(RWLockParam resource) noexcept
     : RWLock(resource.value)
   {
   }
 
+  /**
+   * Constructs from RWLockParam.
+   *
+   * @param resource a RWLockRaw or RWLock.
+   *
+   * This does not takes ownership!
+   */
+  RWLockRef(RWLockRaw resource) noexcept
+    : RWLock(resource)
+  {
+  }
+
   /// Copy constructor.
-  RWLockRef(const RWLockRef& other)
+  RWLockRef(const RWLockRef& other) noexcept
     : RWLock(other.get())
   {
   }
@@ -49593,7 +48949,10 @@ class Semaphore
 
 public:
   /// Default ctor
-  constexpr Semaphore() = default;
+  constexpr Semaphore(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SemaphoreParam.
@@ -49602,7 +48961,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Semaphore(const SemaphoreRaw resource)
+  constexpr explicit Semaphore(const SemaphoreRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -49611,7 +48970,7 @@ public:
   constexpr Semaphore(const Semaphore& other) = delete;
 
   /// Move constructor
-  constexpr Semaphore(Semaphore&& other)
+  constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
   {
   }
@@ -49651,17 +49010,22 @@ public:
   ~Semaphore() { SDL_DestroySemaphore(m_resource); }
 
   /// Assignment operator.
-  Semaphore& operator=(Semaphore other)
+  constexpr Semaphore& operator=(Semaphore&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
+
+public:
   /// Retrieves underlying SemaphoreRaw.
-  constexpr SemaphoreRaw get() const { return m_resource; }
+  constexpr SemaphoreRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SemaphoreRaw and clear this.
-  constexpr SemaphoreRaw release()
+  constexpr SemaphoreRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -49669,16 +49033,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Semaphore& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Semaphore& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SemaphoreParam
-  constexpr operator SemaphoreParam() const { return {m_resource}; }
+  constexpr operator SemaphoreParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a semaphore.
@@ -49771,6 +49132,8 @@ public:
 /// Semi-safe reference for Semaphore.
 struct SemaphoreRef : Semaphore
 {
+  using Semaphore::Semaphore;
+
   /**
    * Constructs from SemaphoreParam.
    *
@@ -49778,13 +49141,25 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreParam resource)
+  SemaphoreRef(SemaphoreParam resource) noexcept
     : Semaphore(resource.value)
   {
   }
 
+  /**
+   * Constructs from SemaphoreParam.
+   *
+   * @param resource a SemaphoreRaw or Semaphore.
+   *
+   * This does not takes ownership!
+   */
+  SemaphoreRef(SemaphoreRaw resource) noexcept
+    : Semaphore(resource)
+  {
+  }
+
   /// Copy constructor.
-  SemaphoreRef(const SemaphoreRef& other)
+  SemaphoreRef(const SemaphoreRef& other) noexcept
     : Semaphore(other.get())
   {
   }
@@ -49964,6 +49339,12 @@ class Condition
   ConditionRaw m_resource = nullptr;
 
 public:
+  /// Default ctor
+  constexpr Condition(std::nullptr_t) noexcept
+    : m_resource(0)
+  {
+  }
+
   /**
    * Constructs from ConditionParam.
    *
@@ -49971,7 +49352,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Condition(const ConditionRaw resource)
+  constexpr explicit Condition(const ConditionRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -49980,7 +49361,7 @@ public:
   constexpr Condition(const Condition& other) = delete;
 
   /// Move constructor
-  constexpr Condition(Condition&& other)
+  constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
   {
   }
@@ -50012,17 +49393,22 @@ public:
   ~Condition() { SDL_DestroyCondition(m_resource); }
 
   /// Assignment operator.
-  Condition& operator=(Condition other)
+  constexpr Condition& operator=(Condition&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Condition& operator=(const Condition& other) noexcept = default;
+
+public:
   /// Retrieves underlying ConditionRaw.
-  constexpr ConditionRaw get() const { return m_resource; }
+  constexpr ConditionRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ConditionRaw and clear this.
-  constexpr ConditionRaw release()
+  constexpr ConditionRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -50030,16 +49416,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Condition& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Condition& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ConditionParam
-  constexpr operator ConditionParam() const { return {m_resource}; }
+  constexpr operator ConditionParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a condition variable.
@@ -50136,6 +49519,8 @@ public:
 /// Semi-safe reference for Condition.
 struct ConditionRef : Condition
 {
+  using Condition::Condition;
+
   /**
    * Constructs from ConditionParam.
    *
@@ -50143,13 +49528,25 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionParam resource)
+  ConditionRef(ConditionParam resource) noexcept
     : Condition(resource.value)
   {
   }
 
+  /**
+   * Constructs from ConditionParam.
+   *
+   * @param resource a ConditionRaw or Condition.
+   *
+   * This does not takes ownership!
+   */
+  ConditionRef(ConditionRaw resource) noexcept
+    : Condition(resource)
+  {
+  }
+
   /// Copy constructor.
-  ConditionRef(const ConditionRef& other)
+  ConditionRef(const ConditionRef& other) noexcept
     : Condition(other.get())
   {
   }
@@ -50653,7 +50050,7 @@ constexpr TrayEntryFlags TRAYENTRY_CHECKED = SDL_TRAYENTRY_CHECKED;
  *
  * @sa TrayEntry.SetCallback
  */
-using TrayCallback = SDL_TrayCallback;
+using TrayCallback = void(SDLCALL*)(void* userdata, TrayEntryRaw entry);
 
 /**
  * A callback that is invoked when a tray entry is selected.
@@ -50666,7 +50063,7 @@ using TrayCallback = SDL_TrayCallback;
  *
  * @sa TrayCallback
  */
-using TrayCB = std::function<void(TrayEntryRaw)>;
+using TrayCB = MakeFrontCallback<void(TrayEntryRaw entry)>;
 
 /**
  * An opaque handle representing a toplevel system tray object.
@@ -50681,7 +50078,10 @@ class Tray
 
 public:
   /// Default ctor
-  constexpr Tray() = default;
+  constexpr Tray(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TrayParam.
@@ -50690,7 +50090,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource)
+  constexpr explicit Tray(const TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -50699,7 +50099,7 @@ public:
   constexpr Tray(const Tray& other) = delete;
 
   /// Move constructor
-  constexpr Tray(Tray&& other)
+  constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
   {
   }
@@ -50740,17 +50140,22 @@ public:
   ~Tray() { SDL_DestroyTray(m_resource); }
 
   /// Assignment operator.
-  Tray& operator=(Tray other)
+  constexpr Tray& operator=(Tray&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Tray& operator=(const Tray& other) noexcept = default;
+
+public:
   /// Retrieves underlying TrayRaw.
-  constexpr TrayRaw get() const { return m_resource; }
+  constexpr TrayRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TrayRaw and clear this.
-  constexpr TrayRaw release()
+  constexpr TrayRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -50758,16 +50163,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Tray& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Tray& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TrayParam
-  constexpr operator TrayParam() const { return {m_resource}; }
+  constexpr operator TrayParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a tray object.
@@ -50861,6 +50263,8 @@ public:
 /// Semi-safe reference for Tray.
 struct TrayRef : Tray
 {
+  using Tray::Tray;
+
   /**
    * Constructs from TrayParam.
    *
@@ -50868,13 +50272,25 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayParam resource)
+  TrayRef(TrayParam resource) noexcept
     : Tray(resource.value)
   {
   }
 
+  /**
+   * Constructs from TrayParam.
+   *
+   * @param resource a TrayRaw or Tray.
+   *
+   * This does not takes ownership!
+   */
+  TrayRef(TrayRaw resource) noexcept
+    : Tray(resource)
+  {
+  }
+
   /// Copy constructor.
-  TrayRef(const TrayRef& other)
+  TrayRef(const TrayRef& other) noexcept
     : Tray(other.get())
   {
   }
@@ -50898,7 +50314,7 @@ public:
    *
    * @param trayMenu the value to be wrapped
    */
-  constexpr TrayMenu(TrayMenuRaw trayMenu = {})
+  constexpr TrayMenu(TrayMenuRaw trayMenu = {}) noexcept
     : m_trayMenu(trayMenu)
   {
   }
@@ -50908,7 +50324,7 @@ public:
    *
    * @returns the underlying TrayMenuRaw.
    */
-  constexpr operator TrayMenuRaw() const { return m_trayMenu; }
+  constexpr operator TrayMenuRaw() const noexcept { return m_trayMenu; }
 
   /**
    * Returns a list of entries in the menu, in order.
@@ -51032,14 +50448,17 @@ class TrayEntry
 
 public:
   /// Default ctor
-  constexpr TrayEntry() = default;
+  constexpr TrayEntry(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TrayEntryParam.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource)
+  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -51048,7 +50467,7 @@ public:
   constexpr TrayEntry(const TrayEntry& other) = default;
 
   /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other)
+  constexpr TrayEntry(TrayEntry&& other) noexcept
     : TrayEntry(other.release())
   {
   }
@@ -51057,17 +50476,20 @@ public:
   ~TrayEntry() {}
 
   /// Assignment operator.
-  TrayEntry& operator=(TrayEntry other)
+  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
+
   /// Retrieves underlying TrayEntryRaw.
-  constexpr TrayEntryRaw get() const { return m_resource; }
+  constexpr TrayEntryRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TrayEntryRaw and clear this.
-  constexpr TrayEntryRaw release()
+  constexpr TrayEntryRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -51075,16 +50497,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const TrayEntry& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TrayEntryParam
-  constexpr operator TrayEntryParam() const { return {m_resource}; }
+  constexpr operator TrayEntryParam() const noexcept { return {m_resource}; }
 
   /**
    * Removes a tray entry.
@@ -51317,7 +50736,7 @@ struct TrayEntryScoped : TrayEntry
   constexpr TrayEntryScoped(const TrayEntry& other) = delete;
 
   /// Move constructor
-  constexpr TrayEntryScoped(TrayEntry&& other)
+  constexpr TrayEntryScoped(TrayEntry&& other) noexcept
     : TrayEntry(other.release())
   {
   }
@@ -51927,10 +51346,7 @@ inline TrayEntry TrayMenu::AppendEntry(StringParam label, TrayEntryFlags flags)
 
 inline void TrayEntry::SetCallback(TrayCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<SDL_TrayEntry*, TrayCB>;
-  SetCallback([](void* userdata,
-                 SDL_TrayEntry* entry) { Wrapper::Call(userdata, entry); },
-              Wrapper::Wrap(get(), std::move(callback)));
+  SetCallback(callback.wrapper, callback.data);
 }
 
 /**
@@ -52103,7 +51519,7 @@ public:
    *
    * @param displayID the value to be wrapped
    */
-  constexpr Display(DisplayID displayID = {})
+  constexpr Display(DisplayID displayID = {}) noexcept
     : m_displayID(displayID)
   {
   }
@@ -52113,7 +51529,7 @@ public:
    *
    * @returns the underlying DisplayID.
    */
-  constexpr operator DisplayID() const { return m_displayID; }
+  constexpr operator DisplayID() const noexcept { return m_displayID; }
 
   /**
    * Return the primary display.
@@ -52628,22 +52044,24 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT =
  *
  * @sa Window.SetHitTest
  */
-using HitTest = SDL_HitTest;
+using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
+                                        const PointRaw* area,
+                                        void* data);
 
 /**
  * Callback used for hit-testing.
  *
- * @param win the WindowRef where hit-testing was set on.
- * @param area a Point const reference which should be hit-tested.
- * @returns an SDL::HitTestResult value.
+ * @param win the Window where hit-testing was set on.
+ * @param area an Point which should be hit-tested.
+ * @returns an HitTestResult value.
  *
  * @cat listener-callback
  *
- * @sa HitTest
  * @sa Window.SetHitTest
+ * @sa HitTest
  */
 using HitTestCB =
-  std::function<HitTestResult(WindowRaw window, const Point& area)>;
+  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.
@@ -52699,7 +52117,10 @@ class Window
 
 public:
   /// Default ctor
-  constexpr Window() = default;
+  constexpr Window(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from WindowParam.
@@ -52708,7 +52129,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource)
+  constexpr explicit Window(const WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -52717,7 +52138,7 @@ public:
   constexpr Window(const Window& other) = delete;
 
   /// Move constructor
-  constexpr Window(Window&& other)
+  constexpr Window(Window&& other) noexcept
     : Window(other.release())
   {
   }
@@ -53055,17 +52476,22 @@ public:
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
-  Window& operator=(Window other)
+  constexpr Window& operator=(Window&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Window& operator=(const Window& other) noexcept = default;
+
+public:
   /// Retrieves underlying WindowRaw.
-  constexpr WindowRaw get() const { return m_resource; }
+  constexpr WindowRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying WindowRaw and clear this.
-  constexpr WindowRaw release()
+  constexpr WindowRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -53073,16 +52499,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Window& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Window& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to WindowParam
-  constexpr operator WindowParam() const { return {m_resource}; }
+  constexpr operator WindowParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a window.
@@ -55014,6 +54437,8 @@ public:
 /// Semi-safe reference for Window.
 struct WindowRef : Window
 {
+  using Window::Window;
+
   /**
    * Constructs from WindowParam.
    *
@@ -55021,13 +54446,25 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowParam resource)
+  WindowRef(WindowParam resource) noexcept
     : Window(resource.value)
   {
   }
 
+  /**
+   * Constructs from WindowParam.
+   *
+   * @param resource a WindowRaw or Window.
+   *
+   * This does not takes ownership!
+   */
+  WindowRef(WindowRaw resource) noexcept
+    : Window(resource)
+  {
+  }
+
   /// Copy constructor.
-  WindowRef(const WindowRef& other)
+  WindowRef(const WindowRef& other) noexcept
     : Window(other.get())
   {
   }
@@ -55162,14 +54599,17 @@ class GLContext
 
 public:
   /// Default ctor
-  constexpr GLContext() = default;
+  constexpr GLContext(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GLContextParam.
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource)
+  constexpr GLContext(const GLContextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -55178,7 +54618,7 @@ public:
   constexpr GLContext(const GLContext& other) = default;
 
   /// Move constructor
-  constexpr GLContext(GLContext&& other)
+  constexpr GLContext(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -55220,17 +54660,20 @@ public:
   ~GLContext() {}
 
   /// Assignment operator.
-  GLContext& operator=(GLContext other)
+  constexpr GLContext& operator=(GLContext&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
+
   /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const { return m_resource; }
+  constexpr GLContextRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release()
+  constexpr GLContextRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -55238,16 +54681,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GLContextParam
-  constexpr operator GLContextParam() const { return {m_resource}; }
+  constexpr operator GLContextParam() const noexcept { return {m_resource}; }
 
   /**
    * Delete an OpenGL context.
@@ -55285,7 +54725,7 @@ struct GLContextScoped : GLContext
   constexpr GLContextScoped(const GLContext& other) = delete;
 
   /// Move constructor
-  constexpr GLContextScoped(GLContext&& other)
+  constexpr GLContextScoped(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -55345,33 +54785,7 @@ using EGLint = SDL_EGLint;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
-
-/**
- * EGL platform attribute initialization callback.
- *
- * This is called when SDL is attempting to create an EGL context, to let the
- * app add extra attributes to its eglGetPlatformDisplay() call.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLAttribArrayCallback
- */
-using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
+using EGLAttribArrayCallback = EGLAttrib*(SDLCALL*)(void* userdata);
 
 /**
  * EGL surface/context attribute initialization callback types.
@@ -55402,39 +54816,9 @@ using EGLAttribArrayCB = std::function<SDL_EGLAttrib*()>;
  *
  * @sa EGL_SetAttributeCallbacks
  */
-using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
-
-/**
- * EGL surface/context attribute initialization callback types.
- *
- * This is called when SDL is attempting to create an EGL surface, to let the
- * app add extra attributes to its eglCreateWindowSurface() or eglCreateContext
- * calls.
- *
- * For convenience, the EGLDisplay and EGLConfig to use are provided to the
- * callback.
- *
- * The callback should return a pointer to an EGL attribute array terminated
- * with `EGL_NONE`. If this function returns nullptr, the Window.Window process
- * will fail gracefully.
- *
- * The returned pointer should be allocated with malloc() and will be passed to
- * free().
- *
- * The arrays returned by each callback will be appended to the existing
- * attribute arrays defined by SDL.
- *
- * @param display the EGL display to be used.
- * @param config the EGL config to be used.
- * @returns a newly-allocated array of attributes, terminated with `EGL_NONE`.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa EGL_SetAttributeCallbacks
- *
- * @sa EGLIntArrayCallback
- */
-using EGLIntArrayCB = std::function<SDL_EGLint*(SDL_EGLDisplay, SDL_EGLConfig)>;
+using EGLIntArrayCallback = EGLint*(SDLCALL*)(void* userdata,
+                                              EGLDisplay display,
+                                              EGLConfig config);
 
 /**
  * An enumeration of OpenGL configuration attributes.
@@ -58732,8 +58116,6 @@ inline void SetWindowHitTest(WindowParam window,
                              HitTest callback,
                              void* callback_data)
 {
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  Wrapper::erase(window);
   CheckError(SDL_SetWindowHitTest(window, callback, callback_data));
 }
 
@@ -58779,14 +58161,7 @@ inline void SetWindowHitTest(WindowParam window,
  */
 inline void SetWindowHitTest(WindowParam window, HitTestCB callback)
 {
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  void* cbHandle = Wrapper::Wrap(window, std::move(callback));
-  SetWindowHitTest(
-    window,
-    [](SDL_Window* win, const SDL_Point* area, void* data) {
-      return Wrapper::Call(data, win, Point(*area));
-    },
-    cbHandle);
+  SetWindowHitTest(window, callback.wrapper, callback.data);
 }
 
 inline void Window::SetHitTest(HitTest callback, void* callback_data)
@@ -58963,12 +58338,7 @@ inline float Window::GetProgressValue()
  * @sa Window.Window
  * @sa Window.Window
  */
-inline void DestroyWindow(WindowRaw window)
-{
-  using Wrapper = KeyValueCallbackWrapper<WindowRaw, HitTestCB>;
-  Wrapper::erase(window);
-  SDL_DestroyWindow(window);
-}
+inline void DestroyWindow(WindowRaw window) { SDL_DestroyWindow(window); }
 
 inline void Window::Destroy() { DestroyWindow(release()); }
 
@@ -59571,7 +58941,9 @@ using DialogFileFilter = SDL_DialogFileFilter;
  * @sa ShowOpenFolderDialog
  * @sa ShowFileDialogWithProperties
  */
-using DialogFileCallback = SDL_DialogFileCallback;
+using DialogFileCallback = void(SDLCALL*)(void* userdata,
+                                          const char* const* filelist,
+                                          int filter);
 
 /**
  * Callback used by file dialog functions.
@@ -59610,7 +58982,8 @@ using DialogFileCallback = SDL_DialogFileCallback;
  * @sa ShowFileDialogWithProperties
  * @sa DialogFileCallback
  */
-using DialogFileCB = std::function<void(const char* const*, int)>;
+using DialogFileCB =
+  std::function<void(const char* const* filelist, int filter)>;
 
 /**
  * Displays a dialog that lets the user select a file on their filesystem.
@@ -61503,7 +60876,7 @@ inline void PushEvent(const Event& event)
  * @sa SetEventFilter
  * @sa AddEventWatch
  */
-using EventFilter = SDL_EventFilter;
+using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
 
 /**
  * A std::function used for callbacks that watch the event queue.
@@ -61524,18 +60897,29 @@ using EventFilter = SDL_EventFilter;
  * @sa AddEventWatch
  * @sa EventFilter
  */
-using EventFilterCB = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(Event* event)>;
 
 /**
- * Handle returned by AddEventWatch(EventFilterCB)
+ * A std::function used for callbacks that watch the event queue.
  *
- * This can be used later to remove the event filter
- * RemoveEventWatch(EventFilterHandle).
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to disallow
+ *          it. When used with AddEventWatch, the return value is ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa SetEventFilter()
+ * @sa AddEventWatch()
+ * @sa EventFilter
  */
-struct EventWatchHandle : CallbackHandle
-{
-  using CallbackHandle::CallbackHandle;
-};
+using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
 
 /**
  * Set up a filter to process all events before they are added to the internal
@@ -61579,8 +60963,7 @@ struct EventWatchHandle : CallbackHandle
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueCallbackWrapper<EventFilterCB>::erase();
-  return SDL_SetEventFilter(filter, userdata);
+  SDL_SetEventFilter(filter, userdata);
 }
 
 /**
@@ -61624,14 +61007,12 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * @sa PeepEvents
  * @sa PushEvent
  */
-inline void SetEventFilter(EventFilterCB filter = {})
+inline void SetEventFilter(EventFilterCB filter)
 {
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-  SDL_SetEventFilter(
-    [](void* userdata, SDL_Event* event) {
-      return Wrapper::Call(userdata, *event);
-    },
-    Wrapper::Wrap(std::move(filter)));
+  static EventFilterCB staticFilter;
+  staticFilter = filter;
+  SetEventFilter([](void*, Event* event) { return staticFilter(event); },
+                 nullptr);
 }
 
 /**
@@ -61654,47 +61035,6 @@ inline void SetEventFilter(EventFilterCB filter = {})
 inline void GetEventFilter(EventFilter* filter, void** userdata)
 {
   CheckError(SDL_GetEventFilter(filter, userdata));
-}
-
-/**
- * Query the current event filter.
- *
- * This function can be used to "chain" filters, by saving the existing filter
- * before replacing it with a function that will call that saved filter.
- *
- * @returns EventFilterCB on success or false if there is no event filter set.
- * @throws Error on failure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa SetEventFilter
- */
-inline EventFilterCB GetEventFilter()
-{
-  using Wrapper = UniqueCallbackWrapper<EventFilterCB>;
-
-  EventFilter filter;
-  void* userdata;
-  GetEventFilter(&filter, &userdata);
-  if (!userdata)
-    return [filter](const Event& event) {
-      return filter(nullptr, const_cast<Event*>(&event));
-    };
-  if (auto cb = Wrapper::at(userdata)) return cb;
-  return [filter, userdata](const Event& event) {
-    return filter(userdata, const_cast<Event*>(&event));
-  };
-}
-
-/// @private
-inline bool EventWatchAuxCallback(void* userdata, Event* event)
-{
-  auto& f = *static_cast<EventFilterCB*>(userdata);
-  return f(*event);
 }
 
 /**
@@ -61749,9 +61089,7 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * set with SetEventFilter(), nor for events posted by the user through
  * PeepEvents().
  *
- * @param filter an EventFilterCB to call when an event happens.
- * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
- *          success.
+ * @param filter an EventFilter function to call when an event happens.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -61763,15 +61101,9 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  * @sa RemoveEventWatch
  * @sa SetEventFilter
  */
-inline EventWatchHandle AddEventWatch(EventFilterCB filter)
+inline void AddEventWatch(EventWatcherCB filter)
 {
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  auto cb = Wrapper::Wrap(std::move(filter));
-  if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
-    Wrapper::release(cb);
-    throw Error{};
-  }
-  return EventWatchHandle{cb};
+  AddEventWatch(filter.wrapper, filter.data);
 }
 
 /**
@@ -61792,25 +61124,6 @@ inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
   SDL_RemoveEventWatch(filter, userdata);
-}
-
-/**
- * Remove an event watch callback added with AddEventWatch().
- *
- * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa AddEventWatch(EventFilterCB)
- */
-inline void RemoveEventWatch(EventWatchHandle handle)
-{
-  using Wrapper = CallbackWrapper<EventFilterCB>;
-  Wrapper::release(handle);
 }
 
 /**
@@ -61858,9 +61171,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
 inline void FilterEvents(EventFilterCB filter)
 {
   return FilterEvents(
-    [](void* userdata, SDL_Event* event) {
-      auto& f = *static_cast<EventFilterCB*>(userdata);
-      return f(*event);
+    [](void* userdata, Event* event) {
+      const auto& f = *static_cast<EventFilterCB*>(userdata);
+      return f(event);
     },
     &filter);
 }
@@ -62521,7 +61834,7 @@ public:
    *
    * @param gPUBuffer the value to be wrapped
    */
-  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {})
+  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {}) noexcept
     : m_gPUBuffer(gPUBuffer)
   {
   }
@@ -62579,7 +61892,7 @@ public:
    *
    * @returns the underlying GPUBufferRaw.
    */
-  constexpr operator GPUBufferRaw() const { return m_gPUBuffer; }
+  constexpr operator GPUBufferRaw() const noexcept { return m_gPUBuffer; }
 };
 
 /**
@@ -62617,7 +61930,8 @@ public:
    *
    * @param gPUTransferBuffer the value to be wrapped
    */
-  constexpr GPUTransferBuffer(GPUTransferBufferRaw gPUTransferBuffer = {})
+  constexpr GPUTransferBuffer(
+    GPUTransferBufferRaw gPUTransferBuffer = {}) noexcept
     : m_gPUTransferBuffer(gPUTransferBuffer)
   {
   }
@@ -62661,7 +61975,7 @@ public:
    *
    * @returns the underlying GPUTransferBufferRaw.
    */
-  constexpr operator GPUTransferBufferRaw() const
+  constexpr operator GPUTransferBufferRaw() const noexcept
   {
     return m_gPUTransferBuffer;
   }
@@ -62712,7 +62026,7 @@ public:
    *
    * @param gPUTexture the value to be wrapped
    */
-  constexpr GPUTexture(GPUTextureRaw gPUTexture = {})
+  constexpr GPUTexture(GPUTextureRaw gPUTexture = {}) noexcept
     : m_gPUTexture(gPUTexture)
   {
   }
@@ -62785,7 +62099,7 @@ public:
    *
    * @returns the underlying GPUTextureRaw.
    */
-  constexpr operator GPUTextureRaw() const { return m_gPUTexture; }
+  constexpr operator GPUTextureRaw() const noexcept { return m_gPUTexture; }
 };
 
 /**
@@ -62824,7 +62138,7 @@ public:
    *
    * @param gPUSampler the value to be wrapped
    */
-  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {})
+  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {}) noexcept
     : m_gPUSampler(gPUSampler)
   {
   }
@@ -62860,7 +62174,7 @@ public:
    *
    * @returns the underlying GPUSamplerRaw.
    */
-  constexpr operator GPUSamplerRaw() const { return m_gPUSampler; }
+  constexpr operator GPUSamplerRaw() const noexcept { return m_gPUSampler; }
 };
 
 /**
@@ -62893,7 +62207,7 @@ public:
    *
    * @param gPUShader the value to be wrapped
    */
-  constexpr GPUShader(GPUShaderRaw gPUShader = {})
+  constexpr GPUShader(GPUShaderRaw gPUShader = {}) noexcept
     : m_gPUShader(gPUShader)
   {
   }
@@ -62981,7 +62295,7 @@ public:
    *
    * @returns the underlying GPUShaderRaw.
    */
-  constexpr operator GPUShaderRaw() const { return m_gPUShader; }
+  constexpr operator GPUShaderRaw() const noexcept { return m_gPUShader; }
 };
 
 /**
@@ -63015,7 +62329,8 @@ public:
    *
    * @param gPUComputePipeline the value to be wrapped
    */
-  constexpr GPUComputePipeline(GPUComputePipelineRaw gPUComputePipeline = {})
+  constexpr GPUComputePipeline(
+    GPUComputePipelineRaw gPUComputePipeline = {}) noexcept
     : m_gPUComputePipeline(gPUComputePipeline)
   {
   }
@@ -63077,7 +62392,7 @@ public:
    *
    * @returns the underlying GPUComputePipelineRaw.
    */
-  constexpr operator GPUComputePipelineRaw() const
+  constexpr operator GPUComputePipelineRaw() const noexcept
   {
     return m_gPUComputePipeline;
   }
@@ -63120,7 +62435,8 @@ public:
    *
    * @param gPUGraphicsPipeline the value to be wrapped
    */
-  constexpr GPUGraphicsPipeline(GPUGraphicsPipelineRaw gPUGraphicsPipeline = {})
+  constexpr GPUGraphicsPipeline(
+    GPUGraphicsPipelineRaw gPUGraphicsPipeline = {}) noexcept
     : m_gPUGraphicsPipeline(gPUGraphicsPipeline)
   {
   }
@@ -63158,7 +62474,7 @@ public:
    *
    * @returns the underlying GPUGraphicsPipelineRaw.
    */
-  constexpr operator GPUGraphicsPipelineRaw() const
+  constexpr operator GPUGraphicsPipelineRaw() const noexcept
   {
     return m_gPUGraphicsPipeline;
   }
@@ -63231,7 +62547,7 @@ public:
    *
    * @param gPURenderPass the value to be wrapped
    */
-  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
+  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {}) noexcept
     : m_gPURenderPass(gPURenderPass)
   {
   }
@@ -63241,7 +62557,10 @@ public:
    *
    * @returns the underlying GPURenderPassRaw.
    */
-  constexpr operator GPURenderPassRaw() const { return m_gPURenderPass; }
+  constexpr operator GPURenderPassRaw() const noexcept
+  {
+    return m_gPURenderPass;
+  }
 
   /**
    * Binds a graphics pipeline on a render pass to be used in rendering.
@@ -63558,7 +62877,7 @@ public:
    *
    * @param gPUComputePass the value to be wrapped
    */
-  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {})
+  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {}) noexcept
     : m_gPUComputePass(gPUComputePass)
   {
   }
@@ -63568,7 +62887,10 @@ public:
    *
    * @returns the underlying GPUComputePassRaw.
    */
-  constexpr operator GPUComputePassRaw() const { return m_gPUComputePass; }
+  constexpr operator GPUComputePassRaw() const noexcept
+  {
+    return m_gPUComputePass;
+  }
 
   /**
    * Binds a compute pipeline on a command buffer for use in compute dispatch.
@@ -63789,7 +63111,7 @@ public:
    *
    * @param gPUCopyPass the value to be wrapped
    */
-  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
+  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {}) noexcept
     : m_gPUCopyPass(gPUCopyPass)
   {
   }
@@ -63799,7 +63121,7 @@ public:
    *
    * @returns the underlying GPUCopyPassRaw.
    */
-  constexpr operator GPUCopyPassRaw() const { return m_gPUCopyPass; }
+  constexpr operator GPUCopyPassRaw() const noexcept { return m_gPUCopyPass; }
 
   /**
    * Uploads data from a transfer buffer to a texture.
@@ -64078,7 +63400,7 @@ public:
    *
    * @param gPUCommandBuffer the value to be wrapped
    */
-  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
+  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {}) noexcept
     : m_gPUCommandBuffer(gPUCommandBuffer)
   {
   }
@@ -64088,7 +63410,10 @@ public:
    *
    * @returns the underlying GPUCommandBufferRaw.
    */
-  constexpr operator GPUCommandBufferRaw() const { return m_gPUCommandBuffer; }
+  constexpr operator GPUCommandBufferRaw() const noexcept
+  {
+    return m_gPUCommandBuffer;
+  }
 
   /**
    * Inserts an arbitrary string label into the command buffer callstream.
@@ -65073,7 +64398,10 @@ class GPUDevice
 
 public:
   /// Default ctor
-  constexpr GPUDevice() = default;
+  constexpr GPUDevice(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GPUDeviceParam.
@@ -65082,7 +64410,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPUDevice(const GPUDeviceRaw resource)
+  constexpr explicit GPUDevice(const GPUDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -65091,7 +64419,7 @@ public:
   constexpr GPUDevice(const GPUDevice& other) = delete;
 
   /// Move constructor
-  constexpr GPUDevice(GPUDevice&& other)
+  constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
   {
   }
@@ -65215,17 +64543,22 @@ public:
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
 
   /// Assignment operator.
-  GPUDevice& operator=(GPUDevice other)
+  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
+
+public:
   /// Retrieves underlying GPUDeviceRaw.
-  constexpr GPUDeviceRaw get() const { return m_resource; }
+  constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GPUDeviceRaw and clear this.
-  constexpr GPUDeviceRaw release()
+  constexpr GPUDeviceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -65233,16 +64566,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GPUDevice& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const GPUDevice& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GPUDeviceParam
-  constexpr operator GPUDeviceParam() const { return {m_resource}; }
+  constexpr operator GPUDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -66105,6 +65435,8 @@ public:
 /// Semi-safe reference for GPUDevice.
 struct GPUDeviceRef : GPUDevice
 {
+  using GPUDevice::GPUDevice;
+
   /**
    * Constructs from GPUDeviceParam.
    *
@@ -66112,13 +65444,25 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceParam resource)
+  GPUDeviceRef(GPUDeviceParam resource) noexcept
     : GPUDevice(resource.value)
   {
   }
 
+  /**
+   * Constructs from GPUDeviceParam.
+   *
+   * @param resource a GPUDeviceRaw or GPUDevice.
+   *
+   * This does not takes ownership!
+   */
+  GPUDeviceRef(GPUDeviceRaw resource) noexcept
+    : GPUDevice(resource)
+  {
+  }
+
   /// Copy constructor.
-  GPUDeviceRef(const GPUDeviceRef& other)
+  GPUDeviceRef(const GPUDeviceRef& other) noexcept
     : GPUDevice(other.get())
   {
   }
@@ -70182,7 +69526,7 @@ public:
    *
    * @param joystickID the value to be wrapped
    */
-  constexpr JoystickID(JoystickIDRaw joystickID = {})
+  constexpr JoystickID(JoystickIDRaw joystickID = {}) noexcept
     : m_joystickID(joystickID)
   {
   }
@@ -70192,7 +69536,7 @@ public:
    *
    * @returns the underlying JoystickIDRaw.
    */
-  constexpr operator JoystickIDRaw() const { return m_joystickID; }
+  constexpr operator JoystickIDRaw() const noexcept { return m_joystickID; }
 
   /**
    * Get the implementation dependent name of a joystick.
@@ -70448,7 +69792,10 @@ class Joystick
 
 public:
   /// Default ctor
-  constexpr Joystick() = default;
+  constexpr Joystick(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from JoystickParam.
@@ -70457,7 +69804,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource)
+  constexpr explicit Joystick(const JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -70466,7 +69813,7 @@ public:
   constexpr Joystick(const Joystick& other) = delete;
 
   /// Move constructor
-  constexpr Joystick(Joystick&& other)
+  constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
   {
   }
@@ -70499,17 +69846,22 @@ public:
   ~Joystick() { SDL_CloseJoystick(m_resource); }
 
   /// Assignment operator.
-  Joystick& operator=(Joystick other)
+  constexpr Joystick& operator=(Joystick&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
+
+public:
   /// Retrieves underlying JoystickRaw.
-  constexpr JoystickRaw get() const { return m_resource; }
+  constexpr JoystickRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying JoystickRaw and clear this.
-  constexpr JoystickRaw release()
+  constexpr JoystickRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -70517,16 +69869,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Joystick& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Joystick& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to JoystickParam
-  constexpr operator JoystickParam() const { return {m_resource}; }
+  constexpr operator JoystickParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
@@ -71213,6 +70562,8 @@ public:
 /// Semi-safe reference for Joystick.
 struct JoystickRef : Joystick
 {
+  using Joystick::Joystick;
+
   /**
    * Constructs from JoystickParam.
    *
@@ -71220,13 +70571,25 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickParam resource)
+  JoystickRef(JoystickParam resource) noexcept
     : Joystick(resource.value)
   {
   }
 
+  /**
+   * Constructs from JoystickParam.
+   *
+   * @param resource a JoystickRaw or Joystick.
+   *
+   * This does not takes ownership!
+   */
+  JoystickRef(JoystickRaw resource) noexcept
+    : Joystick(resource)
+  {
+  }
+
   /// Copy constructor.
-  JoystickRef(const JoystickRef& other)
+  JoystickRef(const JoystickRef& other) noexcept
     : Joystick(other.get())
   {
   }
@@ -73308,7 +72671,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @param messageBox the value to be wrapped
    */
-  constexpr MessageBox(const MessageBoxRaw& messageBox = {})
+  constexpr MessageBox(const MessageBoxRaw& messageBox = {}) noexcept
     : MessageBoxRaw(messageBox)
   {
   }
@@ -73323,12 +72686,13 @@ struct MessageBox : MessageBoxRaw
    * @param buttons the value for buttons.
    * @param colorScheme the value for colorScheme.
    */
-  constexpr MessageBox(MessageBoxFlags flags,
-                       WindowRef window,
-                       const char* title,
-                       const char* message,
-                       std::span<const MessageBoxButtonData> buttons,
-                       OptionalRef<const MessageBoxColorScheme> colorScheme)
+  constexpr MessageBox(
+    MessageBoxFlags flags,
+    WindowRef window,
+    const char* title,
+    const char* message,
+    std::span<const MessageBoxButtonData> buttons,
+    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
                     window.get(),
                     title,
@@ -73344,7 +72708,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current flags value.
    */
-  constexpr SDL_MessageBoxFlags GetFlags() const { return flags; }
+  constexpr SDL_MessageBoxFlags GetFlags() const noexcept { return flags; }
 
   /**
    * Set the flags.
@@ -73352,7 +72716,7 @@ struct MessageBox : MessageBoxRaw
    * @param newFlags the new flags value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags)
+  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags) noexcept
   {
     flags = newFlags;
     return *this;
@@ -73363,7 +72727,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr SDL_Window* GetWindow() const { return window; }
+  constexpr SDL_Window* GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -73371,7 +72735,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(SDL_Window* newWindow)
+  constexpr MessageBox& SetWindow(SDL_Window* newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -73382,7 +72746,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current title value.
    */
-  constexpr const char* GetTitle() const { return title; }
+  constexpr const char* GetTitle() const noexcept { return title; }
 
   /**
    * Set the title.
@@ -73390,7 +72754,7 @@ struct MessageBox : MessageBoxRaw
    * @param newTitle the new title value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetTitle(const char* newTitle)
+  constexpr MessageBox& SetTitle(const char* newTitle) noexcept
   {
     title = newTitle;
     return *this;
@@ -73401,7 +72765,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current message value.
    */
-  constexpr const char* GetMessage() const { return message; }
+  constexpr const char* GetMessage() const noexcept { return message; }
 
   /**
    * Set the message.
@@ -73409,7 +72773,7 @@ struct MessageBox : MessageBoxRaw
    * @param newMessage the new message value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetMessage(const char* newMessage)
+  constexpr MessageBox& SetMessage(const char* newMessage) noexcept
   {
     message = newMessage;
     return *this;
@@ -73420,7 +72784,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current numbuttons value.
    */
-  constexpr int GetNumbuttons() const { return numbuttons; }
+  constexpr int GetNumbuttons() const noexcept { return numbuttons; }
 
   /**
    * Set the numbuttons.
@@ -73428,7 +72792,7 @@ struct MessageBox : MessageBoxRaw
    * @param newNumbuttons the new numbuttons value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetNumbuttons(int newNumbuttons)
+  constexpr MessageBox& SetNumbuttons(int newNumbuttons) noexcept
   {
     numbuttons = newNumbuttons;
     return *this;
@@ -73439,7 +72803,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current buttons.
    */
-  constexpr std::span<const MessageBoxButtonData> GetButtons() const
+  constexpr std::span<const MessageBoxButtonData> GetButtons() const noexcept
   {
     if (numbuttons == 0) return {};
     return std::span(buttons, size_t(numbuttons));
@@ -73452,7 +72816,7 @@ struct MessageBox : MessageBoxRaw
    * @returns Reference to self.
    */
   constexpr MessageBox& SetButtons(
-    std::span<const MessageBoxButtonData> newButtons)
+    std::span<const MessageBoxButtonData> newButtons) noexcept
   {
     if (newButtons.empty()) {
       numbuttons = 0;
@@ -73469,7 +72833,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current colorScheme value.
    */
-  constexpr const MessageBoxColorScheme* GetColorScheme() const
+  constexpr const MessageBoxColorScheme* GetColorScheme() const noexcept
   {
     return colorScheme;
   }
@@ -73481,7 +72845,7 @@ struct MessageBox : MessageBoxRaw
    * @returns Reference to self.
    */
   constexpr MessageBox& SetColorScheme(
-    OptionalRef<const MessageBoxColorScheme> newColorScheme)
+    OptionalRef<const MessageBoxColorScheme> newColorScheme) noexcept
   {
     colorScheme = newColorScheme;
     return *this;
@@ -73672,7 +73036,10 @@ class MetalView
 
 public:
   /// Default ctor
-  constexpr MetalView() = default;
+  constexpr MetalView(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from MetalViewParam.
@@ -73681,7 +73048,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource)
+  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -73690,7 +73057,7 @@ public:
   constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
-  constexpr MetalView(MetalView&& other)
+  constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
   {
   }
@@ -73726,17 +73093,22 @@ public:
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
 
   /// Assignment operator.
-  MetalView& operator=(MetalView other)
+  constexpr MetalView& operator=(MetalView&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
+
+public:
   /// Retrieves underlying MetalViewRaw.
-  constexpr MetalViewRaw get() const { return m_resource; }
+  constexpr MetalViewRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying MetalViewRaw and clear this.
-  constexpr MetalViewRaw release()
+  constexpr MetalViewRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -73744,16 +73116,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const MetalView& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const MetalView& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to MetalViewParam
-  constexpr operator MetalViewParam() const { return {m_resource}; }
+  constexpr operator MetalViewParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy an existing MetalView object.
@@ -73780,6 +73149,8 @@ public:
 /// Semi-safe reference for MetalView.
 struct MetalViewRef : MetalView
 {
+  using MetalView::MetalView;
+
   /**
    * Constructs from MetalViewParam.
    *
@@ -73787,13 +73158,25 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewParam resource)
+  MetalViewRef(MetalViewParam resource) noexcept
     : MetalView(resource.value)
   {
   }
 
+  /**
+   * Constructs from MetalViewParam.
+   *
+   * @param resource a MetalViewRaw or MetalView.
+   *
+   * This does not takes ownership!
+   */
+  MetalViewRef(MetalViewRaw resource) noexcept
+    : MetalView(resource)
+  {
+  }
+
   /// Copy constructor.
-  MetalViewRef(const MetalViewRef& other)
+  MetalViewRef(const MetalViewRef& other) noexcept
     : MetalView(other.get())
   {
   }
@@ -74038,7 +73421,10 @@ class Cursor
 
 public:
   /// Default ctor
-  constexpr Cursor() = default;
+  constexpr Cursor(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from CursorParam.
@@ -74047,7 +73433,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource)
+  constexpr explicit Cursor(const CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -74056,7 +73442,7 @@ public:
   constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
-  constexpr Cursor(Cursor&& other)
+  constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
   {
   }
@@ -74173,17 +73559,22 @@ public:
   ~Cursor() { SDL_DestroyCursor(m_resource); }
 
   /// Assignment operator.
-  Cursor& operator=(Cursor other)
+  constexpr Cursor& operator=(Cursor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
+
+public:
   /// Retrieves underlying CursorRaw.
-  constexpr CursorRaw get() const { return m_resource; }
+  constexpr CursorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CursorRaw and clear this.
-  constexpr CursorRaw release()
+  constexpr CursorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -74191,16 +73582,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Cursor& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Cursor& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CursorParam
-  constexpr operator CursorParam() const { return {m_resource}; }
+  constexpr operator CursorParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
@@ -74241,6 +73629,8 @@ public:
 /// Semi-safe reference for Cursor.
 struct CursorRef : Cursor
 {
+  using Cursor::Cursor;
+
   /**
    * Constructs from CursorParam.
    *
@@ -74248,13 +73638,25 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorParam resource)
+  CursorRef(CursorParam resource) noexcept
     : Cursor(resource.value)
   {
   }
 
+  /**
+   * Constructs from CursorParam.
+   *
+   * @param resource a CursorRaw or Cursor.
+   *
+   * This does not takes ownership!
+   */
+  CursorRef(CursorRaw resource) noexcept
+    : Cursor(resource)
+  {
+  }
+
   /// Copy constructor.
-  CursorRef(const CursorRef& other)
+  CursorRef(const CursorRef& other) noexcept
     : Cursor(other.get())
   {
   }
@@ -75383,7 +74785,10 @@ class Gamepad
 
 public:
   /// Default ctor
-  constexpr Gamepad() = default;
+  constexpr Gamepad(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GamepadParam.
@@ -75392,7 +74797,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource)
+  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -75401,7 +74806,7 @@ public:
   constexpr Gamepad(const Gamepad& other) = delete;
 
   /// Move constructor
-  constexpr Gamepad(Gamepad&& other)
+  constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
   {
   }
@@ -75433,17 +74838,22 @@ public:
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
 
   /// Assignment operator.
-  Gamepad& operator=(Gamepad other)
+  constexpr Gamepad& operator=(Gamepad&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
+
+public:
   /// Retrieves underlying GamepadRaw.
-  constexpr GamepadRaw get() const { return m_resource; }
+  constexpr GamepadRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GamepadRaw and clear this.
-  constexpr GamepadRaw release()
+  constexpr GamepadRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -75451,16 +74861,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Gamepad& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Gamepad& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GamepadParam
-  constexpr operator GamepadParam() const { return {m_resource}; }
+  constexpr operator GamepadParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
@@ -76124,6 +75531,8 @@ public:
 /// Semi-safe reference for Gamepad.
 struct GamepadRef : Gamepad
 {
+  using Gamepad::Gamepad;
+
   /**
    * Constructs from GamepadParam.
    *
@@ -76131,13 +75540,25 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadParam resource)
+  GamepadRef(GamepadParam resource) noexcept
     : Gamepad(resource.value)
   {
   }
 
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw or Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  GamepadRef(GamepadRaw resource) noexcept
+    : Gamepad(resource)
+  {
+  }
+
   /// Copy constructor.
-  GamepadRef(const GamepadRef& other)
+  GamepadRef(const GamepadRef& other) noexcept
     : Gamepad(other.get())
   {
   }
@@ -78694,7 +78115,10 @@ class Haptic
 
 public:
   /// Default ctor
-  constexpr Haptic() = default;
+  constexpr Haptic(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from HapticParam.
@@ -78703,7 +78127,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource)
+  constexpr explicit Haptic(const HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -78712,7 +78136,7 @@ public:
   constexpr Haptic(const Haptic& other) = delete;
 
   /// Move constructor
-  constexpr Haptic(Haptic&& other)
+  constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
   {
   }
@@ -78791,17 +78215,22 @@ public:
   ~Haptic() { SDL_CloseHaptic(m_resource); }
 
   /// Assignment operator.
-  Haptic& operator=(Haptic other)
+  constexpr Haptic& operator=(Haptic&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
+
+public:
   /// Retrieves underlying HapticRaw.
-  constexpr HapticRaw get() const { return m_resource; }
+  constexpr HapticRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying HapticRaw and clear this.
-  constexpr HapticRaw release()
+  constexpr HapticRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -78809,16 +78238,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Haptic& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Haptic& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to HapticParam
-  constexpr operator HapticParam() const { return {m_resource}; }
+  constexpr operator HapticParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
@@ -79154,6 +78580,8 @@ public:
 /// Semi-safe reference for Haptic.
 struct HapticRef : Haptic
 {
+  using Haptic::Haptic;
+
   /**
    * Constructs from HapticParam.
    *
@@ -79161,13 +78589,25 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticParam resource)
+  HapticRef(HapticParam resource) noexcept
     : Haptic(resource.value)
   {
   }
 
+  /**
+   * Constructs from HapticParam.
+   *
+   * @param resource a HapticRaw or Haptic.
+   *
+   * This does not takes ownership!
+   */
+  HapticRef(HapticRaw resource) noexcept
+    : Haptic(resource)
+  {
+  }
+
   /// Copy constructor.
-  HapticRef(const HapticRef& other)
+  HapticRef(const HapticRef& other) noexcept
     : Haptic(other.get())
   {
   }
@@ -79833,6 +79273,789 @@ inline void Haptic::StopRumble() { SDL::StopHapticRumble(m_resource); }
 /// @}
 
 /**
+ * @defgroup CategoryInit Initialization and Shutdown
+ *
+ * All SDL programs need to initialize the library before starting to work with
+ * it.
+ *
+ * Almost everything can simply call Init() near startup, with a handful of
+ * flags to specify subsystems to touch. These are here to make sure SDL does
+ * not even attempt to touch low-level pieces of the operating system that you
+ * don't intend to use. For example, you might be using SDL for video and input
+ * but chose an external library for audio, and in this case you would just need
+ * to leave off the `INIT_AUDIO` flag to make sure that external library has
+ * complete control.
+ *
+ * Most apps, when terminating, should call Quit(). This will clean up (nearly)
+ * everything that SDL might have allocated, and crucially, it'll make sure that
+ * the display's resolution is back to what the user expects if you had
+ * previously changed it for your game.
+ *
+ * SDL3 apps are strongly encouraged to call SetAppMetadata() at startup to fill
+ * in details about the program. This is completely optional, but it helps in
+ * small ways (we can provide an About dialog box for the macOS menu, we can
+ * name the app in the system's audio mixer, etc). Those that want to provide a
+ * _lot_ of information should look at the more-detailed
+ * SetAppMetadataProperty().
+ *
+ * @{
+ */
+
+/**
+ * @defgroup InitFlags Initialization flags
+ *
+ * @{
+ */
+
+/**
+ * Initialization flags for Init and/or InitSubSystem
+ *
+ * These are the flags which may be passed to Init(). You should specify the
+ * subsystems which you will be using in your application.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa Quit
+ * @sa InitSubSystem
+ * @sa QuitSubSystem
+ * @sa WasInit
+ */
+using InitFlags = Uint32;
+
+constexpr InitFlags INIT_AUDIO =
+  SDL_INIT_AUDIO; ///< `INIT_AUDIO` implies `INIT_EVENTS`
+
+/**
+ * `INIT_VIDEO` implies `INIT_EVENTS`, should be initialized on the main thread
+ */
+constexpr InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
+
+constexpr InitFlags INIT_JOYSTICK =
+  SDL_INIT_JOYSTICK; ///< `INIT_JOYSTICK` implies `INIT_EVENTS`
+
+constexpr InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC; ///< HAPTIC
+
+constexpr InitFlags INIT_GAMEPAD =
+  SDL_INIT_GAMEPAD; ///< `INIT_GAMEPAD` implies `INIT_JOYSTICK`
+
+constexpr InitFlags INIT_EVENTS = SDL_INIT_EVENTS; ///< EVENTS
+
+constexpr InitFlags INIT_SENSOR =
+  SDL_INIT_SENSOR; ///< `INIT_SENSOR` implies `INIT_EVENTS`
+
+constexpr InitFlags INIT_CAMERA =
+  SDL_INIT_CAMERA; ///< `INIT_CAMERA` implies `INIT_EVENTS`
+
+/// @}
+
+/**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
+ * Return values for optional main callbacks.
+ *
+ * Returning APP_SUCCESS or APP_FAILURE from SDL_AppInit, SDL_AppEvent, or
+ * SDL_AppIterate will terminate the program and report success/failure to the
+ * operating system. What that means is platform-dependent. On Unix, for
+ * example, on success, the process error code will be zero, and on failure it
+ * will be 1. This interface doesn't allow you to return specific exit codes,
+ * just whether there was an error generally or not.
+ *
+ * Returning APP_CONTINUE from these functions will let the app continue to run.
+ *
+ * See [Main callbacks in
+ * SDL3](https://wiki.libsdl.org/SDL3/README-main-functions#main-callbacks-in-sdl3)
+ * for complete details.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AppResult = SDL_AppResult;
+
+/// Value that requests that the app continue from the main callbacks.
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/// Value that requests termination with success from the main callbacks.
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/// Value that requests termination with error from the main callbacks.
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
+
+/**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line arguments.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppInit_func = AppResult(SDLCALL*)(void** appstate,
+                                         int argc,
+                                         char* argv[]);
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppIterate_func = AppResult(SDLCALL*)(void* appstate);
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns APP_FAILURE to terminate with an error, APP_SUCCESS to terminate
+ *          with success, APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppEvent_func = AppResult(SDLCALL*)(void* appstate, Event* event);
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by EnterAppMainCallbacks. This mechanism operates behind the
+ * scenes for apps using the optional main callbacks. Apps that want to use this
+ * should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
+
+/// @}
+
+/**
+ * Initialize the SDL library.
+ *
+ * Init() simply forwards to calling InitSubSystem(). Therefore, the two may be
+ * used interchangeably. Though for readability of your code InitSubSystem()
+ * might be preferred.
+ *
+ * The file I/O (for example: IOStream.FromFile) and threading (Thread.Thread)
+ * subsystems are initialized by default. Message boxes (ShowSimpleMessageBox)
+ * also attempt to work without initializing the video subsystem, in hopes of
+ * being useful in showing an error dialog when Init fails. You must
+ * specifically initialize other subsystems if you use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the joystick
+ *   subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem() for
+ * each InitSubSystem() to correctly shutdown a subsystem manually (or call
+ * Quit() to force shutdown). If a subsystem is already loaded then this call
+ * will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before calling
+ * Init, using either SetAppMetadata() or SetAppMetadataProperty().
+ *
+ * @param flags subsystem initialization flags.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
+ * @sa InitSubSystem
+ * @sa Quit
+ * @sa SetMainReady
+ * @sa WasInit
+ */
+inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }
+
+/**
+ * Compatibility function to initialize the SDL library.
+ *
+ * This function and Init() are interchangeable.
+ *
+ * @param flags any of the flags used by Init(); see Init for details.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa Quit
+ * @sa QuitSubSystem
+ */
+inline void InitSubSystem(InitFlags flags)
+{
+  CheckError(SDL_InitSubSystem(flags));
+}
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @param flags any of the flags used by Init(); see Init for details.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem
+ * @sa Quit
+ */
+inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
+
+/**
+ * Get a mask of the specified subsystems which are currently initialized.
+ *
+ * @param flags any of the flags used by Init(); see Init for details.
+ * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
+ *          returns the initialization status of the specified subsystems.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa InitSubSystem
+ */
+inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
+
+/**
+ * Clean up all initialized subsystems.
+ *
+ * You should call this function even if you have already shutdown each
+ * initialized subsystem with QuitSubSystem(). It is safe to call this function
+ * even in the case of errors in initialization.
+ *
+ * You can use this function with atexit() to ensure that it is run when your
+ * application is shutdown, but it is not wise to do this from a library or
+ * other dynamically loaded code.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init
+ * @sa QuitSubSystem
+ */
+inline void Quit() { SDL_Quit(); }
+
+/**
+ * Return whether this is the main thread.
+ *
+ * On Apple platforms, the main thread is the thread that runs your program's
+ * main() entry point. On other platforms, the main thread is the one that calls
+ * Init(INIT_VIDEO), which should usually be the one that runs your program's
+ * main() entry point. If you are using the main callbacks, SDL_AppInit(),
+ * SDL_AppIterate(), and SDL_AppQuit() are all called on the main thread.
+ *
+ * @returns true if this thread is the main thread, or false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ */
+inline bool IsMainThread() { return SDL_IsMainThread(); }
+
+/**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ */
+using MainThreadCallback = void(SDLCALL*)(void* userdata);
+
+/**
+ * Callback run on the main thread.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread
+ *
+ * @sa MainThreadCallback
+ *
+ * @cat result-callback
+ *
+ */
+using MainThreadCB = std::function<void()>;
+
+/// @}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution on
+ * the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param userdata a pointer that is passed to `callback`.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread
+ */
+inline void RunOnMainThread(MainThreadCallback callback,
+                            void* userdata,
+                            bool wait_complete)
+{
+  CheckError(SDL_RunOnMainThread(callback, userdata, wait_complete));
+}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution on
+ * the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+inline void RunOnMainThread(MainThreadCB callback, bool wait_complete)
+{
+  using Wrapper = CallbackWrapper<MainThreadCB>;
+  void* wrapped = Wrapper::Wrap(std::move(callback));
+  RunOnMainThread(&Wrapper::CallOnce, wrapped, wait_complete);
+}
+
+/**
+ * Specify basic metadata about your app.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left as nullptr, if a specific
+ * detail doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before Init. Multiple
+ * calls to this function are allowed, but various state might not change once
+ * it has been set up with a previous call to this function.
+ *
+ * Passing a nullptr removes any previous metadata.
+ *
+ * This is a simplified interface for the most important information. You can
+ * supply significantly more detailed metadata with SetAppMetadataProperty().
+ *
+ * @param appname The name of the application ("My Game 2: Bad Guy's Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git hash,
+ *                   or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that identifies
+ *                      this app ("com.example.mygame2").
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadataProperty
+ */
+inline void SetAppMetadata(StringParam appname,
+                           StringParam appversion,
+                           StringParam appidentifier)
+{
+  CheckError(SDL_SetAppMetadata(appname, appversion, appidentifier));
+}
+
+/**
+ * Specify metadata about your app through a set of properties.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left out, if a specific detail
+ * doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before Init. Multiple
+ * calls to this function are allowed, but various state might not change once
+ * it has been set up with a previous call to this function.
+ *
+ * Once set, this metadata can be read using GetAppMetadataProperty().
+ *
+ * These are the supported properties:
+ *
+ * - `prop::appMetaData.NAME_STRING`: The human-readable name of the
+ *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+ *   anywhere the OS shows the name of the application separately from window
+ *   titles, such as volume control applets, etc. This defaults to "SDL
+ *   Application".
+ * - `prop::appMetaData.VERSION_STRING`: The version of the app that is running;
+ *   there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and a
+ *   git hash are all valid options. This has no default.
+ * - `prop::appMetaData.IDENTIFIER_STRING`: A unique string that identifies this
+ *   app. This must be in reverse-domain format, like "com.example.mygame2".
+ *   This string is used by desktop compositors to identify and group windows
+ *   together, as well as match applications with associated desktop settings
+ *   and icons. If you plan to package your application in a container such as
+ *   Flatpak, the app ID should match the name of your Flatpak container as
+ *   well. This has no default.
+ * - `prop::appMetaData.CREATOR_STRING`: The human-readable name of the
+ *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+ * - `prop::appMetaData.COPYRIGHT_STRING`: The human-readable copyright notice,
+ *   like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
+ *   line, don't paste a copy of a whole software license in here. This has no
+ *   default.
+ * - `prop::appMetaData.URL_STRING`: A URL to the app on the web. Maybe a
+ *   product page, or a storefront, or even a GitHub repository, for user's
+ *   further information This has no default.
+ * - `prop::appMetaData.TYPE_STRING`: The type of application this is. Currently
+ *   this string can be "game" for a video game, "mediaplayer" for a media
+ *   player, or generically "application" if nothing else applies. Future
+ *   versions of SDL might add new types. This defaults to "application".
+ *
+ * @param name the name of the metadata property to set.
+ * @param value the value of the property, or nullptr to remove that property.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAppMetadataProperty
+ * @sa SetAppMetadata
+ */
+inline void SetAppMetadataProperty(StringParam name, StringParam value)
+{
+  CheckError(SDL_SetAppMetadataProperty(name, value));
+}
+
+namespace prop::appMetaData {
+
+constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+
+constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
+
+constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
+
+constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
+
+constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
+
+constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
+
+constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
+
+} // namespace prop::appMetaData
+
+/**
+ * Get metadata about your app.
+ *
+ * This returns metadata previously set using SetAppMetadata() or
+ * SetAppMetadataProperty(). See SetAppMetadataProperty() for the list of
+ * available properties and their meanings.
+ *
+ * @param name the name of the metadata property to get.
+ * @returns the current value of the metadata property, or the default if it is
+ *          not set, nullptr for properties with no default.
+ *
+ * @threadsafety It is safe to call this function from any thread, although the
+ *               string returned is not protected and could potentially be freed
+ *               if you call SetAppMetadataProperty() to set that property from
+ *               another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata
+ * @sa SetAppMetadataProperty
+ */
+inline const char* GetAppMetadataProperty(StringParam name)
+{
+  return SDL_GetAppMetadataProperty(name);
+}
+
+#ifndef SDL3PP_APPCLASS_LOG_PRIORITY
+/**
+ * The default log priority for app class.
+ */
+#define SDL3PP_APPCLASS_LOG_PRIORITY LOG_PRIORITY_CRITICAL
+#endif // SDL3PP_APPCLASS_LOG_PRIORITY
+
+/**
+ * Represents application parameters
+ */
+using AppArgs = std::span<char const* const>;
+
+/**
+ * @{
+ *
+ * Allocate and initialize state with new.
+ *
+ * If possible, pass the args to constructor, otherwise expects a default ctor;
+ *
+ * @tparam T the state class
+ * @param state the state to initialize
+ * @param args the program arguments
+ * @return the app status
+ */
+template<class T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  static_assert(std::is_default_constructible_v<T>);
+  *state = new T{};
+  return APP_CONTINUE;
+}
+
+template<class T>
+  requires std::convertible_to<AppArgs, T>
+inline AppResult DefaultCreateClass(T** state, AppArgs args)
+{
+  *state = new T{args};
+  return APP_CONTINUE;
+}
+/// @}
+
+/// @private
+template<class T>
+concept HasInitFunction = requires(T** state) {
+  { T::Init(state, AppArgs{}) } -> std::convertible_to<AppResult>;
+};
+
+/**
+ * @{
+ *
+ * Init state with arguments.
+ *
+ * This will call T::Init() if available, otherwise it delegates to
+ * DefaultCreateClass().
+ *
+ * @tparam T the state class
+ * @param state the state to initialize
+ * @param args the program arguments
+ * @return the app status
+ */
+template<class T>
+inline AppResult InitClass(T** state, AppArgs args)
+{
+  try {
+    return DefaultCreateClass(state, args);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+template<HasInitFunction T>
+inline AppResult InitClass(T** state, AppArgs args)
+{
+  *state = nullptr;
+  try {
+    AppResult result = T::Init(state, args);
+    if (*state == nullptr && result != APP_FAILURE) return APP_SUCCESS;
+    return result;
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+/// @}
+
+/// @private
+template<class T>
+concept HasIterateFunction = requires(T* state) { state->Iterate(); };
+
+/**
+ * Iterate the state
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @return the app status
+ */
+template<HasIterateFunction T>
+inline AppResult IterateClass(T* state)
+{
+  try {
+    return state->Iterate();
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+/// @private
+template<class T>
+concept HasEventFunction =
+  requires(T* state, const SDL_Event& event) { state->Event(event); };
+
+/**
+ * Default handle by finishing if QUIT is requested
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @param event the event
+ * @return APP_SUCCESS if event is QUIT_EVENT, APP_CONTINUE otherwise,
+ */
+template<class T>
+inline AppResult DefaultEventClass(T* state, const SDL_Event& event)
+{
+  if (event.type == SDL_EVENT_QUIT) return APP_SUCCESS;
+  return APP_CONTINUE;
+}
+
+/**
+ * @{
+ * Iterate the state
+ *
+ * @tparam T the state class
+ * @param state the state
+ * @param event the event to handle
+ * @return the app status
+ */
+template<class T>
+inline AppResult EventClass(T* state, const SDL_Event& event)
+{
+  try {
+    return DefaultEventClass(state, event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+template<HasEventFunction T>
+inline AppResult EventClass(T* state, const SDL_Event& event)
+{
+  try {
+    return state->Event(event);
+  } catch (std::exception& e) {
+    LOG_CATEGORY_APPLICATION.LogUnformatted(SDL3PP_APPCLASS_LOG_PRIORITY,
+                                            e.what());
+  } catch (...) {
+  }
+  return APP_FAILURE;
+}
+
+/// @}
+
+/**
+ * Destroy state with delete;
+ *
+ * @tparam T
+ * @param state
+ */
+template<class T>
+inline void DefaultClassDestroy(T* state)
+{
+  delete state;
+}
+
+/// @private
+template<class T>
+concept HasQuitFunction =
+  requires(T* state, AppResult result) { T::Quit(state, result); };
+
+/**
+ * @{
+ * Destroy state with given result
+ *
+ * This is responsible to destroy and deallocate the state. It tries to call
+ * T::Quit() if available and delegates to it the duty of deleting. Otherwise it
+ * calls delete directly.
+ *
+ * @tparam T the state class.
+ * @param state the state to destroy.
+ * @param result the app result.
+ */
+template<class T>
+inline void QuitClass(T* state, AppResult result)
+{
+  DefaultClassDestroy(state);
+}
+
+template<HasQuitFunction T>
+inline void QuitClass(T* state, AppResult result)
+{
+  T::Quit(state, result);
+}
+/// @}
+
+/// @}
+
+/**
  * @defgroup CategoryRender 2D Accelerated Rendering
  *
  * Header file for SDL 2D rendering functions.
@@ -80144,7 +80367,10 @@ class Renderer
 
 public:
   /// Default ctor
-  constexpr Renderer() = default;
+  constexpr Renderer(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from RendererParam.
@@ -80153,7 +80379,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource)
+  constexpr explicit Renderer(const RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -80162,7 +80388,7 @@ public:
   constexpr Renderer(const Renderer& other) = delete;
 
   /// Move constructor
-  constexpr Renderer(Renderer&& other)
+  constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
   {
   }
@@ -80337,17 +80563,22 @@ public:
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
 
   /// Assignment operator.
-  Renderer& operator=(Renderer other)
+  constexpr Renderer& operator=(Renderer&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
+
+public:
   /// Retrieves underlying RendererRaw.
-  constexpr RendererRaw get() const { return m_resource; }
+  constexpr RendererRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying RendererRaw and clear this.
-  constexpr RendererRaw release()
+  constexpr RendererRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -80355,16 +80586,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Renderer& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Renderer& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to RendererParam
-  constexpr operator RendererParam() const { return {m_resource}; }
+  constexpr operator RendererParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -82222,6 +82450,8 @@ public:
 /// Semi-safe reference for Renderer.
 struct RendererRef : Renderer
 {
+  using Renderer::Renderer;
+
   /**
    * Constructs from RendererParam.
    *
@@ -82229,13 +82459,25 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererParam resource)
+  RendererRef(RendererParam resource) noexcept
     : Renderer(resource.value)
   {
   }
 
+  /**
+   * Constructs from RendererParam.
+   *
+   * @param resource a RendererRaw or Renderer.
+   *
+   * This does not takes ownership!
+   */
+  RendererRef(RendererRaw resource) noexcept
+    : Renderer(resource)
+  {
+  }
+
   /// Copy constructor.
-  RendererRef(const RendererRef& other)
+  RendererRef(const RendererRef& other) noexcept
     : Renderer(other.get())
   {
   }
@@ -82262,7 +82504,10 @@ class Texture
 
 public:
   /// Default ctor
-  constexpr Texture() = default;
+  constexpr Texture(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextureParam.
@@ -82271,7 +82516,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource)
+  constexpr explicit Texture(const TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -82280,7 +82525,7 @@ public:
   constexpr Texture(const Texture& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Texture(Texture&& other)
+  constexpr Texture(Texture&& other) noexcept
     : Texture(other.release())
   {
   }
@@ -82562,26 +82807,29 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const { return m_resource; }
+  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
-  constexpr TextureRaw operator->() { return m_resource; }
+  constexpr TextureRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
   /// Assignment operator.
-  Texture& operator=(Texture other)
+  constexpr Texture& operator=(Texture&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr Texture& operator=(const Texture& other) noexcept = default;
+
   /// Retrieves underlying TextureRaw.
-  constexpr TextureRaw get() const { return m_resource; }
+  constexpr TextureRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextureRaw and clear this.
-  constexpr TextureRaw release()
+  constexpr TextureRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -82589,16 +82837,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Texture& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Texture& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextureParam
-  constexpr operator TextureParam() const { return {m_resource}; }
+  constexpr operator TextureParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the specified texture.
@@ -87876,30 +88121,7 @@ using MSG = ::MSG;
  * @sa SetWindowsMessageHook
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  */
-using WindowsMessageHook = SDL_WindowsMessageHook;
-
-/**
- * A callback to be used with SetWindowsMessageHook.
- *
- * This callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing a message directly from the Windows event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param msg a pointer to a Win32 event structure to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               Windows event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetWindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- * @sa WindowsMessageHook
- */
-using WindowsMessageHookCB = std::function<bool(MSG* msg)>;
+using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
 
 /**
  * Set a callback for every Windows message, run before TranslateMessage().
@@ -87920,29 +88142,11 @@ inline void SetWindowsMessageHook(WindowsMessageHook callback, void* userdata)
   SDL_SetWindowsMessageHook(callback, userdata);
 }
 
-/**
- * Set a callback for every Windows message, run before TranslateMessage().
- *
- * The callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * @param callback the WindowsMessageHook function to call.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- */
-inline void SetWindowsMessageHook(WindowsMessageHookCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<WindowsMessageHookCB>;
-  SetWindowsMessageHook(&Wrapper::CallSuffixed,
-                        Wrapper::Wrap(std::move(callback)));
-}
 #endif // SDL_PLATFORM_WINDOWS
 
 #if defined(SDL_PLATFORM_WIN32) || defined(SDL_PLATFORM_WINGDK) ||             \
   defined(SDL3PP_DOC)
+
 /**
  * Get the D3D9 adapter index that matches the specified display.
  *
@@ -88006,30 +88210,7 @@ using XEvent = ::XEvent;
  *
  * @sa SetX11EventHook
  */
-using X11EventHook = SDL_X11EventHook;
-
-/**
- * A callback to be used with SetX11EventHook.
- *
- * This callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing an event directly from the X11 event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param xevent a pointer to an Xlib XEvent union to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               X11 event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetX11EventHook
- *
- * @sa X11EventHook
- */
-using X11EventHookCB = std::function<bool(XEvent*)>;
+using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
 
 /**
  * Set a callback for every X11 event.
@@ -88045,22 +88226,6 @@ using X11EventHookCB = std::function<bool(XEvent*)>;
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
 {
   SDL_SetX11EventHook(callback, userdata);
-}
-
-/**
- * Set a callback for every X11 event.
- *
- * The callback may modify the event, and should return true if the event should
- * continue to be processed, or false to prevent further processing.
- *
- * @param callback the X11EventHook function to call.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void SetX11EventHook(X11EventHookCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<X11EventHookCB>;
-  SDL_SetX11EventHook(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
 }
 
 /* Platform specific functions for Linux*/
@@ -88125,23 +88290,7 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
  *
  * @sa SetiOSAnimationCallback
  */
-using iOSAnimationCallback = SDL_iOSAnimationCallback;
-
-/**
- * The prototype for an Apple iOS animation callback.
- *
- * This datatype is only useful on Apple iOS.
- *
- * After passing a function pointer of this type to SetiOSAnimationCallback, the
- * system will call that function pointer at a regular interval.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetiOSAnimationCallback
- *
- * @sa iOSAnimationCallback
- */
-using iOSAnimationCB = std::function<void()>;
+using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Use this function to set the animation callback on Apple iOS.
@@ -88185,48 +88334,6 @@ inline void SetiOSAnimationCallback(WindowParam window,
 {
   CheckError(
     SDL_SetiOSAnimationCallback(window, interval, callback, callbackParam));
-}
-
-/**
- * Use this function to set the animation callback on Apple iOS.
- *
- * The function prototype for `callback` is:
- *
- * ```c
- * void callback(void *callbackParam);
- * ```
- *
- * Where its parameter, `callbackParam`, is what was passed as `callbackParam`
- * to SetiOSAnimationCallback().
- *
- * This function is only available on Apple iOS.
- *
- * For more information see:
- *
- * https://wiki.libsdl.org/SDL3/README-ios
- *
- * Note that if you use the "main callbacks" instead of a standard C `main`
- * function, you don't have to use this API, as SDL will manage this for you.
- *
- * Details on main callbacks are here:
- *
- * https://wiki.libsdl.org/SDL3/README-main-functions
- *
- * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be called.
- * @param callback the function to call for every frame.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetiOSEventPump
- */
-inline void SetiOSAnimationCallback(WindowParam window,
-                                    int interval,
-                                    iOSAnimationCB callback)
-{
-  using Wrapper = UniqueCallbackWrapper<iOSAnimationCB>;
-  SetiOSAnimationCallback(&Wrapper::Call, Wrapper::Wrap(std::move(callback)));
 }
 
 /**
@@ -88487,7 +88594,9 @@ inline const char* GetAndroidCachePath()
  *
  * @sa RequestAndroidPermission
  */
-using RequestAndroidPermissionCallback = SDL_RequestAndroidPermissionCallback;
+using RequestAndroidPermissionCallback = void(SDLCALL*)(void* userdata,
+                                                        const char* permission,
+                                                        bool granted);
 
 /**
  * Callback that presents a response from a RequestAndroidPermission call.
@@ -88968,7 +89077,7 @@ struct Finger : FingerRaw
    *
    * @param finger the value to be wrapped
    */
-  constexpr Finger(const FingerRaw& finger = {})
+  constexpr Finger(const FingerRaw& finger = {}) noexcept
     : FingerRaw(finger)
   {
   }
@@ -88981,7 +89090,7 @@ struct Finger : FingerRaw
    * @param y the value for y.
    * @param pressure the value for pressure.
    */
-  constexpr Finger(SDL_FingerID id, float x, float y, float pressure)
+  constexpr Finger(SDL_FingerID id, float x, float y, float pressure) noexcept
     : FingerRaw{id, x, y, pressure}
   {
   }
@@ -88991,14 +89100,14 @@ struct Finger : FingerRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return id != 0; }
+  constexpr explicit operator bool() const noexcept { return id != 0; }
 
   /**
    * Get the id.
    *
    * @returns current id value.
    */
-  constexpr SDL_FingerID GetId() const { return id; }
+  constexpr SDL_FingerID GetId() const noexcept { return id; }
 
   /**
    * Set the id.
@@ -89006,7 +89115,7 @@ struct Finger : FingerRaw
    * @param newId the new id value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetId(SDL_FingerID newId)
+  constexpr Finger& SetId(SDL_FingerID newId) noexcept
   {
     id = newId;
     return *this;
@@ -89017,7 +89126,7 @@ struct Finger : FingerRaw
    *
    * @returns current x value.
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the x.
@@ -89025,7 +89134,7 @@ struct Finger : FingerRaw
    * @param newX the new x value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetX(float newX)
+  constexpr Finger& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -89036,7 +89145,7 @@ struct Finger : FingerRaw
    *
    * @returns current y value.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the y.
@@ -89044,7 +89153,7 @@ struct Finger : FingerRaw
    * @param newY the new y value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetY(float newY)
+  constexpr Finger& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -89055,7 +89164,7 @@ struct Finger : FingerRaw
    *
    * @returns current pressure value.
    */
-  constexpr float GetPressure() const { return pressure; }
+  constexpr float GetPressure() const noexcept { return pressure; }
 
   /**
    * Set the pressure.
@@ -89063,7 +89172,7 @@ struct Finger : FingerRaw
    * @param newPressure the new pressure value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetPressure(float newPressure)
+  constexpr Finger& SetPressure(float newPressure) noexcept
   {
     pressure = newPressure;
     return *this;
@@ -91433,7 +91542,10 @@ class Animation
 
 public:
   /// Default ctor
-  constexpr Animation() = default;
+  constexpr Animation(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from AnimationParam.
@@ -91442,7 +91554,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource)
+  constexpr explicit Animation(const AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -91451,7 +91563,7 @@ public:
   constexpr Animation(const Animation& other) = delete;
 
   /// Move constructor
-  constexpr Animation(Animation&& other)
+  constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
   {
   }
@@ -91503,26 +91615,34 @@ public:
   }
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const { return m_resource; }
+  constexpr const AnimationRaw operator->() const noexcept
+  {
+    return m_resource;
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr AnimationRaw operator->() { return m_resource; }
+  constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
   /// Assignment operator.
-  Animation& operator=(Animation other)
+  constexpr Animation& operator=(Animation&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Animation& operator=(const Animation& other) noexcept = default;
+
+public:
   /// Retrieves underlying AnimationRaw.
-  constexpr AnimationRaw get() const { return m_resource; }
+  constexpr AnimationRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AnimationRaw and clear this.
-  constexpr AnimationRaw release()
+  constexpr AnimationRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -91530,16 +91650,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Animation& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Animation& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AnimationParam
-  constexpr operator AnimationParam() const { return {m_resource}; }
+  constexpr operator AnimationParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -91583,6 +91700,8 @@ public:
 /// Semi-safe reference for Animation.
 struct AnimationRef : Animation
 {
+  using Animation::Animation;
+
   /**
    * Constructs from AnimationParam.
    *
@@ -91590,13 +91709,25 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationParam resource)
+  AnimationRef(AnimationParam resource) noexcept
     : Animation(resource.value)
   {
   }
 
+  /**
+   * Constructs from AnimationParam.
+   *
+   * @param resource a AnimationRaw or Animation.
+   *
+   * This does not takes ownership!
+   */
+  AnimationRef(AnimationRaw resource) noexcept
+    : Animation(resource)
+  {
+  }
+
   /// Copy constructor.
-  AnimationRef(const AnimationRef& other)
+  AnimationRef(const AnimationRef& other) noexcept
     : Animation(other.get())
   {
   }
@@ -92262,7 +92393,10 @@ class Font
 
 public:
   /// Default ctor
-  constexpr Font() = default;
+  constexpr Font(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from FontParam.
@@ -92271,7 +92405,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Font(const FontRaw resource)
+  constexpr explicit Font(const FontRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -92280,7 +92414,7 @@ public:
   constexpr Font(const Font& other) = delete;
 
   /// Move constructor
-  constexpr Font(Font&& other)
+  constexpr Font(Font&& other) noexcept
     : Font(other.release())
   {
   }
@@ -92392,17 +92526,22 @@ public:
   ~Font() { TTF_CloseFont(m_resource); }
 
   /// Assignment operator.
-  Font& operator=(Font other)
+  constexpr Font& operator=(Font&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Font& operator=(const Font& other) noexcept = default;
+
+public:
   /// Retrieves underlying FontRaw.
-  constexpr FontRaw get() const { return m_resource; }
+  constexpr FontRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying FontRaw and clear this.
-  constexpr FontRaw release()
+  constexpr FontRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -92410,16 +92549,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Font& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Font& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to FontParam
-  constexpr operator FontParam() const { return {m_resource}; }
+  constexpr operator FontParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of a previously-created font.
@@ -93738,6 +93874,8 @@ public:
 /// Semi-safe reference for Font.
 struct FontRef : Font
 {
+  using Font::Font;
+
   /**
    * Constructs from FontParam.
    *
@@ -93745,13 +93883,25 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontParam resource)
+  FontRef(FontParam resource) noexcept
     : Font(resource.value)
   {
   }
 
+  /**
+   * Constructs from FontParam.
+   *
+   * @param resource a FontRaw or Font.
+   *
+   * This does not takes ownership!
+   */
+  FontRef(FontRaw resource) noexcept
+    : Font(resource)
+  {
+  }
+
   /// Copy constructor.
-  FontRef(const FontRef& other)
+  FontRef(const FontRef& other) noexcept
     : Font(other.get())
   {
   }
@@ -95790,7 +95940,10 @@ class TextEngine
 
 public:
   /// Default ctor
-  constexpr TextEngine() = default;
+  constexpr TextEngine(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextEngineParam.
@@ -95799,7 +95952,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit TextEngine(const TextEngineRaw resource)
+  constexpr explicit TextEngine(const TextEngineRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -95808,7 +95961,7 @@ public:
   constexpr TextEngine(const TextEngine& other) = delete;
 
   /// Move constructor
-  constexpr TextEngine(TextEngine&& other)
+  constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
   {
   }
@@ -95817,20 +95970,22 @@ public:
   virtual ~TextEngine() = default;
 
   /// Assignment operator.
-  TextEngine& operator=(TextEngine&& other)
+  constexpr TextEngine& operator=(TextEngine&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
   /// Assignment operator.
-  TextEngine& operator=(const TextEngine& other) = delete;
+  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
 
+public:
   /// Retrieves underlying TextEngineRaw.
-  constexpr TextEngineRaw get() const { return m_resource; }
+  constexpr TextEngineRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextEngineRaw and clear this.
-  constexpr TextEngineRaw release()
+  constexpr TextEngineRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -95838,16 +95993,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const TextEngine& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const TextEngine& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextEngineParam
-  constexpr operator TextEngineParam() const { return {m_resource}; }
+  constexpr operator TextEngineParam() const noexcept { return {m_resource}; }
 
   /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
@@ -96132,7 +96284,10 @@ class Text
 
 public:
   /// Default ctor
-  constexpr Text() = default;
+  constexpr Text(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from TextParam.
@@ -96141,7 +96296,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Text(const TextRaw resource)
+  constexpr explicit Text(const TextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -96150,7 +96305,7 @@ public:
   constexpr Text(const Text& other) = delete;
 
   /// Move constructor
-  constexpr Text(Text&& other)
+  constexpr Text(Text&& other) noexcept
     : Text(other.release())
   {
   }
@@ -96182,26 +96337,31 @@ public:
   }
 
   /// member access to underlying TextRaw.
-  constexpr const TextRaw operator->() const { return m_resource; }
+  constexpr const TextRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextRaw.
-  constexpr TextRaw operator->() { return m_resource; }
+  constexpr TextRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }
 
   /// Assignment operator.
-  Text& operator=(Text other)
+  constexpr Text& operator=(Text&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Text& operator=(const Text& other) noexcept = default;
+
+public:
   /// Retrieves underlying TextRaw.
-  constexpr TextRaw get() const { return m_resource; }
+  constexpr TextRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextRaw and clear this.
-  constexpr TextRaw release()
+  constexpr TextRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -96209,16 +96369,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Text& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Text& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextParam
-  constexpr operator TextParam() const { return {m_resource}; }
+  constexpr operator TextParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a text object created by a text engine.
@@ -97015,6 +97172,8 @@ public:
 /// Semi-safe reference for Text.
 struct TextRef : Text
 {
+  using Text::Text;
+
   /**
    * Constructs from TextParam.
    *
@@ -97022,13 +97181,25 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextParam resource = nullptr)
+  TextRef(TextParam resource = nullptr) noexcept
     : Text(resource.value)
   {
   }
 
+  /**
+   * Constructs from TextParam.
+   *
+   * @param resource a TextRaw or Text.
+   *
+   * This does not takes ownership!
+   */
+  TextRef(TextRaw resource) noexcept
+    : Text(resource)
+  {
+  }
+
   /// Copy constructor.
-  TextRef(const TextRef& other)
+  TextRef(const TextRef& other) noexcept
     : Text(other.get())
   {
   }

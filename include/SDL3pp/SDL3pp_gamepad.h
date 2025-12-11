@@ -417,7 +417,10 @@ class Gamepad
 
 public:
   /// Default ctor
-  constexpr Gamepad() = default;
+  constexpr Gamepad(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from GamepadParam.
@@ -426,7 +429,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource)
+  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -435,7 +438,7 @@ public:
   constexpr Gamepad(const Gamepad& other) = delete;
 
   /// Move constructor
-  constexpr Gamepad(Gamepad&& other)
+  constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
   {
   }
@@ -467,17 +470,22 @@ public:
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
 
   /// Assignment operator.
-  Gamepad& operator=(Gamepad other)
+  constexpr Gamepad& operator=(Gamepad&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+protected:
+  /// Assignment operator.
+  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
+
+public:
   /// Retrieves underlying GamepadRaw.
-  constexpr GamepadRaw get() const { return m_resource; }
+  constexpr GamepadRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GamepadRaw and clear this.
-  constexpr GamepadRaw release()
+  constexpr GamepadRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -485,16 +493,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Gamepad& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Gamepad& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GamepadParam
-  constexpr operator GamepadParam() const { return {m_resource}; }
+  constexpr operator GamepadParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
@@ -1158,6 +1163,8 @@ public:
 /// Semi-safe reference for Gamepad.
 struct GamepadRef : Gamepad
 {
+  using Gamepad::Gamepad;
+
   /**
    * Constructs from GamepadParam.
    *
@@ -1165,13 +1172,25 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadParam resource)
+  GamepadRef(GamepadParam resource) noexcept
     : Gamepad(resource.value)
   {
   }
 
+  /**
+   * Constructs from GamepadParam.
+   *
+   * @param resource a GamepadRaw or Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  GamepadRef(GamepadRaw resource) noexcept
+    : Gamepad(resource)
+  {
+  }
+
   /// Copy constructor.
-  GamepadRef(const GamepadRef& other)
+  GamepadRef(const GamepadRef& other) noexcept
     : Gamepad(other.get())
   {
   }

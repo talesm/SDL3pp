@@ -223,7 +223,10 @@ class Surface
 
 public:
   /// Default ctor
-  constexpr Surface() = default;
+  constexpr Surface(std::nullptr_t = nullptr) noexcept
+    : m_resource(0)
+  {
+  }
 
   /**
    * Constructs from SurfaceParam.
@@ -232,7 +235,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource)
+  constexpr explicit Surface(const SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -241,7 +244,7 @@ public:
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Surface(Surface&& other)
+  constexpr Surface(Surface&& other) noexcept
     : Surface(other.release())
   {
   }
@@ -493,26 +496,29 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const { return m_resource; }
+  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRaw operator->() { return m_resource; }
+  constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.
-  Surface& operator=(Surface other)
+  constexpr Surface& operator=(Surface&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
   }
 
+  /// Assignment operator.
+  constexpr Surface& operator=(const Surface& other) noexcept = default;
+
   /// Retrieves underlying SurfaceRaw.
-  constexpr SurfaceRaw get() const { return m_resource; }
+  constexpr SurfaceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SurfaceRaw and clear this.
-  constexpr SurfaceRaw release()
+  constexpr SurfaceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -520,16 +526,13 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Surface& other) const = default;
-
-  /// Comparison
-  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+  constexpr auto operator<=>(const Surface& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SurfaceParam
-  constexpr operator SurfaceParam() const { return {m_resource}; }
+  constexpr operator SurfaceParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a surface.

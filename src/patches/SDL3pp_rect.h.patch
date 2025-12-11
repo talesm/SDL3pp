@@ -11,14 +11,14 @@
   * and floating point versions.
 @@ -57,20 +57,25 @@
  /// Comparison operator for Rect.
- constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+ constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
  {
 -  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.w == rhs.w && lhs.h == rhs.h;
 +  return SDL_RectsEqual(&lhs, &rhs);
  }
  
  /// Comparison operator for FRect.
- constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+ constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
  {
 -  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.w == rhs.w && lhs.h == rhs.h;
 +  return SDL_RectsEqualFloat(&lhs, &rhs);
@@ -49,8 +49,8 @@
  
    /**
     * Check if valid.
-@@ -112,16 +120,16 @@
-   constexpr explicit operator bool() const { return *this != PointRaw{}; }
+@@ -115,16 +123,16 @@
+   }
  
    /**
 -   * Get the x.
@@ -59,7 +59,7 @@
 -   * @returns current x value.
 +   * @returns x coordinate
     */
-   constexpr int GetX() const { return x; }
+   constexpr int GetX() const noexcept { return x; }
  
    /**
 -   * Set the x.
@@ -69,8 +69,8 @@
 +   * @param newX the new x coordinate.
     * @returns Reference to self.
     */
-   constexpr Point& SetX(int newX)
-@@ -131,16 +139,16 @@
+   constexpr Point& SetX(int newX) noexcept
+@@ -134,16 +142,16 @@
    }
  
    /**
@@ -80,7 +80,7 @@
 -   * @returns current y value.
 +   * @returns y coordinate
     */
-   constexpr int GetY() const { return y; }
+   constexpr int GetY() const noexcept { return y; }
  
    /**
 -   * Set the y.
@@ -90,8 +90,8 @@
 +   * @param newY the new y coordinate.
     * @returns Reference to self.
     */
-   constexpr Point& SetY(int newY)
-@@ -163,13 +171,328 @@
+   constexpr Point& SetY(int newY) noexcept
+@@ -166,13 +174,328 @@
     * be able to find this function inside SDL itself).
     *
     * @param r the rectangle to test.
@@ -421,7 +421,7 @@
  };
  
  /**
-@@ -177,6 +500,8 @@
+@@ -180,6 +503,8 @@
   *
   * @since This struct is available since SDL 3.2.0.
   *
@@ -430,8 +430,8 @@
   * @sa FRect.GetEnclosingPoints
   * @sa FPoint.InRect
   */
-@@ -211,16 +536,16 @@
-   constexpr explicit operator bool() const { return *this != FPointRaw{}; }
+@@ -217,16 +542,16 @@
+   }
  
    /**
 -   * Get the x.
@@ -439,7 +439,7 @@
     *
     * @returns current x value.
     */
-   constexpr float GetX() const { return x; }
+   constexpr float GetX() const noexcept { return x; }
  
    /**
 -   * Set the x.
@@ -449,8 +449,8 @@
 +   * @param newX the new x coordinate.
     * @returns Reference to self.
     */
-   constexpr FPoint& SetX(float newX)
-@@ -230,16 +555,16 @@
+   constexpr FPoint& SetX(float newX) noexcept
+@@ -236,16 +561,16 @@
    }
  
    /**
@@ -460,7 +460,7 @@
 -   * @returns current y value.
 +   * @returns current y coordinate.
     */
-   constexpr float GetY() const { return y; }
+   constexpr float GetY() const noexcept { return y; }
  
    /**
 -   * Set the y.
@@ -470,8 +470,8 @@
 +   * @param newY the new y coordinate.
     * @returns Reference to self.
     */
-   constexpr FPoint& SetY(float newY)
-@@ -262,13 +587,237 @@
+   constexpr FPoint& SetY(float newY) noexcept
+@@ -268,13 +593,237 @@
     * be able to find this function inside SDL itself).
     *
     * @param r the rectangle to test.
@@ -710,7 +710,7 @@
  };
  
  /**
-@@ -276,6 +825,8 @@
+@@ -282,6 +831,8 @@
   *
   * @since This struct is available since SDL 3.2.0.
   *
@@ -719,7 +719,7 @@
   * @sa Rect.Empty
   * @sa Rect.Equal
   * @sa Rect.HasIntersection
-@@ -299,10 +850,10 @@
+@@ -305,10 +856,10 @@
    /**
     * Constructs from its fields.
     *
@@ -732,9 +732,9 @@
 +   * @param w the width.
 +   * @param h the height.
     */
-   constexpr Rect(int x, int y, int w, int h)
+   constexpr Rect(int x, int y, int w, int h) noexcept
      : RectRaw{x, y, w, h}
-@@ -310,29 +861,39 @@
+@@ -316,29 +867,39 @@
    }
  
    /**
@@ -773,7 +773,7 @@
 -   * @returns current x value.
 +   * @returns coordinate of the left x
     */
-   constexpr int GetX() const { return x; }
+   constexpr int GetX() const noexcept { return x; }
  
    /**
 -   * Set the x.
@@ -783,8 +783,8 @@
 +   * @param newX the new left x.
     * @returns Reference to self.
     */
-   constexpr Rect& SetX(int newX)
-@@ -342,16 +903,16 @@
+   constexpr Rect& SetX(int newX) noexcept
+@@ -348,16 +909,16 @@
    }
  
    /**
@@ -794,7 +794,7 @@
 -   * @returns current y value.
 +   * @returns coordinate of the top y.
     */
-   constexpr int GetY() const { return y; }
+   constexpr int GetY() const noexcept { return y; }
  
    /**
 -   * Set the y.
@@ -804,8 +804,8 @@
 +   * @param newY the new top y.
     * @returns Reference to self.
     */
-   constexpr Rect& SetY(int newY)
-@@ -361,16 +922,16 @@
+   constexpr Rect& SetY(int newY) noexcept
+@@ -367,16 +928,16 @@
    }
  
    /**
@@ -815,7 +815,7 @@
 -   * @returns current w value.
 +   * @returns Width of the rect
     */
-   constexpr int GetW() const { return w; }
+   constexpr int GetW() const noexcept { return w; }
  
    /**
 -   * Set the w.
@@ -825,8 +825,8 @@
 +   * @param newW the new width.
     * @returns Reference to self.
     */
-   constexpr Rect& SetW(int newW)
-@@ -380,16 +941,16 @@
+   constexpr Rect& SetW(int newW) noexcept
+@@ -386,16 +947,16 @@
    }
  
    /**
@@ -836,7 +836,7 @@
 -   * @returns current h value.
 +   * @returns Height of the rect
     */
-   constexpr int GetH() const { return h; }
+   constexpr int GetH() const noexcept { return h; }
  
    /**
 -   * Set the h.
@@ -846,8 +846,8 @@
 +   * @param newH the new height.
     * @returns Reference to self.
     */
-   constexpr Rect& SetH(int newH)
-@@ -404,14 +965,13 @@
+   constexpr Rect& SetH(int newH) noexcept
+@@ -410,14 +971,13 @@
     * If `clip` is not nullptr then only points inside of the clipping rectangle
     * are considered.
     *
@@ -868,7 +868,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     */
-@@ -419,49 +979,176 @@
+@@ -425,49 +985,176 @@
      SpanRef<const PointRaw> points,
      OptionalRef<const RectRaw> clip = std::nullopt);
  
@@ -1063,7 +1063,7 @@
    }
  
    /**
-@@ -484,10 +1171,9 @@
+@@ -490,10 +1177,9 @@
    bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
  
    /**
@@ -1076,7 +1076,7 @@
     *              `rect`.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -497,7 +1183,7 @@
+@@ -503,7 +1189,7 @@
    constexpr operator SDL_FRect() const;
  
    /// @sa operator ToFRect()
@@ -1085,7 +1085,7 @@
  
    /**
     * Determine whether a rectangle has no area.
-@@ -529,7 +1215,7 @@
+@@ -535,7 +1221,7 @@
     * embedded in the calling program and the linker and dynamic loader will not
     * be able to find this function inside SDL itself).
     *
@@ -1094,7 +1094,7 @@
     * @returns true if the rectangles are equal, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -538,22 +1224,36 @@
+@@ -544,22 +1230,36 @@
     */
    constexpr bool Equal(const RectRaw& other) const;
  
@@ -1136,7 +1136,7 @@
     * @returns true if there is an intersection, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -569,10 +1269,9 @@
+@@ -575,10 +1275,9 @@
     *
     * If `result` is nullptr then this function will return false.
     *
@@ -1150,7 +1150,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
-@@ -583,14 +1282,132 @@
+@@ -589,14 +1288,132 @@
    /**
     * Calculate the union of two rectangles.
     *
@@ -1286,7 +1286,7 @@
  };
  
  /**
-@@ -602,6 +1419,8 @@
+@@ -608,6 +1425,8 @@
   *
   * @since This struct is available since SDL 3.2.0.
   *
@@ -1295,7 +1295,7 @@
   * @sa FRect.Empty
   * @sa FRect.Equal
   * @sa FRect.EqualEpsilon
-@@ -627,10 +1446,10 @@
+@@ -633,10 +1452,10 @@
    /**
     * Constructs from its fields.
     *
@@ -1308,9 +1308,9 @@
 +   * @param w the width.
 +   * @param h the height.
     */
-   constexpr FRect(float x, float y, float w, float h)
+   constexpr FRect(float x, float y, float w, float h) noexcept
      : FRectRaw{x, y, w, h}
-@@ -638,29 +1457,27 @@
+@@ -644,29 +1463,27 @@
    }
  
    /**
@@ -1339,7 +1339,7 @@
 -   * @returns current x value.
 +   * @returns coordinate of the left x
     */
-   constexpr float GetX() const { return x; }
+   constexpr float GetX() const noexcept { return x; }
  
    /**
 -   * Set the x.
@@ -1349,8 +1349,8 @@
 +   * @param newX the new left x.
     * @returns Reference to self.
     */
-   constexpr FRect& SetX(float newX)
-@@ -670,16 +1487,16 @@
+   constexpr FRect& SetX(float newX) noexcept
+@@ -676,16 +1493,16 @@
    }
  
    /**
@@ -1360,7 +1360,7 @@
 -   * @returns current y value.
 +   * @returns coordinate of the top y.
     */
-   constexpr float GetY() const { return y; }
+   constexpr float GetY() const noexcept { return y; }
  
    /**
 -   * Set the y.
@@ -1370,8 +1370,8 @@
 +   * @param newY the new top y.
     * @returns Reference to self.
     */
-   constexpr FRect& SetY(float newY)
-@@ -689,16 +1506,16 @@
+   constexpr FRect& SetY(float newY) noexcept
+@@ -695,16 +1512,16 @@
    }
  
    /**
@@ -1381,7 +1381,7 @@
 -   * @returns current w value.
 +   * @returns Width of the rect
     */
-   constexpr float GetW() const { return w; }
+   constexpr float GetW() const noexcept { return w; }
  
    /**
 -   * Set the w.
@@ -1391,8 +1391,8 @@
 +   * @param newW the new width.
     * @returns Reference to self.
     */
-   constexpr FRect& SetW(float newW)
-@@ -708,16 +1525,16 @@
+   constexpr FRect& SetW(float newW) noexcept
+@@ -714,16 +1531,16 @@
    }
  
    /**
@@ -1402,7 +1402,7 @@
 -   * @returns current h value.
 +   * @returns Height of the rect
     */
-   constexpr float GetH() const { return h; }
+   constexpr float GetH() const noexcept { return h; }
  
    /**
 -   * Set the h.
@@ -1412,8 +1412,8 @@
 +   * @param newH the new height.
     * @returns Reference to self.
     */
-   constexpr FRect& SetH(float newH)
-@@ -733,14 +1550,13 @@
+   constexpr FRect& SetH(float newH) noexcept
+@@ -739,14 +1556,13 @@
     * If `clip` is not nullptr then only points inside of the clipping rectangle
     * are considered.
     *
@@ -1434,7 +1434,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     */
-@@ -748,46 +1564,153 @@
+@@ -754,46 +1570,153 @@
      SpanRef<const FPointRaw> points,
      OptionalRef<const FRectRaw> clip = std::nullopt);
  
@@ -1605,7 +1605,7 @@
  
    /**
     * Calculate the intersection of a rectangle and line segment with float
-@@ -812,8 +1735,32 @@
+@@ -818,8 +1741,32 @@
    /**
     * Determine whether a floating point rectangle takes no space.
     *
@@ -1640,7 +1640,7 @@
     *
     * Note that this is a forced-inline function in a header, and not a public
     * API function available in the SDL library (which is to say, the code is
-@@ -842,7 +1789,7 @@
+@@ -848,7 +1795,7 @@
     * embedded in the calling program and the linker and dynamic loader will not
     * be able to find this function inside SDL itself).
     *
@@ -1649,7 +1649,7 @@
     * @param epsilon the epsilon value for comparison.
     * @returns true if the rectangles are equal, false otherwise.
     *
-@@ -869,7 +1816,7 @@
+@@ -875,7 +1822,7 @@
     * embedded in the calling program and the linker and dynamic loader will not
     * be able to find this function inside SDL itself).
     *
@@ -1658,7 +1658,7 @@
     * @returns true if the rectangles are equal, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -880,24 +1827,40 @@
+@@ -886,24 +1833,40 @@
     */
    constexpr bool Equal(const FRectRaw& other) const;
  
@@ -1704,7 +1704,7 @@
     * @since This function is available since SDL 3.2.0.
     *
     * @sa Rect.GetIntersection
-@@ -909,10 +1872,9 @@
+@@ -915,10 +1878,9 @@
     *
     * If `result` is nullptr then this function will return false.
     *
@@ -1718,7 +1718,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
-@@ -923,33 +1885,152 @@
+@@ -929,33 +1891,152 @@
    /**
     * Calculate the union of two rectangles with float precision.
     *
@@ -1879,7 +1879,7 @@
  
  /**
   * Determine whether a point resides inside a rectangle.
-@@ -972,14 +2053,14 @@
+@@ -978,14 +2059,14 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1897,7 +1897,7 @@
  }
  
  /**
-@@ -1000,9 +2081,9 @@
+@@ -1006,9 +2087,9 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1909,7 +1909,7 @@
  
  /**
   * Determine whether two rectangles are equal.
-@@ -1023,14 +2104,14 @@
+@@ -1029,14 +2110,14 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1927,7 +1927,7 @@
  }
  
  /**
-@@ -1048,14 +2129,14 @@
+@@ -1054,14 +2135,14 @@
   *
   * @sa Rect.GetIntersection
   */
@@ -1945,7 +1945,7 @@
  }
  
  /**
-@@ -1065,22 +2146,22 @@
+@@ -1071,22 +2152,22 @@
   *
   * @param A an Rect structure representing the first rectangle.
   * @param B an Rect structure representing the second rectangle.
@@ -1974,7 +1974,7 @@
  }
  
  /**
-@@ -1088,36 +2169,34 @@
+@@ -1094,36 +2175,34 @@
   *
   * @param A an Rect structure representing the first rectangle.
   * @param B an Rect structure representing the second rectangle.
@@ -2020,7 +2020,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
-@@ -1125,7 +2204,11 @@
+@@ -1131,7 +2210,11 @@
    SpanRef<const PointRaw> points,
    OptionalRef<const RectRaw> clip = std::nullopt)
  {
@@ -2033,7 +2033,7 @@
  }
  
  inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
-@@ -1158,12 +2241,12 @@
+@@ -1164,12 +2247,12 @@
                                         int* X2,
                                         int* Y2)
  {
@@ -2048,7 +2048,7 @@
  }
  
  /**
-@@ -1187,14 +2270,14 @@
+@@ -1193,14 +2276,14 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -2066,7 +2066,7 @@
  }
  
  /**
-@@ -1217,10 +2300,10 @@
+@@ -1223,10 +2306,10 @@
   */
  constexpr bool RectEmptyFloat(const FRectRaw& r)
  {
@@ -2079,7 +2079,7 @@
  
  /**
   * Determine whether two floating point rectangles are equal, within some given
-@@ -1247,17 +2330,17 @@
+@@ -1253,17 +2336,17 @@
   *
   * @sa FRect.Equal
   */
@@ -2101,7 +2101,7 @@
  }
  
  /**
-@@ -1285,14 +2368,14 @@
+@@ -1291,14 +2374,14 @@
   *
   * @sa FRect.EqualEpsilon
   */
@@ -2119,7 +2119,7 @@
  }
  
  /**
-@@ -1308,15 +2391,14 @@
+@@ -1314,15 +2397,14 @@
   *
   * @sa Rect.GetIntersection
   */
@@ -2138,7 +2138,7 @@
  }
  
  /**
-@@ -1326,23 +2408,22 @@
+@@ -1332,23 +2414,22 @@
   *
   * @param A an FRect structure representing the first rectangle.
   * @param B an FRect structure representing the second rectangle.
@@ -2168,7 +2168,7 @@
  }
  
  /**
-@@ -1350,36 +2431,35 @@
+@@ -1356,36 +2437,35 @@
   *
   * @param A an FRect structure representing the first rectangle.
   * @param B an FRect structure representing the second rectangle.
@@ -2216,7 +2216,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
-@@ -1387,7 +2467,11 @@
+@@ -1393,7 +2473,11 @@
    SpanRef<const FPointRaw> points,
    OptionalRef<const FRectRaw> clip = std::nullopt)
  {
@@ -2229,7 +2229,7 @@
  }
  
  constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
-@@ -1421,7 +2505,7 @@
+@@ -1427,7 +2511,7 @@
                                              float* X2,
                                              float* Y2)
  {
@@ -2238,7 +2238,7 @@
  }
  
  inline bool FRect::GetLineIntersection(float* X1,
-@@ -1429,11 +2513,103 @@
+@@ -1435,11 +2519,103 @@
                                         float* X2,
                                         float* Y2) const
  {

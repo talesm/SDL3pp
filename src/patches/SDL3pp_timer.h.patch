@@ -111,7 +111,7 @@
  }
  
  /**
-@@ -167,6 +174,8 @@
+@@ -169,6 +176,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -120,7 +120,16 @@
   * @sa AddTimer
   *
   * @sa TimerCallback
-@@ -193,24 +202,25 @@
+@@ -186,7 +195,7 @@
+   template<std::invocable<TimerID, std::chrono::nanoseconds> F>
+   static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
+   {
+-    static_assert(false, "Not implemented");
++    return func(timerID, std::chrono::nanoseconds(interval)).count();
+   }
+ };
+ 
+@@ -209,24 +218,25 @@
   * with GetTicks() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
@@ -151,7 +160,7 @@
  }
  
  /**
-@@ -232,22 +242,44 @@
+@@ -248,22 +258,25 @@
   * with GetTicks() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
@@ -180,39 +189,7 @@
  inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  {
 -  static_assert(false, "Not implemented");
-+  using Wrapper = CallbackWrapper<TimerCB>;
-+  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-+
-+  auto cb = Wrapper::Wrap(std::move(callback));
-+
-+  if (TimerID id = SDL_AddTimerNS(
-+        interval.count(),
-+        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-+          auto& f = *static_cast<TimerCB*>(userdata);
-+          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-+          // If ask to removal, then remove it
-+          if (next == 0) delete Store::release(timerID);
-+          return next;
-+        },
-+        cb)) {
-+    Store::Wrap(id, std::move(cb));
-+    return id;
-+  }
-+  delete cb;
-+  throw Error{};
++  return SDL_AddTimerNS(interval.count(), callback.wrapper, callback.data);
  }
  
  /**
-@@ -262,7 +294,11 @@
-  *
-  * @sa SDL_AddTimer
-  */
--inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
-+inline void RemoveTimer(TimerID id)
-+{
-+  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-+  CheckError(SDL_RemoveTimer(id));
-+}
- 
- /// @}
- 

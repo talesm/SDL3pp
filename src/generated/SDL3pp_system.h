@@ -43,30 +43,7 @@ using MSG = ::MSG;
  * @sa SetWindowsMessageHook
  * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
  */
-using WindowsMessageHook = SDL_WindowsMessageHook;
-
-/**
- * A callback to be used with SetWindowsMessageHook.
- *
- * This callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing a message directly from the Windows event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param msg a pointer to a Win32 event structure to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               Windows event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetWindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- * @sa WindowsMessageHook
- */
-using WindowsMessageHookCB = std::function<bool(MSG* msg)>;
+using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
 
 /**
  * Set a callback for every Windows message, run before TranslateMessage().
@@ -85,25 +62,6 @@ using WindowsMessageHookCB = std::function<bool(MSG* msg)>;
 inline void SetWindowsMessageHook(WindowsMessageHook callback, void* userdata)
 {
   SDL_SetWindowsMessageHook(callback, userdata);
-}
-
-/**
- * Set a callback for every Windows message, run before TranslateMessage().
- *
- * The callback may modify the message, and should return true if the message
- * should continue to be processed, or false to prevent further processing.
- *
- * @param callback the WindowsMessageHook function to call.
- * @param userdata a pointer to pass to every iteration of `callback`.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowsMessageHook
- * @sa SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
- */
-inline void SetWindowsMessageHook(WindowsMessageHookCB callback)
-{
-  static_assert(false, "Not implemented");
 }
 
 /**
@@ -166,30 +124,7 @@ using XEvent = ::XEvent;
  *
  * @sa SetX11EventHook
  */
-using X11EventHook = SDL_X11EventHook;
-
-/**
- * A callback to be used with SetX11EventHook.
- *
- * This callback may modify the event, and should return true if the event
- * should continue to be processed, or false to prevent further processing.
- *
- * As this is processing an event directly from the X11 event loop, this
- * callback should do the minimum required work and return quickly.
- *
- * @param xevent a pointer to an Xlib XEvent union to process.
- * @returns true to let event continue on, false to drop it.
- *
- * @threadsafety This may only be called (by SDL) from the thread handling the
- *               X11 event loop.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetX11EventHook
- *
- * @sa X11EventHook
- */
-using X11EventHookCB = std::function<bool(XEvent*)>;
+using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
 
 /**
  * Set a callback for every X11 event.
@@ -205,22 +140,6 @@ using X11EventHookCB = std::function<bool(XEvent*)>;
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
 {
   SDL_SetX11EventHook(callback, userdata);
-}
-
-/**
- * Set a callback for every X11 event.
- *
- * The callback may modify the event, and should return true if the event should
- * continue to be processed, or false to prevent further processing.
- *
- * @param callback the X11EventHook function to call.
- * @param userdata a pointer to pass to every iteration of `callback`.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline void SetX11EventHook(X11EventHookCB callback)
-{
-  static_assert(false, "Not implemented");
 }
 
 /**
@@ -275,23 +194,7 @@ inline void SetLinuxThreadPriorityAndPolicy(Sint64 threadID,
  *
  * @sa SetiOSAnimationCallback
  */
-using iOSAnimationCallback = SDL_iOSAnimationCallback;
-
-/**
- * The prototype for an Apple iOS animation callback.
- *
- * This datatype is only useful on Apple iOS.
- *
- * After passing a function pointer of this type to SetiOSAnimationCallback, the
- * system will call that function pointer at a regular interval.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SetiOSAnimationCallback
- *
- * @sa iOSAnimationCallback
- */
-using iOSAnimationCB = std::function<void()>;
+using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
 
 /**
  * Use this function to set the animation callback on Apple iOS.
@@ -335,48 +238,6 @@ inline void SetiOSAnimationCallback(WindowParam window,
 {
   CheckError(
     SDL_SetiOSAnimationCallback(window, interval, callback, callbackParam));
-}
-
-/**
- * Use this function to set the animation callback on Apple iOS.
- *
- * The function prototype for `callback` is:
- *
- * ```c
- * void callback(void *callbackParam);
- * ```
- *
- * Where its parameter, `callbackParam`, is what was passed as `callbackParam`
- * to SetiOSAnimationCallback().
- *
- * This function is only available on Apple iOS.
- *
- * For more information see:
- *
- * https://wiki.libsdl.org/SDL3/README-ios
- *
- * Note that if you use the "main callbacks" instead of a standard C `main`
- * function, you don't have to use this API, as SDL will manage this for you.
- *
- * Details on main callbacks are here:
- *
- * https://wiki.libsdl.org/SDL3/README-main-functions
- *
- * @param window the window for which the animation callback should be set.
- * @param interval the number of frames after which **callback** will be called.
- * @param callback the function to call for every frame.
- * @param callbackParam a pointer that is passed to `callback`.
- * @throws Error on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetiOSEventPump
- */
-inline void SetiOSAnimationCallback(WindowParam window,
-                                    int interval,
-                                    iOSAnimationCB callback)
-{
-  static_assert(false, "Not implemented");
 }
 
 /**
@@ -520,8 +381,6 @@ constexpr Uint32 ANDROID_EXTERNAL_STORAGE_READ =
 constexpr Uint32 ANDROID_EXTERNAL_STORAGE_WRITE =
   SDL_ANDROID_EXTERNAL_STORAGE_WRITE;
 
-#error "RequestAndroidPermissionCB (plc)"
-
 /**
  * Get the path used for internal storage for this Android application.
  *
@@ -632,7 +491,24 @@ inline const char* GetAndroidCachePath()
  *
  * @sa RequestAndroidPermission
  */
-using RequestAndroidPermissionCallback = SDL_RequestAndroidPermissionCallback;
+using RequestAndroidPermissionCallback = void(SDLCALL*)(void* userdata,
+                                                        const char* permission,
+                                                        bool granted);
+
+/**
+ * Callback that presents a response from a RequestAndroidPermission call.
+ *
+ * @param permission the Android-specific permission name that was requested.
+ * @param granted true if permission is granted, false if denied.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RequestAndroidPermission
+ *
+ * @sa RequestAndroidPermissionCallback
+ */
+using RequestAndroidPermissionCB =
+  std::function<void(const char* permission, bool granted)>;
 
 /**
  * Request permissions at runtime, asynchronously.

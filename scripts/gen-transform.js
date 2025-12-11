@@ -4,6 +4,8 @@ import { writeJSONSync } from "./cppfier/utils.ts";
  * @import {ApiTransform} from "./cppfier/types"
  */
 
+const currentVersion = ["0", "5", "3"];
+
 /** @type {ApiTransform} */
 const transform = {
   prefixes: ["SDL_", "IMG_", "TTF_"],
@@ -106,17 +108,14 @@ const transform = {
             }
           ]
         },
-        "SDL_SetAssertionHandler": {},
+        "SDL_AssertionHandler": {
+          callback: "lightweight"
+        },
         "SetAssertionHandler": {
           kind: "function",
+          after: "SDL_SetAssertionHandler",
           type: "void",
           parameters: [{ type: "AssertionHandlerCB", name: "handler" }]
-        },
-        "SDL_GetAssertionHandler": {},
-        "GetAssertionHandler": {
-          kind: "function",
-          type: "AssertionHandlerCB",
-          parameters: []
         },
       }
     },
@@ -460,9 +459,9 @@ const transform = {
           immutable: true,
           hints: { methodName: "GetSilenceValue" },
         },
-        "SDL_AudioPostmixCallback": { before: "SDL_AudioDeviceID" },
-        "AudioPostmixCB": {
-          type: "std::function<void(const AudioSpec &spec, std::span<float> buffer)>",
+        "SDL_AudioPostmixCallback": {
+          before: "SDL_AudioDeviceID",
+          callback: "lightweight",
         },
         "SDL_AudioDeviceID": {
           name: "AudioDevice",
@@ -539,9 +538,9 @@ const transform = {
           }],
           hints: { methodName: "SetPostmixCallback" }
         },
-        "SDL_AudioStreamCallback": { before: "SDL_AudioDeviceID" },
-        "AudioStreamCB": {
-          type: "std::function<void(AudioStreamRef stream, int additional_amount, int total_amount)>",
+        "SDL_AudioStreamCallback": {
+          before: "SDL_AudioDeviceID",
+          callback: "lightweight",
         },
         "SDL_AudioStream": {
           resource: true,
@@ -859,8 +858,13 @@ const transform = {
       transform: {
         "SDL_GetClipboardText": { type: "StringResult" },
         "SDL_GetPrimarySelectionText": { type: "StringResult" },
-        "ClipboardDataCB": {
-          type: "std::function<SourceBytes(const char *mime_type)>"
+        "SDL_ClipboardCleanupCallback": { callback: "std" },
+        "SDL_ClipboardDataCallback": {
+          callback: {
+            functorSupport: "std",
+            type: "SourceBytes",
+            parameters: [{ type: "const char *", name: "mime_type" }]
+          }
         },
         "SDL_SetClipboardData": {
           parameters: [
@@ -941,6 +945,7 @@ const transform = {
         "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"
       },
       transform: {
+        "SDL_DialogFileCallback": { callback: "std" },
         "ShowOpenFileDialog": {
           "after": "SDL_ShowOpenFileDialog",
           "kind": "function",
@@ -1373,66 +1378,17 @@ const transform = {
             }
           ]
         },
-        "EventWatchHandle": {
-          doc: ["Handle returned by AddEventWatch()"],
-          kind: "struct",
-          after: "SDL_EventFilter",
-          type: "CallbackHandle",
-          entries: { "CallbackHandle::CallbackHandle": "alias" }
-        },
         "SetEventFilter": {
-          "kind": "function",
-          "after": "SDL_SetEventFilter",
-          "type": "void",
-          "parameters": [
-            {
-              "type": "EventFilterCB",
-              "name": "filter",
-              "default": "{}"
-            }
-          ]
-        },
-        "GetEventFilter": {
+          after: "SDL_SetEventFilter",
           kind: "function",
-          after: "SDL_GetEventFilter",
-          type: "EventFilterCB",
-          parameters: []
-        },
-        "EventWatchAuxCallback": {
-          kind: "function",
-          type: "bool",
-          parameters: [
-            {
-              "type": "void *",
-              "name": "userdata"
-            },
-            {
-              "type": "Event *",
-              "name": "event"
-            }
-          ]
+          type: "void",
+          parameters: [{ type: "EventFilterCB", name: "filter" }]
         },
         "AddEventWatch": {
-          "kind": "function",
-          "after": "SDL_AddEventWatch",
-          "type": "EventWatchHandle",
-          "parameters": [
-            {
-              "type": "EventFilterCB",
-              "name": "filter"
-            }
-          ]
-        },
-        "RemoveEventWatch": {
-          "kind": "function",
-          "after": "SDL_RemoveEventWatch",
-          "type": "void",
-          "parameters": [
-            {
-              "type": "EventWatchHandle",
-              "name": "handle"
-            }
-          ]
+          after: "SDL_AddEventWatch",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "EventWatcherCB", name: "filter" }]
         },
         "FilterEvents": {
           "kind": "function",
@@ -1448,10 +1404,12 @@ const transform = {
         "SDL_EventType": {
           enum: "SDL_EVENT_"
         },
-        "EventFilterCB": {
+        "SDL_EventFilter": {
+          callback: "std"
+        },
+        "EventWatcherCB": {
           kind: "alias",
-          type: "std::function<bool(const Event &)>",
-          after: "EventFilter",
+          type: "MakeFrontCallback<bool(Event *event)>"
         },
         "SDL_GetWindowFromEvent": {
           parameters: [{ type: "const Event &" }]
@@ -1549,11 +1507,7 @@ const transform = {
             },
           }
         },
-        "EnumerateDirectoryCB": {
-          kind: "alias",
-          type: "std::function<EnumerationResult(const char *dirname, const char *fname)>",
-          after: "SDL_EnumerateDirectoryCallback",
-        },
+        "SDL_EnumerateDirectoryCallback": { callback: "std" },
         "EnumerateDirectory": {
           kind: "function",
           type: "void",
@@ -2170,43 +2124,23 @@ const transform = {
             ]
           }
         },
-        "HintCallbackHandle": {
-          after: "SDL_HintCallback",
-          doc: ["Handle returned by AddHintCallback()"],
-          kind: "struct",
-          name: "HintCallbackHandle",
-          type: "CallbackHandle",
-          entries: { "CallbackHandle::CallbackHandle": "alias" }
-        },
-        "SDL_AddHintCallback": {},
+        "SDL_HintCallback": { callback: "lightweight" },
         "AddHintCallback": {
           kind: "function",
-          type: "HintCallbackHandle",
-          parameters: [{
-            name: "name",
-            type: "StringParam"
-          },
-          {
-            name: "callback",
-            type: "HintCB"
-          }],
-        },
-        "SDL_RemoveHintCallback": {},
-        "RemoveHintCallback": {
-          kind: "function",
+          after: "SDL_AddHintCallback",
           type: "void",
           parameters: [{
-            name: "name",
-            type: "StringParam"
+            type: "StringParam",
+            name: "name"
           }, {
-            type: "HintCallbackHandle",
-            name: "handle",
-          }],
+            type: "HintCB",
+            name: "callback"
+          }]
         },
       }
     },
     "SDL_init.h": {
-      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_log.h", "SDL3pp_strings.h"],
+      localIncludes: ["SDL3pp_callbackWrapper.h", "SDL3pp_error.h", "SDL3pp_events.h", "SDL3pp_log.h", "SDL3pp_strings.h"],
       includes: ["atomic"],
       namespacesMap: {
         "SDL_PROP_APP_METADATA_": "prop::appMetaData",
@@ -2215,6 +2149,7 @@ const transform = {
         "SDL_InitFlags": {
           enum: "SDL_INIT_"
         },
+        "SDL_MainThreadCallback": { callback: "std" },
         "SDL_RunOnMainThread": {},
         "RunOnMainThread": {
           kind: "function",
@@ -2678,32 +2613,11 @@ const transform = {
           after: "__begin",
           enum: "SDL_LOG_PRIORITY_"
         },
-        "SDL_GetLogOutputFunction": {},
-        "GetLogOutputFunction": {
-          name: "GetLogOutputFunction",
-          kind: "function",
-          type: "LogOutputCB",
-          parameters: [],
-          after: "SDL_GetLogOutputFunction",
-        },
-        "SDL_SetLogOutputFunction": {},
-        "SetLogOutputFunction": {
-          name: "SetLogOutputFunction",
-          kind: "function",
-          type: "void",
-          after: "SDL_SetLogOutputFunction",
-          parameters: [{
-            type: "LogOutputCB",
-            name: "callback"
-          }]
-        },
         "ResetLogOutputFunction": {
           kind: "function",
           type: "void",
+          after: "SDL_SetLogOutputFunction",
           parameters: []
-        },
-        "LogOutputCB": {
-          type: "std::function<void(LogCategory, LogPriority, const char *)>"
         },
         "SDL_LogCategory": {
           kind: "struct",
@@ -3089,7 +3003,14 @@ const transform = {
               "name": "message"
             }
           ]
-        }
+        },
+        "SDL_LogOutputFunction": { callback: "lightweight" },
+        "SetLogOutputFunction": {
+          kind: "function",
+          after: "SDL_SetLogOutputFunction",
+          type: "void",
+          parameters: [{ type: "LogOutputCB", name: "callback" }]
+        },
       }
     },
     "SDL_main.h": {
@@ -3997,18 +3918,13 @@ const transform = {
         },
         "SDL_EnumeratePropertiesCallback": {
           kind: "alias",
-          type: "SDL_EnumeratePropertiesCallback",
           before: "SDL_PropertiesID",
-        },
-        "EnumeratePropertiesCB": {
-          kind: "alias",
-          type: "std::function<void(PropertiesID props, const char *name)>",
-          before: "SDL_PropertiesID",
+          callback: "std",
         },
         "SDL_CleanupPropertyCallback": {
           kind: "alias",
-          type: "SDL_EnumeratePropertiesCallback",
           before: "SDL_PropertiesID",
+          callback: "std",
         },
         "SetPointerPropertyWithCleanup": {
           kind: "function",
@@ -5520,6 +5436,7 @@ const transform = {
           type: "OwnArray<char>",
           parameters: [{ type: "std::wstring_view" }],
         },
+        "SDL_CompareCallback_r": { callback: "std" },
         "CompareCallback_rCB": { name: "CompareCB" },
         "Seconds": {
           before: "SDL_Time",
@@ -6956,47 +6873,6 @@ const transform = {
     "SDL_system.h": {
       localIncludes: ['SDL3pp_stdinc.h'],
       transform: {
-        "SetWindowsMessageHook": {
-          after: "SDL_SetWindowsMessageHook",
-          kind: "function",
-          type: "void",
-          parameters: [
-            {
-              name: "callback",
-              type: "WindowsMessageHookCB"
-            }
-          ],
-        },
-        "SetX11EventHook": {
-          after: "SDL_SetX11EventHook",
-          kind: "function",
-          type: "void",
-          parameters: [
-            {
-              name: "callback",
-              type: "X11EventHookCB"
-            }
-          ],
-        },
-        "SetiOSAnimationCallback": {
-          after: "SDL_SetiOSAnimationCallback",
-          kind: "function",
-          type: "void",
-          parameters: [
-            {
-              name: "window",
-              type: "WindowParam"
-            },
-            {
-              name: "interval",
-              type: "int"
-            },
-            {
-              name: "callback",
-              type: "iOSAnimationCB"
-            }
-          ],
-        },
         "RequestAndroidPermission": {
           after: "SDL_RequestAndroidPermission",
           kind: "function",
@@ -7022,9 +6898,7 @@ const transform = {
           type: "Uint32",
           constexpr: true,
         },
-        "WindowsMessageHookCB": { type: "std::function<bool(MSG *msg)>" },
-        "iOSAnimationCB": { type: "std::function<void()>" },
-        "RequestAndroidPermissionCB": { type: "std::function<void(const char *permission, bool granted)>" },
+        "SDL_RequestAndroidPermissionCallback": { callback: "std" },
       }
     },
     "SDL_thread.h": {
@@ -7042,11 +6916,12 @@ const transform = {
       ],
       transform: {
         "ThreadID": { after: "__begin" },
-        "ThreadFunction": { after: "__begin" },
-        "ThreadCB": {
+        "SDL_ThreadFunction": {
           after: "__begin",
-          kind: "alias",
-          type: "std::function<int()>"
+          callback: {
+            functorSupport: "std",
+            userdataIndex: 0,
+          },
         },
         "SDL_TLSDestructorCallback": { after: "__begin" },
         "SDL_ThreadPriority": {
@@ -7196,10 +7071,18 @@ const transform = {
         "SDL_NSTimerCallback": {
           name: "TimerCallback",
           type: "SDL_NSTimerCallback",
-          kind: "alias"
-        },
-        "TimerCB": {
-          type: "std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>"
+          kind: "alias",
+          callback: {
+            functorSupport: "lightweight",
+            type: "std::chrono::nanoseconds",
+            parameters: [{
+              name: "timerID",
+              type: "TimerID"
+            }, {
+              name: "interval",
+              type: "std::chrono::nanoseconds"
+            }]
+          },
         },
         "SDL_AddTimerNS": {
           name: "AddTimer",
@@ -7265,12 +7148,7 @@ const transform = {
           enum: "SDL_TRAYENTRY_",
           after: "__begin",
         },
-        "SDL_TrayCallback": { before: "SDL_Tray" },
-        "TrayCB": {
-          before: "SDL_Tray",
-          kind: "alias",
-          type: "std::function<void(TrayEntryRaw)>"
-        },
+        "SDL_TrayCallback": { before: "SDL_Tray", callback: "lightweight" },
         "SDL_Tray": {
           resource: true,
           entries: {
@@ -7387,11 +7265,35 @@ const transform = {
     },
     "SDL_version.h": {
       transform: {
+        "SDL_MAJOR_VERSION": {
+          value: ""
+        },
         "SDL_MINOR_VERSION": {
           value: ""
         },
         "SDL_MICRO_VERSION": {
           value: ""
+        },
+        "SDL3PP_MAJOR_VERSION": {
+          after: "SDL_GetRevision",
+          kind: "def",
+          value: currentVersion[0],
+          doc: ["The current major version of SDL3pp wrapper."]
+        },
+        "SDL3PP_MINOR_VERSION": {
+          kind: "def",
+          value: currentVersion[1],
+          doc: ["The current minor version of SDL3pp wrapper."]
+        },
+        "SDL3PP_PATCH_VERSION": {
+          kind: "def",
+          value: currentVersion[2],
+          doc: ["The current patch version of SDL3pp wrapper."]
+        },
+        "SDL3PP_VERSION": {
+          kind: "def",
+          value: "SDL_VERSIONNUM(SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)",
+          doc: ["This is the version number macro for the current SDL3pp wrapper version."]
         },
       },
     },
@@ -7509,12 +7411,12 @@ const transform = {
         },
         "SDL_FlashOperation": { before: "SDL_Window" },
         "SDL_HitTestResult": { before: "SDL_Window" },
-        "SDL_HitTest": { before: "SDL_Window" },
-        "HitTestCB": {
+        "SDL_HitTest": {
           before: "SDL_Window",
-          kind: "alias",
-          type: "std::function<HitTestResult(WindowRaw window, const Point& area)>",
-          doc: ["@sa HitTest"]
+          callback: {
+            functorSupport: "lightweight",
+            userdataIndex: 2,
+          }
         },
         "SDL_EGLSurface": { before: "SDL_Window" },
         "SDL_ProgressState": {
