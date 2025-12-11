@@ -258,11 +258,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Properties& operator=(const Properties& other) noexcept = default;
 
 public:
   /// Retrieves underlying PropertiesID.

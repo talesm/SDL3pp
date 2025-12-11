@@ -397,11 +397,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
 
 public:
   /// Retrieves underlying IOStreamRaw.

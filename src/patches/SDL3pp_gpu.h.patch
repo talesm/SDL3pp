@@ -175,7 +175,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called from the thread that
-@@ -3776,7 +3752,6 @@
+@@ -3772,7 +3748,6 @@
     * @param wait_all if 0, wait for any fence to be signaled, if 1, wait for all
     *                 fences to be signaled.
     * @param fences an array of fences to wait on.
@@ -183,7 +183,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -3837,6 +3812,7 @@
+@@ -3833,6 +3808,7 @@
     */
    bool TextureSupportsSampleCount(GPUTextureFormat format,
                                    GPUSampleCount sample_count);
@@ -191,7 +191,7 @@
  
    /**
     * Call this to suspend GPU operation on Xbox when you receive the
-@@ -3863,6 +3839,8 @@
+@@ -3859,6 +3835,8 @@
     * @sa AddEventWatch
     */
    void GDKResumeGPU();
@@ -200,7 +200,7 @@
  };
  
  /// Semi-safe reference for GPUDevice.
-@@ -5658,7 +5636,6 @@
+@@ -5654,7 +5632,6 @@
   * @param command_buffer a command buffer.
   * @param slot_index the vertex uniform slot to push data to.
   * @param data client data to write.
@@ -208,7 +208,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
-@@ -5689,7 +5666,6 @@
+@@ -5685,7 +5662,6 @@
   * @param command_buffer a command buffer.
   * @param slot_index the fragment uniform slot to push data to.
   * @param data client data to write.
@@ -216,7 +216,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
-@@ -5720,7 +5696,6 @@
+@@ -5716,7 +5692,6 @@
   * @param command_buffer a command buffer.
   * @param slot_index the uniform slot to push data to.
   * @param data client data to write.
@@ -224,7 +224,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
-@@ -5753,8 +5728,6 @@
+@@ -5749,8 +5724,6 @@
   * @param command_buffer a command buffer.
   * @param color_target_infos an array of texture subresources with corresponding
   *                           clear values and load/store ops.
@@ -233,7 +233,7 @@
   * @param depth_stencil_target_info a texture subresource with corresponding
   *                                  clear value and load/store ops, may be
   *                                  nullptr.
-@@ -5769,8 +5742,10 @@
+@@ -5765,8 +5738,10 @@
    std::span<const GPUColorTargetInfo> color_target_infos,
    OptionalRef<const GPUDepthStencilTargetInfo> depth_stencil_target_info)
  {
@@ -246,7 +246,7 @@
  }
  
  inline GPURenderPass GPUCommandBuffer::BeginRenderPass(
-@@ -5831,7 +5806,7 @@
+@@ -5827,7 +5802,7 @@
   */
  inline void SetGPUScissor(GPURenderPass render_pass, const RectRaw& scissor)
  {
@@ -255,7 +255,7 @@
  }
  
  inline void GPURenderPass::SetScissor(const RectRaw& scissor)
-@@ -5886,7 +5861,6 @@
+@@ -5882,7 +5857,6 @@
   * @param first_slot the vertex buffer slot to begin binding from.
   * @param bindings an array of GPUBufferBinding structs containing vertex
   *                 buffers and offset values.
@@ -263,7 +263,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
-@@ -5894,7 +5868,8 @@
+@@ -5890,7 +5864,8 @@
                                   Uint32 first_slot,
                                   std::span<const GPUBufferBinding> bindings)
  {
@@ -273,7 +273,7 @@
  }
  
  inline void GPURenderPass::BindVertexBuffers(
-@@ -5939,8 +5914,6 @@
+@@ -5935,8 +5910,6 @@
   * @param render_pass a render pass handle.
   * @param first_slot the vertex sampler slot to begin binding from.
   * @param texture_sampler_bindings an array of texture-sampler binding structs.
@@ -282,7 +282,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -5951,7 +5924,10 @@
+@@ -5947,7 +5920,10 @@
    Uint32 first_slot,
    std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
  {
@@ -294,7 +294,7 @@
  }
  
  inline void GPURenderPass::BindVertexSamplers(
-@@ -5974,7 +5950,6 @@
+@@ -5970,7 +5946,6 @@
   * @param render_pass a render pass handle.
   * @param first_slot the vertex storage texture slot to begin binding from.
   * @param storage_textures an array of storage textures.
@@ -302,7 +302,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -5985,7 +5960,8 @@
+@@ -5981,7 +5956,8 @@
    Uint32 first_slot,
    SpanRef<const GPUTextureRaw> storage_textures)
  {
@@ -312,7 +312,7 @@
  }
  
  inline void GPURenderPass::BindVertexStorageTextures(
-@@ -6008,7 +5984,6 @@
+@@ -6004,7 +5980,6 @@
   * @param render_pass a render pass handle.
   * @param first_slot the vertex storage buffer slot to begin binding from.
   * @param storage_buffers an array of buffers.
@@ -320,7 +320,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6019,7 +5994,8 @@
+@@ -6015,7 +5990,8 @@
    Uint32 first_slot,
    SpanRef<const GPUBufferRaw> storage_buffers)
  {
@@ -330,7 +330,7 @@
  }
  
  inline void GPURenderPass::BindVertexStorageBuffers(
-@@ -6041,8 +6017,6 @@
+@@ -6037,8 +6013,6 @@
   * @param render_pass a render pass handle.
   * @param first_slot the fragment sampler slot to begin binding from.
   * @param texture_sampler_bindings an array of texture-sampler binding structs.
@@ -339,7 +339,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6053,8 +6027,10 @@
+@@ -6049,8 +6023,10 @@
    Uint32 first_slot,
    std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
  {
@@ -352,7 +352,7 @@
  }
  
  inline void GPURenderPass::BindFragmentSamplers(
-@@ -6077,7 +6053,6 @@
+@@ -6073,7 +6049,6 @@
   * @param render_pass a render pass handle.
   * @param first_slot the fragment storage texture slot to begin binding from.
   * @param storage_textures an array of storage textures.
@@ -360,7 +360,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6088,7 +6063,8 @@
+@@ -6084,7 +6059,8 @@
    Uint32 first_slot,
    SpanRef<const GPUTextureRaw> storage_textures)
  {
@@ -370,7 +370,7 @@
  }
  
  inline void GPURenderPass::BindFragmentStorageTextures(
-@@ -6111,7 +6087,6 @@
+@@ -6107,7 +6083,6 @@
   * @param render_pass a render pass handle.
   * @param first_slot the fragment storage buffer slot to begin binding from.
   * @param storage_buffers an array of storage buffers.
@@ -378,7 +378,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6122,7 +6097,8 @@
+@@ -6118,7 +6093,8 @@
    Uint32 first_slot,
    SpanRef<const GPUBufferRaw> storage_buffers)
  {
@@ -388,7 +388,7 @@
  }
  
  inline void GPURenderPass::BindFragmentStorageBuffers(
-@@ -6329,12 +6305,8 @@
+@@ -6325,12 +6301,8 @@
   * @param command_buffer a command buffer.
   * @param storage_texture_bindings an array of writeable storage texture binding
   *                                 structs.
@@ -401,7 +401,7 @@
   * @returns a compute pass handle.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -6346,8 +6318,11 @@
+@@ -6342,8 +6314,11 @@
    std::span<const GPUStorageTextureReadWriteBinding> storage_texture_bindings,
    std::span<const GPUStorageBufferReadWriteBinding> storage_buffer_bindings)
  {
@@ -415,7 +415,7 @@
  }
  
  inline GPUComputePass GPUCommandBuffer::BeginComputePass(
-@@ -6388,8 +6363,6 @@
+@@ -6384,8 +6359,6 @@
   * @param compute_pass a compute pass handle.
   * @param first_slot the compute sampler slot to begin binding from.
   * @param texture_sampler_bindings an array of texture-sampler binding structs.
@@ -424,7 +424,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6400,8 +6373,10 @@
+@@ -6396,8 +6369,10 @@
    Uint32 first_slot,
    std::span<const GPUTextureSamplerBinding> texture_sampler_bindings)
  {
@@ -437,7 +437,7 @@
  }
  
  inline void GPUComputePass::BindSamplers(
-@@ -6424,7 +6399,6 @@
+@@ -6420,7 +6395,6 @@
   * @param compute_pass a compute pass handle.
   * @param first_slot the compute storage texture slot to begin binding from.
   * @param storage_textures an array of storage textures.
@@ -445,7 +445,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6435,7 +6409,8 @@
+@@ -6431,7 +6405,8 @@
    Uint32 first_slot,
    SpanRef<const GPUTextureRaw> storage_textures)
  {
@@ -455,7 +455,7 @@
  }
  
  inline void GPUComputePass::BindStorageTextures(
-@@ -6458,7 +6433,6 @@
+@@ -6454,7 +6429,6 @@
   * @param compute_pass a compute pass handle.
   * @param first_slot the compute storage buffer slot to begin binding from.
   * @param storage_buffers an array of storage buffer binding structs.
@@ -463,7 +463,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -6469,7 +6443,8 @@
+@@ -6465,7 +6439,8 @@
    Uint32 first_slot,
    SpanRef<const GPUBufferRaw> storage_buffers)
  {
@@ -473,7 +473,7 @@
  }
  
  inline void GPUComputePass::BindStorageBuffers(
-@@ -7111,11 +7086,11 @@
+@@ -7107,11 +7082,11 @@
   *
   * @param command_buffer a command buffer.
   * @param window a window that has been claimed.
@@ -486,7 +486,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called from the thread that
-@@ -7138,8 +7113,13 @@
+@@ -7134,8 +7109,13 @@
    Uint32* swapchain_texture_width = nullptr,
    Uint32* swapchain_texture_height = nullptr)
  {
@@ -502,7 +502,7 @@
  }
  
  inline GPUTexture GPUCommandBuffer::AcquireSwapchainTexture(
-@@ -7203,11 +7183,11 @@
+@@ -7199,11 +7179,11 @@
   *
   * @param command_buffer a command buffer.
   * @param window a window that has been claimed.
@@ -515,7 +515,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called from the thread that
-@@ -7225,8 +7205,13 @@
+@@ -7221,8 +7201,13 @@
    Uint32* swapchain_texture_width = nullptr,
    Uint32* swapchain_texture_height = nullptr)
  {
@@ -531,7 +531,7 @@
  }
  
  inline GPUTexture GPUCommandBuffer::WaitAndAcquireSwapchainTexture(
-@@ -7360,7 +7345,6 @@
+@@ -7356,7 +7341,6 @@
   * @param wait_all if 0, wait for any fence to be signaled, if 1, wait for all
   *                 fences to be signaled.
   * @param fences an array of fences to wait on.
@@ -539,7 +539,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -7372,7 +7356,8 @@
+@@ -7368,7 +7352,8 @@
                               bool wait_all,
                               std::span<GPUFence* const> fences)
  {
@@ -549,7 +549,7 @@
  }
  
  inline void GPUDevice::WaitForFences(bool wait_all,
-@@ -7508,6 +7493,8 @@
+@@ -7504,6 +7489,8 @@
      format, width, height, depth_or_layer_count);
  }
  
@@ -558,7 +558,7 @@
  /**
   * Call this to suspend GPU operation on Xbox when you receive the
   * EVENT_DID_ENTER_BACKGROUND event.
-@@ -7542,6 +7529,8 @@
+@@ -7538,6 +7525,8 @@
  
  inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
  

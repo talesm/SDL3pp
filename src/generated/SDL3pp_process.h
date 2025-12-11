@@ -288,11 +288,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Process& operator=(const Process& other) noexcept = default;
 
 public:
   /// Retrieves underlying ProcessRaw.

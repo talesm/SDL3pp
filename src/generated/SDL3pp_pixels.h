@@ -2361,11 +2361,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Palette& operator=(const Palette& other) noexcept = default;
 
 public:
   /// Retrieves underlying PaletteRaw.

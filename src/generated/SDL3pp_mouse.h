@@ -326,11 +326,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
 
 public:
   /// Retrieves underlying CursorRaw.

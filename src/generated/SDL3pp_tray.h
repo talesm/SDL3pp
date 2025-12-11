@@ -230,11 +230,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Tray& operator=(const Tray& other) noexcept = default;
 
 public:
   /// Retrieves underlying TrayRaw.
@@ -546,15 +542,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
 
-public:
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
 

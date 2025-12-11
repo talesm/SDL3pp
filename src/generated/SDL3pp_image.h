@@ -2164,11 +2164,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Animation& operator=(const Animation& other) noexcept = default;
 
 public:
   /// Retrieves underlying AnimationRaw.

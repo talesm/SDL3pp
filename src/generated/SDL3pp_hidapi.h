@@ -206,11 +206,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.

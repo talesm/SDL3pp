@@ -455,11 +455,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
 
 public:
   /// Retrieves underlying GamepadRaw.

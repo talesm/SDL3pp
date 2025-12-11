@@ -151,11 +151,8 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
+    default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.

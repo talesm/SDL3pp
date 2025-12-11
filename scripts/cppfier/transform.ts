@@ -1524,8 +1524,8 @@ function expandTypes(
         parameters: [{ name: "other", type: `const ${targetName} &` }],
         constexpr: true,
         hints: {
-          body: "m_resource = other.m_resource;\nreturn *this;",
-          changeAccess: "protected",
+          default: true,
+          changeAccess: hasScoped ? undefined : "protected",
           noexcept: true,
         },
         doc: ["Assignment operator."],
@@ -1538,7 +1538,7 @@ function expandTypes(
         parameters: [],
         hints: {
           body: "return m_resource;",
-          changeAccess: "public",
+          changeAccess: hasScoped ? undefined : "public",
           noexcept: true,
         },
         doc: [`Retrieves underlying ${rawName}.`],

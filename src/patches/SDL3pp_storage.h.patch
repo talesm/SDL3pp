@@ -125,7 +125,7 @@
  
    /// Assignment operator.
    constexpr Storage& operator=(Storage&& other) noexcept
-@@ -488,9 +482,6 @@
+@@ -484,9 +478,6 @@
     * @since This function is available since SDL 3.2.0.
     *
     * @sa Storage.Storage
@@ -135,7 +135,7 @@
     */
    bool Close();
  
-@@ -512,8 +503,7 @@
+@@ -508,8 +499,7 @@
     * Query the size of a file within a storage container.
     *
     * @param path the relative path of the file to query.
@@ -145,7 +145,7 @@
     *          GetError() for more information.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -533,7 +523,6 @@
+@@ -529,7 +519,6 @@
     *
     * @param path the relative path of the file to read.
     * @param destination a client-provided buffer to read the file into.
@@ -153,7 +153,7 @@
     * @returns true if the file was read or false on failure; call GetError() for
     *          more information.
     *
-@@ -554,8 +543,6 @@
+@@ -550,8 +539,6 @@
     * future release.
     *
     * @param path the relative path of the file to read.
@@ -162,7 +162,7 @@
     * @returns true if the file was read or false on failure; call GetError() for
     *          more information.
     *
-@@ -567,6 +554,24 @@
+@@ -563,6 +550,24 @@
     */
    std::string ReadFile(StringParam path);
  
@@ -187,7 +187,7 @@
    template<class T>
    std::vector<T> ReadFileAs(StringParam path);
  
-@@ -575,9 +580,7 @@
+@@ -571,9 +576,7 @@
     *
     * @param path the relative path of the file to write.
     * @param source a client-provided buffer to write from.
@@ -198,7 +198,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
-@@ -645,8 +648,7 @@
+@@ -641,8 +644,7 @@
     *
     * @param path the path of the directory to enumerate, or nullptr for the
     *             root.
@@ -208,7 +208,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -673,7 +675,6 @@
+@@ -669,7 +671,6 @@
     * @param path the path of the directory to enumerate, or nullptr for the
     *             root.
     * @param callback a function that is called for each entry in the directory.
@@ -216,7 +216,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -724,9 +725,8 @@
+@@ -720,9 +721,8 @@
     * Get information about a filesystem path in a storage container.
     *
     * @param path the path to query.
@@ -228,7 +228,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
-@@ -771,8 +771,6 @@
+@@ -767,8 +767,6 @@
     * @param pattern the pattern that files in the directory must match. Can be
     *                nullptr.
     * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -237,7 +237,7 @@
     * @returns an array of strings on success.
     * @throws Error on failure.
     *
-@@ -982,8 +980,7 @@
+@@ -978,8 +976,7 @@
   *
   * @param storage a storage container to query.
   * @param path the relative path of the file to query.
@@ -247,7 +247,7 @@
   *          GetError() for more information.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -994,7 +991,10 @@
+@@ -990,7 +987,10 @@
  inline std::optional<Uint64> GetStorageFileSize(StorageParam storage,
                                                  StringParam path)
  {
@@ -259,7 +259,7 @@
  }
  
  inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
-@@ -1006,14 +1006,13 @@
+@@ -1002,14 +1002,13 @@
   * Synchronously read a file from a storage container into a client-provided
   * buffer.
   *
@@ -277,7 +277,7 @@
   * @returns true if the file was read or false on failure; call GetError() for
   *          more information.
   *
-@@ -1035,16 +1034,10 @@
+@@ -1031,16 +1030,10 @@
   * Synchronously read a file from a storage container into a client-provided
   * buffer.
   *
@@ -296,7 +296,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1054,7 +1047,11 @@
+@@ -1050,7 +1043,11 @@
   */
  inline std::string ReadStorageFile(StorageParam storage, StringParam path)
  {
@@ -309,7 +309,7 @@
  }
  
  inline bool Storage::ReadFile(StringParam path, TargetBytes destination)
-@@ -1068,16 +1065,35 @@
+@@ -1064,16 +1061,35 @@
    return SDL::ReadStorageFile(m_resource, std::move(path));
  }
  
@@ -347,7 +347,7 @@
  }
  
  /**
-@@ -1086,9 +1102,7 @@
+@@ -1082,9 +1098,7 @@
   * @param storage a storage container to write to.
   * @param path the relative path of the file to write.
   * @param source a client-provided buffer to write from.
@@ -358,7 +358,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1100,7 +1114,8 @@
+@@ -1096,7 +1110,8 @@
                               StringParam path,
                               SourceBytes source)
  {
@@ -368,7 +368,7 @@
  }
  
  inline void Storage::WriteFile(StringParam path, SourceBytes source)
-@@ -1178,7 +1193,6 @@
+@@ -1174,7 +1189,6 @@
   * @param storage a storage container.
   * @param path the path of the directory to enumerate, or nullptr for the root.
   * @param callback a function that is called for each entry in the directory.
@@ -376,7 +376,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1189,7 +1203,14 @@
+@@ -1185,7 +1199,14 @@
                                        StringParam path,
                                        EnumerateDirectoryCB callback)
  {
@@ -392,7 +392,7 @@
  }
  
  /**
-@@ -1208,8 +1229,7 @@
+@@ -1204,8 +1225,7 @@
   *
   * @param storage a storage container.
   * @param path the path of the directory to enumerate, or nullptr for the root.
@@ -402,7 +402,7 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1219,7 +1239,12 @@
+@@ -1215,7 +1235,12 @@
  inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
                                                     StringParam path)
  {
@@ -416,7 +416,7 @@
  }
  
  inline void Storage::EnumerateDirectory(StringParam path,
-@@ -1315,9 +1340,8 @@
+@@ -1311,9 +1336,8 @@
   *
   * @param storage a storage container.
   * @param path the path to query.
@@ -428,7 +428,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-@@ -1325,7 +1349,10 @@
+@@ -1321,7 +1345,10 @@
   */
  inline PathInfo GetStoragePathInfo(StorageParam storage, StringParam path)
  {
@@ -440,7 +440,7 @@
  }
  
  inline PathInfo Storage::GetPathInfo(StringParam path)
-@@ -1379,8 +1406,6 @@
+@@ -1375,8 +1402,6 @@
   * @param pattern the pattern that files in the directory must match. Can be
   *                nullptr.
   * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -449,7 +449,7 @@
   * @returns an array of strings on success.
   * @throws Error on failure.
   *
-@@ -1394,7 +1419,10 @@
+@@ -1390,7 +1415,10 @@
                                              StringParam pattern,
                                              GlobFlags flags)
  {

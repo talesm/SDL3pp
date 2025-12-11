@@ -575,11 +575,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Font& operator=(const Font& other) noexcept = default;
 
 public:
   /// Retrieves underlying FontRaw.
@@ -4077,11 +4073,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
 
 public:
   /// Retrieves underlying TextEngineRaw.
@@ -4472,11 +4464,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Text& operator=(const Text& other) noexcept = default;
 
 public:
   /// Retrieves underlying TextRaw.

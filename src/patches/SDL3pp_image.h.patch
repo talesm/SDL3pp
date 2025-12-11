@@ -595,7 +595,7 @@
      : m_resource(IMG_LoadAnimation_IO(src, closeio))
    {
    }
-@@ -2202,21 +2235,34 @@
+@@ -2198,21 +2231,34 @@
     * @since This function is available since SDL_image 3.0.0.
     *
     * @sa Animation.Animation
@@ -631,7 +631,7 @@
    int GetDelay(int index) const;
  };
  
-@@ -2259,29 +2305,26 @@
+@@ -2255,29 +2301,26 @@
    ~AnimationRef() { release(); }
  };
  
@@ -667,7 +667,7 @@
  }
  
  inline Point Animation::GetSize() const
-@@ -2289,19 +2332,23 @@
+@@ -2285,19 +2328,23 @@
    return SDL::GetAnimationSize(m_resource);
  }
  
@@ -696,7 +696,7 @@
  }
  
  inline Surface Animation::GetFrame(int index) const
-@@ -2309,9 +2356,15 @@
+@@ -2305,9 +2352,15 @@
    return SDL::GetAnimationFrame(m_resource, index);
  }
  
@@ -713,7 +713,7 @@
  }
  
  inline int Animation::GetDelay(int index) const
-@@ -2356,7 +2409,7 @@
+@@ -2352,7 +2405,7 @@
   *
   * @sa Animation.Free
   */
@@ -722,7 +722,7 @@
  {
    return Animation(src, closeio);
  }
-@@ -2378,22 +2431,21 @@
+@@ -2374,22 +2427,21 @@
   * call to Animation.Free().
   *
   * @param src an IOStream that data will be read from.
@@ -747,7 +747,7 @@
  }
  
  /**
-@@ -2406,7 +2458,6 @@
+@@ -2402,7 +2454,6 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa Animation.Animation
@@ -755,7 +755,7 @@
   * @sa LoadAnimationTyped
   */
  inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
-@@ -2427,13 +2478,12 @@
+@@ -2423,13 +2474,12 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa Animation.Animation
@@ -771,7 +771,7 @@
  }
  
  /**
-@@ -2450,17 +2500,18 @@
+@@ -2446,17 +2496,18 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa Animation.Animation

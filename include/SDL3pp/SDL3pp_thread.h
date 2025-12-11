@@ -321,11 +321,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Thread& operator=(const Thread& other) noexcept = default;
 
 public:
   /// Retrieves underlying ThreadRaw.

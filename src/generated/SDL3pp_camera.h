@@ -239,11 +239,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Camera& operator=(const Camera& other) noexcept = default;
 
 public:
   /// Retrieves underlying CameraRaw.

@@ -451,11 +451,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
 
 public:
   /// Retrieves underlying JoystickRaw.

@@ -385,11 +385,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Renderer& operator=(const Renderer& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
 
 public:
   /// Retrieves underlying RendererRaw.
@@ -2451,11 +2447,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Texture& operator=(const Texture& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Texture& operator=(const Texture& other) noexcept = default;
 
 public:
   /// Retrieves underlying TextureRaw.

@@ -3066,11 +3066,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.

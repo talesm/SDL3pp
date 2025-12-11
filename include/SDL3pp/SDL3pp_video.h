@@ -1076,11 +1076,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Window& operator=(const Window& other) noexcept = default;
 
 public:
   /// Retrieves underlying WindowRaw.
@@ -3165,15 +3161,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
 
-public:
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
 

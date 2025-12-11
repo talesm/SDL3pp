@@ -1004,11 +1004,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Environment& operator=(const Environment& other) noexcept = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -5819,11 +5815,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr IConv& operator=(const IConv& other) noexcept = default;
 
 public:
   /// Retrieves underlying IConvRaw.

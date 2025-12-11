@@ -257,11 +257,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
 
 public:
   /// Retrieves underlying AsyncIORaw.
@@ -593,11 +589,8 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
+    default;
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.

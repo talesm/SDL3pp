@@ -218,11 +218,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
 
 public:
   /// Retrieves underlying SensorRaw.

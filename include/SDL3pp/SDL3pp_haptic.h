@@ -895,11 +895,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
 
 public:
   /// Retrieves underlying HapticRaw.

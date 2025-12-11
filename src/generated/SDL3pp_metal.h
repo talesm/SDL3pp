@@ -129,11 +129,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.

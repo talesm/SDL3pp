@@ -258,11 +258,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
 
 public:
   /// Retrieves underlying MutexRaw.
@@ -623,11 +619,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
 
 public:
   /// Retrieves underlying RWLockRaw.
@@ -1173,11 +1165,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
 
 public:
   /// Retrieves underlying SemaphoreRaw.
@@ -1557,11 +1545,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Condition& operator=(const Condition& other) noexcept = default;
 
 public:
   /// Retrieves underlying ConditionRaw.

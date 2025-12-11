@@ -10948,11 +10948,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Palette& operator=(const Palette& other) noexcept = default;
 
 public:
   /// Retrieves underlying PaletteRaw.
@@ -11723,11 +11719,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Properties& operator=(const Properties& other) noexcept = default;
 
 public:
   /// Retrieves underlying PropertiesID.
@@ -13925,11 +13917,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Environment& operator=(const Environment& other) noexcept = default;
 
 public:
   /// Retrieves underlying EnvironmentRaw.
@@ -18820,11 +18808,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr IConv& operator=(const IConv& other) noexcept = default;
 
 public:
   /// Retrieves underlying IConvRaw.
@@ -19464,11 +19448,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept = default;
 
 public:
   /// Retrieves underlying AsyncIORaw.
@@ -19797,11 +19777,8 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept =
+    default;
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.
@@ -23305,11 +23282,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr HidDevice& operator=(const HidDevice& other) noexcept = default;
 
 public:
   /// Retrieves underlying HidDeviceRaw.
@@ -24491,11 +24464,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr IOStream& operator=(const IOStream& other) noexcept = default;
 
 public:
   /// Retrieves underlying IOStreamRaw.
@@ -27364,11 +27333,8 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr SharedObject& operator=(const SharedObject& other) noexcept =
+    default;
 
 public:
   /// Retrieves underlying SharedObjectRaw.
@@ -31311,11 +31277,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Sensor& operator=(const Sensor& other) noexcept = default;
 
 public:
   /// Retrieves underlying SensorRaw.
@@ -33362,11 +33324,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept = default;
 
 public:
   /// Retrieves underlying AudioDeviceID.
@@ -34219,11 +34177,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioStream& operator=(const AudioStream& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr AudioStream& operator=(const AudioStream& other) noexcept = default;
 
 public:
   /// Retrieves underlying AudioStreamRaw.
@@ -38646,11 +38600,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Process& operator=(const Process& other) noexcept = default;
 
 public:
   /// Retrieves underlying ProcessRaw.
@@ -39737,11 +39687,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Storage& operator=(const Storage& other) noexcept = default;
 
 public:
   /// Retrieves underlying StorageRaw.
@@ -41160,11 +41106,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Surface& operator=(const Surface& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Surface& operator=(const Surface& other) noexcept = default;
 
 public:
   /// Retrieves underlying SurfaceRaw.
@@ -45103,11 +45045,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Thread& operator=(const Thread& other) noexcept = default;
 
 public:
   /// Retrieves underlying ThreadRaw.
@@ -45890,11 +45828,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Camera& operator=(const Camera& other) noexcept = default;
 
 public:
   /// Retrieves underlying CameraRaw.
@@ -46809,11 +46743,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Mutex& operator=(const Mutex& other) noexcept = default;
 
 public:
   /// Retrieves underlying MutexRaw.
@@ -47174,11 +47104,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr RWLock& operator=(const RWLock& other) noexcept = default;
 
 public:
   /// Retrieves underlying RWLockRaw.
@@ -47724,11 +47650,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Semaphore& operator=(const Semaphore& other) noexcept = default;
 
 public:
   /// Retrieves underlying SemaphoreRaw.
@@ -48108,11 +48030,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Condition& operator=(const Condition& other) noexcept = default;
 
 public:
   /// Retrieves underlying ConditionRaw.
@@ -48859,11 +48777,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Tray& operator=(const Tray& other) noexcept = default;
 
 public:
   /// Retrieves underlying TrayRaw.
@@ -49197,15 +49111,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept = default;
 
-public:
   /// Retrieves underlying TrayEntryRaw.
   constexpr TrayEntryRaw get() const noexcept { return m_resource; }
 
@@ -51141,11 +51049,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Window& operator=(const Window& other) noexcept = default;
 
 public:
   /// Retrieves underlying WindowRaw.
@@ -53230,15 +53134,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr GLContext& operator=(const GLContext& other) noexcept = default;
 
-public:
   /// Retrieves underlying GLContextRaw.
   constexpr GLContextRaw get() const noexcept { return m_resource; }
 
@@ -62636,11 +62534,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept = default;
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
@@ -67544,11 +67438,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Joystick& operator=(const Joystick& other) noexcept = default;
 
 public:
   /// Retrieves underlying JoystickRaw.
@@ -70517,11 +70407,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr MetalView& operator=(const MetalView& other) noexcept = default;
 
 public:
   /// Retrieves underlying MetalViewRaw.
@@ -70983,11 +70869,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Cursor& operator=(const Cursor& other) noexcept = default;
 
 public:
   /// Retrieves underlying CursorRaw.
@@ -72114,11 +71996,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Gamepad& operator=(const Gamepad& other) noexcept = default;
 
 public:
   /// Retrieves underlying GamepadRaw.
@@ -75265,11 +75143,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Haptic& operator=(const Haptic& other) noexcept = default;
 
 public:
   /// Retrieves underlying HapticRaw.
@@ -77506,11 +77380,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Renderer& operator=(const Renderer& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Renderer& operator=(const Renderer& other) noexcept = default;
 
 public:
   /// Retrieves underlying RendererRaw.
@@ -79553,11 +79423,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Texture& operator=(const Texture& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Texture& operator=(const Texture& other) noexcept = default;
 
 public:
   /// Retrieves underlying TextureRaw.
@@ -87587,11 +87453,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Animation& operator=(const Animation& other) noexcept = default;
 
 public:
   /// Retrieves underlying AnimationRaw.
@@ -88490,11 +88352,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Font& operator=(const Font& other) noexcept = default;
 
 public:
   /// Retrieves underlying FontRaw.
@@ -91938,11 +91796,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr TextEngine& operator=(const TextEngine& other) noexcept = default;
 
 public:
   /// Retrieves underlying TextEngineRaw.
@@ -92318,11 +92172,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other) noexcept
-  {
-    m_resource = other.m_resource;
-    return *this;
-  }
+  constexpr Text& operator=(const Text& other) noexcept = default;
 
 public:
   /// Retrieves underlying TextRaw.
