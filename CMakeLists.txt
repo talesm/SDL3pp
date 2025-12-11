@@ -51,7 +51,7 @@ endif ()
 
 # SDL_ttf
 option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
-if (SDL3PP_ENABLE_TTF AND NOT SDL3PP_USE_BUNDLED)
+if (SDL3PP_ENABLE_TTF)
     find_package(SDL3_ttf QUIET)
     set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
     if (TARGET SDL3_ttf::SDL3_ttf)

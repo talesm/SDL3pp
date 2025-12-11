@@ -41,3 +41,22 @@ if (SDL3PP_ENABLE_IMAGE)
   )
   FetchContent_MakeAvailable(SDL3ImageExternal)
 endif (SDL3PP_ENABLE_IMAGE)
+
+set(SDLTTF_INSTALL ON) # passed to external/SDL
+if (SDL3PP_ENABLE_TTF)
+  set(CACHE SDL3PP_USE_SDL3TTF_TAG TYPE STRING HELP "Bundle SDL3_ttf with this named tag/branch" VALUE "")
+  if(SDL3PP_USE_SDL3TTF_TAG)
+    set(SDL3TTF_TAG ${SDL3PP_USE_SDL3TTF_TAG})
+  else ()
+    set(SDL3TTF_TAG release-3.2.2)
+  endif ()
+  FetchContent_Declare(SDL3TTFExternal
+    GIT_REPOSITORY git@github.com:libsdl-org/SDL_ttf.git
+    GIT_TAG ${SDL3TTF_TAG}
+    GIT_SUBMODULES_RECURSE ON
+    GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
+    GIT_PROGRESS ON
+    UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
+  )
+  FetchContent_MakeAvailable(SDL3TTFExternal)
+endif (SDL3PP_ENABLE_TTF)
