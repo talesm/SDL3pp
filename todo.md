@@ -19,11 +19,12 @@ New Version checklist:
 Next version
 ------------
 
-Strengthen class types
+Simplify project setup
 
-- [x] Make resource constructors, comparison operators noexcept;
-- [x] Make wrapper constructors, comparison operators noexcept;
-- [x] Make resource accept std::nullptr_t.
+- [ ] Replace submodules by ExternalProject;
+- [ ] Create lightweight distribution, with only CMake and includes;
+- [ ] Create Windows mode, where it downloads pre-compiled versions, if
+  possible.
 
 Backlog
 -------
