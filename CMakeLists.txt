@@ -7,7 +7,21 @@ project(SDL3pp
 
 include(GNUInstallDirs)
 
-find_package(SDL3 QUIET)
+option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
+if (SDL3PP_FORCE_BUNDLED)
+    set(SDL3PP_USE_BUNDLED ON)
+else ()
+    find_package(SDL3 QUIET)
+    if (NOT TARGET SDL3::SDL3)
+        set(SDL3PP_USE_BUNDLED ON)
+    endif()
+endif ()
+
+# include bundled, if necessary
+if (SDL3PP_USE_BUNDLED)
+    include(cmake/SDL3ppAddExternalProjects.cmake)
+    find_package(SDL3 REQUIRED)
+endif ()
 
 set(SDL3PP_ORIGINAL_INCLUDE_DIRS 
     ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/
@@ -25,7 +39,7 @@ set(SDL3PP_DEPENDENCIES SDL3::SDL3)
 
 # SDL_image
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
-if(SDL3PP_ENABLE_IMAGE)
+if (SDL3PP_ENABLE_IMAGE AND NOT SDL3PP_USE_BUNDLED)
     find_package(SDL3_image QUIET)
     set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
     if (TARGET SDL3_image::SDL3_image)
@@ -33,11 +47,11 @@ if(SDL3PP_ENABLE_IMAGE)
     else ()
         set(SDL3PP_ENABLE_IMAGE OFF)
     endif ()
-endif(SDL3PP_ENABLE_IMAGE)
+endif ()
 
 # SDL_ttf
 option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
-if(SDL3PP_ENABLE_TTF)
+if (SDL3PP_ENABLE_TTF AND NOT SDL3PP_USE_BUNDLED)
     find_package(SDL3_ttf QUIET)
     set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
     if (TARGET SDL3_ttf::SDL3_ttf)
@@ -45,13 +59,16 @@ if(SDL3PP_ENABLE_TTF)
     else ()
         set(SDL3PP_ENABLE_TTF OFF)
     endif ()
-endif(SDL3PP_ENABLE_TTF)
+endif ()
+
+###############
+# The library #
+###############
 
 file(GLOB_RECURSE SDL3pp_lib_HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
     file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
-else ()
 endif ()
 
 set(SDL3PP_COMPILE_FEATURES cxx_std_23)
