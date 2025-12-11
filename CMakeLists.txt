@@ -17,19 +17,21 @@ else ()
     endif()
 endif ()
 
+#############################
+### Enable/Disable options ##
+#############################
+set(SDL3PP_DEPENDENCIES SDL3::SDL3)
+
+option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
+option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
+
 # include bundled, if necessary
 if (SDL3PP_USE_BUNDLED)
     include(cmake/SDL3ppAddExternalProjects.cmake)
     find_package(SDL3 REQUIRED)
 endif ()
 
-#############################
-### Enable/Disable options ##
-#############################
-set(SDL3PP_DEPENDENCIES SDL3::SDL3)
-
 # SDL_image
-option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
 if (SDL3PP_ENABLE_IMAGE)
     find_package(SDL3_image QUIET)
     set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
@@ -41,7 +43,6 @@ if (SDL3PP_ENABLE_IMAGE)
 endif ()
 
 # SDL_ttf
-option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
 if (SDL3PP_ENABLE_TTF)
     find_package(SDL3_ttf QUIET)
     set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
