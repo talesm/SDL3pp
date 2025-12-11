@@ -9,7 +9,7 @@
   *
   * A GUID is a 128-bit value that represents something that is uniquely
   * identifiable by this value: "globally unique."
-@@ -74,18 +74,9 @@
+@@ -74,21 +74,9 @@
    }
  
    /**
@@ -17,7 +17,10 @@
 -   *
 -   * @returns True if valid state, false otherwise.
 -   */
--  constexpr explicit operator bool() const { return *this != GUIDRaw{}; }
+-  constexpr explicit operator bool() const noexcept
+-  {
+-    return *this != GUIDRaw{};
+-  }
 -
 -  /**
     * Get an ASCII string representation for a given GUID.
@@ -29,7 +32,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -100,8 +91,7 @@
+@@ -103,8 +91,7 @@
   * Get an ASCII string representation for a given GUID.
   *
   * @param guid the GUID you wish to convert to string.
@@ -39,7 +42,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -111,10 +101,12 @@
+@@ -114,10 +101,12 @@
   */
  inline std::string GUIDToString(const GUIDRaw& guid)
  {

@@ -43,25 +43,25 @@ using FRectRaw = SDL_FRect;
 struct FRect;
 
 /// Comparison operator for Point.
-constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs)
+constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs) noexcept
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 /// Comparison operator for FPoint.
-constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs)
+constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 /// Comparison operator for Rect.
-constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
 {
   return SDL_RectsEqual(&lhs, &rhs);
 }
 
 /// Comparison operator for FRect.
-constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
 {
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
@@ -86,7 +86,7 @@ struct Point : PointRaw
    *
    * @param p the value to be wrapped
    */
-  constexpr Point(const PointRaw& p = {})
+  constexpr Point(const PointRaw& p = {}) noexcept
     : PointRaw(p)
   {
   }
@@ -97,7 +97,7 @@ struct Point : PointRaw
    * @param x the value for x.
    * @param y the value for y.
    */
-  constexpr Point(int x, int y)
+  constexpr Point(int x, int y) noexcept
     : PointRaw{x, y}
   {
   }
@@ -117,14 +117,17 @@ struct Point : PointRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != PointRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != PointRaw{};
+  }
 
   /**
    * Get x coordinate
    *
    * @returns x coordinate
    */
-  constexpr int GetX() const { return x; }
+  constexpr int GetX() const noexcept { return x; }
 
   /**
    * Set the x coordinate.
@@ -132,7 +135,7 @@ struct Point : PointRaw
    * @param newX the new x coordinate.
    * @returns Reference to self.
    */
-  constexpr Point& SetX(int newX)
+  constexpr Point& SetX(int newX) noexcept
   {
     x = newX;
     return *this;
@@ -143,7 +146,7 @@ struct Point : PointRaw
    *
    * @returns y coordinate
    */
-  constexpr int GetY() const { return y; }
+  constexpr int GetY() const noexcept { return y; }
 
   /**
    * Set the y coordinate.
@@ -151,7 +154,7 @@ struct Point : PointRaw
    * @param newY the new y coordinate.
    * @returns Reference to self.
    */
-  constexpr Point& SetY(int newY)
+  constexpr Point& SetY(int newY) noexcept
   {
     y = newY;
     return *this;
@@ -512,7 +515,7 @@ struct FPoint : FPointRaw
    *
    * @param p the value to be wrapped
    */
-  constexpr FPoint(const FPointRaw& p = {})
+  constexpr FPoint(const FPointRaw& p = {}) noexcept
     : FPointRaw(p)
   {
   }
@@ -523,7 +526,7 @@ struct FPoint : FPointRaw
    * @param x the value for x.
    * @param y the value for y.
    */
-  constexpr FPoint(float x, float y)
+  constexpr FPoint(float x, float y) noexcept
     : FPointRaw{x, y}
   {
   }
@@ -533,14 +536,17 @@ struct FPoint : FPointRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != FPointRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != FPointRaw{};
+  }
 
   /**
    * Get the x coordinate.
    *
    * @returns current x value.
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the x coordinate.
@@ -548,7 +554,7 @@ struct FPoint : FPointRaw
    * @param newX the new x coordinate.
    * @returns Reference to self.
    */
-  constexpr FPoint& SetX(float newX)
+  constexpr FPoint& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -559,7 +565,7 @@ struct FPoint : FPointRaw
    *
    * @returns current y coordinate.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the y coordinate.
@@ -567,7 +573,7 @@ struct FPoint : FPointRaw
    * @param newY the new y coordinate.
    * @returns Reference to self.
    */
-  constexpr FPoint& SetY(float newY)
+  constexpr FPoint& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -842,7 +848,7 @@ struct Rect : RectRaw
    *
    * @param r the value to be wrapped
    */
-  constexpr Rect(const RectRaw& r = {})
+  constexpr Rect(const RectRaw& r = {}) noexcept
     : RectRaw(r)
   {
   }
@@ -855,7 +861,7 @@ struct Rect : RectRaw
    * @param w the width.
    * @param h the height.
    */
-  constexpr Rect(int x, int y, int w, int h)
+  constexpr Rect(int x, int y, int w, int h) noexcept
     : RectRaw{x, y, w, h}
   {
   }
@@ -888,7 +894,7 @@ struct Rect : RectRaw
    *
    * @returns coordinate of the left x
    */
-  constexpr int GetX() const { return x; }
+  constexpr int GetX() const noexcept { return x; }
 
   /**
    * Set the left x coordinate.
@@ -896,7 +902,7 @@ struct Rect : RectRaw
    * @param newX the new left x.
    * @returns Reference to self.
    */
-  constexpr Rect& SetX(int newX)
+  constexpr Rect& SetX(int newX) noexcept
   {
     x = newX;
     return *this;
@@ -907,7 +913,7 @@ struct Rect : RectRaw
    *
    * @returns coordinate of the top y.
    */
-  constexpr int GetY() const { return y; }
+  constexpr int GetY() const noexcept { return y; }
 
   /**
    * Set the top y coordinate.
@@ -915,7 +921,7 @@ struct Rect : RectRaw
    * @param newY the new top y.
    * @returns Reference to self.
    */
-  constexpr Rect& SetY(int newY)
+  constexpr Rect& SetY(int newY) noexcept
   {
     y = newY;
     return *this;
@@ -926,7 +932,7 @@ struct Rect : RectRaw
    *
    * @returns Width of the rect
    */
-  constexpr int GetW() const { return w; }
+  constexpr int GetW() const noexcept { return w; }
 
   /**
    * Set the width of the rect.
@@ -934,7 +940,7 @@ struct Rect : RectRaw
    * @param newW the new width.
    * @returns Reference to self.
    */
-  constexpr Rect& SetW(int newW)
+  constexpr Rect& SetW(int newW) noexcept
   {
     w = newW;
     return *this;
@@ -945,7 +951,7 @@ struct Rect : RectRaw
    *
    * @returns Height of the rect
    */
-  constexpr int GetH() const { return h; }
+  constexpr int GetH() const noexcept { return h; }
 
   /**
    * Set the height of the rect.
@@ -953,7 +959,7 @@ struct Rect : RectRaw
    * @param newH the new height.
    * @returns Reference to self.
    */
-  constexpr Rect& SetH(int newH)
+  constexpr Rect& SetH(int newH) noexcept
   {
     h = newH;
     return *this;
@@ -1434,7 +1440,7 @@ struct FRect : FRectRaw
    *
    * @param r the value to be wrapped
    */
-  constexpr FRect(const FRectRaw& r = {})
+  constexpr FRect(const FRectRaw& r = {}) noexcept
     : FRectRaw(r)
   {
   }
@@ -1447,7 +1453,7 @@ struct FRect : FRectRaw
    * @param w the width.
    * @param h the height.
    */
-  constexpr FRect(float x, float y, float w, float h)
+  constexpr FRect(float x, float y, float w, float h) noexcept
     : FRectRaw{x, y, w, h}
   {
   }
@@ -1480,7 +1486,7 @@ struct FRect : FRectRaw
    *
    * @returns coordinate of the left x
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the left x coordinate.
@@ -1488,7 +1494,7 @@ struct FRect : FRectRaw
    * @param newX the new left x.
    * @returns Reference to self.
    */
-  constexpr FRect& SetX(float newX)
+  constexpr FRect& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -1499,7 +1505,7 @@ struct FRect : FRectRaw
    *
    * @returns coordinate of the top y.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the top y coordinate.
@@ -1507,7 +1513,7 @@ struct FRect : FRectRaw
    * @param newY the new top y.
    * @returns Reference to self.
    */
-  constexpr FRect& SetY(float newY)
+  constexpr FRect& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -1518,7 +1524,7 @@ struct FRect : FRectRaw
    *
    * @returns Width of the rect
    */
-  constexpr float GetW() const { return w; }
+  constexpr float GetW() const noexcept { return w; }
 
   /**
    * Set the width of the rect.
@@ -1526,7 +1532,7 @@ struct FRect : FRectRaw
    * @param newW the new width.
    * @returns Reference to self.
    */
-  constexpr FRect& SetW(float newW)
+  constexpr FRect& SetW(float newW) noexcept
   {
     w = newW;
     return *this;
@@ -1537,7 +1543,7 @@ struct FRect : FRectRaw
    *
    * @returns Height of the rect
    */
-  constexpr float GetH() const { return h; }
+  constexpr float GetH() const noexcept { return h; }
 
   /**
    * Set the height of the rect.
@@ -1545,7 +1551,7 @@ struct FRect : FRectRaw
    * @param newH the new height.
    * @returns Reference to self.
    */
-  constexpr FRect& SetH(float newH)
+  constexpr FRect& SetH(float newH) noexcept
   {
     h = newH;
     return *this;

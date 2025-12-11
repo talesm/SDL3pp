@@ -408,7 +408,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr Time(TimeRaw time = {})
+  constexpr Time(TimeRaw time = {}) noexcept
     : m_time(time)
   {
   }
@@ -425,7 +425,7 @@ public:
    *
    * @returns the underlying TimeRaw.
    */
-  constexpr operator TimeRaw() const { return m_time; }
+  constexpr operator TimeRaw() const noexcept { return m_time; }
 
   constexpr operator std::chrono::nanoseconds() const
   {

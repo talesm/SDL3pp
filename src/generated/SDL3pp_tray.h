@@ -399,7 +399,7 @@ public:
    *
    * @param trayMenu the value to be wrapped
    */
-  constexpr TrayMenu(TrayMenuRaw trayMenu = {})
+  constexpr TrayMenu(TrayMenuRaw trayMenu = {}) noexcept
     : m_trayMenu(trayMenu)
   {
   }
@@ -409,7 +409,7 @@ public:
    *
    * @returns the underlying TrayMenuRaw.
    */
-  constexpr operator TrayMenuRaw() const { return m_trayMenu; }
+  constexpr operator TrayMenuRaw() const noexcept { return m_trayMenu; }
 
   /**
    * Returns a list of entries in the menu, in order.

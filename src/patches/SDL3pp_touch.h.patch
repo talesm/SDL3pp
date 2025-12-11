@@ -9,16 +9,19 @@
   *
   * SDL offers touch input, on platforms that support it. It can manage multiple
   * touch devices and track multiple fingers on those devices.
-@@ -120,7 +120,7 @@
+@@ -120,10 +120,7 @@
     *
     * @returns True if valid state, false otherwise.
     */
--  constexpr explicit operator bool() const { return *this != FingerRaw{}; }
-+  constexpr explicit operator bool() const { return id != 0; }
+-  constexpr explicit operator bool() const noexcept
+-  {
+-    return *this != FingerRaw{};
+-  }
++  constexpr explicit operator bool() const noexcept { return id != 0; }
  
    /**
     * Get the id.
-@@ -220,15 +220,17 @@
+@@ -223,15 +220,17 @@
   * Therefore the returned list might be empty, although devices are available.
   * After using all devices at least once the number will be correct.
   *
@@ -41,7 +44,7 @@
  
  /**
   * Get the touch device name as reported from the driver.
-@@ -261,17 +263,16 @@
+@@ -264,17 +263,16 @@
   * Get a list of active fingers for a given touch device.
   *
   * @param touchID the ID of a touch device.

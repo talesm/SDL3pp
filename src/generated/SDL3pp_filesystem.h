@@ -314,7 +314,7 @@ struct PathInfo : PathInfoRaw
    *
    * @param pathInfo the value to be wrapped
    */
-  constexpr PathInfo(const PathInfoRaw& pathInfo = {})
+  constexpr PathInfo(const PathInfoRaw& pathInfo = {}) noexcept
     : PathInfoRaw(pathInfo)
   {
   }
@@ -324,14 +324,20 @@ struct PathInfo : PathInfoRaw
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t _) const { return !bool(*this); }
+  constexpr bool operator==(std::nullptr_t _) const noexcept
+  {
+    return !bool(*this);
+  }
 
   /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != PathInfoRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != PathInfoRaw{};
+  }
 };
 
 /**

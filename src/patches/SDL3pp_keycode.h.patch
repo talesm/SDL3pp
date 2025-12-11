@@ -37,7 +37,7 @@
  constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT; ///< the left Shift key is down.
 @@ -156,8 +175,10 @@
     */
-   constexpr operator KeycodeRaw() const { return m_keycode; }
+   constexpr operator KeycodeRaw() const noexcept { return m_keycode; }
  
 +  /// Has Extended flag.
    constexpr bool IsExtended() const;

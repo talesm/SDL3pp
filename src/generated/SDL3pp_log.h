@@ -112,7 +112,7 @@ public:
    *
    * @param category the value to be wrapped
    */
-  constexpr LogCategory(LogCategoryRaw category = {})
+  constexpr LogCategory(LogCategoryRaw category = {}) noexcept
     : m_category(category)
   {
   }
@@ -129,7 +129,7 @@ public:
    *
    * @returns the underlying LogCategoryRaw.
    */
-  constexpr operator LogCategoryRaw() const { return m_category; }
+  constexpr operator LogCategoryRaw() const noexcept { return m_category; }
 
   /**
    * Set the priority of a particular log category.

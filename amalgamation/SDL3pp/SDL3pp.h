@@ -7455,7 +7455,8 @@ public:
    *
    * @param category the value to be wrapped
    */
-  constexpr LogCategory(LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION)
+  constexpr LogCategory(
+    LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION) noexcept
     : m_category(category)
   {
   }
@@ -7475,7 +7476,7 @@ public:
    *
    * @returns the underlying LogCategoryRaw.
    */
-  constexpr operator LogCategoryRaw() const { return m_category; }
+  constexpr operator LogCategoryRaw() const noexcept { return m_category; }
 
   /**
    * Set the priority of a particular log category.
@@ -8808,7 +8809,7 @@ public:
    *
    * @param format the value to be wrapped
    */
-  constexpr PixelFormat(PixelFormatRaw format = {})
+  constexpr PixelFormat(PixelFormatRaw format = {}) noexcept
     : m_format(format)
   {
   }
@@ -8851,7 +8852,7 @@ public:
    *
    * @returns the underlying PixelFormatRaw.
    */
-  constexpr operator PixelFormatRaw() const { return m_format; }
+  constexpr operator PixelFormatRaw() const noexcept { return m_format; }
 
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -10051,7 +10052,7 @@ public:
    *
    * @param cspace the value to be wrapped
    */
-  constexpr Colorspace(ColorspaceRaw cspace = {})
+  constexpr Colorspace(ColorspaceRaw cspace = {}) noexcept
     : m_cspace(cspace)
   {
   }
@@ -10106,7 +10107,7 @@ public:
    *
    * @returns the underlying ColorspaceRaw.
    */
-  constexpr operator ColorspaceRaw() const { return m_cspace; }
+  constexpr operator ColorspaceRaw() const noexcept { return m_cspace; }
 
   /**
    * Retrieve the type of a Colorspace.
@@ -10535,19 +10536,19 @@ constexpr bool Colorspace::IsFullRange() const
 }
 
 /// Comparison operator for Color.
-constexpr bool operator==(ColorRaw lhs, ColorRaw rhs)
+constexpr bool operator==(ColorRaw lhs, ColorRaw rhs) noexcept
 {
   return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
 /// Comparison operator for FColor.
-constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs)
+constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
 {
   return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
 /// Spaceship operator for Color.
-constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
+constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs) noexcept
 {
   if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
   if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
@@ -10556,7 +10557,7 @@ constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
 }
 
 /// Spaceship operator for FColor.
-constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
+constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
 {
   if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
   if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
@@ -10583,7 +10584,7 @@ struct Color : ColorRaw
    *
    * @param color the value to be wrapped
    */
-  constexpr Color(ColorRaw color = {})
+  constexpr Color(ColorRaw color = {}) noexcept
     : ColorRaw(color)
   {
   }
@@ -10596,7 +10597,7 @@ struct Color : ColorRaw
    * @param b the value for channel b.
    * @param a the value for channel a.
    */
-  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255) noexcept
     : ColorRaw{r, g, b, a}
   {
   }
@@ -10606,7 +10607,7 @@ struct Color : ColorRaw
    *
    * @returns The red component from the color.
    */
-  constexpr Uint8 GetR() const { return r; }
+  constexpr Uint8 GetR() const noexcept { return r; }
 
   /**
    * Set the red component from the color.
@@ -10614,7 +10615,7 @@ struct Color : ColorRaw
    * @param newR New red component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetR(Uint8 newR)
+  constexpr Color& SetR(Uint8 newR) noexcept
   {
     r = newR;
     return *this;
@@ -10626,7 +10627,7 @@ struct Color : ColorRaw
    * @returns The green component from the color.
    *
    */
-  constexpr Uint8 GetG() const { return g; }
+  constexpr Uint8 GetG() const noexcept { return g; }
 
   /**
    * Set the green component from the color.
@@ -10634,7 +10635,7 @@ struct Color : ColorRaw
    * @param newG New green component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetG(Uint8 newG)
+  constexpr Color& SetG(Uint8 newG) noexcept
   {
     g = newG;
     return *this;
@@ -10646,7 +10647,7 @@ struct Color : ColorRaw
    * @returns The blue component from the color.
    *
    */
-  constexpr Uint8 GetB() const { return b; }
+  constexpr Uint8 GetB() const noexcept { return b; }
 
   /**
    * Set the blue component from the color.
@@ -10654,7 +10655,7 @@ struct Color : ColorRaw
    * @param newB New blue component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetB(Uint8 newB)
+  constexpr Color& SetB(Uint8 newB) noexcept
   {
     b = newB;
     return *this;
@@ -10666,7 +10667,7 @@ struct Color : ColorRaw
    * @returns The alpha component from the color.
    *
    */
-  constexpr Uint8 GetA() const { return a; }
+  constexpr Uint8 GetA() const noexcept { return a; }
 
   /**
    * Set the alpha component from the color.
@@ -10674,7 +10675,7 @@ struct Color : ColorRaw
    * @param newA New alpha component value.
    * @returns Reference to self.
    */
-  constexpr Color& SetA(Uint8 newA)
+  constexpr Color& SetA(Uint8 newA) noexcept
   {
     a = newA;
     return *this;
@@ -10756,7 +10757,7 @@ struct FColor : FColorRaw
    *
    * @param color the value to be wrapped
    */
-  constexpr FColor(const FColorRaw& color = {})
+  constexpr FColor(const FColorRaw& color = {}) noexcept
     : FColorRaw(color)
   {
   }
@@ -10769,7 +10770,7 @@ struct FColor : FColorRaw
    * @param b the value for b.
    * @param a the value for a.
    */
-  constexpr FColor(float r, float g, float b, float a = 1)
+  constexpr FColor(float r, float g, float b, float a = 1) noexcept
     : FColorRaw{r, g, b, a}
   {
   }
@@ -10779,7 +10780,7 @@ struct FColor : FColorRaw
    *
    * @returns The red component from the color.
    */
-  constexpr float GetR() const { return r; }
+  constexpr float GetR() const noexcept { return r; }
 
   /**
    * Set the red component from the color.
@@ -10787,7 +10788,7 @@ struct FColor : FColorRaw
    * @param newR New red component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetR(float newR)
+  constexpr FColor& SetR(float newR) noexcept
   {
     r = newR;
     return *this;
@@ -10799,7 +10800,7 @@ struct FColor : FColorRaw
    * @returns The green component from the color.
    *
    */
-  constexpr float GetG() const { return g; }
+  constexpr float GetG() const noexcept { return g; }
 
   /**
    * Set the green component from the color.
@@ -10807,7 +10808,7 @@ struct FColor : FColorRaw
    * @param newG New green component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetG(float newG)
+  constexpr FColor& SetG(float newG) noexcept
   {
     g = newG;
     return *this;
@@ -10819,7 +10820,7 @@ struct FColor : FColorRaw
    * @returns The blue component from the color.
    *
    */
-  constexpr float GetB() const { return b; }
+  constexpr float GetB() const noexcept { return b; }
 
   /**
    * Set the blue component from the color.
@@ -10827,7 +10828,7 @@ struct FColor : FColorRaw
    * @param newB New blue component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetB(float newB)
+  constexpr FColor& SetB(float newB) noexcept
   {
     b = newB;
     return *this;
@@ -10839,7 +10840,7 @@ struct FColor : FColorRaw
    * @returns The alpha component from the color.
    *
    */
-  constexpr float GetA() const { return a; }
+  constexpr float GetA() const noexcept { return a; }
 
   /**
    * Set the alpha component from the color.
@@ -10847,7 +10848,7 @@ struct FColor : FColorRaw
    * @param newA New alpha component value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetA(float newA)
+  constexpr FColor& SetA(float newA) noexcept
   {
     a = newA;
     return *this;
@@ -13306,7 +13307,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr explicit Time(TimeRaw time)
+  constexpr explicit Time(TimeRaw time) noexcept
     : m_time(time)
   {
   }
@@ -13316,7 +13317,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr Time(std::chrono::nanoseconds time)
+  constexpr Time(std::chrono::nanoseconds time) noexcept
     : m_time(time)
   {
   }
@@ -22607,7 +22608,7 @@ struct PathInfo : PathInfoRaw
    *
    * @param pathInfo the value to be wrapped
    */
-  constexpr PathInfo(const PathInfoRaw& pathInfo = {})
+  constexpr PathInfo(const PathInfoRaw& pathInfo = {}) noexcept
     : PathInfoRaw(pathInfo)
   {
   }
@@ -22617,14 +22618,20 @@ struct PathInfo : PathInfoRaw
    *
    * @returns True if invalid state, false otherwise.
    */
-  constexpr bool operator==(std::nullptr_t _) const { return !bool(*this); }
+  constexpr bool operator==(std::nullptr_t _) const noexcept
+  {
+    return !bool(*this);
+  }
 
   /**
    * Check if valid.
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return type != PATHTYPE_NONE; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return type != PATHTYPE_NONE;
+  }
 };
 
 /**
@@ -22998,7 +23005,7 @@ struct GUID : GUIDRaw
    *
    * @param gUID the value to be wrapped
    */
-  constexpr GUID(const GUIDRaw& gUID = {})
+  constexpr GUID(const GUIDRaw& gUID = {}) noexcept
     : GUIDRaw(gUID)
   {
   }
@@ -27759,25 +27766,25 @@ using FRectRaw = SDL_FRect;
 struct FRect;
 
 /// Comparison operator for Point.
-constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs)
+constexpr bool operator==(const PointRaw& lhs, const PointRaw& rhs) noexcept
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 /// Comparison operator for FPoint.
-constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs)
+constexpr bool operator==(const FPointRaw& lhs, const FPointRaw& rhs) noexcept
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 /// Comparison operator for Rect.
-constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs)
+constexpr bool operator==(const RectRaw& lhs, const RectRaw& rhs) noexcept
 {
   return SDL_RectsEqual(&lhs, &rhs);
 }
 
 /// Comparison operator for FRect.
-constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs)
+constexpr bool operator==(const FRectRaw& lhs, const FRectRaw& rhs) noexcept
 {
   return SDL_RectsEqualFloat(&lhs, &rhs);
 }
@@ -27802,7 +27809,7 @@ struct Point : PointRaw
    *
    * @param p the value to be wrapped
    */
-  constexpr Point(const PointRaw& p = {})
+  constexpr Point(const PointRaw& p = {}) noexcept
     : PointRaw(p)
   {
   }
@@ -27813,7 +27820,7 @@ struct Point : PointRaw
    * @param x the value for x.
    * @param y the value for y.
    */
-  constexpr Point(int x, int y)
+  constexpr Point(int x, int y) noexcept
     : PointRaw{x, y}
   {
   }
@@ -27833,14 +27840,17 @@ struct Point : PointRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != PointRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != PointRaw{};
+  }
 
   /**
    * Get x coordinate
    *
    * @returns x coordinate
    */
-  constexpr int GetX() const { return x; }
+  constexpr int GetX() const noexcept { return x; }
 
   /**
    * Set the x coordinate.
@@ -27848,7 +27858,7 @@ struct Point : PointRaw
    * @param newX the new x coordinate.
    * @returns Reference to self.
    */
-  constexpr Point& SetX(int newX)
+  constexpr Point& SetX(int newX) noexcept
   {
     x = newX;
     return *this;
@@ -27859,7 +27869,7 @@ struct Point : PointRaw
    *
    * @returns y coordinate
    */
-  constexpr int GetY() const { return y; }
+  constexpr int GetY() const noexcept { return y; }
 
   /**
    * Set the y coordinate.
@@ -27867,7 +27877,7 @@ struct Point : PointRaw
    * @param newY the new y coordinate.
    * @returns Reference to self.
    */
-  constexpr Point& SetY(int newY)
+  constexpr Point& SetY(int newY) noexcept
   {
     y = newY;
     return *this;
@@ -28228,7 +28238,7 @@ struct FPoint : FPointRaw
    *
    * @param p the value to be wrapped
    */
-  constexpr FPoint(const FPointRaw& p = {})
+  constexpr FPoint(const FPointRaw& p = {}) noexcept
     : FPointRaw(p)
   {
   }
@@ -28239,7 +28249,7 @@ struct FPoint : FPointRaw
    * @param x the value for x.
    * @param y the value for y.
    */
-  constexpr FPoint(float x, float y)
+  constexpr FPoint(float x, float y) noexcept
     : FPointRaw{x, y}
   {
   }
@@ -28249,14 +28259,17 @@ struct FPoint : FPointRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != FPointRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != FPointRaw{};
+  }
 
   /**
    * Get the x coordinate.
    *
    * @returns current x value.
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the x coordinate.
@@ -28264,7 +28277,7 @@ struct FPoint : FPointRaw
    * @param newX the new x coordinate.
    * @returns Reference to self.
    */
-  constexpr FPoint& SetX(float newX)
+  constexpr FPoint& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -28275,7 +28288,7 @@ struct FPoint : FPointRaw
    *
    * @returns current y coordinate.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the y coordinate.
@@ -28283,7 +28296,7 @@ struct FPoint : FPointRaw
    * @param newY the new y coordinate.
    * @returns Reference to self.
    */
-  constexpr FPoint& SetY(float newY)
+  constexpr FPoint& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -28558,7 +28571,7 @@ struct Rect : RectRaw
    *
    * @param r the value to be wrapped
    */
-  constexpr Rect(const RectRaw& r = {})
+  constexpr Rect(const RectRaw& r = {}) noexcept
     : RectRaw(r)
   {
   }
@@ -28571,7 +28584,7 @@ struct Rect : RectRaw
    * @param w the width.
    * @param h the height.
    */
-  constexpr Rect(int x, int y, int w, int h)
+  constexpr Rect(int x, int y, int w, int h) noexcept
     : RectRaw{x, y, w, h}
   {
   }
@@ -28604,7 +28617,7 @@ struct Rect : RectRaw
    *
    * @returns coordinate of the left x
    */
-  constexpr int GetX() const { return x; }
+  constexpr int GetX() const noexcept { return x; }
 
   /**
    * Set the left x coordinate.
@@ -28612,7 +28625,7 @@ struct Rect : RectRaw
    * @param newX the new left x.
    * @returns Reference to self.
    */
-  constexpr Rect& SetX(int newX)
+  constexpr Rect& SetX(int newX) noexcept
   {
     x = newX;
     return *this;
@@ -28623,7 +28636,7 @@ struct Rect : RectRaw
    *
    * @returns coordinate of the top y.
    */
-  constexpr int GetY() const { return y; }
+  constexpr int GetY() const noexcept { return y; }
 
   /**
    * Set the top y coordinate.
@@ -28631,7 +28644,7 @@ struct Rect : RectRaw
    * @param newY the new top y.
    * @returns Reference to self.
    */
-  constexpr Rect& SetY(int newY)
+  constexpr Rect& SetY(int newY) noexcept
   {
     y = newY;
     return *this;
@@ -28642,7 +28655,7 @@ struct Rect : RectRaw
    *
    * @returns Width of the rect
    */
-  constexpr int GetW() const { return w; }
+  constexpr int GetW() const noexcept { return w; }
 
   /**
    * Set the width of the rect.
@@ -28650,7 +28663,7 @@ struct Rect : RectRaw
    * @param newW the new width.
    * @returns Reference to self.
    */
-  constexpr Rect& SetW(int newW)
+  constexpr Rect& SetW(int newW) noexcept
   {
     w = newW;
     return *this;
@@ -28661,7 +28674,7 @@ struct Rect : RectRaw
    *
    * @returns Height of the rect
    */
-  constexpr int GetH() const { return h; }
+  constexpr int GetH() const noexcept { return h; }
 
   /**
    * Set the height of the rect.
@@ -28669,7 +28682,7 @@ struct Rect : RectRaw
    * @param newH the new height.
    * @returns Reference to self.
    */
-  constexpr Rect& SetH(int newH)
+  constexpr Rect& SetH(int newH) noexcept
   {
     h = newH;
     return *this;
@@ -29150,7 +29163,7 @@ struct FRect : FRectRaw
    *
    * @param r the value to be wrapped
    */
-  constexpr FRect(const FRectRaw& r = {})
+  constexpr FRect(const FRectRaw& r = {}) noexcept
     : FRectRaw(r)
   {
   }
@@ -29163,7 +29176,7 @@ struct FRect : FRectRaw
    * @param w the width.
    * @param h the height.
    */
-  constexpr FRect(float x, float y, float w, float h)
+  constexpr FRect(float x, float y, float w, float h) noexcept
     : FRectRaw{x, y, w, h}
   {
   }
@@ -29196,7 +29209,7 @@ struct FRect : FRectRaw
    *
    * @returns coordinate of the left x
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the left x coordinate.
@@ -29204,7 +29217,7 @@ struct FRect : FRectRaw
    * @param newX the new left x.
    * @returns Reference to self.
    */
-  constexpr FRect& SetX(float newX)
+  constexpr FRect& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -29215,7 +29228,7 @@ struct FRect : FRectRaw
    *
    * @returns coordinate of the top y.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the top y coordinate.
@@ -29223,7 +29236,7 @@ struct FRect : FRectRaw
    * @param newY the new top y.
    * @returns Reference to self.
    */
-  constexpr FRect& SetY(float newY)
+  constexpr FRect& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -29234,7 +29247,7 @@ struct FRect : FRectRaw
    *
    * @returns Width of the rect
    */
-  constexpr float GetW() const { return w; }
+  constexpr float GetW() const noexcept { return w; }
 
   /**
    * Set the width of the rect.
@@ -29242,7 +29255,7 @@ struct FRect : FRectRaw
    * @param newW the new width.
    * @returns Reference to self.
    */
-  constexpr FRect& SetW(float newW)
+  constexpr FRect& SetW(float newW) noexcept
   {
     w = newW;
     return *this;
@@ -29253,7 +29266,7 @@ struct FRect : FRectRaw
    *
    * @returns Height of the rect
    */
-  constexpr float GetH() const { return h; }
+  constexpr float GetH() const noexcept { return h; }
 
   /**
    * Set the height of the rect.
@@ -29261,7 +29274,7 @@ struct FRect : FRectRaw
    * @param newH the new height.
    * @returns Reference to self.
    */
-  constexpr FRect& SetH(float newH)
+  constexpr FRect& SetH(float newH) noexcept
   {
     h = newH;
     return *this;
@@ -30379,7 +30392,7 @@ public:
    *
    * @param scancode the value to be wrapped
    */
-  constexpr Scancode(ScancodeRaw scancode = {})
+  constexpr Scancode(ScancodeRaw scancode = {}) noexcept
     : m_scancode(scancode)
   {
   }
@@ -30406,7 +30419,7 @@ public:
    *
    * @returns the underlying ScancodeRaw.
    */
-  constexpr operator ScancodeRaw() const { return m_scancode; }
+  constexpr operator ScancodeRaw() const noexcept { return m_scancode; }
 
   /**
    * Set a human-readable name for a scancode.
@@ -31677,7 +31690,7 @@ struct DateTime : DateTimeRaw
    *
    * @param dateTime the value to be wrapped
    */
-  constexpr DateTime(const DateTimeRaw& dateTime = {})
+  constexpr DateTime(const DateTimeRaw& dateTime = {}) noexcept
     : DateTimeRaw(dateTime)
   {
   }
@@ -31703,7 +31716,7 @@ struct DateTime : DateTimeRaw
                      int second,
                      int nanosecond,
                      int day_of_week,
-                     int utc_offset)
+                     int utc_offset) noexcept
     : DateTimeRaw{year,
                   month,
                   day,
@@ -31738,7 +31751,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const
+  constexpr explicit operator bool() const noexcept
   {
     return year != 0 || month != 0 || day != 0 || hour != 0 || minute != 0 ||
            second != 0 || nanosecond != 0;
@@ -31749,7 +31762,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current year value.
    */
-  constexpr int GetYear() const { return year; }
+  constexpr int GetYear() const noexcept { return year; }
 
   /**
    * Set the year.
@@ -31757,7 +31770,7 @@ struct DateTime : DateTimeRaw
    * @param newYear the new year value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetYear(int newYear)
+  constexpr DateTime& SetYear(int newYear) noexcept
   {
     year = newYear;
     return *this;
@@ -31768,7 +31781,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current month value.
    */
-  constexpr int GetMonth() const { return month; }
+  constexpr int GetMonth() const noexcept { return month; }
 
   /**
    * Set the month.
@@ -31776,7 +31789,7 @@ struct DateTime : DateTimeRaw
    * @param newMonth the new month value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetMonth(int newMonth)
+  constexpr DateTime& SetMonth(int newMonth) noexcept
   {
     month = newMonth;
     return *this;
@@ -31787,7 +31800,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current day value.
    */
-  constexpr int GetDay() const { return day; }
+  constexpr int GetDay() const noexcept { return day; }
 
   /**
    * Set the day.
@@ -31795,7 +31808,7 @@ struct DateTime : DateTimeRaw
    * @param newDay the new day value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetDay(int newDay)
+  constexpr DateTime& SetDay(int newDay) noexcept
   {
     day = newDay;
     return *this;
@@ -31806,7 +31819,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current hour value.
    */
-  constexpr int GetHour() const { return hour; }
+  constexpr int GetHour() const noexcept { return hour; }
 
   /**
    * Set the hour.
@@ -31814,7 +31827,7 @@ struct DateTime : DateTimeRaw
    * @param newHour the new hour value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetHour(int newHour)
+  constexpr DateTime& SetHour(int newHour) noexcept
   {
     hour = newHour;
     return *this;
@@ -31825,7 +31838,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current minute value.
    */
-  constexpr int GetMinute() const { return minute; }
+  constexpr int GetMinute() const noexcept { return minute; }
 
   /**
    * Set the minute.
@@ -31833,7 +31846,7 @@ struct DateTime : DateTimeRaw
    * @param newMinute the new minute value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetMinute(int newMinute)
+  constexpr DateTime& SetMinute(int newMinute) noexcept
   {
     minute = newMinute;
     return *this;
@@ -31844,7 +31857,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current second value.
    */
-  constexpr int GetSecond() const { return second; }
+  constexpr int GetSecond() const noexcept { return second; }
 
   /**
    * Set the second.
@@ -31852,7 +31865,7 @@ struct DateTime : DateTimeRaw
    * @param newSecond the new second value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetSecond(int newSecond)
+  constexpr DateTime& SetSecond(int newSecond) noexcept
   {
     second = newSecond;
     return *this;
@@ -31863,7 +31876,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current nanosecond value.
    */
-  constexpr int GetNanosecond() const { return nanosecond; }
+  constexpr int GetNanosecond() const noexcept { return nanosecond; }
 
   /**
    * Set the nanosecond.
@@ -31871,7 +31884,7 @@ struct DateTime : DateTimeRaw
    * @param newNanosecond the new nanosecond value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetNanosecond(int newNanosecond)
+  constexpr DateTime& SetNanosecond(int newNanosecond) noexcept
   {
     nanosecond = newNanosecond;
     return *this;
@@ -31882,7 +31895,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current day_of_week value.
    */
-  constexpr int GetDay_of_week() const { return day_of_week; }
+  constexpr int GetDay_of_week() const noexcept { return day_of_week; }
 
   /**
    * Set the day_of_week.
@@ -31890,7 +31903,7 @@ struct DateTime : DateTimeRaw
    * @param newDay_of_week the new day_of_week value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetDay_of_week(int newDay_of_week)
+  constexpr DateTime& SetDay_of_week(int newDay_of_week) noexcept
   {
     day_of_week = newDay_of_week;
     return *this;
@@ -31901,7 +31914,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current utc_offset value.
    */
-  constexpr int GetUtc_offset() const { return utc_offset; }
+  constexpr int GetUtc_offset() const noexcept { return utc_offset; }
 
   /**
    * Set the utc_offset.
@@ -31909,7 +31922,7 @@ struct DateTime : DateTimeRaw
    * @param newUtc_offset the new utc_offset value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetUtc_offset(int newUtc_offset)
+  constexpr DateTime& SetUtc_offset(int newUtc_offset) noexcept
   {
     utc_offset = newUtc_offset;
     return *this;
@@ -32631,7 +32644,7 @@ public:
    *
    * @param audioFormat the value to be wrapped
    */
-  constexpr AudioFormat(AudioFormatRaw audioFormat = {})
+  constexpr AudioFormat(AudioFormatRaw audioFormat = {}) noexcept
     : m_audioFormat(audioFormat)
   {
   }
@@ -32670,7 +32683,7 @@ public:
    *
    * @returns the underlying AudioFormatRaw.
    */
-  constexpr operator AudioFormatRaw() const { return m_audioFormat; }
+  constexpr operator AudioFormatRaw() const noexcept { return m_audioFormat; }
 
   /**
    * Retrieve the size, in bits, from an AudioFormat.
@@ -37538,7 +37551,7 @@ public:
    *
    * @param keycode the value to be wrapped
    */
-  constexpr Keycode(KeycodeRaw keycode = {})
+  constexpr Keycode(KeycodeRaw keycode = {}) noexcept
     : m_keycode(keycode)
   {
   }
@@ -37589,7 +37602,7 @@ public:
    *
    * @returns the underlying KeycodeRaw.
    */
-  constexpr operator KeycodeRaw() const { return m_keycode; }
+  constexpr operator KeycodeRaw() const noexcept { return m_keycode; }
 
   /// Has Extended flag.
   constexpr bool IsExtended() const;
@@ -48958,7 +48971,7 @@ public:
    *
    * @param trayMenu the value to be wrapped
    */
-  constexpr TrayMenu(TrayMenuRaw trayMenu = {})
+  constexpr TrayMenu(TrayMenuRaw trayMenu = {}) noexcept
     : m_trayMenu(trayMenu)
   {
   }
@@ -48968,7 +48981,7 @@ public:
    *
    * @returns the underlying TrayMenuRaw.
    */
-  constexpr operator TrayMenuRaw() const { return m_trayMenu; }
+  constexpr operator TrayMenuRaw() const noexcept { return m_trayMenu; }
 
   /**
    * Returns a list of entries in the menu, in order.
@@ -50163,7 +50176,7 @@ public:
    *
    * @param displayID the value to be wrapped
    */
-  constexpr Display(DisplayID displayID = {})
+  constexpr Display(DisplayID displayID = {}) noexcept
     : m_displayID(displayID)
   {
   }
@@ -50173,7 +50186,7 @@ public:
    *
    * @returns the underlying DisplayID.
    */
-  constexpr operator DisplayID() const { return m_displayID; }
+  constexpr operator DisplayID() const noexcept { return m_displayID; }
 
   /**
    * Return the primary display.
@@ -59920,7 +59933,7 @@ public:
    *
    * @param gPUBuffer the value to be wrapped
    */
-  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {})
+  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {}) noexcept
     : m_gPUBuffer(gPUBuffer)
   {
   }
@@ -59978,7 +59991,7 @@ public:
    *
    * @returns the underlying GPUBufferRaw.
    */
-  constexpr operator GPUBufferRaw() const { return m_gPUBuffer; }
+  constexpr operator GPUBufferRaw() const noexcept { return m_gPUBuffer; }
 };
 
 /**
@@ -60016,7 +60029,8 @@ public:
    *
    * @param gPUTransferBuffer the value to be wrapped
    */
-  constexpr GPUTransferBuffer(GPUTransferBufferRaw gPUTransferBuffer = {})
+  constexpr GPUTransferBuffer(
+    GPUTransferBufferRaw gPUTransferBuffer = {}) noexcept
     : m_gPUTransferBuffer(gPUTransferBuffer)
   {
   }
@@ -60060,7 +60074,7 @@ public:
    *
    * @returns the underlying GPUTransferBufferRaw.
    */
-  constexpr operator GPUTransferBufferRaw() const
+  constexpr operator GPUTransferBufferRaw() const noexcept
   {
     return m_gPUTransferBuffer;
   }
@@ -60111,7 +60125,7 @@ public:
    *
    * @param gPUTexture the value to be wrapped
    */
-  constexpr GPUTexture(GPUTextureRaw gPUTexture = {})
+  constexpr GPUTexture(GPUTextureRaw gPUTexture = {}) noexcept
     : m_gPUTexture(gPUTexture)
   {
   }
@@ -60181,7 +60195,7 @@ public:
    *
    * @returns the underlying GPUTextureRaw.
    */
-  constexpr operator GPUTextureRaw() const { return m_gPUTexture; }
+  constexpr operator GPUTextureRaw() const noexcept { return m_gPUTexture; }
 };
 
 /**
@@ -60220,7 +60234,7 @@ public:
    *
    * @param gPUSampler the value to be wrapped
    */
-  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {})
+  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {}) noexcept
     : m_gPUSampler(gPUSampler)
   {
   }
@@ -60256,7 +60270,7 @@ public:
    *
    * @returns the underlying GPUSamplerRaw.
    */
-  constexpr operator GPUSamplerRaw() const { return m_gPUSampler; }
+  constexpr operator GPUSamplerRaw() const noexcept { return m_gPUSampler; }
 };
 
 /**
@@ -60287,7 +60301,7 @@ public:
    *
    * @param gPUShader the value to be wrapped
    */
-  constexpr GPUShader(GPUShaderRaw gPUShader = {})
+  constexpr GPUShader(GPUShaderRaw gPUShader = {}) noexcept
     : m_gPUShader(gPUShader)
   {
   }
@@ -60375,7 +60389,7 @@ public:
    *
    * @returns the underlying GPUShaderRaw.
    */
-  constexpr operator GPUShaderRaw() const { return m_gPUShader; }
+  constexpr operator GPUShaderRaw() const noexcept { return m_gPUShader; }
 };
 
 /**
@@ -60409,7 +60423,8 @@ public:
    *
    * @param gPUComputePipeline the value to be wrapped
    */
-  constexpr GPUComputePipeline(GPUComputePipelineRaw gPUComputePipeline = {})
+  constexpr GPUComputePipeline(
+    GPUComputePipelineRaw gPUComputePipeline = {}) noexcept
     : m_gPUComputePipeline(gPUComputePipeline)
   {
   }
@@ -60471,7 +60486,7 @@ public:
    *
    * @returns the underlying GPUComputePipelineRaw.
    */
-  constexpr operator GPUComputePipelineRaw() const
+  constexpr operator GPUComputePipelineRaw() const noexcept
   {
     return m_gPUComputePipeline;
   }
@@ -60514,7 +60529,8 @@ public:
    *
    * @param gPUGraphicsPipeline the value to be wrapped
    */
-  constexpr GPUGraphicsPipeline(GPUGraphicsPipelineRaw gPUGraphicsPipeline = {})
+  constexpr GPUGraphicsPipeline(
+    GPUGraphicsPipelineRaw gPUGraphicsPipeline = {}) noexcept
     : m_gPUGraphicsPipeline(gPUGraphicsPipeline)
   {
   }
@@ -60552,7 +60568,7 @@ public:
    *
    * @returns the underlying GPUGraphicsPipelineRaw.
    */
-  constexpr operator GPUGraphicsPipelineRaw() const
+  constexpr operator GPUGraphicsPipelineRaw() const noexcept
   {
     return m_gPUGraphicsPipeline;
   }
@@ -60623,7 +60639,7 @@ public:
    *
    * @param gPURenderPass the value to be wrapped
    */
-  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
+  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {}) noexcept
     : m_gPURenderPass(gPURenderPass)
   {
   }
@@ -60633,7 +60649,10 @@ public:
    *
    * @returns the underlying GPURenderPassRaw.
    */
-  constexpr operator GPURenderPassRaw() const { return m_gPURenderPass; }
+  constexpr operator GPURenderPassRaw() const noexcept
+  {
+    return m_gPURenderPass;
+  }
 
   /**
    * Binds a graphics pipeline on a render pass to be used in rendering.
@@ -60950,7 +60969,7 @@ public:
    *
    * @param gPUComputePass the value to be wrapped
    */
-  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {})
+  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {}) noexcept
     : m_gPUComputePass(gPUComputePass)
   {
   }
@@ -60960,7 +60979,10 @@ public:
    *
    * @returns the underlying GPUComputePassRaw.
    */
-  constexpr operator GPUComputePassRaw() const { return m_gPUComputePass; }
+  constexpr operator GPUComputePassRaw() const noexcept
+  {
+    return m_gPUComputePass;
+  }
 
   /**
    * Binds a compute pipeline on a command buffer for use in compute dispatch.
@@ -61170,7 +61192,7 @@ public:
    *
    * @param gPUCopyPass the value to be wrapped
    */
-  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
+  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {}) noexcept
     : m_gPUCopyPass(gPUCopyPass)
   {
   }
@@ -61180,7 +61202,7 @@ public:
    *
    * @returns the underlying GPUCopyPassRaw.
    */
-  constexpr operator GPUCopyPassRaw() const { return m_gPUCopyPass; }
+  constexpr operator GPUCopyPassRaw() const noexcept { return m_gPUCopyPass; }
 
   /**
    * Uploads data from a transfer buffer to a texture.
@@ -61455,7 +61477,7 @@ public:
    *
    * @param gPUCommandBuffer the value to be wrapped
    */
-  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
+  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {}) noexcept
     : m_gPUCommandBuffer(gPUCommandBuffer)
   {
   }
@@ -61465,7 +61487,10 @@ public:
    *
    * @returns the underlying GPUCommandBufferRaw.
    */
-  constexpr operator GPUCommandBufferRaw() const { return m_gPUCommandBuffer; }
+  constexpr operator GPUCommandBufferRaw() const noexcept
+  {
+    return m_gPUCommandBuffer;
+  }
 
   /**
    * Inserts an arbitrary string label into the command buffer callstream.
@@ -67151,7 +67176,7 @@ public:
    *
    * @param joystickID the value to be wrapped
    */
-  constexpr JoystickID(JoystickIDRaw joystickID = {})
+  constexpr JoystickID(JoystickIDRaw joystickID = {}) noexcept
     : m_joystickID(joystickID)
   {
   }
@@ -67161,7 +67186,7 @@ public:
    *
    * @returns the underlying JoystickIDRaw.
    */
-  constexpr operator JoystickIDRaw() const { return m_joystickID; }
+  constexpr operator JoystickIDRaw() const noexcept { return m_joystickID; }
 
   /**
    * Get the implementation dependent name of a joystick.
@@ -69993,7 +70018,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @param messageBox the value to be wrapped
    */
-  constexpr MessageBox(const MessageBoxRaw& messageBox = {})
+  constexpr MessageBox(const MessageBoxRaw& messageBox = {}) noexcept
     : MessageBoxRaw(messageBox)
   {
   }
@@ -70008,12 +70033,13 @@ struct MessageBox : MessageBoxRaw
    * @param buttons the value for buttons.
    * @param colorScheme the value for colorScheme.
    */
-  constexpr MessageBox(MessageBoxFlags flags,
-                       WindowRef window,
-                       const char* title,
-                       const char* message,
-                       std::span<const MessageBoxButtonData> buttons,
-                       OptionalRef<const MessageBoxColorScheme> colorScheme)
+  constexpr MessageBox(
+    MessageBoxFlags flags,
+    WindowRef window,
+    const char* title,
+    const char* message,
+    std::span<const MessageBoxButtonData> buttons,
+    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
                     window.get(),
                     title,
@@ -70029,7 +70055,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current flags value.
    */
-  constexpr SDL_MessageBoxFlags GetFlags() const { return flags; }
+  constexpr SDL_MessageBoxFlags GetFlags() const noexcept { return flags; }
 
   /**
    * Set the flags.
@@ -70037,7 +70063,7 @@ struct MessageBox : MessageBoxRaw
    * @param newFlags the new flags value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags)
+  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags) noexcept
   {
     flags = newFlags;
     return *this;
@@ -70048,7 +70074,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr SDL_Window* GetWindow() const { return window; }
+  constexpr SDL_Window* GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -70056,7 +70082,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(SDL_Window* newWindow)
+  constexpr MessageBox& SetWindow(SDL_Window* newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -70067,7 +70093,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current title value.
    */
-  constexpr const char* GetTitle() const { return title; }
+  constexpr const char* GetTitle() const noexcept { return title; }
 
   /**
    * Set the title.
@@ -70075,7 +70101,7 @@ struct MessageBox : MessageBoxRaw
    * @param newTitle the new title value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetTitle(const char* newTitle)
+  constexpr MessageBox& SetTitle(const char* newTitle) noexcept
   {
     title = newTitle;
     return *this;
@@ -70086,7 +70112,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current message value.
    */
-  constexpr const char* GetMessage() const { return message; }
+  constexpr const char* GetMessage() const noexcept { return message; }
 
   /**
    * Set the message.
@@ -70094,7 +70120,7 @@ struct MessageBox : MessageBoxRaw
    * @param newMessage the new message value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetMessage(const char* newMessage)
+  constexpr MessageBox& SetMessage(const char* newMessage) noexcept
   {
     message = newMessage;
     return *this;
@@ -70105,7 +70131,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current numbuttons value.
    */
-  constexpr int GetNumbuttons() const { return numbuttons; }
+  constexpr int GetNumbuttons() const noexcept { return numbuttons; }
 
   /**
    * Set the numbuttons.
@@ -70113,7 +70139,7 @@ struct MessageBox : MessageBoxRaw
    * @param newNumbuttons the new numbuttons value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetNumbuttons(int newNumbuttons)
+  constexpr MessageBox& SetNumbuttons(int newNumbuttons) noexcept
   {
     numbuttons = newNumbuttons;
     return *this;
@@ -70124,7 +70150,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current buttons.
    */
-  constexpr std::span<const MessageBoxButtonData> GetButtons() const
+  constexpr std::span<const MessageBoxButtonData> GetButtons() const noexcept
   {
     if (numbuttons == 0) return {};
     return std::span(buttons, size_t(numbuttons));
@@ -70137,7 +70163,7 @@ struct MessageBox : MessageBoxRaw
    * @returns Reference to self.
    */
   constexpr MessageBox& SetButtons(
-    std::span<const MessageBoxButtonData> newButtons)
+    std::span<const MessageBoxButtonData> newButtons) noexcept
   {
     if (newButtons.empty()) {
       numbuttons = 0;
@@ -70154,7 +70180,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current colorScheme value.
    */
-  constexpr const MessageBoxColorScheme* GetColorScheme() const
+  constexpr const MessageBoxColorScheme* GetColorScheme() const noexcept
   {
     return colorScheme;
   }
@@ -70166,7 +70192,7 @@ struct MessageBox : MessageBoxRaw
    * @returns Reference to self.
    */
   constexpr MessageBox& SetColorScheme(
-    OptionalRef<const MessageBoxColorScheme> newColorScheme)
+    OptionalRef<const MessageBoxColorScheme> newColorScheme) noexcept
   {
     colorScheme = newColorScheme;
     return *this;
@@ -84970,7 +84996,7 @@ struct Finger : FingerRaw
    *
    * @param finger the value to be wrapped
    */
-  constexpr Finger(const FingerRaw& finger = {})
+  constexpr Finger(const FingerRaw& finger = {}) noexcept
     : FingerRaw(finger)
   {
   }
@@ -84983,7 +85009,7 @@ struct Finger : FingerRaw
    * @param y the value for y.
    * @param pressure the value for pressure.
    */
-  constexpr Finger(SDL_FingerID id, float x, float y, float pressure)
+  constexpr Finger(SDL_FingerID id, float x, float y, float pressure) noexcept
     : FingerRaw{id, x, y, pressure}
   {
   }
@@ -84993,14 +85019,14 @@ struct Finger : FingerRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return id != 0; }
+  constexpr explicit operator bool() const noexcept { return id != 0; }
 
   /**
    * Get the id.
    *
    * @returns current id value.
    */
-  constexpr SDL_FingerID GetId() const { return id; }
+  constexpr SDL_FingerID GetId() const noexcept { return id; }
 
   /**
    * Set the id.
@@ -85008,7 +85034,7 @@ struct Finger : FingerRaw
    * @param newId the new id value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetId(SDL_FingerID newId)
+  constexpr Finger& SetId(SDL_FingerID newId) noexcept
   {
     id = newId;
     return *this;
@@ -85019,7 +85045,7 @@ struct Finger : FingerRaw
    *
    * @returns current x value.
    */
-  constexpr float GetX() const { return x; }
+  constexpr float GetX() const noexcept { return x; }
 
   /**
    * Set the x.
@@ -85027,7 +85053,7 @@ struct Finger : FingerRaw
    * @param newX the new x value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetX(float newX)
+  constexpr Finger& SetX(float newX) noexcept
   {
     x = newX;
     return *this;
@@ -85038,7 +85064,7 @@ struct Finger : FingerRaw
    *
    * @returns current y value.
    */
-  constexpr float GetY() const { return y; }
+  constexpr float GetY() const noexcept { return y; }
 
   /**
    * Set the y.
@@ -85046,7 +85072,7 @@ struct Finger : FingerRaw
    * @param newY the new y value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetY(float newY)
+  constexpr Finger& SetY(float newY) noexcept
   {
     y = newY;
     return *this;
@@ -85057,7 +85083,7 @@ struct Finger : FingerRaw
    *
    * @returns current pressure value.
    */
-  constexpr float GetPressure() const { return pressure; }
+  constexpr float GetPressure() const noexcept { return pressure; }
 
   /**
    * Set the pressure.
@@ -85065,7 +85091,7 @@ struct Finger : FingerRaw
    * @param newPressure the new pressure value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetPressure(float newPressure)
+  constexpr Finger& SetPressure(float newPressure) noexcept
   {
     pressure = newPressure;
     return *this;

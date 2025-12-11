@@ -440,7 +440,7 @@ public:
    *
    * @param gPUBuffer the value to be wrapped
    */
-  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {})
+  constexpr GPUBuffer(GPUBufferRaw gPUBuffer = {}) noexcept
     : m_gPUBuffer(gPUBuffer)
   {
   }
@@ -498,7 +498,7 @@ public:
    *
    * @returns the underlying GPUBufferRaw.
    */
-  constexpr operator GPUBufferRaw() const { return m_gPUBuffer; }
+  constexpr operator GPUBufferRaw() const noexcept { return m_gPUBuffer; }
 };
 
 /**
@@ -536,7 +536,8 @@ public:
    *
    * @param gPUTransferBuffer the value to be wrapped
    */
-  constexpr GPUTransferBuffer(GPUTransferBufferRaw gPUTransferBuffer = {})
+  constexpr GPUTransferBuffer(
+    GPUTransferBufferRaw gPUTransferBuffer = {}) noexcept
     : m_gPUTransferBuffer(gPUTransferBuffer)
   {
   }
@@ -580,7 +581,7 @@ public:
    *
    * @returns the underlying GPUTransferBufferRaw.
    */
-  constexpr operator GPUTransferBufferRaw() const
+  constexpr operator GPUTransferBufferRaw() const noexcept
   {
     return m_gPUTransferBuffer;
   }
@@ -631,7 +632,7 @@ public:
    *
    * @param gPUTexture the value to be wrapped
    */
-  constexpr GPUTexture(GPUTextureRaw gPUTexture = {})
+  constexpr GPUTexture(GPUTextureRaw gPUTexture = {}) noexcept
     : m_gPUTexture(gPUTexture)
   {
   }
@@ -701,7 +702,7 @@ public:
    *
    * @returns the underlying GPUTextureRaw.
    */
-  constexpr operator GPUTextureRaw() const { return m_gPUTexture; }
+  constexpr operator GPUTextureRaw() const noexcept { return m_gPUTexture; }
 };
 
 /**
@@ -740,7 +741,7 @@ public:
    *
    * @param gPUSampler the value to be wrapped
    */
-  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {})
+  constexpr GPUSampler(GPUSamplerRaw gPUSampler = {}) noexcept
     : m_gPUSampler(gPUSampler)
   {
   }
@@ -776,7 +777,7 @@ public:
    *
    * @returns the underlying GPUSamplerRaw.
    */
-  constexpr operator GPUSamplerRaw() const { return m_gPUSampler; }
+  constexpr operator GPUSamplerRaw() const noexcept { return m_gPUSampler; }
 };
 
 /**
@@ -807,7 +808,7 @@ public:
    *
    * @param gPUShader the value to be wrapped
    */
-  constexpr GPUShader(GPUShaderRaw gPUShader = {})
+  constexpr GPUShader(GPUShaderRaw gPUShader = {}) noexcept
     : m_gPUShader(gPUShader)
   {
   }
@@ -895,7 +896,7 @@ public:
    *
    * @returns the underlying GPUShaderRaw.
    */
-  constexpr operator GPUShaderRaw() const { return m_gPUShader; }
+  constexpr operator GPUShaderRaw() const noexcept { return m_gPUShader; }
 };
 
 /**
@@ -929,7 +930,8 @@ public:
    *
    * @param gPUComputePipeline the value to be wrapped
    */
-  constexpr GPUComputePipeline(GPUComputePipelineRaw gPUComputePipeline = {})
+  constexpr GPUComputePipeline(
+    GPUComputePipelineRaw gPUComputePipeline = {}) noexcept
     : m_gPUComputePipeline(gPUComputePipeline)
   {
   }
@@ -991,7 +993,7 @@ public:
    *
    * @returns the underlying GPUComputePipelineRaw.
    */
-  constexpr operator GPUComputePipelineRaw() const
+  constexpr operator GPUComputePipelineRaw() const noexcept
   {
     return m_gPUComputePipeline;
   }
@@ -1034,7 +1036,8 @@ public:
    *
    * @param gPUGraphicsPipeline the value to be wrapped
    */
-  constexpr GPUGraphicsPipeline(GPUGraphicsPipelineRaw gPUGraphicsPipeline = {})
+  constexpr GPUGraphicsPipeline(
+    GPUGraphicsPipelineRaw gPUGraphicsPipeline = {}) noexcept
     : m_gPUGraphicsPipeline(gPUGraphicsPipeline)
   {
   }
@@ -1072,7 +1075,7 @@ public:
    *
    * @returns the underlying GPUGraphicsPipelineRaw.
    */
-  constexpr operator GPUGraphicsPipelineRaw() const
+  constexpr operator GPUGraphicsPipelineRaw() const noexcept
   {
     return m_gPUGraphicsPipeline;
   }
@@ -1143,7 +1146,7 @@ public:
    *
    * @param gPURenderPass the value to be wrapped
    */
-  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {})
+  constexpr GPURenderPass(GPURenderPassRaw gPURenderPass = {}) noexcept
     : m_gPURenderPass(gPURenderPass)
   {
   }
@@ -1153,7 +1156,10 @@ public:
    *
    * @returns the underlying GPURenderPassRaw.
    */
-  constexpr operator GPURenderPassRaw() const { return m_gPURenderPass; }
+  constexpr operator GPURenderPassRaw() const noexcept
+  {
+    return m_gPURenderPass;
+  }
 
   /**
    * Binds a graphics pipeline on a render pass to be used in rendering.
@@ -1470,7 +1476,7 @@ public:
    *
    * @param gPUComputePass the value to be wrapped
    */
-  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {})
+  constexpr GPUComputePass(GPUComputePassRaw gPUComputePass = {}) noexcept
     : m_gPUComputePass(gPUComputePass)
   {
   }
@@ -1480,7 +1486,10 @@ public:
    *
    * @returns the underlying GPUComputePassRaw.
    */
-  constexpr operator GPUComputePassRaw() const { return m_gPUComputePass; }
+  constexpr operator GPUComputePassRaw() const noexcept
+  {
+    return m_gPUComputePass;
+  }
 
   /**
    * Binds a compute pipeline on a command buffer for use in compute dispatch.
@@ -1690,7 +1699,7 @@ public:
    *
    * @param gPUCopyPass the value to be wrapped
    */
-  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {})
+  constexpr GPUCopyPass(GPUCopyPassRaw gPUCopyPass = {}) noexcept
     : m_gPUCopyPass(gPUCopyPass)
   {
   }
@@ -1700,7 +1709,7 @@ public:
    *
    * @returns the underlying GPUCopyPassRaw.
    */
-  constexpr operator GPUCopyPassRaw() const { return m_gPUCopyPass; }
+  constexpr operator GPUCopyPassRaw() const noexcept { return m_gPUCopyPass; }
 
   /**
    * Uploads data from a transfer buffer to a texture.
@@ -1975,7 +1984,7 @@ public:
    *
    * @param gPUCommandBuffer the value to be wrapped
    */
-  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {})
+  constexpr GPUCommandBuffer(GPUCommandBufferRaw gPUCommandBuffer = {}) noexcept
     : m_gPUCommandBuffer(gPUCommandBuffer)
   {
   }
@@ -1985,7 +1994,10 @@ public:
    *
    * @returns the underlying GPUCommandBufferRaw.
    */
-  constexpr operator GPUCommandBufferRaw() const { return m_gPUCommandBuffer; }
+  constexpr operator GPUCommandBufferRaw() const noexcept
+  {
+    return m_gPUCommandBuffer;
+  }
 
   /**
    * Inserts an arbitrary string label into the command buffer callstream.

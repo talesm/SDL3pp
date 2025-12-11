@@ -263,7 +263,7 @@ public:
    *
    * @param audioFormat the value to be wrapped
    */
-  constexpr AudioFormat(AudioFormatRaw audioFormat = {})
+  constexpr AudioFormat(AudioFormatRaw audioFormat = {}) noexcept
     : m_audioFormat(audioFormat)
   {
   }
@@ -302,7 +302,7 @@ public:
    *
    * @returns the underlying AudioFormatRaw.
    */
-  constexpr operator AudioFormatRaw() const { return m_audioFormat; }
+  constexpr operator AudioFormatRaw() const noexcept { return m_audioFormat; }
 
   /**
    * Retrieve the size, in bits, from an AudioFormat.

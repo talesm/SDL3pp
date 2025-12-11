@@ -178,7 +178,7 @@ public:
    *
    * @param displayID the value to be wrapped
    */
-  constexpr Display(DisplayID displayID = {})
+  constexpr Display(DisplayID displayID = {}) noexcept
     : m_displayID(displayID)
   {
   }
@@ -188,7 +188,7 @@ public:
    *
    * @returns the underlying DisplayID.
    */
-  constexpr operator DisplayID() const { return m_displayID; }
+  constexpr operator DisplayID() const noexcept { return m_displayID; }
 
   /**
    * Return the primary display.

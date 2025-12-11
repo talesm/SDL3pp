@@ -40,7 +40,7 @@ struct DateTime : DateTimeRaw
    *
    * @param dateTime the value to be wrapped
    */
-  constexpr DateTime(const DateTimeRaw& dateTime = {})
+  constexpr DateTime(const DateTimeRaw& dateTime = {}) noexcept
     : DateTimeRaw(dateTime)
   {
   }
@@ -66,7 +66,7 @@ struct DateTime : DateTimeRaw
                      int second,
                      int nanosecond,
                      int day_of_week,
-                     int utc_offset)
+                     int utc_offset) noexcept
     : DateTimeRaw{year,
                   month,
                   day,
@@ -102,14 +102,17 @@ struct DateTime : DateTimeRaw
    *
    * @returns True if valid state, false otherwise.
    */
-  constexpr explicit operator bool() const { return *this != DateTimeRaw{}; }
+  constexpr explicit operator bool() const noexcept
+  {
+    return *this != DateTimeRaw{};
+  }
 
   /**
    * Get the year.
    *
    * @returns current year value.
    */
-  constexpr int GetYear() const { return year; }
+  constexpr int GetYear() const noexcept { return year; }
 
   /**
    * Set the year.
@@ -117,7 +120,7 @@ struct DateTime : DateTimeRaw
    * @param newYear the new year value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetYear(int newYear)
+  constexpr DateTime& SetYear(int newYear) noexcept
   {
     year = newYear;
     return *this;
@@ -128,7 +131,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current month value.
    */
-  constexpr int GetMonth() const { return month; }
+  constexpr int GetMonth() const noexcept { return month; }
 
   /**
    * Set the month.
@@ -136,7 +139,7 @@ struct DateTime : DateTimeRaw
    * @param newMonth the new month value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetMonth(int newMonth)
+  constexpr DateTime& SetMonth(int newMonth) noexcept
   {
     month = newMonth;
     return *this;
@@ -147,7 +150,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current day value.
    */
-  constexpr int GetDay() const { return day; }
+  constexpr int GetDay() const noexcept { return day; }
 
   /**
    * Set the day.
@@ -155,7 +158,7 @@ struct DateTime : DateTimeRaw
    * @param newDay the new day value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetDay(int newDay)
+  constexpr DateTime& SetDay(int newDay) noexcept
   {
     day = newDay;
     return *this;
@@ -166,7 +169,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current hour value.
    */
-  constexpr int GetHour() const { return hour; }
+  constexpr int GetHour() const noexcept { return hour; }
 
   /**
    * Set the hour.
@@ -174,7 +177,7 @@ struct DateTime : DateTimeRaw
    * @param newHour the new hour value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetHour(int newHour)
+  constexpr DateTime& SetHour(int newHour) noexcept
   {
     hour = newHour;
     return *this;
@@ -185,7 +188,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current minute value.
    */
-  constexpr int GetMinute() const { return minute; }
+  constexpr int GetMinute() const noexcept { return minute; }
 
   /**
    * Set the minute.
@@ -193,7 +196,7 @@ struct DateTime : DateTimeRaw
    * @param newMinute the new minute value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetMinute(int newMinute)
+  constexpr DateTime& SetMinute(int newMinute) noexcept
   {
     minute = newMinute;
     return *this;
@@ -204,7 +207,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current second value.
    */
-  constexpr int GetSecond() const { return second; }
+  constexpr int GetSecond() const noexcept { return second; }
 
   /**
    * Set the second.
@@ -212,7 +215,7 @@ struct DateTime : DateTimeRaw
    * @param newSecond the new second value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetSecond(int newSecond)
+  constexpr DateTime& SetSecond(int newSecond) noexcept
   {
     second = newSecond;
     return *this;
@@ -223,7 +226,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current nanosecond value.
    */
-  constexpr int GetNanosecond() const { return nanosecond; }
+  constexpr int GetNanosecond() const noexcept { return nanosecond; }
 
   /**
    * Set the nanosecond.
@@ -231,7 +234,7 @@ struct DateTime : DateTimeRaw
    * @param newNanosecond the new nanosecond value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetNanosecond(int newNanosecond)
+  constexpr DateTime& SetNanosecond(int newNanosecond) noexcept
   {
     nanosecond = newNanosecond;
     return *this;
@@ -242,7 +245,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current day_of_week value.
    */
-  constexpr int GetDay_of_week() const { return day_of_week; }
+  constexpr int GetDay_of_week() const noexcept { return day_of_week; }
 
   /**
    * Set the day_of_week.
@@ -250,7 +253,7 @@ struct DateTime : DateTimeRaw
    * @param newDay_of_week the new day_of_week value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetDay_of_week(int newDay_of_week)
+  constexpr DateTime& SetDay_of_week(int newDay_of_week) noexcept
   {
     day_of_week = newDay_of_week;
     return *this;
@@ -261,7 +264,7 @@ struct DateTime : DateTimeRaw
    *
    * @returns current utc_offset value.
    */
-  constexpr int GetUtc_offset() const { return utc_offset; }
+  constexpr int GetUtc_offset() const noexcept { return utc_offset; }
 
   /**
    * Set the utc_offset.
@@ -269,7 +272,7 @@ struct DateTime : DateTimeRaw
    * @param newUtc_offset the new utc_offset value.
    * @returns Reference to self.
    */
-  constexpr DateTime& SetUtc_offset(int newUtc_offset)
+  constexpr DateTime& SetUtc_offset(int newUtc_offset) noexcept
   {
     utc_offset = newUtc_offset;
     return *this;

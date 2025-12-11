@@ -422,7 +422,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr explicit Time(TimeRaw time)
+  constexpr explicit Time(TimeRaw time) noexcept
     : m_time(time)
   {
   }
@@ -432,7 +432,7 @@ public:
    *
    * @param time the value to be wrapped
    */
-  constexpr Time(std::chrono::nanoseconds time)
+  constexpr Time(std::chrono::nanoseconds time) noexcept
     : m_time(time)
   {
   }

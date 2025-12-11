@@ -155,7 +155,7 @@ public:
    *
    * @param joystickID the value to be wrapped
    */
-  constexpr JoystickID(JoystickIDRaw joystickID = {})
+  constexpr JoystickID(JoystickIDRaw joystickID = {}) noexcept
     : m_joystickID(joystickID)
   {
   }
@@ -165,7 +165,7 @@ public:
    *
    * @returns the underlying JoystickIDRaw.
    */
-  constexpr operator JoystickIDRaw() const { return m_joystickID; }
+  constexpr operator JoystickIDRaw() const noexcept { return m_joystickID; }
 
   /**
    * Get the implementation dependent name of a joystick.

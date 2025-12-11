@@ -52,16 +52,17 @@
   */
  class LogCategory
  {
-@@ -112,7 +134,7 @@
+@@ -112,7 +134,8 @@
     *
     * @param category the value to be wrapped
     */
--  constexpr LogCategory(LogCategoryRaw category = {})
-+  constexpr LogCategory(LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION)
+-  constexpr LogCategory(LogCategoryRaw category = {}) noexcept
++  constexpr LogCategory(
++    LogCategoryRaw category = SDL_LOG_CATEGORY_APPLICATION) noexcept
      : m_category(category)
    {
    }
-@@ -122,7 +144,10 @@
+@@ -122,7 +145,10 @@
     *
     * @param category the value to be wrapped
     */
@@ -73,7 +74,7 @@
  
    /**
     * Unwraps to the underlying LogCategory.
-@@ -134,7 +159,6 @@
+@@ -134,7 +160,6 @@
    /**
     * Set the priority of a particular log category.
     *
@@ -81,7 +82,7 @@
     * @param priority the LogPriority to assign.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -150,7 +174,6 @@
+@@ -150,7 +175,6 @@
    /**
     * Get the priority of a particular log category.
     *
@@ -89,7 +90,7 @@
     * @returns the LogPriority for the requested category.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -161,25 +184,47 @@
+@@ -161,25 +185,47 @@
     */
    LogPriority GetLogPriority() const;
  
@@ -144,7 +145,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -197,16 +242,17 @@
+@@ -197,16 +243,17 @@
    /**
     * Log a message with LOG_PRIORITY_TRACE.
     *
@@ -168,7 +169,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -223,16 +269,18 @@
+@@ -223,16 +270,18 @@
    /**
     * Log a message with LOG_PRIORITY_VERBOSE.
     *
@@ -192,7 +193,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -247,16 +295,18 @@
+@@ -247,16 +296,18 @@
    /**
     * Log a message with LOG_PRIORITY_DEBUG.
     *
@@ -216,7 +217,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogError
     * @sa LogCategory.LogInfo
-@@ -272,16 +322,18 @@
+@@ -272,16 +323,18 @@
    /**
     * Log a message with LOG_PRIORITY_INFO.
     *
@@ -240,7 +241,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -297,16 +349,18 @@
+@@ -297,16 +350,18 @@
    /**
     * Log a message with LOG_PRIORITY_WARN.
     *
@@ -264,7 +265,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -322,16 +376,18 @@
+@@ -322,16 +377,18 @@
    /**
     * Log a message with LOG_PRIORITY_ERROR.
     *
@@ -288,7 +289,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogInfo
-@@ -347,23 +403,26 @@
+@@ -347,23 +404,26 @@
    /**
     * Log a message with LOG_PRIORITY_CRITICAL.
     *
@@ -327,7 +328,7 @@
     * @sa LogCategory.LogWarn
     */
    template<class... ARGS>
-@@ -521,39 +580,39 @@
+@@ -521,39 +581,39 @@
  }
  
  /**
@@ -380,7 +381,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -565,30 +624,56 @@
+@@ -565,30 +625,56 @@
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
   * @sa LogCategory.LogMessage
@@ -446,7 +447,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -599,31 +684,36 @@
+@@ -599,31 +685,36 @@
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
@@ -492,7 +493,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -631,6 +721,7 @@
+@@ -631,6 +722,7 @@
   *
   * @sa Log
   * @sa LogCategory.LogCritical
@@ -500,7 +501,7 @@
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
   * @sa LogCategory.LogMessage
-@@ -640,24 +731,24 @@
+@@ -640,24 +732,24 @@
   * @sa LogCategory.LogWarn
   */
  template<class... ARGS>
@@ -532,7 +533,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -667,31 +758,32 @@
+@@ -667,31 +759,32 @@
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
@@ -574,7 +575,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -699,33 +791,33 @@
+@@ -699,33 +792,33 @@
   *
   * @sa Log
   * @sa LogCategory.LogCritical
@@ -616,7 +617,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -734,7 +826,7 @@
+@@ -734,7 +827,7 @@
   * @sa Log
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
@@ -625,7 +626,7 @@
   * @sa LogCategory.LogMessage
   * @sa LogUnformatted
   * @sa LogCategory.LogTrace
-@@ -742,30 +834,31 @@
+@@ -742,30 +835,31 @@
   * @sa LogCategory.LogWarn
   */
  template<class... ARGS>
@@ -664,7 +665,7 @@
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
-@@ -773,30 +866,26 @@
+@@ -773,30 +867,26 @@
   * @sa LogUnformatted
   * @sa LogCategory.LogTrace
   * @sa LogCategory.LogVerbose
@@ -702,7 +703,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -805,53 +894,60 @@
+@@ -805,53 +895,60 @@
   * @sa Log
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
@@ -778,7 +779,7 @@
  
  /**
   * The prototype for the log output callback function.
-@@ -885,6 +981,8 @@
+@@ -885,6 +982,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -787,7 +788,7 @@
   * @sa LogOutputFunction
   */
  using LogOutputCB = MakeFrontCallback<
-@@ -938,6 +1036,7 @@
+@@ -938,6 +1037,7 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction
@@ -795,7 +796,7 @@
   */
  inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  {
-@@ -948,7 +1047,6 @@
+@@ -948,7 +1048,6 @@
   * Replace the default log output function with one of your own.
   *
   * @param callback an LogOutputFunction to call instead of the default.
@@ -803,7 +804,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -956,15 +1054,26 @@
+@@ -956,15 +1055,26 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction

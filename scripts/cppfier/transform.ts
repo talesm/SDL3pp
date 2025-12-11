@@ -753,6 +753,7 @@ function expandTypes(
         hints: {
           init: [`${isStruct ? rawType : attribute}(${paramName})`],
           changeAccess: isStruct ? undefined : "public",
+          noexcept: true,
         },
       });
     if ((isStruct && wrapper.ordered) || wrapper.comparable) {
@@ -772,7 +773,7 @@ function expandTypes(
             { type: constParamType, name: "rhs" },
           ],
           doc: [`Comparison operator for ${targetType}.`],
-          hints: { body },
+          hints: { body, noexcept: true },
         },
         sourceType
       );
@@ -797,7 +798,7 @@ function expandTypes(
               { type: constParamType, name: "rhs" },
             ],
             doc: [`Spaceship operator for ${targetType}.`],
-            hints: { body },
+            hints: { body, noexcept: true },
           },
           sourceType
         );
@@ -818,7 +819,7 @@ function expandTypes(
             content: `True if invalid state, false otherwise.`,
           },
         ],
-        hints: { body: "return !bool(*this);" },
+        hints: { body: "return !bool(*this);", noexcept: true },
       });
     if (!isStruct)
       insertTransform(entries, {
@@ -832,8 +833,11 @@ function expandTypes(
           `Unwraps to the underlying ${sourceType}.`,
           { tag: "@returns", content: `the underlying ${rawType}.` },
         ],
-        hints: { body: `return ${attribute};` },
+        hints: { body: `return ${attribute};`, noexcept: true },
       });
+    const body = isStruct
+      ? `return *this != ${rawType}{};`
+      : `return ${attribute} != 0;`;
     if (wrapper.invalidState !== false && isStruct)
       insertTransform(entries, {
         kind: "function",
@@ -847,11 +851,7 @@ function expandTypes(
           "Check if valid.",
           { tag: "@returns", content: "True if valid state, false otherwise." },
         ],
-        hints: {
-          body: isStruct
-            ? `return *this != ${rawType}{};`
-            : `return ${attribute} != 0;`,
-        },
+        hints: { body, noexcept: true },
       });
 
     if (isStruct) {
@@ -877,7 +877,7 @@ function expandTypes(
               `Get the ${name}.`,
               { tag: "@returns", content: `current ${name} value.` },
             ],
-            hints: { body: `return ${name};` },
+            hints: { body: `return ${name};`, noexcept: true },
           });
           insertTransform(entries, {
             kind: "function",
@@ -900,7 +900,10 @@ function expandTypes(
                 { tag: "@returns", content: "Reference to self." },
               ],
             ],
-            hints: { body: `${name} = new${capName};\nreturn *this;` },
+            hints: {
+              body: `${name} = new${capName};\nreturn *this;`,
+              noexcept: true,
+            },
           });
           context.addCallbackType(sourceType, rawType);
           context.addParamType(sourceType, rawType);
@@ -923,6 +926,7 @@ function expandTypes(
           ],
           hints: {
             init: [`${rawType}{${parameters.map((p) => p.name).join(", ")}}`],
+            noexcept: true,
           },
         });
       }

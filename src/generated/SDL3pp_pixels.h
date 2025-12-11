@@ -370,7 +370,7 @@ public:
    *
    * @param format the value to be wrapped
    */
-  constexpr PixelFormat(PixelFormatRaw format = {})
+  constexpr PixelFormat(PixelFormatRaw format = {}) noexcept
     : m_format(format)
   {
   }
@@ -412,7 +412,7 @@ public:
    *
    * @returns the underlying PixelFormatRaw.
    */
-  constexpr operator PixelFormatRaw() const { return m_format; }
+  constexpr operator PixelFormatRaw() const noexcept { return m_format; }
 
   /**
    * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -1530,7 +1530,7 @@ public:
    *
    * @param cspace the value to be wrapped
    */
-  constexpr Colorspace(ColorspaceRaw cspace = {})
+  constexpr Colorspace(ColorspaceRaw cspace = {}) noexcept
     : m_cspace(cspace)
   {
   }
@@ -1581,7 +1581,7 @@ public:
    *
    * @returns the underlying ColorspaceRaw.
    */
-  constexpr operator ColorspaceRaw() const { return m_cspace; }
+  constexpr operator ColorspaceRaw() const noexcept { return m_cspace; }
 
   /**
    * A macro to retrieve the type of an Colorspace.
@@ -2012,19 +2012,19 @@ constexpr bool Colorspace::IsFullRange() const
 }
 
 /// Comparison operator for Color.
-constexpr bool operator==(ColorRaw lhs, ColorRaw rhs)
+constexpr bool operator==(ColorRaw lhs, ColorRaw rhs) noexcept
 {
   return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
 /// Comparison operator for FColor.
-constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs)
+constexpr bool operator==(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
 {
   return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b && lhs.a == rhs.a;
 }
 
 /// Spaceship operator for Color.
-constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
+constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs) noexcept
 {
   if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
   if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
@@ -2033,7 +2033,7 @@ constexpr auto operator<=>(ColorRaw lhs, ColorRaw rhs)
 }
 
 /// Spaceship operator for FColor.
-constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs)
+constexpr auto operator<=>(const FColorRaw& lhs, const FColorRaw& rhs) noexcept
 {
   if (lhs.r != rhs.r) return lhs.r <=> rhs.r;
   if (lhs.g != rhs.g) return lhs.g <=> rhs.g;
@@ -2057,7 +2057,7 @@ struct Color : ColorRaw
    *
    * @param color the value to be wrapped
    */
-  constexpr Color(ColorRaw color = {})
+  constexpr Color(ColorRaw color = {}) noexcept
     : ColorRaw(color)
   {
   }
@@ -2070,7 +2070,7 @@ struct Color : ColorRaw
    * @param b the value for b.
    * @param a the value for a.
    */
-  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) noexcept
     : ColorRaw{r, g, b, a}
   {
   }
@@ -2080,7 +2080,7 @@ struct Color : ColorRaw
    *
    * @returns current r value.
    */
-  constexpr Uint8 GetR() const { return r; }
+  constexpr Uint8 GetR() const noexcept { return r; }
 
   /**
    * Set the r.
@@ -2088,7 +2088,7 @@ struct Color : ColorRaw
    * @param newR the new r value.
    * @returns Reference to self.
    */
-  constexpr Color& SetR(Uint8 newR)
+  constexpr Color& SetR(Uint8 newR) noexcept
   {
     r = newR;
     return *this;
@@ -2099,7 +2099,7 @@ struct Color : ColorRaw
    *
    * @returns current g value.
    */
-  constexpr Uint8 GetG() const { return g; }
+  constexpr Uint8 GetG() const noexcept { return g; }
 
   /**
    * Set the g.
@@ -2107,7 +2107,7 @@ struct Color : ColorRaw
    * @param newG the new g value.
    * @returns Reference to self.
    */
-  constexpr Color& SetG(Uint8 newG)
+  constexpr Color& SetG(Uint8 newG) noexcept
   {
     g = newG;
     return *this;
@@ -2118,7 +2118,7 @@ struct Color : ColorRaw
    *
    * @returns current b value.
    */
-  constexpr Uint8 GetB() const { return b; }
+  constexpr Uint8 GetB() const noexcept { return b; }
 
   /**
    * Set the b.
@@ -2126,7 +2126,7 @@ struct Color : ColorRaw
    * @param newB the new b value.
    * @returns Reference to self.
    */
-  constexpr Color& SetB(Uint8 newB)
+  constexpr Color& SetB(Uint8 newB) noexcept
   {
     b = newB;
     return *this;
@@ -2137,7 +2137,7 @@ struct Color : ColorRaw
    *
    * @returns current a value.
    */
-  constexpr Uint8 GetA() const { return a; }
+  constexpr Uint8 GetA() const noexcept { return a; }
 
   /**
    * Set the a.
@@ -2145,7 +2145,7 @@ struct Color : ColorRaw
    * @param newA the new a value.
    * @returns Reference to self.
    */
-  constexpr Color& SetA(Uint8 newA)
+  constexpr Color& SetA(Uint8 newA) noexcept
   {
     a = newA;
     return *this;
@@ -2172,7 +2172,7 @@ struct FColor : FColorRaw
    *
    * @param color the value to be wrapped
    */
-  constexpr FColor(const FColorRaw& color = {})
+  constexpr FColor(const FColorRaw& color = {}) noexcept
     : FColorRaw(color)
   {
   }
@@ -2185,7 +2185,7 @@ struct FColor : FColorRaw
    * @param b the value for b.
    * @param a the value for a.
    */
-  constexpr FColor(float r, float g, float b, float a)
+  constexpr FColor(float r, float g, float b, float a) noexcept
     : FColorRaw{r, g, b, a}
   {
   }
@@ -2195,7 +2195,7 @@ struct FColor : FColorRaw
    *
    * @returns current r value.
    */
-  constexpr float GetR() const { return r; }
+  constexpr float GetR() const noexcept { return r; }
 
   /**
    * Set the r.
@@ -2203,7 +2203,7 @@ struct FColor : FColorRaw
    * @param newR the new r value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetR(float newR)
+  constexpr FColor& SetR(float newR) noexcept
   {
     r = newR;
     return *this;
@@ -2214,7 +2214,7 @@ struct FColor : FColorRaw
    *
    * @returns current g value.
    */
-  constexpr float GetG() const { return g; }
+  constexpr float GetG() const noexcept { return g; }
 
   /**
    * Set the g.
@@ -2222,7 +2222,7 @@ struct FColor : FColorRaw
    * @param newG the new g value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetG(float newG)
+  constexpr FColor& SetG(float newG) noexcept
   {
     g = newG;
     return *this;
@@ -2233,7 +2233,7 @@ struct FColor : FColorRaw
    *
    * @returns current b value.
    */
-  constexpr float GetB() const { return b; }
+  constexpr float GetB() const noexcept { return b; }
 
   /**
    * Set the b.
@@ -2241,7 +2241,7 @@ struct FColor : FColorRaw
    * @param newB the new b value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetB(float newB)
+  constexpr FColor& SetB(float newB) noexcept
   {
     b = newB;
     return *this;
@@ -2252,7 +2252,7 @@ struct FColor : FColorRaw
    *
    * @returns current a value.
    */
-  constexpr float GetA() const { return a; }
+  constexpr float GetA() const noexcept { return a; }
 
   /**
    * Set the a.
@@ -2260,7 +2260,7 @@ struct FColor : FColorRaw
    * @param newA the new a value.
    * @returns Reference to self.
    */
-  constexpr FColor& SetA(float newA)
+  constexpr FColor& SetA(float newA) noexcept
   {
     a = newA;
     return *this;
