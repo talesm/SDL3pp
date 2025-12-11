@@ -186,7 +186,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Thread(const ThreadRaw resource)
+  constexpr explicit Thread(const ThreadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -195,7 +195,7 @@ public:
   constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
-  constexpr Thread(Thread&& other)
+  constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
   {
   }
@@ -313,7 +313,7 @@ public:
   ~Thread() { SDL_DetachThread(m_resource); }
 
   /// Assignment operator.
-  constexpr Thread& operator=(Thread&& other)
+  constexpr Thread& operator=(Thread&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -321,7 +321,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other)
+  constexpr Thread& operator=(const Thread& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -329,10 +329,10 @@ protected:
 
 public:
   /// Retrieves underlying ThreadRaw.
-  constexpr ThreadRaw get() const { return m_resource; }
+  constexpr ThreadRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ThreadRaw and clear this.
-  constexpr ThreadRaw release()
+  constexpr ThreadRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -340,16 +340,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Thread& other) const = default;
+  constexpr auto operator<=>(const Thread& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ThreadParam
-  constexpr operator ThreadParam() const { return {m_resource}; }
+  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -482,7 +482,7 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadParam resource)
+  ThreadRef(ThreadParam resource) noexcept
     : Thread(resource.value)
   {
   }
@@ -494,13 +494,13 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadRaw resource)
+  ThreadRef(ThreadRaw resource) noexcept
     : Thread(resource)
   {
   }
 
   /// Copy constructor.
-  ThreadRef(const ThreadRef& other)
+  ThreadRef(const ThreadRef& other) noexcept
     : Thread(other.get())
   {
   }

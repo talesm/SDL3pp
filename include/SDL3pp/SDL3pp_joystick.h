@@ -406,7 +406,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource)
+  constexpr explicit Joystick(const JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -415,7 +415,7 @@ public:
   constexpr Joystick(const Joystick& other) = delete;
 
   /// Move constructor
-  constexpr Joystick(Joystick&& other)
+  constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
   {
   }
@@ -446,7 +446,7 @@ public:
   ~Joystick() { SDL_CloseJoystick(m_resource); }
 
   /// Assignment operator.
-  constexpr Joystick& operator=(Joystick&& other)
+  constexpr Joystick& operator=(Joystick&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -454,7 +454,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other)
+  constexpr Joystick& operator=(const Joystick& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -462,10 +462,10 @@ protected:
 
 public:
   /// Retrieves underlying JoystickRaw.
-  constexpr JoystickRaw get() const { return m_resource; }
+  constexpr JoystickRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying JoystickRaw and clear this.
-  constexpr JoystickRaw release()
+  constexpr JoystickRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -473,16 +473,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Joystick& other) const = default;
+  constexpr auto operator<=>(const Joystick& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to JoystickParam
-  constexpr operator JoystickParam() const { return {m_resource}; }
+  constexpr operator JoystickParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
@@ -1070,7 +1070,7 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickParam resource)
+  JoystickRef(JoystickParam resource) noexcept
     : Joystick(resource.value)
   {
   }
@@ -1082,13 +1082,13 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickRaw resource)
+  JoystickRef(JoystickRaw resource) noexcept
     : Joystick(resource)
   {
   }
 
   /// Copy constructor.
-  JoystickRef(const JoystickRef& other)
+  JoystickRef(const JoystickRef& other) noexcept
     : Joystick(other.get())
   {
   }

@@ -743,10 +743,10 @@
 +  virtual ~TextEngine() = default;
  
    /// Assignment operator.
-   constexpr TextEngine& operator=(TextEngine&& other)
+   constexpr TextEngine& operator=(TextEngine&& other) noexcept
 @@ -4107,16 +4071,14 @@
    /// Converts to TextEngineParam
-   constexpr operator TextEngineParam() const { return {m_resource}; }
+   constexpr operator TextEngineParam() const noexcept { return {m_resource}; }
  
 -  /// frees up textEngine.
 -  void Destroy() { static_assert(false, "Not implemented"); }
@@ -1280,8 +1280,8 @@
     *
     * This does not takes ownership!
     */
--  TextRef(TextParam resource)
-+  TextRef(TextParam resource = nullptr)
+-  TextRef(TextParam resource) noexcept
++  TextRef(TextParam resource = nullptr) noexcept
      : Text(resource.value)
    {
    }

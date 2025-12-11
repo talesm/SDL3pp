@@ -193,7 +193,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource)
+  constexpr explicit Cursor(const CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -202,7 +202,7 @@ public:
   constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
-  constexpr Cursor(Cursor&& other)
+  constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
   {
   }
@@ -318,7 +318,7 @@ public:
   ~Cursor() { SDL_DestroyCursor(m_resource); }
 
   /// Assignment operator.
-  constexpr Cursor& operator=(Cursor&& other)
+  constexpr Cursor& operator=(Cursor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -326,7 +326,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other)
+  constexpr Cursor& operator=(const Cursor& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -334,10 +334,10 @@ protected:
 
 public:
   /// Retrieves underlying CursorRaw.
-  constexpr CursorRaw get() const { return m_resource; }
+  constexpr CursorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CursorRaw and clear this.
-  constexpr CursorRaw release()
+  constexpr CursorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -345,16 +345,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Cursor& other) const = default;
+  constexpr auto operator<=>(const Cursor& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CursorParam
-  constexpr operator CursorParam() const { return {m_resource}; }
+  constexpr operator CursorParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
@@ -403,7 +403,7 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorParam resource)
+  CursorRef(CursorParam resource) noexcept
     : Cursor(resource.value)
   {
   }
@@ -415,13 +415,13 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource)
+  CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
 
   /// Copy constructor.
-  CursorRef(const CursorRef& other)
+  CursorRef(const CursorRef& other) noexcept
     : Cursor(other.get())
   {
   }

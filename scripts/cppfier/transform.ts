@@ -1228,7 +1228,10 @@ function expandTypes(
         constexpr: true,
         explicit: !hasScoped,
         parameters: [{ name: "resource", type: constRawName }],
-        hints: { init: ["m_resource(resource)"] },
+        hints: {
+          init: ["m_resource(resource)"],
+          noexcept: true,
+        },
         doc: [
           `Constructs from ${paramType}.`,
           { tag: "@param resource", content: `a ${rawName} to be wrapped.` },
@@ -1250,6 +1253,7 @@ function expandTypes(
         parameters: [{ name: "other", type: `${targetName} &&` }],
         hints: {
           init: [`${targetName}(other.release())`],
+          noexcept: true,
         },
         doc: ["Move constructor"],
       },
@@ -1465,14 +1469,14 @@ function expandTypes(
         immutable: true,
         type: constRawName,
         parameters: [],
-        hints: { body: "return m_resource;" },
+        hints: { body: "return m_resource;", noexcept: true },
       };
       ctors["operator->#2"] = {
         kind: "function",
         constexpr: true,
         type: rawName,
         parameters: [],
-        hints: { body: "return m_resource;" },
+        hints: { body: "return m_resource;", noexcept: true },
       };
     }
 
@@ -1510,6 +1514,7 @@ function expandTypes(
         constexpr: true,
         hints: {
           body: "std::swap(m_resource, other.m_resource);\nreturn *this;",
+          noexcept: true,
         },
         doc: ["Assignment operator."],
       },
@@ -1521,6 +1526,7 @@ function expandTypes(
         hints: {
           body: "m_resource = other.m_resource;\nreturn *this;",
           changeAccess: "protected",
+          noexcept: true,
         },
         doc: ["Assignment operator."],
       },
@@ -1533,6 +1539,7 @@ function expandTypes(
         hints: {
           body: "return m_resource;",
           changeAccess: "public",
+          noexcept: true,
         },
         doc: [`Retrieves underlying ${rawName}.`],
       },
@@ -1543,6 +1550,7 @@ function expandTypes(
         parameters: [],
         hints: {
           body: `auto r = m_resource;\nm_resource = ${nullValue};\nreturn r;`,
+          noexcept: true,
         },
         doc: [`Retrieves underlying ${rawName} and clear this.`],
       },
@@ -1552,7 +1560,7 @@ function expandTypes(
         immutable: true,
         constexpr: true,
         parameters: [{ type: `const ${targetName} &`, name: "other" }],
-        hints: { default: true },
+        hints: { default: true, noexcept: true },
         doc: [`Comparison`],
       },
       "operator ==": {
@@ -1571,7 +1579,7 @@ function expandTypes(
         constexpr: true,
         explicit: true,
         parameters: [],
-        hints: { body: "return !!m_resource;" },
+        hints: { body: "return !!m_resource;", noexcept: true },
         doc: [`Converts to bool`],
       },
       [`operator ${paramType}`]: {
@@ -1580,7 +1588,7 @@ function expandTypes(
         immutable: true,
         constexpr: true,
         parameters: [],
-        hints: { body: "return {m_resource};" },
+        hints: { body: "return {m_resource};", noexcept: true },
         doc: [`Converts to ${paramType}`],
       },
       [freeFunction.name]: "plc",
@@ -1611,7 +1619,7 @@ function expandTypes(
                 name: "resource",
               },
             ],
-            hints: { init: [`${targetName}(resource.value)`] },
+            hints: { init: [`${targetName}(resource.value)`], noexcept: true },
             doc: [
               `Constructs from ${paramType}.`,
               {
@@ -1630,7 +1638,7 @@ function expandTypes(
                 name: "resource",
               },
             ],
-            hints: { init: [`${targetName}(resource)`] },
+            hints: { init: [`${targetName}(resource)`], noexcept: true },
             doc: [
               `Constructs from ${paramType}.`,
               {
@@ -1649,7 +1657,7 @@ function expandTypes(
                 name: "other",
               },
             ],
-            hints: { init: [`${targetName}(other.get())`] },
+            hints: { init: [`${targetName}(other.get())`], noexcept: true },
             doc: ["Copy constructor."],
           },
           [`~${refName}`]: {
@@ -1684,6 +1692,7 @@ function expandTypes(
             parameters: [{ name: "other", type: `${targetName} &&` }],
             hints: {
               init: [`${targetName}(other.release())`],
+              noexcept: true,
             },
           },
           [`~${scopedName}`]: {

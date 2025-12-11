@@ -2988,7 +2988,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPUDevice(const GPUDeviceRaw resource)
+  constexpr explicit GPUDevice(const GPUDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2997,7 +2997,7 @@ public:
   constexpr GPUDevice(const GPUDevice& other) = delete;
 
   /// Move constructor
-  constexpr GPUDevice(GPUDevice&& other)
+  constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
   {
   }
@@ -3082,7 +3082,7 @@ public:
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
 
   /// Assignment operator.
-  constexpr GPUDevice& operator=(GPUDevice&& other)
+  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -3090,7 +3090,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other)
+  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -3098,10 +3098,10 @@ protected:
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
-  constexpr GPUDeviceRaw get() const { return m_resource; }
+  constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GPUDeviceRaw and clear this.
-  constexpr GPUDeviceRaw release()
+  constexpr GPUDeviceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -3109,16 +3109,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GPUDevice& other) const = default;
+  constexpr auto operator<=>(const GPUDevice& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GPUDeviceParam
-  constexpr operator GPUDeviceParam() const { return {m_resource}; }
+  constexpr operator GPUDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -3877,7 +3877,7 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceParam resource)
+  GPUDeviceRef(GPUDeviceParam resource) noexcept
     : GPUDevice(resource.value)
   {
   }
@@ -3889,13 +3889,13 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource)
+  GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
 
   /// Copy constructor.
-  GPUDeviceRef(const GPUDeviceRef& other)
+  GPUDeviceRef(const GPUDeviceRef& other) noexcept
     : GPUDevice(other.get())
   {
   }

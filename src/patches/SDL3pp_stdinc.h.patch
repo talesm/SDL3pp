@@ -910,14 +910,14 @@
    constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
  
    /// Converts to bool
--  constexpr explicit operator bool() const { return !!m_resource; }
-+  constexpr explicit operator bool() const
+-  constexpr explicit operator bool() const noexcept { return !!m_resource; }
++  constexpr explicit operator bool() const noexcept
 +  {
 +    return m_resource != IConvRaw(SDL_ICONV_ERROR);
 +  }
  
    /// Converts to IConvParam
-   constexpr operator IConvParam() const { return {m_resource}; }
+   constexpr operator IConvParam() const noexcept { return {m_resource}; }
 @@ -5852,7 +5964,6 @@
    /**
     * This function frees a context used for character set conversion.

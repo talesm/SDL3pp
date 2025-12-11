@@ -102,7 +102,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource)
+  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -111,7 +111,7 @@ public:
   constexpr SharedObject(const SharedObject& other) = delete;
 
   /// Move constructor
-  constexpr SharedObject(SharedObject&& other)
+  constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
   {
   }
@@ -143,7 +143,7 @@ public:
   ~SharedObject() { SDL_UnloadObject(m_resource); }
 
   /// Assignment operator.
-  constexpr SharedObject& operator=(SharedObject&& other)
+  constexpr SharedObject& operator=(SharedObject&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -151,7 +151,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other)
+  constexpr SharedObject& operator=(const SharedObject& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -159,10 +159,10 @@ protected:
 
 public:
   /// Retrieves underlying SharedObjectRaw.
-  constexpr SharedObjectRaw get() const { return m_resource; }
+  constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SharedObjectRaw and clear this.
-  constexpr SharedObjectRaw release()
+  constexpr SharedObjectRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -170,16 +170,17 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const SharedObject& other) const = default;
+  constexpr auto operator<=>(const SharedObject& other) const noexcept =
+    default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SharedObjectParam
-  constexpr operator SharedObjectParam() const { return {m_resource}; }
+  constexpr operator SharedObjectParam() const noexcept { return {m_resource}; }
 
   /**
    * Unload a shared object from memory.
@@ -236,7 +237,7 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectParam resource)
+  SharedObjectRef(SharedObjectParam resource) noexcept
     : SharedObject(resource.value)
   {
   }
@@ -248,13 +249,13 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource)
+  SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
 
   /// Copy constructor.
-  SharedObjectRef(const SharedObjectRef& other)
+  SharedObjectRef(const SharedObjectRef& other) noexcept
     : SharedObject(other.get())
   {
   }

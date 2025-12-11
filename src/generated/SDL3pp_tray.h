@@ -172,7 +172,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource)
+  constexpr explicit Tray(const TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -181,7 +181,7 @@ public:
   constexpr Tray(const Tray& other) = delete;
 
   /// Move constructor
-  constexpr Tray(Tray&& other)
+  constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
   {
   }
@@ -222,7 +222,7 @@ public:
   ~Tray() { SDL_DestroyTray(m_resource); }
 
   /// Assignment operator.
-  constexpr Tray& operator=(Tray&& other)
+  constexpr Tray& operator=(Tray&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -230,7 +230,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other)
+  constexpr Tray& operator=(const Tray& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -238,10 +238,10 @@ protected:
 
 public:
   /// Retrieves underlying TrayRaw.
-  constexpr TrayRaw get() const { return m_resource; }
+  constexpr TrayRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TrayRaw and clear this.
-  constexpr TrayRaw release()
+  constexpr TrayRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -249,16 +249,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Tray& other) const = default;
+  constexpr auto operator<=>(const Tray& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TrayParam
-  constexpr operator TrayParam() const { return {m_resource}; }
+  constexpr operator TrayParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a tray object.
@@ -361,7 +361,7 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayParam resource)
+  TrayRef(TrayParam resource) noexcept
     : Tray(resource.value)
   {
   }
@@ -373,13 +373,13 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayRaw resource)
+  TrayRef(TrayRaw resource) noexcept
     : Tray(resource)
   {
   }
 
   /// Copy constructor.
-  TrayRef(const TrayRef& other)
+  TrayRef(const TrayRef& other) noexcept
     : Tray(other.get())
   {
   }
@@ -522,7 +522,7 @@ public:
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource)
+  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -531,7 +531,7 @@ public:
   constexpr TrayEntry(const TrayEntry& other) = default;
 
   /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other)
+  constexpr TrayEntry(TrayEntry&& other) noexcept
     : TrayEntry(other.release())
   {
   }
@@ -540,7 +540,7 @@ public:
   ~TrayEntry() {}
 
   /// Assignment operator.
-  constexpr TrayEntry& operator=(TrayEntry&& other)
+  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -548,7 +548,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other)
+  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -556,10 +556,10 @@ protected:
 
 public:
   /// Retrieves underlying TrayEntryRaw.
-  constexpr TrayEntryRaw get() const { return m_resource; }
+  constexpr TrayEntryRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TrayEntryRaw and clear this.
-  constexpr TrayEntryRaw release()
+  constexpr TrayEntryRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -567,16 +567,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const TrayEntry& other) const = default;
+  constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TrayEntryParam
-  constexpr operator TrayEntryParam() const { return {m_resource}; }
+  constexpr operator TrayEntryParam() const noexcept { return {m_resource}; }
 
   /**
    * Removes a tray entry.
@@ -796,7 +796,7 @@ struct TrayEntryScoped : TrayEntry
   constexpr TrayEntryScoped(const TrayEntry& other) = delete;
 
   /// Move constructor
-  constexpr TrayEntryScoped(TrayEntry&& other)
+  constexpr TrayEntryScoped(TrayEntry&& other) noexcept
     : TrayEntry(other.release())
   {
   }

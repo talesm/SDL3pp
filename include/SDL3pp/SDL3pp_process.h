@@ -148,7 +148,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource)
+  constexpr explicit Process(const ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -157,7 +157,7 @@ public:
   constexpr Process(const Process& other) = delete;
 
   /// Move constructor
-  constexpr Process(Process&& other)
+  constexpr Process(Process&& other) noexcept
     : Process(other.release())
   {
   }
@@ -280,7 +280,7 @@ public:
   ~Process() { SDL_DestroyProcess(m_resource); }
 
   /// Assignment operator.
-  constexpr Process& operator=(Process&& other)
+  constexpr Process& operator=(Process&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -288,7 +288,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other)
+  constexpr Process& operator=(const Process& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -296,10 +296,10 @@ protected:
 
 public:
   /// Retrieves underlying ProcessRaw.
-  constexpr ProcessRaw get() const { return m_resource; }
+  constexpr ProcessRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ProcessRaw and clear this.
-  constexpr ProcessRaw release()
+  constexpr ProcessRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -307,16 +307,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Process& other) const = default;
+  constexpr auto operator<=>(const Process& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ProcessParam
-  constexpr operator ProcessParam() const { return {m_resource}; }
+  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -539,7 +539,7 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessParam resource)
+  ProcessRef(ProcessParam resource) noexcept
     : Process(resource.value)
   {
   }
@@ -551,13 +551,13 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource)
+  ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
 
   /// Copy constructor.
-  ProcessRef(const ProcessRef& other)
+  ProcessRef(const ProcessRef& other) noexcept
     : Process(other.get())
   {
   }

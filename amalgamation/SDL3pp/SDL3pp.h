@@ -10878,7 +10878,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Palette(const PaletteRaw resource)
+  constexpr explicit Palette(const PaletteRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -10887,7 +10887,7 @@ public:
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Palette(Palette&& other)
+  constexpr Palette(Palette&& other) noexcept
     : Palette(other.release())
   {
   }
@@ -10931,16 +10931,16 @@ public:
   }
 
   /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const { return m_resource; }
+  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying PaletteRaw.
-  constexpr PaletteRaw operator->() { return m_resource; }
+  constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.
-  constexpr Palette& operator=(Palette&& other)
+  constexpr Palette& operator=(Palette&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -10948,7 +10948,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other)
+  constexpr Palette& operator=(const Palette& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -10956,10 +10956,10 @@ protected:
 
 public:
   /// Retrieves underlying PaletteRaw.
-  constexpr PaletteRaw get() const { return m_resource; }
+  constexpr PaletteRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PaletteRaw and clear this.
-  constexpr PaletteRaw release()
+  constexpr PaletteRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -10967,16 +10967,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Palette& other) const = default;
+  constexpr auto operator<=>(const Palette& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PaletteParam
-  constexpr operator PaletteParam() const { return {m_resource}; }
+  constexpr operator PaletteParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a palette created with Palette.Palette().
@@ -11677,7 +11677,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource)
+  constexpr explicit Properties(const PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -11686,7 +11686,7 @@ public:
   constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
-  constexpr Properties(Properties&& other)
+  constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
   {
   }
@@ -11715,7 +11715,7 @@ public:
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
-  constexpr Properties& operator=(Properties&& other)
+  constexpr Properties& operator=(Properties&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -11723,7 +11723,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other)
+  constexpr Properties& operator=(const Properties& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -11731,10 +11731,10 @@ protected:
 
 public:
   /// Retrieves underlying PropertiesID.
-  constexpr PropertiesID get() const { return m_resource; }
+  constexpr PropertiesID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PropertiesID and clear this.
-  constexpr PropertiesID release()
+  constexpr PropertiesID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -11742,16 +11742,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Properties& other) const = default;
+  constexpr auto operator<=>(const Properties& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const { return {m_resource}; }
+  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -12183,7 +12183,7 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesParam resource)
+  PropertiesRef(PropertiesParam resource) noexcept
     : Properties(resource.value)
   {
   }
@@ -12195,13 +12195,13 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource)
+  PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
 
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other)
+  PropertiesRef(const PropertiesRef& other) noexcept
     : Properties(other.get())
   {
   }
@@ -13870,7 +13870,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource)
+  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -13879,7 +13879,7 @@ public:
   constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
-  constexpr Environment(Environment&& other)
+  constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
   {
   }
@@ -13917,7 +13917,7 @@ public:
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
-  constexpr Environment& operator=(Environment&& other)
+  constexpr Environment& operator=(Environment&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -13925,7 +13925,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other)
+  constexpr Environment& operator=(const Environment& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -13933,10 +13933,10 @@ protected:
 
 public:
   /// Retrieves underlying EnvironmentRaw.
-  constexpr EnvironmentRaw get() const { return m_resource; }
+  constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying EnvironmentRaw and clear this.
-  constexpr EnvironmentRaw release()
+  constexpr EnvironmentRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -13944,16 +13944,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Environment& other) const = default;
+  constexpr auto operator<=>(const Environment& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const { return {m_resource}; }
+  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -14075,7 +14075,7 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentParam resource)
+  EnvironmentRef(EnvironmentParam resource) noexcept
     : Environment(resource.value)
   {
   }
@@ -14087,13 +14087,13 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource)
+  EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
 
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other)
+  EnvironmentRef(const EnvironmentRef& other) noexcept
     : Environment(other.get())
   {
   }
@@ -18771,7 +18771,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource)
+  constexpr explicit IConv(const IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -18780,7 +18780,7 @@ public:
   constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
-  constexpr IConv(IConv&& other)
+  constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
   {
   }
@@ -18812,7 +18812,7 @@ public:
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
-  constexpr IConv& operator=(IConv&& other)
+  constexpr IConv& operator=(IConv&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -18820,7 +18820,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other)
+  constexpr IConv& operator=(const IConv& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -18828,10 +18828,10 @@ protected:
 
 public:
   /// Retrieves underlying IConvRaw.
-  constexpr IConvRaw get() const { return m_resource; }
+  constexpr IConvRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IConvRaw and clear this.
-  constexpr IConvRaw release()
+  constexpr IConvRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -18839,19 +18839,19 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IConv& other) const = default;
+  constexpr auto operator<=>(const IConv& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const
+  constexpr explicit operator bool() const noexcept
   {
     return m_resource != IConvRaw(SDL_ICONV_ERROR);
   }
 
   /// Converts to IConvParam
-  constexpr operator IConvParam() const { return {m_resource}; }
+  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -18918,7 +18918,7 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvParam resource)
+  IConvRef(IConvParam resource) noexcept
     : IConv(resource.value)
   {
   }
@@ -18930,13 +18930,13 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource)
+  IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
 
   /// Copy constructor.
-  IConvRef(const IConvRef& other)
+  IConvRef(const IConvRef& other) noexcept
     : IConv(other.get())
   {
   }
@@ -19386,7 +19386,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIO(const AsyncIORaw resource)
+  constexpr explicit AsyncIO(const AsyncIORaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -19395,7 +19395,7 @@ public:
   constexpr AsyncIO(const AsyncIO& other) = delete;
 
   /// Move constructor
-  constexpr AsyncIO(AsyncIO&& other)
+  constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
   {
   }
@@ -19456,7 +19456,7 @@ public:
   }
 
   /// Assignment operator.
-  constexpr AsyncIO& operator=(AsyncIO&& other)
+  constexpr AsyncIO& operator=(AsyncIO&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -19464,7 +19464,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIO& operator=(const AsyncIO& other)
+  constexpr AsyncIO& operator=(const AsyncIO& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -19472,10 +19472,10 @@ protected:
 
 public:
   /// Retrieves underlying AsyncIORaw.
-  constexpr AsyncIORaw get() const { return m_resource; }
+  constexpr AsyncIORaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AsyncIORaw and clear this.
-  constexpr AsyncIORaw release()
+  constexpr AsyncIORaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -19483,16 +19483,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AsyncIO& other) const = default;
+  constexpr auto operator<=>(const AsyncIO& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AsyncIOParam
-  constexpr operator AsyncIOParam() const { return {m_resource}; }
+  constexpr operator AsyncIOParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -19649,7 +19649,7 @@ struct AsyncIORef : AsyncIO
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIOParam resource)
+  AsyncIORef(AsyncIOParam resource) noexcept
     : AsyncIO(resource.value)
   {
   }
@@ -19661,13 +19661,13 @@ struct AsyncIORef : AsyncIO
    *
    * This does not takes ownership!
    */
-  AsyncIORef(AsyncIORaw resource)
+  AsyncIORef(AsyncIORaw resource) noexcept
     : AsyncIO(resource)
   {
   }
 
   /// Copy constructor.
-  AsyncIORef(const AsyncIORef& other)
+  AsyncIORef(const AsyncIORef& other) noexcept
     : AsyncIO(other.get())
   {
   }
@@ -19745,7 +19745,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource)
+  constexpr explicit AsyncIOQueue(const AsyncIOQueueRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -19754,7 +19754,7 @@ public:
   constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
 
   /// Move constructor
-  constexpr AsyncIOQueue(AsyncIOQueue&& other)
+  constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())
   {
   }
@@ -19789,7 +19789,7 @@ public:
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
 
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other)
+  constexpr AsyncIOQueue& operator=(AsyncIOQueue&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -19797,7 +19797,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other)
+  constexpr AsyncIOQueue& operator=(const AsyncIOQueue& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -19805,10 +19805,10 @@ protected:
 
 public:
   /// Retrieves underlying AsyncIOQueueRaw.
-  constexpr AsyncIOQueueRaw get() const { return m_resource; }
+  constexpr AsyncIOQueueRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AsyncIOQueueRaw and clear this.
-  constexpr AsyncIOQueueRaw release()
+  constexpr AsyncIOQueueRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -19816,16 +19816,17 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueue& other) const = default;
+  constexpr auto operator<=>(const AsyncIOQueue& other) const noexcept =
+    default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AsyncIOQueueParam
-  constexpr operator AsyncIOQueueParam() const { return {m_resource}; }
+  constexpr operator AsyncIOQueueParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -19994,7 +19995,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueParam resource)
+  AsyncIOQueueRef(AsyncIOQueueParam resource) noexcept
     : AsyncIOQueue(resource.value)
   {
   }
@@ -20006,13 +20007,13 @@ struct AsyncIOQueueRef : AsyncIOQueue
    *
    * This does not takes ownership!
    */
-  AsyncIOQueueRef(AsyncIOQueueRaw resource)
+  AsyncIOQueueRef(AsyncIOQueueRaw resource) noexcept
     : AsyncIOQueue(resource)
   {
   }
 
   /// Copy constructor.
-  AsyncIOQueueRef(const AsyncIOQueueRef& other)
+  AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
     : AsyncIOQueue(other.get())
   {
   }
@@ -23236,7 +23237,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource)
+  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -23245,7 +23246,7 @@ public:
   constexpr HidDevice(const HidDevice& other) = delete;
 
   /// Move constructor
-  constexpr HidDevice(HidDevice&& other)
+  constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
   {
   }
@@ -23296,7 +23297,7 @@ public:
   ~HidDevice() { SDL_hid_close(m_resource); }
 
   /// Assignment operator.
-  constexpr HidDevice& operator=(HidDevice&& other)
+  constexpr HidDevice& operator=(HidDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -23304,7 +23305,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other)
+  constexpr HidDevice& operator=(const HidDevice& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -23312,10 +23313,10 @@ protected:
 
 public:
   /// Retrieves underlying HidDeviceRaw.
-  constexpr HidDeviceRaw get() const { return m_resource; }
+  constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying HidDeviceRaw and clear this.
-  constexpr HidDeviceRaw release()
+  constexpr HidDeviceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -23323,16 +23324,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const HidDevice& other) const = default;
+  constexpr auto operator<=>(const HidDevice& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to HidDeviceParam
-  constexpr operator HidDeviceParam() const { return {m_resource}; }
+  constexpr operator HidDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a HID device.
@@ -23565,7 +23566,7 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceParam resource)
+  HidDeviceRef(HidDeviceParam resource) noexcept
     : HidDevice(resource.value)
   {
   }
@@ -23577,13 +23578,13 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource)
+  HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
 
   /// Copy constructor.
-  HidDeviceRef(const HidDeviceRef& other)
+  HidDeviceRef(const HidDeviceRef& other) noexcept
     : HidDevice(other.get())
   {
   }
@@ -24237,7 +24238,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource)
+  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -24246,7 +24247,7 @@ public:
   constexpr IOStream(const IOStream& other) = delete;
 
   /// Move constructor
-  constexpr IOStream(IOStream&& other)
+  constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
   {
   }
@@ -24482,7 +24483,7 @@ public:
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
-  constexpr IOStream& operator=(IOStream&& other)
+  constexpr IOStream& operator=(IOStream&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -24490,7 +24491,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other)
+  constexpr IOStream& operator=(const IOStream& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -24498,10 +24499,10 @@ protected:
 
 public:
   /// Retrieves underlying IOStreamRaw.
-  constexpr IOStreamRaw get() const { return m_resource; }
+  constexpr IOStreamRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IOStreamRaw and clear this.
-  constexpr IOStreamRaw release()
+  constexpr IOStreamRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -24509,16 +24510,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IOStream& other) const = default;
+  constexpr auto operator<=>(const IOStream& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to IOStreamParam
-  constexpr operator IOStreamParam() const { return {m_resource}; }
+  constexpr operator IOStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free an allocated IOStream structure.
@@ -25737,7 +25738,7 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamParam resource)
+  IOStreamRef(IOStreamParam resource) noexcept
     : IOStream(resource.value)
   {
   }
@@ -25749,13 +25750,13 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamRaw resource)
+  IOStreamRef(IOStreamRaw resource) noexcept
     : IOStream(resource)
   {
   }
 
   /// Copy constructor.
-  IOStreamRef(const IOStreamRef& other)
+  IOStreamRef(const IOStreamRef& other) noexcept
     : IOStream(other.get())
   {
   }
@@ -27314,7 +27315,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit SharedObject(const SharedObjectRaw resource)
+  constexpr explicit SharedObject(const SharedObjectRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -27323,7 +27324,7 @@ public:
   constexpr SharedObject(const SharedObject& other) = delete;
 
   /// Move constructor
-  constexpr SharedObject(SharedObject&& other)
+  constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
   {
   }
@@ -27355,7 +27356,7 @@ public:
   ~SharedObject() { SDL_UnloadObject(m_resource); }
 
   /// Assignment operator.
-  constexpr SharedObject& operator=(SharedObject&& other)
+  constexpr SharedObject& operator=(SharedObject&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -27363,7 +27364,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr SharedObject& operator=(const SharedObject& other)
+  constexpr SharedObject& operator=(const SharedObject& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -27371,10 +27372,10 @@ protected:
 
 public:
   /// Retrieves underlying SharedObjectRaw.
-  constexpr SharedObjectRaw get() const { return m_resource; }
+  constexpr SharedObjectRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SharedObjectRaw and clear this.
-  constexpr SharedObjectRaw release()
+  constexpr SharedObjectRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -27382,16 +27383,17 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const SharedObject& other) const = default;
+  constexpr auto operator<=>(const SharedObject& other) const noexcept =
+    default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SharedObjectParam
-  constexpr operator SharedObjectParam() const { return {m_resource}; }
+  constexpr operator SharedObjectParam() const noexcept { return {m_resource}; }
 
   /**
    * Unload a shared object from memory.
@@ -27448,7 +27450,7 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectParam resource)
+  SharedObjectRef(SharedObjectParam resource) noexcept
     : SharedObject(resource.value)
   {
   }
@@ -27460,13 +27462,13 @@ struct SharedObjectRef : SharedObject
    *
    * This does not takes ownership!
    */
-  SharedObjectRef(SharedObjectRaw resource)
+  SharedObjectRef(SharedObjectRaw resource) noexcept
     : SharedObject(resource)
   {
   }
 
   /// Copy constructor.
-  SharedObjectRef(const SharedObjectRef& other)
+  SharedObjectRef(const SharedObjectRef& other) noexcept
     : SharedObject(other.get())
   {
   }
@@ -31265,7 +31267,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource)
+  constexpr explicit Sensor(const SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -31274,7 +31276,7 @@ public:
   constexpr Sensor(const Sensor& other) = delete;
 
   /// Move constructor
-  constexpr Sensor(Sensor&& other)
+  constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
   {
   }
@@ -31301,7 +31303,7 @@ public:
   ~Sensor() { SDL_CloseSensor(m_resource); }
 
   /// Assignment operator.
-  constexpr Sensor& operator=(Sensor&& other)
+  constexpr Sensor& operator=(Sensor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -31309,7 +31311,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other)
+  constexpr Sensor& operator=(const Sensor& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -31317,10 +31319,10 @@ protected:
 
 public:
   /// Retrieves underlying SensorRaw.
-  constexpr SensorRaw get() const { return m_resource; }
+  constexpr SensorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SensorRaw and clear this.
-  constexpr SensorRaw release()
+  constexpr SensorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -31328,16 +31330,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Sensor& other) const = default;
+  constexpr auto operator<=>(const Sensor& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SensorParam
-  constexpr operator SensorParam() const { return {m_resource}; }
+  constexpr operator SensorParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a sensor previously opened with Sensor.Sensor().
@@ -31420,7 +31422,7 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorParam resource)
+  SensorRef(SensorParam resource) noexcept
     : Sensor(resource.value)
   {
   }
@@ -31432,13 +31434,13 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource)
+  SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
 
   /// Copy constructor.
-  SensorRef(const SensorRef& other)
+  SensorRef(const SensorRef& other) noexcept
     : Sensor(other.get())
   {
   }
@@ -33254,7 +33256,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioDevice(const AudioDeviceID resource)
+  constexpr explicit AudioDevice(const AudioDeviceID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -33263,7 +33265,7 @@ public:
   constexpr AudioDevice(const AudioDevice& other) = delete;
 
   /// Move constructor
-  constexpr AudioDevice(AudioDevice&& other)
+  constexpr AudioDevice(AudioDevice&& other) noexcept
     : AudioDevice(other.release())
   {
   }
@@ -33352,7 +33354,7 @@ public:
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
 
   /// Assignment operator.
-  constexpr AudioDevice& operator=(AudioDevice&& other)
+  constexpr AudioDevice& operator=(AudioDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -33360,7 +33362,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioDevice& operator=(const AudioDevice& other)
+  constexpr AudioDevice& operator=(const AudioDevice& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -33368,10 +33370,10 @@ protected:
 
 public:
   /// Retrieves underlying AudioDeviceID.
-  constexpr AudioDeviceID get() const { return m_resource; }
+  constexpr AudioDeviceID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AudioDeviceID and clear this.
-  constexpr AudioDeviceID release()
+  constexpr AudioDeviceID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -33379,16 +33381,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AudioDevice& other) const = default;
+  constexpr auto operator<=>(const AudioDevice& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AudioDeviceParam
-  constexpr operator AudioDeviceParam() const { return {m_resource}; }
+  constexpr operator AudioDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a previously-opened audio device.
@@ -33928,7 +33930,7 @@ struct AudioDeviceRef : AudioDevice
    *
    * This does not takes ownership!
    */
-  AudioDeviceRef(AudioDeviceParam resource)
+  AudioDeviceRef(AudioDeviceParam resource) noexcept
     : AudioDevice(resource.value)
   {
   }
@@ -33940,13 +33942,13 @@ struct AudioDeviceRef : AudioDevice
    *
    * This does not takes ownership!
    */
-  AudioDeviceRef(AudioDeviceID resource)
+  AudioDeviceRef(AudioDeviceID resource) noexcept
     : AudioDevice(resource)
   {
   }
 
   /// Copy constructor.
-  AudioDeviceRef(const AudioDeviceRef& other)
+  AudioDeviceRef(const AudioDeviceRef& other) noexcept
     : AudioDevice(other.get())
   {
   }
@@ -34038,7 +34040,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit AudioStream(const AudioStreamRaw resource)
+  constexpr explicit AudioStream(const AudioStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -34047,7 +34049,7 @@ public:
   constexpr AudioStream(const AudioStream& other) = delete;
 
   /// Move constructor
-  constexpr AudioStream(AudioStream&& other)
+  constexpr AudioStream(AudioStream&& other) noexcept
     : AudioStream(other.release())
   {
   }
@@ -34209,7 +34211,7 @@ public:
   ~AudioStream() { SDL_DestroyAudioStream(m_resource); }
 
   /// Assignment operator.
-  constexpr AudioStream& operator=(AudioStream&& other)
+  constexpr AudioStream& operator=(AudioStream&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -34217,7 +34219,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr AudioStream& operator=(const AudioStream& other)
+  constexpr AudioStream& operator=(const AudioStream& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -34225,10 +34227,10 @@ protected:
 
 public:
   /// Retrieves underlying AudioStreamRaw.
-  constexpr AudioStreamRaw get() const { return m_resource; }
+  constexpr AudioStreamRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AudioStreamRaw and clear this.
-  constexpr AudioStreamRaw release()
+  constexpr AudioStreamRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -34236,16 +34238,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const AudioStream& other) const = default;
+  constexpr auto operator<=>(const AudioStream& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AudioStreamParam
-  constexpr operator AudioStreamParam() const { return {m_resource}; }
+  constexpr operator AudioStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Free an audio stream.
@@ -35154,7 +35156,7 @@ struct AudioStreamRef : AudioStream
    *
    * This does not takes ownership!
    */
-  AudioStreamRef(AudioStreamParam resource)
+  AudioStreamRef(AudioStreamParam resource) noexcept
     : AudioStream(resource.value)
   {
   }
@@ -35166,13 +35168,13 @@ struct AudioStreamRef : AudioStream
    *
    * This does not takes ownership!
    */
-  AudioStreamRef(AudioStreamRaw resource)
+  AudioStreamRef(AudioStreamRaw resource) noexcept
     : AudioStream(resource)
   {
   }
 
   /// Copy constructor.
-  AudioStreamRef(const AudioStreamRef& other)
+  AudioStreamRef(const AudioStreamRef& other) noexcept
     : AudioStream(other.get())
   {
   }
@@ -38504,7 +38506,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Process(const ProcessRaw resource)
+  constexpr explicit Process(const ProcessRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -38513,7 +38515,7 @@ public:
   constexpr Process(const Process& other) = delete;
 
   /// Move constructor
-  constexpr Process(Process&& other)
+  constexpr Process(Process&& other) noexcept
     : Process(other.release())
   {
   }
@@ -38636,7 +38638,7 @@ public:
   ~Process() { SDL_DestroyProcess(m_resource); }
 
   /// Assignment operator.
-  constexpr Process& operator=(Process&& other)
+  constexpr Process& operator=(Process&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -38644,7 +38646,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Process& operator=(const Process& other)
+  constexpr Process& operator=(const Process& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -38652,10 +38654,10 @@ protected:
 
 public:
   /// Retrieves underlying ProcessRaw.
-  constexpr ProcessRaw get() const { return m_resource; }
+  constexpr ProcessRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ProcessRaw and clear this.
-  constexpr ProcessRaw release()
+  constexpr ProcessRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -38663,16 +38665,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Process& other) const = default;
+  constexpr auto operator<=>(const Process& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ProcessParam
-  constexpr operator ProcessParam() const { return {m_resource}; }
+  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -38895,7 +38897,7 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessParam resource)
+  ProcessRef(ProcessParam resource) noexcept
     : Process(resource.value)
   {
   }
@@ -38907,13 +38909,13 @@ struct ProcessRef : Process
    *
    * This does not takes ownership!
    */
-  ProcessRef(ProcessRaw resource)
+  ProcessRef(ProcessRaw resource) noexcept
     : Process(resource)
   {
   }
 
   /// Copy constructor.
-  ProcessRef(const ProcessRef& other)
+  ProcessRef(const ProcessRef& other) noexcept
     : Process(other.get())
   {
   }
@@ -39597,7 +39599,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource)
+  constexpr explicit Storage(const StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -39606,7 +39608,7 @@ public:
   constexpr Storage(const Storage& other) = delete;
 
   /// Move constructor
-  constexpr Storage(Storage&& other)
+  constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
   {
   }
@@ -39727,7 +39729,7 @@ public:
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
 
   /// Assignment operator.
-  constexpr Storage& operator=(Storage&& other)
+  constexpr Storage& operator=(Storage&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -39735,7 +39737,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other)
+  constexpr Storage& operator=(const Storage& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -39743,10 +39745,10 @@ protected:
 
 public:
   /// Retrieves underlying StorageRaw.
-  constexpr StorageRaw get() const { return m_resource; }
+  constexpr StorageRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying StorageRaw and clear this.
-  constexpr StorageRaw release()
+  constexpr StorageRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -39754,16 +39756,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Storage& other) const = default;
+  constexpr auto operator<=>(const Storage& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to StorageParam
-  constexpr operator StorageParam() const { return {m_resource}; }
+  constexpr operator StorageParam() const noexcept { return {m_resource}; }
 
   /**
    * Closes and frees a storage container.
@@ -40090,7 +40092,7 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageParam resource)
+  StorageRef(StorageParam resource) noexcept
     : Storage(resource.value)
   {
   }
@@ -40102,13 +40104,13 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageRaw resource)
+  StorageRef(StorageRaw resource) noexcept
     : Storage(resource)
   {
   }
 
   /// Copy constructor.
-  StorageRef(const StorageRef& other)
+  StorageRef(const StorageRef& other) noexcept
     : Storage(other.get())
   {
   }
@@ -40926,7 +40928,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Surface(const SurfaceRaw resource)
+  constexpr explicit Surface(const SurfaceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -40935,7 +40937,7 @@ public:
   constexpr Surface(const Surface& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Surface(Surface&& other)
+  constexpr Surface(Surface&& other) noexcept
     : Surface(other.release())
   {
   }
@@ -41141,16 +41143,16 @@ public:
   static Surface LoadBMP(StringParam file);
 
   /// member access to underlying SurfaceRaw.
-  constexpr const SurfaceRaw operator->() const { return m_resource; }
+  constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying SurfaceRaw.
-  constexpr SurfaceRaw operator->() { return m_resource; }
+  constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
   /// Assignment operator.
-  constexpr Surface& operator=(Surface&& other)
+  constexpr Surface& operator=(Surface&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -41158,7 +41160,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Surface& operator=(const Surface& other)
+  constexpr Surface& operator=(const Surface& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -41166,10 +41168,10 @@ protected:
 
 public:
   /// Retrieves underlying SurfaceRaw.
-  constexpr SurfaceRaw get() const { return m_resource; }
+  constexpr SurfaceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SurfaceRaw and clear this.
-  constexpr SurfaceRaw release()
+  constexpr SurfaceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -41177,16 +41179,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Surface& other) const = default;
+  constexpr auto operator<=>(const Surface& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SurfaceParam
-  constexpr operator SurfaceParam() const { return {m_resource}; }
+  constexpr operator SurfaceParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a surface.
@@ -44966,7 +44968,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Thread(const ThreadRaw resource)
+  constexpr explicit Thread(const ThreadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -44975,7 +44977,7 @@ public:
   constexpr Thread(const Thread& other) = delete;
 
   /// Move constructor
-  constexpr Thread(Thread&& other)
+  constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())
   {
   }
@@ -45093,7 +45095,7 @@ public:
   ~Thread() { SDL_DetachThread(m_resource); }
 
   /// Assignment operator.
-  constexpr Thread& operator=(Thread&& other)
+  constexpr Thread& operator=(Thread&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -45101,7 +45103,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Thread& operator=(const Thread& other)
+  constexpr Thread& operator=(const Thread& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -45109,10 +45111,10 @@ protected:
 
 public:
   /// Retrieves underlying ThreadRaw.
-  constexpr ThreadRaw get() const { return m_resource; }
+  constexpr ThreadRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ThreadRaw and clear this.
-  constexpr ThreadRaw release()
+  constexpr ThreadRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -45120,16 +45122,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Thread& other) const = default;
+  constexpr auto operator<=>(const Thread& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ThreadParam
-  constexpr operator ThreadParam() const { return {m_resource}; }
+  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -45262,7 +45264,7 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadParam resource)
+  ThreadRef(ThreadParam resource) noexcept
     : Thread(resource.value)
   {
   }
@@ -45274,13 +45276,13 @@ struct ThreadRef : Thread
    *
    * This does not takes ownership!
    */
-  ThreadRef(ThreadRaw resource)
+  ThreadRef(ThreadRaw resource) noexcept
     : Thread(resource)
   {
   }
 
   /// Copy constructor.
-  ThreadRef(const ThreadRef& other)
+  ThreadRef(const ThreadRef& other) noexcept
     : Thread(other.get())
   {
   }
@@ -45809,7 +45811,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource)
+  constexpr explicit Camera(const CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -45818,7 +45820,7 @@ public:
   constexpr Camera(const Camera& other) = delete;
 
   /// Move constructor
-  constexpr Camera(Camera&& other)
+  constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
   {
   }
@@ -45880,7 +45882,7 @@ public:
   ~Camera() { SDL_CloseCamera(m_resource); }
 
   /// Assignment operator.
-  constexpr Camera& operator=(Camera&& other)
+  constexpr Camera& operator=(Camera&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -45888,7 +45890,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other)
+  constexpr Camera& operator=(const Camera& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -45896,10 +45898,10 @@ protected:
 
 public:
   /// Retrieves underlying CameraRaw.
-  constexpr CameraRaw get() const { return m_resource; }
+  constexpr CameraRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CameraRaw and clear this.
-  constexpr CameraRaw release()
+  constexpr CameraRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -45907,16 +45909,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Camera& other) const = default;
+  constexpr auto operator<=>(const Camera& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CameraParam
-  constexpr operator CameraParam() const { return {m_resource}; }
+  constexpr operator CameraParam() const noexcept { return {m_resource}; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -46093,7 +46095,7 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraParam resource)
+  CameraRef(CameraParam resource) noexcept
     : Camera(resource.value)
   {
   }
@@ -46105,13 +46107,13 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraRaw resource)
+  CameraRef(CameraRaw resource) noexcept
     : Camera(resource)
   {
   }
 
   /// Copy constructor.
-  CameraRef(const CameraRef& other)
+  CameraRef(const CameraRef& other) noexcept
     : Camera(other.get())
   {
   }
@@ -46752,7 +46754,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Mutex(const MutexRaw resource)
+  constexpr explicit Mutex(const MutexRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -46761,7 +46763,7 @@ public:
   constexpr Mutex(const Mutex& other) = delete;
 
   /// Move constructor
-  constexpr Mutex(Mutex&& other)
+  constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
   {
   }
@@ -46799,7 +46801,7 @@ public:
   ~Mutex() { SDL_DestroyMutex(m_resource); }
 
   /// Assignment operator.
-  constexpr Mutex& operator=(Mutex&& other)
+  constexpr Mutex& operator=(Mutex&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -46807,7 +46809,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Mutex& operator=(const Mutex& other)
+  constexpr Mutex& operator=(const Mutex& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -46815,10 +46817,10 @@ protected:
 
 public:
   /// Retrieves underlying MutexRaw.
-  constexpr MutexRaw get() const { return m_resource; }
+  constexpr MutexRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying MutexRaw and clear this.
-  constexpr MutexRaw release()
+  constexpr MutexRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -46826,16 +46828,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Mutex& other) const = default;
+  constexpr auto operator<=>(const Mutex& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to MutexParam
-  constexpr operator MutexParam() const { return {m_resource}; }
+  constexpr operator MutexParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a mutex created with Mutex.Mutex().
@@ -46924,7 +46926,7 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexParam resource)
+  MutexRef(MutexParam resource) noexcept
     : Mutex(resource.value)
   {
   }
@@ -46936,13 +46938,13 @@ struct MutexRef : Mutex
    *
    * This does not takes ownership!
    */
-  MutexRef(MutexRaw resource)
+  MutexRef(MutexRaw resource) noexcept
     : Mutex(resource)
   {
   }
 
   /// Copy constructor.
-  MutexRef(const MutexRef& other)
+  MutexRef(const MutexRef& other) noexcept
     : Mutex(other.get())
   {
   }
@@ -47097,7 +47099,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit RWLock(const RWLockRaw resource)
+  constexpr explicit RWLock(const RWLockRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -47106,7 +47108,7 @@ public:
   constexpr RWLock(const RWLock& other) = delete;
 
   /// Move constructor
-  constexpr RWLock(RWLock&& other)
+  constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
   {
   }
@@ -47164,7 +47166,7 @@ public:
   ~RWLock() { SDL_DestroyRWLock(m_resource); }
 
   /// Assignment operator.
-  constexpr RWLock& operator=(RWLock&& other)
+  constexpr RWLock& operator=(RWLock&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -47172,7 +47174,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr RWLock& operator=(const RWLock& other)
+  constexpr RWLock& operator=(const RWLock& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -47180,10 +47182,10 @@ protected:
 
 public:
   /// Retrieves underlying RWLockRaw.
-  constexpr RWLockRaw get() const { return m_resource; }
+  constexpr RWLockRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying RWLockRaw and clear this.
-  constexpr RWLockRaw release()
+  constexpr RWLockRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -47191,16 +47193,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const RWLock& other) const = default;
+  constexpr auto operator<=>(const RWLock& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to RWLockParam
-  constexpr operator RWLockParam() const { return {m_resource}; }
+  constexpr operator RWLockParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a read/write lock created with RWLock.RWLock().
@@ -47370,7 +47372,7 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockParam resource)
+  RWLockRef(RWLockParam resource) noexcept
     : RWLock(resource.value)
   {
   }
@@ -47382,13 +47384,13 @@ struct RWLockRef : RWLock
    *
    * This does not takes ownership!
    */
-  RWLockRef(RWLockRaw resource)
+  RWLockRef(RWLockRaw resource) noexcept
     : RWLock(resource)
   {
   }
 
   /// Copy constructor.
-  RWLockRef(const RWLockRef& other)
+  RWLockRef(const RWLockRef& other) noexcept
     : RWLock(other.get())
   {
   }
@@ -47665,7 +47667,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Semaphore(const SemaphoreRaw resource)
+  constexpr explicit Semaphore(const SemaphoreRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -47674,7 +47676,7 @@ public:
   constexpr Semaphore(const Semaphore& other) = delete;
 
   /// Move constructor
-  constexpr Semaphore(Semaphore&& other)
+  constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
   {
   }
@@ -47714,7 +47716,7 @@ public:
   ~Semaphore() { SDL_DestroySemaphore(m_resource); }
 
   /// Assignment operator.
-  constexpr Semaphore& operator=(Semaphore&& other)
+  constexpr Semaphore& operator=(Semaphore&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -47722,7 +47724,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Semaphore& operator=(const Semaphore& other)
+  constexpr Semaphore& operator=(const Semaphore& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -47730,10 +47732,10 @@ protected:
 
 public:
   /// Retrieves underlying SemaphoreRaw.
-  constexpr SemaphoreRaw get() const { return m_resource; }
+  constexpr SemaphoreRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SemaphoreRaw and clear this.
-  constexpr SemaphoreRaw release()
+  constexpr SemaphoreRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -47741,16 +47743,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Semaphore& other) const = default;
+  constexpr auto operator<=>(const Semaphore& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SemaphoreParam
-  constexpr operator SemaphoreParam() const { return {m_resource}; }
+  constexpr operator SemaphoreParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a semaphore.
@@ -47852,7 +47854,7 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreParam resource)
+  SemaphoreRef(SemaphoreParam resource) noexcept
     : Semaphore(resource.value)
   {
   }
@@ -47864,13 +47866,13 @@ struct SemaphoreRef : Semaphore
    *
    * This does not takes ownership!
    */
-  SemaphoreRef(SemaphoreRaw resource)
+  SemaphoreRef(SemaphoreRaw resource) noexcept
     : Semaphore(resource)
   {
   }
 
   /// Copy constructor.
-  SemaphoreRef(const SemaphoreRef& other)
+  SemaphoreRef(const SemaphoreRef& other) noexcept
     : Semaphore(other.get())
   {
   }
@@ -48057,7 +48059,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Condition(const ConditionRaw resource)
+  constexpr explicit Condition(const ConditionRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -48066,7 +48068,7 @@ public:
   constexpr Condition(const Condition& other) = delete;
 
   /// Move constructor
-  constexpr Condition(Condition&& other)
+  constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())
   {
   }
@@ -48098,7 +48100,7 @@ public:
   ~Condition() { SDL_DestroyCondition(m_resource); }
 
   /// Assignment operator.
-  constexpr Condition& operator=(Condition&& other)
+  constexpr Condition& operator=(Condition&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -48106,7 +48108,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Condition& operator=(const Condition& other)
+  constexpr Condition& operator=(const Condition& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -48114,10 +48116,10 @@ protected:
 
 public:
   /// Retrieves underlying ConditionRaw.
-  constexpr ConditionRaw get() const { return m_resource; }
+  constexpr ConditionRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying ConditionRaw and clear this.
-  constexpr ConditionRaw release()
+  constexpr ConditionRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -48125,16 +48127,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Condition& other) const = default;
+  constexpr auto operator<=>(const Condition& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to ConditionParam
-  constexpr operator ConditionParam() const { return {m_resource}; }
+  constexpr operator ConditionParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a condition variable.
@@ -48240,7 +48242,7 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionParam resource)
+  ConditionRef(ConditionParam resource) noexcept
     : Condition(resource.value)
   {
   }
@@ -48252,13 +48254,13 @@ struct ConditionRef : Condition
    *
    * This does not takes ownership!
    */
-  ConditionRef(ConditionRaw resource)
+  ConditionRef(ConditionRaw resource) noexcept
     : Condition(resource)
   {
   }
 
   /// Copy constructor.
-  ConditionRef(const ConditionRef& other)
+  ConditionRef(const ConditionRef& other) noexcept
     : Condition(other.get())
   {
   }
@@ -48799,7 +48801,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Tray(const TrayRaw resource)
+  constexpr explicit Tray(const TrayRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -48808,7 +48810,7 @@ public:
   constexpr Tray(const Tray& other) = delete;
 
   /// Move constructor
-  constexpr Tray(Tray&& other)
+  constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
   {
   }
@@ -48849,7 +48851,7 @@ public:
   ~Tray() { SDL_DestroyTray(m_resource); }
 
   /// Assignment operator.
-  constexpr Tray& operator=(Tray&& other)
+  constexpr Tray& operator=(Tray&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -48857,7 +48859,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Tray& operator=(const Tray& other)
+  constexpr Tray& operator=(const Tray& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -48865,10 +48867,10 @@ protected:
 
 public:
   /// Retrieves underlying TrayRaw.
-  constexpr TrayRaw get() const { return m_resource; }
+  constexpr TrayRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TrayRaw and clear this.
-  constexpr TrayRaw release()
+  constexpr TrayRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -48876,16 +48878,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Tray& other) const = default;
+  constexpr auto operator<=>(const Tray& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TrayParam
-  constexpr operator TrayParam() const { return {m_resource}; }
+  constexpr operator TrayParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a tray object.
@@ -48988,7 +48990,7 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayParam resource)
+  TrayRef(TrayParam resource) noexcept
     : Tray(resource.value)
   {
   }
@@ -49000,13 +49002,13 @@ struct TrayRef : Tray
    *
    * This does not takes ownership!
    */
-  TrayRef(TrayRaw resource)
+  TrayRef(TrayRaw resource) noexcept
     : Tray(resource)
   {
   }
 
   /// Copy constructor.
-  TrayRef(const TrayRef& other)
+  TrayRef(const TrayRef& other) noexcept
     : Tray(other.get())
   {
   }
@@ -49171,7 +49173,7 @@ public:
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
-  constexpr TrayEntry(const TrayEntryRaw resource)
+  constexpr TrayEntry(const TrayEntryRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -49180,7 +49182,7 @@ public:
   constexpr TrayEntry(const TrayEntry& other) = default;
 
   /// Move constructor
-  constexpr TrayEntry(TrayEntry&& other)
+  constexpr TrayEntry(TrayEntry&& other) noexcept
     : TrayEntry(other.release())
   {
   }
@@ -49189,7 +49191,7 @@ public:
   ~TrayEntry() {}
 
   /// Assignment operator.
-  constexpr TrayEntry& operator=(TrayEntry&& other)
+  constexpr TrayEntry& operator=(TrayEntry&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -49197,7 +49199,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TrayEntry& operator=(const TrayEntry& other)
+  constexpr TrayEntry& operator=(const TrayEntry& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -49205,10 +49207,10 @@ protected:
 
 public:
   /// Retrieves underlying TrayEntryRaw.
-  constexpr TrayEntryRaw get() const { return m_resource; }
+  constexpr TrayEntryRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TrayEntryRaw and clear this.
-  constexpr TrayEntryRaw release()
+  constexpr TrayEntryRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -49216,16 +49218,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const TrayEntry& other) const = default;
+  constexpr auto operator<=>(const TrayEntry& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TrayEntryParam
-  constexpr operator TrayEntryParam() const { return {m_resource}; }
+  constexpr operator TrayEntryParam() const noexcept { return {m_resource}; }
 
   /**
    * Removes a tray entry.
@@ -49458,7 +49460,7 @@ struct TrayEntryScoped : TrayEntry
   constexpr TrayEntryScoped(const TrayEntry& other) = delete;
 
   /// Move constructor
-  constexpr TrayEntryScoped(TrayEntry&& other)
+  constexpr TrayEntryScoped(TrayEntry&& other) noexcept
     : TrayEntry(other.release())
   {
   }
@@ -50805,7 +50807,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource)
+  constexpr explicit Window(const WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -50814,7 +50816,7 @@ public:
   constexpr Window(const Window& other) = delete;
 
   /// Move constructor
-  constexpr Window(Window&& other)
+  constexpr Window(Window&& other) noexcept
     : Window(other.release())
   {
   }
@@ -51131,7 +51133,7 @@ public:
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
-  constexpr Window& operator=(Window&& other)
+  constexpr Window& operator=(Window&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -51139,7 +51141,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other)
+  constexpr Window& operator=(const Window& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -51147,10 +51149,10 @@ protected:
 
 public:
   /// Retrieves underlying WindowRaw.
-  constexpr WindowRaw get() const { return m_resource; }
+  constexpr WindowRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying WindowRaw and clear this.
-  constexpr WindowRaw release()
+  constexpr WindowRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -51158,16 +51160,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Window& other) const = default;
+  constexpr auto operator<=>(const Window& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to WindowParam
-  constexpr operator WindowParam() const { return {m_resource}; }
+  constexpr operator WindowParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a window.
@@ -53036,7 +53038,7 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowParam resource)
+  WindowRef(WindowParam resource) noexcept
     : Window(resource.value)
   {
   }
@@ -53048,13 +53050,13 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowRaw resource)
+  WindowRef(WindowRaw resource) noexcept
     : Window(resource)
   {
   }
 
   /// Copy constructor.
-  WindowRef(const WindowRef& other)
+  WindowRef(const WindowRef& other) noexcept
     : Window(other.get())
   {
   }
@@ -53177,7 +53179,7 @@ public:
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource)
+  constexpr GLContext(const GLContextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -53186,7 +53188,7 @@ public:
   constexpr GLContext(const GLContext& other) = default;
 
   /// Move constructor
-  constexpr GLContext(GLContext&& other)
+  constexpr GLContext(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -53222,7 +53224,7 @@ public:
   ~GLContext() {}
 
   /// Assignment operator.
-  constexpr GLContext& operator=(GLContext&& other)
+  constexpr GLContext& operator=(GLContext&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -53230,7 +53232,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other)
+  constexpr GLContext& operator=(const GLContext& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -53238,10 +53240,10 @@ protected:
 
 public:
   /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const { return m_resource; }
+  constexpr GLContextRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release()
+  constexpr GLContextRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -53249,16 +53251,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const = default;
+  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GLContextParam
-  constexpr operator GLContextParam() const { return {m_resource}; }
+  constexpr operator GLContextParam() const noexcept { return {m_resource}; }
 
   /**
    * Delete an OpenGL context.
@@ -53296,7 +53298,7 @@ struct GLContextScoped : GLContext
   constexpr GLContextScoped(const GLContext& other) = delete;
 
   /// Move constructor
-  constexpr GLContextScoped(GLContext&& other)
+  constexpr GLContextScoped(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -62532,7 +62534,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit GPUDevice(const GPUDeviceRaw resource)
+  constexpr explicit GPUDevice(const GPUDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -62541,7 +62543,7 @@ public:
   constexpr GPUDevice(const GPUDevice& other) = delete;
 
   /// Move constructor
-  constexpr GPUDevice(GPUDevice&& other)
+  constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())
   {
   }
@@ -62626,7 +62628,7 @@ public:
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
 
   /// Assignment operator.
-  constexpr GPUDevice& operator=(GPUDevice&& other)
+  constexpr GPUDevice& operator=(GPUDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -62634,7 +62636,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GPUDevice& operator=(const GPUDevice& other)
+  constexpr GPUDevice& operator=(const GPUDevice& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -62642,10 +62644,10 @@ protected:
 
 public:
   /// Retrieves underlying GPUDeviceRaw.
-  constexpr GPUDeviceRaw get() const { return m_resource; }
+  constexpr GPUDeviceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GPUDeviceRaw and clear this.
-  constexpr GPUDeviceRaw release()
+  constexpr GPUDeviceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -62653,16 +62655,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GPUDevice& other) const = default;
+  constexpr auto operator<=>(const GPUDevice& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GPUDeviceParam
-  constexpr operator GPUDeviceParam() const { return {m_resource}; }
+  constexpr operator GPUDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -63423,7 +63425,7 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceParam resource)
+  GPUDeviceRef(GPUDeviceParam resource) noexcept
     : GPUDevice(resource.value)
   {
   }
@@ -63435,13 +63437,13 @@ struct GPUDeviceRef : GPUDevice
    *
    * This does not takes ownership!
    */
-  GPUDeviceRef(GPUDeviceRaw resource)
+  GPUDeviceRef(GPUDeviceRaw resource) noexcept
     : GPUDevice(resource)
   {
   }
 
   /// Copy constructor.
-  GPUDeviceRef(const GPUDeviceRef& other)
+  GPUDeviceRef(const GPUDeviceRef& other) noexcept
     : GPUDevice(other.get())
   {
   }
@@ -67494,7 +67496,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Joystick(const JoystickRaw resource)
+  constexpr explicit Joystick(const JoystickRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -67503,7 +67505,7 @@ public:
   constexpr Joystick(const Joystick& other) = delete;
 
   /// Move constructor
-  constexpr Joystick(Joystick&& other)
+  constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())
   {
   }
@@ -67534,7 +67536,7 @@ public:
   ~Joystick() { SDL_CloseJoystick(m_resource); }
 
   /// Assignment operator.
-  constexpr Joystick& operator=(Joystick&& other)
+  constexpr Joystick& operator=(Joystick&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -67542,7 +67544,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Joystick& operator=(const Joystick& other)
+  constexpr Joystick& operator=(const Joystick& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -67550,10 +67552,10 @@ protected:
 
 public:
   /// Retrieves underlying JoystickRaw.
-  constexpr JoystickRaw get() const { return m_resource; }
+  constexpr JoystickRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying JoystickRaw and clear this.
-  constexpr JoystickRaw release()
+  constexpr JoystickRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -67561,16 +67563,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Joystick& other) const = default;
+  constexpr auto operator<=>(const Joystick& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to JoystickParam
-  constexpr operator JoystickParam() const { return {m_resource}; }
+  constexpr operator JoystickParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
@@ -68158,7 +68160,7 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickParam resource)
+  JoystickRef(JoystickParam resource) noexcept
     : Joystick(resource.value)
   {
   }
@@ -68170,13 +68172,13 @@ struct JoystickRef : Joystick
    *
    * This does not takes ownership!
    */
-  JoystickRef(JoystickRaw resource)
+  JoystickRef(JoystickRaw resource) noexcept
     : Joystick(resource)
   {
   }
 
   /// Copy constructor.
-  JoystickRef(const JoystickRef& other)
+  JoystickRef(const JoystickRef& other) noexcept
     : Joystick(other.get())
   {
   }
@@ -70462,7 +70464,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource)
+  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -70471,7 +70473,7 @@ public:
   constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
-  constexpr MetalView(MetalView&& other)
+  constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
   {
   }
@@ -70507,7 +70509,7 @@ public:
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
 
   /// Assignment operator.
-  constexpr MetalView& operator=(MetalView&& other)
+  constexpr MetalView& operator=(MetalView&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -70515,7 +70517,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other)
+  constexpr MetalView& operator=(const MetalView& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -70523,10 +70525,10 @@ protected:
 
 public:
   /// Retrieves underlying MetalViewRaw.
-  constexpr MetalViewRaw get() const { return m_resource; }
+  constexpr MetalViewRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying MetalViewRaw and clear this.
-  constexpr MetalViewRaw release()
+  constexpr MetalViewRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -70534,16 +70536,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const MetalView& other) const = default;
+  constexpr auto operator<=>(const MetalView& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to MetalViewParam
-  constexpr operator MetalViewParam() const { return {m_resource}; }
+  constexpr operator MetalViewParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy an existing MetalView object.
@@ -70579,7 +70581,7 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewParam resource)
+  MetalViewRef(MetalViewParam resource) noexcept
     : MetalView(resource.value)
   {
   }
@@ -70591,13 +70593,13 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource)
+  MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
 
   /// Copy constructor.
-  MetalViewRef(const MetalViewRef& other)
+  MetalViewRef(const MetalViewRef& other) noexcept
     : MetalView(other.get())
   {
   }
@@ -70851,7 +70853,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Cursor(const CursorRaw resource)
+  constexpr explicit Cursor(const CursorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -70860,7 +70862,7 @@ public:
   constexpr Cursor(const Cursor& other) = delete;
 
   /// Move constructor
-  constexpr Cursor(Cursor&& other)
+  constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())
   {
   }
@@ -70973,7 +70975,7 @@ public:
   ~Cursor() { SDL_DestroyCursor(m_resource); }
 
   /// Assignment operator.
-  constexpr Cursor& operator=(Cursor&& other)
+  constexpr Cursor& operator=(Cursor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -70981,7 +70983,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Cursor& operator=(const Cursor& other)
+  constexpr Cursor& operator=(const Cursor& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -70989,10 +70991,10 @@ protected:
 
 public:
   /// Retrieves underlying CursorRaw.
-  constexpr CursorRaw get() const { return m_resource; }
+  constexpr CursorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CursorRaw and clear this.
-  constexpr CursorRaw release()
+  constexpr CursorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -71000,16 +71002,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Cursor& other) const = default;
+  constexpr auto operator<=>(const Cursor& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CursorParam
-  constexpr operator CursorParam() const { return {m_resource}; }
+  constexpr operator CursorParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
@@ -71058,7 +71060,7 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorParam resource)
+  CursorRef(CursorParam resource) noexcept
     : Cursor(resource.value)
   {
   }
@@ -71070,13 +71072,13 @@ struct CursorRef : Cursor
    *
    * This does not takes ownership!
    */
-  CursorRef(CursorRaw resource)
+  CursorRef(CursorRaw resource) noexcept
     : Cursor(resource)
   {
   }
 
   /// Copy constructor.
-  CursorRef(const CursorRef& other)
+  CursorRef(const CursorRef& other) noexcept
     : Cursor(other.get())
   {
   }
@@ -72065,7 +72067,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Gamepad(const GamepadRaw resource)
+  constexpr explicit Gamepad(const GamepadRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -72074,7 +72076,7 @@ public:
   constexpr Gamepad(const Gamepad& other) = delete;
 
   /// Move constructor
-  constexpr Gamepad(Gamepad&& other)
+  constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())
   {
   }
@@ -72104,7 +72106,7 @@ public:
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
 
   /// Assignment operator.
-  constexpr Gamepad& operator=(Gamepad&& other)
+  constexpr Gamepad& operator=(Gamepad&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -72112,7 +72114,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Gamepad& operator=(const Gamepad& other)
+  constexpr Gamepad& operator=(const Gamepad& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -72120,10 +72122,10 @@ protected:
 
 public:
   /// Retrieves underlying GamepadRaw.
-  constexpr GamepadRaw get() const { return m_resource; }
+  constexpr GamepadRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GamepadRaw and clear this.
-  constexpr GamepadRaw release()
+  constexpr GamepadRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -72131,16 +72133,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Gamepad& other) const = default;
+  constexpr auto operator<=>(const Gamepad& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GamepadParam
-  constexpr operator GamepadParam() const { return {m_resource}; }
+  constexpr operator GamepadParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
@@ -72731,7 +72733,7 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadParam resource)
+  GamepadRef(GamepadParam resource) noexcept
     : Gamepad(resource.value)
   {
   }
@@ -72743,13 +72745,13 @@ struct GamepadRef : Gamepad
    *
    * This does not takes ownership!
    */
-  GamepadRef(GamepadRaw resource)
+  GamepadRef(GamepadRaw resource) noexcept
     : Gamepad(resource)
   {
   }
 
   /// Copy constructor.
-  GamepadRef(const GamepadRef& other)
+  GamepadRef(const GamepadRef& other) noexcept
     : Gamepad(other.get())
   {
   }
@@ -75167,7 +75169,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Haptic(const HapticRaw resource)
+  constexpr explicit Haptic(const HapticRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -75176,7 +75178,7 @@ public:
   constexpr Haptic(const Haptic& other) = delete;
 
   /// Move constructor
-  constexpr Haptic(Haptic&& other)
+  constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())
   {
   }
@@ -75255,7 +75257,7 @@ public:
   ~Haptic() { SDL_CloseHaptic(m_resource); }
 
   /// Assignment operator.
-  constexpr Haptic& operator=(Haptic&& other)
+  constexpr Haptic& operator=(Haptic&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -75263,7 +75265,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Haptic& operator=(const Haptic& other)
+  constexpr Haptic& operator=(const Haptic& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -75271,10 +75273,10 @@ protected:
 
 public:
   /// Retrieves underlying HapticRaw.
-  constexpr HapticRaw get() const { return m_resource; }
+  constexpr HapticRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying HapticRaw and clear this.
-  constexpr HapticRaw release()
+  constexpr HapticRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -75282,16 +75284,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Haptic& other) const = default;
+  constexpr auto operator<=>(const Haptic& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to HapticParam
-  constexpr operator HapticParam() const { return {m_resource}; }
+  constexpr operator HapticParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
@@ -75636,7 +75638,7 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticParam resource)
+  HapticRef(HapticParam resource) noexcept
     : Haptic(resource.value)
   {
   }
@@ -75648,13 +75650,13 @@ struct HapticRef : Haptic
    *
    * This does not takes ownership!
    */
-  HapticRef(HapticRaw resource)
+  HapticRef(HapticRaw resource) noexcept
     : Haptic(resource)
   {
   }
 
   /// Copy constructor.
-  HapticRef(const HapticRef& other)
+  HapticRef(const HapticRef& other) noexcept
     : Haptic(other.get())
   {
   }
@@ -77323,7 +77325,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Renderer(const RendererRaw resource)
+  constexpr explicit Renderer(const RendererRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -77332,7 +77334,7 @@ public:
   constexpr Renderer(const Renderer& other) = delete;
 
   /// Move constructor
-  constexpr Renderer(Renderer&& other)
+  constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
   {
   }
@@ -77496,7 +77498,7 @@ public:
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
 
   /// Assignment operator.
-  constexpr Renderer& operator=(Renderer&& other)
+  constexpr Renderer& operator=(Renderer&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -77504,7 +77506,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Renderer& operator=(const Renderer& other)
+  constexpr Renderer& operator=(const Renderer& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -77512,10 +77514,10 @@ protected:
 
 public:
   /// Retrieves underlying RendererRaw.
-  constexpr RendererRaw get() const { return m_resource; }
+  constexpr RendererRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying RendererRaw and clear this.
-  constexpr RendererRaw release()
+  constexpr RendererRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -77523,16 +77525,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Renderer& other) const = default;
+  constexpr auto operator<=>(const Renderer& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to RendererParam
-  constexpr operator RendererParam() const { return {m_resource}; }
+  constexpr operator RendererParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -79205,7 +79207,7 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererParam resource)
+  RendererRef(RendererParam resource) noexcept
     : Renderer(resource.value)
   {
   }
@@ -79217,13 +79219,13 @@ struct RendererRef : Renderer
    *
    * This does not takes ownership!
    */
-  RendererRef(RendererRaw resource)
+  RendererRef(RendererRaw resource) noexcept
     : Renderer(resource)
   {
   }
 
   /// Copy constructor.
-  RendererRef(const RendererRef& other)
+  RendererRef(const RendererRef& other) noexcept
     : Renderer(other.get())
   {
   }
@@ -79259,7 +79261,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Texture(const TextureRaw resource)
+  constexpr explicit Texture(const TextureRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -79268,7 +79270,7 @@ public:
   constexpr Texture(const Texture& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Texture(Texture&& other)
+  constexpr Texture(Texture&& other) noexcept
     : Texture(other.release())
   {
   }
@@ -79534,16 +79536,16 @@ public:
   }
 
   /// member access to underlying TextureRaw.
-  constexpr const TextureRaw operator->() const { return m_resource; }
+  constexpr const TextureRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextureRaw.
-  constexpr TextureRaw operator->() { return m_resource; }
+  constexpr TextureRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
   /// Assignment operator.
-  constexpr Texture& operator=(Texture&& other)
+  constexpr Texture& operator=(Texture&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -79551,7 +79553,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Texture& operator=(const Texture& other)
+  constexpr Texture& operator=(const Texture& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -79559,10 +79561,10 @@ protected:
 
 public:
   /// Retrieves underlying TextureRaw.
-  constexpr TextureRaw get() const { return m_resource; }
+  constexpr TextureRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextureRaw and clear this.
-  constexpr TextureRaw release()
+  constexpr TextureRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -79570,16 +79572,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Texture& other) const = default;
+  constexpr auto operator<=>(const Texture& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextureParam
-  constexpr operator TextureParam() const { return {m_resource}; }
+  constexpr operator TextureParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the specified texture.
@@ -87504,7 +87506,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource)
+  constexpr explicit Animation(const AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -87513,7 +87515,7 @@ public:
   constexpr Animation(const Animation& other) = delete;
 
   /// Move constructor
-  constexpr Animation(Animation&& other)
+  constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
   {
   }
@@ -87565,16 +87567,19 @@ public:
   }
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const { return m_resource; }
+  constexpr const AnimationRaw operator->() const noexcept
+  {
+    return m_resource;
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr AnimationRaw operator->() { return m_resource; }
+  constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
   /// Assignment operator.
-  constexpr Animation& operator=(Animation&& other)
+  constexpr Animation& operator=(Animation&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -87582,7 +87587,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other)
+  constexpr Animation& operator=(const Animation& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -87590,10 +87595,10 @@ protected:
 
 public:
   /// Retrieves underlying AnimationRaw.
-  constexpr AnimationRaw get() const { return m_resource; }
+  constexpr AnimationRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AnimationRaw and clear this.
-  constexpr AnimationRaw release()
+  constexpr AnimationRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -87601,16 +87606,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Animation& other) const = default;
+  constexpr auto operator<=>(const Animation& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AnimationParam
-  constexpr operator AnimationParam() const { return {m_resource}; }
+  constexpr operator AnimationParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -87663,7 +87668,7 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationParam resource)
+  AnimationRef(AnimationParam resource) noexcept
     : Animation(resource.value)
   {
   }
@@ -87675,13 +87680,13 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationRaw resource)
+  AnimationRef(AnimationRaw resource) noexcept
     : Animation(resource)
   {
   }
 
   /// Copy constructor.
-  AnimationRef(const AnimationRef& other)
+  AnimationRef(const AnimationRef& other) noexcept
     : Animation(other.get())
   {
   }
@@ -88356,7 +88361,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Font(const FontRaw resource)
+  constexpr explicit Font(const FontRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -88365,7 +88370,7 @@ public:
   constexpr Font(const Font& other) = delete;
 
   /// Move constructor
-  constexpr Font(Font&& other)
+  constexpr Font(Font&& other) noexcept
     : Font(other.release())
   {
   }
@@ -88477,7 +88482,7 @@ public:
   ~Font() { TTF_CloseFont(m_resource); }
 
   /// Assignment operator.
-  constexpr Font& operator=(Font&& other)
+  constexpr Font& operator=(Font&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -88485,7 +88490,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Font& operator=(const Font& other)
+  constexpr Font& operator=(const Font& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -88493,10 +88498,10 @@ protected:
 
 public:
   /// Retrieves underlying FontRaw.
-  constexpr FontRaw get() const { return m_resource; }
+  constexpr FontRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying FontRaw and clear this.
-  constexpr FontRaw release()
+  constexpr FontRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -88504,16 +88509,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Font& other) const = default;
+  constexpr auto operator<=>(const Font& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to FontParam
-  constexpr operator FontParam() const { return {m_resource}; }
+  constexpr operator FontParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of a previously-created font.
@@ -89841,7 +89846,7 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontParam resource)
+  FontRef(FontParam resource) noexcept
     : Font(resource.value)
   {
   }
@@ -89853,13 +89858,13 @@ struct FontRef : Font
    *
    * This does not takes ownership!
    */
-  FontRef(FontRaw resource)
+  FontRef(FontRaw resource) noexcept
     : Font(resource)
   {
   }
 
   /// Copy constructor.
-  FontRef(const FontRef& other)
+  FontRef(const FontRef& other) noexcept
     : Font(other.get())
   {
   }
@@ -91907,7 +91912,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit TextEngine(const TextEngineRaw resource)
+  constexpr explicit TextEngine(const TextEngineRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -91916,7 +91921,7 @@ public:
   constexpr TextEngine(const TextEngine& other) = delete;
 
   /// Move constructor
-  constexpr TextEngine(TextEngine&& other)
+  constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
   {
   }
@@ -91925,7 +91930,7 @@ public:
   virtual ~TextEngine() = default;
 
   /// Assignment operator.
-  constexpr TextEngine& operator=(TextEngine&& other)
+  constexpr TextEngine& operator=(TextEngine&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -91933,7 +91938,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr TextEngine& operator=(const TextEngine& other)
+  constexpr TextEngine& operator=(const TextEngine& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -91941,10 +91946,10 @@ protected:
 
 public:
   /// Retrieves underlying TextEngineRaw.
-  constexpr TextEngineRaw get() const { return m_resource; }
+  constexpr TextEngineRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextEngineRaw and clear this.
-  constexpr TextEngineRaw release()
+  constexpr TextEngineRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -91952,16 +91957,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const TextEngine& other) const = default;
+  constexpr auto operator<=>(const TextEngine& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextEngineParam
-  constexpr operator TextEngineParam() const { return {m_resource}; }
+  constexpr operator TextEngineParam() const noexcept { return {m_resource}; }
 
   /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
@@ -92255,7 +92260,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Text(const TextRaw resource)
+  constexpr explicit Text(const TextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -92264,7 +92269,7 @@ public:
   constexpr Text(const Text& other) = delete;
 
   /// Move constructor
-  constexpr Text(Text&& other)
+  constexpr Text(Text&& other) noexcept
     : Text(other.release())
   {
   }
@@ -92296,16 +92301,16 @@ public:
   }
 
   /// member access to underlying TextRaw.
-  constexpr const TextRaw operator->() const { return m_resource; }
+  constexpr const TextRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying TextRaw.
-  constexpr TextRaw operator->() { return m_resource; }
+  constexpr TextRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }
 
   /// Assignment operator.
-  constexpr Text& operator=(Text&& other)
+  constexpr Text& operator=(Text&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -92313,7 +92318,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Text& operator=(const Text& other)
+  constexpr Text& operator=(const Text& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -92321,10 +92326,10 @@ protected:
 
 public:
   /// Retrieves underlying TextRaw.
-  constexpr TextRaw get() const { return m_resource; }
+  constexpr TextRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying TextRaw and clear this.
-  constexpr TextRaw release()
+  constexpr TextRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -92332,16 +92337,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Text& other) const = default;
+  constexpr auto operator<=>(const Text& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to TextParam
-  constexpr operator TextParam() const { return {m_resource}; }
+  constexpr operator TextParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a text object created by a text engine.
@@ -93147,7 +93152,7 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextParam resource = nullptr)
+  TextRef(TextParam resource = nullptr) noexcept
     : Text(resource.value)
   {
   }
@@ -93159,13 +93164,13 @@ struct TextRef : Text
    *
    * This does not takes ownership!
    */
-  TextRef(TextRaw resource)
+  TextRef(TextRaw resource) noexcept
     : Text(resource)
   {
   }
 
   /// Copy constructor.
-  TextRef(const TextRef& other)
+  TextRef(const TextRef& other) noexcept
     : Text(other.get())
   {
   }

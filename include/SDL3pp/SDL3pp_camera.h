@@ -160,7 +160,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Camera(const CameraRaw resource)
+  constexpr explicit Camera(const CameraRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -169,7 +169,7 @@ public:
   constexpr Camera(const Camera& other) = delete;
 
   /// Move constructor
-  constexpr Camera(Camera&& other)
+  constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())
   {
   }
@@ -231,7 +231,7 @@ public:
   ~Camera() { SDL_CloseCamera(m_resource); }
 
   /// Assignment operator.
-  constexpr Camera& operator=(Camera&& other)
+  constexpr Camera& operator=(Camera&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -239,7 +239,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Camera& operator=(const Camera& other)
+  constexpr Camera& operator=(const Camera& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -247,10 +247,10 @@ protected:
 
 public:
   /// Retrieves underlying CameraRaw.
-  constexpr CameraRaw get() const { return m_resource; }
+  constexpr CameraRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying CameraRaw and clear this.
-  constexpr CameraRaw release()
+  constexpr CameraRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -258,16 +258,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Camera& other) const = default;
+  constexpr auto operator<=>(const Camera& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to CameraParam
-  constexpr operator CameraParam() const { return {m_resource}; }
+  constexpr operator CameraParam() const noexcept { return {m_resource}; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -444,7 +444,7 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraParam resource)
+  CameraRef(CameraParam resource) noexcept
     : Camera(resource.value)
   {
   }
@@ -456,13 +456,13 @@ struct CameraRef : Camera
    *
    * This does not takes ownership!
    */
-  CameraRef(CameraRaw resource)
+  CameraRef(CameraRaw resource) noexcept
     : Camera(resource)
   {
   }
 
   /// Copy constructor.
-  CameraRef(const CameraRef& other)
+  CameraRef(const CameraRef& other) noexcept
     : Camera(other.get())
   {
   }

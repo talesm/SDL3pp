@@ -174,7 +174,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Sensor(const SensorRaw resource)
+  constexpr explicit Sensor(const SensorRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -183,7 +183,7 @@ public:
   constexpr Sensor(const Sensor& other) = delete;
 
   /// Move constructor
-  constexpr Sensor(Sensor&& other)
+  constexpr Sensor(Sensor&& other) noexcept
     : Sensor(other.release())
   {
   }
@@ -210,7 +210,7 @@ public:
   ~Sensor() { SDL_CloseSensor(m_resource); }
 
   /// Assignment operator.
-  constexpr Sensor& operator=(Sensor&& other)
+  constexpr Sensor& operator=(Sensor&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -218,7 +218,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Sensor& operator=(const Sensor& other)
+  constexpr Sensor& operator=(const Sensor& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -226,10 +226,10 @@ protected:
 
 public:
   /// Retrieves underlying SensorRaw.
-  constexpr SensorRaw get() const { return m_resource; }
+  constexpr SensorRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying SensorRaw and clear this.
-  constexpr SensorRaw release()
+  constexpr SensorRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -237,16 +237,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Sensor& other) const = default;
+  constexpr auto operator<=>(const Sensor& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to SensorParam
-  constexpr operator SensorParam() const { return {m_resource}; }
+  constexpr operator SensorParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a sensor previously opened with Sensor.Sensor().
@@ -329,7 +329,7 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorParam resource)
+  SensorRef(SensorParam resource) noexcept
     : Sensor(resource.value)
   {
   }
@@ -341,13 +341,13 @@ struct SensorRef : Sensor
    *
    * This does not takes ownership!
    */
-  SensorRef(SensorRaw resource)
+  SensorRef(SensorRaw resource) noexcept
     : Sensor(resource)
   {
   }
 
   /// Copy constructor.
-  SensorRef(const SensorRef& other)
+  SensorRef(const SensorRef& other) noexcept
     : Sensor(other.get())
   {
   }

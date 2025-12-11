@@ -142,7 +142,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IOStream(const IOStreamRaw resource)
+  constexpr explicit IOStream(const IOStreamRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -151,7 +151,7 @@ public:
   constexpr IOStream(const IOStream& other) = delete;
 
   /// Move constructor
-  constexpr IOStream(IOStream&& other)
+  constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())
   {
   }
@@ -387,7 +387,7 @@ public:
   ~IOStream() { SDL_CloseIO(m_resource); }
 
   /// Assignment operator.
-  constexpr IOStream& operator=(IOStream&& other)
+  constexpr IOStream& operator=(IOStream&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -395,7 +395,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IOStream& operator=(const IOStream& other)
+  constexpr IOStream& operator=(const IOStream& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -403,10 +403,10 @@ protected:
 
 public:
   /// Retrieves underlying IOStreamRaw.
-  constexpr IOStreamRaw get() const { return m_resource; }
+  constexpr IOStreamRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IOStreamRaw and clear this.
-  constexpr IOStreamRaw release()
+  constexpr IOStreamRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -414,16 +414,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IOStream& other) const = default;
+  constexpr auto operator<=>(const IOStream& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to IOStreamParam
-  constexpr operator IOStreamParam() const { return {m_resource}; }
+  constexpr operator IOStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free an allocated IOStream structure.
@@ -1642,7 +1642,7 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamParam resource)
+  IOStreamRef(IOStreamParam resource) noexcept
     : IOStream(resource.value)
   {
   }
@@ -1654,13 +1654,13 @@ struct IOStreamRef : IOStream
    *
    * This does not takes ownership!
    */
-  IOStreamRef(IOStreamRaw resource)
+  IOStreamRef(IOStreamRaw resource) noexcept
     : IOStream(resource)
   {
   }
 
   /// Copy constructor.
-  IOStreamRef(const IOStreamRef& other)
+  IOStreamRef(const IOStreamRef& other) noexcept
     : IOStream(other.get())
   {
   }

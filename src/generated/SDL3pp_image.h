@@ -2083,7 +2083,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Animation(const AnimationRaw resource)
+  constexpr explicit Animation(const AnimationRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2092,7 +2092,7 @@ public:
   constexpr Animation(const Animation& other) = delete;
 
   /// Move constructor
-  constexpr Animation(Animation&& other)
+  constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())
   {
   }
@@ -2144,16 +2144,19 @@ public:
   }
 
   /// member access to underlying AnimationRaw.
-  constexpr const AnimationRaw operator->() const { return m_resource; }
+  constexpr const AnimationRaw operator->() const noexcept
+  {
+    return m_resource;
+  }
 
   /// member access to underlying AnimationRaw.
-  constexpr AnimationRaw operator->() { return m_resource; }
+  constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
   /// Assignment operator.
-  constexpr Animation& operator=(Animation&& other)
+  constexpr Animation& operator=(Animation&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -2161,7 +2164,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Animation& operator=(const Animation& other)
+  constexpr Animation& operator=(const Animation& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -2169,10 +2172,10 @@ protected:
 
 public:
   /// Retrieves underlying AnimationRaw.
-  constexpr AnimationRaw get() const { return m_resource; }
+  constexpr AnimationRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying AnimationRaw and clear this.
-  constexpr AnimationRaw release()
+  constexpr AnimationRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -2180,16 +2183,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Animation& other) const = default;
+  constexpr auto operator<=>(const Animation& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to AnimationParam
-  constexpr operator AnimationParam() const { return {m_resource}; }
+  constexpr operator AnimationParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -2229,7 +2232,7 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationParam resource)
+  AnimationRef(AnimationParam resource) noexcept
     : Animation(resource.value)
   {
   }
@@ -2241,13 +2244,13 @@ struct AnimationRef : Animation
    *
    * This does not takes ownership!
    */
-  AnimationRef(AnimationRaw resource)
+  AnimationRef(AnimationRaw resource) noexcept
     : Animation(resource)
   {
   }
 
   /// Copy constructor.
-  AnimationRef(const AnimationRef& other)
+  AnimationRef(const AnimationRef& other) noexcept
     : Animation(other.get())
   {
   }

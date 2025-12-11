@@ -124,7 +124,7 @@
 +  ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
  
    /// Assignment operator.
-   constexpr Storage& operator=(Storage&& other)
+   constexpr Storage& operator=(Storage&& other) noexcept
 @@ -488,9 +482,6 @@
     * @since This function is available since SDL 3.2.0.
     *

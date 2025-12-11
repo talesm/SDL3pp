@@ -303,7 +303,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Storage(const StorageRaw resource)
+  constexpr explicit Storage(const StorageRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -312,7 +312,7 @@ public:
   constexpr Storage(const Storage& other) = delete;
 
   /// Move constructor
-  constexpr Storage(Storage&& other)
+  constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())
   {
   }
@@ -433,7 +433,7 @@ public:
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
 
   /// Assignment operator.
-  constexpr Storage& operator=(Storage&& other)
+  constexpr Storage& operator=(Storage&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -441,7 +441,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Storage& operator=(const Storage& other)
+  constexpr Storage& operator=(const Storage& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -449,10 +449,10 @@ protected:
 
 public:
   /// Retrieves underlying StorageRaw.
-  constexpr StorageRaw get() const { return m_resource; }
+  constexpr StorageRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying StorageRaw and clear this.
-  constexpr StorageRaw release()
+  constexpr StorageRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -460,16 +460,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Storage& other) const = default;
+  constexpr auto operator<=>(const Storage& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to StorageParam
-  constexpr operator StorageParam() const { return {m_resource}; }
+  constexpr operator StorageParam() const noexcept { return {m_resource}; }
 
   /**
    * Closes and frees a storage container.
@@ -796,7 +796,7 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageParam resource)
+  StorageRef(StorageParam resource) noexcept
     : Storage(resource.value)
   {
   }
@@ -808,13 +808,13 @@ struct StorageRef : Storage
    *
    * This does not takes ownership!
    */
-  StorageRef(StorageRaw resource)
+  StorageRef(StorageRaw resource) noexcept
     : Storage(resource)
   {
   }
 
   /// Copy constructor.
-  StorageRef(const StorageRef& other)
+  StorageRef(const StorageRef& other) noexcept
     : Storage(other.get())
   {
   }

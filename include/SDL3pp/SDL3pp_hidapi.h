@@ -143,7 +143,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit HidDevice(const HidDeviceRaw resource)
+  constexpr explicit HidDevice(const HidDeviceRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -152,7 +152,7 @@ public:
   constexpr HidDevice(const HidDevice& other) = delete;
 
   /// Move constructor
-  constexpr HidDevice(HidDevice&& other)
+  constexpr HidDevice(HidDevice&& other) noexcept
     : HidDevice(other.release())
   {
   }
@@ -203,7 +203,7 @@ public:
   ~HidDevice() { SDL_hid_close(m_resource); }
 
   /// Assignment operator.
-  constexpr HidDevice& operator=(HidDevice&& other)
+  constexpr HidDevice& operator=(HidDevice&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -211,7 +211,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr HidDevice& operator=(const HidDevice& other)
+  constexpr HidDevice& operator=(const HidDevice& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -219,10 +219,10 @@ protected:
 
 public:
   /// Retrieves underlying HidDeviceRaw.
-  constexpr HidDeviceRaw get() const { return m_resource; }
+  constexpr HidDeviceRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying HidDeviceRaw and clear this.
-  constexpr HidDeviceRaw release()
+  constexpr HidDeviceRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -230,16 +230,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const HidDevice& other) const = default;
+  constexpr auto operator<=>(const HidDevice& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to HidDeviceParam
-  constexpr operator HidDeviceParam() const { return {m_resource}; }
+  constexpr operator HidDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a HID device.
@@ -472,7 +472,7 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceParam resource)
+  HidDeviceRef(HidDeviceParam resource) noexcept
     : HidDevice(resource.value)
   {
   }
@@ -484,13 +484,13 @@ struct HidDeviceRef : HidDevice
    *
    * This does not takes ownership!
    */
-  HidDeviceRef(HidDeviceRaw resource)
+  HidDeviceRef(HidDeviceRaw resource) noexcept
     : HidDevice(resource)
   {
   }
 
   /// Copy constructor.
-  HidDeviceRef(const HidDeviceRef& other)
+  HidDeviceRef(const HidDeviceRef& other) noexcept
     : HidDevice(other.get())
   {
   }

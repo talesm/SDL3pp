@@ -295,12 +295,10 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
   }
 
   function generateFunction(entry: ApiEntry, prefix: string) {
-    const reference = entry.reference ? "&".repeat(entry.reference) : "";
-    const specifier = entry.immutable
-      ? ` const${reference}`
-      : reference
-      ? " " + reference
-      : "";
+    const reference = entry.reference ? "&".repeat(entry.reference) + " " : "";
+    const const_ = entry.immutable ? "const " : "";
+    const noexcept = entry.hints?.noexcept ? "noexcept " : "";
+    const specifier = const_ + reference + noexcept;
     const parameters = generateParameters(entry.parameters ?? []);
     const body = generateBody(entry, prefix);
     return `${generateDeclPrefix(

@@ -213,7 +213,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Properties(const PropertiesID resource)
+  constexpr explicit Properties(const PropertiesID resource) noexcept
     : m_resource(resource)
   {
   }
@@ -222,7 +222,7 @@ public:
   constexpr Properties(const Properties& other) = delete;
 
   /// Move constructor
-  constexpr Properties(Properties&& other)
+  constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())
   {
   }
@@ -251,7 +251,7 @@ public:
   ~Properties() { SDL_DestroyProperties(m_resource); }
 
   /// Assignment operator.
-  constexpr Properties& operator=(Properties&& other)
+  constexpr Properties& operator=(Properties&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -259,7 +259,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Properties& operator=(const Properties& other)
+  constexpr Properties& operator=(const Properties& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -267,10 +267,10 @@ protected:
 
 public:
   /// Retrieves underlying PropertiesID.
-  constexpr PropertiesID get() const { return m_resource; }
+  constexpr PropertiesID get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PropertiesID and clear this.
-  constexpr PropertiesID release()
+  constexpr PropertiesID release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -278,16 +278,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Properties& other) const = default;
+  constexpr auto operator<=>(const Properties& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const { return {m_resource}; }
+  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -719,7 +719,7 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesParam resource)
+  PropertiesRef(PropertiesParam resource) noexcept
     : Properties(resource.value)
   {
   }
@@ -731,13 +731,13 @@ struct PropertiesRef : Properties
    *
    * This does not takes ownership!
    */
-  PropertiesRef(PropertiesID resource)
+  PropertiesRef(PropertiesID resource) noexcept
     : Properties(resource)
   {
   }
 
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other)
+  PropertiesRef(const PropertiesRef& other) noexcept
     : Properties(other.get())
   {
   }

@@ -76,7 +76,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit MetalView(const MetalViewRaw resource)
+  constexpr explicit MetalView(const MetalViewRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -85,7 +85,7 @@ public:
   constexpr MetalView(const MetalView& other) = delete;
 
   /// Move constructor
-  constexpr MetalView(MetalView&& other)
+  constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())
   {
   }
@@ -121,7 +121,7 @@ public:
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
 
   /// Assignment operator.
-  constexpr MetalView& operator=(MetalView&& other)
+  constexpr MetalView& operator=(MetalView&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -129,7 +129,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr MetalView& operator=(const MetalView& other)
+  constexpr MetalView& operator=(const MetalView& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -137,10 +137,10 @@ protected:
 
 public:
   /// Retrieves underlying MetalViewRaw.
-  constexpr MetalViewRaw get() const { return m_resource; }
+  constexpr MetalViewRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying MetalViewRaw and clear this.
-  constexpr MetalViewRaw release()
+  constexpr MetalViewRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = 0;
@@ -148,16 +148,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const MetalView& other) const = default;
+  constexpr auto operator<=>(const MetalView& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to MetalViewParam
-  constexpr operator MetalViewParam() const { return {m_resource}; }
+  constexpr operator MetalViewParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy an existing MetalView object.
@@ -193,7 +193,7 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewParam resource)
+  MetalViewRef(MetalViewParam resource) noexcept
     : MetalView(resource.value)
   {
   }
@@ -205,13 +205,13 @@ struct MetalViewRef : MetalView
    *
    * This does not takes ownership!
    */
-  MetalViewRef(MetalViewRaw resource)
+  MetalViewRef(MetalViewRaw resource) noexcept
     : MetalView(resource)
   {
   }
 
   /// Copy constructor.
-  MetalViewRef(const MetalViewRef& other)
+  MetalViewRef(const MetalViewRef& other) noexcept
     : MetalView(other.get())
   {
   }

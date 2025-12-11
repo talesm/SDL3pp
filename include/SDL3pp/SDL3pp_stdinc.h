@@ -978,7 +978,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Environment(const EnvironmentRaw resource)
+  constexpr explicit Environment(const EnvironmentRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -987,7 +987,7 @@ public:
   constexpr Environment(const Environment& other) = delete;
 
   /// Move constructor
-  constexpr Environment(Environment&& other)
+  constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
   {
   }
@@ -1025,7 +1025,7 @@ public:
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
 
   /// Assignment operator.
-  constexpr Environment& operator=(Environment&& other)
+  constexpr Environment& operator=(Environment&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -1033,7 +1033,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Environment& operator=(const Environment& other)
+  constexpr Environment& operator=(const Environment& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -1041,10 +1041,10 @@ protected:
 
 public:
   /// Retrieves underlying EnvironmentRaw.
-  constexpr EnvironmentRaw get() const { return m_resource; }
+  constexpr EnvironmentRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying EnvironmentRaw and clear this.
-  constexpr EnvironmentRaw release()
+  constexpr EnvironmentRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -1052,16 +1052,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Environment& other) const = default;
+  constexpr auto operator<=>(const Environment& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const { return {m_resource}; }
+  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -1183,7 +1183,7 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentParam resource)
+  EnvironmentRef(EnvironmentParam resource) noexcept
     : Environment(resource.value)
   {
   }
@@ -1195,13 +1195,13 @@ struct EnvironmentRef : Environment
    *
    * This does not takes ownership!
    */
-  EnvironmentRef(EnvironmentRaw resource)
+  EnvironmentRef(EnvironmentRaw resource) noexcept
     : Environment(resource)
   {
   }
 
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other)
+  EnvironmentRef(const EnvironmentRef& other) noexcept
     : Environment(other.get())
   {
   }
@@ -5879,7 +5879,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit IConv(const IConvRaw resource)
+  constexpr explicit IConv(const IConvRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -5888,7 +5888,7 @@ public:
   constexpr IConv(const IConv& other) = delete;
 
   /// Move constructor
-  constexpr IConv(IConv&& other)
+  constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())
   {
   }
@@ -5920,7 +5920,7 @@ public:
   ~IConv() { SDL_iconv_close(m_resource); }
 
   /// Assignment operator.
-  constexpr IConv& operator=(IConv&& other)
+  constexpr IConv& operator=(IConv&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -5928,7 +5928,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr IConv& operator=(const IConv& other)
+  constexpr IConv& operator=(const IConv& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -5936,10 +5936,10 @@ protected:
 
 public:
   /// Retrieves underlying IConvRaw.
-  constexpr IConvRaw get() const { return m_resource; }
+  constexpr IConvRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying IConvRaw and clear this.
-  constexpr IConvRaw release()
+  constexpr IConvRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -5947,19 +5947,19 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const IConv& other) const = default;
+  constexpr auto operator<=>(const IConv& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const
+  constexpr explicit operator bool() const noexcept
   {
     return m_resource != IConvRaw(SDL_ICONV_ERROR);
   }
 
   /// Converts to IConvParam
-  constexpr operator IConvParam() const { return {m_resource}; }
+  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -6026,7 +6026,7 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvParam resource)
+  IConvRef(IConvParam resource) noexcept
     : IConv(resource.value)
   {
   }
@@ -6038,13 +6038,13 @@ struct IConvRef : IConv
    *
    * This does not takes ownership!
    */
-  IConvRef(IConvRaw resource)
+  IConvRef(IConvRaw resource) noexcept
     : IConv(resource)
   {
   }
 
   /// Copy constructor.
-  IConvRef(const IConvRef& other)
+  IConvRef(const IConvRef& other) noexcept
     : IConv(other.get())
   {
   }

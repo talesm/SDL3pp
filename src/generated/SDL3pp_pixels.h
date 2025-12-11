@@ -2291,7 +2291,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Palette(const PaletteRaw resource)
+  constexpr explicit Palette(const PaletteRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -2300,7 +2300,7 @@ public:
   constexpr Palette(const Palette& other) { ++m_resource->refcount; }
 
   /// Move constructor
-  constexpr Palette(Palette&& other)
+  constexpr Palette(Palette&& other) noexcept
     : Palette(other.release())
   {
   }
@@ -2344,16 +2344,16 @@ public:
   }
 
   /// member access to underlying PaletteRaw.
-  constexpr const PaletteRaw operator->() const { return m_resource; }
+  constexpr const PaletteRaw operator->() const noexcept { return m_resource; }
 
   /// member access to underlying PaletteRaw.
-  constexpr PaletteRaw operator->() { return m_resource; }
+  constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
   /// Assignment operator.
-  constexpr Palette& operator=(Palette&& other)
+  constexpr Palette& operator=(Palette&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -2361,7 +2361,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Palette& operator=(const Palette& other)
+  constexpr Palette& operator=(const Palette& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -2369,10 +2369,10 @@ protected:
 
 public:
   /// Retrieves underlying PaletteRaw.
-  constexpr PaletteRaw get() const { return m_resource; }
+  constexpr PaletteRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying PaletteRaw and clear this.
-  constexpr PaletteRaw release()
+  constexpr PaletteRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -2380,16 +2380,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Palette& other) const = default;
+  constexpr auto operator<=>(const Palette& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to PaletteParam
-  constexpr operator PaletteParam() const { return {m_resource}; }
+  constexpr operator PaletteParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a palette created with Palette.Palette().

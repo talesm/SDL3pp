@@ -742,7 +742,7 @@ public:
    *
    * This assumes the ownership, call release() if you need to take back.
    */
-  constexpr explicit Window(const WindowRaw resource)
+  constexpr explicit Window(const WindowRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -751,7 +751,7 @@ public:
   constexpr Window(const Window& other) = delete;
 
   /// Move constructor
-  constexpr Window(Window&& other)
+  constexpr Window(Window&& other) noexcept
     : Window(other.release())
   {
   }
@@ -1068,7 +1068,7 @@ public:
   ~Window() { SDL_DestroyWindow(m_resource); }
 
   /// Assignment operator.
-  constexpr Window& operator=(Window&& other)
+  constexpr Window& operator=(Window&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -1076,7 +1076,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr Window& operator=(const Window& other)
+  constexpr Window& operator=(const Window& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -1084,10 +1084,10 @@ protected:
 
 public:
   /// Retrieves underlying WindowRaw.
-  constexpr WindowRaw get() const { return m_resource; }
+  constexpr WindowRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying WindowRaw and clear this.
-  constexpr WindowRaw release()
+  constexpr WindowRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -1095,16 +1095,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const Window& other) const = default;
+  constexpr auto operator<=>(const Window& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to WindowParam
-  constexpr operator WindowParam() const { return {m_resource}; }
+  constexpr operator WindowParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a window.
@@ -2973,7 +2973,7 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowParam resource)
+  WindowRef(WindowParam resource) noexcept
     : Window(resource.value)
   {
   }
@@ -2985,13 +2985,13 @@ struct WindowRef : Window
    *
    * This does not takes ownership!
    */
-  WindowRef(WindowRaw resource)
+  WindowRef(WindowRaw resource) noexcept
     : Window(resource)
   {
   }
 
   /// Copy constructor.
-  WindowRef(const WindowRef& other)
+  WindowRef(const WindowRef& other) noexcept
     : Window(other.get())
   {
   }
@@ -3114,7 +3114,7 @@ public:
    *
    * @param resource a GLContextRaw to be wrapped.
    */
-  constexpr GLContext(const GLContextRaw resource)
+  constexpr GLContext(const GLContextRaw resource) noexcept
     : m_resource(resource)
   {
   }
@@ -3123,7 +3123,7 @@ public:
   constexpr GLContext(const GLContext& other) = default;
 
   /// Move constructor
-  constexpr GLContext(GLContext&& other)
+  constexpr GLContext(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }
@@ -3159,7 +3159,7 @@ public:
   ~GLContext() {}
 
   /// Assignment operator.
-  constexpr GLContext& operator=(GLContext&& other)
+  constexpr GLContext& operator=(GLContext&& other) noexcept
   {
     std::swap(m_resource, other.m_resource);
     return *this;
@@ -3167,7 +3167,7 @@ public:
 
 protected:
   /// Assignment operator.
-  constexpr GLContext& operator=(const GLContext& other)
+  constexpr GLContext& operator=(const GLContext& other) noexcept
   {
     m_resource = other.m_resource;
     return *this;
@@ -3175,10 +3175,10 @@ protected:
 
 public:
   /// Retrieves underlying GLContextRaw.
-  constexpr GLContextRaw get() const { return m_resource; }
+  constexpr GLContextRaw get() const noexcept { return m_resource; }
 
   /// Retrieves underlying GLContextRaw and clear this.
-  constexpr GLContextRaw release()
+  constexpr GLContextRaw release() noexcept
   {
     auto r = m_resource;
     m_resource = nullptr;
@@ -3186,16 +3186,16 @@ public:
   }
 
   /// Comparison
-  constexpr auto operator<=>(const GLContext& other) const = default;
+  constexpr auto operator<=>(const GLContext& other) const noexcept = default;
 
   /// Comparison
   constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
 
   /// Converts to bool
-  constexpr explicit operator bool() const { return !!m_resource; }
+  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
   /// Converts to GLContextParam
-  constexpr operator GLContextParam() const { return {m_resource}; }
+  constexpr operator GLContextParam() const noexcept { return {m_resource}; }
 
   /**
    * Delete an OpenGL context.
@@ -3233,7 +3233,7 @@ struct GLContextScoped : GLContext
   constexpr GLContextScoped(const GLContext& other) = delete;
 
   /// Move constructor
-  constexpr GLContextScoped(GLContext&& other)
+  constexpr GLContextScoped(GLContext&& other) noexcept
     : GLContext(other.release())
   {
   }

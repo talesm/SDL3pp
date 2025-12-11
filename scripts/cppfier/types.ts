@@ -67,6 +67,7 @@ export interface EntryHint {
   changeAccess?: "public" | "private" | "protected";
   delegate?: string;
   methodName?: string;
+  noexcept?: boolean;
 }
 
 export interface VersionTag {

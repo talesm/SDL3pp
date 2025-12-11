@@ -17,12 +17,11 @@ New Version checklist:
 Next version
 ------------
 
-Reword callback handling.
+Strengthen class types
 
-- [x] Remove hacky and leaky stored callback wrapping, except for the safer
-  callOnce, and use a more lightweight function wrapper that fit in a single
-  pointer.
-- [x] Use less error prone unified diffs to patch the API.
+- [x] Make resource constructors, comparison operators noexcept;
+- [ ] Make wrapper constructors, comparison operators noexcept;
+- [ ] Make resource accept std::nullptr_t.
 
 Backlog
 -------
