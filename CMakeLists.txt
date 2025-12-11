@@ -7,91 +7,61 @@ project(SDL3pp
 
 include(GNUInstallDirs)
 
-option(SDL3PP_FORCE_BUNDLED "Disable compilation of SDL_Image" OFF)
-
+option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
 if (SDL3PP_FORCE_BUNDLED)
-    set(SDL_INSTALL ON) # passed to external/SDL
-    add_subdirectory(external/SDL)
+    set(SDL3PP_USE_BUNDLED ON)
 else ()
     find_package(SDL3 QUIET)
     if (NOT TARGET SDL3::SDL3)
-        set(SDL_INSTALL ON) # passed to external/SDL
-        add_subdirectory(external/SDL)
-    endif ()
+        set(SDL3PP_USE_BUNDLED ON)
+    endif()
 endif ()
-
-set(SDL3PP_ORIGINAL_INCLUDE_DIRS 
-    ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/
-    ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/
-    ${PROJECT_SOURCE_DIR}/external/SDL_ttf/include/SDL3_ttf/
-)
-list(TRANSFORM SDL3PP_ORIGINAL_INCLUDE_DIRS APPEND "*.h" OUTPUT_VARIABLE SDL3PP_HEADER_GLOB)
-
-file(GLOB SDL3PP_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${SDL3PP_HEADER_GLOB})
 
 #############################
 ### Enable/Disable options ##
 #############################
 set(SDL3PP_DEPENDENCIES SDL3::SDL3)
 
+option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
+option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
+
+# include bundled, if necessary
+if (SDL3PP_USE_BUNDLED)
+    include(cmake/SDL3ppAddExternalProjects.cmake)
+    find_package(SDL3 REQUIRED)
+endif ()
+
 # SDL_image
-option(SDL3PP_DISABLE_IMAGE "Disable compilation of SDL_Image" OFF)
-if(SDL3PP_DISABLE_IMAGE)
-    set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_IMAGE")
-else(SDL3PP_DISABLE_IMAGE)
-    if (SDL3PP_FORCE_BUNDLED)
-        set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
-        add_subdirectory(external/SDL_image)
+if (SDL3PP_ENABLE_IMAGE)
+    find_package(SDL3_image QUIET)
+    set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
+    if (TARGET SDL3_image::SDL3_image)
         set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
     else ()
-        find_package(SDL3_image QUIET)
-        set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image REQUIRED)") # placeholder in cmake.in
-        if (TARGET SDL3_image::SDL3_image)
-            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
-        else ()
-            set(SDLIMAGE_INSTALL ON) # passed to external/SDL_image
-            if (EXISTS external/SDL_image/CMakeLists.txt)
-                add_subdirectory(external/SDL_image)
-                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
-            endif()
-        endif ()
+        set(SDL3PP_ENABLE_IMAGE OFF)
     endif ()
-endif(SDL3PP_DISABLE_IMAGE)
+endif ()
 
 # SDL_ttf
-option(SDL3PP_DISABLE_TTF "Disable compilation of SDL_TTF" OFF)
-if(SDL3PP_DISABLE_TTF)
-    set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_TTF")
-else(SDL3PP_DISABLE_TTF)
-    if (SDL3PP_FORCE_BUNDLED)
-        set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
-        add_subdirectory(external/SDL_ttf)
+if (SDL3PP_ENABLE_TTF)
+    find_package(SDL3_ttf QUIET)
+    set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
+    if (TARGET SDL3_ttf::SDL3_ttf)
         set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
     else ()
-        find_package(SDL3_ttf QUIET)
-        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf REQUIRED)") # placeholder in cmake.in
-        if (TARGET SDL3_ttf::SDL3_ttf)
-            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-        else()
-            set(SDLTTF_INSTALL ON) # passed to external/SDL_ttf
-            if (EXISTS external/SDL_ttf/CMakeLists.txt)
-                add_subdirectory(external/SDL_ttf)
-                set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-            endif()
-        endif ()
+        set(SDL3PP_ENABLE_TTF OFF)
     endif ()
-endif(SDL3PP_DISABLE_TTF)
+endif ()
 
-# use StringParam
-option(SDL3PP_DISABLE_STRING_PARAM "Disable StringParam wrapping" OFF)
-if(SDL3PP_DISABLE_STRING_PARAM)
-    set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_STRING_PARAM")
-endif(SDL3PP_DISABLE_STRING_PARAM)
-
+###############
+# The library #
+###############
 
 file(GLOB_RECURSE SDL3pp_lib_HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
-file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+    file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
+endif ()
 
 set(SDL3PP_COMPILE_FEATURES cxx_std_23)
 
@@ -107,7 +77,7 @@ target_include_directories(SDL3pp INTERFACE
 )
 
 # The amalgamation header
-set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation" CACHE FILEPATH "Amalgamation output directory")
+set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/amalgamation")
 set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
 set(SDL3PP_AMALGAMATION_MAIN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_main.h")
 set(SDL3PP_AMALGAMATION_VULKAN "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp_vulkan.h")
@@ -139,9 +109,9 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_VULKAN}
 )
 
 # Examples
-option(BUILD_EXAMPLES "Build the examples" ON)
+option(SDL3PP_BUILD_EXAMPLES "Build the examples" OFF)
 option(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION "Build examples against amalgamation" OFF)
-if (BUILD_EXAMPLES)
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/examples AND SDL3PP_BUILD_EXAMPLES)
     if (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
         add_library(SDL3pp_ExampleBase ALIAS SDL3pp_amalgamated)
     else ()
@@ -151,8 +121,8 @@ if (BUILD_EXAMPLES)
 endif ()
 
 # Unit tests
-option(BUILD_TESTING "Build the tests" ON)
-if (BUILD_TESTING)
+option(SDL3PP_BUILD_TESTING "Build the tests" ON)
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
     add_library(test_main OBJECT test/doctest.cpp)
     target_include_directories(test_main INTERFACE test/)
     enable_testing()
@@ -204,7 +174,7 @@ add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
     COMMAND npm run check
     COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
-    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
+    DEPENDS ${SDL3PP_DEPENDENCIES} 
             ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
             ${CPPFIER_SOURCES}
             ${CPPFIER_GRAMMAR_SOURCES}
@@ -287,26 +257,4 @@ add_custom_target(SDL3pp_zip_amalgamation
     COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
-)
-
-set(SDL3PP_FULL_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_full-${PROJECT_VERSION}")
-set(SDL3PP_FULL_FILES 
-    include/
-    assets/
-    cmake/
-    external/
-    docs/
-    examples/
-    test/
-    CMakeLists.txt
-    LICENSE.txt
-    README.md
-    changelog.md
-)
-
-add_custom_target(SDL3pp_zip_full
-    COMMAND rm -f ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILEBASE}.tar.gz
-    COMMAND tar -czvf ${SDL3PP_FULL_FILEBASE}.tar.gz ${SDL3PP_FULL_FILES}
-    COMMAND zip -r ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILES}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
