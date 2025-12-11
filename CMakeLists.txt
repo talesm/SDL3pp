@@ -23,15 +23,6 @@ if (SDL3PP_USE_BUNDLED)
     find_package(SDL3 REQUIRED)
 endif ()
 
-set(SDL3PP_ORIGINAL_INCLUDE_DIRS 
-    ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/
-    ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/
-    ${PROJECT_SOURCE_DIR}/external/SDL_ttf/include/SDL3_ttf/
-)
-list(TRANSFORM SDL3PP_ORIGINAL_INCLUDE_DIRS APPEND "*.h" OUTPUT_VARIABLE SDL3PP_HEADER_GLOB)
-
-file(GLOB SDL3PP_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${SDL3PP_HEADER_GLOB})
-
 #############################
 ### Enable/Disable options ##
 #############################
@@ -182,7 +173,7 @@ add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
     COMMAND npm run check
     COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
-    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} 
+    DEPENDS ${SDL3PP_DEPENDENCIES} 
             ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
             ${CPPFIER_SOURCES}
             ${CPPFIER_GRAMMAR_SOURCES}
@@ -265,26 +256,4 @@ add_custom_target(SDL3pp_zip_amalgamation
     COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
-)
-
-set(SDL3PP_FULL_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp_full-${PROJECT_VERSION}")
-set(SDL3PP_FULL_FILES 
-    include/
-    assets/
-    cmake/
-    external/
-    docs/
-    examples/
-    test/
-    CMakeLists.txt
-    LICENSE.txt
-    README.md
-    changelog.md
-)
-
-add_custom_target(SDL3pp_zip_full
-    COMMAND rm -f ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILEBASE}.tar.gz
-    COMMAND tar -czvf ${SDL3PP_FULL_FILEBASE}.tar.gz ${SDL3PP_FULL_FILES}
-    COMMAND zip -r ${SDL3PP_FULL_FILEBASE}.zip ${SDL3PP_FULL_FILES}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )

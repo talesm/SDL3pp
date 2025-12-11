@@ -48,9 +48,7 @@ function readContent(name: string, baseDirs: string[]) {
   for (const baseDir of baseDirs) {
     try {
       return readFileSync(baseDir + name, "utf-8");
-    } catch (err) {
-      system.log(`${name} not found at ${baseDir}, looking at next one`);
-    }
+    } catch (err) {}
   }
   throw new Error("File not found: " + name);
 }
