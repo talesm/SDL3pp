@@ -1496,6 +1496,7 @@ function expandTypes(
     } else {
       targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
     }
+    const isCopyable = hasScoped || hasShared;
     targetEntry.entries = {
       m_resource: {
         kind: "var",
@@ -1533,7 +1534,7 @@ function expandTypes(
         constexpr: true,
         hints: {
           default: true,
-          changeAccess: hasScoped ? undefined : "protected",
+          changeAccess: isCopyable ? undefined : "protected",
           noexcept: true,
         },
         doc: ["Assignment operator."],
@@ -1546,7 +1547,7 @@ function expandTypes(
         parameters: [],
         hints: {
           body: "return m_resource;",
-          changeAccess: hasScoped ? undefined : "public",
+          changeAccess: isCopyable ? undefined : "public",
           noexcept: true,
         },
         doc: [`Retrieves underlying ${rawName}.`],

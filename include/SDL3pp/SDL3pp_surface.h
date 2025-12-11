@@ -445,11 +445,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
   constexpr Surface& operator=(const Surface& other) noexcept = default;
 
-public:
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
 

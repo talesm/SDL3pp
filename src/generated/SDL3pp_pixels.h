@@ -2362,11 +2362,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
   constexpr Palette& operator=(const Palette& other) noexcept = default;
 
-public:
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
 

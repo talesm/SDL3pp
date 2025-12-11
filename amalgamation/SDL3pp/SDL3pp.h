@@ -1517,7 +1517,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MINOR_VERSION 5
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 0
+#define SDL3PP_PATCH_VERSION 3
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -10950,11 +10950,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
   constexpr Palette& operator=(const Palette& other) noexcept = default;
 
-public:
   /// Retrieves underlying PaletteRaw.
   constexpr PaletteRaw get() const noexcept { return m_resource; }
 
@@ -41123,11 +41121,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
   constexpr Surface& operator=(const Surface& other) noexcept = default;
 
-public:
   /// Retrieves underlying SurfaceRaw.
   constexpr SurfaceRaw get() const noexcept { return m_resource; }
 
@@ -79462,11 +79458,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
   constexpr Texture& operator=(const Texture& other) noexcept = default;
 
-public:
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
 

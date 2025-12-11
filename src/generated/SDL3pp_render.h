@@ -2448,11 +2448,9 @@ public:
     return *this;
   }
 
-protected:
   /// Assignment operator.
   constexpr Texture& operator=(const Texture& other) noexcept = default;
 
-public:
   /// Retrieves underlying TextureRaw.
   constexpr TextureRaw get() const noexcept { return m_resource; }
 

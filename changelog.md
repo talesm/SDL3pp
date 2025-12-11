@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.3
+
+Quick-fix for copy constructor being protected on SDL::Surface.
+
 ## Version 0.5.2
 
 Strengthen class types
