@@ -21,4 +21,22 @@ FetchContent_Declare(SDL3External
   UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
   OVERRIDE_FIND_PACKAGE
 )
-FetchContent_MakeAvailable(SDL3External)
+
+if (SDL3PP_ENABLE_IMAGE)
+  set(CACHE SDL3PP_USE_SDL3IMAGE_TAG TYPE STRING HELP "Bundle SDL3_image with this named tag/branch" VALUE "")
+  if(SDL3PP_USE_SDL3IMAGE_TAG)
+    set(SDL3IMAGE_TAG ${SDL3PP_USE_SDL3IMAGE_TAG})
+  else ()
+    set(SDL3IMAGE_TAG release-3.2.4)
+  endif ()
+  FetchContent_Declare(SDL3ImageExternal
+    GIT_REPOSITORY git@github.com:libsdl-org/SDL_image.git
+    GIT_TAG ${SDL3IMAGE_TAG}
+    GIT_SUBMODULES_RECURSE ON
+    GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
+    GIT_PROGRESS ON
+    UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
+  )
+endif (SDL3PP_ENABLE_IMAGE)
+
+FetchContent_MakeAvailable(SDL3External SDL3ImageExternal)

@@ -39,7 +39,7 @@ set(SDL3PP_DEPENDENCIES SDL3::SDL3)
 
 # SDL_image
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
-if (SDL3PP_ENABLE_IMAGE AND NOT SDL3PP_USE_BUNDLED)
+if (SDL3PP_ENABLE_IMAGE)
     find_package(SDL3_image QUIET)
     set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
     if (TARGET SDL3_image::SDL3_image)
