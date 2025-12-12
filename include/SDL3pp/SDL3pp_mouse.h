@@ -563,10 +563,14 @@ using MouseMotionTransformCallback = SDL_MouseMotionTransformCallback;
  * @since This datatype is available since SDL 3.4.0.
  *
  * @sa SetRelativeMouseTransform
+ *
  * @sa MouseMotionTransformCallback
  */
-using MouseMotionTransformCB =
-  std::function<void(Uint64, WindowRaw, SDL_MouseID, float*, float*)>;
+using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
+                                                      SDL_Window* window,
+                                                      MouseID mouseID,
+                                                      float* x,
+                                                      float* y)>;
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -803,6 +807,25 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCallback callback,
                                       void* userdata)
 {
   CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
+}
+
+/**
+ * Set a user-defined function by which to transform relative mouse inputs.
+ *
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
+ *
+ * @param callback a callback used to transform relative mouse motion, or
+ *                 nullptr for default behavior.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
+{
+  SetRelativeMouseTransform(callback.wrapper, callback.data);
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)

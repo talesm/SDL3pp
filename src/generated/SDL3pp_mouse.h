@@ -540,6 +540,47 @@ using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A callback used to transform mouse motion delta from raw values.
+ *
+ * This is called during SDL's handling of platform mouse events to scale the
+ * values of the resulting motion delta.
+ *
+ * @param timestamp the associated time at which this mouse motion event was
+ *                  received.
+ * @param window the associated window to which this mouse motion event was
+ *               addressed.
+ * @param mouseID the associated mouse from which this mouse motion event was
+ *                emitted.
+ * @param x pointer to a variable that will be treated as the resulting x-axis
+ *          motion.
+ * @param y pointer to a variable that will be treated as the resulting y-axis
+ *          motion.
+ *
+ * @threadsafety This callback is called by SDL's internal mouse input
+ *               processing procedure, which may be a thread separate from the
+ *               main event loop that is run at realtime priority. Stalling this
+ *               thread with too much work in the callback can therefore
+ *               potentially freeze the entire system. Care should be taken with
+ *               proper synchronization practices when adding other side effects
+ *               beyond mutation of the x and y values.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SetRelativeMouseTransform
+ *
+ * @sa MouseMotionTransformCallback
+ */
+using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
+                                                      SDL_Window* window,
+                                                      MouseID mouseID,
+                                                      float* x,
+                                                      float* y)>;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Return whether a mouse is currently connected.
  *
@@ -772,6 +813,30 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCallback callback,
                                       void* userdata)
 {
   CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Set a user-defined function by which to transform relative mouse inputs.
+ *
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
+ *
+ * @param callback a callback used to transform relative mouse motion, or
+ *                 nullptr for default behavior.
+ * @param userdata a pointer that will be passed to `callback`.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
+{
+  static_assert(false, "Not implemented");
 }
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)

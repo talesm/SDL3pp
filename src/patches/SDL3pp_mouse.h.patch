@@ -89,7 +89,7 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -531,12 +533,40 @@
+@@ -531,16 +533,7 @@
   *
   * @sa SetRelativeMouseTransform
   */
@@ -99,44 +99,15 @@
 -                                                    MouseID mouseID,
 -                                                    float* x,
 -                                                    float* y);
+-
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 +using MouseMotionTransformCallback = SDL_MouseMotionTransformCallback;
-+
-+/**
-+ * A callback used to transform mouse motion delta from raw values.
-+ *
-+ * This is called during SDL's handling of platform mouse events to scale the
-+ * values of the resulting motion delta.
-+ *
-+ * @param timestamp the associated time at which this mouse motion event was
-+ *                  received.
-+ * @param window the associated window to which this mouse motion event was
-+ *               addressed.
-+ * @param mouseID the associated mouse from which this mouse motion event was
-+ *                emitted.
-+ * @param x pointer to a variable that will be treated as the resulting x-axis
-+ *          motion.
-+ * @param y pointer to a variable that will be treated as the resulting y-axis
-+ *          motion.
-+ *
-+ * @threadsafety This callback is called by SDL's internal mouse input
-+ *               processing procedure, which may be a thread separate from the
-+ *               main event loop that is run at realtime priority. Stalling this
-+ *               thread with too much work in the callback can therefore
-+ *               potentially freeze the entire system. Care should be taken with
-+ *               proper synchronization practices when adding other side effects
-+ *               beyond mutation of the x and y values.
-+ *
-+ * @since This datatype is available since SDL 3.4.0.
-+ *
-+ * @sa SetRelativeMouseTransform
-+ * @sa MouseMotionTransformCallback
-+ */
-+using MouseMotionTransformCB =
-+  std::function<void(Uint64, WindowRaw, SDL_MouseID, float*, float*)>;
  
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
- 
-@@ -560,11 +590,8 @@
+ /**
+  * A callback used to transform mouse motion delta from raw values.
+@@ -601,11 +594,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -150,7 +121,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -573,7 +600,12 @@
+@@ -614,7 +604,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -164,7 +135,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -604,7 +636,7 @@
+@@ -645,7 +640,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -173,7 +144,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -722,7 +754,7 @@
+@@ -763,7 +758,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -182,7 +153,7 @@
  }
  
  /**
-@@ -736,8 +768,7 @@
+@@ -777,8 +772,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -192,7 +163,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -748,7 +779,7 @@
+@@ -789,7 +783,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -201,7 +172,35 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -861,12 +892,9 @@
+@@ -815,10 +809,6 @@
+   CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
+ }
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * Set a user-defined function by which to transform relative mouse inputs.
+  *
+@@ -827,7 +817,6 @@
+  *
+  * @param callback a callback used to transform relative mouse motion, or
+  *                 nullptr for default behavior.
+- * @param userdata a pointer that will be passed to `callback`.
+  * @throws Error on failure.
+  *
+  * @threadsafety This function should only be called on the main thread.
+@@ -836,7 +825,7 @@
+  */
+ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
+ {
+-  static_assert(false, "Not implemented");
++  SetRelativeMouseTransform(callback.wrapper, callback.data);
+ }
+ 
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+@@ -926,12 +915,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -217,7 +216,7 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -902,8 +930,7 @@
+@@ -967,8 +953,7 @@
   * closest smaller image will be upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -227,7 +226,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1030,7 +1057,7 @@
+@@ -1095,7 +1080,7 @@
   *
   * @sa Cursor.Set
   */
@@ -236,7 +235,7 @@
  
  /**
   * Get the default cursor.
-@@ -1048,7 +1075,7 @@
+@@ -1113,7 +1098,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

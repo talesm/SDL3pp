@@ -1592,6 +1592,69 @@ constexpr int AudioFrameSize(const AudioSpec& x)
   return SDL_AUDIO_FRAMESIZE(x);
 }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ *
+ * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
+ * it's not safe to dispose of the data until the stream has completely consumed
+ * it. Often times it's difficult to know exactly when this has happened.
+ *
+ * This callback fires once when the stream no longer needs the buffer, allowing
+ * the app to easily free or reuse it.
+ *
+ * @param userdata an opaque pointer provided by the app for their personal use.
+ * @param buf the pointer provided to AudioStream.PutDataNoCopy().
+ * @param buflen the size of buffer, in bytes, provided to
+ *               AudioStream.PutDataNoCopy().
+ *
+ * @threadsafety This callbacks may run from any thread, so if you need to
+ *               protect shared data, you should use AudioStream.Lock to
+ *               serialize access; this lock will be held before your callback
+ *               is called, so your callback does not need to manage the lock
+ *               explicitly.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.SetGetCallback
+ * @sa AudioStream.SetPutCallback
+ */
+using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
+                                                       const void* buf,
+                                                       int buflen);
+
+/**
+ * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ *
+ * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
+ * it's not safe to dispose of the data until the stream has completely consumed
+ * it. Often times it's difficult to know exactly when this has happened.
+ *
+ * This callback fires once when the stream no longer needs the buffer, allowing
+ * the app to easily free or reuse it.
+ *
+ * @param buf the pointer provided to AudioStream.PutDataNoCopy().
+ * @param buflen the size of buffer, in bytes, provided to
+ *               AudioStream.PutDataNoCopy().
+ *
+ * @threadsafety This callbacks may run from any thread, so if you need to
+ *               protect shared data, you should use AudioStream.Lock to
+ *               serialize access; this lock will be held before your callback
+ *               is called, so your callback does not need to manage the lock
+ *               explicitly.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.SetGetCallback
+ * @sa AudioStream.SetPutCallback
+ * @sa AudioStreamDataCompleteCallback
+ */
+using AudioStreamDataCompleteCB =
+  std::function<void(const void* buf, int buflen)>;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * The opaque handle that represents an audio stream.
  *
@@ -2301,6 +2364,98 @@ public:
    */
   void PutData(SourceBytes buf);
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Add external data to an audio stream without copying it.
+   *
+   * Unlike AudioStream.PutData(), this function does not make a copy of the
+   * provided data, instead storing the provided pointer. This means that the
+   * put operation does not need to allocate and copy the data, but the original
+   * data must remain available until the stream is done with it, either by
+   * being read from the stream in its entirety, or a call to
+   * AudioStream.Clear() or AudioStream.Destroy().
+   *
+   * The data must match the format/channels/samplerate specified in the latest
+   * call to AudioStream.SetFormat, or the format specified when creating the
+   * stream if it hasn't been changed.
+   *
+   * An optional callback may be provided, which is called when the stream no
+   * longer needs the data. Once this callback fires, the stream will not access
+   * the data again. This callback will fire for any reason the data is no
+   * longer needed, including clearing or destroying the stream.
+   *
+   * Note that there is still an allocation to store tracking information, so
+   * this function is more efficient for larger blocks of data. If you're
+   * planning to put a few samples at a time, it will be more efficient to use
+   * AudioStream.PutData(), which allocates and buffers in blocks.
+   *
+   * @param buf a pointer to the audio data to add.
+   * @param callback the callback function to call when the data is no longer
+   *                 needed by the stream. May be nullptr.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, but if the
+   *               stream has a callback set, the caller might need to manage
+   *               extra locking.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa AudioStream.Clear
+   * @sa AudioStream.Flush
+   * @sa AudioStream.GetData
+   * @sa AudioStream.GetQueued
+   */
+  void PutDataNoCopy(SourceBytes buf,
+                     AudioStreamDataCompleteCallback callback,
+                     void* userdata);
+
+  /**
+   * Add external data to an audio stream without copying it.
+   *
+   * Unlike AudioStream.PutData(), this function does not make a copy of the
+   * provided data, instead storing the provided pointer. This means that the
+   * put operation does not need to allocate and copy the data, but the original
+   * data must remain available until the stream is done with it, either by
+   * being read from the stream in its entirety, or a call to
+   * AudioStream.Clear() or AudioStream.Destroy().
+   *
+   * The data must match the format/channels/samplerate specified in the latest
+   * call to AudioStream.SetFormat, or the format specified when creating the
+   * stream if it hasn't been changed.
+   *
+   * An optional callback may be provided, which is called when the stream no
+   * longer needs the data. Once this callback fires, the stream will not access
+   * the data again. This callback will fire for any reason the data is no
+   * longer needed, including clearing or destroying the stream.
+   *
+   * Note that there is still an allocation to store tracking information, so
+   * this function is more efficient for larger blocks of data. If you're
+   * planning to put a few samples at a time, it will be more efficient to use
+   * AudioStream.PutData(), which allocates and buffers in blocks.
+   *
+   * @param buf a pointer to the audio data to add.
+   * @param callback the callback function to call when the data is no longer
+   *                 needed by the stream. May be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, but if the
+   *               stream has a callback set, the caller might need to manage
+   *               extra locking.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa AudioStream.Clear
+   * @sa AudioStream.Flush
+   * @sa AudioStream.GetData
+   * @sa AudioStream.GetQueued
+   */
+  void PutDataNoCopy(SourceBytes buf, AudioStreamDataCompleteCB callback);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
   /**
    * Get converted/resampled data from the stream.
    *
@@ -2744,54 +2899,6 @@ public:
   AudioDeviceRef GetDevice() const;
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
-
-  /**
-   * Add external data to an audio stream without copying it.
-   *
-   * Unlike AudioStream.PutData(), this function does not make a copy of the
-   * provided data, instead storing the provided pointer. This means that the
-   * put operation does not need to allocate and copy the data, but the original
-   * data must remain available until the stream is done with it, either by
-   * being read from the stream in its entirety, or a call to
-   * AudioStream.Clear() or AudioStream.Destroy().
-   *
-   * The data must match the format/channels/samplerate specified in the latest
-   * call to AudioStream.SetFormat, or the format specified when creating the
-   * stream if it hasn't been changed.
-   *
-   * An optional callback may be provided, which is called when the stream no
-   * longer needs the data. Once this callback fires, the stream will not access
-   * the data again. This callback will fire for any reason the data is no
-   * longer needed, including clearing or destroying the stream.
-   *
-   * Note that there is still an allocation to store tracking information, so
-   * this function is more efficient for larger blocks of data. If you're
-   * planning to put a few samples at a time, it will be more efficient to use
-   * AudioStream.PutData(), which allocates and buffers in blocks.
-   *
-   * @param buf a pointer to the audio data to add.
-   * @param len the number of bytes to add to the stream.
-   * @param callback the callback function to call when the data is no longer
-   *                 needed by the stream. May be nullptr.
-   * @param userdata an opaque pointer provided to the callback for its own
-   *                 personal use.
-   * @throws Error on failure.
-   *
-   * @threadsafety It is safe to call this function from any thread, but if the
-   *               stream has a callback set, the caller might need to manage
-   *               extra locking.
-   *
-   * @since This function is available since SDL 3.4.0.
-   *
-   * @sa AudioStream.Clear
-   * @sa AudioStream.Flush
-   * @sa AudioStream.GetData
-   * @sa AudioStream.GetQueued
-   */
-  void PutDataNoCopy(const void* buf,
-                     int len,
-                     AudioStreamDataCompleteCallback callback,
-                     void* userdata);
 
   /**
    * Add data to the stream with each channel in a separate array.
@@ -4098,62 +4205,56 @@ inline void AudioStream::PutData(SourceBytes buf)
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
- * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ * Add external data to an audio stream without copying it.
  *
- * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
- * it's not safe to dispose of the data until the stream has completely consumed
- * it. Often times it's difficult to know exactly when this has happened.
+ * Unlike AudioStream.PutData(), this function does not make a copy of the
+ * provided data, instead storing the provided pointer. This means that the put
+ * operation does not need to allocate and copy the data, but the original data
+ * must remain available until the stream is done with it, either by being read
+ * from the stream in its entirety, or a call to AudioStream.Clear() or
+ * AudioStream.Destroy().
  *
- * This callback fires once when the stream no longer needs the buffer, allowing
- * the app to easily free or reuse it.
+ * The data must match the format/channels/samplerate specified in the latest
+ * call to AudioStream.SetFormat, or the format specified when creating the
+ * stream if it hasn't been changed.
  *
- * @param userdata an opaque pointer provided by the app for their personal use.
- * @param buf the pointer provided to AudioStream.PutDataNoCopy().
- * @param buflen the size of buffer, in bytes, provided to
- *               AudioStream.PutDataNoCopy().
+ * An optional callback may be provided, which is called when the stream no
+ * longer needs the data. Once this callback fires, the stream will not access
+ * the data again. This callback will fire for any reason the data is no longer
+ * needed, including clearing or destroying the stream.
  *
- * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
- *               serialize access; this lock will be held before your callback
- *               is called, so your callback does not need to manage the lock
- *               explicitly.
+ * Note that there is still an allocation to store tracking information, so this
+ * function is more efficient for larger blocks of data. If you're planning to
+ * put a few samples at a time, it will be more efficient to use
+ * AudioStream.PutData(), which allocates and buffers in blocks.
  *
- * @since This datatype is available since SDL 3.4.0.
+ * @param stream the stream the audio data is being added to.
+ * @param buf a pointer to the audio data to add.
+ * @param callback the callback function to call when the data is no longer
+ *                 needed by the stream. May be nullptr.
+ * @param userdata an opaque pointer provided to the callback for its own
+ *                 personal use.
+ * @throws Error on failure.
  *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
+ * @threadsafety It is safe to call this function from any thread, but if the
+ *               stream has a callback set, the caller might need to manage
+ *               extra locking.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.Clear
+ * @sa AudioStream.Flush
+ * @sa AudioStream.GetData
+ * @sa AudioStream.GetQueued
  */
-using AudioStreamDataCompleteCallback = SDL_AudioStreamDataCompleteCallback;
-
-/**
- * A callback that fires for completed AudioStream.PutDataNoCopy() data.
- *
- * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
- * it's not safe to dispose of the data until the stream has completely consumed
- * it. Often times it's difficult to know exactly when this has happened.
- *
- * This callback fires once when the stream no longer needs the buffer, allowing
- * the app to easily free or reuse it.
- *
- * @param userdata an opaque pointer provided by the app for their personal
- *                 use.
- * @param buf the pointer provided to AudioStream.PutDataNoCopy().
- * @param buflen the size of buffer, in bytes, provided to
- *               AudioStream.PutDataNoCopy().
- *
- * @threadsafety This callbacks may run from any thread, so if you need to
- *               protect shared data, you should use AudioStream.Lock to
- *               serialize access; this lock will be held before your callback
- *               is called, so your callback does not need to manage the lock
- *               explicitly.
- *
- * @since This datatype is available since SDL 3.4.0.
- *
- * @sa AudioStream.SetGetCallback
- * @sa AudioStream.SetPutCallback
- * @sa AudioStreamDataCompleteCallback
- */
-using AudioStreamDataCompleteCB = std::function<void(const void*, int)>;
+inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+                                     SourceBytes buf,
+                                     AudioStreamDataCompleteCallback callback,
+                                     void* userdata)
+{
+  CheckError(SDL_PutAudioStreamDataNoCopy(
+    stream, buf.data(), buf.size_bytes(), callback, userdata));
+}
 
 /**
  * Add external data to an audio stream without copying it.
@@ -4181,11 +4282,8 @@ using AudioStreamDataCompleteCB = std::function<void(const void*, int)>;
  *
  * @param stream the stream the audio data is being added to.
  * @param buf a pointer to the audio data to add.
- * @param len the number of bytes to add to the stream.
  * @param callback the callback function to call when the data is no longer
  *                 needed by the stream. May be nullptr.
- * @param userdata an opaque pointer provided to the callback for its own
- *                 personal use.
  * @throws Error on failure.
  *
  * @threadsafety It is safe to call this function from any thread, but if the
@@ -4200,21 +4298,27 @@ using AudioStreamDataCompleteCB = std::function<void(const void*, int)>;
  * @sa AudioStream.GetQueued
  */
 inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
-                                     const void* buf,
-                                     int len,
-                                     AudioStreamDataCompleteCallback callback,
-                                     void* userdata)
+                                     SourceBytes buf,
+                                     AudioStreamDataCompleteCB callback)
 {
-  CheckError(
-    SDL_PutAudioStreamDataNoCopy(stream, buf, len, callback, userdata));
+  using Wrapper = CallbackWrapper<CleanupPropertyCB>;
+  PutAudioStreamDataNoCopy(stream,
+                           std::move(buf),
+                           &Wrapper::CallOnce,
+                           Wrapper::Wrap(std::move(callback)));
 }
 
-inline void AudioStream::PutDataNoCopy(const void* buf,
-                                       int len,
+inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                        AudioStreamDataCompleteCallback callback,
                                        void* userdata)
 {
-  SDL::PutAudioStreamDataNoCopy(m_resource, buf, len, callback, userdata);
+  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
+}
+
+inline void AudioStream::PutDataNoCopy(SourceBytes buf,
+                                       AudioStreamDataCompleteCB callback)
+{
+  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
 }
 
 /**

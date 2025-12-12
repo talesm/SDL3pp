@@ -542,6 +542,10 @@ const transform = {
           before: "SDL_AudioDeviceID",
           callback: "lightweight",
         },
+        "SDL_AudioStreamDataCompleteCallback": {
+          before: "SDL_AudioStream",
+          callback: "std"
+        },
         "SDL_AudioStream": {
           resource: true,
           entries: {
@@ -632,6 +636,21 @@ const transform = {
             "SDL_PutAudioStreamData": {
               parameters: [{}, { type: "SourceBytes", name: "buf" }]
             },
+            "SDL_PutAudioStreamDataNoCopy": {
+              parameters: [{},
+              {
+                type: "SourceBytes",
+                name: "buf"
+              },
+              {
+                name: "callback",
+                type: "AudioStreamDataCompleteCallback"
+              },
+              {
+                name: "userdata",
+                type: "void *"
+              }]
+            },
             "SDL_GetAudioStreamData": {
               parameters: [{}, { type: "TargetBytes", name: "buf" }]
             },
@@ -707,6 +726,25 @@ const transform = {
             { name: "callback", type: "AudioStreamCB" },
           ],
           hints: { methodName: "SetPutCallback" },
+        },
+        "PutAudioStreamDataNoCopy": {
+          after: "SDL_PutAudioStreamDataNoCopy",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            name: "stream",
+            type: "AudioStreamParam"
+          },
+          {
+            type: "SourceBytes",
+            name: "buf"
+          },
+          {
+            name: "callback",
+            type: "AudioStreamDataCompleteCB"
+          }],
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
+          hints: { methodName: "PutDataNoCopy" },
         },
         "SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK": {
           kind: "var",
@@ -3162,6 +3200,13 @@ const transform = {
         },
         "SDL_WarpMouseGlobal": {
           name: "WarpMouse"
+        },
+        "SDL_MouseMotionTransformCallback": { callback: "lightweight" },
+        "SetRelativeMouseTransform": {
+          after: "SDL_SetRelativeMouseTransform",
+          kind: "function",
+          type: "void",
+          parameters: [{ type: "MouseMotionTransformCB", name: "callback" }],
         },
         "SDL_SetWindowRelativeMouseMode": {
           name: "Window::SetRelativeMouseMode"
