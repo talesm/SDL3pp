@@ -486,7 +486,7 @@ struct MakeFrontCallback<R(PARAMS...)>
 };
 
 template<class F>
-struct MakeBackCallback;
+struct MakeTrailingCallback;
 
 /**
  * Make Back Callback
@@ -495,13 +495,15 @@ struct MakeBackCallback;
  * @tparam PARAMS
  */
 template<class R, class... PARAMS>
-struct MakeBackCallback<R(PARAMS...)>
-  : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>, R, PARAMS...>
+struct MakeTrailingCallback<R(PARAMS...)>
+  : LightweightTrailingCallbackT<MakeTrailingCallback<R(PARAMS...)>,
+                                 R,
+                                 PARAMS...>
 {
   /// ctor
   template<std::invocable<PARAMS...> F>
-  MakeBackCallback(const F& func)
-    : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>,
+  MakeTrailingCallback(const F& func)
+    : LightweightTrailingCallbackT<MakeTrailingCallback<R(PARAMS...)>,
                                    R,
                                    PARAMS...>(func)
   {
@@ -2345,7 +2347,7 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  MakeBackCallback<AssertState(const AssertData* data)>;
+  MakeTrailingCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -50703,7 +50705,7 @@ using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
  * @sa HitTest
  */
 using HitTestCB =
-  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
+  MakeTrailingCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.

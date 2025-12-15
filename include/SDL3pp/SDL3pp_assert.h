@@ -416,7 +416,7 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  MakeBackCallback<AssertState(const AssertData* data)>;
+  MakeTrailingCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
