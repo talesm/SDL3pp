@@ -24,40 +24,51 @@ else ()
   set(SDL3TTF_TAG release-3.2.2)
 endif ()
 
-set(SDL_INSTALL ON) # passed to external/SDL
-FetchContent_Declare(SDL3External
-  GIT_REPOSITORY git@github.com:libsdl-org/SDL.git
-  GIT_TAG ${SDL3_TAG}
-  GIT_SUBMODULES_RECURSE ON
-  GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
-  GIT_PROGRESS ON
-  UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-  OVERRIDE_FIND_PACKAGE
-)
-FetchContent_MakeAvailable(SDL3External)
+if (WIN32)
+  set(SDL3PP_USE_WINDOWS_PREBUILT_DEFAULT ON)
+else ()
+  set(SDL3PP_USE_WINDOWS_PREBUILT_DEFAULT OFF)
+endif ()
+option(SDL3PP_USE_WINDOWS_PREBUILT "Download prebuilt instead of sources (Windows only)" ${SDL3PP_USE_WINDOWS_PREBUILT_DEFAULT})
 
-if (SDL3PP_ENABLE_IMAGE)
-  set(SDLIMAGE_INSTALL ON) # passed to external/SDL
-  FetchContent_Declare(SDL3ImageExternal
-    GIT_REPOSITORY git@github.com:libsdl-org/SDL_image.git
-    GIT_TAG ${SDL3IMAGE_TAG}
+if (SDL3PP_USE_WINDOWS_PREBUILT)
+  message("Configuring using windows pre-built")
+else()
+  set(SDL_INSTALL ON) # passed to external/SDL
+  FetchContent_Declare(SDL3External
+    GIT_REPOSITORY git@github.com:libsdl-org/SDL.git
+    GIT_TAG ${SDL3_TAG}
     GIT_SUBMODULES_RECURSE ON
     GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
     GIT_PROGRESS ON
     UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
+    OVERRIDE_FIND_PACKAGE
   )
-  FetchContent_MakeAvailable(SDL3ImageExternal)
-endif (SDL3PP_ENABLE_IMAGE)
+  FetchContent_MakeAvailable(SDL3External)
 
-if (SDL3PP_ENABLE_TTF)
-  set(SDLTTF_INSTALL ON) # passed to external/SDL
-  FetchContent_Declare(SDL3TTFExternal
-    GIT_REPOSITORY git@github.com:libsdl-org/SDL_ttf.git
-    GIT_TAG ${SDL3TTF_TAG}
-    GIT_SUBMODULES_RECURSE ON
-    GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
-    GIT_PROGRESS ON
-    UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
-  )
-  FetchContent_MakeAvailable(SDL3TTFExternal)
-endif (SDL3PP_ENABLE_TTF)
+  if (SDL3PP_ENABLE_IMAGE)
+    set(SDLIMAGE_INSTALL ON) # passed to external/SDL
+    FetchContent_Declare(SDL3ImageExternal
+      GIT_REPOSITORY git@github.com:libsdl-org/SDL_image.git
+      GIT_TAG ${SDL3IMAGE_TAG}
+      GIT_SUBMODULES_RECURSE ON
+      GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
+      GIT_PROGRESS ON
+      UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
+    )
+    FetchContent_MakeAvailable(SDL3ImageExternal)
+  endif (SDL3PP_ENABLE_IMAGE)
+
+  if (SDL3PP_ENABLE_TTF)
+    set(SDLTTF_INSTALL ON) # passed to external/SDL
+    FetchContent_Declare(SDL3TTFExternal
+      GIT_REPOSITORY git@github.com:libsdl-org/SDL_ttf.git
+      GIT_TAG ${SDL3TTF_TAG}
+      GIT_SUBMODULES_RECURSE ON
+      GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
+      GIT_PROGRESS ON
+      UPDATE_DISCONNECTED ${SDL3PP_BUNDLE_DISCONNECTED}
+    )
+    FetchContent_MakeAvailable(SDL3TTFExternal)
+  endif (SDL3PP_ENABLE_TTF)
+endif()
