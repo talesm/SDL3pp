@@ -121,15 +121,16 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/examples AND SDL3PP_BUILD_EXAMPLES)
 endif ()
 
 # Unit tests
-option(SDL3PP_BUILD_TESTING "Build the tests" ON)
+option(SDL3PP_BUILD_TESTING "Build the tests" OFF)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
     add_library(test_main OBJECT test/doctest.cpp)
     target_include_directories(test_main INTERFACE test/)
+    target_link_libraries(test_main PUBLIC SDL3pp)
     enable_testing()
 
     file(GLOB unitTestSources CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
     add_executable(SDL3pp_unitTests ${unitTestSources})
-    target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
+    target_link_libraries(SDL3pp_unitTests PRIVATE test_main)
     add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 endif ()
 

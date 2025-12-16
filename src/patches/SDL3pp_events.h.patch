@@ -229,12 +229,13 @@
   * @returns true if this got an event or false if the timeout elapsed without
   *          any events available.
   *
-@@ -1211,15 +1224,12 @@
+@@ -1211,15 +1224,13 @@
  inline bool WaitEventTimeout(Event* event,
                               std::chrono::milliseconds timeoutDuration)
  {
 -  static_assert(false, "Not implemented");
-+  return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
++  return WaitEventTimeout(event,
++                          Sint32(std::max(timeoutDuration.count(), Sint64(1))));
  }
  
  /**
@@ -248,7 +249,7 @@
   *
   * As this function may implicitly call PumpEvents(), you can only call this
   * function in the thread that initialized the video subsystem.
-@@ -1227,12 +1237,10 @@
+@@ -1227,12 +1238,10 @@
   * The timeout is not guaranteed, the actual wait time could be longer due to
   * system scheduling.
   *
@@ -265,7 +266,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -1245,7 +1253,8 @@
+@@ -1245,7 +1254,8 @@
  inline std::optional<Event> WaitEventTimeout(
    std::chrono::milliseconds timeoutDuration)
  {
@@ -275,7 +276,7 @@
  }
  
  /**
-@@ -1312,7 +1321,7 @@
+@@ -1312,7 +1322,7 @@
   */
  inline void PushEvent(const Event& event)
  {
@@ -284,7 +285,7 @@
  }
  
  /**
-@@ -1336,7 +1345,7 @@
+@@ -1336,7 +1346,7 @@
  using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
  
  /**
@@ -293,7 +294,7 @@
   *
   * @param event the event that triggered the callback.
   * @returns true to permit event to be added to the queue, and false to disallow
-@@ -1348,12 +1357,35 @@
+@@ -1348,12 +1358,35 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -331,7 +332,7 @@
  using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
  
  /**
-@@ -1425,7 +1457,6 @@
+@@ -1425,7 +1458,6 @@
   * event filter, but events pushed onto the queue with PeepEvents() do not.
   *
   * @param filter an EventFilter function to call when an event happens.
@@ -339,7 +340,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1439,7 +1470,10 @@
+@@ -1439,7 +1471,10 @@
   */
  inline void SetEventFilter(EventFilterCB filter)
  {
@@ -351,7 +352,7 @@
  }
  
  /**
-@@ -1517,7 +1551,6 @@
+@@ -1517,7 +1552,6 @@
   * PeepEvents().
   *
   * @param filter an EventFilter function to call when an event happens.
@@ -359,7 +360,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1529,7 +1562,7 @@
+@@ -1529,7 +1563,7 @@
   */
  inline void AddEventWatch(EventWatcherCB filter)
  {
@@ -368,7 +369,7 @@
  }
  
  /**
-@@ -1584,18 +1617,25 @@
+@@ -1584,18 +1618,25 @@
   * filter until this function returns.
   *
   * @param filter the EventFilter function to call when an event happens.
@@ -396,7 +397,7 @@
  }
  
  /**
-@@ -1665,7 +1705,7 @@
+@@ -1665,7 +1706,7 @@
   */
  inline WindowRef GetWindowFromEvent(const Event& event)
  {
