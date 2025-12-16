@@ -1,4 +1,10 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <SDL3pp/SDL3pp_main.h>
+#define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
-// This is just the "main" file, it makes compilation a bit easier
+int main(int argc, char** argv)
+{
+  doctest::Context context;
+  context.applyCommandLine(argc, argv);
+  return context.run(); // run
+}
