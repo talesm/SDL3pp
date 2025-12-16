@@ -22,8 +22,7 @@ Next version
 Simplify project setup
 
 - [x] Replace submodules by ExternalProject;
-- [ ] Create lightweight distribution, with only CMake and includes;
-- [ ] Create Windows mode, where it downloads pre-compiled versions, if
+- [x] Create Windows mode, where it downloads pre-compiled versions, if
   possible.
 
 Backlog
