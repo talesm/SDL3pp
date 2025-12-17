@@ -11,7 +11,7 @@ New Version checklist:
 - [ ] Update [README ExternalProject](README.md#using-cmakes-externalproject)
   instructions to the new tag;
 - [ ] Update [changelog](changelog.md);
-- [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_full;
+- [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_headers;
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>
   - [ ] Don't forget go add SDL3pp_zip_amalgamation and SDL3pp_zip_full to the
     downloads!
@@ -22,7 +22,7 @@ Next version
 Simplify project setup
 
 - [x] Replace submodules by ExternalProject;
-- [ ] Create lightweight distribution, with only CMake and includes;
+- [x] Create lightweight distribution, with only CMake and includes;
 - [ ] Document windows install;
 - [ ] Document releases
 
@@ -44,6 +44,13 @@ Backlog
   - [ ] SDL_mixer;
   - [ ] SDL_net
   - [ ] SDL_gfx
+- [ ] Create unified lock interface pattern:
+  - [ ] for SDL_AcquireCameraFrame;
+  - [ ] for SDL_LockSurface;
+  - [ ] for SDL_LockTexture;
+  - [ ] for SDL_LockAudioStream;
+  - [ ] for SDL_LockProperties;
+- [ ] Add examples for input;
 
 Think about
 -----------
