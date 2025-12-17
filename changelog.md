@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.5.4
+
+Quick-fix for easier integration with projects
+
+- Replace submodules by ExternalProject;
+- Create more lightweight distribution;
+
 ## Version 0.5.3
 
 Quick-fix for copy constructor being protected on SDL::Surface.
