@@ -18,10 +18,12 @@ memory management and wrappers for string and callbacks.
   2. You can also download the
      [the latest release](https://github.com/talesm/SDL3pp/releases) then
      [build](#building) and [install](#installing) the project;
-  3. If you use CMake, you can also set up an
+  3. If you use CMake, you can also set up
+     [FetchContent](#using-cmakes-fetchcontent) or
      [ExternalProject](#using-cmakes-externalproject);
-- See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
-- See [Example](#example) and [Examples directory](./examples/).
+- See [API reference](#ApiByCategory);
+- See [Example](#example) and
+  [Examples directory](https://github.com/talesm/SDL3pp/tree/main/examples/).
 
 ## Goals
 
@@ -103,10 +105,31 @@ Alteratively can move into a custom location with:
 cmake --install build --install-prefix <directory>
 ```
 
-## Using Cmake's ExternalProject
+## Using Cmake's FetchContent
 
 If you are already using CMake for your project, you can use the following
 command to download from git automatically:
+
+```cmake
+include(FetchContent)
+# set(SDL3PP_FORCE_BUNDLED ON) # Enable this to force CMake to download SDL, SDL_image and SDL_ttf
+FetchContent_Declare(SDL3ppExternal
+  GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
+  GIT_TAG origin/main
+  GIT_PROGRESS ON
+)
+FetchContent_MakeAvailable(SDL3ppExternal)
+
+# Link to your project
+target_link_libraries(MyProject
+  PRIVATE SDL3pp::SDL3pp
+)
+```
+
+## Using Cmake's ExternalProject
+
+If you are already using CMake for your project, you can use the following
+command to download from git automatically on older versions of CMake:
 
 ```cmake
 include(ExternalProject)

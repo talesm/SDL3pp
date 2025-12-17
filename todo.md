@@ -5,10 +5,14 @@ New Version checklist:
 
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);
+- [ ] Update [README Quick start links](README.md#quick-start--tldr) to new tag
+  link;
+- [ ] Update [README Quick start links](docs/README.md#quick-start--tldr) to new
+  tag link;
+- [ ] Update [README FetchContent](docs/README.md#using-cmakes-fetchcontent)
+  instructions to the new tag;
 - [ ] Update
-  [README Quick start links for amalgamation](README.md#quick-start--tldr) to
-  new tag link;
-- [ ] Update [README ExternalProject](README.md#using-cmakes-externalproject)
+  [README ExternalProject](docs/README.md#using-cmakes-externalproject)
   instructions to the new tag;
 - [ ] Update [changelog](changelog.md);
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_headers;
@@ -23,8 +27,6 @@ Simplify project setup
 
 - [x] Replace submodules by ExternalProject;
 - [x] Create lightweight distribution, with only CMake and includes;
-- [ ] Document windows install;
-- [ ] Document releases
 
 Backlog
 -------
