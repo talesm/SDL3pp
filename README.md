@@ -11,13 +11,13 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [the single header](./amalgamation/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp_amalgamated-0.5.4.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp_amalgamated-0.5.4.tar.gz))
      and add to your project;
   2. You can also download the
-     [the latest release](https://github.com/talesm/SDL3pp/releases) then
-     [build](https://talesm.github.io/SDL3pp/#building) and
+     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp-0.5.4.zip)
+     then [build](https://talesm.github.io/SDL3pp/#building) and
      [install](https://talesm.github.io/SDL3pp/#installing) the project;
   3. If you use CMake, you can also set up
      [FetchContent](https://talesm.github.io/SDL3pp/#using-cmakes-fetchcontent)

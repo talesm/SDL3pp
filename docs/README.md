@@ -11,13 +11,13 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [the single header](./amalgamation/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp_amalgamated-0.5.4.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp_amalgamated-0.5.4.tar.gz))
      and add to your project;
   2. You can also download the
-     [the latest release](https://github.com/talesm/SDL3pp/releases) then
-     [build](#building) and [install](#installing) the project;
+     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp-0.5.4.zip)
+     then [build](#building) and [install](#installing) the project;
   3. If you use CMake, you can also set up
      [FetchContent](#using-cmakes-fetchcontent) or
      [ExternalProject](#using-cmakes-externalproject);
@@ -115,7 +115,7 @@ include(FetchContent)
 # set(SDL3PP_FORCE_BUNDLED ON) # Enable this to force CMake to download SDL, SDL_image and SDL_ttf
 FetchContent_Declare(SDL3ppExternal
   GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
-  GIT_TAG origin/main
+  GIT_TAG 0.5.4
   GIT_PROGRESS ON
 )
 FetchContent_MakeAvailable(SDL3ppExternal)
@@ -136,7 +136,7 @@ include(ExternalProject)
 
 ExternalProject_Add(SDL3ppExternal
   GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
-  GIT_TAG 0.5.3
+  GIT_TAG 0.5.4
   GIT_SUBMODULES_RECURSE ON
   GIT_SHALLOW ON # Optional, just allow download a bit faster
   GIT_PROGRESS ON
