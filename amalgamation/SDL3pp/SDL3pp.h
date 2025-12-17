@@ -59016,7 +59016,8 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
 inline bool WaitEventTimeout(Event* event,
                              std::chrono::milliseconds timeoutDuration)
 {
-  return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
+  return WaitEventTimeout(event,
+                          Sint32(std::max(timeoutDuration.count(), Sint64(1))));
 }
 
 /**
