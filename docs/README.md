@@ -1,5 +1,4 @@
-SDL3pp {#mainpage}
-==================
+# SDL3pp {#mainpage}
 
 A "port" of SDL3 in C++.
 
@@ -10,28 +9,35 @@ memory management and wrappers for string and callbacks.
 
 ## Quick start / TLDR
 
-- Download [the latest release](https://github.com/talesm/SDL3pp/releases);
-- [Build](#building) instructions; 
-- [Installation](#installing) instructions;
-- See [API reference](#ApiByCategory);
-- See [Example](#example) and
-  [Examples directory](https://github.com/talesm/SDL3pp/tree/main/examples).
+- You have 3 options to add SDL3pp to your project:
+  1. Download [the single header](./amalgamation/SDL3pp/) (as
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.zip)
+     or
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.tar.gz))
+     and add to your project;
+  2. You can also download the
+     [the latest release](https://github.com/talesm/SDL3pp/releases) then
+     [build](#building) and [install](#installing) the project;
+  3. If you use CMake, you can also set up an
+     [ExternalProject](#using-cmakes-externalproject);
+- See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
+- See [Example](#example) and [Examples directory](./examples/).
 
 ## Goals
 
 - Be header only, we are only wrapping SDL here;
 - Mostly wrap the naturally OO-looking API into actual OO C++ constructs;
-  - Also add little quick improvements like using vocabulary types to better 
-    fit C++ idioms;
+  - Also add little quick improvements like using vocabulary types to better fit
+    C++ idioms;
   - See @ref transformations for more details;
 - Put everything into a `SDL` namespace instead of prefixes;
-  - For uniformity we also wrap non OO entities at lower priority (like 
-    aliases, functions, constants, etc);
+  - For uniformity we also wrap non OO entities at lower priority (like aliases,
+    functions, constants, etc);
 - Interfaces should accept both C structs and the C++ wraps, so you can adapt a
   codebase gradually or just choose to use only what you deem necessary.
-- Flexible, while we use [RAII](https://en.cppreference.com/w/cpp/language/raii)
-  idiom by default, you have the choice to not use it and, for example, manage
-  memory yourself.
+- Flexible, while we use
+  [RAII](https://en.cppreference.com/w/cpp/language/raii) idiom by default, you
+  have the choice to not use it and, for example, manage memory yourself.
 
 ## Documentation
 
@@ -40,16 +46,25 @@ memory management and wrappers for string and callbacks.
 - See @ref DesignNotes to understand the rationally behind some design patterns
   and choices we use.
 - See [our source code](https://github.com/talesm/SDL3pp);
-- See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
+- See the
+  [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
 - See [most recent version of this Doxygen](https://talesm.github.io/SDL3pp/)
 
 ## Example
 
 @include window_with_renderer.cpp
 
-See more examples at [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
+See more examples at
+[examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
 
 ## Building
+
+If aren't using the "full" version, ensure you have the necessary dependencies
+installed:
+
+- SDL3
+- SDL3_image (optional)
+- SDL3_ttf (optional)
 
 Assuming you are on the source dir, you can build with:
 
@@ -58,19 +73,25 @@ cmake -S . -B build
 cmake --build build
 ```
 
+If CMake can't find the dependencies, you might have to pass them through
+cmake-gui or using the following:
+
+```sh
+cmake -DSDL3_DIR=path-to-SDL3-dir build
+cmake -DSDL3_image_DIR=path-to-SDL3_image-dir build
+cmake -DSDL3_ttf_DIR=path-to-SDL3_ttf-dir build
+```
+
 ## Installing
 
-There are a few ways to install SDL3pp:
+If you have SDL3 already set up on your project, you can just copy the contents
+of [amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/)
+directly to your project.
 
-### Copy into project
+### System installation
 
-The most basic way is to copy the contents of
-[amalgamation/](./amalgamation/SDL3pp/) or [include](./include/SDL3pp/) directly
-to your project.
-
-### System installation:
-
-After [build](#building), you can install on you system with cmake:
+If you like to have a whole system intallation, you can checkout the project
+[build](#building), and then you can install on you system with cmake:
 
 ```sh
 cmake --install build
@@ -81,3 +102,35 @@ Alteratively can move into a custom location with:
 ```sh
 cmake --install build --install-prefix <directory>
 ```
+
+## Using Cmake's ExternalProject
+
+If you are already using CMake for your project, you can use the following
+command to download from git automatically:
+
+```cmake
+include(ExternalProject)
+
+ExternalProject_Add(SDL3ppExternal
+  GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
+  GIT_TAG 0.5.3
+  GIT_SUBMODULES_RECURSE ON
+  GIT_SHALLOW ON # Optional, just allow download a bit faster
+  GIT_PROGRESS ON
+  CMAKE_ARGS -DSDL3PP_FORCE_BUNDLED=ON
+  INSTALL_COMMAND ${CMAKE_COMMAND} --install . --prefix <INSTALL_DIR> 
+)
+# find_package(SDL3pp)
+ExternalProject_Get_property(SDL3ppExternal INSTALL_DIR)
+add_library(SDL3pp INTERFACE)
+add_dependencies(SDL3pp SDL3ppExternal)
+set_target_properties(SDL3pp PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${INSTALL_DIR}/include"
+  INTERFACE_LINK_DIRECTORIES "${INSTALL_DIR}/lib/"
+  INTERFACE_LINK_LIBRARIES "SDL3;SDL3_ttf;SDL3_image"
+)
+target_compile_features(SDL3pp INTERFACE cxx_std_23)
+```
+
+If you have SDL3 installed on your system and want use that version, you can
+omit the `-DSDL3PP_FORCE_BUNDLED=ON` above.
