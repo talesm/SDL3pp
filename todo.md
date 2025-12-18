@@ -20,14 +20,16 @@ Next version
 
 Make root readme the authoritative one, as the doxygen one is uglier:
 
+- [x] Fix error on Texture and Surface constructors when SDL_image not detected;
 - [x] Move content back to the root README.md
 - [ ] Make the doxygen one simpler, removing the the build instructions and
   referring to project's.
-- [ ] Add windows-prebuilt option mode, downloading the version automatically.
+- [ ] Download "bundled" projects only if "SDL3PP_FORCE_BUNDLED" is ON
 
 Backlog
 -------
 
+- [ ] Add windows-prebuilt option mode, downloading the version automatically.
 - [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
   several APIS;
 - [ ] Generate archive with the includes only;
