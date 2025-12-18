@@ -21,7 +21,8 @@ memory management and wrappers for string and callbacks.
   3. If you use CMake, you can also set up
      [FetchContent](#using-cmakes-fetchcontent) to automatically do that for
      you;
-- See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
+- See [the generated docs](https://talesm.github.io/SDL3pp/) and particularly
+  the [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
 - See [Example](#example) and [Examples directory](./examples/).
 
 ## Goals
@@ -142,35 +143,3 @@ target_link_libraries(MyProject
   PRIVATE SDL3pp::SDL3pp
 )
 ```
-
-## Using Cmake's ExternalProject
-
-If you are already using CMake for your project, you can use the following
-command to download from git automatically on older versions of CMake:
-
-```cmake
-include(ExternalProject)
-
-ExternalProject_Add(SDL3ppExternal
-  GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
-  GIT_TAG 0.5.4
-  GIT_SUBMODULES_RECURSE ON
-  GIT_SHALLOW ON # Optional, just allow download a bit faster
-  GIT_PROGRESS ON
-  CMAKE_ARGS -DSDL3PP_FORCE_BUNDLED=ON
-  INSTALL_COMMAND ${CMAKE_COMMAND} --install . --prefix <INSTALL_DIR> 
-)
-# find_package(SDL3pp)
-ExternalProject_Get_property(SDL3ppExternal INSTALL_DIR)
-add_library(SDL3pp INTERFACE)
-add_dependencies(SDL3pp SDL3ppExternal)
-set_target_properties(SDL3pp PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "${INSTALL_DIR}/include"
-  INTERFACE_LINK_DIRECTORIES "${INSTALL_DIR}/lib/"
-  INTERFACE_LINK_LIBRARIES "SDL3;SDL3_ttf;SDL3_image"
-)
-target_compile_features(SDL3pp INTERFACE cxx_std_23)
-```
-
-If you have SDL3 installed on your system and want use that version, you can
-omit the `-DSDL3PP_FORCE_BUNDLED=ON` above.
