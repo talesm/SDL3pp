@@ -3,13 +3,13 @@ Todo for next version
 
 New Version checklist:
 
+- [ ] Update [changelog](changelog.md);
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);
 - [ ] Update [README Quick start links](README.md#quick-start--tldr) to new tag
   link;
 - [ ] Update [README FetchContent](README.md#using-cmakes-fetchcontent)
   instructions to the new tag;
-- [ ] Update [changelog](changelog.md);
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_headers;
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>
   - [ ] Don't forget go add SDL3pp_zip_amalgamation and SDL3pp_zip_full to the

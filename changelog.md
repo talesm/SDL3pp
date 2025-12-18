@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 0.5.5
+
+Small fixes.
+
+- Fix error on Texture and Surface constructors when SDL_image not detected;
+- Move content back to the root README.md
+- Make the doxygen one simpler, removing the the build instructions and
+  referring to project's.
+- Download "bundled" projects only if "SDL3PP_FORCE_BUNDLED" is ON
+
 ## Version 0.5.4
 
 Quick-fix for easier integration with projects

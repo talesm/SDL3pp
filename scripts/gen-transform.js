@@ -4,7 +4,7 @@ import { writeJSONSync } from "./cppfier/utils.ts";
  * @import {ApiTransform} from "./cppfier/types"
  */
 
-const currentVersion = ["0", "5", "4"];
+const currentVersion = ["0", "5", "5"];
 
 /** @type {ApiTransform} */
 const transform = {

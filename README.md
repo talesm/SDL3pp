@@ -11,12 +11,12 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [the single header](./amalgamation/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp_amalgamated-0.5.4.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.5/SDL3pp_amalgamated-0.5.5.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp_amalgamated-0.5.4.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.5/SDL3pp_amalgamated-0.5.5.tar.gz))
      and add to your project;
   2. You can also download the
-     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.5.4/SDL3pp-0.5.4.zip)
+     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.5.5/SDL3pp-0.5.5.zip)
      then [build](#building) and [install](#installing) the project;
   3. If you use CMake, you can also set up
      [FetchContent](#using-cmakes-fetchcontent) to automatically do that for
@@ -133,7 +133,7 @@ include(FetchContent)
 # set(SDL3PP_FORCE_BUNDLED ON) # Enable this to force CMake to download SDL, SDL_image and SDL_ttf
 FetchContent_Declare(SDL3ppExternal
   GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
-  GIT_TAG 0.5.4
+  GIT_TAG 0.5.5
   GIT_PROGRESS ON
 )
 FetchContent_MakeAvailable(SDL3ppExternal)
