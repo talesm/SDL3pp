@@ -24,7 +24,7 @@ Make root readme the authoritative one, as the doxygen one is uglier:
 - [x] Move content back to the root README.md
 - [ ] Make the doxygen one simpler, removing the the build instructions and
   referring to project's.
-- [ ] Download "bundled" projects only if "SDL3PP_FORCE_BUNDLED" is ON
+- [x] Download "bundled" projects only if "SDL3PP_FORCE_BUNDLED" is ON
 
 Backlog
 -------

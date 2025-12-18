@@ -7,51 +7,40 @@ project(SDL3pp
 
 include(GNUInstallDirs)
 
-option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
-if (SDL3PP_FORCE_BUNDLED)
-    set(SDL3PP_USE_BUNDLED ON)
-else ()
-    find_package(SDL3 QUIET)
-    if (NOT TARGET SDL3::SDL3)
-        set(SDL3PP_USE_BUNDLED ON)
-    endif()
-endif ()
-
 #############################
 ### Enable/Disable options ##
 #############################
-set(SDL3PP_DEPENDENCIES SDL3::SDL3)
-
+option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
 option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
 
-# include bundled, if necessary
-if (SDL3PP_USE_BUNDLED)
+if (SDL3PP_FORCE_BUNDLED)
     include(cmake/SDL3ppAddExternalProjects.cmake)
-    find_package(SDL3 REQUIRED)
-endif ()
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf)
 
-# SDL_image
-if (SDL3PP_ENABLE_IMAGE)
-    find_package(SDL3_image QUIET)
-    set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
-    if (TARGET SDL3_image::SDL3_image)
-        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
-    else ()
-        set(SDL3PP_ENABLE_IMAGE OFF)
+else ()
+    find_package(SDL3 CONFIG REQUIRED)
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3)
+
+    # SDL_image
+    if (SDL3PP_ENABLE_IMAGE)
+        find_package(SDL3_image QUIET)
+        set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_image::SDL3_image)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        endif ()
+    endif ()
+    
+    # SDL_ttf
+    if (SDL3PP_ENABLE_TTF)
+        find_package(SDL3_ttf QUIET)
+        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+        endif ()
     endif ()
 endif ()
 
-# SDL_ttf
-if (SDL3PP_ENABLE_TTF)
-    find_package(SDL3_ttf QUIET)
-    set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
-    if (TARGET SDL3_ttf::SDL3_ttf)
-        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-    else ()
-        set(SDL3PP_ENABLE_TTF OFF)
-    endif ()
-endif ()
 
 ###############
 # The library #
