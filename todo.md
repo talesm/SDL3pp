@@ -7,12 +7,7 @@ New Version checklist:
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);
 - [ ] Update [README Quick start links](README.md#quick-start--tldr) to new tag
   link;
-- [ ] Update [README Quick start links](docs/README.md#quick-start--tldr) to new
-  tag link;
-- [ ] Update [README FetchContent](docs/README.md#using-cmakes-fetchcontent)
-  instructions to the new tag;
-- [ ] Update
-  [README ExternalProject](docs/README.md#using-cmakes-externalproject)
+- [ ] Update [README FetchContent](README.md#using-cmakes-fetchcontent)
   instructions to the new tag;
 - [ ] Update [changelog](changelog.md);
 - [ ] build SDL3pp_zip_amalgamation and SDL3pp_zip_headers;
@@ -25,8 +20,7 @@ Next version
 
 Make root readme the authoritative one, as the doxygen one is uglier:
 
-- [ ] Move content back to the root README.md (except for ExternalProject, it is
-  not necessary)
+- [x] Move content back to the root README.md
 - [ ] Make the doxygen one simpler, removing the the build instructions and
   referring to project's.
 - [ ] Add windows-prebuilt option mode, downloading the version automatically.
