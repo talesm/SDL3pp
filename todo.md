@@ -23,10 +23,13 @@ New Version checklist:
 Next version
 ------------
 
-Simplify project setup
+Make root readme the authoritative one, as the doxygen one is uglier:
 
-- [x] Replace submodules by ExternalProject;
-- [x] Create lightweight distribution, with only CMake and includes;
+- [ ] Move content back to the root README.md (except for ExternalProject, it is
+  not necessary)
+- [ ] Make the doxygen one simpler, removing the the build instructions and
+  referring to project's.
+- [ ] Add windows-prebuilt option mode, downloading the version automatically.
 
 Backlog
 -------
