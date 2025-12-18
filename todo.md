@@ -21,7 +21,7 @@ Next version
 Make root readme the authoritative one, as the doxygen one is uglier:
 
 - [x] Move content back to the root README.md
-- [ ] Make the doxygen one simpler, removing the the build instructions and
+- [x] Make the doxygen one simpler, removing the the build instructions and
   referring to project's.
 - [ ] Add windows-prebuilt option mode, downloading the version automatically.
 
