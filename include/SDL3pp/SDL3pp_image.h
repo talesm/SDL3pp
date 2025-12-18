@@ -2508,6 +2508,32 @@ inline Animation LoadWEBPAnimation(IOStreamParam src)
 
 } // namespace SDL
 
+#else // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
+
+namespace SDL {
+
+inline Surface::Surface(StringParam file)
+  : Surface(LoadBMP(std::move(file)))
+{
+}
+
+inline Surface::Surface(IOStreamParam src, bool closeio)
+  : Surface(LoadBMP(std::move(src), closeio))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, StringParam file)
+  : Texture(std::move(renderer), Surface(std::move(file)))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+  : Texture(std::move(renderer), Surface(std::move(src), closeio))
+{
+}
+
+} // namespace SDL
+
 #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #endif /* SDL3PP_IMAGE_H_ */
