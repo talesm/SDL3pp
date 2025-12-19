@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.5.6
+
+Fix error ".../docs/Doxyfile not found" when trying to include CMakeLists from
+SDL3pp-0.5.5.tar.gz.
+
 ## Version 0.5.5
 
 Small fixes.

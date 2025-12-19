@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.5.5
+    VERSION 0.5.6
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
@@ -123,16 +123,20 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
 endif ()
 
 # The documentation
-# check if Doxygen is installed
-find_package(Doxygen COMPONENTS dot)
-if (DOXYGEN_FOUND)
-    # Main doc
-    doxygen_add_docs(SDL3pp_doxygen
-        COMMENT "Generate API docs for SDL3pp"
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
-    )
-endif (DOXYGEN_FOUND)
+option(SDL3PP_GEN_DOCS "Generated docs" OFF)
+
+if (SDL3PP_GEN_DOCS AND EXISTS ${PROJECT_SOURCE_DIR}/docs/Doxyfile)
+    # check if Doxygen is installed
+    find_package(Doxygen COMPONENTS dot)
+    if (DOXYGEN_FOUND)
+        # Main doc
+        doxygen_add_docs(SDL3pp_doxygen
+            COMMENT "Generate API docs for SDL3pp"
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+        )
+    endif ()
+endif ()
 
 #########################
 ## Refresh the headers ##
