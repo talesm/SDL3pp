@@ -7,11 +7,6 @@
 #include "SDL3pp_version.h"
 #include "SDL3pp_video.h"
 
-#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
-  __has_include(<SDL3_image/SDL_image.h>)
-#define SDL3PP_ENABLE_IMAGE
-#endif
-
 #if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>

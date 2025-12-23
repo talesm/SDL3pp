@@ -1528,6 +1528,18 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 
 /// @}
 
+// Check if SDL_image is available
+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+  __has_include(<SDL3_image/SDL_image.h>)
+#define SDL3PP_ENABLE_IMAGE
+#endif
+
+// Check if SDL_ttf is available
+#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
+  __has_include(<SDL3_ttf/SDL_ttf.h>)
+#define SDL3PP_ENABLE_TTF
+#endif
+
 /**
  * @defgroup CategoryStrings Helpers to use C++ strings and byte arrays.
  *
@@ -37349,7 +37361,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
                                      SourceBytes buf,
                                      AudioStreamDataCompleteCB callback)
 {
-  using Wrapper = CallbackWrapper<CleanupPropertyCB>;
+  using Wrapper = CallbackWrapper<AudioStreamDataCompleteCB>;
   PutAudioStreamDataNoCopy(stream,
                            std::move(buf),
                            &Wrapper::CallOnce,
@@ -44264,6 +44276,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
+#ifndef SDL3PP_ENABLE_IMAGE
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
@@ -44287,7 +44300,7 @@ inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
  */
 inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
 {
-  return SDL_LoadSurface_IO(src, closeio);
+  return Surface{SDL_LoadSurface_IO(src, closeio)};
 }
 
 /**
@@ -44307,9 +44320,12 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
  * @sa Surface.Destroy
  * @sa LoadSurface
  */
-inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
-
+inline Surface LoadSurface(StringParam file)
+{
+  return Surface{SDL_LoadSurface(file)};
+}
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL3PP_ENABLE_IMAGE
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -45045,7 +45061,7 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  */
 inline Surface RotateSurface(SurfaceParam surface, float angle)
 {
-  return SDL_RotateSurface(surface, angle);
+  return Surface{SDL_RotateSurface(surface, angle)};
 }
 
 inline Surface Surface::Rotate(float angle)
@@ -61649,7 +61665,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  */
 inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
-  if (buf.size_bytes() == 0) return SDL_GetEventDescription(event, nullptr, 0);
+  if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
   return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
 }
 
@@ -61682,7 +61698,7 @@ inline int GetEventDescription(const Event& event, TargetBytes buf)
  */
 inline std::string GetEventDescription(const Event& event)
 {
-  int sz = SDL_GetEventDescription(event, nullptr, 0);
+  int sz = SDL_GetEventDescription(&event, nullptr, 0);
   std::string r;
   r.reserve(sz);
   GetEventDescription(event, r);
@@ -80685,7 +80701,7 @@ struct TextureConstParam
   constexpr auto operator->() { return value; }
 };
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 // Forward decl
 struct GPURenderState;
@@ -80723,7 +80739,7 @@ struct GPURenderStateParam
   constexpr operator GPURenderStateRaw() const { return value; }
 };
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * The name of the software renderer.
@@ -82917,7 +82933,7 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderStateRef CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+  GPURenderState CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
 
   /**
    * Set custom GPU render state.
@@ -85322,7 +85338,7 @@ inline void Texture::SetPalette(PaletteParam palette)
  */
 inline Palette GetTexturePalette(TextureParam texture)
 {
-  return SDL_GetTexturePalette(texture);
+  return Palette::Borrow(SDL_GetTexturePalette(texture));
 }
 
 inline Palette Texture::GetPalette()
@@ -87601,13 +87617,13 @@ inline void RenderTexture9GridTiled(RendererParam renderer,
 {
   CheckError(SDL_RenderTexture9GridTiled(renderer,
                                          texture,
-                                         srcrect,
+                                         &srcrect,
                                          left_width,
                                          right_width,
                                          top_height,
                                          bottom_height,
                                          scale,
-                                         dstrect,
+                                         &dstrect,
                                          tileScale));
 }
 
@@ -88485,7 +88501,7 @@ inline GPURenderState CreateGPURenderState(RendererParam renderer,
   return GPURenderState(renderer, createinfo);
 }
 
-inline GPURenderStateRef Renderer::CreateGPURenderState(
+inline GPURenderState Renderer::CreateGPURenderState(
   GPURenderStateCreateInfo* createinfo)
 {
   return GPURenderState(m_resource, createinfo);
@@ -89966,11 +89982,6 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
 /// @}
 
 } // namespace SDL
-#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
-  __has_include(<SDL3_image/SDL_image.h>)
-#define SDL3PP_ENABLE_IMAGE
-#endif
-
 #if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>
@@ -92494,11 +92505,6 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
 } // namespace SDL
 
 #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
-
-#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
-  __has_include(<SDL3_ttf/SDL_ttf.h>)
-#define SDL3PP_ENABLE_TTF
-#endif
 
 #if defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)
 

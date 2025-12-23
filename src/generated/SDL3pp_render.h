@@ -4,6 +4,7 @@
 #include <SDL3/SDL_render.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_events.h"
+#include "SDL3pp_gpu.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_video.h"
 

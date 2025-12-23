@@ -2446,6 +2446,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
+#ifndef SDL3PP_ENABLE_IMAGE
 #if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
@@ -2469,7 +2470,7 @@ inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
  */
 inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
 {
-  return SDL_LoadSurface_IO(src, closeio);
+  return Surface{SDL_LoadSurface_IO(src, closeio)};
 }
 
 /**
@@ -2489,9 +2490,12 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
  * @sa Surface.Destroy
  * @sa LoadSurface
  */
-inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
-
+inline Surface LoadSurface(StringParam file)
+{
+  return Surface{SDL_LoadSurface(file)};
+}
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL3PP_ENABLE_IMAGE
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -3227,7 +3231,7 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  */
 inline Surface RotateSurface(SurfaceParam surface, float angle)
 {
-  return SDL_RotateSurface(surface, angle);
+  return Surface{SDL_RotateSurface(surface, angle)};
 }
 
 inline Surface Surface::Rotate(float angle)

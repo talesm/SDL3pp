@@ -4,6 +4,7 @@
 #include <SDL3/SDL_render.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_events.h"
+#include "SDL3pp_gpu.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_video.h"
 
@@ -147,7 +148,7 @@ struct TextureConstParam
   constexpr auto operator->() { return value; }
 };
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 // Forward decl
 struct GPURenderState;
@@ -185,7 +186,7 @@ struct GPURenderStateParam
   constexpr operator GPURenderStateRaw() const { return value; }
 };
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * The name of the software renderer.
@@ -2379,7 +2380,7 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderStateRef CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+  GPURenderState CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
 
   /**
    * Set custom GPU render state.
@@ -4784,7 +4785,7 @@ inline void Texture::SetPalette(PaletteParam palette)
  */
 inline Palette GetTexturePalette(TextureParam texture)
 {
-  return SDL_GetTexturePalette(texture);
+  return Palette::Borrow(SDL_GetTexturePalette(texture));
 }
 
 inline Palette Texture::GetPalette()
@@ -7063,13 +7064,13 @@ inline void RenderTexture9GridTiled(RendererParam renderer,
 {
   CheckError(SDL_RenderTexture9GridTiled(renderer,
                                          texture,
-                                         srcrect,
+                                         &srcrect,
                                          left_width,
                                          right_width,
                                          top_height,
                                          bottom_height,
                                          scale,
-                                         dstrect,
+                                         &dstrect,
                                          tileScale));
 }
 
@@ -7947,7 +7948,7 @@ inline GPURenderState CreateGPURenderState(RendererParam renderer,
   return GPURenderState(renderer, createinfo);
 }
 
-inline GPURenderStateRef Renderer::CreateGPURenderState(
+inline GPURenderState Renderer::CreateGPURenderState(
   GPURenderStateCreateInfo* createinfo)
 {
   return GPURenderState(m_resource, createinfo);

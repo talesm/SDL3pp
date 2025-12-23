@@ -169,6 +169,18 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 
 /// @}
 
+// Check if SDL_image is available
+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+  __has_include(<SDL3_image/SDL_image.h>)
+#define SDL3PP_ENABLE_IMAGE
+#endif
+
+// Check if SDL_ttf is available
+#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
+  __has_include(<SDL3_ttf/SDL_ttf.h>)
+#define SDL3PP_ENABLE_TTF
+#endif
+
 } // namespace SDL
 
 #endif /* SDL3PP_VERSION_H_ */

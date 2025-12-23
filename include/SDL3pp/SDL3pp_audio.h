@@ -4319,7 +4319,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
                                      SourceBytes buf,
                                      AudioStreamDataCompleteCB callback)
 {
-  using Wrapper = CallbackWrapper<CleanupPropertyCB>;
+  using Wrapper = CallbackWrapper<AudioStreamDataCompleteCB>;
   PutAudioStreamDataNoCopy(stream,
                            std::move(buf),
                            &Wrapper::CallOnce,

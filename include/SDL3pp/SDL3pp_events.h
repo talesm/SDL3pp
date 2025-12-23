@@ -1807,7 +1807,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  */
 inline int GetEventDescription(const Event& event, TargetBytes buf)
 {
-  if (buf.size_bytes() == 0) return SDL_GetEventDescription(event, nullptr, 0);
+  if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
   return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
 }
 
@@ -1840,7 +1840,7 @@ inline int GetEventDescription(const Event& event, TargetBytes buf)
  */
 inline std::string GetEventDescription(const Event& event)
 {
-  int sz = SDL_GetEventDescription(event, nullptr, 0);
+  int sz = SDL_GetEventDescription(&event, nullptr, 0);
   std::string r;
   r.reserve(sz);
   GetEventDescription(event, r);

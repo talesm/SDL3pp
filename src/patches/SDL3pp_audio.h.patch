@@ -833,7 +833,7 @@
                                       AudioStreamDataCompleteCB callback)
  {
 -  static_assert(false, "Not implemented");
-+  using Wrapper = CallbackWrapper<CleanupPropertyCB>;
++  using Wrapper = CallbackWrapper<AudioStreamDataCompleteCB>;
 +  PutAudioStreamDataNoCopy(stream,
 +                           std::move(buf),
 +                           &Wrapper::CallOnce,
