@@ -1,3 +1,27 @@
+include(ExternalProject)
+
+ExternalProject_Add(SDL3Base
+  PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
+  URL               https://github.com/libsdl-org/SDL/releases/download/release-3.2.28/SDL3-3.2.28.tar.gz
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+)
+ExternalProject_Add(SDL3ImageBase
+  PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
+  URL               https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+)
+ExternalProject_Add(SDL3TTFBase
+  PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
+  URL               https://github.com/libsdl-org/SDL_ttf/releases/download/release-3.2.2/SDL3_ttf-3.2.2.tar.gz
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+)
+
 file(GLOB CPPFIER_SOURCES CONFIGURE_DEPENDS scripts/cppfier/*.ts)
 
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/node_modules 
@@ -24,7 +48,9 @@ add_custom_command(OUTPUT ${CPPFIER_GRAMMAR_SOURCES}
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
   COMMAND npm run check
   COMMAND ${PROJECT_SOURCE_DIR}/scripts/parse.sh
-  DEPENDS ${SDL3PP_DEPENDENCIES} 
+  DEPENDS SDL3Base
+          SDL3ImageBase
+          SDL3TTFBase
           ${PROJECT_SOURCE_DIR}/scripts/config-source.json 
           ${CPPFIER_SOURCES}
           ${CPPFIER_GRAMMAR_SOURCES}
