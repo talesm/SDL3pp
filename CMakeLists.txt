@@ -110,7 +110,7 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/examples AND SDL3PP_BUILD_EXAMPLES)
 endif ()
 
 # Unit tests
-option(SDL3PP_BUILD_TESTING "Build the tests" ON)
+option(SDL3PP_BUILD_TESTING "Build the tests" OFF)
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
     add_library(test_main OBJECT test/doctest.cpp)
     target_include_directories(test_main INTERFACE test/)

@@ -8347,6 +8347,9 @@ const transform = {
         "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": {
           since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
         },
+        "TTF_HINTING_INVALID": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
+        },
         "TTF_Text": {
           resource: true,
           entries: {

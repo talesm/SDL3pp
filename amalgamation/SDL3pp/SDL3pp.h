@@ -88182,7 +88182,11 @@ constexpr FontStyleFlags STYLE_STRIKETHROUGH =
  */
 using HintingFlags = TTF_HintingFlags;
 
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID; ///< INVALID
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 constexpr HintingFlags HINTING_NORMAL =
   TTF_HINTING_NORMAL; ///< Normal hinting applies standard grid-fitting.
