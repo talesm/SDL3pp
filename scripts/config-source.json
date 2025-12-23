@@ -61,8 +61,8 @@
     "SDL_ttf.h"
   ],
   "baseDir": [
-    "build/_deps/sdl3external-src/include/SDL3/",
-    "build/_deps/sdl3imageexternal-src/include/SDL3_image/",
+    "build/base/src/SDL3Base/include/SDL3/",
+    "build/base/src/SDL3ImageBase/include/SDL3_image/",
     "build/_deps/sdl3ttfexternal-src/include/SDL3_ttf/"
   ],
   "outputFile": "scripts/source.json"
