@@ -21,6 +21,7 @@ Next version
 Simplify generation
 
 - [x] Make source from transformation independent from the linked one;
+- [x] Fix SDL_ttf build;
 
 Backlog
 -------
