@@ -288,11 +288,11 @@ class ApiContext {
     const tag = this.baseVersions[version.tag];
     if (
       !tag ||
-      (tag.minor % 2 == 0 &&
-        tag.patch % 2 == 0 &&
-        !isVersionAfter(version, tag))
-    )
+      (tag.minor % 2 == 0 && tag.patch % 2 == 0) ||
+      !isVersionAfter(version, tag)
+    ) {
       return version;
+    }
     return tag;
   }
 

@@ -38,6 +38,7 @@ add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
   DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json 
           ${PROJECT_SOURCE_DIR}/scripts/config-target.json
           ${PROJECT_SOURCE_DIR}/scripts/gen-transform.js
+          ${PROJECT_SOURCE_DIR}/scripts/base.json
           ${CPPFIER_SOURCES}
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )

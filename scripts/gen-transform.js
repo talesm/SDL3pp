@@ -1,4 +1,5 @@
 import { writeJSONSync } from "./cppfier/utils.ts";
+import baseVersions from "./base.json" with { type: 'json' };
 
 /**
  * @import {ApiTransform} from "./cppfier/types"
@@ -21,6 +22,7 @@ const transform = {
     SDL_TTF: { tag: "SDL_TTF", major: 3, minor: 2, patch: 0 },
     SDL_IMAGE: { tag: "SDL_IMAGE", major: 3, minor: 2, patch: 0 },
   },
+  baseVersions,
   paramTypeMap: {
     "const char *": "StringParam",
     "TTF_TextEngine *": "TextEngineParam",
