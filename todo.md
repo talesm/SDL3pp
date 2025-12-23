@@ -18,13 +18,9 @@ New Version checklist:
 Next version
 ------------
 
-Make root readme the authoritative one, as the doxygen one is uglier:
+Simplify generation
 
-- [x] Fix error on Texture and Surface constructors when SDL_image not detected;
-- [x] Move content back to the root README.md
-- [x] Make the doxygen one simpler, removing the the build instructions and
-  referring to project's.
-- [x] Download "bundled" projects only if "SDL3PP_FORCE_BUNDLED" is ON
+- [x] Make source from transformation independent from the linked one;
 
 Backlog
 -------

@@ -166,11 +166,11 @@ struct TextConstParam
 };
 
 /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
-#define SDL_TTF_MAJOR_VERSION 3
+#define SDL_TTF_MAJOR_VERSION
 
-#define SDL_TTF_MINOR_VERSION 2
+#define SDL_TTF_MINOR_VERSION
 
-#define SDL_TTF_MICRO_VERSION 3
+#define SDL_TTF_MICRO_VERSION
 
 /// This is the version number macro for the current SDL_ttf version.
 #define SDL_TTF_VERSION                                                        \
@@ -496,7 +496,7 @@ public:
    * the last indexed size will be the default.
    *
    * If `closeio` is true, `src` will be automatically closed once the font is
-   * closed. Otherwise you should keep `src` open until the font is closed.
+   * closed. Otherwise you should close `src` yourself after closing the font.
    *
    * When done with the returned Font, use Font.Close() to dispose of it.
    *
@@ -526,11 +526,11 @@ public:
    * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
    *   IOStream isn't being used. This is required if
    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
    *   be opened. This should not be closed until the font is closed. This is
    *   required if `prop::Font.CREATE_FILENAME_STRING` and
-   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
    * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
@@ -547,9 +547,9 @@ public:
    * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
    *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
    *   or 72 otherwise.
-   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
-   *   will be used as the font data source and the initial size and style of
-   *   the new font.
+   * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+   *   used as the font data source and the initial size and style of the new
+   *   font.
    *
    * @param props the properties to use.
    * @post a valid Font on success.
@@ -992,7 +992,7 @@ public:
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
-   * @since This function is available since SDL_ttf 3.2.2.
+   * @since This function is available since SDL_ttf 3.4.0.
    */
   int GetWeight() const;
 
@@ -1984,7 +1984,7 @@ inline Font OpenFont(StringParam file, float ptsize)
  * last indexed size will be the default.
  *
  * If `closeio` is true, `src` will be automatically closed once the font is
- * closed. Otherwise you should keep `src` open until the font is closed.
+ * closed. Otherwise you should close `src` yourself after closing the font.
  *
  * When done with the returned Font, use Font.Close() to dispose of it.
  *
@@ -2013,11 +2013,11 @@ inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
  *
  * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
  *   isn't being used. This is required if `prop::Font.CREATE_IOSTREAM_POINTER`
- *   and `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+ *   and `prop::Font.CREATE_EXISTING_FONT` aren't set.
  * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
  *   opened. This should not be closed until the font is closed. This is
  *   required if `prop::Font.CREATE_FILENAME_STRING` and
- *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+ *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
  * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
  *   the beginning of the font, defaults to 0.
  * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
@@ -2034,9 +2034,9 @@ inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
  * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
  *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
  *   72 otherwise.
- * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
- *   will be used as the font data source and the initial size and style of the
- *   new font.
+ * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+ *   used as the font data source and the initial size and style of the new
+ *   font.
  *
  * @param props the properties to use.
  * @returns a valid Font on success.
@@ -2075,12 +2075,11 @@ constexpr auto CREATE_HORIZONTAL_DPI_NUMBER =
 constexpr auto CREATE_VERTICAL_DPI_NUMBER =
   TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto CREATE_EXISTING_FONT_POINTER =
-  TTF_PROP_FONT_CREATE_EXISTING_FONT_POINTER;
+constexpr auto CREATE_EXISTING_FONT = TTF_PROP_FONT_CREATE_EXISTING_FONT;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
 
@@ -2601,7 +2600,7 @@ inline bool Font::GetSDF() const { return SDL::GetFontSDF(m_resource); }
  * @threadsafety This function should be called on the thread that created the
  *               font.
  *
- * @since This function is available since SDL_ttf 3.2.2.
+ * @since This function is available since SDL_ttf 3.4.0.
  */
 inline int GetFontWeight(FontParam font) { return TTF_GetFontWeight(font); }
 
@@ -4192,10 +4191,10 @@ struct RendererTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
-   *   creating textures and drawing text
-   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
-   *   texture atlas
+   * - `prop::RendererTextEngine.RENDERER`: the renderer to use for creating
+   *   textures and drawing text
+   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
+   *   atlas
    *
    * @param props the properties to use.
    * @post a TextEngine object or nullptr on failure; call GetError() for more
@@ -4265,10 +4264,9 @@ struct GPUTextEngine : TextEngine
    *
    * These are the supported properties:
    *
-   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
-   *   textures and drawing text.
-   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
-   *   atlas
+   * - `prop::GpuTextEngine.DEVICE`: the GPUDevice to use for creating textures
+   *   and drawing text.
+   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture atlas
    *
    * @param props the properties to use.
    * @post a TextEngine object or nullptr on failure; call GetError() for more
@@ -4870,10 +4868,8 @@ public:
    *
    * This function may cause the internal text representation to be rebuilt.
    *
-   * @param text the Text to modify.
    * @param x the x offset of the upper left corner of this text in pixels.
    * @param y the y offset of the upper left corner of this text in pixels.
-   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -4882,7 +4878,7 @@ public:
    *
    * @sa Text.GetPosition
    */
-  void SetPosition(Point p);
+  void SetPosition(const PointRaw& p);
 
   /**
    * Get the position of a text object.
@@ -4891,7 +4887,6 @@ public:
    *          this text in pixels, may be nullptr.
    * @param y a pointer filled in with the y offset of the upper left corner of
    *          this text in pixels, may be nullptr.
-   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -4909,7 +4904,6 @@ public:
    *          this text in pixels, may be nullptr.
    * @param y a pointer filled in with the y offset of the upper left corner of
    *          this text in pixels, may be nullptr.
-   * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -5233,8 +5227,6 @@ public:
    * substring with the SUBSTRING_TEXT_START flag set.
    *
    * @param substring the SubString to query.
-   * @param previous a pointer filled in with the previous substring in the text
-   *                 object.
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -5479,10 +5471,10 @@ inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
  *
  * These are the supported properties:
  *
- * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
- *   creating textures and drawing text
- * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
- *   texture atlas
+ * - `prop::RendererTextEngine.RENDERER`: the renderer to use for creating
+ *   textures and drawing text
+ * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
+ *   atlas
  *
  * @param props the properties to use.
  * @returns a TextEngine object or nullptr on failure; call GetError() for more
@@ -5505,19 +5497,18 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
 
 namespace prop::RendererTextEngine {
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto RENDERER_POINTER =
-  TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER;
+constexpr auto RENDERER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+constexpr auto ATLAS_TEXTURE_SIZE =
+  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 } // namespace prop::RendererTextEngine
 
@@ -5606,10 +5597,9 @@ inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
  *
  * These are the supported properties:
  *
- * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
- *   textures and drawing text.
- * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
- *   atlas
+ * - `prop::GpuTextEngine.DEVICE`: the GPUDevice to use for creating textures
+ *   and drawing text.
+ * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture atlas
  *
  * @param props the properties to use.
  * @returns a TextEngine object or nullptr on failure; call GetError() for more
@@ -5631,18 +5621,17 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
 
 namespace prop::GpuTextEngine {
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER;
+constexpr auto DEVICE = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+constexpr auto ATLAS_TEXTURE_SIZE = TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 } // namespace prop::GpuTextEngine
 
@@ -6171,7 +6160,6 @@ inline FColor Text::GetColorFloat()
  * @param text the Text to modify.
  * @param x the x offset of the upper left corner of this text in pixels.
  * @param y the y offset of the upper left corner of this text in pixels.
- * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               text.
@@ -6180,12 +6168,15 @@ inline FColor Text::GetColorFloat()
  *
  * @sa Text.GetPosition
  */
-inline void SetTextPosition(TextParam text, Point p)
+inline void SetTextPosition(TextParam text, const PointRaw& p)
 {
   CheckError(TTF_SetTextPosition(text, p));
 }
 
-inline void Text::SetPosition(Point p) { SDL::SetTextPosition(m_resource, p); }
+inline void Text::SetPosition(const PointRaw& p)
+{
+  SDL::SetTextPosition(m_resource, p);
+}
 
 /**
  * Get the position of a text object.
@@ -6195,7 +6186,6 @@ inline void Text::SetPosition(Point p) { SDL::SetTextPosition(m_resource, p); }
  *          this text in pixels, may be nullptr.
  * @param y a pointer filled in with the y offset of the upper left corner of
  *          this text in pixels, may be nullptr.
- * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               text.
@@ -6217,7 +6207,6 @@ inline void GetTextPosition(TextConstParam text, int* x, int* y)
  *          this text in pixels, may be nullptr.
  * @param y a pointer filled in with the y offset of the upper left corner of
  *          this text in pixels, may be nullptr.
- * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the
  *               text.
@@ -6657,8 +6646,6 @@ inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
  *
  * @param text the Text to query.
  * @param substring the SubString to query.
- * @param previous a pointer filled in with the previous substring in the text
- *                 object.
  * @throws Error on failure.
  *
  * @threadsafety This function should be called on the thread that created the

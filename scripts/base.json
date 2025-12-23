@@ -1,0 +1,20 @@
+{
+  "SDL": {
+    "tag": "SDL",
+    "major": 3,
+    "minor": 2,
+    "patch": 28
+  },
+  "SDL_IMAGE": {
+    "tag": "SDL_IMAGE",
+    "major": 3,
+    "minor": 2,
+    "patch": 4
+  },
+  "SDL_TTF": {
+    "tag": "SDL_TTF",
+    "major": 3,
+    "minor": 2,
+    "patch": 2
+  }
+}

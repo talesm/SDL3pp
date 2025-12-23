@@ -33,7 +33,6 @@
  };
  
 -/// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
--#define SDL_TTF_MAJOR_VERSION 3
 +#ifdef SDL3PP_DOC
 +
 +/**
@@ -41,17 +40,15 @@
 + * @{
 + * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
 + */
-+#define SDL_TTF_MAJOR_VERSION
-+
-+#define SDL_TTF_MINOR_VERSION
+ #define SDL_TTF_MAJOR_VERSION
  
--#define SDL_TTF_MINOR_VERSION 2
-+#define SDL_TTF_MICRO_VERSION
+ #define SDL_TTF_MINOR_VERSION
  
--#define SDL_TTF_MICRO_VERSION 3
-+///@}
+ #define SDL_TTF_MICRO_VERSION
  
 -/// This is the version number macro for the current SDL_ttf version.
++///@}
++
 +/**
 + * This is the version number macro for the current SDL_ttf version.
 + */
@@ -92,12 +89,15 @@
     * @param file path to font file.
     * @param ptsize point size to use for the newly-opened font.
     * @post a valid Font on success.
-@@ -498,12 +518,10 @@
-    * If `closeio` is true, `src` will be automatically closed once the font is
-    * closed. Otherwise you should keep `src` open until the font is closed.
+@@ -496,14 +516,12 @@
+    * the last indexed size will be the default.
     *
--   * When done with the returned Font, use Font.Close() to dispose of it.
+    * If `closeio` is true, `src` will be automatically closed once the font is
+-   * closed. Otherwise you should close `src` yourself after closing the font.
 -   *
+-   * When done with the returned Font, use Font.Close() to dispose of it.
++   * closed. Otherwise you should keep `src` open until the font is closed.
+    *
     * @param src an IOStream to provide a font file's data.
 +   * @param ptsize point size to use for the newly-opened font.
     * @param closeio true to close `src` when the font is closed, false to leave
@@ -115,6 +115,33 @@
    {
    }
  
+@@ -526,11 +544,11 @@
+    * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an
+    *   IOStream isn't being used. This is required if
+    *   `prop::Font.CREATE_IOSTREAM_POINTER` and
+-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
++   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+    * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to
+    *   be opened. This should not be closed until the font is closed. This is
+    *   required if `prop::Font.CREATE_FILENAME_STRING` and
+-   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
++   *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+    * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
+    *   for the beginning of the font, defaults to 0.
+    * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+@@ -547,9 +565,9 @@
+    * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+    *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set,
+    *   or 72 otherwise.
+-   * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+-   *   used as the font data source and the initial size and style of the new
+-   *   font.
++   * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
++   *   will be used as the font data source and the initial size and style of
++   *   the new font.
+    *
+    * @param props the properties to use.
+    * @post a valid Font on success.
 @@ -619,7 +637,6 @@
     * @since This function is available since SDL_ttf 3.0.0.
     *
@@ -132,6 +159,15 @@
     * @returns a valid Font on success.
     * @throws Error on failure.
     *
+@@ -992,7 +1007,7 @@
+    * @threadsafety This function should be called on the thread that created the
+    *               font.
+    *
+-   * @since This function is available since SDL_ttf 3.4.0.
++   * @since This function is available since SDL_ttf 3.2.2.
+    */
+   int GetWeight() const;
+ 
 @@ -1235,7 +1250,7 @@
     * This updates any Text objects using this font.
     *
@@ -334,7 +370,13 @@
     * @param fg the foreground color for the text.
     * @param bg the background color for the text.
     * @param wrap_width the maximum width of the text surface or 0 to wrap on
-@@ -1989,9 +2010,9 @@
+@@ -1984,14 +2005,14 @@
+  * last indexed size will be the default.
+  *
+  * If `closeio` is true, `src` will be automatically closed once the font is
+- * closed. Otherwise you should close `src` yourself after closing the font.
++ * closed. Otherwise you should keep `src` open until the font is closed.
+  *
   * When done with the returned Font, use Font.Close() to dispose of it.
   *
   * @param src an IOStream to provide a font file's data.
@@ -345,7 +387,44 @@
   * @returns a valid Font on success.
   * @throws Error on failure.
   *
-@@ -2113,7 +2134,7 @@
+@@ -2013,11 +2034,11 @@
+  *
+  * - `prop::Font.CREATE_FILENAME_STRING`: the font file to open, if an IOStream
+  *   isn't being used. This is required if `prop::Font.CREATE_IOSTREAM_POINTER`
+- *   and `prop::Font.CREATE_EXISTING_FONT` aren't set.
++ *   and `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+  * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStream containing the font to be
+  *   opened. This should not be closed until the font is closed. This is
+  *   required if `prop::Font.CREATE_FILENAME_STRING` and
+- *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
++ *   `prop::Font.CREATE_EXISTING_FONT_POINTER` aren't set.
+  * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream for
+  *   the beginning of the font, defaults to 0.
+  * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the font
+@@ -2034,9 +2055,9 @@
+  * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for font
+  *   rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER` if set, or
+  *   72 otherwise.
+- * - `prop::Font.CREATE_EXISTING_FONT`: an optional Font that, if set, will be
+- *   used as the font data source and the initial size and style of the new
+- *   font.
++ * - `prop::Font.CREATE_EXISTING_FONT_POINTER`: an optional Font that, if set,
++ *   will be used as the font data source and the initial size and style of the
++ *   new font.
+  *
+  * @param props the properties to use.
+  * @returns a valid Font on success.
+@@ -2077,7 +2098,8 @@
+ 
+ #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+ 
+-constexpr auto CREATE_EXISTING_FONT = TTF_PROP_FONT_CREATE_EXISTING_FONT;
++constexpr auto CREATE_EXISTING_FONT_POINTER =
++  TTF_PROP_FONT_CREATE_EXISTING_FONT;
+ 
+ #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+ 
+@@ -2112,7 +2134,7 @@
   */
  inline Font CopyFont(FontParam existing_font)
  {
@@ -354,7 +433,7 @@
  }
  
  inline Font Font::Copy() const { return SDL::CopyFont(m_resource); }
-@@ -2140,7 +2161,7 @@
+@@ -2139,7 +2161,7 @@
   */
  inline PropertiesRef GetFontProperties(FontParam font)
  {
@@ -363,7 +442,12 @@
  }
  
  inline PropertiesRef Font::GetProperties()
-@@ -2605,79 +2626,35 @@
+@@ -2600,83 +2622,39 @@
+  * @threadsafety This function should be called on the thread that created the
+  *               font.
+  *
+- * @since This function is available since SDL_ttf 3.4.0.
++ * @since This function is available since SDL_ttf 3.2.2.
   */
  inline int GetFontWeight(FontParam font) { return TTF_GetFontWeight(font); }
  
@@ -443,7 +527,7 @@
  constexpr int FONT_WEIGHT_EXTRA_BLACK =
    TTF_FONT_WEIGHT_EXTRA_BLACK; ///< ExtraBlack (950) named font weight value
  
-@@ -3060,7 +3037,7 @@
+@@ -3059,7 +3037,7 @@
   *
   * @param font the font to modify.
   * @param script an [ISO 15924
@@ -452,7 +536,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -3189,7 +3166,7 @@
+@@ -3188,7 +3166,7 @@
   */
  inline Surface GetGlyphImage(FontParam font, Uint32 ch, ImageType* image_type)
  {
@@ -461,7 +545,7 @@
  }
  
  inline Surface Font::GetGlyphImage(Uint32 ch, ImageType* image_type) const
-@@ -3219,7 +3196,7 @@
+@@ -3218,7 +3196,7 @@
                                       Uint32 glyph_index,
                                       ImageType* image_type)
  {
@@ -470,7 +554,7 @@
  }
  
  inline Surface Font::GetGlyphImageForIndex(Uint32 glyph_index,
-@@ -3283,8 +3260,7 @@
+@@ -3282,8 +3260,7 @@
   * @param font the font to query.
   * @param previous_ch the previous codepoint.
   * @param ch the current codepoint.
@@ -480,7 +564,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -3294,7 +3270,8 @@
+@@ -3293,7 +3270,8 @@
   */
  inline int GetGlyphKerning(FontParam font, Uint32 previous_ch, Uint32 ch)
  {
@@ -490,7 +574,7 @@
  }
  
  inline int Font::GetGlyphKerning(Uint32 previous_ch, Uint32 ch) const
-@@ -3310,8 +3287,6 @@
+@@ -3309,8 +3287,6 @@
   *
   * @param font the font to query.
   * @param text text to calculate, in UTF-8 encoding.
@@ -499,7 +583,7 @@
   * @param w will be filled with width, in pixels, on return.
   * @param h will be filled with height, in pixels, on return.
   * @throws Error on failure.
-@@ -3323,7 +3298,7 @@
+@@ -3322,7 +3298,7 @@
   */
  inline void GetStringSize(FontParam font, std::string_view text, int* w, int* h)
  {
@@ -508,7 +592,7 @@
  }
  
  inline void Font::GetStringSize(std::string_view text, int* w, int* h) const
-@@ -3344,8 +3319,6 @@
+@@ -3343,8 +3319,6 @@
   *
   * @param font the font to query.
   * @param text text to calculate, in UTF-8 encoding.
@@ -517,7 +601,7 @@
   * @param wrap_width the maximum width or 0 to wrap on newline characters.
   * @param w will be filled with width, in pixels, on return.
   * @param h will be filled with height, in pixels, on return.
-@@ -3362,7 +3335,8 @@
+@@ -3361,7 +3335,8 @@
                                   int* w,
                                   int* h)
  {
@@ -527,7 +611,7 @@
  }
  
  inline void Font::GetStringSizeWrapped(std::string_view text,
-@@ -3383,8 +3357,6 @@
+@@ -3382,8 +3357,6 @@
   *
   * @param font the font to query.
   * @param text text to calculate, in UTF-8 encoding.
@@ -536,7 +620,7 @@
   * @param max_width maximum width, in pixels, available for the string, or 0 for
   *                  unbounded width.
   * @param measured_width a pointer filled in with the width, in pixels, of the
-@@ -3404,8 +3376,12 @@
+@@ -3403,8 +3376,12 @@
                            int* measured_width,
                            size_t* measured_length)
  {
@@ -551,7 +635,7 @@
  }
  
  inline void Font::MeasureString(std::string_view text,
-@@ -3436,8 +3412,6 @@
+@@ -3435,8 +3412,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -560,7 +644,7 @@
   * @param fg the foreground color for the text.
   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
   *
-@@ -3454,7 +3428,7 @@
+@@ -3453,7 +3428,7 @@
   */
  inline Surface RenderText_Solid(FontParam font, std::string_view text, Color fg)
  {
@@ -569,7 +653,7 @@
  }
  
  inline Surface Font::RenderText_Solid(std::string_view text, Color fg) const
-@@ -3479,8 +3453,6 @@
+@@ -3478,8 +3453,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -578,7 +662,7 @@
   * @param fg the foreground color for the text.
   * @param wrapLength the maximum width of the text surface or 0 to wrap on
   *                   newline characters.
-@@ -3501,7 +3473,8 @@
+@@ -3500,7 +3473,8 @@
                                          Color fg,
                                          int wrapLength)
  {
@@ -588,7 +672,7 @@
  }
  
  inline Surface Font::RenderText_Solid_Wrapped(std::string_view text,
-@@ -3540,7 +3513,7 @@
+@@ -3539,7 +3513,7 @@
   */
  inline Surface RenderGlyph_Solid(FontParam font, Uint32 ch, ColorRaw fg)
  {
@@ -597,7 +681,7 @@
  }
  
  inline Surface Font::RenderGlyph_Solid(Uint32 ch, ColorRaw fg) const
-@@ -3568,8 +3541,6 @@
+@@ -3567,8 +3541,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -606,7 +690,7 @@
   * @param fg the foreground color for the text.
   * @param bg the background color for the text.
   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
-@@ -3589,7 +3560,7 @@
+@@ -3588,7 +3560,7 @@
                                   Color fg,
                                   Color bg)
  {
@@ -615,7 +699,7 @@
  }
  
  inline Surface Font::RenderText_Shaded(std::string_view text,
-@@ -3617,8 +3588,6 @@
+@@ -3616,8 +3588,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -624,7 +708,7 @@
   * @param fg the foreground color for the text.
   * @param bg the background color for the text.
   * @param wrap_width the maximum width of the text surface or 0 to wrap on
-@@ -3641,7 +3610,8 @@
+@@ -3640,7 +3610,8 @@
                                           Color bg,
                                           int wrap_width)
  {
@@ -634,7 +718,7 @@
  }
  
  inline Surface Font::RenderText_Shaded_Wrapped(std::string_view text,
-@@ -3686,7 +3656,7 @@
+@@ -3685,7 +3656,7 @@
                                    ColorRaw fg,
                                    ColorRaw bg)
  {
@@ -643,7 +727,7 @@
  }
  
  inline Surface Font::RenderGlyph_Shaded(Uint32 ch,
-@@ -3715,8 +3685,6 @@
+@@ -3714,8 +3685,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -652,7 +736,7 @@
   * @param fg the foreground color for the text.
   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
   *
-@@ -3734,7 +3702,7 @@
+@@ -3733,7 +3702,7 @@
                                    std::string_view text,
                                    Color fg)
  {
@@ -661,7 +745,7 @@
  }
  
  inline Surface Font::RenderText_Blended(std::string_view text, Color fg) const
-@@ -3759,8 +3727,6 @@
+@@ -3758,8 +3727,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -670,7 +754,7 @@
   * @param fg the foreground color for the text.
   * @param wrap_width the maximum width of the text surface or 0 to wrap on
   *                   newline characters.
-@@ -3781,7 +3747,8 @@
+@@ -3780,7 +3747,8 @@
                                            Color fg,
                                            int wrap_width)
  {
@@ -680,7 +764,7 @@
  }
  
  inline Surface Font::RenderText_Blended_Wrapped(std::string_view text,
-@@ -3820,7 +3787,7 @@
+@@ -3819,7 +3787,7 @@
   */
  inline Surface RenderGlyph_Blended(FontParam font, Uint32 ch, ColorRaw fg)
  {
@@ -689,7 +773,7 @@
  }
  
  inline Surface Font::RenderGlyph_Blended(Uint32 ch, ColorRaw fg) const
-@@ -3847,8 +3814,6 @@
+@@ -3846,8 +3814,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -698,7 +782,7 @@
   * @param fg the foreground color for the text.
   * @param bg the background color for the text.
   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
-@@ -3868,7 +3833,7 @@
+@@ -3867,7 +3833,7 @@
                                Color fg,
                                Color bg)
  {
@@ -707,7 +791,7 @@
  }
  
  inline Surface Font::RenderText_LCD(std::string_view text,
-@@ -3895,8 +3860,6 @@
+@@ -3894,8 +3860,6 @@
   *
   * @param font the font to render with.
   * @param text text to render, in UTF-8 encoding.
@@ -716,7 +800,7 @@
   * @param fg the foreground color for the text.
   * @param bg the background color for the text.
   * @param wrap_width the maximum width of the text surface or 0 to wrap on
-@@ -3919,7 +3882,8 @@
+@@ -3918,7 +3882,8 @@
                                        Color bg,
                                        int wrap_width)
  {
@@ -726,7 +810,7 @@
  }
  
  inline Surface Font::RenderText_LCD_Wrapped(std::string_view text,
-@@ -3964,7 +3928,7 @@
+@@ -3963,7 +3928,7 @@
                                 ColorRaw fg,
                                 ColorRaw bg)
  {
@@ -735,7 +819,7 @@
  }
  
  inline Surface Font::RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const
-@@ -4065,7 +4029,7 @@
+@@ -4064,7 +4029,7 @@
    }
  
    /// Destructor
@@ -744,7 +828,7 @@
  
    /// Assignment operator.
    constexpr TextEngine& operator=(TextEngine&& other) noexcept
-@@ -4099,16 +4063,14 @@
+@@ -4098,16 +4063,14 @@
    /// Converts to TextEngineParam
    constexpr operator TextEngineParam() const noexcept { return {m_resource}; }
  
@@ -763,7 +847,7 @@
     * @returns a Text object or nullptr on failure; call GetError() for more
     *          information.
     *
-@@ -4122,6 +4084,7 @@
+@@ -4121,6 +4084,7 @@
    Text CreateText(FontParam font, std::string_view text);
  };
  
@@ -771,7 +855,7 @@
  struct SurfaceTextEngine : TextEngine
  {
    /**
-@@ -4138,7 +4101,7 @@
+@@ -4137,7 +4101,7 @@
     * @sa Text.DrawSurface
     */
    SurfaceTextEngine()
@@ -780,7 +864,7 @@
    {
    }
  
-@@ -4150,9 +4113,6 @@
+@@ -4149,9 +4113,6 @@
     * All text created by this engine should be destroyed before calling this
     * function.
     *
@@ -790,7 +874,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               engine.
     *
-@@ -4160,9 +4120,10 @@
+@@ -4159,9 +4120,10 @@
     *
     * @sa SurfaceTextEngine.SurfaceTextEngine
     */
@@ -802,7 +886,7 @@
  struct RendererTextEngine : TextEngine
  {
    /**
-@@ -4182,7 +4143,7 @@
+@@ -4181,7 +4143,7 @@
     * @sa RendererTextEngine.RendererTextEngine
     */
    RendererTextEngine(RendererParam renderer)
@@ -811,7 +895,22 @@
    {
    }
  
-@@ -4211,7 +4172,7 @@
+@@ -4191,10 +4153,10 @@
+    *
+    * These are the supported properties:
+    *
+-   * - `prop::RendererTextEngine.RENDERER`: the renderer to use for creating
+-   *   textures and drawing text
+-   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
+-   *   atlas
++   * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
++   *   creating textures and drawing text
++   * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
++   *   texture atlas
+    *
+    * @param props the properties to use.
+    * @post a TextEngine object or nullptr on failure; call GetError() for more
+@@ -4210,7 +4172,7 @@
     * @sa Text.DrawRenderer
     */
    RendererTextEngine(PropertiesParam props)
@@ -820,7 +919,7 @@
    {
    }
  
-@@ -4223,9 +4184,6 @@
+@@ -4222,9 +4184,6 @@
     * All text created by this engine should be destroyed before calling this
     * function.
     *
@@ -830,7 +929,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               engine.
     *
-@@ -4233,9 +4191,10 @@
+@@ -4232,9 +4191,10 @@
     *
     * @sa RendererTextEngine.RendererTextEngine
     */
@@ -842,7 +941,7 @@
  struct GPUTextEngine : TextEngine
  {
    /**
-@@ -4255,7 +4214,7 @@
+@@ -4254,7 +4214,7 @@
     * @sa Text.GetGPUDrawData
     */
    GPUTextEngine(GPUDeviceParam device)
@@ -851,7 +950,21 @@
    {
    }
  
-@@ -4284,7 +4243,7 @@
+@@ -4264,9 +4224,10 @@
+    *
+    * These are the supported properties:
+    *
+-   * - `prop::GpuTextEngine.DEVICE`: the GPUDevice to use for creating textures
+-   *   and drawing text.
+-   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture atlas
++   * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
++   *   textures and drawing text.
++   * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
++   *   atlas
+    *
+    * @param props the properties to use.
+    * @post a TextEngine object or nullptr on failure; call GetError() for more
+@@ -4282,7 +4243,7 @@
     * @sa Text.GetGPUDrawData
     */
    GPUTextEngine(PropertiesParam props)
@@ -860,7 +973,7 @@
    {
    }
  
-@@ -4294,8 +4253,6 @@
+@@ -4292,8 +4253,6 @@
     * Sets the winding order of the vertices returned by Text.GetGPUDrawData for
     * a particular GPU text engine.
     *
@@ -869,7 +982,7 @@
     * @param winding the new winding order option.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4305,15 +4262,12 @@
+@@ -4303,15 +4262,12 @@
     *
     * @sa GPUTextEngine.GetGPUWinding
     */
@@ -886,7 +999,7 @@
     * @returns the winding order used by the GPU text engine or
     *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
     *
-@@ -4324,7 +4278,7 @@
+@@ -4322,7 +4278,7 @@
     *
     * @sa GPUTextEngine.SetGPUWinding
     */
@@ -895,7 +1008,7 @@
  
    /**
     * Destroy a text engine created for drawing text with the SDL GPU API.
-@@ -4332,9 +4286,6 @@
+@@ -4330,9 +4286,6 @@
     * All text created by this engine should be destroyed before calling this
     * function.
     *
@@ -905,7 +1018,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               engine.
     *
-@@ -4342,7 +4293,7 @@
+@@ -4340,7 +4293,7 @@
     *
     * @sa GPUTextEngine.GPUTextEngine
     */
@@ -914,7 +1027,7 @@
  };
  
  /**
-@@ -4432,8 +4383,6 @@
+@@ -4430,8 +4383,6 @@
     *               nullptr.
     * @param font the font to render with.
     * @param text the text to use, in UTF-8 encoding.
@@ -923,7 +1036,7 @@
     * @post a Text object or nullptr on failure; call GetError() for more
     *       information.
     *
-@@ -4445,7 +4394,7 @@
+@@ -4443,7 +4394,7 @@
     * @sa Text.Destroy
     */
    Text(TextEngineParam engine, FontParam font, std::string_view text)
@@ -932,7 +1045,7 @@
    {
    }
  
-@@ -4508,11 +4457,8 @@
+@@ -4506,11 +4457,8 @@
     * `text` must have been created using a TextEngine from
     * SurfaceTextEngine.SurfaceTextEngine().
     *
@@ -946,7 +1059,7 @@
     * @param surface the surface to draw on.
     * @throws Error on failure.
     *
-@@ -4533,11 +4479,8 @@
+@@ -4531,11 +4479,8 @@
     * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
     * passed to that function.
     *
@@ -960,7 +1073,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4696,7 +4639,7 @@
+@@ -4694,7 +4639,7 @@
     * This returns false if SDL_ttf isn't built with HarfBuzz support.
     *
     * @param script an [ISO 15924
@@ -969,7 +1082,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4731,11 +4674,7 @@
+@@ -4729,11 +4674,7 @@
     *
     * The default text color is white (255, 255, 255, 255).
     *
@@ -982,7 +1095,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4753,11 +4692,7 @@
+@@ -4751,11 +4692,7 @@
     *
     * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
     *
@@ -995,7 +1108,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4796,14 +4731,7 @@
+@@ -4794,14 +4731,7 @@
    /**
     * Get the color of a text object.
     *
@@ -1011,7 +1124,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4814,7 +4742,7 @@
+@@ -4812,7 +4742,7 @@
     * @sa Text.GetColorFloat
     * @sa Text.SetColor
     */
@@ -1020,7 +1133,7 @@
  
    /**
     * Get the color of a text object.
-@@ -4842,14 +4770,7 @@
+@@ -4840,14 +4770,7 @@
    /**
     * Get the color of a text object.
     *
@@ -1036,7 +1149,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4860,7 +4781,7 @@
+@@ -4858,7 +4781,7 @@
     * @sa Text.GetColor
     * @sa Text.SetColorFloat
     */
@@ -1045,18 +1158,26 @@
  
    /**
     * Set the position of a text object.
-@@ -4870,9 +4791,7 @@
+@@ -4868,8 +4791,8 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
--   * @param text the Text to modify.
 -   * @param x the x offset of the upper left corner of this text in pixels.
 -   * @param y the y offset of the upper left corner of this text in pixels.
 +   * @param p the x, y offset of the upper left corner of this text in pixels.
-    * @throws Error on failure.
++   * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4905,10 +4824,9 @@
+    *               text.
+@@ -4887,6 +4810,7 @@
+    *          this text in pixels, may be nullptr.
+    * @param y a pointer filled in with the y offset of the upper left corner of
+    *          this text in pixels, may be nullptr.
++   * @throws Error on failure.
+    *
+    * @threadsafety This function should be called on the thread that created the
+    *               text.
+@@ -4900,10 +4824,9 @@
    /**
     * Get the position of a text object.
     *
@@ -1067,10 +1188,10 @@
 +   * @returns a Point with the offset of the upper left corner of this text in
 +   *          pixels on success.
 +   * @throws Error on failure.
-    * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4918,7 +4836,7 @@
+    *               text.
+@@ -4912,7 +4835,7 @@
     *
     * @sa Text.SetPosition
     */
@@ -1079,7 +1200,7 @@
  
    /**
     * Set whether wrapping is enabled on a text object.
-@@ -4941,9 +4859,8 @@
+@@ -4935,9 +4858,8 @@
    /**
     * Get whether wrapping is enabled on a text object.
     *
@@ -1091,7 +1212,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4998,10 +4915,7 @@
+@@ -4992,10 +4914,7 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1103,7 +1224,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -5020,14 +4934,11 @@
+@@ -5014,14 +4933,11 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1118,7 +1239,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -5046,10 +4957,7 @@
+@@ -5040,10 +4956,7 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1129,7 +1250,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -5112,18 +5020,17 @@
+@@ -5106,18 +5019,17 @@
     * The size of the text may change when the font or font style and size
     * change.
     *
@@ -1152,7 +1273,7 @@
  
    /**
     * Get the substring of a text object that surrounds a text offset.
-@@ -5146,14 +5053,32 @@
+@@ -5140,14 +5052,32 @@
     */
    void GetSubString(int offset, SubString* substring) const;
  
@@ -1191,7 +1312,7 @@
  
    /**
     * Get the substring of a text object that contains the given line.
-@@ -5175,9 +5100,20 @@
+@@ -5169,9 +5099,20 @@
     */
    void GetSubStringForLine(int line, SubString* substring) const;
  
@@ -1213,7 +1334,7 @@
    }
  
    /**
-@@ -5186,8 +5122,6 @@
+@@ -5180,8 +5121,6 @@
     * @param offset a byte offset into the text string.
     * @param length the length of the range being queried, in bytes, or -1 for
     *               the remainder of the string.
@@ -1222,7 +1343,7 @@
     * @returns a nullptr terminated array of substring pointers or nullptr on
     *          failure; call GetError() for more information. This is a single
     *          allocation that should be freed with free() when it is no longer
-@@ -5198,22 +5132,31 @@
+@@ -5192,22 +5131,31 @@
     *
     * @since This function is available since SDL_ttf 3.0.0.
     */
@@ -1263,7 +1384,16 @@
     *          outside the bounds of the text area.
     * @param substring a pointer filled in with the closest substring of text to
     *                  the given point.
-@@ -5282,10 +5225,10 @@
+@@ -5227,6 +5175,8 @@
+    * substring with the SUBSTRING_TEXT_START flag set.
+    *
+    * @param substring the SubString to query.
++   * @param previous a pointer filled in with the previous substring in the text
++   *                 object.
+    * @throws Error on failure.
+    *
+    * @threadsafety This function should be called on the thread that created the
+@@ -5274,10 +5224,10 @@
     * A copy of the UTF-8 string that this text object represents, useful for
     * layout, debugging and retrieving substring text
     */
@@ -1276,7 +1406,7 @@
  };
  
  /// Semi-safe reference for Text.
-@@ -5300,7 +5243,7 @@
+@@ -5292,7 +5242,7 @@
     *
     * This does not takes ownership!
     */
@@ -1285,7 +1415,7 @@
      : Text(resource.value)
    {
    }
-@@ -5327,53 +5270,75 @@
+@@ -5319,53 +5269,75 @@
    ~TextRef() { release(); }
  };
  
@@ -1377,7 +1507,7 @@
  };
  
  /**
-@@ -5401,10 +5366,8 @@
+@@ -5393,10 +5365,8 @@
   * SurfaceTextEngine.SurfaceTextEngine().
   *
   * @param text the text to draw.
@@ -1390,7 +1520,7 @@
   * @param surface the surface to draw on.
   * @throws Error on failure.
   *
-@@ -5418,7 +5381,7 @@
+@@ -5410,7 +5380,7 @@
   */
  inline void DrawSurfaceText(TextConstParam text, Point p, SurfaceParam surface)
  {
@@ -1399,18 +1529,38 @@
  }
  
  inline void Text::DrawSurface(Point p, SurfaceParam surface) const
-@@ -5510,10 +5473,6 @@
- constexpr auto RENDERER_POINTER =
-   TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER;
+@@ -5471,10 +5441,10 @@
+  *
+  * These are the supported properties:
+  *
+- * - `prop::RendererTextEngine.RENDERER`: the renderer to use for creating
+- *   textures and drawing text
+- * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
+- *   atlas
++ * - `prop::RendererTextEngine.RENDERER_POINTER`: the renderer to use for
++ *   creating textures and drawing text
++ * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the
++ *   texture atlas
+  *
+  * @param props the properties to use.
+  * @returns a TextEngine object or nullptr on failure; call GetError() for more
+@@ -5499,13 +5469,9 @@
  
--#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
--
--#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
--
- constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-   TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+ #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
  
-@@ -5529,10 +5488,8 @@
+-constexpr auto RENDERER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
++constexpr auto RENDERER_POINTER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
+ 
+-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+-
+-#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+-
+-constexpr auto ATLAS_TEXTURE_SIZE =
++constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
+   TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
+ 
+ #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+@@ -5520,10 +5486,8 @@
   * passed to that function.
   *
   * @param text the text to draw.
@@ -1423,7 +1573,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -5541,11 +5498,11 @@
+@@ -5532,11 +5496,11 @@
   * @since This function is available since SDL_ttf 3.0.0.
   *
   * @sa RendererTextEngine.RendererTextEngine
@@ -1437,18 +1587,38 @@
  }
  
  inline void Text::DrawRenderer(FPoint p) const
-@@ -5635,10 +5592,6 @@
+@@ -5597,9 +5561,10 @@
+  *
+  * These are the supported properties:
+  *
+- * - `prop::GpuTextEngine.DEVICE`: the GPUDevice to use for creating textures
+- *   and drawing text.
+- * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture atlas
++ * - `prop::GpuTextEngine.DEVICE_POINTER`: the GPUDevice to use for creating
++ *   textures and drawing text.
++ * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE_NUMBER`: the size of the texture
++ *   atlas
+  *
+  * @param props the properties to use.
+  * @returns a TextEngine object or nullptr on failure; call GetError() for more
+@@ -5623,13 +5588,10 @@
  
- constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER;
+ #if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
  
--#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+-constexpr auto DEVICE = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
++constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
+ 
+-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 -
--#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+-#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 -
- constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-   TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+-constexpr auto ATLAS_TEXTURE_SIZE = TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
++constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
++  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
  
-@@ -5670,7 +5623,7 @@
+ #endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+ 
+@@ -5659,7 +5621,7 @@
   * @since This function is available since SDL_ttf 3.0.0.
   *
   * @sa GPUTextEngine.GPUTextEngine
@@ -1457,7 +1627,7 @@
   */
  inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstParam text)
  {
-@@ -5704,16 +5657,56 @@
+@@ -5693,16 +5655,56 @@
  
  inline void GPUTextEngine::Destroy() { DestroyGPUTextEngine(release()); }
  
@@ -1520,7 +1690,7 @@
  }
  
  /**
-@@ -5723,8 +5716,6 @@
+@@ -5712,8 +5714,6 @@
   *               nullptr.
   * @param font the font to render with.
   * @param text the text to use, in UTF-8 encoding.
@@ -1529,7 +1699,7 @@
   * @returns a Text object or nullptr on failure; call GetError() for more
   *          information.
   *
-@@ -5761,7 +5752,7 @@
+@@ -5750,7 +5750,7 @@
   */
  inline PropertiesRef GetTextProperties(TextConstParam text)
  {
@@ -1538,7 +1708,7 @@
  }
  
  inline PropertiesRef Text::GetProperties() const
-@@ -5866,7 +5857,7 @@
+@@ -5855,7 +5855,7 @@
   */
  inline FontRef GetTextFont(TextConstParam text)
  {
@@ -1547,7 +1717,7 @@
  }
  
  inline FontRef Text::GetFont() const { return SDL::GetTextFont(m_resource); }
-@@ -5926,7 +5917,7 @@
+@@ -5915,7 +5915,7 @@
   *
   * @param text the text to modify.
   * @param script an [ISO 15924
@@ -1556,7 +1726,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -5976,10 +5967,7 @@
+@@ -5965,10 +5965,7 @@
   * The default text color is white (255, 255, 255, 255).
   *
   * @param text the Text to modify.
@@ -1568,7 +1738,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -5992,7 +5980,7 @@
+@@ -5981,7 +5978,7 @@
   */
  inline void SetTextColor(TextParam text, Color c)
  {
@@ -1577,7 +1747,7 @@
  }
  
  inline void Text::SetColor(Color c) { SDL::SetTextColor(m_resource, c); }
-@@ -6003,10 +5991,7 @@
+@@ -5992,10 +5989,7 @@
   * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
   *
   * @param text the Text to modify.
@@ -1589,7 +1759,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6019,7 +6004,7 @@
+@@ -6008,7 +6002,7 @@
   */
  inline void SetTextColorFloat(TextParam text, FColor c)
  {
@@ -1598,7 +1768,7 @@
  }
  
  inline void Text::SetColorFloat(FColor c)
-@@ -6062,14 +6047,7 @@
+@@ -6051,14 +6045,7 @@
   * Get the color of a text object.
   *
   * @param text the Text to query.
@@ -1614,7 +1784,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6082,7 +6060,9 @@
+@@ -6071,7 +6058,9 @@
   */
  inline Color GetTextColor(TextParam text)
  {
@@ -1625,7 +1795,7 @@
  }
  
  inline void Text::GetColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
-@@ -6090,7 +6070,7 @@
+@@ -6079,7 +6068,7 @@
    SDL::GetTextColor(m_resource, r, g, b, a);
  }
  
@@ -1634,7 +1804,7 @@
  
  /**
   * Get the color of a text object.
-@@ -6127,14 +6107,7 @@
+@@ -6116,14 +6105,7 @@
   * Get the color of a text object.
   *
   * @param text the Text to query.
@@ -1650,7 +1820,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6147,7 +6120,9 @@
+@@ -6136,7 +6118,9 @@
   */
  inline FColor GetTextColorFloat(TextParam text)
  {
@@ -1661,7 +1831,7 @@
  }
  
  inline void Text::GetColorFloat(float* r, float* g, float* b, float* a) const
-@@ -6155,7 +6130,7 @@
+@@ -6144,7 +6128,7 @@
    SDL::GetTextColorFloat(m_resource, r, g, b, a);
  }
  
@@ -1670,26 +1840,35 @@
  {
    return SDL::GetTextColorFloat(m_resource);
  }
-@@ -6169,8 +6144,7 @@
+@@ -6158,8 +6142,8 @@
   * This function may cause the internal text representation to be rebuilt.
   *
   * @param text the Text to modify.
 - * @param x the x offset of the upper left corner of this text in pixels.
 - * @param y the y offset of the upper left corner of this text in pixels.
 + * @param p the x, y offset of the upper left corner of this text in pixels.
-  * @throws Error on failure.
++ * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6182,7 +6156,7 @@
+  *               text.
+@@ -6170,7 +6154,7 @@
   */
- inline void SetTextPosition(TextParam text, Point p)
+ inline void SetTextPosition(TextParam text, const PointRaw& p)
  {
 -  CheckError(TTF_SetTextPosition(text, p));
 +  CheckError(TTF_SetTextPosition(text, p.x, p.y));
  }
  
- inline void Text::SetPosition(Point p) { SDL::SetTextPosition(m_resource, p); }
-@@ -6213,10 +6187,8 @@
+ inline void Text::SetPosition(const PointRaw& p)
+@@ -6186,6 +6170,7 @@
+  *          this text in pixels, may be nullptr.
+  * @param y a pointer filled in with the y offset of the upper left corner of
+  *          this text in pixels, may be nullptr.
++ * @throws Error on failure.
+  *
+  * @threadsafety This function should be called on the thread that created the
+  *               text.
+@@ -6203,10 +6188,9 @@
   * Get the position of a text object.
   *
   * @param text the Text to query.
@@ -1699,10 +1878,11 @@
 - *          this text in pixels, may be nullptr.
 + * @returns a Point with the offset of the upper left corner of this text in
 + *          pixels on success.
-  * @throws Error on failure.
++ * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6228,7 +6200,9 @@
+  *               text.
+@@ -6217,7 +6201,9 @@
   */
  inline Point GetTextPosition(TextParam text)
  {
@@ -1713,7 +1893,7 @@
  }
  
  inline void Text::GetPosition(int* x, int* y) const
-@@ -6236,7 +6210,10 @@
+@@ -6225,7 +6211,10 @@
    SDL::GetTextPosition(m_resource, x, y);
  }
  
@@ -1725,7 +1905,7 @@
  
  /**
   * Set whether wrapping is enabled on a text object.
-@@ -6269,8 +6246,8 @@
+@@ -6258,8 +6247,8 @@
   * Get whether wrapping is enabled on a text object.
   *
   * @param text the Text to query.
@@ -1736,7 +1916,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6282,7 +6259,9 @@
+@@ -6271,7 +6260,9 @@
   */
  inline int GetTextWrapWidth(TextConstParam text)
  {
@@ -1747,7 +1927,7 @@
  }
  
  inline int Text::GetWrapWidth() const
-@@ -6350,8 +6329,6 @@
+@@ -6339,8 +6330,6 @@
   *
   * @param text the Text to modify.
   * @param string the UTF-8 text to use, may be nullptr.
@@ -1756,7 +1936,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6365,7 +6342,7 @@
+@@ -6354,7 +6343,7 @@
   */
  inline void SetTextString(TextParam text, std::string_view string)
  {
@@ -1765,7 +1945,7 @@
  }
  
  inline void Text::SetString(std::string_view string)
-@@ -6384,8 +6361,6 @@
+@@ -6373,8 +6362,6 @@
   *               does not do UTF-8 validation, so you should only insert at
   *               UTF-8 sequence boundaries.
   * @param string the UTF-8 text to insert.
@@ -1774,7 +1954,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6401,7 +6376,7 @@
+@@ -6390,7 +6377,7 @@
                               int offset,
                               std::string_view string)
  {
@@ -1783,7 +1963,7 @@
  }
  
  inline void Text::InsertString(int offset, std::string_view string)
-@@ -6416,8 +6391,6 @@
+@@ -6405,8 +6392,6 @@
   *
   * @param text the Text to modify.
   * @param string the UTF-8 text to insert.
@@ -1792,7 +1972,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6431,7 +6404,7 @@
+@@ -6420,7 +6405,7 @@
   */
  inline void AppendTextString(TextParam text, std::string_view string)
  {
@@ -1801,7 +1981,7 @@
  }
  
  inline void Text::AppendString(std::string_view string)
-@@ -6500,10 +6473,8 @@
+@@ -6489,10 +6474,8 @@
   * The size of the text may change when the font or font style and size change.
   *
   * @param text the Text to query.
@@ -1814,7 +1994,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should be called on the thread that created the
-@@ -6513,7 +6484,9 @@
+@@ -6502,7 +6485,9 @@
   */
  inline Point GetTextSize(TextParam text)
  {
@@ -1825,7 +2005,7 @@
  }
  
  inline void Text::GetSize(int* w, int* h) const
-@@ -6521,7 +6494,7 @@
+@@ -6510,7 +6495,7 @@
    SDL::GetTextSize(m_resource, w, h);
  }
  
@@ -1834,7 +2014,7 @@
  
  /**
   * Get the substring of a text object that surrounds a text offset.
-@@ -6593,12 +6566,8 @@
+@@ -6582,12 +6567,8 @@
   * @param offset a byte offset into the text string.
   * @param length the length of the range being queried, in bytes, or -1 for the
   *               remainder of the string.
@@ -1848,7 +2028,7 @@
   *
   * @threadsafety This function should be called on the thread that created the
   *               text.
-@@ -6609,7 +6578,9 @@
+@@ -6598,7 +6579,9 @@
                                                        int offset,
                                                        int length)
  {
@@ -1859,7 +2039,7 @@
  }
  
  inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
-@@ -6624,9 +6595,7 @@
+@@ -6613,9 +6596,7 @@
   * This will return the closest substring of text to the given point.
   *
   * @param text the Text to query.
@@ -1870,7 +2050,7 @@
   *          outside the bounds of the text area.
   * @param substring a pointer filled in with the closest substring of text to
   *                  the given point.
-@@ -6641,7 +6610,7 @@
+@@ -6630,7 +6611,7 @@
                                       Point p,
                                       SubString* substring)
  {
@@ -1879,7 +2059,16 @@
  }
  
  inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
-@@ -6737,7 +6706,7 @@
+@@ -6646,6 +6627,8 @@
+  *
+  * @param text the Text to query.
+  * @param substring the SubString to query.
++ * @param previous a pointer filled in with the previous substring in the text
++ *                 object.
+  * @throws Error on failure.
+  *
+  * @threadsafety This function should be called on the thread that created the
+@@ -6724,7 +6707,7 @@
   *
   * @since This function is available since SDL_ttf 3.0.0.
   *
@@ -1888,7 +2077,7 @@
   */
  inline void DestroyText(TextRaw text) { TTF_DestroyText(text); }
  
-@@ -6773,4 +6742,6 @@
+@@ -6760,4 +6743,6 @@
  
  } // namespace SDL
  
