@@ -18,7 +18,7 @@
  /**
   * Specify the behavior of Alt+Tab while the keyboard is grabbed.
   *
-@@ -1350,7 +1352,7 @@
+@@ -1324,7 +1326,7 @@
   *
   * `0xAAAA/0xBBBB,0xCCCC/0xDDDD`
   *
@@ -27,7 +27,7 @@
   * will be loaded and interpreted as the value of the variable.
   *
   * This hint can be set anytime.
-@@ -4619,6 +4621,8 @@
+@@ -4661,6 +4663,8 @@
   */
  #define SDL_HINT_PEN_TOUCH_EVENTS "SDL_PEN_TOUCH_EVENTS"
  
@@ -36,7 +36,7 @@
  /**
   * An enumeration of hint priorities.
   *
-@@ -4833,7 +4837,6 @@
+@@ -4875,7 +4879,6 @@
   * @param name the hint to watch.
   * @param callback An HintCallback function that will be called when the hint
   *                 value changes.
@@ -44,7 +44,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -4844,7 +4847,7 @@
+@@ -4886,7 +4889,7 @@
   */
  inline void AddHintCallback(StringParam name, HintCB callback)
  {

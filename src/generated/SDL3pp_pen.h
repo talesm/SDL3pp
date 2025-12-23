@@ -24,11 +24,28 @@ namespace SDL {
  * - EVENT_PEN_BUTTON_DOWN, EVENT_PEN_BUTTON_UP (PenButtonEvent)
  * - EVENT_PEN_AXIS (PenAxisEvent)
  *
- * When a pen starts providing input, SDL will assign it a unique PenID, which
- * will remain for the life of the process, as long as the pen stays connected.
- *
  * Pens may provide more than simple touch input; they might have other axes,
  * such as pressure, tilt, rotation, etc.
+ *
+ * When a pen starts providing input, SDL will assign it a unique PenID, which
+ * will remain for the life of the process, as long as the pen stays connected.
+ * A pen leaving proximity (being taken far enough away from the digitizer
+ * tablet that it no longer reponds) and then coming back should fire proximity
+ * events, but the PenID should remain consistent. Unplugging the digitizer and
+ * reconnecting may cause future input to have a new PenID, as SDL may not know
+ * that this is the same hardware.
+ *
+ * Please note that various platforms vary wildly in how (and how well) they
+ * support pen input. If your pen supports some piece of functionality but SDL
+ * doesn't seem to, it might actually be the operating system's fault. For
+ * example, some platforms can manage multiple devices at the same time, but
+ * others will make any connected pens look like a single logical device, much
+ * how all USB mice connected to a computer will move the same system cursor.
+ * cursor. Other platforms might not support pen buttons, or the distance axis,
+ * etc. Very few platforms can even report _what_ functionality the pen supports
+ * in the first place, so best practices is to either build UI to let the user
+ * configure their pens, or be prepared to handle new functionality for a pen
+ * the first time an event is reported.
  *
  * @{
  */
@@ -40,7 +57,12 @@ namespace SDL {
  *
  * These show up in pen events when SDL sees input from them. They remain
  * consistent as long as SDL can recognize a tool to be the same pen; but if a
- * pen physically leaves the area and returns, it might get a new ID.
+ * pen's digitizer table is physically detached from the computer, it might get
+ * a new ID when reconnected, as SDL won't know it's the same device.
+ *
+ * These IDs are only stable within a single run of a program; the next time a
+ * program is run, the pen's ID will likely be different, even if the hardware
+ * hasn't been disconnected, etc.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -87,6 +109,13 @@ constexpr PenInputFlags PEN_INPUT_BUTTON_5 =
 
 constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
   SDL_PEN_INPUT_ERASER_TIP; ///< eraser tip is used
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr PenInputFlags PEN_INPUT_IN_PROXIMITY =
+  SDL_PEN_INPUT_IN_PROXIMITY; ///< pen is in proximity (since SDL 3.4.0)
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Pen axis indices.

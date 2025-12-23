@@ -104,13 +104,11 @@ namespace SDL {
  * This macro is only defined if it isn't already defined, so to override it
  * (perhaps with something that doesn't provide path information at all, so
  * build machine information doesn't leak into public binaries), apps can define
- * this macro before including SDL_assert.h. For example, Clang and GCC can
- * define this to `FILE_NAME` to get just the source filename instead of the
- * full path.
+ * this macro before including SDL.h or SDL_assert.h.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_FILE __FILE__
+#define SDL_FILE __FILE_NAME__
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 

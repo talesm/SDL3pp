@@ -12,9 +12,9 @@
   * SDL offers file dialogs, to let users select files with native GUI
   * interfaces. There are "open" dialogs, "save" dialogs, and folder selection
 @@ -159,7 +157,6 @@
-  *                support it may allow the user to ignore the filters. If
-  *                non-nullptr, it must remain valid at least until the callback
-  *                is invoked.
+  *                option, and platforms that do support it may allow the user to
+  *                ignore the filters. If non-nullptr, it must remain valid at
+  *                least until the callback is invoked.
 - * @param nfilters the number of filters. Ignored if filters is nullptr.
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
@@ -42,7 +42,7 @@
  }
  
  /**
-@@ -211,17 +213,14 @@
+@@ -211,8 +213,6 @@
   *
   * @param callback a function pointer to be invoked when the user selects a file
   *                 and accepts, or cancels the dialog, or an error occurs.
@@ -50,15 +50,12 @@
 - *                 it will be invoked.
   * @param window the window that the dialog should be modal for, may be nullptr.
   *               Not all platforms support this option.
-  * @param filters a list of filters, may be nullptr. See the [`DialogFileFilter`
-  *                documentation for examples](DialogFileFilter#code-examples).
-  *                Not all platforms support this option, and platforms that do
-  *                support it may allow the user to ignore the filters. If
-- *                non-nullptr, it must remain valid at least until the callback
-- *                is invoked.
+  * @param filters a list of filters, may be nullptr. See the
+@@ -221,7 +221,6 @@
+  *                option, and platforms that do support it may allow the user to
+  *                ignore the filters. If non-nullptr, it must remain valid at
+  *                least until the callback is invoked.
 - * @param nfilters the number of filters. Ignored if filters is nullptr.
-+ *                non-empty, it must remain valid at least until the callback is
-+ *                invoked.
   * @param default_location the default folder or file to start the dialog at,
   *                         may be nullptr. Not all platforms support this
   *                         option.

@@ -261,6 +261,11 @@ public:
    * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
    *   the display
    *
+   * On Windows:
+   *
+   * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+   *   associated with the display
+   *
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -501,6 +506,8 @@ namespace prop::Global {
  * has no effect, and reading it when the video subsystem is uninitialized will
  * either return the user provided value, if one was set prior to
  * initialization, or nullptr. See docs/README-wayland.md for more information.
+ *
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
   SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER;
@@ -624,6 +631,13 @@ constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
   SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/// window is in fill-document mode (Emscripten only), since SDL 3.4.0
+constexpr WindowFlags WINDOW_FILL_DOCUMENT = SDL_WINDOW_FILL_DOCUMENT;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 constexpr WindowFlags WINDOW_VULKAN =
   SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
@@ -1079,6 +1093,12 @@ public:
    * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
+   * These are additional supported properties on iOS, tvOS, and visionOS:
+   *
+   * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   *   UIWindowScene associated with the window, defaults to the active window
+   *   scene.
+   *
    * These are additional supported properties on Wayland:
    *
    * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
@@ -1112,14 +1132,6 @@ public:
    *
    * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
    *   canvas element. This should start with a '#' sign
-   * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the
-   *   canvas element fill the entire document. Resize events will be generated
-   *   as the browser window is resized, as that will adjust the canvas size as
-   *   well. The canvas will cover anything else on the page, including any
-   *   controls provided by Emscripten in its generated HTML file. Often times
-   *   this is desirable for a browser-based game, but it means several things
-   *   that we expect of an SDL window on other platforms might not work as
-   *   expected, such as minimum window sizes and aspect ratios. Default false.
    * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
    *   binding element for keyboard inputs for this canvas. The variable can be
    *   one of:
@@ -1522,9 +1534,6 @@ public:
    *
    * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element
    *   will have
-   * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is
-   *   set to consume the entire browser window, bypassing some SDL window
-   *   functionality.
    * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
    *   that associates keyboard events to this window
    *
@@ -1552,6 +1561,7 @@ public:
    * @sa Window.Minimize
    * @sa Window.SetFullscreen
    * @sa Window.SetMouseGrab
+   * @sa Window.SetFillDocument
    * @sa Window.Show
    */
   WindowFlags GetFlags() const;
@@ -1749,6 +1759,7 @@ public:
    * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
+   * @sa EVENT_WINDOW_RESIZED
    */
   void GetSize(int* w, int* h) const;
 
@@ -1770,6 +1781,7 @@ public:
    * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
+   * @sa EVENT_WINDOW_RESIZED
    */
   Point GetSize() const;
 
@@ -2046,6 +2058,39 @@ public:
    * @sa Window.GetFlags
    */
   void SetAlwaysOnTop(bool on_top);
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Set the window to fill the current document space (Emscripten only).
+   *
+   * This will add or remove the window's `WINDOW_FILL_DOCUMENT` flag.
+   *
+   * Currently this flag only applies to the Emscripten target.
+   *
+   * When enabled, the canvas element fills the entire document. Resize events
+   * will be generated as the browser window is resized, as that will adjust the
+   * canvas size as well. The canvas will cover anything else on the page,
+   * including any controls provided by Emscripten in its generated HTML file
+   * (in fact, any elements on the page that aren't the canvas will be moved
+   * into a hidden `div` element).
+   *
+   * Often times this is desirable for a browser-based game, but it means
+   * several things that we expect of an SDL window on other platforms might not
+   * work as expected, such as minimum window sizes and aspect ratios.
+   *
+   * @param fill true to set the window to fill the document, false to disable.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Window.GetFlags
+   */
+  void SetFillDocument(bool fill);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Show a window.
@@ -3636,9 +3681,11 @@ constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
 constexpr GLAttr GL_SHARE_WITH_CURRENT_CONTEXT =
   SDL_GL_SHARE_WITH_CURRENT_CONTEXT; ///< OpenGL context sharing; defaults to 0.
 
-constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE =
-  SDL_GL_FRAMEBUFFER_SRGB_CAPABLE; ///< requests sRGB capable visual; defaults
-                                   ///< to 0.
+/**
+ * requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a
+ * request; GL drivers might not comply!
+ */
+constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE = SDL_GL_FRAMEBUFFER_SRGB_CAPABLE;
 
 /**
  * sets context the release behavior. See GLContextReleaseFlag; defaults to
@@ -3851,6 +3898,11 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
  *   the display
  *
+ * On Windows:
+ *
+ * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+ *   associated with the display
+ *
  * @param displayID the instance ID of the display to query.
  * @returns a valid property ID on success.
  * @throws Error on failure.
@@ -3882,6 +3934,13 @@ constexpr auto WAYLAND_WL_OUTPUT_POINTER =
   SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto WINDOWS_HMONITOR_POINTER =
+  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 } // namespace prop::Display
 
@@ -4690,6 +4749,12 @@ inline Window CreatePopupWindow(WindowParam parent,
  * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
  *   NSView associated with the window, defaults to `[window contentView]`
  *
+ * These are additional supported properties on iOS, tvOS, and visionOS:
+ *
+ * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+ *   UIWindowScene associated with the window, defaults to the active window
+ *   scene.
+ *
  * These are additional supported properties on Wayland:
  *
  * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
@@ -4723,14 +4788,6 @@ inline Window CreatePopupWindow(WindowParam parent,
  *
  * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
  *   canvas element. This should start with a '#' sign
- * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the
- *   canvas element fill the entire document. Resize events will be generated as
- *   the browser window is resized, as that will adjust the canvas size as well.
- *   The canvas will cover anything else on the page, including any controls
- *   provided by Emscripten in its generated HTML file. Often times this is
- *   desirable for a browser-based game, but it means several things that we
- *   expect of an SDL window on other platforms might not work as expected, such
- *   as minimum window sizes and aspect ratios. Default false.
  * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
  *   binding element for keyboard inputs for this canvas. The variable can be
  *   one of:
@@ -4848,6 +4905,13 @@ constexpr auto CREATE_COCOA_WINDOW_POINTER =
 constexpr auto CREATE_COCOA_VIEW_POINTER =
   SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_WINDOWSCENE_POINTER =
+  SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
 
@@ -4870,13 +4934,6 @@ constexpr auto CREATE_X11_WINDOW_NUMBER =
 
 constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
-
-#if SDL_VERSION_ATLEAST(3, 3, 2)
-
-constexpr auto CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
@@ -4985,13 +5042,6 @@ constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
-
-#if SDL_VERSION_ATLEAST(3, 3, 2)
-
-constexpr auto EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN =
-  SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
@@ -5189,9 +5239,6 @@ inline WindowRef Window::GetParent() const
  *
  * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
  *   have
- * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is set
- *   to consume the entire browser window, bypassing some SDL window
- *   functionality.
  * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
  *   that associates keyboard events to this window
  *
@@ -5229,6 +5276,7 @@ inline PropertiesRef Window::GetProperties() const
  * @sa Window.Minimize
  * @sa Window.SetFullscreen
  * @sa Window.SetMouseGrab
+ * @sa Window.SetFillDocument
  * @sa Window.Show
  */
 inline WindowFlags GetWindowFlags(WindowParam window)
@@ -5495,6 +5543,7 @@ inline void Window::SetSize(const PointRaw& size)
  * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
+ * @sa EVENT_WINDOW_RESIZED
  */
 inline void GetWindowSize(WindowParam window, int* w, int* h)
 {
@@ -5520,6 +5569,7 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
+ * @sa EVENT_WINDOW_RESIZED
  */
 inline Point GetWindowSize(WindowParam window)
 {
@@ -5944,6 +5994,52 @@ inline void Window::SetAlwaysOnTop(bool on_top)
 {
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Set the window to fill the current document space (Emscripten only).
+ *
+ * This will add or remove the window's `WINDOW_FILL_DOCUMENT` flag.
+ *
+ * Currently this flag only applies to the Emscripten target.
+ *
+ * When enabled, the canvas element fills the entire document. Resize events
+ * will be generated as the browser window is resized, as that will adjust the
+ * canvas size as well. The canvas will cover anything else on the page,
+ * including any controls provided by Emscripten in its generated HTML file (in
+ * fact, any elements on the page that aren't the canvas will be moved into a
+ * hidden `div` element).
+ *
+ * Often times this is desirable for a browser-based game, but it means several
+ * things that we expect of an SDL window on other platforms might not work as
+ * expected, such as minimum window sizes and aspect ratios.
+ *
+ * @param window the window of which to change the fill-document state.
+ * @param fill true to set the window to fill the document, false to disable.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Window.GetFlags
+ */
+inline void SetWindowFillDocument(WindowParam window, bool fill)
+{
+  CheckError(SDL_SetWindowFillDocument(window, fill));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+inline void Window::SetFillDocument(bool fill)
+{
+  SDL::SetWindowFillDocument(m_resource, fill);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Show a window.

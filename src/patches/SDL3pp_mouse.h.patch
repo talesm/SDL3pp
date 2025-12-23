@@ -35,7 +35,7 @@
    {
    }
  
-@@ -282,8 +280,7 @@
+@@ -283,8 +281,7 @@
     * used instead.
     *
     * @param surface an Surface structure representing the cursor image.
@@ -45,7 +45,7 @@
     * @post the new cursor on success.
     * @throws Error on failure.
     *
-@@ -299,7 +296,7 @@
+@@ -300,7 +297,7 @@
     * @sa Cursor.Set
     */
    Cursor(SurfaceParam surface, const PointRaw& hot)
@@ -54,7 +54,7 @@
    {
    }
  
-@@ -455,17 +452,21 @@
+@@ -456,17 +453,21 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
@@ -81,7 +81,7 @@
  
  /**
   * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
-@@ -494,6 +495,7 @@
+@@ -495,6 +496,7 @@
  
  constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
  
@@ -89,7 +89,7 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -531,16 +533,7 @@
+@@ -532,16 +534,7 @@
   *
   * @sa SetRelativeMouseTransform
   */
@@ -107,7 +107,7 @@
  
  /**
   * A callback used to transform mouse motion delta from raw values.
-@@ -601,11 +594,8 @@
+@@ -602,11 +595,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -121,7 +121,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -614,7 +604,12 @@
+@@ -615,7 +605,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -135,7 +135,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -645,7 +640,7 @@
+@@ -646,7 +641,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -144,7 +144,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -763,7 +758,7 @@
+@@ -764,7 +759,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -153,7 +153,7 @@
  }
  
  /**
-@@ -777,8 +772,7 @@
+@@ -778,8 +773,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -163,7 +163,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -789,7 +783,7 @@
+@@ -790,7 +784,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -172,7 +172,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -815,10 +809,6 @@
+@@ -816,10 +810,6 @@
    CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
  }
  
@@ -183,7 +183,7 @@
  /**
   * Set a user-defined function by which to transform relative mouse inputs.
   *
-@@ -827,7 +817,6 @@
+@@ -828,7 +818,6 @@
   *
   * @param callback a callback used to transform relative mouse motion, or
   *                 nullptr for default behavior.
@@ -191,7 +191,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -836,7 +825,7 @@
+@@ -837,7 +826,7 @@
   */
  inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
  {
@@ -200,7 +200,7 @@
  }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -926,12 +915,9 @@
+@@ -927,12 +916,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -216,8 +216,8 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -967,8 +953,7 @@
-  * closest smaller image will be upscaled and be used instead.
+@@ -969,8 +955,7 @@
+  * upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
 - * @param hot_x the x position of the cursor hot spot.
@@ -226,7 +226,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1095,7 +1080,7 @@
+@@ -1097,7 +1082,7 @@
   *
   * @sa Cursor.Set
   */
@@ -235,7 +235,7 @@
  
  /**
   * Get the default cursor.
-@@ -1113,7 +1098,7 @@
+@@ -1115,7 +1100,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

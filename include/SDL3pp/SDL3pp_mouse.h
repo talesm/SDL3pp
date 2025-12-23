@@ -271,9 +271,10 @@ public:
    * If this function is passed a surface with alternate representations added
    * with Surface.AddAlternateImage(), the surface will be interpreted as the
    * content to be used for 100% display scale, and the alternate
-   * representations will be used for high DPI situations. For example, if the
-   * original surface is 32x32, then on a 2x macOS display or 200% display scale
-   * on Windows, a 64x64 version of the image will be used, if available. If a
+   * representations will be used for high DPI situations if
+   * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
+   * surface is 32x32, then on a 2x macOS display or 200% display scale on
+   * Windows, a 64x64 version of the image will be used, if available. If a
    * matching version of the image isn't available, the closest larger size
    * image will be downscaled to the appropriate size and be used instead, if
    * available. Otherwise, the closest smaller image will be upscaled and be
@@ -945,12 +946,13 @@ inline Cursor CreateCursor(const Uint8* data,
  * If this function is passed a surface with alternate representations added
  * with Surface.AddAlternateImage(), the surface will be interpreted as the
  * content to be used for 100% display scale, and the alternate representations
- * will be used for high DPI situations. For example, if the original surface is
- * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
- * version of the image will be used, if available. If a matching version of the
- * image isn't available, the closest larger size image will be downscaled to
- * the appropriate size and be used instead, if available. Otherwise, the
- * closest smaller image will be upscaled and be used instead.
+ * will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is
+ * enabled. For example, if the original surface is 32x32, then on a 2x macOS
+ * display or 200% display scale on Windows, a 64x64 version of the image will
+ * be used, if available. If a matching version of the image isn't available,
+ * the closest larger size image will be downscaled to the appropriate size and
+ * be used instead, if available. Otherwise, the closest smaller image will be
+ * upscaled and be used instead.
  *
  * @param surface an Surface structure representing the cursor image.
  * @param hot the position of the cursor hot spot.

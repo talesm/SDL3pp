@@ -53,7 +53,7 @@
  /**
   * The prototype for the application's main() function
   *
-@@ -135,7 +147,7 @@
+@@ -138,7 +150,7 @@
                    main_func mainFunction,
                    void* reserved)
  {
@@ -62,7 +62,7 @@
  }
  
  /**
-@@ -171,9 +183,11 @@
+@@ -174,9 +186,11 @@
                                   AppQuit_func appquit)
  {
    return SDL_EnterAppMainCallbacks(
@@ -75,7 +75,7 @@
  /**
   * Register a win32 window class for SDL's use.
   *
-@@ -186,12 +200,11 @@
+@@ -189,12 +203,11 @@
   * Most applications do not need to, and should not, call this directly; SDL
   * will call it when initializing the video subsystem.
   *
@@ -91,7 +91,7 @@
   * @param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL will
   *              use `GetModuleHandle(nullptr)` instead.
   * @returns true on success or false on failure; call GetError() for more
-@@ -221,6 +234,8 @@
+@@ -224,6 +237,8 @@
   */
  inline void UnregisterApp() { SDL_UnregisterApp(); }
  
@@ -100,7 +100,7 @@
  /**
   * Callback from the application to let the suspend continue.
   *
-@@ -231,6 +246,30 @@
+@@ -234,6 +249,30 @@
   */
  inline void GDKSuspendComplete() { SDL_GDKSuspendComplete(); }
  

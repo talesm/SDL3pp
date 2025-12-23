@@ -1601,7 +1601,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -1611,7 +1611,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindSamplers(
     Uint32 first_slot,
@@ -1624,7 +1624,7 @@ public:
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
@@ -1632,7 +1632,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageTextures(Uint32 first_slot,
                            SpanRef<const GPUTextureRaw> storage_textures);
@@ -1644,7 +1644,7 @@ public:
    * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
@@ -1652,7 +1652,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageBuffers(Uint32 first_slot,
                           SpanRef<const GPUBufferRaw> storage_buffers);
@@ -2118,6 +2118,12 @@ public:
    *
    * Useful for debugging.
    *
+   * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @param text a UTF-8 string constant to insert as the label.
    *
    * @since This function is available since SDL 3.2.0.
@@ -2132,6 +2138,12 @@ public:
    *
    * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
    * to GPUCommandBuffer.PopDebugGroup.
+   *
+   * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
    *
    * On some backends (e.g. Metal), pushing a debug group during a
    * render/blit/compute pass will create a group that is scoped to the native
@@ -2149,6 +2161,12 @@ public:
   /**
    * Ends the most-recently pushed debug group.
    *
+   * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUCommandBuffer.PushDebugGroup
@@ -2158,7 +2176,7 @@ public:
   /**
    * Pushes data to a vertex uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -2178,7 +2196,7 @@ public:
   /**
    * Pushes data to a fragment uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -2195,7 +2213,7 @@ public:
   /**
    * Pushes data to a uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -3219,7 +3237,7 @@ public:
    * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
-   * With the D3D12 renderer:
+   * With the D3D12 backend:
    *
    * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
    *   for all vertex semantics, default is "TEXCOORD".
@@ -3231,6 +3249,20 @@ public:
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
+   *
+   * With the Vulkan backend:
+   *
+   * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   *   default, Vulkan device enumeration includes drivers of all types,
+   *   including software renderers (for example, the Lavapipe Mesa driver).
+   *   This can be useful if your application _requires_ SDL_GPU, but if you can
+   *   provide your own fallback renderer (for example, an OpenGL renderer) this
+   *   property can be set to true. Defaults to false.
+   * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   *   GPUVulkanOptions structure to be processed during device creation. This
+   *   allows configuring a variety of Vulkan-specific options such as
+   *   increasing the API version and opting into extensions aside from the
+   *   minimal set SDL requires.
    *
    * @param props the properties to use.
    * @post a GPU context on success.
@@ -5074,7 +5106,7 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
- * With the D3D12 renderer:
+ * With the D3D12 backend:
  *
  * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
@@ -5085,6 +5117,20 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
+ *
+ * With the Vulkan backend:
+ *
+ * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ *   default, Vulkan device enumeration includes drivers of all types, including
+ *   software renderers (for example, the Lavapipe Mesa driver). This can be
+ *   useful if your application _requires_ SDL_GPU, but if you can provide your
+ *   own fallback renderer (for example, an OpenGL renderer) this property can
+ *   be set to true. Defaults to false.
+ * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ *   GPUVulkanOptions structure to be processed during device creation. This
+ *   allows configuring a variety of Vulkan-specific options such as increasing
+ *   the API version and opting into extensions aside from the minimal set SDL
+ *   requires.
  *
  * @param props the properties to use.
  * @returns a GPU context on success.
@@ -5175,6 +5221,20 @@ constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
@@ -5201,6 +5261,28 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 } // namespace prop::GpuDevice
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A structure specifying additional options when using Vulkan.
+ *
+ * When no such structure is provided, SDL will use Vulkan API version 1.0 and a
+ * minimal set of features. The requested API version influences how the
+ * feature_list is processed by SDL. When requesting API version 1.0, the
+ * feature_list is ignored. Only the vulkan_10_physical_device_features and the
+ * extension lists are used. When requesting API version 1.1, the feature_list
+ * is scanned for feature structures introduced in Vulkan 1.1. When requesting
+ * Vulkan 1.2 or higher, the feature_list is additionally scanned for compound
+ * feature structs such as VkPhysicalDeviceVulkan11Features. The device and
+ * instance extension lists, as well as vulkan_10_physical_device_features, are
+ * always processed.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ */
+using GPUVulkanOptions = SDL_GPUVulkanOptions;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -5901,6 +5983,12 @@ inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
  *
  * Useful for debugging.
  *
+ * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * @param command_buffer a command buffer.
  * @param text a UTF-8 string constant to insert as the label.
  *
@@ -5926,6 +6014,12 @@ inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
  * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
  * to GPUCommandBuffer.PopDebugGroup.
  *
+ * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * On some backends (e.g. Metal), pushing a debug group during a
  * render/blit/compute pass will create a group that is scoped to the native
  * pass rather than the command buffer. For best results, if you push a debug
@@ -5950,6 +6044,12 @@ inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 
 /**
  * Ends the most-recently pushed debug group.
+ *
+ * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
  *
  * @param command_buffer a command buffer.
  *
@@ -6149,7 +6249,7 @@ inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 /**
  * Pushes data to a vertex uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -6183,7 +6283,7 @@ inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
 /**
  * Pushes data to a fragment uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -6214,7 +6314,7 @@ inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
 /**
  * Pushes data to a uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -6894,7 +6994,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute sampler slot to begin binding from.
@@ -6904,7 +7004,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
@@ -6930,7 +7030,7 @@ inline void GPUComputePass::BindSamplers(
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
@@ -6939,7 +7039,7 @@ inline void GPUComputePass::BindSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
@@ -6964,7 +7064,7 @@ inline void GPUComputePass::BindStorageTextures(
  * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
@@ -6973,7 +7073,7 @@ inline void GPUComputePass::BindStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageBuffers(
   GPUComputePass compute_pass,

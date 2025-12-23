@@ -113,6 +113,9 @@ inline void SetMainReady() { SDL_SetMainReady(); }
  * using SDL_main (like when using SDL3PP_MAIN_HANDLED). When using this, you do
  * *not* need SetMainReady().
  *
+ * If `argv` is nullptr, SDL will provide command line arguments, either by
+ * querying the OS for them if possible, or supplying a filler array if not.
+ *
  * @param argc the argc parameter from the application's main() function, or 0
  *             if the platform's main-equivalent has no argc.
  * @param argv the argv parameter from the application's main() function, or

@@ -464,6 +464,10 @@ public:
   /**
    * Load a PNG image from a seekable SDL data stream.
    *
+   * This is intended as a convenience function for loading images from trusted
+   * sources. If you want to load arbitrary images you should use libpng or
+   * another image loading library designed with security in mind.
+   *
    * The new surface should be freed with Surface.Destroy(). Not doing so will
    * result in a memory leak.
    *
@@ -489,6 +493,10 @@ public:
 
   /**
    * Load a PNG image from a file.
+   *
+   * This is intended as a convenience function for loading images from trusted
+   * sources. If you want to load arbitrary images you should use libpng or
+   * another image loading library designed with security in mind.
    *
    * The new surface should be freed with Surface.Destroy(). Not doing so will
    * result in a memory leak.
@@ -592,6 +600,12 @@ public:
    *   edge of the image, if this surface is being used as a cursor.
    * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
    *   edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+   *   meant to be rotated clockwise to make the image right-side up. Default 0.
+   *   This is used by the camera API, if a mobile device is oriented
+   *   differently than what its camera provides (i.e. - the camera always
+   *   provides portrait images but the phone is being held in landscape
+   *   orientation). Since SDL 3.4.0.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -1194,6 +1208,14 @@ public:
    * When the rotation isn't a multiple of 90 degrees, the resulting surface is
    * larger than the original, with the background filled in with the colorkey,
    * if available, or RGBA 255/255/255/0 if not.
+   *
+   * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the
+   * new copy will have the adjusted value set: if the rotation property is 90
+   * and `angle` was 30, the new surface will have a property value of 60 (that
+   * is: to be upright vs gravity, this surface needs to rotate 60 more
+   * degrees). However, note that further rotations on the new surface in this
+   * example will produce unexpected results, since the image will have resized
+   * and padded to accommodate the not-90 degree angle.
    *
    * @param angle the rotation angle, in degrees.
    * @returns a rotated copy of the surface or nullptr on failure; call
@@ -2013,6 +2035,12 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  *   edge of the image, if this surface is being used as a cursor.
  * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
  *   edge of the image, if this surface is being used as a cursor.
+ * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+ *   meant to be rotated clockwise to make the image right-side up. Default 0.
+ *   This is used by the camera API, if a mobile device is oriented differently
+ *   than what its camera provides (i.e. - the camera always provides portrait
+ *   images but the phone is being held in landscape orientation). Since SDL
+ *   3.4.0.
  *
  * @param surface the Surface structure to query.
  * @returns a valid property ID on success.
@@ -2052,6 +2080,12 @@ constexpr auto HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;
 constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 } // namespace prop::Surface
 
@@ -2371,6 +2405,57 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Load a BMP or PNG image from a seekable SDL data stream.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa LoadSurface
+ */
+inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
+{
+  return SDL_LoadSurface_IO(src, closeio);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Load a BMP or PNG image from a file.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param file the file to load.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa LoadSurface
+ */
+inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Load a BMP image from a seekable SDL data stream.
  *
@@ -2497,6 +2582,10 @@ inline void Surface::SaveBMP(StringParam file) const
 /**
  * Load a PNG image from a seekable SDL data stream.
  *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
  * The new surface should be freed with Surface.Destroy(). Not doing so will
  * result in a memory leak.
  *
@@ -2525,6 +2614,10 @@ inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
 
 /**
  * Load a PNG image from a file.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
  *
  * The new surface should be freed with Surface.Destroy(). Not doing so will
  * result in a memory leak.
@@ -3059,6 +3152,14 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  * When the rotation isn't a multiple of 90 degrees, the resulting surface is
  * larger than the original, with the background filled in with the colorkey, if
  * available, or RGBA 255/255/255/0 if not.
+ *
+ * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the new
+ * copy will have the adjusted value set: if the rotation property is 90 and
+ * `angle` was 30, the new surface will have a property value of 60 (that is: to
+ * be upright vs gravity, this surface needs to rotate 60 more degrees).
+ * However, note that further rotations on the new surface in this example will
+ * produce unexpected results, since the image will have resized and padded to
+ * accommodate the not-90 degree angle.
  *
  * @param surface the surface to rotate.
  * @param angle the rotation angle, in degrees.

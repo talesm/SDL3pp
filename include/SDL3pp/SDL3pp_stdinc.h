@@ -2533,7 +2533,7 @@ inline void zerop(T* x)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
- * @sa zeroa
+ * @sa zerop
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])

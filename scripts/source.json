@@ -130,7 +130,7 @@
         "SDL_FILE": {
           "doc": [
             "A macro that reports the current file being compiled.",
-            "This macro is only defined if it isn't already defined, so to override it (perhaps with something that doesn't provide path information at all, so build machine information doesn't leak into public binaries), apps can define this macro before including SDL_assert.h. For example, Clang and GCC can define this to `FILE_NAME` to get just the source filename instead of the full path.",
+            "This macro is only defined if it isn't already defined, so to override it (perhaps with something that doesn't provide path information at all, so build machine information doesn't leak into public binaries), apps can define this macro before including SDL.h or SDL_assert.h.",
             {
               "tag": "\\since",
               "content": "This macro is available since SDL 3.2.0."
@@ -138,7 +138,7 @@
           ],
           "name": "SDL_FILE",
           "kind": "def",
-          "value": "__FILE__"
+          "value": "__FILE_NAME__"
         },
         "SDL_ASSERT_FILE": {
           "doc": [
@@ -3562,6 +3562,7 @@
         "SDL_GetAudioDeviceName": {
           "doc": [
             "Get the human-readable name of a specific audio device.",
+            "**WARNING**: this function will work with SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK and SDL_AUDIO_DEVICE_DEFAULT_RECORDING, returning the current default physical devices' names. However, as the default device may change at any time, it is likely better to show a generic name to the user, like \"System default audio device\" or perhaps \"default [currently %s]\". Do not store this name to disk to reidentify the device in a later run of the program, as the default might change in general, and the string will be the name of a specific device and not the abstract system default.",
             [
               {
                 "tag": "\\param devid",
@@ -4841,7 +4842,7 @@
             ],
             {
               "tag": "\\threadsafety",
-              "content": "It is safe to call this function from any thread, as it holds a stream-specific mutex while running. Don't change the stream's format to have a different number of channels from a a different thread at the same time, though!"
+              "content": "It is safe to call this function from any thread, as it holds a stream-specific mutex while running. Don't change the stream's format to have a different number of channels from a different thread at the same time, though!"
             },
             {
               "tag": "\\since",
@@ -8975,7 +8976,7 @@
               },
               {
                 "tag": "\\param filters",
-                "content": "a list of filters, may be NULL. See the [`SDL_DialogFileFilter` documentation for examples](SDL_DialogFileFilter#code-examples). Not all platforms support this option, and platforms that do support it may allow the user to ignore the filters. If non-NULL, it must remain valid at least until the callback is invoked."
+                "content": "a list of filters, may be NULL. See the [`SDL_DialogFileFilter`](SDL_DialogFileFilter#code-examples) documentation for examples]. Not all platforms support this option, and platforms that do support it may allow the user to ignore the filters. If non-NULL, it must remain valid at least until the callback is invoked."
               },
               {
                 "tag": "\\param nfilters",
@@ -13091,6 +13092,7 @@
             "Pressure-sensitive pen proximity event structure (event.pproximity.*)",
             "When a pen becomes visible to the system (it is close enough to a tablet, etc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's ID. This ID is valid until the pen leaves proximity again (has been removed from the tablet's area, the tablet has been unplugged, etc). If the same pen reenters proximity again, it will be given a new ID.",
             "Note that \"proximity\" means \"close enough for the tablet to know the tool is there.\" The pen touching and lifting off from the tablet while not leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.",
+            "Not all platforms have a window associated with the pen during proximity events. Some wait until motion/button/etc events to offer this info.",
             {
               "tag": "\\since",
               "content": "This struct is available since SDL 3.2.0."
@@ -14896,6 +14898,7 @@
                 "content": "`parent`: the containing directory of the bundle. For example: `/Applications/SDLApp/`"
               }
             ],
+            "**Android Specific Functionality**: This function returns \"./\", which allows filesystem operations to use internal storage and the asset system.",
             "**Nintendo 3DS Specific Functionality**: This function returns \"romfs\" directory of the application as it is uncommon to store resources outside the executable. As such it is not a writable directory.",
             "The returned path is guaranteed to end with a path separator ('\\\\' on Windows, '/' on most other platforms).",
             {
@@ -15723,6 +15726,7 @@
         "One turns a joystick into a gamepad by providing a magic configuration string, which tells SDL the details of a specific device: when you see this specific hardware, if button 2 gets pressed, this is actually D-Pad Up, etc.",
         "SDL has many popular controllers configured out of the box, and users can add their own controller details through an environment variable if it's otherwise unknown to SDL.",
         "In order to use these functions, SDL_Init() must have been called with the SDL_INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and load appropriate drivers.",
+        "If you're using SDL gamepad support in a Steam game, you must call SteamAPI_InitEx() before calling SDL_Init().",
         "If you would like to receive gamepad updates while the application is in the background, you should set the following hint before calling SDL_Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS",
         "Gamepads support various optional features such as rumble, color LEDs, touchpad, gyro, etc. The support for these features varies depending on the controller and OS support available. You can check for LED and rumble capabilities at runtime by calling SDL_GetGamepadProperties() and checking the various capability properties. You can check for touchpad by calling SDL_GetNumGamepadTouchpads() and check for gyro and accelerometer by calling SDL_GamepadHasSensor().",
         "By default SDL will try to use the most capable driver available, but you can tune which OS drivers to use with the various joystick hints in SDL_hints.h.",
@@ -25300,7 +25304,7 @@
                 "content": "`SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to provide Metal shader libraries if applicable."
               }
             ],
-            "With the D3D12 renderer:",
+            "With the D3D12 backend:",
             [
               {
                 "tag": "-",
@@ -25309,6 +25313,17 @@
               {
                 "tag": "-",
                 "content": "`SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By default, Resourcing Binding Tier 2 is required for D3D12 support. However, an application can set this property to true to enable Tier 1 support, if (and only if) the application uses 8 or fewer storage resources across all shader stages. As of writing, this property is useful for targeting Intel Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource Binding or does not support D3D12 in any capacity. Defaults to false."
+              }
+            ],
+            "With the Vulkan backend:",
+            [
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By default, Vulkan device enumeration includes drivers of all types, including software renderers (for example, the Lavapipe Mesa driver). This can be useful if your application _requires_ SDL_GPU, but if you can provide your own fallback renderer (for example, an OpenGL renderer) this property can be set to true. Defaults to false."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an SDL_GPUVulkanOptions structure to be processed during device creation. This allows configuring a variety of Vulkan-specific options such as increasing the API version and opting into extensions aside from the minimal set SDL requires."
               }
             ],
             [
@@ -25433,6 +25448,86 @@
           "name": "SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING",
           "kind": "def",
           "value": "\"SDL.gpu.device.create.d3d12.semantic\""
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN": {
+          "name": "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN",
+          "kind": "def",
+          "value": "\"SDL.gpu.device.create.vulkan.requirehardwareacceleration\""
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER": {
+          "name": "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER",
+          "kind": "def",
+          "value": "\"SDL.gpu.device.create.vulkan.options\""
+        },
+        "SDL_GPUVulkanOptions": {
+          "doc": [
+            "A structure specifying additional options when using Vulkan.",
+            "When no such structure is provided, SDL will use Vulkan API version 1.0 and a minimal set of features. The requested API version influences how the feature_list is processed by SDL. When requesting API version 1.0, the feature_list is ignored. Only the vulkan_10_physical_device_features and the extension lists are used. When requesting API version 1.1, the feature_list is scanned for feature structures introduced in Vulkan 1.1. When requesting Vulkan 1.2 or higher, the feature_list is additionally scanned for compound feature structs such as VkPhysicalDeviceVulkan11Features. The device and instance extension lists, as well as vulkan_10_physical_device_features, are always processed.",
+            {
+              "tag": "\\since",
+              "content": "This struct is available since SDL 3.4.0."
+            }
+          ],
+          "name": "SDL_GPUVulkanOptions",
+          "kind": "struct",
+          "entries": {
+            "vulkan_api_version": {
+              "doc": [
+                "The Vulkan API version to request for the instance. Use Vulkan's VK_MAKE_VERSION or VK_MAKE_API_VERSION."
+              ],
+              "name": "vulkan_api_version",
+              "kind": "var",
+              "type": "Uint32"
+            },
+            "feature_list": {
+              "doc": [
+                "Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.)"
+              ],
+              "name": "feature_list",
+              "kind": "var",
+              "type": "void *"
+            },
+            "vulkan_10_physical_device_features": {
+              "doc": [
+                "Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features."
+              ],
+              "name": "vulkan_10_physical_device_features",
+              "kind": "var",
+              "type": "void *"
+            },
+            "device_extension_count": {
+              "doc": [
+                "Number of additional device extensions to require."
+              ],
+              "name": "device_extension_count",
+              "kind": "var",
+              "type": "Uint32"
+            },
+            "device_extension_names": {
+              "doc": [
+                "Pointer to a list of additional device extensions to require."
+              ],
+              "name": "device_extension_names",
+              "kind": "var",
+              "type": "const char **"
+            },
+            "instance_extension_count": {
+              "doc": [
+                "Number of additional instance extensions to require."
+              ],
+              "name": "instance_extension_count",
+              "kind": "var",
+              "type": "Uint32"
+            },
+            "instance_extension_names": {
+              "doc": [
+                "Pointer to a list of additional instance extensions to require."
+              ],
+              "name": "instance_extension_names",
+              "kind": "var",
+              "type": "const char **"
+            }
+          }
         },
         "SDL_DestroyGPUDevice": {
           "doc": [
@@ -26541,6 +26636,7 @@
           "doc": [
             "Inserts an arbitrary string label into the command buffer callstream.",
             "Useful for debugging.",
+            "On Direct3D 12, using SDL_InsertGPUDebugLabel requires WinPixEventRuntime.dll to be in your PATH or in the same directory as your executable. See [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for instructions on how to obtain it.",
             [
               {
                 "tag": "\\param command_buffer",
@@ -26575,6 +26671,7 @@
             "Begins a debug group with an arbitrary name.",
             "Used for denoting groups of calls when viewing the command buffer callstream in a graphics debugging tool.",
             "Each call to SDL_PushGPUDebugGroup must have a corresponding call to SDL_PopGPUDebugGroup.",
+            "On Direct3D 12, using SDL_PushGPUDebugGroup requires WinPixEventRuntime.dll to be in your PATH or in the same directory as your executable. See [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for instructions on how to obtain it.",
             "On some backends (e.g. Metal), pushing a debug group during a render/blit/compute pass will create a group that is scoped to the native pass rather than the command buffer. For best results, if you push a debug group during a pass, always pop it in the same pass.",
             [
               {
@@ -26612,6 +26709,7 @@
         "SDL_PopGPUDebugGroup": {
           "doc": [
             "Ends the most-recently pushed debug group.",
+            "On Direct3D 12, using SDL_PopGPUDebugGroup requires WinPixEventRuntime.dll to be in your PATH or in the same directory as your executable. See [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for instructions on how to obtain it.",
             {
               "tag": "\\param command_buffer",
               "content": "a command buffer."
@@ -26909,7 +27007,7 @@
         "SDL_PushGPUVertexUniformData": {
           "doc": [
             "Pushes data to a vertex uniform slot on the command buffer.",
-            "Subsequent draw calls will use this uniform data.",
+            "Subsequent draw calls in this command buffer will use this uniform data.",
             "The data being pushed must respect std140 layout conventions. In practical terms this means you must ensure that vec3 and vec4 fields are 16-byte aligned.",
             "For detailed information about accessing uniform data from a shader, please refer to SDL_CreateGPUShader.",
             [
@@ -26960,7 +27058,7 @@
         "SDL_PushGPUFragmentUniformData": {
           "doc": [
             "Pushes data to a fragment uniform slot on the command buffer.",
-            "Subsequent draw calls will use this uniform data.",
+            "Subsequent draw calls in this command buffer will use this uniform data.",
             "The data being pushed must respect std140 layout conventions. In practical terms this means you must ensure that vec3 and vec4 fields are 16-byte aligned.",
             [
               {
@@ -27010,7 +27108,7 @@
         "SDL_PushGPUComputeUniformData": {
           "doc": [
             "Pushes data to a uniform slot on the command buffer.",
-            "Subsequent draw calls will use this uniform data.",
+            "Subsequent draw calls in this command buffer will use this uniform data.",
             "The data being pushed must respect std140 layout conventions. In practical terms this means you must ensure that vec3 and vec4 fields are 16-byte aligned.",
             [
               {
@@ -28045,7 +28143,7 @@
           "doc": [
             "Binds texture-sampler pairs for use on the compute shader.",
             "The textures must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.",
-            "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
+            "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUComputePipeline().",
             [
               {
                 "tag": "\\param compute_pass",
@@ -28070,7 +28168,7 @@
             },
             {
               "tag": "\\sa",
-              "content": "SDL_CreateGPUShader"
+              "content": "SDL_CreateGPUComputePipeline"
             }
           ],
           "name": "SDL_BindGPUComputeSamplers",
@@ -28099,7 +28197,7 @@
           "doc": [
             "Binds storage textures as readonly for use on the compute pipeline.",
             "These textures must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
+            "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUComputePipeline().",
             [
               {
                 "tag": "\\param compute_pass",
@@ -28124,7 +28222,7 @@
             },
             {
               "tag": "\\sa",
-              "content": "SDL_CreateGPUShader"
+              "content": "SDL_CreateGPUComputePipeline"
             }
           ],
           "name": "SDL_BindGPUComputeStorageTextures",
@@ -28153,7 +28251,7 @@
           "doc": [
             "Binds storage buffers as readonly for use on the compute pipeline.",
             "These buffers must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.",
-            "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUShader().",
+            "Be sure your shader is set up according to the requirements documented in SDL_CreateGPUComputePipeline().",
             [
               {
                 "tag": "\\param compute_pass",
@@ -28178,7 +28276,7 @@
             },
             {
               "tag": "\\sa",
-              "content": "SDL_CreateGPUShader"
+              "content": "SDL_CreateGPUComputePipeline"
             }
           ],
           "name": "SDL_BindGPUComputeStorageBuffers",
@@ -34860,22 +34958,6 @@
           "kind": "def",
           "value": "\"SDL_EMSCRIPTEN_KEYBOARD_ELEMENT\""
         },
-        "SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT": {
-          "doc": [
-            "Dictate that newly-created windows will fill the whole browser window.",
-            "The canvas element fills the entire document. Resize events will be generated as the browser window is resized, as that will adjust the canvas size as well. The canvas will cover anything else on the page, including any controls provided by Emscripten in its generated HTML file. Often times this is desirable for a browser-based game, but it means several things that we expect of an SDL window on other platforms might not work as expected, such as minimum window sizes and aspect ratios.",
-            "This hint overrides SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN properties when creating an SDL window.",
-            "This hint only applies to the emscripten platform.",
-            "This hint should be set before creating a window.",
-            {
-              "tag": "\\since",
-              "content": "This hint is available since SDL 3.4.0."
-            }
-          ],
-          "name": "SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT",
-          "kind": "def",
-          "value": "\"SDL_EMSCRIPTEN_FILL_DOCUMENT\""
-        },
         "SDL_HINT_ENABLE_SCREEN_KEYBOARD": {
           "doc": [
             "A variable that controls whether the on-screen keyboard should be shown when text input is active.",
@@ -37138,6 +37220,30 @@
           "kind": "def",
           "value": "\"SDL_MAC_SCROLL_MOMENTUM\""
         },
+        "SDL_HINT_MAC_PRESS_AND_HOLD": {
+          "doc": [
+            "A variable controlling whether holding down a key will repeat the pressed key or open the accents menu on macOS.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": Holding a key will open the accents menu for that key."
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": Holding a key will repeat the pressed key. (default)"
+              }
+            ],
+            "This hint needs to be set before SDL_Init().",
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.4.0."
+            }
+          ],
+          "name": "SDL_HINT_MAC_PRESS_AND_HOLD",
+          "kind": "def",
+          "value": "\"SDL_MAC_PRESS_AND_HOLD\""
+        },
         "SDL_HINT_MAIN_CALLBACK_RATE": {
           "doc": [
             "Request SDL_AppIterate() be called at a specific rate.",
@@ -37220,6 +37326,30 @@
           "name": "SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR",
           "kind": "def",
           "value": "\"SDL_MOUSE_DEFAULT_SYSTEM_CURSOR\""
+        },
+        "SDL_HINT_MOUSE_DPI_SCALE_CURSORS": {
+          "doc": [
+            "A variable setting whether we should scale cursors by the current display scale.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": Cursors will not change size based on the display content scale. (default)"
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": Cursors will automatically match the display content scale (e.g. a 2x sized cursor will be used when the window is on a monitor with 200% scale). This is currently implemented on Windows and Wayland."
+              }
+            ],
+            "This hint needs to be set before creating cursors.",
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.4.0."
+            }
+          ],
+          "name": "SDL_HINT_MOUSE_DPI_SCALE_CURSORS",
+          "kind": "def",
+          "value": "\"SDL_MOUSE_DPI_SCALE_CURSORS\""
         },
         "SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE": {
           "doc": [
@@ -39486,6 +39616,32 @@
           "name": "SDL_HINT_WINDOWS_RAW_KEYBOARD",
           "kind": "def",
           "value": "\"SDL_WINDOWS_RAW_KEYBOARD\""
+        },
+        "SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS": {
+          "doc": [
+            "A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when enabling Windows raw keyboard events.",
+            "This blocks any hotkeys that have been registered by applications from having any effect beyond generating raw WM_INPUT events.",
+            "This flag does not affect system-hotkeys like ALT-TAB or CTRL-ALT-DEL, but does affect the Windows Logo key since it is a userland hotkey registered by explorer.exe.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": Hotkeys are not excluded. (default)"
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": Hotkeys are excluded."
+              }
+            ],
+            "This hint can be set anytime.",
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.4.0."
+            }
+          ],
+          "name": "SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS",
+          "kind": "def",
+          "value": "\"SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS\""
         },
         "SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL": {
           "doc": [
@@ -48469,8 +48625,9 @@
           "doc": [
             "The SDL virtual key representation.",
             "Values of this type are used to represent keyboard keys using the current layout of the keyboard. These values include Unicode values representing the unmodified character that would be generated by pressing the key, or an `SDLK_*` constant for those keys that do not generate characters.",
-            "A special exception is the number keys at the top of the keyboard which map to SDLK_0...SDLK_9 on AZERTY layouts.",
+            "A special exception is the number keys at the top of the keyboard which map by default to SDLK_0...SDLK_9 on AZERTY layouts.",
             "Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or unicode code point.",
+            "Many common keycodes are listed below, but this list is not exhaustive.",
             {
               "tag": "\\since",
               "content": "This datatype is available since SDL 3.2.0."
@@ -52833,6 +52990,7 @@
           "doc": [
             "Initializes and launches an SDL application, by doing platform-specific initialization before calling your mainFunction and cleanups after it returns, if that is needed for a specific platform, otherwise it just calls mainFunction.",
             "You can use this if you want to use your own main() implementation without using SDL_main (like when using SDL_MAIN_HANDLED). When using this, you do *not* need SDL_SetMainReady().",
+            "If `argv` is NULL, SDL will provide command line arguments, either by querying the OS for them if possible, or supplying a filler array if not.",
             [
               {
                 "tag": "\\param argc",
@@ -54736,7 +54894,7 @@
         "SDL_CreateColorCursor": {
           "doc": [
             "Create a color cursor.",
-            "If this function is passed a surface with alternate representations added with SDL_AddSurfaceAlternateImage(), the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.",
+            "If this function is passed a surface with alternate representations added with SDL_AddSurfaceAlternateImage(), the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.",
             [
               {
                 "tag": "\\param surface",
@@ -56881,15 +57039,17 @@
             "content": "SDL_EVENT_PEN_AXIS (SDL_PenAxisEvent)"
           }
         ],
-        "When a pen starts providing input, SDL will assign it a unique SDL_PenID, which will remain for the life of the process, as long as the pen stays connected.",
-        "Pens may provide more than simple touch input; they might have other axes, such as pressure, tilt, rotation, etc."
+        "Pens may provide more than simple touch input; they might have other axes, such as pressure, tilt, rotation, etc.",
+        "When a pen starts providing input, SDL will assign it a unique SDL_PenID, which will remain for the life of the process, as long as the pen stays connected. A pen leaving proximity (being taken far enough away from the digitizer tablet that it no longer reponds) and then coming back should fire proximity events, but the SDL_PenID should remain consistent. Unplugging the digitizer and reconnecting may cause future input to have a new SDL_PenID, as SDL may not know that this is the same hardware.",
+        "Please note that various platforms vary wildly in how (and how well) they support pen input. If your pen supports some piece of functionality but SDL doesn't seem to, it might actually be the operating system's fault. For example, some platforms can manage multiple devices at the same time, but others will make any connected pens look like a single logical device, much how all USB mice connected to a computer will move the same system cursor. cursor. Other platforms might not support pen buttons, or the distance axis, etc. Very few platforms can even report _what_ functionality the pen supports in the first place, so best practices is to either build UI to let the user configure their pens, or be prepared to handle new functionality for a pen the first time an event is reported."
       ],
       "entries": {
         "SDL_PenID": {
           "doc": [
             "SDL pen instance IDs.",
             "Zero is used to signify an invalid/null device.",
-            "These show up in pen events when SDL sees input from them. They remain consistent as long as SDL can recognize a tool to be the same pen; but if a pen physically leaves the area and returns, it might get a new ID.",
+            "These show up in pen events when SDL sees input from them. They remain consistent as long as SDL can recognize a tool to be the same pen; but if a pen's digitizer table is physically detached from the computer, it might get a new ID when reconnected, as SDL won't know it's the same device.",
+            "These IDs are only stable within a single run of a program; the next time a program is run, the pen's ID will likely be different, even if the hardware hasn't been disconnected, etc.",
             {
               "tag": "\\since",
               "content": "This datatype is available since SDL 3.2.0."
@@ -56990,6 +57150,14 @@
           "name": "SDL_PEN_INPUT_ERASER_TIP",
           "kind": "def",
           "value": "(1u << 30)"
+        },
+        "SDL_PEN_INPUT_IN_PROXIMITY": {
+          "doc": [
+            "pen is in proximity (since SDL 3.4.0)"
+          ],
+          "name": "SDL_PEN_INPUT_IN_PROXIMITY",
+          "kind": "def",
+          "value": "(1u << 31)"
         },
         "SDL_PenAxis": {
           "doc": [
@@ -57992,7 +58160,7 @@
               },
               {
                 "tag": "\\returns",
-                "content": "true if the format is 10-bit, false otherwise."
+                "content": "true if the format is a floating point, false otherwise."
               }
             ],
             {
@@ -67653,7 +67821,7 @@
               },
               {
                 "tag": "\\returns",
-                "content": "true on success or false on failure; call SDL_GetError() for more information."
+                "content": "true if the event is converted or doesn't need conversion, or false on failure; call SDL_GetError() for more information."
               }
             ],
             {
@@ -77276,7 +77444,7 @@
               },
               {
                 "tag": "\\sa",
-                "content": "SDL_zeroa"
+                "content": "SDL_zerop"
               }
             ]
           ],
@@ -83704,7 +83872,7 @@
               "type": ""
             }
           ],
-          "value": "(Uint16 *)SDL_iconv_string(\"UCS-2\", \"UTF-8\", S, SDL_strlen(S)+1)"
+          "value": "SDL_reinterpret_cast(Uint16 *, SDL_iconv_string(\"UCS-2\", \"UTF-8\", S, SDL_strlen(S)+1))"
         },
         "SDL_iconv_utf8_ucs4": {
           "doc": [
@@ -83733,7 +83901,7 @@
               "type": ""
             }
           ],
-          "value": "(Uint32 *)SDL_iconv_string(\"UCS-4\", \"UTF-8\", S, SDL_strlen(S)+1)"
+          "value": "SDL_reinterpret_cast(Uint32 *, SDL_iconv_string(\"UCS-4\", \"UTF-8\", S, SDL_strlen(S)+1))"
         },
         "SDL_iconv_wchar_utf8": {
           "doc": [
@@ -83762,7 +83930,7 @@
               "type": ""
             }
           ],
-          "value": "SDL_iconv_string(\"UTF-8\", \"WCHAR_T\", (char *)S, (SDL_wcslen(S)+1)*sizeof(wchar_t))"
+          "value": "SDL_iconv_string(\"UTF-8\", \"WCHAR_T\", SDL_reinterpret_cast(const char *, S), (SDL_wcslen(S)+1)*sizeof(wchar_t))"
         },
         "strlcpy": {
           "name": "strlcpy",
@@ -85536,6 +85704,10 @@
               {
                 "tag": "-",
                 "content": "`SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top edge of the image, if this surface is being used as a cursor."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_SURFACE_ROTATION_FLOAT`: the number of degrees a surface's data is meant to be rotated clockwise to make the image right-side up. Default 0. This is used by the camera API, if a mobile device is oriented differently than what its camera provides (i.e. - the camera always provides portrait images but the phone is being held in landscape orientation). Since SDL 3.4.0."
               }
             ],
             [
@@ -85591,6 +85763,11 @@
           "name": "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER",
           "kind": "def",
           "value": "\"SDL.surface.hotspot.y\""
+        },
+        "SDL_PROP_SURFACE_ROTATION_FLOAT": {
+          "name": "SDL_PROP_SURFACE_ROTATION_FLOAT",
+          "kind": "def",
+          "value": "\"SDL.surface.rotation\""
         },
         "SDL_SetSurfaceColorspace": {
           "doc": [
@@ -86074,6 +86251,100 @@
             }
           ]
         },
+        "SDL_LoadSurface_IO": {
+          "doc": [
+            "Load a BMP or PNG image from a seekable SDL data stream.",
+            "The new surface should be freed with SDL_DestroySurface(). Not doing so will result in a memory leak.",
+            [
+              {
+                "tag": "\\param src",
+                "content": "the data stream for the surface."
+              },
+              {
+                "tag": "\\param closeio",
+                "content": "if true, calls SDL_CloseIO() on `src` before returning, even in the case of an error."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a pointer to a new SDL_Surface structure or NULL on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.4.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DestroySurface"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LoadSurface"
+              }
+            ]
+          ],
+          "name": "SDL_LoadSurface_IO",
+          "kind": "function",
+          "type": "SDL_Surface *",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "SDL_IOStream *"
+            },
+            {
+              "name": "closeio",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_LoadSurface": {
+          "doc": [
+            "Load a BMP or PNG image from a file.",
+            "The new surface should be freed with SDL_DestroySurface(). Not doing so will result in a memory leak.",
+            [
+              {
+                "tag": "\\param file",
+                "content": "the file to load."
+              },
+              {
+                "tag": "\\returns",
+                "content": "a pointer to a new SDL_Surface structure or NULL on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "It is safe to call this function from any thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.4.0."
+            },
+            [
+              {
+                "tag": "\\sa",
+                "content": "SDL_DestroySurface"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_LoadSurface_IO"
+              }
+            ]
+          ],
+          "name": "SDL_LoadSurface",
+          "kind": "function",
+          "type": "SDL_Surface *",
+          "parameters": [
+            {
+              "name": "file",
+              "type": "const char *"
+            }
+          ]
+        },
         "SDL_LoadBMP_IO": {
           "doc": [
             "Load a BMP image from a seekable SDL data stream.",
@@ -86289,6 +86560,7 @@
         "SDL_LoadPNG_IO": {
           "doc": [
             "Load a PNG image from a seekable SDL data stream.",
+            "This is intended as a convenience function for loading images from trusted sources. If you want to load arbitrary images you should use libpng or another image loading library designed with security in mind.",
             "The new surface should be freed with SDL_DestroySurface(). Not doing so will result in a memory leak.",
             [
               {
@@ -86344,6 +86616,7 @@
         "SDL_LoadPNG": {
           "doc": [
             "Load a PNG image from a file.",
+            "This is intended as a convenience function for loading images from trusted sources. If you want to load arbitrary images you should use libpng or another image loading library designed with security in mind.",
             "The new surface should be freed with SDL_DestroySurface(). Not doing so will result in a memory leak.",
             [
               {
@@ -87208,6 +87481,7 @@
             "Return a copy of a surface rotated clockwise a number of degrees.",
             "The angle of rotation can be negative for counter-clockwise rotation.",
             "When the rotation isn't a multiple of 90 degrees, the resulting surface is larger than the original, with the background filled in with the colorkey, if available, or RGBA 255/255/255/0 if not.",
+            "If `surface` has the SDL_PROP_SURFACE_ROTATION_FLOAT property set on it, the new copy will have the adjusted value set: if the rotation property is 90 and `angle` was 30, the new surface will have a property value of 60 (that is: to be upright vs gravity, this surface needs to rotate 60 more degrees). However, note that further rotations on the new surface in this example will produce unexpected results, since the image will have resized and padded to accommodate the not-90 degree angle.",
             [
               {
                 "tag": "\\param surface",
@@ -93997,7 +94271,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "2"
+          "value": "6"
         },
         "SDL_VERSIONNUM": {
           "doc": [
@@ -94177,7 +94451,7 @@
         "SDL_GetRevision": {
           "doc": [
             "Get the code revision of the SDL library that is linked against your program.",
-            "This value is the revision of the code you are linking against and may be different from the code you are compiling with, which is found in the constant SDL_REVISION.",
+            "This value is the revision of the code you are linking against and may be different from the code you are compiling with, which is found in the constant SDL_REVISION if you explicitly include SDL_revision.h",
             "The revision is an arbitrary string (a hash value) uniquely identifying the exact revision of the SDL library in use, and is only useful in comparing against other revisions. It is NOT an incrementing number.",
             "If SDL wasn't built from a git repository with the appropriate tools, this will return an empty string.",
             "You shouldn't use this function for anything but logging it for debugging purposes. The string is not intended to be reliable in any way.",
@@ -94243,7 +94517,11 @@
         "SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER": {
           "doc": [
             "The pointer to the global `wl_display` object used by the Wayland video backend.",
-            "Can be set before the video subsystem is initialized to import an external `wl_display` object from an application or toolkit for use in SDL, or read after initialization to export the `wl_display` used by the Wayland video backend. Setting this property after the video subsystem has been initialized has no effect, and reading it when the video subsystem is uninitialized will either return the user provided value, if one was set prior to initialization, or NULL. See docs/README-wayland.md for more information."
+            "Can be set before the video subsystem is initialized to import an external `wl_display` object from an application or toolkit for use in SDL, or read after initialization to export the `wl_display` used by the Wayland video backend. Setting this property after the video subsystem has been initialized has no effect, and reading it when the video subsystem is uninitialized will either return the user provided value, if one was set prior to initialization, or NULL. See docs/README-wayland.md for more information.",
+            {
+              "tag": "\\since",
+              "content": "This macro is available since SDL 3.2.0."
+            }
           ],
           "name": "SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER",
           "kind": "def",
@@ -94664,6 +94942,14 @@
           "name": "SDL_WINDOW_KEYBOARD_GRABBED",
           "kind": "def",
           "value": "SDL_UINT64_C(0x0000000000100000)"
+        },
+        "SDL_WINDOW_FILL_DOCUMENT": {
+          "doc": [
+            "window is in fill-document mode (Emscripten only), since SDL 3.4.0"
+          ],
+          "name": "SDL_WINDOW_FILL_DOCUMENT",
+          "kind": "def",
+          "value": "SDL_UINT64_C(0x0000000000200000)"
         },
         "SDL_WINDOW_VULKAN": {
           "doc": [
@@ -95339,7 +95625,7 @@
             },
             "SDL_GL_FRAMEBUFFER_SRGB_CAPABLE": {
               "doc": [
-                "requests sRGB capable visual; defaults to 0."
+                "requests sRGB-capable visual if 1. Defaults to -1 (\"don't care\"). This is a request; GL drivers might not comply!"
               ],
               "name": "SDL_GL_FRAMEBUFFER_SRGB_CAPABLE",
               "kind": "var",
@@ -95681,6 +95967,11 @@
               "tag": "-",
               "content": "`SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with the display"
             },
+            "On Windows:",
+            {
+              "tag": "-",
+              "content": "`SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR) associated with the display"
+            },
             [
               {
                 "tag": "\\param displayID",
@@ -95724,6 +96015,11 @@
           "name": "SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER",
           "kind": "def",
           "value": "\"SDL.display.wayland.wl_output\""
+        },
+        "SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER": {
+          "name": "SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER",
+          "kind": "def",
+          "value": "\"SDL.display.windows.hmonitor\""
         },
         "SDL_GetDisplayName": {
           "doc": [
@@ -97058,6 +97354,11 @@
                 "content": "`SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)` NSView associated with the window, defaults to `[window contentView]`"
               }
             ],
+            "These are additional supported properties on iOS, tvOS, and visionOS:",
+            {
+              "tag": "-",
+              "content": "`SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)` UIWindowScene associated with the window, defaults to the active window scene."
+            },
             "These are additional supported properties on Wayland:",
             [
               {
@@ -97095,10 +97396,6 @@
               {
                 "tag": "-",
                 "content": "`SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the canvas element. This should start with a '#' sign"
-              },
-              {
-                "tag": "-",
-                "content": "`SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the canvas element fill the entire document. Resize events will be generated as the browser window is resized, as that will adjust the canvas size as well. The canvas will cover anything else on the page, including any controls provided by Emscripten in its generated HTML file. Often times this is desirable for a browser-based game, but it means several things that we expect of an SDL window on other platforms might not work as expected, such as minimum window sizes and aspect ratios. Default false."
               },
               {
                 "tag": "-",
@@ -97318,6 +97615,11 @@
           "kind": "def",
           "value": "\"SDL.window.create.cocoa.view\""
         },
+        "SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER": {
+          "name": "SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER",
+          "kind": "def",
+          "value": "\"SDL.window.create.uikit.windowscene\""
+        },
         "SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN": {
           "name": "SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN",
           "kind": "def",
@@ -97352,11 +97654,6 @@
           "name": "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING",
           "kind": "def",
           "value": "\"SDL.window.create.emscripten.canvas_id\""
-        },
-        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN": {
-          "name": "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN",
-          "kind": "def",
-          "value": "\"SDL.window.create.emscripten.fill_document\""
         },
         "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
           "name": "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING",
@@ -97653,10 +97950,6 @@
               },
               {
                 "tag": "-",
-                "content": "`SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is set to consume the entire browser window, bypassing some SDL window functionality."
-              },
-              {
-                "tag": "-",
                 "content": "`SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element that associates keyboard events to this window"
               }
             ],
@@ -97869,11 +98162,6 @@
           "kind": "def",
           "value": "\"SDL.window.emscripten.canvas_id\""
         },
-        "SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN": {
-          "name": "SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN",
-          "kind": "def",
-          "value": "\"SDL.window.emscripten.fill_document\""
-        },
         "SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
           "name": "SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING",
           "kind": "def",
@@ -97924,6 +98212,10 @@
               {
                 "tag": "\\sa",
                 "content": "SDL_SetWindowMouseGrab"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_SetWindowFillDocument"
               },
               {
                 "tag": "\\sa",
@@ -98291,6 +98583,10 @@
               {
                 "tag": "\\sa",
                 "content": "SDL_SetWindowSize"
+              },
+              {
+                "tag": "\\sa",
+                "content": "SDL_EVENT_WINDOW_RESIZED"
               }
             ]
           ],
@@ -98961,6 +99257,54 @@
             },
             {
               "name": "on_top",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_SetWindowFillDocument": {
+          "doc": [
+            "Set the window to fill the current document space (Emscripten only).",
+            "This will add or remove the window's `SDL_WINDOW_FILL_DOCUMENT` flag.",
+            "Currently this flag only applies to the Emscripten target.",
+            "When enabled, the canvas element fills the entire document. Resize events will be generated as the browser window is resized, as that will adjust the canvas size as well. The canvas will cover anything else on the page, including any controls provided by Emscripten in its generated HTML file (in fact, any elements on the page that aren't the canvas will be moved into a hidden `div` element).",
+            "Often times this is desirable for a browser-based game, but it means several things that we expect of an SDL window on other platforms might not work as expected, such as minimum window sizes and aspect ratios.",
+            [
+              {
+                "tag": "\\param window",
+                "content": "the window of which to change the fill-document state."
+              },
+              {
+                "tag": "\\param fill",
+                "content": "true to set the window to fill the document, false to disable."
+              },
+              {
+                "tag": "\\returns",
+                "content": "true on success or false on failure; call SDL_GetError() for more information."
+              }
+            ],
+            {
+              "tag": "\\threadsafety",
+              "content": "This function should only be called on the main thread."
+            },
+            {
+              "tag": "\\since",
+              "content": "This function is available since SDL 3.4.0."
+            },
+            {
+              "tag": "\\sa",
+              "content": "SDL_GetWindowFlags"
+            }
+          ],
+          "name": "SDL_SetWindowFillDocument",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "SDL_Window *"
+            },
+            {
+              "name": "fill",
               "type": "bool"
             }
           ]

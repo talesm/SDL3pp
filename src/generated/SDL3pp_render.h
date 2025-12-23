@@ -1157,7 +1157,8 @@ public:
    * Once converted, coordinates may be outside the rendering area.
    *
    * @param event the event to modify.
-   * @throws Error on failure.
+   * @returns true if the event is converted or doesn't need conversion, or
+   *          false on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -5797,7 +5798,8 @@ inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
  *
  * @param renderer the rendering context.
  * @param event the event to modify.
- * @throws Error on failure.
+ * @returns true if the event is converted or doesn't need conversion, or false
+ *          on failure; call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *

@@ -9,7 +9,7 @@
   *
   * SDL pen event handling.
   *
-@@ -155,8 +155,6 @@
+@@ -184,8 +184,6 @@
   */
  using PenDeviceType = SDL_PenDeviceType;
  
@@ -18,7 +18,7 @@
  constexpr PenDeviceType PEN_DEVICE_TYPE_INVALID =
    SDL_PEN_DEVICE_TYPE_INVALID; ///< Not a valid pen device.
  
-@@ -170,8 +168,6 @@
+@@ -199,8 +197,6 @@
    SDL_PEN_DEVICE_TYPE_INDIRECT; ///< Pen touches something that isn't the
                                  ///< display.
  

@@ -622,7 +622,7 @@ public:
   /**
    * Determine if this is a floating point format.
    *
-   * @returns true if the format is 10-bit, false otherwise.
+   * @returns true if the format is a floating point, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -1274,7 +1274,7 @@ constexpr bool PixelFormat::Is10Bit() const
  * expressions with side-effects here.
  *
  * @param format an PixelFormat to check.
- * @returns true if the format is 10-bit, false otherwise.
+ * @returns true if the format is a floating point, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
  *

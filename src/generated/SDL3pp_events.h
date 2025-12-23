@@ -741,6 +741,9 @@ using PinchFingerEvent = SDL_PinchFingerEvent;
  * there." The pen touching and lifting off from the tablet while not leaving
  * the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
  *
+ * Not all platforms have a window associated with the pen during proximity
+ * events. Some wait until motion/button/etc events to offer this info.
+ *
  * @since This struct is available since SDL 3.2.0.
  */
 using PenProximityEvent = SDL_PenProximityEvent;

@@ -771,32 +771,6 @@ namespace SDL {
  */
 #define SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-/**
- * Dictate that newly-created windows will fill the whole browser window.
- *
- * The canvas element fills the entire document. Resize events will be generated
- * as the browser window is resized, as that will adjust the canvas size as
- * well. The canvas will cover anything else on the page, including any controls
- * provided by Emscripten in its generated HTML file. Often times this is
- * desirable for a browser-based game, but it means several things that we
- * expect of an SDL window on other platforms might not work as expected, such
- * as minimum window sizes and aspect ratios.
- *
- * This hint overrides prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN
- * properties when creating an SDL window.
- *
- * This hint only applies to the emscripten platform.
- *
- * This hint should be set before creating a window.
- *
- * @since This hint is available since SDL 3.4.0.
- */
-#define SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT "SDL_EMSCRIPTEN_FILL_DOCUMENT"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * A variable that controls whether the on-screen keyboard should be shown when
  * text input is active.
@@ -2638,6 +2612,25 @@ namespace SDL {
  */
 #define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A variable controlling whether holding down a key will repeat the pressed key
+ * or open the accents menu on macOS.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Holding a key will open the accents menu for that key.
+ * - "1": Holding a key will repeat the pressed key. (default)
+ *
+ * This hint needs to be set before Init().
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_MAC_PRESS_AND_HOLD "SDL_MAC_PRESS_AND_HOLD"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Request SDL_AppIterate() be called at a specific rate.
  *
@@ -2716,6 +2709,28 @@ namespace SDL {
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A variable setting whether we should scale cursors by the current display
+ * scale.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Cursors will not change size based on the display content scale.
+ *   (default)
+ * - "1": Cursors will automatically match the display content scale (e.g. a 2x
+ *   sized cursor will be used when the window is on a monitor with 200% scale).
+ *   This is currently implemented on Windows and Wayland.
+ *
+ * This hint needs to be set before creating cursors.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_MOUSE_DPI_SCALE_CURSORS "SDL_MOUSE_DPI_SCALE_CURSORS"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
@@ -4414,6 +4429,33 @@ namespace SDL {
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
+ * enabling Windows raw keyboard events.
+ *
+ * This blocks any hotkeys that have been registered by applications from having
+ * any effect beyond generating raw WM_INPUT events.
+ *
+ * This flag does not affect system-hotkeys like ALT-TAB or CTRL-ALT-DEL, but
+ * does affect the Windows Logo key since it is a userland hotkey registered by
+ * explorer.exe.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Hotkeys are not excluded. (default)
+ * - "1": Hotkeys are excluded.
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS                          \
+  "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.

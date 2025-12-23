@@ -1886,6 +1886,12 @@ const transform = {
         "SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
         },
+        "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 }
+        },
         "SDL_PROP_GPU_DEVICE_NAME_STRING": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
         },
@@ -3376,7 +3382,10 @@ const transform = {
         },
         "SDL_PenDeviceType": {
           enum: "SDL_PEN_DEVICE_TYPE_",
-        }
+        },
+        "SDL_PEN_INPUT_IN_PROXIMITY": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 }
+        },
       }
     },
     "SDL_pixels.h": {
@@ -4723,7 +4732,13 @@ const transform = {
             { type: "const FPointRaw &", name: "coord" },
           ]
         },
-        "SDL_ConvertEventToRenderCoordinates": { immutable: true },
+        "SDL_ConvertEventToRenderCoordinates": {
+          immutable: true,
+          type: "void",
+          hints: {
+            mayFail: true
+          }
+        },
         "SDL_SetRenderViewport": {
           parameters: [
             {},
@@ -6248,6 +6263,9 @@ const transform = {
         "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 6 },
         },
+        "SDL_PROP_SURFACE_ROTATION_FLOAT": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+        },
         "SDL_MUSTLOCK": {
           kind: "function",
           name: "MustLock",
@@ -6291,6 +6309,10 @@ const transform = {
         "SDL_GetSurfaceImages": {
           type: "OwnArray<SurfaceRaw>",
           parameters: [{ type: "SurfaceConstParam" }]
+        },
+        "SDL_LoadSurface_IO": {
+          name: "LoadSurface",
+          parameters: [{}, { default: "false" }]
         },
         "SDL_LoadBMP_IO": {
           name: "LoadBMP",
@@ -7696,16 +7718,22 @@ const transform = {
         "SDL_EGL_GetWindowSurface": {
           hints: { methodName: "GetEGLSurface" }
         },
+        "SDL_WINDOW_FILL_DOCUMENT": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+        },
         "SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        },
+        "SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
         },
         "SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 18 },
         },
-        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+        "SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
         },
-        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN": {
+        "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
         "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
@@ -7715,9 +7743,6 @@ const transform = {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
         "SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
-        },
-        "SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
         },
         "SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {

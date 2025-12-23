@@ -35,7 +35,7 @@
  constexpr Keymod KMOD_NONE = SDL_KMOD_NONE; ///< no modifier is applicable.
  
  constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT; ///< the left Shift key is down.
-@@ -158,8 +177,10 @@
+@@ -160,8 +179,10 @@
     */
    constexpr operator KeycodeRaw() const noexcept { return m_keycode; }
  
@@ -46,7 +46,7 @@
    constexpr bool IsScancode() const;
  
    /**
-@@ -204,13 +225,13 @@
+@@ -206,13 +227,13 @@
  
  constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
  
@@ -64,7 +64,7 @@
  
  constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
  
-@@ -280,7 +301,7 @@
+@@ -282,7 +303,7 @@
  
  constexpr Keycode KEYCODE_LEFTBRACKET = SDLK_LEFTBRACKET; ///< '['
  
@@ -73,7 +73,7 @@
  
  constexpr Keycode KEYCODE_RIGHTBRACKET = SDLK_RIGHTBRACKET; ///< ']'
  
-@@ -350,9 +371,9 @@
+@@ -352,9 +373,9 @@
  
  constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
  
@@ -85,7 +85,7 @@
  
  constexpr Keycode KEYCODE_CAPSLOCK =
    SDLK_CAPSLOCK; ///< ScancodeToKeycode(SCANCODE_CAPSLOCK)
-@@ -861,20 +882,26 @@
+@@ -863,20 +884,26 @@
  
  constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
  

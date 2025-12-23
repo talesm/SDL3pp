@@ -1491,7 +1491,7 @@ inline int GetVersion() { return SDL_GetVersion(); }
  *
  * This value is the revision of the code you are linking against and may be
  * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
+ * constant SDL_REVISION if you explicitly include SDL_revision.h
  *
  * The revision is an arbitrary string (a hash value) uniquely identifying the
  * exact revision of the SDL library in use, and is only useful in comparing
@@ -2037,13 +2037,11 @@ public:
  * This macro is only defined if it isn't already defined, so to override it
  * (perhaps with something that doesn't provide path information at all, so
  * build machine information doesn't leak into public binaries), apps can define
- * this macro before including SDL_assert.h. For example, Clang and GCC can
- * define this to `FILE_NAME` to get just the source filename instead of the
- * full path.
+ * this macro before including SDL.h or SDL_assert.h.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_FILE __FILE__
+#define SDL_FILE __FILE_NAME__
 
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -3592,32 +3590,6 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
-/**
- * Dictate that newly-created windows will fill the whole browser window.
- *
- * The canvas element fills the entire document. Resize events will be generated
- * as the browser window is resized, as that will adjust the canvas size as
- * well. The canvas will cover anything else on the page, including any controls
- * provided by Emscripten in its generated HTML file. Often times this is
- * desirable for a browser-based game, but it means several things that we
- * expect of an SDL window on other platforms might not work as expected, such
- * as minimum window sizes and aspect ratios.
- *
- * This hint overrides prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN
- * properties when creating an SDL window.
- *
- * This hint only applies to the emscripten platform.
- *
- * This hint should be set before creating a window.
- *
- * @since This hint is available since SDL 3.4.0.
- */
-#define SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT "SDL_EMSCRIPTEN_FILL_DOCUMENT"
-
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable that controls whether the on-screen keyboard should be shown when
@@ -5460,6 +5432,25 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A variable controlling whether holding down a key will repeat the pressed key
+ * or open the accents menu on macOS.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Holding a key will open the accents menu for that key.
+ * - "1": Holding a key will repeat the pressed key. (default)
+ *
+ * This hint needs to be set before Init().
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_MAC_PRESS_AND_HOLD "SDL_MAC_PRESS_AND_HOLD"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Request SDL_AppIterate() be called at a specific rate.
  *
@@ -5538,6 +5529,28 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A variable setting whether we should scale cursors by the current display
+ * scale.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Cursors will not change size based on the display content scale.
+ *   (default)
+ * - "1": Cursors will automatically match the display content scale (e.g. a 2x
+ *   sized cursor will be used when the window is on a monitor with 200% scale).
+ *   This is currently implemented on Windows and Wayland.
+ *
+ * This hint needs to be set before creating cursors.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_MOUSE_DPI_SCALE_CURSORS "SDL_MOUSE_DPI_SCALE_CURSORS"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
@@ -7236,6 +7249,33 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
+ * enabling Windows raw keyboard events.
+ *
+ * This blocks any hotkeys that have been registered by applications from having
+ * any effect beyond generating raw WM_INPUT events.
+ *
+ * This flag does not affect system-hotkeys like ALT-TAB or CTRL-ALT-DEL, but
+ * does affect the Windows Logo key since it is a userland hotkey registered by
+ * explorer.exe.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Hotkeys are not excluded. (default)
+ * - "1": Hotkeys are excluded.
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS                          \
+  "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
@@ -9378,7 +9418,7 @@ public:
   /**
    * Determine if this is a floating point format.
    *
-   * @returns true if the format is 10-bit, false otherwise.
+   * @returns true if the format is a floating point, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -10030,7 +10070,7 @@ constexpr bool PixelFormat::Is10Bit() const
  * expressions with side-effects here.
  *
  * @param format an PixelFormat to check.
- * @returns true if the format is 10-bit, false otherwise.
+ * @returns true if the format is a floating point, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15812,7 +15852,7 @@ inline void zerop(T* x)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
- * @sa zeroa
+ * @sa zerop
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])
@@ -22848,6 +22888,9 @@ struct Path : StringResult
  *   `/Applications/SDLApp/MyApp.app/`
  * - `parent`: the containing directory of the bundle. For example:
  *   `/Applications/SDLApp/`
+ *
+ * **Android Specific Functionality**: This function returns "./", which allows
+ * filesystem operations to use internal storage and the asset system.
  *
  * **Nintendo 3DS Specific Functionality**: This function returns "romfs"
  * directory of the application as it is uncommon to store resources outside the
@@ -33993,6 +34036,15 @@ public:
   /**
    * Get the human-readable name of a specific audio device.
    *
+   * **WARNING**: this function will work with AUDIO_DEVICE_DEFAULT_PLAYBACK and
+   * AUDIO_DEVICE_DEFAULT_RECORDING, returning the current default physical
+   * devices' names. However, as the default device may change at any time, it
+   * is likely better to show a generic name to the user, like "System default
+   * audio device" or perhaps "default [currently %s]". Do not store this name
+   * to disk to reidentify the device in a later run of the program, as the
+   * default might change in general, and the string will be the name of a
+   * specific device and not the abstract system default.
+   *
    * @returns the name of the audio device on success.
    * @throws Error on failure.
    *
@@ -35261,7 +35313,7 @@ public:
    * @threadsafety It is safe to call this function from any thread, as it holds
    *               a stream-specific mutex while running. Don't change the
    *               stream's format to have a different number of channels from a
-   *               a different thread at the same time, though!
+   *               different thread at the same time, though!
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -36116,6 +36168,15 @@ inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
 
 /**
  * Get the human-readable name of a specific audio device.
+ *
+ * **WARNING**: this function will work with AUDIO_DEVICE_DEFAULT_PLAYBACK and
+ * AUDIO_DEVICE_DEFAULT_RECORDING, returning the current default physical
+ * devices' names. However, as the default device may change at any time, it is
+ * likely better to show a generic name to the user, like "System default audio
+ * device" or perhaps "default [currently %s]". Do not store this name to disk
+ * to reidentify the device in a later run of the program, as the default might
+ * change in general, and the string will be the name of a specific device and
+ * not the abstract system default.
  *
  * @param devid the instance ID of the device to query.
  * @returns the name of the audio device on success.
@@ -37068,8 +37129,8 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @threadsafety It is safe to call this function from any thread, as it holds a
  *               stream-specific mutex while running. Don't change the stream's
- *               format to have a different number of channels from a a
- *               different thread at the same time, though!
+ *               format to have a different number of channels from a different
+ *               thread at the same time, though!
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -38570,10 +38631,12 @@ constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
  * `SDLK_*` constant for those keys that do not generate characters.
  *
  * A special exception is the number keys at the top of the keyboard which map
- * to SDLK_0...SDLK_9 on AZERTY layouts.
+ * by default to SDLK_0...SDLK_9 on AZERTY layouts.
  *
  * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
  * unicode code point.
+ *
+ * Many common keycodes are listed below, but this list is not exhaustive.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -42209,8 +42272,9 @@ public:
   /**
    * Load a PNG image from a seekable SDL data stream.
    *
-   * The new surface should be freed with Surface.Destroy(). Not doing so
-   * will result in a memory leak.
+   * This is intended as a convenience function for loading images from trusted
+   * sources. If you want to load arbitrary images you should use libpng or
+   * another image loading library designed with security in mind.
    *
    * @param src the data stream for the surface.
    * @param closeio if true, calls IOStream.Close() on `src` before returning,
@@ -42230,6 +42294,10 @@ public:
 
   /**
    * Load a PNG image from a file.
+   *
+   * This is intended as a convenience function for loading images from trusted
+   * sources. If you want to load arbitrary images you should use libpng or
+   * another image loading library designed with security in mind.
    *
    * The new surface should be freed with Surface.Destroy(). Not doing so will
    * result in a memory leak.
@@ -42333,6 +42401,12 @@ public:
    *   edge of the image, if this surface is being used as a cursor.
    * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
    *   edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+   *   meant to be rotated clockwise to make the image right-side up. Default 0.
+   *   This is used by the camera API, if a mobile device is oriented
+   *   differently than what its camera provides (i.e. - the camera always
+   *   provides portrait images but the phone is being held in landscape
+   *   orientation). Since SDL 3.4.0.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -42955,6 +43029,14 @@ public:
    * When the rotation isn't a multiple of 90 degrees, the resulting surface is
    * larger than the original, with the background filled in with the colorkey,
    * if available, or RGBA 255/255/255/0 if not.
+   *
+   * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the
+   * new copy will have the adjusted value set: if the rotation property is 90
+   * and `angle` was 30, the new surface will have a property value of 60 (that
+   * is: to be upright vs gravity, this surface needs to rotate 60 more
+   * degrees). However, note that further rotations on the new surface in this
+   * example will produce unexpected results, since the image will have resized
+   * and padded to accommodate the not-90 degree angle.
    *
    * @param angle the rotation angle, in degrees.
    * @returns a rotated copy of the surface or nullptr on failure; call
@@ -43817,6 +43899,12 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  *   edge of the image, if this surface is being used as a cursor.
  * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
  *   edge of the image, if this surface is being used as a cursor.
+ * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+ *   meant to be rotated clockwise to make the image right-side up. Default 0.
+ *   This is used by the camera API, if a mobile device is oriented differently
+ *   than what its camera provides (i.e. - the camera always provides portrait
+ *   images but the phone is being held in landscape orientation). Since SDL
+ *   3.4.0.
  *
  * @param surface the Surface structure to query.
  * @returns a valid property ID on success.
@@ -43852,6 +43940,12 @@ constexpr auto HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;
 constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 } // namespace prop::Surface
 
@@ -44170,6 +44264,53 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Load a BMP or PNG image from a seekable SDL data stream.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa LoadSurface
+ */
+inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
+{
+  return SDL_LoadSurface_IO(src, closeio);
+}
+
+/**
+ * Load a BMP or PNG image from a file.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param file the file to load.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa LoadSurface
+ */
+inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Load a BMP image from a seekable SDL data stream.
  *
@@ -44296,6 +44437,10 @@ inline void Surface::SaveBMP(StringParam file) const
 /**
  * Load a PNG image from a seekable SDL data stream.
  *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
  * The new surface should be freed with Surface.Destroy(). Not doing so will
  * result in a memory leak.
  *
@@ -44320,6 +44465,10 @@ inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
 
 /**
  * Load a PNG image from a file.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
  *
  * The new surface should be freed with Surface.Destroy(). Not doing so will
  * result in a memory leak.
@@ -44875,6 +45024,14 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  * When the rotation isn't a multiple of 90 degrees, the resulting surface is
  * larger than the original, with the background filled in with the colorkey, if
  * available, or RGBA 255/255/255/0 if not.
+ *
+ * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the new
+ * copy will have the adjusted value set: if the rotation property is 90 and
+ * `angle` was 30, the new surface will have a property value of 60 (that is: to
+ * be upright vs gravity, this surface needs to rotate 60 more degrees).
+ * However, note that further rotations on the new surface in this example will
+ * produce unexpected results, since the image will have resized and padded to
+ * accommodate the not-90 degree angle.
  *
  * @param surface the surface to rotate.
  * @param angle the rotation angle, in degrees.
@@ -51708,6 +51865,11 @@ public:
    * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
    *   the display
    *
+   * On Windows:
+   *
+   * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+   *   associated with the display
+   *
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -51942,6 +52104,8 @@ namespace prop::Global {
  * has no effect, and reading it when the video subsystem is uninitialized will
  * either return the user provided value, if one was set prior to
  * initialization, or nullptr. See docs/README-wayland.md for more information.
+ *
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
   SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER;
@@ -52065,6 +52229,13 @@ constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
   SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/// window is in fill-document mode (Emscripten only), since SDL 3.4.0
+constexpr WindowFlags WINDOW_FILL_DOCUMENT = SDL_WINDOW_FILL_DOCUMENT;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 constexpr WindowFlags WINDOW_VULKAN =
   SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
@@ -52498,6 +52669,12 @@ public:
    * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
+   * These are additional supported properties on iOS, tvOS, and visionOS:
+   *
+   * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   *   UIWindowScene associated with the window, defaults to the active window
+   *   scene.
+   *
    * These are additional supported properties on Wayland:
    *
    * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
@@ -52531,14 +52708,6 @@ public:
    *
    * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
    *   canvas element. This should start with a '#' sign
-   * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the
-   *   canvas element fill the entire document. Resize events will be generated
-   *   as the browser window is resized, as that will adjust the canvas size as
-   *   well. The canvas will cover anything else on the page, including any
-   *   controls provided by Emscripten in its generated HTML file. Often times
-   *   this is desirable for a browser-based game, but it means several things
-   *   that we expect of an SDL window on other platforms might not work as
-   *   expected, such as minimum window sizes and aspect ratios. Default false.
    * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
    *   binding element for keyboard inputs for this canvas. The variable can be
    *   one of:
@@ -52940,9 +53109,6 @@ public:
    *
    * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element
    *   will have
-   * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is
-   *   set to consume the entire browser window, bypassing some SDL window
-   *   functionality.
    * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
    *   that associates keyboard events to this window
    *
@@ -52970,6 +53136,7 @@ public:
    * @sa Window.Minimize
    * @sa Window.SetFullscreen
    * @sa Window.SetMouseGrab
+   * @sa Window.SetFillDocument
    * @sa Window.Show
    */
   WindowFlags GetFlags() const;
@@ -53162,6 +53329,7 @@ public:
    * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
+   * @sa EVENT_WINDOW_RESIZED
    */
   void GetSize(int* w, int* h) const;
 
@@ -53182,6 +53350,7 @@ public:
    * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
+   * @sa EVENT_WINDOW_RESIZED
    * @sa GetSize(int *, int *)
    */
   Point GetSize() const;
@@ -53479,6 +53648,39 @@ public:
    * @sa Window.GetFlags
    */
   void SetAlwaysOnTop(bool on_top);
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Set the window to fill the current document space (Emscripten only).
+   *
+   * This will add or remove the window's `WINDOW_FILL_DOCUMENT` flag.
+   *
+   * Currently this flag only applies to the Emscripten target.
+   *
+   * When enabled, the canvas element fills the entire document. Resize events
+   * will be generated as the browser window is resized, as that will adjust the
+   * canvas size as well. The canvas will cover anything else on the page,
+   * including any controls provided by Emscripten in its generated HTML file
+   * (in fact, any elements on the page that aren't the canvas will be moved
+   * into a hidden `div` element).
+   *
+   * Often times this is desirable for a browser-based game, but it means
+   * several things that we expect of an SDL window on other platforms might not
+   * work as expected, such as minimum window sizes and aspect ratios.
+   *
+   * @param fill true to set the window to fill the document, false to disable.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Window.GetFlags
+   */
+  void SetFillDocument(bool fill);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Show a window.
@@ -55050,9 +55252,11 @@ constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
 constexpr GLAttr GL_SHARE_WITH_CURRENT_CONTEXT =
   SDL_GL_SHARE_WITH_CURRENT_CONTEXT; ///< OpenGL context sharing; defaults to 0.
 
-constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE =
-  SDL_GL_FRAMEBUFFER_SRGB_CAPABLE; ///< requests sRGB capable visual; defaults
-                                   ///< to 0.
+/**
+ * requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a
+ * request; GL drivers might not comply!
+ */
+constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE = SDL_GL_FRAMEBUFFER_SRGB_CAPABLE;
 
 /**
  * sets context the release behavior. See GLContextReleaseFlag; defaults to
@@ -55267,6 +55471,11 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
  *   the display
  *
+ * On Windows:
+ *
+ * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+ *   associated with the display
+ *
  * @param displayID the instance ID of the display to query.
  * @returns a valid property ID on success.
  * @throws Error on failure.
@@ -55298,6 +55507,13 @@ constexpr auto WAYLAND_WL_OUTPUT_POINTER =
   SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto WINDOWS_HMONITOR_POINTER =
+  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 } // namespace prop::Display
 
@@ -56110,6 +56326,12 @@ inline Window CreatePopupWindow(WindowParam parent,
  * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
  *   NSView associated with the window, defaults to `[window contentView]`
  *
+ * These are additional supported properties on iOS, tvOS, and visionOS:
+ *
+ * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+ *   UIWindowScene associated with the window, defaults to the active window
+ *   scene.
+ *
  * These are additional supported properties on Wayland:
  *
  * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
@@ -56143,14 +56365,6 @@ inline Window CreatePopupWindow(WindowParam parent,
  *
  * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
  *   canvas element. This should start with a '#' sign
- * - `prop::Window.CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true to make the
- *   canvas element fill the entire document. Resize events will be generated as
- *   the browser window is resized, as that will adjust the canvas size as well.
- *   The canvas will cover anything else on the page, including any controls
- *   provided by Emscripten in its generated HTML file. Often times this is
- *   desirable for a browser-based game, but it means several things that we
- *   expect of an SDL window on other platforms might not work as expected, such
- *   as minimum window sizes and aspect ratios. Default false.
  * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
  *   binding element for keyboard inputs for this canvas. The variable can be
  *   one of:
@@ -56268,6 +56482,13 @@ constexpr auto CREATE_COCOA_WINDOW_POINTER =
 constexpr auto CREATE_COCOA_VIEW_POINTER =
   SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_WINDOWSCENE_POINTER =
+  SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
 
@@ -56290,9 +56511,6 @@ constexpr auto CREATE_X11_WINDOW_NUMBER =
 
 constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
-
-constexpr auto CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN =
-  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN;
 
 constexpr auto CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
@@ -56401,9 +56619,6 @@ constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
-
-constexpr auto EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN =
-  SDL_PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN;
 
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
@@ -56597,9 +56812,6 @@ inline WindowRef Window::GetParent() const
  *
  * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
  *   have
- * - `prop::Window.EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN`: true if the canvas is set
- *   to consume the entire browser window, bypassing some SDL window
- *   functionality.
  * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
  *   that associates keyboard events to this window
  *
@@ -56637,6 +56849,7 @@ inline PropertiesRef Window::GetProperties() const
  * @sa Window.Minimize
  * @sa Window.SetFullscreen
  * @sa Window.SetMouseGrab
+ * @sa Window.SetFillDocument
  * @sa Window.Show
  */
 inline WindowFlags GetWindowFlags(WindowParam window)
@@ -56899,6 +57112,7 @@ inline void Window::SetSize(const PointRaw& size)
  * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
+ * @sa EVENT_WINDOW_RESIZED
  */
 inline void GetWindowSize(WindowParam window, int* w, int* h)
 {
@@ -56923,6 +57137,7 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
+ * @sa EVENT_WINDOW_RESIZED
  */
 inline Point GetWindowSize(WindowParam window)
 {
@@ -57374,6 +57589,48 @@ inline void Window::SetAlwaysOnTop(bool on_top)
 {
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * Set the window to fill the current document space (Emscripten only).
+ *
+ * This will add or remove the window's `WINDOW_FILL_DOCUMENT` flag.
+ *
+ * Currently this flag only applies to the Emscripten target.
+ *
+ * When enabled, the canvas element fills the entire document. Resize events
+ * will be generated as the browser window is resized, as that will adjust the
+ * canvas size as well. The canvas will cover anything else on the page,
+ * including any controls provided by Emscripten in its generated HTML file (in
+ * fact, any elements on the page that aren't the canvas will be moved into a
+ * hidden `div` element).
+ *
+ * Often times this is desirable for a browser-based game, but it means several
+ * things that we expect of an SDL window on other platforms might not work as
+ * expected, such as minimum window sizes and aspect ratios.
+ *
+ * @param window the window of which to change the fill-document state.
+ * @param fill true to set the window to fill the document, false to disable.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Window.GetFlags
+ */
+inline void SetWindowFillDocument(WindowParam window, bool fill)
+{
+  CheckError(SDL_SetWindowFillDocument(window, fill));
+}
+
+inline void Window::SetFillDocument(bool fill)
+{
+  SDL::SetWindowFillDocument(m_resource, fill);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Show a window.
@@ -59117,12 +59374,12 @@ using DialogFileCB =
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. See the [`DialogFileFilter`
- *                documentation for examples](DialogFileFilter#code-examples).
- *                Not all platforms support this option, and platforms that do
- *                support it may allow the user to ignore the filters. If
- *                non-nullptr, it must remain valid at least until the callback
- *                is invoked.
+ * @param filters a list of filters, may be nullptr. See the
+ *                [`DialogFileFilter`](DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user to
+ *                ignore the filters. If non-nullptr, it must remain valid at
+ *                least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -59181,12 +59438,12 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  *                 and accepts, or cancels the dialog, or an error occurs.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. See the [`DialogFileFilter`
- *                documentation for examples](DialogFileFilter#code-examples).
- *                Not all platforms support this option, and platforms that do
- *                support it may allow the user to ignore the filters. If
- *                non-empty, it must remain valid at least until the callback is
- *                invoked.
+ * @param filters a list of filters, may be nullptr. See the
+ *                [`DialogFileFilter`](DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user to
+ *                ignore the filters. If non-nullptr, it must remain valid at
+ *                least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -60322,6 +60579,9 @@ using PinchFingerEvent = SDL_PinchFingerEvent;
  * Note that "proximity" means "close enough for the tablet to know the tool is
  * there." The pen touching and lifting off from the tablet while not leaving
  * the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
+ *
+ * Not all platforms have a window associated with the pen during proximity
+ * events. Some wait until motion/button/etc events to offer this info.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -63014,7 +63274,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -63022,7 +63282,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindSamplers(
     Uint32 first_slot,
@@ -63035,14 +63295,14 @@ public:
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageTextures(Uint32 first_slot,
                            SpanRef<const GPUTextureRaw> storage_textures);
@@ -63054,14 +63314,14 @@ public:
    * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageBuffers(Uint32 first_slot,
                           SpanRef<const GPUBufferRaw> storage_buffers);
@@ -63527,6 +63787,12 @@ public:
    *
    * Useful for debugging.
    *
+   * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @param text a UTF-8 string constant to insert as the label.
    *
    * @since This function is available since SDL 3.2.0.
@@ -63541,6 +63807,12 @@ public:
    *
    * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
    * to GPUCommandBuffer.PopDebugGroup.
+   *
+   * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
    *
    * On some backends (e.g. Metal), pushing a debug group during a
    * render/blit/compute pass will create a group that is scoped to the native
@@ -63558,6 +63830,12 @@ public:
   /**
    * Ends the most-recently pushed debug group.
    *
+   * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUCommandBuffer.PushDebugGroup
@@ -63567,7 +63845,7 @@ public:
   /**
    * Pushes data to a vertex uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -63586,7 +63864,7 @@ public:
   /**
    * Pushes data to a fragment uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -63602,7 +63880,7 @@ public:
   /**
    * Pushes data to a uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -64617,7 +64895,7 @@ public:
    * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
-   * With the D3D12 renderer:
+   * With the D3D12 backend:
    *
    * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
    *   for all vertex semantics, default is "TEXCOORD".
@@ -64629,6 +64907,20 @@ public:
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
+   *
+   * With the Vulkan backend:
+   *
+   * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   *   default, Vulkan device enumeration includes drivers of all types,
+   *   including software renderers (for example, the Lavapipe Mesa driver).
+   *   This can be useful if your application _requires_ SDL_GPU, but if you can
+   *   provide your own fallback renderer (for example, an OpenGL renderer) this
+   *   property can be set to true. Defaults to false.
+   * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   *   GPUVulkanOptions structure to be processed during device creation. This
+   *   allows configuring a variety of Vulkan-specific options such as
+   *   increasing the API version and opting into extensions aside from the
+   *   minimal set SDL requires.
    *
    * @param props the properties to use.
    * @post a GPU context on success.
@@ -66475,7 +66767,7 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
- * With the D3D12 renderer:
+ * With the D3D12 backend:
  *
  * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
@@ -66486,6 +66778,20 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
+ *
+ * With the Vulkan backend:
+ *
+ * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ *   default, Vulkan device enumeration includes drivers of all types, including
+ *   software renderers (for example, the Lavapipe Mesa driver). This can be
+ *   useful if your application _requires_ SDL_GPU, but if you can provide your
+ *   own fallback renderer (for example, an OpenGL renderer) this property can
+ *   be set to true. Defaults to false.
+ * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ *   GPUVulkanOptions structure to be processed during device creation. This
+ *   allows configuring a variety of Vulkan-specific options such as increasing
+ *   the API version and opting into extensions aside from the minimal set SDL
+ *   requires.
  *
  * @param props the properties to use.
  * @returns a GPU context on success.
@@ -66564,6 +66870,16 @@ constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
+
+constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 #if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
@@ -66578,6 +66894,28 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 #endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 } // namespace prop::GpuDevice
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+/**
+ * A structure specifying additional options when using Vulkan.
+ *
+ * When no such structure is provided, SDL will use Vulkan API version 1.0 and a
+ * minimal set of features. The requested API version influences how the
+ * feature_list is processed by SDL. When requesting API version 1.0, the
+ * feature_list is ignored. Only the vulkan_10_physical_device_features and the
+ * extension lists are used. When requesting API version 1.1, the feature_list
+ * is scanned for feature structures introduced in Vulkan 1.1. When requesting
+ * Vulkan 1.2 or higher, the feature_list is additionally scanned for compound
+ * feature structs such as VkPhysicalDeviceVulkan11Features. The device and
+ * instance extension lists, as well as vulkan_10_physical_device_features, are
+ * always processed.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ */
+using GPUVulkanOptions = SDL_GPUVulkanOptions;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -67278,6 +67616,12 @@ inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
  *
  * Useful for debugging.
  *
+ * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * @param command_buffer a command buffer.
  * @param text a UTF-8 string constant to insert as the label.
  *
@@ -67303,6 +67647,12 @@ inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
  * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
  * to GPUCommandBuffer.PopDebugGroup.
  *
+ * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * On some backends (e.g. Metal), pushing a debug group during a
  * render/blit/compute pass will create a group that is scoped to the native
  * pass rather than the command buffer. For best results, if you push a debug
@@ -67327,6 +67677,12 @@ inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 
 /**
  * Ends the most-recently pushed debug group.
+ *
+ * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
  *
  * @param command_buffer a command buffer.
  *
@@ -67526,7 +67882,7 @@ inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 /**
  * Pushes data to a vertex uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -67559,7 +67915,7 @@ inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
 /**
  * Pushes data to a fragment uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -67589,7 +67945,7 @@ inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
 /**
  * Pushes data to a uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -68268,7 +68624,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute sampler slot to begin binding from.
@@ -68276,7 +68632,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
@@ -68304,7 +68660,7 @@ inline void GPUComputePass::BindSamplers(
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
@@ -68312,7 +68668,7 @@ inline void GPUComputePass::BindSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
@@ -68338,7 +68694,7 @@ inline void GPUComputePass::BindStorageTextures(
  * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
@@ -68346,7 +68702,7 @@ inline void GPUComputePass::BindStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageBuffers(
   GPUComputePass compute_pass,
@@ -73615,9 +73971,10 @@ public:
    * If this function is passed a surface with alternate representations added
    * with Surface.AddAlternateImage(), the surface will be interpreted as the
    * content to be used for 100% display scale, and the alternate
-   * representations will be used for high DPI situations. For example, if the
-   * original surface is 32x32, then on a 2x macOS display or 200% display scale
-   * on Windows, a 64x64 version of the image will be used, if available. If a
+   * representations will be used for high DPI situations if
+   * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
+   * surface is 32x32, then on a 2x macOS display or 200% display scale on
+   * Windows, a 64x64 version of the image will be used, if available. If a
    * matching version of the image isn't available, the closest larger size
    * image will be downscaled to the appropriate size and be used instead, if
    * available. Otherwise, the closest smaller image will be upscaled and be
@@ -74289,12 +74646,13 @@ inline Cursor CreateCursor(const Uint8* data,
  * If this function is passed a surface with alternate representations added
  * with Surface.AddAlternateImage(), the surface will be interpreted as the
  * content to be used for 100% display scale, and the alternate representations
- * will be used for high DPI situations. For example, if the original surface is
- * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
- * version of the image will be used, if available. If a matching version of the
- * image isn't available, the closest larger size image will be downscaled to
- * the appropriate size and be used instead, if available. Otherwise, the
- * closest smaller image will be upscaled and be used instead.
+ * will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is
+ * enabled. For example, if the original surface is 32x32, then on a 2x macOS
+ * display or 200% display scale on Windows, a 64x64 version of the image will
+ * be used, if available. If a matching version of the image isn't available,
+ * the closest larger size image will be downscaled to the appropriate size and
+ * be used instead, if available. Otherwise, the closest smaller image will be
+ * upscaled and be used instead.
  *
  * @param surface an Surface structure representing the cursor image.
  * @param hot the position of the cursor hot spot.
@@ -74538,6 +74896,9 @@ inline bool CursorVisible() { return SDL_CursorVisible(); }
  * In order to use these functions, Init() must have been called with the
  * INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and load
  * appropriate drivers.
+ *
+ * If you're using SDL gamepad support in a Steam game, you must call
+ * SteamAPI_InitEx() before calling Init().
  *
  * If you would like to receive gamepad updates while the application is in the
  * background, you should set the following hint before calling Init():
@@ -89404,11 +89765,28 @@ inline OwnArray<Finger*> GetTouchFingers(TouchID touchID)
  * - EVENT_PEN_BUTTON_DOWN, EVENT_PEN_BUTTON_UP (PenButtonEvent)
  * - EVENT_PEN_AXIS (PenAxisEvent)
  *
- * When a pen starts providing input, SDL will assign it a unique PenID, which
- * will remain for the life of the process, as long as the pen stays connected.
- *
  * Pens may provide more than simple touch input; they might have other axes,
  * such as pressure, tilt, rotation, etc.
+ *
+ * When a pen starts providing input, SDL will assign it a unique PenID, which
+ * will remain for the life of the process, as long as the pen stays connected.
+ * A pen leaving proximity (being taken far enough away from the digitizer
+ * tablet that it no longer reponds) and then coming back should fire proximity
+ * events, but the PenID should remain consistent. Unplugging the digitizer and
+ * reconnecting may cause future input to have a new PenID, as SDL may not know
+ * that this is the same hardware.
+ *
+ * Please note that various platforms vary wildly in how (and how well) they
+ * support pen input. If your pen supports some piece of functionality but SDL
+ * doesn't seem to, it might actually be the operating system's fault. For
+ * example, some platforms can manage multiple devices at the same time, but
+ * others will make any connected pens look like a single logical device, much
+ * how all USB mice connected to a computer will move the same system cursor.
+ * cursor. Other platforms might not support pen buttons, or the distance axis,
+ * etc. Very few platforms can even report _what_ functionality the pen supports
+ * in the first place, so best practices is to either build UI to let the user
+ * configure their pens, or be prepared to handle new functionality for a pen
+ * the first time an event is reported.
  *
  * @{
  */
@@ -89420,7 +89798,12 @@ inline OwnArray<Finger*> GetTouchFingers(TouchID touchID)
  *
  * These show up in pen events when SDL sees input from them. They remain
  * consistent as long as SDL can recognize a tool to be the same pen; but if a
- * pen physically leaves the area and returns, it might get a new ID.
+ * pen's digitizer table is physically detached from the computer, it might get
+ * a new ID when reconnected, as SDL won't know it's the same device.
+ *
+ * These IDs are only stable within a single run of a program; the next time a
+ * program is run, the pen's ID will likely be different, even if the hardware
+ * hasn't been disconnected, etc.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -89467,6 +89850,13 @@ constexpr PenInputFlags PEN_INPUT_BUTTON_5 =
 
 constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
   SDL_PEN_INPUT_ERASER_TIP; ///< eraser tip is used
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr PenInputFlags PEN_INPUT_IN_PROXIMITY =
+  SDL_PEN_INPUT_IN_PROXIMITY; ///< pen is in proximity (since SDL 3.4.0)
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Pen axis indices.
