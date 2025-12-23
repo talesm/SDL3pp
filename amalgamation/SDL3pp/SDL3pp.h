@@ -486,7 +486,7 @@ struct MakeFrontCallback<R(PARAMS...)>
 };
 
 template<class F>
-struct MakeBackCallback;
+struct MakeTrailingCallback;
 
 /**
  * Make Back Callback
@@ -495,13 +495,15 @@ struct MakeBackCallback;
  * @tparam PARAMS
  */
 template<class R, class... PARAMS>
-struct MakeBackCallback<R(PARAMS...)>
-  : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>, R, PARAMS...>
+struct MakeTrailingCallback<R(PARAMS...)>
+  : LightweightTrailingCallbackT<MakeTrailingCallback<R(PARAMS...)>,
+                                 R,
+                                 PARAMS...>
 {
   /// ctor
   template<std::invocable<PARAMS...> F>
-  MakeBackCallback(const F& func)
-    : LightweightTrailingCallbackT<MakeBackCallback<R(PARAMS...)>,
+  MakeTrailingCallback(const F& func)
+    : LightweightTrailingCallbackT<MakeTrailingCallback<R(PARAMS...)>,
                                    R,
                                    PARAMS...>(func)
   {
@@ -1517,7 +1519,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MINOR_VERSION 5
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 3
+#define SDL3PP_PATCH_VERSION 6
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \
@@ -2369,7 +2371,7 @@ using AssertionHandler = AssertState(SDLCALL*)(const AssertData* data,
  * @sa AssertionHandler
  */
 using AssertionHandlerCB =
-  MakeBackCallback<AssertState(const AssertData* data)>;
+  MakeTrailingCallback<AssertState(const AssertData* data)>;
 
 /**
  * Set an application-defined assertion handler.
@@ -52165,7 +52167,7 @@ using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
  * @sa HitTest
  */
 using HitTestCB =
-  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
+  MakeTrailingCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.
@@ -60860,7 +60862,8 @@ inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
 inline bool WaitEventTimeout(Event* event,
                              std::chrono::milliseconds timeoutDuration)
 {
-  return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
+  return WaitEventTimeout(event,
+                          Sint32(std::max(timeoutDuration.count(), Sint64(1))));
 }
 
 /**
@@ -92067,6 +92070,32 @@ inline Animation LoadWEBPAnimation(IOStreamParam src)
 }
 
 /// @}
+
+} // namespace SDL
+
+#else // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
+
+namespace SDL {
+
+inline Surface::Surface(StringParam file)
+  : Surface(LoadBMP(std::move(file)))
+{
+}
+
+inline Surface::Surface(IOStreamParam src, bool closeio)
+  : Surface(LoadBMP(std::move(src), closeio))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, StringParam file)
+  : Texture(std::move(renderer), Surface(std::move(file)))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+  : Texture(std::move(renderer), Surface(std::move(src), closeio))
+{
+}
 
 } // namespace SDL
 

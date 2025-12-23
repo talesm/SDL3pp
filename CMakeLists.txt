@@ -1,57 +1,46 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp 
-    VERSION 0.5.3
+    VERSION 0.5.6
     DESCRIPTION "A slim C++ wrapper for SDL3" 
     HOMEPAGE_URL "https://github.com/talesm/SDL3pp"
 )
 
 include(GNUInstallDirs)
 
-option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
-if (SDL3PP_FORCE_BUNDLED)
-    set(SDL3PP_USE_BUNDLED ON)
-else ()
-    find_package(SDL3 QUIET)
-    if (NOT TARGET SDL3::SDL3)
-        set(SDL3PP_USE_BUNDLED ON)
-    endif()
-endif ()
-
 #############################
 ### Enable/Disable options ##
 #############################
-set(SDL3PP_DEPENDENCIES SDL3::SDL3)
-
+option(SDL3PP_FORCE_BUNDLED "Force use of bundled SDL libraries" OFF)
 option(SDL3PP_ENABLE_IMAGE "Enable compilation of SDL_Image" ON)
 option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
 
-# include bundled, if necessary
-if (SDL3PP_USE_BUNDLED)
+if (SDL3PP_FORCE_BUNDLED)
     include(cmake/SDL3ppAddExternalProjects.cmake)
-    find_package(SDL3 REQUIRED)
-endif ()
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf)
 
-# SDL_image
-if (SDL3PP_ENABLE_IMAGE)
-    find_package(SDL3_image QUIET)
-    set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
-    if (TARGET SDL3_image::SDL3_image)
-        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
-    else ()
-        set(SDL3PP_ENABLE_IMAGE OFF)
+else ()
+    find_package(SDL3 CONFIG REQUIRED)
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3)
+
+    # SDL_image
+    if (SDL3PP_ENABLE_IMAGE)
+        find_package(SDL3_image QUIET)
+        set(SDL3_IMAGE_DEPENDENCY "find_dependency(SDL3_image QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_image::SDL3_image)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
+        endif ()
+    endif ()
+    
+    # SDL_ttf
+    if (SDL3PP_ENABLE_TTF)
+        find_package(SDL3_ttf QUIET)
+        set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
+        if (TARGET SDL3_ttf::SDL3_ttf)
+            set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+        endif ()
     endif ()
 endif ()
 
-# SDL_ttf
-if (SDL3PP_ENABLE_TTF)
-    find_package(SDL3_ttf QUIET)
-    set(SDL3_TTF_DEPENDENCY "find_dependency(SDL3_ttf QUIET)") # placeholder in cmake.in
-    if (TARGET SDL3_ttf::SDL3_ttf)
-        set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
-    else ()
-        set(SDL3PP_ENABLE_TTF OFF)
-    endif ()
-endif ()
 
 ###############
 # The library #
@@ -134,16 +123,20 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test AND SDL3PP_BUILD_TESTING)
 endif ()
 
 # The documentation
-# check if Doxygen is installed
-find_package(Doxygen COMPONENTS dot)
-if (DOXYGEN_FOUND)
-    # Main doc
-    doxygen_add_docs(SDL3pp_doxygen
-        COMMENT "Generate API docs for SDL3pp"
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
-    )
-endif (DOXYGEN_FOUND)
+option(SDL3PP_GEN_DOCS "Generated docs" OFF)
+
+if (SDL3PP_GEN_DOCS AND EXISTS ${PROJECT_SOURCE_DIR}/docs/Doxyfile)
+    # check if Doxygen is installed
+    find_package(Doxygen COMPONENTS dot)
+    if (DOXYGEN_FOUND)
+        # Main doc
+        doxygen_add_docs(SDL3pp_doxygen
+            COMMENT "Generate API docs for SDL3pp"
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+        )
+    endif ()
+endif ()
 
 #########################
 ## Refresh the headers ##
@@ -257,4 +250,12 @@ add_custom_target(SDL3pp_zip_amalgamation
     COMMAND zip -ju ${SDL3PP_AMALGAMATION_FILEBASE}.zip ../LICENSE.txt ../README.md ../changelog.md
     DEPENDS SDL3pp_amalgamated
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/amalgamation/
+)
+
+set(SDL3PP_HEADERS_ONLY_FILEBASE "${PROJECT_BINARY_DIR}/SDL3pp-${PROJECT_VERSION}")
+add_custom_target(SDL3pp_zip_headers
+    COMMAND rm -f ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz
+    COMMAND tar -czvf ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+    COMMAND zip -r ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/
 )

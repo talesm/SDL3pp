@@ -720,7 +720,7 @@ using HitTest = HitTestResult(SDLCALL*)(WindowRaw win,
  * @sa HitTest
  */
 using HitTestCB =
-  MakeBackCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
+  MakeTrailingCallback<HitTestResult(WindowRaw win, const PointRaw* area)>;
 
 /**
  * Opaque type for an EGL surface.

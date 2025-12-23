@@ -580,7 +580,7 @@ function expandTypes(
         callback.parameters === undefined
       ) {
         makeCallbackAlias(
-          userdataIndex === 0 ? "MakeFrontCallback" : "MakeBackCallback",
+          userdataIndex === 0 ? "MakeFrontCallback" : "MakeTrailingCallback",
           resultType,
           typeParams
         );

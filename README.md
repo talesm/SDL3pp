@@ -11,47 +11,32 @@ memory management and wrappers for string and callbacks.
 
 - You have 3 options to add SDL3pp to your project:
   1. Download [the single header](./amalgamation/SDL3pp/) (as
-     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.zip)
+     [zip](https://github.com/talesm/SDL3pp/releases/download/0.5.6/SDL3pp_amalgamated-0.5.6.zip)
      or
-     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.3/SDL3pp_amalgamated.tar.gz))
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.6/SDL3pp_amalgamated-0.5.6.tar.gz))
      and add to your project;
   2. You can also download the
-     [the latest release](https://github.com/talesm/SDL3pp/releases) then
-     [build](#building) and [install](#installing) the project;
-  3. If you use CMake, you can also set up an
-     [ExternalProject](#using-cmakes-externalproject);
-- See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
+     [the latest release](https://github.com/talesm/SDL3pp/releases/download/0.5.6/SDL3pp-0.5.6.zip)
+     (also available as
+     [tarball](https://github.com/talesm/SDL3pp/releases/download/0.5.6/SDL3pp-0.5.6.tar.gz))
+     then [build](#building) and [install](#installing) the project;
+  3. If you use CMake, you can also set up
+     [FetchContent](#using-cmakes-fetchcontent) to automatically do that for
+     you;
+- See [the generated docs](https://talesm.github.io/SDL3pp/) and particularly
+  the [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
 - See [Example](#example) and [Examples directory](./examples/).
 
 ## Goals
 
 - Be header only, we are only wrapping SDL here;
 - Mostly wrap the naturally OO-looking API into actual OO C++ constructs;
-  - Also add little quick improvements like using vocabulary types to better fit
-    C++ idioms;
-  - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html)
-    for more details;
 - Put everything into a `SDL` namespace instead of prefixes;
-  - For uniformity we also wrap non OO entities at lower priority (like aliases,
-    functions, constants, etc) into SDL namespace;
 - Interfaces should accept both C structs and the C++ wraps, so you can adapt a
   codebase gradually or just choose to use only what you deem necessary.
 - Flexible, while we use
   [RAII](https://en.cppreference.com/w/cpp/language/raii) idiom by default, you
   have the choice to not use it and, for example, manage memory yourself.
-
-## Documentation
-
-- See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
-  - See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
-  - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html)
-    to understand the strategies we adopt to map we do from C to C++;
-  - See [Design notes](https://talesm.github.io/SDL3pp/group__DesignNotes.html)
-    to understand the rationally behind some design patterns and choices we use.
-- See the
-  [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples) for
-  some examples;
-- See our roadmap-ish [todo](todo.md).
 
 ## Example
 
@@ -140,34 +125,21 @@ Alteratively can move into a custom location with:
 cmake --install build --install-prefix <directory>
 ```
 
-## Using Cmake's ExternalProject
+## Using Cmake's FetchContent
 
 If you are already using CMake for your project, you can use the following
 command to download from git automatically:
 
 ```cmake
-include(ExternalProject)
+include(FetchContent)
+# set(SDL3PP_FORCE_BUNDLED ON) # Enable this to force CMake to download SDL, SDL_image and SDL_ttf
+FetchContent_Declare(SDL3ppExternal
+  URL https://github.com/talesm/SDL3pp/releases/download/0.5.6/SDL3pp-0.5.6.tar.gz
+)
+FetchContent_MakeAvailable(SDL3ppExternal)
 
-ExternalProject_Add(SDL3ppExternal
-  GIT_REPOSITORY git@github.com:talesm/SDL3pp.git
-  GIT_TAG 0.5.3
-  GIT_SUBMODULES_RECURSE ON
-  GIT_SHALLOW ON # Optional, just allow download a bit faster
-  GIT_PROGRESS ON
-  CMAKE_ARGS -DSDL3PP_FORCE_BUNDLED=ON
-  INSTALL_COMMAND ${CMAKE_COMMAND} --install . --prefix <INSTALL_DIR> 
+# Link to your project
+target_link_libraries(MyProject
+  PRIVATE SDL3pp::SDL3pp
 )
-# find_package(SDL3pp)
-ExternalProject_Get_property(SDL3ppExternal INSTALL_DIR)
-add_library(SDL3pp INTERFACE)
-add_dependencies(SDL3pp SDL3ppExternal)
-set_target_properties(SDL3pp PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "${INSTALL_DIR}/include"
-  INTERFACE_LINK_DIRECTORIES "${INSTALL_DIR}/lib/"
-  INTERFACE_LINK_LIBRARIES "SDL3;SDL3_ttf;SDL3_image"
-)
-target_compile_features(SDL3pp INTERFACE cxx_std_23)
 ```
-
-If you have SDL3 installed on your system and want use that version, you can
-omit the `-DSDL3PP_FORCE_BUNDLED=ON` above.
