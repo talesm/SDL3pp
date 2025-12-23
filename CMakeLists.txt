@@ -197,5 +197,6 @@ add_custom_target(SDL3pp_zip_headers
     COMMAND rm -f ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz
     COMMAND tar -czvf ${SDL3PP_HEADERS_ONLY_FILEBASE}.tar.gz include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
     COMMAND zip -r ${SDL3PP_HEADERS_ONLY_FILEBASE}.zip include/ cmake/ LICENSE.txt README.md changelog.md CMakeLists.txt
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/
 )

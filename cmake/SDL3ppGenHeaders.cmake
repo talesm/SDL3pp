@@ -57,9 +57,15 @@ add_custom_target(SDL3pp_refresh
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
+add_custom_command(OUTPUT ${SDL3PP_WRAPPED_HEADERS} 
+  COMMAND ${CMAKE_COMMAND} --build . -t SDL3pp_refresh
+  COMMAND touch ${SDL3PP_WRAPPED_HEADERS}
+  DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
+)
+
 # Apply patches
 add_custom_target(SDL3pp_check_all
   COMMAND echo "Everything ran!"
-  DEPENDS SDL3pp_refresh SDL3pp_amalgamated SDL3pp_doxygen SDL3pp
+  DEPENDS SDL3pp_amalgamated SDL3pp_doxygen SDL3pp
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
