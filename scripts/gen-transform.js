@@ -1358,6 +1358,9 @@ const transform = {
     "SDL_events.h": {
       localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],
       transform: {
+        "SDL_PinchFingerEvent": {
+          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+        },
         "PollEvent": {
           kind: "function",
           after: "SDL_PollEvent",
@@ -1871,7 +1874,7 @@ const transform = {
         "SDL_GPUTextureSupportsFormat": { hints: { methodName: "TextureSupportsFormat" } },
         "SDL_GPUTextureSupportsSampleCount": { hints: { methodName: "TextureSupportsSampleCount" } },
         "SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 2, patch: 12, }
+          since: { tag: "SDL", major: 3, minor: 3, patch: 2, }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
@@ -1906,6 +1909,9 @@ const transform = {
         "SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING": {
           since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
         },
+        "SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER": {
+          since: { tag: "SDL", major: 3, minor: 2, patch: 12 }
+        }
       }
     },
     "SDL_guid.h": {

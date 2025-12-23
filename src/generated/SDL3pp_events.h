@@ -725,8 +725,12 @@ using RenderEvent = SDL_RenderEvent;
  */
 using TouchFingerEvent = SDL_TouchFingerEvent;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
 /// Pinch event structure (event.pinch.*)
 using PinchFingerEvent = SDL_PinchFingerEvent;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Pressure-sensitive pen proximity event structure (event.pproximity.*)

@@ -60580,8 +60580,12 @@ using RenderEvent = SDL_RenderEvent;
  */
 using TouchFingerEvent = SDL_TouchFingerEvent;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
 /// Pinch event structure (event.pinch.*)
 using PinchFingerEvent = SDL_PinchFingerEvent;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Pressure-sensitive pen proximity event structure (event.pproximity.*)
@@ -66833,12 +66837,12 @@ constexpr auto CREATE_DEBUGMODE_BOOLEAN =
 constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
-#if SDL_VERSION_ATLEAST(3, 2, 12)
+#if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto CREATE_VERBOSE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 2, 12)
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
 
@@ -67451,8 +67455,12 @@ constexpr auto CREATE_D3D12_CLEAR_A_FLOAT =
 constexpr auto CREATE_D3D12_CLEAR_DEPTH_FLOAT =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT;
 
+#if SDL_VERSION_ATLEAST(3, 2, 12)
+
 constexpr auto CREATE_D3D12_CLEAR_STENCIL_NUMBER =
   SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER;
+
+#endif // SDL_VERSION_ATLEAST(3, 2, 12)
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_TEXTURE_CREATE_NAME_STRING;
 
