@@ -166,11 +166,11 @@ struct TextConstParam
 };
 
 /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
-#define SDL_TTF_MAJOR_VERSION 3
+#define SDL_TTF_MAJOR_VERSION
 
-#define SDL_TTF_MINOR_VERSION 2
+#define SDL_TTF_MINOR_VERSION
 
-#define SDL_TTF_MICRO_VERSION 3
+#define SDL_TTF_MICRO_VERSION
 
 /// This is the version number macro for the current SDL_ttf version.
 #define SDL_TTF_VERSION                                                        \

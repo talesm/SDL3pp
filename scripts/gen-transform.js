@@ -7550,6 +7550,15 @@ const transform = {
             "IMG_Version": { name: "Version" },
           },
         },
+        "SDL_IMAGE_MAJOR_VERSION": {
+          value: ""
+        },
+        "SDL_IMAGE_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_IMAGE_MICRO_VERSION": {
+          value: ""
+        },
         "IMG_Animation": {
           resource: { free: "IMG_FreeAnimation" },
           entries: {
@@ -7795,6 +7804,15 @@ const transform = {
         "SDL3pp_video.h",
       ],
       transform: {
+        "SDL_TTF_MAJOR_VERSION": {
+          value: ""
+        },
+        "SDL_TTF_MINOR_VERSION": {
+          value: ""
+        },
+        "SDL_TTF_MICRO_VERSION": {
+          value: ""
+        },
         "TTF_FontStyleFlags": {
           enum: "TTF_STYLE_",
           before: "TTF_Font",
