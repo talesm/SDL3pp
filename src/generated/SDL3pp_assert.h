@@ -110,7 +110,7 @@ namespace SDL {
  */
 #define SDL_FILE __FILE_NAME__
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A macro that reports the current file being compiled, for use in assertions.
@@ -125,7 +125,7 @@ namespace SDL {
  */
 #define SDL_ASSERT_FILE SDL_FILE
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A macro that reports the current line number of the file being compiled.

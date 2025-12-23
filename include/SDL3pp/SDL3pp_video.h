@@ -2045,7 +2045,7 @@ public:
    */
   void SetAlwaysOnTop(bool on_top);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the window to fill the current document space (Emscripten only).
@@ -2076,7 +2076,7 @@ public:
    */
   void SetFillDocument(bool fill);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Show a window.
@@ -2765,7 +2765,7 @@ public:
    */
   void Flash(FlashOperation operation);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -2817,7 +2817,7 @@ public:
    */
   float GetProgressValue();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -5986,7 +5986,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the window to fill the current document space (Emscripten only).
@@ -6026,7 +6026,7 @@ inline void Window::SetFillDocument(bool fill)
   SDL::SetWindowFillDocument(m_resource, fill);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Show a window.
@@ -6988,7 +6988,7 @@ inline void Window::Flash(FlashOperation operation)
   SDL::FlashWindow(m_resource, operation);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -7076,7 +7076,7 @@ inline float Window::GetProgressValue()
   return SDL::GetWindowProgressValue(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Destroy a window.

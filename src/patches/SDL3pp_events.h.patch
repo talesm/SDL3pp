@@ -412,7 +412,7 @@
 +  return {CheckError(SDL_GetWindowFromEvent(&event))};
  }
  
- #if SDL_VERSION_ATLEAST(3, 4, 0)
+ #if SDL_VERSION_ATLEAST(3, 3, 6)
 @@ -1746,26 +1778,26 @@
  /**
   * Generate an English description of an event.
@@ -460,9 +460,9 @@
    return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Generate an English description of an event.
@@ -493,4 +493,4 @@
 +  return r;
  }
  
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+ #endif // SDL_VERSION_ATLEAST(3, 3, 6)

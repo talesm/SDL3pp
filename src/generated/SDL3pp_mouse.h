@@ -445,7 +445,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Animated cursor frame info.
@@ -454,7 +454,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
  */
 using CursorFrameInfo = SDL_CursorFrameInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 using MouseButton = Uint8;
 
@@ -500,7 +500,7 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
   return SDL_BUTTON_MASK(button);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A callback used to transform mouse motion delta from raw values.
@@ -539,9 +539,9 @@ using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
                                                     float* x,
                                                     float* y);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A callback used to transform mouse motion delta from raw values.
@@ -580,7 +580,7 @@ using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
                                                       float* x,
                                                       float* y)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Return whether a mouse is currently connected.
@@ -793,7 +793,7 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set a user-defined function by which to transform relative mouse inputs.
@@ -816,9 +816,9 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCallback callback,
   CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set a user-defined function by which to transform relative mouse inputs.
@@ -840,7 +840,7 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
   static_assert(false, "Not implemented");
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
@@ -990,7 +990,7 @@ inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
   return Cursor(surface, hot);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create an animated color cursor.
@@ -1045,7 +1045,7 @@ inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
     SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create a system cursor.

@@ -2043,7 +2043,7 @@ public:
  */
 #define SDL_FILE __FILE_NAME__
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A macro that reports the current file being compiled, for use in assertions.
@@ -2058,7 +2058,7 @@ public:
  */
 #define SDL_ASSERT_FILE SDL_FILE
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A macro that reports the current line number of the file being compiled.
@@ -3212,7 +3212,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE "SDL_AUDIO_DEVICE_STREAM_ROLE"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Specify whether this audio device should do audio processing.
@@ -3234,7 +3234,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_AUDIO_DEVICE_RAW_STREAM "SDL_AUDIO_DEVICE_RAW_STREAM"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Specify the input file when recording audio using the disk audio driver.
@@ -3519,7 +3519,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_DISPLAY_USABLE_BOUNDS "SDL_DISPLAY_USABLE_BOUNDS"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the level of checking for invalid parameters passed to SDL functions.
@@ -3536,7 +3536,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_INVALID_PARAM_CHECKS "SDL_INVALID_PARAM_CHECKS"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Disable giving back control to the browser automatically when running with
@@ -4693,7 +4693,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED                             \
   "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch 2
@@ -4712,7 +4712,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 "SDL_JOYSTICK_HIDAPI_SWITCH2"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether Nintendo Switch Joy-Con controllers will be in
@@ -4871,7 +4871,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED                             \
   "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -4890,9 +4890,9 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP "SDL_JOYSTICK_HIDAPI_GIP"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -4913,7 +4913,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA                        \
   "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether IOKit should be used for controller handling.
@@ -5182,7 +5182,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES                                \
   "SDL_JOYSTICK_ZERO_CENTERED_DEVICES"
 
-#if SDL_VERSION_ATLEAST(3, 2, 5)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable containing a list of devices and their desired number of haptic
@@ -5206,7 +5206,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_JOYSTICK_HAPTIC_AXES "SDL_JOYSTICK_HAPTIC_AXES"
 
-#endif // SDL_VERSION_ATLEAST(3, 2, 5)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable that controls keycode representation in keyboard events.
@@ -5281,7 +5281,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable that controls whether KMSDRM will use "atomic" functionality.
@@ -5304,7 +5304,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_KMSDRM_ATOMIC "SDL_KMSDRM_ATOMIC"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling the default SDL log levels.
@@ -5432,7 +5432,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether holding down a key will repeat the pressed key
@@ -5449,7 +5449,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MAC_PRESS_AND_HOLD "SDL_MAC_PRESS_AND_HOLD"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Request SDL_AppIterate() be called at a specific rate.
@@ -5530,7 +5530,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable setting whether we should scale cursors by the current display
@@ -5550,7 +5550,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MOUSE_DPI_SCALE_CURSORS "SDL_MOUSE_DPI_SCALE_CURSORS"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
@@ -5926,7 +5926,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_RENDER_DIRECT3D11_DEBUG "SDL_RENDER_DIRECT3D11_DEBUG"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether to use the Direct3D 11 WARP software
@@ -5946,7 +5946,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_RENDER_DIRECT3D11_WARP "SDL_RENDER_DIRECT3D11_WARP"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether to enable Vulkan Validation Layers.
@@ -6525,7 +6525,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \
   "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable indicating whether the metal layer drawable size should be updated
@@ -6545,9 +6545,9 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE                              \
   "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether SDL will attempt to automatically set the
@@ -6570,7 +6570,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE                            \
   "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether fullscreen windows are minimized when they
@@ -6772,7 +6772,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
-#if SDL_VERSION_ATLEAST(3, 2, 10)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether SDL should call XSelectInput() to enable input
@@ -6791,7 +6791,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \
   "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
 
-#endif // SDL_VERSION_ATLEAST(3, 2, 10)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint should
@@ -7250,7 +7250,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
@@ -7275,7 +7275,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS                          \
   "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS"
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
@@ -12607,7 +12607,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A generic property for naming things.
@@ -12633,7 +12633,7 @@ struct PropertiesRef : Properties
  */
 inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the global SDL properties.
@@ -21484,7 +21484,7 @@ struct AtomicU32 : AtomicU32Raw
    */
   Uint32 Get();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Add to an atomic variable.
@@ -21503,7 +21503,7 @@ struct AtomicU32 : AtomicU32Raw
    */
   Uint32 Add(int v);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// A type representing an atomic of an arbitrary pointer.
@@ -21653,7 +21653,7 @@ inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
 
 inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(this); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Add to an atomic variable.
@@ -21678,7 +21678,7 @@ inline Uint32 AddAtomicU32(AtomicU32Raw* a, int v)
 
 inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 template<class T>
 inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
@@ -22439,7 +22439,7 @@ inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
  */
 inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Report the size of a page of memory.
@@ -22462,7 +22462,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  */
 inline int GetSystemPageSize() { return SDL_GetSystemPageSize(); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 
@@ -23869,7 +23869,7 @@ public:
    */
   void close();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the properties associated with an HidDevice.
@@ -23886,7 +23886,7 @@ public:
    */
   PropertiesRef hid_get_properties();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Write an Output report to a HID device.
@@ -24280,7 +24280,7 @@ inline HidDevice hid_open_path(StringParam path)
   return HidDevice(std::move(path));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the properties associated with an HidDevice.
@@ -24306,7 +24306,7 @@ inline PropertiesRef HidDevice::hid_get_properties()
   return SDL::hid_get_properties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 namespace prop::Hidapi {
 
@@ -34631,7 +34631,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
   return SDL_AUDIO_FRAMESIZE(x);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A callback that fires for completed AudioStream.PutDataNoCopy() data.
@@ -34692,7 +34692,7 @@ using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
 using AudioStreamDataCompleteCB =
   std::function<void(const void* buf, int buflen)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * The opaque handle that represents an audio stream.
@@ -35403,7 +35403,7 @@ public:
    */
   void PutData(SourceBytes buf);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Add external data to an audio stream without copying it.
@@ -35937,7 +35937,7 @@ public:
    */
   AudioDeviceRef GetDevice() const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Add data to the stream with each channel in a separate array.
@@ -35991,7 +35991,7 @@ public:
                      int num_channels,
                      int num_samples);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// Semi-safe reference for AudioStream.
@@ -37250,7 +37250,7 @@ inline void AudioStream::PutData(SourceBytes buf)
   SDL::PutAudioStreamData(m_resource, std::move(buf));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Add external data to an audio stream without copying it.
@@ -37434,7 +37434,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
     m_resource, channel_buffers, num_channels, num_samples);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get converted/resampled data from the stream.
@@ -42267,7 +42267,7 @@ public:
    */
   static Surface LoadBMP(StringParam file);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Load a PNG image from a seekable SDL data stream.
@@ -42316,7 +42316,7 @@ public:
    */
   static Surface LoadPNG(StringParam file);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /// member access to underlying SurfaceRaw.
   constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
@@ -42680,7 +42680,7 @@ public:
    */
   void SaveBMP(StringParam file) const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
@@ -42716,7 +42716,7 @@ public:
    */
   void SavePNG(StringParam file) const;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -43019,7 +43019,7 @@ public:
    */
   void Flip(FlipMode flip);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Return a copy of a surface rotated clockwise a number of degrees.
@@ -43049,7 +43049,7 @@ public:
    */
   Surface Rotate(float angle);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -43466,7 +43466,7 @@ public:
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a stretched pixel copy from one surface to another.
@@ -43492,7 +43492,7 @@ public:
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different
@@ -44264,7 +44264,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -44309,7 +44309,7 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
  */
 inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -44432,7 +44432,7 @@ inline void Surface::SaveBMP(StringParam file) const
   SDL::SaveBMP(m_resource, std::move(file));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a PNG image from a seekable SDL data stream.
@@ -44551,7 +44551,7 @@ inline void Surface::SavePNG(StringParam file) const
   SDL::SavePNG(m_resource, std::move(file));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the RLE acceleration hint for a surface.
@@ -45014,7 +45014,7 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 
 inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Return a copy of a surface rotated clockwise a number of degrees.
@@ -45053,7 +45053,7 @@ inline Surface Surface::Rotate(float angle)
   return SDL::RotateSurface(m_resource, angle);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -45752,7 +45752,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -45791,7 +45791,7 @@ inline void Surface::Stretch(SurfaceParam src,
   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different
@@ -53649,7 +53649,7 @@ public:
    */
   void SetAlwaysOnTop(bool on_top);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the window to fill the current document space (Emscripten only).
@@ -53680,7 +53680,7 @@ public:
    */
   void SetFillDocument(bool fill);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Show a window.
@@ -54369,7 +54369,7 @@ public:
    */
   void Flash(FlashOperation operation);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -54421,7 +54421,7 @@ public:
    */
   float GetProgressValue();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -57590,7 +57590,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the window to fill the current document space (Emscripten only).
@@ -57630,7 +57630,7 @@ inline void Window::SetFillDocument(bool fill)
   SDL::SetWindowFillDocument(m_resource, fill);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Show a window.
@@ -58592,7 +58592,7 @@ inline void Window::Flash(FlashOperation operation)
   SDL::FlashWindow(m_resource, operation);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -58680,7 +58680,7 @@ inline float Window::GetProgressValue()
   return SDL::GetWindowProgressValue(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Destroy a window.
@@ -61615,7 +61615,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
   return {CheckError(SDL_GetWindowFromEvent(&event))};
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Generate an English description of an event.
@@ -61689,7 +61689,7 @@ inline std::string GetEventDescription(const Event& event)
   return r;
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 
@@ -65001,7 +65001,7 @@ public:
    */
   GPUShaderFormat GetShaderFormats();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the properties associated with a GPU device.
@@ -65106,7 +65106,7 @@ public:
    */
   PropertiesRef GetProperties();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -66895,7 +66895,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 
 } // namespace prop::GpuDevice
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A structure specifying additional options when using Vulkan.
@@ -66915,7 +66915,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
  */
 using GPUVulkanOptions = SDL_GPUVulkanOptions;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -67000,7 +67000,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the properties associated with a GPU device.
@@ -67109,16 +67109,12 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceParam device)
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline PropertiesRef GPUDevice::GetProperties()
 {
   return SDL::GetGPUDeviceProperties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Creates a pipeline object to be used in a compute workflow.
@@ -69763,7 +69759,7 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the SDL pixel format corresponding to a GPU texture format.
@@ -69793,7 +69789,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
   return SDL_GetGPUTextureFormatFromPixelFormat(format);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 #ifdef SDL_PLATFORM_GDK
 
@@ -74142,7 +74138,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Animated cursor frame info.
@@ -74151,7 +74147,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
  */
 using CursorFrameInfo = SDL_CursorFrameInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Represents a button index.
@@ -74202,7 +74198,7 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
   return SDL_BUTTON_MASK(button);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A callback used to transform mouse motion delta from raw values.
@@ -74234,7 +74230,12 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
  *
  * @sa SetRelativeMouseTransform
  */
-using MouseMotionTransformCallback = SDL_MouseMotionTransformCallback;
+using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
+                                                    Uint64 timestamp,
+                                                    SDL_Window* window,
+                                                    MouseID mouseID,
+                                                    float* x,
+                                                    float* y);
 
 /**
  * A callback used to transform mouse motion delta from raw values.
@@ -74273,7 +74274,7 @@ using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
                                                       float* x,
                                                       float* y)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Return whether a mouse is currently connected.
@@ -74487,7 +74488,7 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set a user-defined function by which to transform relative mouse inputs.
@@ -74529,7 +74530,7 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
   SetRelativeMouseTransform(callback.wrapper, callback.data);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
@@ -74675,7 +74676,7 @@ inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
   return Cursor(surface, hot);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create an animated color cursor.
@@ -74730,7 +74731,7 @@ inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
     SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create a system cursor.
@@ -80731,7 +80732,7 @@ struct GPURenderStateParam
  */
 constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * The name of the GPU renderer.
@@ -80740,7 +80741,7 @@ constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
  */
 constexpr auto GPU_RENDERER = SDL_GPU_RENDERER;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Vertex structure.
@@ -80765,7 +80766,7 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING =
 constexpr TextureAccess TEXTUREACCESS_TARGET =
   SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * The addressing mode for a texture when used in Renderer.RenderGeometry().
@@ -80832,7 +80833,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A structure specifying the parameters of a GPU render state.
@@ -80843,7 +80844,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
  */
 using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A structure representing rendering state
@@ -81099,7 +81100,7 @@ public:
    */
   void Destroy();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Return the GPU device used by a renderer.
@@ -81113,7 +81114,7 @@ public:
    */
   GPUDeviceRef GetGPUDevice();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the window associated with a renderer.
@@ -82437,7 +82438,7 @@ public:
                           float scale,
                           OptionalRef<const FRectRaw> dstrect);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -82483,7 +82484,7 @@ public:
                                const FRectRaw& dstrect,
                                float tileScale);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Render a list of triangles, optionally using a texture and indices into the
@@ -82547,7 +82548,7 @@ public:
                          int num_indices,
                          int size_indices);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the texture addressing mode used in Renderer.RenderGeometry().
@@ -82585,7 +82586,7 @@ public:
   void GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                    TextureAddressMode* v_mode);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Read pixels from the current rendering target.
@@ -82866,7 +82867,7 @@ public:
                              std::string_view fmt,
                              ARGS... args);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set default scale mode for new textures for given renderer.
@@ -82935,7 +82936,7 @@ public:
    */
   void SetGPURenderState(GPURenderStateParam state);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// Semi-safe reference for Renderer.
@@ -83491,7 +83492,7 @@ public:
   /// Get the pixel format.
   PixelFormat GetFormat() const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the palette used by a texture.
@@ -83527,7 +83528,7 @@ public:
    */
   Palette GetPalette();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -84347,7 +84348,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 
 } // namespace prop::Renderer
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create a 2D GPU rendering context.
@@ -84407,7 +84408,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
   return SDL::GetGPURendererDevice(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create a 2D software rendering context for a surface.
@@ -85275,7 +85276,7 @@ inline PixelFormat Texture::GetFormat() const
   return SDL::GetTextureFormat(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the palette used by a texture.
@@ -85329,7 +85330,7 @@ inline Palette Texture::GetPalette()
   return SDL::GetTexturePalette(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set an additional color value multiplied into render copy operations.
@@ -87550,7 +87551,7 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
                           dstrect);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -87632,7 +87633,7 @@ inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
                                tileScale);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Render a list of triangles, optionally using a texture and indices into the
@@ -87754,7 +87755,7 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
                          size_indices);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the texture addressing mode used in Renderer.RenderGeometry().
@@ -87814,7 +87815,7 @@ inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
   SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Read pixels from the current rendering target.
@@ -88247,7 +88248,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
   SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set default scale mode for new textures for given renderer.
@@ -88399,7 +88400,10 @@ public:
   constexpr explicit operator bool() const { return !!m_resource; }
 
   /// Converts to GPURenderStateParam
-  constexpr operator GPURenderStateParam() const { return {m_resource}; }
+  constexpr operator GPURenderStateParam() const noexcept
+  {
+    return {m_resource};
+  }
 
   /**
    * Destroy custom GPU render state.
@@ -88565,7 +88569,7 @@ inline void DestroyGPURenderState(GPURenderStateRaw state)
 
 inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 
@@ -89906,7 +89910,7 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * An enum that describes the type of a pen device.
@@ -89957,7 +89961,7 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
   return SDL_GetPenDeviceType(instance_id);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 

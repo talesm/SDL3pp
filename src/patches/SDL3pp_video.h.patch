@@ -403,9 +403,9 @@
     */
    void SetProgressState(ProgressState state);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Get the state of the progress bar for the given window’s taskbar icon.
@@ -414,9 +414,9 @@
     */
    ProgressState GetProgressState();
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -425,9 +425,9 @@
     */
    void SetProgressValue(float value);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Get the value of the progress bar for the given window’s taskbar icon.
@@ -993,9 +993,9 @@
    CheckError(SDL_SetWindowFillDocument(window, fill));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Window::SetFillDocument(bool fill)
  {
@@ -1126,18 +1126,18 @@
    CheckError(SDL_SetWindowProgressState(window, state));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Window::SetProgressState(ProgressState state)
  {
    SDL::SetWindowProgressState(m_resource, state);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Get the state of the progress bar for the given window’s taskbar icon.
@@ -1146,18 +1146,18 @@
    return SDL_GetWindowProgressState(window);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline ProgressState Window::GetProgressState()
  {
    return SDL::GetWindowProgressState(m_resource);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -1166,18 +1166,18 @@
    CheckError(SDL_SetWindowProgressValue(window, value));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Window::SetProgressValue(float value)
  {
    SDL::SetWindowProgressValue(m_resource, value);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Get the value of the progress bar for the given window’s taskbar icon.
@@ -1186,9 +1186,9 @@
    return SDL_GetWindowProgressValue(window);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline float Window::GetProgressValue()
  {

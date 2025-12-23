@@ -459,7 +459,7 @@ public:
    */
   static Surface LoadBMP(StringParam file);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Load a PNG image from a seekable SDL data stream.
@@ -487,9 +487,9 @@ public:
    */
   static Surface LoadPNG(IOStreamParam src, bool closeio = false);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Load a PNG image from a file.
@@ -515,7 +515,7 @@ public:
    */
   static Surface LoadPNG(StringParam file);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /// member access to underlying SurfaceRaw.
   constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
@@ -887,7 +887,7 @@ public:
    */
   void SaveBMP(StringParam file) const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
@@ -907,9 +907,9 @@ public:
    */
   void SavePNG(IOStreamParam dst, bool closeio = false) const;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Save a surface to a file in PNG format.
@@ -927,7 +927,7 @@ public:
    */
   void SavePNG(StringParam file) const;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -1198,7 +1198,7 @@ public:
    */
   void Flip(FlipMode flip);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Return a copy of a surface rotated clockwise a number of degrees.
@@ -1228,7 +1228,7 @@ public:
    */
   Surface Rotate(float angle);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -1574,7 +1574,7 @@ public:
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a stretched pixel copy from one surface to another.
@@ -1600,7 +1600,7 @@ public:
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different
@@ -2405,7 +2405,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -2431,9 +2431,9 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
   return SDL_LoadSurface_IO(src, closeio);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a BMP or PNG image from a file.
@@ -2454,7 +2454,7 @@ inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
  */
 inline Surface LoadSurface(StringParam file) { return SDL_LoadSurface(file); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -2577,7 +2577,7 @@ inline void Surface::SaveBMP(StringParam file) const
   SDL::SaveBMP(m_resource, std::move(file));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a PNG image from a seekable SDL data stream.
@@ -2608,9 +2608,9 @@ inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
   return Surface(SDL_LoadPNG_IO(src, closeio));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Load a PNG image from a file.
@@ -2636,27 +2636,27 @@ inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
  */
 inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline Surface Surface::LoadPNG(IOStreamParam src, bool closeio)
 {
   return SDL::LoadPNG(src, closeio);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline Surface Surface::LoadPNG(StringParam file)
 {
   return SDL::LoadPNG(std::move(file));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Save a surface to a seekable SDL data stream in PNG format.
@@ -2682,9 +2682,9 @@ inline void SavePNG(SurfaceConstParam surface,
   CheckError(SDL_SavePNG_IO(surface, dst, closeio));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Save a surface to a file in PNG format.
@@ -2706,25 +2706,25 @@ inline void SavePNG(SurfaceConstParam surface, StringParam file)
   CheckError(SDL_SavePNG(surface, file));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Surface::SavePNG(IOStreamParam dst, bool closeio) const
 {
   SDL::SavePNG(m_resource, dst, closeio);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Surface::SavePNG(StringParam file) const
 {
   SDL::SavePNG(m_resource, std::move(file));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the RLE acceleration hint for a surface.
@@ -3142,7 +3142,7 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 
 inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Return a copy of a surface rotated clockwise a number of degrees.
@@ -3176,16 +3176,16 @@ inline Surface RotateSurface(SurfaceParam surface, float angle)
   return SDL_RotateSurface(surface, angle);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline Surface Surface::Rotate(float angle)
 {
   return SDL::RotateSurface(m_resource, angle);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -3806,7 +3806,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
   SDL::BlitSurfaceUncheckedScaled(m_resource, src, srcrect, dstrect, scaleMode);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -3837,9 +3837,9 @@ inline void StretchSurface(SurfaceParam src,
   CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Surface::Stretch(SurfaceParam src,
                              OptionalRef<RectRaw> srcrect,
@@ -3849,7 +3849,7 @@ inline void Surface::Stretch(SurfaceParam src,
   SDL::StretchSurface(m_resource, src, srcrect, dstrect, scaleMode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different

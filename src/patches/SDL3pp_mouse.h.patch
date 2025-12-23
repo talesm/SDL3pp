@@ -56,7 +56,7 @@
  
 @@ -456,17 +453,21 @@
  
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+ #endif // SDL_VERSION_ATLEAST(3, 3, 6)
  
 +/**
 + * Represents a button index.
@@ -89,25 +89,18 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -532,16 +534,7 @@
-  *
-  * @sa SetRelativeMouseTransform
-  */
--using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
--                                                    Uint64 timestamp,
--                                                    SDL_Window* window,
--                                                    MouseID mouseID,
--                                                    float* x,
--                                                    float* y);
--
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
--
--#if SDL_VERSION_ATLEAST(3, 4, 0)
-+using MouseMotionTransformCallback = SDL_MouseMotionTransformCallback;
+@@ -539,10 +541,6 @@
+                                                     float* x,
+                                                     float* y);
  
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
+-
  /**
   * A callback used to transform mouse motion delta from raw values.
-@@ -602,11 +595,8 @@
+  *
+@@ -602,11 +600,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -121,7 +114,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -615,7 +605,12 @@
+@@ -615,7 +610,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -135,7 +128,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -646,7 +641,7 @@
+@@ -646,7 +646,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -144,7 +137,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -764,7 +759,7 @@
+@@ -764,7 +764,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -153,7 +146,7 @@
  }
  
  /**
-@@ -778,8 +773,7 @@
+@@ -778,8 +778,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -163,7 +156,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -790,7 +784,7 @@
+@@ -790,7 +789,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -171,19 +164,19 @@
 +  CheckError(SDL_WarpMouseGlobal(p.x, p.y));
  }
  
- #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -816,10 +810,6 @@
+ #if SDL_VERSION_ATLEAST(3, 3, 6)
+@@ -816,10 +815,6 @@
    CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Set a user-defined function by which to transform relative mouse inputs.
   *
-@@ -828,7 +818,6 @@
+@@ -828,7 +823,6 @@
   *
   * @param callback a callback used to transform relative mouse motion, or
   *                 nullptr for default behavior.
@@ -191,7 +184,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -837,7 +826,7 @@
+@@ -837,7 +831,7 @@
   */
  inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
  {
@@ -199,8 +192,8 @@
 +  SetRelativeMouseTransform(callback.wrapper, callback.data);
  }
  
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -927,12 +916,9 @@
+ #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+@@ -927,12 +921,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -216,7 +209,7 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -969,8 +955,7 @@
+@@ -969,8 +960,7 @@
   * upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -226,7 +219,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1097,7 +1082,7 @@
+@@ -1097,7 +1087,7 @@
   *
   * @sa Cursor.Set
   */
@@ -235,7 +228,7 @@
  
  /**
   * Get the default cursor.
-@@ -1115,7 +1100,7 @@
+@@ -1115,7 +1105,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

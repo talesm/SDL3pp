@@ -2059,7 +2059,7 @@ public:
    */
   void SetAlwaysOnTop(bool on_top);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the window to fill the current document space (Emscripten only).
@@ -2090,7 +2090,7 @@ public:
    */
   void SetFillDocument(bool fill);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Show a window.
@@ -2781,7 +2781,7 @@ public:
    */
   void Flash(FlashOperation operation);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -2796,9 +2796,9 @@ public:
    */
   void SetProgressState(ProgressState state);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the state of the progress bar for the given window’s taskbar icon.
@@ -2812,9 +2812,9 @@ public:
    */
   ProgressState GetProgressState();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -2829,9 +2829,9 @@ public:
    */
   void SetProgressValue(float value);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the value of the progress bar for the given window’s taskbar icon.
@@ -2845,7 +2845,7 @@ public:
    */
   float GetProgressValue();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -5995,7 +5995,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set the window to fill the current document space (Emscripten only).
@@ -6030,16 +6030,16 @@ inline void SetWindowFillDocument(WindowParam window, bool fill)
   CheckError(SDL_SetWindowFillDocument(window, fill));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Window::SetFillDocument(bool fill)
 {
   SDL::SetWindowFillDocument(m_resource, fill);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Show a window.
@@ -7003,7 +7003,7 @@ inline void Window::Flash(FlashOperation operation)
   SDL::FlashWindow(m_resource, operation);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -7022,18 +7022,18 @@ inline void SetWindowProgressState(WindowParam window, ProgressState state)
   CheckError(SDL_SetWindowProgressState(window, state));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Window::SetProgressState(ProgressState state)
 {
   SDL::SetWindowProgressState(m_resource, state);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the state of the progress bar for the given window’s taskbar icon.
@@ -7051,18 +7051,18 @@ inline ProgressState GetWindowProgressState(WindowParam window)
   return SDL_GetWindowProgressState(window);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline ProgressState Window::GetProgressState()
 {
   return SDL::GetWindowProgressState(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -7081,18 +7081,18 @@ inline void SetWindowProgressValue(WindowParam window, float value)
   CheckError(SDL_SetWindowProgressValue(window, value));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline void Window::SetProgressValue(float value)
 {
   SDL::SetWindowProgressValue(m_resource, value);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the value of the progress bar for the given window’s taskbar icon.
@@ -7110,16 +7110,16 @@ inline float GetWindowProgressValue(WindowParam window)
   return SDL_GetWindowProgressValue(window);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline float Window::GetProgressValue()
 {
   return SDL::GetWindowProgressValue(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Destroy a window.

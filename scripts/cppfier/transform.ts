@@ -125,6 +125,15 @@ export function transformApi(config: TransformConfig) {
   return api;
 }
 
+function isVersionAfter(version: VersionTag, tag: VersionTag) {
+  if (version.major > tag.major) return true;
+  if (version.major < tag.major) return false;
+  if (version.minor > tag.minor) return true;
+  if (version.minor < tag.minor) return false;
+  if (version.patch > tag.patch) return true;
+  return false;
+}
+
 class ApiContext {
   namespace: string;
   source: Dict<ApiEntry>;
@@ -134,6 +143,7 @@ class ApiContext {
   paramReplacements: any;
   delegatedReplacements: any;
   minVersions: Dict<VersionTag>;
+  baseVersions: Dict<VersionTag>;
   includeBeforeMap: Dict<Dict<ApiEntryTransform[]>>;
   includeAfterMap: Dict<Dict<ApiEntryTransform[]>>;
   file: string;
@@ -163,6 +173,7 @@ class ApiContext {
     this.blacklist = new Set();
 
     this.minVersions = transform.minVersions ?? {};
+    this.baseVersions = transform.baseVersions ?? {};
 
     this.includeBeforeMap = {};
     this.includeAfterMap = {};
@@ -270,12 +281,19 @@ class ApiContext {
   isAfterMinVersion(version: VersionTag) {
     const tag = this.minVersions[version.tag];
     if (!tag) return false;
-    if (version.major > tag.major) return true;
-    if (version.major < tag.major) return false;
-    if (version.minor > tag.minor) return true;
-    if (version.minor < tag.minor) return false;
-    if (version.patch > tag.patch) return true;
-    return false;
+    return isVersionAfter(version, tag);
+  }
+
+  previewFutureVersion(version: VersionTag) {
+    const tag = this.baseVersions[version.tag];
+    if (
+      !tag ||
+      (tag.minor % 2 == 0 &&
+        tag.patch % 2 == 0 &&
+        !isVersionAfter(version, tag))
+    )
+      return version;
+    return tag;
   }
 
   setFile(file: string) {
@@ -2920,7 +2938,8 @@ function resolveVersionDoc(doc: ParsedDoc, context: ApiContext) {
     minor: +m[3],
     patch: +m[4],
   };
-  if (context.isAfterMinVersion(version)) return version;
+  if (context.isAfterMinVersion(version))
+    return context.previewFutureVersion(version);
 }
 
 function resolveDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {

@@ -209,14 +209,14 @@
 +  return SDL_AUDIO_FRAMESIZE(x);
  }
  
- #if SDL_VERSION_ATLEAST(3, 4, 0)
+ #if SDL_VERSION_ATLEAST(3, 3, 6)
 @@ -1635,10 +1633,6 @@
                                                         const void* buf,
                                                         int buflen);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * A callback that fires for completed AudioStream.PutDataNoCopy() data.
@@ -470,7 +470,7 @@
                       AudioStreamDataCompleteCallback callback,
                       void* userdata);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
 -#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
@@ -809,7 +809,7 @@
      stream, buf.data(), buf.size_bytes(), callback, userdata));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
 -#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
@@ -842,7 +842,7 @@
  
 -#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                         AudioStreamDataCompleteCallback callback,
@@ -851,7 +851,7 @@
    SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
 -#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
@@ -863,7 +863,7 @@
  
 -#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Add data to the stream with each channel in a separate array.
@@ -872,9 +872,9 @@
      stream, channel_buffers, num_channels, num_samples));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
                                         int num_channels,

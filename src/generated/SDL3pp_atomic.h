@@ -553,7 +553,7 @@ public:
    */
   Uint32 Get();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Add to an atomic variable.
@@ -572,7 +572,7 @@ public:
    */
   Uint32 Add(int v);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 template<class T>
@@ -723,7 +723,7 @@ inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
 
 inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(this); }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Add to an atomic variable.
@@ -746,13 +746,13 @@ inline Uint32 AddAtomicU32(AtomicU32Raw* a, int v)
   return SDL_AddAtomicU32(a, v);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 template<class T>
 inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)

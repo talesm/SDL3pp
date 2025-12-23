@@ -246,7 +246,7 @@ public:
    */
   void close();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the properties associated with an HidDevice.
@@ -263,7 +263,7 @@ public:
    */
   PropertiesRef hid_get_properties();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Write an Output report to a HID device.
@@ -657,7 +657,7 @@ inline HidDevice hid_open_path(StringParam path)
   return HidDevice(std::move(path));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the properties associated with an HidDevice.
@@ -683,7 +683,7 @@ inline PropertiesRef HidDevice::hid_get_properties()
   return SDL::hid_get_properties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 namespace prop::Hidapi {
 

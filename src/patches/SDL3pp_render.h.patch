@@ -31,7 +31,7 @@
   */
  using TextureAddressMode = SDL_TextureAddressMode;
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
  constexpr TextureAddressMode TEXTURE_ADDRESS_INVALID =
    SDL_TEXTURE_ADDRESS_INVALID; ///< TEXTURE_ADDRESS_INVALID
@@ -579,9 +579,9 @@
    void SetRenderTextureAddressMode(TextureAddressMode u_mode,
                                     TextureAddressMode v_mode);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Get the texture addressing mode used in Renderer.RenderGeometry().
@@ -638,9 +638,9 @@
     */
    void SetDefaultTextureScaleMode(ScaleMode scale_mode);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Get default texture scale mode of the given renderer.
@@ -649,9 +649,9 @@
     */
    void GetDefaultTextureScaleMode(ScaleMode* scale_mode);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Create custom GPU render state.
@@ -660,9 +660,9 @@
     */
    GPURenderStateRef CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Set custom GPU render state.
@@ -792,14 +792,14 @@
 +  /// Get the pixel format.
    PixelFormat GetFormat() const;
  
- #if SDL_VERSION_ATLEAST(3, 4, 0)
+ #if SDL_VERSION_ATLEAST(3, 3, 6)
 @@ -2981,10 +2976,6 @@
     */
    void SetPalette(PaletteParam palette);
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Get the palette used by a texture.
@@ -1007,9 +1007,9 @@
    return SDL_CreateGPURenderer(device, window);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Return the GPU device used by a renderer.
@@ -1018,9 +1018,9 @@
    return SDL_GetGPURendererDevice(renderer);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline GPUDeviceRef Renderer::GetGPUDevice()
  {
@@ -1250,18 +1250,18 @@
    CheckError(SDL_SetTexturePalette(texture, palette));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Texture::SetPalette(PaletteParam palette)
  {
    SDL::SetTexturePalette(m_resource, palette);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Get the palette used by a texture.
@@ -1270,9 +1270,9 @@
    return SDL_GetTexturePalette(texture);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline Palette Texture::GetPalette()
  {
@@ -2102,9 +2102,9 @@
                                           tileScale));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
                                                const FRectRaw& srcrect,
@@ -2142,9 +2142,9 @@
    CheckError(SDL_SetRenderTextureAddressMode(renderer, u_mode, v_mode));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
                                                    TextureAddressMode v_mode)
@@ -2152,9 +2152,9 @@
    SDL::SetRenderTextureAddressMode(m_resource, u_mode, v_mode);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Get the texture addressing mode used in Renderer.RenderGeometry().
@@ -2163,9 +2163,9 @@
    CheckError(SDL_GetRenderTextureAddressMode(renderer, u_mode, v_mode));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                                    TextureAddressMode* v_mode)
@@ -2261,23 +2261,23 @@
 +  SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
  }
  
- #if SDL_VERSION_ATLEAST(3, 4, 0)
+ #if SDL_VERSION_ATLEAST(3, 3, 6)
 @@ -7624,19 +7733,11 @@
    CheckError(SDL_SetDefaultTextureScaleMode(renderer, scale_mode));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
  {
    SDL::SetDefaultTextureScaleMode(m_resource, scale_mode);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Get default texture scale mode of the given renderer.
@@ -2286,18 +2286,18 @@
    CheckError(SDL_GetDefaultTextureScaleMode(renderer, scale_mode));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
  {
    SDL::GetDefaultTextureScaleMode(m_resource, scale_mode);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * A custom GPU render state.
@@ -2336,7 +2336,7 @@
  
    constexpr GPURenderState(GPURenderStateRef&& other) = delete;
  
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Create custom GPU render state.
@@ -2345,7 +2345,7 @@
    {
    }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /// Destructor
    ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
@@ -2374,7 +2374,7 @@
    {
      auto r = m_resource;
      m_resource = nullptr;
-@@ -7773,23 +7853,21 @@
+@@ -7773,11 +7853,13 @@
    }
  
    /// Comparison
@@ -2390,14 +2390,13 @@
 +  constexpr explicit operator bool() const { return !!m_resource; }
  
    /// Converts to GPURenderStateParam
--  constexpr operator GPURenderStateParam() const noexcept
--  {
--    return {m_resource};
--  }
--
--#if SDL_VERSION_ATLEAST(3, 4, 0)
-+  constexpr operator GPURenderStateParam() const { return {m_resource}; }
+   constexpr operator GPURenderStateParam() const noexcept
+@@ -7785,11 +7867,10 @@
+     return {m_resource};
+   }
  
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
+-
    /**
     * Destroy custom GPU render state.
     *
@@ -2405,26 +2404,26 @@
     * @threadsafety This function should be called on the thread that created the
     *               renderer.
     *
-@@ -7799,10 +7877,6 @@
+@@ -7799,10 +7880,6 @@
     */
    void Destroy();
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
    /**
     * Set fragment shader uniform variables in a custom GPU render state.
     *
-@@ -7820,17 +7894,11 @@
+@@ -7820,17 +7897,11 @@
     * @since This function is available since SDL 3.4.0.
     */
    void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
 -
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
  };
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /// Semi-safe reference for GPURenderState.
  struct GPURenderStateRef : GPURenderState
@@ -2434,7 +2433,7 @@
    /**
     * Constructs from GPURenderStateParam.
     *
-@@ -7838,25 +7906,13 @@
+@@ -7838,25 +7909,13 @@
     *
     * This does not takes ownership!
     */
@@ -2462,22 +2461,22 @@
      : GPURenderState(other.get())
    {
    }
-@@ -7865,8 +7921,6 @@
+@@ -7865,8 +7924,6 @@
    ~GPURenderStateRef() { release(); }
  };
  
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Create custom GPU render state.
   *
-@@ -7890,20 +7944,12 @@
+@@ -7890,20 +7947,12 @@
    return GPURenderState(renderer, createinfo);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline GPURenderStateRef Renderer::CreateGPURenderState(
    GPURenderStateCreateInfo* createinfo)
@@ -2485,63 +2484,63 @@
    return GPURenderState(m_resource, createinfo);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Set fragment shader uniform variables in a custom GPU render state.
   *
-@@ -7930,10 +7976,6 @@
+@@ -7930,10 +7979,6 @@
      SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
                                                  const void* data,
                                                  Uint32 length)
-@@ -7941,10 +7983,6 @@
+@@ -7941,10 +7986,6 @@
    SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Set custom GPU render state.
   *
-@@ -7966,19 +8004,11 @@
+@@ -7966,19 +8007,11 @@
    CheckError(SDL_SetGPURenderState(renderer, state));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void Renderer::SetGPURenderState(GPURenderStateParam state)
  {
    SDL::SetGPURenderState(m_resource, state);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Destroy custom GPU render state.
   *
-@@ -7996,10 +8026,6 @@
+@@ -7996,10 +8029,6 @@
    SDL_DestroyGPURenderState(state);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
  
- #endif // SDL_VERSION_ATLEAST(3, 4, 0)
+ #endif // SDL_VERSION_ATLEAST(3, 3, 6)

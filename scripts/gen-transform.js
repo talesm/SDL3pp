@@ -21,6 +21,11 @@ const transform = {
     SDL_TTF: { tag: "SDL_TTF", major: 3, minor: 2, patch: 0 },
     SDL_IMAGE: { tag: "SDL_IMAGE", major: 3, minor: 2, patch: 0 },
   },
+  baseVersions: {
+    SDL: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+    SDL_TTF: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 },
+    SDL_IMAGE: { tag: "SDL_IMAGE", major: 3, minor: 2, patch: 4 },
+  },
   paramTypeMap: {
     "const char *": "StringParam",
     "TTF_TextEngine *": "TextEngineParam",

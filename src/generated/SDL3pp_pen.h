@@ -165,7 +165,7 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * An enum that describes the type of a pen device.
@@ -184,7 +184,7 @@ constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
  */
 using PenDeviceType = SDL_PenDeviceType;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 constexpr PenDeviceType PEN_DEVICE_TYPE_INVALID =
   SDL_PEN_DEVICE_TYPE_INVALID; ///< Not a valid pen device.
@@ -199,7 +199,7 @@ constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
   SDL_PEN_DEVICE_TYPE_INDIRECT; ///< Pen touches something that isn't the
                                 ///< display.
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the device type of the given pen.
@@ -220,7 +220,7 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
   return SDL_GetPenDeviceType(instance_id);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 

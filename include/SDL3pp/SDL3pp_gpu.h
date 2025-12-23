@@ -3319,7 +3319,7 @@ public:
    */
   GPUShaderFormat GetShaderFormats();
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Get the properties associated with a GPU device.
@@ -3424,7 +3424,7 @@ public:
    */
   PropertiesRef GetProperties();
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -5213,7 +5213,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 
 } // namespace prop::GpuDevice
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A structure specifying additional options when using Vulkan.
@@ -5233,7 +5233,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
  */
 using GPUVulkanOptions = SDL_GPUVulkanOptions;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -5318,7 +5318,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the properties associated with a GPU device.
@@ -5427,16 +5427,12 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceParam device)
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
-
-#if SDL_VERSION_ATLEAST(3, 4, 0)
-
 inline PropertiesRef GPUDevice::GetProperties()
 {
   return SDL::GetGPUDeviceProperties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Creates a pipeline object to be used in a compute workflow.
@@ -8081,7 +8077,7 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get the SDL pixel format corresponding to a GPU texture format.
@@ -8111,7 +8107,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
   return SDL_GetGPUTextureFormatFromPixelFormat(format);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 #ifdef SDL_PLATFORM_GDK
 

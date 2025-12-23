@@ -1741,7 +1741,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
   return CheckError(SDL_GetWindowFromEvent(&event));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Generate an English description of an event.
@@ -1778,9 +1778,9 @@ inline int GetEventDescription(const Event& event, TargetBytes buf)
   return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Generate an English description of an event.
@@ -1817,7 +1817,7 @@ inline std::string GetEventDescription(const Event& event)
   static_assert(false, "Not implemented");
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 

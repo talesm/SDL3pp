@@ -1601,7 +1601,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
   return SDL_AUDIO_FRAMESIZE(x);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A callback that fires for completed AudioStream.PutDataNoCopy() data.
@@ -1662,7 +1662,7 @@ using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
 using AudioStreamDataCompleteCB =
   std::function<void(const void* buf, int buflen)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * The opaque handle that represents an audio stream.
@@ -2373,7 +2373,7 @@ public:
    */
   void PutData(SourceBytes buf);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Add external data to an audio stream without copying it.
@@ -2907,7 +2907,7 @@ public:
    */
   AudioDeviceRef GetDevice() const;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Add data to the stream with each channel in a separate array.
@@ -2961,7 +2961,7 @@ public:
                      int num_channels,
                      int num_samples);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// Semi-safe reference for AudioStream.
@@ -4220,7 +4220,7 @@ inline void AudioStream::PutData(SourceBytes buf)
   SDL::PutAudioStreamData(m_resource, std::move(buf));
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Add external data to an audio stream without copying it.
@@ -4404,7 +4404,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
     m_resource, channel_buffers, num_channels, num_samples);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get converted/resampled data from the stream.

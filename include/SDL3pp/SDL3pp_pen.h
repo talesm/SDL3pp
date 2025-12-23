@@ -165,7 +165,7 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * An enum that describes the type of a pen device.
@@ -216,7 +216,7 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
   return SDL_GetPenDeviceType(instance_id);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 

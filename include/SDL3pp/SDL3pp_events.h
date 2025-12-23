@@ -1773,7 +1773,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
   return {CheckError(SDL_GetWindowFromEvent(&event))};
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Generate an English description of an event.
@@ -1847,7 +1847,7 @@ inline std::string GetEventDescription(const Event& event)
   return r;
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 

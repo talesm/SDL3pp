@@ -13,7 +13,7 @@
   */
  using PenDeviceType = SDL_PenDeviceType;
  
--#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 -
  constexpr PenDeviceType PEN_DEVICE_TYPE_INVALID =
    SDL_PEN_DEVICE_TYPE_INVALID; ///< Not a valid pen device.
@@ -22,7 +22,7 @@
    SDL_PEN_DEVICE_TYPE_INDIRECT; ///< Pen touches something that isn't the
                                  ///< display.
  
--#if SDL_VERSION_ATLEAST(3, 4, 0)
+-#if SDL_VERSION_ATLEAST(3, 3, 6)
 -
  /**
   * Get the device type of the given pen.
