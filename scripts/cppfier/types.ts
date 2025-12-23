@@ -115,6 +115,7 @@ export interface ApiTransform {
   paramTypeMap?: StringMap;
   returnTypeMap?: StringMap;
   minVersions?: Dict<VersionTag>;
+  baseVersions?: Dict<VersionTag>;
   signatureRules?: SignatureTransform[];
 
   /// The default namespace
