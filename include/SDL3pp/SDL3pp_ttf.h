@@ -357,7 +357,11 @@ constexpr FontStyleFlags STYLE_STRIKETHROUGH =
  */
 using HintingFlags = TTF_HintingFlags;
 
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
+
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID; ///< INVALID
+
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 constexpr HintingFlags HINTING_NORMAL =
   TTF_HINTING_NORMAL; ///< Normal hinting applies standard grid-fitting.
@@ -2091,12 +2095,12 @@ constexpr auto CREATE_HORIZONTAL_DPI_NUMBER =
 constexpr auto CREATE_VERTICAL_DPI_NUMBER =
   TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER;
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 constexpr auto CREATE_EXISTING_FONT_POINTER =
-  TTF_PROP_FONT_CREATE_EXISTING_FONT_POINTER;
+  TTF_PROP_FONT_CREATE_EXISTING_FONT;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 constexpr auto OUTLINE_LINE_CAP_NUMBER = TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER;
 
@@ -4796,7 +4800,7 @@ public:
    *
    * @sa Text.GetPosition
    */
-  void SetPosition(Point p);
+  void SetPosition(const PointRaw& p);
 
   /**
    * Get the position of a text object.
@@ -4821,7 +4825,6 @@ public:
    *
    * @returns a Point with the offset of the upper left corner of this text in
    *          pixels on success.
-   * @throws Error on failure.
    * @throws Error on failure.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -5463,15 +5466,14 @@ inline RendererTextEngine CreateRendererTextEngineWithProperties(
 
 namespace prop::RendererTextEngine {
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto RENDERER_POINTER =
-  TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER;
+constexpr auto RENDERER_POINTER = TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER;
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 } // namespace prop::RendererTextEngine
 
@@ -5583,14 +5585,14 @@ inline GPUTextEngine CreateGPUTextEngineWithProperties(PropertiesParam props)
 
 namespace prop::GpuTextEngine {
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
-constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER;
+constexpr auto DEVICE_POINTER = TTF_PROP_GPU_TEXT_ENGINE_DEVICE;
 
 constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
-  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER;
+  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
 } // namespace prop::GpuTextEngine
 
@@ -6149,12 +6151,15 @@ inline FColor Text::GetColorFloat() const
  *
  * @sa Text.GetPosition
  */
-inline void SetTextPosition(TextParam text, Point p)
+inline void SetTextPosition(TextParam text, const PointRaw& p)
 {
   CheckError(TTF_SetTextPosition(text, p.x, p.y));
 }
 
-inline void Text::SetPosition(Point p) { SDL::SetTextPosition(m_resource, p); }
+inline void Text::SetPosition(const PointRaw& p)
+{
+  SDL::SetTextPosition(m_resource, p);
+}
 
 /**
  * Get the position of a text object.

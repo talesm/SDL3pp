@@ -96,11 +96,11 @@ struct AnimationConstParam
 };
 
 /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
-#define SDL_IMAGE_MAJOR_VERSION 3
+#define SDL_IMAGE_MAJOR_VERSION
 
-#define SDL_IMAGE_MINOR_VERSION 2
+#define SDL_IMAGE_MINOR_VERSION
 
-#define SDL_IMAGE_MICRO_VERSION 5
+#define SDL_IMAGE_MICRO_VERSION
 
 /// This is the version number macro for the current SDL_image version.
 #define SDL_IMAGE_VERSION                                                      \
