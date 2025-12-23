@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.5.7
+
+Quick fix build of SDL_ttf against version 3.2.2 and 3.2.0.
+
+- Fix SDL_ttf build;
+- Make source from transformation independent from the linked one;
+
 ## Version 0.5.6
 
 Fix error ".../docs/Doxyfile not found" when trying to include CMakeLists from

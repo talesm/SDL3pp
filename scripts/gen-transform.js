@@ -5,7 +5,7 @@ import baseVersions from "./base.json" with { type: 'json' };
  * @import {ApiTransform} from "./cppfier/types"
  */
 
-const currentVersion = ["0", "5", "6"];
+const currentVersion = ["0", "5", "7"];
 
 /** @type {ApiTransform} */
 const transform = {
