@@ -7835,8 +7835,9 @@ const transform = {
           enum: "TTF_IMAGE_",
           before: "TTF_Font",
         },
-        "TTF_PROP_FONT_CREATE_EXISTING_FONT_POINTER": {
-          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        "TTF_PROP_FONT_CREATE_EXISTING_FONT": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 },
+          name: "CREATE_EXISTING_FONT_POINTER"
         },
         "TTF_Font": {
           resource: true,
@@ -7874,7 +7875,10 @@ const transform = {
             "TTF_GetFontHinting": "immutable",
             "TTF_SetFontSDF": "function",
             "TTF_GetFontSDF": "immutable",
-            "TTF_GetFontWeight": "immutable",
+            "TTF_GetFontWeight": {
+              immutable: true,
+              since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 },
+            },
             "TTF_SetFontWrapAlignment": "function",
             "TTF_GetFontWrapAlignment": "immutable",
             "TTF_GetFontHeight": "immutable",
@@ -8331,17 +8335,17 @@ const transform = {
             parameters: [{ type: "TextEngineRaw" }],
           }
         },
-        "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER_POINTER": {
-          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
         },
-        "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER": {
-          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
         },
-        "TTF_PROP_GPU_TEXT_ENGINE_DEVICE_POINTER": {
-          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        "TTF_PROP_GPU_TEXT_ENGINE_DEVICE": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
         },
-        "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE_NUMBER": {
-          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 3 }
+        "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": {
+          since: { tag: "SDL_TTF", major: 3, minor: 2, patch: 2 }
         },
         "TTF_Text": {
           resource: true,
@@ -8428,15 +8432,18 @@ const transform = {
             "TTF_GetTextColor": "immutable",
             "TTF_GetTextColorFloat": "immutable",
             "TTF_SetTextPosition": {
-              "static": false,
-              "parameters": [
-                {
-                  "type": "Point",
-                  "name": "p"
-                }
-              ]
+              type: "void",
+              parameters: [
+                {},
+                { type: "const PointRaw &", name: "p" }
+              ],
+              hints: { mayFail: true },
             },
-            "TTF_GetTextPosition": "immutable",
+            "TTF_GetTextPosition": {
+              immutable: true,
+              type: "void",
+              hints: { mayFail: true },
+            },
             "TTF_SetTextWrapWidth": "function",
             "TTF_GetTextWrapWidth": {
               "immutable": true,

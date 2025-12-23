@@ -8,13 +8,13 @@
   "SDL_IMAGE": {
     "tag": "SDL_IMAGE",
     "major": 3,
-    "minor": 4,
-    "patch": 0
+    "minor": 2,
+    "patch": 4
   },
   "SDL_TTF": {
     "tag": "SDL_TTF",
     "major": 3,
     "minor": 2,
-    "patch": 0
+    "patch": 2
   }
 }
