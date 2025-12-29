@@ -10890,7 +10890,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Palette(const Palette& other) { ++m_resource->refcount; }
+  constexpr Palette(const Palette& other)
+    : m_resource(other.m_resource)
+  {
+    ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Palette(Palette&& other) noexcept
@@ -40899,7 +40903,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Surface(const Surface& other) { ++m_resource->refcount; }
+  constexpr Surface(const Surface& other)
+    : m_resource(other.m_resource)
+  {
+    ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Surface(Surface&& other) noexcept
@@ -79177,7 +79185,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Texture(const Texture& other) { ++m_resource->refcount; }
+  constexpr Texture(const Texture& other)
+    : m_resource(other.m_resource)
+  {
+    ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Texture(Texture&& other) noexcept

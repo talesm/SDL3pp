@@ -2154,7 +2154,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Texture(const Texture& other) { ++m_resource->refcount; }
+  constexpr Texture(const Texture& other)
+    : m_resource(other.m_resource)
+  {
+    ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Texture(Texture&& other) noexcept

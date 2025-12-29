@@ -237,17 +237,19 @@ function generateFile(targetFile: ApiFile, config: GenerateApiFileConfig) {
     if (hint?.delete) return " = delete;";
     if (hint?.default) return " = default;";
     if (!entry.proto) {
+      let body = "";
       if (hint?.body) {
-        return `\n${prefix}{\n${prefix}  ${hint.body.replaceAll(
+        body = `\n${prefix}{\n${prefix}  ${hint.body.replaceAll(
           "\n",
           `\n${prefix}  `
         )}\n${prefix}}`;
       }
+      let init = "";
       if (hint?.init?.length) {
-        return `\n${prefix}  : ${hint.init.join(
-          `\n${prefix}  , `
-        )}\n${prefix}{}`;
+        init = `\n${prefix}  : ${hint.init.join(`\n${prefix}  , `)}`;
+        if (!body) body = `\n${prefix}{}`;
       }
+      if (init || body) return init + body;
     }
     const maybeDelegatedTo = hint?.delegate ?? entry.sourceName;
     const delegatedTo =

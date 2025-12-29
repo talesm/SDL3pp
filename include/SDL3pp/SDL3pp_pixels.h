@@ -2496,7 +2496,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Palette(const Palette& other) { ++m_resource->refcount; }
+  constexpr Palette(const Palette& other)
+    : m_resource(other.m_resource)
+  {
+    ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Palette(Palette&& other) noexcept

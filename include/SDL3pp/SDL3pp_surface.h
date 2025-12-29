@@ -221,7 +221,11 @@ public:
   }
 
   /// Copy constructor
-  constexpr Surface(const Surface& other) { ++m_resource->refcount; }
+  constexpr Surface(const Surface& other)
+    : m_resource(other.m_resource)
+  {
+    ++m_resource->refcount;
+  }
 
   /// Move constructor
   constexpr Surface(Surface&& other) noexcept
