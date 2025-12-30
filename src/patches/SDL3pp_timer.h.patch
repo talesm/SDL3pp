@@ -1,6 +1,6 @@
 --- src/generated/SDL3pp_timer.h
 +++ include/SDL3pp/SDL3pp_timer.h
-@@ -7,40 +7,46 @@
+@@ -7,41 +7,43 @@
  namespace SDL {
  
  /**
@@ -14,7 +14,7 @@
 - * by [CategoryTime](CategoryTime).
 + * by [CategoryTime](#CategoryTime).
   *
-  * This category covers measuring time elapsed (SDL_GetTicks(),
+  * This category covers measuring time elapsed (GetTicks(),
   * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
   * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
   * after a certain amount of time has elapsed (SDL_AddTimer(), etc).
@@ -38,27 +38,46 @@
 +}
  
  /**
-- * Get the number of nanoseconds since SDL library initialization.
+- * Get the number of milliseconds that have elapsed since the SDL library
+- * initialization.
 + * Get the time elapsed since SDL library initialization.
   *
-- * @returns an unsigned 64-bit value representing the number of nanoseconds
-- *          since the SDL library initialized.
+- * @returns an unsigned 64‑bit integer that represents the number of
+- *          milliseconds that have elapsed since the SDL library was initialized
+- *          (typically via a call to Init).
 + * @returns a std::chrono::nanoseconds value representing the number of
-+ * nanoseconds since the SDL library initialized.
++ *          nanoseconds since the SDL library initialized.
   *
   * @threadsafety It is safe to call this function from any thread.
   *
   * @since This function is available since SDL 3.2.0.
+  *
++ * @sa GetTicksMS
+  * @sa GetTicksNS
   */
--inline std::chrono::nanoseconds GetTicks() { return SDL_GetTicksNS(); }
-+inline std::chrono::nanoseconds GetTicks()
-+{
-+  return std::chrono::nanoseconds{SDL_GetTicksNS()};
-+}
+ inline std::chrono::nanoseconds GetTicks()
+@@ -49,6 +51,20 @@
+   return std::chrono::nanoseconds(SDL_GetTicksNS());
+ }
+ 
++/**
++ * Get the number of milliseconds that have elapsed since the SDL library
++ * initialization.
++ *
++ * @returns an unsigned 64‑bit integer that represents the number of
++ *          milliseconds that have elapsed since the SDL library was initialized
++ *          (typically via a call to Init).
++ *
++ * @threadsafety It is safe to call this function from any thread.
++ *
++ * @since This function is available since SDL 3.2.0.
++ *
++ * @sa GetTicksNS
++ */
+ inline Uint64 GetTicksMS() { return SDL_GetTicks(); }
  
  /**
-  * Get the current value of the high resolution counter.
-@@ -77,41 +83,42 @@
+@@ -98,41 +114,42 @@
  }
  
  /**
@@ -111,7 +130,7 @@
  }
  
  /**
-@@ -169,6 +176,8 @@
+@@ -190,6 +207,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -120,7 +139,7 @@
   * @sa AddTimer
   *
   * @sa TimerCallback
-@@ -186,7 +195,7 @@
+@@ -207,7 +226,7 @@
    template<std::invocable<TimerID, std::chrono::nanoseconds> F>
    static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
    {
@@ -129,8 +148,8 @@
    }
  };
  
-@@ -209,24 +218,25 @@
-  * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+@@ -230,24 +249,25 @@
+  * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
 - * @param interval the timer delay, in nanoseconds, passed to `callback`.
@@ -160,8 +179,8 @@
  }
  
  /**
-@@ -248,22 +258,25 @@
-  * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+@@ -269,22 +289,25 @@
+  * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
 - * @param interval the timer delay, in nanoseconds, passed to `callback`.

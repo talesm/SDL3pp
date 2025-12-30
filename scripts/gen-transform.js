@@ -7231,7 +7231,6 @@ const transform = {
     "SDL_timer.h": {
       localIncludes: ["SDL3pp_stdinc.h"],
       ignoreEntries: [
-        "SDL_GetTicks",
         "SDL_TimerCallback",
         "SDL_AddTimer",
         "SDL_DelayNS",
@@ -7267,9 +7266,15 @@ const transform = {
           "immutable": true,
           "parameters": []
         },
-        "SDL_GetTicksNS": {
-          "name": "GetTicks",
-          "type": "std::chrono::nanoseconds"
+        "SDL_GetTicks": {
+          type: "std::chrono::nanoseconds",
+          hints: { body: "return std::chrono::nanoseconds(SDL_GetTicksNS());" },
+        },
+        "GetTicksMS": {
+          kind: "function",
+          type: "Uint64",
+          parameters: [],
+          hints: { body: "return SDL_GetTicks();" },
         },
         "SDL_Delay": {
           "parameters": [

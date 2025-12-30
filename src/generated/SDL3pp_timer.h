@@ -15,7 +15,7 @@ namespace SDL {
  * This is not to be confused with _calendar time_ management, which is provided
  * by [CategoryTime](CategoryTime).
  *
- * This category covers measuring time elapsed (SDL_GetTicks(),
+ * This category covers measuring time elapsed (GetTicks(),
  * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
  * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
  * after a certain amount of time has elapsed (SDL_AddTimer(), etc).
@@ -31,6 +31,27 @@ constexpr Time Time::FromPosix(Sint64 time) { return SDL_SECONDS_TO_NS(time); }
 constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
 
 /**
+ * Get the number of milliseconds that have elapsed since the SDL library
+ * initialization.
+ *
+ * @returns an unsigned 64‑bit integer that represents the number of
+ *          milliseconds that have elapsed since the SDL library was initialized
+ *          (typically via a call to Init).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTicksNS
+ */
+inline std::chrono::nanoseconds GetTicks()
+{
+  return std::chrono::nanoseconds(SDL_GetTicksNS());
+}
+
+inline Uint64 GetTicksMS() { return SDL_GetTicks(); }
+
+/**
  * Get the number of nanoseconds since SDL library initialization.
  *
  * @returns an unsigned 64-bit value representing the number of nanoseconds
@@ -40,7 +61,7 @@ constexpr Sint64 Time::ToPosix() const { return SDL_NS_TO_SECONDS(m_time); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline std::chrono::nanoseconds GetTicks() { return SDL_GetTicksNS(); }
+inline Uint64 GetTicksNS() { return SDL_GetTicksNS(); }
 
 /**
  * Get the current value of the high resolution counter.
@@ -206,7 +227,7 @@ struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
  * the timer would only wait another 750 ns before its next iteration.
  *
  * Timing may be inexact due to OS scheduling. Be sure to note the current time
- * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+ * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
  * adjust for variances.
  *
  * @param interval the timer delay, in nanoseconds, passed to `callback`.
@@ -245,7 +266,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * the timer would only wait another 750 ns before its next iteration.
  *
  * Timing may be inexact due to OS scheduling. Be sure to note the current time
- * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+ * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
  * adjust for variances.
  *
  * @param interval the timer delay, in nanoseconds, passed to `callback`.
