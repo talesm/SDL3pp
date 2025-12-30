@@ -141,7 +141,7 @@
 + *
   * @sa AddTimer
   *
-  * @sa TimerCallback
+  * @sa NSTimerCallback
 @@ -276,7 +284,7 @@
    template<std::invocable<TimerID, std::chrono::nanoseconds> F>
    static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
@@ -174,7 +174,7 @@
   * @sa RemoveTimer
   */
  inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                         TimerCallback callback,
+                         NSTimerCallback callback,
                          void* userdata)
  {
 -  return SDL_AddTimerNS(interval, callback, userdata);

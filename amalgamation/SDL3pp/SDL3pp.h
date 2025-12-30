@@ -33085,9 +33085,9 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = Uint64(SDLCALL*)(void* userdata,
-                                       TimerID timerID,
-                                       Uint64 interval);
+using NSTimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                         TimerID timerID,
+                                         Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.
@@ -33113,7 +33113,7 @@ using TimerCallback = Uint64(SDLCALL*)(void* userdata,
  *
  * @sa AddTimer
  *
- * @sa TimerCallback
+ * @sa NSTimerCallback
  */
 struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
 {
@@ -33166,7 +33166,7 @@ struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
  * @sa RemoveTimer
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        TimerCallback callback,
+                        NSTimerCallback callback,
                         void* userdata)
 {
   return CheckError(SDL_AddTimerNS(interval.count(), callback, userdata));

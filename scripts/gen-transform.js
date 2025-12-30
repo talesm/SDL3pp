@@ -7295,10 +7295,8 @@ const transform = {
           }]
         },
         "SDL_NSTimerCallback": {
-          name: "TimerCallback",
-          type: "SDL_NSTimerCallback",
-          kind: "alias",
           callback: {
+            wrapper: "TimerCB",
             functorSupport: "lightweight",
             type: "std::chrono::nanoseconds",
             parameters: [{
@@ -7318,7 +7316,7 @@ const transform = {
               name: "interval"
             },
             {
-              type: "TimerCallback",
+              type: "NSTimerCallback",
               name: "callback"
             },
             {
