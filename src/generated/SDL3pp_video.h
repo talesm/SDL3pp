@@ -849,7 +849,26 @@ public:
 
   constexpr Window(WindowRef&& other) = delete;
 
-  /// Default ctor
+  /**
+   * Create a window and default renderer.
+   *
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param width the width of the window.
+   * @param height the height of the window.
+   * @param window_flags the flags used to create the window (see
+   *                     Window.Window()).
+   * @param window a pointer filled with the window, or nullptr on error.
+   * @param renderer a pointer filled with the renderer, or nullptr on error.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.Renderer
+   * @sa Window.Window
+   */
   Window(StringParam title,
          const PointRaw& size,
          WindowFlags window_flags,

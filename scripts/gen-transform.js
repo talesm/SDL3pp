@@ -4744,7 +4744,8 @@ const transform = {
           }],
           hints: {
             mayFail: true,
-            init: ["Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"]
+            init: ["Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"],
+            copyDoc: "SDL_CreateWindowAndRenderer",
           },
         },
         "SDL_GetRenderer": {
