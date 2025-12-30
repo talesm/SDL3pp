@@ -157,10 +157,10 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #define SDL3PP_MAJOR_VERSION 0
 
 /// The current minor version of SDL3pp wrapper.
-#define SDL3PP_MINOR_VERSION 5
+#define SDL3PP_MINOR_VERSION 6
 
 /// The current patch version of SDL3pp wrapper.
-#define SDL3PP_PATCH_VERSION 8
+#define SDL3PP_PATCH_VERSION 0
 
 /// This is the version number macro for the current SDL3pp wrapper version.
 #define SDL3PP_VERSION                                                         \

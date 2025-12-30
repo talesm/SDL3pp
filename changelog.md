@@ -1,5 +1,25 @@
 # Changelog
 
+## Version 0.6.0
+
+Undo some "smarty" changes.
+
+- Simplify CreateWindowAndRenderer:
+  - Add overload CreateWindowAndRenderer that take pointers instead of returning
+    pair;
+  - Add overload CreateWindowAndRenderer that returns Window;
+  - Add overload to Window::Window that creates renderer
+- Make free standing version of Random;
+- Simplify timer functions:
+  - GetTicksMS and GetTicksNS that return integers;
+  - Delay overload takes integers type;
+  - DelayPrecise overload takes integer type;
+  - AddTimer accepting SDL_AddTimer callback;
+  - Add MSTimerCallback for millisecond precision callbacks;
+  - Rename TimerCallback to NSTimerCallback, to make clear we are using
+    Nanoseconds here;
+- Merge preview 3.3.x, you should be able to use this with prerelease 3.3.6;
+
 ## Version 0.5.8
 
 Quick fix Surface, Texture and Palette copy constructors
