@@ -4490,10 +4490,66 @@ const transform = {
             "SDL_CreateSoftwareRenderer": "ctor",
           }
         },
+        "CreateWindowAndRendererRaw": {
+          before: "SDL_CreateWindowAndRenderer",
+          kind: "function",
+          type: "void",
+          parameters: [
+            {
+              type: "StringParam",
+              name: "title"
+            },
+            {
+              type: "const PointRaw &",
+              name: "size"
+            },
+            {
+              type: "WindowFlags",
+              name: "window_flags"
+            },
+            {
+              type: "WindowRaw *",
+              name: "window"
+            },
+            {
+              type: "RendererRaw *",
+              name: "renderer"
+            }
+          ],
+        },
         "SDL_CreateWindowAndRenderer": {
+          type: "void",
+          parameters: [
+            {
+              type: "StringParam",
+              name: "title"
+            },
+            {
+              type: "const PointRaw &",
+              name: "size"
+            },
+            {
+              type: "WindowFlags",
+              name: "window_flags"
+            },
+            {
+              type: "Window *",
+              name: "window"
+            },
+            {
+              type: "Renderer *",
+              name: "renderer"
+            }
+          ],
+        },
+        "CreateWindowAndRenderer": {
+          kind: "function",
           type: "std::pair<Window, Renderer>",
           parameters: [
-            {},
+            {
+              type: "StringParam",
+              name: "title"
+            },
             {
               type: "const PointRaw &",
               name: "size"

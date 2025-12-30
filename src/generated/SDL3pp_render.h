@@ -3125,6 +3125,44 @@ inline const char* GetRenderDriver(int index)
   return SDL_GetRenderDriver(index);
 }
 
+inline void CreateWindowAndRendererRaw(StringParam title,
+                                       const PointRaw& size,
+                                       WindowFlags window_flags,
+                                       WindowRaw* window,
+                                       RendererRaw* renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
+/**
+ * Create a window and default renderer.
+ *
+ * @param title the title of the window, in UTF-8 encoding.
+ * @param width the width of the window.
+ * @param height the height of the window.
+ * @param window_flags the flags used to create the window (see
+ *                     Window.Window()).
+ * @param window a pointer filled with the window, or nullptr on error.
+ * @param renderer a pointer filled with the renderer, or nullptr on error.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.Renderer
+ * @sa Window.Window
+ */
+inline void CreateWindowAndRenderer(StringParam title,
+                                    const PointRaw& size,
+                                    WindowFlags window_flags,
+                                    Window* window,
+                                    Renderer* renderer)
+{
+  CheckError(
+    SDL_CreateWindowAndRenderer(title, size, window_flags, window, renderer));
+}
+
 /**
  * Create a window and default renderer.
  *
@@ -3149,7 +3187,7 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   const PointRaw& size,
   WindowFlags window_flags = 0)
 {
-  return CheckError(SDL_CreateWindowAndRenderer(title, size, window_flags));
+  static_assert(false, "Not implemented");
 }
 
 /**

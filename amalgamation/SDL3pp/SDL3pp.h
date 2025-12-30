@@ -80214,6 +80214,66 @@ inline const char* GetRenderDriver(int index)
  * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
  *                     Window.Window()).
+ * @param window a pointer filled with the window, or nullptr on error.
+ * @param renderer a pointer filled with the renderer, or nullptr on error.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.Renderer
+ * @sa Window.Window
+ */
+inline void CreateWindowAndRendererRaw(StringParam title,
+                                       const PointRaw& size,
+                                       WindowFlags window_flags,
+                                       WindowRaw* window,
+                                       RendererRaw* renderer)
+{
+  CheckError(SDL_CreateWindowAndRenderer(
+    title, size.x, size.y, window_flags, window, renderer));
+}
+
+/**
+ * Create a window and default renderer.
+ *
+ * @param title the title of the window, in UTF-8 encoding.
+ * @param size the width and height of the window.
+ * @param window_flags the flags used to create the window (see
+ *                     Window.Window()).
+ * @param window a pointer filled with the window, or nullptr on error.
+ * @param renderer a pointer filled with the renderer, or nullptr on error.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.Renderer
+ * @sa Window.Window
+ */
+inline void CreateWindowAndRenderer(StringParam title,
+                                    const PointRaw& size,
+                                    WindowFlags window_flags,
+                                    Window* window,
+                                    Renderer* renderer)
+{
+  SDL_Window* windowRaw = nullptr;
+  SDL_Renderer* rendererRaw = nullptr;
+  CreateWindowAndRendererRaw(
+    std::move(title), size, window_flags, &windowRaw, &rendererRaw);
+  if (window) *window = Window{windowRaw};
+  if (renderer) *renderer = Renderer{rendererRaw};
+}
+
+/**
+ * Create a window and default renderer.
+ *
+ * @param title the title of the window, in UTF-8 encoding.
+ * @param size the width and height of the window.
+ * @param window_flags the flags used to create the window (see
+ *                     Window.Window()).
  * @returns a pair with window and renderer.
  * @throws Error on failure.
  *
@@ -80231,8 +80291,8 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 {
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;
-  CheckError(SDL_CreateWindowAndRenderer(
-    title, size.x, size.y, window_flags, &window, &renderer));
+  CreateWindowAndRendererRaw(
+    std::move(title), size, window_flags, &window, &renderer);
   return {Window{window}, Renderer(renderer)};
 }
 
