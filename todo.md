@@ -18,10 +18,16 @@ New Version checklist:
 Next version
 ------------
 
-Simplify generation
+De-smart-fy
 
-- [x] Make source from transformation independent from the linked one;
-- [x] Fix SDL_ttf build;
+- [x] Simplify CreateWindowAndRenderer
+  - [x] Add overload CreateWindowAndRenderer that take pointers instead of
+    returning pair;
+  - [x] Add overload CreateWindowAndRenderer that returns Window;
+  - [x] Add overload to Window::Window that creates renderer
+- [x] Make free standing version of Random;
+- [ ] Add named versions Delay that takes integer;
+- [x] Merge preview 3.3.x;
 
 Backlog
 -------

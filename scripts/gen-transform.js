@@ -5,7 +5,7 @@ import baseVersions from "./base.json" with { type: 'json' };
  * @import {ApiTransform} from "./cppfier/types"
  */
 
-const currentVersion = ["0", "5", "7"];
+const currentVersion = ["0", "5", "8"];
 
 /** @type {ApiTransform} */
 const transform = {
@@ -4638,20 +4638,114 @@ const transform = {
             "SDL_CreateSoftwareRenderer": "ctor",
           }
         },
+        "CreateWindowAndRendererRaw": {
+          before: "SDL_CreateWindowAndRenderer",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "WindowRaw *",
+            name: "window"
+          },
+          {
+            type: "RendererRaw *",
+            name: "renderer"
+          }],
+        },
         "SDL_CreateWindowAndRenderer": {
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "Window *",
+            name: "window"
+          },
+          {
+            type: "Renderer *",
+            name: "renderer"
+          }],
+        },
+        "CreateWindowAndRenderer": {
+          kind: "function",
           type: "std::pair<Window, Renderer>",
-          parameters: [
-            {},
-            {
-              type: "const PointRaw &",
-              name: "size"
-            },
-            {
-              type: "WindowFlags",
-              name: "window_flags",
-              default: "0"
-            }
-          ]
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags",
+            default: "0"
+          }]
+        },
+        "CreateWindowAndRenderer#2": {
+          kind: "function",
+          name: "CreateWindowAndRenderer",
+          type: "Window",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "Renderer *",
+            name: "renderer"
+          }]
+        },
+        "Window::Window": {
+          kind: "function",
+          type: "",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "RendererRef *",
+            name: "renderer"
+          }],
+          hints: {
+            mayFail: true,
+            init: ["Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"]
+          },
         },
         "SDL_GetRenderer": {
           name: "Window::GetRenderer",
@@ -6024,7 +6118,7 @@ const transform = {
         "SDL_sqrtf": { name: "sqrt" },
         "SDL_tanf": { name: "tan" },
         "Random": {
-          after: "SDL_rand_bits",
+          before: "SDL_rand",
           kind: "struct",
           entries: {
             "m_state": {
@@ -6035,7 +6129,11 @@ const transform = {
               kind: "function",
               constexpr: true,
               type: "",
-              parameters: []
+              parameters: [],
+              hints: {
+                changeAccess: "public",
+                init: ["m_state(0)"],
+              },
             },
             "Random#2": {
               kind: "function",
@@ -6045,37 +6143,83 @@ const transform = {
               parameters: [{
                 type: "Uint64",
                 name: "state"
-              }]
+              }],
+              hints: { init: ["m_state(state)"] },
             },
             "operator Uint64": {
               kind: "function",
               constexpr: true,
+              immutable: true,
               type: "",
-              parameters: []
+              parameters: [],
+              hints: { body: "return m_state;" },
             },
-            "SDL_rand_r": {
-              name: "rand",
+            "rand": {
+              kind: "function",
+              type: "Sint32",
               static: false,
               parameters: [{
                 type: "Sint32",
                 name: "n"
-              }]
+              }],
+              hints: { body: "return SDL_rand_r(&m_state, n);" },
             },
-            "SDL_randf_r": {
-              name: "randf",
+            "randf": {
+              kind: "function",
               static: false,
-              parameters: []
+              type: "float",
+              parameters: [],
+              hints: { body: "return SDL_randf_r(&m_state);" },
             },
-            "SDL_rand_bits_r": {
-              name: "rand_bits",
+            "rand_bits": {
+              kind: "function",
               static: false,
-              parameters: []
+              type: "Uint32",
+              parameters: [],
+              hints: { body: "return SDL_rand_bits_r(&m_state);" },
             }
-          }
+          },
+          hints: { private: true },
         },
-        "SDL_rand_r": {},
-        "SDL_randf_r": {},
-        "SDL_rand_bits_r": {},
+        "SDL_rand_r": {
+          name: "rand",
+        },
+        "rand": {
+          kind: "function",
+          type: "Sint32",
+          parameters: [{
+            type: "Random &",
+            name: "state"
+          }, {
+            type: "Sint32",
+            name: "n"
+          }],
+          hints: { body: "return state.rand(n);" },
+        },
+        "SDL_randf_r": {
+          name: "randf",
+        },
+        "randf": {
+          kind: "function",
+          type: "float",
+          parameters: [{
+            type: "Random &",
+            name: "state"
+          }],
+          hints: { body: "return state.randf();" },
+        },
+        "SDL_rand_bits_r": {
+          name: "rand_bits",
+        },
+        "rand_bits": {
+          kind: "function",
+          type: "Uint32",
+          parameters: [{
+            type: "Random &",
+            name: "state"
+          }],
+          hints: { body: "return state.rand_bits();" },
+        },
         "qsort_r": {
           after: "SDL_qsort_r",
           kind: "function",

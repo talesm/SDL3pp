@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.8
+
+Quick fix Surface, Texture and Palette copy constructors
+
 ## Version 0.5.7
 
 Quick fix build of SDL_ttf against version 3.2.2 and 3.2.0.
