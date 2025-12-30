@@ -405,7 +405,7 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
  * and Time.FromWindows().
  *
- * @since This type is available since SDL 3.2.0.
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @sa MAX_SINT64
  * @sa MIN_SINT64
@@ -1985,7 +1985,7 @@ constexpr T min(T x, U y)
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
- * @returns the lesser of `x` and `y`.
+ * @returns the greater of `x` and `y`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2533,7 +2533,7 @@ inline void zerop(T* x)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
- * @sa zeroa
+ * @sa zerop
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])
@@ -4337,9 +4337,7 @@ public:
   {
   }
 
-  /**
-   * Init state with the given value
-   */
+  /// Init state with the given value
   constexpr explicit Random(Uint64 state)
     : m_state(state)
   {
@@ -4503,12 +4501,11 @@ inline Sint32 rand(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
  * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
  * much worse as n gets bigger.
  *
- * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to 1..6
+ * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+ * 1..6
  *
  * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)rand_bits()
- *
- * If you want reproducible output, be sure to initialize with srand() first.
+ * you should use: (Sint32)rand_bits(state)
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -4516,14 +4513,18 @@ inline Sint32 rand(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
  * libraries available with different characteristics and you should pick one of
  * those to meet any serious needs.
  *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
  * @param n the number of possible outcomes. n must be positive.
  * @returns a random value in the range of [0 .. n-1].
  *
- * @threadsafety All calls should be made from a single thread
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa srand
+ * @sa rand
+ * @sa rand_bits
  * @sa randf
  */
 inline Sint32 rand(Random& state, Sint32 n) { return state.rand(n); }
@@ -4587,14 +4588,18 @@ inline float randf(Uint64* state) { return SDL_randf_r(state); }
  * libraries available with different characteristics and you should pick one of
  * those to meet any serious needs.
  *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
  * @returns a random value in the range of [0.0, 1.0).
  *
- * @threadsafety All calls should be made from a single thread
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa srand
+ * @sa rand_bits
  * @sa rand
+ * @sa randf
  */
 inline float randf(Random& state) { return state.randf(); }
 
@@ -4661,13 +4666,13 @@ inline Uint32 rand_bits(Uint64* state) { return SDL_rand_bits_r(state); }
  *              nullptr.
  * @returns a random value in the range of [0-MAX_UINT32].
  *
- * @threadsafety All calls should be made from a single thread
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa rand
  * @sa randf
- * @sa srand
  */
 inline Uint32 rand_bits(Random& state) { return state.rand_bits(); }
 
@@ -4939,7 +4944,7 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4967,7 +4972,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -5161,7 +5166,7 @@ inline float exp(float x) { return SDL_expf(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -5189,7 +5194,7 @@ inline double floor(double x) { return SDL_floor(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -6382,7 +6387,7 @@ constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using FunctionPointer = SDL_FunctionPointer;
+using FunctionPointer = void(SDLCALL*)();
 
 /// @}
 

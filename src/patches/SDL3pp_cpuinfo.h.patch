@@ -1,6 +1,6 @@
 --- src/generated/SDL3pp_cpuinfo.h
 +++ include/SDL3pp/SDL3pp_cpuinfo.h
-@@ -7,7 +7,7 @@
+@@ -8,7 +8,7 @@
  namespace SDL {
  
  /**

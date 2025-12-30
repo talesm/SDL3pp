@@ -151,10 +151,12 @@ using DialogFileCB =
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. Not all platforms support
- *                this option, and platforms that do support it may allow the
- *                user to ignore the filters. If non-nullptr, it must remain
- *                valid at least until the callback is invoked.
+ * @param filters a list of filters, may be nullptr. See the
+ *                [`DialogFileFilter`](DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user to
+ *                ignore the filters. If non-nullptr, it must remain valid at
+ *                least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -213,10 +215,12 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  *                 and accepts, or cancels the dialog, or an error occurs.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. Not all platforms support
- *                this option, and platforms that do support it may allow the
- *                user to ignore the filters. If non-nullptr, it must remain
- *                valid at least until the callback is invoked.
+ * @param filters a list of filters, may be nullptr. See the
+ *                [`DialogFileFilter`](DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user to
+ *                ignore the filters. If non-nullptr, it must remain valid at
+ *                least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.

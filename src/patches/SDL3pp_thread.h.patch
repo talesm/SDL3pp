@@ -9,7 +9,16 @@
   *
   * SDL offers cross-platform thread management functions. These are mostly
   * concerned with starting threads, setting their priority, and dealing with
-@@ -138,7 +138,6 @@
+@@ -24,7 +24,7 @@
+  *
+  * If you're going to work with threads, you almost certainly need to have a
+  * good understanding of thread safety measures: locking and synchronization
+- * mechanisms are handled by the functions in SDL_mutex.h.
++ * mechanisms are handled by the functions in SDL3pp_mutex.h.
+  *
+  * @{
+  */
+@@ -139,7 +139,6 @@
  /**
   * The function passed to Thread.Thread() as the new thread's entry point.
   *

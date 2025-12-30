@@ -34,7 +34,7 @@ namespace SDL {
  *
  * For more information, see:
  *
- * https://wiki.libsdl.org/SDL3/README/main-functions
+ * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @{
  */
@@ -47,7 +47,7 @@ namespace SDL {
  * proper entry point for the platform, and all the other magic details needed,
  * like manually calling SetMainReady.
  *
- * Please see [README/main-functions](README/main-functions), (or
+ * Please see [README-main-functions](README-main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
  * explanation.
  *
@@ -64,7 +64,7 @@ namespace SDL {
  * SDL_AppQuit. The app should not provide a `main` function in this case, and
  * doing so will likely cause the build to fail.
  *
- * Please see [README/main-functions](README/main-functions), (or
+ * Please see [README-main-functions](README-main-functions), (or
  * docs/README-main-functions.md in the source tree) for a more detailed
  * explanation.
  *
@@ -112,6 +112,9 @@ inline void SetMainReady() { SDL_SetMainReady(); }
  * You can use this if you want to use your own main() implementation without
  * using SDL_main (like when using SDL3PP_MAIN_HANDLED). When using this, you do
  * *not* need SetMainReady().
+ *
+ * If `argv` is nullptr, SDL will provide command line arguments, either by
+ * querying the OS for them if possible, or supplying a filler array if not.
  *
  * @param argc the argc parameter from the application's main() function, or 0
  *             if the platform's main-equivalent has no argc.
@@ -186,11 +189,12 @@ inline int EnterAppMainCallbacks(int argc,
  * Most applications do not need to, and should not, call this directly; SDL
  * will call it when initializing the video subsystem.
  *
+ * If `name` is nullptr, SDL currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)`
+ * for the style, regardless of what is specified here.
+ *
  * @param name the window class name, in UTF-8 encoding. If nullptr, SDL
  *             currently uses "SDL_app" but this isn't guaranteed.
- * @param style the value to use in WNDCLASSEX::style. If `name` is nullptr, SDL
- *              currently uses `(CS_BYTEALIGNCLIENT | CS_OWNDC)` regardless of
- *              what is specified here.
+ * @param style the value to use in WNDCLASSEX::style.
  * @param hInst the HINSTANCE to use in WNDCLASSEX::hInstance. If zero, SDL will
  *              use `GetModuleHandle(nullptr)` instead.
  * @returns true on success or false on failure; call GetError() for more

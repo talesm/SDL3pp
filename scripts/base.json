@@ -2,8 +2,8 @@
   "SDL": {
     "tag": "SDL",
     "major": 3,
-    "minor": 2,
-    "patch": 28
+    "minor": 3,
+    "patch": 6
   },
   "SDL_IMAGE": {
     "tag": "SDL_IMAGE",

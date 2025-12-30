@@ -18,7 +18,7 @@
  /**
   * The level of assertion aggressiveness.
   *
-@@ -124,7 +126,7 @@
+@@ -146,7 +148,7 @@
   * To use:
   *
   * ```c
@@ -27,7 +27,7 @@
   * ```
   *
   * @since This macro is available since SDL 3.2.0.
-@@ -150,6 +152,8 @@
+@@ -172,6 +174,8 @@
      (void)sizeof((condition));                                                 \
    } while (SDL_NULL_WHILE_LOOP_CONDITION)
  
@@ -36,7 +36,7 @@
  /**
   * Possible outcomes from a triggered assertion.
   *
-@@ -214,6 +218,8 @@
+@@ -236,6 +240,8 @@
    return SDL_ReportAssertion(data, func, file, line);
  }
  
@@ -45,7 +45,7 @@
  /**
   * The macro used when an assertion triggers a breakpoint.
   *
-@@ -315,7 +321,7 @@
+@@ -337,7 +343,7 @@
   * requires GUI interfaces to happen on the main thread but you're debugging an
   * assertion in a background thread, it might be desirable to set this to
   * "break" so that your debugger takes control as soon as assert is triggered,
@@ -54,7 +54,7 @@
   *
   * @param condition boolean value to test.
   *
-@@ -377,8 +383,10 @@
+@@ -399,8 +405,10 @@
   */
  #define SDL_assert_always(condition) SDL_enabled_assert(condition)
  
@@ -66,7 +66,7 @@
   *
   * @param data a pointer to the AssertData structure corresponding to the
   *             current assertion.
-@@ -435,7 +443,7 @@
+@@ -457,7 +465,7 @@
   */
  inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
  {
@@ -75,7 +75,7 @@
  }
  
  /**
-@@ -453,7 +461,6 @@
+@@ -475,7 +483,6 @@
   *
   * @param handler the AssertionHandler function to call when an assertion fails
   *                or nullptr for the default handler.
@@ -83,7 +83,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -463,7 +470,7 @@
+@@ -485,7 +492,7 @@
   */
  inline void SetAssertionHandler(AssertionHandlerCB handler)
  {
@@ -92,7 +92,7 @@
  }
  
  /**
-@@ -514,7 +521,6 @@
+@@ -536,7 +543,6 @@
  {
    return SDL_GetAssertionHandler(puserdata);
  }
@@ -100,16 +100,18 @@
  /**
   * Get a list of all assertion failures.
   *
-@@ -523,7 +529,7 @@
+@@ -545,8 +551,8 @@
   *
   * The proper way to examine this data looks something like this:
   *
 - * ```c
+- * const AssertData *item = GetAssertionReport();
 + * ```cpp
-  * const AssertData *item = GetAssertionReport();
++ * const AssertData *item = &GetAssertionReport();
   * while (item) {
   *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
-@@ -549,7 +555,7 @@
+  *           item->condition, item->function, item->filename,
+@@ -571,7 +577,7 @@
   */
  inline const AssertData& GetAssertionReport()
  {

@@ -1,6 +1,6 @@
 --- src/generated/SDL3pp_image.h
 +++ include/SDL3pp/SDL3pp_image.h
-@@ -1,17 +1,25 @@
+@@ -1,17 +1,20 @@
  #ifndef SDL3PP_IMAGE_H_
  #define SDL3PP_IMAGE_H_
  
@@ -11,11 +11,6 @@
  #include "SDL3pp_version.h"
  #include "SDL3pp_video.h"
  
-+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
-+  __has_include(<SDL3_image/SDL_image.h>)
-+#define SDL3PP_ENABLE_IMAGE
-+#endif
-+
 +#if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 +
 +#include <SDL3_image/SDL_image.h>
@@ -28,7 +23,7 @@
   *
   * Header file for SDL_image library
   *
-@@ -95,14 +103,24 @@
+@@ -95,14 +98,24 @@
    constexpr auto operator->() { return value; }
  };
  
@@ -55,7 +50,7 @@
  #define SDL_IMAGE_VERSION                                                      \
    SDL_VERSIONNUM(                                                              \
      SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_MICRO_VERSION)
-@@ -114,6 +132,8 @@
+@@ -114,6 +127,8 @@
     (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION > Y ||              \
      SDL_IMAGE_MICRO_VERSION >= Z))
  
@@ -64,7 +59,7 @@
  namespace IMG {
  
  /**
-@@ -123,12 +143,10 @@
+@@ -123,12 +138,10 @@
   *
   * @since This function is available since SDL_image 3.0.0.
   */
@@ -78,7 +73,7 @@
  /**
   * Load an image from an SDL data source into a software surface.
   *
-@@ -170,14 +188,11 @@
+@@ -170,14 +183,11 @@
   * images directly into an Texture for use by the GPU without using a software
   * surface: call LoadTextureTyped() instead.
   *
@@ -95,7 +90,7 @@
   * @returns a new SDL surface, or nullptr on error.
   *
   * @since This function is available since SDL_image 3.0.0.
-@@ -190,7 +205,7 @@
+@@ -190,7 +200,7 @@
                                  StringParam type,
                                  bool closeio = false)
  {
@@ -104,7 +99,7 @@
  }
  
  /**
-@@ -219,9 +234,6 @@
+@@ -219,9 +229,6 @@
   * images directly into an Texture for use by the GPU without using a software
   * surface: call Texture.Texture() instead.
   *
@@ -114,7 +109,7 @@
   * @param file a path on the filesystem to load an image from.
   * @returns a new SDL surface, or nullptr on error.
   *
-@@ -231,7 +243,7 @@
+@@ -231,7 +238,7 @@
   * @sa Surface.Surface
   * @sa Surface.Destroy
   */
@@ -123,7 +118,7 @@
  
  /**
   * Load an image from an SDL data source into a software surface.
-@@ -268,9 +280,6 @@
+@@ -268,9 +275,6 @@
   * images directly into an Texture for use by the GPU without using a software
   * surface: call Texture.Texture() instead.
   *
@@ -133,7 +128,7 @@
   * @param src an IOStream that data will be read from.
   * @param closeio true to close/free the IOStream before returning, false to
   *                leave it open.
-@@ -282,9 +291,9 @@
+@@ -282,9 +286,9 @@
   * @sa LoadSurfaceTyped
   * @sa Surface.Destroy
   */
@@ -145,7 +140,7 @@
  }
  
  inline Surface::Surface(StringParam file)
-@@ -316,9 +325,6 @@
+@@ -316,9 +320,6 @@
   * If you would rather decode an image to an Surface (a buffer of pixels in CPU
   * memory), call Surface.Surface() instead.
   *
@@ -155,7 +150,7 @@
   * @param renderer the Renderer to use to create the GPU texture.
   * @param file a path on the filesystem to load an image from.
   * @returns a new texture, or nullptr on error.
-@@ -330,7 +336,7 @@
+@@ -330,7 +331,7 @@
   */
  inline Texture LoadTexture(RendererParam renderer, StringParam file)
  {
@@ -164,7 +159,7 @@
  }
  
  /**
-@@ -361,9 +367,6 @@
+@@ -361,9 +362,6 @@
   * If you would rather decode an image to an Surface (a buffer of pixels in CPU
   * memory), call Surface.Surface() instead.
   *
@@ -174,7 +169,7 @@
   * @param renderer the Renderer to use to create the GPU texture.
   * @param src an IOStream that data will be read from.
   * @param closeio true to close/free the IOStream before returning, false to
-@@ -378,9 +381,9 @@
+@@ -378,9 +376,9 @@
   */
  inline Texture LoadTexture(RendererParam renderer,
                             IOStreamParam src,
@@ -186,7 +181,7 @@
  }
  
  inline Texture::Texture(RendererParam renderer, StringParam file)
-@@ -427,21 +430,17 @@
+@@ -427,21 +425,17 @@
   * If you would rather decode an image to an Surface (a buffer of pixels in CPU
   * memory), call LoadSurfaceTyped() instead.
   *
@@ -210,7 +205,7 @@
   * @sa Texture.Destroy
   */
  inline Texture LoadTextureTyped(RendererParam renderer,
-@@ -449,7 +448,7 @@
+@@ -449,7 +443,7 @@
                                  StringParam type,
                                  bool closeio = false)
  {
@@ -219,7 +214,7 @@
  }
  
  /**
-@@ -1241,7 +1240,10 @@
+@@ -1241,7 +1235,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -231,7 +226,7 @@
  
  /**
   * Load a ICO image directly.
-@@ -1275,7 +1277,10 @@
+@@ -1275,7 +1272,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -243,7 +238,7 @@
  
  /**
   * Load a CUR image directly.
-@@ -1309,7 +1314,10 @@
+@@ -1309,7 +1309,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -255,7 +250,7 @@
  
  /**
   * Load a BMP image directly.
-@@ -1343,7 +1351,10 @@
+@@ -1343,7 +1346,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -267,7 +262,7 @@
  
  /**
   * Load a GIF image directly.
-@@ -1377,7 +1388,10 @@
+@@ -1377,7 +1383,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -279,7 +274,7 @@
  
  /**
   * Load a JPG image directly.
-@@ -1411,7 +1425,10 @@
+@@ -1411,7 +1420,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -291,7 +286,7 @@
  
  /**
   * Load a JXL image directly.
-@@ -1445,7 +1462,10 @@
+@@ -1445,7 +1457,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -303,7 +298,7 @@
  
  /**
   * Load a LBM image directly.
-@@ -1479,7 +1499,10 @@
+@@ -1479,7 +1494,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -315,7 +310,7 @@
  
  /**
   * Load a PCX image directly.
-@@ -1513,7 +1536,10 @@
+@@ -1513,7 +1531,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -327,7 +322,7 @@
  
  /**
   * Load a PNG image directly.
-@@ -1547,7 +1573,10 @@
+@@ -1547,7 +1568,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -339,7 +334,7 @@
  
  /**
   * Load a PNM image directly.
-@@ -1581,7 +1610,10 @@
+@@ -1581,7 +1605,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -351,7 +346,7 @@
  
  /**
   * Load a SVG image directly.
-@@ -1615,7 +1647,10 @@
+@@ -1615,7 +1642,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -363,7 +358,7 @@
  
  /**
   * Load a QOI image directly.
-@@ -1649,7 +1684,10 @@
+@@ -1649,7 +1679,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -375,7 +370,7 @@
  
  /**
   * Load a TGA image directly.
-@@ -1683,7 +1721,10 @@
+@@ -1683,7 +1716,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -387,7 +382,7 @@
  
  /**
   * Load a TIFF image directly.
-@@ -1717,7 +1758,10 @@
+@@ -1717,7 +1753,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -399,7 +394,7 @@
  
  /**
   * Load a XCF image directly.
-@@ -1751,7 +1795,10 @@
+@@ -1751,7 +1790,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -411,7 +406,7 @@
  
  /**
   * Load a XPM image directly.
-@@ -1785,7 +1832,10 @@
+@@ -1785,7 +1827,10 @@
   * @sa LoadXV
   * @sa LoadWEBP
   */
@@ -423,7 +418,7 @@
  
  /**
   * Load a XV image directly.
-@@ -1819,7 +1869,7 @@
+@@ -1819,7 +1864,7 @@
   * @sa LoadXPM
   * @sa LoadWEBP
   */
@@ -432,7 +427,7 @@
  
  /**
   * Load a WEBP image directly.
-@@ -1853,7 +1903,10 @@
+@@ -1853,7 +1898,10 @@
   * @sa LoadXPM
   * @sa LoadXV
   */
@@ -444,7 +439,7 @@
  
  /**
   * Load an SVG image, scaled to a specific size.
-@@ -1864,19 +1917,15 @@
+@@ -1864,19 +1912,15 @@
   * Either width or height may be 0 and the image will be auto-sized to preserve
   * aspect ratio.
   *
@@ -466,7 +461,7 @@
  }
  
  /**
-@@ -1886,9 +1935,6 @@
+@@ -1886,9 +1930,6 @@
   * it will be 32bpp. If you always want 32-bit data, use
   * ReadXPMFromArrayToRGB888() instead.
   *
@@ -476,7 +471,7 @@
   * @param xpm a null-terminated array of strings that comprise XPM data.
   * @returns a new SDL surface, or nullptr on error.
   *
-@@ -1898,7 +1944,7 @@
+@@ -1898,7 +1939,7 @@
   */
  inline Surface ReadXPMFromArray(char** xpm)
  {
@@ -485,7 +480,7 @@
  }
  
  /**
-@@ -1907,9 +1953,6 @@
+@@ -1907,9 +1948,6 @@
   * The returned surface will always be a 32-bit RGB surface. If you want 8-bit
   * indexed colors (and the XPM data allows it), use ReadXPMFromArray() instead.
   *
@@ -495,7 +490,7 @@
   * @param xpm a null-terminated array of strings that comprise XPM data.
   * @returns a new SDL surface, or nullptr on error.
   *
-@@ -1919,7 +1962,7 @@
+@@ -1919,7 +1957,7 @@
   */
  inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  {
@@ -504,7 +499,7 @@
  }
  
  /**
-@@ -1934,8 +1977,6 @@
+@@ -1934,8 +1972,6 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.0.0.
@@ -513,7 +508,7 @@
   */
  inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  {
-@@ -1952,22 +1993,20 @@
+@@ -1952,22 +1988,20 @@
   *
   * @param surface the SDL surface to save.
   * @param dst the IOStream to save the image data to.
@@ -539,7 +534,7 @@
  }
  
  /**
-@@ -2003,8 +2042,6 @@
+@@ -2003,8 +2037,6 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.0.0.
@@ -548,7 +543,7 @@
   */
  inline void SavePNG(SurfaceParam surface,
                      IOStreamParam dst,
-@@ -2025,8 +2062,6 @@
+@@ -2025,8 +2057,6 @@
   * @throws Error on failure.
   *
   * @since This function is available since SDL_image 3.0.0.
@@ -557,7 +552,7 @@
   */
  inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  {
-@@ -2043,22 +2078,20 @@
+@@ -2043,22 +2073,20 @@
   *
   * @param surface the SDL surface to save.
   * @param dst the IOStream to save the image data to.
@@ -583,7 +578,7 @@
  }
  
  /**
-@@ -2141,7 +2174,7 @@
+@@ -2141,7 +2169,7 @@
     *
     * @sa Animation.Free
     */
@@ -592,7 +587,7 @@
      : m_resource(IMG_LoadAnimation_IO(src, closeio))
    {
    }
-@@ -2198,21 +2231,34 @@
+@@ -2198,21 +2226,34 @@
     * @since This function is available since SDL_image 3.0.0.
     *
     * @sa Animation.Animation
@@ -628,7 +623,7 @@
    int GetDelay(int index) const;
  };
  
-@@ -2255,29 +2301,26 @@
+@@ -2255,29 +2296,26 @@
    ~AnimationRef() { release(); }
  };
  
@@ -664,7 +659,7 @@
  }
  
  inline Point Animation::GetSize() const
-@@ -2285,19 +2328,23 @@
+@@ -2285,19 +2323,23 @@
    return SDL::GetAnimationSize(m_resource);
  }
  
@@ -693,7 +688,7 @@
  }
  
  inline Surface Animation::GetFrame(int index) const
-@@ -2305,9 +2352,15 @@
+@@ -2305,9 +2347,15 @@
    return SDL::GetAnimationFrame(m_resource, index);
  }
  
@@ -710,7 +705,7 @@
  }
  
  inline int Animation::GetDelay(int index) const
-@@ -2352,7 +2405,7 @@
+@@ -2352,7 +2400,7 @@
   *
   * @sa Animation.Free
   */
@@ -719,7 +714,7 @@
  {
    return Animation(src, closeio);
  }
-@@ -2374,22 +2427,21 @@
+@@ -2374,22 +2422,21 @@
   * call to Animation.Free().
   *
   * @param src an IOStream that data will be read from.
@@ -744,7 +739,7 @@
  }
  
  /**
-@@ -2402,7 +2454,6 @@
+@@ -2402,7 +2449,6 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa Animation.Animation
@@ -752,7 +747,7 @@
   * @sa LoadAnimationTyped
   */
  inline void FreeAnimation(AnimationRaw anim) { IMG_FreeAnimation(anim); }
-@@ -2423,13 +2474,12 @@
+@@ -2423,13 +2469,12 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa Animation.Animation
@@ -768,7 +763,7 @@
  }
  
  /**
-@@ -2446,17 +2496,44 @@
+@@ -2446,17 +2491,44 @@
   * @since This function is available since SDL_image 3.0.0.
   *
   * @sa Animation.Animation

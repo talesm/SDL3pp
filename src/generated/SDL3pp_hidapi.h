@@ -242,6 +242,25 @@ public:
    */
   void close();
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Get the properties associated with an HidDevice.
+   *
+   * The following read-only properties are provided by SDL:
+   *
+   * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+   *   associated with the device, if it was opened using libusb.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  PropertiesRef hid_get_properties();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
   /**
    * Write an Output report to a HID device.
    *
@@ -655,6 +674,49 @@ inline HidDevice hid_open_path(StringParam path)
 {
   return HidDevice(std::move(path));
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Get the properties associated with an HidDevice.
+ *
+ * The following read-only properties are provided by SDL:
+ *
+ * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+ *   associated with the device, if it was opened using libusb.
+ *
+ * @param dev a device handle returned from HidDevice.HidDevice().
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PropertiesRef hid_get_properties(HidDeviceParam dev)
+{
+  return CheckError(SDL_hid_get_properties(dev));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+inline PropertiesRef HidDevice::hid_get_properties()
+{
+  return SDL::hid_get_properties(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+namespace prop::Hidapi {
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
+  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
+} // namespace prop::Hidapi
 
 /**
  * Write an Output report to a HID device.

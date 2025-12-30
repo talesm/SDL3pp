@@ -74,7 +74,7 @@
    }
  };
  
-@@ -159,7 +185,7 @@
+@@ -172,7 +198,7 @@
   */
  inline Path GetPrefPath(StringParam org, StringParam app)
  {
@@ -83,7 +83,7 @@
  }
  
  /**
-@@ -171,19 +197,19 @@
+@@ -184,19 +210,19 @@
   *
   * The folders supported per platform are:
   *
@@ -116,7 +116,7 @@
   *
   * Note that on macOS/iOS, the Videos folder is called "Movies".
   *
-@@ -336,7 +362,7 @@
+@@ -351,7 +377,7 @@
     */
    constexpr explicit operator bool() const noexcept
    {
@@ -125,14 +125,15 @@
    }
  };
  
-@@ -482,43 +508,43 @@
+@@ -501,7 +527,6 @@
   *
   * @param path the path of the directory to enumerate.
   * @param callback a function that is called for each entry in the directory.
 - * @param userdata a pointer that is passed to `callback`.
   * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+@@ -510,24 +535,20 @@
   */
  inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
  {
@@ -164,7 +165,9 @@
 - * @throws Error on failure.
 + * @returns all the directory contents.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -535,13 +556,18 @@
   */
  inline std::vector<Path> EnumerateDirectory(StringParam path)
  {
@@ -185,7 +188,7 @@
   * delete directory trees.
   *
   * @param path the path to remove from the filesystem.
-@@ -598,15 +624,16 @@
+@@ -629,8 +655,7 @@
   * Get information about a filesystem path.
   *
   * @param path the path to query.
@@ -194,7 +197,8 @@
 + * @returns the information about the path on success.
   * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+@@ -639,7 +664,9 @@
   */
  inline PathInfo GetPathInfo(StringParam path)
  {
@@ -205,7 +209,7 @@
  }
  
  /**
-@@ -630,8 +657,6 @@
+@@ -663,8 +690,6 @@
   * @param pattern the pattern that files in the directory must match. Can be
   *                nullptr.
   * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -214,7 +218,7 @@
   * @returns an array of strings on success.
   * @throws Error on failure.
   *
-@@ -641,9 +666,11 @@
+@@ -674,9 +699,11 @@
   */
  inline OwnArray<char*> GlobDirectory(StringParam path,
                                       StringParam pattern,
@@ -228,7 +232,7 @@
  }
  
  /**
-@@ -665,7 +692,7 @@
+@@ -700,7 +727,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */

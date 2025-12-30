@@ -1417,7 +1417,11 @@ struct Rect : RectRaw
 };
 
 /**
- * A rectangle, with the origin at the upper left (using floating point values).
+ * A rectangle stored using floating point values.
+ *
+ * The origin of the coordinate space is in the top-left, with increasing values
+ * moving down and right. The properties `x` and `y` represent the coordinates
+ * of the top-left corner of the rectangle.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -1461,21 +1465,9 @@ struct FRect : FRectRaw
   /**
    * Constructs from top-left corner plus size
    */
-  constexpr FRect(FPoint corner, FPoint size)
+  constexpr FRect(const FPointRaw& corner, const FPointRaw& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRectRaw& other) const
-  {
-    return Equal(other);
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRect& other) const
-  {
-    return *this == (const FRectRaw&)(other);
   }
 
   /// @sa Empty()
@@ -1747,7 +1739,7 @@ struct FRect : FRectRaw
   bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
-   * Calculate the intersection of a rectangle and line segment
+   * Determine whether a floating point rectangle takes no space.
    *
    * @param[in,out] p1 Starting coordinates of the line
    * @param[in,out] p2 Ending coordinates of the line
@@ -1816,7 +1808,8 @@ struct FRect : FRectRaw
   constexpr bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
-   * Determine whether two rectangles are equal.
+   * Determine whether two floating point rectangles are equal, within a default
+   * epsilon.
    *
    * Rectangles are considered equal if both are not nullptr and each of their
    * x, y, width and height are within FLT_EPSILON of each other. This is often
@@ -1867,9 +1860,9 @@ struct FRect : FRectRaw
   }
 
   /**
-   * Determine whether two rectangles intersect.
+   * Determine whether two rectangles intersect with float precision.
    *
-   * @param other an SDL_Rect structure representing the second rectangle.
+   * @param other an FRect structure representing the second rectangle.
    * @returns true if there is an intersection, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1885,8 +1878,8 @@ struct FRect : FRectRaw
    *
    * If `result` is nullptr then this function will return false.
    *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
+   * @param other an FRect structure representing the second rectangle.
+   * @returns an FRect structure filled in with the intersection of
    *          if there is intersection, an empty FRect otherwise.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1898,7 +1891,7 @@ struct FRect : FRectRaw
   /**
    * Calculate the union of two rectangles with float precision.
    *
-   * @param other an SDL_Rect structure representing the second rectangle.
+   * @param other an FRect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
    * @throws Error on failure.
    *
@@ -2043,7 +2036,7 @@ constexpr FRect RectToFRect(const RectRaw& rect)
   return frect;
 }
 
-constexpr Rect::operator SDL_FRect() const { return RectToFRect(*this); }
+constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
 
 /**
  * Determine whether a point resides inside a rectangle.
@@ -2294,10 +2287,10 @@ constexpr bool FPoint::InRect(const FRectRaw& r) const
 }
 
 /**
- * Determine whether a floating point rectangle can contain any point.
+ * Determine whether a floating point rectangle takes no space.
  *
- * A rectangle is considered "empty" for this function if `r` is nullptr, or
- * if `r`'s width and/or height are < 0.0f.
+ * A rectangle is considered "empty" for this function if `r` is nullptr, or if
+ * `r`'s width and/or height are < 0.0f.
  *
  * Note that this is a forced-inline function in a header, and not a public API
  * function available in the SDL library (which is to say, the code is embedded
@@ -2322,10 +2315,10 @@ constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  * Determine whether two floating point rectangles are equal, within some given
  * epsilon.
  *
- * Rectangles are considered equal if both are not nullptr and each of their
- * x, y, width and height are within `epsilon` of each other. If you don't
- * know what value to use for `epsilon`, you should call the FRect.Equal
- * function instead.
+ * Rectangles are considered equal if both are not nullptr and each of their x,
+ * y, width and height are within `epsilon` of each other. If you don't know
+ * what value to use for `epsilon`, you should call the FRect.Equal function
+ * instead.
  *
  * Note that this is a forced-inline function in a header, and not a public API
  * function available in the SDL library (which is to say, the code is embedded

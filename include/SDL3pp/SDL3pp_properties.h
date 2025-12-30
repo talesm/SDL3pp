@@ -5,6 +5,7 @@
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_strings.h"
+#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -190,7 +191,7 @@ using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
- * SDL properties ID
+ * An ID that represents a properties set.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -312,7 +313,9 @@ public:
    * @param dst the destination properties.
    * @throws Error on failure.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety It is safe to call this function from any thread. This
+   *               function acquires simultaneous mutex locks on both the source
+   *               and destination property sets.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -742,6 +745,34 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A generic property for naming things.
+ *
+ * This property is intended to be added to any Properties that needs a generic
+ * name associated with the property set. It is not guaranteed that any property
+ * set will include this key, but it is convenient to have a standard key that
+ * any piece of code could reasonably agree to use.
+ *
+ * For example, the properties associated with an Texture might have a name
+ * string of "player sprites", or an AudioStream might have "background music",
+ * etc. This might also be useful for an IOStream to list the path to its asset.
+ *
+ * There is no format for the value set with this key; it is expected to be
+ * human-readable and informational in nature, possibly for logging or debugging
+ * purposes.
+ *
+ * SDL does not currently set this property on any objects it creates, but this
+ * may change in later versions; it is currently expected that apps and external
+ * libraries will take advantage of it, when appropriate.
+ *
+ * @since This constant is available since SDL 3.4.0.
+ */
+inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Get the global SDL properties.
  *
@@ -789,7 +820,9 @@ inline Properties Properties::Create() { return SDL::CreateProperties(); }
  * @param dst the destination properties.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety It is safe to call this function from any thread. This function
+ *               acquires simultaneous mutex locks on both the source and
+ *               destination property sets.
  *
  * @since This function is available since SDL 3.2.0.
  */

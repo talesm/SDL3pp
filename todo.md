@@ -27,7 +27,7 @@ De-smart-fy
   - [x] Add overload to Window::Window that creates renderer
 - [x] Make free standing version of Random;
 - [ ] Add named versions Delay that takes integer;
-- [ ] Merge preview 3.3.x;
+- [x] Merge preview 3.3.x;
 
 Backlog
 -------

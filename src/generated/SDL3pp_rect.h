@@ -600,7 +600,11 @@ struct Rect : RectRaw
 };
 
 /**
- * A rectangle, with the origin at the upper left (using floating point values).
+ * A rectangle stored using floating point values.
+ *
+ * The origin of the coordinate space is in the top-left, with increasing values
+ * moving down and right. The properties `x` and `y` represent the coordinates
+ * of the top-left corner of the rectangle.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -812,7 +816,7 @@ struct FRect : FRectRaw
   bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
-   * Determine whether a floating point rectangle can contain any point.
+   * Determine whether a floating point rectangle takes no space.
    *
    * A rectangle is considered "empty" for this function if `r` is nullptr, or
    * if `r`'s width and/or height are < 0.0f.
@@ -1200,7 +1204,7 @@ constexpr bool FPoint::InRect(const FRectRaw& r) const
 }
 
 /**
- * Determine whether a floating point rectangle can contain any point.
+ * Determine whether a floating point rectangle takes no space.
  *
  * A rectangle is considered "empty" for this function if `r` is nullptr, or if
  * `r`'s width and/or height are < 0.0f.

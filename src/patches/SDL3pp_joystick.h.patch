@@ -9,7 +9,18 @@
   *
   * SDL joystick support.
   *
-@@ -296,8 +296,8 @@
+@@ -23,8 +23,8 @@
+  * instead.
+  *
+  * The term "instance_id" is the current instantiation of a joystick device in
+- * the system. If the joystick is removed and then re-inserted then it will get
+- * a new instance_id. instance_id's are monotonically increasing identifiers of
++ * the system, if the joystick is removed and then re-inserted then it will get
++ * a new instance_id, instance_id's are monotonically increasing identifiers of
+  * a joystick plugged in.
+  *
+  * The term "player_index" is the number assigned to a player on a specific
+@@ -324,8 +324,8 @@
     * The joystick subsystem must be initialized before a joystick can be opened
     * for use.
     *
@@ -18,9 +29,9 @@
 +   * @returns an Joystick on success.
 +   * @throws Error on failure.
     *
-    * @since This function is available since SDL 3.2.0.
+    * @threadsafety It is safe to call this function from any thread.
     *
-@@ -358,6 +358,10 @@
+@@ -394,6 +394,10 @@
  constexpr JoystickConnectionState JOYSTICK_CONNECTION_WIRELESS =
    SDL_JOYSTICK_CONNECTION_WIRELESS; ///< JOYSTICK_CONNECTION_WIRELESS
  
@@ -31,7 +42,7 @@
  using HatState = Uint8;
  
  constexpr Uint8 HAT_CENTERED = SDL_HAT_CENTERED; ///< CENTERED
-@@ -430,15 +434,14 @@
+@@ -466,8 +470,7 @@
     * for use.
     *
     * @param instance_id the joystick instance ID.
@@ -39,8 +50,9 @@
 -   *       information.
 +   * @throws Error on failure.
     *
-    * @since This function is available since SDL 3.2.0.
+    * @threadsafety It is safe to call this function from any thread.
     *
+@@ -476,7 +479,7 @@
     * @sa Joystick.Close
     */
    Joystick(JoystickID instance_id)
@@ -49,7 +61,7 @@
    {
    }
  
-@@ -567,10 +570,8 @@
+@@ -639,10 +642,8 @@
     *                 update.
     * @param finger the index of the finger on the touchpad to set.
     * @param down true if the finger is pressed, false if the finger is released.
@@ -62,7 +74,7 @@
     * @param pressure the pressure of the finger.
     * @throws Error on failure.
     *
-@@ -1144,8 +1145,6 @@
+@@ -1297,8 +1298,6 @@
  /**
   * Get a list of currently connected joysticks.
   *
@@ -71,7 +83,7 @@
   * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
   *          call GetError() for more information. This should be freed with
   *          free() when it is no longer needed.
-@@ -1155,7 +1154,12 @@
+@@ -1310,7 +1309,12 @@
   * @sa HasJoystick
   * @sa JoystickID.OpenJoystick
   */
@@ -85,7 +97,7 @@
  
  /**
   * Get the implementation dependent name of a joystick.
-@@ -1358,8 +1362,8 @@
+@@ -1529,8 +1533,8 @@
   * for use.
   *
   * @param instance_id the joystick instance ID.
@@ -94,9 +106,9 @@
 + * @returns an Joystick on success.
 + * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1370,10 +1374,7 @@
+@@ -1543,10 +1547,7 @@
    return Joystick(instance_id);
  }
  
@@ -108,7 +120,7 @@
  
  /**
   * Get the Joystick associated with an instance ID, if it has been opened.
-@@ -1386,7 +1387,7 @@
+@@ -1561,7 +1562,7 @@
   */
  inline JoystickRef GetJoystickFromID(JoystickID instance_id)
  {
@@ -117,7 +129,7 @@
  }
  
  inline JoystickRef JoystickID::GetJoystickFromID()
-@@ -1408,7 +1409,7 @@
+@@ -1585,7 +1586,7 @@
   */
  inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
  {
@@ -126,7 +138,7 @@
  }
  
  /**
-@@ -1623,10 +1624,8 @@
+@@ -1855,10 +1856,8 @@
   * @param touchpad the index of the touchpad on the virtual joystick to update.
   * @param finger the index of the finger on the touchpad to set.
   * @param down true if the finger is pressed, false if the finger is released.
@@ -139,7 +151,7 @@
   * @param pressure the pressure of the finger.
   * @throws Error on failure.
   *
-@@ -1640,7 +1639,7 @@
+@@ -1880,7 +1879,7 @@
                                         float pressure)
  {
    CheckError(SDL_SetJoystickVirtualTouchpad(
@@ -148,7 +160,7 @@
  }
  
  inline void Joystick::SetVirtualTouchpad(int touchpad,
-@@ -1714,7 +1713,7 @@
+@@ -1964,7 +1963,7 @@
   */
  inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
  {

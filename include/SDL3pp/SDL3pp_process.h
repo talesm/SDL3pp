@@ -225,6 +225,9 @@ public:
    * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
    *   this property is set, it will be the entire environment for the process,
    *   otherwise the current environment is used.
+   * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   *   representing the working directory for the process, defaults to the
+   *   current working directory.
    * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
    *   standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_nullptr`.
@@ -251,6 +254,12 @@ public:
    *   in the background. In this case the default input and output is
    *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
    *   available, and will always be 0.
+   * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+   *   run and any parameters. This string is passed directly to `CreateProcess`
+   *   on Windows, and does nothing on other platforms. This property is only
+   *   important if you want to start programs that does non-standard
+   *   command-line processing, and in most cases using
+   *   `prop::process.CREATE_ARGS_POINTER` is sufficient.
    *
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -618,6 +627,9 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
  *   property is set, it will be the entire environment for the process,
  *   otherwise the current environment is used.
+ * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+ *   representing the working directory for the process, defaults to the current
+ *   working directory.
  * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
  *   standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_nullptr`.
@@ -644,6 +656,12 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  *   in the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
  *   available, and will always be 0.
+ * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+ *   run and any parameters. This string is passed directly to `CreateProcess`
+ *   on Windows, and does nothing on other platforms. This property is only
+ *   important if you want to start programs that does non-standard command-line
+ *   processing, and in most cases using `prop::process.CREATE_ARGS_POINTER` is
+ *   sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
  * SIGCHLD should not be ignored or handled because those would prevent SDL from
@@ -679,6 +697,13 @@ constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
 constexpr auto CREATE_ENVIRONMENT_POINTER =
   SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_WORKING_DIRECTORY_STRING =
+  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto CREATE_STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
 
 constexpr auto CREATE_STDIN_POINTER = SDL_PROP_PROCESS_CREATE_STDIN_POINTER;
@@ -696,6 +721,12 @@ constexpr auto CREATE_STDERR_TO_STDOUT_BOOLEAN =
 
 constexpr auto CREATE_BACKGROUND_BOOLEAN =
   SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
 

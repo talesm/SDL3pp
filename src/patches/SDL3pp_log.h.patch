@@ -169,7 +169,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -223,16 +270,18 @@
+@@ -222,16 +269,18 @@
    /**
     * Log a message with LOG_PRIORITY_VERBOSE.
     *
@@ -193,7 +193,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -247,16 +296,18 @@
+@@ -246,16 +295,18 @@
    /**
     * Log a message with LOG_PRIORITY_DEBUG.
     *
@@ -217,7 +217,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogError
     * @sa LogCategory.LogInfo
-@@ -272,16 +323,18 @@
+@@ -271,16 +322,18 @@
    /**
     * Log a message with LOG_PRIORITY_INFO.
     *
@@ -241,7 +241,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -297,16 +350,18 @@
+@@ -296,16 +349,18 @@
    /**
     * Log a message with LOG_PRIORITY_WARN.
     *
@@ -265,7 +265,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogError
-@@ -322,16 +377,18 @@
+@@ -321,16 +376,18 @@
    /**
     * Log a message with LOG_PRIORITY_ERROR.
     *
@@ -289,7 +289,7 @@
     * @sa LogCategory.LogCritical
     * @sa LogCategory.LogDebug
     * @sa LogCategory.LogInfo
-@@ -347,23 +404,26 @@
+@@ -346,23 +403,26 @@
    /**
     * Log a message with LOG_PRIORITY_CRITICAL.
     *
@@ -328,7 +328,7 @@
     * @sa LogCategory.LogWarn
     */
    template<class... ARGS>
-@@ -521,39 +581,39 @@
+@@ -523,39 +583,39 @@
  }
  
  /**
@@ -381,12 +381,11 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -565,30 +625,56 @@
+@@ -567,29 +627,55 @@
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
   * @sa LogCategory.LogMessage
 - * @sa LogUnformatted
-  * @sa LogCategory.LogTrace
   * @sa LogCategory.LogVerbose
   * @sa LogCategory.LogWarn
   */
@@ -447,7 +446,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -599,31 +685,36 @@
+@@ -600,31 +686,36 @@
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
@@ -493,7 +492,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -631,6 +722,7 @@
+@@ -632,6 +723,7 @@
   *
   * @sa Log
   * @sa LogCategory.LogCritical
@@ -501,7 +500,7 @@
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
   * @sa LogCategory.LogMessage
-@@ -640,24 +732,24 @@
+@@ -641,24 +733,24 @@
   * @sa LogCategory.LogWarn
   */
  template<class... ARGS>
@@ -533,7 +532,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -667,31 +759,32 @@
+@@ -668,31 +760,32 @@
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
@@ -575,7 +574,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -699,33 +792,33 @@
+@@ -700,33 +793,33 @@
   *
   * @sa Log
   * @sa LogCategory.LogCritical
@@ -617,7 +616,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -734,7 +827,7 @@
+@@ -735,7 +828,7 @@
   * @sa Log
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
@@ -626,7 +625,7 @@
   * @sa LogCategory.LogMessage
   * @sa LogUnformatted
   * @sa LogCategory.LogTrace
-@@ -742,30 +835,31 @@
+@@ -743,30 +836,31 @@
   * @sa LogCategory.LogWarn
   */
  template<class... ARGS>
@@ -665,7 +664,7 @@
   * @sa LogCategory.LogDebug
   * @sa LogCategory.LogError
   * @sa LogCategory.LogInfo
-@@ -773,30 +867,26 @@
+@@ -774,30 +868,26 @@
   * @sa LogUnformatted
   * @sa LogCategory.LogTrace
   * @sa LogCategory.LogVerbose
@@ -703,7 +702,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -805,53 +895,60 @@
+@@ -806,53 +896,60 @@
   * @sa Log
   * @sa LogCategory.LogCritical
   * @sa LogCategory.LogDebug
@@ -779,7 +778,7 @@
  
  /**
   * The prototype for the log output callback function.
-@@ -885,6 +982,8 @@
+@@ -886,6 +983,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -788,7 +787,7 @@
   * @sa LogOutputFunction
   */
  using LogOutputCB = MakeFrontCallback<
-@@ -938,6 +1037,7 @@
+@@ -939,6 +1038,7 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction
@@ -796,7 +795,7 @@
   */
  inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  {
-@@ -948,7 +1048,6 @@
+@@ -949,7 +1049,6 @@
   * Replace the default log output function with one of your own.
   *
   * @param callback an LogOutputFunction to call instead of the default.
@@ -804,7 +803,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -956,15 +1055,26 @@
+@@ -957,15 +1056,26 @@
   *
   * @sa GetDefaultLogOutputFunction
   * @sa GetLogOutputFunction

@@ -7,11 +7,6 @@
 #include "SDL3pp_version.h"
 #include "SDL3pp_video.h"
 
-#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
-  __has_include(<SDL3_ttf/SDL_ttf.h>)
-#define SDL3PP_ENABLE_TTF
-#endif
-
 #if defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)
 
 #include <SDL3_ttf/SDL_ttf.h>

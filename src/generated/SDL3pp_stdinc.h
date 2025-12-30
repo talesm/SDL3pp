@@ -115,6 +115,26 @@ struct IConvParam
   constexpr operator IConvRaw() const { return value; }
 };
 
+using int8_t = ::int8_t;
+
+using uint8_t = ::uint8_t;
+
+using int16_t = ::int16_t;
+
+using uint16_t = ::uint16_t;
+
+using int32_t = ::int32_t;
+
+using uint32_t = ::uint32_t;
+
+using int64_t = ::int64_t;
+
+using uint64_t = ::uint64_t;
+
+using intptr_t = ::intptr_t;
+
+using uintptr_t = ::uintptr_t;
+
 /**
  * Don't let SDL use "long long" C types.
  *
@@ -393,7 +413,7 @@ constexpr Nanoseconds FromNS(Sint64 duration)
  * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
  * and Time.FromWindows().
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @sa MAX_SINT64
  * @sa MIN_SINT64
@@ -1930,7 +1950,7 @@ constexpr T min(T x, U y)
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
- * @returns the lesser of `x` and `y`.
+ * @returns the greater of `x` and `y`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -2465,7 +2485,7 @@ inline void zerop(T* x)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
- * @sa zeroa
+ * @sa zerop
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])
@@ -4747,7 +4767,7 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4775,7 +4795,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4969,7 +4989,7 @@ inline float exp(float x) { return SDL_expf(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -4997,7 +5017,7 @@ inline double floor(double x) { return SDL_floor(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`

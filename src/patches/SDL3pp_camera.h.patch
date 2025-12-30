@@ -9,7 +9,44 @@
   *
   * Video capture for the SDL library.
   *
-@@ -214,9 +214,9 @@
+@@ -149,26 +149,24 @@
+  */
+ using CameraPermissionState = SDL_CameraPermissionState;
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+-
+-#if SDL_VERSION_ATLEAST(3, 3, 2)
+-
+ constexpr CameraPermissionState CAMERA_PERMISSION_STATE_DENIED =
+   SDL_CAMERA_PERMISSION_STATE_DENIED; ///< CAMERA_PERMISSION_STATE_DENIED
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+-
+-#if SDL_VERSION_ATLEAST(3, 3, 2)
+-
+ constexpr CameraPermissionState CAMERA_PERMISSION_STATE_PENDING =
+   SDL_CAMERA_PERMISSION_STATE_PENDING; ///< CAMERA_PERMISSION_STATE_PENDING
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+-
+-#if SDL_VERSION_ATLEAST(3, 3, 2)
+-
+ constexpr CameraPermissionState CAMERA_PERMISSION_STATE_APPROVED =
+   SDL_CAMERA_PERMISSION_STATE_APPROVED; ///< CAMERA_PERMISSION_STATE_APPROVED
++#else
++
++/**
++ * The current state of a request for camera access.
++ *
++ * @since This enum is available since SDL 3.4.0.
++ *
++ * @sa Camera.GetPermissionState
++ */
++using CameraPermissionState = int;
+ 
+ #endif // SDL_VERSION_ATLEAST(3, 3, 2)
+ 
+@@ -248,9 +246,9 @@
     *
     * @param instance_id the camera device instance ID.
     * @param spec the desired format for data the device will provide. Can be
@@ -22,7 +59,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -348,8 +348,7 @@
+@@ -384,8 +382,7 @@
     * (or EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
     * occasionally until it returns non-zero.
     *
@@ -32,7 +69,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -390,8 +389,8 @@
+@@ -426,8 +423,8 @@
     *
     * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
     *                    error. Can be nullptr.
@@ -43,7 +80,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -399,7 +398,7 @@
+@@ -435,7 +432,7 @@
     *
     * @sa Camera.ReleaseFrame
     */
@@ -52,7 +89,7 @@
  
    /**
     * Release a frame of video acquired from a camera.
-@@ -540,11 +539,8 @@
+@@ -576,11 +573,8 @@
  /**
   * Get a list of currently connected camera devices.
   *
@@ -65,7 +102,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -552,7 +548,12 @@
+@@ -588,7 +582,12 @@
   *
   * @sa Camera.Camera
   */
@@ -79,7 +116,7 @@
  
  /**
   * Get the list of native formats/sizes a camera supports.
-@@ -576,12 +577,8 @@
+@@ -612,12 +611,8 @@
   * warning popup.
   *
   * @param instance_id the camera device instance ID.
@@ -93,7 +130,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -592,7 +589,9 @@
+@@ -628,7 +623,9 @@
   */
  inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
  {
@@ -104,7 +141,7 @@
  }
  
  /**
-@@ -668,9 +667,9 @@
+@@ -704,9 +701,9 @@
   *
   * @param instance_id the camera device instance ID.
   * @param spec the desired format for data the device will provide. Can be
@@ -117,7 +154,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -759,7 +758,7 @@
+@@ -796,7 +793,7 @@
   */
  inline PropertiesRef GetCameraProperties(CameraParam camera)
  {
@@ -126,7 +163,7 @@
  }
  
  inline PropertiesRef Camera::GetProperties()
-@@ -780,8 +779,7 @@
+@@ -817,8 +814,7 @@
   * occasionally until it returns non-zero.
   *
   * @param camera opened camera device.
@@ -136,7 +173,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -791,7 +789,8 @@
+@@ -828,7 +824,8 @@
   */
  inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
  {
@@ -146,7 +183,7 @@
  }
  
  inline std::optional<CameraSpec> Camera::GetFormat()
-@@ -830,8 +829,8 @@
+@@ -867,8 +864,8 @@
   * @param camera opened camera device.
   * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
   *                    error. Can be nullptr.
@@ -157,7 +194,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -839,9 +838,10 @@
+@@ -876,9 +873,10 @@
   *
   * @sa Camera.ReleaseFrame
   */

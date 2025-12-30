@@ -103,9 +103,31 @@ namespace SDL {
 /**
  * A macro that reports the current file being compiled.
  *
+ * This macro is only defined if it isn't already defined, so to override it
+ * (perhaps with something that doesn't provide path information at all, so
+ * build machine information doesn't leak into public binaries), apps can define
+ * this macro before including SDL.h or SDL_assert.h.
+ *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_FILE __FILE__
+#define SDL_FILE __FILE_NAME__
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A macro that reports the current file being compiled, for use in assertions.
+ *
+ * This macro is only defined if it isn't already defined, so to override it
+ * (perhaps with something that doesn't provide path information at all, so
+ * build machine information doesn't leak into public binaries), apps can define
+ * this macro before including SDL_assert.h. For example, defining this to `""`
+ * will make sure no source path information is included in asserts.
+ *
+ * @since This macro is available since SDL 3.4.0.
+ */
+#define SDL_ASSERT_FILE SDL_FILE
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A macro that reports the current line number of the file being compiled.
@@ -256,7 +278,7 @@ inline AssertState ReportAssertion(AssertData* data,
       static struct SDL_AssertData sdl_assert_data = {                         \
         false, 0, #condition, NULL, 0, NULL, NULL};                            \
       const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(            \
-        &sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE);                   \
+        &sdl_assert_data, SDL_FUNCTION, SDL_ASSERT_FILE, SDL_LINE);            \
       if (sdl_assert_state == SDL_ASSERTION_RETRY) {                           \
         continue; /* go again. */                                              \
       } else if (sdl_assert_state == SDL_ASSERTION_BREAK) {                    \
@@ -530,7 +552,7 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
  * The proper way to examine this data looks something like this:
  *
  * ```cpp
- * const AssertData *item = GetAssertionReport();
+ * const AssertData *item = &GetAssertionReport();
  * while (item) {
  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
  *           item->condition, item->function, item->filename,

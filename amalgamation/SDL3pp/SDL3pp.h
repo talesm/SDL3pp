@@ -1487,13 +1487,13 @@ public:
 inline int GetVersion() { return SDL_GetVersion(); }
 
 /**
- * Get the code revision of SDL that is linked against your program.
+ * Get the code revision of the SDL library that is linked against your program.
  *
- * This value is the revision of the code you are linked with and may be
+ * This value is the revision of the code you are linking against and may be
  * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
+ * constant SDL_REVISION if you explicitly include SDL_revision.h
  *
- * The revision is arbitrary string (a hash value) uniquely identifying the
+ * The revision is an arbitrary string (a hash value) uniquely identifying the
  * exact revision of the SDL library in use, and is only useful in comparing
  * against other revisions. It is NOT an incrementing number.
  *
@@ -1527,6 +1527,18 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
     SDL3PP_MAJOR_VERSION, SDL3PP_MINOR_VERSION, SDL3PP_MICRO_VERSION)
 
 /// @}
+
+// Check if SDL_image is available
+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+  __has_include(<SDL3_image/SDL_image.h>)
+#define SDL3PP_ENABLE_IMAGE
+#endif
+
+// Check if SDL_ttf is available
+#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
+  __has_include(<SDL3_ttf/SDL_ttf.h>)
+#define SDL3PP_ENABLE_TTF
+#endif
 
 /**
  * @defgroup CategoryStrings Helpers to use C++ strings and byte arrays.
@@ -2034,9 +2046,31 @@ public:
 /**
  * A macro that reports the current file being compiled.
  *
+ * This macro is only defined if it isn't already defined, so to override it
+ * (perhaps with something that doesn't provide path information at all, so
+ * build machine information doesn't leak into public binaries), apps can define
+ * this macro before including SDL.h or SDL_assert.h.
+ *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL_FILE __FILE__
+#define SDL_FILE __FILE_NAME__
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A macro that reports the current file being compiled, for use in assertions.
+ *
+ * This macro is only defined if it isn't already defined, so to override it
+ * (perhaps with something that doesn't provide path information at all, so
+ * build machine information doesn't leak into public binaries), apps can define
+ * this macro before including SDL_assert.h. For example, defining this to `""`
+ * will make sure no source path information is included in asserts.
+ *
+ * @since This macro is available since SDL 3.4.0.
+ */
+#define SDL_ASSERT_FILE SDL_FILE
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A macro that reports the current line number of the file being compiled.
@@ -2187,7 +2221,7 @@ inline AssertState ReportAssertion(AssertData* data,
       static struct SDL_AssertData sdl_assert_data = {                         \
         false, 0, #condition, NULL, 0, NULL, NULL};                            \
       const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(            \
-        &sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE);                   \
+        &sdl_assert_data, SDL_FUNCTION, SDL_ASSERT_FILE, SDL_LINE);            \
       if (sdl_assert_state == SDL_ASSERTION_RETRY) {                           \
         continue; /* go again. */                                              \
       } else if (sdl_assert_state == SDL_ASSERTION_BREAK) {                    \
@@ -2461,7 +2495,7 @@ inline AssertionHandler GetAssertionHandler(void** puserdata)
  * The proper way to examine this data looks something like this:
  *
  * ```cpp
- * const AssertData *item = GetAssertionReport();
+ * const AssertData *item = &GetAssertionReport();
  * while (item) {
  *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
  *           item->condition, item->function, item->filename,
@@ -3170,11 +3204,49 @@ inline bool ClearError() { return SDL_ClearError(); }
  * so it applies to a physical audio device in this case, and not an
  * AudioStream, nor an SDL logical audio device.
  *
+ * For Windows WASAPI audio, the following roles are supported, and map to
+ * `AUDIO_STREAM_CATEGORY`:
+ *
+ * - "Other" (default)
+ * - "Communications" - Real-time communications, such as VOIP or chat
+ * - "Game" - Game audio
+ * - "GameChat" - Game chat audio, similar to "Communications" except that this
+ *   will not attenuate other audio streams
+ * - "Movie" - Music or sound with dialog
+ * - "Media" - Music or sound without dialog
+ *
+ * If your application applies its own echo cancellation, gain control, and
+ * noise reduction it should also set SDL_HINT_AUDIO_DEVICE_RAW_STREAM.
+ *
  * This hint should be set before an audio device is opened.
  *
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE "SDL_AUDIO_DEVICE_STREAM_ROLE"
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Specify whether this audio device should do audio processing.
+ *
+ * Some operating systems perform echo cancellation, gain control, and noise
+ * reduction as needed. If your application already handles these, you can set
+ * this hint to prevent the OS from doing additional audio processing.
+ *
+ * This corresponds to the WASAPI audio option `AUDCLNT_STREAMOPTIONS_RAW`.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": audio processing can be done by the OS. (default)
+ * - "1": audio processing is done by the application.
+ *
+ * This hint should be set before an audio device is opened.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_AUDIO_DEVICE_RAW_STREAM "SDL_AUDIO_DEVICE_RAW_STREAM"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Specify the input file when recording audio using the disk audio driver.
@@ -3459,6 +3531,25 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_DISPLAY_USABLE_BOUNDS "SDL_DISPLAY_USABLE_BOUNDS"
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set the level of checking for invalid parameters passed to SDL functions.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "1": Enable fast parameter error checking, e.g. quick nullptr checks, etc.
+ * - "2": Enable full parameter error checking, e.g. validating objects are the
+ *   correct type, etc. (default)
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_INVALID_PARAM_CHECKS "SDL_INVALID_PARAM_CHECKS"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Disable giving back control to the browser automatically when running with
  * asyncify.
@@ -3485,8 +3576,6 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint only applies to the emscripten platform.
  *
- * The default value is "#canvas"
- *
  * This hint should be set before creating a window.
  *
  * @since This hint is available since SDL 3.2.0.
@@ -3500,7 +3589,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * The variable can be one of:
  *
- * - "#window": the javascript window object (default)
+ * - "#window": the javascript window object
  * - "#document": the javascript document object
  * - "#screen": the javascript window.screen object
  * - "#canvas": the WebGL canvas element
@@ -3912,8 +4001,8 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_IME_IMPLEMENTED_UI "SDL_IME_IMPLEMENTED_UI"
 
 /**
- * A variable controlling whether the home indicator bar on iPhone X should be
- * hidden.
+ * A variable controlling whether the home indicator bar on iPhone X and later
+ * should be hidden.
  *
  * The variable can be set to the following values:
  *
@@ -4501,6 +4590,69 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI "SDL_JOYSTICK_HIDAPI_STEAM_HORI"
 
 /**
+ * A variable controlling whether the HIDAPI driver for some Logitech wheels
+ * should be used.
+ *
+ * This variable can be set to the following values:
+ *
+ * - "0": HIDAPI driver is not used
+ * - "1": HIDAPI driver is used
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_LG4FF "SDL_JOYSTICK_HIDAPI_LG4FF"
+
+/**
+ * A variable controlling whether the HIDAPI driver for 8BitDo controllers
+ * should be used.
+ *
+ * This variable can be set to the following values:
+ *
+ * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_8BITDO "SDL_JOYSTICK_HIDAPI_8BITDO"
+
+/**
+ * A variable controlling whether the HIDAPI driver for SInput controllers
+ * should be used.
+ *
+ * More info - https://github.com/HandHeldLegend/SInput-HID
+ *
+ * This variable can be set to the following values:
+ *
+ * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_SINPUT "SDL_JOYSTICK_HIDAPI_SINPUT"
+
+/**
+ * A variable controlling whether the HIDAPI driver for ZUIKI controllers should
+ * be used.
+ *
+ * This variable can be set to the following values:
+ *
+ * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_ZUIKI "SDL_JOYSTICK_HIDAPI_ZUIKI"
+
+/**
+ * A variable controlling whether the HIDAPI driver for Flydigi controllers
+ * should be used.
+ *
+ * This variable can be set to the following values:
+ *
+ * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI "SDL_JOYSTICK_HIDAPI_FLYDIGI"
+
+/**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch
  * controllers should be used.
  *
@@ -4552,6 +4704,27 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED                             \
   "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether the HIDAPI driver for Nintendo Switch 2
+ * controllers should be used.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 "SDL_JOYSTICK_HIDAPI_SWITCH2"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether Nintendo Switch Joy-Con controllers will be in
@@ -4709,6 +4882,50 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED                             \
   "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
+ * controllers should be used.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_GIP "SDL_JOYSTICK_HIDAPI_GIP"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
+ * controllers should reset the controller if it can't get the metadata from the
+ * controller.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Assume this is a generic controller.
+ * - "1": Reset the controller to get metadata.
+ *
+ * By default the controller is not reset.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA                        \
+  "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether IOKit should be used for controller handling.
@@ -5018,9 +5235,9 @@ inline bool ClearError() { return SDL_ClearError(); }
  *   pressing the 1 key would yield the keycode SDLK_1, or '1', instead of
  *   SDLK_AMPERSAND, or '&'
  * - "latin_letters": For keyboards using non-Latin letters, such as Russian or
- *   Thai, the letter keys generate keycodes as though it had an en_US layout.
- *   e.g. pressing the key associated with SCANCODE_A on a Russian keyboard
- *   would yield 'a' instead of a Cyrillic letter.
+ *   Thai, the letter keys generate keycodes as though it had an English QWERTY
+ *   layout. e.g. pressing the key associated with SCANCODE_A on a Russian
+ *   keyboard would yield 'a' instead of a Cyrillic letter.
  *
  * The default value for this hint is "french_numbers,latin_letters"
  *
@@ -5076,6 +5293,31 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable that controls whether KMSDRM will use "atomic" functionality.
+ *
+ * The KMSDRM backend can use atomic commits, if both DRM_CLIENT_CAP_ATOMIC and
+ * DRM_CLIENT_CAP_UNIVERSAL_PLANES is supported by the system. As of SDL 3.4.0,
+ * it will favor this functionality, but in case this doesn't work well on a
+ * given system or other surprises, this hint can be used to disable it.
+ *
+ * This hint can not enable the functionality if it isn't available.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": SDL will not use the KMSDRM "atomic" functionality.
+ * - "1": SDL will allow usage of the KMSDRM "atomic" functionality. (default)
+ *
+ * This hint should be set before SDL is initialized.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_KMSDRM_ATOMIC "SDL_KMSDRM_ATOMIC"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * A variable controlling the default SDL log levels.
  *
@@ -5095,6 +5337,11 @@ inline bool ClearError() { return SDL_ClearError(); }
  * If this hint isn't set, the default log levels are equivalent to:
  *
  * `app=info,assert=warn,test=verbose,*=error`
+ *
+ * If the `DEBUG_INVOCATION` environment variable is set to "1", the default log
+ * levels are equivalent to:
+ *
+ * `assert=warn,test=verbose,*=debug`
  *
  * This hint can be set anytime.
  *
@@ -5197,6 +5444,25 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether holding down a key will repeat the pressed key
+ * or open the accents menu on macOS.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Holding a key will open the accents menu for that key.
+ * - "1": Holding a key will repeat the pressed key. (default)
+ *
+ * This hint needs to be set before Init().
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_MAC_PRESS_AND_HOLD "SDL_MAC_PRESS_AND_HOLD"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Request SDL_AppIterate() be called at a specific rate.
  *
@@ -5216,6 +5482,10 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This defaults to 0, and specifying nullptr for the hint's value will restore
  * the default.
+ *
+ * This doesn't have to be an integer value. For example, "59.94" won't be
+ * rounded to an integer rate; the digits after the decimal are actually
+ * respected.
  *
  * This hint can be set anytime.
  *
@@ -5272,6 +5542,28 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable setting whether we should scale cursors by the current display
+ * scale.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Cursors will not change size based on the display content scale.
+ *   (default)
+ * - "1": Cursors will automatically match the display content scale (e.g. a 2x
+ *   sized cursor will be used when the window is on a monitor with 200% scale).
+ *   This is currently implemented on Windows and Wayland.
+ *
+ * This hint needs to be set before creating cursors.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_MOUSE_DPI_SCALE_CURSORS "SDL_MOUSE_DPI_SCALE_CURSORS"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
  * relative mouse mode.
@@ -5280,7 +5572,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  * window center occur within a short time period, SDL will emulate mouse warps
  * using relative mouse mode. This can provide smoother and more reliable mouse
  * motion for some older games, which continuously calculate the distance
- * travelled by the mouse pointer and warp it back to the center of the window,
+ * traveled by the mouse pointer and warp it back to the center of the window,
  * rather than using relative mouse motion.
  *
  * Note that relative mouse mode may have different mouse acceleration behavior
@@ -5646,6 +5938,28 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_RENDER_DIRECT3D11_DEBUG "SDL_RENDER_DIRECT3D11_DEBUG"
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether to use the Direct3D 11 WARP software
+ * rasterizer.
+ *
+ * For more information, see:
+ * https://learn.microsoft.com/en-us/windows/win32/direct3darticles/directx-warp
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Disable WARP rasterizer. (default)
+ * - "1": Enable WARP rasterizer.
+ *
+ * This hint should be set before creating a renderer.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_RENDER_DIRECT3D11_WARP "SDL_RENDER_DIRECT3D11_WARP"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * A variable controlling whether to enable Vulkan Validation Layers.
  *
@@ -5828,6 +6142,37 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED "SDL_ROG_GAMEPAD_MICE_EXCLUDED"
+
+/**
+ * Variable controlling the width of the PS2's framebuffer in pixels
+ *
+ * By default, this variable is "640"
+ */
+#define SDL_HINT_PS2_GS_WIDTH "SDL_PS2_GS_WIDTH"
+
+/**
+ * Variable controlling the height of the PS2's framebuffer in pixels
+ *
+ * By default, this variable is "448"
+ */
+#define SDL_HINT_PS2_GS_HEIGHT "SDL_PS2_GS_HEIGHT"
+
+/**
+ * Variable controlling whether the signal is interlaced or progressive
+ *
+ * - "0": Image is interlaced. (default)
+ * - "1": Image is progressive
+ */
+#define SDL_HINT_PS2_GS_PROGRESSIVE "SDL_PS2_GS_PROGRESSIVE"
+
+/**
+ * Variable controlling the video mode of the console
+ *
+ * - "": Console-native. (default)
+ * - "NTSC": 60hz region
+ * - "PAL": 50hz region
+ */
+#define SDL_HINT_PS2_GS_MODE "SDL_PS2_GS_MODE"
 
 /**
  * A variable controlling which Dispmanx layer to use on a Raspberry PI.
@@ -6191,6 +6536,53 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \
   "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable indicating whether the metal layer drawable size should be updated
+ * for the EVENT_WINDOW_PIXEL_SIZE_CHANGED event on macOS.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": the metal layer drawable size will not be updated on the
+ *   EVENT_WINDOW_PIXEL_SIZE_CHANGED event.
+ * - "1": the metal layer drawable size will be updated on the
+ *   EVENT_WINDOW_PIXEL_SIZE_CHANGED event. (default)
+ *
+ * This hint should be set before MetalView.MetalView called.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE                              \
+  "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether SDL will attempt to automatically set the
+ * destination display to a mode most closely matching that of the previous
+ * display if an exclusive fullscreen window is moved onto it.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": SDL will not attempt to automatically set a matching mode on the
+ *   destination display. If an exclusive fullscreen window is moved to a new
+ *   display, the window will become fullscreen desktop.
+ * - "1": SDL will attempt to automatically set a mode on the destination
+ *   display that most closely matches the mode of the display that the
+ *   exclusive fullscreen window was previously on. (default)
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE                            \
+  "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether fullscreen windows are minimized when they
@@ -6847,9 +7239,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * The variable can be set to the following values:
  *
- * - "0": GameInput is not used for raw keyboard and mouse events.
+ * - "0": GameInput is not used for raw keyboard and mouse events. (default)
  * - "1": GameInput is used for raw keyboard and mouse events, if available.
- *   (default)
  *
  * This hint should be set before SDL is initialized.
  *
@@ -6870,6 +7261,33 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
+ * enabling Windows raw keyboard events.
+ *
+ * This blocks any hotkeys that have been registered by applications from having
+ * any effect beyond generating raw WM_INPUT events.
+ *
+ * This flag does not affect system-hotkeys like ALT-TAB or CTRL-ALT-DEL, but
+ * does affect the Windows Logo key since it is a userland hotkey registered by
+ * explorer.exe.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Hotkeys are not excluded. (default)
+ * - "1": Hotkeys are excluded.
+ *
+ * This hint can be set anytime.
+ *
+ * @since This hint is available since SDL 3.4.0.
+ */
+#define SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS                          \
+  "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS"
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
@@ -7181,12 +7599,7 @@ inline void ResetHints() { SDL_ResetHints(); }
  * @param name the hint to query.
  * @returns the string value of a hint or nullptr if the hint isn't set.
  *
- * @threadsafety It is safe to call this function from any thread, however the
- *               return value only remains valid until the hint is changed; if
- *               another thread might do so, the app should supply locks and/or
- *               make a copy of the string. Note that using a hint callback
- *               instead is always thread-safe, as SDL holds a lock on the
- *               thread subsystem during the callback.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -7583,7 +7996,6 @@ public:
    * @sa LogCategory.LogInfo
    * @sa LogCategory.LogMessage
    * @sa LogUnformatted
-   * @sa LogCategory.LogTrace
    * @sa LogCategory.LogVerbose
    * @sa LogCategory.LogWarn
    */
@@ -7886,6 +8298,9 @@ inline void ResetLogPriorities() { SDL_ResetLogPriorities(); }
  * By default LOG_PRIORITY_INFO and below have no prefix, and LOG_PRIORITY_WARN
  * and higher have a prefix showing their priority, e.g. "WARNING: ".
  *
+ * This function makes a copy of its string argument, **prefix**, so it is not
+ * necessary to keep the value of **prefix** alive after the call returns.
+ *
  * @param priority the LogPriority to modify.
  * @param prefix the prefix to use for that log priority, or nullptr to use no
  *               prefix.
@@ -7948,7 +8363,6 @@ inline void LogUnformatted(LogCategory category,
  * @sa LogCategory.LogError
  * @sa LogCategory.LogInfo
  * @sa LogCategory.LogMessage
- * @sa LogCategory.LogTrace
  * @sa LogCategory.LogVerbose
  * @sa LogCategory.LogWarn
  */
@@ -9016,7 +9430,7 @@ public:
   /**
    * Determine if this is a floating point format.
    *
-   * @returns true if the format is 10-bit, false otherwise.
+   * @returns true if the format is a floating point, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -9668,7 +10082,7 @@ constexpr bool PixelFormat::Is10Bit() const
  * expressions with side-effects here.
  *
  * @param format an PixelFormat to check.
- * @returns true if the format is 10-bit, false otherwise.
+ * @returns true if the format is a floating point, false otherwise.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -11356,7 +11770,7 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  * a completely white pixel in 16-bit RGB565 format would return [0xff, 0xff,
  * 0xff] not [0xf8, 0xfc, 0xf8]).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
@@ -11373,14 +11787,14 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  * @sa MapRGB
  * @sa MapColor
  */
-inline void GetRGB(Uint32 pixel,
+inline void GetRGB(Uint32 pixelvalue,
                    const PixelFormatDetails& format,
                    PaletteConstParam palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, &format, palette, r, g, b);
+  SDL_GetRGB(pixelvalue, &format, palette, r, g, b);
 }
 
 /**
@@ -11394,7 +11808,7 @@ inline void GetRGB(Uint32 pixel,
  * If the surface has no alpha component, the alpha will be returned as 0xff
  * (100% opaque).
  *
- * @param pixel a pixel value.
+ * @param pixelvalue a pixel value.
  * @param format a pointer to PixelFormatDetails describing the pixel format.
  * @param palette an optional palette for indexed formats, may be nullptr.
  * @param r a pointer filled in with the red component, may be nullptr.
@@ -11412,7 +11826,7 @@ inline void GetRGB(Uint32 pixel,
  * @sa MapRGB
  * @sa MapColor
  */
-inline void GetRGBA(Uint32 pixel,
+inline void GetRGBA(Uint32 pixelvalue,
                     const PixelFormatDetails& format,
                     PaletteConstParam palette,
                     Uint8* r,
@@ -11420,7 +11834,7 @@ inline void GetRGBA(Uint32 pixel,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
+  SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
 }
 
 /**
@@ -11655,7 +12069,7 @@ using CleanupPropertyCallback = void(SDLCALL*)(void* userdata, void* value);
 using CleanupPropertyCB = std::function<void(void* value)>;
 
 /**
- * SDL properties ID
+ * An ID that represents a properties set.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -11777,7 +12191,9 @@ public:
    * @param dst the destination properties.
    * @throws Error on failure.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety It is safe to call this function from any thread. This
+   *               function acquires simultaneous mutex locks on both the source
+   *               and destination property sets.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -12207,6 +12623,34 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A generic property for naming things.
+ *
+ * This property is intended to be added to any Properties that needs a generic
+ * name associated with the property set. It is not guaranteed that any property
+ * set will include this key, but it is convenient to have a standard key that
+ * any piece of code could reasonably agree to use.
+ *
+ * For example, the properties associated with an Texture might have a name
+ * string of "player sprites", or an AudioStream might have "background music",
+ * etc. This might also be useful for an IOStream to list the path to its asset.
+ *
+ * There is no format for the value set with this key; it is expected to be
+ * human-readable and informational in nature, possibly for logging or debugging
+ * purposes.
+ *
+ * SDL does not currently set this property on any objects it creates, but this
+ * may change in later versions; it is currently expected that apps and external
+ * libraries will take advantage of it, when appropriate.
+ *
+ * @since This constant is available since SDL 3.4.0.
+ */
+inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Get the global SDL properties.
  *
@@ -12254,7 +12698,9 @@ inline Properties Properties::Create() { return SDL::CreateProperties(); }
  * @param dst the destination properties.
  * @throws Error on failure.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety It is safe to call this function from any thread. This function
+ *               acquires simultaneous mutex locks on both the source and
+ *               destination property sets.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -13294,7 +13740,7 @@ constexpr Nanoseconds FromNS(Sint64 duration) { return Nanoseconds{duration}; }
  * Time.FromPosix(), and between Windows FILETIME values with Time.ToWindows()
  * and Time.FromWindows().
  *
- * @since This type is available since SDL 3.2.0.
+ * @since This datatype is available since SDL 3.2.0.
  *
  * @sa MAX_SINT64
  * @sa MIN_SINT64
@@ -14874,7 +15320,7 @@ constexpr T min(T x, U y)
  *
  * @param x the first value to compare.
  * @param y the second value to compare.
- * @returns the lesser of `x` and `y`.
+ * @returns the greater of `x` and `y`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -15422,7 +15868,7 @@ inline void zerop(T* x)
  * @since This function is available since SDL 3.2.0.
  *
  * @sa zero
- * @sa zeroa
+ * @sa zerop
  */
 template<class T, std::size_t N>
 inline void zeroa(T (&x)[N])
@@ -17226,9 +17672,7 @@ public:
   {
   }
 
-  /**
-   * Init state with the given value
-   */
+  /// Init state with the given value
   constexpr explicit Random(Uint64 state)
     : m_state(state)
   {
@@ -17392,12 +17836,11 @@ inline Sint32 rand(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
  * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
  * much worse as n gets bigger.
  *
- * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to 1..6
+ * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+ * 1..6
  *
  * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)rand_bits()
- *
- * If you want reproducible output, be sure to initialize with srand() first.
+ * you should use: (Sint32)rand_bits(state)
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -17405,14 +17848,18 @@ inline Sint32 rand(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
  * libraries available with different characteristics and you should pick one of
  * those to meet any serious needs.
  *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
  * @param n the number of possible outcomes. n must be positive.
  * @returns a random value in the range of [0 .. n-1].
  *
- * @threadsafety All calls should be made from a single thread
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa srand
+ * @sa rand
+ * @sa rand_bits
  * @sa randf
  */
 inline Sint32 rand(Random& state, Sint32 n) { return state.rand(n); }
@@ -17476,14 +17923,18 @@ inline float randf(Uint64* state) { return SDL_randf_r(state); }
  * libraries available with different characteristics and you should pick one of
  * those to meet any serious needs.
  *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
  * @returns a random value in the range of [0.0, 1.0).
  *
- * @threadsafety All calls should be made from a single thread
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa srand
+ * @sa rand_bits
  * @sa rand
+ * @sa randf
  */
 inline float randf(Random& state) { return state.randf(); }
 
@@ -17550,13 +18001,13 @@ inline Uint32 rand_bits(Uint64* state) { return SDL_rand_bits_r(state); }
  *              nullptr.
  * @returns a random value in the range of [0-MAX_UINT32].
  *
- * @threadsafety All calls should be made from a single thread
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa rand
  * @sa randf
- * @sa srand
  */
 inline Uint32 rand_bits(Random& state) { return state.rand_bits(); }
 
@@ -17828,7 +18279,7 @@ inline float atan2(float y, float x) { return SDL_atan2f(y, x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -17856,7 +18307,7 @@ inline double ceil(double x) { return SDL_ceil(x); }
 /**
  * Compute the ceiling of `x`.
  *
- * The ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`
+ * The ceiling of `x` is the smallest integer `y` such that `y >= x`, i.e `x`
  * rounded up to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -18050,7 +18501,7 @@ inline float exp(float x) { return SDL_expf(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -18078,7 +18529,7 @@ inline double floor(double x) { return SDL_floor(x); }
 /**
  * Compute the floor of `x`.
  *
- * The floor of `x` is the largest integer `y` such that `y > x`, i.e `x`
+ * The floor of `x` is the largest integer `y` such that `y <= x`, i.e `x`
  * rounded down to the nearest integer.
  *
  * Domain: `-INF <= x <= INF`
@@ -19271,7 +19722,7 @@ constexpr bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using FunctionPointer = SDL_FunctionPointer;
+using FunctionPointer = void(SDLCALL*)();
 
 /// @}
 
@@ -21133,6 +21584,27 @@ struct AtomicU32 : AtomicU32Raw
    * @sa AtomicU32.Set
    */
   Uint32 Get();
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Add to an atomic variable.
+   *
+   * This function also acts as a full memory barrier.
+   *
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
+   *
+   * @param v the desired value to add or subtract.
+   * @returns the previous value of the atomic variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  Uint32 Add(int v);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// A type representing an atomic of an arbitrary pointer.
@@ -21281,6 +21753,33 @@ inline Uint32 AtomicU32::Set(Uint32 v) { return SDL::SetAtomicU32(this, v); }
 inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
 
 inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(this); }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Add to an atomic variable.
+ *
+ * This function also acts as a full memory barrier.
+ *
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
+ *
+ * @param a a pointer to an AtomicU32 variable to be modified.
+ * @param v the desired value to add or subtract.
+ * @returns the previous value of the atomic variable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline Uint32 AddAtomicU32(AtomicU32Raw* a, int v)
+{
+  return SDL_AddAtomicU32(a, v);
+}
+
+inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 template<class T>
 inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
@@ -22041,6 +22540,31 @@ inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
  */
 inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Report the size of a page of memory.
+ *
+ * Different platforms might have different memory page sizes. In current times,
+ * 4 kilobytes is not unusual, but newer systems are moving to larger page
+ * sizes, and esoteric platforms might have any unexpected size.
+ *
+ * Note that this function can return 0, which means SDL can't determine the
+ * page size on this platform. It will _not_ set an error string to be retrieved
+ * with GetError() in this case! In this case, defaulting to 4096 is often a
+ * reasonable option.
+ *
+ * @returns the size of a single page of memory, in bytes, or 0 if SDL can't
+ *          determine this information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline int GetSystemPageSize() { return SDL_GetSystemPageSize(); }
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /// @}
 
 /**
@@ -22466,6 +22990,9 @@ struct Path : StringResult
  * - `parent`: the containing directory of the bundle. For example:
  *   `/Applications/SDLApp/`
  *
+ * **Android Specific Functionality**: This function returns "./", which allows
+ * filesystem operations to use internal storage and the asset system.
+ *
  * **Nintendo 3DS Specific Functionality**: This function returns "romfs"
  * directory of the application as it is uncommon to store resources outside the
  * executable. As such it is not a writable directory.
@@ -22477,6 +23004,8 @@ struct Path : StringResult
  *          directory. nullptr will be returned on error or when the platform
  *          doesn't implement this functionality, call GetError() for more
  *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -22522,6 +23051,12 @@ inline const char* GetBasePath() { return SDL_GetBasePath(); }
  * - ...only use letters, numbers, and spaces. Avoid punctuation like "Game Name
  *   2: Bad Guy's Revenge!" ... "Game Name 2" is sufficient.
  *
+ * Due to historical mistakes, `org` is allowed to be nullptr or "". In such
+ * cases, SDL will omit the org subdirectory, including on platforms where it
+ * shouldn't, and including on platforms where this would make your app fail
+ * certification for an app store. New apps should definitely specify a real
+ * string for `org`.
+ *
  * The returned path is guaranteed to end with a path separator ('\\' on
  * Windows, '/' on most other platforms).
  *
@@ -22530,6 +23065,8 @@ inline const char* GetBasePath() { return SDL_GetBasePath(); }
  * @returns a UTF-8 string of the user directory in platform-dependent notation.
  *          nullptr if there's a problem (creating directory failed, etc.). This
  *          should be freed with free() when it is no longer needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -22646,6 +23183,8 @@ constexpr Folder FOLDER_COUNT = SDL_FOLDER_COUNT;
  * @returns either a null-terminated C string containing the full path to the
  *          folder, or nullptr if an error happened.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetUserFolder(Folder folder)
@@ -22741,6 +23280,8 @@ constexpr GlobFlags GLOB_CASEINSENSITIVE =
  *
  * @param path the path of the directory to create.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -22838,6 +23379,8 @@ using EnumerateDirectoryCB =
  * @param userdata a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void EnumerateDirectory(StringParam path,
@@ -22862,6 +23405,8 @@ inline void EnumerateDirectory(StringParam path,
  * @param callback a function that is called for each entry in the directory.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
@@ -22880,6 +23425,8 @@ inline void EnumerateDirectory(StringParam path, EnumerateDirectoryCB callback)
  *
  * @param path the path of the directory to enumerate.
  * @returns all the directory contents.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -22902,6 +23449,8 @@ inline std::vector<Path> EnumerateDirectory(StringParam path)
  * @param path the path to remove from the filesystem.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
@@ -22909,7 +23458,7 @@ inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
 /**
  * Rename a file or directory.
  *
- * If the file at `newpath` already exists, it will replaced.
+ * If the file at `newpath` already exists, it will be replaced.
  *
  * Note that this will not copy files across filesystems/drives/volumes, as that
  * is a much more complicated (and possibly time-consuming) operation.
@@ -22922,6 +23471,8 @@ inline void RemovePath(StringParam path) { CheckError(SDL_RemovePath(path)); }
  * @param oldpath the old path.
  * @param newpath the new path.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -22965,6 +23516,10 @@ inline void RenamePath(StringParam oldpath, StringParam newpath)
  * @param newpath the new path.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread, but this
+ *               operation is not atomic, so the app might need to protect
+ *               access to specific paths from other threads if appropriate.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void CopyFile(StringParam oldpath, StringParam newpath)
@@ -22979,6 +23534,8 @@ inline void CopyFile(StringParam oldpath, StringParam newpath)
  * @returns the information about the path on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PathInfo GetPathInfo(StringParam path)
@@ -22992,10 +23549,10 @@ inline PathInfo GetPathInfo(StringParam path)
  * Enumerate a directory tree, filtered by pattern, and return a list.
  *
  * Files are filtered out if they don't match the string in `pattern`, which may
- * contain wildcard characters '\*' (match everything) and '?' (match one
+ * contain wildcard characters `*` (match everything) and `?` (match one
  * character). If pattern is nullptr, no filtering is done and all results are
  * returned. Subdirectories are permitted, and are specified with a path
- * separator of '/'. Wildcard characters '\*' and '?' never match a path
+ * separator of `/`. Wildcard characters `*` and `?` never match a path
  * separator.
  *
  * `flags` may be set to GLOB_CASEINSENSITIVE to make the pattern matching
@@ -23041,6 +23598,8 @@ inline OwnArray<char*> GlobDirectory(StringParam path,
  * @returns a UTF-8 string of the current working directory in
  *          platform-dependent notation. nullptr if there's a problem. This
  *          should be freed with free() when it is no longer needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -23410,6 +23969,25 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void close();
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Get the properties associated with an HidDevice.
+   *
+   * The following read-only properties are provided by SDL:
+   *
+   * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+   *   associated with the device, if it was opened using libusb.
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  PropertiesRef hid_get_properties();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Write an Output report to a HID device.
@@ -23802,6 +24380,45 @@ inline HidDevice hid_open_path(StringParam path)
 {
   return HidDevice(std::move(path));
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Get the properties associated with an HidDevice.
+ *
+ * The following read-only properties are provided by SDL:
+ *
+ * - `prop::Hidapi.LIBUSB_DEVICE_HANDLE_POINTER`: the libusb_device_handle
+ *   associated with the device, if it was opened using libusb.
+ *
+ * @param dev a device handle returned from HidDevice.HidDevice().
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PropertiesRef hid_get_properties(HidDeviceParam dev)
+{
+  return CheckError(SDL_hid_get_properties(dev));
+}
+
+inline PropertiesRef HidDevice::hid_get_properties()
+{
+  return SDL::hid_get_properties(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+namespace prop::Hidapi {
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
+  SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
+} // namespace prop::Hidapi
 
 /**
  * Write an Output report to a HID device.
@@ -24340,6 +24957,8 @@ public:
    * - "w": Create an empty file for writing. If a file with the same name
    *   already exists its content is erased and the file is treated as a new
    *   empty file.
+   * - "wx": Create an empty file for writing. If a file with the same name
+   *   already exists, the call fails. (Supported since SDL 3.4.0)
    * - "a": Append to a file. Writing operations append data at the end of the
    *   file. The file is created if it does not exist.
    * - "r+": Open a file for update both reading and writing. The file must
@@ -24347,6 +24966,8 @@ public:
    * - "w+": Create an empty file for both reading and writing. If a file with
    *   the same name already exists its content is erased and the file is
    *   treated as a new empty file.
+   * - "w+x": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
    * - "a+": Open a file for reading and appending. All writing operations are
    *   performed at the end of the file, protecting the previous content to be
    *   overwritten. You can reposition (fseek, rewind) the internal pointer to
@@ -24397,7 +25018,7 @@ public:
    * @returns a pointer to the IOStream structure that is created or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24418,8 +25039,7 @@ public:
    * certain size, for both read and write access.
    *
    * This memory buffer is not copied by the IOStream; the pointer you provide
-   * must remain valid until you close the stream. Closing the stream will not
-   * free the original buffer.
+   * must remain valid until you close the stream.
    *
    * If you need to make sure the IOStream never writes to the memory buffer,
    * you should use IOStream.FromConstMem() with a read-only buffer of memory
@@ -24431,6 +25051,13 @@ public:
    *   was passed to this function.
    * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
    *
    * @param mem a buffer to feed an IOStream stream.
    * @returns a valid IOStream on success.
@@ -24461,8 +25088,7 @@ public:
    * writing to the memory buffer.
    *
    * This memory buffer is not copied by the IOStream; the pointer you provide
-   * must remain valid until you close the stream. Closing the stream will not
-   * free the original buffer.
+   * must remain valid until you close the stream.
    *
    * If you need to write to a memory buffer, you should use IOStream.FromMem()
    * with a writable buffer of memory instead.
@@ -24473,6 +25099,13 @@ public:
    *   was passed to this function.
    * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter
    *   that was passed to this function.
+   *
+   * Additionally, the following properties are recognized:
+   *
+   * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+   *   non-nullptr value it will be interpreted as a function of free_func type
+   *   and called with the passed `mem` pointer when closing the stream. By
+   *   default it is unset, i.e., the memory will not be freed.
    *
    * @param mem a read-only buffer to feed an IOStreamRef stream.
    * @returns a valid IOStream on success.
@@ -24607,7 +25240,7 @@ public:
    *
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24621,7 +25254,7 @@ public:
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -24640,7 +25273,7 @@ public:
    *
    * @returns an IOStatus enum with the current state.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -24652,7 +25285,7 @@ public:
    * @returns the size of the data stream in the IOStream on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -24677,7 +25310,7 @@ public:
    * @returns the final offset in the data stream after the seek or -1 on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24695,7 +25328,7 @@ public:
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24753,11 +25386,15 @@ public:
    * stream is not at EOF, IOStream.GetStatus() will return a different error
    * value and GetError() will offer a human-readable message.
    *
+   * A request for zero bytes on a valid stream will return zero immediately
+   * without accessing the stream, so the stream status (EOF, err, etc) will not
+   * change.
+   *
    * @param buf a pointer to a buffer to read data into.
    * @returns the number of bytes read, or 0 on end of file or other failure;
    *          call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24780,11 +25417,15 @@ public:
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
+   * A request for zero bytes on a valid stream will return zero immediately
+   * without accessing the stream, so the stream status (EOF, err, etc) will not
+   * change.
+   *
    * @param buf the bytes to write to
    * @returns the number of bytes written, which will be less than `size` on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24835,7 +25476,7 @@ public:
    * @returns the number of bytes written or 0 on failure; call GetError() for
    *          more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24866,7 +25507,7 @@ public:
    * @returns the number of bytes written or 0 on failure; call GetError() for
    *          more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24884,7 +25525,7 @@ public:
    *
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24902,7 +25543,7 @@ public:
    * @returns the data in bytes
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24943,7 +25584,7 @@ public:
    *             invalid pointer.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -24963,7 +25604,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -24980,7 +25621,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25001,7 +25642,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25022,7 +25663,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25043,7 +25684,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25064,7 +25705,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25085,7 +25726,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25106,7 +25747,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25127,7 +25768,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25148,7 +25789,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25169,7 +25810,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25190,7 +25831,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25211,7 +25852,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25232,7 +25873,7 @@ public:
    * @returns the data read on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25572,7 +26213,7 @@ public:
    * @param value the byte value to write.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25584,7 +26225,7 @@ public:
    * @param value the byte value to write.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25601,7 +26242,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25618,7 +26259,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25634,7 +26275,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25650,7 +26291,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25667,7 +26308,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25684,7 +26325,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25700,7 +26341,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25716,7 +26357,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25733,7 +26374,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25750,7 +26391,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25766,7 +26407,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25782,7 +26423,7 @@ public:
    * @param value the data to be written, in native format.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety Do not use the same IOStream from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -25840,12 +26481,16 @@ struct IOStreamRef : IOStream
  * - "r": Open a file for reading. The file must exist.
  * - "w": Create an empty file for writing. If a file with the same name already
  *   exists its content is erased and the file is treated as a new empty file.
+ * - "wx": Create an empty file for writing. If a file with the same name
+ *   already exists, the call fails. (Supported since SDL 3.4.0)
  * - "a": Append to a file. Writing operations append data at the end of the
  *   file. The file is created if it does not exist.
  * - "r+": Open a file for update both reading and writing. The file must exist.
  * - "w+": Create an empty file for both reading and writing. If a file with the
  *   same name already exists its content is erased and the file is treated as a
  *   new empty file.
+ * - "w+x": Create an empty file for both reading and writing. If a file with
+ *   the same name already exists, the call fails. (Supported since SDL 3.4.0)
  * - "a+": Open a file for reading and appending. All writing operations are
  *   performed at the end of the file, protecting the previous content to be
  *   overwritten. You can reposition (fseek, rewind) the internal pointer to
@@ -25895,7 +26540,7 @@ struct IOStreamRef : IOStream
  * @returns a pointer to the IOStream structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -25933,6 +26578,13 @@ constexpr auto MEMORY_POINTER = SDL_PROP_IOSTREAM_MEMORY_POINTER;
 
 constexpr auto MEMORY_SIZE_NUMBER = SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto MEMORY_FREE_FUNC_POINTER =
+  SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto DYNAMIC_MEMORY_POINTER =
   SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER;
 
@@ -25949,8 +26601,7 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  * size, for both read and write access.
  *
  * This memory buffer is not copied by the IOStream; the pointer you provide
- * must remain valid until you close the stream. Closing the stream will not
- * free the original buffer.
+ * must remain valid until you close the stream.
  *
  * If you need to make sure the IOStream never writes to the memory buffer, you
  * should use IOStream.FromConstMem() with a read-only buffer of memory instead.
@@ -25961,6 +26612,13 @@ constexpr auto DYNAMIC_CHUNKSIZE_NUMBER =
  *   passed to this function.
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ *   non-nullptr value it will be interpreted as a function of free_func type
+ *   and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a buffer to feed an IOStream stream.
  * @returns a valid IOStream on success.
@@ -25998,8 +26656,7 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  * writing to the memory buffer.
  *
  * This memory buffer is not copied by the IOStream; the pointer you provide
- * must remain valid until you close the stream. Closing the stream will not
- * free the original buffer.
+ * must remain valid until you close the stream.
  *
  * If you need to write to a memory buffer, you should use IOStream.FromMem()
  * with a writable buffer of memory instead.
@@ -26010,6 +26667,13 @@ inline IOStream IOStream::FromMem(TargetBytes mem)
  *   passed to this function.
  * - `prop::IOStream.MEMORY_SIZE_NUMBER`: this will be the `size` parameter that
  *   was passed to this function.
+ *
+ * Additionally, the following properties are recognized:
+ *
+ * - `prop::IOStream.MEMORY_FREE_FUNC_POINTER`: if this property is set to a
+ *   non-nullptr value it will be interpreted as a function of free_func type
+ *   and called with the passed `mem` pointer when closing the stream. By
+ *   default it is unset, i.e., the memory will not be freed.
  *
  * @param mem a read-only buffer to feed an IOStreamRef stream.
  * @returns a valid IOStream on success.
@@ -26126,7 +26790,7 @@ inline IOStream IOStream::Open(const IOStreamInterface& iface, void* userdata)
  * @param context IOStream structure to close.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26143,7 +26807,7 @@ inline void IOStream::Close() { CloseIO(release()); }
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26171,7 +26835,7 @@ inline PropertiesRef IOStream::GetProperties() const
  * @param context the IOStream to query.
  * @returns an IOStatus enum with the current state.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26192,7 +26856,7 @@ inline IOStatus IOStream::GetStatus() const
  * @returns the size of the data stream in the IOStream on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26223,7 +26887,7 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
  * @returns the final offset in the data stream after the seek or -1 on failure;
  *          call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26251,7 +26915,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  * @returns the current offset in the stream, or -1 if the information can not
  *          be determined.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26272,12 +26936,16 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  * stream is not at EOF, IOStream.GetStatus() will return a different error
  * value and GetError() will offer a human-readable message.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an IOStream structure.
  * @param buf a pointer to a buffer to read data into.
  * @returns the number of bytes read, or 0 on end of file or other failure; call
  *          GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26308,12 +26976,16 @@ inline size_t IOStream::Read(TargetBytes buf)
  * recoverable, such as a non-blocking write that can simply be retried later,
  * or a fatal error.
  *
+ * A request for zero bytes on a valid stream will return zero immediately
+ * without accessing the stream, so the stream status (EOF, err, etc) will not
+ * change.
+ *
  * @param context a pointer to an IOStream structure.
  * @param buf a pointer to a buffer containing data to write.
  * @returns the number of bytes written, which will be less than `size` on
  *          failure; call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26347,7 +27019,7 @@ inline size_t IOStream::Write(SourceBytes buf)
  * @returns the number of bytes written or 0 on failure; call GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26379,7 +27051,7 @@ inline size_t IOprintf(IOStreamParam context,
  * @returns the number of bytes written or 0 on failure; call GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26409,7 +27081,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  * @param context IOStream structure to flush.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26435,7 +27107,7 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @returns the data or nullptr on failure; call GetError() for more
  *          information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26460,7 +27132,7 @@ inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
  * @returns the data.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26514,7 +27186,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  *                even in the case of an error.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26533,7 +27205,7 @@ inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = false)
  * @param data the data to be written.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -26562,7 +27234,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26585,7 +27257,7 @@ inline Uint8 ReadU8(IOStreamParam src)
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26612,7 +27284,7 @@ inline Sint8 ReadS8(IOStreamParam src)
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26641,7 +27313,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26670,7 +27342,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26699,7 +27371,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26728,7 +27400,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26757,7 +27429,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26786,7 +27458,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26815,7 +27487,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26844,7 +27516,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26873,7 +27545,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26902,7 +27574,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26931,7 +27603,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
  * @return the  data read.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26951,7 +27623,7 @@ inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
  * @param value the byte value to write.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26969,7 +27641,7 @@ inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
  * @param value the byte value to write.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -26991,7 +27663,7 @@ inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27016,7 +27688,7 @@ inline void IOStream::WriteU16LE(Uint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27041,7 +27713,7 @@ inline void IOStream::WriteS16LE(Sint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27066,7 +27738,7 @@ inline void IOStream::WriteU16BE(Uint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27091,7 +27763,7 @@ inline void IOStream::WriteS16BE(Sint16 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27116,7 +27788,7 @@ inline void IOStream::WriteU32LE(Uint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27141,7 +27813,7 @@ inline void IOStream::WriteS32LE(Sint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27166,7 +27838,7 @@ inline void IOStream::WriteU32BE(Uint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27191,7 +27863,7 @@ inline void IOStream::WriteS32BE(Sint32 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27216,7 +27888,7 @@ inline void IOStream::WriteU64LE(Uint64 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27241,7 +27913,7 @@ inline void IOStream::WriteS64LE(Sint64 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27266,7 +27938,7 @@ inline void IOStream::WriteU64BE(Uint64 value)
  * @param value the data to be written, in native format.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety Do not use the same IOStream from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -27803,7 +28475,8 @@ constexpr PowerState POWERSTATE_CHARGED =
  *                determine a value or there is no battery.
  * @param percent a pointer filled in with the percentage of battery life left,
  *                between 0 and 100, or nullptr to ignore. This will be filled
- *                in with -1 we can't determine a value or there is no battery.
+ *                in with -1 when we can't determine a value or there is no
+ *                battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
  *          GetError() for more information.
  *
@@ -29224,7 +29897,11 @@ struct Rect : RectRaw
 };
 
 /**
- * A rectangle, with the origin at the upper left (using floating point values).
+ * A rectangle stored using floating point values.
+ *
+ * The origin of the coordinate space is in the top-left, with increasing values
+ * moving down and right. The properties `x` and `y` represent the coordinates
+ * of the top-left corner of the rectangle.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -29268,21 +29945,9 @@ struct FRect : FRectRaw
   /**
    * Constructs from top-left corner plus size
    */
-  constexpr FRect(FPoint corner, FPoint size)
+  constexpr FRect(const FPointRaw& corner, const FPointRaw& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRectRaw& other) const
-  {
-    return Equal(other);
-  }
-
-  /// Compares with the underlying type
-  constexpr bool operator==(const FRect& other) const
-  {
-    return *this == (const FRectRaw&)(other);
   }
 
   /// @sa Empty()
@@ -29554,7 +30219,7 @@ struct FRect : FRectRaw
   bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
 
   /**
-   * Calculate the intersection of a rectangle and line segment
+   * Determine whether a floating point rectangle takes no space.
    *
    * @param[in,out] p1 Starting coordinates of the line
    * @param[in,out] p2 Ending coordinates of the line
@@ -29623,7 +30288,8 @@ struct FRect : FRectRaw
   constexpr bool EqualEpsilon(const FRectRaw& other, const float epsilon) const;
 
   /**
-   * Determine whether two rectangles are equal.
+   * Determine whether two floating point rectangles are equal, within a default
+   * epsilon.
    *
    * Rectangles are considered equal if both are not nullptr and each of their
    * x, y, width and height are within FLT_EPSILON of each other. This is often
@@ -29674,9 +30340,9 @@ struct FRect : FRectRaw
   }
 
   /**
-   * Determine whether two rectangles intersect.
+   * Determine whether two rectangles intersect with float precision.
    *
-   * @param other an SDL_Rect structure representing the second rectangle.
+   * @param other an FRect structure representing the second rectangle.
    * @returns true if there is an intersection, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -29692,8 +30358,8 @@ struct FRect : FRectRaw
    *
    * If `result` is nullptr then this function will return false.
    *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
+   * @param other an FRect structure representing the second rectangle.
+   * @returns an FRect structure filled in with the intersection of
    *          if there is intersection, an empty FRect otherwise.
    *
    * @since This function is available since SDL 3.2.0.
@@ -29705,7 +30371,7 @@ struct FRect : FRectRaw
   /**
    * Calculate the union of two rectangles with float precision.
    *
-   * @param other an SDL_Rect structure representing the second rectangle.
+   * @param other an FRect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
    * @throws Error on failure.
    *
@@ -29850,7 +30516,7 @@ constexpr FRect RectToFRect(const RectRaw& rect)
   return frect;
 }
 
-constexpr Rect::operator SDL_FRect() const { return RectToFRect(*this); }
+constexpr Rect::operator SDL_FRect() const { return SDL::RectToFRect(*this); }
 
 /**
  * Determine whether a point resides inside a rectangle.
@@ -30101,10 +30767,10 @@ constexpr bool FPoint::InRect(const FRectRaw& r) const
 }
 
 /**
- * Determine whether a floating point rectangle can contain any point.
+ * Determine whether a floating point rectangle takes no space.
  *
- * A rectangle is considered "empty" for this function if `r` is nullptr, or
- * if `r`'s width and/or height are < 0.0f.
+ * A rectangle is considered "empty" for this function if `r` is nullptr, or if
+ * `r`'s width and/or height are < 0.0f.
  *
  * Note that this is a forced-inline function in a header, and not a public API
  * function available in the SDL library (which is to say, the code is embedded
@@ -30129,10 +30795,10 @@ constexpr bool FRect::Empty() const { return SDL::RectEmptyFloat(*this); }
  * Determine whether two floating point rectangles are equal, within some given
  * epsilon.
  *
- * Rectangles are considered equal if both are not nullptr and each of their
- * x, y, width and height are within `epsilon` of each other. If you don't
- * know what value to use for `epsilon`, you should call the FRect.Equal
- * function instead.
+ * Rectangles are considered equal if both are not nullptr and each of their x,
+ * y, width and height are within `epsilon` of each other. If you don't know
+ * what value to use for `epsilon`, you should call the FRect.Equal function
+ * instead.
  *
  * Note that this is a forced-inline function in a header, and not a public API
  * function available in the SDL library (which is to say, the code is embedded
@@ -32196,7 +32862,7 @@ inline int GetDayOfWeek(int year, int month, int day)
  * This category covers measuring time elapsed (SDL_GetTicks(),
  * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
  * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
- * after a certain amount of time has elasped (SDL_AddTimer(), etc).
+ * after a certain amount of time has elapsed (SDL_AddTimer(), etc).
  *
  * @{
  */
@@ -33471,6 +34137,15 @@ public:
   /**
    * Get the human-readable name of a specific audio device.
    *
+   * **WARNING**: this function will work with AUDIO_DEVICE_DEFAULT_PLAYBACK and
+   * AUDIO_DEVICE_DEFAULT_RECORDING, returning the current default physical
+   * devices' names. However, as the default device may change at any time, it
+   * is likely better to show a generic name to the user, like "System default
+   * audio device" or perhaps "default [currently %s]". Do not store this name
+   * to disk to reidentify the device in a later run of the program, as the
+   * default might change in general, and the string will be the name of a
+   * specific device and not the abstract system default.
+   *
    * @returns the name of the audio device on success.
    * @throws Error on failure.
    *
@@ -33878,7 +34553,7 @@ public:
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStream.ResumeDevice(stream);`
+   * with AudioStream.ResumeDevice().
    *
    * This function works with both playback and recording devices.
    *
@@ -33937,7 +34612,7 @@ public:
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStream.ResumeDevice(stream);`
+   * with AudioStream.ResumeDevice().
    *
    * This function works with both playback and recording devices.
    *
@@ -34057,6 +34732,69 @@ constexpr int AudioFrameSize(const AudioSpec& x)
   return SDL_AUDIO_FRAMESIZE(x);
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ *
+ * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
+ * it's not safe to dispose of the data until the stream has completely consumed
+ * it. Often times it's difficult to know exactly when this has happened.
+ *
+ * This callback fires once when the stream no longer needs the buffer, allowing
+ * the app to easily free or reuse it.
+ *
+ * @param userdata an opaque pointer provided by the app for their personal use.
+ * @param buf the pointer provided to AudioStream.PutDataNoCopy().
+ * @param buflen the size of buffer, in bytes, provided to
+ *               AudioStream.PutDataNoCopy().
+ *
+ * @threadsafety This callbacks may run from any thread, so if you need to
+ *               protect shared data, you should use AudioStream.Lock to
+ *               serialize access; this lock will be held before your callback
+ *               is called, so your callback does not need to manage the lock
+ *               explicitly.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.SetGetCallback
+ * @sa AudioStream.SetPutCallback
+ */
+using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
+                                                       const void* buf,
+                                                       int buflen);
+
+/**
+ * A callback that fires for completed AudioStream.PutDataNoCopy() data.
+ *
+ * When using AudioStream.PutDataNoCopy() to provide data to an AudioStream,
+ * it's not safe to dispose of the data until the stream has completely consumed
+ * it. Often times it's difficult to know exactly when this has happened.
+ *
+ * This callback fires once when the stream no longer needs the buffer, allowing
+ * the app to easily free or reuse it.
+ *
+ * @param buf the pointer provided to AudioStream.PutDataNoCopy().
+ * @param buflen the size of buffer, in bytes, provided to
+ *               AudioStream.PutDataNoCopy().
+ *
+ * @threadsafety This callbacks may run from any thread, so if you need to
+ *               protect shared data, you should use AudioStream.Lock to
+ *               serialize access; this lock will be held before your callback
+ *               is called, so your callback does not need to manage the lock
+ *               explicitly.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.SetGetCallback
+ * @sa AudioStream.SetPutCallback
+ * @sa AudioStreamDataCompleteCallback
+ */
+using AudioStreamDataCompleteCB =
+  std::function<void(const void* buf, int buflen)>;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * The opaque handle that represents an audio stream.
  *
@@ -34161,7 +34899,7 @@ public:
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStream.ResumeDevice(stream);`
+   * with AudioStream.ResumeDevice().
    *
    * This function works with both playback and recording devices.
    *
@@ -34227,7 +34965,7 @@ public:
    * Also unlike other functions, the audio device begins paused. This is to map
    * more closely to SDL2-style behavior, since there is no extra step here to
    * bind a stream to begin audio flowing. The audio device should be resumed
-   * with `AudioStream.ResumeDevice(stream);`
+   * with `AudioStream.ResumeDevice();`
    *
    * This function works with both playback and recording devices.
    *
@@ -34324,6 +35062,17 @@ public:
 
   /**
    * Get the properties associated with an audio stream.
+   *
+   * The application can hang any data it wants here, but the following
+   * properties are understood by SDL:
+   *
+   * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
+   *   stream be automatically cleaned up when the audio subsystem quits. If set
+   *   to false, the streams will persist beyond that. This property is ignored
+   *   for streams created through AudioStream.AudioStream(), and will always be
+   *   cleaned up. Streams that are not cleaned up will still be unbound from
+   *   devices when the audio subsystem quits. This property was added in SDL
+   *   3.4.0.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -34510,9 +35259,9 @@ public:
    *
    * The frequency ratio is used to adjust the rate at which input data is
    * consumed. Changing this effectively modifies the speed and pitch of the
-   * audio. A value greater than 1.0 will play the audio faster, and at a higher
-   * pitch. A value less than 1.0 will play the audio slower, and at a lower
-   * pitch.
+   * audio. A value greater than 1.0f will play the audio faster, and at a
+   * higher pitch. A value less than 1.0f will play the audio slower, and at a
+   * lower pitch. 1.0f means play at normal speed.
    *
    * This is applied during AudioStream.GetData, and can be continuously changed
    * to create various effects.
@@ -34665,7 +35414,7 @@ public:
    * @threadsafety It is safe to call this function from any thread, as it holds
    *               a stream-specific mutex while running. Don't change the
    *               stream's format to have a different number of channels from a
-   *               a different thread at the same time, though!
+   *               different thread at the same time, though!
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -34679,7 +35428,7 @@ public:
    * Channel maps are optional; most things do not need them, instead passing
    * data in the [order that SDL expects](CategoryAudio#channel-layouts).
    *
-   * The output channel map reorders data that leaving a stream via
+   * The output channel map reorders data that is leaving a stream via
    * AudioStream.GetData.
    *
    * Each item in the array represents an input channel, and its value is the
@@ -34754,6 +35503,98 @@ public:
    * @sa AudioStream.GetQueued
    */
   void PutData(SourceBytes buf);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Add external data to an audio stream without copying it.
+   *
+   * Unlike AudioStream.PutData(), this function does not make a copy of the
+   * provided data, instead storing the provided pointer. This means that the
+   * put operation does not need to allocate and copy the data, but the original
+   * data must remain available until the stream is done with it, either by
+   * being read from the stream in its entirety, or a call to
+   * AudioStream.Clear() or AudioStream.Destroy().
+   *
+   * The data must match the format/channels/samplerate specified in the latest
+   * call to AudioStream.SetFormat, or the format specified when creating the
+   * stream if it hasn't been changed.
+   *
+   * An optional callback may be provided, which is called when the stream no
+   * longer needs the data. Once this callback fires, the stream will not access
+   * the data again. This callback will fire for any reason the data is no
+   * longer needed, including clearing or destroying the stream.
+   *
+   * Note that there is still an allocation to store tracking information, so
+   * this function is more efficient for larger blocks of data. If you're
+   * planning to put a few samples at a time, it will be more efficient to use
+   * AudioStream.PutData(), which allocates and buffers in blocks.
+   *
+   * @param buf a pointer to the audio data to add.
+   * @param callback the callback function to call when the data is no longer
+   *                 needed by the stream. May be nullptr.
+   * @param userdata an opaque pointer provided to the callback for its own
+   *                 personal use.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, but if the
+   *               stream has a callback set, the caller might need to manage
+   *               extra locking.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa AudioStream.Clear
+   * @sa AudioStream.Flush
+   * @sa AudioStream.GetData
+   * @sa AudioStream.GetQueued
+   */
+  void PutDataNoCopy(SourceBytes buf,
+                     AudioStreamDataCompleteCallback callback,
+                     void* userdata);
+
+  /**
+   * Add external data to an audio stream without copying it.
+   *
+   * Unlike AudioStream.PutData(), this function does not make a copy of the
+   * provided data, instead storing the provided pointer. This means that the
+   * put operation does not need to allocate and copy the data, but the original
+   * data must remain available until the stream is done with it, either by
+   * being read from the stream in its entirety, or a call to
+   * AudioStream.Clear() or AudioStream.Destroy().
+   *
+   * The data must match the format/channels/samplerate specified in the latest
+   * call to AudioStream.SetFormat, or the format specified when creating the
+   * stream if it hasn't been changed.
+   *
+   * An optional callback may be provided, which is called when the stream no
+   * longer needs the data. Once this callback fires, the stream will not access
+   * the data again. This callback will fire for any reason the data is no
+   * longer needed, including clearing or destroying the stream.
+   *
+   * Note that there is still an allocation to store tracking information, so
+   * this function is more efficient for larger blocks of data. If you're
+   * planning to put a few samples at a time, it will be more efficient to use
+   * AudioStream.PutData(), which allocates and buffers in blocks.
+   *
+   * @param buf a pointer to the audio data to add.
+   * @param callback the callback function to call when the data is no longer
+   *                 needed by the stream. May be nullptr.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, but if the
+   *               stream has a callback set, the caller might need to manage
+   *               extra locking.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa AudioStream.Clear
+   * @sa AudioStream.Flush
+   * @sa AudioStream.GetData
+   * @sa AudioStream.GetQueued
+   */
+  void PutDataNoCopy(SourceBytes buf, AudioStreamDataCompleteCB callback);
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get converted/resampled data from the stream.
@@ -34912,8 +35753,8 @@ public:
    * previously been paused. Once unpaused, any bound audio streams will begin
    * to progress again, and audio can be generated.
    *
-   * Remember, AudioStream.AudioStream opens device in a paused state, so this
-   * function call is required for audio playback to begin on such device.
+   * AudioStream.AudioStream opens audio devices in a paused state, so this
+   * function call is required for audio playback to begin on such devices.
    *
    * @throws Error on failure.
    *
@@ -35196,6 +36037,62 @@ public:
    * @sa AudioDevice.BindAudioStreams
    */
   AudioDeviceRef GetDevice() const;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Add data to the stream with each channel in a separate array.
+   *
+   * This data must match the format/channels/samplerate specified in the latest
+   * call to AudioStream.SetFormat, or the format specified when creating the
+   * stream if it hasn't been changed.
+   *
+   * The data will be interleaved and queued. Note that AudioStream only
+   * operates on interleaved data, so this is simply a convenience function for
+   * easily queueing data from sources that provide separate arrays. There is no
+   * equivalent function to retrieve planar data.
+   *
+   * The arrays in `channel_buffers` are ordered as they are to be interleaved;
+   * the first array will be the first sample in the interleaved data. Any
+   * individual array may be nullptr; in this case, silence will be interleaved
+   * for that channel.
+   *
+   * `num_channels` specifies how many arrays are in `channel_buffers`. This can
+   * be used as a safety to prevent overflow, in case the stream format has
+   * changed elsewhere. If more channels are specified than the current input
+   * spec, they are ignored. If less channels are specified, the missing arrays
+   * are treated as if they are nullptr (silence is written to those channels).
+   * If the count is -1, SDL will assume the array count matches the current
+   * input spec.
+   *
+   * Note that `num_samples` is the number of _samples per array_. This can also
+   * be thought of as the number of _sample frames_ to be queued. A value of 1
+   * with stereo arrays will queue two samples to the stream. This is different
+   * than AudioStream.PutData, which wants the size of a single array in bytes.
+   *
+   * @param channel_buffers a pointer to an array of arrays, one array per
+   *                        channel.
+   * @param num_channels the number of arrays in `channel_buffers` or -1.
+   * @param num_samples the number of _samples_ per array to write to the
+   *                    stream.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread, but if the
+   *               stream has a callback set, the caller might need to manage
+   *               extra locking.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa AudioStream.Clear
+   * @sa AudioStream.Flush
+   * @sa AudioStream.GetData
+   * @sa AudioStream.GetQueued
+   */
+  void PutPlanarData(const void* const* channel_buffers,
+                     int num_channels,
+                     int num_samples);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// Semi-safe reference for AudioStream.
@@ -35372,6 +36269,15 @@ inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
 
 /**
  * Get the human-readable name of a specific audio device.
+ *
+ * **WARNING**: this function will work with AUDIO_DEVICE_DEFAULT_PLAYBACK and
+ * AUDIO_DEVICE_DEFAULT_RECORDING, returning the current default physical
+ * devices' names. However, as the default device may change at any time, it is
+ * likely better to show a generic name to the user, like "System default audio
+ * device" or perhaps "default [currently %s]". Do not store this name to disk
+ * to reidentify the device in a later run of the program, as the default might
+ * change in general, and the string will be the name of a specific device and
+ * not the abstract system default.
  *
  * @param devid the instance ID of the device to query.
  * @returns the name of the audio device on success.
@@ -35974,6 +36880,17 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
 /**
  * Get the properties associated with an audio stream.
  *
+ * The application can hang any data it wants here, but the following properties
+ * are understood by SDL:
+ *
+ * - `prop::AudioStream._AUTO_CLEANUP_BOOLEAN`: if true (the default), the
+ *   stream be automatically cleaned up when the audio subsystem quits. If set
+ *   to false, the streams will persist beyond that. This property is ignored
+ *   for streams created through AudioStream.AudioStream(), and will always be
+ *   cleaned up. Streams that are not cleaned up will still be unbound from
+ *   devices when the audio subsystem quits. This property was added in SDL
+ *   3.4.0.
+ *
  * @param stream the AudioStream to query.
  * @returns a valid property ID on success.
  * @throws Error on failure.
@@ -35991,6 +36908,17 @@ inline PropertiesRef AudioStream::GetProperties() const
 {
   return SDL::GetAudioStreamProperties(m_resource);
 }
+
+namespace prop::AudioStream {
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto _AUTO_CLEANUP_BOOLEAN =
+  SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
+} // namespace prop::AudioStream
 
 /**
  * Query the current format of an audio stream.
@@ -36096,14 +37024,14 @@ inline float AudioStream::GetFrequencyRatio() const
  *
  * The frequency ratio is used to adjust the rate at which input data is
  * consumed. Changing this effectively modifies the speed and pitch of the
- * audio. A value greater than 1.0 will play the audio faster, and at a higher
- * pitch. A value less than 1.0 will play the audio slower, and at a lower
- * pitch.
+ * audio. A value greater than 1.0f will play the audio faster, and at a higher
+ * pitch. A value less than 1.0f will play the audio slower, and at a lower
+ * pitch. 1.0f means play at normal speed.
  *
  * This is applied during AudioStream.GetData, and can be continuously changed
  * to create various effects.
  *
- * @param stream the stream the frequency ratio is being changed.
+ * @param stream the stream on which the frequency ratio is being changed.
  * @param ratio the frequency ratio. 1.0 is normal speed. Must be between 0.01
  *              and 100.
  * @throws Error on failure.
@@ -36302,8 +37230,8 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @threadsafety It is safe to call this function from any thread, as it holds a
  *               stream-specific mutex while running. Don't change the stream's
- *               format to have a different number of channels from a a
- *               different thread at the same time, though!
+ *               format to have a different number of channels from a different
+ *               thread at the same time, though!
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -36327,7 +37255,7 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  * Channel maps are optional; most things do not need them, instead passing data
  * in the [order that SDL expects](CategoryAudio#channel-layouts).
  *
- * The output channel map reorders data that leaving a stream via
+ * The output channel map reorders data that is leaving a stream via
  * AudioStream.GetData.
  *
  * Each item in the array represents an input channel, and its value is the
@@ -36422,6 +37350,192 @@ inline void AudioStream::PutData(SourceBytes buf)
 {
   SDL::PutAudioStreamData(m_resource, std::move(buf));
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Add external data to an audio stream without copying it.
+ *
+ * Unlike AudioStream.PutData(), this function does not make a copy of the
+ * provided data, instead storing the provided pointer. This means that the put
+ * operation does not need to allocate and copy the data, but the original data
+ * must remain available until the stream is done with it, either by being read
+ * from the stream in its entirety, or a call to AudioStream.Clear() or
+ * AudioStream.Destroy().
+ *
+ * The data must match the format/channels/samplerate specified in the latest
+ * call to AudioStream.SetFormat, or the format specified when creating the
+ * stream if it hasn't been changed.
+ *
+ * An optional callback may be provided, which is called when the stream no
+ * longer needs the data. Once this callback fires, the stream will not access
+ * the data again. This callback will fire for any reason the data is no longer
+ * needed, including clearing or destroying the stream.
+ *
+ * Note that there is still an allocation to store tracking information, so this
+ * function is more efficient for larger blocks of data. If you're planning to
+ * put a few samples at a time, it will be more efficient to use
+ * AudioStream.PutData(), which allocates and buffers in blocks.
+ *
+ * @param stream the stream the audio data is being added to.
+ * @param buf a pointer to the audio data to add.
+ * @param callback the callback function to call when the data is no longer
+ *                 needed by the stream. May be nullptr.
+ * @param userdata an opaque pointer provided to the callback for its own
+ *                 personal use.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread, but if the
+ *               stream has a callback set, the caller might need to manage
+ *               extra locking.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.Clear
+ * @sa AudioStream.Flush
+ * @sa AudioStream.GetData
+ * @sa AudioStream.GetQueued
+ */
+inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+                                     SourceBytes buf,
+                                     AudioStreamDataCompleteCallback callback,
+                                     void* userdata)
+{
+  CheckError(SDL_PutAudioStreamDataNoCopy(
+    stream, buf.data(), buf.size_bytes(), callback, userdata));
+}
+
+/**
+ * Add external data to an audio stream without copying it.
+ *
+ * Unlike AudioStream.PutData(), this function does not make a copy of the
+ * provided data, instead storing the provided pointer. This means that the put
+ * operation does not need to allocate and copy the data, but the original data
+ * must remain available until the stream is done with it, either by being read
+ * from the stream in its entirety, or a call to AudioStream.Clear() or
+ * AudioStream.Destroy().
+ *
+ * The data must match the format/channels/samplerate specified in the latest
+ * call to AudioStream.SetFormat, or the format specified when creating the
+ * stream if it hasn't been changed.
+ *
+ * An optional callback may be provided, which is called when the stream no
+ * longer needs the data. Once this callback fires, the stream will not access
+ * the data again. This callback will fire for any reason the data is no longer
+ * needed, including clearing or destroying the stream.
+ *
+ * Note that there is still an allocation to store tracking information, so this
+ * function is more efficient for larger blocks of data. If you're planning to
+ * put a few samples at a time, it will be more efficient to use
+ * AudioStream.PutData(), which allocates and buffers in blocks.
+ *
+ * @param stream the stream the audio data is being added to.
+ * @param buf a pointer to the audio data to add.
+ * @param callback the callback function to call when the data is no longer
+ *                 needed by the stream. May be nullptr.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread, but if the
+ *               stream has a callback set, the caller might need to manage
+ *               extra locking.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.Clear
+ * @sa AudioStream.Flush
+ * @sa AudioStream.GetData
+ * @sa AudioStream.GetQueued
+ */
+inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+                                     SourceBytes buf,
+                                     AudioStreamDataCompleteCB callback)
+{
+  using Wrapper = CallbackWrapper<AudioStreamDataCompleteCB>;
+  PutAudioStreamDataNoCopy(stream,
+                           std::move(buf),
+                           &Wrapper::CallOnce,
+                           Wrapper::Wrap(std::move(callback)));
+}
+
+inline void AudioStream::PutDataNoCopy(SourceBytes buf,
+                                       AudioStreamDataCompleteCallback callback,
+                                       void* userdata)
+{
+  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
+}
+
+inline void AudioStream::PutDataNoCopy(SourceBytes buf,
+                                       AudioStreamDataCompleteCB callback)
+{
+  SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback);
+}
+
+/**
+ * Add data to the stream with each channel in a separate array.
+ *
+ * This data must match the format/channels/samplerate specified in the latest
+ * call to AudioStream.SetFormat, or the format specified when creating the
+ * stream if it hasn't been changed.
+ *
+ * The data will be interleaved and queued. Note that AudioStream only operates
+ * on interleaved data, so this is simply a convenience function for easily
+ * queueing data from sources that provide separate arrays. There is no
+ * equivalent function to retrieve planar data.
+ *
+ * The arrays in `channel_buffers` are ordered as they are to be interleaved;
+ * the first array will be the first sample in the interleaved data. Any
+ * individual array may be nullptr; in this case, silence will be interleaved
+ * for that channel.
+ *
+ * `num_channels` specifies how many arrays are in `channel_buffers`. This can
+ * be used as a safety to prevent overflow, in case the stream format has
+ * changed elsewhere. If more channels are specified than the current input
+ * spec, they are ignored. If less channels are specified, the missing arrays
+ * are treated as if they are nullptr (silence is written to those channels). If
+ * the count is -1, SDL will assume the array count matches the current input
+ * spec.
+ *
+ * Note that `num_samples` is the number of _samples per array_. This can also
+ * be thought of as the number of _sample frames_ to be queued. A value of 1
+ * with stereo arrays will queue two samples to the stream. This is different
+ * than AudioStream.PutData, which wants the size of a single array in bytes.
+ *
+ * @param stream the stream the audio data is being added to.
+ * @param channel_buffers a pointer to an array of arrays, one array per
+ *                        channel.
+ * @param num_channels the number of arrays in `channel_buffers` or -1.
+ * @param num_samples the number of _samples_ per array to write to the stream.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread, but if the
+ *               stream has a callback set, the caller might need to manage
+ *               extra locking.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa AudioStream.Clear
+ * @sa AudioStream.Flush
+ * @sa AudioStream.GetData
+ * @sa AudioStream.GetQueued
+ */
+inline void PutAudioStreamPlanarData(AudioStreamParam stream,
+                                     const void* const* channel_buffers,
+                                     int num_channels,
+                                     int num_samples)
+{
+  CheckError(SDL_PutAudioStreamPlanarData(
+    stream, channel_buffers, num_channels, num_samples));
+}
+
+inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
+                                       int num_channels,
+                                       int num_samples)
+{
+  SDL::PutAudioStreamPlanarData(
+    m_resource, channel_buffers, num_channels, num_samples);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Get converted/resampled data from the stream.
@@ -36626,8 +37740,8 @@ inline void AudioStream::PauseDevice()
  * previously been paused. Once unpaused, any bound audio streams will begin to
  * progress again, and audio can be generated.
  *
- * Remember, AudioStream.AudioStream opens device in a paused state, so this
- * function call is required for audio playback to begin on such device.
+ * AudioStream.AudioStream opens audio devices in a paused state, so this
+ * function call is required for audio playback to begin on such devices.
  *
  * @param stream the audio stream associated with the audio device to resume.
  * @throws Error on failure.
@@ -36986,7 +38100,7 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
  * bind a stream to begin audio flowing. The audio device should be resumed with
- * `AudioStream.ResumeDevice(stream);`
+ * AudioStream.ResumeDevice().
  *
  * This function works with both playback and recording devices.
  *
@@ -37051,7 +38165,7 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
  * Also unlike other functions, the audio device begins paused. This is to map
  * more closely to SDL2-style behavior, since there is no extra step here to
  * bind a stream to begin audio flowing. The audio device should be resumed with
- * `AudioStream.ResumeDevice(stream);`
+ * AudioStream.ResumeDevice().
  *
  * This function works with both playback and recording devices.
  *
@@ -37296,8 +38410,8 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  * ```
  *
  * @param src the data source for the WAVE data.
- * @param spec a pointer to an AudioSpec that will be set to the WAVE
- *             data's format details on successful return.
+ * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
+ *             format details on successful return.
  * @param closeio if true, calls IOStream.Close() on `src` before returning,
  *                even in the case of an error.
  * @throws Error on failure.
@@ -37618,12 +38732,16 @@ constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
  * `SDLK_*` constant for those keys that do not generate characters.
  *
  * A special exception is the number keys at the top of the keyboard which map
- * to SDLK_0...SDLK_9 on AZERTY layouts.
+ * by default to SDLK_0...SDLK_9 on AZERTY layouts.
  *
  * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
  * unicode code point.
  *
+ * Many common keycodes are listed below, but this list is not exhaustive.
+ *
  * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_HINT_KEYCODE_OPTIONS
  */
 class Keycode
 {
@@ -38637,6 +39755,9 @@ public:
    * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If
    *   this property is set, it will be the entire environment for the process,
    *   otherwise the current environment is used.
+   * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+   *   representing the working directory for the process, defaults to the
+   *   current working directory.
    * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
    *   standard input for the process comes from, defaults to
    *   `SDL_PROCESS_STDIO_nullptr`.
@@ -38663,6 +39784,12 @@ public:
    *   in the background. In this case the default input and output is
    *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
    *   available, and will always be 0.
+   * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+   *   run and any parameters. This string is passed directly to `CreateProcess`
+   *   on Windows, and does nothing on other platforms. This property is only
+   *   important if you want to start programs that does non-standard
+   *   command-line processing, and in most cases using
+   *   `prop::process.CREATE_ARGS_POINTER` is sufficient.
    *
    * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
    * SIGCHLD should not be ignored or handled because those would prevent SDL
@@ -39030,6 +40157,9 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  * - `prop::process.CREATE_ENVIRONMENT_POINTER`: an Environment pointer. If this
  *   property is set, it will be the entire environment for the process,
  *   otherwise the current environment is used.
+ * - `prop::process.CREATE_WORKING_DIRECTORY_STRING`: a UTF-8 encoded string
+ *   representing the working directory for the process, defaults to the current
+ *   working directory.
  * - `prop::process.CREATE_STDIN_NUMBER`: an ProcessIO value describing where
  *   standard input for the process comes from, defaults to
  *   `SDL_PROCESS_STDIO_nullptr`.
@@ -39056,6 +40186,12 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  *   in the background. In this case the default input and output is
  *   `SDL_PROCESS_STDIO_nullptr` and the exitcode of the process is not
  *   available, and will always be 0.
+ * - `prop::process.CREATE_CMDLINE_STRING`: a string containing the program to
+ *   run and any parameters. This string is passed directly to `CreateProcess`
+ *   on Windows, and does nothing on other platforms. This property is only
+ *   important if you want to start programs that does non-standard command-line
+ *   processing, and in most cases using `prop::process.CREATE_ARGS_POINTER` is
+ *   sufficient.
  *
  * On POSIX platforms, wait() and waitpid(-1, ...) should not be called, and
  * SIGCHLD should not be ignored or handled because those would prevent SDL from
@@ -39091,6 +40227,13 @@ constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
 constexpr auto CREATE_ENVIRONMENT_POINTER =
   SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_WORKING_DIRECTORY_STRING =
+  SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto CREATE_STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
 
 constexpr auto CREATE_STDIN_POINTER = SDL_PROP_PROCESS_CREATE_STDIN_POINTER;
@@ -39108,6 +40251,12 @@ constexpr auto CREATE_STDERR_TO_STDOUT_BOOLEAN =
 
 constexpr auto CREATE_BACKGROUND_BOOLEAN =
   SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
 
@@ -39673,6 +40822,10 @@ public:
   /**
    * Opens up a read-only container for the application's filesystem.
    *
+   * By default, Storage.Storage uses the generic storage implementation. When
+   * the path override is not provided, the generic implementation will use the
+   * output of GetBasePath as the base path.
+   *
    * @param override a path to override the backend's default title root.
    * @param props a property list that may contain backend-specific information.
    * @post a title storage container on success.
@@ -40167,6 +41320,10 @@ struct StorageRef : Storage
 
 /**
  * Opens up a read-only container for the application's filesystem.
+ *
+ * By default, Storage.Storage uses the generic storage implementation. When the
+ * path override is not provided, the generic implementation will use the output
+ * of GetBasePath as the base path.
  *
  * @param override a path to override the backend's default title root.
  * @param props a property list that may contain backend-specific information.
@@ -40787,12 +41944,16 @@ inline OwnArray<char*> Storage::GlobDirectory(StringParam path,
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, Surface.LoadBMP(). SDL itself does not
- * provide loaders for various other file formats, but there are several
- * excellent external libraries that do, including its own satellite library,
- * SDL_image:
+ * There is also a simple .bmp loader, Surface.LoadBMP(), and a simple .png
+ * loader, Surface.LoadPNG(). SDL itself does not provide loaders for other file
+ * formats, but there are several excellent external libraries that do,
+ * including its own satellite library,
+ * [SDL_image](https://wiki.libsdl.org/SDL3_image).
  *
- * https://github.com/libsdl-org/SDL_image
+ *
+ * In general these functions are thread-safe in that they can be called on
+ * different threads with different surfaces. You should not try to modify any
+ * surface from two threads simultaneously.
  *
  * @{
  */
@@ -40916,6 +42077,16 @@ constexpr ScaleMode SCALEMODE_NEAREST =
 constexpr ScaleMode SCALEMODE_LINEAR =
   SDL_SCALEMODE_LINEAR; ///< linear filtering
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/**
+ * nearest pixel sampling with improved scaling for pixel art, available since
+ * SDL 3.4.0
+ */
+constexpr ScaleMode SCALEMODE_PIXELART = SDL_SCALEMODE_PIXELART;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 /**
  * The flip mode.
  *
@@ -40928,6 +42099,14 @@ constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE; ///< Do not flip
 constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL; ///< flip horizontally
 
 constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/// flip horizontally and vertically (not a diagonal flip)
+constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
+  SDL_FLIP_HORIZONTAL_AND_VERTICAL;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 /**
  * A collection of pixels used in software blitting.
@@ -40953,8 +42132,6 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
  * image and pitch is the length of that data.
  *
  * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
  *
  * @sa Surface.Surface
  * @sa Surface.Destroy
@@ -41195,6 +42372,57 @@ public:
    */
   static Surface LoadBMP(StringParam file);
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Load a PNG image from a seekable SDL data stream.
+   *
+   * This is intended as a convenience function for loading images from trusted
+   * sources. If you want to load arbitrary images you should use libpng or
+   * another image loading library designed with security in mind.
+   *
+   * @param src the data stream for the surface.
+   * @param closeio if true, calls IOStream.Close() on `src` before returning,
+   *                even in the case of an error.
+   * @returns a pointer to a new Surface structure or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  static Surface LoadPNG(IOStreamParam src, bool closeio = false);
+
+  /**
+   * Load a PNG image from a file.
+   *
+   * This is intended as a convenience function for loading images from trusted
+   * sources. If you want to load arbitrary images you should use libpng or
+   * another image loading library designed with security in mind.
+   *
+   * The new surface should be freed with Surface.Destroy(). Not doing so will
+   * result in a memory leak.
+   *
+   * @param file the PNG file to load.
+   * @returns a pointer to a new Surface structure or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.Destroy
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  static Surface LoadPNG(StringParam file);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
   /// member access to underlying SurfaceRaw.
   constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
 
@@ -41278,6 +42506,12 @@ public:
    *   edge of the image, if this surface is being used as a cursor.
    * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
    *   edge of the image, if this surface is being used as a cursor.
+   * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+   *   meant to be rotated clockwise to make the image right-side up. Default 0.
+   *   This is used by the camera API, if a mobile device is oriented
+   *   differently than what its camera provides (i.e. - the camera always
+   *   provides portrait images but the phone is being held in landscape
+   *   orientation). Since SDL 3.4.0.
    *
    * @returns a valid property ID on success.
    * @throws Error on failure.
@@ -41297,7 +42531,8 @@ public:
    * @param colorspace a Colorspace value describing the surface colorspace.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41315,7 +42550,8 @@ public:
    * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if the
    *          surface is nullptr.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41343,7 +42579,8 @@ public:
    * @returns a new Palette structure on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41354,12 +42591,16 @@ public:
   /**
    * Set the palette used by a surface.
    *
+   * Setting the palette keeps an internal reference to the palette, which can
+   * be safely destroyed afterwards.
+   *
    * A single palette can be shared with many surfaces.
    *
    * @param palette the Palette structure to use.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41396,7 +42637,8 @@ public:
    * @param image an alternate Surface to associate with this surface.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41430,7 +42672,8 @@ public:
    * @returns a nullptr terminated array of Surface pointers or nullptr on
    *          failure; call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41446,7 +42689,8 @@ public:
    * This function removes a reference from all the alternative versions,
    * destroying them if this is the last reference to them.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41464,15 +42708,16 @@ public:
    * `surface->format`. Once you are done accessing the surface, you should use
    * Surface.Unlock() to release it.
    *
-   * Not all surfaces require locking. If `Surface.MustLock()` evaluates to
-   * false, then you can read and write to the surface at any time, and the
-   * pixel format of the surface will not change.
+   * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
+   * to 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
    *
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe. The locking referred to by
-   *               this function is making the pixels available for direct
-   *               access, not thread-safe locking.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces. The locking referred to by this function
+   *               is making the pixels available for direct access, not
+   *               thread-safe locking.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41508,7 +42753,8 @@ public:
    *                even in the case of an error.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41518,7 +42764,7 @@ public:
   void SaveBMP(IOStreamParam dst, bool closeio = false) const;
 
   /**
-   * Save a surface to a file.
+   * Save a surface to a file in BMP format.
    *
    * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
    * BMP directly. Other RGB formats with 8-bit or higher get converted to a
@@ -41529,7 +42775,8 @@ public:
    * @param file a file to save to.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41537,6 +42784,44 @@ public:
    * @sa Surface.SaveBMP
    */
   void SaveBMP(StringParam file) const;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Save a surface to a seekable SDL data stream in PNG format.
+   *
+   * @param dst a data stream to save to.
+   * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+   *                even in the case of an error.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  void SavePNG(IOStreamParam dst, bool closeio = false) const;
+
+  /**
+   * Save a surface to a file in PNG format.
+   *
+   * @param file a file to save to.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Surface.LoadPNG
+   * @sa Surface.SavePNG
+   */
+  void SavePNG(StringParam file) const;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -41547,7 +42832,8 @@ public:
    * @param enabled true to enable RLE acceleration, false to disable it.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41584,7 +42870,8 @@ public:
    * @param key the transparent pixel or std::nullopt to disable it.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41653,7 +42940,8 @@ public:
    * @param b the blue color value multiplied into blit operations.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41670,7 +42958,8 @@ public:
    * @param b a pointer filled in with the current blue color value.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41690,7 +42979,8 @@ public:
    * @param alpha the alpha value multiplied into blit operations.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41748,7 +43038,8 @@ public:
    * @param blendMode the BlendMode to use for blit blending.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41784,7 +43075,8 @@ public:
    * @returns true if the rectangle intersects the surface, otherwise false and
    *          blits will be completely clipped.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41810,7 +43102,8 @@ public:
    *          surface on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41824,11 +43117,44 @@ public:
    * @param flip the direction to flip.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
   void Flip(FlipMode flip);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Return a copy of a surface rotated clockwise a number of degrees.
+   *
+   * The angle of rotation can be negative for counter-clockwise rotation.
+   *
+   * When the rotation isn't a multiple of 90 degrees, the resulting surface is
+   * larger than the original, with the background filled in with the colorkey,
+   * if available, or RGBA 255/255/255/0 if not.
+   *
+   * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the
+   * new copy will have the adjusted value set: if the rotation property is 90
+   * and `angle` was 30, the new surface will have a property value of 60 (that
+   * is: to be upright vs gravity, this surface needs to rotate 60 more
+   * degrees). However, note that further rotations on the new surface in this
+   * example will produce unexpected results, since the image will have resized
+   * and padded to accommodate the not-90 degree angle.
+   *
+   * @param angle the rotation angle, in degrees.
+   * @returns a rotated copy of the surface or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  Surface Rotate(float angle);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -41839,7 +43165,8 @@ public:
    * @returns a copy of the surface or nullptr on failure; call GetError() for
    *          more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41856,7 +43183,8 @@ public:
    * @returns a copy of the surface or nullptr on failure; call GetError() for
    *          more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41882,7 +43210,8 @@ public:
    * @returns the new Surface structure that is created or nullptr on failure;
    *          call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41910,7 +43239,8 @@ public:
    * @returns the new Surface structure that is created or nullptr on failure;
    *          call GetError() for more information.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -41931,7 +43261,8 @@ public:
    *               multiplication, false to do multiplication in sRGB space.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -41948,7 +43279,8 @@ public:
    * @param c the color components of the pixel, normally in the range 0-1.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -41971,7 +43303,8 @@ public:
    * @param color the color to fill with.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -42007,7 +43340,8 @@ public:
    * @param color the color to fill with.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -42237,7 +43571,7 @@ public:
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a stretched pixel copy from one surface to another.
@@ -42263,7 +43597,7 @@ public:
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different
@@ -42386,7 +43720,8 @@ public:
    * @param b the blue component of the pixel in the range 0-255.
    * @returns a pixel value.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -42415,7 +43750,8 @@ public:
    * @param c the color components of the pixel in the range 0-255.
    * @returns a pixel value.
    *
-   * @threadsafety It is safe to call this function from any thread.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -42443,7 +43779,8 @@ public:
    *          ignore this channel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -42463,7 +43800,8 @@ public:
    * @returns color on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -42486,7 +43824,8 @@ public:
    *          0-1, or nullptr to ignore this channel.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -42506,7 +43845,8 @@ public:
    * @returns color on success.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -42525,7 +43865,8 @@ public:
    * @param c the color values, 0-255.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -42541,40 +43882,29 @@ public:
    * @param c the color values, normally in the range 0-1.
    * @throws Error on failure.
    *
-   * @threadsafety This function is not thread safe.
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
    *
    * @since This function is available since SDL 3.2.0.
    */
   void WritePixelFloat(const PointRaw& p, const FColorRaw& c);
 
-  /**
-   * Get the width in pixels.
-   */
+  /// Get the width in pixels.
   constexpr int GetWidth() const;
 
-  /**
-   * Get the height in pixels.
-   */
+  /// Get the height in pixels.
   constexpr int GetHeight() const;
 
-  /**
-   * Get the size in pixels.
-   */
+  /// Get the size in pixels.
   constexpr Point GetSize() const;
 
-  /**
-   * Get pitch in bytes.
-   */
+  /// Get pitch in bytes.
   constexpr int GetPitch() const;
 
-  /**
-   * Get the pixel format.
-   */
+  /// Get the pixel format.
   constexpr PixelFormat GetFormat() const;
 
-  /**
-   * Get the pixels.
-   */
+  /// Get the pixels.
   constexpr void* GetPixels() const;
 };
 
@@ -42674,6 +44004,12 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  *   edge of the image, if this surface is being used as a cursor.
  * - `prop::Surface.HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the top
  *   edge of the image, if this surface is being used as a cursor.
+ * - `prop::Surface.ROTATION_FLOAT`: the number of degrees a surface's data is
+ *   meant to be rotated clockwise to make the image right-side up. Default 0.
+ *   This is used by the camera API, if a mobile device is oriented differently
+ *   than what its camera provides (i.e. - the camera always provides portrait
+ *   images but the phone is being held in landscape orientation). Since SDL
+ *   3.4.0.
  *
  * @param surface the Surface structure to query.
  * @returns a valid property ID on success.
@@ -42710,6 +44046,12 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 } // namespace prop::Surface
 
 /**
@@ -42722,7 +44064,8 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
  * @param colorspace an Colorspace value describing the surface colorspace.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42749,7 +44092,8 @@ inline void Surface::SetColorspace(Colorspace colorspace)
  * @returns the colorspace used by the surface, or COLORSPACE_UNKNOWN if the
  *          surface is nullptr.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42785,7 +44129,8 @@ inline Colorspace Surface::GetColorspace() const
  * @returns a new Palette structure on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42804,13 +44149,17 @@ inline Palette Surface::CreatePalette()
 /**
  * Set the palette used by a surface.
  *
+ * Setting the palette keeps an internal reference to the palette, which can be
+ * safely destroyed afterwards.
+ *
  * A single palette can be shared with many surfaces.
  *
  * @param surface the Surface structure to update.
  * @param palette the Palette structure to use.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42866,7 +44215,8 @@ inline Palette Surface::GetPalette() const
  *              surface.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42922,7 +44272,8 @@ inline bool Surface::HasAlternateImages() const
  * @returns a nullptr terminated array of Surface pointers or nullptr on
  *          failure; call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42950,7 +44301,8 @@ inline OwnArray<SurfaceRaw> Surface::GetImages() const
  *
  * @param surface the Surface structure to update.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -42983,9 +44335,10 @@ inline void Surface::RemoveAlternateImages()
  * @param surface the Surface structure to be locked.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe. The locking referred to by
- *               this function is making the pixels available for direct access,
- *               not thread-safe locking.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces. The locking referred to by this function is making
+ *               the pixels available for direct access, not thread-safe
+ *               locking.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43015,6 +44368,57 @@ inline void Surface::Lock() { SDL::LockSurface(m_resource); }
 inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
+
+#ifndef SDL3PP_ENABLE_IMAGE
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Load a BMP or PNG image from a seekable SDL data stream.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa LoadSurface
+ */
+inline Surface LoadSurface(IOStreamParam src, bool closeio = false)
+{
+  return Surface{SDL_LoadSurface_IO(src, closeio)};
+}
+
+/**
+ * Load a BMP or PNG image from a file.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param file the file to load.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa LoadSurface
+ */
+inline Surface LoadSurface(StringParam file)
+{
+  return Surface{SDL_LoadSurface(file)};
+}
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL3PP_ENABLE_IMAGE
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -43086,7 +44490,8 @@ inline Surface Surface::LoadBMP(StringParam file)
  *                even in the case of an error.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43101,7 +44506,7 @@ inline void SaveBMP(SurfaceConstParam surface,
 }
 
 /**
- * Save a surface to a file.
+ * Save a surface to a file in BMP format.
  *
  * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP
  * directly. Other RGB formats with 8-bit or higher get converted to a 24-bit
@@ -43113,7 +44518,8 @@ inline void SaveBMP(SurfaceConstParam surface,
  * @param file a file to save to.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43135,6 +44541,127 @@ inline void Surface::SaveBMP(StringParam file) const
   SDL::SaveBMP(m_resource, std::move(file));
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Load a PNG image from a seekable SDL data stream.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls IOStream.Close() on `src` before returning,
+ *                even in the case of an error.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline Surface LoadPNG(IOStreamParam src, bool closeio = false)
+{
+  return Surface(SDL_LoadPNG_IO(src, closeio));
+}
+
+/**
+ * Load a PNG image from a file.
+ *
+ * This is intended as a convenience function for loading images from trusted
+ * sources. If you want to load arbitrary images you should use libpng or
+ * another image loading library designed with security in mind.
+ *
+ * The new surface should be freed with Surface.Destroy(). Not doing so will
+ * result in a memory leak.
+ *
+ * @param file the PNG file to load.
+ * @returns a pointer to a new Surface structure or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.Destroy
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
+
+inline Surface Surface::LoadPNG(IOStreamParam src, bool closeio)
+{
+  return SDL::LoadPNG(src, closeio);
+}
+
+inline Surface Surface::LoadPNG(StringParam file)
+{
+  return SDL::LoadPNG(std::move(file));
+}
+
+/**
+ * Save a surface to a seekable SDL data stream in PNG format.
+ *
+ * @param surface the Surface structure containing the image to be saved.
+ * @param dst a data stream to save to.
+ * @param closeio if true, calls IOStream.Close() on `dst` before returning,
+ *                even in the case of an error.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline void SavePNG(SurfaceConstParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
+{
+  CheckError(SDL_SavePNG_IO(surface, dst, closeio));
+}
+
+/**
+ * Save a surface to a file in PNG format.
+ *
+ * @param surface the Surface structure containing the image to be saved.
+ * @param file a file to save to.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.LoadPNG
+ * @sa Surface.SavePNG
+ */
+inline void SavePNG(SurfaceConstParam surface, StringParam file)
+{
+  CheckError(SDL_SavePNG(surface, file));
+}
+
+inline void Surface::SavePNG(IOStreamParam dst, bool closeio) const
+{
+  SDL::SavePNG(m_resource, dst, closeio);
+}
+
+inline void Surface::SavePNG(StringParam file) const
+{
+  SDL::SavePNG(m_resource, std::move(file));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Set the RLE acceleration hint for a surface.
  *
@@ -43145,7 +44672,8 @@ inline void Surface::SaveBMP(StringParam file) const
  * @param enabled true to enable RLE acceleration, false to disable it.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43197,7 +44725,8 @@ inline bool Surface::HasRLE() const { return SDL::SurfaceHasRLE(m_resource); }
  * @param key the transparent pixel or std::nullopt to disable it.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43302,7 +44831,8 @@ inline std::optional<Uint32> Surface::GetColorKey() const
  * @param b the blue color value multiplied into blit operations.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43328,7 +44858,8 @@ inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
  * @param b a pointer filled in with the current blue color value.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43360,7 +44891,8 @@ inline void Surface::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @param alpha the alpha value multiplied into blit operations.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43455,7 +44987,8 @@ inline Color Surface::GetMod() const { return SDL::GetSurfaceMod(m_resource); }
  * @param blendMode the BlendMode to use for blit blending.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43511,7 +45044,8 @@ inline BlendMode Surface::GetBlendMode() const
  * @returns true if the rectangle intersects the surface, otherwise false and
  *          blits will be completely clipped.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43551,7 +45085,8 @@ inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
  *          surface.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43576,7 +45111,8 @@ inline Rect Surface::GetClipRect() const
  * @param flip the direction to flip.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -43586,6 +45122,47 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 }
 
 inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Return a copy of a surface rotated clockwise a number of degrees.
+ *
+ * The angle of rotation can be negative for counter-clockwise rotation.
+ *
+ * When the rotation isn't a multiple of 90 degrees, the resulting surface is
+ * larger than the original, with the background filled in with the colorkey, if
+ * available, or RGBA 255/255/255/0 if not.
+ *
+ * If `surface` has the prop::Surface.ROTATION_FLOAT property set on it, the new
+ * copy will have the adjusted value set: if the rotation property is 90 and
+ * `angle` was 30, the new surface will have a property value of 60 (that is: to
+ * be upright vs gravity, this surface needs to rotate 60 more degrees).
+ * However, note that further rotations on the new surface in this example will
+ * produce unexpected results, since the image will have resized and padded to
+ * accommodate the not-90 degree angle.
+ *
+ * @param surface the surface to rotate.
+ * @param angle the rotation angle, in degrees.
+ * @returns a rotated copy of the surface or nullptr on failure; call GetError()
+ *          for more information.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline Surface RotateSurface(SurfaceParam surface, float angle)
+{
+  return Surface{SDL_RotateSurface(surface, angle)};
+}
+
+inline Surface Surface::Rotate(float angle)
+{
+  return SDL::RotateSurface(m_resource, angle);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -43599,7 +45176,8 @@ inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
  * @returns a copy of the surface or nullptr on failure; call GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43627,7 +45205,8 @@ inline Surface Surface::Duplicate() const
  * @returns a copy of the surface or nullptr on failure; call GetError() for
  *          more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43664,7 +45243,8 @@ inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
  * @returns the new Surface structure that is created or nullptr on failure;
  *          call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43701,7 +45281,8 @@ inline Surface Surface::Convert(PixelFormat format) const
  * @returns the new Surface structure that is created or nullptr on failure;
  *          call GetError() for more information.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43866,7 +45447,8 @@ inline void PremultiplyAlpha(const PointRaw& size,
  *               multiplication, false to do multiplication in sRGB space.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -43892,7 +45474,8 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * @param c the color components of the pixel, normally in the range 0-1.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -43924,7 +45507,8 @@ inline void Surface::Clear(const FColorRaw& c)
  * @param color the color to fill with.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -43977,7 +45561,8 @@ inline void Surface::Fill(Uint32 color) { SDL::FillSurface(m_resource, color); }
  * @param color the color to fill with.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44276,7 +45861,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#if SDL_VERSION_ATLEAST(3, 4, 0)
+#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -44315,7 +45900,7 @@ inline void Surface::Stretch(SurfaceParam src,
   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different
@@ -44503,7 +46088,8 @@ inline void Surface::Blit9Grid(SurfaceParam src,
  * @param b the blue component of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44544,7 +46130,8 @@ inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
  * @param c the color components of the pixel in the range 0-255.
  * @returns a pixel value.
  *
- * @threadsafety It is safe to call this function from any thread.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -44581,7 +46168,8 @@ inline Uint32 Surface::MapRGBA(ColorRaw c) const
  *          ignore this channel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44609,7 +46197,8 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
  * @returns color on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44652,7 +46241,8 @@ inline Color Surface::ReadPixel(const PointRaw& p) const
  *          0-1, or nullptr to ignore this channel.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44677,7 +46267,8 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
  * @returns color on success.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44717,7 +46308,8 @@ inline FColor Surface::ReadPixelFloat(const PointRaw& p) const
  * @param c the color channels value, 0-255.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44744,7 +46336,8 @@ inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
  * @param c the color channels values, normally in the range 0-1.
  * @throws Error on failure.
  *
- * @threadsafety This function is not thread safe.
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -44849,7 +46442,8 @@ constexpr void* Surface::GetPixels() const
  * report failure without doing anything.
  *
  * If you're going to work with threads, you almost certainly need to have a
- * good understanding of [CategoryMutex](CategoryMutex) as well.
+ * good understanding of thread safety measures: locking and synchronization
+ * mechanisms are handled by the functions in SDL3pp_mutex.h.
  *
  * @{
  */
@@ -45829,6 +47423,38 @@ constexpr CameraPosition CAMERA_POSITION_FRONT_FACING =
 constexpr CameraPosition CAMERA_POSITION_BACK_FACING =
   SDL_CAMERA_POSITION_BACK_FACING; ///< CAMERA_POSITION_BACK_FACING
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/**
+ * The current state of a request for camera access.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ *
+ * @sa Camera.GetPermissionState
+ */
+using CameraPermissionState = SDL_CameraPermissionState;
+
+constexpr CameraPermissionState CAMERA_PERMISSION_STATE_DENIED =
+  SDL_CAMERA_PERMISSION_STATE_DENIED; ///< CAMERA_PERMISSION_STATE_DENIED
+
+constexpr CameraPermissionState CAMERA_PERMISSION_STATE_PENDING =
+  SDL_CAMERA_PERMISSION_STATE_PENDING; ///< CAMERA_PERMISSION_STATE_PENDING
+
+constexpr CameraPermissionState CAMERA_PERMISSION_STATE_APPROVED =
+  SDL_CAMERA_PERMISSION_STATE_APPROVED; ///< CAMERA_PERMISSION_STATE_APPROVED
+#else
+
+/**
+ * The current state of a request for camera access.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ *
+ * @sa Camera.GetPermissionState
+ */
+using CameraPermissionState = int;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 /**
  * The opaque structure used to identify an opened SDL camera.
  *
@@ -45978,8 +47604,9 @@ public:
    * on others the approval might be implicit and not alert the user at all.
    *
    * This function can be used to check the status of that approval. It will
-   * return 0 if still waiting for user response, 1 if the camera is approved
-   * for use, and -1 if the user denied access.
+   * return CAMERA_PERMISSION_STATE_PENDING if waiting for user response,
+   * CAMERA_PERMISSION_STATE_APPROVED if the camera is approved for use, and
+   * CAMERA_PERMISSION_STATE_DENIED if the user denied access.
    *
    * Instead of polling with this function, you can wait for a
    * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event in the
@@ -45989,8 +47616,9 @@ public:
    * If a camera is declined, there's nothing to be done but call Camera.Close()
    * to dispose of it.
    *
-   * @returns -1 if user denied access to the camera, 1 if user approved access,
-   *          0 if no decision has been made yet.
+   * @returns an CameraPermissionState value indicating if access is granted, or
+   *          `CAMERA_PERMISSION_STATE_PENDING` if the decision is still
+   *          pending.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -45999,7 +47627,7 @@ public:
    * @sa Camera.Camera
    * @sa Camera.Close
    */
-  int GetPermissionState();
+  CameraPermissionState GetPermissionState();
 
   /**
    * Get the instance ID of an opened camera.
@@ -46384,8 +48012,9 @@ inline Camera OpenCamera(CameraID instance_id,
  * on others the approval might be implicit and not alert the user at all.
  *
  * This function can be used to check the status of that approval. It will
- * return 0 if still waiting for user response, 1 if the camera is approved for
- * use, and -1 if the user denied access.
+ * return CAMERA_PERMISSION_STATE_PENDING if waiting for user response,
+ * CAMERA_PERMISSION_STATE_APPROVED if the camera is approved for use, and
+ * CAMERA_PERMISSION_STATE_DENIED if the user denied access.
  *
  * Instead of polling with this function, you can wait for a
  * EVENT_CAMERA_DEVICE_APPROVED (or EVENT_CAMERA_DEVICE_DENIED) event in the
@@ -46396,8 +48025,8 @@ inline Camera OpenCamera(CameraID instance_id,
  * to dispose of it.
  *
  * @param camera the opened camera device to query.
- * @returns -1 if user denied access to the camera, 1 if user approved access, 0
- *          if no decision has been made yet.
+ * @returns an CameraPermissionState value indicating if access is granted, or
+ *          `CAMERA_PERMISSION_STATE_PENDING` if the decision is still pending.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -46406,12 +48035,12 @@ inline Camera OpenCamera(CameraID instance_id,
  * @sa Camera.Camera
  * @sa Camera.Close
  */
-inline int GetCameraPermissionState(CameraParam camera)
+inline CameraPermissionState GetCameraPermissionState(CameraParam camera)
 {
   return SDL_GetCameraPermissionState(camera);
 }
 
-inline int Camera::GetPermissionState()
+inline CameraPermissionState Camera::GetPermissionState()
 {
   return SDL::GetCameraPermissionState(m_resource);
 }
@@ -50340,6 +51969,16 @@ public:
    *   coordinate transformations needed to conform to the requested display
    *   orientation.
    *
+   * On Wayland:
+   *
+   * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
+   *   the display
+   *
+   * On Windows:
+   *
+   * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+   *   associated with the display
+   *
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -50574,6 +52213,8 @@ namespace prop::Global {
  * has no effect, and reading it when the video subsystem is uninitialized will
  * either return the user provided value, if one was set prior to
  * initialization, or nullptr. See docs/README-wayland.md for more information.
+ *
+ * @since This constant is available since SDL 3.2.0.
  */
 constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
   SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER;
@@ -50614,6 +52255,12 @@ using DisplayModeData = SDL_DisplayModeData;
  * immutable after being set through Window.Window(), some of it can be changed
  * on existing windows by the app, and some of it might be altered by the user
  * or system outside of the app's control.
+ *
+ * When creating windows with `WINDOW_RESIZABLE`, SDL will constrain resizable
+ * windows to the dimensions recommended by the compositor to fit it within the
+ * usable desktop space, although some compositors will do this automatically
+ * without intervention as well. Use `Window.SetResizable` after creation
+ * instead if you wish to create a window with a specific size.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
@@ -50691,6 +52338,13 @@ constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
   SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/// window is in fill-document mode (Emscripten only), since SDL 3.4.0
+constexpr WindowFlags WINDOW_FILL_DOCUMENT = SDL_WINDOW_FILL_DOCUMENT;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 constexpr WindowFlags WINDOW_VULKAN =
   SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
@@ -50802,6 +52456,38 @@ using HitTestCB =
  */
 using EGLSurface = SDL_EGLSurface;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+/**
+ * Window progress state
+ *
+ * @since This enum is available since SDL 3.2.8.
+ */
+using ProgressState = SDL_ProgressState;
+
+/// An invalid progress state indicating an error; check GetError()
+constexpr ProgressState PROGRESS_STATE_INVALID = SDL_PROGRESS_STATE_INVALID;
+
+constexpr ProgressState PROGRESS_STATE_NONE =
+  SDL_PROGRESS_STATE_NONE; ///< No progress bar is shown.
+
+/// The progress bar is shown in a indeterminate state.
+constexpr ProgressState PROGRESS_STATE_INDETERMINATE =
+  SDL_PROGRESS_STATE_INDETERMINATE;
+
+constexpr ProgressState PROGRESS_STATE_NORMAL =
+  SDL_PROGRESS_STATE_NORMAL; ///< The progress bar is shown in a normal state
+
+constexpr ProgressState PROGRESS_STATE_PAUSED =
+  SDL_PROGRESS_STATE_PAUSED; ///< The progress bar is shown in a paused state
+
+/**
+ * The progress bar is shown in a state indicating the application had an error
+ */
+constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 /**
  * The struct used as an opaque handle to a window.
  *
@@ -50882,8 +52568,6 @@ public:
    *
    * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
    * - `WINDOW_OPENGL`: window usable with an OpenGL context
-   * - `WINDOW_OCCLUDED`: window partially or completely obscured by another
-   *   window
    * - `WINDOW_HIDDEN`: window is not visible
    * - `WINDOW_BORDERLESS`: no window decoration
    * - `WINDOW_RESIZABLE`: window can be resized
@@ -50911,7 +52595,8 @@ public:
    * - `WINDOW_TRANSPARENT`: window with transparent buffer
    * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
    *
-   * The Window is implicitly shown if WINDOW_HIDDEN is not set.
+   * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at creation
+   * time, Window.Show() can be used to show it later.
    *
    * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
    * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
@@ -51117,12 +52802,18 @@ public:
    * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
    *   NSView associated with the window, defaults to `[window contentView]`
    *
+   * These are additional supported properties on iOS, tvOS, and visionOS:
+   *
+   * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+   *   UIWindowScene associated with the window, defaults to the active window
+   *   scene.
+   *
    * These are additional supported properties on Wayland:
    *
    * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
    *   application wants to use the Wayland surface for a custom role and does
    *   not want it attached to an XDG toplevel window. See
-   *   [README/wayland](README/wayland) for more information on using custom
+   *   [README-wayland](README-wayland) for more information on using custom
    *   surfaces.
    * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
    *   application wants an associated `wl_egl_window` object to be created and
@@ -51130,7 +52821,7 @@ public:
    *   property or `WINDOW_OPENGL` flag set.
    * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
    *   associated with the window, if you want to wrap an existing window. See
-   *   [README/wayland](README/wayland) for more information.
+   *   [README-wayland](README-wayland) for more information.
    *
    * These are additional supported properties on Windows:
    *
@@ -51146,8 +52837,22 @@ public:
    *
    * The window is implicitly shown if the "hidden" property is not set.
    *
-   * Windows with the "tooltip" and "menu" properties are popup windows and have
-   * the behaviors and guidelines outlined in Window.Window().
+   * These are additional supported properties with Emscripten:
+   *
+   * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+   *   canvas element. This should start with a '#' sign
+   * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+   *   binding element for keyboard inputs for this canvas. The variable can be
+   *   one of:
+   * - "#window": the javascript window object (default)
+   * - "#document": the javascript document object
+   * - "#screen": the javascript window.screen object
+   * - "#canvas": the WebGL canvas element
+   * - "#none": Don't bind anything at all
+   * - any other string without a leading # sign applies to the element on the
+   *   page with that ID. Windows with the "tooltip" and "menu" properties are
+   *   popup windows and have the behaviors and guidelines outlined in
+   *   Window.Window().
    *
    * If this window is being created to be used with an Renderer, you should not
    * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
@@ -51480,8 +53185,8 @@ public:
    *
    * On OpenVR:
    *
-   * - `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the
-   *   associated overlay window.
+   * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+   *   the associated overlay window.
    *
    * On Vivante:
    *
@@ -51533,6 +53238,13 @@ public:
    * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the
    *   window
    *
+   * On Emscripten:
+   *
+   * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element
+   *   will have
+   * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
+   *   that associates keyboard events to this window
+   *
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -51557,6 +53269,7 @@ public:
    * @sa Window.Minimize
    * @sa Window.SetFullscreen
    * @sa Window.SetMouseGrab
+   * @sa Window.SetFillDocument
    * @sa Window.Show
    */
   WindowFlags GetFlags() const;
@@ -51594,15 +53307,16 @@ public:
   /**
    * Set the icon for a window.
    *
-   * If this function is passed a surface with alternate representations, the
-   * surface will be interpreted as the content to be used for 100% display
-   * scale, and the alternate representations will be used for high DPI
-   * situations. For example, if the original surface is 32x32, then on a 2x
-   * macOS display or 200% display scale on Windows, a 64x64 version of the
-   * image will be used, if available. If a matching version of the image isn't
-   * available, the closest larger size image will be downscaled to the
-   * appropriate size and be used instead, if available. Otherwise, the closest
-   * smaller image will be upscaled and be used instead.
+   * If this function is passed a surface with alternate representations added
+   * using Surface.AddAlternateImage(), the surface will be interpreted as the
+   * content to be used for 100% display scale, and the alternate
+   * representations will be used for high DPI situations. For example, if the
+   * original surface is 32x32, then on a 2x macOS display or 200% display scale
+   * on Windows, a 64x64 version of the image will be used, if available. If a
+   * matching version of the image isn't available, the closest larger size
+   * image will be downscaled to the appropriate size and be used instead, if
+   * available. Otherwise, the closest smaller image will be upscaled and be
+   * used instead.
    *
    * @param icon an Surface structure containing the icon for the window.
    * @throws Error on failure.
@@ -51610,6 +53324,8 @@ public:
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.AddAlternateImage
    */
   void SetIcon(SurfaceParam icon);
 
@@ -51746,6 +53462,7 @@ public:
    * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
+   * @sa EVENT_WINDOW_RESIZED
    */
   void GetSize(int* w, int* h) const;
 
@@ -51766,6 +53483,7 @@ public:
    * @sa Renderer.GetOutputSize
    * @sa Window.GetSizeInPixels
    * @sa Window.SetSize
+   * @sa EVENT_WINDOW_RESIZED
    * @sa GetSize(int *, int *)
    */
   Point GetSize() const;
@@ -51855,7 +53573,7 @@ public:
   void SetAspectRatio(float min_aspect, float max_aspect);
 
   /**
-   * Get the size of a window's client area.
+   * Get the aspect ratio of a window's client area.
    *
    * @param min_aspect a pointer filled in with the minimum aspect ratio of the
    *                   window, may be nullptr.
@@ -52063,6 +53781,39 @@ public:
    * @sa Window.GetFlags
    */
   void SetAlwaysOnTop(bool on_top);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set the window to fill the current document space (Emscripten only).
+   *
+   * This will add or remove the window's `WINDOW_FILL_DOCUMENT` flag.
+   *
+   * Currently this flag only applies to the Emscripten target.
+   *
+   * When enabled, the canvas element fills the entire document. Resize events
+   * will be generated as the browser window is resized, as that will adjust the
+   * canvas size as well. The canvas will cover anything else on the page,
+   * including any controls provided by Emscripten in its generated HTML file
+   * (in fact, any elements on the page that aren't the canvas will be moved
+   * into a hidden `div` element).
+   *
+   * Often times this is desirable for a browser-based game, but it means
+   * several things that we expect of an SDL window on other platforms might not
+   * work as expected, such as minimum window sizes and aspect ratios.
+   *
+   * @param fill true to set the window to fill the document, false to disable.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Window.GetFlags
+   */
+  void SetFillDocument(bool fill);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Show a window.
@@ -52440,7 +54191,6 @@ public:
    *
    * @sa Window.GetMouseRect
    * @sa Window.SetMouseRect
-   * @sa Window.SetMouseGrab
    * @sa Window.SetKeyboardGrab
    */
   void SetMouseGrab(bool grabbed);
@@ -52752,8 +54502,68 @@ public:
    */
   void Flash(FlashOperation operation);
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Sets the state of the progress bar for the given window’s taskbar icon.
+   *
+   * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying the
+   *              progress bar.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetProgressState(ProgressState state);
+
+  /**
+   * Get the state of the progress bar for the given window’s taskbar icon.
+   *
+   * @returns the progress state, or `PROGRESS_STATE_INVALID` on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  ProgressState GetProgressState();
+
+  /**
+   * Sets the value of the progress bar for the given window’s taskbar icon.
+   *
+   * @param value the progress value in the range of [0.0f - 1.0f]. If the value
+   *              is outside the valid range, it gets clamped.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetProgressValue(float value);
+
+  /**
+   * Get the value of the progress bar for the given window’s taskbar icon.
+   *
+   * @returns the progress value in the range of [0.0f - 1.0f], or -1.0f on
+   *          failure; call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  float GetProgressValue();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * The OpenGL context will be created with the current states set through
+   * GL_SetAttribute().
+   *
+   * The Window specified must have been created with the WINDOW_OPENGL flag, or
+   * context creation will fail.
    *
    * Windows users new to OpenGL should note that, for historical reasons, GL
    * functions added after OpenGL version 1.1 are not available by default.
@@ -53111,6 +54921,8 @@ struct WindowRef : Window
  * WINDOWPOS_UNDEFINED or WINDOWPOS_UNDEFINED_DISPLAY.
  *
  * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr int WINDOWPOS_UNDEFINED_MASK = SDL_WINDOWPOS_UNDEFINED_MASK;
 
@@ -53123,6 +54935,8 @@ constexpr int WINDOWPOS_UNDEFINED_MASK = SDL_WINDOWPOS_UNDEFINED_MASK;
  * @param X the Display of the display to use.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr int WINDOWPOS_UNDEFINED_DISPLAY(int X)
 {
@@ -53135,6 +54949,8 @@ constexpr int WINDOWPOS_UNDEFINED_DISPLAY(int X)
  * This always uses the primary display.
  *
  * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr int WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED;
 
@@ -53144,6 +54960,8 @@ constexpr int WINDOWPOS_UNDEFINED = SDL_WINDOWPOS_UNDEFINED;
  * @param X the window position value.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr bool WINDOWPOS_ISUNDEFINED(int X)
 {
@@ -53157,6 +54975,8 @@ constexpr bool WINDOWPOS_ISUNDEFINED(int X)
  * WINDOWPOS_CENTERED or WINDOWPOS_CENTERED_DISPLAY.
  *
  * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr int WINDOWPOS_CENTERED_MASK = SDL_WINDOWPOS_CENTERED_MASK;
 
@@ -53169,6 +54989,8 @@ constexpr int WINDOWPOS_CENTERED_MASK = SDL_WINDOWPOS_CENTERED_MASK;
  * @param X the Display of the display to use.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr int WINDOWPOS_CENTERED_DISPLAY(int X)
 {
@@ -53181,6 +55003,8 @@ constexpr int WINDOWPOS_CENTERED_DISPLAY(int X)
  * This always uses the primary display.
  *
  * @since This constant is available since SDL 3.2.0.
+ *
+ * @sa Window.SetPosition
  */
 constexpr int WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED;
 
@@ -53190,6 +55014,8 @@ constexpr int WINDOWPOS_CENTERED = SDL_WINDOWPOS_CENTERED;
  * @param X the window position value.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window.GetPosition
  */
 constexpr bool WINDOWPOS_ISCENTERED(int X)
 {
@@ -53202,6 +55028,9 @@ constexpr bool WINDOWPOS_ISCENTERED(int X)
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa GLContext.GLContext
+ * @sa GL_SetAttribute
+ * @sa GLContext.MakeCurrent
+ * @sa GLContext.Destroy
  *
  * @cat resource
  */
@@ -53237,6 +55066,12 @@ public:
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * The OpenGL context will be created with the current states set through
+   * GL_SetAttribute().
+   *
+   * The Window specified must have been created with the WINDOW_OPENGL flag, or
+   * context creation will fail.
    *
    * Windows users new to OpenGL should note that, for historical reasons, GL
    * functions added after OpenGL version 1.1 are not available by default.
@@ -53550,9 +55385,11 @@ constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
 constexpr GLAttr GL_SHARE_WITH_CURRENT_CONTEXT =
   SDL_GL_SHARE_WITH_CURRENT_CONTEXT; ///< OpenGL context sharing; defaults to 0.
 
-constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE =
-  SDL_GL_FRAMEBUFFER_SRGB_CAPABLE; ///< requests sRGB capable visual; defaults
-                                   ///< to 0.
+/**
+ * requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a
+ * request; GL drivers might not comply!
+ */
+constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE = SDL_GL_FRAMEBUFFER_SRGB_CAPABLE;
 
 /**
  * sets context the release behavior. See GLContextReleaseFlag; defaults to
@@ -53660,7 +55497,8 @@ inline int GetNumVideoDrivers() { return SDL_GetNumVideoDrivers(); }
  * be proper names.
  *
  * @param index the index of a video driver.
- * @returns the name of the video driver with the given **index**.
+ * @returns the name of the video driver with the given **index**, or nullptr if
+ *          index is out of bounds.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -53761,6 +55599,16 @@ inline Display Display::GetPrimary() { return SDL::GetPrimaryDisplay(); }
  *   coordinate transformations needed to conform to the requested display
  *   orientation.
  *
+ * On Wayland:
+ *
+ * - `prop::Display.WAYLAND_WL_OUTPUT_POINTER`: the wl_output associated with
+ *   the display
+ *
+ * On Windows:
+ *
+ * - `prop::Display.WINDOWS_HMONITOR_POINTER`: the monitor handle (HMONITOR)
+ *   associated with the display
+ *
  * @param displayID the instance ID of the display to query.
  * @returns a valid property ID on success.
  * @throws Error on failure.
@@ -53785,6 +55633,20 @@ constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
 
 constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
   SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto WAYLAND_WL_OUTPUT_POINTER =
+  SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto WINDOWS_HMONITOR_POINTER =
+  SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 } // namespace prop::Display
 
@@ -54367,8 +56229,6 @@ inline OwnArray<WindowRef> GetWindows()
  *
  * - `WINDOW_FULLSCREEN`: fullscreen window at desktop resolution
  * - `WINDOW_OPENGL`: window usable with an OpenGL context
- * - `WINDOW_OCCLUDED`: window partially or completely obscured by another
- *   window
  * - `WINDOW_HIDDEN`: window is not visible
  * - `WINDOW_BORDERLESS`: no window decoration
  * - `WINDOW_RESIZABLE`: window can be resized
@@ -54396,7 +56256,8 @@ inline OwnArray<WindowRef> GetWindows()
  * - `WINDOW_TRANSPARENT`: window with transparent buffer
  * - `WINDOW_NOT_FOCUSABLE`: window should not be focusable
  *
- * The Window is implicitly shown if WINDOW_HIDDEN is not set.
+ * The Window will be shown if WINDOW_HIDDEN is not set. If hidden at
+ * creation time, Window.Show() can be used to show it later.
  *
  * On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist
  * property to YES, otherwise you will not receive a High-DPI OpenGL canvas.
@@ -54598,12 +56459,18 @@ inline Window CreatePopupWindow(WindowParam parent,
  * - `prop::Window.CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
  *   NSView associated with the window, defaults to `[window contentView]`
  *
+ * These are additional supported properties on iOS, tvOS, and visionOS:
+ *
+ * - `prop::Window.CREATE_WINDOWSCENE_POINTER`: the `(__unsafe_unretained)`
+ *   UIWindowScene associated with the window, defaults to the active window
+ *   scene.
+ *
  * These are additional supported properties on Wayland:
  *
  * - `prop::Window.CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if the
  *   application wants to use the Wayland surface for a custom role and does not
  *   want it attached to an XDG toplevel window. See
- *   [README/wayland](README/wayland) for more information on using custom
+ *   [README-wayland](README-wayland) for more information on using custom
  *   surfaces.
  * - `prop::Window.CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
  *   application wants an associated `wl_egl_window` object to be created and
@@ -54611,7 +56478,7 @@ inline Window CreatePopupWindow(WindowParam parent,
  *   property or `WINDOW_OPENGL` flag set.
  * - `prop::Window.CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
  *   associated with the window, if you want to wrap an existing window. See
- *   [README/wayland](README/wayland) for more information.
+ *   [README-wayland](README-wayland) for more information.
  *
  * These are additional supported properties on Windows:
  *
@@ -54627,8 +56494,22 @@ inline Window CreatePopupWindow(WindowParam parent,
  *
  * The window is implicitly shown if the "hidden" property is not set.
  *
- * Windows with the "tooltip" and "menu" properties are popup windows and have
- * the behaviors and guidelines outlined in Window.Window().
+ * These are additional supported properties with Emscripten:
+ *
+ * - `prop::Window.CREATE_EMSCRIPTEN_CANVAS_ID_STRING`: the id given to the
+ *   canvas element. This should start with a '#' sign
+ * - `prop::Window.CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: override the
+ *   binding element for keyboard inputs for this canvas. The variable can be
+ *   one of:
+ * - "#window": the javascript window object (default)
+ * - "#document": the javascript document object
+ * - "#screen": the javascript window.screen object
+ * - "#canvas": the WebGL canvas element
+ * - "#none": Don't bind anything at all
+ * - any other string without a leading # sign applies to the element on the
+ *   page with that ID. Windows with the "tooltip" and "menu" properties are
+ *   popup windows and have the behaviors and guidelines outlined in
+ *   Window.Window().
  *
  * If this window is being created to be used with an Renderer, you should not
  * add a graphics API specific property (`prop::Window.CREATE_OPENGL_BOOLEAN`,
@@ -54734,6 +56615,13 @@ constexpr auto CREATE_COCOA_WINDOW_POINTER =
 constexpr auto CREATE_COCOA_VIEW_POINTER =
   SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_WINDOWSCENE_POINTER =
+  SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
 
@@ -54751,6 +56639,16 @@ constexpr auto CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER =
 
 constexpr auto CREATE_X11_WINDOW_NUMBER =
   SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
+
+constexpr auto CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
+  SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
 
@@ -54792,7 +56690,16 @@ constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
 constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
   SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
 
-constexpr auto OPENVR_OVERLAY_ID = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto OPENVR_OVERLAY_ID_NUMBER =
+  SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
+
+#else
+
+constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto VIVANTE_DISPLAY_POINTER =
   SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
@@ -54840,6 +56747,16 @@ constexpr auto X11_DISPLAY_POINTER = SDL_PROP_WINDOW_X11_DISPLAY_POINTER;
 constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
 
 constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
+  SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
+
+constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
+  SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 } // namespace prop::Window
 
@@ -54972,8 +56889,8 @@ inline WindowRef Window::GetParent() const
  *
  * On OpenVR:
  *
- * - `prop::Window.OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the
- *   associated overlay window.
+ * - `prop::Window.OPENVR_OVERLAY_ID_NUMBER`: the OpenVR Overlay Handle ID for
+ *   the associated overlay window.
  *
  * On Vivante:
  *
@@ -55024,6 +56941,13 @@ inline WindowRef Window::GetParent() const
  *   window
  * - `prop::Window.X11_WINDOW_NUMBER`: the X11 Window associated with the window
  *
+ * On Emscripten:
+ *
+ * - `prop::Window.EMSCRIPTEN_CANVAS_ID_STRING`: the id the canvas element will
+ *   have
+ * - `prop::Window.EMSCRIPTEN_KEYBOARD_ELEMENT_STRING`: the keyboard element
+ *   that associates keyboard events to this window
+ *
  * @param window the window to query.
  * @returns a valid property ID on success.
  * @throws Error on failure.
@@ -55058,6 +56982,7 @@ inline PropertiesRef Window::GetProperties() const
  * @sa Window.Minimize
  * @sa Window.SetFullscreen
  * @sa Window.SetMouseGrab
+ * @sa Window.SetFillDocument
  * @sa Window.Show
  */
 inline WindowFlags GetWindowFlags(WindowParam window)
@@ -55120,15 +57045,15 @@ inline const char* Window::GetTitle() const
 /**
  * Set the icon for a window.
  *
- * If this function is passed a surface with alternate representations, the
- * surface will be interpreted as the content to be used for 100% display scale,
- * and the alternate representations will be used for high DPI situations. For
- * example, if the original surface is 32x32, then on a 2x macOS display or 200%
- * display scale on Windows, a 64x64 version of the image will be used, if
- * available. If a matching version of the image isn't available, the closest
- * larger size image will be downscaled to the appropriate size and be used
- * instead, if available. Otherwise, the closest smaller image will be upscaled
- * and be used instead.
+ * If this function is passed a surface with alternate representations added
+ * using Surface.AddAlternateImage(), the surface will be interpreted as the
+ * content to be used for 100% display scale, and the alternate representations
+ * will be used for high DPI situations. For example, if the original surface is
+ * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
+ * version of the image will be used, if available. If a matching version of the
+ * image isn't available, the closest larger size image will be downscaled to
+ * the appropriate size and be used instead, if available. Otherwise, the
+ * closest smaller image will be upscaled and be used instead.
  *
  * @param window the window to change.
  * @param icon an Surface structure containing the icon for the window.
@@ -55137,6 +57062,8 @@ inline const char* Window::GetTitle() const
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface.AddAlternateImage
  */
 inline void SetWindowIcon(WindowParam window, SurfaceParam icon)
 {
@@ -55318,6 +57245,7 @@ inline void Window::SetSize(const PointRaw& size)
  * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
+ * @sa EVENT_WINDOW_RESIZED
  */
 inline void GetWindowSize(WindowParam window, int* w, int* h)
 {
@@ -55342,6 +57270,7 @@ inline void GetWindowSize(WindowParam window, int* w, int* h)
  * @sa Renderer.GetOutputSize
  * @sa Window.GetSizeInPixels
  * @sa Window.SetSize
+ * @sa EVENT_WINDOW_RESIZED
  */
 inline Point GetWindowSize(WindowParam window)
 {
@@ -55477,7 +57406,7 @@ inline void Window::SetAspectRatio(float min_aspect, float max_aspect)
 }
 
 /**
- * Get the size of a window's client area.
+ * Get the aspect ratio of a window's client area.
  *
  * @param window the window to query the width and height from.
  * @param min_aspect a pointer filled in with the minimum aspect ratio of the
@@ -55793,6 +57722,48 @@ inline void Window::SetAlwaysOnTop(bool on_top)
 {
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set the window to fill the current document space (Emscripten only).
+ *
+ * This will add or remove the window's `WINDOW_FILL_DOCUMENT` flag.
+ *
+ * Currently this flag only applies to the Emscripten target.
+ *
+ * When enabled, the canvas element fills the entire document. Resize events
+ * will be generated as the browser window is resized, as that will adjust the
+ * canvas size as well. The canvas will cover anything else on the page,
+ * including any controls provided by Emscripten in its generated HTML file (in
+ * fact, any elements on the page that aren't the canvas will be moved into a
+ * hidden `div` element).
+ *
+ * Often times this is desirable for a browser-based game, but it means several
+ * things that we expect of an SDL window on other platforms might not work as
+ * expected, such as minimum window sizes and aspect ratios.
+ *
+ * @param window the window of which to change the fill-document state.
+ * @param fill true to set the window to fill the document, false to disable.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Window.GetFlags
+ */
+inline void SetWindowFillDocument(WindowParam window, bool fill)
+{
+  CheckError(SDL_SetWindowFillDocument(window, fill));
+}
+
+inline void Window::SetFillDocument(bool fill)
+{
+  SDL::SetWindowFillDocument(m_resource, fill);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Show a window.
@@ -56294,7 +58265,6 @@ inline void Window::SetKeyboardGrab(bool grabbed)
  *
  * @sa Window.GetMouseRect
  * @sa Window.SetMouseRect
- * @sa Window.SetMouseGrab
  * @sa Window.SetKeyboardGrab
  */
 inline void SetWindowMouseGrab(WindowParam window, bool grabbed)
@@ -56755,6 +58725,96 @@ inline void Window::Flash(FlashOperation operation)
   SDL::FlashWindow(m_resource, operation);
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Sets the state of the progress bar for the given window’s taskbar icon.
+ *
+ * @param window the window whose progress state is to be modified.
+ * @param state the progress state. `PROGRESS_STATE_NONE` stops displaying
+ *              the progress bar.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetWindowProgressState(WindowParam window, ProgressState state)
+{
+  CheckError(SDL_SetWindowProgressState(window, state));
+}
+
+inline void Window::SetProgressState(ProgressState state)
+{
+  SDL::SetWindowProgressState(m_resource, state);
+}
+
+/**
+ * Get the state of the progress bar for the given window’s taskbar icon.
+ *
+ * @param window the window to get the current progress state from.
+ * @returns the progress state, or `PROGRESS_STATE_INVALID` on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline ProgressState GetWindowProgressState(WindowParam window)
+{
+  return SDL_GetWindowProgressState(window);
+}
+
+inline ProgressState Window::GetProgressState()
+{
+  return SDL::GetWindowProgressState(m_resource);
+}
+
+/**
+ * Sets the value of the progress bar for the given window’s taskbar icon.
+ *
+ * @param window the window whose progress value is to be modified.
+ * @param value the progress value in the range of [0.0f - 1.0f]. If the value
+ *              is outside the valid range, it gets clamped.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetWindowProgressValue(WindowParam window, float value)
+{
+  CheckError(SDL_SetWindowProgressValue(window, value));
+}
+
+inline void Window::SetProgressValue(float value)
+{
+  SDL::SetWindowProgressValue(m_resource, value);
+}
+
+/**
+ * Get the value of the progress bar for the given window’s taskbar icon.
+ *
+ * @param window the window to get the current progress value from.
+ * @returns the progress value in the range of [0.0f - 1.0f], or -1.0f on
+ *          failure; call GetError() for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline float GetWindowProgressValue(WindowParam window)
+{
+  return SDL_GetWindowProgressValue(window);
+}
+
+inline float Window::GetProgressValue()
+{
+  return SDL::GetWindowProgressValue(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Destroy a window.
  *
@@ -56992,7 +59052,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  * GL_GetAttribute() to check the values after creating the OpenGL context,
  * since the values obtained can differ from the requested ones.
  *
- * @param attr an GLAttr enum value specifying the OpenGL attribute to set.
+ * @param attr an enum value specifying the OpenGL attribute to set.
  * @param value the desired value for the attribute.
  * @throws Error on failure.
  *
@@ -57000,6 +59060,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa GLContext.GLContext
  * @sa GL_GetAttribute
  * @sa GL_ResetAttributes
  */
@@ -57029,6 +59090,12 @@ inline void GL_GetAttribute(GLAttr attr, int* value)
 
 /**
  * Create an OpenGL context for an OpenGL window, and make it current.
+ *
+ * The OpenGL context will be created with the current states set through
+ * GL_SetAttribute().
+ *
+ * The Window specified must have been created with the WINDOW_OPENGL flag, or
+ * context creation will fail.
  *
  * Windows users new to OpenGL should note that, for historical reasons, GL
  * functions added after OpenGL version 1.1 are not available by default. Those
@@ -57440,10 +59507,12 @@ using DialogFileCB =
  *                 it will be invoked.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. Not all platforms support
- *                this option, and platforms that do support it may allow the
- *                user to ignore the filters. If non-nullptr, it must remain
- *                valid at least until the callback is invoked.
+ * @param filters a list of filters, may be nullptr. See the
+ *                [`DialogFileFilter`](DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user to
+ *                ignore the filters. If non-nullptr, it must remain valid at
+ *                least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -57502,10 +59571,12 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  *                 and accepts, or cancels the dialog, or an error occurs.
  * @param window the window that the dialog should be modal for, may be nullptr.
  *               Not all platforms support this option.
- * @param filters a list of filters, may be nullptr. Not all platforms support
- *                this option, and platforms that do support it may allow the
- *                user to ignore the filters. If non-nullptr, it must remain
- *                valid at least until the callback is invoked.
+ * @param filters a list of filters, may be nullptr. See the
+ *                [`DialogFileFilter`](DialogFileFilter#code-examples)
+ *                documentation for examples]. Not all platforms support this
+ *                option, and platforms that do support it may allow the user to
+ *                ignore the filters. If non-nullptr, it must remain valid at
+ *                least until the callback is invoked.
  * @param default_location the default folder or file to start the dialog at,
  *                         may be nullptr. Not all platforms support this
  *                         option.
@@ -57922,7 +59993,7 @@ constexpr auto CANCEL_STRING = SDL_PROP_FILE_DIALOG_CANCEL_STRING;
  * coming and going, the system changing in some way, etc.
  *
  * An app generally takes a moment, perhaps at the start of a new frame, to
- * examine any events that have occured since the last time and process or
+ * examine any events that have occurred since the last time and process or
  * ignore them. This is generally done by calling PollEvent() in a loop until it
  * returns false (or, if using the main callbacks, events are provided one at a
  * time in calls to SDL_AppEvent() before the next call to SDL_AppIterate(); in
@@ -58032,6 +60103,14 @@ constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
                                            ///< scale
 
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_DISPLAY_USABLE_BOUNDS_CHANGED =
+  SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED; ///< Display has changed usable
+                                           ///< bounds
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
 
@@ -58046,7 +60125,8 @@ constexpr EventType EVENT_WINDOW_HIDDEN =
 
 /**
  * Window has been exposed and should be redrawn, and can be redrawn directly
- * from event watchers for this event
+ * from event watchers for this event. data1 is 1 for live-resize expose events,
+ * 0 otherwise.
  */
 constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
 
@@ -58159,6 +60239,16 @@ constexpr EventType EVENT_KEYBOARD_REMOVED =
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
   SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates
 
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
+  SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown
+
+constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
+  SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
 constexpr EventType EVENT_MOUSE_MOTION =
   SDL_EVENT_MOUSE_MOTION; ///< Mouse moved
 
@@ -58251,8 +60341,21 @@ constexpr EventType EVENT_FINGER_MOTION =
 constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
+#if SDL_VERSION_ATLEAST(3, 3, 0)
+
+constexpr EventType EVENT_PINCH_BEGIN =
+  SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started
+
+constexpr EventType EVENT_PINCH_UPDATE =
+  SDL_EVENT_PINCH_UPDATE; ///< Pinch gesture updated
+
+constexpr EventType EVENT_PINCH_END =
+  SDL_EVENT_PINCH_END; ///< Pinch gesture ended
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+
 constexpr EventType EVENT_CLIPBOARD_UPDATE =
-  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard or primary selection changed
+  SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard changed
 
 constexpr EventType EVENT_DROP_FILE =
   SDL_EVENT_DROP_FILE; ///< The system requests a file open
@@ -58552,6 +60655,10 @@ using GamepadSensorEvent = SDL_GamepadSensorEvent;
 /**
  * Audio device event structure (event.adevice.*)
  *
+ * Note that SDL will send a EVENT_AUDIO_DEVICE_ADDED event for every device it
+ * discovers during initialization. After that, this event will only arrive when
+ * a device is hotplugged during the program's run.
+ *
  * @since This struct is available since SDL 3.2.0.
  */
 using AudioDeviceEvent = SDL_AudioDeviceEvent;
@@ -58590,8 +60697,15 @@ using RenderEvent = SDL_RenderEvent;
  */
 using TouchFingerEvent = SDL_TouchFingerEvent;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/// Pinch event structure (event.pinch.*)
+using PinchFingerEvent = SDL_PinchFingerEvent;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
- * Pressure-sensitive pen proximity event structure (event.pmotion.*)
+ * Pressure-sensitive pen proximity event structure (event.pproximity.*)
  *
  * When a pen becomes visible to the system (it is close enough to a tablet,
  * etc), SDL will send an EVENT_PEN_PROXIMITY_IN event with the new pen's ID.
@@ -58602,6 +60716,9 @@ using TouchFingerEvent = SDL_TouchFingerEvent;
  * Note that "proximity" means "close enough for the tablet to know the tool is
  * there." The pen touching and lifting off from the tablet while not leaving
  * the area are handled by EVENT_PEN_DOWN and EVENT_PEN_UP.
+ *
+ * Not all platforms have a window associated with the pen during proximity
+ * events. Some wait until motion/button/etc events to offer this info.
  *
  * @since This struct is available since SDL 3.2.0.
  */
@@ -58929,6 +61046,13 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * }
  * ```
  *
+ * Note that Windows (and possibly other platforms) has a quirk about how it
+ * handles events while dragging/resizing a window, which can cause this
+ * function to block for significant amounts of time. Technical explanations and
+ * solutions are discussed on the wiki:
+ *
+ * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
+ *
  * @param event the Event structure to be filled with the next event from the
  *              queue, or nullptr.
  * @returns true if this got an event or false if there are none available.
@@ -58967,6 +61091,13 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  *     // update game state, draw the current frame
  * }
  * ```
+ *
+ * Note that Windows (and possibly other platforms) has a quirk about how it
+ * handles events while dragging/resizing a window, which can cause this
+ * function to block for significant amounts of time. Technical explanations and
+ * solutions are discussed on the wiki:
+ *
+ * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
  *
  * @returns Event if this got an event or std::nullopt if there are none
  *          available.
@@ -59133,8 +61264,10 @@ inline bool WaitEventTimeout(Event* event,
 }
 
 /**
- * Wait until the specified timeout (with milliseconds precision) for the next
- * available event.
+ * Wait until the specified timeout (in milliseconds) for the next available
+ * event.
+ *
+ * The next event is removed from the queue and returned.
  *
  * As this function may implicitly call PumpEvents(), you can only call this
  * function in the thread that initialized the video subsystem.
@@ -59264,9 +61397,8 @@ using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
  *
  * @cat listener-callback
  *
- * @sa listener-callback
- * @sa SetEventFilter()
- * @sa AddEventWatch()
+ * @sa SetEventFilter
+ * @sa AddEventWatch
  * @sa EventFilter
  */
 using EventFilterCB = std::function<bool(Event* event)>;
@@ -59306,7 +61438,9 @@ using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
  * selective filtering of dynamically arriving events.
  *
  * **WARNING**: Be very careful of what you do in the event filter function, as
- * it may run in a different thread!
+ * it may run in a different thread! The exception is handling of
+ * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the main
+ * thread and you are expected to redraw your window in response to this event.
  *
  * On platforms that support it, if the quit event is generated by an interrupt
  * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
@@ -59318,7 +61452,7 @@ using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
  * Note: Events pushed onto the queue with PushEvent() get passed through the
  * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
- * @param filter an EventFilter function to call when an event happens.
+ * @param filter a function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -59349,7 +61483,9 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * selective filtering of dynamically arriving events.
  *
  * **WARNING**: Be very careful of what you do in the event filter function, as
- * it may run in a different thread!
+ * it may run in a different thread! The exception is handling of
+ * EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the main
+ * thread and you are expected to redraw your window in response to this event.
  *
  * On platforms that support it, if the quit event is generated by an interrupt
  * signal (e.g. pressing Ctrl-C), it will be delivered to the application at the
@@ -59361,11 +61497,13 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * Note: Events pushed onto the queue with PushEvent() get passed through the
  * event filter, but events pushed onto the queue with PeepEvents() do not.
  *
- * @param filter an EventFilter function to call when an event happens.
+ * @param filter a function to call when an event happens.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
  *
  * @sa AddEventWatch
  * @sa SetEventEnabled
@@ -59462,6 +61600,8 @@ inline void AddEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @cat listener-callback
+ *
  * @sa RemoveEventWatch
  * @sa SetEventFilter
  */
@@ -59529,7 +61669,6 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  *
  * @cat immediate-callback
  *
- * @sa immediate-callback
  * @sa GetEventFilter
  * @sa SetEventFilter
  */
@@ -59612,6 +61751,82 @@ inline WindowRef GetWindowFromEvent(const Event& event)
 {
   return {CheckError(SDL_GetWindowFromEvent(&event))};
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Generate an English description of an event.
+ *
+ * This will fill `buf` with a null-terminated string that might look
+ * something like this:
+ *
+ * ```
+ * EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99
+ * y=139.09 xrel=52 yrel=6)
+ * ```
+ *
+ * The exact format of the string is not guaranteed; it is intended for
+ * logging purposes, to be read by a human, and not parsed by a computer.
+ *
+ * The returned value follows the same rules as snprintf(): `buf` will
+ * always be nullptr-terminated (unless `buflen` is zero), and will be truncated
+ * if `buflen` is too small. The return code is the number of bytes needed for
+ * the complete string, not counting the nullptr-terminator, whether the string
+ * was truncated or not. Unlike snprintf(), though, this function never
+ * returns -1.
+ *
+ * @param event an event to describe
+ * @param buf the buffer to fill with the description string. May be empty.
+ * @returns number of bytes needed for the full string, not counting the
+ *          null-terminator byte.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline int GetEventDescription(const Event& event, TargetBytes buf)
+{
+  if (buf.size_bytes() == 0) return SDL_GetEventDescription(&event, nullptr, 0);
+  return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
+}
+
+/**
+ * Generate an English description of an event.
+ *
+ * This will fill `buf` with a null-terminated string that might look something
+ * like this:
+ *
+ * ```
+ * EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99
+ * y=139.09 xrel=52 yrel=6)
+ * ```
+ *
+ * The exact format of the string is not guaranteed; it is intended for logging
+ * purposes, to be read by a human, and not parsed by a computer.
+ *
+ * The returned value follows the same rules as snprintf(): `buf` will always be
+ * nullptr-terminated (unless `buflen` is zero), and will be truncated if
+ * `buflen` is too small. The return code is the number of bytes needed for the
+ * complete string, not counting the nullptr-terminator, whether the string was
+ * truncated or not. Unlike snprintf(), though, this function never returns -1.
+ *
+ * @param event an event to describe
+ * @returns a std::string containing the the description string
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline std::string GetEventDescription(const Event& event)
+{
+  int sz = SDL_GetEventDescription(&event, nullptr, 0);
+  std::string r;
+  r.reserve(sz);
+  GetEventDescription(event, r);
+  return r;
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 
@@ -59800,14 +62015,19 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  * underlying graphics API. While it's possible that we have done something
  * inefficiently, it's very unlikely especially if you are relatively
  * inexperienced with GPU rendering. Please see the performance tips above and
- * make sure you are following them. Additionally, tools like RenderDoc can be
- * very helpful for diagnosing incorrect behavior and performance issues.
+ * make sure you are following them. Additionally, tools like
+ * [RenderDoc](https://renderdoc.org/) can be very helpful for diagnosing
+ * incorrect behavior and performance issues.
  *
  * ## System Requirements
  *
- * **Vulkan:** Supported on Windows, Linux, Nintendo Switch, and certain Android
- * devices. Requires Vulkan 1.0 with the following extensions and device
- * features:
+ * ### Vulkan
+ *
+ * SDL driver name: "vulkan" (for use in GPUDevice.GPUDevice() and
+ * prop::GpuDevice.CREATE_NAME_STRING)
+ *
+ * Supported on Windows, Linux, Nintendo Switch, and certain Android devices.
+ * Requires Vulkan 1.0 with the following extensions and device features:
  *
  * - `VK_KHR_swapchain`
  * - `VK_KHR_maintenance1`
@@ -59816,19 +62036,62 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  * - `depthClamp`
  * - `shaderClipDistance`
  * - `drawIndirectFirstInstance`
+ * - `sampleRateShading`
  *
- * **D3D12:** Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series
- * X|S (GDK). Requires a GPU that supports DirectX 12 Feature Level 11_0 and
- * Resource Binding Tier 2 or above.
+ * You can remove some of these requirements to increase compatibility with
+ * Android devices by using these properties when creating the GPU device with
+ * GPUDevice.GPUDevice():
  *
- * **Metal:** Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware
- * requirements vary by operating system:
+ * - prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN
+ * - prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN
+ * - prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN
+ * - prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN
+ *
+ * ### D3D12
+ *
+ * SDL driver name: "direct3d12"
+ *
+ * Supported on Windows 10 or newer, Xbox One (GDK), and Xbox Series X|S (GDK).
+ * Requires a GPU that supports DirectX 12 Feature Level 11_0 and Resource
+ * Binding Tier 2 or above.
+ *
+ * You can remove the Tier 2 resource binding requirement to support Intel
+ * Haswell and Broadwell GPUs by using this property when creating the GPU
+ * device with GPUDevice.GPUDevice():
+ *
+ * - prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN
+ *
+ * ### Metal
+ *
+ * SDL driver name: "metal"
+ *
+ * Supported on macOS 10.14+ and iOS/tvOS 13.0+. Hardware requirements vary by
+ * operating system:
  *
  * - macOS requires an Apple Silicon or [Intel Mac2
  *   family](https://developer.apple.com/documentation/metal/mtlfeatureset/mtlfeatureset_macos_gpufamily2_v1?language=objc)
  *   GPU
  * - iOS/tvOS requires an A9 GPU or newer
  * - iOS Simulator and tvOS Simulator are unsupported
+ *
+ * ## Coordinate System
+ *
+ * The GPU API uses a left-handed coordinate system, following the convention of
+ * D3D12 and Metal. Specifically:
+ *
+ * - **Normalized Device Coordinates:** The lower-left corner has an x,y
+ *   coordinate of `(-1.0, -1.0)`. The upper-right corner is `(1.0, 1.0)`. Z
+ *   values range from `[0.0, 1.0]` where 0 is the near plane.
+ * - **Viewport Coordinates:** The top-left corner has an x,y coordinate of `(0,
+ *   0)` and extends to the bottom-right corner at `(viewportWidth,
+ *   viewportHeight)`. +Y is down.
+ * - **Texture Coordinates:** The top-left corner has an x,y coordinate of `(0,
+ *   0)` and extends to the bottom-right corner at `(1.0, 1.0)`. +Y is down.
+ *
+ * If the backend driver differs from this convention (e.g. Vulkan, which has an
+ * NDC that assumes +Y is down), SDL will automatically convert the coordinate
+ * system behind the scenes, so you don't need to perform any coordinate
+ * flipping logic in your shaders.
  *
  * ## Uniform Data
  *
@@ -59894,6 +62157,37 @@ inline WindowRef GetWindowFromEvent(const Event& event)
  * unreferenced data in a bound resource without cycling, but overwriting a
  * section of data that has already been referenced will produce unexpected
  * results.
+ *
+ * ## Debugging
+ *
+ * At some point of your GPU journey, you will probably encounter issues that
+ * are not traceable with regular debugger - for example, your code compiles but
+ * you get an empty screen, or your shader fails in runtime.
+ *
+ * For debugging such cases, there are tools that allow visually inspecting the
+ * whole GPU frame, every drawcall, every bound resource, memory buffers, etc.
+ * They are the following, per platform:
+ *
+ * * For Windows/Linux, use [RenderDoc](https://renderdoc.org/) * For MacOS
+ * (Metal), use Xcode built-in debugger (Open XCode, go to Debug > Debug
+ * Executable..., select your application, set "GPU Frame Capture" to "Metal" in
+ * scheme "Options" window, run your app, and click the small Metal icon on the
+ * bottom to capture a frame)
+ *
+ * Aside from that, you may want to enable additional debug layers to receive
+ * more detailed error messages, based on your GPU backend:
+ *
+ * * For D3D12, the debug layer is an optional feature that can be installed via
+ * "Windows Settings -> System -> Optional features" and adding the "Graphics
+ * Tools" optional feature. * For Vulkan, you will need to install Vulkan SDK on
+ * Windows, and on Linux, you usually have some sort of
+ * `vulkan-validation-layers` system package that should be installed. * For
+ * Metal, it should be enough just to run the application from XCode to receive
+ * detailed errors or warnings in the output.
+ *
+ * Don't hesitate to use tools as RenderDoc when encountering runtime issues or
+ * unexpected output on screen, quick GPU frame inspection can usually help you
+ * fix the majority of such problems.
  *
  * @{
  */
@@ -60245,7 +62539,8 @@ public:
    * Creates a texture object to be used in graphics or compute workflows.
    *
    * The contents of this texture are undefined until data is written to the
-   * texture.
+   * texture, either via GPUCopyPass.UploadToTexture or by performing a render
+   * or compute pass with this texture as a target.
    *
    * Note that certain combinations of usage flags are invalid. For example, a
    * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -60287,6 +62582,8 @@ public:
    *
    * @sa GPUCopyPass.UploadToTexture
    * @sa GPUCopyPass.DownloadFromTexture
+   * @sa GPUCommandBuffer.BeginRenderPass
+   * @sa GPUCommandBuffer.BeginComputePass
    * @sa GPURenderPass.BindVertexSamplers
    * @sa GPURenderPass.BindVertexStorageTextures
    * @sa GPURenderPass.BindFragmentSamplers
@@ -60390,6 +62687,8 @@ public:
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUShader.GPUShader
+ * @sa GPUShaderFormat
+ * @sa GPUShaderStage
  */
 using GPUShaderCreateInfo = SDL_GPUShaderCreateInfo;
 
@@ -60726,6 +63025,8 @@ constexpr GPUIndexElementSize GPU_INDEXELEMENTSIZE_32BIT =
  *
  * @sa GPURenderPass.BindVertexSamplers
  * @sa GPURenderPass.BindFragmentSamplers
+ * @sa GPUTexture
+ * @sa GPUSampler
  */
 using GPUTextureSamplerBinding = SDL_GPUTextureSamplerBinding;
 
@@ -61110,7 +63411,7 @@ public:
    * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute sampler slot to begin binding from.
    * @param texture_sampler_bindings an array of texture-sampler binding
@@ -61118,7 +63419,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindSamplers(
     Uint32 first_slot,
@@ -61131,14 +63432,14 @@ public:
    * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage texture slot to begin binding from.
    * @param storage_textures an array of storage textures.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageTextures(Uint32 first_slot,
                            SpanRef<const GPUTextureRaw> storage_textures);
@@ -61150,14 +63451,14 @@ public:
    * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
    *
    * Be sure your shader is set up according to the requirements documented in
-   * GPUShader.GPUShader().
+   * GPUComputePipeline.GPUComputePipeline().
    *
    * @param first_slot the compute storage buffer slot to begin binding from.
    * @param storage_buffers an array of storage buffer binding structs.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GPUShader.GPUShader
+   * @sa GPUComputePipeline.GPUComputePipeline
    */
   void BindStorageBuffers(Uint32 first_slot,
                           SpanRef<const GPUBufferRaw> storage_buffers);
@@ -61262,6 +63563,17 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
 /**
  * A structure specifying parameters related to transferring data to or from a
  * texture.
+ *
+ * If either of `pixels_per_row` or `rows_per_layer` is zero, then width and
+ * height of passed GPUTextureRegion to GPUCopyPass.UploadToTexture or
+ * GPUCopyPass.DownloadFromTexture are used as default values respectively and
+ * data is considered to be tightly packed.
+ *
+ * **WARNING**: Direct3D 12 requires texture data row pitch to be 256 byte
+ * aligned, and offsets to be aligned to 512 bytes. If they are not, SDL will
+ * make a temporary copy of the data that is properly aligned, but this adds
+ * overhead to the transfer process. Apps can avoid this by aligning their data
+ * appropriately, or using a different GPU backend than Direct3D 12.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -61465,6 +63777,7 @@ public:
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa FColor
  */
 using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
 
@@ -61507,6 +63820,9 @@ using GPUColorTargetInfo = SDL_GPUColorTargetInfo;
  *   be reused again.
  *
  * Note that depth/stencil targets do not support multisample resolves.
+ *
+ * Due to ABI limitations, depth textures with more than 255 layers are not
+ * supported.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -61608,6 +63924,12 @@ public:
    *
    * Useful for debugging.
    *
+   * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @param text a UTF-8 string constant to insert as the label.
    *
    * @since This function is available since SDL 3.2.0.
@@ -61622,6 +63944,12 @@ public:
    *
    * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
    * to GPUCommandBuffer.PopDebugGroup.
+   *
+   * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
    *
    * On some backends (e.g. Metal), pushing a debug group during a
    * render/blit/compute pass will create a group that is scoped to the native
@@ -61639,6 +63967,12 @@ public:
   /**
    * Ends the most-recently pushed debug group.
    *
+   * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+   * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+   * executable. See
+   * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+   * instructions on how to obtain it.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GPUCommandBuffer.PushDebugGroup
@@ -61648,11 +63982,14 @@ public:
   /**
    * Pushes data to a vertex uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
    * aligned.
+   *
+   * For detailed information about accessing uniform data from a shader, please
+   * refer to GPUShader.GPUShader.
    *
    * @param slot_index the vertex uniform slot to push data to.
    * @param data client data to write.
@@ -61664,7 +64001,7 @@ public:
   /**
    * Pushes data to a fragment uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -61680,7 +64017,7 @@ public:
   /**
    * Pushes data to a uniform slot on the command buffer.
    *
-   * Subsequent draw calls will use this uniform data.
+   * Subsequent draw calls in this command buffer will use this uniform data.
    *
    * The data being pushed must respect std140 layout conventions. In practical
    * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -61703,6 +64040,14 @@ public:
    * pass. A default viewport and scissor state are automatically set when this
    * is called. You cannot begin another render pass, or begin a compute pass or
    * copy pass until you have ended the render pass.
+   *
+   * Using GPU_LOADOP_LOAD before any contents have been written to the texture
+   * subresource will result in undefined behavior. GPU_LOADOP_CLEAR will set
+   * the contents of the texture subresource to a single value before any
+   * rendering is performed. It's fine to do an empty render pass using
+   * GPU_STOREOP_STORE to clear a texture, but in general it's better to think
+   * of clearing not as an independent operation but as something that's done as
+   * the beginning of a render pass.
    *
    * @param color_target_infos an array of texture subresources with
    *                           corresponding clear values and load/store ops.
@@ -61765,6 +64110,8 @@ public:
    * @returns a copy pass handle.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GPUCopyPass.End
    */
   GPUCopyPass BeginCopyPass();
 
@@ -61799,7 +64146,9 @@ public:
    * buffer used to acquire it.
    *
    * This function will fill the swapchain texture handle with nullptr if too
-   * many frames are in flight. This is not an error.
+   * many frames are in flight. This is not an error. This nullptr pointer
+   * should not be passed back into SDL. Instead, it should be considered as an
+   * indication to wait until the swapchain is available.
    *
    * If you use this function, it is possible to create a situation where many
    * command buffers are allocated while the rendering context waits for the GPU
@@ -62604,6 +64953,13 @@ public:
   /**
    * Creates a GPU context.
    *
+   * The GPU driver name can be one of the following:
+   *
+   * - "vulkan": [Vulkan](CategoryGPU#vulkan)
+   * - "direct3d12": [D3D12](CategoryGPU#d3d12)
+   * - "metal": [Metal](CategoryGPU#metal)
+   * - nullptr: let SDL pick the optimal driver
+   *
    * @param format_flags a bitflag indicating which shader formats the app is
    *                     able to provide.
    * @param debug_mode enable debug mode properties and validations.
@@ -62614,6 +64970,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa GPUDevice.GPUDevice
    * @sa GPUDevice.GetShaderFormats
    * @sa GPUDevice.GetDriver
    * @sa GPUDevice.Destroy
@@ -62634,8 +64991,31 @@ public:
    *   and validations, defaults to true.
    * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
    *   efficiency over maximum GPU performance, defaults to false.
+   * - `prop::GpuDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+   *   useful debug information on device creation, defaults to true.
    * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to use,
    *   if a specific one is desired.
+   * - `prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+   *   device feature shaderClipDistance. If disabled, clip distances are not
+   *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+   *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+   *   Metal. Disabling optional features allows the application to run on some
+   *   older Android devices. Defaults to true.
+   * - `prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+   *   device feature depthClamp. If disabled, there is no depth clamp support
+   *   and enable_depth_clip in GPURasterizerState must always be set to true.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+   *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+   *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
+   *   Disabling optional features allows the application to run on some older
+   *   Android devices. Defaults to true.
+   * - `prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+   *   feature samplerAnisotropy. If disabled, enable_anisotropy of
+   *   GPUSamplerCreateInfo must be set to false. Disabling optional features
+   *   allows the application to run on some older Android devices. Defaults to
+   *   true.
    *
    * These are the current shader format properties:
    *
@@ -62652,10 +65032,32 @@ public:
    * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
    *   provide Metal shader libraries if applicable.
    *
-   * With the D3D12 renderer:
+   * With the D3D12 backend:
    *
    * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use
    *   for all vertex semantics, default is "TEXCOORD".
+   * - `prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+   *   default, Resourcing Binding Tier 2 is required for D3D12 support.
+   *   However, an application can set this property to true to enable Tier 1
+   *   support, if (and only if) the application uses 8 or fewer storage
+   *   resources across all shader stages. As of writing, this property is
+   *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
+   *   either supports Tier 2 Resource Binding or does not support D3D12 in any
+   *   capacity. Defaults to false.
+   *
+   * With the Vulkan backend:
+   *
+   * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+   *   default, Vulkan device enumeration includes drivers of all types,
+   *   including software renderers (for example, the Lavapipe Mesa driver).
+   *   This can be useful if your application _requires_ SDL_GPU, but if you can
+   *   provide your own fallback renderer (for example, an OpenGL renderer) this
+   *   property can be set to true. Defaults to false.
+   * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+   *   GPUVulkanOptions structure to be processed during device creation. This
+   *   allows configuring a variety of Vulkan-specific options such as
+   *   increasing the API version and opting into extensions aside from the
+   *   minimal set SDL requires.
    *
    * @param props the properties to use.
    * @post a GPU context on success.
@@ -62735,6 +65137,113 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   GPUShaderFormat GetShaderFormats();
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Get the properties associated with a GPU device.
+   *
+   * All properties are optional and may differ between GPU backends and SDL
+   * versions.
+   *
+   * The following properties are provided by SDL:
+   *
+   * `prop::GpuDevice.NAME_STRING`: Contains the name of the underlying device
+   * as reported by the system driver. This string has no standardized format,
+   * is highly inconsistent between hardware devices and drivers, and is able to
+   * change at any time. Do not attempt to parse this string as it is bound to
+   * fail at some point in the future when system drivers are updated, new
+   * hardware devices are introduced, or when SDL adds new GPU backends or
+   * modifies existing ones.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - GTX 970
+   * - GeForce GTX 970
+   * - NVIDIA GeForce GTX 970
+   * - Microsoft Direct3D12 (NVIDIA GeForce GTX 970)
+   * - NVIDIA Graphics Device
+   * - GeForce GPU
+   * - P106-100
+   * - AMD 15D8:C9
+   * - AMD Custom GPU 0405
+   * - AMD Radeon (TM) Graphics
+   * - ASUS Radeon RX 470 Series
+   * - Intel(R) Arc(tm) A380 Graphics (DG2)
+   * - Virtio-GPU Venus (NVIDIA TITAN V)
+   * - SwiftShader Device (LLVM 16.0.0)
+   * - llvmpipe (LLVM 15.0.4, 256 bits)
+   * - Microsoft Basic Render Driver
+   * - unknown device
+   *
+   * The above list shows that the same device can have different formats, the
+   * vendor name may or may not appear in the string, the included vendor name
+   * may not be the vendor of the chipset on the device, some manufacturers
+   * include pseudo-legal marks while others don't, some devices may not use a
+   * marketing name in the string, the device string may be wrapped by the name
+   * of a translation interface, the device may be emulated in software, or the
+   * string may contain generic text that does not identify the device at all.
+   *
+   * `prop::GpuDevice.DRIVER_NAME_STRING`: Contains the self-reported name of
+   * the underlying system driver.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - Intel Corporation
+   * - Intel open-source Mesa driver
+   * - Qualcomm Technologies Inc. Adreno Vulkan Driver
+   * - MoltenVK
+   * - Mali-G715
+   * - venus
+   *
+   * `prop::GpuDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+   * of the underlying system driver. This is a relatively short version string
+   * in an unspecified format. If prop::GpuDevice.DRIVER_INFO_STRING is
+   * available then that property should be preferred over this one as it may
+   * contain additional information that is useful for identifying the exact
+   * driver version used.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - 53.0.0
+   * - 0.405.2463
+   * - 32.0.15.6614
+   *
+   * `prop::GpuDevice.DRIVER_INFO_STRING`: Contains the detailed version
+   * information of the underlying system driver as reported by the driver. This
+   * is an arbitrary string with no standardized format and it may contain
+   * newlines. This property should be preferred over
+   * prop::GpuDevice.DRIVER_VERSION_STRING if it is available as it usually
+   * contains the same information but in a format that is easier to read.
+   *
+   * Strings that have been found in the wild include:
+   *
+   * - 101.6559
+   * - 1.2.11
+   * - Mesa 21.2.2 (LLVM 12.0.1)
+   * - Mesa 22.2.0-devel (git-f226222 2022-04-14 impish-oibaf-ppa)
+   * - v1.r53p0-00eac0.824c4f31403fb1fbf8ee1042422c2129
+   *
+   * This string has also been observed to be a multiline string (which has a
+   * trailing newline):
+   *
+   * ```
+   * Driver Build: 85da404, I46ff5fc46f, 1606794520
+   * Date: 11/30/20
+   * Compiler Version: EV031.31.04.01
+   * Driver Branch: promo490_3_Google
+   * ```
+   *
+   * @returns a valid property ID on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  PropertiesRef GetProperties();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -62906,7 +65415,8 @@ public:
    * Creates a texture object to be used in graphics or compute workflows.
    *
    * The contents of this texture are undefined until data is written to the
-   * texture.
+   * texture, either via GPUCopyPass.UploadToTexture or by performing a render
+   * or compute pass with this texture as a target.
    *
    * Note that certain combinations of usage flags are invalid. For example, a
    * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -62947,6 +65457,8 @@ public:
    *
    * @sa GPUCopyPass.UploadToTexture
    * @sa GPUCopyPass.DownloadFromTexture
+   * @sa GPUCommandBuffer.BeginRenderPass
+   * @sa GPUCommandBuffer.BeginComputePass
    * @sa GPURenderPass.BindVertexSamplers
    * @sa GPURenderPass.BindVertexStorageTextures
    * @sa GPURenderPass.BindFragmentSamplers
@@ -63274,7 +65786,7 @@ public:
    * GPUDevice.WindowSupportsSwapchainComposition prior to calling this
    * function.
    *
-   * GPU_PRESENTMODE_VSYNC with GPU_SWAPCHAINCOMPOSITION_SDR are always
+   * GPU_PRESENTMODE_VSYNC with GPU_SWAPCHAINCOMPOSITION_SDR is always
    * supported.
    *
    * @param window an Window that has been claimed.
@@ -63424,6 +65936,7 @@ public:
    */
   bool TextureSupportsSampleCount(GPUTextureFormat format,
                                   GPUSampleCount sample_count);
+
 #ifdef SDL_PLATFORM_GDK
 
   /**
@@ -64208,6 +66721,9 @@ using GPUStencilOpState = SDL_GPUStencilOpState;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa GPUColorTargetDescription
+ * @sa GPUBlendFactor
+ * @sa GPUBlendOp
+ * @sa GPUColorComponentFlags
  */
 using GPUColorTargetBlendState = SDL_GPUColorTargetBlendState;
 
@@ -64308,6 +66824,13 @@ inline bool GPUSupportsProperties(PropertiesParam props)
 /**
  * Creates a GPU context.
  *
+ * The GPU driver name can be one of the following:
+ *
+ * - "vulkan": [Vulkan](CategoryGPU#vulkan)
+ * - "direct3d12": [D3D12](CategoryGPU#d3d12)
+ * - "metal": [Metal](CategoryGPU#metal)
+ * - nullptr: let SDL pick the optimal driver
+ *
  * @param format_flags a bitflag indicating which shader formats the app is able
  *                     to provide.
  * @param debug_mode enable debug mode properties and validations.
@@ -64318,6 +66841,7 @@ inline bool GPUSupportsProperties(PropertiesParam props)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa GPUDevice.GPUDevice
  * @sa GPUDevice.GetShaderFormats
  * @sa GPUDevice.GetDriver
  * @sa GPUDevice.Destroy
@@ -64339,8 +66863,31 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   and validations, defaults to true.
  * - `prop::GpuDevice.CREATE_PREFERLOWPOWER_BOOLEAN`: enable to prefer energy
  *   efficiency over maximum GPU performance, defaults to false.
+ * - `prop::GpuDevice.CREATE_VERBOSE_BOOLEAN`: enable to automatically log
+ *   useful debug information on device creation, defaults to true.
  * - `prop::GpuDevice.CREATE_NAME_STRING`: the name of the GPU driver to use, if
  *   a specific one is desired.
+ * - `prop::GpuDevice.CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN`: Enable Vulkan
+ *   device feature shaderClipDistance. If disabled, clip distances are not
+ *   supported in shader code: gl_ClipDistance[] built-ins of GLSL,
+ *   SV_ClipDistance0/1 semantics of HLSL and [[clip_distance]] attribute of
+ *   Metal. Disabling optional features allows the application to run on some
+ *   older Android devices. Defaults to true.
+ * - `prop::GpuDevice.CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN`: Enable Vulkan
+ *   device feature depthClamp. If disabled, there is no depth clamp support and
+ *   enable_depth_clip in GPURasterizerState must always be set to true.
+ *   Disabling optional features allows the application to run on some older
+ *   Android devices. Defaults to true.
+ * - `prop::GpuDevice.CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN`:
+ *   Enable Vulkan device feature drawIndirectFirstInstance. If disabled, the
+ *   argument first_instance of GPUIndirectDrawCommand must be set to zero.
+ *   Disabling optional features allows the application to run on some older
+ *   Android devices. Defaults to true.
+ * - `prop::GpuDevice.CREATE_FEATURE_ANISOTROPY_BOOLEAN`: Enable Vulkan device
+ *   feature samplerAnisotropy. If disabled, enable_anisotropy of
+ *   GPUSamplerCreateInfo must be set to false. Disabling optional features
+ *   allows the application to run on some older Android devices. Defaults to
+ *   true.
  *
  * These are the current shader format properties:
  *
@@ -64357,10 +66904,31 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  * - `prop::GpuDevice.CREATE_SHADERS_METALLIB_BOOLEAN`: The app is able to
  *   provide Metal shader libraries if applicable.
  *
- * With the D3D12 renderer:
+ * With the D3D12 backend:
  *
  * - `prop::GpuDevice.CREATE_D3D12_SEMANTIC_NAME_STRING`: the prefix to use for
  *   all vertex semantics, default is "TEXCOORD".
+ * - `prop::GpuDevice.CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN`: By
+ *   default, Resourcing Binding Tier 2 is required for D3D12 support. However,
+ *   an application can set this property to true to enable Tier 1 support, if
+ *   (and only if) the application uses 8 or fewer storage resources across all
+ *   shader stages. As of writing, this property is useful for targeting Intel
+ *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
+ *   Binding or does not support D3D12 in any capacity. Defaults to false.
+ *
+ * With the Vulkan backend:
+ *
+ * - `prop::GpuDevice.CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN`: By
+ *   default, Vulkan device enumeration includes drivers of all types, including
+ *   software renderers (for example, the Lavapipe Mesa driver). This can be
+ *   useful if your application _requires_ SDL_GPU, but if you can provide your
+ *   own fallback renderer (for example, an OpenGL renderer) this property can
+ *   be set to true. Defaults to false.
+ * - `prop::GpuDevice.CREATE_VULKAN_OPTIONS_POINTER`: a pointer to an
+ *   GPUVulkanOptions structure to be processed during device creation. This
+ *   allows configuring a variety of Vulkan-specific options such as increasing
+ *   the API version and opting into extensions aside from the minimal set SDL
+ *   requires.
  *
  * @param props the properties to use.
  * @returns a GPU context on success.
@@ -64386,7 +66954,30 @@ constexpr auto CREATE_DEBUGMODE_BOOLEAN =
 constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_VERBOSE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
+
+constexpr auto CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN;
+
+constexpr auto CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN;
+
+constexpr auto CREATE_FEATURE_ANISOTROPY_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto CREATE_SHADERS_PRIVATE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
@@ -64406,10 +66997,62 @@ constexpr auto CREATE_SHADERS_MSL_BOOLEAN =
 constexpr auto CREATE_SHADERS_METALLIB_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
+
+constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
+  SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
+
+constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
+
+constexpr auto DRIVER_VERSION_STRING =
+  SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
+
+constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 } // namespace prop::GpuDevice
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A structure specifying additional options when using Vulkan.
+ *
+ * When no such structure is provided, SDL will use Vulkan API version 1.0 and a
+ * minimal set of features. The requested API version influences how the
+ * feature_list is processed by SDL. When requesting API version 1.0, the
+ * feature_list is ignored. Only the vulkan_10_physical_device_features and the
+ * extension lists are used. When requesting API version 1.1, the feature_list
+ * is scanned for feature structures introduced in Vulkan 1.1. When requesting
+ * Vulkan 1.2 or higher, the feature_list is additionally scanned for compound
+ * feature structs such as VkPhysicalDeviceVulkan11Features. The device and
+ * instance extension lists, as well as vulkan_10_physical_device_features, are
+ * always processed.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ */
+using GPUVulkanOptions = SDL_GPUVulkanOptions;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -64493,6 +67136,122 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
 {
   return SDL::GetGPUShaderFormats(m_resource);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Get the properties associated with a GPU device.
+ *
+ * All properties are optional and may differ between GPU backends and SDL
+ * versions.
+ *
+ * The following properties are provided by SDL:
+ *
+ * `prop::GpuDevice.NAME_STRING`: Contains the name of the underlying device as
+ * reported by the system driver. This string has no standardized format, is
+ * highly inconsistent between hardware devices and drivers, and is able to
+ * change at any time. Do not attempt to parse this string as it is bound to
+ * fail at some point in the future when system drivers are updated, new
+ * hardware devices are introduced, or when SDL adds new GPU backends or
+ * modifies existing ones.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - GTX 970
+ * - GeForce GTX 970
+ * - NVIDIA GeForce GTX 970
+ * - Microsoft Direct3D12 (NVIDIA GeForce GTX 970)
+ * - NVIDIA Graphics Device
+ * - GeForce GPU
+ * - P106-100
+ * - AMD 15D8:C9
+ * - AMD Custom GPU 0405
+ * - AMD Radeon (TM) Graphics
+ * - ASUS Radeon RX 470 Series
+ * - Intel(R) Arc(tm) A380 Graphics (DG2)
+ * - Virtio-GPU Venus (NVIDIA TITAN V)
+ * - SwiftShader Device (LLVM 16.0.0)
+ * - llvmpipe (LLVM 15.0.4, 256 bits)
+ * - Microsoft Basic Render Driver
+ * - unknown device
+ *
+ * The above list shows that the same device can have different formats, the
+ * vendor name may or may not appear in the string, the included vendor name may
+ * not be the vendor of the chipset on the device, some manufacturers include
+ * pseudo-legal marks while others don't, some devices may not use a marketing
+ * name in the string, the device string may be wrapped by the name of a
+ * translation interface, the device may be emulated in software, or the string
+ * may contain generic text that does not identify the device at all.
+ *
+ * `prop::GpuDevice.DRIVER_NAME_STRING`: Contains the self-reported name of the
+ * underlying system driver.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - Intel Corporation
+ * - Intel open-source Mesa driver
+ * - Qualcomm Technologies Inc. Adreno Vulkan Driver
+ * - MoltenVK
+ * - Mali-G715
+ * - venus
+ *
+ * `prop::GpuDevice.DRIVER_VERSION_STRING`: Contains the self-reported version
+ * of the underlying system driver. This is a relatively short version string in
+ * an unspecified format. If prop::GpuDevice.DRIVER_INFO_STRING is available
+ * then that property should be preferred over this one as it may contain
+ * additional information that is useful for identifying the exact driver
+ * version used.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - 53.0.0
+ * - 0.405.2463
+ * - 32.0.15.6614
+ *
+ * `prop::GpuDevice.DRIVER_INFO_STRING`: Contains the detailed version
+ * information of the underlying system driver as reported by the driver. This
+ * is an arbitrary string with no standardized format and it may contain
+ * newlines. This property should be preferred over
+ * prop::GpuDevice.DRIVER_VERSION_STRING if it is available as it usually
+ * contains the same information but in a format that is easier to read.
+ *
+ * Strings that have been found in the wild include:
+ *
+ * - 101.6559
+ * - 1.2.11
+ * - Mesa 21.2.2 (LLVM 12.0.1)
+ * - Mesa 22.2.0-devel (git-f226222 2022-04-14 impish-oibaf-ppa)
+ * - v1.r53p0-00eac0.824c4f31403fb1fbf8ee1042422c2129
+ *
+ * This string has also been observed to be a multiline string (which has a
+ * trailing newline):
+ *
+ * ```
+ * Driver Build: 85da404, I46ff5fc46f, 1606794520
+ * Date: 11/30/20
+ * Compiler Version: EV031.31.04.01
+ * Driver Branch: promo490_3_Google
+ * ```
+ *
+ * @param device a GPU context to query.
+ * @returns a valid property ID on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PropertiesRef GetGPUDeviceProperties(GPUDeviceParam device)
+{
+  return CheckError(SDL_GetGPUDeviceProperties(device));
+}
+
+inline PropertiesRef GPUDevice::GetProperties()
+{
+  return SDL::GetGPUDeviceProperties(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Creates a pipeline object to be used in a compute workflow.
@@ -64730,7 +67489,8 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  * Creates a texture object to be used in graphics or compute workflows.
  *
  * The contents of this texture are undefined until data is written to the
- * texture.
+ * texture, either via GPUCopyPass.UploadToTexture or by performing a render or
+ * compute pass with this texture as a target.
  *
  * Note that certain combinations of usage flags are invalid. For example, a
  * texture cannot have both the SAMPLER and GRAPHICS_STORAGE_READ flags.
@@ -64772,6 +67532,8 @@ constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
  *
  * @sa GPUCopyPass.UploadToTexture
  * @sa GPUCopyPass.DownloadFromTexture
+ * @sa GPUCommandBuffer.BeginRenderPass
+ * @sa GPUCommandBuffer.BeginComputePass
  * @sa GPURenderPass.BindVertexSamplers
  * @sa GPURenderPass.BindVertexStorageTextures
  * @sa GPURenderPass.BindFragmentSamplers
@@ -64991,6 +67753,12 @@ inline void GPUDevice::SetTextureName(GPUTexture texture, StringParam text)
  *
  * Useful for debugging.
  *
+ * On Direct3D 12, using GPUCommandBuffer.InsertDebugLabel requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * @param command_buffer a command buffer.
  * @param text a UTF-8 string constant to insert as the label.
  *
@@ -65016,6 +67784,12 @@ inline void GPUCommandBuffer::InsertDebugLabel(StringParam text)
  * Each call to GPUCommandBuffer.PushDebugGroup must have a corresponding call
  * to GPUCommandBuffer.PopDebugGroup.
  *
+ * On Direct3D 12, using GPUCommandBuffer.PushDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
+ *
  * On some backends (e.g. Metal), pushing a debug group during a
  * render/blit/compute pass will create a group that is scoped to the native
  * pass rather than the command buffer. For best results, if you push a debug
@@ -65040,6 +67814,12 @@ inline void GPUCommandBuffer::PushDebugGroup(StringParam name)
 
 /**
  * Ends the most-recently pushed debug group.
+ *
+ * On Direct3D 12, using GPUCommandBuffer.PopDebugGroup requires
+ * WinPixEventRuntime.dll to be in your PATH or in the same directory as your
+ * executable. See
+ * [here](https://devblogs.microsoft.com/pix/winpixeventruntime/) for
+ * instructions on how to obtain it.
  *
  * @param command_buffer a command buffer.
  *
@@ -65239,11 +68019,14 @@ inline GPUCommandBuffer GPUDevice::AcquireCommandBuffer()
 /**
  * Pushes data to a vertex uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
  * aligned.
+ *
+ * For detailed information about accessing uniform data from a shader, please
+ * refer to GPUShader.GPUShader.
  *
  * @param command_buffer a command buffer.
  * @param slot_index the vertex uniform slot to push data to.
@@ -65269,7 +68052,7 @@ inline void GPUCommandBuffer::PushVertexUniformData(Uint32 slot_index,
 /**
  * Pushes data to a fragment uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -65299,7 +68082,7 @@ inline void GPUCommandBuffer::PushFragmentUniformData(Uint32 slot_index,
 /**
  * Pushes data to a uniform slot on the command buffer.
  *
- * Subsequent draw calls will use this uniform data.
+ * Subsequent draw calls in this command buffer will use this uniform data.
  *
  * The data being pushed must respect std140 layout conventions. In practical
  * terms this means you must ensure that vec3 and vec4 fields are 16-byte
@@ -65336,6 +68119,14 @@ inline void GPUCommandBuffer::PushComputeUniformData(Uint32 slot_index,
  * default viewport and scissor state are automatically set when this is called.
  * You cannot begin another render pass, or begin a compute pass or copy pass
  * until you have ended the render pass.
+ *
+ * Using GPU_LOADOP_LOAD before any contents have been written to the texture
+ * subresource will result in undefined behavior. GPU_LOADOP_CLEAR will set the
+ * contents of the texture subresource to a single value before any rendering is
+ * performed. It's fine to do an empty render pass using GPU_STOREOP_STORE to
+ * clear a texture, but in general it's better to think of clearing not as an
+ * independent operation but as something that's done as the beginning of a
+ * render pass.
  *
  * @param command_buffer a command buffer.
  * @param color_target_infos an array of texture subresources with corresponding
@@ -65970,7 +68761,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  * The textures must have been created with GPU_TEXTUREUSAGE_SAMPLER.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute sampler slot to begin binding from.
@@ -65978,7 +68769,7 @@ inline void GPUComputePass::BindPipeline(GPUComputePipeline compute_pipeline)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeSamplers(
   GPUComputePass compute_pass,
@@ -66006,7 +68797,7 @@ inline void GPUComputePass::BindSamplers(
  * GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage texture slot to begin binding from.
@@ -66014,7 +68805,7 @@ inline void GPUComputePass::BindSamplers(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageTextures(
   GPUComputePass compute_pass,
@@ -66040,7 +68831,7 @@ inline void GPUComputePass::BindStorageTextures(
  * GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ.
  *
  * Be sure your shader is set up according to the requirements documented in
- * GPUShader.GPUShader().
+ * GPUComputePipeline.GPUComputePipeline().
  *
  * @param compute_pass a compute pass handle.
  * @param first_slot the compute storage buffer slot to begin binding from.
@@ -66048,7 +68839,7 @@ inline void GPUComputePass::BindStorageTextures(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GPUShader.GPUShader
+ * @sa GPUComputePipeline.GPUComputePipeline
  */
 inline void BindGPUComputeStorageBuffers(
   GPUComputePass compute_pass,
@@ -66208,6 +68999,8 @@ inline void GPUDevice::UnmapTransferBuffer(GPUTransferBuffer transfer_buffer)
  * @returns a copy pass handle.
  *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GPUCopyPass.End
  */
 inline GPUCopyPass BeginGPUCopyPass(GPUCommandBuffer command_buffer)
 {
@@ -66684,7 +69477,9 @@ inline GPUTextureFormat GPUDevice::GetSwapchainTextureFormat(WindowParam window)
  * buffer used to acquire it.
  *
  * This function will fill the swapchain texture handle with nullptr if too many
- * frames are in flight. This is not an error.
+ * frames are in flight. This is not an error. This nullptr pointer should not
+ * be passed back into SDL. Instead, it should be considered as an indication to
+ * wait until the swapchain is available.
  *
  * If you use this function, it is possible to create a situation where many
  * command buffers are allocated while the rendering context waits for the GPU
@@ -67105,6 +69900,38 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Get the SDL pixel format corresponding to a GPU texture format.
+ *
+ * @param format a texture format.
+ * @returns the corresponding pixel format, or PIXELFORMAT_UNKNOWN if there is
+ *          no corresponding pixel format.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PixelFormat GetPixelFormatFromGPUTextureFormat(GPUTextureFormat format)
+{
+  return SDL_GetPixelFormatFromGPUTextureFormat(format);
+}
+
+/**
+ * Get the GPU texture format corresponding to an SDL pixel format.
+ *
+ * @param format a pixel format.
+ * @returns the corresponding GPU texture format, or GPU_TEXTUREFORMAT_INVALID
+ *          if there is no corresponding GPU texture format.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
+{
+  return SDL_GetGPUTextureFormatFromPixelFormat(format);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 #ifdef SDL_PLATFORM_GDK
 
 /**
@@ -67175,6 +70002,14 @@ inline void GPUDevice::GDKResumeGPU() { SDL::GDKResumeGPU(m_resource); }
  * background, you should set the following hint before calling Init():
  * SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
  *
+ * SDL can provide virtual joysticks as well: the app defines an imaginary
+ * controller with AttachVirtualJoystick(), and then can provide inputs for it
+ * via Joystick.SetVirtualAxis(), Joystick.SetVirtualButton(), etc. As this data
+ * is supplied, it will look like a normal joystick to SDL, just not backed by a
+ * hardware driver. This has been used to make unusual devices, like VR headset
+ * controllers, look like normal joysticks, or provide recording/playback of
+ * game inputs, etc.
+ *
  * @{
  */
 
@@ -67229,6 +70064,10 @@ struct JoystickID;
  *
  * This is by no means a complete list of everything that can be plugged into a
  * computer.
+ *
+ * You may refer to [XInput Controller
+ * Types](https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes)
+ * table for a general understanding of each joystick type.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -67307,6 +70146,8 @@ public:
    * @returns the name of the selected joystick. If no name can be found, this
    *          function returns nullptr; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetName
@@ -67322,6 +70163,8 @@ public:
    * @returns the path of the selected joystick. If no path can be found, this
    *          function returns nullptr; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetPath
@@ -67335,6 +70178,8 @@ public:
    * This can be called before any joysticks are opened.
    *
    * @returns the player index of a joystick, or -1 if it's not available.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67350,6 +70195,8 @@ public:
    *
    * @returns the GUID of the selected joystick. If called with an invalid
    *          instance_id, this function returns a zero GUID.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67367,6 +70214,8 @@ public:
    * @returns the USB vendor ID of the selected joystick. If called with an
    *          invalid instance_id, this function returns 0.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetVendor
@@ -67382,6 +70231,8 @@ public:
    *
    * @returns the USB product ID of the selected joystick. If called with an
    *          invalid instance_id, this function returns 0.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67399,6 +70250,8 @@ public:
    * @returns the product version of the selected joystick. If called with an
    *          invalid instance_id, this function returns 0.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetProductVersion
@@ -67414,6 +70267,8 @@ public:
    * @returns the JoystickType of the selected joystick. If called with an
    *          invalid instance_id, this function returns
    *          `JOYSTICK_TYPE_UNKNOWN`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67431,6 +70286,8 @@ public:
    * @returns an Joystick on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.Close
@@ -67443,6 +70300,8 @@ public:
    * @returns an Joystick on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   JoystickRef GetJoystickFromID();
@@ -67451,6 +70310,8 @@ public:
    * Detach a virtual joystick.
    *
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67462,6 +70323,8 @@ public:
    * Query whether or not a joystick is virtual.
    *
    * @returns true if the joystick is virtual, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -67568,6 +70431,8 @@ public:
    * @param instance_id the joystick instance ID.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.Close
@@ -67615,6 +70480,8 @@ public:
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.OpenJoystick
@@ -67637,7 +70504,15 @@ public:
    * @param value the new value for the specified axis.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualAxis(int axis, Sint16 value);
 
@@ -67654,7 +70529,15 @@ public:
    * @param yrel the relative motion on the Y axis.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel);
 
@@ -67670,7 +70553,15 @@ public:
    * @param down true if the button is pressed, false otherwise.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualButton(int button, bool down);
 
@@ -67686,7 +70577,15 @@ public:
    * @param value the new value for the specified hat.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualHat(int hat, Uint8 value);
 
@@ -67707,7 +70606,15 @@ public:
    * @param pressure the pressure of the finger.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualTouchpad(int touchpad,
                           int finger,
@@ -67730,7 +70637,15 @@ public:
    * @param num_values the number of values pointed to by `data`.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
    */
   void SendVirtualSensorData(SensorType type,
                              Uint64 sensor_timestamp,
@@ -67756,6 +70671,8 @@ public:
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   PropertiesRef GetProperties();
@@ -67765,6 +70682,8 @@ public:
    *
    * @returns the name of the selected joystick. If no name can be found, this
    *          function returns nullptr; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67777,6 +70696,8 @@ public:
    *
    * @returns the path of the selected joystick. If no path can be found, this
    *          function returns nullptr; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67792,6 +70713,8 @@ public:
    *
    * @returns the player index, or -1 if it's not available.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.SetPlayerIndex
@@ -67804,6 +70727,8 @@ public:
    * @param player_index player index to assign to this joystick, or -1 to clear
    *                     the player index and turn off player LEDs.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67820,6 +70745,8 @@ public:
    *          this function returns a zero GUID; call GetError() for more
    *          information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.GetJoystickGUIDForID
@@ -67834,6 +70761,8 @@ public:
    *
    * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.GetJoystickVendorForID
@@ -67847,6 +70776,8 @@ public:
    *
    * @returns the USB product ID of the selected joystick, or 0 if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.GetJoystickProductForID
@@ -67859,6 +70790,8 @@ public:
    * If the product version isn't available this function returns 0.
    *
    * @returns the product version of the selected joystick, or 0 if unavailable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67874,6 +70807,8 @@ public:
    * @returns the firmware version of the selected joystick, or 0 if
    *          unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   Uint16 GetFirmwareVersion();
@@ -67887,6 +70822,8 @@ public:
    * @returns the serial number of the selected joystick, or nullptr if
    *          unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   const char* GetSerial();
@@ -67895,6 +70832,8 @@ public:
    * Get the type of an opened joystick.
    *
    * @returns the JoystickType of the selected joystick.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67908,6 +70847,8 @@ public:
    * @returns true if the joystick has been opened, false if it has not; call
    *          GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   bool Connected();
@@ -67917,6 +70858,8 @@ public:
    *
    * @returns the instance ID of the specified joystick on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -67931,6 +70874,8 @@ public:
    *
    * @returns the number of axis controls/number of axes on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -67952,6 +70897,8 @@ public:
    * @returns the number of trackballs on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetBall
@@ -67967,6 +70914,8 @@ public:
    * @returns the number of POV hats on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetHat
@@ -67981,6 +70930,8 @@ public:
    *
    * @returns the number of buttons on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -68008,6 +70959,8 @@ public:
    * @returns a 16-bit signed integer representing the current position of the
    *          axis or 0 on failure; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetNumAxes
@@ -68024,6 +70977,8 @@ public:
    * @param axis the axis to query; the axis indices start at index 0.
    * @param state upon return, the initial value is supplied here.
    * @returns true if this axis has any initial value, or false if not.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -68042,6 +70997,8 @@ public:
    * @param dy stores the difference in the y axis position since the last poll.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetNumBalls
@@ -68056,6 +71013,8 @@ public:
    * @param hat the hat index to get the state from; indices start at index 0.
    * @returns the current hat position.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetNumHats
@@ -68068,6 +71027,8 @@ public:
    * @param button the button index to get the state from; indices start at
    *               index 0.
    * @returns true if the button is pressed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -68090,6 +71051,8 @@ public:
    *                              rumble motor, from 0 to 0xFFFF.
    * @param duration_ms the duration of the rumble effect, in milliseconds.
    * @returns true, or false if rumble isn't supported on this joystick.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -68118,6 +71081,8 @@ public:
    * @param duration_ms the duration of the rumble effect, in milliseconds.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.Rumble
@@ -68140,6 +71105,8 @@ public:
    * @param blue the intensity of the blue LED.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   void SetLED(Uint8 red, Uint8 green, Uint8 blue);
@@ -68151,6 +71118,8 @@ public:
    * @param size the size of the data to send to the joystick.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   void SendEffect(const void* data, int size);
@@ -68160,6 +71129,8 @@ public:
    *
    * @returns the connection state on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -68180,6 +71151,8 @@ public:
    *                battery.
    * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
    *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -68252,12 +71225,17 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  * joysticks while processing to guarantee that the joystick list won't change
  * and joystick and gamepad events will not be delivered.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void LockJoysticks() { SDL_LockJoysticks(); }
 
 /**
  * Unlocking for atomic access to the joystick API.
+ *
+ * @threadsafety This should be called from the same thread that called
+ *               LockJoysticks().
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -68267,6 +71245,8 @@ inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
  * Return whether a joystick is currently connected.
  *
  * @returns true if a joystick is connected, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68280,6 +71260,8 @@ inline bool HasJoystick() { return SDL_HasJoystick(); }
  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
  *          call GetError() for more information. This should be freed with
  *          free() when it is no longer needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68301,6 +71283,8 @@ inline OwnArray<JoystickID> GetJoysticks()
  * @param instance_id the joystick instance ID.
  * @returns the name of the selected joystick. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68326,6 +71310,8 @@ inline const char* JoystickID::GetJoystickNameForID()
  * @returns the path of the selected joystick. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetPath
@@ -68348,6 +71334,8 @@ inline const char* JoystickID::GetJoystickPathForID()
  *
  * @param instance_id the joystick instance ID.
  * @returns the player index of a joystick, or -1 if it's not available.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68372,6 +71360,8 @@ inline int JoystickID::GetJoystickPlayerIndexForID()
  * @param instance_id the joystick instance ID.
  * @returns the GUID of the selected joystick. If called with an invalid
  *          instance_id, this function returns a zero GUID.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68398,6 +71388,8 @@ inline GUID JoystickID::GetJoystickGUIDForID()
  * @returns the USB vendor ID of the selected joystick. If called with an
  *          invalid instance_id, this function returns 0.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetVendor
@@ -68422,6 +71414,8 @@ inline Uint16 JoystickID::GetJoystickVendorForID()
  * @param instance_id the joystick instance ID.
  * @returns the USB product ID of the selected joystick. If called with an
  *          invalid instance_id, this function returns 0.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68448,6 +71442,8 @@ inline Uint16 JoystickID::GetJoystickProductForID()
  * @returns the product version of the selected joystick. If called with an
  *          invalid instance_id, this function returns 0.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetProductVersion
@@ -68471,6 +71467,8 @@ inline Uint16 JoystickID::GetJoystickProductVersionForID()
  * @param instance_id the joystick instance ID.
  * @returns the JoystickType of the selected joystick. If called with an invalid
  *          instance_id, this function returns `JOYSTICK_TYPE_UNKNOWN`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68497,6 +71495,8 @@ inline JoystickType JoystickID::GetJoystickTypeForID()
  * @returns an Joystick on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.Close
@@ -68514,6 +71514,8 @@ inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
  * @param instance_id the instance ID to get the Joystick for.
  * @returns an Joystick on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -68533,6 +71535,8 @@ inline JoystickRef JoystickID::GetJoystickFromID()
  * @param player_index the player index to get the Joystick for.
  * @returns an Joystick on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68580,13 +71584,32 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
 /**
  * Attach a new virtual joystick.
  *
+ * Apps can create virtual joysticks, that exist without hardware directly
+ * backing them, and have program-supplied inputs. Once attached, a virtual
+ * joystick looks like any other joystick that SDL can access. These can be used
+ * to make other things look like joysticks, or provide pre-recorded input, etc.
+ *
+ * Once attached, the app can send joystick inputs to the new virtual joystick
+ * using Joystick.SetVirtualAxis(), etc.
+ *
+ * When no longer needed, the virtual joystick can be removed by calling
+ * JoystickID.DetachVirtualJoystick().
+ *
  * @param desc joystick description, initialized using InitInterface().
  * @returns the joystick instance ID, or 0 on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.DetachVirtualJoystick
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
 {
@@ -68599,6 +71622,8 @@ inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
  * @param instance_id the joystick instance ID, previously returned from
  *                    AttachVirtualJoystick().
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68619,6 +71644,8 @@ inline void JoystickID::DetachVirtualJoystick()
  *
  * @param instance_id the joystick instance ID.
  * @returns true if the joystick is virtual, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -68649,7 +71676,15 @@ inline bool JoystickID::IsJoystickVirtual()
  * @param value the new value for the specified axis.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualAxis(JoystickParam joystick,
                                    int axis,
@@ -68677,7 +71712,15 @@ inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
  * @param yrel the relative motion on the Y axis.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualBall(JoystickParam joystick,
                                    int ball,
@@ -68705,7 +71748,15 @@ inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
  * @param down true if the button is pressed, false otherwise.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualButton(JoystickParam joystick,
                                      int button,
@@ -68732,7 +71783,15 @@ inline void Joystick::SetVirtualButton(int button, bool down)
  * @param value the new value for the specified hat.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualHat(JoystickParam joystick, int hat, Uint8 value)
 {
@@ -68761,7 +71820,15 @@ inline void Joystick::SetVirtualHat(int hat, Uint8 value)
  * @param pressure the pressure of the finger.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualTouchpad(JoystickParam joystick,
                                        int touchpad,
@@ -68800,7 +71867,15 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
  * @param num_values the number of values pointed to by `data`.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
  */
 inline void SendJoystickVirtualSensorData(JoystickParam joystick,
                                           SensorType type,
@@ -68841,6 +71916,8 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
@@ -68875,6 +71952,8 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  * @returns the name of the selected joystick. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickNameForID
@@ -68895,6 +71974,8 @@ inline const char* Joystick::GetName()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the path of the selected joystick. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68919,6 +72000,8 @@ inline const char* Joystick::GetPath()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the player index, or -1 if it's not available.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.SetPlayerIndex
@@ -68940,6 +72023,8 @@ inline int Joystick::GetPlayerIndex()
  * @param player_index player index to assign to this joystick, or -1 to clear
  *                     the player index and turn off player LEDs.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -68964,6 +72049,8 @@ inline void Joystick::SetPlayerIndex(int player_index)
  * @returns the GUID of the given joystick. If called on an invalid index, this
  *          function returns a zero GUID; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickGUIDForID
@@ -68983,6 +72070,8 @@ inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(m_resource); }
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69006,6 +72095,8 @@ inline Uint16 Joystick::GetVendor()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the USB product ID of the selected joystick, or 0 if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickProductForID
@@ -69027,6 +72118,8 @@ inline Uint16 Joystick::GetProduct()
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the product version of the selected joystick, or 0 if unavailable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69050,6 +72143,8 @@ inline Uint16 Joystick::GetProductVersion()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the firmware version of the selected joystick, or 0 if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline Uint16 GetJoystickFirmwareVersion(JoystickParam joystick)
@@ -69071,6 +72166,8 @@ inline Uint16 Joystick::GetFirmwareVersion()
  * @returns the serial number of the selected joystick, or nullptr if
  *          unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetJoystickSerial(JoystickParam joystick)
@@ -69088,6 +72185,8 @@ inline const char* Joystick::GetSerial()
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the JoystickType of the selected joystick.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69115,6 +72214,8 @@ inline JoystickType Joystick::GetType()
  * @param crc16 a pointer filled in with a CRC used to distinguish different
  *              products with the same VID/PID, or 0 if not available.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickGUIDForID
@@ -69135,6 +72236,8 @@ inline void GetJoystickGUIDInfo(GUID guid,
  * @returns true if the joystick has been opened, false if it has not; call
  *          GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool JoystickConnected(JoystickParam joystick)
@@ -69150,6 +72253,8 @@ inline bool Joystick::Connected() { return SDL::JoystickConnected(m_resource); }
  * @param joystick an Joystick structure containing joystick information.
  * @returns the instance ID of the specified joystick on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -69170,6 +72275,8 @@ inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(m_resource); }
  * @param joystick an Joystick structure containing joystick information.
  * @returns the number of axis controls/number of axes on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69200,6 +72307,8 @@ inline int Joystick::GetNumAxes()
  * @returns the number of trackballs on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetBall
@@ -69224,6 +72333,8 @@ inline int Joystick::GetNumBalls()
  * @returns the number of POV hats on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetHat
@@ -69247,6 +72358,8 @@ inline int Joystick::GetNumHats()
  * @param joystick an Joystick structure containing joystick information.
  * @returns the number of buttons on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69273,6 +72386,8 @@ inline int Joystick::GetNumButtons()
  *
  * @param enabled whether to process joystick events or not.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickEventsEnabled
@@ -69291,6 +72406,8 @@ inline void SetJoystickEventsEnabled(bool enabled)
  *
  * @returns true if joystick events are being processed, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetJoystickEventsEnabled
@@ -69302,6 +72419,8 @@ inline bool JoystickEventsEnabled() { return SDL_JoystickEventsEnabled(); }
  *
  * This is called automatically by the event loop if any joystick events are
  * enabled.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -69324,6 +72443,8 @@ inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
  * @param axis the axis to query; the axis indices start at index 0.
  * @returns a 16-bit signed integer representing the current position of the
  *          axis or 0 on failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69350,6 +72471,8 @@ inline Sint16 Joystick::GetAxis(int axis)
  * @param axis the axis to query; the axis indices start at index 0.
  * @param state upon return, the initial value is supplied here.
  * @returns true if this axis has any initial value, or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -69379,6 +72502,8 @@ inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
  * @param dy stores the difference in the y axis position since the last poll.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetNumBalls
@@ -69402,6 +72527,8 @@ inline void Joystick::GetBall(int ball, int* dx, int* dy)
  * @param hat the hat index to get the state from; indices start at index 0.
  * @returns the current hat position.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetNumHats
@@ -69423,6 +72550,8 @@ inline Uint8 Joystick::GetHat(int hat)
  * @param button the button index to get the state from; indices start at index
  *               0.
  * @returns true if the button is pressed, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -69454,6 +72583,8 @@ inline bool Joystick::GetButton(int button)
  *                              rumble motor, from 0 to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
  * @returns true, or false if rumble isn't supported on this joystick.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -69495,6 +72626,8 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
  * @param duration_ms the duration of the rumble effect, in milliseconds.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.Rumble
@@ -69531,6 +72664,8 @@ inline void Joystick::RumbleTriggers(Uint16 left_rumble,
  * @param blue the intensity of the blue LED.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetJoystickLED(JoystickParam joystick,
@@ -69554,6 +72689,8 @@ inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
  * @param size the size of the data to send to the joystick.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SendJoystickEffect(JoystickParam joystick,
@@ -69573,6 +72710,8 @@ inline void Joystick::SendEffect(const void* data, int size)
  *
  * @param joystick the joystick device to close.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.OpenJoystick
@@ -69587,6 +72726,8 @@ inline void Joystick::Close() { CloseJoystick(release()); }
  * @param joystick the joystick to query.
  * @returns the connection state on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -69616,6 +72757,8 @@ inline JoystickConnectionState Joystick::GetConnectionState()
  *                in with -1 we can't determine a value or there is no battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -69779,8 +72922,7 @@ inline void ResetKeyboard() { SDL_ResetKeyboard(); }
 /**
  * Get the current key modifier state for the keyboard.
  *
- * @returns an OR'd combination of the modifier keys for the keyboard. See
- *          Keymod for details.
+ * @returns an OR'd combination of the modifier keys for the keyboard.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -70945,6 +74087,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa CreateAnimatedCursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
    * @sa Cursor.Destroy
@@ -70962,15 +74105,17 @@ public:
   /**
    * Create a color cursor.
    *
-   * If this function is passed a surface with alternate representations, the
-   * surface will be interpreted as the content to be used for 100% display
-   * scale, and the alternate representations will be used for high DPI
-   * situations. For example, if the original surface is 32x32, then on a 2x
-   * macOS display or 200% display scale on Windows, a 64x64 version of the
-   * image will be used, if available. If a matching version of the image isn't
-   * available, the closest larger size image will be downscaled to the
-   * appropriate size and be used instead, if available. Otherwise, the closest
-   * smaller image will be upscaled and be used instead.
+   * If this function is passed a surface with alternate representations added
+   * with Surface.AddAlternateImage(), the surface will be interpreted as the
+   * content to be used for 100% display scale, and the alternate
+   * representations will be used for high DPI situations if
+   * SDL_HINT_MOUSE_DPI_SCALE_CURSORS is enabled. For example, if the original
+   * surface is 32x32, then on a 2x macOS display or 200% display scale on
+   * Windows, a 64x64 version of the image will be used, if available. If a
+   * matching version of the image isn't available, the closest larger size
+   * image will be downscaled to the appropriate size and be used instead, if
+   * available. Otherwise, the closest smaller image will be upscaled and be
+   * used instead.
    *
    * @param surface an Surface structure representing the cursor image.
    * @param hot the x, y position of the cursor hot spot.
@@ -70981,6 +74126,8 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa Surface.AddAlternateImage
+   * @sa CreateAnimatedCursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
    * @sa Cursor.Destroy
@@ -71054,6 +74201,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
+   * @sa CreateAnimatedCursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
    * @sa Cursor.Cursor
@@ -71131,6 +74279,17 @@ constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Animated cursor frame info.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ */
+using CursorFrameInfo = SDL_CursorFrameInfo;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Represents a button index.
  *
@@ -71179,6 +74338,84 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
 {
   return SDL_BUTTON_MASK(button);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A callback used to transform mouse motion delta from raw values.
+ *
+ * This is called during SDL's handling of platform mouse events to scale the
+ * values of the resulting motion delta.
+ *
+ * @param userdata what was passed as `userdata` to SetRelativeMouseTransform().
+ * @param timestamp the associated time at which this mouse motion event was
+ *                  received.
+ * @param window the associated window to which this mouse motion event was
+ *               addressed.
+ * @param mouseID the associated mouse from which this mouse motion event was
+ *                emitted.
+ * @param x pointer to a variable that will be treated as the resulting x-axis
+ *          motion.
+ * @param y pointer to a variable that will be treated as the resulting y-axis
+ *          motion.
+ *
+ * @threadsafety This callback is called by SDL's internal mouse input
+ *               processing procedure, which may be a thread separate from the
+ *               main event loop that is run at realtime priority. Stalling this
+ *               thread with too much work in the callback can therefore
+ *               potentially freeze the entire system. Care should be taken with
+ *               proper synchronization practices when adding other side effects
+ *               beyond mutation of the x and y values.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SetRelativeMouseTransform
+ */
+using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
+                                                    Uint64 timestamp,
+                                                    SDL_Window* window,
+                                                    MouseID mouseID,
+                                                    float* x,
+                                                    float* y);
+
+/**
+ * A callback used to transform mouse motion delta from raw values.
+ *
+ * This is called during SDL's handling of platform mouse events to scale the
+ * values of the resulting motion delta.
+ *
+ * @param timestamp the associated time at which this mouse motion event was
+ *                  received.
+ * @param window the associated window to which this mouse motion event was
+ *               addressed.
+ * @param mouseID the associated mouse from which this mouse motion event was
+ *                emitted.
+ * @param x pointer to a variable that will be treated as the resulting x-axis
+ *          motion.
+ * @param y pointer to a variable that will be treated as the resulting y-axis
+ *          motion.
+ *
+ * @threadsafety This callback is called by SDL's internal mouse input
+ *               processing procedure, which may be a thread separate from the
+ *               main event loop that is run at realtime priority. Stalling this
+ *               thread with too much work in the callback can therefore
+ *               potentially freeze the entire system. Care should be taken with
+ *               proper synchronization practices when adding other side effects
+ *               beyond mutation of the x and y values.
+ *
+ * @since This datatype is available since SDL 3.4.0.
+ *
+ * @sa SetRelativeMouseTransform
+ *
+ * @sa MouseMotionTransformCallback
+ */
+using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
+                                                      SDL_Window* window,
+                                                      MouseID mouseID,
+                                                      float* x,
+                                                      float* y)>;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Return whether a mouse is currently connected.
@@ -71392,46 +74629,55 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
- * Set relative mouse mode for a window.
+ * Set a user-defined function by which to transform relative mouse inputs.
  *
- * While the window has focus and relative mouse mode is enabled, the cursor
- * is hidden, the mouse position is constrained to the window, and SDL will
- * report continuous relative mouse motion even if the mouse is at the edge of
- * the window.
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
  *
- * If you'd like to keep the mouse position fixed while in relative mode you
- * can use Window.SetMouseRect(). If you'd like the cursor to be at a
- * specific location when relative mode ends, you should use
- * Window.WarpMouse() before disabling relative mode.
- *
- * This function will flush any pending mouse motion for this window.
- *
- * @param enabled true to enable relative mode, false to disable.
+ * @param callback a callback used to transform relative mouse motion, or
+ *                 nullptr for default behavior.
+ * @param userdata a pointer that will be passed to `callback`.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
  *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.GetRelativeMouseMode
+ * @since This function is available since SDL 3.4.0.
  */
+inline void SetRelativeMouseTransform(MouseMotionTransformCallback callback,
+                                      void* userdata)
+{
+  CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
+}
+
+/**
+ * Set a user-defined function by which to transform relative mouse inputs.
+ *
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
+ *
+ * @param callback a callback used to transform relative mouse motion, or
+ *                 nullptr for default behavior.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
+{
+  SetRelativeMouseTransform(callback.wrapper, callback.data);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
   CheckError(SDL_SetWindowRelativeMouseMode(m_resource, enabled));
 }
 
-/**
- * Query whether relative mouse mode is enabled for a window.
- *
- * @returns true if relative mode is enabled for a window or false otherwise.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window.SetRelativeMouseMode
- */
 inline bool Window::GetRelativeMouseMode() const
 {
   return SDL_GetWindowRelativeMouseMode(m_resource);
@@ -71522,6 +74768,7 @@ inline void CaptureMouse(bool enabled)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa CreateAnimatedCursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
  * @sa Cursor.Destroy
@@ -71538,15 +74785,16 @@ inline Cursor CreateCursor(const Uint8* data,
 /**
  * Create a color cursor.
  *
- * If this function is passed a surface with alternate representations, the
- * surface will be interpreted as the content to be used for 100% display scale,
- * and the alternate representations will be used for high DPI situations. For
- * example, if the original surface is 32x32, then on a 2x macOS display or 200%
- * display scale on Windows, a 64x64 version of the image will be used, if
- * available. If a matching version of the image isn't available, the closest
- * larger size image will be downscaled to the appropriate size and be used
- * instead, if available. Otherwise, the closest smaller image will be upscaled
- * and be used instead.
+ * If this function is passed a surface with alternate representations added
+ * with Surface.AddAlternateImage(), the surface will be interpreted as the
+ * content to be used for 100% display scale, and the alternate representations
+ * will be used for high DPI situations if SDL_HINT_MOUSE_DPI_SCALE_CURSORS is
+ * enabled. For example, if the original surface is 32x32, then on a 2x macOS
+ * display or 200% display scale on Windows, a 64x64 version of the image will
+ * be used, if available. If a matching version of the image isn't available,
+ * the closest larger size image will be downscaled to the appropriate size and
+ * be used instead, if available. Otherwise, the closest smaller image will be
+ * upscaled and be used instead.
  *
  * @param surface an Surface structure representing the cursor image.
  * @param hot the position of the cursor hot spot.
@@ -71557,6 +74805,8 @@ inline Cursor CreateCursor(const Uint8* data,
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa Surface.AddAlternateImage
+ * @sa CreateAnimatedCursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
  * @sa Cursor.Destroy
@@ -71566,6 +74816,63 @@ inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
 {
   return Cursor(surface, hot);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Create an animated color cursor.
+ *
+ * Animated cursors are composed of a sequential array of frames, specified as
+ * surfaces and durations in an array of CursorFrameInfo structs. The hot spot
+ * coordinates are universal to all frames, and all frames must have the same
+ * dimensions.
+ *
+ * Frame durations are specified in milliseconds. A duration of 0 implies an
+ * infinite frame time, and the animation will stop on that frame. To create a
+ * one-shot animation, set the duration of the last frame in the sequence to 0.
+ *
+ * If this function is passed surfaces with alternate representations added with
+ * Surface.AddAlternateImage(), the surfaces will be interpreted as the content
+ * to be used for 100% display scale, and the alternate representations will be
+ * used for high DPI situations. For example, if the original surfaces are
+ * 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64
+ * version of the image will be used, if available. If a matching version of the
+ * image isn't available, the closest larger size image will be downscaled to
+ * the appropriate size and be used instead, if available. Otherwise, the
+ * closest smaller image will be upscaled and be used instead.
+ *
+ * If the underlying platform does not support animated cursors, this function
+ * will fall back to creating a static color cursor using the first frame in the
+ * sequence.
+ *
+ * @param frames an array of cursor images composing the animation.
+ * @param frame_count the number of frames in the sequence.
+ * @param hot_x the x position of the cursor hot spot.
+ * @param hot_y the y position of the cursor hot spot.
+ * @returns the new cursor on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Surface.AddAlternateImage
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Cursor
+ * @sa Cursor.Destroy
+ * @sa Cursor.Set
+ */
+inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
+                                      int frame_count,
+                                      int hot_x,
+                                      int hot_y)
+{
+  return CheckError(
+    SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y));
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Create a system cursor.
@@ -71650,6 +74957,7 @@ inline CursorRef GetDefaultCursor()
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa CreateAnimatedCursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
  * @sa Cursor.Cursor
@@ -71730,6 +75038,9 @@ inline bool CursorVisible() { return SDL_CursorVisible(); }
  * In order to use these functions, Init() must have been called with the
  * INIT_GAMEPAD flag. This causes SDL to scan the system for gamepads, and load
  * appropriate drivers.
+ *
+ * If you're using SDL gamepad support in a Steam game, you must call
+ * SteamAPI_InitEx() before calling Init().
  *
  * If you would like to receive gamepad updates while the application is in the
  * background, you should set the following hint before calling Init():
@@ -71835,6 +75146,13 @@ constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT =
 constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR =
   SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr GamepadType GAMEPAD_TYPE_GAMECUBE =
+  SDL_GAMEPAD_TYPE_GAMECUBE; ///< GAMEPAD_TYPE_GAMECUBE
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr GamepadType GAMEPAD_TYPE_COUNT =
   SDL_GAMEPAD_TYPE_COUNT; ///< GAMEPAD_TYPE_COUNT
 
@@ -71844,8 +75162,9 @@ constexpr GamepadType GAMEPAD_TYPE_COUNT =
  * For controllers that use a diamond pattern for the face buttons, the
  * south/east/west/north buttons below correspond to the locations in the
  * diamond pattern. For Xbox controllers, this would be A/B/X/Y, for Nintendo
- * Switch controllers, this would be B/A/Y/X, for PlayStation controllers this
- * would be Cross/Circle/Square/Triangle.
+ * Switch controllers, this would be B/A/Y/X, for GameCube controllers this
+ * would be A/X/B/Y, for PlayStation controllers this would be
+ * Cross/Circle/Square/Triangle.
  *
  * For controllers that don't use a diamond pattern for the face buttons, the
  * south/east/west/north buttons indicate the buttons labeled A, B, C, D, or 1,
@@ -71917,21 +75236,31 @@ constexpr GamepadButton GAMEPAD_BUTTON_DPAD_RIGHT =
  */
 constexpr GamepadButton GAMEPAD_BUTTON_MISC1 = SDL_GAMEPAD_BUTTON_MISC1;
 
-/// Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1)
+/**
+ * Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1,
+ * DualSense Edge RB button, Right Joy-Con SR button)
+ */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1;
 
-/// Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3)
+/**
+ * Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3,
+ * DualSense Edge LB button, Left Joy-Con SL button)
+ */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE1 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE1;
 
 /**
- * Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2)
+ * Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2,
+ * DualSense Edge right Fn button, Right Joy-Con SL button)
  */
 constexpr GamepadButton GAMEPAD_BUTTON_RIGHT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2;
 
-/// Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4)
+/**
+ * Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4,
+ * DualSense Edge left Fn button, Left Joy-Con SR button)
+ */
 constexpr GamepadButton GAMEPAD_BUTTON_LEFT_PADDLE2 =
   SDL_GAMEPAD_BUTTON_LEFT_PADDLE2;
 
@@ -71941,11 +75270,11 @@ constexpr GamepadButton GAMEPAD_BUTTON_TOUCHPAD =
 constexpr GamepadButton GAMEPAD_BUTTON_MISC2 =
   SDL_GAMEPAD_BUTTON_MISC2; ///< Additional button
 
-constexpr GamepadButton GAMEPAD_BUTTON_MISC3 =
-  SDL_GAMEPAD_BUTTON_MISC3; ///< Additional button
+/// Additional button (e.g. Nintendo GameCube left trigger click)
+constexpr GamepadButton GAMEPAD_BUTTON_MISC3 = SDL_GAMEPAD_BUTTON_MISC3;
 
-constexpr GamepadButton GAMEPAD_BUTTON_MISC4 =
-  SDL_GAMEPAD_BUTTON_MISC4; ///< Additional button
+/// Additional button (e.g. Nintendo GameCube right trigger click)
+constexpr GamepadButton GAMEPAD_BUTTON_MISC4 = SDL_GAMEPAD_BUTTON_MISC4;
 
 constexpr GamepadButton GAMEPAD_BUTTON_MISC5 =
   SDL_GAMEPAD_BUTTON_MISC5; ///< Additional button
@@ -72126,6 +75455,8 @@ public:
    * @post a gamepad identifier or nullptr if an error occurred; call GetError()
    *       for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.Close
@@ -72174,6 +75505,8 @@ public:
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.Gamepad
@@ -72187,6 +75520,8 @@ public:
    *
    * @returns a string that has the gamepad's mapping or nullptr if no mapping
    *          is available; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72218,6 +75553,8 @@ public:
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   PropertiesRef GetProperties();
@@ -72228,6 +75565,8 @@ public:
    * @returns the instance ID of the specified gamepad on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   JoystickID GetID();
@@ -72237,6 +75576,8 @@ public:
    *
    * @returns the implementation dependent name for the gamepad, or nullptr if
    *          there is no name or the identifier passed is invalid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72250,6 +75591,8 @@ public:
    * @returns the implementation dependent path for the gamepad, or nullptr if
    *          there is no path or the identifier passed is invalid.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetGamepadPathForID
@@ -72261,6 +75604,8 @@ public:
    *
    * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetGamepadTypeForID
@@ -72271,6 +75616,8 @@ public:
    * Get the type of an opened gamepad, ignoring any mapping override.
    *
    * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72285,6 +75632,8 @@ public:
    *
    * @returns the player index for gamepad, or -1 if it's not available.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.SetPlayerIndex
@@ -72297,6 +75646,8 @@ public:
    * @param player_index player index to assign to this gamepad, or -1 to clear
    *                     the player index and turn off player LEDs.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72311,6 +75662,8 @@ public:
    *
    * @returns the USB vendor ID, or zero if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetGamepadVendorForID
@@ -72323,6 +75676,8 @@ public:
    * If the product ID isn't available this function returns 0.
    *
    * @returns the USB product ID, or zero if unavailable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72337,6 +75692,8 @@ public:
    *
    * @returns the USB product version, or zero if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetGamepadProductVersionForID
@@ -72350,6 +75707,8 @@ public:
    *
    * @returns the gamepad firmware version, or zero if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   Uint16 GetFirmwareVersion();
@@ -72361,6 +75720,8 @@ public:
    * available.
    *
    * @returns the serial number, or nullptr if unavailable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72374,6 +75735,8 @@ public:
    *
    * @returns the gamepad handle, or 0 if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   Uint64 GetSteamHandle();
@@ -72383,6 +75746,8 @@ public:
    *
    * @returns the connection state on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72403,6 +75768,8 @@ public:
    *                battery.
    * @returns the current battery state.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   PowerState GetPowerInfo(int* percent);
@@ -72412,6 +75779,8 @@ public:
    *
    * @returns true if the gamepad has been opened and is currently connected, or
    *          false if not.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72432,6 +75801,8 @@ public:
    * @returns an Joystick object, or nullptr on failure; call GetError() for
    *          more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   JoystickRef GetJoystick();
@@ -72445,6 +75816,8 @@ public:
    *          allocation that should be freed with free() when it is no longer
    *          needed.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   SDL_GamepadBinding** GetBindings(int* count);
@@ -72457,6 +75830,8 @@ public:
    *
    * @param axis an axis enum value (an GamepadAxis value).
    * @returns true if the gamepad has this axis, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72477,9 +75852,13 @@ public:
    * return a negative value. Note that this differs from the value reported by
    * the lower-level Joystick.GetAxis(), which normally uses the full range.
    *
+   * Note that for invalid gamepads or axes, this will return 0. Zero is also a
+   * valid value in normal operation; usually it means a centered axis.
+   *
    * @param axis an axis index (one of the GamepadAxis values).
-   * @returns axis state (including 0) on success.
-   * @throws Error on failure.
+   * @returns axis state.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72497,6 +75876,8 @@ public:
    * @param button a button enum value (an GamepadButton value).
    * @returns true if the gamepad has this button, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.HasAxis
@@ -72508,6 +75889,8 @@ public:
    *
    * @param button a button index (one of the GamepadButton values).
    * @returns true if the button is pressed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72522,6 +75905,8 @@ public:
    * @param button a button index (one of the GamepadButton values).
    * @returns the GamepadButtonLabel enum corresponding to the button label.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetGamepadButtonLabelForType
@@ -72532,6 +75917,8 @@ public:
    * Get the number of touchpads on a gamepad.
    *
    * @returns number of touchpads.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72545,6 +75932,8 @@ public:
    *
    * @param touchpad a touchpad.
    * @returns number of supported simultaneous fingers.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72567,6 +75956,8 @@ public:
    * @param pressure a pointer filled with pressure value, may be nullptr.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.GetNumTouchpadFingers
@@ -72584,6 +75975,8 @@ public:
    * @param type the type of sensor to query.
    * @returns true if the sensor exists, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.GetSensorData
@@ -72599,6 +75992,8 @@ public:
    * @param enabled whether data reporting should be enabled.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.HasSensor
@@ -72612,6 +76007,8 @@ public:
    * @param type the type of sensor to query.
    * @returns true if the sensor is enabled, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.SetSensorEnabled
@@ -72623,6 +76020,8 @@ public:
    *
    * @param type the type of sensor to query.
    * @returns the data rate, or 0.0f if the data rate is not available.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72638,6 +76037,8 @@ public:
    * @param data a pointer filled with the current sensor state.
    * @param num_values the number of values to write to data.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72658,6 +76059,8 @@ public:
    *                              rumble motor, from 0 to 0xFFFF.
    * @param duration_ms the duration of the rumble effect, in milliseconds.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72685,6 +76088,8 @@ public:
    * @param duration_ms the duration of the rumble effect, in milliseconds.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.Rumble
@@ -72707,6 +76112,8 @@ public:
    * @param blue the intensity of the blue LED.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   void SetLED(Uint8 red, Uint8 green, Uint8 blue);
@@ -72717,6 +76124,8 @@ public:
    * @param data the data to send to the gamepad.
    * @param size the size of the data to send to the gamepad.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -72729,6 +76138,8 @@ public:
    * @param button a button on the gamepad.
    * @returns the sfSymbolsName or nullptr if the name can't be found.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Gamepad.GetAppleSFSymbolsNameForAxis
@@ -72740,6 +76151,8 @@ public:
    *
    * @param axis an axis on the gamepad.
    * @returns the sfSymbolsName or nullptr if the name can't be found.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -72921,6 +76334,8 @@ inline int AddGamepadMappingsFromFile(StringParam file)
  *
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
@@ -72930,6 +76345,8 @@ inline void ReloadGamepadMappings() { CheckError(SDL_ReloadGamepadMappings()); }
  *
  * @returns an array of the mapping strings, nullptr-terminated, or nullptr on
  *          failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -72946,6 +76363,8 @@ inline OwnArray<char*> GetGamepadMappings()
  * @param guid a structure containing the GUID for which a mapping is desired.
  * @returns a mapping string or nullptr on failure; call GetError() for more
  *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -72965,6 +76384,8 @@ inline StringResult GetGamepadMappingForGUID(GUID guid)
  * @param gamepad the gamepad you want to get the current mapping for.
  * @returns a string that has the gamepad's mapping or nullptr if no mapping is
  *          available; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -72993,6 +76414,8 @@ inline StringResult Gamepad::GetMapping()
  *                mapping.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AddGamepadMapping
@@ -73008,6 +76431,8 @@ inline void SetGamepadMapping(JoystickID instance_id, StringParam mapping)
  *
  * @returns true if a gamepad is connected, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepads
@@ -73019,6 +76444,8 @@ inline bool HasGamepad() { return SDL_HasGamepad(); }
  *
  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
  *          call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73039,6 +76466,8 @@ inline OwnArray<JoystickID> GetGamepads()
  * @returns true if the given joystick is supported by the gamepad interface,
  *          false if it isn't or it's an invalid index.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetJoysticks
@@ -73057,6 +76486,8 @@ inline bool IsGamepad(JoystickID instance_id)
  * @param instance_id the joystick instance ID.
  * @returns the name of the selected gamepad. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73077,6 +76508,8 @@ inline const char* GetGamepadNameForID(JoystickID instance_id)
  * @returns the path of the selected gamepad. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.GetPath
@@ -73094,6 +76527,8 @@ inline const char* GetGamepadPathForID(JoystickID instance_id)
  *
  * @param instance_id the joystick instance ID.
  * @returns the player index of a gamepad, or -1 if it's not available.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73113,6 +76548,8 @@ inline int GetGamepadPlayerIndexForID(JoystickID instance_id)
  * @param instance_id the joystick instance ID.
  * @returns the GUID of the selected gamepad. If called on an invalid index,
  *          this function returns a zero GUID.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73134,6 +76571,8 @@ inline GUID GetGamepadGUIDForID(JoystickID instance_id)
  * @returns the USB vendor ID of the selected gamepad. If called on an invalid
  *          index, this function returns zero.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.GetVendor
@@ -73153,6 +76592,8 @@ inline Uint16 GetGamepadVendorForID(JoystickID instance_id)
  * @param instance_id the joystick instance ID.
  * @returns the USB product ID of the selected gamepad. If called on an invalid
  *          index, this function returns zero.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73174,6 +76615,8 @@ inline Uint16 GetGamepadProductForID(JoystickID instance_id)
  * @returns the product version of the selected gamepad. If called on an invalid
  *          index, this function returns zero.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.GetProductVersion
@@ -73191,6 +76634,8 @@ inline Uint16 GetGamepadProductVersionForID(JoystickID instance_id)
  *
  * @param instance_id the joystick instance ID.
  * @returns the gamepad type.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73210,6 +76655,8 @@ inline GamepadType GetGamepadTypeForID(JoystickID instance_id)
  *
  * @param instance_id the joystick instance ID.
  * @returns the gamepad type.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73231,6 +76678,8 @@ inline GamepadType GetRealGamepadTypeForID(JoystickID instance_id)
  * @returns the mapping string. Returns nullptr if no mapping is available. This
  *          should be freed with free() when it is no longer needed.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepads
@@ -73247,6 +76696,8 @@ inline char* GetGamepadMappingForID(JoystickID instance_id)
  * @param instance_id the joystick instance ID.
  * @returns a gamepad identifier or nullptr if an error occurred; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73266,6 +76717,8 @@ inline Gamepad OpenGamepad(JoystickID instance_id)
  * @returns an Gamepad on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline GamepadRef GetGamepadFromID(JoystickID instance_id)
@@ -73278,6 +76731,8 @@ inline GamepadRef GetGamepadFromID(JoystickID instance_id)
  *
  * @param player_index the player index, which different from the instance ID.
  * @returns the Gamepad associated with a player index.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73310,6 +76765,8 @@ inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns a valid property ID on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -73345,6 +76802,8 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  * @returns the instance ID of the specified gamepad on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline JoystickID GetGamepadID(GamepadParam gamepad)
@@ -73360,6 +76819,8 @@ inline JoystickID Gamepad::GetID() { return SDL::GetGamepadID(m_resource); }
  * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns the implementation dependent name for the gamepad, or nullptr if
  *          there is no name or the identifier passed is invalid.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73382,6 +76843,8 @@ inline const char* Gamepad::GetName()
  * @returns the implementation dependent path for the gamepad, or nullptr if
  *          there is no path or the identifier passed is invalid.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepadPathForID
@@ -73402,6 +76865,8 @@ inline const char* Gamepad::GetPath()
  * @param gamepad the gamepad object to query.
  * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepadTypeForID
@@ -73421,6 +76886,8 @@ inline GamepadType Gamepad::GetType()
  *
  * @param gamepad the gamepad object to query.
  * @returns the gamepad type, or GAMEPAD_TYPE_UNKNOWN if it's not available.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73444,6 +76911,8 @@ inline GamepadType Gamepad::GetRealType()
  * @param gamepad the gamepad object to query.
  * @returns the player index for gamepad, or -1 if it's not available.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.SetPlayerIndex
@@ -73465,6 +76934,8 @@ inline int Gamepad::GetPlayerIndex()
  * @param player_index player index to assign to this gamepad, or -1 to clear
  *                     the player index and turn off player LEDs.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73488,6 +76959,8 @@ inline void Gamepad::SetPlayerIndex(int player_index)
  * @param gamepad the gamepad object to query.
  * @returns the USB vendor ID, or zero if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepadVendorForID
@@ -73506,6 +76979,8 @@ inline Uint16 Gamepad::GetVendor() { return SDL::GetGamepadVendor(m_resource); }
  *
  * @param gamepad the gamepad object to query.
  * @returns the USB product ID, or zero if unavailable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73529,6 +77004,8 @@ inline Uint16 Gamepad::GetProduct()
  * @param gamepad the gamepad object to query.
  * @returns the USB product version, or zero if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepadProductVersionForID
@@ -73551,6 +77028,8 @@ inline Uint16 Gamepad::GetProductVersion()
  * @param gamepad the gamepad object to query.
  * @returns the gamepad firmware version, or zero if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline Uint16 GetGamepadFirmwareVersion(GamepadParam gamepad)
@@ -73570,6 +77049,8 @@ inline Uint16 Gamepad::GetFirmwareVersion()
  *
  * @param gamepad the gamepad object to query.
  * @returns the serial number, or nullptr if unavailable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -73592,6 +77073,8 @@ inline const char* Gamepad::GetSerial()
  * @param gamepad the gamepad object to query.
  * @returns the gamepad handle, or 0 if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline Uint64 GetGamepadSteamHandle(GamepadParam gamepad)
@@ -73610,6 +77093,8 @@ inline Uint64 Gamepad::GetSteamHandle()
  * @param gamepad the gamepad object to query.
  * @returns the connection state on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -73638,6 +77123,8 @@ inline JoystickConnectionState Gamepad::GetConnectionState()
  *                in with -1 we can't determine a value or there is no battery.
  * @returns the current battery state.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PowerState GetGamepadPowerInfo(GamepadParam gamepad, int* percent)
@@ -73656,6 +77143,8 @@ inline PowerState Gamepad::GetPowerInfo(int* percent)
  * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  * @returns true if the gamepad has been opened and is currently connected, or
  *          false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -73682,6 +77171,8 @@ inline bool Gamepad::Connected() { return SDL::GamepadConnected(m_resource); }
  * @returns an Joystick object, or nullptr on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
@@ -73702,6 +77193,8 @@ inline JoystickRef Gamepad::GetJoystick()
  *
  * @param enabled whether to process gamepad events or not.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GamepadEventsEnabled
@@ -73720,6 +77213,8 @@ inline void SetGamepadEventsEnabled(bool enabled)
  *
  * @returns true if gamepad events are being processed, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetGamepadEventsEnabled
@@ -73735,6 +77230,8 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  *          failure; call GetError() for more information. This is a single
  *          allocation that should be freed with free() when it is no longer
  *          needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -73755,6 +77252,8 @@ inline SDL_GamepadBinding** Gamepad::GetBindings(int* count)
  * enabled. Under such circumstances, it will not be necessary to call this
  * function.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void UpdateGamepads() { SDL_UpdateGamepads(); }
@@ -73770,6 +77269,8 @@ inline void UpdateGamepads() { SDL_UpdateGamepads(); }
  * @param str string representing a GamepadType type.
  * @returns the GamepadType enum corresponding to the input string, or
  *          `GAMEPAD_TYPE_UNKNOWN` if no match was found.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73787,6 +77288,8 @@ inline GamepadType GetGamepadTypeFromString(StringParam str)
  * @returns a string for the given type, or nullptr if an invalid type is
  *          specified. The string returned is of the format used by Gamepad
  *          mapping strings.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73812,6 +77315,8 @@ inline const char* GetGamepadStringForType(GamepadType type)
  * @returns the GamepadAxis enum corresponding to the input string, or
  *          `GAMEPAD_AXIS_INVALID` if no match was found.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepadStringForAxis
@@ -73828,6 +77333,8 @@ inline GamepadAxis GetGamepadAxisFromString(StringParam str)
  * @returns a string for the given axis, or nullptr if an invalid axis is
  *          specified. The string returned is of the format used by Gamepad
  *          mapping strings.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73847,6 +77354,8 @@ inline const char* GetGamepadStringForAxis(GamepadAxis axis)
  * @param gamepad a gamepad.
  * @param axis an axis enum value (an GamepadAxis value).
  * @returns true if the gamepad has this axis, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73875,10 +77384,14 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  * return a negative value. Note that this differs from the value reported by
  * the lower-level Joystick.GetAxis(), which normally uses the full range.
  *
+ * Note that for invalid gamepads or axes, this will return 0. Zero is also a
+ * valid value in normal operation; usually it means a centered axis.
+ *
  * @param gamepad a gamepad.
  * @param axis an axis index (one of the GamepadAxis values).
- * @returns axis state (including 0) on success.
- * @throws Error on failure.
+ * @returns axis state.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73887,7 +77400,7 @@ inline bool Gamepad::HasAxis(GamepadAxis axis)
  */
 inline Sint16 GetGamepadAxis(GamepadParam gamepad, GamepadAxis axis)
 {
-  return CheckError(SDL_GetGamepadAxis(gamepad, axis));
+  return SDL_GetGamepadAxis(gamepad, axis);
 }
 
 inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
@@ -73907,6 +77420,8 @@ inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
  * @returns the GamepadButton enum corresponding to the input string, or
  *          `GAMEPAD_BUTTON_INVALID` if no match was found.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa GetGamepadStringForButton
@@ -73923,6 +77438,8 @@ inline GamepadButton GetGamepadButtonFromString(StringParam str)
  * @returns a string for the given button, or nullptr if an invalid button is
  *          specified. The string returned is of the format used by Gamepad
  *          mapping strings.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73942,6 +77459,8 @@ inline const char* GetGamepadStringForButton(GamepadButton button)
  * @param gamepad a gamepad.
  * @param button a button enum value (an GamepadButton value).
  * @returns true if the gamepad has this button, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73963,6 +77482,8 @@ inline bool Gamepad::HasButton(GamepadButton button)
  * @param gamepad a gamepad.
  * @param button a button index (one of the GamepadButton values).
  * @returns true if the button is pressed, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -73986,6 +77507,8 @@ inline bool Gamepad::GetButton(GamepadButton button)
  * @param button a button index (one of the GamepadButton values).
  * @returns the GamepadButtonLabel enum corresponding to the button label.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.GetButtonLabel
@@ -74002,6 +77525,8 @@ inline GamepadButtonLabel GetGamepadButtonLabelForType(GamepadType type,
  * @param gamepad a gamepad.
  * @param button a button index (one of the GamepadButton values).
  * @returns the GamepadButtonLabel enum corresponding to the button label.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74024,6 +77549,8 @@ inline GamepadButtonLabel Gamepad::GetButtonLabel(GamepadButton button)
  * @param gamepad a gamepad.
  * @returns number of touchpads.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.GetNumTouchpadFingers
@@ -74045,6 +77572,8 @@ inline int Gamepad::GetNumTouchpads()
  * @param gamepad a gamepad.
  * @param touchpad a touchpad.
  * @returns number of supported simultaneous fingers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74075,6 +77604,8 @@ inline int Gamepad::GetNumTouchpadFingers(int touchpad)
  *          origin in the upper left, may be nullptr.
  * @param pressure a pointer filled with pressure value, may be nullptr.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74110,6 +77641,8 @@ inline void Gamepad::GetTouchpadFinger(int touchpad,
  * @param type the type of sensor to query.
  * @returns true if the sensor exists, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.GetSensorData
@@ -74133,6 +77666,8 @@ inline bool Gamepad::HasSensor(SensorType type)
  * @param type the type of sensor to enable/disable.
  * @param enabled whether data reporting should be enabled.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74158,6 +77693,8 @@ inline void Gamepad::SetSensorEnabled(SensorType type, bool enabled)
  * @param type the type of sensor to query.
  * @returns true if the sensor is enabled, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.SetSensorEnabled
@@ -74178,6 +77715,8 @@ inline bool Gamepad::SensorEnabled(SensorType type)
  * @param gamepad the gamepad to query.
  * @param type the type of sensor to query.
  * @returns the data rate, or 0.0f if the data rate is not available.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -74202,6 +77741,8 @@ inline float Gamepad::GetSensorDataRate(SensorType type)
  * @param data a pointer filled with the current sensor state.
  * @param num_values the number of values to write to data.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -74234,6 +77775,8 @@ inline void Gamepad::GetSensorData(SensorType type, float* data, int num_values)
  *                              rumble motor, from 0 to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -74275,6 +77818,8 @@ inline void Gamepad::Rumble(Uint16 low_frequency_rumble,
  * @param duration_ms the duration of the rumble effect, in milliseconds.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.Rumble
@@ -74311,6 +77856,8 @@ inline void Gamepad::RumbleTriggers(Uint16 left_rumble,
  * @param blue the intensity of the blue LED.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetGamepadLED(GamepadParam gamepad,
@@ -74334,6 +77881,8 @@ inline void Gamepad::SetLED(Uint8 red, Uint8 green, Uint8 blue)
  * @param size the size of the data to send to the gamepad.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SendGamepadEffect(GamepadParam gamepad, const void* data, int size)
@@ -74351,6 +77900,8 @@ inline void Gamepad::SendEffect(const void* data, int size)
  *
  * @param gamepad a gamepad identifier previously returned by Gamepad.Gamepad().
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Gamepad.Gamepad
@@ -74365,6 +77916,8 @@ inline void Gamepad::Close() { CloseGamepad(release()); }
  * @param gamepad the gamepad to query.
  * @param button a button on the gamepad.
  * @returns the sfSymbolsName or nullptr if the name can't be found.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74387,6 +77940,8 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForButton(GamepadButton button)
  * @param gamepad the gamepad to query.
  * @param axis an axis on the gamepad.
  * @returns the sfSymbolsName or nullptr if the name can't be found.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74456,7 +78011,7 @@ inline const char* Gamepad::GetAppleSFSymbolsNameForAxis(GamepadAxis axis)
  * {
  *    Haptic *haptic;
  *    HapticEffect effect;
- *    int effect_id;
+ *    HapticEffectID effect_id;
  *
  *    // Open the device
  *    haptic = Haptic.Haptic(joystick);
@@ -74543,9 +78098,15 @@ struct HapticParam
  */
 
 /**
- * Haptic effects flag constants
+ * ID for haptic effects.
  *
+ * This is -1 if the ID is invalid.
+ *
+ * @sa Haptic.CreateEffect
  */
+using HapticEffectID = int;
+
+/// Type of haptic effect.
 using HapticEffectType = Uint32;
 
 /**
@@ -74766,7 +78327,7 @@ constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
  * @{
  */
 
-/// Direction encoding
+/// Type of coordinates used for haptic direction.
 using HapticDirectionType = Uint8;
 
 /**
@@ -75435,7 +78996,7 @@ public:
    * @sa Haptic.RunEffect
    * @sa Haptic.UpdateEffect
    */
-  int CreateEffect(const HapticEffect& effect);
+  HapticEffectID CreateEffect(const HapticEffect& effect);
 
   /**
    * Update the properties of an effect.
@@ -75455,7 +79016,7 @@ public:
    * @sa Haptic.CreateEffect
    * @sa Haptic.RunEffect
    */
-  void UpdateEffect(int effect, const HapticEffect& data);
+  void UpdateEffect(HapticEffectID effect, const HapticEffect& data);
 
   /**
    * Run the haptic effect on its associated haptic device.
@@ -75476,7 +79037,7 @@ public:
    * @sa Haptic.StopEffect
    * @sa Haptic.StopEffects
    */
-  void RunEffect(int effect, Uint32 iterations);
+  void RunEffect(HapticEffectID effect, Uint32 iterations);
 
   /**
    * Stop the haptic effect on its associated haptic device.
@@ -75489,7 +79050,7 @@ public:
    * @sa Haptic.RunEffect
    * @sa Haptic.StopEffects
    */
-  void StopEffect(int effect);
+  void StopEffect(HapticEffectID effect);
 
   /**
    * Destroy a haptic effect on the device.
@@ -75503,7 +79064,7 @@ public:
    *
    * @sa Haptic.CreateEffect
    */
-  void DestroyEffect(int effect);
+  void DestroyEffect(HapticEffectID effect);
 
   /**
    * Get the status of the current effect on the specified haptic device.
@@ -75518,7 +79079,7 @@ public:
    *
    * @sa Haptic.GetFeatures
    */
-  bool GetEffectStatus(int effect);
+  bool GetEffectStatus(HapticEffectID effect);
 
   /**
    * Set the global gain of the specified haptic device.
@@ -76008,12 +79569,13 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  * @sa Haptic.RunEffect
  * @sa Haptic.UpdateEffect
  */
-inline int CreateHapticEffect(HapticParam haptic, const HapticEffect& effect)
+inline HapticEffectID CreateHapticEffect(HapticParam haptic,
+                                         const HapticEffect& effect)
 {
   return CheckError(SDL_CreateHapticEffect(haptic, &effect));
 }
 
-inline int Haptic::CreateEffect(const HapticEffect& effect)
+inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
 {
   return SDL::CreateHapticEffect(m_resource, effect);
 }
@@ -76038,13 +79600,14 @@ inline int Haptic::CreateEffect(const HapticEffect& effect)
  * @sa Haptic.RunEffect
  */
 inline void UpdateHapticEffect(HapticParam haptic,
-                               int effect,
+                               HapticEffectID effect,
                                const HapticEffect& data)
 {
   CheckError(SDL_UpdateHapticEffect(haptic, effect, &data));
 }
 
-inline void Haptic::UpdateEffect(int effect, const HapticEffect& data)
+inline void Haptic::UpdateEffect(HapticEffectID effect,
+                                 const HapticEffect& data)
 {
   SDL::UpdateHapticEffect(m_resource, effect, data);
 }
@@ -76069,12 +79632,14 @@ inline void Haptic::UpdateEffect(int effect, const HapticEffect& data)
  * @sa Haptic.StopEffect
  * @sa Haptic.StopEffects
  */
-inline void RunHapticEffect(HapticParam haptic, int effect, Uint32 iterations)
+inline void RunHapticEffect(HapticParam haptic,
+                            HapticEffectID effect,
+                            Uint32 iterations)
 {
   CheckError(SDL_RunHapticEffect(haptic, effect, iterations));
 }
 
-inline void Haptic::RunEffect(int effect, Uint32 iterations)
+inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
 {
   SDL::RunHapticEffect(m_resource, effect, iterations);
 }
@@ -76091,12 +79656,12 @@ inline void Haptic::RunEffect(int effect, Uint32 iterations)
  * @sa Haptic.RunEffect
  * @sa Haptic.StopEffects
  */
-inline void StopHapticEffect(HapticParam haptic, int effect)
+inline void StopHapticEffect(HapticParam haptic, HapticEffectID effect)
 {
   CheckError(SDL_StopHapticEffect(haptic, effect));
 }
 
-inline void Haptic::StopEffect(int effect)
+inline void Haptic::StopEffect(HapticEffectID effect)
 {
   SDL::StopHapticEffect(m_resource, effect);
 }
@@ -76114,12 +79679,12 @@ inline void Haptic::StopEffect(int effect)
  *
  * @sa Haptic.CreateEffect
  */
-inline void DestroyHapticEffect(HapticParam haptic, int effect)
+inline void DestroyHapticEffect(HapticParam haptic, HapticEffectID effect)
 {
   SDL_DestroyHapticEffect(haptic, effect);
 }
 
-inline void Haptic::DestroyEffect(int effect)
+inline void Haptic::DestroyEffect(HapticEffectID effect)
 {
   SDL::DestroyHapticEffect(m_resource, effect);
 }
@@ -76138,12 +79703,12 @@ inline void Haptic::DestroyEffect(int effect)
  *
  * @sa Haptic.GetFeatures
  */
-inline bool GetHapticEffectStatus(HapticParam haptic, int effect)
+inline bool GetHapticEffectStatus(HapticParam haptic, HapticEffectID effect)
 {
   return SDL_GetHapticEffectStatus(haptic, effect);
 }
 
-inline bool Haptic::GetEffectStatus(int effect)
+inline bool Haptic::GetEffectStatus(HapticEffectID effect)
 {
   return SDL::GetHapticEffectStatus(m_resource, effect);
 }
@@ -76436,7 +80001,7 @@ constexpr InitFlags INIT_CAMERA =
  * Returning APP_CONTINUE from these functions will let the app continue to run.
  *
  * See [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * SDL3](https://wiki.libsdl.org/SDL3/README-main-functions#main-callbacks-in-sdl3)
  * for complete details.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -77143,7 +80708,7 @@ inline void QuitClass(T* state, AppResult result)
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
+ * functionality such as 3D polygons and particle effects, and in that case you
  * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
  * many good 3D engines.
  *
@@ -77261,12 +80826,63 @@ struct TextureConstParam
   constexpr auto operator->() { return value; }
 };
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+// Forward decl
+struct GPURenderState;
+
+/// Alias to raw representation for GPURenderState.
+using GPURenderStateRaw = SDL_GPURenderState*;
+
+// Forward decl
+struct GPURenderStateRef;
+
+/// Safely wrap GPURenderState for non owning parameters
+struct GPURenderStateParam
+{
+  GPURenderStateRaw value; ///< parameter's GPURenderStateRaw
+
+  /// Constructs from GPURenderStateRaw
+  constexpr GPURenderStateParam(GPURenderStateRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr GPURenderStateParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const GPURenderStateParam& other) const = default;
+
+  /// Converts to underlying GPURenderStateRaw
+  constexpr operator GPURenderStateRaw() const { return value; }
+};
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * The name of the software renderer.
  *
  * @since This constant is available since SDL 3.2.0.
  */
 constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * The name of the GPU renderer.
+ *
+ * @since This constant is available since SDL 3.4.0.
+ */
+constexpr auto GPU_RENDERER = SDL_GPU_RENDERER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Vertex structure.
@@ -77291,6 +80907,38 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING =
 constexpr TextureAccess TEXTUREACCESS_TARGET =
   SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * The addressing mode for a texture when used in Renderer.RenderGeometry().
+ *
+ * This affects how texture coordinates are interpreted outside of [0, 1]
+ *
+ * Texture wrapping is always supported for power of two texture sizes, and is
+ * supported for other texture sizes if prop::Renderer.TEXTURE_WRAPPING_BOOLEAN
+ * is set to true.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ */
+using TextureAddressMode = SDL_TextureAddressMode;
+
+constexpr TextureAddressMode TEXTURE_ADDRESS_INVALID =
+  SDL_TEXTURE_ADDRESS_INVALID; ///< TEXTURE_ADDRESS_INVALID
+
+/**
+ * Wrapping is enabled if texture coordinates are outside [0, 1], this is the
+ * default
+ */
+constexpr TextureAddressMode TEXTURE_ADDRESS_AUTO = SDL_TEXTURE_ADDRESS_AUTO;
+
+/// Texture coordinates are clamped to the [0, 1] range
+constexpr TextureAddressMode TEXTURE_ADDRESS_CLAMP = SDL_TEXTURE_ADDRESS_CLAMP;
+
+constexpr TextureAddressMode TEXTURE_ADDRESS_WRAP =
+  SDL_TEXTURE_ADDRESS_WRAP; ///< The texture is repeated (tiled)
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * How the logical size is mapped to the output.
  *
@@ -77307,7 +80955,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_STRETCH =
 
 /**
  * The rendered content is fit to the largest dimension and the other dimension
- * is letterboxed with black bars
+ * is letterboxed with the clear color
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_LETTERBOX =
   SDL_LOGICAL_PRESENTATION_LETTERBOX;
@@ -77325,6 +80973,19 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A structure specifying the parameters of a GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.GPURenderState
+ */
+using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A structure representing rendering state
@@ -77464,6 +81125,17 @@ public:
    *   present synchronized with the refresh rate. This property can take any
    *   value that is supported by Renderer.SetVSync() for the renderer.
    *
+   * With the SDL GPU renderer (since SDL 3.4.0):
+   *
+   * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+   *   renderer, optional.
+   * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+   *   provide SPIR-V shaders to GPURenderState, optional.
+   * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+   *   provide DXIL shaders to GPURenderState, optional.
+   * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+   *   provide MSL shaders to GPURenderState, optional.
+   *
    * With the vulkan renderer:
    *
    * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
@@ -77509,7 +81181,7 @@ public:
    *                rendering is done.
    * @throws Error on failure.
    *
-   * @threadsafety This function should only be called on the main thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -77569,6 +81241,22 @@ public:
    */
   void Destroy();
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Return the GPU device used by a renderer.
+   *
+   * @returns the GPU device used by the renderer, or nullptr if the renderer is
+   *          not a GPU renderer; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  GPUDeviceRef GetGPUDevice();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
   /**
    * Get the window associated with a renderer.
    *
@@ -77611,6 +81299,8 @@ public:
    * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array
    *   of pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
    *   available texture formats for this renderer.
+   * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+   *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
    * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
    * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
@@ -77711,6 +81401,8 @@ public:
    *
    * @returns Point on success.
    * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -77827,6 +81519,8 @@ public:
    *   required
    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
+   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with Texture.SetPalette()
    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -77901,6 +81595,20 @@ public:
    * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
    *   you want to wrap an existing texture.
+   *
+   * With the GPU renderer:
+   *
+   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
+   *   with the texture, if you want to wrap an existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
    *
    * @param props the properties to use.
    * @returns the created texture or nullptr on failure; call GetError() for
@@ -78004,14 +81712,6 @@ public:
    * specific dimensions but to make fonts look sharp, the app turns off logical
    * presentation while drawing text, for example.
    *
-   * For the renderer's window, letterboxing is drawn into the framebuffer if
-   * logical presentation is enabled during Renderer.Present; be sure to
-   * reenable it before presenting if you were toggling it, otherwise the
-   * letterbox areas might have artifacts from previous frames (or artifacts
-   * from external overlays, etc). Letterboxing is never drawn into texture
-   * render targets; be sure to call Renderer.RenderClear() before drawing into
-   * the texture so the letterboxing areas are cleared, if appropriate.
-   *
    * You can convert coordinates in an event into rendering coordinates using
    * Renderer.ConvertEventToRenderCoordinates().
    *
@@ -78034,14 +81734,15 @@ public:
    * Get device independent resolution and presentation mode for rendering.
    *
    * This function gets the width and height of the logical rendering output, or
-   * the output size in pixels if a logical resolution is not enabled.
+   * 0 if a logical resolution is not enabled.
    *
    * Each render target has its own logical presentation state. This function
    * gets the state for the current render target.
    *
-   * @param w an int to be filled with the width.
-   * @param h an int to be filled with the height.
-   * @param mode the presentation mode used.
+   * @param w an int filled with the logical presentation width.
+   * @param h an int filled with the logical presentation height.
+   * @param mode a variable filled with the logical presentation mode being
+   *             used.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -78058,10 +81759,14 @@ public:
    * Get device independent resolution and presentation mode for rendering.
    *
    * This function gets the width and height of the logical rendering output, or
-   * the output size in pixels if a logical resolution is not enabled.
+   * 0 if a logical resolution is not enabled.
+   *
+   * Each render target has its own logical presentation state. This function
+   * gets the state for the current render target.
    *
    * @param size a Point to be filled with the width and height.
-   * @param mode the presentation mode used.
+   * @param mode a variable filled with the logical presentation mode being
+   *             used.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -78124,9 +81829,9 @@ public:
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (RendererRef.SetLogicalPresentation)
-   * - The scale (RendererRef.SetScale)
-   * - The viewport (RendererRef.SetViewport)
+   * - The logical presentation settings (Renderer.SetLogicalPresentation)
+   * - The scale (Renderer.SetScale)
+   * - The viewport (Renderer.SetViewport)
    *
    * @param coord the x, y coordinate in render coordinates.
    * @returns a FPoint filled with window coordinates on success.
@@ -78197,7 +81902,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.GetViewport
-   * @sa Renderer.IsViewportSet
+   * @sa Renderer.ViewportSet
    */
   void SetViewport(OptionalRef<const RectRaw> rect);
 
@@ -78231,7 +81936,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.IsViewportSet
+   * @sa Renderer.ViewportSet
    * @sa Renderer.SetViewport
    */
   Rect GetViewport() const;
@@ -78863,6 +82568,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderTexture
+   * @sa Renderer.RenderTexture9GridTiled
    */
   void RenderTexture9Grid(TextureParam texture,
                           OptionalRef<const FRectRaw> srcrect,
@@ -78872,6 +82578,54 @@ public:
                           float bottom_height,
                           float scale,
                           OptionalRef<const FRectRaw> dstrect);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Perform a scaled copy using the 9-grid algorithm to the current rendering
+   * target at subpixel precision.
+   *
+   * The pixels in the texture are split into a 3x3 grid, using the different
+   * corner sizes for each corner, and the sides and center making up the
+   * remaining pixels. The corners are then scaled using `scale` and fit into
+   * the corners of the destination rectangle. The sides and center are then
+   * tiled into place to cover the remaining destination rectangle.
+   *
+   * @param texture the source texture.
+   * @param srcrect the Rect structure representing the rectangle to be used for
+   *                the 9-grid, or nullptr to use the entire texture.
+   * @param left_width the width, in pixels, of the left corners in `srcrect`.
+   * @param right_width the width, in pixels, of the right corners in `srcrect`.
+   * @param top_height the height, in pixels, of the top corners in `srcrect`.
+   * @param bottom_height the height, in pixels, of the bottom corners in
+   *                      `srcrect`.
+   * @param scale the scale used to transform the corner of `srcrect` into the
+   *              corner of `dstrect`, or 0.0f for an unscaled copy.
+   * @param dstrect a pointer to the destination rectangle, or nullptr for the
+   *                entire rendering target.
+   * @param tileScale the scale used to transform the borders and center of
+   *                  `srcrect` into the borders and middle of `dstrect`, or
+   *                  1.0f for an unscaled copy.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.RenderTexture
+   * @sa Renderer.RenderTexture9Grid
+   */
+  void RenderTexture9GridTiled(TextureParam texture,
+                               const FRectRaw& srcrect,
+                               float left_width,
+                               float right_width,
+                               float top_height,
+                               float bottom_height,
+                               float scale,
+                               const FRectRaw& dstrect,
+                               float tileScale);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Render a list of triangles, optionally using a texture and indices into the
@@ -78890,6 +82644,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderGeometryRaw
+   * @sa Renderer.SetRenderTextureAddressMode
    */
   void RenderGeometry(TextureParam texture,
                       std::span<const Vertex> vertices,
@@ -78920,6 +82675,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderGeometry
+   * @sa Renderer.SetRenderTextureAddressMode
    */
   void RenderGeometryRaw(TextureParam texture,
                          const float* xy,
@@ -78932,6 +82688,46 @@ public:
                          const void* indices,
                          int num_indices,
                          int size_indices);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set the texture addressing mode used in Renderer.RenderGeometry().
+   *
+   * @param u_mode the TextureAddressMode to use for horizontal texture
+   *               coordinates in Renderer.RenderGeometry().
+   * @param v_mode the TextureAddressMode to use for vertical texture
+   *               coordinates in Renderer.RenderGeometry().
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.RenderGeometry
+   * @sa Renderer.RenderGeometryRaw
+   * @sa Renderer.GetRenderTextureAddressMode
+   */
+  void SetRenderTextureAddressMode(TextureAddressMode u_mode,
+                                   TextureAddressMode v_mode);
+
+  /**
+   * Get the texture addressing mode used in Renderer.RenderGeometry().
+   *
+   * @param u_mode a pointer filled in with the TextureAddressMode to use for
+   *               horizontal texture coordinates in Renderer.RenderGeometry(),
+   *               may be nullptr.
+   * @param v_mode a pointer filled in with the TextureAddressMode to use for
+   *               vertical texture coordinates in Renderer.RenderGeometry(),
+   *               may be nullptr.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.SetRenderTextureAddressMode
+   */
+  void GetRenderTextureAddressMode(TextureAddressMode* u_mode,
+                                   TextureAddressMode* v_mode);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Read pixels from the current rendering target.
@@ -78983,8 +82779,7 @@ public:
    * should not be done; you are only required to change back the rendering
    * target to default via `Renderer.SetTarget(renderer, nullptr)` afterwards,
    * as textures by themselves do not have a concept of backbuffers. Calling
-   * Renderer.Present while rendering to a texture will still update the screen
-   * with any current drawing that has been done _to the window itself_.
+   * Renderer.Present while rendering to a texture will fail.
    *
    * @throws Error on failure.
    *
@@ -79154,8 +82949,8 @@ public:
    * Among these limitations:
    *
    * - It accepts UTF-8 strings, but will only renders ASCII characters.
-   * - It has a single, tiny size (8x8 pixels). One can use logical presentation
-   *   or scaling to adjust it, but it will be blurry.
+   * - It has a single, tiny size (8x8 pixels). You can use logical presentation
+   *   or Renderer.SetScale() to adjust it.
    * - It uses a simple, hardcoded bitmap font. It does not allow different font
    *   selections and it does not support truetype, for proper scaling.
    * - It does no word-wrapping and does not treat newline characters as a line
@@ -79212,6 +83007,77 @@ public:
   void RenderDebugTextFormat(const FPointRaw& p,
                              std::string_view fmt,
                              ARGS... args);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set default scale mode for new textures for given renderer.
+   *
+   * When a renderer is created, scale_mode defaults to SCALEMODE_LINEAR.
+   *
+   * @param scale_mode the scale mode to change to for new textures.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.GetDefaultTextureScaleMode
+   */
+  void SetDefaultTextureScaleMode(ScaleMode scale_mode);
+
+  /**
+   * Get default texture scale mode of the given renderer.
+   *
+   * @param scale_mode a ScaleMode filled with current default scale mode. See
+   *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
+   *                   the value.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.SetDefaultTextureScaleMode
+   */
+  void GetDefaultTextureScaleMode(ScaleMode* scale_mode);
+
+  /**
+   * Create custom GPU render state.
+   *
+   * @param createinfo a struct describing the GPU render state to create.
+   * @returns a custom GPU render state or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa GPURenderState.SetFragmentUniforms
+   * @sa Renderer.SetGPURenderState
+   * @sa GPURenderState.Destroy
+   */
+  GPURenderState CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+
+  /**
+   * Set custom GPU render state.
+   *
+   * This function sets custom GPU render state for subsequent draw calls. This
+   * allows using custom shaders with the GPU renderer.
+   *
+   * @param state the state to to use, or nullptr to clear custom GPU render
+   *              state.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetGPURenderState(GPURenderStateParam state);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// Semi-safe reference for Renderer.
@@ -79376,6 +83242,8 @@ public:
    *   required
    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
+   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with Texture.SetPalette()
    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -79450,6 +83318,20 @@ public:
    * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
    *   you want to wrap an existing texture.
+   *
+   * With the GPU renderer:
+   *
+   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
+   *   with the texture, if you want to wrap an existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
@@ -79693,6 +83575,17 @@ public:
    * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
+   * With the gpu renderer:
+   *
+   * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+   *   texture
+   * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with
+   *   the UV plane of an NV12 texture
+   * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
+   *   U plane of a YUV texture
+   * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
+   *   V plane of a YUV texture
+   *
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -79743,6 +83636,44 @@ public:
 
   /// Get the pixel format.
   PixelFormat GetFormat() const;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set the palette used by a texture.
+   *
+   * Setting the palette keeps an internal reference to the palette, which can
+   * be safely destroyed afterwards.
+   *
+   * A single palette can be shared with many textures.
+   *
+   * @param palette the Palette structure to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Palette.Palette
+   * @sa Texture.GetPalette
+   */
+  void SetPalette(PaletteParam palette);
+
+  /**
+   * Get the palette used by a texture.
+   *
+   * @returns a pointer to the palette used by the texture, or nullptr if there
+   *          is no palette used.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Texture.SetPalette
+   */
+  Palette GetPalette();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -80498,6 +84429,17 @@ inline Renderer CreateRenderer(WindowParam window, StringParam name)
  *   synchronized with the refresh rate. This property can take any value that
  *   is supported by Renderer.SetVSync() for the renderer.
  *
+ * With the SDL GPU renderer (since SDL 3.4.0):
+ *
+ * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+ *   renderer, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+ *   provide SPIR-V shaders to GPURenderState, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+ *   provide DXIL shaders to GPURenderState, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
+ *   MSL shaders to GPURenderState, optional.
+ *
  * With the vulkan renderer:
  *
  * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
@@ -80547,6 +84489,22 @@ constexpr auto CREATE_OUTPUT_COLORSPACE_NUMBER =
 constexpr auto CREATE_PRESENT_VSYNC_NUMBER =
   SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_GPU_DEVICE_POINTER =
+  SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
+
+constexpr auto CREATE_GPU_SHADERS_SPIRV_BOOLEAN =
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN;
+
+constexpr auto CREATE_GPU_SHADERS_DXIL_BOOLEAN =
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN;
+
+constexpr auto CREATE_GPU_SHADERS_MSL_BOOLEAN =
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto CREATE_VULKAN_INSTANCE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER;
 
@@ -80578,6 +84536,13 @@ constexpr auto MAX_TEXTURE_SIZE_NUMBER =
 
 constexpr auto TEXTURE_FORMATS_POINTER =
   SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto TEXTURE_WRAPPING_BOOLEAN =
+  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto OUTPUT_COLORSPACE_NUMBER =
   SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
@@ -80626,6 +84591,68 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 
 } // namespace prop::Renderer
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Create a 2D GPU rendering context.
+ *
+ * The GPU device to use is passed in as a parameter. If this is nullptr, then a
+ * device will be created normally and can be retrieved using
+ * Renderer.GetGPUDevice().
+ *
+ * The window to use is passed in as a parameter. If this is nullptr, then this
+ * will become an offscreen renderer. In that case, you should call
+ * Renderer.SetTarget() to setup rendering to a texture, and then call
+ * Renderer.Present() normally to complete drawing a frame.
+ *
+ * @param device the GPU device to use with the renderer, or nullptr to create a
+ *               device.
+ * @param window the window where rendering is displayed, or nullptr to create
+ *               an offscreen renderer.
+ * @returns a valid rendering context or nullptr if there was an error; call
+ *          GetError() for more information.
+ *
+ * @threadsafety If this function is called with a valid GPU device, it should
+ *               be called on the thread that created the device. If this
+ *               function is called with a valid window, it should be called on
+ *               the thread that created the window.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.Renderer
+ * @sa Renderer.GetGPUDevice
+ * @sa GPUShader.GPUShader
+ * @sa GPURenderState.GPURenderState
+ * @sa Renderer.SetGPURenderState
+ */
+inline RendererRef CreateGPURenderer(GPUDeviceParam device, WindowParam window)
+{
+  return SDL_CreateGPURenderer(device, window);
+}
+
+/**
+ * Return the GPU device used by a renderer.
+ *
+ * @param renderer the rendering context.
+ * @returns the GPU device used by the renderer, or nullptr if the renderer is
+ *          not a GPU renderer; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline GPUDeviceRef GetGPURendererDevice(RendererParam renderer)
+{
+  return SDL_GetGPURendererDevice(renderer);
+}
+
+inline GPUDeviceRef Renderer::GetGPUDevice()
+{
+  return SDL::GetGPURendererDevice(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Create a 2D software rendering context for a surface.
  *
@@ -80639,7 +84666,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  * @returns a valid rendering context or nullptr if there was an error; call
  *          GetError() for more information.
  *
- * @threadsafety This function should only be called on the main thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -80716,6 +84743,8 @@ inline const char* Renderer::GetName() const
  * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
  *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
  *   available texture formats for this renderer.
+ * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+ *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
  * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
  *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
  * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
@@ -81005,6 +85034,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *   required
  * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
  *   required
+ * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+ *   texture formats. This can be set later with Texture.SetPalette()
  * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
@@ -81080,6 +85111,18 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
  *   you want to wrap an existing texture.
  *
+ * With the GPU renderer:
+ *
+ * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+ *   the texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated
+ *   with the UV plane of an NV12 texture, if you want to wrap an existing
+ *   texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+ *   with the U plane of a YUV texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+ *   with the V plane of a YUV texture, if you want to wrap an existing texture.
+ *
  * @param renderer the rendering context.
  * @param props the properties to use.
  * @returns the created texture or nullptr on failure; call GetError() for more
@@ -81119,6 +85162,12 @@ constexpr auto CREATE_ACCESS_NUMBER = SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER;
 constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
 
 constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto CREATE_SDR_WHITE_POINT_FLOAT =
   SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT;
@@ -81173,6 +85222,22 @@ constexpr auto CREATE_OPENGLES2_TEXTURE_V_NUMBER =
 
 constexpr auto CREATE_VULKAN_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_GPU_TEXTURE_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
+
+constexpr auto CREATE_GPU_TEXTURE_UV_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER;
+
+constexpr auto CREATE_GPU_TEXTURE_U_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER;
+
+constexpr auto CREATE_GPU_TEXTURE_V_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
 
@@ -81238,6 +85303,18 @@ constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
   SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER;
 
 constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
+
+constexpr auto GPU_TEXTURE_UV_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER;
+
+constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
+
+constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 } // namespace prop::Texture
 
@@ -81316,6 +85393,17 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
  *   with the V plane of a YUV texture
  * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
  *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
+ *
+ * With the gpu renderer:
+ *
+ * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+ *   texture
+ * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+ *   UV plane of an NV12 texture
+ * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
+ *   plane of a YUV texture
+ * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
+ *   plane of a YUV texture
  *
  * @param texture the texture to query.
  * @returns a valid property ID on success.
@@ -81430,6 +85518,62 @@ inline PixelFormat Texture::GetFormat() const
 {
   return SDL::GetTextureFormat(m_resource);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set the palette used by a texture.
+ *
+ * Setting the palette keeps an internal reference to the palette, which can be
+ * safely destroyed afterwards.
+ *
+ * A single palette can be shared with many textures.
+ *
+ * @param texture the texture to update.
+ * @param palette the Palette structure to use.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Palette.Palette
+ * @sa Texture.GetPalette
+ */
+inline void SetTexturePalette(TextureParam texture, PaletteParam palette)
+{
+  CheckError(SDL_SetTexturePalette(texture, palette));
+}
+
+inline void Texture::SetPalette(PaletteParam palette)
+{
+  SDL::SetTexturePalette(m_resource, palette);
+}
+
+/**
+ * Get the palette used by a texture.
+ *
+ * @param texture the texture to query.
+ * @returns a pointer to the palette used by the texture, or nullptr if there is
+ *          no palette used.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Texture.SetPalette
+ */
+inline Palette GetTexturePalette(TextureParam texture)
+{
+  return Palette::Borrow(SDL_GetTexturePalette(texture));
+}
+
+inline Palette Texture::GetPalette()
+{
+  return SDL::GetTexturePalette(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set an additional color value multiplied into render copy operations.
@@ -82308,14 +86452,6 @@ inline Texture Renderer::GetTarget() const
  * specific dimensions but to make fonts look sharp, the app turns off logical
  * presentation while drawing text, for example.
  *
- * For the renderer's window, letterboxing is drawn into the framebuffer if
- * logical presentation is enabled during Renderer.Present; be sure to reenable
- * it before presenting if you were toggling it, otherwise the letterbox areas
- * might have artifacts from previous frames (or artifacts from external
- * overlays, etc). Letterboxing is never drawn into texture render targets; be
- * sure to call Renderer.RenderClear() before drawing into the texture so the
- * letterboxing areas are cleared, if appropriate.
- *
  * You can convert coordinates in an event into rendering coordinates using
  * Renderer.ConvertEventToRenderCoordinates().
  *
@@ -82348,16 +86484,16 @@ inline void Renderer::SetLogicalPresentation(const PointRaw& size,
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
- * This function gets the width and height of the logical rendering output, or
- * the output size in pixels if a logical resolution is not enabled.
+ * This function gets the width and height of the logical rendering output, or 0
+ * if a logical resolution is not enabled.
  *
  * Each render target has its own logical presentation state. This function gets
  * the state for the current render target.
  *
  * @param renderer the rendering context.
- * @param w an int to be filled with the width.
- * @param h an int to be filled with the height.
- * @param mode the presentation mode used.
+ * @param w an int filled with the logical presentation width.
+ * @param h an int filled with the logical presentation height.
+ * @param mode a variable filled with the logical presentation mode being used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -82377,15 +86513,16 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
- * This function gets the width and height of the logical rendering output, or
- * the output size in pixels if a logical resolution is not enabled.
+ * This function gets the width and height of the logical rendering output, or 0
+ * if a logical resolution is not enabled.
  *
  * Each render target has its own logical presentation state. This function gets
  * the state for the current render target.
  *
  * @param renderer the rendering context.
- * @param size a Point to be filled with the width and height.
- * @param mode the presentation mode used.
+ * @param size a Point to be filled  with the logical presentation width and
+ *             height.
+ * @param mode a variable filled with the logical presentation mode being used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -82639,7 +86776,7 @@ inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.IsViewportSet
+ * @sa Renderer.ViewportSet
  * @sa Renderer.SetViewport
  */
 inline Rect GetRenderViewport(RendererParam renderer)
@@ -83614,6 +87751,7 @@ inline void Renderer::RenderTextureTiled(TextureParam texture,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderTexture
+ * @sa Renderer.RenderTexture9GridTiled
  */
 inline void RenderTexture9Grid(RendererParam renderer,
                                TextureParam texture,
@@ -83656,6 +87794,90 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
                           dstrect);
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Perform a scaled copy using the 9-grid algorithm to the current rendering
+ * target at subpixel precision.
+ *
+ * The pixels in the texture are split into a 3x3 grid, using the different
+ * corner sizes for each corner, and the sides and center making up the
+ * remaining pixels. The corners are then scaled using `scale` and fit into the
+ * corners of the destination rectangle. The sides and center are then tiled
+ * into place to cover the remaining destination rectangle.
+ *
+ * @param renderer the renderer which should copy parts of a texture.
+ * @param texture the source texture.
+ * @param srcrect the Rect structure representing the rectangle to be used for
+ *                the 9-grid, or nullptr to use the entire texture.
+ * @param left_width the width, in pixels, of the left corners in `srcrect`.
+ * @param right_width the width, in pixels, of the right corners in `srcrect`.
+ * @param top_height the height, in pixels, of the top corners in `srcrect`.
+ * @param bottom_height the height, in pixels, of the bottom corners in
+ *                      `srcrect`.
+ * @param scale the scale used to transform the corner of `srcrect` into the
+ *              corner of `dstrect`, or 0.0f for an unscaled copy.
+ * @param dstrect a pointer to the destination rectangle, or nullptr for the
+ *                entire rendering target.
+ * @param tileScale the scale used to transform the borders and center of
+ *                  `srcrect` into the borders and middle of `dstrect`, or 1.0f
+ *                  for an unscaled copy.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.RenderTexture
+ * @sa Renderer.RenderTexture9Grid
+ */
+inline void RenderTexture9GridTiled(RendererParam renderer,
+                                    TextureParam texture,
+                                    const FRectRaw& srcrect,
+                                    float left_width,
+                                    float right_width,
+                                    float top_height,
+                                    float bottom_height,
+                                    float scale,
+                                    const FRectRaw& dstrect,
+                                    float tileScale)
+{
+  CheckError(SDL_RenderTexture9GridTiled(renderer,
+                                         texture,
+                                         &srcrect,
+                                         left_width,
+                                         right_width,
+                                         top_height,
+                                         bottom_height,
+                                         scale,
+                                         &dstrect,
+                                         tileScale));
+}
+
+inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
+                                              const FRectRaw& srcrect,
+                                              float left_width,
+                                              float right_width,
+                                              float top_height,
+                                              float bottom_height,
+                                              float scale,
+                                              const FRectRaw& dstrect,
+                                              float tileScale)
+{
+  SDL::RenderTexture9GridTiled(m_resource,
+                               texture,
+                               srcrect,
+                               left_width,
+                               right_width,
+                               top_height,
+                               bottom_height,
+                               scale,
+                               dstrect,
+                               tileScale);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Render a list of triangles, optionally using a texture and indices into the
  * vertex array Color and alpha modulation is done per vertex
@@ -83674,6 +87896,7 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderGeometryRaw
+ * @sa Renderer.SetRenderTextureAddressMode
  */
 inline void RenderGeometry(RendererParam renderer,
                            TextureParam texture,
@@ -83720,6 +87943,7 @@ inline void Renderer::RenderGeometry(TextureParam texture,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderGeometry
+ * @sa Renderer.SetRenderTextureAddressMode
  */
 inline void RenderGeometryRaw(RendererParam renderer,
                               TextureParam texture,
@@ -83773,6 +87997,68 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
                          num_indices,
                          size_indices);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set the texture addressing mode used in Renderer.RenderGeometry().
+ *
+ * @param renderer the rendering context.
+ * @param u_mode the TextureAddressMode to use for horizontal texture
+ *               coordinates in Renderer.RenderGeometry().
+ * @param v_mode the TextureAddressMode to use for vertical texture coordinates
+ *               in Renderer.RenderGeometry().
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.RenderGeometry
+ * @sa Renderer.RenderGeometryRaw
+ * @sa Renderer.GetRenderTextureAddressMode
+ */
+inline void SetRenderTextureAddressMode(RendererParam renderer,
+                                        TextureAddressMode u_mode,
+                                        TextureAddressMode v_mode)
+{
+  CheckError(SDL_SetRenderTextureAddressMode(renderer, u_mode, v_mode));
+}
+
+inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
+                                                  TextureAddressMode v_mode)
+{
+  SDL::SetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+}
+
+/**
+ * Get the texture addressing mode used in Renderer.RenderGeometry().
+ *
+ * @param renderer the rendering context.
+ * @param u_mode a pointer filled in with the TextureAddressMode to use for
+ *               horizontal texture coordinates in Renderer.RenderGeometry(),
+ *               may be nullptr.
+ * @param v_mode a pointer filled in with the TextureAddressMode to use for
+ *               vertical texture coordinates in Renderer.RenderGeometry(), may
+ *               be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.SetRenderTextureAddressMode
+ */
+inline void GetRenderTextureAddressMode(RendererParam renderer,
+                                        TextureAddressMode* u_mode,
+                                        TextureAddressMode* v_mode)
+{
+  CheckError(SDL_GetRenderTextureAddressMode(renderer, u_mode, v_mode));
+}
+
+inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
+                                                  TextureAddressMode* v_mode)
+{
+  SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Read pixels from the current rendering target.
@@ -83833,8 +88119,7 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  * not be done; you are only required to change back the rendering target to
  * default via `Renderer.SetTarget(renderer, nullptr)` afterwards, as textures
  * by themselves do not have a concept of backbuffers. Calling Renderer.Present
- * while rendering to a texture will still update the screen with any current
- * drawing that has been done _to the window itself_.
+ * while rendering to a texture will fail.
  *
  * @param renderer the rendering context.
  * @throws Error on failure.
@@ -84125,8 +88410,8 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  * Among these limitations:
  *
  * - It accepts UTF-8 strings, but will only renders ASCII characters.
- * - It has a single, tiny size (8x8 pixels). One can use logical presentation
- *   or scaling to adjust it, but it will be blurry.
+ * - It has a single, tiny size (8x8 pixels). You can use logical presentation
+ *   or Renderer.SetScale() to adjust it.
  * - It uses a simple, hardcoded bitmap font. It does not allow different font
  *   selections and it does not support truetype, for proper scaling.
  * - It does no word-wrapping and does not treat newline characters as a line
@@ -84205,6 +88490,329 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
 {
   SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set default scale mode for new textures for given renderer.
+ *
+ * When a renderer is created, scale_mode defaults to SCALEMODE_LINEAR.
+ *
+ * @param renderer the renderer to update.
+ * @param scale_mode the scale mode to change to for new textures.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.GetDefaultTextureScaleMode
+ */
+inline void SetDefaultTextureScaleMode(RendererParam renderer,
+                                       ScaleMode scale_mode)
+{
+  CheckError(SDL_SetDefaultTextureScaleMode(renderer, scale_mode));
+}
+
+inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
+{
+  SDL::SetDefaultTextureScaleMode(m_resource, scale_mode);
+}
+
+/**
+ * Get default texture scale mode of the given renderer.
+ *
+ * @param renderer the renderer to get data from.
+ * @param scale_mode a ScaleMode filled with current default scale mode. See
+ *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
+ *                   the value.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.SetDefaultTextureScaleMode
+ */
+inline void GetDefaultTextureScaleMode(RendererParam renderer,
+                                       ScaleMode* scale_mode)
+{
+  CheckError(SDL_GetDefaultTextureScaleMode(renderer, scale_mode));
+}
+
+inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
+{
+  SDL::GetDefaultTextureScaleMode(m_resource, scale_mode);
+}
+
+/**
+ * A custom GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.GPURenderState
+ * @sa GPURenderState.SetFragmentUniforms
+ * @sa Renderer.SetGPURenderState
+ * @sa GPURenderState.Destroy
+ *
+ * @cat resource
+ */
+class GPURenderState
+{
+  GPURenderStateRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr GPURenderState() = default;
+
+  /**
+   * Constructs from GPURenderStateParam.
+   *
+   * @param resource a GPURenderStateRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPURenderState(const GPURenderStateRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr GPURenderState(const GPURenderState& other) = delete;
+
+  /// Move constructor
+  constexpr GPURenderState(GPURenderState&& other)
+    : GPURenderState(other.release())
+  {
+  }
+
+  constexpr GPURenderState(const GPURenderStateRef& other) = delete;
+
+  constexpr GPURenderState(GPURenderStateRef&& other) = delete;
+
+  /**
+   * Create custom GPU render state.
+   *
+   * @param renderer the renderer to use.
+   * @param createinfo a struct describing the GPU render state to create.
+   * @post a custom GPU render state or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa GPURenderState.SetFragmentUniforms
+   * @sa Renderer.SetGPURenderState
+   * @sa GPURenderState.Destroy
+   */
+  GPURenderState(RendererParam renderer, GPURenderStateCreateInfo* createinfo)
+    : m_resource(SDL_CreateGPURenderState(renderer, createinfo))
+  {
+  }
+
+  /// Destructor
+  ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
+
+  /// Assignment operator.
+  GPURenderState& operator=(GPURenderState other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying GPURenderStateRaw.
+  constexpr GPURenderStateRaw get() const { return m_resource; }
+
+  /// Retrieves underlying GPURenderStateRaw and clear this.
+  constexpr GPURenderStateRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const GPURenderState& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to GPURenderStateParam
+  constexpr operator GPURenderStateParam() const noexcept
+  {
+    return {m_resource};
+  }
+
+  /**
+   * Destroy custom GPU render state.
+   *
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa GPURenderState.GPURenderState
+   */
+  void Destroy();
+
+  /**
+   * Set fragment shader uniform variables in a custom GPU render state.
+   *
+   * The data is copied and will be pushed using
+   * GPUCommandBuffer.PushFragmentUniformData() during draw call execution.
+   *
+   * @param slot_index the fragment uniform slot to push data to.
+   * @param data client data to write.
+   * @param length the length of the data to write.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
+};
+
+/// Semi-safe reference for GPURenderState.
+struct GPURenderStateRef : GPURenderState
+{
+  /**
+   * Constructs from GPURenderStateParam.
+   *
+   * @param resource a GPURenderStateRaw or GPURenderState.
+   *
+   * This does not takes ownership!
+   */
+  GPURenderStateRef(GPURenderStateParam resource)
+    : GPURenderState(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  GPURenderStateRef(const GPURenderStateRef& other)
+    : GPURenderState(other.get())
+  {
+  }
+
+  /// Destructor
+  ~GPURenderStateRef() { release(); }
+};
+
+/**
+ * Create custom GPU render state.
+ *
+ * @param renderer the renderer to use.
+ * @param createinfo a struct describing the GPU render state to create.
+ * @returns a custom GPU render state or nullptr on failure; call GetError() for
+ *          more information.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.SetFragmentUniforms
+ * @sa Renderer.SetGPURenderState
+ * @sa GPURenderState.Destroy
+ */
+inline GPURenderState CreateGPURenderState(RendererParam renderer,
+                                           GPURenderStateCreateInfo* createinfo)
+{
+  return GPURenderState(renderer, createinfo);
+}
+
+inline GPURenderState Renderer::CreateGPURenderState(
+  GPURenderStateCreateInfo* createinfo)
+{
+  return GPURenderState(m_resource, createinfo);
+}
+
+/**
+ * Set fragment shader uniform variables in a custom GPU render state.
+ *
+ * The data is copied and will be pushed using
+ * GPUCommandBuffer.PushFragmentUniformData() during draw call execution.
+ *
+ * @param state the state to modify.
+ * @param slot_index the fragment uniform slot to push data to.
+ * @param data client data to write.
+ * @param length the length of the data to write.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetGPURenderStateFragmentUniforms(GPURenderStateParam state,
+                                              Uint32 slot_index,
+                                              const void* data,
+                                              Uint32 length)
+{
+  CheckError(
+    SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
+}
+
+inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
+                                                const void* data,
+                                                Uint32 length)
+{
+  SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
+}
+
+/**
+ * Set custom GPU render state.
+ *
+ * This function sets custom GPU render state for subsequent draw calls. This
+ * allows using custom shaders with the GPU renderer.
+ *
+ * @param renderer the renderer to use.
+ * @param state the state to to use, or nullptr to clear custom GPU render
+ *              state.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetGPURenderState(RendererParam renderer, GPURenderStateParam state)
+{
+  CheckError(SDL_SetGPURenderState(renderer, state));
+}
+
+inline void Renderer::SetGPURenderState(GPURenderStateParam state)
+{
+  SDL::SetGPURenderState(m_resource, state);
+}
+
+/**
+ * Destroy custom GPU render state.
+ *
+ * @param state the state to destroy.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.GPURenderState
+ */
+inline void DestroyGPURenderState(GPURenderStateRaw state)
+{
+  SDL_DestroyGPURenderState(state);
+}
+
+inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 
@@ -84438,14 +89046,14 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  *
  * For more information see:
  *
- * https://wiki.libsdl.org/SDL3/README/ios
+ * https://wiki.libsdl.org/SDL3/README-ios
  *
  * Note that if you use the "main callbacks" instead of a standard C `main`
  * function, you don't have to use this API, as SDL will manage this for you.
  *
  * Details on main callbacks are here:
  *
- * https://wiki.libsdl.org/SDL3/README/main-functions
+ * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @param window the window for which the animation callback should be set.
  * @param interval the number of frames after which **callback** will be called.
@@ -85396,12 +90004,36 @@ inline OwnArray<Finger*> GetTouchFingers(TouchID touchID)
  * handling, e.g., for input and drawing tablets or suitably equipped mobile /
  * tablet devices.
  *
- * To get started with pens, simply handle SDL_EVENT_PEN_* events. When a pen
- * starts providing input, SDL will assign it a unique PenID, which will remain
- * for the life of the process, as long as the pen stays connected.
+ * To get started with pens, simply handle pen events:
+ *
+ * - EVENT_PEN_PROXIMITY_IN, EVENT_PEN_PROXIMITY_OUT (PenProximityEvent)
+ * - EVENT_PEN_DOWN, EVENT_PEN_UP (PenTouchEvent)
+ * - EVENT_PEN_MOTION (PenMotionEvent)
+ * - EVENT_PEN_BUTTON_DOWN, EVENT_PEN_BUTTON_UP (PenButtonEvent)
+ * - EVENT_PEN_AXIS (PenAxisEvent)
  *
  * Pens may provide more than simple touch input; they might have other axes,
  * such as pressure, tilt, rotation, etc.
+ *
+ * When a pen starts providing input, SDL will assign it a unique PenID, which
+ * will remain for the life of the process, as long as the pen stays connected.
+ * A pen leaving proximity (being taken far enough away from the digitizer
+ * tablet that it no longer reponds) and then coming back should fire proximity
+ * events, but the PenID should remain consistent. Unplugging the digitizer and
+ * reconnecting may cause future input to have a new PenID, as SDL may not know
+ * that this is the same hardware.
+ *
+ * Please note that various platforms vary wildly in how (and how well) they
+ * support pen input. If your pen supports some piece of functionality but SDL
+ * doesn't seem to, it might actually be the operating system's fault. For
+ * example, some platforms can manage multiple devices at the same time, but
+ * others will make any connected pens look like a single logical device, much
+ * how all USB mice connected to a computer will move the same system cursor.
+ * cursor. Other platforms might not support pen buttons, or the distance axis,
+ * etc. Very few platforms can even report _what_ functionality the pen supports
+ * in the first place, so best practices is to either build UI to let the user
+ * configure their pens, or be prepared to handle new functionality for a pen
+ * the first time an event is reported.
  *
  * @{
  */
@@ -85413,7 +90045,12 @@ inline OwnArray<Finger*> GetTouchFingers(TouchID touchID)
  *
  * These show up in pen events when SDL sees input from them. They remain
  * consistent as long as SDL can recognize a tool to be the same pen; but if a
- * pen physically leaves the area and returns, it might get a new ID.
+ * pen's digitizer table is physically detached from the computer, it might get
+ * a new ID when reconnected, as SDL won't know it's the same device.
+ *
+ * These IDs are only stable within a single run of a program; the next time a
+ * program is run, the pen's ID will likely be different, even if the hardware
+ * hasn't been disconnected, etc.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
@@ -85460,6 +90097,13 @@ constexpr PenInputFlags PEN_INPUT_BUTTON_5 =
 
 constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
   SDL_PEN_INPUT_ERASER_TIP; ///< eraser tip is used
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+constexpr PenInputFlags PEN_INPUT_IN_PROXIMITY =
+  SDL_PEN_INPUT_IN_PROXIMITY; ///< pen is in proximity (since SDL 3.4.0)
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Pen axis indices.
@@ -85509,14 +90153,62 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * An enum that describes the type of a pen device.
+ *
+ * A "direct" device is a pen that touches a graphic display (like an Apple
+ * Pencil on an iPad's screen). "Indirect" devices touch an external tablet
+ * surface that is connected to the machine but is not a display (like a
+ * lower-end Wacom tablet connected over USB).
+ *
+ * Apps may use this information to decide if they should draw a cursor; if the
+ * pen is touching the screen directly, a cursor doesn't make sense and can be
+ * in the way, but becomes necessary for indirect devices to know where on the
+ * display they are interacting.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ */
+using PenDeviceType = SDL_PenDeviceType;
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_INVALID =
+  SDL_PEN_DEVICE_TYPE_INVALID; ///< Not a valid pen device.
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_UNKNOWN =
+  SDL_PEN_DEVICE_TYPE_UNKNOWN; ///< Don't know specifics of this pen.
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_DIRECT =
+  SDL_PEN_DEVICE_TYPE_DIRECT; ///< Pen touches display.
+
+constexpr PenDeviceType PEN_DEVICE_TYPE_INDIRECT =
+  SDL_PEN_DEVICE_TYPE_INDIRECT; ///< Pen touches something that isn't the
+                                ///< display.
+
+/**
+ * Get the device type of the given pen.
+ *
+ * Many platforms do not supply this information, so an app must always be
+ * prepared to get an PEN_DEVICE_TYPE_UNKNOWN result.
+ *
+ * @param instance_id the pen instance ID.
+ * @returns the device type of the given pen, or PEN_DEVICE_TYPE_INVALID on
+ *          failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline PenDeviceType GetPenDeviceType(PenID instance_id)
+{
+  return SDL_GetPenDeviceType(instance_id);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /// @}
 
 } // namespace SDL
-#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
-  __has_include(<SDL3_image/SDL_image.h>)
-#define SDL3PP_ENABLE_IMAGE
-#endif
-
 #if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>
@@ -88040,11 +92732,6 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
 } // namespace SDL
 
 #endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
-
-#if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
-  __has_include(<SDL3_ttf/SDL_ttf.h>)
-#define SDL3PP_ENABLE_TTF
-#endif
 
 #if defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)
 

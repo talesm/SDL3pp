@@ -59,7 +59,7 @@ namespace SDL {
  * {
  *    Haptic *haptic;
  *    HapticEffect effect;
- *    int effect_id;
+ *    HapticEffectID effect_id;
  *
  *    // Open the device
  *    haptic = Haptic.Haptic(joystick);
@@ -140,7 +140,17 @@ struct HapticParam
   constexpr operator HapticRaw() const { return value; }
 };
 
-using HapticEffectType = Uint32;
+/**
+ * ID for haptic effects.
+ *
+ * This is -1 if the ID is invalid.
+ *
+ * @sa Haptic.CreateEffect
+ */
+using HapticEffectID = SDL_HapticEffectID;
+
+/// Type of haptic effect.
+using HapticEffectType = SDL_HapticEffectType;
 
 /**
  * Constant effect supported.
@@ -353,7 +363,8 @@ constexpr HapticEffectType HAPTIC_STATUS = SDL_HAPTIC_STATUS;
  */
 constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
 
-using HapticDirectionType = Uint8;
+/// Type of coordinates used for haptic direction.
+using HapticDirectionType = SDL_HapticDirectionType;
 
 /**
  * Uses polar coordinates for the direction.
@@ -1019,7 +1030,7 @@ public:
    * @sa Haptic.RunEffect
    * @sa Haptic.UpdateEffect
    */
-  int CreateEffect(const HapticEffect& effect);
+  HapticEffectID CreateEffect(const HapticEffect& effect);
 
   /**
    * Update the properties of an effect.
@@ -1039,7 +1050,7 @@ public:
    * @sa Haptic.CreateEffect
    * @sa Haptic.RunEffect
    */
-  void UpdateEffect(int effect, const HapticEffect& data);
+  void UpdateEffect(HapticEffectID effect, const HapticEffect& data);
 
   /**
    * Run the haptic effect on its associated haptic device.
@@ -1060,7 +1071,7 @@ public:
    * @sa Haptic.StopEffect
    * @sa Haptic.StopEffects
    */
-  void RunEffect(int effect, Uint32 iterations);
+  void RunEffect(HapticEffectID effect, Uint32 iterations);
 
   /**
    * Stop the haptic effect on its associated haptic device.
@@ -1073,7 +1084,7 @@ public:
    * @sa Haptic.RunEffect
    * @sa Haptic.StopEffects
    */
-  void StopEffect(int effect);
+  void StopEffect(HapticEffectID effect);
 
   /**
    * Destroy a haptic effect on the device.
@@ -1087,7 +1098,7 @@ public:
    *
    * @sa Haptic.CreateEffect
    */
-  void DestroyEffect(int effect);
+  void DestroyEffect(HapticEffectID effect);
 
   /**
    * Get the status of the current effect on the specified haptic device.
@@ -1102,7 +1113,7 @@ public:
    *
    * @sa Haptic.GetFeatures
    */
-  bool GetEffectStatus(int effect);
+  bool GetEffectStatus(HapticEffectID effect);
 
   /**
    * Set the global gain of the specified haptic device.
@@ -1590,12 +1601,13 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  * @sa Haptic.RunEffect
  * @sa Haptic.UpdateEffect
  */
-inline int CreateHapticEffect(HapticParam haptic, const HapticEffect& effect)
+inline HapticEffectID CreateHapticEffect(HapticParam haptic,
+                                         const HapticEffect& effect)
 {
   return CheckError(SDL_CreateHapticEffect(haptic, &effect));
 }
 
-inline int Haptic::CreateEffect(const HapticEffect& effect)
+inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
 {
   return SDL::CreateHapticEffect(m_resource, effect);
 }
@@ -1620,13 +1632,14 @@ inline int Haptic::CreateEffect(const HapticEffect& effect)
  * @sa Haptic.RunEffect
  */
 inline void UpdateHapticEffect(HapticParam haptic,
-                               int effect,
+                               HapticEffectID effect,
                                const HapticEffect& data)
 {
   CheckError(SDL_UpdateHapticEffect(haptic, effect, &data));
 }
 
-inline void Haptic::UpdateEffect(int effect, const HapticEffect& data)
+inline void Haptic::UpdateEffect(HapticEffectID effect,
+                                 const HapticEffect& data)
 {
   SDL::UpdateHapticEffect(m_resource, effect, data);
 }
@@ -1651,12 +1664,14 @@ inline void Haptic::UpdateEffect(int effect, const HapticEffect& data)
  * @sa Haptic.StopEffect
  * @sa Haptic.StopEffects
  */
-inline void RunHapticEffect(HapticParam haptic, int effect, Uint32 iterations)
+inline void RunHapticEffect(HapticParam haptic,
+                            HapticEffectID effect,
+                            Uint32 iterations)
 {
   CheckError(SDL_RunHapticEffect(haptic, effect, iterations));
 }
 
-inline void Haptic::RunEffect(int effect, Uint32 iterations)
+inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
 {
   SDL::RunHapticEffect(m_resource, effect, iterations);
 }
@@ -1673,12 +1688,12 @@ inline void Haptic::RunEffect(int effect, Uint32 iterations)
  * @sa Haptic.RunEffect
  * @sa Haptic.StopEffects
  */
-inline void StopHapticEffect(HapticParam haptic, int effect)
+inline void StopHapticEffect(HapticParam haptic, HapticEffectID effect)
 {
   CheckError(SDL_StopHapticEffect(haptic, effect));
 }
 
-inline void Haptic::StopEffect(int effect)
+inline void Haptic::StopEffect(HapticEffectID effect)
 {
   SDL::StopHapticEffect(m_resource, effect);
 }
@@ -1696,12 +1711,12 @@ inline void Haptic::StopEffect(int effect)
  *
  * @sa Haptic.CreateEffect
  */
-inline void DestroyHapticEffect(HapticParam haptic, int effect)
+inline void DestroyHapticEffect(HapticParam haptic, HapticEffectID effect)
 {
   SDL_DestroyHapticEffect(haptic, effect);
 }
 
-inline void Haptic::DestroyEffect(int effect)
+inline void Haptic::DestroyEffect(HapticEffectID effect)
 {
   SDL::DestroyHapticEffect(m_resource, effect);
 }
@@ -1720,12 +1735,12 @@ inline void Haptic::DestroyEffect(int effect)
  *
  * @sa Haptic.GetFeatures
  */
-inline bool GetHapticEffectStatus(HapticParam haptic, int effect)
+inline bool GetHapticEffectStatus(HapticParam haptic, HapticEffectID effect)
 {
   return SDL_GetHapticEffectStatus(haptic, effect);
 }
 
-inline bool Haptic::GetEffectStatus(int effect)
+inline bool Haptic::GetEffectStatus(HapticEffectID effect)
 {
   return SDL::GetHapticEffectStatus(m_resource, effect);
 }

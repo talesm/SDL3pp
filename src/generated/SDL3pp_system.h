@@ -212,14 +212,14 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  *
  * For more information see:
  *
- * https://wiki.libsdl.org/SDL3/README/ios
+ * https://wiki.libsdl.org/SDL3/README-ios
  *
  * Note that if you use the "main callbacks" instead of a standard C `main`
  * function, you don't have to use this API, as SDL will manage this for you.
  *
  * Details on main callbacks are here:
  *
- * https://wiki.libsdl.org/SDL3/README/main-functions
+ * https://wiki.libsdl.org/SDL3/README-main-functions
  *
  * @param window the window for which the animation callback should be set.
  * @param interval the number of frames after which **callback** will be called.

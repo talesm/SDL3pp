@@ -43,6 +43,14 @@ namespace SDL {
  * background, you should set the following hint before calling Init():
  * SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
  *
+ * SDL can provide virtual joysticks as well: the app defines an imaginary
+ * controller with AttachVirtualJoystick(), and then can provide inputs for it
+ * via Joystick.SetVirtualAxis(), Joystick.SetVirtualButton(), etc. As this data
+ * is supplied, it will look like a normal joystick to SDL, just not backed by a
+ * hardware driver. This has been used to make unusual devices, like VR headset
+ * controllers, look like normal joysticks, or provide recording/playback of
+ * game inputs, etc.
+ *
  * @{
  */
 
@@ -97,6 +105,10 @@ struct JoystickID;
  *
  * This is by no means a complete list of everything that can be plugged into a
  * computer.
+ *
+ * You may refer to [XInput Controller
+ * Types](https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes)
+ * table for a general understanding of each joystick type.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -175,6 +187,8 @@ public:
    * @returns the name of the selected joystick. If no name can be found, this
    *          function returns nullptr; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetName
@@ -190,6 +204,8 @@ public:
    * @returns the path of the selected joystick. If no path can be found, this
    *          function returns nullptr; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetPath
@@ -203,6 +219,8 @@ public:
    * This can be called before any joysticks are opened.
    *
    * @returns the player index of a joystick, or -1 if it's not available.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -218,6 +236,8 @@ public:
    *
    * @returns the GUID of the selected joystick. If called with an invalid
    *          instance_id, this function returns a zero GUID.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -235,6 +255,8 @@ public:
    * @returns the USB vendor ID of the selected joystick. If called with an
    *          invalid instance_id, this function returns 0.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetVendor
@@ -250,6 +272,8 @@ public:
    *
    * @returns the USB product ID of the selected joystick. If called with an
    *          invalid instance_id, this function returns 0.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -267,6 +291,8 @@ public:
    * @returns the product version of the selected joystick. If called with an
    *          invalid instance_id, this function returns 0.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetProductVersion
@@ -282,6 +308,8 @@ public:
    * @returns the JoystickType of the selected joystick. If called with an
    *          invalid instance_id, this function returns
    *          `JOYSTICK_TYPE_UNKNOWN`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -299,6 +327,8 @@ public:
    * @returns an Joystick on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.Close
@@ -311,6 +341,8 @@ public:
    * @returns an Joystick on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   JoystickRef GetJoystickFromID();
@@ -319,6 +351,8 @@ public:
    * Detach a virtual joystick.
    *
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -330,6 +364,8 @@ public:
    * Query whether or not a joystick is virtual.
    *
    * @returns true if the joystick is virtual, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -436,6 +472,8 @@ public:
    * @param instance_id the joystick instance ID.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.Close
@@ -483,6 +521,8 @@ public:
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.OpenJoystick
@@ -505,7 +545,15 @@ public:
    * @param value the new value for the specified axis.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualAxis(int axis, Sint16 value);
 
@@ -522,7 +570,15 @@ public:
    * @param yrel the relative motion on the Y axis.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel);
 
@@ -538,7 +594,15 @@ public:
    * @param down true if the button is pressed, false otherwise.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualButton(int button, bool down);
 
@@ -554,7 +618,15 @@ public:
    * @param value the new value for the specified hat.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualTouchpad
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualHat(int hat, Uint8 value);
 
@@ -575,7 +647,15 @@ public:
    * @param pressure the pressure of the finger.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa SDL_SetJoystickVirtualSensorData
    */
   void SetVirtualTouchpad(int touchpad,
                           int finger,
@@ -598,7 +678,15 @@ public:
    * @param num_values the number of values pointed to by `data`.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Joystick.SetVirtualAxis
+   * @sa Joystick.SetVirtualButton
+   * @sa Joystick.SetVirtualBall
+   * @sa Joystick.SetVirtualHat
+   * @sa Joystick.SetVirtualTouchpad
    */
   void SendVirtualSensorData(SensorType type,
                              Uint64 sensor_timestamp,
@@ -624,6 +712,8 @@ public:
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   PropertiesRef GetProperties();
@@ -633,6 +723,8 @@ public:
    *
    * @returns the name of the selected joystick. If no name can be found, this
    *          function returns nullptr; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -645,6 +737,8 @@ public:
    *
    * @returns the path of the selected joystick. If no path can be found, this
    *          function returns nullptr; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -660,6 +754,8 @@ public:
    *
    * @returns the player index, or -1 if it's not available.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.SetPlayerIndex
@@ -672,6 +768,8 @@ public:
    * @param player_index player index to assign to this joystick, or -1 to clear
    *                     the player index and turn off player LEDs.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -688,6 +786,8 @@ public:
    *          this function returns a zero GUID; call GetError() for more
    *          information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.GetJoystickGUIDForID
@@ -702,6 +802,8 @@ public:
    *
    * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.GetJoystickVendorForID
@@ -715,6 +817,8 @@ public:
    *
    * @returns the USB product ID of the selected joystick, or 0 if unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa JoystickID.GetJoystickProductForID
@@ -727,6 +831,8 @@ public:
    * If the product version isn't available this function returns 0.
    *
    * @returns the product version of the selected joystick, or 0 if unavailable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -742,6 +848,8 @@ public:
    * @returns the firmware version of the selected joystick, or 0 if
    *          unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   Uint16 GetFirmwareVersion();
@@ -755,6 +863,8 @@ public:
    * @returns the serial number of the selected joystick, or nullptr if
    *          unavailable.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   const char* GetSerial();
@@ -763,6 +873,8 @@ public:
    * Get the type of an opened joystick.
    *
    * @returns the JoystickType of the selected joystick.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -776,6 +888,8 @@ public:
    * @returns true if the joystick has been opened, false if it has not; call
    *          GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   bool Connected();
@@ -785,6 +899,8 @@ public:
    *
    * @returns the instance ID of the specified joystick on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -799,6 +915,8 @@ public:
    *
    * @returns the number of axis controls/number of axes on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -820,6 +938,8 @@ public:
    * @returns the number of trackballs on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetBall
@@ -835,6 +955,8 @@ public:
    * @returns the number of POV hats on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetHat
@@ -849,6 +971,8 @@ public:
    *
    * @returns the number of buttons on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -876,6 +1000,8 @@ public:
    * @returns a 16-bit signed integer representing the current position of the
    *          axis or 0 on failure; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetNumAxes
@@ -892,6 +1018,8 @@ public:
    * @param axis the axis to query; the axis indices start at index 0.
    * @param state upon return, the initial value is supplied here.
    * @returns true if this axis has any initial value, or false if not.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -910,6 +1038,8 @@ public:
    * @param dy stores the difference in the y axis position since the last poll.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetNumBalls
@@ -924,6 +1054,8 @@ public:
    * @param hat the hat index to get the state from; indices start at index 0.
    * @returns the current hat position.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.GetNumHats
@@ -936,6 +1068,8 @@ public:
    * @param button the button index to get the state from; indices start at
    *               index 0.
    * @returns true if the button is pressed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -958,6 +1092,8 @@ public:
    *                              rumble motor, from 0 to 0xFFFF.
    * @param duration_ms the duration of the rumble effect, in milliseconds.
    * @returns true, or false if rumble isn't supported on this joystick.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -986,6 +1122,8 @@ public:
    * @param duration_ms the duration of the rumble effect, in milliseconds.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Joystick.Rumble
@@ -1008,6 +1146,8 @@ public:
    * @param blue the intensity of the blue LED.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   void SetLED(Uint8 red, Uint8 green, Uint8 blue);
@@ -1019,6 +1159,8 @@ public:
    * @param size the size of the data to send to the joystick.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   void SendEffect(const void* data, int size);
@@ -1028,6 +1170,8 @@ public:
    *
    * @returns the connection state on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1048,6 +1192,8 @@ public:
    *                battery.
    * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
    *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1120,12 +1266,17 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  * joysticks while processing to guarantee that the joystick list won't change
  * and joystick and gamepad events will not be delivered.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void LockJoysticks() { SDL_LockJoysticks(); }
 
 /**
  * Unlocking for atomic access to the joystick API.
+ *
+ * @threadsafety This should be called from the same thread that called
+ *               LockJoysticks().
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1135,6 +1286,8 @@ inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
  * Return whether a joystick is currently connected.
  *
  * @returns true if a joystick is connected, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1148,6 +1301,8 @@ inline bool HasJoystick() { return SDL_HasJoystick(); }
  * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
  *          call GetError() for more information. This should be freed with
  *          free() when it is no longer needed.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1169,6 +1324,8 @@ inline OwnArray<JoystickID> GetJoysticks()
  * @param instance_id the joystick instance ID.
  * @returns the name of the selected joystick. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1194,6 +1351,8 @@ inline const char* JoystickID::GetJoystickNameForID()
  * @returns the path of the selected joystick. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetPath
@@ -1216,6 +1375,8 @@ inline const char* JoystickID::GetJoystickPathForID()
  *
  * @param instance_id the joystick instance ID.
  * @returns the player index of a joystick, or -1 if it's not available.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1240,6 +1401,8 @@ inline int JoystickID::GetJoystickPlayerIndexForID()
  * @param instance_id the joystick instance ID.
  * @returns the GUID of the selected joystick. If called with an invalid
  *          instance_id, this function returns a zero GUID.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1266,6 +1429,8 @@ inline GUID JoystickID::GetJoystickGUIDForID()
  * @returns the USB vendor ID of the selected joystick. If called with an
  *          invalid instance_id, this function returns 0.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetVendor
@@ -1290,6 +1455,8 @@ inline Uint16 JoystickID::GetJoystickVendorForID()
  * @param instance_id the joystick instance ID.
  * @returns the USB product ID of the selected joystick. If called with an
  *          invalid instance_id, this function returns 0.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1316,6 +1483,8 @@ inline Uint16 JoystickID::GetJoystickProductForID()
  * @returns the product version of the selected joystick. If called with an
  *          invalid instance_id, this function returns 0.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetProductVersion
@@ -1339,6 +1508,8 @@ inline Uint16 JoystickID::GetJoystickProductVersionForID()
  * @param instance_id the joystick instance ID.
  * @returns the JoystickType of the selected joystick. If called with an invalid
  *          instance_id, this function returns `JOYSTICK_TYPE_UNKNOWN`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1365,6 +1536,8 @@ inline JoystickType JoystickID::GetJoystickTypeForID()
  * @returns an Joystick on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.Close
@@ -1382,6 +1555,8 @@ inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
  * @param instance_id the instance ID to get the Joystick for.
  * @returns an Joystick on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1401,6 +1576,8 @@ inline JoystickRef JoystickID::GetJoystickFromID()
  * @param player_index the player index to get the Joystick for.
  * @returns an Joystick on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1448,13 +1625,32 @@ using VirtualJoystickDesc = SDL_VirtualJoystickDesc;
 /**
  * Attach a new virtual joystick.
  *
+ * Apps can create virtual joysticks, that exist without hardware directly
+ * backing them, and have program-supplied inputs. Once attached, a virtual
+ * joystick looks like any other joystick that SDL can access. These can be used
+ * to make other things look like joysticks, or provide pre-recorded input, etc.
+ *
+ * Once attached, the app can send joystick inputs to the new virtual joystick
+ * using Joystick.SetVirtualAxis(), etc.
+ *
+ * When no longer needed, the virtual joystick can be removed by calling
+ * JoystickID.DetachVirtualJoystick().
+ *
  * @param desc joystick description, initialized using InitInterface().
  * @returns the joystick instance ID, or 0 on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.DetachVirtualJoystick
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
 {
@@ -1467,6 +1663,8 @@ inline JoystickID AttachVirtualJoystick(const VirtualJoystickDesc& desc)
  * @param instance_id the joystick instance ID, previously returned from
  *                    AttachVirtualJoystick().
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1487,6 +1685,8 @@ inline void JoystickID::DetachVirtualJoystick()
  *
  * @param instance_id the joystick instance ID.
  * @returns true if the joystick is virtual, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1517,7 +1717,15 @@ inline bool JoystickID::IsJoystickVirtual()
  * @param value the new value for the specified axis.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualAxis(JoystickParam joystick,
                                    int axis,
@@ -1545,7 +1753,15 @@ inline void Joystick::SetVirtualAxis(int axis, Sint16 value)
  * @param yrel the relative motion on the Y axis.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualBall(JoystickParam joystick,
                                    int ball,
@@ -1573,7 +1789,15 @@ inline void Joystick::SetVirtualBall(int ball, Sint16 xrel, Sint16 yrel)
  * @param down true if the button is pressed, false otherwise.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualButton(JoystickParam joystick,
                                      int button,
@@ -1600,7 +1824,15 @@ inline void Joystick::SetVirtualButton(int button, bool down)
  * @param value the new value for the specified hat.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualTouchpad
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualHat(JoystickParam joystick, int hat, Uint8 value)
 {
@@ -1629,7 +1861,15 @@ inline void Joystick::SetVirtualHat(int hat, Uint8 value)
  * @param pressure the pressure of the finger.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa SDL_SetJoystickVirtualSensorData
  */
 inline void SetJoystickVirtualTouchpad(JoystickParam joystick,
                                        int touchpad,
@@ -1668,7 +1908,15 @@ inline void Joystick::SetVirtualTouchpad(int touchpad,
  * @param num_values the number of values pointed to by `data`.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Joystick.SetVirtualAxis
+ * @sa Joystick.SetVirtualButton
+ * @sa Joystick.SetVirtualBall
+ * @sa Joystick.SetVirtualHat
+ * @sa Joystick.SetVirtualTouchpad
  */
 inline void SendJoystickVirtualSensorData(JoystickParam joystick,
                                           SensorType type,
@@ -1709,6 +1957,8 @@ inline void Joystick::SendVirtualSensorData(SensorType type,
  * @returns a valid property ID on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
@@ -1743,6 +1993,8 @@ constexpr auto TRIGGER_RUMBLE_BOOLEAN =
  * @returns the name of the selected joystick. If no name can be found, this
  *          function returns nullptr; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickNameForID
@@ -1763,6 +2015,8 @@ inline const char* Joystick::GetName()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the path of the selected joystick. If no path can be found, this
  *          function returns nullptr; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1787,6 +2041,8 @@ inline const char* Joystick::GetPath()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the player index, or -1 if it's not available.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.SetPlayerIndex
@@ -1808,6 +2064,8 @@ inline int Joystick::GetPlayerIndex()
  * @param player_index player index to assign to this joystick, or -1 to clear
  *                     the player index and turn off player LEDs.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1832,6 +2090,8 @@ inline void Joystick::SetPlayerIndex(int player_index)
  * @returns the GUID of the given joystick. If called on an invalid index, this
  *          function returns a zero GUID; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickGUIDForID
@@ -1851,6 +2111,8 @@ inline GUID Joystick::GetGUID() { return SDL::GetJoystickGUID(m_resource); }
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the USB vendor ID of the selected joystick, or 0 if unavailable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1874,6 +2136,8 @@ inline Uint16 Joystick::GetVendor()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the USB product ID of the selected joystick, or 0 if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickProductForID
@@ -1895,6 +2159,8 @@ inline Uint16 Joystick::GetProduct()
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the product version of the selected joystick, or 0 if unavailable.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1918,6 +2184,8 @@ inline Uint16 Joystick::GetProductVersion()
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the firmware version of the selected joystick, or 0 if unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline Uint16 GetJoystickFirmwareVersion(JoystickParam joystick)
@@ -1939,6 +2207,8 @@ inline Uint16 Joystick::GetFirmwareVersion()
  * @returns the serial number of the selected joystick, or nullptr if
  *          unavailable.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetJoystickSerial(JoystickParam joystick)
@@ -1956,6 +2226,8 @@ inline const char* Joystick::GetSerial()
  *
  * @param joystick the Joystick obtained from JoystickID.OpenJoystick().
  * @returns the JoystickType of the selected joystick.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1983,6 +2255,8 @@ inline JoystickType Joystick::GetType()
  * @param crc16 a pointer filled in with a CRC used to distinguish different
  *              products with the same VID/PID, or 0 if not available.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.GetJoystickGUIDForID
@@ -2003,6 +2277,8 @@ inline void GetJoystickGUIDInfo(GUID guid,
  * @returns true if the joystick has been opened, false if it has not; call
  *          GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool JoystickConnected(JoystickParam joystick)
@@ -2018,6 +2294,8 @@ inline bool Joystick::Connected() { return SDL::JoystickConnected(m_resource); }
  * @param joystick an Joystick structure containing joystick information.
  * @returns the instance ID of the specified joystick on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2038,6 +2316,8 @@ inline JoystickID Joystick::GetID() { return SDL::GetJoystickID(m_resource); }
  * @param joystick an Joystick structure containing joystick information.
  * @returns the number of axis controls/number of axes on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2068,6 +2348,8 @@ inline int Joystick::GetNumAxes()
  * @returns the number of trackballs on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetBall
@@ -2092,6 +2374,8 @@ inline int Joystick::GetNumBalls()
  * @returns the number of POV hats on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetHat
@@ -2115,6 +2399,8 @@ inline int Joystick::GetNumHats()
  * @param joystick an Joystick structure containing joystick information.
  * @returns the number of buttons on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2141,6 +2427,8 @@ inline int Joystick::GetNumButtons()
  *
  * @param enabled whether to process joystick events or not.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickEventsEnabled
@@ -2159,6 +2447,8 @@ inline void SetJoystickEventsEnabled(bool enabled)
  *
  * @returns true if joystick events are being processed, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetJoystickEventsEnabled
@@ -2170,6 +2460,8 @@ inline bool JoystickEventsEnabled() { return SDL_JoystickEventsEnabled(); }
  *
  * This is called automatically by the event loop if any joystick events are
  * enabled.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2192,6 +2484,8 @@ inline void UpdateJoysticks() { SDL_UpdateJoysticks(); }
  * @param axis the axis to query; the axis indices start at index 0.
  * @returns a 16-bit signed integer representing the current position of the
  *          axis or 0 on failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2218,6 +2512,8 @@ inline Sint16 Joystick::GetAxis(int axis)
  * @param axis the axis to query; the axis indices start at index 0.
  * @param state upon return, the initial value is supplied here.
  * @returns true if this axis has any initial value, or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2247,6 +2543,8 @@ inline bool Joystick::GetAxisInitialState(int axis, Sint16* state)
  * @param dy stores the difference in the y axis position since the last poll.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetNumBalls
@@ -2270,6 +2568,8 @@ inline void Joystick::GetBall(int ball, int* dx, int* dy)
  * @param hat the hat index to get the state from; indices start at index 0.
  * @returns the current hat position.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.GetNumHats
@@ -2291,6 +2591,8 @@ inline Uint8 Joystick::GetHat(int hat)
  * @param button the button index to get the state from; indices start at index
  *               0.
  * @returns true if the button is pressed, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2322,6 +2624,8 @@ inline bool Joystick::GetButton(int button)
  *                              rumble motor, from 0 to 0xFFFF.
  * @param duration_ms the duration of the rumble effect, in milliseconds.
  * @returns true, or false if rumble isn't supported on this joystick.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2363,6 +2667,8 @@ inline bool Joystick::Rumble(Uint16 low_frequency_rumble,
  * @param duration_ms the duration of the rumble effect, in milliseconds.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Joystick.Rumble
@@ -2399,6 +2705,8 @@ inline void Joystick::RumbleTriggers(Uint16 left_rumble,
  * @param blue the intensity of the blue LED.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetJoystickLED(JoystickParam joystick,
@@ -2422,6 +2730,8 @@ inline void Joystick::SetLED(Uint8 red, Uint8 green, Uint8 blue)
  * @param size the size of the data to send to the joystick.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SendJoystickEffect(JoystickParam joystick,
@@ -2441,6 +2751,8 @@ inline void Joystick::SendEffect(const void* data, int size)
  *
  * @param joystick the joystick device to close.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa JoystickID.OpenJoystick
@@ -2455,6 +2767,8 @@ inline void Joystick::Close() { CloseJoystick(release()); }
  * @param joystick the joystick to query.
  * @returns the connection state on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -2484,6 +2798,8 @@ inline JoystickConnectionState Joystick::GetConnectionState()
  *                in with -1 we can't determine a value or there is no battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

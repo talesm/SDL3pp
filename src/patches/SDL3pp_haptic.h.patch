@@ -9,23 +9,31 @@
   *
   * The SDL haptic subsystem manages haptic (force feedback) devices.
   *
-@@ -140,6 +140,15 @@
-   constexpr operator HapticRaw() const { return value; }
+@@ -141,16 +141,21 @@
  };
  
-+/**
+ /**
 + * @name Haptic effects
 + * @{
 + */
 +
 +/**
-+ * Haptic effects flag constants
-+ *
-+ */
- using HapticEffectType = Uint32;
+  * ID for haptic effects.
+  *
+  * This is -1 if the ID is invalid.
+  *
+  * @sa Haptic.CreateEffect
+  */
+-using HapticEffectID = SDL_HapticEffectID;
++using HapticEffectID = int;
+ 
+ /// Type of haptic effect.
+-using HapticEffectType = SDL_HapticEffectType;
++using HapticEffectType = Uint32;
  
  /**
-@@ -353,6 +362,14 @@
+  * Constant effect supported.
+@@ -363,8 +368,15 @@
   */
  constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
  
@@ -36,11 +44,13 @@
 + * @{
 + */
 +
-+/// Direction encoding
- using HapticDirectionType = Uint8;
+ /// Type of coordinates used for haptic direction.
+-using HapticDirectionType = SDL_HapticDirectionType;
++using HapticDirectionType = Uint8;
  
  /**
-@@ -394,6 +411,8 @@
+  * Uses polar coordinates for the direction.
+@@ -405,6 +417,8 @@
   */
  constexpr HapticDirectionType HAPTIC_STEERING_AXIS = SDL_HAPTIC_STEERING_AXIS;
  
@@ -49,7 +59,7 @@
  /**
   * Used to play a device an infinite number of times.
   *
-@@ -1275,17 +1294,19 @@
+@@ -1286,17 +1300,19 @@
  /**
   * Get a list of currently connected haptic devices.
   *
@@ -74,7 +84,7 @@
  
  /**
   * Get the implementation dependent name of a haptic device.
-@@ -1342,7 +1363,7 @@
+@@ -1353,7 +1369,7 @@
   */
  inline HapticRef GetHapticFromID(HapticID instance_id)
  {

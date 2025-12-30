@@ -74,7 +74,8 @@ constexpr PowerState POWERSTATE_CHARGED =
  *                determine a value or there is no battery.
  * @param percent a pointer filled in with the percentage of battery life left,
  *                between 0 and 100, or nullptr to ignore. This will be filled
- *                in with -1 we can't determine a value or there is no battery.
+ *                in with -1 when we can't determine a value or there is no
+ *                battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
  *          GetError() for more information.
  *

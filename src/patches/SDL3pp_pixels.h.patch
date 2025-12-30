@@ -289,7 +289,7 @@
 -   * expressions with side-effects here.
 +   * Determine if this is a floating point format.
     *
-    * @returns true if the format is 10-bit, false otherwise.
+    * @returns true if the format is a floating point, false otherwise.
     *
 @@ -603,10 +631,7 @@
    constexpr bool IsFloat() const;
@@ -1150,7 +1150,7 @@
  
  /**
 @@ -2798,23 +3029,52 @@
-   SDL_GetRGBA(pixel, &format, palette, r, g, b, a);
+   SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
  }
  
 +/**

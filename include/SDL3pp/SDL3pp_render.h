@@ -4,6 +4,7 @@
 #include <SDL3/SDL_render.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_events.h"
+#include "SDL3pp_gpu.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_video.h"
 
@@ -29,7 +30,7 @@ namespace SDL {
  * may also be stretched with linear interpolation.
  *
  * This API is designed to accelerate simple 2D operations. You may want more
- * functionality such as polygons and particle effects and in that case you
+ * functionality such as 3D polygons and particle effects, and in that case you
  * should use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the
  * many good 3D engines.
  *
@@ -147,12 +148,63 @@ struct TextureConstParam
   constexpr auto operator->() { return value; }
 };
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+// Forward decl
+struct GPURenderState;
+
+/// Alias to raw representation for GPURenderState.
+using GPURenderStateRaw = SDL_GPURenderState*;
+
+// Forward decl
+struct GPURenderStateRef;
+
+/// Safely wrap GPURenderState for non owning parameters
+struct GPURenderStateParam
+{
+  GPURenderStateRaw value; ///< parameter's GPURenderStateRaw
+
+  /// Constructs from GPURenderStateRaw
+  constexpr GPURenderStateParam(GPURenderStateRaw value)
+    : value(value)
+  {
+  }
+
+  /// Constructs null/invalid
+  constexpr GPURenderStateParam(std::nullptr_t _ = nullptr)
+    : value(nullptr)
+  {
+  }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!value; }
+
+  /// Comparison
+  constexpr auto operator<=>(const GPURenderStateParam& other) const = default;
+
+  /// Converts to underlying GPURenderStateRaw
+  constexpr operator GPURenderStateRaw() const { return value; }
+};
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * The name of the software renderer.
  *
  * @since This constant is available since SDL 3.2.0.
  */
 constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * The name of the GPU renderer.
+ *
+ * @since This constant is available since SDL 3.4.0.
+ */
+constexpr auto GPU_RENDERER = SDL_GPU_RENDERER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Vertex structure.
@@ -177,6 +229,38 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING =
 constexpr TextureAccess TEXTUREACCESS_TARGET =
   SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * The addressing mode for a texture when used in Renderer.RenderGeometry().
+ *
+ * This affects how texture coordinates are interpreted outside of [0, 1]
+ *
+ * Texture wrapping is always supported for power of two texture sizes, and is
+ * supported for other texture sizes if prop::Renderer.TEXTURE_WRAPPING_BOOLEAN
+ * is set to true.
+ *
+ * @since This enum is available since SDL 3.4.0.
+ */
+using TextureAddressMode = SDL_TextureAddressMode;
+
+constexpr TextureAddressMode TEXTURE_ADDRESS_INVALID =
+  SDL_TEXTURE_ADDRESS_INVALID; ///< TEXTURE_ADDRESS_INVALID
+
+/**
+ * Wrapping is enabled if texture coordinates are outside [0, 1], this is the
+ * default
+ */
+constexpr TextureAddressMode TEXTURE_ADDRESS_AUTO = SDL_TEXTURE_ADDRESS_AUTO;
+
+/// Texture coordinates are clamped to the [0, 1] range
+constexpr TextureAddressMode TEXTURE_ADDRESS_CLAMP = SDL_TEXTURE_ADDRESS_CLAMP;
+
+constexpr TextureAddressMode TEXTURE_ADDRESS_WRAP =
+  SDL_TEXTURE_ADDRESS_WRAP; ///< The texture is repeated (tiled)
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * How the logical size is mapped to the output.
  *
@@ -193,7 +277,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_STRETCH =
 
 /**
  * The rendered content is fit to the largest dimension and the other dimension
- * is letterboxed with black bars
+ * is letterboxed with the clear color
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_LETTERBOX =
   SDL_LOGICAL_PRESENTATION_LETTERBOX;
@@ -211,6 +295,19 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
  */
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * A structure specifying the parameters of a GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.GPURenderState
+ */
+using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A structure representing rendering state
@@ -350,6 +447,17 @@ public:
    *   present synchronized with the refresh rate. This property can take any
    *   value that is supported by Renderer.SetVSync() for the renderer.
    *
+   * With the SDL GPU renderer (since SDL 3.4.0):
+   *
+   * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+   *   renderer, optional.
+   * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+   *   provide SPIR-V shaders to GPURenderState, optional.
+   * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+   *   provide DXIL shaders to GPURenderState, optional.
+   * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to
+   *   provide MSL shaders to GPURenderState, optional.
+   *
    * With the vulkan renderer:
    *
    * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use
@@ -395,7 +503,7 @@ public:
    *                rendering is done.
    * @throws Error on failure.
    *
-   * @threadsafety This function should only be called on the main thread.
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -455,6 +563,22 @@ public:
    */
   void Destroy();
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Return the GPU device used by a renderer.
+   *
+   * @returns the GPU device used by the renderer, or nullptr if the renderer is
+   *          not a GPU renderer; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  GPUDeviceRef GetGPUDevice();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
   /**
    * Get the window associated with a renderer.
    *
@@ -497,6 +621,8 @@ public:
    * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array
    *   of pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
    *   available texture formats for this renderer.
+   * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+   *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
    * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
    *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
    * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
@@ -597,6 +723,8 @@ public:
    *
    * @returns Point on success.
    * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -713,6 +841,8 @@ public:
    *   required
    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
+   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with Texture.SetPalette()
    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -787,6 +917,20 @@ public:
    * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
    *   you want to wrap an existing texture.
+   *
+   * With the GPU renderer:
+   *
+   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
+   *   with the texture, if you want to wrap an existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
    *
    * @param props the properties to use.
    * @returns the created texture or nullptr on failure; call GetError() for
@@ -890,14 +1034,6 @@ public:
    * specific dimensions but to make fonts look sharp, the app turns off logical
    * presentation while drawing text, for example.
    *
-   * For the renderer's window, letterboxing is drawn into the framebuffer if
-   * logical presentation is enabled during Renderer.Present; be sure to
-   * reenable it before presenting if you were toggling it, otherwise the
-   * letterbox areas might have artifacts from previous frames (or artifacts
-   * from external overlays, etc). Letterboxing is never drawn into texture
-   * render targets; be sure to call Renderer.RenderClear() before drawing into
-   * the texture so the letterboxing areas are cleared, if appropriate.
-   *
    * You can convert coordinates in an event into rendering coordinates using
    * Renderer.ConvertEventToRenderCoordinates().
    *
@@ -920,14 +1056,15 @@ public:
    * Get device independent resolution and presentation mode for rendering.
    *
    * This function gets the width and height of the logical rendering output, or
-   * the output size in pixels if a logical resolution is not enabled.
+   * 0 if a logical resolution is not enabled.
    *
    * Each render target has its own logical presentation state. This function
    * gets the state for the current render target.
    *
-   * @param w an int to be filled with the width.
-   * @param h an int to be filled with the height.
-   * @param mode the presentation mode used.
+   * @param w an int filled with the logical presentation width.
+   * @param h an int filled with the logical presentation height.
+   * @param mode a variable filled with the logical presentation mode being
+   *             used.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -944,10 +1081,14 @@ public:
    * Get device independent resolution and presentation mode for rendering.
    *
    * This function gets the width and height of the logical rendering output, or
-   * the output size in pixels if a logical resolution is not enabled.
+   * 0 if a logical resolution is not enabled.
+   *
+   * Each render target has its own logical presentation state. This function
+   * gets the state for the current render target.
    *
    * @param size a Point to be filled with the width and height.
-   * @param mode the presentation mode used.
+   * @param mode a variable filled with the logical presentation mode being
+   *             used.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1010,9 +1151,9 @@ public:
    * This takes into account several states:
    *
    * - The window dimensions.
-   * - The logical presentation settings (RendererRef.SetLogicalPresentation)
-   * - The scale (RendererRef.SetScale)
-   * - The viewport (RendererRef.SetViewport)
+   * - The logical presentation settings (Renderer.SetLogicalPresentation)
+   * - The scale (Renderer.SetScale)
+   * - The viewport (Renderer.SetViewport)
    *
    * @param coord the x, y coordinate in render coordinates.
    * @returns a FPoint filled with window coordinates on success.
@@ -1083,7 +1224,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.GetViewport
-   * @sa Renderer.IsViewportSet
+   * @sa Renderer.ViewportSet
    */
   void SetViewport(OptionalRef<const RectRaw> rect);
 
@@ -1117,7 +1258,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Renderer.IsViewportSet
+   * @sa Renderer.ViewportSet
    * @sa Renderer.SetViewport
    */
   Rect GetViewport() const;
@@ -1749,6 +1890,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderTexture
+   * @sa Renderer.RenderTexture9GridTiled
    */
   void RenderTexture9Grid(TextureParam texture,
                           OptionalRef<const FRectRaw> srcrect,
@@ -1758,6 +1900,54 @@ public:
                           float bottom_height,
                           float scale,
                           OptionalRef<const FRectRaw> dstrect);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Perform a scaled copy using the 9-grid algorithm to the current rendering
+   * target at subpixel precision.
+   *
+   * The pixels in the texture are split into a 3x3 grid, using the different
+   * corner sizes for each corner, and the sides and center making up the
+   * remaining pixels. The corners are then scaled using `scale` and fit into
+   * the corners of the destination rectangle. The sides and center are then
+   * tiled into place to cover the remaining destination rectangle.
+   *
+   * @param texture the source texture.
+   * @param srcrect the Rect structure representing the rectangle to be used for
+   *                the 9-grid, or nullptr to use the entire texture.
+   * @param left_width the width, in pixels, of the left corners in `srcrect`.
+   * @param right_width the width, in pixels, of the right corners in `srcrect`.
+   * @param top_height the height, in pixels, of the top corners in `srcrect`.
+   * @param bottom_height the height, in pixels, of the bottom corners in
+   *                      `srcrect`.
+   * @param scale the scale used to transform the corner of `srcrect` into the
+   *              corner of `dstrect`, or 0.0f for an unscaled copy.
+   * @param dstrect a pointer to the destination rectangle, or nullptr for the
+   *                entire rendering target.
+   * @param tileScale the scale used to transform the borders and center of
+   *                  `srcrect` into the borders and middle of `dstrect`, or
+   *                  1.0f for an unscaled copy.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.RenderTexture
+   * @sa Renderer.RenderTexture9Grid
+   */
+  void RenderTexture9GridTiled(TextureParam texture,
+                               const FRectRaw& srcrect,
+                               float left_width,
+                               float right_width,
+                               float top_height,
+                               float bottom_height,
+                               float scale,
+                               const FRectRaw& dstrect,
+                               float tileScale);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Render a list of triangles, optionally using a texture and indices into the
@@ -1776,6 +1966,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderGeometryRaw
+   * @sa Renderer.SetRenderTextureAddressMode
    */
   void RenderGeometry(TextureParam texture,
                       std::span<const Vertex> vertices,
@@ -1806,6 +1997,7 @@ public:
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Renderer.RenderGeometry
+   * @sa Renderer.SetRenderTextureAddressMode
    */
   void RenderGeometryRaw(TextureParam texture,
                          const float* xy,
@@ -1818,6 +2010,46 @@ public:
                          const void* indices,
                          int num_indices,
                          int size_indices);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set the texture addressing mode used in Renderer.RenderGeometry().
+   *
+   * @param u_mode the TextureAddressMode to use for horizontal texture
+   *               coordinates in Renderer.RenderGeometry().
+   * @param v_mode the TextureAddressMode to use for vertical texture
+   *               coordinates in Renderer.RenderGeometry().
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.RenderGeometry
+   * @sa Renderer.RenderGeometryRaw
+   * @sa Renderer.GetRenderTextureAddressMode
+   */
+  void SetRenderTextureAddressMode(TextureAddressMode u_mode,
+                                   TextureAddressMode v_mode);
+
+  /**
+   * Get the texture addressing mode used in Renderer.RenderGeometry().
+   *
+   * @param u_mode a pointer filled in with the TextureAddressMode to use for
+   *               horizontal texture coordinates in Renderer.RenderGeometry(),
+   *               may be nullptr.
+   * @param v_mode a pointer filled in with the TextureAddressMode to use for
+   *               vertical texture coordinates in Renderer.RenderGeometry(),
+   *               may be nullptr.
+   * @throws Error on failure.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.SetRenderTextureAddressMode
+   */
+  void GetRenderTextureAddressMode(TextureAddressMode* u_mode,
+                                   TextureAddressMode* v_mode);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Read pixels from the current rendering target.
@@ -1869,8 +2101,7 @@ public:
    * should not be done; you are only required to change back the rendering
    * target to default via `Renderer.SetTarget(renderer, nullptr)` afterwards,
    * as textures by themselves do not have a concept of backbuffers. Calling
-   * Renderer.Present while rendering to a texture will still update the screen
-   * with any current drawing that has been done _to the window itself_.
+   * Renderer.Present while rendering to a texture will fail.
    *
    * @throws Error on failure.
    *
@@ -2040,8 +2271,8 @@ public:
    * Among these limitations:
    *
    * - It accepts UTF-8 strings, but will only renders ASCII characters.
-   * - It has a single, tiny size (8x8 pixels). One can use logical presentation
-   *   or scaling to adjust it, but it will be blurry.
+   * - It has a single, tiny size (8x8 pixels). You can use logical presentation
+   *   or Renderer.SetScale() to adjust it.
    * - It uses a simple, hardcoded bitmap font. It does not allow different font
    *   selections and it does not support truetype, for proper scaling.
    * - It does no word-wrapping and does not treat newline characters as a line
@@ -2098,6 +2329,77 @@ public:
   void RenderDebugTextFormat(const FPointRaw& p,
                              std::string_view fmt,
                              ARGS... args);
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set default scale mode for new textures for given renderer.
+   *
+   * When a renderer is created, scale_mode defaults to SCALEMODE_LINEAR.
+   *
+   * @param scale_mode the scale mode to change to for new textures.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.GetDefaultTextureScaleMode
+   */
+  void SetDefaultTextureScaleMode(ScaleMode scale_mode);
+
+  /**
+   * Get default texture scale mode of the given renderer.
+   *
+   * @param scale_mode a ScaleMode filled with current default scale mode. See
+   *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
+   *                   the value.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Renderer.SetDefaultTextureScaleMode
+   */
+  void GetDefaultTextureScaleMode(ScaleMode* scale_mode);
+
+  /**
+   * Create custom GPU render state.
+   *
+   * @param createinfo a struct describing the GPU render state to create.
+   * @returns a custom GPU render state or nullptr on failure; call GetError()
+   *          for more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa GPURenderState.SetFragmentUniforms
+   * @sa Renderer.SetGPURenderState
+   * @sa GPURenderState.Destroy
+   */
+  GPURenderState CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+
+  /**
+   * Set custom GPU render state.
+   *
+   * This function sets custom GPU render state for subsequent draw calls. This
+   * allows using custom shaders with the GPU renderer.
+   *
+   * @param state the state to to use, or nullptr to clear custom GPU render
+   *              state.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetGPURenderState(GPURenderStateParam state);
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 };
 
 /// Semi-safe reference for Renderer.
@@ -2262,6 +2564,8 @@ public:
    *   required
    * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in
    *   pixels, required
+   * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+   *   texture formats. This can be set later with Texture.SetPalette()
    * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating
    *   point textures, this defines the value of 100% diffuse white, with higher
    *   values being displayed in the High Dynamic Range headroom. This defaults
@@ -2336,6 +2640,20 @@ public:
    * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
    *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
    *   you want to wrap an existing texture.
+   *
+   * With the GPU renderer:
+   *
+   * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated
+   *   with the texture, if you want to wrap an existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture
+   *   associated with the UV plane of an NV12 texture, if you want to wrap an
+   *   existing texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+   *   with the U plane of a YUV texture, if you want to wrap an existing
+   *   texture.
+   * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+   *   with the V plane of a YUV texture, if you want to wrap an existing
+   *   texture.
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
@@ -2579,6 +2897,17 @@ public:
    * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the
    *   texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
    *
+   * With the gpu renderer:
+   *
+   * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+   *   texture
+   * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with
+   *   the UV plane of an NV12 texture
+   * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the
+   *   U plane of a YUV texture
+   * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the
+   *   V plane of a YUV texture
+   *
    * @returns a valid property ID on success.
    * @throws Error on failure.
    *
@@ -2629,6 +2958,44 @@ public:
 
   /// Get the pixel format.
   PixelFormat GetFormat() const;
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+  /**
+   * Set the palette used by a texture.
+   *
+   * Setting the palette keeps an internal reference to the palette, which can
+   * be safely destroyed afterwards.
+   *
+   * A single palette can be shared with many textures.
+   *
+   * @param palette the Palette structure to use.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Palette.Palette
+   * @sa Texture.GetPalette
+   */
+  void SetPalette(PaletteParam palette);
+
+  /**
+   * Get the palette used by a texture.
+   *
+   * @returns a pointer to the palette used by the texture, or nullptr if there
+   *          is no palette used.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa Texture.SetPalette
+   */
+  Palette GetPalette();
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -3384,6 +3751,17 @@ inline Renderer CreateRenderer(WindowParam window, StringParam name)
  *   synchronized with the refresh rate. This property can take any value that
  *   is supported by Renderer.SetVSync() for the renderer.
  *
+ * With the SDL GPU renderer (since SDL 3.4.0):
+ *
+ * - `prop::Renderer.CREATE_GPU_DEVICE_POINTER`: the device to use with the
+ *   renderer, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_SPIRV_BOOLEAN`: the app is able to
+ *   provide SPIR-V shaders to GPURenderState, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_DXIL_BOOLEAN`: the app is able to
+ *   provide DXIL shaders to GPURenderState, optional.
+ * - `prop::Renderer.CREATE_GPU_SHADERS_MSL_BOOLEAN`: the app is able to provide
+ *   MSL shaders to GPURenderState, optional.
+ *
  * With the vulkan renderer:
  *
  * - `prop::Renderer.CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use with
@@ -3433,6 +3811,22 @@ constexpr auto CREATE_OUTPUT_COLORSPACE_NUMBER =
 constexpr auto CREATE_PRESENT_VSYNC_NUMBER =
   SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER;
 
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_GPU_DEVICE_POINTER =
+  SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
+
+constexpr auto CREATE_GPU_SHADERS_SPIRV_BOOLEAN =
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN;
+
+constexpr auto CREATE_GPU_SHADERS_DXIL_BOOLEAN =
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN;
+
+constexpr auto CREATE_GPU_SHADERS_MSL_BOOLEAN =
+  SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+
 constexpr auto CREATE_VULKAN_INSTANCE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER;
 
@@ -3464,6 +3858,13 @@ constexpr auto MAX_TEXTURE_SIZE_NUMBER =
 
 constexpr auto TEXTURE_FORMATS_POINTER =
   SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto TEXTURE_WRAPPING_BOOLEAN =
+  SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto OUTPUT_COLORSPACE_NUMBER =
   SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
@@ -3512,6 +3913,68 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 
 } // namespace prop::Renderer
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Create a 2D GPU rendering context.
+ *
+ * The GPU device to use is passed in as a parameter. If this is nullptr, then a
+ * device will be created normally and can be retrieved using
+ * Renderer.GetGPUDevice().
+ *
+ * The window to use is passed in as a parameter. If this is nullptr, then this
+ * will become an offscreen renderer. In that case, you should call
+ * Renderer.SetTarget() to setup rendering to a texture, and then call
+ * Renderer.Present() normally to complete drawing a frame.
+ *
+ * @param device the GPU device to use with the renderer, or nullptr to create a
+ *               device.
+ * @param window the window where rendering is displayed, or nullptr to create
+ *               an offscreen renderer.
+ * @returns a valid rendering context or nullptr if there was an error; call
+ *          GetError() for more information.
+ *
+ * @threadsafety If this function is called with a valid GPU device, it should
+ *               be called on the thread that created the device. If this
+ *               function is called with a valid window, it should be called on
+ *               the thread that created the window.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.Renderer
+ * @sa Renderer.GetGPUDevice
+ * @sa GPUShader.GPUShader
+ * @sa GPURenderState.GPURenderState
+ * @sa Renderer.SetGPURenderState
+ */
+inline RendererRef CreateGPURenderer(GPUDeviceParam device, WindowParam window)
+{
+  return SDL_CreateGPURenderer(device, window);
+}
+
+/**
+ * Return the GPU device used by a renderer.
+ *
+ * @param renderer the rendering context.
+ * @returns the GPU device used by the renderer, or nullptr if the renderer is
+ *          not a GPU renderer; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline GPUDeviceRef GetGPURendererDevice(RendererParam renderer)
+{
+  return SDL_GetGPURendererDevice(renderer);
+}
+
+inline GPUDeviceRef Renderer::GetGPUDevice()
+{
+  return SDL::GetGPURendererDevice(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Create a 2D software rendering context for a surface.
  *
@@ -3525,7 +3988,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
  * @returns a valid rendering context or nullptr if there was an error; call
  *          GetError() for more information.
  *
- * @threadsafety This function should only be called on the main thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -3602,6 +4065,8 @@ inline const char* Renderer::GetName() const
  * - `prop::Renderer.TEXTURE_FORMATS_POINTER`: a (const PixelFormat *) array of
  *   pixel formats, terminated with PIXELFORMAT_UNKNOWN, representing the
  *   available texture formats for this renderer.
+ * - `prop::Renderer.TEXTURE_WRAPPING_BOOLEAN`: true if the renderer supports
+ *   TEXTURE_ADDRESS_WRAP on non-power-of-two textures.
  * - `prop::Renderer.OUTPUT_COLORSPACE_NUMBER`: an Colorspace value describing
  *   the colorspace for output to the display, defaults to COLORSPACE_SRGB.
  * - `prop::Renderer.HDR_ENABLED_BOOLEAN`: true if the output colorspace is
@@ -3891,6 +4356,8 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *   required
  * - `prop::Texture.CREATE_HEIGHT_NUMBER`: the height of the texture in pixels,
  *   required
+ * - `prop::Texture.CREATE_PALETTE_POINTER`: an Palette to use with palettized
+ *   texture formats. This can be set later with Texture.SetPalette()
  * - `prop::Texture.CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point
  *   textures, this defines the value of 100% diffuse white, with higher values
  *   being displayed in the High Dynamic Range headroom. This defaults to 100
@@ -3966,6 +4433,18 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
  *   you want to wrap an existing texture.
  *
+ * With the GPU renderer:
+ *
+ * - `prop::Texture.CREATE_GPU_TEXTURE_POINTER`: the GPUTexture associated with
+ *   the texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_NUMBER`: the GPUTexture associated
+ *   with the UV plane of an NV12 texture, if you want to wrap an existing
+ *   texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_NUMBER`: the GPUTexture associated
+ *   with the U plane of a YUV texture, if you want to wrap an existing texture.
+ * - `SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_NUMBER`: the GPUTexture associated
+ *   with the V plane of a YUV texture, if you want to wrap an existing texture.
+ *
  * @param renderer the rendering context.
  * @param props the properties to use.
  * @returns the created texture or nullptr on failure; call GetError() for more
@@ -4005,6 +4484,12 @@ constexpr auto CREATE_ACCESS_NUMBER = SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER;
 constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
 
 constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto CREATE_SDR_WHITE_POINT_FLOAT =
   SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT;
@@ -4059,6 +4544,22 @@ constexpr auto CREATE_OPENGLES2_TEXTURE_V_NUMBER =
 
 constexpr auto CREATE_VULKAN_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto CREATE_GPU_TEXTURE_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
+
+constexpr auto CREATE_GPU_TEXTURE_UV_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER;
+
+constexpr auto CREATE_GPU_TEXTURE_U_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER;
+
+constexpr auto CREATE_GPU_TEXTURE_V_POINTER =
+  SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
 
@@ -4124,6 +4625,18 @@ constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
   SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER;
 
 constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
+
+#if SDL_VERSION_ATLEAST(3, 3, 2)
+
+constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
+
+constexpr auto GPU_TEXTURE_UV_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER;
+
+constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
+
+constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 2)
 
 } // namespace prop::Texture
 
@@ -4202,6 +4715,17 @@ constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
  *   with the V plane of a YUV texture
  * - `prop::Texture.OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the texture
  *   target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)
+ *
+ * With the gpu renderer:
+ *
+ * - `prop::Texture.GPU_TEXTURE_POINTER`: the GPUTexture associated with the
+ *   texture
+ * - `prop::Texture.GPU_TEXTURE_UV_POINTER`: the GPUTexture associated with the
+ *   UV plane of an NV12 texture
+ * - `prop::Texture.GPU_TEXTURE_U_POINTER`: the GPUTexture associated with the U
+ *   plane of a YUV texture
+ * - `prop::Texture.GPU_TEXTURE_V_POINTER`: the GPUTexture associated with the V
+ *   plane of a YUV texture
  *
  * @param texture the texture to query.
  * @returns a valid property ID on success.
@@ -4316,6 +4840,62 @@ inline PixelFormat Texture::GetFormat() const
 {
   return SDL::GetTextureFormat(m_resource);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set the palette used by a texture.
+ *
+ * Setting the palette keeps an internal reference to the palette, which can be
+ * safely destroyed afterwards.
+ *
+ * A single palette can be shared with many textures.
+ *
+ * @param texture the texture to update.
+ * @param palette the Palette structure to use.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Palette.Palette
+ * @sa Texture.GetPalette
+ */
+inline void SetTexturePalette(TextureParam texture, PaletteParam palette)
+{
+  CheckError(SDL_SetTexturePalette(texture, palette));
+}
+
+inline void Texture::SetPalette(PaletteParam palette)
+{
+  SDL::SetTexturePalette(m_resource, palette);
+}
+
+/**
+ * Get the palette used by a texture.
+ *
+ * @param texture the texture to query.
+ * @returns a pointer to the palette used by the texture, or nullptr if there is
+ *          no palette used.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Texture.SetPalette
+ */
+inline Palette GetTexturePalette(TextureParam texture)
+{
+  return Palette::Borrow(SDL_GetTexturePalette(texture));
+}
+
+inline Palette Texture::GetPalette()
+{
+  return SDL::GetTexturePalette(m_resource);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Set an additional color value multiplied into render copy operations.
@@ -5194,14 +5774,6 @@ inline Texture Renderer::GetTarget() const
  * specific dimensions but to make fonts look sharp, the app turns off logical
  * presentation while drawing text, for example.
  *
- * For the renderer's window, letterboxing is drawn into the framebuffer if
- * logical presentation is enabled during Renderer.Present; be sure to reenable
- * it before presenting if you were toggling it, otherwise the letterbox areas
- * might have artifacts from previous frames (or artifacts from external
- * overlays, etc). Letterboxing is never drawn into texture render targets; be
- * sure to call Renderer.RenderClear() before drawing into the texture so the
- * letterboxing areas are cleared, if appropriate.
- *
  * You can convert coordinates in an event into rendering coordinates using
  * Renderer.ConvertEventToRenderCoordinates().
  *
@@ -5234,16 +5806,16 @@ inline void Renderer::SetLogicalPresentation(const PointRaw& size,
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
- * This function gets the width and height of the logical rendering output, or
- * the output size in pixels if a logical resolution is not enabled.
+ * This function gets the width and height of the logical rendering output, or 0
+ * if a logical resolution is not enabled.
  *
  * Each render target has its own logical presentation state. This function gets
  * the state for the current render target.
  *
  * @param renderer the rendering context.
- * @param w an int to be filled with the width.
- * @param h an int to be filled with the height.
- * @param mode the presentation mode used.
+ * @param w an int filled with the logical presentation width.
+ * @param h an int filled with the logical presentation height.
+ * @param mode a variable filled with the logical presentation mode being used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5263,15 +5835,16 @@ inline void GetRenderLogicalPresentation(RendererParam renderer,
 /**
  * Get device independent resolution and presentation mode for rendering.
  *
- * This function gets the width and height of the logical rendering output, or
- * the output size in pixels if a logical resolution is not enabled.
+ * This function gets the width and height of the logical rendering output, or 0
+ * if a logical resolution is not enabled.
  *
  * Each render target has its own logical presentation state. This function gets
  * the state for the current render target.
  *
  * @param renderer the rendering context.
- * @param size a Point to be filled with the width and height.
- * @param mode the presentation mode used.
+ * @param size a Point to be filled  with the logical presentation width and
+ *             height.
+ * @param mode a variable filled with the logical presentation mode being used.
  * @throws Error on failure.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -5525,7 +6098,7 @@ inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Renderer.IsViewportSet
+ * @sa Renderer.ViewportSet
  * @sa Renderer.SetViewport
  */
 inline Rect GetRenderViewport(RendererParam renderer)
@@ -6500,6 +7073,7 @@ inline void Renderer::RenderTextureTiled(TextureParam texture,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderTexture
+ * @sa Renderer.RenderTexture9GridTiled
  */
 inline void RenderTexture9Grid(RendererParam renderer,
                                TextureParam texture,
@@ -6542,6 +7116,90 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
                           dstrect);
 }
 
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Perform a scaled copy using the 9-grid algorithm to the current rendering
+ * target at subpixel precision.
+ *
+ * The pixels in the texture are split into a 3x3 grid, using the different
+ * corner sizes for each corner, and the sides and center making up the
+ * remaining pixels. The corners are then scaled using `scale` and fit into the
+ * corners of the destination rectangle. The sides and center are then tiled
+ * into place to cover the remaining destination rectangle.
+ *
+ * @param renderer the renderer which should copy parts of a texture.
+ * @param texture the source texture.
+ * @param srcrect the Rect structure representing the rectangle to be used for
+ *                the 9-grid, or nullptr to use the entire texture.
+ * @param left_width the width, in pixels, of the left corners in `srcrect`.
+ * @param right_width the width, in pixels, of the right corners in `srcrect`.
+ * @param top_height the height, in pixels, of the top corners in `srcrect`.
+ * @param bottom_height the height, in pixels, of the bottom corners in
+ *                      `srcrect`.
+ * @param scale the scale used to transform the corner of `srcrect` into the
+ *              corner of `dstrect`, or 0.0f for an unscaled copy.
+ * @param dstrect a pointer to the destination rectangle, or nullptr for the
+ *                entire rendering target.
+ * @param tileScale the scale used to transform the borders and center of
+ *                  `srcrect` into the borders and middle of `dstrect`, or 1.0f
+ *                  for an unscaled copy.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.RenderTexture
+ * @sa Renderer.RenderTexture9Grid
+ */
+inline void RenderTexture9GridTiled(RendererParam renderer,
+                                    TextureParam texture,
+                                    const FRectRaw& srcrect,
+                                    float left_width,
+                                    float right_width,
+                                    float top_height,
+                                    float bottom_height,
+                                    float scale,
+                                    const FRectRaw& dstrect,
+                                    float tileScale)
+{
+  CheckError(SDL_RenderTexture9GridTiled(renderer,
+                                         texture,
+                                         &srcrect,
+                                         left_width,
+                                         right_width,
+                                         top_height,
+                                         bottom_height,
+                                         scale,
+                                         &dstrect,
+                                         tileScale));
+}
+
+inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
+                                              const FRectRaw& srcrect,
+                                              float left_width,
+                                              float right_width,
+                                              float top_height,
+                                              float bottom_height,
+                                              float scale,
+                                              const FRectRaw& dstrect,
+                                              float tileScale)
+{
+  SDL::RenderTexture9GridTiled(m_resource,
+                               texture,
+                               srcrect,
+                               left_width,
+                               right_width,
+                               top_height,
+                               bottom_height,
+                               scale,
+                               dstrect,
+                               tileScale);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+
 /**
  * Render a list of triangles, optionally using a texture and indices into the
  * vertex array Color and alpha modulation is done per vertex
@@ -6560,6 +7218,7 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderGeometryRaw
+ * @sa Renderer.SetRenderTextureAddressMode
  */
 inline void RenderGeometry(RendererParam renderer,
                            TextureParam texture,
@@ -6606,6 +7265,7 @@ inline void Renderer::RenderGeometry(TextureParam texture,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Renderer.RenderGeometry
+ * @sa Renderer.SetRenderTextureAddressMode
  */
 inline void RenderGeometryRaw(RendererParam renderer,
                               TextureParam texture,
@@ -6659,6 +7319,68 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
                          num_indices,
                          size_indices);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set the texture addressing mode used in Renderer.RenderGeometry().
+ *
+ * @param renderer the rendering context.
+ * @param u_mode the TextureAddressMode to use for horizontal texture
+ *               coordinates in Renderer.RenderGeometry().
+ * @param v_mode the TextureAddressMode to use for vertical texture coordinates
+ *               in Renderer.RenderGeometry().
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.RenderGeometry
+ * @sa Renderer.RenderGeometryRaw
+ * @sa Renderer.GetRenderTextureAddressMode
+ */
+inline void SetRenderTextureAddressMode(RendererParam renderer,
+                                        TextureAddressMode u_mode,
+                                        TextureAddressMode v_mode)
+{
+  CheckError(SDL_SetRenderTextureAddressMode(renderer, u_mode, v_mode));
+}
+
+inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
+                                                  TextureAddressMode v_mode)
+{
+  SDL::SetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+}
+
+/**
+ * Get the texture addressing mode used in Renderer.RenderGeometry().
+ *
+ * @param renderer the rendering context.
+ * @param u_mode a pointer filled in with the TextureAddressMode to use for
+ *               horizontal texture coordinates in Renderer.RenderGeometry(),
+ *               may be nullptr.
+ * @param v_mode a pointer filled in with the TextureAddressMode to use for
+ *               vertical texture coordinates in Renderer.RenderGeometry(), may
+ *               be nullptr.
+ * @throws Error on failure.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.SetRenderTextureAddressMode
+ */
+inline void GetRenderTextureAddressMode(RendererParam renderer,
+                                        TextureAddressMode* u_mode,
+                                        TextureAddressMode* v_mode)
+{
+  CheckError(SDL_GetRenderTextureAddressMode(renderer, u_mode, v_mode));
+}
+
+inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
+                                                  TextureAddressMode* v_mode)
+{
+  SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
+}
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * Read pixels from the current rendering target.
@@ -6719,8 +7441,7 @@ inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
  * not be done; you are only required to change back the rendering target to
  * default via `Renderer.SetTarget(renderer, nullptr)` afterwards, as textures
  * by themselves do not have a concept of backbuffers. Calling Renderer.Present
- * while rendering to a texture will still update the screen with any current
- * drawing that has been done _to the window itself_.
+ * while rendering to a texture will fail.
  *
  * @param renderer the rendering context.
  * @throws Error on failure.
@@ -7011,8 +7732,8 @@ constexpr int DEBUG_TEXT_FONT_CHARACTER_SIZE =
  * Among these limitations:
  *
  * - It accepts UTF-8 strings, but will only renders ASCII characters.
- * - It has a single, tiny size (8x8 pixels). One can use logical presentation
- *   or scaling to adjust it, but it will be blurry.
+ * - It has a single, tiny size (8x8 pixels). You can use logical presentation
+ *   or Renderer.SetScale() to adjust it.
  * - It uses a simple, hardcoded bitmap font. It does not allow different font
  *   selections and it does not support truetype, for proper scaling.
  * - It does no word-wrapping and does not treat newline characters as a line
@@ -7091,6 +7812,329 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
 {
   SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
+
+#if SDL_VERSION_ATLEAST(3, 3, 6)
+
+/**
+ * Set default scale mode for new textures for given renderer.
+ *
+ * When a renderer is created, scale_mode defaults to SCALEMODE_LINEAR.
+ *
+ * @param renderer the renderer to update.
+ * @param scale_mode the scale mode to change to for new textures.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.GetDefaultTextureScaleMode
+ */
+inline void SetDefaultTextureScaleMode(RendererParam renderer,
+                                       ScaleMode scale_mode)
+{
+  CheckError(SDL_SetDefaultTextureScaleMode(renderer, scale_mode));
+}
+
+inline void Renderer::SetDefaultTextureScaleMode(ScaleMode scale_mode)
+{
+  SDL::SetDefaultTextureScaleMode(m_resource, scale_mode);
+}
+
+/**
+ * Get default texture scale mode of the given renderer.
+ *
+ * @param renderer the renderer to get data from.
+ * @param scale_mode a ScaleMode filled with current default scale mode. See
+ *                   Renderer.SetDefaultTextureScaleMode() for the meaning of
+ *                   the value.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa Renderer.SetDefaultTextureScaleMode
+ */
+inline void GetDefaultTextureScaleMode(RendererParam renderer,
+                                       ScaleMode* scale_mode)
+{
+  CheckError(SDL_GetDefaultTextureScaleMode(renderer, scale_mode));
+}
+
+inline void Renderer::GetDefaultTextureScaleMode(ScaleMode* scale_mode)
+{
+  SDL::GetDefaultTextureScaleMode(m_resource, scale_mode);
+}
+
+/**
+ * A custom GPU render state.
+ *
+ * @since This struct is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.GPURenderState
+ * @sa GPURenderState.SetFragmentUniforms
+ * @sa Renderer.SetGPURenderState
+ * @sa GPURenderState.Destroy
+ *
+ * @cat resource
+ */
+class GPURenderState
+{
+  GPURenderStateRaw m_resource = nullptr;
+
+public:
+  /// Default ctor
+  constexpr GPURenderState() = default;
+
+  /**
+   * Constructs from GPURenderStateParam.
+   *
+   * @param resource a GPURenderStateRaw to be wrapped.
+   *
+   * This assumes the ownership, call release() if you need to take back.
+   */
+  constexpr explicit GPURenderState(const GPURenderStateRaw resource)
+    : m_resource(resource)
+  {
+  }
+
+  /// Copy constructor
+  constexpr GPURenderState(const GPURenderState& other) = delete;
+
+  /// Move constructor
+  constexpr GPURenderState(GPURenderState&& other)
+    : GPURenderState(other.release())
+  {
+  }
+
+  constexpr GPURenderState(const GPURenderStateRef& other) = delete;
+
+  constexpr GPURenderState(GPURenderStateRef&& other) = delete;
+
+  /**
+   * Create custom GPU render state.
+   *
+   * @param renderer the renderer to use.
+   * @param createinfo a struct describing the GPU render state to create.
+   * @post a custom GPU render state or nullptr on failure; call GetError() for
+   *       more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa GPURenderState.SetFragmentUniforms
+   * @sa Renderer.SetGPURenderState
+   * @sa GPURenderState.Destroy
+   */
+  GPURenderState(RendererParam renderer, GPURenderStateCreateInfo* createinfo)
+    : m_resource(SDL_CreateGPURenderState(renderer, createinfo))
+  {
+  }
+
+  /// Destructor
+  ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
+
+  /// Assignment operator.
+  GPURenderState& operator=(GPURenderState other)
+  {
+    std::swap(m_resource, other.m_resource);
+    return *this;
+  }
+
+  /// Retrieves underlying GPURenderStateRaw.
+  constexpr GPURenderStateRaw get() const { return m_resource; }
+
+  /// Retrieves underlying GPURenderStateRaw and clear this.
+  constexpr GPURenderStateRaw release()
+  {
+    auto r = m_resource;
+    m_resource = nullptr;
+    return r;
+  }
+
+  /// Comparison
+  constexpr auto operator<=>(const GPURenderState& other) const = default;
+
+  /// Comparison
+  constexpr bool operator==(std::nullptr_t _) const { return !m_resource; }
+
+  /// Converts to bool
+  constexpr explicit operator bool() const { return !!m_resource; }
+
+  /// Converts to GPURenderStateParam
+  constexpr operator GPURenderStateParam() const noexcept
+  {
+    return {m_resource};
+  }
+
+  /**
+   * Destroy custom GPU render state.
+   *
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa GPURenderState.GPURenderState
+   */
+  void Destroy();
+
+  /**
+   * Set fragment shader uniform variables in a custom GPU render state.
+   *
+   * The data is copied and will be pushed using
+   * GPUCommandBuffer.PushFragmentUniformData() during draw call execution.
+   *
+   * @param slot_index the fragment uniform slot to push data to.
+   * @param data client data to write.
+   * @param length the length of the data to write.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               renderer.
+   *
+   * @since This function is available since SDL 3.4.0.
+   */
+  void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
+};
+
+/// Semi-safe reference for GPURenderState.
+struct GPURenderStateRef : GPURenderState
+{
+  /**
+   * Constructs from GPURenderStateParam.
+   *
+   * @param resource a GPURenderStateRaw or GPURenderState.
+   *
+   * This does not takes ownership!
+   */
+  GPURenderStateRef(GPURenderStateParam resource)
+    : GPURenderState(resource.value)
+  {
+  }
+
+  /// Copy constructor.
+  GPURenderStateRef(const GPURenderStateRef& other)
+    : GPURenderState(other.get())
+  {
+  }
+
+  /// Destructor
+  ~GPURenderStateRef() { release(); }
+};
+
+/**
+ * Create custom GPU render state.
+ *
+ * @param renderer the renderer to use.
+ * @param createinfo a struct describing the GPU render state to create.
+ * @returns a custom GPU render state or nullptr on failure; call GetError() for
+ *          more information.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.SetFragmentUniforms
+ * @sa Renderer.SetGPURenderState
+ * @sa GPURenderState.Destroy
+ */
+inline GPURenderState CreateGPURenderState(RendererParam renderer,
+                                           GPURenderStateCreateInfo* createinfo)
+{
+  return GPURenderState(renderer, createinfo);
+}
+
+inline GPURenderState Renderer::CreateGPURenderState(
+  GPURenderStateCreateInfo* createinfo)
+{
+  return GPURenderState(m_resource, createinfo);
+}
+
+/**
+ * Set fragment shader uniform variables in a custom GPU render state.
+ *
+ * The data is copied and will be pushed using
+ * GPUCommandBuffer.PushFragmentUniformData() during draw call execution.
+ *
+ * @param state the state to modify.
+ * @param slot_index the fragment uniform slot to push data to.
+ * @param data client data to write.
+ * @param length the length of the data to write.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetGPURenderStateFragmentUniforms(GPURenderStateParam state,
+                                              Uint32 slot_index,
+                                              const void* data,
+                                              Uint32 length)
+{
+  CheckError(
+    SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
+}
+
+inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
+                                                const void* data,
+                                                Uint32 length)
+{
+  SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
+}
+
+/**
+ * Set custom GPU render state.
+ *
+ * This function sets custom GPU render state for subsequent draw calls. This
+ * allows using custom shaders with the GPU renderer.
+ *
+ * @param renderer the renderer to use.
+ * @param state the state to to use, or nullptr to clear custom GPU render
+ *              state.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ */
+inline void SetGPURenderState(RendererParam renderer, GPURenderStateParam state)
+{
+  CheckError(SDL_SetGPURenderState(renderer, state));
+}
+
+inline void Renderer::SetGPURenderState(GPURenderStateParam state)
+{
+  SDL::SetGPURenderState(m_resource, state);
+}
+
+/**
+ * Destroy custom GPU render state.
+ *
+ * @param state the state to destroy.
+ *
+ * @threadsafety This function should be called on the thread that created the
+ *               renderer.
+ *
+ * @since This function is available since SDL 3.4.0.
+ *
+ * @sa GPURenderState.GPURenderState
+ */
+inline void DestroyGPURenderState(GPURenderStateRaw state)
+{
+  SDL_DestroyGPURenderState(state);
+}
+
+inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
+
+#endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
 /// @}
 
