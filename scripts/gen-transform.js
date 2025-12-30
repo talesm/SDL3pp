@@ -4490,20 +4490,114 @@ const transform = {
             "SDL_CreateSoftwareRenderer": "ctor",
           }
         },
+        "CreateWindowAndRendererRaw": {
+          before: "SDL_CreateWindowAndRenderer",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "WindowRaw *",
+            name: "window"
+          },
+          {
+            type: "RendererRaw *",
+            name: "renderer"
+          }],
+        },
         "SDL_CreateWindowAndRenderer": {
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "Window *",
+            name: "window"
+          },
+          {
+            type: "Renderer *",
+            name: "renderer"
+          }],
+        },
+        "CreateWindowAndRenderer": {
+          kind: "function",
           type: "std::pair<Window, Renderer>",
-          parameters: [
-            {},
-            {
-              type: "const PointRaw &",
-              name: "size"
-            },
-            {
-              type: "WindowFlags",
-              name: "window_flags",
-              default: "0"
-            }
-          ]
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags",
+            default: "0"
+          }]
+        },
+        "CreateWindowAndRenderer#2": {
+          kind: "function",
+          name: "CreateWindowAndRenderer",
+          type: "Window",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "Renderer *",
+            name: "renderer"
+          }]
+        },
+        "Window::Window": {
+          kind: "function",
+          type: "",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "RendererRef *",
+            name: "renderer"
+          }],
+          hints: {
+            mayFail: true,
+            init: ["Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"]
+          },
         },
         "SDL_GetRenderer": {
           name: "Window::GetRenderer",
