@@ -7285,13 +7285,14 @@ const transform = {
           }],
           hints: { body: "SDL_DelayNS(duration.count());" },
         },
-        "SDL_DelayPrecise": {
-          "parameters": [
-            {
-              "type": "std::chrono::nanoseconds",
-              "name": "duration"
-            }
-          ]
+        "DelayPrecise": {
+          after: "SDL_DelayPrecise",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "std::chrono::nanoseconds",
+            name: "duration"
+          }]
         },
         "SDL_NSTimerCallback": {
           name: "TimerCallback",

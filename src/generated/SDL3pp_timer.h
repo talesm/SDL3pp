@@ -181,9 +181,27 @@ inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
  * @sa Delay
  * @sa DelayNS
  */
+inline void DelayPrecise(Uint64 ns) { SDL_DelayPrecise(ns); }
+
+/**
+ * Wait a specified number of nanoseconds before returning.
+ *
+ * This function waits a specified number of nanoseconds before returning. It
+ * will attempt to wait as close to the requested time as possible, busy waiting
+ * if necessary, but could return later due to OS scheduling.
+ *
+ * @param ns the number of nanoseconds to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay
+ * @sa DelayNS
+ */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
-  SDL_DelayPrecise(duration);
+  static_assert(false, "Not implemented");
 }
 
 /**

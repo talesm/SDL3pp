@@ -29,7 +29,7 @@ De-smart-fy
 - [x] Simplify timer functions:
   - [x] GetTicksMS and GetTicksNS that return integers;
   - [x] Delay overload takes integers type;
-  - [ ] DelayPrecise overload takes integer type
+  - [x] DelayPrecise overload takes integer type
   - [ ] AddTimer accepting SDL_AddTimer callback;
 - [x] Merge preview 3.3.x;
 
