@@ -68,6 +68,7 @@ export interface EntryHint {
   delegate?: string;
   methodName?: string;
   noexcept?: boolean;
+  copyDoc?: string;
 }
 
 export interface VersionTag {

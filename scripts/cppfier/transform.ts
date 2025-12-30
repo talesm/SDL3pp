@@ -2035,6 +2035,11 @@ function makeSortedEntryArray(
     }
     delete entryDelta.before;
     delete entryDelta.after;
+    if (entryDelta.hints?.copyDoc) {
+      const copyDoc = entryDelta.hints.copyDoc;
+      delete entryDelta.hints.copyDoc;
+      entryDelta.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+    }
   }
 
   const sortedEntries: Dict<ApiEntry> = {};

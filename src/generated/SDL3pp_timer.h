@@ -49,6 +49,20 @@ inline std::chrono::nanoseconds GetTicks()
   return std::chrono::nanoseconds(SDL_GetTicksNS());
 }
 
+/**
+ * Get the number of milliseconds that have elapsed since the SDL library
+ * initialization.
+ *
+ * @returns an unsigned 64‑bit integer that represents the number of
+ *          milliseconds that have elapsed since the SDL library was initialized
+ *          (typically via a call to Init).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTicksNS
+ */
 inline Uint64 GetTicksMS() { return SDL_GetTicks(); }
 
 /**

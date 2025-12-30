@@ -7273,7 +7273,7 @@ const transform = {
           kind: "function",
           type: "Uint64",
           parameters: [],
-          hints: { body: "return SDL_GetTicks();" },
+          hints: { body: "return SDL_GetTicks();", copyDoc: "SDL_GetTicks" },
         },
         "Delay": {
           after: "SDL_Delay",
