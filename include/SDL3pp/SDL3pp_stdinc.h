@@ -4317,6 +4317,119 @@ inline int vasprintf(char** strp,
 inline void srand(Uint64 seed) { SDL_srand(seed); }
 
 /**
+ * A independent pseudo random state
+ *
+ * This can be instantiated in any thread and as long as it is not shared with
+ * another thread all members are safe to call.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ */
+class Random
+{
+  Uint64 m_state;
+
+public:
+  /// Default constructor initializes state to zero
+  constexpr Random()
+    : m_state(0)
+  {
+  }
+
+  /**
+   * Init state with the given value
+   */
+  constexpr explicit Random(Uint64 state)
+    : m_state(state)
+  {
+  }
+
+  /// Convert to the underlying type
+  constexpr operator Uint64() const { return m_state; }
+
+  /**
+   * Generate a pseudo-random number less than n for positive n
+   *
+   * The method used is faster and of better quality than `rand() % n`. Odds are
+   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+   * much worse as n gets bigger.
+   *
+   * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+   * 1..6
+   *
+   * If you want to generate a pseudo-random number in the full range of Sint32,
+   * you should use: (Sint32)rand_bits(state)
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @param n the number of possible outcomes. n must be positive.
+   * @returns a random value in the range of [0 .. n-1].
+   *
+   * @threadsafety This function is thread-safe, as long as the state pointer
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand
+   * @sa rand_bits
+   * @sa randf
+   */
+  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
+
+  /**
+   * Generate a uniform pseudo-random floating point number less than 1.0
+   *
+   * If you want reproducible output, be sure to initialize with srand() first.
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0.0, 1.0).
+   *
+   * @threadsafety This function is thread-safe, as long as the state pointer
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand_bits
+   * @sa rand
+   * @sa randf
+   */
+  float randf() { return SDL_randf_r(&m_state); }
+
+  /**
+   * Generate 32 pseudo-random bits.
+   *
+   * You likely want to use rand() to get a pseudo-random number instead.
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0-MAX_UINT32].
+   *
+   * @threadsafety This function is thread-safe, as long as the state pointer
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand
+   * @sa randf
+   */
+  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
+};
+
+/**
  * Generate a pseudo-random number less than n for positive n
  *
  * The method used is faster and of better quality than `rand() % n`. Odds are
@@ -4349,6 +4462,73 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
 inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 
 /**
+ * Generate a pseudo-random number less than n for positive n
+ *
+ * The method used is faster and of better quality than `rand() % n`. Odds are
+ * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+ * much worse as n gets bigger.
+ *
+ * Example: to simulate a d6 use `rand(state, 6) + 1` The +1 converts 0..5 to
+ * 1..6
+ *
+ * If you want to generate a pseudo-random number in the full range of Sint32,
+ * you should use: (Sint32)rand_bits(state)
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @param n the number of possible outcomes. n must be positive.
+ * @returns a random value in the range of [0 .. n-1].
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand
+ * @sa rand_bits
+ * @sa randf
+ */
+inline Sint32 rand(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
+
+/**
+ * Generate a pseudo-random number less than n for positive n
+ *
+ * The method used is faster and of better quality than `rand() % n`. Odds are
+ * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+ * much worse as n gets bigger.
+ *
+ * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to 1..6
+ *
+ * If you want to generate a pseudo-random number in the full range of Sint32,
+ * you should use: (Sint32)rand_bits()
+ *
+ * If you want reproducible output, be sure to initialize with srand() first.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param n the number of possible outcomes. n must be positive.
+ * @returns a random value in the range of [0 .. n-1].
+ *
+ * @threadsafety All calls should be made from a single thread
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa srand
+ * @sa randf
+ */
+inline Sint32 rand(Random& state, Sint32 n) { return state.rand(n); }
+
+/**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
  * If you want reproducible output, be sure to initialize with srand() first.
@@ -4369,6 +4549,54 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
  * @sa rand
  */
 inline float randf() { return SDL_randf(); }
+
+/**
+ * Generate a uniform pseudo-random floating point number less than 1.0
+ *
+ * If you want reproducible output, be sure to initialize with srand() first.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0.0, 1.0).
+ *
+ * @threadsafety This function is thread-safe, as long as the state pointer
+ *               isn't shared between threads.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand_bits
+ * @sa rand
+ * @sa randf
+ */
+inline float randf(Uint64* state) { return SDL_randf_r(state); }
+
+/**
+ * Generate a uniform pseudo-random floating point number less than 1.0
+ *
+ * If you want reproducible output, be sure to initialize with srand() first.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @returns a random value in the range of [0.0, 1.0).
+ *
+ * @threadsafety All calls should be made from a single thread
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa srand
+ * @sa rand
+ */
+inline float randf(Random& state) { return state.randf(); }
 
 /**
  * Generate 32 pseudo-random bits.
@@ -4394,182 +4622,9 @@ inline float randf() { return SDL_randf(); }
 inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 /**
- * A independent pseudo random state
- *
- * This can be instantiated in any thread and as long as it is not shared with
- * another thread all members are safe to call.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- */
-class Random
-{
-  Uint64 m_state;
-
-public:
-  constexpr Random()
-    : m_state(0)
-  {
-  }
-
-  /**
-   * Init state with the given value
-   */
-  constexpr explicit Random(Uint64 state)
-    : m_state(state)
-  {
-  }
-
-  /// Convert to the underlying type
-  constexpr operator Uint64() { return m_state; }
-
-  /**
-   * Generate a pseudo-random number less than n for positive n
-   *
-   * The method used is faster and of better quality than `rand() % n`. Odds are
-   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
-   * much worse as n gets bigger.
-   *
-   * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
-   * 0..5 to 1..6
-   *
-   * If you want to generate a pseudo-random number in the full range of Sint32,
-   * you should use: (Sint32)state.rand_bits()
-   *
-   * There are no guarantees as to the quality of the random sequence produced,
-   * and this should not be used for security (cryptography, passwords) or where
-   * money is on the line (loot-boxes, casinos). There are many random number
-   * libraries available with different characteristics and you should pick one
-   * of those to meet any serious needs.
-   *
-   * @param n the number of possible outcomes. n must be positive.
-   * @returns a random value in the range of [0 .. n-1].
-   *
-   * @threadsafety This function is thread-safe, as long as this object
-   *               isn't shared between threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa rand
-   * @sa Random.rand_bits
-   * @sa Random.randf
-   */
-  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
-
-  /**
-   * Generate a uniform pseudo-random floating point number less than 1.0
-   *
-   * If you want reproducible output, be sure to initialize with srand() first.
-   *
-   * There are no guarantees as to the quality of the random sequence produced,
-   * and this should not be used for security (cryptography, passwords) or where
-   * money is on the line (loot-boxes, casinos). There are many random number
-   * libraries available with different characteristics and you should pick one
-   * of those to meet any serious needs.
-   *
-   * @returns a random value in the range of [0.0, 1.0).
-   *
-   * @threadsafety This function is thread-safe, as long as this object
-   *               isn't shared between threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Random.rand_bits
-   * @sa Random.rand
-   * @sa randf
-   */
-  float randf() { return SDL_randf_r(&m_state); }
-
-  /**
-   * Generate 32 pseudo-random bits.
-   *
-   * You likely want to use Random.rand() to get a pseudo-random number instead.
-   *
-   * There are no guarantees as to the quality of the random sequence produced,
-   * and this should not be used for security (cryptography, passwords) or where
-   * money is on the line (loot-boxes, casinos). There are many random number
-   * libraries available with different characteristics and you should pick one
-   * of those to meet any serious needs.
-   *
-   * @returns a random value in the range of [0-MAX_UINT32].
-   *
-   * @threadsafety This function is thread-safe, as long as this object
-   *               isn't shared between threads.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Random.rand
-   * @sa Random.randf
-   */
-  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
-};
-
-/**
- * Generate a pseudo-random number less than n for positive n
- *
- * The method used is faster and of better quality than `rand() % n`. Odds are
- * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
- * much worse as n gets bigger.
- *
- * Example: to simulate a d6 use `Random.rand(state, 6) + 1` The +1 converts
- * 0..5 to 1..6
- *
- * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)Random.rand_bits(state)
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one of
- * those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              nullptr.
- * @param n the number of possible outcomes. n must be positive.
- * @returns a random value in the range of [0 .. n-1].
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa rand
- * @sa Random.rand_bits
- * @sa Random.randf
- */
-inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
-
-/**
- * Generate a uniform pseudo-random floating point number less than 1.0
- *
- * If you want reproducible output, be sure to initialize with srand() first.
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one of
- * those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              nullptr.
- * @returns a random value in the range of [0.0, 1.0).
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Random.rand_bits
- * @sa Random.rand
- * @sa randf
- */
-inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
-
-/**
  * Generate 32 pseudo-random bits.
  *
- * You likely want to use Random.rand() to get a psuedo-random number instead.
+ * You likely want to use rand() to get a pseudo-random number instead.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -4586,10 +4641,35 @@ inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Random.rand
- * @sa Random.randf
+ * @sa rand
+ * @sa randf
  */
-inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+inline Uint32 rand_bits(Uint64* state) { return SDL_rand_bits_r(state); }
+
+/**
+ * Generate 32 pseudo-random bits.
+ *
+ * You likely want to use rand() to get a pseudo-random number instead.
+ *
+ * There are no guarantees as to the quality of the random sequence produced,
+ * and this should not be used for security (cryptography, passwords) or where
+ * money is on the line (loot-boxes, casinos). There are many random number
+ * libraries available with different characteristics and you should pick one of
+ * those to meet any serious needs.
+ *
+ * @param state a pointer to the current random number state, this may not be
+ *              nullptr.
+ * @returns a random value in the range of [0-MAX_UINT32].
+ *
+ * @threadsafety All calls should be made from a single thread
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa rand
+ * @sa randf
+ * @sa srand
+ */
+inline Uint32 rand_bits(Random& state) { return state.rand_bits(); }
 
 /**
  * The value of Pi, as a double-precision floating point literal.
