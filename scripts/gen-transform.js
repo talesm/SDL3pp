@@ -7231,8 +7231,6 @@ const transform = {
     "SDL_timer.h": {
       localIncludes: ["SDL3pp_stdinc.h"],
       ignoreEntries: [
-        "SDL_TimerCallback",
-        "SDL_AddTimer",
         "SDL_MS_PER_SECOND",
         "SDL_US_PER_SECOND",
         "SDL_NS_PER_SECOND",
@@ -7294,7 +7292,11 @@ const transform = {
             name: "duration"
           }]
         },
+        "SDL_TimerCallback": {
+          name: "MSTimerCallback",
+        },
         "SDL_NSTimerCallback": {
+          before: "SDL_AddTimer",
           callback: {
             wrapper: "TimerCB",
             functorSupport: "lightweight",
@@ -7307,6 +7309,22 @@ const transform = {
               type: "std::chrono::nanoseconds"
             }]
           },
+        },
+        "SDL_AddTimer": {
+          parameters: [
+            {
+              type: "std::chrono::milliseconds",
+              name: "interval"
+            },
+            {
+              type: "MSTimerCallback",
+              name: "callback"
+            },
+            {
+              type: "void *",
+              name: "userdata"
+            }
+          ]
         },
         "SDL_AddTimerNS": {
           name: "AddTimer",
