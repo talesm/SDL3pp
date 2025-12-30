@@ -4494,72 +4494,86 @@ const transform = {
           before: "SDL_CreateWindowAndRenderer",
           kind: "function",
           type: "void",
-          parameters: [
-            {
-              type: "StringParam",
-              name: "title"
-            },
-            {
-              type: "const PointRaw &",
-              name: "size"
-            },
-            {
-              type: "WindowFlags",
-              name: "window_flags"
-            },
-            {
-              type: "WindowRaw *",
-              name: "window"
-            },
-            {
-              type: "RendererRaw *",
-              name: "renderer"
-            }
-          ],
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "WindowRaw *",
+            name: "window"
+          },
+          {
+            type: "RendererRaw *",
+            name: "renderer"
+          }],
         },
         "SDL_CreateWindowAndRenderer": {
-          type: "void",
-          parameters: [
-            {
-              type: "StringParam",
-              name: "title"
-            },
-            {
-              type: "const PointRaw &",
-              name: "size"
-            },
-            {
-              type: "WindowFlags",
-              name: "window_flags"
-            },
-            {
-              type: "Window *",
-              name: "window"
-            },
-            {
-              type: "Renderer *",
-              name: "renderer"
-            }
-          ],
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "Window *",
+            name: "window"
+          },
+          {
+            type: "Renderer *",
+            name: "renderer"
+          }],
         },
         "CreateWindowAndRenderer": {
           kind: "function",
           type: "std::pair<Window, Renderer>",
-          parameters: [
-            {
-              type: "StringParam",
-              name: "title"
-            },
-            {
-              type: "const PointRaw &",
-              name: "size"
-            },
-            {
-              type: "WindowFlags",
-              name: "window_flags",
-              default: "0"
-            }
-          ]
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags",
+            default: "0"
+          }]
+        },
+        "CreateWindowAndRenderer#2": {
+          kind: "function",
+          name: "CreateWindowAndRenderer",
+          type: "Window",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "Renderer *",
+            name: "renderer"
+          }]
         },
         "SDL_GetRenderer": {
           name: "Window::GetRenderer",

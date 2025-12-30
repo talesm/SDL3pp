@@ -3191,6 +3191,33 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 }
 
 /**
+ * Create a window and default renderer.
+ *
+ * @param title the title of the window, in UTF-8 encoding.
+ * @param width the width of the window.
+ * @param height the height of the window.
+ * @param window_flags the flags used to create the window (see
+ *                     Window.Window()).
+ * @param window a pointer filled with the window, or nullptr on error.
+ * @param renderer a pointer filled with the renderer, or nullptr on error.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer.Renderer
+ * @sa Window.Window
+ */
+inline Window CreateWindowAndRenderer(StringParam title,
+                                      const PointRaw& size,
+                                      WindowFlags window_flags,
+                                      Renderer* renderer)
+{
+  static_assert(false, "Not implemented");
+}
+
+/**
  * Create a 2D rendering context for a window.
  *
  * If you want a specific renderer, you can specify its name here. A list of
