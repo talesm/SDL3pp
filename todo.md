@@ -20,8 +20,8 @@ Next version
 
 De-smart-fy
 
-- [ ] CreateWindowAndRenderer to take pointers instead of returning pair;
-- [ ] Add overload CreateWindowAndRenderer that returns Window;
+- [x] CreateWindowAndRenderer to take pointers instead of returning pair;
+- [x] Add overload CreateWindowAndRenderer that returns Window;
 - [ ] Make free standing version of Random;
 - [ ] Add named versions Delay that takes integer;
 - [ ] Merge preview 3.3.x;
