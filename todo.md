@@ -3,6 +3,7 @@ Todo for next version
 
 New Version checklist:
 
+- [ ] Create version branch (b0.6.0);
 - [ ] Update [changelog](changelog.md);
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);
@@ -14,6 +15,7 @@ New Version checklist:
 - [ ] Create new Release on <https://github.com/talesm/SDL3pp>
   - [ ] Don't forget go add SDL3pp_zip_amalgamation and SDL3pp_zip_full to the
     downloads!
+- [ ] Merge branch into main
 
 Next version
 ------------
