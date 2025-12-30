@@ -4575,6 +4575,30 @@ const transform = {
             name: "renderer"
           }]
         },
+        "Window::Window": {
+          kind: "function",
+          type: "",
+          parameters: [{
+            type: "StringParam",
+            name: "title"
+          },
+          {
+            type: "const PointRaw &",
+            name: "size"
+          },
+          {
+            type: "WindowFlags",
+            name: "window_flags"
+          },
+          {
+            type: "RendererRef *",
+            name: "renderer"
+          }],
+          hints: {
+            mayFail: true,
+            init: ["Window(CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))"]
+          },
+        },
         "SDL_GetRenderer": {
           name: "Window::GetRenderer",
           immutable: true,

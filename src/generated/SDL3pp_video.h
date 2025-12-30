@@ -768,6 +768,12 @@ public:
 
   constexpr Window(WindowRef&& other) = delete;
 
+  /// Default ctor
+  Window(StringParam title,
+         const PointRaw& size,
+         WindowFlags window_flags,
+         RendererRef* renderer);
+
   /**
    * Create a window with the specified dimensions and flags.
    *

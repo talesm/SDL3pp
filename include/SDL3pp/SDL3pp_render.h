@@ -3315,6 +3315,15 @@ inline Window CreateWindowAndRenderer(StringParam title,
   return window;
 }
 
+inline Window::Window(StringParam title,
+                      const PointRaw& size,
+                      WindowFlags window_flags,
+                      RendererRef* renderer)
+  : Window(
+      CreateWindowAndRenderer(std::move(title), size, window_flags, renderer))
+{
+}
+
 /**
  * Create a 2D rendering context for a window.
  *
