@@ -17,7 +17,7 @@ namespace SDL {
  *
  * This category covers measuring time elapsed (GetTicks(),
  * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
- * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
+ * time (Delay(), DelayNS(), DelayPrecise()), and firing a callback function
  * after a certain amount of time has elapsed (SDL_AddTimer(), etc).
  *
  * There are also useful macros to convert between time units, like
@@ -109,10 +109,47 @@ inline Uint64 GetPerformanceFrequency()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_DelayNS
+ * @sa DelayNS
  * @sa DelayPrecise
  */
-inline void Delay(std::chrono::nanoseconds duration) { SDL_Delay(duration); }
+inline void Delay(Uint32 ms) { SDL_Delay(ms); }
+
+/**
+ * Wait a specified number of milliseconds before returning.
+ *
+ * This function waits a specified number of milliseconds before returning. It
+ * waits at least the specified time, but possibly longer due to OS scheduling.
+ *
+ * @param ms the number of milliseconds to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa DelayNS
+ * @sa DelayPrecise
+ */
+inline void Delay(std::chrono::nanoseconds duration)
+{
+  SDL_DelayNS(duration.count());
+}
+
+/**
+ * Wait a specified number of nanoseconds before returning.
+ *
+ * This function waits a specified number of nanoseconds before returning. It
+ * waits at least the specified time, but possibly longer due to OS scheduling.
+ *
+ * @param ns the number of nanoseconds to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay
+ * @sa DelayPrecise
+ */
+inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
 
 /**
  * Wait a specified number of nanoseconds before returning.
@@ -128,7 +165,7 @@ inline void Delay(std::chrono::nanoseconds duration) { SDL_Delay(duration); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Delay
- * @sa SDL_DelayNS
+ * @sa DelayNS
  */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {

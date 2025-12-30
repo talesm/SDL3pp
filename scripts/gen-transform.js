@@ -7233,7 +7233,6 @@ const transform = {
       ignoreEntries: [
         "SDL_TimerCallback",
         "SDL_AddTimer",
-        "SDL_DelayNS",
         "SDL_MS_PER_SECOND",
         "SDL_US_PER_SECOND",
         "SDL_NS_PER_SECOND",
@@ -7276,13 +7275,15 @@ const transform = {
           parameters: [],
           hints: { body: "return SDL_GetTicks();" },
         },
-        "SDL_Delay": {
-          "parameters": [
-            {
-              "type": "std::chrono::nanoseconds",
-              "name": "duration"
-            }
-          ]
+        "Delay": {
+          after: "SDL_Delay",
+          kind: "function",
+          type: "void",
+          parameters: [{
+            type: "std::chrono::nanoseconds",
+            name: "duration"
+          }],
+          hints: { body: "SDL_DelayNS(duration.count());" },
         },
         "SDL_DelayPrecise": {
           "parameters": [

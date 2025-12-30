@@ -16,7 +16,7 @@
   *
   * This category covers measuring time elapsed (GetTicks(),
   * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
-  * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
+  * time (Delay(), DelayNS(), DelayPrecise()), and firing a callback function
   * after a certain amount of time has elapsed (SDL_AddTimer(), etc).
   *
 - * There are also useful macros to convert between time units, like
@@ -77,8 +77,15 @@
  inline Uint64 GetTicksMS() { return SDL_GetTicks(); }
  
  /**
-@@ -98,41 +114,42 @@
- }
+@@ -109,18 +125,19 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  *
++ * @sa Delay(std::chrono::nanoseconds)
+  * @sa DelayNS
+  * @sa DelayPrecise
+  */
+ inline void Delay(Uint32 ms) { SDL_Delay(ms); }
  
  /**
 - * Wait a specified number of milliseconds before returning.
@@ -93,16 +100,8 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-  * @since This function is available since SDL 3.2.0.
-  *
-- * @sa SDL_DelayNS
-  * @sa DelayPrecise
-  */
--inline void Delay(std::chrono::nanoseconds duration) { SDL_Delay(duration); }
-+inline void Delay(std::chrono::nanoseconds duration)
-+{
-+  SDL_DelayNS(duration.count());
-+}
+@@ -152,24 +169,25 @@
+ inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
  
  /**
 - * Wait a specified number of nanoseconds before returning.
@@ -120,8 +119,10 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
-  * @sa Delay
-- * @sa SDL_DelayNS
+- * @sa Delay
++ * @sa Delay(Uint32)
++ * @sa Delay(std::chrono::nanoseconds)
+  * @sa DelayNS
   */
  inline void DelayPrecise(std::chrono::nanoseconds duration)
  {
@@ -130,7 +131,7 @@
  }
  
  /**
-@@ -190,6 +207,8 @@
+@@ -227,6 +245,8 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -139,7 +140,7 @@
   * @sa AddTimer
   *
   * @sa TimerCallback
-@@ -207,7 +226,7 @@
+@@ -244,7 +264,7 @@
    template<std::invocable<TimerID, std::chrono::nanoseconds> F>
    static Uint64 doCall(F& func, TimerID timerID, Uint64 interval)
    {
@@ -148,7 +149,7 @@
    }
  };
  
-@@ -230,24 +249,25 @@
+@@ -267,24 +287,25 @@
   * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *
@@ -179,7 +180,7 @@
  }
  
  /**
-@@ -269,22 +289,25 @@
+@@ -306,22 +327,25 @@
   * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
   * adjust for variances.
   *

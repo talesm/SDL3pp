@@ -27,8 +27,9 @@ De-smart-fy
   - [x] Add overload to Window::Window that creates renderer
 - [x] Make free standing version of Random;
 - [x] Simplify timer functions:
-  - [ ] Delay that takes integers types;
   - [x] GetTicksMS and GetTicksNS that return integers;
+  - [x] Delay overload takes integers type;
+  - [ ] DelayPrecise overload takes integer type
   - [ ] AddTimer accepting SDL_AddTimer callback;
 - [x] Merge preview 3.3.x;
 
