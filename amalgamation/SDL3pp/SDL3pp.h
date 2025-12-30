@@ -32859,10 +32859,10 @@ inline int GetDayOfWeek(int year, int month, int day)
  * This is not to be confused with _calendar time_ management, which is provided
  * by [CategoryTime](#CategoryTime).
  *
- * This category covers measuring time elapsed (SDL_GetTicks(),
+ * This category covers measuring time elapsed (GetTicks(),
  * GetPerformanceCounter()), putting a thread to sleep for a certain amount of
- * time (Delay(), SDL_DelayNS(), DelayPrecise()), and firing a callback function
- * after a certain amount of time has elapsed (SDL_AddTimer(), etc).
+ * time (Delay(), DelayNS(), DelayPrecise()), and firing a callback function
+ * after a certain amount of time has elapsed (AddTimer(), etc).
  *
  * @{
  */
@@ -32881,16 +32881,47 @@ constexpr Sint64 Time::ToPosix() const
  * Get the time elapsed since SDL library initialization.
  *
  * @returns a std::chrono::nanoseconds value representing the number of
- * nanoseconds since the SDL library initialized.
+ *          nanoseconds since the SDL library initialized.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTicksMS
+ * @sa GetTicksNS
+ */
+inline std::chrono::nanoseconds GetTicks()
+{
+  return std::chrono::nanoseconds(SDL_GetTicksNS());
+}
+
+/**
+ * Get the number of milliseconds that have elapsed since the SDL library
+ * initialization.
+ *
+ * @returns an unsigned 64‑bit integer that represents the number of
+ *          milliseconds that have elapsed since the SDL library was initialized
+ *          (typically via a call to Init).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetTicksNS
+ */
+inline Uint64 GetTicksMS() { return SDL_GetTicks(); }
+
+/**
+ * Get the number of nanoseconds since SDL library initialization.
+ *
+ * @returns an unsigned 64-bit value representing the number of nanoseconds
+ *          since the SDL library initialized.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline std::chrono::nanoseconds GetTicks()
-{
-  return std::chrono::nanoseconds{SDL_GetTicksNS()};
-}
+inline Uint64 GetTicksNS() { return SDL_GetTicksNS(); }
 
 /**
  * Get the current value of the high resolution counter.
@@ -32927,6 +32958,24 @@ inline Uint64 GetPerformanceFrequency()
 }
 
 /**
+ * Wait a specified number of milliseconds before returning.
+ *
+ * This function waits a specified number of milliseconds before returning. It
+ * waits at least the specified time, but possibly longer due to OS scheduling.
+ *
+ * @param ms the number of milliseconds to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay(std::chrono::nanoseconds)
+ * @sa DelayNS
+ * @sa DelayPrecise
+ */
+inline void Delay(Uint32 ms) { SDL_Delay(ms); }
+
+/**
  * Wait a specified duration before returning.
  *
  * This function waits a specified duration before returning. It
@@ -32938,12 +32987,49 @@ inline Uint64 GetPerformanceFrequency()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa DelayPrecise
+ * @sa DelayNS
+ * @sa DelayPrecise(std::chrono::nanoseconds)
  */
 inline void Delay(std::chrono::nanoseconds duration)
 {
   SDL_DelayNS(duration.count());
 }
+
+/**
+ * Wait a specified number of nanoseconds before returning.
+ *
+ * This function waits a specified number of nanoseconds before returning. It
+ * waits at least the specified time, but possibly longer due to OS scheduling.
+ *
+ * @param ns the number of nanoseconds to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay
+ * @sa DelayPrecise(std::chrono::nanoseconds)
+ */
+inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
+
+/**
+ * Wait a specified number of nanoseconds before returning.
+ *
+ * This function waits a specified number of nanoseconds before returning. It
+ * will attempt to wait as close to the requested time as possible, busy waiting
+ * if necessary, but could return later due to OS scheduling.
+ *
+ * @param ns the number of nanoseconds to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay
+ * @sa DelayNS
+ * @sa DelayPrecise(std::chrono::nanoseconds)
+ */
+inline void DelayPrecise(Uint64 ns) { SDL_DelayPrecise(ns); }
 
 /**
  * Wait a specified duration before returning.
@@ -32958,7 +33044,10 @@ inline void Delay(std::chrono::nanoseconds duration)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Delay
+ * @sa Delay(Uint32)
+ * @sa Delay(std::chrono::nanoseconds)
+ * @sa DelayNS
+ * @sa DelayPrecise(Uint64)
  */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
@@ -32973,16 +33062,16 @@ inline void DelayPrecise(std::chrono::nanoseconds duration)
 using TimerID = SDL_TimerID;
 
 /**
- * Function prototype for the nanosecond timer callback function.
+ * Function prototype for the millisecond timer callback function.
  *
  * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as the
- * one passed in, the periodic alarm continues, otherwise a new alarm is
+ * next timer interval, in milliseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
  * scheduled. If the callback returns 0, the periodic alarm is canceled and will
  * be removed.
  *
- * @param userdata an arbitrary pointer provided by the app through
- *                 SDL_AddTimer, for its own use.
+ * @param userdata an arbitrary pointer provided by the app through AddTimer,
+ *                 for its own use.
  * @param timerID the current timer being processed.
  * @param interval the current callback time interval.
  * @returns the new callback time interval, or 0 to disable further runs of the
@@ -32996,9 +33085,37 @@ using TimerID = SDL_TimerID;
  *
  * @sa AddTimer
  */
-using TimerCallback = Uint64(SDLCALL*)(void* userdata,
-                                       TimerID timerID,
-                                       Uint64 interval);
+using MSTimerCallback = Uint32(SDLCALL*)(void* userdata,
+                                         TimerID timerID,
+                                         Uint32 interval);
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as the
+ * one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and will
+ * be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through AddTimer,
+ *                 for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of the
+ *          callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer
+ */
+using NSTimerCallback = Uint64(SDLCALL*)(void* userdata,
+                                         TimerID timerID,
+                                         Uint64 interval);
 
 /**
  * Function prototype for the nanosecond timer callback function.
@@ -33024,7 +33141,7 @@ using TimerCallback = Uint64(SDLCALL*)(void* userdata,
  *
  * @sa AddTimer
  *
- * @sa TimerCallback
+ * @sa NSTimerCallback
  */
 struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
 {
@@ -33055,11 +33172,52 @@ struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
  * potentially be called before this function returns.
  *
  * Timers take into account the amount of time it took to execute the callback.
+ * For example, if the callback took 250 ms to execute and returned 1000 (ms),
+ * the timer would only wait another 750 ms before its next iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current time
+ * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
+ * adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ *                 `callback`.
+ * @param callback the NSTimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID or 0 on failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddTimer(std::chrono::nanoseconds, NSTimerCallback, void*)
+ * @sa AddTimer(std::chrono::nanoseconds, TimerCB)
+ * @sa RemoveTimer
+ */
+inline TimerID AddTimer(std::chrono::milliseconds interval,
+                        MSTimerCallback callback,
+                        void* userdata)
+{
+  return SDL_AddTimer(Uint32(interval.count()), callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimer() call and should return the next timer
+ * interval. If the value returned from the callback is 0, the timer is canceled
+ * and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the callback.
  * For example, if the callback took 250 ns to execute and returned 1000 (ns),
  * the timer would only wait another 750 ns before its next iteration.
  *
  * Timing may be inexact due to OS scheduling. Be sure to note the current time
- * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+ * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
  * adjust for variances.
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
@@ -33074,10 +33232,12 @@ struct TimerCB : LightweightCallbackT<TimerCB, Uint64, TimerID, Uint64>
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @sa AddTimer(std::chrono::milliseconds, MSTimerCallback, void*)
+ * @sa AddTimer(std::chrono::nanoseconds, TimerCB)
  * @sa RemoveTimer
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        TimerCallback callback,
+                        NSTimerCallback callback,
                         void* userdata)
 {
   return CheckError(SDL_AddTimerNS(interval.count(), callback, userdata));
@@ -33099,7 +33259,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * the timer would only wait another 750 ns before its next iteration.
  *
  * Timing may be inexact due to OS scheduling. Be sure to note the current time
- * with GetTicks() or GetPerformanceCounter() in case your callback needs to
+ * with GetTicksNS() or GetPerformanceCounter() in case your callback needs to
  * adjust for variances.
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
@@ -33116,6 +33276,8 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * @cat listener-callback
  *
  * @sa listener-callback
+ * @sa AddTimer(std::chrono::milliseconds, MSTimerCallback, void*)
+ * @sa AddTimer(std::chrono::nanoseconds, NSTimerCallback, void*)
  * @sa RemoveTimer()
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
@@ -33124,7 +33286,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 }
 
 /**
- * Remove a timer created with SDL_AddTimer().
+ * Remove a timer created with AddTimer().
  *
  * @param id the ID of the timer to remove.
  * @throws Error on failure.
@@ -33133,7 +33295,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_AddTimer
+ * @sa AddTimer
  */
 inline void RemoveTimer(TimerID id) { CheckError(SDL_RemoveTimer(id)); }
 

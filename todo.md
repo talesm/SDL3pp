@@ -20,13 +20,17 @@ Next version
 
 De-smart-fy
 
-- [x] Simplify CreateWindowAndRenderer
+- [x] Simplify CreateWindowAndRenderer:
   - [x] Add overload CreateWindowAndRenderer that take pointers instead of
     returning pair;
   - [x] Add overload CreateWindowAndRenderer that returns Window;
   - [x] Add overload to Window::Window that creates renderer
 - [x] Make free standing version of Random;
-- [ ] Add named versions Delay that takes integer;
+- [x] Simplify timer functions:
+  - [x] GetTicksMS and GetTicksNS that return integers;
+  - [x] Delay overload takes integers type;
+  - [x] DelayPrecise overload takes integer type
+  - [x] AddTimer accepting SDL_AddTimer callback;
 - [x] Merge preview 3.3.x;
 
 Backlog
