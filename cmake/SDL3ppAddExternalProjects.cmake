@@ -8,7 +8,7 @@ set(SDL3PP_USE_SDL3_TAG OFF CACHE STRING "Bundle SDL3 with this named tag/branch
 if(SDL3PP_USE_SDL3_TAG)
   set(SDL3_TAG ${SDL3PP_USE_SDL3_TAG})
 else ()
-  set(SDL3_TAG release-3.2.28)
+  set(SDL3_TAG release-3.2.30)
 endif ()
 
 set(SDL_INSTALL ON) # passed to external/SDL
