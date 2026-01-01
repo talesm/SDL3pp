@@ -102313,7 +102313,7 @@
         "SDL_IMAGE_MICRO_VERSION": {
           "name": "SDL_IMAGE_MICRO_VERSION",
           "kind": "def",
-          "value": "4"
+          "value": "6"
         },
         "SDL_IMAGE_VERSION": {
           "doc": [
@@ -106951,26 +106951,41 @@
           "kind": "struct",
           "entries": {
             "w": {
+              "doc": [
+                "The width of the frames"
+              ],
               "name": "w",
               "kind": "var",
               "type": "int"
             },
             "h": {
+              "doc": [
+                "The height of the frames"
+              ],
               "name": "h",
               "kind": "var",
               "type": "int"
             },
             "count": {
+              "doc": [
+                "The number of frames"
+              ],
               "name": "count",
               "kind": "var",
               "type": "int"
             },
             "frames": {
+              "doc": [
+                "An array of frames"
+              ],
               "name": "frames",
               "kind": "var",
               "type": "SDL_Surface **"
             },
             "delays": {
+              "doc": [
+                "An array of frame delays, in milliseconds"
+              ],
               "name": "delays",
               "kind": "var",
               "type": "int *"

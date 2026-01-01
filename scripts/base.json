@@ -9,7 +9,7 @@
     "tag": "SDL_IMAGE",
     "major": 3,
     "minor": 2,
-    "patch": 4
+    "patch": 6
   },
   "SDL_TTF": {
     "tag": "SDL_TTF",

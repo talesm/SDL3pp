@@ -9,7 +9,7 @@ ExternalProject_Add(SDL3Base
 )
 ExternalProject_Add(SDL3ImageBase
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/base/
-  URL               https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz
+  URL               https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.6/SDL3_image-3.2.6.tar.gz
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
