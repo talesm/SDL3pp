@@ -138,7 +138,7 @@ constexpr CameraPosition CAMERA_POSITION_FRONT_FACING =
 constexpr CameraPosition CAMERA_POSITION_BACK_FACING =
   SDL_CAMERA_POSITION_BACK_FACING; ///< CAMERA_POSITION_BACK_FACING
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The current state of a request for camera access.
@@ -149,28 +149,28 @@ constexpr CameraPosition CAMERA_POSITION_BACK_FACING =
  */
 using CameraPermissionState = SDL_CameraPermissionState;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr CameraPermissionState CAMERA_PERMISSION_STATE_DENIED =
   SDL_CAMERA_PERMISSION_STATE_DENIED; ///< CAMERA_PERMISSION_STATE_DENIED
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr CameraPermissionState CAMERA_PERMISSION_STATE_PENDING =
   SDL_CAMERA_PERMISSION_STATE_PENDING; ///< CAMERA_PERMISSION_STATE_PENDING
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr CameraPermissionState CAMERA_PERMISSION_STATE_APPROVED =
   SDL_CAMERA_PERMISSION_STATE_APPROVED; ///< CAMERA_PERMISSION_STATE_APPROVED
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The opaque structure used to identify an opened SDL camera.

@@ -1864,6 +1864,10 @@ public:
    * This copy occurs on the GPU timeline. You may assume the copy has finished
    * in subsequent commands.
    *
+   * This function does not support copying between depth and color textures.
+   * For those, copy the texture to a buffer and then to the destination
+   * texture.
+   *
    * @param source a source texture region.
    * @param destination a destination texture region.
    * @param w the width of the region to copy.
@@ -3343,7 +3347,7 @@ public:
    */
   GPUShaderFormat GetShaderFormats();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the properties associated with a GPU device.
@@ -3448,7 +3452,7 @@ public:
    */
   PropertiesRef GetProperties();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -5156,42 +5160,42 @@ constexpr auto CREATE_DEBUGMODE_BOOLEAN =
 constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VERBOSE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_FEATURE_ANISOTROPY_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_SHADERS_PRIVATE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
@@ -5211,58 +5215,58 @@ constexpr auto CREATE_SHADERS_MSL_BOOLEAN =
 constexpr auto CREATE_SHADERS_METALLIB_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto DRIVER_NAME_STRING = SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto DRIVER_VERSION_STRING =
   SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::GpuDevice
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A structure specifying additional options when using Vulkan.
@@ -5282,7 +5286,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
  */
 using GPUVulkanOptions = SDL_GPUVulkanOptions;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -5367,7 +5371,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the properties associated with a GPU device.
@@ -5476,16 +5480,16 @@ inline PropertiesRef GetGPUDeviceProperties(GPUDeviceParam device)
   return CheckError(SDL_GetGPUDeviceProperties(device));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline PropertiesRef GPUDevice::GetProperties()
 {
   return SDL::GetGPUDeviceProperties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Creates a pipeline object to be used in a compute workflow.
@@ -7316,6 +7320,9 @@ inline void GPUCopyPass::UploadToBuffer(const GPUTransferBufferLocation& source,
  * This copy occurs on the GPU timeline. You may assume the copy has finished in
  * subsequent commands.
  *
+ * This function does not support copying between depth and color textures. For
+ * those, copy the texture to a buffer and then to the destination texture.
+ *
  * @param copy_pass a copy pass handle.
  * @param source a source texture region.
  * @param destination a destination texture region.
@@ -8127,7 +8134,7 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the SDL pixel format corresponding to a GPU texture format.
@@ -8143,9 +8150,9 @@ inline PixelFormat GetPixelFormatFromGPUTextureFormat(GPUTextureFormat format)
   return SDL_GetPixelFormatFromGPUTextureFormat(format);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the GPU texture format corresponding to an SDL pixel format.
@@ -8161,7 +8168,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
   return SDL_GetGPUTextureFormatFromPixelFormat(format);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Call this to suspend GPU operation on Xbox when you receive the

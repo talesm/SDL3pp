@@ -2055,7 +2055,7 @@ public:
  */
 #define SDL_FILE __FILE_NAME__
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A macro that reports the current file being compiled, for use in assertions.
@@ -2070,7 +2070,7 @@ public:
  */
 #define SDL_ASSERT_FILE SDL_FILE
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A macro that reports the current line number of the file being compiled.
@@ -3224,7 +3224,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE "SDL_AUDIO_DEVICE_STREAM_ROLE"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Specify whether this audio device should do audio processing.
@@ -3246,7 +3246,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_AUDIO_DEVICE_RAW_STREAM "SDL_AUDIO_DEVICE_RAW_STREAM"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Specify the input file when recording audio using the disk audio driver.
@@ -3531,7 +3531,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_DISPLAY_USABLE_BOUNDS "SDL_DISPLAY_USABLE_BOUNDS"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the level of checking for invalid parameters passed to SDL functions.
@@ -3548,7 +3548,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_INVALID_PARAM_CHECKS "SDL_INVALID_PARAM_CHECKS"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Disable giving back control to the browser automatically when running with
@@ -3893,6 +3893,20 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_HIDAPI_LIBUSB "SDL_HIDAPI_LIBUSB"
+
+/**
+ * A variable to control whether HIDAPI uses libusb for GameCube adapters.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": HIDAPI will not use libusb for GameCube adapters.
+ * - "1": HIDAPI will use libusb for GameCube adapters if available. (default)
+ *
+ * This hint should be set before SDL is initialized.
+ *
+ * @since This hint is available since SDL 3.2.0.
+ */
+#define SDL_HINT_HIDAPI_LIBUSB_GAMECUBE "SDL_HIDAPI_LIBUSB_GAMECUBE"
 
 /**
  * A variable to control whether HIDAPI uses libusb only for whitelisted
@@ -4705,7 +4719,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED                             \
   "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch 2
@@ -4724,7 +4738,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 "SDL_JOYSTICK_HIDAPI_SWITCH2"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether Nintendo Switch Joy-Con controllers will be in
@@ -4883,7 +4897,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED                             \
   "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -4901,10 +4915,6 @@ inline bool ClearError() { return SDL_ClearError(); }
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP "SDL_JOYSTICK_HIDAPI_GIP"
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
-
-#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -4925,7 +4935,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA                        \
   "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether IOKit should be used for controller handling.
@@ -5293,7 +5303,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable that controls whether KMSDRM will use "atomic" functionality.
@@ -5316,7 +5326,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_KMSDRM_ATOMIC "SDL_KMSDRM_ATOMIC"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling the default SDL log levels.
@@ -5444,7 +5454,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether holding down a key will repeat the pressed key
@@ -5461,7 +5471,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MAC_PRESS_AND_HOLD "SDL_MAC_PRESS_AND_HOLD"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Request SDL_AppIterate() be called at a specific rate.
@@ -5542,7 +5552,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable setting whether we should scale cursors by the current display
@@ -5562,7 +5572,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_MOUSE_DPI_SCALE_CURSORS "SDL_MOUSE_DPI_SCALE_CURSORS"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
@@ -5938,7 +5948,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_RENDER_DIRECT3D11_DEBUG "SDL_RENDER_DIRECT3D11_DEBUG"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether to use the Direct3D 11 WARP software
@@ -5958,7 +5968,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_RENDER_DIRECT3D11_WARP "SDL_RENDER_DIRECT3D11_WARP"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether to enable Vulkan Validation Layers.
@@ -6398,10 +6408,12 @@ inline bool ClearError() { return SDL_ClearError(); }
  * prioritized in the list of displays, as exposed by calling GetDisplays(),
  * with the first listed becoming the primary display. The naming convention can
  * vary depending on the environment, but it is usually a connector name (e.g.
- * 'DP-1', 'DP-2', 'HDMI-A-1',etc...).
+ * 'DP-1', 'DP-2', 'HDMI-A-1', etc...).
  *
- * On Wayland and X11 desktops, the connector names associated with displays can
- * typically be found by using the `xrandr` utility.
+ * On Wayland desktops, the connector names associated with displays can be
+ * found in the `name` property of the info output from `wayland-info -i
+ * wl_output`. On X11 desktops, the `xrandr` utility can be used to retrieve the
+ * connector names associated with displays.
  *
  * This hint is currently supported on the following drivers:
  *
@@ -6537,7 +6549,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \
   "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable indicating whether the metal layer drawable size should be updated
@@ -6556,10 +6568,6 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE                              \
   "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
-
-#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether SDL will attempt to automatically set the
@@ -6582,7 +6590,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE                            \
   "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether fullscreen windows are minimized when they
@@ -6591,8 +6599,10 @@ inline bool ClearError() { return SDL_ClearError(); }
  * The variable can be set to the following values:
  *
  * - "0": Fullscreen windows will not be minimized when they lose focus.
- *   (default)
  * - "1": Fullscreen windows are minimized when they lose focus.
+ * - "auto": Fullscreen windows are minimized when they lose focus if they use
+ *   exclusive fullscreen modes, so the desktop video mode is restored.
+ *   (default)
  *
  * This hint can be set anytime.
  *
@@ -7262,7 +7272,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
@@ -7287,7 +7297,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS                          \
   "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
@@ -12623,7 +12633,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A generic property for naming things.
@@ -12649,7 +12659,7 @@ struct PropertiesRef : Properties
  */
 inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the global SDL properties.
@@ -21585,7 +21595,7 @@ struct AtomicU32 : AtomicU32Raw
    */
   Uint32 Get();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Add to an atomic variable.
@@ -21604,7 +21614,7 @@ struct AtomicU32 : AtomicU32Raw
    */
   Uint32 Add(int v);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
 /// A type representing an atomic of an arbitrary pointer.
@@ -21754,7 +21764,7 @@ inline Uint32 GetAtomicU32(AtomicU32Raw* a) { return SDL_GetAtomicU32(a); }
 
 inline Uint32 AtomicU32::Get() { return SDL::GetAtomicU32(this); }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Add to an atomic variable.
@@ -21779,7 +21789,7 @@ inline Uint32 AddAtomicU32(AtomicU32Raw* a, int v)
 
 inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 template<class T>
 inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
@@ -22540,7 +22550,7 @@ inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
  */
 inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Report the size of a page of memory.
@@ -22563,7 +22573,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  */
 inline int GetSystemPageSize() { return SDL_GetSystemPageSize(); }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 
@@ -23970,7 +23980,7 @@ public:
    */
   void close();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the properties associated with an HidDevice.
@@ -23987,7 +23997,7 @@ public:
    */
   PropertiesRef hid_get_properties();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Write an Output report to a HID device.
@@ -24381,7 +24391,7 @@ inline HidDevice hid_open_path(StringParam path)
   return HidDevice(std::move(path));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the properties associated with an HidDevice.
@@ -24407,18 +24417,14 @@ inline PropertiesRef HidDevice::hid_get_properties()
   return SDL::hid_get_properties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
-
 namespace prop::Hidapi {
-
-#if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
   SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
-
 } // namespace prop::Hidapi
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Write an Output report to a HID device.
@@ -26578,12 +26584,12 @@ constexpr auto MEMORY_POINTER = SDL_PROP_IOSTREAM_MEMORY_POINTER;
 
 constexpr auto MEMORY_SIZE_NUMBER = SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto MEMORY_FREE_FUNC_POINTER =
   SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto DYNAMIC_MEMORY_POINTER =
   SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER;
@@ -34894,7 +34900,7 @@ constexpr int AudioFrameSize(const AudioSpec& x)
   return SDL_AUDIO_FRAMESIZE(x);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A callback that fires for completed AudioStream.PutDataNoCopy() data.
@@ -34955,7 +34961,7 @@ using AudioStreamDataCompleteCallback = void(SDLCALL*)(void* userdata,
 using AudioStreamDataCompleteCB =
   std::function<void(const void* buf, int buflen)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The opaque handle that represents an audio stream.
@@ -35666,7 +35672,7 @@ public:
    */
   void PutData(SourceBytes buf);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Add external data to an audio stream without copying it.
@@ -36200,7 +36206,7 @@ public:
    */
   AudioDeviceRef GetDevice() const;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Add data to the stream with each channel in a separate array.
@@ -36254,7 +36260,7 @@ public:
                      int num_channels,
                      int num_samples);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
 /// Semi-safe reference for AudioStream.
@@ -37071,16 +37077,16 @@ inline PropertiesRef AudioStream::GetProperties() const
   return SDL::GetAudioStreamProperties(m_resource);
 }
 
-namespace prop::AudioStream {
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+namespace prop::AudioStream {
 
 constexpr auto _AUTO_CLEANUP_BOOLEAN =
   SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
-
 } // namespace prop::AudioStream
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Query the current format of an audio stream.
@@ -37513,7 +37519,7 @@ inline void AudioStream::PutData(SourceBytes buf)
   SDL::PutAudioStreamData(m_resource, std::move(buf));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Add external data to an audio stream without copying it.
@@ -37697,7 +37703,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
     m_resource, channel_buffers, num_channels, num_samples);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get converted/resampled data from the stream.
@@ -38897,7 +38903,7 @@ constexpr Keymod KMOD_GUI = SDL_KMOD_GUI; ///< Any GUI key is down.
  * by default to SDLK_0...SDLK_9 on AZERTY layouts.
  *
  * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
- * unicode code point.
+ * Unicode code point.
  *
  * Many common keycodes are listed below, but this list is not exhaustive.
  *
@@ -40389,12 +40395,12 @@ constexpr auto CREATE_ARGS_POINTER = SDL_PROP_PROCESS_CREATE_ARGS_POINTER;
 constexpr auto CREATE_ENVIRONMENT_POINTER =
   SDL_PROP_PROCESS_CREATE_ENVIRONMENT_POINTER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_WORKING_DIRECTORY_STRING =
   SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_STDIN_NUMBER = SDL_PROP_PROCESS_CREATE_STDIN_NUMBER;
 
@@ -40414,11 +40420,11 @@ constexpr auto CREATE_STDERR_TO_STDOUT_BOOLEAN =
 constexpr auto CREATE_BACKGROUND_BOOLEAN =
   SDL_PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_CMDLINE_STRING = SDL_PROP_PROCESS_CREATE_CMDLINE_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto PID_NUMBER = SDL_PROP_PROCESS_PID_NUMBER;
 
@@ -42239,7 +42245,7 @@ constexpr ScaleMode SCALEMODE_NEAREST =
 constexpr ScaleMode SCALEMODE_LINEAR =
   SDL_SCALEMODE_LINEAR; ///< linear filtering
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * nearest pixel sampling with improved scaling for pixel art, available since
@@ -42247,7 +42253,7 @@ constexpr ScaleMode SCALEMODE_LINEAR =
  */
 constexpr ScaleMode SCALEMODE_PIXELART = SDL_SCALEMODE_PIXELART;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The flip mode.
@@ -42262,13 +42268,13 @@ constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL; ///< flip horizontally
 
 constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// flip horizontally and vertically (not a diagonal flip)
 constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
   SDL_FLIP_HORIZONTAL_AND_VERTICAL;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A collection of pixels used in software blitting.
@@ -42534,7 +42540,7 @@ public:
    */
   static Surface LoadBMP(StringParam file);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Load a PNG image from a seekable SDL data stream.
@@ -42583,7 +42589,7 @@ public:
    */
   static Surface LoadPNG(StringParam file);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
   constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
@@ -42947,7 +42953,7 @@ public:
    */
   void SaveBMP(StringParam file) const;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
@@ -42983,7 +42989,7 @@ public:
    */
   void SavePNG(StringParam file) const;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -43286,7 +43292,7 @@ public:
    */
   void Flip(FlipMode flip);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Return a copy of a surface rotated clockwise a number of degrees.
@@ -43316,7 +43322,7 @@ public:
    */
   Surface Rotate(float angle);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -43733,7 +43739,7 @@ public:
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a stretched pixel copy from one surface to another.
@@ -43759,7 +43765,7 @@ public:
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different
@@ -44208,11 +44214,11 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Surface
 
@@ -44532,7 +44538,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
 #ifndef SDL3PP_ENABLE_IMAGE
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -44579,7 +44585,7 @@ inline Surface LoadSurface(StringParam file)
 {
   return Surface{SDL_LoadSurface(file)};
 }
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 #endif // SDL3PP_ENABLE_IMAGE
 
 /**
@@ -44703,7 +44709,7 @@ inline void Surface::SaveBMP(StringParam file) const
   SDL::SaveBMP(m_resource, std::move(file));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a PNG image from a seekable SDL data stream.
@@ -44822,7 +44828,7 @@ inline void Surface::SavePNG(StringParam file) const
   SDL::SavePNG(m_resource, std::move(file));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the RLE acceleration hint for a surface.
@@ -45285,7 +45291,7 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 
 inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Return a copy of a surface rotated clockwise a number of degrees.
@@ -45324,7 +45330,7 @@ inline Surface Surface::Rotate(float angle)
   return SDL::RotateSurface(m_resource, angle);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -45630,7 +45636,7 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * This function handles all surface formats, and ignores any clip rectangle.
  *
  * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
- * otherwise the color is assumed to be in the colorspace of the suface.
+ * otherwise the color is assumed to be in the colorspace of the surface.
  *
  * @param surface the Surface to clear.
  * @param c the color components of the pixel, normally in the range 0-1.
@@ -46023,7 +46029,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -46062,7 +46068,7 @@ inline void Surface::Stretch(SurfaceParam src,
   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different
@@ -47585,7 +47591,7 @@ constexpr CameraPosition CAMERA_POSITION_FRONT_FACING =
 constexpr CameraPosition CAMERA_POSITION_BACK_FACING =
   SDL_CAMERA_POSITION_BACK_FACING; ///< CAMERA_POSITION_BACK_FACING
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The current state of a request for camera access.
@@ -47615,7 +47621,7 @@ constexpr CameraPermissionState CAMERA_PERMISSION_STATE_APPROVED =
  */
 using CameraPermissionState = int;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The opaque structure used to identify an opened SDL camera.
@@ -52501,12 +52507,12 @@ constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
   SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// window is in fill-document mode (Emscripten only), since SDL 3.4.0
 constexpr WindowFlags WINDOW_FILL_DOCUMENT = SDL_WINDOW_FILL_DOCUMENT;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr WindowFlags WINDOW_VULKAN =
   SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
@@ -52618,7 +52624,7 @@ using HitTestCB =
  */
 using EGLSurface = SDL_EGLSurface;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Window progress state
@@ -52635,7 +52641,8 @@ constexpr ProgressState PROGRESS_STATE_NONE =
 
 /// The progress bar is shown in a indeterminate state.
 constexpr ProgressState PROGRESS_STATE_INDETERMINATE =
-  SDL_PROGRESS_STATE_INDETERMINATE;
+  SDL_PROGRESS_STATE_INDETERMINATE; ///< The progress bar is shown in a
+                                    ///< indeterminate state
 
 constexpr ProgressState PROGRESS_STATE_NORMAL =
   SDL_PROGRESS_STATE_NORMAL; ///< The progress bar is shown in a normal state
@@ -52648,7 +52655,7 @@ constexpr ProgressState PROGRESS_STATE_PAUSED =
  */
 constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The struct used as an opaque handle to a window.
@@ -53686,7 +53693,7 @@ public:
    * notches, TV overscan, etc. This function provides the area of the window
    * which is safe to have interactable content. You should continue rendering
    * into the rest of the window, but it should not contain visually important
-   * or interactible content.
+   * or interactable content.
    *
    * @throws Error on failure.
    *
@@ -53944,7 +53951,7 @@ public:
    */
   void SetAlwaysOnTop(bool on_top);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the window to fill the current document space (Emscripten only).
@@ -53975,7 +53982,7 @@ public:
    */
   void SetFillDocument(bool fill);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Show a window.
@@ -54664,7 +54671,7 @@ public:
    */
   void Flash(FlashOperation operation);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -54716,7 +54723,7 @@ public:
    */
   float GetProgressValue();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -55796,19 +55803,15 @@ constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
 constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
   SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WAYLAND_WL_OUTPUT_POINTER =
   SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
-
-#if SDL_VERSION_ATLEAST(3, 3, 6)
-
 constexpr auto WINDOWS_HMONITOR_POINTER =
   SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Display
 
@@ -56777,12 +56780,12 @@ constexpr auto CREATE_COCOA_WINDOW_POINTER =
 constexpr auto CREATE_COCOA_VIEW_POINTER =
   SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_WINDOWSCENE_POINTER =
   SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
@@ -56802,7 +56805,7 @@ constexpr auto CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER =
 constexpr auto CREATE_X11_WINDOW_NUMBER =
   SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
@@ -56810,7 +56813,7 @@ constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
 constexpr auto CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
 
@@ -56852,7 +56855,7 @@ constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
 constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
   SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OPENVR_OVERLAY_ID_NUMBER =
   SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
@@ -56861,7 +56864,7 @@ constexpr auto OPENVR_OVERLAY_ID_NUMBER =
 
 constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VIVANTE_DISPLAY_POINTER =
   SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
@@ -56910,7 +56913,7 @@ constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
 
 constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
@@ -56918,7 +56921,7 @@ constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Window
 
@@ -57497,7 +57500,7 @@ inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
  * notches, TV overscan, etc. This function provides the area of the window
  * which is safe to have interactable content. You should continue rendering
  * into the rest of the window, but it should not contain visually important or
- * interactible content.
+ * interactable content.
  *
  * @param window the window to query.
  * @throws Error on failure.
@@ -57885,7 +57888,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the window to fill the current document space (Emscripten only).
@@ -57925,7 +57928,7 @@ inline void Window::SetFillDocument(bool fill)
   SDL::SetWindowFillDocument(m_resource, fill);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Show a window.
@@ -58887,7 +58890,7 @@ inline void Window::Flash(FlashOperation operation)
   SDL::FlashWindow(m_resource, operation);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -58975,7 +58978,7 @@ inline float Window::GetProgressValue()
   return SDL::GetWindowProgressValue(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroy a window.
@@ -60265,13 +60268,13 @@ constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
                                            ///< scale
 
-#if SDL_VERSION_ATLEAST(3, 3, 0)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_DISPLAY_USABLE_BOUNDS_CHANGED =
   SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED; ///< Display has changed usable
                                            ///< bounds
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
@@ -60401,7 +60404,7 @@ constexpr EventType EVENT_KEYBOARD_REMOVED =
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
   SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates
 
-#if SDL_VERSION_ATLEAST(3, 3, 0)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
   SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown
@@ -60409,7 +60412,7 @@ constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
 constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
   SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_MOUSE_MOTION =
   SDL_EVENT_MOUSE_MOTION; ///< Mouse moved
@@ -60503,7 +60506,7 @@ constexpr EventType EVENT_FINGER_MOTION =
 constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
-#if SDL_VERSION_ATLEAST(3, 3, 0)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_PINCH_BEGIN =
   SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started
@@ -60514,7 +60517,7 @@ constexpr EventType EVENT_PINCH_UPDATE =
 constexpr EventType EVENT_PINCH_END =
   SDL_EVENT_PINCH_END; ///< Pinch gesture ended
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_CLIPBOARD_UPDATE =
   SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard changed
@@ -60859,12 +60862,12 @@ using RenderEvent = SDL_RenderEvent;
  */
 using TouchFingerEvent = SDL_TouchFingerEvent;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// Pinch event structure (event.pinch.*)
 using PinchFingerEvent = SDL_PinchFingerEvent;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Pressure-sensitive pen proximity event structure (event.pproximity.*)
@@ -61914,7 +61917,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
   return {CheckError(SDL_GetWindowFromEvent(&event))};
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Generate an English description of an event.
@@ -61988,7 +61991,7 @@ inline std::string GetEventDescription(const Event& event)
   return r;
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 
@@ -63832,6 +63835,10 @@ public:
    * This copy occurs on the GPU timeline. You may assume the copy has finished
    * in subsequent commands.
    *
+   * This function does not support copying between depth and color textures.
+   * For those, copy the texture to a buffer and then to the destination
+   * texture.
+   *
    * @param source a source texture region.
    * @param destination a destination texture region.
    * @param w the width of the region to copy.
@@ -65300,7 +65307,7 @@ public:
    */
   GPUShaderFormat GetShaderFormats();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the properties associated with a GPU device.
@@ -65405,7 +65412,7 @@ public:
    */
   PropertiesRef GetProperties();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Creates a pipeline object to be used in a compute workflow.
@@ -67116,16 +67123,16 @@ constexpr auto CREATE_DEBUGMODE_BOOLEAN =
 constexpr auto CREATE_PREFERLOWPOWER_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VERBOSE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN;
@@ -67139,7 +67146,7 @@ constexpr auto CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN =
 constexpr auto CREATE_FEATURE_ANISOTROPY_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_SHADERS_PRIVATE_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN;
@@ -67159,27 +67166,23 @@ constexpr auto CREATE_SHADERS_MSL_BOOLEAN =
 constexpr auto CREATE_SHADERS_METALLIB_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN;
 
 constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
-
-#if SDL_VERSION_ATLEAST(3, 3, 2)
 
 constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
 
@@ -67190,11 +67193,11 @@ constexpr auto DRIVER_VERSION_STRING =
 
 constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::GpuDevice
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A structure specifying additional options when using Vulkan.
@@ -67214,7 +67217,7 @@ constexpr auto DRIVER_INFO_STRING = SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING;
  */
 using GPUVulkanOptions = SDL_GPUVulkanOptions;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -67299,7 +67302,7 @@ inline GPUShaderFormat GPUDevice::GetShaderFormats()
   return SDL::GetGPUShaderFormats(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the properties associated with a GPU device.
@@ -67413,7 +67416,7 @@ inline PropertiesRef GPUDevice::GetProperties()
   return SDL::GetGPUDeviceProperties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Creates a pipeline object to be used in a compute workflow.
@@ -69241,6 +69244,9 @@ inline void GPUCopyPass::UploadToBuffer(const GPUTransferBufferLocation& source,
  * This copy occurs on the GPU timeline. You may assume the copy has finished in
  * subsequent commands.
  *
+ * This function does not support copying between depth and color textures. For
+ * those, copy the texture to a buffer and then to the destination texture.
+ *
  * @param copy_pass a copy pass handle.
  * @param source a source texture region.
  * @param destination a destination texture region.
@@ -70062,7 +70068,7 @@ inline Uint32 CalculateGPUTextureFormatSize(GPUTextureFormat format,
     format, width, height, depth_or_layer_count);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the SDL pixel format corresponding to a GPU texture format.
@@ -70092,7 +70098,7 @@ inline GPUTextureFormat GetGPUTextureFormatFromPixelFormat(PixelFormat format)
   return SDL_GetGPUTextureFormatFromPixelFormat(format);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 #ifdef SDL_PLATFORM_GDK
 
@@ -74441,7 +74447,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Animated cursor frame info.
@@ -74450,7 +74456,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
  */
 using CursorFrameInfo = SDL_CursorFrameInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Represents a button index.
@@ -74501,7 +74507,7 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
   return SDL_BUTTON_MASK(button);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A callback used to transform mouse motion delta from raw values.
@@ -74577,7 +74583,7 @@ using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
                                                       float* x,
                                                       float* y)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Return whether a mouse is currently connected.
@@ -74791,7 +74797,7 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set a user-defined function by which to transform relative mouse inputs.
@@ -74833,7 +74839,7 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
   SetRelativeMouseTransform(callback.wrapper, callback.data);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
@@ -74979,7 +74985,7 @@ inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
   return Cursor(surface, hot);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create an animated color cursor.
@@ -75034,7 +75040,7 @@ inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
     SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a system cursor.
@@ -75308,12 +75314,12 @@ constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT =
 constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR =
   SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr GamepadType GAMEPAD_TYPE_GAMECUBE =
   SDL_GAMEPAD_TYPE_GAMECUBE; ///< GAMEPAD_TYPE_GAMECUBE
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr GamepadType GAMEPAD_TYPE_COUNT =
   SDL_GAMEPAD_TYPE_COUNT; ///< GAMEPAD_TYPE_COUNT
@@ -76193,7 +76199,7 @@ public:
    * Get the current state of a gamepad sensor.
    *
    * The number of values and interpretation of the data is sensor dependent.
-   * See SDL_sensor.h for the details for each type of sensor.
+   * See the remarks in SensorType for details for each type of sensor.
    *
    * @param type the type of sensor to query.
    * @param data a pointer filled with the current sensor state.
@@ -77578,7 +77584,7 @@ inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
  * not normally need to call this function unless you are parsing Gamepad
  * mappings in your own code.
  *
- * @param str string representing a Gamepad axis.
+ * @param str string representing a Gamepad button.
  * @returns the GamepadButton enum corresponding to the input string, or
  *          `GAMEPAD_BUTTON_INVALID` if no match was found.
  *
@@ -77896,7 +77902,7 @@ inline float Gamepad::GetSensorDataRate(SensorType type)
  * Get the current state of a gamepad sensor.
  *
  * The number of values and interpretation of the data is sensor dependent. See
- * SDL_sensor.h for the details for each type of sensor.
+ * the remarks in SensorType for details for each type of sensor.
  *
  * @param gamepad the gamepad to query.
  * @param type the type of sensor to query.
@@ -81035,7 +81041,7 @@ struct GPURenderStateParam
  */
 constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The name of the GPU renderer.
@@ -81044,7 +81050,7 @@ constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
  */
 constexpr auto GPU_RENDERER = SDL_GPU_RENDERER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Vertex structure.
@@ -81069,7 +81075,7 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING =
 constexpr TextureAccess TEXTUREACCESS_TARGET =
   SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The addressing mode for a texture when used in Renderer.RenderGeometry().
@@ -81136,7 +81142,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A structure specifying the parameters of a GPU render state.
@@ -81147,7 +81153,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
  */
 using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A structure representing rendering state
@@ -81403,7 +81409,7 @@ public:
    */
   void Destroy();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Return the GPU device used by a renderer.
@@ -81417,7 +81423,7 @@ public:
    */
   GPUDeviceRef GetGPUDevice();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the window associated with a renderer.
@@ -81754,9 +81760,10 @@ public:
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
@@ -82741,7 +82748,7 @@ public:
                           float scale,
                           OptionalRef<const FRectRaw> dstrect);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -82787,7 +82794,7 @@ public:
                                const FRectRaw& dstrect,
                                float tileScale);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Render a list of triangles, optionally using a texture and indices into the
@@ -82851,7 +82858,7 @@ public:
                          int num_indices,
                          int size_indices);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the texture addressing mode used in Renderer.RenderGeometry().
@@ -82889,7 +82896,7 @@ public:
   void GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                    TextureAddressMode* v_mode);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Read pixels from the current rendering target.
@@ -83170,7 +83177,7 @@ public:
                              std::string_view fmt,
                              ARGS... args);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set default scale mode for new textures for given renderer.
@@ -83239,7 +83246,7 @@ public:
    */
   void SetGPURenderState(GPURenderStateParam state);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
 /// Semi-safe reference for Renderer.
@@ -83477,9 +83484,10 @@ public:
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
@@ -83799,7 +83807,7 @@ public:
   /// Get the pixel format.
   PixelFormat GetFormat() const;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the palette used by a texture.
@@ -83835,7 +83843,7 @@ public:
    */
   Palette GetPalette();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -84651,7 +84659,7 @@ constexpr auto CREATE_OUTPUT_COLORSPACE_NUMBER =
 constexpr auto CREATE_PRESENT_VSYNC_NUMBER =
   SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_GPU_DEVICE_POINTER =
   SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
@@ -84665,7 +84673,7 @@ constexpr auto CREATE_GPU_SHADERS_DXIL_BOOLEAN =
 constexpr auto CREATE_GPU_SHADERS_MSL_BOOLEAN =
   SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_INSTANCE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER;
@@ -84699,12 +84707,12 @@ constexpr auto MAX_TEXTURE_SIZE_NUMBER =
 constexpr auto TEXTURE_FORMATS_POINTER =
   SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto TEXTURE_WRAPPING_BOOLEAN =
   SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OUTPUT_COLORSPACE_NUMBER =
   SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
@@ -84753,7 +84761,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 
 } // namespace prop::Renderer
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a 2D GPU rendering context.
@@ -84813,7 +84821,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
   return SDL::GetGPURendererDevice(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a 2D software rendering context for a surface.
@@ -85269,9 +85277,10 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *
  * With the vulkan renderer:
  *
- * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
- *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
- *   you want to wrap an existing texture.
+ * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+ *   the texture, if you want to wrap an existing texture.
+ * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+ *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
  *
  * With the GPU renderer:
  *
@@ -85325,11 +85334,11 @@ constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
 
 constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_SDR_WHITE_POINT_FLOAT =
   SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT;
@@ -85385,7 +85394,14 @@ constexpr auto CREATE_OPENGLES2_TEXTURE_V_NUMBER =
 constexpr auto CREATE_VULKAN_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_VULKAN_LAYOUT_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_GPU_TEXTURE_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
@@ -85399,7 +85415,7 @@ constexpr auto CREATE_GPU_TEXTURE_U_POINTER =
 constexpr auto CREATE_GPU_TEXTURE_V_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
 
@@ -85466,7 +85482,7 @@ constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
 
 constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
 
@@ -85476,7 +85492,7 @@ constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
 
 constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Texture
 
@@ -85681,7 +85697,7 @@ inline PixelFormat Texture::GetFormat() const
   return SDL::GetTextureFormat(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the palette used by a texture.
@@ -85735,7 +85751,7 @@ inline Palette Texture::GetPalette()
   return SDL::GetTexturePalette(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set an additional color value multiplied into render copy operations.
@@ -87956,7 +87972,7 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
                           dstrect);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -88038,7 +88054,7 @@ inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
                                tileScale);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Render a list of triangles, optionally using a texture and indices into the
@@ -88160,7 +88176,7 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
                          size_indices);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the texture addressing mode used in Renderer.RenderGeometry().
@@ -88220,7 +88236,7 @@ inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
   SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Read pixels from the current rendering target.
@@ -88653,7 +88669,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
   SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set default scale mode for new textures for given renderer.
@@ -88974,7 +88990,7 @@ inline void DestroyGPURenderState(GPURenderStateRaw state)
 
 inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 
@@ -90260,12 +90276,12 @@ constexpr PenInputFlags PEN_INPUT_BUTTON_5 =
 constexpr PenInputFlags PEN_INPUT_ERASER_TIP =
   SDL_PEN_INPUT_ERASER_TIP; ///< eraser tip is used
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr PenInputFlags PEN_INPUT_IN_PROXIMITY =
   SDL_PEN_INPUT_IN_PROXIMITY; ///< pen is in proximity (since SDL 3.4.0)
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Pen axis indices.
@@ -90315,7 +90331,7 @@ constexpr PenAxis PEN_AXIS_TANGENTIAL_PRESSURE =
  */
 constexpr PenAxis PEN_AXIS_COUNT = SDL_PEN_AXIS_COUNT;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * An enum that describes the type of a pen device.
@@ -90366,7 +90382,7 @@ inline PenDeviceType GetPenDeviceType(PenID instance_id)
   return SDL_GetPenDeviceType(instance_id);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 

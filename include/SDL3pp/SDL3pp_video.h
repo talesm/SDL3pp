@@ -626,12 +626,12 @@ constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
 constexpr WindowFlags WINDOW_KEYBOARD_GRABBED =
   SDL_WINDOW_KEYBOARD_GRABBED; ///< window has grabbed keyboard input
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// window is in fill-document mode (Emscripten only), since SDL 3.4.0
 constexpr WindowFlags WINDOW_FILL_DOCUMENT = SDL_WINDOW_FILL_DOCUMENT;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr WindowFlags WINDOW_VULKAN =
   SDL_WINDOW_VULKAN; ///< window usable for Vulkan surface
@@ -743,7 +743,7 @@ using HitTestCB =
  */
 using EGLSurface = SDL_EGLSurface;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Window progress state
@@ -760,7 +760,8 @@ constexpr ProgressState PROGRESS_STATE_NONE =
 
 /// The progress bar is shown in a indeterminate state.
 constexpr ProgressState PROGRESS_STATE_INDETERMINATE =
-  SDL_PROGRESS_STATE_INDETERMINATE;
+  SDL_PROGRESS_STATE_INDETERMINATE; ///< The progress bar is shown in a
+                                    ///< indeterminate state
 
 constexpr ProgressState PROGRESS_STATE_NORMAL =
   SDL_PROGRESS_STATE_NORMAL; ///< The progress bar is shown in a normal state
@@ -773,7 +774,7 @@ constexpr ProgressState PROGRESS_STATE_PAUSED =
  */
 constexpr ProgressState PROGRESS_STATE_ERROR = SDL_PROGRESS_STATE_ERROR;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The struct used as an opaque handle to a window.
@@ -1811,7 +1812,7 @@ public:
    * notches, TV overscan, etc. This function provides the area of the window
    * which is safe to have interactable content. You should continue rendering
    * into the rest of the window, but it should not contain visually important
-   * or interactible content.
+   * or interactable content.
    *
    * @throws Error on failure.
    *
@@ -2069,7 +2070,7 @@ public:
    */
   void SetAlwaysOnTop(bool on_top);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the window to fill the current document space (Emscripten only).
@@ -2100,7 +2101,7 @@ public:
    */
   void SetFillDocument(bool fill);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Show a window.
@@ -2789,7 +2790,7 @@ public:
    */
   void Flash(FlashOperation operation);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -2841,7 +2842,7 @@ public:
    */
   float GetProgressValue();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3921,19 +3922,15 @@ constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
 constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
   SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto WAYLAND_WL_OUTPUT_POINTER =
   SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
-
-#if SDL_VERSION_ATLEAST(3, 3, 6)
-
 constexpr auto WINDOWS_HMONITOR_POINTER =
   SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Display
 
@@ -4902,12 +4899,12 @@ constexpr auto CREATE_COCOA_WINDOW_POINTER =
 constexpr auto CREATE_COCOA_VIEW_POINTER =
   SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_WINDOWSCENE_POINTER =
   SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
   SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
@@ -4927,7 +4924,7 @@ constexpr auto CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER =
 constexpr auto CREATE_X11_WINDOW_NUMBER =
   SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING;
@@ -4935,7 +4932,7 @@ constexpr auto CREATE_EMSCRIPTEN_CANVAS_ID_STRING =
 constexpr auto CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
 
@@ -4977,7 +4974,7 @@ constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
 constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
   SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OPENVR_OVERLAY_ID_NUMBER =
   SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER;
@@ -4986,7 +4983,7 @@ constexpr auto OPENVR_OVERLAY_ID_NUMBER =
 
 constexpr auto OPENVR_OVERLAY_ID_NUMBER = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto VIVANTE_DISPLAY_POINTER =
   SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
@@ -5035,7 +5032,7 @@ constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
 
 constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING;
@@ -5043,7 +5040,7 @@ constexpr auto EMSCRIPTEN_CANVAS_ID_STRING =
 constexpr auto EMSCRIPTEN_KEYBOARD_ELEMENT_STRING =
   SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Window
 
@@ -5622,7 +5619,7 @@ inline Rect Window::GetRect() const { return SDL::GetWindowRect(m_resource); }
  * notches, TV overscan, etc. This function provides the area of the window
  * which is safe to have interactable content. You should continue rendering
  * into the rest of the window, but it should not contain visually important or
- * interactible content.
+ * interactable content.
  *
  * @param window the window to query.
  * @throws Error on failure.
@@ -6010,7 +6007,7 @@ inline void Window::SetAlwaysOnTop(bool on_top)
   SDL::SetWindowAlwaysOnTop(m_resource, on_top);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the window to fill the current document space (Emscripten only).
@@ -6050,7 +6047,7 @@ inline void Window::SetFillDocument(bool fill)
   SDL::SetWindowFillDocument(m_resource, fill);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Show a window.
@@ -7012,7 +7009,7 @@ inline void Window::Flash(FlashOperation operation)
   SDL::FlashWindow(m_resource, operation);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -7100,7 +7097,7 @@ inline float Window::GetProgressValue()
   return SDL::GetWindowProgressValue(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Destroy a window.

@@ -739,7 +739,7 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A generic property for naming things.
@@ -765,7 +765,7 @@ struct PropertiesRef : Properties
  */
 inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the global SDL properties.

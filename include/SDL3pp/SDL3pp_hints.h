@@ -394,7 +394,7 @@ namespace SDL {
  */
 #define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE "SDL_AUDIO_DEVICE_STREAM_ROLE"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Specify whether this audio device should do audio processing.
@@ -416,7 +416,7 @@ namespace SDL {
  */
 #define SDL_HINT_AUDIO_DEVICE_RAW_STREAM "SDL_AUDIO_DEVICE_RAW_STREAM"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Specify the input file when recording audio using the disk audio driver.
@@ -701,7 +701,7 @@ namespace SDL {
  */
 #define SDL_HINT_DISPLAY_USABLE_BOUNDS "SDL_DISPLAY_USABLE_BOUNDS"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the level of checking for invalid parameters passed to SDL functions.
@@ -718,7 +718,7 @@ namespace SDL {
  */
 #define SDL_HINT_INVALID_PARAM_CHECKS "SDL_INVALID_PARAM_CHECKS"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Disable giving back control to the browser automatically when running with
@@ -1063,6 +1063,20 @@ namespace SDL {
  * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_HIDAPI_LIBUSB "SDL_HIDAPI_LIBUSB"
+
+/**
+ * A variable to control whether HIDAPI uses libusb for GameCube adapters.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": HIDAPI will not use libusb for GameCube adapters.
+ * - "1": HIDAPI will use libusb for GameCube adapters if available. (default)
+ *
+ * This hint should be set before SDL is initialized.
+ *
+ * @since This hint is available since SDL 3.2.0.
+ */
+#define SDL_HINT_HIDAPI_LIBUSB_GAMECUBE "SDL_HIDAPI_LIBUSB_GAMECUBE"
 
 /**
  * A variable to control whether HIDAPI uses libusb only for whitelisted
@@ -1875,7 +1889,7 @@ namespace SDL {
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED                             \
   "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch 2
@@ -1894,7 +1908,7 @@ namespace SDL {
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SWITCH2 "SDL_JOYSTICK_HIDAPI_SWITCH2"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether Nintendo Switch Joy-Con controllers will be in
@@ -2053,7 +2067,7 @@ namespace SDL {
 #define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED                             \
   "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -2071,10 +2085,6 @@ namespace SDL {
  * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP "SDL_JOYSTICK_HIDAPI_GIP"
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
-
-#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
@@ -2095,7 +2105,7 @@ namespace SDL {
 #define SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA                        \
   "SDL_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether IOKit should be used for controller handling.
@@ -2463,7 +2473,7 @@ namespace SDL {
  */
 #define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable that controls whether KMSDRM will use "atomic" functionality.
@@ -2486,7 +2496,7 @@ namespace SDL {
  */
 #define SDL_HINT_KMSDRM_ATOMIC "SDL_KMSDRM_ATOMIC"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling the default SDL log levels.
@@ -2614,7 +2624,7 @@ namespace SDL {
  */
 #define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether holding down a key will repeat the pressed key
@@ -2631,7 +2641,7 @@ namespace SDL {
  */
 #define SDL_HINT_MAC_PRESS_AND_HOLD "SDL_MAC_PRESS_AND_HOLD"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Request SDL_AppIterate() be called at a specific rate.
@@ -2712,7 +2722,7 @@ namespace SDL {
  */
 #define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable setting whether we should scale cursors by the current display
@@ -2732,7 +2742,7 @@ namespace SDL {
  */
 #define SDL_HINT_MOUSE_DPI_SCALE_CURSORS "SDL_MOUSE_DPI_SCALE_CURSORS"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
@@ -3108,7 +3118,7 @@ namespace SDL {
  */
 #define SDL_HINT_RENDER_DIRECT3D11_DEBUG "SDL_RENDER_DIRECT3D11_DEBUG"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether to use the Direct3D 11 WARP software
@@ -3128,7 +3138,7 @@ namespace SDL {
  */
 #define SDL_HINT_RENDER_DIRECT3D11_WARP "SDL_RENDER_DIRECT3D11_WARP"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether to enable Vulkan Validation Layers.
@@ -3568,10 +3578,12 @@ namespace SDL {
  * prioritized in the list of displays, as exposed by calling GetDisplays(),
  * with the first listed becoming the primary display. The naming convention can
  * vary depending on the environment, but it is usually a connector name (e.g.
- * 'DP-1', 'DP-2', 'HDMI-A-1',etc...).
+ * 'DP-1', 'DP-2', 'HDMI-A-1', etc...).
  *
- * On Wayland and X11 desktops, the connector names associated with displays can
- * typically be found by using the `xrandr` utility.
+ * On Wayland desktops, the connector names associated with displays can be
+ * found in the `name` property of the info output from `wayland-info -i
+ * wl_output`. On X11 desktops, the `xrandr` utility can be used to retrieve the
+ * connector names associated with displays.
  *
  * This hint is currently supported on the following drivers:
  *
@@ -3707,7 +3719,7 @@ namespace SDL {
 #define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \
   "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable indicating whether the metal layer drawable size should be updated
@@ -3726,10 +3738,6 @@ namespace SDL {
  */
 #define SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE                              \
   "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
-
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
-
-#if SDL_VERSION_ATLEAST(3, 3, 6)
 
 /**
  * A variable controlling whether SDL will attempt to automatically set the
@@ -3752,7 +3760,7 @@ namespace SDL {
 #define SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE                            \
   "SDL_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether fullscreen windows are minimized when they
@@ -3761,8 +3769,10 @@ namespace SDL {
  * The variable can be set to the following values:
  *
  * - "0": Fullscreen windows will not be minimized when they lose focus.
- *   (default)
  * - "1": Fullscreen windows are minimized when they lose focus.
+ * - "auto": Fullscreen windows are minimized when they lose focus if they use
+ *   exclusive fullscreen modes, so the desktop video mode is restored.
+ *   (default)
  *
  * This hint can be set anytime.
  *
@@ -4432,7 +4442,7 @@ namespace SDL {
  */
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when
@@ -4457,7 +4467,7 @@ namespace SDL {
 #define SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS                          \
   "SDL_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS"
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.

@@ -138,9 +138,9 @@
     */
    static Surface LoadPNG(IOStreamParam src, bool closeio = false);
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
    /**
     * Load a PNG image from a file.
@@ -185,9 +185,9 @@
     */
    void SavePNG(IOStreamParam dst, bool closeio = false) const;
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
    /**
     * Save a surface to a file in PNG format.
@@ -330,12 +330,9 @@
     * @param scaleMode the ScaleMode to be used.
     * @returns a copy of the surface or nullptr on failure; call GetError() for
     *          more information.
-@@ -1357,12 +1355,9 @@
-    * This function handles all surface formats, and ignores any clip rectangle.
-    *
+@@ -1359,10 +1357,7 @@
     * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
--   * otherwise the color is assumed to be in the colorspace of the suface.
-+   * otherwise the color is assumed to be in the colorspace of the surface.
+    * otherwise the color is assumed to be in the colorspace of the surface.
     *
 -   * @param r the red component of the pixel, normally in the range 0-1.
 -   * @param g the green component of the pixel, normally in the range 0-1.
@@ -773,7 +770,7 @@
  inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
  
 +#ifndef SDL3PP_ENABLE_IMAGE
- #if SDL_VERSION_ATLEAST(3, 3, 6)
+ #if SDL_VERSION_ATLEAST(3, 4, 0)
  
  /**
 @@ -2432,13 +2474,9 @@
@@ -784,9 +781,9 @@
 +  return Surface{SDL_LoadSurface_IO(src, closeio)};
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Load a BMP or PNG image from a file.
@@ -801,7 +798,7 @@
 +{
 +  return Surface{SDL_LoadSurface(file)};
 +}
- #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 +#endif // SDL3PP_ENABLE_IMAGE
  
  /**
@@ -810,9 +807,9 @@
    return Surface(SDL_LoadPNG_IO(src, closeio));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Load a PNG image from a file.
@@ -821,27 +818,27 @@
   */
  inline Surface LoadPNG(StringParam file) { return Surface(SDL_LoadPNG(file)); }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline Surface Surface::LoadPNG(IOStreamParam src, bool closeio)
  {
    return SDL::LoadPNG(src, closeio);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline Surface Surface::LoadPNG(StringParam file)
  {
    return SDL::LoadPNG(std::move(file));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Save a surface to a seekable SDL data stream in PNG format.
@@ -850,9 +847,9 @@
    CheckError(SDL_SavePNG_IO(surface, dst, closeio));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Save a surface to a file in PNG format.
@@ -861,18 +858,18 @@
    CheckError(SDL_SavePNG(surface, file));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline void Surface::SavePNG(IOStreamParam dst, bool closeio) const
  {
    SDL::SavePNG(m_resource, dst, closeio);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline void Surface::SavePNG(StringParam file) const
  {
@@ -1072,9 +1069,9 @@
 +  return Surface{SDL_RotateSurface(surface, angle)};
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline Surface Surface::Rotate(float angle)
  {
@@ -1217,7 +1214,7 @@
  
  /**
 @@ -3494,10 +3552,7 @@
-  * otherwise the color is assumed to be in the colorspace of the suface.
+  * otherwise the color is assumed to be in the colorspace of the surface.
   *
   * @param surface the Surface to clear.
 - * @param r the red component of the pixel, normally in the range 0-1.
@@ -1412,14 +1409,14 @@
 +  SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
  }
  
- #if SDL_VERSION_ATLEAST(3, 3, 6)
+ #if SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -3841,16 +3973,12 @@
    CheckError(SDL_StretchSurface(src, srcrect, dst, dstrect, scaleMode));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline void Surface::Stretch(SurfaceParam src,
                               OptionalRef<RectRaw> srcrect,
@@ -1430,7 +1427,7 @@
 +  SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
  }
  
- #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -3889,7 +4017,7 @@
                                 OptionalRef<const RectRaw> srcrect,
                                 OptionalRef<const RectRaw> dstrect)

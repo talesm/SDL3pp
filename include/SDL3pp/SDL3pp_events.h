@@ -128,13 +128,13 @@ constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
   SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED; ///< Display has changed content
                                            ///< scale
 
-#if SDL_VERSION_ATLEAST(3, 3, 0)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_DISPLAY_USABLE_BOUNDS_CHANGED =
   SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED; ///< Display has changed usable
                                            ///< bounds
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_DISPLAY_FIRST =
   SDL_EVENT_DISPLAY_FIRST; ///< DISPLAY_FIRST
@@ -264,7 +264,7 @@ constexpr EventType EVENT_KEYBOARD_REMOVED =
 constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
   SDL_EVENT_TEXT_EDITING_CANDIDATES; ///< Keyboard text editing candidates
 
-#if SDL_VERSION_ATLEAST(3, 3, 0)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
   SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown
@@ -272,7 +272,7 @@ constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
 constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
   SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_MOUSE_MOTION =
   SDL_EVENT_MOUSE_MOTION; ///< Mouse moved
@@ -366,7 +366,7 @@ constexpr EventType EVENT_FINGER_MOTION =
 constexpr EventType EVENT_FINGER_CANCELED =
   SDL_EVENT_FINGER_CANCELED; ///< FINGER_CANCELED
 
-#if SDL_VERSION_ATLEAST(3, 3, 0)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_PINCH_BEGIN =
   SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started
@@ -377,7 +377,7 @@ constexpr EventType EVENT_PINCH_UPDATE =
 constexpr EventType EVENT_PINCH_END =
   SDL_EVENT_PINCH_END; ///< Pinch gesture ended
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr EventType EVENT_CLIPBOARD_UPDATE =
   SDL_EVENT_CLIPBOARD_UPDATE; ///< The clipboard changed
@@ -722,12 +722,12 @@ using RenderEvent = SDL_RenderEvent;
  */
 using TouchFingerEvent = SDL_TouchFingerEvent;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// Pinch event structure (event.pinch.*)
 using PinchFingerEvent = SDL_PinchFingerEvent;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Pressure-sensitive pen proximity event structure (event.pproximity.*)
@@ -1777,7 +1777,7 @@ inline WindowRef GetWindowFromEvent(const Event& event)
   return {CheckError(SDL_GetWindowFromEvent(&event))};
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Generate an English description of an event.
@@ -1851,7 +1851,7 @@ inline std::string GetEventDescription(const Event& event)
   return r;
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 

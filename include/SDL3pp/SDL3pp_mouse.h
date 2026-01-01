@@ -442,7 +442,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_NORMAL =
 constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
   SDL_MOUSEWHEEL_FLIPPED; ///< The scroll direction is flipped / natural
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Animated cursor frame info.
@@ -451,7 +451,7 @@ constexpr MouseWheelDirection MOUSEWHEEL_FLIPPED =
  */
 using CursorFrameInfo = SDL_CursorFrameInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Represents a button index.
@@ -502,7 +502,7 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
   return SDL_BUTTON_MASK(button);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A callback used to transform mouse motion delta from raw values.
@@ -578,7 +578,7 @@ using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
                                                       float* x,
                                                       float* y)>;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Return whether a mouse is currently connected.
@@ -792,7 +792,7 @@ inline void WarpMouse(const FPointRaw& p)
   CheckError(SDL_WarpMouseGlobal(p.x, p.y));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set a user-defined function by which to transform relative mouse inputs.
@@ -834,7 +834,7 @@ inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
   SetRelativeMouseTransform(callback.wrapper, callback.data);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline void Window::SetRelativeMouseMode(bool enabled)
 {
@@ -980,7 +980,7 @@ inline Cursor CreateColorCursor(SurfaceParam surface, const PointRaw& hot)
   return Cursor(surface, hot);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create an animated color cursor.
@@ -1035,7 +1035,7 @@ inline CursorRef CreateAnimatedCursor(CursorFrameInfo* frames,
     SDL_CreateAnimatedCursor(frames, frame_count, hot_x, hot_y));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a system cursor.

@@ -195,7 +195,7 @@ struct GPURenderStateParam
  */
 constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The name of the GPU renderer.
@@ -204,7 +204,7 @@ constexpr auto SOFTWARE_RENDERER = SDL_SOFTWARE_RENDERER;
  */
 constexpr auto GPU_RENDERER = SDL_GPU_RENDERER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Vertex structure.
@@ -229,7 +229,7 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING =
 constexpr TextureAccess TEXTUREACCESS_TARGET =
   SDL_TEXTUREACCESS_TARGET; ///< Texture can be used as a render target
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The addressing mode for a texture when used in Renderer.RenderGeometry().
@@ -296,7 +296,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
 constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A structure specifying the parameters of a GPU render state.
@@ -307,7 +307,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
  */
 using GPURenderStateCreateInfo = SDL_GPURenderStateCreateInfo;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A structure representing rendering state
@@ -563,7 +563,7 @@ public:
    */
   void Destroy();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Return the GPU device used by a renderer.
@@ -577,7 +577,7 @@ public:
    */
   GPUDeviceRef GetGPUDevice();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the window associated with a renderer.
@@ -914,9 +914,10 @@ public:
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
@@ -1901,7 +1902,7 @@ public:
                           float scale,
                           OptionalRef<const FRectRaw> dstrect);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -1947,7 +1948,7 @@ public:
                                const FRectRaw& dstrect,
                                float tileScale);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Render a list of triangles, optionally using a texture and indices into the
@@ -2011,7 +2012,7 @@ public:
                          int num_indices,
                          int size_indices);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the texture addressing mode used in Renderer.RenderGeometry().
@@ -2049,7 +2050,7 @@ public:
   void GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                    TextureAddressMode* v_mode);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Read pixels from the current rendering target.
@@ -2330,7 +2331,7 @@ public:
                              std::string_view fmt,
                              ARGS... args);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set default scale mode for new textures for given renderer.
@@ -2399,7 +2400,7 @@ public:
    */
   void SetGPURenderState(GPURenderStateParam state);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
 /// Semi-safe reference for Renderer.
@@ -2637,9 +2638,10 @@ public:
    *
    * With the vulkan renderer:
    *
-   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
-   *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
-   *   you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+   *   the texture, if you want to wrap an existing texture.
+   * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+   *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
    *
    * With the GPU renderer:
    *
@@ -2959,7 +2961,7 @@ public:
   /// Get the pixel format.
   PixelFormat GetFormat() const;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the palette used by a texture.
@@ -2995,7 +2997,7 @@ public:
    */
   Palette GetPalette();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set an additional color value multiplied into render copy operations.
@@ -3811,7 +3813,7 @@ constexpr auto CREATE_OUTPUT_COLORSPACE_NUMBER =
 constexpr auto CREATE_PRESENT_VSYNC_NUMBER =
   SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_GPU_DEVICE_POINTER =
   SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
@@ -3825,7 +3827,7 @@ constexpr auto CREATE_GPU_SHADERS_DXIL_BOOLEAN =
 constexpr auto CREATE_GPU_SHADERS_MSL_BOOLEAN =
   SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_INSTANCE_POINTER =
   SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER;
@@ -3859,12 +3861,12 @@ constexpr auto MAX_TEXTURE_SIZE_NUMBER =
 constexpr auto TEXTURE_FORMATS_POINTER =
   SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto TEXTURE_WRAPPING_BOOLEAN =
   SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto OUTPUT_COLORSPACE_NUMBER =
   SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER;
@@ -3913,7 +3915,7 @@ constexpr auto GPU_DEVICE_POINTER = SDL_PROP_RENDERER_GPU_DEVICE_POINTER;
 
 } // namespace prop::Renderer
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a 2D GPU rendering context.
@@ -3973,7 +3975,7 @@ inline GPUDeviceRef Renderer::GetGPUDevice()
   return SDL::GetGPURendererDevice(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Create a 2D software rendering context for a surface.
@@ -4429,9 +4431,10 @@ inline Texture Renderer::CreateTextureFromSurface(SurfaceParam surface)
  *
  * With the vulkan renderer:
  *
- * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout
- *   VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if
- *   you want to wrap an existing texture.
+ * - `prop::Texture.CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with
+ *   the texture, if you want to wrap an existing texture.
+ * - `prop::Texture.CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the
+ *   VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
  *
  * With the GPU renderer:
  *
@@ -4485,11 +4488,11 @@ constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER;
 
 constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_PALETTE_POINTER = SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_SDR_WHITE_POINT_FLOAT =
   SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT;
@@ -4545,7 +4548,14 @@ constexpr auto CREATE_OPENGLES2_TEXTURE_V_NUMBER =
 constexpr auto CREATE_VULKAN_TEXTURE_NUMBER =
   SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
+constexpr auto CREATE_VULKAN_LAYOUT_NUMBER =
+  SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_GPU_TEXTURE_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
@@ -4559,7 +4569,7 @@ constexpr auto CREATE_GPU_TEXTURE_U_POINTER =
 constexpr auto CREATE_GPU_TEXTURE_V_POINTER =
   SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto COLORSPACE_NUMBER = SDL_PROP_TEXTURE_COLORSPACE_NUMBER;
 
@@ -4626,7 +4636,7 @@ constexpr auto OPENGLES2_TEXTURE_TARGET_NUMBER =
 
 constexpr auto VULKAN_TEXTURE_NUMBER = SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER;
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
 
@@ -4636,7 +4646,7 @@ constexpr auto GPU_TEXTURE_U_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER;
 
 constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Texture
 
@@ -4841,7 +4851,7 @@ inline PixelFormat Texture::GetFormat() const
   return SDL::GetTextureFormat(m_resource);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the palette used by a texture.
@@ -4895,7 +4905,7 @@ inline Palette Texture::GetPalette()
   return SDL::GetTexturePalette(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set an additional color value multiplied into render copy operations.
@@ -7116,7 +7126,7 @@ inline void Renderer::RenderTexture9Grid(TextureParam texture,
                           dstrect);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a scaled copy using the 9-grid algorithm to the current rendering
@@ -7198,7 +7208,7 @@ inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
                                tileScale);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Render a list of triangles, optionally using a texture and indices into the
@@ -7320,7 +7330,7 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
                          size_indices);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the texture addressing mode used in Renderer.RenderGeometry().
@@ -7380,7 +7390,7 @@ inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
   SDL::GetRenderTextureAddressMode(m_resource, u_mode, v_mode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Read pixels from the current rendering target.
@@ -7813,7 +7823,7 @@ inline void Renderer::RenderDebugTextFormat(const FPointRaw& p,
   SDL::RenderDebugTextFormat(m_resource, p, fmt, args...);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set default scale mode for new textures for given renderer.
@@ -8134,7 +8144,7 @@ inline void DestroyGPURenderState(GPURenderStateRaw state)
 
 inline void GPURenderState::Destroy() { DestroyGPURenderState(release()); }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 

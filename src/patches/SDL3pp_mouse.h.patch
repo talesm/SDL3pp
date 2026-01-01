@@ -56,7 +56,7 @@
  
 @@ -456,17 +453,21 @@
  
- #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
 +/**
 + * Represents a button index.
@@ -93,9 +93,9 @@
                                                      float* x,
                                                      float* y);
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * A callback used to transform mouse motion delta from raw values.
@@ -164,14 +164,14 @@
 +  CheckError(SDL_WarpMouseGlobal(p.x, p.y));
  }
  
- #if SDL_VERSION_ATLEAST(3, 3, 6)
+ #if SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -816,10 +815,6 @@
    CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Set a user-defined function by which to transform relative mouse inputs.
@@ -192,7 +192,7 @@
 +  SetRelativeMouseTransform(callback.wrapper, callback.data);
  }
  
- #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -927,12 +921,9 @@
   *
   * @param data the color value for each pixel of the cursor.

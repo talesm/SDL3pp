@@ -158,7 +158,7 @@ constexpr ScaleMode SCALEMODE_NEAREST =
 constexpr ScaleMode SCALEMODE_LINEAR =
   SDL_SCALEMODE_LINEAR; ///< linear filtering
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * nearest pixel sampling with improved scaling for pixel art, available since
@@ -166,7 +166,7 @@ constexpr ScaleMode SCALEMODE_LINEAR =
  */
 constexpr ScaleMode SCALEMODE_PIXELART = SDL_SCALEMODE_PIXELART;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * The flip mode.
@@ -181,13 +181,13 @@ constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL; ///< flip horizontally
 
 constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL; ///< flip vertically
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// flip horizontally and vertically (not a diagonal flip)
 constexpr FlipMode FLIP_HORIZONTAL_AND_VERTICAL =
   SDL_FLIP_HORIZONTAL_AND_VERTICAL;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A collection of pixels used in software blitting.
@@ -453,7 +453,7 @@ public:
    */
   static Surface LoadBMP(StringParam file);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Load a PNG image from a seekable SDL data stream.
@@ -502,7 +502,7 @@ public:
    */
   static Surface LoadPNG(StringParam file);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /// member access to underlying SurfaceRaw.
   constexpr const SurfaceRaw operator->() const noexcept { return m_resource; }
@@ -866,7 +866,7 @@ public:
    */
   void SaveBMP(StringParam file) const;
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Save a surface to a seekable SDL data stream in PNG format.
@@ -902,7 +902,7 @@ public:
    */
   void SavePNG(StringParam file) const;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set the RLE acceleration hint for a surface.
@@ -1205,7 +1205,7 @@ public:
    */
   void Flip(FlipMode flip);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Return a copy of a surface rotated clockwise a number of degrees.
@@ -1235,7 +1235,7 @@ public:
    */
   Surface Rotate(float angle);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Creates a new surface identical to the existing surface.
@@ -1652,7 +1652,7 @@ public:
                            const RectRaw& dstrect,
                            ScaleMode scaleMode);
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a stretched pixel copy from one surface to another.
@@ -1678,7 +1678,7 @@ public:
                OptionalRef<RectRaw> dstrect,
                ScaleMode scaleMode);
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different
@@ -2127,11 +2127,11 @@ constexpr auto HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;
 
 #endif // SDL_VERSION_ATLEAST(3, 2, 6)
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto ROTATION_FLOAT = SDL_PROP_SURFACE_ROTATION_FLOAT;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Surface
 
@@ -2451,7 +2451,7 @@ inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
 
 #ifndef SDL3PP_ENABLE_IMAGE
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a BMP or PNG image from a seekable SDL data stream.
@@ -2498,7 +2498,7 @@ inline Surface LoadSurface(StringParam file)
 {
   return Surface{SDL_LoadSurface(file)};
 }
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 #endif // SDL3PP_ENABLE_IMAGE
 
 /**
@@ -2622,7 +2622,7 @@ inline void Surface::SaveBMP(StringParam file) const
   SDL::SaveBMP(m_resource, std::move(file));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Load a PNG image from a seekable SDL data stream.
@@ -2741,7 +2741,7 @@ inline void Surface::SavePNG(StringParam file) const
   SDL::SavePNG(m_resource, std::move(file));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Set the RLE acceleration hint for a surface.
@@ -3204,7 +3204,7 @@ inline void FlipSurface(SurfaceParam surface, FlipMode flip)
 
 inline void Surface::Flip(FlipMode flip) { SDL::FlipSurface(m_resource, flip); }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Return a copy of a surface rotated clockwise a number of degrees.
@@ -3243,7 +3243,7 @@ inline Surface Surface::Rotate(float angle)
   return SDL::RotateSurface(m_resource, angle);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Creates a new surface identical to the existing surface.
@@ -3549,7 +3549,7 @@ inline void Surface::PremultiplyAlpha(bool linear)
  * This function handles all surface formats, and ignores any clip rectangle.
  *
  * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
- * otherwise the color is assumed to be in the colorspace of the suface.
+ * otherwise the color is assumed to be in the colorspace of the surface.
  *
  * @param surface the Surface to clear.
  * @param c the color components of the pixel, normally in the range 0-1.
@@ -3942,7 +3942,7 @@ inline void Surface::BlitUncheckedScaled(SurfaceParam src,
   SDL::BlitSurfaceUncheckedScaled(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a stretched pixel copy from one surface to another.
@@ -3981,7 +3981,7 @@ inline void Surface::Stretch(SurfaceParam src,
   SDL::StretchSurface(src, srcrect, m_resource, dstrect, scaleMode);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Perform a tiled blit to a destination surface, which may be of a different

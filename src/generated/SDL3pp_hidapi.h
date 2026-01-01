@@ -242,7 +242,7 @@ public:
    */
   void close();
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Get the properties associated with an HidDevice.
@@ -259,7 +259,7 @@ public:
    */
   PropertiesRef hid_get_properties();
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Write an Output report to a HID device.
@@ -675,7 +675,7 @@ inline HidDevice hid_open_path(StringParam path)
   return HidDevice(std::move(path));
 }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Get the properties associated with an HidDevice.
@@ -696,25 +696,25 @@ inline PropertiesRef hid_get_properties(HidDeviceParam dev)
   return CheckError(SDL_hid_get_properties(dev));
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline PropertiesRef HidDevice::hid_get_properties()
 {
   return SDL::hid_get_properties(m_resource);
 }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 namespace prop::Hidapi {
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto LIBUSB_DEVICE_HANDLE_POINTER =
   SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER;
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 } // namespace prop::Hidapi
 

@@ -855,7 +855,7 @@ const transform = {
           ]
         },
         "SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         }
       }
     },
@@ -873,7 +873,7 @@ const transform = {
         "SDL_CameraPosition": { before: "SDL_Camera" },
         "SDL_CameraPermissionState": {
           before: "SDL_Camera",
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_GetCameras": {
           type: "OwnArray<CameraID>",
@@ -1359,7 +1359,7 @@ const transform = {
       localIncludes: ["SDL3pp_stdinc.h", "SDL3pp_video.h"],
       transform: {
         "SDL_PinchFingerEvent": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "PollEvent": {
           kind: "function",
@@ -1462,22 +1462,22 @@ const transform = {
         "SDL_HasEvents": { parameters: [{ default: "EVENT_FIRST" }, { default: "EVENT_LAST" }] },
         "SDL_FlushEvents": { parameters: [{ default: "EVENT_FIRST" }, { default: "EVENT_LAST" }] },
         "SDL_EVENT_DISPLAY_USABLE_BOUNDS_CHANGED": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_EVENT_SCREEN_KEYBOARD_SHOWN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_EVENT_SCREEN_KEYBOARD_HIDDEN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_EVENT_PINCH_BEGIN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_EVENT_PINCH_UPDATE": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_EVENT_PINCH_END": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 0 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_GetEventDescription": {
           parameters: [{}, { type: "TargetBytes" }]
@@ -1653,7 +1653,7 @@ const transform = {
           type: "OwnArray<JoystickID>",
           parameters: [],
         },
-        "SDL_GAMEPAD_TYPE_GAMECUBE": { since: { tag: "SDL", major: 3, minor: 3, patch: 2 } },
+        "SDL_GAMEPAD_TYPE_GAMECUBE": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       },
     },
     "SDL_gpu.h": {
@@ -1874,40 +1874,40 @@ const transform = {
         "SDL_GPUTextureSupportsFormat": { hints: { methodName: "TextureSupportsFormat" } },
         "SDL_GPUTextureSupportsSampleCount": { hints: { methodName: "TextureSupportsSampleCount" } },
         "SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2, }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0, }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_NAME_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_DRIVER_NAME_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_DRIVER_VERSION_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 12 }
@@ -2160,7 +2160,7 @@ const transform = {
           parameters: [{}, { type: "TargetBytes" }],
           hints: { methodName: "get_report_descriptor" }
         },
-        "SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER": { since: { tag: "SDL", major: 3, minor: 3, patch: 2 } }
+        "SDL_PROP_HIDAPI_LIBUSB_DEVICE_HANDLE_POINTER": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } }
       },
     },
     "SDL_hints.h": {
@@ -2512,7 +2512,7 @@ const transform = {
             { name: "closeio", type: "bool", default: "true" }
           ]
         },
-        "SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER": { since: { tag: "SDL", major: 3, minor: 3, patch: 2 } },
+        "SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       }
     },
     "SDL_keyboard.h": {
@@ -3392,7 +3392,7 @@ const transform = {
           enum: "SDL_PEN_DEVICE_TYPE_",
         },
         "SDL_PEN_INPUT_IN_PROXIMITY": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 }
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
       }
     },
@@ -3947,10 +3947,10 @@ const transform = {
           }
         },
         "SDL_PROP_PROCESS_CREATE_WORKING_DIRECTORY_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_PROCESS_CREATE_CMDLINE_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
       },
       namespacesMap: {
@@ -5427,46 +5427,49 @@ const transform = {
           type: "Surface",
         },
         "SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_CREATE_PALETTE_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
+        },
+        "SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER": {
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_GPU_TEXTURE_UV_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_GPU_TEXTURE_U_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
       }
     },
@@ -6405,10 +6408,10 @@ const transform = {
           since: { tag: "SDL", major: 3, minor: 2, patch: 10 },
         },
         "SDL_SCALEMODE_PIXELART": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_FLIP_HORIZONTAL_AND_VERTICAL": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 6 },
@@ -6417,7 +6420,7 @@ const transform = {
           since: { tag: "SDL", major: 3, minor: 2, patch: 6 },
         },
         "SDL_PROP_SURFACE_ROTATION_FLOAT": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_MUSTLOCK": {
           kind: "function",
@@ -7664,7 +7667,7 @@ const transform = {
         "SDL_EGLSurface": { before: "SDL_Window" },
         "SDL_ProgressState": {
           before: "SDL_Window",
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_Window": {
           resource: {
@@ -7895,34 +7898,34 @@ const transform = {
           hints: { methodName: "GetEGLSurface" }
         },
         "SDL_WINDOW_FILL_DOCUMENT": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 2, patch: 18 },
         },
         "SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 6 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
         "SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING": {
-          since: { tag: "SDL", major: 3, minor: 3, patch: 2 },
+          since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
       }
     },

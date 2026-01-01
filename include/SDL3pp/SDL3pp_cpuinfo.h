@@ -318,7 +318,7 @@ inline int GetSystemRAM() { return SDL_GetSystemRAM(); }
  */
 inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
 
-#if SDL_VERSION_ATLEAST(3, 3, 6)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Report the size of a page of memory.
@@ -341,7 +341,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  */
 inline int GetSystemPageSize() { return SDL_GetSystemPageSize(); }
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /// @}
 

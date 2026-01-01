@@ -27,9 +27,9 @@
  constexpr EventType EVENT_SCREEN_KEYBOARD_SHOWN =
    SDL_EVENT_SCREEN_KEYBOARD_SHOWN; ///< The on-screen keyboard has been shown
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 0)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  constexpr EventType EVENT_SCREEN_KEYBOARD_HIDDEN =
    SDL_EVENT_SCREEN_KEYBOARD_HIDDEN; ///< The on-screen keyboard has been hidden
@@ -38,16 +38,16 @@
  constexpr EventType EVENT_PINCH_BEGIN =
    SDL_EVENT_PINCH_BEGIN; ///< Pinch gesture started
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 0)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  constexpr EventType EVENT_PINCH_UPDATE =
    SDL_EVENT_PINCH_UPDATE; ///< Pinch gesture updated
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 0)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 0)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  constexpr EventType EVENT_PINCH_END =
    SDL_EVENT_PINCH_END; ///< Pinch gesture ended
@@ -412,7 +412,7 @@
 +  return {CheckError(SDL_GetWindowFromEvent(&event))};
  }
  
- #if SDL_VERSION_ATLEAST(3, 3, 6)
+ #if SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -1750,26 +1782,26 @@
  /**
   * Generate an English description of an event.
@@ -460,9 +460,9 @@
    return SDL_GetEventDescription(&event, buf.data(), buf.size_bytes());
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Generate an English description of an event.
@@ -493,4 +493,4 @@
 +  return r;
  }
  
- #endif // SDL_VERSION_ATLEAST(3, 3, 6)
+ #endif // SDL_VERSION_ATLEAST(3, 4, 0)

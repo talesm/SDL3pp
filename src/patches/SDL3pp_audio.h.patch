@@ -209,14 +209,14 @@
 +  return SDL_AUDIO_FRAMESIZE(x);
  }
  
- #if SDL_VERSION_ATLEAST(3, 3, 6)
+ #if SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -1635,10 +1633,6 @@
                                                         const void* buf,
                                                         int buflen);
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * A callback that fires for completed AudioStream.PutDataNoCopy() data.
@@ -470,7 +470,7 @@
                       AudioStreamDataCompleteCallback callback,
                       void* userdata);
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
 -#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
@@ -705,6 +705,28 @@
  }
  
  inline PropertiesRef AudioStream::GetProperties() const
+@@ -3661,17 +3778,17 @@
+   return SDL::GetAudioStreamProperties(m_resource);
+ }
+ 
+-namespace prop::AudioStream {
+-
+ #if SDL_VERSION_ATLEAST(3, 4, 0)
+ 
++namespace prop::AudioStream {
++
+ constexpr auto _AUTO_CLEANUP_BOOLEAN =
+   SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN;
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ } // namespace prop::AudioStream
+ 
++#endif // SDL_VERSION_ATLEAST(3, 4, 0)
++
+ /**
+  * Query the current format of an audio stream.
+  *
 @@ -3877,10 +3994,8 @@
   * returning nullptr, and does not signify an error.
   *
@@ -809,7 +831,7 @@
      stream, buf.data(), buf.size_bytes(), callback, userdata));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
 -#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
@@ -842,7 +864,7 @@
  
 -#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                         AudioStreamDataCompleteCallback callback,
@@ -851,7 +873,7 @@
    SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
 -#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
@@ -863,7 +885,7 @@
  
 -#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Add data to the stream with each channel in a separate array.
@@ -872,9 +894,9 @@
      stream, channel_buffers, num_channels, num_samples));
  }
  
--#endif // SDL_VERSION_ATLEAST(3, 3, 6)
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 -
--#if SDL_VERSION_ATLEAST(3, 3, 6)
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
 -
  inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
                                         int num_channels,

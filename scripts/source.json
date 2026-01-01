@@ -18352,7 +18352,7 @@
             [
               {
                 "tag": "\\param str",
-                "content": "string representing a SDL_Gamepad axis."
+                "content": "string representing a SDL_Gamepad button."
               },
               {
                 "tag": "\\returns",
@@ -18970,7 +18970,7 @@
         "SDL_GetGamepadSensorData": {
           "doc": [
             "Get the current state of a gamepad sensor.",
-            "The number of values and interpretation of the data is sensor dependent. See SDL_sensor.h for the details for each type of sensor.",
+            "The number of values and interpretation of the data is sensor dependent. See the remarks in SDL_SensorType for details for each type of sensor.",
             [
               {
                 "tag": "\\param gamepad",
@@ -28629,6 +28629,7 @@
           "doc": [
             "Performs a texture-to-texture copy.",
             "This copy occurs on the GPU timeline. You may assume the copy has finished in subsequent commands.",
+            "This function does not support copying between depth and color textures. For those, copy the texture to a buffer and then to the destination texture.",
             [
               {
                 "tag": "\\param copy_pass",
@@ -35314,6 +35315,30 @@
           "kind": "def",
           "value": "\"SDL_HIDAPI_LIBUSB\""
         },
+        "SDL_HINT_HIDAPI_LIBUSB_GAMECUBE": {
+          "doc": [
+            "A variable to control whether HIDAPI uses libusb for GameCube adapters.",
+            "The variable can be set to the following values:",
+            [
+              {
+                "tag": "-",
+                "content": "\"0\": HIDAPI will not use libusb for GameCube adapters."
+              },
+              {
+                "tag": "-",
+                "content": "\"1\": HIDAPI will use libusb for GameCube adapters if available. (default)"
+              }
+            ],
+            "This hint should be set before SDL is initialized.",
+            {
+              "tag": "\\since",
+              "content": "This hint is available since SDL 3.2.0."
+            }
+          ],
+          "name": "SDL_HINT_HIDAPI_LIBUSB_GAMECUBE",
+          "kind": "def",
+          "value": "\"SDL_HIDAPI_LIBUSB_GAMECUBE\""
+        },
         "SDL_HINT_HIDAPI_LIBUSB_WHITELIST": {
           "doc": [
             "A variable to control whether HIDAPI uses libusb only for whitelisted devices.",
@@ -38429,8 +38454,8 @@
         "SDL_HINT_VIDEO_DISPLAY_PRIORITY": {
           "doc": [
             "A comma separated list containing the names of the displays that SDL should sort to the front of the display list.",
-            "When this hint is set, displays with matching name strings will be prioritized in the list of displays, as exposed by calling SDL_GetDisplays(), with the first listed becoming the primary display. The naming convention can vary depending on the environment, but it is usually a connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1',etc...).",
-            "On Wayland and X11 desktops, the connector names associated with displays can typically be found by using the `xrandr` utility.",
+            "When this hint is set, displays with matching name strings will be prioritized in the list of displays, as exposed by calling SDL_GetDisplays(), with the first listed becoming the primary display. The naming convention can vary depending on the environment, but it is usually a connector name (e.g. 'DP-1', 'DP-2', 'HDMI-A-1', etc...).",
+            "On Wayland desktops, the connector names associated with displays can be found in the `name` property of the info output from `wayland-info -i wl_output`. On X11 desktops, the `xrandr` utility can be used to retrieve the connector names associated with displays.",
             "This hint is currently supported on the following drivers:",
             [
               {
@@ -38675,11 +38700,15 @@
             [
               {
                 "tag": "-",
-                "content": "\"0\": Fullscreen windows will not be minimized when they lose focus. (default)"
+                "content": "\"0\": Fullscreen windows will not be minimized when they lose focus."
               },
               {
                 "tag": "-",
                 "content": "\"1\": Fullscreen windows are minimized when they lose focus."
+              },
+              {
+                "tag": "-",
+                "content": "\"auto\": Fullscreen windows are minimized when they lose focus if they use exclusive fullscreen modes, so the desktop video mode is restored. (default)"
               }
             ],
             "This hint can be set anytime.",
@@ -48626,7 +48655,7 @@
             "The SDL virtual key representation.",
             "Values of this type are used to represent keyboard keys using the current layout of the keyboard. These values include Unicode values representing the unmodified character that would be generated by pressing the key, or an `SDLK_*` constant for those keys that do not generate characters.",
             "A special exception is the number keys at the top of the keyboard which map by default to SDLK_0...SDLK_9 on AZERTY layouts.",
-            "Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or unicode code point.",
+            "Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or Unicode code point.",
             "Many common keycodes are listed below, but this list is not exhaustive.",
             {
               "tag": "\\since",
@@ -55157,7 +55186,7 @@
             "You do not have to call SDL_DestroyCursor() on the return value, but it is safe to do so.",
             {
               "tag": "\\returns",
-              "content": "the default cursor on success or NULL on failuree; call SDL_GetError() for more information."
+              "content": "the default cursor on success or NULL on failure; call SDL_GetError() for more information."
             },
             {
               "tag": "\\threadsafety",
@@ -65505,10 +65534,16 @@
               }
             ],
             "With the vulkan renderer:",
-            {
-              "tag": "-",
-              "content": "`SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if you want to wrap an existing texture."
-            },
+            [
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with the texture, if you want to wrap an existing texture."
+              },
+              {
+                "tag": "-",
+                "content": "`SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER`: the VkImageLayout for the VkImage, defaults to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL."
+              }
+            ],
             "With the GPU renderer:",
             [
               {
@@ -65710,6 +65745,11 @@
           "name": "SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER",
           "kind": "def",
           "value": "\"SDL.texture.create.vulkan.texture\""
+        },
+        "SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER": {
+          "name": "SDL_PROP_TEXTURE_CREATE_VULKAN_LAYOUT_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.texture.create.vulkan.layout\""
         },
         "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER": {
           "name": "SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER",
@@ -88105,7 +88145,7 @@
           "doc": [
             "Clear a surface with a specific color, with floating point precision.",
             "This function handles all surface formats, and ignores any clip rectangle.",
-            "If the surface is YUV, the color is assumed to be in the sRGB colorspace, otherwise the color is assumed to be in the colorspace of the suface.",
+            "If the surface is YUV, the color is assumed to be in the sRGB colorspace, otherwise the color is assumed to be in the colorspace of the surface.",
             [
               {
                 "tag": "\\param surface",
@@ -94258,7 +94298,7 @@
           ],
           "name": "SDL_MINOR_VERSION",
           "kind": "def",
-          "value": "3"
+          "value": "4"
         },
         "SDL_MICRO_VERSION": {
           "doc": [
@@ -94271,7 +94311,7 @@
           ],
           "name": "SDL_MICRO_VERSION",
           "kind": "def",
-          "value": "6"
+          "value": "0"
         },
         "SDL_VERSIONNUM": {
           "doc": [
@@ -98611,7 +98651,7 @@
         "SDL_GetWindowSafeArea": {
           "doc": [
             "Get the safe area for this window.",
-            "Some devices have portions of the screen which are partially obscured or not interactive, possibly due to on-screen controls, curved edges, camera notches, TV overscan, etc. This function provides the area of the window which is safe to have interactable content. You should continue rendering into the rest of the window, but it should not contain visually important or interactible content.",
+            "Some devices have portions of the screen which are partially obscured or not interactive, possibly due to on-screen controls, curved edges, camera notches, TV overscan, etc. This function provides the area of the window which is safe to have interactable content. You should continue rendering into the rest of the window, but it should not contain visually important or interactable content.",
             [
               {
                 "tag": "\\param window",

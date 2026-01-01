@@ -148,12 +148,12 @@ constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT =
 constexpr GamepadType GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR =
   SDL_GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR; ///< GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR
 
-#if SDL_VERSION_ATLEAST(3, 3, 2)
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr GamepadType GAMEPAD_TYPE_GAMECUBE =
   SDL_GAMEPAD_TYPE_GAMECUBE; ///< GAMEPAD_TYPE_GAMECUBE
 
-#endif // SDL_VERSION_ATLEAST(3, 3, 2)
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr GamepadType GAMEPAD_TYPE_COUNT =
   SDL_GAMEPAD_TYPE_COUNT; ///< GAMEPAD_TYPE_COUNT
@@ -1033,7 +1033,7 @@ public:
    * Get the current state of a gamepad sensor.
    *
    * The number of values and interpretation of the data is sensor dependent.
-   * See SDL_sensor.h for the details for each type of sensor.
+   * See the remarks in SensorType for details for each type of sensor.
    *
    * @param type the type of sensor to query.
    * @param data a pointer filled with the current sensor state.
@@ -2418,7 +2418,7 @@ inline Sint16 Gamepad::GetAxis(GamepadAxis axis)
  * not normally need to call this function unless you are parsing Gamepad
  * mappings in your own code.
  *
- * @param str string representing a Gamepad axis.
+ * @param str string representing a Gamepad button.
  * @returns the GamepadButton enum corresponding to the input string, or
  *          `GAMEPAD_BUTTON_INVALID` if no match was found.
  *
@@ -2736,7 +2736,7 @@ inline float Gamepad::GetSensorDataRate(SensorType type)
  * Get the current state of a gamepad sensor.
  *
  * The number of values and interpretation of the data is sensor dependent. See
- * SDL_sensor.h for the details for each type of sensor.
+ * the remarks in SensorType for details for each type of sensor.
  *
  * @param gamepad the gamepad to query.
  * @param type the type of sensor to query.
