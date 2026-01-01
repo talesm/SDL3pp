@@ -3,7 +3,7 @@ Todo for next version
 
 New Version checklist:
 
-- [ ] Create version branch (b0.6.0);
+- [ ] Create version branch (b0.6.1);
 - [ ] Update [changelog](changelog.md);
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);
@@ -20,20 +20,7 @@ New Version checklist:
 Next version
 ------------
 
-De-smart-fy
-
-- [x] Simplify CreateWindowAndRenderer:
-  - [x] Add overload CreateWindowAndRenderer that take pointers instead of
-    returning pair;
-  - [x] Add overload CreateWindowAndRenderer that returns Window;
-  - [x] Add overload to Window::Window that creates renderer
-- [x] Make free standing version of Random;
-- [x] Simplify timer functions:
-  - [x] GetTicksMS and GetTicksNS that return integers;
-  - [x] Delay overload takes integers type;
-  - [x] DelayPrecise overload takes integer type
-  - [x] AddTimer accepting SDL_AddTimer callback;
-- [x] Merge preview 3.3.x;
+Support SDL 3.4.0
 
 Backlog
 -------
