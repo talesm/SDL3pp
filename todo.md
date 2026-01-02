@@ -21,7 +21,7 @@ Next version
 ------------
 
 - [x] Fix MemoryBarrierRelease and MemoryBarrierAcquire;
-- [ ] Replace all SDL_\* parameters with \*Raw equivalents;
+- [x] Replace all SDL_\* parameters with \*Raw equivalents;
 - [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
   several APIS;
   - [ ] AudioStreamLock for SDL_LockAudioStream;

@@ -1603,7 +1603,7 @@
   * @threadsafety This function should only be called on the main thread.
 @@ -5535,7 +5641,9 @@
    TextureParam texture,
-   OptionalRef<const SDL_Rect> rect = std::nullopt)
+   OptionalRef<const RectRaw> rect = std::nullopt)
  {
 -  return CheckError(SDL_LockTextureToSurface(texture, rect));
 +  SurfaceRaw surface = nullptr;
@@ -1611,7 +1611,7 @@
 +  return Surface::Borrow(surface);
  }
  
- inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
+ inline Surface Texture::LockToSurface(OptionalRef<const RectRaw> rect)
 @@ -5600,9 +5708,24 @@
    SDL::SetRenderTarget(m_resource, texture);
  }
