@@ -3,7 +3,7 @@ Todo for next version
 
 New Version checklist:
 
-- [ ] Create version branch (b0.6.2);
+- [ ] Create version branch (b0.7.0);
 - [ ] Update [changelog](changelog.md);
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);
@@ -22,6 +22,7 @@ Next version
 
 - [x] Fix MemoryBarrierRelease and MemoryBarrierAcquire;
 - [x] Replace all SDL_\* parameters with \*Raw equivalents;
+- [x] Fix GetGamepadBindings()
 - [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
   several APIS;
   - [ ] AudioStreamLock for SDL_LockAudioStream;
@@ -35,15 +36,6 @@ Next version
 Backlog
 -------
 
-- [ ] Refactor Lock methods in order to return Lock classes by default (breaking
-  change!):
-  - [ ] AudioStreamLock for SDL_LockAudioStream;
-  - [ ] CameraFrameLock for SDL_AcquireCameraFrame;
-  - [ ] JoystickApiLock for SDL_LockJoysticks;
-  - [ ] MemoryBarrierLock for SDL_MemoryBarrierAcquire
-  - [ ] PropertiesLock for SDL_LockProperties;
-  - [ ] SurfaceLock for SDL_LockSurface;
-  - [ ] TextureLock for SDL_LockTexture;
 - [ ] Add windows-prebuilt option mode, downloading the version automatically.
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;

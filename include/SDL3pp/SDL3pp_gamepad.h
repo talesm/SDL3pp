@@ -814,15 +814,13 @@ public:
    *
    * @param count a pointer filled in with the number of bindings returned.
    * @returns a nullptr terminated array of pointers to bindings or nullptr on
-   *          failure; call GetError() for more information. This is a single
-   *          allocation that should be freed with free() when it is no longer
-   *          needed.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SDL_GamepadBinding** GetBindings(int* count);
+  OwnArray<GamepadBinding*> GetBindings();
 
   /**
    * Query whether a gamepad has a given axis.
@@ -2229,22 +2227,22 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  * @param gamepad a gamepad.
  * @param count a pointer filled in with the number of bindings returned.
  * @returns a nullptr terminated array of pointers to bindings or nullptr on
- *          failure; call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no longer
- *          needed.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SDL_GamepadBinding** GetGamepadBindings(GamepadParam gamepad, int* count)
+inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
 {
-  return SDL_GetGamepadBindings(gamepad, count);
+  int count;
+  auto r = (SDL_GetGamepadBindings(gamepad, &count));
+  return OwnArray<GamepadBinding*>(r, count);
 }
 
-inline SDL_GamepadBinding** Gamepad::GetBindings(int* count)
+inline OwnArray<GamepadBinding*> Gamepad::GetBindings()
 {
-  return SDL::GetGamepadBindings(m_resource, count);
+  return SDL::GetGamepadBindings(m_resource);
 }
 
 /**

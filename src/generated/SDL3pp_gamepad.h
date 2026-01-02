@@ -823,7 +823,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SDL_GamepadBinding** GetBindings(int* count);
+  OwnArray<GamepadBinding*> GetBindings();
 
   /**
    * Query whether a gamepad has a given axis.
@@ -2237,14 +2237,14 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SDL_GamepadBinding** GetGamepadBindings(GamepadParam gamepad, int* count)
+inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
 {
-  return SDL_GetGamepadBindings(gamepad, count);
+  return SDL_GetGamepadBindings(gamepad);
 }
 
-inline SDL_GamepadBinding** Gamepad::GetBindings(int* count)
+inline OwnArray<GamepadBinding*> Gamepad::GetBindings()
 {
-  return SDL::GetGamepadBindings(m_resource, count);
+  return SDL::GetGamepadBindings(m_resource);
 }
 
 /**

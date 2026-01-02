@@ -1671,6 +1671,10 @@ const transform = {
           type: "OwnArray<JoystickID>",
           parameters: [],
         },
+        "SDL_GetGamepadBindings": {
+          type: "OwnArray<GamepadBinding *>",
+          parameters: [{}],
+        },
         "SDL_GAMEPAD_TYPE_GAMECUBE": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       },
     },
