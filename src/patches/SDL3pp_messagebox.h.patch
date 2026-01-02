@@ -73,7 +73,7 @@
     * @param colorScheme the value for colorScheme.
     */
 -  constexpr MessageBox(MessageBoxFlags flags,
--                       SDL_Window* window,
+-                       WindowParam window,
 -                       StringParam title,
 -                       StringParam message,
 -                       int numbuttons,
@@ -81,14 +81,13 @@
 -                       const MessageBoxColorScheme& colorScheme) noexcept
 +  constexpr MessageBox(
 +    MessageBoxFlags flags,
-+    WindowRef window,
++    WindowParam window,
 +    const char* title,
 +    const char* message,
 +    std::span<const MessageBoxButtonData> buttons,
 +    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
      : MessageBoxRaw{flags,
--                    window,
-+                    window.get(),
+                     window,
                      title,
                      message,
 -                    numbuttons,

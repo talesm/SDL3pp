@@ -55,16 +55,19 @@ export function transformApi(config: TransformConfig) {
   const fileTransformMap = transform.files ?? {};
 
   // Ensure fileTransformMap is full
-  for (const sourceName of Object.keys(source.files)) {
+  for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     const fileConfig = fileTransformMap[sourceName];
-    if (fileTransformMap[sourceName]) {
+    if (fileConfig) {
       fileConfig.ignoreEntries?.forEach((s) => context.blacklist.add(s));
       if (!fileConfig.transform) fileConfig.transform = {};
       if (!fileConfig.definitionPrefix)
         fileConfig.definitionPrefix = context.definitionPrefix;
       if (!fileConfig.sourceIncludePrefix)
         fileConfig.sourceIncludePrefix = sourceIncludePrefix;
+      sourceFile.name =
+        fileConfig.name || transformIncludeName(sourceName, context);
     } else {
+      sourceFile.name = transformIncludeName(sourceName, context);
       fileTransformMap[sourceName] = {
         transform: {},
         definitionPrefix: context.definitionPrefix,
@@ -74,19 +77,14 @@ export function transformApi(config: TransformConfig) {
   }
 
   // Step 1: Expand types
-  for (const [sourceName, sourceFile] of Object.entries(source.files)) {
-    context.setFile(sourceName);
-    const fileConfig = fileTransformMap[sourceName];
-    expandTypes(sourceFile.entries, fileConfig, context);
-  }
+  stepExpandTypes(source, context, fileTransformMap);
 
   // Step 2: Transform Files
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     context.setFile(sourceName);
     const fileConfig = fileTransformMap[sourceName];
     context.enableException = fileConfig.enableException !== false;
-    const targetName =
-      fileConfig.name || transformIncludeName(sourceName, context);
+    const targetName = sourceFile.name;
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
     const includes = fileConfig.includes ?? [];
@@ -123,6 +121,33 @@ export function transformApi(config: TransformConfig) {
   files.forEach((file) => (api.files[file.name] = file));
 
   return api;
+}
+
+function stepExpandTypes(
+  source: Api,
+  context: ApiContext,
+  fileTransformMap: Dict<ApiFileTransform>
+) {
+  const unorderedEntries = Object.entries(source.files);
+  const targetNames = new Set(
+    unorderedEntries.map(([sourceName, sourceFile]) => sourceFile.name)
+  );
+  const processed = new Set<string>();
+  while (unorderedEntries.length) {
+    const [sourceName, sourceFile] = unorderedEntries.shift();
+    if (
+      fileTransformMap[sourceName].localIncludes?.some(
+        (dep) => targetNames.has(dep) && !processed.has(dep)
+      )
+    ) {
+      unorderedEntries.push([sourceName, sourceFile]);
+      continue;
+    }
+    processed.add(sourceFile.name);
+    context.setFile(sourceName);
+    const fileConfig = fileTransformMap[sourceName];
+    expandTypes(sourceFile.entries, fileConfig, context);
+  }
 }
 
 function isVersionAfter(version: VersionTag, tag: VersionTag) {

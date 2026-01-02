@@ -162,13 +162,13 @@ struct MessageBox : MessageBoxRaw
    */
   constexpr MessageBox(
     MessageBoxFlags flags,
-    WindowRef window,
+    WindowParam window,
     const char* title,
     const char* message,
     std::span<const MessageBoxButtonData> buttons,
     OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
-                    window.get(),
+                    window,
                     title,
                     message,
                     int(buttons.size()),
@@ -201,7 +201,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr SDL_Window* GetWindow() const noexcept { return window; }
+  constexpr WindowRef GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -209,7 +209,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(SDL_Window* newWindow) noexcept
+  constexpr MessageBox& SetWindow(WindowParam newWindow) noexcept
   {
     window = newWindow;
     return *this;
