@@ -21081,67 +21081,71 @@ using AtomicU32Raw = SDL_AtomicU32;
 struct AtomicU32;
 
 /**
- * Insert a memory release barrier (function version).
- *
- * Please refer to SDL_MemoryBarrierRelease for details. This is a function
- * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this function
- * behind the scenes, where more heavy lifting can happen inside of SDL.
- * Generally, though, an app written in C/C++/etc should use the macro version,
- * as it will be more efficient.
- *
- * @threadsafety Obviously this function is safe to use from any thread at any
- *               time, but if you find yourself needing this, you are probably
- *               dealing with some very sensitive code; be careful!
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_MemoryBarrierRelease
- */
-inline void MemoryBarrierRelease() { SDL_MemoryBarrierReleaseFunction(); }
-
-/**
- * Insert a memory acquire barrier (function version).
- *
- * Please refer to SDL_MemoryBarrierRelease for details. This is a function
- * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this function
- * behind the scenes, where more heavy lifting can happen inside of SDL.
- * Generally, though, an app written in C/C++/etc should use the macro version,
- * as it will be more efficient.
- *
- * @threadsafety Obviously this function is safe to use from any thread at any
- *               time, but if you find yourself needing this, you are probably
- *               dealing with some very sensitive code; be careful!
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_MemoryBarrierAcquire
- */
-inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
-
-#ifdef SDL3PP_DOC
-
-/**
  * Mark a compiler barrier.
  *
  * A compiler barrier prevents the compiler from reordering reads and writes to
  * globally visible variables across the call.
  *
- * This macro only prevents the compiler from reordering reads and writes, it
+ * This function only prevents the compiler from reordering reads and writes, it
  * does not prevent the CPU from reordering reads and writes. However, all of
  * the atomic operations that modify memory are full memory barriers.
  *
- * @threadsafety Obviously this macro is safe to use from any thread at any
+ * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
  *               dealing with some very sensitive code; be careful!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_CompilerBarrier() DoCompilerSpecificReadWriteBarrier()
+SDL_FORCE_INLINE void CompilerBarrier() { SDL_CompilerBarrier(); }
 
 /**
- * Insert a memory release barrier (macro version).
+ * Insert a memory release barrier (function version).
+ *
+ * Please refer to MemoryBarrierRelease for details. This is a function version,
+ * which might be useful if you need to use this functionality from a scripting
+ * language, etc. Also, some of the macro versions call this function behind the
+ * scenes, where more heavy lifting can happen inside of SDL. Generally, though,
+ * an app written in C/C++/etc should use the macro version, as it will be more
+ * efficient.
+ *
+ * @threadsafety Obviously this function is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa MemoryBarrierRelease
+ */
+inline void MemoryBarrierReleaseFunction()
+{
+  SDL_MemoryBarrierReleaseFunction();
+}
+
+/**
+ * Insert a memory acquire barrier (function version).
+ *
+ * Please refer to MemoryBarrierRelease for details. This is a function version,
+ * which might be useful if you need to use this functionality from a scripting
+ * language, etc. Also, some of the macro versions call this function behind the
+ * scenes, where more heavy lifting can happen inside of SDL. Generally, though,
+ * an app written in C/C++/etc should use the macro version, as it will be more
+ * efficient.
+ *
+ * @threadsafety Obviously this function is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa MemoryBarrierAcquire
+ */
+inline void MemoryBarrierAcquireFunction()
+{
+  SDL_MemoryBarrierAcquireFunction();
+}
+
+/**
+ * Insert a memory release barrier.
  *
  * Memory barriers are designed to prevent reads and writes from being reordered
  * by the compiler and being seen out of order on multi-core CPUs.
@@ -21162,62 +21166,59 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  *
  * This is the macro version of this functionality; if possible, SDL will use
  * compiler intrinsics or inline assembly, but some platforms might need to call
- * the function version of this, MemoryBarrierRelease to do the heavy lifting.
- * Apps that can use the macro should favor it over the function.
+ * the function version of this, MemoryBarrierReleaseFunction to do the heavy
+ * lifting. Apps that can use the macro should favor it over the function.
  *
- * @threadsafety Obviously this macro is safe to use from any thread at any
+ * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
  *               dealing with some very sensitive code; be careful!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_MemoryBarrierAcquire
- * @sa MemoryBarrierRelease
+ * @sa MemoryBarrierAcquire
+ * @sa MemoryBarrierReleaseFunction
  */
-#define SDL_MemoryBarrierRelease() SDL_MemoryBarrierReleaseFunction()
+SDL_FORCE_INLINE void MemoryBarrierRelease() { SDL_MemoryBarrierRelease(); }
 
 /**
- * Insert a memory acquire barrier (macro version).
+ * Insert a memory acquire barrier.
  *
- * Please see SDL_MemoryBarrierRelease for the details on what memory barriers
- * are and when to use them.
+ * Please see MemoryBarrierRelease for the details on what memory barriers are
+ * and when to use them.
  *
  * This is the macro version of this functionality; if possible, SDL will use
  * compiler intrinsics or inline assembly, but some platforms might need to call
- * the function version of this, MemoryBarrierAcquire, to do the heavy lifting.
- * Apps that can use the macro should favor it over the function.
+ * the function version of this, MemoryBarrierAcquireFunction, to do the heavy
+ * lifting. Apps that can use the macro should favor it over the function.
  *
- * @threadsafety Obviously this macro is safe to use from any thread at any
+ * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
  *               dealing with some very sensitive code; be careful!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_MemoryBarrierRelease
- * @sa MemoryBarrierAcquire
+ * @sa MemoryBarrierRelease
+ * @sa MemoryBarrierAcquireFunction
  */
-#define SDL_MemoryBarrierAcquire() SDL_MemoryBarrierAcquireFunction()
+SDL_FORCE_INLINE void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquire(); }
 
 /**
- * A macro to insert a CPU-specific "pause" instruction into the program.
+ * A function to insert a CPU-specific "pause" instruction into the program.
  *
  * This can be useful in busy-wait loops, as it serves as a hint to the CPU as
  * to the program's intent; some CPUs can use this to do more efficient
- * processing. On some platforms, this doesn't do anything, so using this macro
- * might just be a harmless no-op.
+ * processing. On some platforms, this doesn't do anything, so using this
+ * function might just be a harmless no-op.
  *
  * Note that if you are busy-waiting, there are often more-efficient approaches
  * with other synchronization primitives: mutexes, semaphores, condition
  * variables, etc.
  *
- * @threadsafety This macro is safe to use from any thread.
+ * @threadsafety This function is safe to use from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_CPUPauseInstruction()                                              \
-  DoACPUPauseInACompilerAndArchitectureSpecificWay
-
-#endif // SDL3PP_DOC
+SDL_FORCE_INLINE void CPUPauseInstruction() { SDL_CPUPauseInstruction(); }
 
 /**
  * A type representing an atomic integer value.
@@ -21337,7 +21338,8 @@ struct AtomicInt : AtomicIntRaw
   /**
    * Increment an atomic variable used as a reference count.
    *
-   * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
    *
    * @returns the previous value of the atomic variable.
    *
@@ -21352,7 +21354,8 @@ struct AtomicInt : AtomicIntRaw
   /**
    * Decrement an atomic variable used as a reference count.
    *
-   * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+   * ***Note: If you don't know what this function is for, you shouldn't use
+   * it!***
    *
    * @returns true if the variable reached zero after decrementing, false
    *          otherwise.
@@ -21467,7 +21470,8 @@ inline int AtomicInt::Add(int v) { return SDL::AddAtomicInt(this, v); }
 /**
  * Increment an atomic variable used as a reference count.
  *
- * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
  *
  * @param a a pointer to an AtomicInt to increment.
  * @returns the previous value of the atomic variable.
@@ -21485,7 +21489,8 @@ inline bool AtomicInt::AtomicIncRef() { return SDL::AtomicIncRef(this); }
 /**
  * Decrement an atomic variable used as a reference count.
  *
- * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+ * ***Note: If you don't know what this function is for, you shouldn't use
+ * it!***
  *
  * @param a a pointer to an AtomicInt to decrement.
  * @returns true if the variable reached zero after decrementing, false

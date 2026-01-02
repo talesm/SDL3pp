@@ -50,46 +50,6 @@ using AtomicU32Raw = SDL_AtomicU32;
 struct AtomicU32;
 
 /**
- * Insert a memory release barrier (function version).
- *
- * Please refer to SDL_MemoryBarrierRelease for details. This is a function
- * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this function
- * behind the scenes, where more heavy lifting can happen inside of SDL.
- * Generally, though, an app written in C/C++/etc should use the macro version,
- * as it will be more efficient.
- *
- * @threadsafety Obviously this function is safe to use from any thread at any
- *               time, but if you find yourself needing this, you are probably
- *               dealing with some very sensitive code; be careful!
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_MemoryBarrierRelease
- */
-inline void MemoryBarrierRelease() { SDL_MemoryBarrierReleaseFunction(); }
-
-/**
- * Insert a memory acquire barrier (function version).
- *
- * Please refer to SDL_MemoryBarrierRelease for details. This is a function
- * version, which might be useful if you need to use this functionality from a
- * scripting language, etc. Also, some of the macro versions call this function
- * behind the scenes, where more heavy lifting can happen inside of SDL.
- * Generally, though, an app written in C/C++/etc should use the macro version,
- * as it will be more efficient.
- *
- * @threadsafety Obviously this function is safe to use from any thread at any
- *               time, but if you find yourself needing this, you are probably
- *               dealing with some very sensitive code; be careful!
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_MemoryBarrierAcquire
- */
-inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
-
-/**
  * Mark a compiler barrier.
  *
  * A compiler barrier prevents the compiler from reordering reads and writes to
@@ -99,13 +59,59 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  * does not prevent the CPU from reordering reads and writes. However, all of
  * the atomic operations that modify memory are full memory barriers.
  *
- * @threadsafety Obviously this macro is safe to use from any thread at any
+ * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
  *               dealing with some very sensitive code; be careful!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_CompilerBarrier() DoCompilerSpecificReadWriteBarrier()
+inline void CompilerBarrier() { SDL_CompilerBarrier(); }
+
+/**
+ * Insert a memory release barrier (function version).
+ *
+ * Please refer to MemoryBarrierRelease for details. This is a function version,
+ * which might be useful if you need to use this functionality from a scripting
+ * language, etc. Also, some of the macro versions call this function behind the
+ * scenes, where more heavy lifting can happen inside of SDL. Generally, though,
+ * an app written in C/C++/etc should use the macro version, as it will be more
+ * efficient.
+ *
+ * @threadsafety Obviously this function is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa MemoryBarrierRelease
+ */
+inline void MemoryBarrierReleaseFunction()
+{
+  SDL_MemoryBarrierReleaseFunction();
+}
+
+/**
+ * Insert a memory acquire barrier (function version).
+ *
+ * Please refer to MemoryBarrierRelease for details. This is a function version,
+ * which might be useful if you need to use this functionality from a scripting
+ * language, etc. Also, some of the macro versions call this function behind the
+ * scenes, where more heavy lifting can happen inside of SDL. Generally, though,
+ * an app written in C/C++/etc should use the macro version, as it will be more
+ * efficient.
+ *
+ * @threadsafety Obviously this function is safe to use from any thread at any
+ *               time, but if you find yourself needing this, you are probably
+ *               dealing with some very sensitive code; be careful!
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa MemoryBarrierAcquire
+ */
+inline void MemoryBarrierAcquireFunction()
+{
+  SDL_MemoryBarrierAcquireFunction();
+}
 
 /**
  * Insert a memory release barrier (macro version).
@@ -129,41 +135,41 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  *
  * This is the macro version of this functionality; if possible, SDL will use
  * compiler intrinsics or inline assembly, but some platforms might need to call
- * the function version of this, MemoryBarrierRelease to do the heavy lifting.
- * Apps that can use the macro should favor it over the function.
+ * the function version of this, MemoryBarrierReleaseFunction to do the heavy
+ * lifting. Apps that can use the macro should favor it over the function.
  *
- * @threadsafety Obviously this macro is safe to use from any thread at any
+ * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
  *               dealing with some very sensitive code; be careful!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_MemoryBarrierAcquire
- * @sa MemoryBarrierRelease
+ * @sa MemoryBarrierAcquire
+ * @sa MemoryBarrierReleaseFunction
  */
-#define SDL_MemoryBarrierRelease() SDL_MemoryBarrierReleaseFunction()
+inline void MemoryBarrierRelease() { SDL_MemoryBarrierRelease(); }
 
 /**
  * Insert a memory acquire barrier (macro version).
  *
- * Please see SDL_MemoryBarrierRelease for the details on what memory barriers
- * are and when to use them.
+ * Please see MemoryBarrierRelease for the details on what memory barriers are
+ * and when to use them.
  *
  * This is the macro version of this functionality; if possible, SDL will use
  * compiler intrinsics or inline assembly, but some platforms might need to call
- * the function version of this, MemoryBarrierAcquire, to do the heavy lifting.
- * Apps that can use the macro should favor it over the function.
+ * the function version of this, MemoryBarrierAcquireFunction, to do the heavy
+ * lifting. Apps that can use the macro should favor it over the function.
  *
- * @threadsafety Obviously this macro is safe to use from any thread at any
+ * @threadsafety Obviously this function is safe to use from any thread at any
  *               time, but if you find yourself needing this, you are probably
  *               dealing with some very sensitive code; be careful!
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_MemoryBarrierRelease
- * @sa MemoryBarrierAcquire
+ * @sa MemoryBarrierRelease
+ * @sa MemoryBarrierAcquireFunction
  */
-#define SDL_MemoryBarrierAcquire() SDL_MemoryBarrierAcquireFunction()
+inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquire(); }
 
 /**
  * A macro to insert a CPU-specific "pause" instruction into the program.
@@ -177,12 +183,11 @@ inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
  * with other synchronization primitives: mutexes, semaphores, condition
  * variables, etc.
  *
- * @threadsafety This macro is safe to use from any thread.
+ * @threadsafety This function is safe to use from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL_CPUPauseInstruction()                                              \
-  DoACPUPauseInACompilerAndArchitectureSpecificWay
+inline void CPUPauseInstruction() { SDL_CPUPauseInstruction(); }
 
 /**
  * A type representing an atomic integer value.

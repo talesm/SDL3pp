@@ -9,25 +9,76 @@
   *
   * Atomic operations.
   *
-@@ -89,6 +89,8 @@
-  */
- inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquireFunction(); }
- 
-+#ifdef SDL3PP_DOC
-+
- /**
-  * Mark a compiler barrier.
+@@ -55,7 +55,7 @@
+  * A compiler barrier prevents the compiler from reordering reads and writes to
+  * globally visible variables across the call.
   *
-@@ -184,6 +186,8 @@
- #define SDL_CPUPauseInstruction()                                              \
-   DoACPUPauseInACompilerAndArchitectureSpecificWay
+- * This macro only prevents the compiler from reordering reads and writes, it
++ * This function only prevents the compiler from reordering reads and writes, it
+  * does not prevent the CPU from reordering reads and writes. However, all of
+  * the atomic operations that modify memory are full memory barriers.
+  *
+@@ -65,7 +65,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline void CompilerBarrier() { SDL_CompilerBarrier(); }
++SDL_FORCE_INLINE void CompilerBarrier() { SDL_CompilerBarrier(); }
  
-+#endif // SDL3PP_DOC
-+
+ /**
+  * Insert a memory release barrier (function version).
+@@ -114,7 +114,7 @@
+ }
+ 
+ /**
+- * Insert a memory release barrier (macro version).
++ * Insert a memory release barrier.
+  *
+  * Memory barriers are designed to prevent reads and writes from being reordered
+  * by the compiler and being seen out of order on multi-core CPUs.
+@@ -147,10 +147,10 @@
+  * @sa MemoryBarrierAcquire
+  * @sa MemoryBarrierReleaseFunction
+  */
+-inline void MemoryBarrierRelease() { SDL_MemoryBarrierRelease(); }
++SDL_FORCE_INLINE void MemoryBarrierRelease() { SDL_MemoryBarrierRelease(); }
+ 
+ /**
+- * Insert a memory acquire barrier (macro version).
++ * Insert a memory acquire barrier.
+  *
+  * Please see MemoryBarrierRelease for the details on what memory barriers are
+  * and when to use them.
+@@ -169,15 +169,15 @@
+  * @sa MemoryBarrierRelease
+  * @sa MemoryBarrierAcquireFunction
+  */
+-inline void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquire(); }
++SDL_FORCE_INLINE void MemoryBarrierAcquire() { SDL_MemoryBarrierAcquire(); }
+ 
+ /**
+- * A macro to insert a CPU-specific "pause" instruction into the program.
++ * A function to insert a CPU-specific "pause" instruction into the program.
+  *
+  * This can be useful in busy-wait loops, as it serves as a hint to the CPU as
+  * to the program's intent; some CPUs can use this to do more efficient
+- * processing. On some platforms, this doesn't do anything, so using this macro
+- * might just be a harmless no-op.
++ * processing. On some platforms, this doesn't do anything, so using this
++ * function might just be a harmless no-op.
+  *
+  * Note that if you are busy-waiting, there are often more-efficient approaches
+  * with other synchronization primitives: mutexes, semaphores, condition
+@@ -187,7 +187,7 @@
+  *
+  * @since This function is available since SDL 3.2.0.
+  */
+-inline void CPUPauseInstruction() { SDL_CPUPauseInstruction(); }
++SDL_FORCE_INLINE void CPUPauseInstruction() { SDL_CPUPauseInstruction(); }
+ 
  /**
   * A type representing an atomic integer value.
-  *
-@@ -211,6 +215,11 @@
+@@ -216,6 +216,11 @@
   */
  struct AtomicInt : AtomicIntRaw
  {
@@ -39,23 +90,51 @@
    constexpr AtomicInt(int value)
      : AtomicIntRaw(value)
    {
-@@ -299,7 +308,6 @@
+@@ -302,9 +307,9 @@
+   /**
+    * Increment an atomic variable used as a reference count.
     *
-    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+-   * ***Note: If you don't know what this macro is for, you shouldn't use it!***
++   * ***Note: If you don't know what this function is for, you shouldn't use
++   * it!***
     *
 -   * @param a a pointer to an AtomicInt to increment.
     * @returns the previous value of the atomic variable.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -315,7 +323,6 @@
+@@ -318,9 +323,9 @@
+   /**
+    * Decrement an atomic variable used as a reference count.
     *
-    * ***Note: If you don't know what this macro is for, you shouldn't use it!***
+-   * ***Note: If you don't know what this macro is for, you shouldn't use it!***
++   * ***Note: If you don't know what this function is for, you shouldn't use
++   * it!***
     *
 -   * @param a a pointer to an AtomicInt to decrement.
     * @returns true if the variable reached zero after decrementing, false
     *          otherwise.
     *
-@@ -489,9 +496,13 @@
+@@ -434,7 +439,8 @@
+ /**
+  * Increment an atomic variable used as a reference count.
+  *
+- * ***Note: If you don't know what this macro is for, you shouldn't use it!***
++ * ***Note: If you don't know what this function is for, you shouldn't use
++ * it!***
+  *
+  * @param a a pointer to an AtomicInt to increment.
+  * @returns the previous value of the atomic variable.
+@@ -452,7 +458,8 @@
+ /**
+  * Decrement an atomic variable used as a reference count.
+  *
+- * ***Note: If you don't know what this macro is for, you shouldn't use it!***
++ * ***Note: If you don't know what this function is for, you shouldn't use
++ * it!***
+  *
+  * @param a a pointer to an AtomicInt to decrement.
+  * @returns true if the variable reached zero after decrementing, false
+@@ -494,9 +501,13 @@
   */
  struct AtomicU32 : AtomicU32Raw
  {
@@ -71,7 +150,7 @@
    {
    }
  
-@@ -575,12 +586,14 @@
+@@ -580,12 +591,14 @@
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  };
  
@@ -86,7 +165,7 @@
    constexpr AtomicPointer(T* value)
      : m_value(value)
    {
-@@ -596,7 +609,6 @@
+@@ -601,7 +614,6 @@
     * ***Note: If you don't know what this function is for, you shouldn't use
     * it!***
     *
@@ -94,7 +173,7 @@
     * @param oldval the old pointer value.
     * @param newval the new pointer value.
     * @returns true if the pointer was set, false otherwise.
-@@ -617,7 +629,6 @@
+@@ -622,7 +634,6 @@
     * ***Note: If you don't know what this function is for, you shouldn't use
     * it!***
     *
@@ -102,7 +181,7 @@
     * @param v the desired pointer value.
     * @returns the previous value of the pointer.
     *
-@@ -636,7 +647,6 @@
+@@ -641,7 +652,6 @@
     * ***Note: If you don't know what this function is for, you shouldn't use
     * it!***
     *
@@ -110,7 +189,7 @@
     * @returns the current value of a pointer.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -746,10 +756,6 @@
+@@ -751,10 +761,6 @@
    return SDL_AddAtomicU32(a, v);
  }
  
@@ -121,7 +200,7 @@
  inline Uint32 AtomicU32::Add(int v) { return SDL::AddAtomicU32(this, v); }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -757,19 +763,19 @@
+@@ -762,19 +768,19 @@
  template<class T>
  inline bool AtomicPointer<T>::CompareAndSwap(T* oldval, T* newval)
  {

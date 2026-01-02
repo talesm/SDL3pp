@@ -165,8 +165,26 @@ const transform = {
         "SDL_MEMORY_BARRIER_USES_FUNCTION",
       ],
       transform: {
-        "SDL_MemoryBarrierReleaseFunction": { name: "MemoryBarrierRelease", after: "__begin" },
-        "SDL_MemoryBarrierAcquireFunction": { name: "MemoryBarrierAcquire", after: "__begin" },
+        "SDL_CompilerBarrier": {
+          kind: "function",
+          type: "void",
+          parameters: [],
+        },
+        "SDL_MemoryBarrierRelease": {
+          kind: "function",
+          type: "void",
+          parameters: [],
+        },
+        "SDL_MemoryBarrierAcquire": {
+          kind: "function",
+          type: "void",
+          parameters: [],
+        },
+        "SDL_CPUPauseInstruction": {
+          kind: "function",
+          type: "void",
+          parameters: [],
+        },
         "SDL_AtomicInt": {
           kind: "struct",
           wrapper: {
