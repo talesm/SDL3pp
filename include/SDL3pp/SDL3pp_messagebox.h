@@ -182,7 +182,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current flags value.
    */
-  constexpr SDL_MessageBoxFlags GetFlags() const noexcept { return flags; }
+  constexpr MessageBoxFlags GetFlags() const noexcept { return flags; }
 
   /**
    * Set the flags.
@@ -190,7 +190,7 @@ struct MessageBox : MessageBoxRaw
    * @param newFlags the new flags value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags) noexcept
+  constexpr MessageBox& SetFlags(MessageBoxFlags newFlags) noexcept
   {
     flags = newFlags;
     return *this;

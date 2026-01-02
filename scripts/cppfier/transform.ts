@@ -882,12 +882,14 @@ function expandTypes(
           if (attrib.kind !== "var") continue;
           const name = attrib.name;
           const type = attrib.type;
-          parameters.push({ type, name });
+          const paramType = transformType(type, context.paramTypeMap);
+          const returnType = transformType(type, context.returnTypeMap);
+          parameters.push({ type: paramType, name });
           const capName = name[0].toUpperCase() + name.slice(1);
           insertTransform(entries, {
             kind: "function",
             name: `Get${capName}`,
-            type,
+            type: returnType,
             constexpr,
             immutable: true,
             parameters: [],
@@ -904,7 +906,7 @@ function expandTypes(
             constexpr,
             parameters: [
               {
-                type,
+                type: paramType,
                 name: `new${capName}`,
               },
             ],
