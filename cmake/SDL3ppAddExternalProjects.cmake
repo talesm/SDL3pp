@@ -11,7 +11,11 @@ else ()
   set(SDL3_TAG release-3.4.0)
 endif ()
 
-set(SDL_INSTALL ON) # passed to external/SDL
+set(SDL_INSTALL ON) # passed to SDL3External
+set(SDL_TESTS OFF)  # passed to SDL3External
+set(SDL_TEST_LIBRARY OFF) # passed to SDL3External
+set(SDL_X11_XTEST OFF)  # passed to SDL3External
+
 FetchContent_Declare(SDL3External
   GIT_REPOSITORY git@github.com:libsdl-org/SDL.git
   GIT_TAG ${SDL3_TAG}
