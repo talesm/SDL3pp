@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.6.1
+
+Support SDL 3.4.0
+
 ## Version 0.6.0
 
 Undo some "smarty" changes.
