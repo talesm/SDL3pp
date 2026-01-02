@@ -89,7 +89,13 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -539,10 +541,6 @@
+@@ -534,15 +536,11 @@
+  */
+ using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
+                                                     Uint64 timestamp,
+-                                                    SDL_Window* window,
++                                                    WindowRaw window,
+                                                     MouseID mouseID,
                                                      float* x,
                                                      float* y);
  
@@ -100,6 +106,15 @@
  /**
   * A callback used to transform mouse motion delta from raw values.
   *
+@@ -575,7 +573,7 @@
+  * @sa MouseMotionTransformCallback
+  */
+ using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
+-                                                      SDL_Window* window,
++                                                      WindowRaw window,
+                                                       MouseID mouseID,
+                                                       float* x,
+                                                       float* y)>;
 @@ -602,11 +600,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
