@@ -1671,6 +1671,10 @@ const transform = {
           type: "OwnArray<JoystickID>",
           parameters: [],
         },
+        "SDL_GetGamepadBindings": {
+          type: "OwnArray<GamepadBinding *>",
+          parameters: [{}],
+        },
         "SDL_GAMEPAD_TYPE_GAMECUBE": { since: { tag: "SDL", major: 3, minor: 4, patch: 0 } },
       },
     },
@@ -3281,17 +3285,17 @@ const transform = {
             "SDL_CreateMutex": "ctor",
             "SDL_LockMutex": {
               parameters: [{
-                type: "SDL_Mutex *"
+                type: "MutexRaw"
               }]
             },
             "SDL_TryLockMutex": {
               parameters: [{
-                type: "SDL_Mutex *"
+                type: "MutexRaw"
               }]
             },
             "SDL_UnlockMutex": {
               parameters: [{
-                type: "SDL_Mutex *"
+                type: "MutexRaw"
               }]
             },
           }
@@ -3301,29 +3305,19 @@ const transform = {
           entries: {
             "SDL_CreateRWLock": "ctor",
             "SDL_LockRWLockForReading": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
+              parameters: [{ type: "RWLockRaw" }],
             },
             "SDL_LockRWLockForWriting": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
+              parameters: [{ type: "RWLockRaw" }],
             },
             "SDL_TryLockRWLockForReading": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
+              parameters: [{ type: "RWLockRaw" }],
             },
             "SDL_TryLockRWLockForWriting": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
+              parameters: [{ type: "RWLockRaw" }],
             },
             "SDL_UnlockRWLock": {
-              parameters: [{
-                type: "SDL_RWLock *"
-              }]
+              parameters: [{ type: "RWLockRaw" }],
             },
           }
         },
@@ -5438,10 +5432,10 @@ const transform = {
           ]
         },
         "SDL_LockTexture": {
-          parameters: [{}, { type: "OptionalRef<const SDL_Rect>" }, {}, {}]
+          parameters: [{}, { type: "OptionalRef<const RectRaw>" }, {}, {}]
         },
         "SDL_LockTextureToSurface": {
-          parameters: [{}, { type: "OptionalRef<const SDL_Rect>", default: "std::nullopt" }],
+          parameters: [{}, { type: "OptionalRef<const RectRaw>", default: "std::nullopt" }],
           type: "Surface",
         },
         "SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER": {
@@ -6915,7 +6909,7 @@ const transform = {
               name: "scale"
             },
             {
-              type: "SDL_ScaleMode",
+              type: "ScaleMode",
               name: "scaleMode"
             },
             {
@@ -6938,7 +6932,7 @@ const transform = {
             name: "scale"
           },
           {
-            type: "SDL_ScaleMode",
+            type: "ScaleMode",
             name: "scaleMode"
           },
           {
@@ -6987,7 +6981,7 @@ const transform = {
             default: "1",
           },
           {
-            type: "SDL_ScaleMode",
+            type: "ScaleMode",
             name: "scaleMode",
             default: "SCALEMODE_NEAREST",
           }]
@@ -7031,7 +7025,7 @@ const transform = {
             default: "1",
           },
           {
-            type: "SDL_ScaleMode",
+            type: "ScaleMode",
             name: "scaleMode",
             default: "SCALEMODE_NEAREST",
           }]

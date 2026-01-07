@@ -535,7 +535,7 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
  */
 using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
                                                     Uint64 timestamp,
-                                                    SDL_Window* window,
+                                                    WindowRaw window,
                                                     MouseID mouseID,
                                                     float* x,
                                                     float* y);
@@ -572,7 +572,7 @@ using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
  * @sa MouseMotionTransformCallback
  */
 using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
-                                                      SDL_Window* window,
+                                                      WindowRaw window,
                                                       MouseID mouseID,
                                                       float* x,
                                                       float* y)>;

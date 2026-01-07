@@ -110,7 +110,7 @@ struct Finger : FingerRaw
    * @param y the value for y.
    * @param pressure the value for pressure.
    */
-  constexpr Finger(SDL_FingerID id, float x, float y, float pressure) noexcept
+  constexpr Finger(FingerID id, float x, float y, float pressure) noexcept
     : FingerRaw{id, x, y, pressure}
   {
   }
@@ -130,7 +130,7 @@ struct Finger : FingerRaw
    *
    * @returns current id value.
    */
-  constexpr SDL_FingerID GetId() const noexcept { return id; }
+  constexpr FingerID GetId() const noexcept { return id; }
 
   /**
    * Set the id.
@@ -138,7 +138,7 @@ struct Finger : FingerRaw
    * @param newId the new id value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetId(SDL_FingerID newId) noexcept
+  constexpr Finger& SetId(FingerID newId) noexcept
   {
     id = newId;
     return *this;

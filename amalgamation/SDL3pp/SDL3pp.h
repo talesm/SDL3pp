@@ -43813,7 +43813,7 @@ public:
   void BlitTiledWithScale(SurfaceParam src,
                           OptionalRef<const RectRaw> srcrect,
                           float scale,
-                          SDL_ScaleMode scaleMode,
+                          ScaleMode scaleMode,
                           OptionalRef<const RectRaw> dstrect);
 
   /**
@@ -43856,7 +43856,7 @@ public:
                  int bottom_height,
                  OptionalRef<const RectRaw> dstrect,
                  float scale = 1,
-                 SDL_ScaleMode scaleMode = SCALEMODE_NEAREST);
+                 ScaleMode scaleMode = SCALEMODE_NEAREST);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -46129,7 +46129,7 @@ inline void Surface::BlitTiled(SurfaceParam src,
 inline void BlitSurfaceTiledWithScale(SurfaceParam src,
                                       OptionalRef<const RectRaw> srcrect,
                                       float scale,
-                                      SDL_ScaleMode scaleMode,
+                                      ScaleMode scaleMode,
                                       SurfaceParam dst,
                                       OptionalRef<const RectRaw> dstrect)
 {
@@ -46140,7 +46140,7 @@ inline void BlitSurfaceTiledWithScale(SurfaceParam src,
 inline void Surface::BlitTiledWithScale(SurfaceParam src,
                                         OptionalRef<const RectRaw> srcrect,
                                         float scale,
-                                        SDL_ScaleMode scaleMode,
+                                        ScaleMode scaleMode,
                                         OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiledWithScale(
@@ -46189,7 +46189,7 @@ inline void BlitSurface9Grid(SurfaceParam src,
                              SurfaceParam dst,
                              OptionalRef<const RectRaw> dstrect,
                              float scale = 1,
-                             SDL_ScaleMode scaleMode = SCALEMODE_NEAREST)
+                             ScaleMode scaleMode = SCALEMODE_NEAREST)
 {
   CheckError(SDL_BlitSurface9Grid(src,
                                   srcrect,
@@ -46211,7 +46211,7 @@ inline void Surface::Blit9Grid(SurfaceParam src,
                                int bottom_height,
                                OptionalRef<const RectRaw> dstrect,
                                float scale,
-                               SDL_ScaleMode scaleMode)
+                               ScaleMode scaleMode)
 {
   SDL::BlitSurface9Grid(src,
                         srcrect,
@@ -73439,13 +73439,13 @@ struct MessageBox : MessageBoxRaw
    */
   constexpr MessageBox(
     MessageBoxFlags flags,
-    WindowRef window,
+    WindowParam window,
     const char* title,
     const char* message,
     std::span<const MessageBoxButtonData> buttons,
     OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
     : MessageBoxRaw{flags,
-                    window.get(),
+                    window,
                     title,
                     message,
                     int(buttons.size()),
@@ -73459,7 +73459,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current flags value.
    */
-  constexpr SDL_MessageBoxFlags GetFlags() const noexcept { return flags; }
+  constexpr MessageBoxFlags GetFlags() const noexcept { return flags; }
 
   /**
    * Set the flags.
@@ -73467,7 +73467,7 @@ struct MessageBox : MessageBoxRaw
    * @param newFlags the new flags value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetFlags(SDL_MessageBoxFlags newFlags) noexcept
+  constexpr MessageBox& SetFlags(MessageBoxFlags newFlags) noexcept
   {
     flags = newFlags;
     return *this;
@@ -73478,7 +73478,7 @@ struct MessageBox : MessageBoxRaw
    *
    * @returns current window value.
    */
-  constexpr SDL_Window* GetWindow() const noexcept { return window; }
+  constexpr WindowRef GetWindow() const noexcept { return window; }
 
   /**
    * Set the window.
@@ -73486,7 +73486,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(SDL_Window* newWindow) noexcept
+  constexpr MessageBox& SetWindow(WindowParam newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -74522,7 +74522,7 @@ constexpr MouseButtonFlags ButtonMask(MouseButton button)
  */
 using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
                                                     Uint64 timestamp,
-                                                    SDL_Window* window,
+                                                    WindowRaw window,
                                                     MouseID mouseID,
                                                     float* x,
                                                     float* y);
@@ -74559,7 +74559,7 @@ using MouseMotionTransformCallback = void(SDLCALL*)(void* userdata,
  * @sa MouseMotionTransformCallback
  */
 using MouseMotionTransformCB = MakeFrontCallback<void(Uint64 timestamp,
-                                                      SDL_Window* window,
+                                                      WindowRaw window,
                                                       MouseID mouseID,
                                                       float* x,
                                                       float* y)>;
@@ -75963,15 +75963,13 @@ public:
    *
    * @param count a pointer filled in with the number of bindings returned.
    * @returns a nullptr terminated array of pointers to bindings or nullptr on
-   *          failure; call GetError() for more information. This is a single
-   *          allocation that should be freed with free() when it is no longer
-   *          needed.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  SDL_GamepadBinding** GetBindings(int* count);
+  OwnArray<GamepadBinding*> GetBindings();
 
   /**
    * Query whether a gamepad has a given axis.
@@ -77375,22 +77373,22 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  * @param gamepad a gamepad.
  * @param count a pointer filled in with the number of bindings returned.
  * @returns a nullptr terminated array of pointers to bindings or nullptr on
- *          failure; call GetError() for more information. This is a single
- *          allocation that should be freed with free() when it is no longer
- *          needed.
+ *          failure; call GetError() for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline SDL_GamepadBinding** GetGamepadBindings(GamepadParam gamepad, int* count)
+inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
 {
-  return SDL_GetGamepadBindings(gamepad, count);
+  int count;
+  auto r = (SDL_GetGamepadBindings(gamepad, &count));
+  return OwnArray<GamepadBinding*>(r, count);
 }
 
-inline SDL_GamepadBinding** Gamepad::GetBindings(int* count)
+inline OwnArray<GamepadBinding*> Gamepad::GetBindings()
 {
-  return SDL::GetGamepadBindings(m_resource, count);
+  return SDL::GetGamepadBindings(m_resource);
 }
 
 /**
@@ -84289,7 +84287,7 @@ public:
    * @sa Texture.LockToSurface
    * @sa Texture.Unlock
    */
-  void Lock(OptionalRef<const SDL_Rect> rect, void** pixels, int* pitch);
+  void Lock(OptionalRef<const RectRaw> rect, void** pixels, int* pitch);
 
   /**
    * Lock a portion of the texture for **write-only** pixel access, and expose
@@ -84321,7 +84319,7 @@ public:
    * @sa Texture.Lock
    * @sa Texture.Unlock
    */
-  Surface LockToSurface(OptionalRef<const SDL_Rect> rect = std::nullopt);
+  Surface LockToSurface(OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -86416,14 +86414,14 @@ inline void Texture::UpdateNV(OptionalRef<const RectRaw> rect,
  * @sa Texture.Unlock
  */
 inline void LockTexture(TextureParam texture,
-                        OptionalRef<const SDL_Rect> rect,
+                        OptionalRef<const RectRaw> rect,
                         void** pixels,
                         int* pitch)
 {
   CheckError(SDL_LockTexture(texture, rect, pixels, pitch));
 }
 
-inline void Texture::Lock(OptionalRef<const SDL_Rect> rect,
+inline void Texture::Lock(OptionalRef<const RectRaw> rect,
                           void** pixels,
                           int* pitch)
 {
@@ -86463,14 +86461,14 @@ inline void Texture::Lock(OptionalRef<const SDL_Rect> rect,
  */
 inline Surface LockTextureToSurface(
   TextureParam texture,
-  OptionalRef<const SDL_Rect> rect = std::nullopt)
+  OptionalRef<const RectRaw> rect = std::nullopt)
 {
   SurfaceRaw surface = nullptr;
   CheckError(SDL_LockTextureToSurface(texture, rect, &surface));
   return Surface::Borrow(surface);
 }
 
-inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
+inline Surface Texture::LockToSurface(OptionalRef<const RectRaw> rect)
 {
   return SDL::LockTextureToSurface(m_resource, rect);
 }
@@ -89984,7 +89982,7 @@ struct Finger : FingerRaw
    * @param y the value for y.
    * @param pressure the value for pressure.
    */
-  constexpr Finger(SDL_FingerID id, float x, float y, float pressure) noexcept
+  constexpr Finger(FingerID id, float x, float y, float pressure) noexcept
     : FingerRaw{id, x, y, pressure}
   {
   }
@@ -90001,7 +89999,7 @@ struct Finger : FingerRaw
    *
    * @returns current id value.
    */
-  constexpr SDL_FingerID GetId() const noexcept { return id; }
+  constexpr FingerID GetId() const noexcept { return id; }
 
   /**
    * Set the id.
@@ -90009,7 +90007,7 @@ struct Finger : FingerRaw
    * @param newId the new id value.
    * @returns Reference to self.
    */
-  constexpr Finger& SetId(SDL_FingerID newId) noexcept
+  constexpr Finger& SetId(FingerID newId) noexcept
   {
     id = newId;
     return *this;
