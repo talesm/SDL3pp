@@ -16,7 +16,7 @@ option(SDL3PP_ENABLE_TTF "Enable compilation of SDL_TTF" ON)
 
 if (SDL3PP_FORCE_BUNDLED)
     include(cmake/SDL3ppAddExternalProjects.cmake)
-    set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf)
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3)
 
 else ()
     find_package(SDL3 CONFIG REQUIRED)
