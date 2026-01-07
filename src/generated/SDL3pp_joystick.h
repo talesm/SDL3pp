@@ -1306,7 +1306,7 @@ public:
   constexpr JoystickApiLock(JoystickApiLock&& other) noexcept
     : m_lock(other.m_lock)
   {
-    other.m_lock = false;
+    other.m_lock = {};
   }
 
   /**

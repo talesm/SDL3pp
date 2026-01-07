@@ -568,6 +568,7 @@ const transform = {
         },
         "SDL_AudioStream": {
           resource: true,
+          lock: true,
           entries: {
             "SDL_CreateAudioStream": {
               name: "ctor",

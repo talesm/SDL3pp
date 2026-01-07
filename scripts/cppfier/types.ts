@@ -231,6 +231,8 @@ export interface LockDefinition {
    * If false, does not generate control variable
    */
   controlVar?: boolean;
+
+  controlType?: string;
 }
 
 export interface WrapperDefinition {

@@ -190,6 +190,9 @@ struct AudioStreamParam
   constexpr operator AudioStreamRaw() const { return value; }
 };
 
+// Forward decl
+struct AudioStreamLock;
+
 /**
  * Mask of bits in an AudioFormat that contains the format bit size.
  *
@@ -2888,6 +2891,147 @@ struct AudioStreamRef : AudioStream
 };
 
 /**
+ * Lock an audio stream for serialized access.
+ *
+ * Each AudioStream has an internal mutex it uses to protect its data structures
+ * from threading conflicts. This function allows an app to lock that mutex,
+ * which could be useful if registering callbacks on this stream.
+ *
+ * One does not need to lock a stream to use in it most cases, as the stream
+ * manages this lock internally. However, this lock is held during callbacks,
+ * which may run from arbitrary threads at any time, so if an app needs to
+ * protect shared data during those callbacks, locking the stream guarantees
+ * that the callback is not running while the lock is held.
+ *
+ * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+ * the same attributes (recursive locks are allowed, etc).
+ *
+ * @param stream the audio stream to lock.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AudioStream.Unlock
+ */
+class AudioStreamLock
+{
+  AudioStreamRef m_lock;
+
+public:
+  /**
+   * Lock an audio stream for serialized access.
+   *
+   * Each AudioStream has an internal mutex it uses to protect its data
+   * structures from threading conflicts. This function allows an app to lock
+   * that mutex, which could be useful if registering callbacks on this stream.
+   *
+   * One does not need to lock a stream to use in it most cases, as the stream
+   * manages this lock internally. However, this lock is held during callbacks,
+   * which may run from arbitrary threads at any time, so if an app needs to
+   * protect shared data during those callbacks, locking the stream guarantees
+   * that the callback is not running while the lock is held.
+   *
+   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+   * the same attributes (recursive locks are allowed, etc).
+   *
+   * @param stream the audio stream to lock.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Unlock
+   */
+  AudioStreamLock(AudioStreamRef resource);
+
+  /**
+   * Lock an audio stream for serialized access.
+   *
+   * Each AudioStream has an internal mutex it uses to protect its data
+   * structures from threading conflicts. This function allows an app to lock
+   * that mutex, which could be useful if registering callbacks on this stream.
+   *
+   * One does not need to lock a stream to use in it most cases, as the stream
+   * manages this lock internally. However, this lock is held during callbacks,
+   * which may run from arbitrary threads at any time, so if an app needs to
+   * protect shared data during those callbacks, locking the stream guarantees
+   * that the callback is not running while the lock is held.
+   *
+   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+   * the same attributes (recursive locks are allowed, etc).
+   *
+   * @param stream the audio stream to lock.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Unlock
+   */
+  AudioStreamLock(const AudioStreamLock& other) = delete;
+
+  /// Move constructor
+  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock an audio stream for serialized access.
+   *
+   * This unlocks an audio stream after a call to AudioStream.Lock.
+   *
+   * @param stream the audio stream to unlock.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety You should only call this from the same thread that
+   *               previously called AudioStream.Lock.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Lock
+   */
+  ~AudioStreamLock() { reset(); }
+
+  /// Assignment operator
+  AudioStreamLock& operator=(AudioStreamLock other)
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock an audio stream for serialized access.
+   *
+   * This unlocks an audio stream after a call to AudioStream.Lock.
+   *
+   * @param stream the audio stream to unlock.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety You should only call this from the same thread that
+   *               previously called AudioStream.Lock.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Lock
+   */
+  void reset();
+};
+
+/**
  * Use this function to get the number of built-in audio drivers.
  *
  * This function returns a hardcoded number. This never returns a negative
@@ -4591,6 +4735,12 @@ inline void LockAudioStream(AudioStreamParam stream)
 
 inline void AudioStream::Lock() { SDL::LockAudioStream(m_resource); }
 
+inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
+  : m_lock(std::move(resource))
+{
+  LockAudioStream(m_lock);
+}
+
 /**
  * Unlock an audio stream for serialized access.
  *
@@ -4612,6 +4762,13 @@ inline void UnlockAudioStream(AudioStreamParam stream)
 }
 
 inline void AudioStream::Unlock() { SDL::UnlockAudioStream(m_resource); }
+
+inline void AudioStreamLock::reset()
+{
+  if (!m_lock) return;
+  UnlockAudioStream(m_lock);
+  m_lock = {};
+}
 
 /**
  * Set a callback that runs when data is requested from an audio stream.
