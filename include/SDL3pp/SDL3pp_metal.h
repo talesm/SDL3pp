@@ -209,10 +209,7 @@ struct MetalViewRef : MetalView
   }
 
   /// Copy constructor.
-  MetalViewRef(const MetalViewRef& other) noexcept
-    : MetalView(other.get())
-  {
-  }
+  constexpr MetalViewRef(const MetalViewRef& other) noexcept = default;
 
   /// Destructor
   ~MetalViewRef() { release(); }

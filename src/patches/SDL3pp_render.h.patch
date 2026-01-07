@@ -669,7 +669,7 @@
  
    /**
     * Set custom GPU render state.
-@@ -2487,10 +2500,8 @@
+@@ -2484,10 +2497,8 @@
     * @param renderer the rendering context.
     * @param format one of the enumerated values in PixelFormat.
     * @param access one of the enumerated values in TextureAccess.
@@ -682,7 +682,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -2506,7 +2517,8 @@
+@@ -2503,7 +2514,8 @@
            PixelFormat format,
            TextureAccess access,
            const PointRaw& size)
@@ -692,7 +692,7 @@
    {
    }
  
-@@ -2524,19 +2536,17 @@
+@@ -2521,19 +2533,17 @@
     * @param renderer the rendering context.
     * @param surface the Surface structure containing pixel data used to fill the
     *                texture.
@@ -714,7 +714,7 @@
    {
    }
  
-@@ -2651,8 +2661,7 @@
+@@ -2648,8 +2658,7 @@
     *
     * @param renderer the rendering context.
     * @param props the properties to use.
@@ -724,7 +724,7 @@
     *
     * @threadsafety This function should only be called on the main thread.
     *
-@@ -2666,7 +2675,7 @@
+@@ -2663,7 +2672,7 @@
     * @sa Texture.Update
     */
    Texture(RendererParam renderer, PropertiesParam props)
@@ -733,7 +733,7 @@
    {
    }
  
-@@ -2690,9 +2699,6 @@
+@@ -2687,9 +2696,6 @@
     * If you would rather decode an image to an Surface (a buffer of pixels in
     * CPU memory), call Surface.Surface() instead.
     *
@@ -743,7 +743,7 @@
     * @param renderer the Renderer to use to create the GPU texture.
     * @param file a path on the filesystem to load an image from.
     * @post a new texture, or nullptr on error.
-@@ -2733,9 +2739,6 @@
+@@ -2730,9 +2736,6 @@
     * If you would rather decode an image to an Surface (a buffer of pixels in
     * CPU memory), call Surface.Surface() instead.
     *
@@ -753,7 +753,7 @@
     * @param renderer the Renderer to use to create the GPU texture.
     * @param src an IOStream that data will be read from.
     * @param closeio true to close/free the IOStream before returning, false to
-@@ -2748,7 +2751,7 @@
+@@ -2745,7 +2748,7 @@
     * @sa LoadTextureTyped
     * @sa Texture.Destroy
     */
@@ -762,7 +762,7 @@
  
    /**
     * Safely borrows the from TextureParam.
-@@ -2945,27 +2948,19 @@
+@@ -2942,27 +2945,19 @@
     */
    void GetSize(float* w, float* h) const;
  
@@ -795,7 +795,7 @@
    PixelFormat GetFormat() const;
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -2990,10 +2985,6 @@
+@@ -2987,10 +2982,6 @@
     */
    void SetPalette(PaletteParam palette);
  
@@ -806,7 +806,7 @@
    /**
     * Get the palette used by a texture.
     *
-@@ -3151,7 +3142,7 @@
+@@ -3148,7 +3139,7 @@
    /**
     * Get the additional alpha value multiplied into render copy operations.
     *
@@ -815,7 +815,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3167,7 +3158,7 @@
+@@ -3164,7 +3155,7 @@
    /**
     * Get the additional alpha value multiplied into render copy operations.
     *
@@ -824,7 +824,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3180,12 +3171,82 @@
+@@ -3177,12 +3168,82 @@
     */
    float GetAlphaModFloat() const;
  
@@ -907,7 +907,7 @@
    FColor GetModFloat() const;
  
    /**
-@@ -3208,7 +3269,7 @@
+@@ -3205,7 +3266,7 @@
    /**
     * Get the blend mode used for texture copy operations.
     *
@@ -916,7 +916,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3240,7 +3301,7 @@
+@@ -3237,7 +3298,7 @@
    /**
     * Get the scale mode used for texture scale operations.
     *
@@ -925,7 +925,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3297,11 +3358,10 @@
+@@ -3294,11 +3355,10 @@
     * While this function will work with streaming textures, for optimization
     * reasons you may not get the pixels back if you lock the texture afterward.
     *
@@ -941,7 +941,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3428,8 +3488,8 @@
+@@ -3425,8 +3485,8 @@
     *
     * @param rect a pointer to the rectangle to lock for access. If the rect is
     *             nullptr, the entire texture will be locked.
@@ -952,7 +952,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3508,21 +3568,39 @@
+@@ -3505,21 +3565,39 @@
    return SDL_GetRenderDriver(index);
  }
  
@@ -995,7 +995,7 @@
   * @param window_flags the flags used to create the window (see
   *                     Window.Window()).
   * @param window a pointer filled with the window, or nullptr on error.
-@@ -3542,20 +3620,22 @@
+@@ -3539,20 +3617,22 @@
                                      Window* window,
                                      Renderer* renderer)
  {
@@ -1024,7 +1024,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -3570,19 +3650,22 @@
+@@ -3567,19 +3647,22 @@
    const PointRaw& size,
    WindowFlags window_flags = 0)
  {
@@ -1051,7 +1051,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -3597,7 +3680,10 @@
+@@ -3594,7 +3677,10 @@
                                        WindowFlags window_flags,
                                        Renderer* renderer)
  {
@@ -1063,7 +1063,7 @@
  }
  
  inline Window::Window(StringParam title,
-@@ -3734,24 +3820,12 @@
+@@ -3731,24 +3817,12 @@
  constexpr auto CREATE_GPU_DEVICE_POINTER =
    SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER;
  
@@ -1088,7 +1088,7 @@
  constexpr auto CREATE_GPU_SHADERS_MSL_BOOLEAN =
    SDL_PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN;
  
-@@ -3882,10 +3956,6 @@
+@@ -3879,10 +3953,6 @@
    return SDL_CreateGPURenderer(device, window);
  }
  
@@ -1099,7 +1099,7 @@
  /**
   * Return the GPU device used by a renderer.
   *
-@@ -3902,10 +3972,6 @@
+@@ -3899,10 +3969,6 @@
    return SDL_GetGPURendererDevice(renderer);
  }
  
@@ -1110,7 +1110,7 @@
  inline GPUDeviceRef Renderer::GetGPUDevice()
  {
    return SDL::GetGPURendererDevice(m_resource);
-@@ -3939,7 +4005,7 @@
+@@ -3936,7 +4002,7 @@
  
  inline RendererRef Window::GetRenderer() const
  {
@@ -1119,7 +1119,7 @@
  }
  
  /**
-@@ -3955,7 +4021,7 @@
+@@ -3952,7 +4018,7 @@
   */
  inline WindowRef GetRenderWindow(RendererParam renderer)
  {
@@ -1128,7 +1128,7 @@
  }
  
  inline WindowRef Renderer::GetWindow()
-@@ -4074,7 +4140,7 @@
+@@ -4071,7 +4137,7 @@
   */
  inline PropertiesRef GetRendererProperties(RendererParam renderer)
  {
@@ -1137,7 +1137,7 @@
  }
  
  inline PropertiesRef Renderer::GetProperties() const
-@@ -4117,8 +4183,7 @@
+@@ -4114,8 +4180,7 @@
   * adjustments, use Renderer.GetCurrentOutputSize() instead.
   *
   * @param renderer the rendering context.
@@ -1147,7 +1147,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -4129,7 +4194,9 @@
+@@ -4126,7 +4191,9 @@
   */
  inline Point GetRenderOutputSize(RendererParam renderer)
  {
@@ -1158,7 +1158,7 @@
  }
  
  inline void Renderer::GetOutputSize(int* w, int* h) const
-@@ -4177,8 +4244,7 @@
+@@ -4174,8 +4241,7 @@
   * presentation state, dictated by Renderer.SetLogicalPresentation().
   *
   * @param renderer the rendering context.
@@ -1168,7 +1168,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -4189,7 +4255,9 @@
+@@ -4186,7 +4252,9 @@
   */
  inline Point GetCurrentRenderOutputSize(RendererParam renderer)
  {
@@ -1179,7 +1179,7 @@
  }
  
  inline void Renderer::GetCurrentOutputSize(int* w, int* h) const
-@@ -4210,8 +4278,7 @@
+@@ -4207,8 +4275,7 @@
   * @param renderer the rendering context.
   * @param format one of the enumerated values in PixelFormat.
   * @param access one of the enumerated values in TextureAccess.
@@ -1189,7 +1189,7 @@
   * @returns the created texture or nullptr on failure; call GetError() for more
   *          information.
   *
-@@ -4495,24 +4562,12 @@
+@@ -4492,24 +4559,12 @@
  constexpr auto CREATE_GPU_TEXTURE_POINTER =
    SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER;
  
@@ -1214,7 +1214,7 @@
  constexpr auto CREATE_GPU_TEXTURE_V_POINTER =
    SDL_PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER;
  
-@@ -4587,22 +4642,10 @@
+@@ -4584,22 +4639,10 @@
  
  constexpr auto GPU_TEXTURE_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER;
  
@@ -1237,7 +1237,7 @@
  constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -4706,7 +4749,7 @@
+@@ -4703,7 +4746,7 @@
   */
  inline PropertiesRef GetTextureProperties(TextureConstParam texture)
  {
@@ -1246,7 +1246,7 @@
  }
  
  inline PropertiesRef Texture::GetProperties() const
-@@ -4727,7 +4770,7 @@
+@@ -4724,7 +4767,7 @@
   */
  inline RendererRef GetRendererFromTexture(TextureConstParam texture)
  {
@@ -1255,7 +1255,7 @@
  }
  
  inline RendererRef Texture::GetRenderer() const
-@@ -4754,23 +4797,10 @@
+@@ -4751,23 +4794,10 @@
    CheckError(SDL_GetTextureSize(texture, w, h));
  }
  
@@ -1281,7 +1281,7 @@
  }
  
  inline void Texture::GetSize(float* w, float* h) const
-@@ -4783,9 +4813,12 @@
+@@ -4780,9 +4810,12 @@
    return SDL::GetTextureSize(m_resource);
  }
  
@@ -1295,7 +1295,7 @@
  }
  
  inline FPoint Texture::GetSizeFloat() const
-@@ -4793,29 +4826,26 @@
+@@ -4790,29 +4823,26 @@
    return SDL::GetTextureSizeFloat(m_resource);
  }
  
@@ -1331,7 +1331,7 @@
  }
  
  inline PixelFormat Texture::GetFormat() const
-@@ -4849,19 +4879,11 @@
+@@ -4846,19 +4876,11 @@
    CheckError(SDL_SetTexturePalette(texture, palette));
  }
  
@@ -1351,7 +1351,7 @@
  /**
   * Get the palette used by a texture.
   *
-@@ -4877,13 +4899,9 @@
+@@ -4874,13 +4896,9 @@
   */
  inline Palette GetTexturePalette(TextureParam texture)
  {
@@ -1366,7 +1366,7 @@
  inline Palette Texture::GetPalette()
  {
    return SDL::GetTexturePalette(m_resource);
-@@ -5096,7 +5114,7 @@
+@@ -5093,7 +5111,7 @@
   * Get the additional alpha value multiplied into render copy operations.
   *
   * @param texture the texture to query.
@@ -1375,7 +1375,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5109,7 +5127,9 @@
+@@ -5106,7 +5124,9 @@
   */
  inline Uint8 GetTextureAlphaMod(TextureConstParam texture)
  {
@@ -1386,7 +1386,7 @@
  }
  
  inline Uint8 Texture::GetAlphaMod() const
-@@ -5121,7 +5141,7 @@
+@@ -5118,7 +5138,7 @@
   * Get the additional alpha value multiplied into render copy operations.
   *
   * @param texture the texture to query.
@@ -1395,7 +1395,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5134,7 +5154,9 @@
+@@ -5131,7 +5151,9 @@
   */
  inline float GetTextureAlphaModFloat(TextureConstParam texture)
  {
@@ -1406,7 +1406,7 @@
  }
  
  inline float Texture::GetAlphaModFloat() const
-@@ -5142,16 +5164,64 @@
+@@ -5139,16 +5161,64 @@
    return SDL::GetTextureAlphaModFloat(m_resource);
  }
  
@@ -1473,7 +1473,7 @@
  }
  
  inline void Texture::SetModFloat(FColor c)
-@@ -5159,16 +5229,50 @@
+@@ -5156,16 +5226,50 @@
    SDL::SetTextureModFloat(m_resource, c);
  }
  
@@ -1526,7 +1526,7 @@
  }
  
  inline FColor Texture::GetModFloat() const
-@@ -5206,7 +5310,7 @@
+@@ -5203,7 +5307,7 @@
   * Get the blend mode used for texture copy operations.
   *
   * @param texture the texture to query.
@@ -1535,7 +1535,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5217,7 +5321,9 @@
+@@ -5214,7 +5318,9 @@
   */
  inline BlendMode GetTextureBlendMode(TextureConstParam texture)
  {
@@ -1546,7 +1546,7 @@
  }
  
  inline BlendMode Texture::GetBlendMode() const
-@@ -5256,7 +5362,7 @@
+@@ -5253,7 +5359,7 @@
   * Get the scale mode used for texture scale operations.
   *
   * @param texture the texture to query.
@@ -1555,7 +1555,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5267,7 +5373,9 @@
+@@ -5264,7 +5370,9 @@
   */
  inline ScaleMode GetTextureScaleMode(TextureConstParam texture)
  {
@@ -1566,7 +1566,7 @@
  }
  
  inline ScaleMode Texture::GetScaleMode() const
-@@ -5329,11 +5437,10 @@
+@@ -5326,11 +5434,10 @@
   * may not get the pixels back if you lock the texture afterward.
   *
   * @param texture the texture to update.
@@ -1582,7 +1582,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5349,7 +5456,7 @@
+@@ -5346,7 +5453,7 @@
                            SurfaceConstParam surface,
                            OptionalRef<const RectRaw> rect = std::nullopt)
  {
@@ -1591,7 +1591,7 @@
  }
  
  inline void Texture::Update(OptionalRef<const RectRaw> rect,
-@@ -5522,8 +5629,7 @@
+@@ -5519,8 +5626,7 @@
   *                `TEXTUREACCESS_STREAMING`.
   * @param rect a pointer to the rectangle to lock for access. If the rect is
   *             nullptr, the entire texture will be locked.
@@ -1601,7 +1601,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5537,7 +5643,9 @@
+@@ -5534,7 +5640,9 @@
    TextureParam texture,
    OptionalRef<const SDL_Rect> rect = std::nullopt)
  {
@@ -1612,7 +1612,7 @@
  }
  
  inline Surface Texture::LockToSurface(OptionalRef<const SDL_Rect> rect)
-@@ -5602,9 +5710,24 @@
+@@ -5599,9 +5707,24 @@
    SDL::SetRenderTarget(m_resource, texture);
  }
  
@@ -1638,7 +1638,7 @@
  }
  
  inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
-@@ -5626,7 +5749,9 @@
+@@ -5623,7 +5746,9 @@
   */
  inline Texture GetRenderTarget(RendererParam renderer)
  {
@@ -1649,7 +1649,7 @@
  }
  
  inline Texture Renderer::GetTarget() const
-@@ -5665,8 +5790,7 @@
+@@ -5662,8 +5787,7 @@
   * Renderer.ConvertEventToRenderCoordinates().
   *
   * @param renderer the rendering context.
@@ -1659,7 +1659,7 @@
   * @param mode the presentation mode used.
   * @throws Error on failure.
   *
-@@ -5682,7 +5806,7 @@
+@@ -5679,7 +5803,7 @@
                                           const PointRaw& size,
                                           RendererLogicalPresentation mode)
  {
@@ -1668,7 +1668,7 @@
  }
  
  inline void Renderer::SetLogicalPresentation(const PointRaw& size,
-@@ -5730,8 +5854,8 @@
+@@ -5727,8 +5851,8 @@
   * the state for the current render target.
   *
   * @param renderer the rendering context.
@@ -1679,7 +1679,7 @@
   * @param mode a variable filled with the logical presentation mode being used.
   * @throws Error on failure.
   *
-@@ -5745,7 +5869,10 @@
+@@ -5742,7 +5866,10 @@
                                           PointRaw* size,
                                           RendererLogicalPresentation* mode)
  {
@@ -1691,7 +1691,7 @@
  }
  
  inline void Renderer::GetLogicalPresentation(
-@@ -5773,8 +5900,7 @@
+@@ -5770,8 +5897,7 @@
   * the rectangle for the current render target.
   *
   * @param renderer the rendering context.
@@ -1701,7 +1701,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5785,7 +5911,9 @@
+@@ -5782,7 +5908,9 @@
   */
  inline FRect GetRenderLogicalPresentationRect(RendererParam renderer)
  {
@@ -1712,7 +1712,7 @@
  }
  
  inline FRect Renderer::GetLogicalPresentationRect() const
-@@ -5804,10 +5932,8 @@
+@@ -5801,10 +5929,8 @@
   * - The viewport (Renderer.SetViewport)
   *
   * @param renderer the rendering context.
@@ -1725,7 +1725,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5820,7 +5946,10 @@
+@@ -5817,7 +5943,10 @@
  inline FPoint RenderCoordinatesFromWindow(RendererParam renderer,
                                            const FPointRaw& window_coord)
  {
@@ -1737,7 +1737,7 @@
  }
  
  inline FPoint Renderer::RenderCoordinatesFromWindow(
-@@ -5840,10 +5969,8 @@
+@@ -5837,10 +5966,8 @@
   * - The viewport (Renderer.SetViewport)
   *
   * @param renderer the rendering context.
@@ -1750,7 +1750,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5857,7 +5984,10 @@
+@@ -5854,7 +5981,10 @@
  inline FPoint RenderCoordinatesToWindow(RendererParam renderer,
                                          const FPointRaw& coord)
  {
@@ -1762,7 +1762,7 @@
  }
  
  inline FPoint Renderer::RenderCoordinatesToWindow(const FPointRaw& coord) const
-@@ -5889,8 +6019,7 @@
+@@ -5886,8 +6016,7 @@
   *
   * @param renderer the rendering context.
   * @param event the event to modify.
@@ -1772,7 +1772,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -5944,9 +6073,25 @@
+@@ -5941,9 +6070,25 @@
    SDL::SetRenderViewport(m_resource, rect);
  }
  
@@ -1799,7 +1799,7 @@
  }
  
  inline void Renderer::ResetViewport() { SDL::ResetRenderViewport(m_resource); }
-@@ -5958,7 +6103,7 @@
+@@ -5955,7 +6100,7 @@
   * the current render target.
   *
   * @param renderer the rendering context.
@@ -1808,7 +1808,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5970,7 +6115,9 @@
+@@ -5967,7 +6112,9 @@
   */
  inline Rect GetRenderViewport(RendererParam renderer)
  {
@@ -1819,7 +1819,7 @@
  }
  
  inline Rect Renderer::GetViewport() const
-@@ -6019,8 +6166,7 @@
+@@ -6016,8 +6163,7 @@
   * visually important or interactible content.
   *
   * @param renderer the rendering context.
@@ -1829,7 +1829,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6029,7 +6175,9 @@
+@@ -6026,7 +6172,9 @@
   */
  inline Rect GetRenderSafeArea(RendererParam renderer)
  {
@@ -1840,7 +1840,7 @@
  }
  
  inline Rect Renderer::GetSafeArea() const
-@@ -6066,9 +6214,25 @@
+@@ -6063,9 +6211,25 @@
    SDL::SetRenderClipRect(m_resource, rect);
  }
  
@@ -1867,7 +1867,7 @@
  }
  
  inline void Renderer::ResetClipRect() { SDL::ResetRenderClipRect(m_resource); }
-@@ -6080,8 +6244,8 @@
+@@ -6077,8 +6241,8 @@
   * cliprect for the current render target.
   *
   * @param renderer the rendering context.
@@ -1878,7 +1878,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6093,7 +6257,9 @@
+@@ -6090,7 +6254,9 @@
   */
  inline Rect GetRenderClipRect(RendererParam renderer)
  {
@@ -1889,7 +1889,7 @@
  }
  
  inline Rect Renderer::GetClipRect() const
-@@ -6143,8 +6309,7 @@
+@@ -6140,8 +6306,7 @@
   * current render target.
   *
   * @param renderer the rendering context.
@@ -1899,7 +1899,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6155,7 +6320,7 @@
+@@ -6152,7 +6317,7 @@
   */
  inline void SetRenderScale(RendererParam renderer, const FPointRaw& scale)
  {
@@ -1908,7 +1908,7 @@
  }
  
  inline void Renderer::SetScale(const FPointRaw& scale)
-@@ -6191,9 +6356,7 @@
+@@ -6188,9 +6353,7 @@
   * Each render target has its own scale. This function gets the scale for the
   * current render target.
   *
@@ -1919,7 +1919,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6204,7 +6367,9 @@
+@@ -6201,7 +6364,9 @@
   */
  inline FPoint GetRenderScale(RendererParam renderer)
  {
@@ -1930,7 +1930,7 @@
  }
  
  inline void Renderer::GetScale(float* scaleX, float* scaleY) const
-@@ -6224,12 +6389,7 @@
+@@ -6221,12 +6386,7 @@
   * Renderer.RenderClear().
   *
   * @param renderer the rendering context.
@@ -1944,7 +1944,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6241,7 +6401,7 @@
+@@ -6238,7 +6398,7 @@
   */
  inline void SetRenderDrawColor(RendererParam renderer, ColorRaw c)
  {
@@ -1953,7 +1953,7 @@
  }
  
  inline void Renderer::SetDrawColor(ColorRaw c)
-@@ -6256,11 +6416,7 @@
+@@ -6253,11 +6413,7 @@
   * Renderer.RenderClear().
   *
   * @param renderer the rendering context.
@@ -1966,7 +1966,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6272,7 +6428,7 @@
+@@ -6269,7 +6425,7 @@
   */
  inline void SetRenderDrawColorFloat(RendererParam renderer, const FColorRaw& c)
  {
@@ -1975,7 +1975,7 @@
  }
  
  inline void Renderer::SetDrawColorFloat(const FColorRaw& c)
-@@ -6314,14 +6470,7 @@
+@@ -6311,14 +6467,7 @@
   * Get the color used for drawing operations (Rect, Line and Clear).
   *
   * @param renderer the rendering context.
@@ -1991,7 +1991,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6333,7 +6482,9 @@
+@@ -6330,7 +6479,9 @@
   */
  inline Color GetRenderDrawColor(RendererParam renderer)
  {
@@ -2002,7 +2002,7 @@
  }
  
  inline void Renderer::GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
-@@ -6380,14 +6531,7 @@
+@@ -6377,14 +6528,7 @@
   * Get the color used for drawing operations (Rect, Line and Clear).
   *
   * @param renderer the rendering context.
@@ -2018,7 +2018,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6399,7 +6543,9 @@
+@@ -6396,7 +6540,9 @@
   */
  inline FColor GetRenderDrawColorFloat(RendererParam renderer)
  {
@@ -2029,7 +2029,7 @@
  }
  
  inline void Renderer::GetDrawColorFloat(float* r,
-@@ -6449,7 +6595,7 @@
+@@ -6446,7 +6592,7 @@
   * Get the color scale used for render operations.
   *
   * @param renderer the rendering context.
@@ -2038,7 +2038,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6460,7 +6606,9 @@
+@@ -6457,7 +6603,9 @@
   */
  inline float GetRenderColorScale(RendererParam renderer)
  {
@@ -2049,7 +2049,7 @@
  }
  
  inline float Renderer::GetColorScale() const
-@@ -6497,7 +6645,7 @@
+@@ -6494,7 +6642,7 @@
   * Get the blend mode used for drawing operations.
   *
   * @param renderer the rendering context.
@@ -2058,7 +2058,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6508,7 +6656,9 @@
+@@ -6505,7 +6653,9 @@
   */
  inline BlendMode GetRenderDrawBlendMode(RendererParam renderer)
  {
@@ -2069,7 +2069,7 @@
  }
  
  inline BlendMode Renderer::GetDrawBlendMode() const
-@@ -6544,8 +6694,7 @@
+@@ -6541,8 +6691,7 @@
   * Draw a point on the current rendering target at subpixel precision.
   *
   * @param renderer the renderer which should draw a point.
@@ -2079,7 +2079,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6556,7 +6705,7 @@
+@@ -6553,7 +6702,7 @@
   */
  inline void RenderPoint(RendererParam renderer, const FPointRaw& p)
  {
@@ -2088,7 +2088,7 @@
  }
  
  inline void Renderer::RenderPoint(const FPointRaw& p)
-@@ -6569,7 +6718,6 @@
+@@ -6566,7 +6715,6 @@
   *
   * @param renderer the renderer which should draw multiple points.
   * @param points the points to draw.
@@ -2096,7 +2096,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6581,7 +6729,7 @@
+@@ -6578,7 +6726,7 @@
  inline void RenderPoints(RendererParam renderer,
                           SpanRef<const FPointRaw> points)
  {
@@ -2105,7 +2105,7 @@
  }
  
  inline void Renderer::RenderPoints(SpanRef<const FPointRaw> points)
-@@ -6593,10 +6741,8 @@
+@@ -6590,10 +6738,8 @@
   * Draw a line on the current rendering target at subpixel precision.
   *
   * @param renderer the renderer which should draw a line.
@@ -2118,7 +2118,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6609,7 +6755,7 @@
+@@ -6606,7 +6752,7 @@
                         const FPointRaw& p1,
                         const FPointRaw& p2)
  {
@@ -2127,7 +2127,7 @@
  }
  
  inline void Renderer::RenderLine(const FPointRaw& p1, const FPointRaw& p2)
-@@ -6623,7 +6769,6 @@
+@@ -6620,7 +6766,6 @@
   *
   * @param renderer the renderer which should draw multiple lines.
   * @param points the points along the lines.
@@ -2135,7 +2135,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6634,7 +6779,7 @@
+@@ -6631,7 +6776,7 @@
   */
  inline void RenderLines(RendererParam renderer, SpanRef<const FPointRaw> points)
  {
@@ -2144,7 +2144,7 @@
  }
  
  inline void Renderer::RenderLines(SpanRef<const FPointRaw> points)
-@@ -6672,7 +6817,6 @@
+@@ -6669,7 +6814,6 @@
   *
   * @param renderer the renderer which should draw multiple rectangles.
   * @param rects a pointer to an array of destination rectangles.
@@ -2152,7 +2152,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6683,7 +6827,7 @@
+@@ -6680,7 +6824,7 @@
   */
  inline void RenderRects(RendererParam renderer, SpanRef<const FRectRaw> rects)
  {
@@ -2161,7 +2161,7 @@
  }
  
  inline void Renderer::RenderRects(SpanRef<const FRectRaw> rects)
-@@ -6723,7 +6867,6 @@
+@@ -6720,7 +6864,6 @@
   *
   * @param renderer the renderer which should fill multiple rectangles.
   * @param rects a pointer to an array of destination rectangles.
@@ -2169,7 +2169,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -6735,7 +6878,7 @@
+@@ -6732,7 +6875,7 @@
  inline void RenderFillRects(RendererParam renderer,
                              SpanRef<const FRectRaw> rects)
  {
@@ -2178,7 +2178,7 @@
  }
  
  inline void Renderer::RenderFillRects(SpanRef<const FRectRaw> rects)
-@@ -6808,7 +6951,7 @@
+@@ -6805,7 +6948,7 @@
                                   OptionalRef<const FRectRaw> dstrect,
                                   double angle,
                                   OptionalRef<const FPointRaw> center,
@@ -2187,7 +2187,7 @@
  {
    CheckError(SDL_RenderTextureRotated(
      renderer, texture, srcrect, dstrect, angle, center, flip));
-@@ -7035,20 +7178,16 @@
+@@ -7032,20 +7175,16 @@
  {
    CheckError(SDL_RenderTexture9GridTiled(renderer,
                                           texture,
@@ -2210,7 +2210,7 @@
  inline void Renderer::RenderTexture9GridTiled(TextureParam texture,
                                                const FRectRaw& srcrect,
                                                float left_width,
-@@ -7081,11 +7220,9 @@
+@@ -7078,11 +7217,9 @@
   * @param renderer the rendering context.
   * @param texture (optional) The SDL texture to use.
   * @param vertices vertices.
@@ -2222,7 +2222,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7098,9 +7235,14 @@
+@@ -7095,9 +7232,14 @@
  inline void RenderGeometry(RendererParam renderer,
                             TextureParam texture,
                             std::span<const Vertex> vertices,
@@ -2239,7 +2239,7 @@
  }
  
  inline void Renderer::RenderGeometry(TextureParam texture,
-@@ -7215,20 +7357,12 @@
+@@ -7212,20 +7354,12 @@
    CheckError(SDL_SetRenderTextureAddressMode(renderer, u_mode, v_mode));
  }
  
@@ -2260,7 +2260,7 @@
  /**
   * Get the texture addressing mode used in Renderer.RenderGeometry().
   *
-@@ -7252,10 +7386,6 @@
+@@ -7249,10 +7383,6 @@
    CheckError(SDL_GetRenderTextureAddressMode(renderer, u_mode, v_mode));
  }
  
@@ -2271,7 +2271,7 @@
  inline void Renderer::GetRenderTextureAddressMode(TextureAddressMode* u_mode,
                                                    TextureAddressMode* v_mode)
  {
-@@ -7292,7 +7422,7 @@
+@@ -7289,7 +7419,7 @@
  inline Surface RenderReadPixels(RendererParam renderer,
                                  OptionalRef<const RectRaw> rect = {})
  {
@@ -2280,7 +2280,7 @@
  }
  
  inline Surface Renderer::ReadPixels(OptionalRef<const RectRaw> rect) const
-@@ -7560,16 +7690,18 @@
+@@ -7557,16 +7687,18 @@
    SDL::SetRenderVSync(m_resource, vsync);
  }
  
@@ -2301,7 +2301,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -7580,7 +7712,9 @@
+@@ -7577,7 +7709,9 @@
   */
  inline int GetRenderVSync(RendererParam renderer)
  {
@@ -2312,7 +2312,7 @@
  }
  
  inline int Renderer::GetVSync() const
-@@ -7626,8 +7760,7 @@
+@@ -7623,8 +7757,7 @@
   * The text is drawn in the color specified by Renderer.SetDrawColor().
   *
   * @param renderer the renderer which should draw a line of text.
@@ -2322,7 +2322,7 @@
   * @param str the string to render.
   * @throws Error on failure.
   *
-@@ -7642,7 +7775,7 @@
+@@ -7639,7 +7772,7 @@
                              const FPointRaw& p,
                              StringParam str)
  {
@@ -2331,7 +2331,7 @@
  }
  
  inline void Renderer::RenderDebugText(const FPointRaw& p, StringParam str)
-@@ -7661,10 +7794,9 @@
+@@ -7658,10 +7791,9 @@
   * Renderer.RenderDebugText.
   *
   * @param renderer the renderer which should draw the text.
@@ -2344,7 +2344,7 @@
   *            any.
   * @throws Error on failure.
   *
-@@ -7681,7 +7813,8 @@
+@@ -7678,7 +7810,8 @@
                                    std::string_view fmt,
                                    ARGS... args)
  {
@@ -2354,7 +2354,7 @@
  }
  
  template<class... ARGS>
-@@ -7689,7 +7822,7 @@
+@@ -7686,7 +7819,7 @@
                                              std::string_view fmt,
                                              ARGS... args)
  {
@@ -2363,7 +2363,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -7715,19 +7848,11 @@
+@@ -7712,19 +7845,11 @@
    CheckError(SDL_SetDefaultTextureScaleMode(renderer, scale_mode));
  }
  
@@ -2383,7 +2383,7 @@
  /**
   * Get default texture scale mode of the given renderer.
   *
-@@ -7749,19 +7874,11 @@
+@@ -7746,19 +7871,11 @@
    CheckError(SDL_GetDefaultTextureScaleMode(renderer, scale_mode));
  }
  
@@ -2403,7 +2403,7 @@
  /**
   * A custom GPU render state.
   *
-@@ -7780,10 +7897,7 @@
+@@ -7777,10 +7894,7 @@
  
  public:
    /// Default ctor
@@ -2415,7 +2415,7 @@
  
    /**
     * Constructs from GPURenderStateParam.
-@@ -7792,7 +7906,7 @@
+@@ -7789,7 +7903,7 @@
     *
     * This assumes the ownership, call release() if you need to take back.
     */
@@ -2424,7 +2424,7 @@
      : m_resource(resource)
    {
    }
-@@ -7803,7 +7917,7 @@
+@@ -7800,7 +7914,7 @@
  
  public:
    /// Move constructor
@@ -2433,7 +2433,7 @@
      : GPURenderState(other.release())
    {
    }
-@@ -7812,8 +7926,6 @@
+@@ -7809,8 +7923,6 @@
  
    constexpr GPURenderState(GPURenderStateRef&& other) = delete;
  
@@ -2442,7 +2442,7 @@
    /**
     * Create custom GPU render state.
     *
-@@ -7836,29 +7948,21 @@
+@@ -7833,29 +7945,21 @@
    {
    }
  
@@ -2475,7 +2475,7 @@
    {
      auto r = m_resource;
      m_resource = nullptr;
-@@ -7866,11 +7970,13 @@
+@@ -7863,11 +7967,13 @@
    }
  
    /// Comparison
@@ -2492,7 +2492,7 @@
  
    /// Converts to GPURenderStateParam
    constexpr operator GPURenderStateParam() const noexcept
-@@ -7878,11 +7984,10 @@
+@@ -7875,11 +7981,10 @@
      return {m_resource};
    }
  
@@ -2505,7 +2505,7 @@
     * @threadsafety This function should be called on the thread that created the
     *               renderer.
     *
-@@ -7892,10 +7997,6 @@
+@@ -7889,10 +7994,6 @@
     */
    void Destroy();
  
@@ -2516,7 +2516,7 @@
    /**
     * Set fragment shader uniform variables in a custom GPU render state.
     *
-@@ -7913,17 +8014,11 @@
+@@ -7910,17 +8011,11 @@
     * @since This function is available since SDL 3.4.0.
     */
    void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
@@ -2534,7 +2534,7 @@
    /**
     * Constructs from GPURenderStateParam.
     *
-@@ -7931,25 +8026,13 @@
+@@ -7928,23 +8023,11 @@
     *
     * This does not takes ownership!
     */
@@ -2557,12 +2557,9 @@
 -  }
 -
    /// Copy constructor.
--  GPURenderStateRef(const GPURenderStateRef& other) noexcept
-+  GPURenderStateRef(const GPURenderStateRef& other)
-     : GPURenderState(other.get())
-   {
-   }
-@@ -7958,8 +8041,6 @@
+   constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept =
+     default;
+@@ -7953,8 +8036,6 @@
    ~GPURenderStateRef() { release(); }
  };
  
@@ -2571,7 +2568,7 @@
  /**
   * Create custom GPU render state.
   *
-@@ -7983,20 +8064,12 @@
+@@ -7978,20 +8059,12 @@
    return GPURenderState(renderer, createinfo);
  }
  
@@ -2593,7 +2590,7 @@
  /**
   * Set fragment shader uniform variables in a custom GPU render state.
   *
-@@ -8023,10 +8096,6 @@
+@@ -8018,10 +8091,6 @@
      SDL_SetGPURenderStateFragmentUniforms(state, slot_index, data, length));
  }
  
@@ -2604,7 +2601,7 @@
  inline void GPURenderState::SetFragmentUniforms(Uint32 slot_index,
                                                  const void* data,
                                                  Uint32 length)
-@@ -8034,10 +8103,6 @@
+@@ -8029,10 +8098,6 @@
    SDL::SetGPURenderStateFragmentUniforms(m_resource, slot_index, data, length);
  }
  
@@ -2615,7 +2612,7 @@
  /**
   * Set custom GPU render state.
   *
-@@ -8059,19 +8124,11 @@
+@@ -8054,19 +8119,11 @@
    CheckError(SDL_SetGPURenderState(renderer, state));
  }
  
@@ -2635,7 +2632,7 @@
  /**
   * Destroy custom GPU render state.
   *
-@@ -8089,10 +8146,6 @@
+@@ -8084,10 +8141,6 @@
    SDL_DestroyGPURenderState(state);
  }
  

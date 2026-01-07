@@ -2422,10 +2422,7 @@ struct RendererRef : Renderer
   }
 
   /// Copy constructor.
-  RendererRef(const RendererRef& other) noexcept
-    : Renderer(other.get())
-  {
-  }
+  constexpr RendererRef(const RendererRef& other) noexcept = default;
 
   /// Destructor
   ~RendererRef() { release(); }
@@ -7949,10 +7946,8 @@ struct GPURenderStateRef : GPURenderState
   }
 
   /// Copy constructor.
-  GPURenderStateRef(const GPURenderStateRef& other) noexcept
-    : GPURenderState(other.get())
-  {
-  }
+  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept =
+    default;
 
   /// Destructor
   ~GPURenderStateRef() { release(); }

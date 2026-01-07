@@ -19,7 +19,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1348,26 +1347,26 @@
+@@ -1345,26 +1344,26 @@
  /**
   * Get the current gamepad mappings.
   *
@@ -54,7 +54,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1378,7 +1377,7 @@
+@@ -1375,7 +1374,7 @@
   */
  inline StringResult GetGamepadMappingForGUID(GUID guid)
  {
@@ -63,7 +63,7 @@
  }
  
  /**
-@@ -1388,8 +1387,7 @@
+@@ -1385,8 +1384,7 @@
   *
   * @param gamepad the gamepad you want to get the current mapping for.
   * @returns a string that has the gamepad's mapping or nullptr if no mapping is
@@ -73,7 +73,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1402,7 +1400,7 @@
+@@ -1399,7 +1397,7 @@
   */
  inline StringResult GetGamepadMapping(GamepadParam gamepad)
  {
@@ -82,7 +82,7 @@
  }
  
  inline StringResult Gamepad::GetMapping()
-@@ -1448,11 +1446,8 @@
+@@ -1445,11 +1443,8 @@
  /**
   * Get a list of currently connected gamepads.
   *
@@ -95,7 +95,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1461,7 +1456,12 @@
+@@ -1458,7 +1453,12 @@
   * @sa HasGamepad
   * @sa Gamepad.Gamepad
   */
@@ -109,7 +109,7 @@
  
  /**
   * Check if the given joystick is supported by the gamepad interface.
-@@ -1727,7 +1727,7 @@
+@@ -1724,7 +1724,7 @@
   */
  inline GamepadRef GetGamepadFromID(JoystickID instance_id)
  {
@@ -118,7 +118,7 @@
  }
  
  /**
-@@ -1745,7 +1745,7 @@
+@@ -1742,7 +1742,7 @@
   */
  inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  {
@@ -127,7 +127,7 @@
  }
  
  /**
-@@ -1776,7 +1776,7 @@
+@@ -1773,7 +1773,7 @@
   */
  inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
  {
@@ -136,7 +136,7 @@
  }
  
  inline PropertiesRef Gamepad::GetProperties()
-@@ -2181,7 +2181,7 @@
+@@ -2178,7 +2178,7 @@
   */
  inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
  {

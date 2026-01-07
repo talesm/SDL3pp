@@ -3195,10 +3195,7 @@ struct WindowRef : Window
   }
 
   /// Copy constructor.
-  WindowRef(const WindowRef& other) noexcept
-    : Window(other.get())
-  {
-  }
+  constexpr WindowRef(const WindowRef& other) noexcept = default;
 
   /// Destructor
   ~WindowRef() { release(); }

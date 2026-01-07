@@ -422,10 +422,7 @@ struct CursorRef : Cursor
   }
 
   /// Copy constructor.
-  CursorRef(const CursorRef& other) noexcept
-    : Cursor(other.get())
-  {
-  }
+  constexpr CursorRef(const CursorRef& other) noexcept = default;
 
   /// Destructor
   ~CursorRef() { release(); }

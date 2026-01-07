@@ -464,10 +464,7 @@ struct AsyncIORef : AsyncIO
   }
 
   /// Copy constructor.
-  AsyncIORef(const AsyncIORef& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
+  constexpr AsyncIORef(const AsyncIORef& other) noexcept = default;
 
   /// Destructor
   ~AsyncIORef() { release(); }
@@ -812,10 +809,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
   }
 
   /// Copy constructor.
-  AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
+  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept = default;
 
   /// Destructor
   ~AsyncIOQueueRef() { release(); }

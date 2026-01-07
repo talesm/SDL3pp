@@ -1670,13 +1670,14 @@ function expandTypes(
           [`${refName}#3`]: {
             kind: "function",
             type: "",
+            constexpr: true,
             parameters: [
               {
                 type: `const ${refName} &`,
                 name: "other",
               },
             ],
-            hints: { init: [`${targetName}(other.get())`], noexcept: true },
+            hints: { default: true, noexcept: true },
             doc: ["Copy constructor."],
           },
           [`~${refName}`]: {

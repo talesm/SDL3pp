@@ -497,10 +497,7 @@ struct CameraRef : Camera
   }
 
   /// Copy constructor.
-  CameraRef(const CameraRef& other) noexcept
-    : Camera(other.get())
-  {
-  }
+  constexpr CameraRef(const CameraRef& other) noexcept = default;
 
   /// Destructor
   ~CameraRef() { release(); }

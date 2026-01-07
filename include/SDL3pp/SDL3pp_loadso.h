@@ -254,10 +254,7 @@ struct SharedObjectRef : SharedObject
   }
 
   /// Copy constructor.
-  SharedObjectRef(const SharedObjectRef& other) noexcept
-    : SharedObject(other.get())
-  {
-  }
+  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept = default;
 
   /// Destructor
   ~SharedObjectRef() { release(); }

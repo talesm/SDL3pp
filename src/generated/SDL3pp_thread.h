@@ -500,10 +500,7 @@ struct ThreadRef : Thread
   }
 
   /// Copy constructor.
-  ThreadRef(const ThreadRef& other) noexcept
-    : Thread(other.get())
-  {
-  }
+  constexpr ThreadRef(const ThreadRef& other) noexcept = default;
 
   /// Destructor
   ~ThreadRef() { release(); }

@@ -1276,10 +1276,7 @@ struct HapticRef : Haptic
   }
 
   /// Copy constructor.
-  HapticRef(const HapticRef& other) noexcept
-    : Haptic(other.get())
-  {
-  }
+  constexpr HapticRef(const HapticRef& other) noexcept = default;
 
   /// Destructor
   ~HapticRef() { release(); }

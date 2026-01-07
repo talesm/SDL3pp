@@ -74,7 +74,7 @@
     * @param pressure the pressure of the finger.
     * @throws Error on failure.
     *
-@@ -1299,8 +1300,6 @@
+@@ -1296,8 +1297,6 @@
  /**
   * Get a list of currently connected joysticks.
   *
@@ -83,7 +83,7 @@
   * @returns a 0 terminated array of joystick instance IDs or nullptr on failure;
   *          call GetError() for more information. This should be freed with
   *          free() when it is no longer needed.
-@@ -1312,7 +1311,12 @@
+@@ -1309,7 +1308,12 @@
   * @sa HasJoystick
   * @sa JoystickID.OpenJoystick
   */
@@ -97,7 +97,7 @@
  
  /**
   * Get the implementation dependent name of a joystick.
-@@ -1531,8 +1535,8 @@
+@@ -1528,8 +1532,8 @@
   * for use.
   *
   * @param instance_id the joystick instance ID.
@@ -108,7 +108,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1545,10 +1549,7 @@
+@@ -1542,10 +1546,7 @@
    return Joystick(instance_id);
  }
  
@@ -120,7 +120,7 @@
  
  /**
   * Get the Joystick associated with an instance ID, if it has been opened.
-@@ -1563,7 +1564,7 @@
+@@ -1560,7 +1561,7 @@
   */
  inline JoystickRef GetJoystickFromID(JoystickID instance_id)
  {
@@ -129,7 +129,7 @@
  }
  
  inline JoystickRef JoystickID::GetJoystickFromID()
-@@ -1587,7 +1588,7 @@
+@@ -1584,7 +1585,7 @@
   */
  inline JoystickRef GetJoystickFromPlayerIndex(int player_index)
  {
@@ -138,7 +138,7 @@
  }
  
  /**
-@@ -1857,10 +1858,8 @@
+@@ -1854,10 +1855,8 @@
   * @param touchpad the index of the touchpad on the virtual joystick to update.
   * @param finger the index of the finger on the touchpad to set.
   * @param down true if the finger is pressed, false if the finger is released.
@@ -151,7 +151,7 @@
   * @param pressure the pressure of the finger.
   * @throws Error on failure.
   *
-@@ -1882,7 +1881,7 @@
+@@ -1879,7 +1878,7 @@
                                         float pressure)
  {
    CheckError(SDL_SetJoystickVirtualTouchpad(
@@ -160,7 +160,7 @@
  }
  
  inline void Joystick::SetVirtualTouchpad(int touchpad,
-@@ -1966,7 +1965,7 @@
+@@ -1963,7 +1962,7 @@
   */
  inline PropertiesRef GetJoystickProperties(JoystickParam joystick)
  {

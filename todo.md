@@ -20,7 +20,8 @@ New Version checklist:
 Next version
 ------------
 
-- [x] Fix build failure on clang
+- [x] Fix a few build failure on clang;
+- [x] Clean up generated resource code;
 - [x] Fix MemoryBarrierRelease and MemoryBarrierAcquire;
 - [ ] Replace all SDL_\* parameters with \*Raw equivalents;
 - [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on

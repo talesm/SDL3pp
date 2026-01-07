@@ -1369,10 +1369,7 @@ struct IOStreamRef : IOStream
   }
 
   /// Copy constructor.
-  IOStreamRef(const IOStreamRef& other) noexcept
-    : IOStream(other.get())
-  {
-  }
+  constexpr IOStreamRef(const IOStreamRef& other) noexcept = default;
 
   /// Destructor
   ~IOStreamRef() { release(); }

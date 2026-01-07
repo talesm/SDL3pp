@@ -1554,10 +1554,7 @@ struct AudioDeviceRef : AudioDevice
   }
 
   /// Copy constructor.
-  AudioDeviceRef(const AudioDeviceRef& other) noexcept
-    : AudioDevice(other.get())
-  {
-  }
+  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept = default;
 
   /// Destructor
   ~AudioDeviceRef() { release(); }
@@ -2884,10 +2881,7 @@ struct AudioStreamRef : AudioStream
   }
 
   /// Copy constructor.
-  AudioStreamRef(const AudioStreamRef& other) noexcept
-    : AudioStream(other.get())
-  {
-  }
+  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept = default;
 
   /// Destructor
   ~AudioStreamRef() { release(); }

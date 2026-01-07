@@ -1948,10 +1948,7 @@ struct FontRef : Font
   }
 
   /// Copy constructor.
-  FontRef(const FontRef& other) noexcept
-    : Font(other.get())
-  {
-  }
+  constexpr FontRef(const FontRef& other) noexcept = default;
 
   /// Destructor
   ~FontRef() { release(); }
@@ -5320,10 +5317,7 @@ struct TextRef : Text
   }
 
   /// Copy constructor.
-  TextRef(const TextRef& other) noexcept
-    : Text(other.get())
-  {
-  }
+  constexpr TextRef(const TextRef& other) noexcept = default;
 
   /// Destructor
   ~TextRef() { release(); }

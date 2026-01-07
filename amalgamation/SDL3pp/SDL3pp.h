@@ -12627,10 +12627,7 @@ struct PropertiesRef : Properties
   }
 
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other) noexcept
-    : Properties(other.get())
-  {
-  }
+  constexpr PropertiesRef(const PropertiesRef& other) noexcept = default;
 
   /// Destructor
   ~PropertiesRef() { release(); }
@@ -14547,10 +14544,7 @@ struct EnvironmentRef : Environment
   }
 
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other) noexcept
-    : Environment(other.get())
-  {
-  }
+  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept = default;
 
   /// Destructor
   ~EnvironmentRef() { release(); }
@@ -19473,10 +19467,7 @@ struct IConvRef : IConv
   }
 
   /// Copy constructor.
-  IConvRef(const IConvRef& other) noexcept
-    : IConv(other.get())
-  {
-  }
+  constexpr IConvRef(const IConvRef& other) noexcept = default;
 
   /// Destructor
   ~IConvRef() { release(); }
@@ -20202,10 +20193,7 @@ struct AsyncIORef : AsyncIO
   }
 
   /// Copy constructor.
-  AsyncIORef(const AsyncIORef& other) noexcept
-    : AsyncIO(other.get())
-  {
-  }
+  constexpr AsyncIORef(const AsyncIORef& other) noexcept = default;
 
   /// Destructor
   ~AsyncIORef() { release(); }
@@ -20550,10 +20538,7 @@ struct AsyncIOQueueRef : AsyncIOQueue
   }
 
   /// Copy constructor.
-  AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
-    : AsyncIOQueue(other.get())
-  {
-  }
+  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept = default;
 
   /// Destructor
   ~AsyncIOQueueRef() { release(); }
@@ -24257,10 +24242,7 @@ struct HidDeviceRef : HidDevice
   }
 
   /// Copy constructor.
-  HidDeviceRef(const HidDeviceRef& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
+  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept = default;
 
   /// Destructor
   ~HidDeviceRef() { release(); }
@@ -26486,10 +26468,7 @@ struct IOStreamRef : IOStream
   }
 
   /// Copy constructor.
-  IOStreamRef(const IOStreamRef& other) noexcept
-    : IOStream(other.get())
-  {
-  }
+  constexpr IOStreamRef(const IOStreamRef& other) noexcept = default;
 
   /// Destructor
   ~IOStreamRef() { release(); }
@@ -28228,10 +28207,7 @@ struct SharedObjectRef : SharedObject
   }
 
   /// Copy constructor.
-  SharedObjectRef(const SharedObjectRef& other) noexcept
-    : SharedObject(other.get())
-  {
-  }
+  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept = default;
 
   /// Destructor
   ~SharedObjectRef() { release(); }
@@ -32198,10 +32174,7 @@ struct SensorRef : Sensor
   }
 
   /// Copy constructor.
-  SensorRef(const SensorRef& other) noexcept
-    : Sensor(other.get())
-  {
-  }
+  constexpr SensorRef(const SensorRef& other) noexcept = default;
 
   /// Destructor
   ~SensorRef() { release(); }
@@ -34875,10 +34848,7 @@ struct AudioDeviceRef : AudioDevice
   }
 
   /// Copy constructor.
-  AudioDeviceRef(const AudioDeviceRef& other) noexcept
-    : AudioDevice(other.get())
-  {
-  }
+  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept = default;
 
   /// Destructor
   ~AudioDeviceRef() { release(); }
@@ -36321,10 +36291,7 @@ struct AudioStreamRef : AudioStream
   }
 
   /// Copy constructor.
-  AudioStreamRef(const AudioStreamRef& other) noexcept
-    : AudioStream(other.get())
-  {
-  }
+  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept = default;
 
   /// Destructor
   ~AudioStreamRef() { release(); }
@@ -40290,10 +40257,7 @@ struct ProcessRef : Process
   }
 
   /// Copy constructor.
-  ProcessRef(const ProcessRef& other) noexcept
-    : Process(other.get())
-  {
-  }
+  constexpr ProcessRef(const ProcessRef& other) noexcept = default;
 
   /// Destructor
   ~ProcessRef() { release(); }
@@ -41509,10 +41473,7 @@ struct StorageRef : Storage
   }
 
   /// Copy constructor.
-  StorageRef(const StorageRef& other) noexcept
-    : Storage(other.get())
-  {
-  }
+  constexpr StorageRef(const StorageRef& other) noexcept = default;
 
   /// Destructor
   ~StorageRef() { release(); }
@@ -47118,10 +47079,7 @@ struct ThreadRef : Thread
   }
 
   /// Copy constructor.
-  ThreadRef(const ThreadRef& other) noexcept
-    : Thread(other.get())
-  {
-  }
+  constexpr ThreadRef(const ThreadRef& other) noexcept = default;
 
   /// Destructor
   ~ThreadRef() { release(); }
@@ -47981,10 +47939,7 @@ struct CameraRef : Camera
   }
 
   /// Copy constructor.
-  CameraRef(const CameraRef& other) noexcept
-    : Camera(other.get())
-  {
-  }
+  constexpr CameraRef(const CameraRef& other) noexcept = default;
 
   /// Destructor
   ~CameraRef() { release(); }
@@ -48814,10 +48769,7 @@ struct MutexRef : Mutex
   }
 
   /// Copy constructor.
-  MutexRef(const MutexRef& other) noexcept
-    : Mutex(other.get())
-  {
-  }
+  constexpr MutexRef(const MutexRef& other) noexcept = default;
 
   /// Destructor
   ~MutexRef() { release(); }
@@ -49261,10 +49213,7 @@ struct RWLockRef : RWLock
   }
 
   /// Copy constructor.
-  RWLockRef(const RWLockRef& other) noexcept
-    : RWLock(other.get())
-  {
-  }
+  constexpr RWLockRef(const RWLockRef& other) noexcept = default;
 
   /// Destructor
   ~RWLockRef() { release(); }
@@ -49741,10 +49690,7 @@ struct SemaphoreRef : Semaphore
   }
 
   /// Copy constructor.
-  SemaphoreRef(const SemaphoreRef& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
+  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept = default;
 
   /// Destructor
   ~SemaphoreRef() { release(); }
@@ -50130,10 +50076,7 @@ struct ConditionRef : Condition
   }
 
   /// Copy constructor.
-  ConditionRef(const ConditionRef& other) noexcept
-    : Condition(other.get())
-  {
-  }
+  constexpr ConditionRef(const ConditionRef& other) noexcept = default;
 
   /// Destructor
   ~ConditionRef() { release(); }
@@ -50876,10 +50819,7 @@ struct TrayRef : Tray
   }
 
   /// Copy constructor.
-  TrayRef(const TrayRef& other) noexcept
-    : Tray(other.get())
-  {
-  }
+  constexpr TrayRef(const TrayRef& other) noexcept = default;
 
   /// Destructor
   ~TrayRef() { release(); }
@@ -55122,10 +55062,7 @@ struct WindowRef : Window
   }
 
   /// Copy constructor.
-  WindowRef(const WindowRef& other) noexcept
-    : Window(other.get())
-  {
-  }
+  constexpr WindowRef(const WindowRef& other) noexcept = default;
 
   /// Destructor
   ~WindowRef() { release(); }
@@ -66217,10 +66154,7 @@ struct GPUDeviceRef : GPUDevice
   }
 
   /// Copy constructor.
-  GPUDeviceRef(const GPUDeviceRef& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
+  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept = default;
 
   /// Destructor
   ~GPUDeviceRef() { release(); }
@@ -71409,10 +71343,7 @@ struct JoystickRef : Joystick
   }
 
   /// Copy constructor.
-  JoystickRef(const JoystickRef& other) noexcept
-    : Joystick(other.get())
-  {
-  }
+  constexpr JoystickRef(const JoystickRef& other) noexcept = default;
 
   /// Destructor
   ~JoystickRef() { release(); }
@@ -73998,10 +73929,7 @@ struct MetalViewRef : MetalView
   }
 
   /// Copy constructor.
-  MetalViewRef(const MetalViewRef& other) noexcept
-    : MetalView(other.get())
-  {
-  }
+  constexpr MetalViewRef(const MetalViewRef& other) noexcept = default;
 
   /// Destructor
   ~MetalViewRef() { release(); }
@@ -74481,10 +74409,7 @@ struct CursorRef : Cursor
   }
 
   /// Copy constructor.
-  CursorRef(const CursorRef& other) noexcept
-    : Cursor(other.get())
-  {
-  }
+  constexpr CursorRef(const CursorRef& other) noexcept = default;
 
   /// Destructor
   ~CursorRef() { release(); }
@@ -76417,10 +76342,7 @@ struct GamepadRef : Gamepad
   }
 
   /// Copy constructor.
-  GamepadRef(const GamepadRef& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
+  constexpr GamepadRef(const GamepadRef& other) noexcept = default;
 
   /// Destructor
   ~GamepadRef() { release(); }
@@ -79468,10 +79390,7 @@ struct HapticRef : Haptic
   }
 
   /// Copy constructor.
-  HapticRef(const HapticRef& other) noexcept
-    : Haptic(other.get())
-  {
-  }
+  constexpr HapticRef(const HapticRef& other) noexcept = default;
 
   /// Destructor
   ~HapticRef() { release(); }
@@ -83341,10 +83260,7 @@ struct RendererRef : Renderer
   }
 
   /// Copy constructor.
-  RendererRef(const RendererRef& other) noexcept
-    : Renderer(other.get())
-  {
-  }
+  constexpr RendererRef(const RendererRef& other) noexcept = default;
 
   /// Destructor
   ~RendererRef() { release(); }
@@ -88938,10 +88854,8 @@ struct GPURenderStateRef : GPURenderState
   }
 
   /// Copy constructor.
-  GPURenderStateRef(const GPURenderStateRef& other)
-    : GPURenderState(other.get())
-  {
-  }
+  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept =
+    default;
 
   /// Destructor
   ~GPURenderStateRef() { release(); }
@@ -92733,10 +92647,7 @@ struct AnimationRef : Animation
   }
 
   /// Copy constructor.
-  AnimationRef(const AnimationRef& other) noexcept
-    : Animation(other.get())
-  {
-  }
+  constexpr AnimationRef(const AnimationRef& other) noexcept = default;
 
   /// Destructor
   ~AnimationRef() { release(); }
@@ -94934,10 +94845,7 @@ struct FontRef : Font
   }
 
   /// Copy constructor.
-  FontRef(const FontRef& other) noexcept
-    : Font(other.get())
-  {
-  }
+  constexpr FontRef(const FontRef& other) noexcept = default;
 
   /// Destructor
   ~FontRef() { release(); }
@@ -98235,10 +98143,7 @@ struct TextRef : Text
   }
 
   /// Copy constructor.
-  TextRef(const TextRef& other) noexcept
-    : Text(other.get())
-  {
-  }
+  constexpr TextRef(const TextRef& other) noexcept = default;
 
   /// Destructor
   ~TextRef() { release(); }

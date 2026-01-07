@@ -4185,10 +4185,7 @@ struct GPUDeviceRef : GPUDevice
   }
 
   /// Copy constructor.
-  GPUDeviceRef(const GPUDeviceRef& other) noexcept
-    : GPUDevice(other.get())
-  {
-  }
+  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept = default;
 
   /// Destructor
   ~GPUDeviceRef() { release(); }

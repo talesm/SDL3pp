@@ -394,10 +394,7 @@ struct MutexRef : Mutex
   }
 
   /// Copy constructor.
-  MutexRef(const MutexRef& other) noexcept
-    : Mutex(other.get())
-  {
-  }
+  constexpr MutexRef(const MutexRef& other) noexcept = default;
 
   /// Destructor
   ~MutexRef() { release(); }
@@ -841,10 +838,7 @@ struct RWLockRef : RWLock
   }
 
   /// Copy constructor.
-  RWLockRef(const RWLockRef& other) noexcept
-    : RWLock(other.get())
-  {
-  }
+  constexpr RWLockRef(const RWLockRef& other) noexcept = default;
 
   /// Destructor
   ~RWLockRef() { release(); }
@@ -1321,10 +1315,7 @@ struct SemaphoreRef : Semaphore
   }
 
   /// Copy constructor.
-  SemaphoreRef(const SemaphoreRef& other) noexcept
-    : Semaphore(other.get())
-  {
-  }
+  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept = default;
 
   /// Destructor
   ~SemaphoreRef() { release(); }
@@ -1710,10 +1701,7 @@ struct ConditionRef : Condition
   }
 
   /// Copy constructor.
-  ConditionRef(const ConditionRef& other) noexcept
-    : Condition(other.get())
-  {
-  }
+  constexpr ConditionRef(const ConditionRef& other) noexcept = default;
 
   /// Destructor
   ~ConditionRef() { release(); }

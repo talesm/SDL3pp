@@ -1177,10 +1177,7 @@ struct EnvironmentRef : Environment
   }
 
   /// Copy constructor.
-  EnvironmentRef(const EnvironmentRef& other) noexcept
-    : Environment(other.get())
-  {
-  }
+  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept = default;
 
   /// Destructor
   ~EnvironmentRef() { release(); }
@@ -5947,10 +5944,7 @@ struct IConvRef : IConv
   }
 
   /// Copy constructor.
-  IConvRef(const IConvRef& other) noexcept
-    : IConv(other.get())
-  {
-  }
+  constexpr IConvRef(const IConvRef& other) noexcept = default;
 
   /// Destructor
   ~IConvRef() { release(); }

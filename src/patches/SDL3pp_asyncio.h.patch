@@ -33,7 +33,7 @@
  
    /**
     * Use this function to get the size of the data stream in an AsyncIO.
-@@ -530,7 +536,7 @@
+@@ -527,7 +533,7 @@
  
  public:
    /// Default ctor
@@ -42,7 +42,7 @@
      : m_resource(0)
    {
    }
-@@ -661,9 +667,8 @@
+@@ -658,9 +664,8 @@
     * It is safe for multiple threads to call this function on the same queue at
     * once; a completed task will only go to one of the threads.
     *
@@ -54,7 +54,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -702,11 +707,9 @@
+@@ -699,11 +704,9 @@
     * polling, it is possible to have a timeout of -1 to wait forever, and use
     * AsyncIOQueue.Signal() to wake up the waiting threads later.
     *
@@ -69,7 +69,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -745,11 +748,8 @@
+@@ -742,11 +745,8 @@
     * polling, it is possible to have a timeout of -1 to wait forever, and use
     * AsyncIOQueue.Signal() to wake up the waiting threads later.
     *
@@ -83,7 +83,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1028,24 +1028,25 @@
+@@ -1022,24 +1022,25 @@
   * @param queue a queue to add the new AsyncIO to.
   * @param userdata an app-defined pointer that will be provided with the task
   *                 results.
@@ -115,7 +115,7 @@
  }
  
  /**
-@@ -1115,9 +1116,8 @@
+@@ -1109,9 +1110,8 @@
   * once; a completed task will only go to one of the threads.
   *
   * @param queue the async I/O task queue to query.
@@ -127,7 +127,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1127,7 +1127,10 @@
+@@ -1121,7 +1121,10 @@
   */
  inline std::optional<AsyncIOOutcome> GetAsyncIOResult(AsyncIOQueueParam queue)
  {
@@ -139,7 +139,7 @@
  }
  
  inline std::optional<AsyncIOOutcome> AsyncIOQueue::GetResult()
-@@ -1164,11 +1167,9 @@
+@@ -1158,11 +1161,9 @@
   * AsyncIOQueue.Signal() to wake up the waiting threads later.
   *
   * @param queue the async I/O task queue to wait on.
@@ -154,7 +154,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1179,7 +1180,11 @@
+@@ -1173,7 +1174,11 @@
  inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue,
                                                         Milliseconds timeout)
  {
@@ -167,7 +167,7 @@
  }
  
  /**
-@@ -1211,11 +1216,8 @@
+@@ -1205,11 +1210,8 @@
   * AsyncIOQueue.Signal() to wake up the waiting threads later.
   *
   * @param queue the async I/O task queue to wait on.
@@ -181,7 +181,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1225,7 +1227,10 @@
+@@ -1219,7 +1221,10 @@
   */
  inline std::optional<AsyncIOOutcome> WaitAsyncIOResult(AsyncIOQueueParam queue)
  {

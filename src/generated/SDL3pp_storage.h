@@ -818,10 +818,7 @@ struct StorageRef : Storage
   }
 
   /// Copy constructor.
-  StorageRef(const StorageRef& other) noexcept
-    : Storage(other.get())
-  {
-  }
+  constexpr StorageRef(const StorageRef& other) noexcept = default;
 
   /// Destructor
   ~StorageRef() { release(); }

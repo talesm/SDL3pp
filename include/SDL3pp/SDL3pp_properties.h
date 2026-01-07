@@ -738,10 +738,7 @@ struct PropertiesRef : Properties
   }
 
   /// Copy constructor.
-  PropertiesRef(const PropertiesRef& other) noexcept
-    : Properties(other.get())
-  {
-  }
+  constexpr PropertiesRef(const PropertiesRef& other) noexcept = default;
 
   /// Destructor
   ~PropertiesRef() { release(); }

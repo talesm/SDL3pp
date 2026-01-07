@@ -539,10 +539,7 @@ struct ProcessRef : Process
   }
 
   /// Copy constructor.
-  ProcessRef(const ProcessRef& other) noexcept
-    : Process(other.get())
-  {
-  }
+  constexpr ProcessRef(const ProcessRef& other) noexcept = default;
 
   /// Destructor
   ~ProcessRef() { release(); }

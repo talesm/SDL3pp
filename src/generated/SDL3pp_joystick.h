@@ -1231,10 +1231,7 @@ struct JoystickRef : Joystick
   }
 
   /// Copy constructor.
-  JoystickRef(const JoystickRef& other) noexcept
-    : Joystick(other.get())
-  {
-  }
+  constexpr JoystickRef(const JoystickRef& other) noexcept = default;
 
   /// Destructor
   ~JoystickRef() { release(); }

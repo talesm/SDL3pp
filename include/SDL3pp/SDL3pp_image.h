@@ -2289,10 +2289,7 @@ struct AnimationRef : Animation
   }
 
   /// Copy constructor.
-  AnimationRef(const AnimationRef& other) noexcept
-    : Animation(other.get())
-  {
-  }
+  constexpr AnimationRef(const AnimationRef& other) noexcept = default;
 
   /// Destructor
   ~AnimationRef() { release(); }

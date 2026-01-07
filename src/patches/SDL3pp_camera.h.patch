@@ -89,7 +89,7 @@
  
    /**
     * Release a frame of video acquired from a camera.
-@@ -578,11 +575,8 @@
+@@ -575,11 +572,8 @@
  /**
   * Get a list of currently connected camera devices.
   *
@@ -102,7 +102,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -590,7 +584,12 @@
+@@ -587,7 +581,12 @@
   *
   * @sa Camera.Camera
   */
@@ -116,7 +116,7 @@
  
  /**
   * Get the list of native formats/sizes a camera supports.
-@@ -614,12 +613,8 @@
+@@ -611,12 +610,8 @@
   * warning popup.
   *
   * @param instance_id the camera device instance ID.
@@ -130,7 +130,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -630,7 +625,9 @@
+@@ -627,7 +622,9 @@
   */
  inline OwnArray<CameraSpec*> GetCameraSupportedFormats(CameraID instance_id)
  {
@@ -141,7 +141,7 @@
  }
  
  /**
-@@ -706,9 +703,9 @@
+@@ -703,9 +700,9 @@
   *
   * @param instance_id the camera device instance ID.
   * @param spec the desired format for data the device will provide. Can be
@@ -154,7 +154,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -798,7 +795,7 @@
+@@ -795,7 +792,7 @@
   */
  inline PropertiesRef GetCameraProperties(CameraParam camera)
  {
@@ -163,7 +163,7 @@
  }
  
  inline PropertiesRef Camera::GetProperties()
-@@ -819,8 +816,7 @@
+@@ -816,8 +813,7 @@
   * occasionally until it returns non-zero.
   *
   * @param camera opened camera device.
@@ -173,7 +173,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -830,7 +826,8 @@
+@@ -827,7 +823,8 @@
   */
  inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
  {
@@ -183,7 +183,7 @@
  }
  
  inline std::optional<CameraSpec> Camera::GetFormat()
-@@ -869,8 +866,8 @@
+@@ -866,8 +863,8 @@
   * @param camera opened camera device.
   * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
   *                    error. Can be nullptr.
@@ -194,7 +194,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -878,9 +875,10 @@
+@@ -875,9 +872,10 @@
   *
   * @sa Camera.ReleaseFrame
   */

@@ -521,10 +521,7 @@ struct HidDeviceRef : HidDevice
   }
 
   /// Copy constructor.
-  HidDeviceRef(const HidDeviceRef& other) noexcept
-    : HidDevice(other.get())
-  {
-  }
+  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept = default;
 
   /// Destructor
   ~HidDeviceRef() { release(); }

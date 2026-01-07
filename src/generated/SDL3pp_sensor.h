@@ -345,10 +345,7 @@ struct SensorRef : Sensor
   }
 
   /// Copy constructor.
-  SensorRef(const SensorRef& other) noexcept
-    : Sensor(other.get())
-  {
-  }
+  constexpr SensorRef(const SensorRef& other) noexcept = default;
 
   /// Destructor
   ~SensorRef() { release(); }

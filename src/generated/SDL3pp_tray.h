@@ -377,10 +377,7 @@ struct TrayRef : Tray
   }
 
   /// Copy constructor.
-  TrayRef(const TrayRef& other) noexcept
-    : Tray(other.get())
-  {
-  }
+  constexpr TrayRef(const TrayRef& other) noexcept = default;
 
   /// Destructor
   ~TrayRef() { release(); }

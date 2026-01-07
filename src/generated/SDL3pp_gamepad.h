@@ -1196,10 +1196,7 @@ struct GamepadRef : Gamepad
   }
 
   /// Copy constructor.
-  GamepadRef(const GamepadRef& other) noexcept
-    : Gamepad(other.get())
-  {
-  }
+  constexpr GamepadRef(const GamepadRef& other) noexcept = default;
 
   /// Destructor
   ~GamepadRef() { release(); }
