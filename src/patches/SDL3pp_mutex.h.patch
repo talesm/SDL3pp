@@ -18,7 +18,7 @@
      : m_resource(0)
    {
    }
-@@ -541,7 +541,7 @@
+@@ -543,7 +543,7 @@
  
  public:
    /// Default ctor
@@ -27,7 +27,7 @@
      : m_resource(0)
    {
    }
-@@ -1252,8 +1252,8 @@
+@@ -1258,8 +1258,8 @@
     * pointed to by `sem` has a positive value or the specified time has elapsed.
     * If the call is successful it will atomically decrement the semaphore value.
     *
@@ -38,7 +38,7 @@
     * @returns true if the wait succeeds or false if the wait times out.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -1421,8 +1421,8 @@
+@@ -1427,8 +1427,8 @@
   * call is successful it will atomically decrement the semaphore value.
   *
   * @param sem the semaphore to wait on.
@@ -49,7 +49,7 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @since This function is available since SDL 3.2.0.
-@@ -1434,7 +1434,7 @@
+@@ -1440,7 +1440,7 @@
  inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
                                   std::chrono::milliseconds timeout)
  {
@@ -58,7 +58,7 @@
  }
  
  inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1496,7 +1496,7 @@
+@@ -1502,7 +1502,7 @@
  
  public:
    /// Default ctor
@@ -67,7 +67,7 @@
      : m_resource(0)
    {
    }
-@@ -1656,8 +1656,8 @@
+@@ -1664,8 +1664,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -78,7 +78,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -1828,8 +1828,8 @@
+@@ -1836,8 +1836,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -89,7 +89,7 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -1845,7 +1845,7 @@
+@@ -1853,7 +1853,7 @@
                                   MutexParam mutex,
                                   std::chrono::milliseconds timeout)
  {
@@ -98,7 +98,7 @@
  }
  
  inline bool Condition::WaitTimeout(MutexParam mutex,
-@@ -1878,8 +1878,8 @@
+@@ -1886,8 +1886,8 @@
   *
   * Here is an example of using this:
   *

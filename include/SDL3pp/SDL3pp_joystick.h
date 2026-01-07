@@ -450,9 +450,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Joystick(const Joystick& other) = delete;
+  constexpr Joystick(const Joystick& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Joystick(Joystick&& other) noexcept
     : Joystick(other.release())

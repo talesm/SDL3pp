@@ -2091,9 +2091,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Animation(const Animation& other) = delete;
+  constexpr Animation(const Animation& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Animation(Animation&& other) noexcept
     : Animation(other.release())

@@ -201,9 +201,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Cursor(const Cursor& other) = delete;
+  constexpr Cursor(const Cursor& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Cursor(Cursor&& other) noexcept
     : Cursor(other.release())

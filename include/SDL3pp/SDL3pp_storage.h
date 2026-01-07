@@ -311,9 +311,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Storage(const Storage& other) = delete;
+  constexpr Storage(const Storage& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Storage(Storage&& other) noexcept
     : Storage(other.release())

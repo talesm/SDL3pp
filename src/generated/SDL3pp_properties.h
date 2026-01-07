@@ -221,9 +221,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Properties(const Properties& other) = delete;
+  constexpr Properties(const Properties& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Properties(Properties&& other) noexcept
     : Properties(other.release())

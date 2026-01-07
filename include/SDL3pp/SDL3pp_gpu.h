@@ -3122,9 +3122,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr GPUDevice(const GPUDevice& other) = delete;
+  constexpr GPUDevice(const GPUDevice& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr GPUDevice(GPUDevice&& other) noexcept
     : GPUDevice(other.release())

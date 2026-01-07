@@ -196,9 +196,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Thread(const Thread& other) = delete;
+  constexpr Thread(const Thread& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Thread(Thread&& other) noexcept
     : Thread(other.release())

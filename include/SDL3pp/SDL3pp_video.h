@@ -808,9 +808,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Window(const Window& other) = delete;
+  constexpr Window(const Window& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Window(Window&& other) noexcept
     : Window(other.release())
@@ -3344,7 +3346,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr GLContext(const GLContext& other) = default;
+  constexpr GLContext(const GLContext& other) noexcept = default;
 
   /// Move constructor
   constexpr GLContext(GLContext&& other) noexcept

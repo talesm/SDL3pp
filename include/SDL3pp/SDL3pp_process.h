@@ -156,9 +156,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Process(const Process& other) = delete;
+  constexpr Process(const Process& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Process(Process&& other) noexcept
     : Process(other.release())

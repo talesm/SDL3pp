@@ -200,9 +200,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Camera(const Camera& other) = delete;
+  constexpr Camera(const Camera& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Camera(Camera&& other) noexcept
     : Camera(other.release())

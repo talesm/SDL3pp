@@ -437,9 +437,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Gamepad(const Gamepad& other) = delete;
+  constexpr Gamepad(const Gamepad& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Gamepad(Gamepad&& other) noexcept
     : Gamepad(other.release())

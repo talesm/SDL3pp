@@ -799,9 +799,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Haptic(const Haptic& other) = delete;
+  constexpr Haptic(const Haptic& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Haptic(Haptic&& other) noexcept
     : Haptic(other.release())

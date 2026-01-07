@@ -183,9 +183,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Tray(const Tray& other) = delete;
+  constexpr Tray(const Tray& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Tray(Tray&& other) noexcept
     : Tray(other.release())
@@ -552,7 +554,7 @@ public:
   }
 
   /// Copy constructor
-  constexpr TrayEntry(const TrayEntry& other) = default;
+  constexpr TrayEntry(const TrayEntry& other) noexcept = default;
 
   /// Move constructor
   constexpr TrayEntry(TrayEntry&& other) noexcept

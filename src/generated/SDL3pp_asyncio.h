@@ -193,9 +193,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr AsyncIO(const AsyncIO& other) = delete;
+  constexpr AsyncIO(const AsyncIO& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr AsyncIO(AsyncIO&& other) noexcept
     : AsyncIO(other.release())
@@ -545,9 +547,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr AsyncIOQueue(const AsyncIOQueue& other) = delete;
+  constexpr AsyncIOQueue(const AsyncIOQueue& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr AsyncIOQueue(AsyncIOQueue&& other) noexcept
     : AsyncIOQueue(other.release())

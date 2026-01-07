@@ -977,9 +977,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Environment(const Environment& other) = delete;
+  constexpr Environment(const Environment& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Environment(Environment&& other) noexcept
     : Environment(other.release())
@@ -5791,9 +5793,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr IConv(const IConv& other) = delete;
+  constexpr IConv(const IConv& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr IConv(IConv&& other) noexcept
     : IConv(other.release())

@@ -214,9 +214,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Mutex(const Mutex& other) = delete;
+  constexpr Mutex(const Mutex& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Mutex(Mutex&& other) noexcept
     : Mutex(other.release())
@@ -558,9 +560,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr RWLock(const RWLock& other) = delete;
+  constexpr RWLock(const RWLock& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr RWLock(RWLock&& other) noexcept
     : RWLock(other.release())
@@ -1122,9 +1126,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Semaphore(const Semaphore& other) = delete;
+  constexpr Semaphore(const Semaphore& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Semaphore(Semaphore&& other) noexcept
     : Semaphore(other.release())
@@ -1513,9 +1519,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Condition(const Condition& other) = delete;
+  constexpr Condition(const Condition& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Condition(Condition&& other) noexcept
     : Condition(other.release())

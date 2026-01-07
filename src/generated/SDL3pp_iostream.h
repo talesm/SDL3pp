@@ -150,9 +150,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr IOStream(const IOStream& other) = delete;
+  constexpr IOStream(const IOStream& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr IOStream(IOStream&& other) noexcept
     : IOStream(other.release())

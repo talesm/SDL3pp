@@ -97,7 +97,7 @@
   *
   * @threadsafety This will run from a background thread owned by SDL. The
   *               application is responsible for locking resources the callback
-@@ -994,8 +1003,6 @@
+@@ -996,8 +1005,6 @@
     */
    void Close();
  
@@ -106,7 +106,7 @@
    /**
     * Get the human-readable name of a specific audio device.
     *
-@@ -1008,8 +1015,8 @@
+@@ -1010,8 +1017,8 @@
     * default might change in general, and the string will be the name of a
     * specific device and not the abstract system default.
     *
@@ -117,7 +117,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1042,9 +1049,9 @@
+@@ -1044,9 +1051,9 @@
     * Buffer size is only important if you need low-level control over the audio
     * playback timing. Most apps do not need this.
     *
@@ -128,7 +128,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1062,11 +1069,8 @@
+@@ -1064,11 +1071,8 @@
     * Audio devices usually have no remapping applied. This is represented by
     * returning nullptr, and does not signify an error.
     *
@@ -141,7 +141,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1268,7 +1272,6 @@
+@@ -1270,7 +1274,6 @@
     * end's format.
     *
     * @param streams an array of audio streams to bind.
@@ -149,7 +149,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1395,7 +1398,6 @@
+@@ -1397,7 +1400,6 @@
     * Setting a nullptr callback function disables any previously-set callback.
     *
     * @param callback a callback function to be called. Can be nullptr.
@@ -157,7 +157,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1459,9 +1461,9 @@
+@@ -1461,9 +1463,9 @@
     * @sa AudioStream.GetDevice
     * @sa AudioStream.ResumeDevice
     */
@@ -170,7 +170,7 @@
  
    /**
     * Convenience function for straightforward audio init for the common case.
-@@ -1503,11 +1505,7 @@
+@@ -1505,11 +1507,7 @@
     *
     * @param spec the audio stream's data format. Can be nullptr.
     * @param callback a callback where the app will provide new data for
@@ -183,7 +183,7 @@
     * @returns an audio stream on success.
     * @throws Error on failure.
     *
-@@ -1570,7 +1568,7 @@
+@@ -1572,7 +1570,7 @@
   *
   * @since This constant is available since SDL 3.2.0.
   */
@@ -192,7 +192,7 @@
    SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK;
  
  /**
-@@ -1582,7 +1580,7 @@
+@@ -1584,7 +1582,7 @@
   *
   * @since This constant is available since SDL 3.2.0.
   */
@@ -201,7 +201,7 @@
    SDL_AUDIO_DEVICE_DEFAULT_RECORDING;
  
  /**
-@@ -1600,7 +1598,7 @@
+@@ -1602,7 +1600,7 @@
   */
  constexpr int AudioFrameSize(const AudioSpec& x)
  {
@@ -210,7 +210,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -1635,10 +1633,6 @@
+@@ -1637,10 +1635,6 @@
                                                         const void* buf,
                                                         int buflen);
  
@@ -221,7 +221,7 @@
  /**
   * A callback that fires for completed AudioStream.PutDataNoCopy() data.
   *
-@@ -1824,7 +1818,59 @@
+@@ -1828,7 +1822,59 @@
    {
    }
  
@@ -282,7 +282,7 @@
    AudioStream(AudioDeviceParam devid,
                OptionalRef<const AudioSpec> spec,
                AudioStreamCB callback);
-@@ -1906,9 +1952,45 @@
+@@ -1910,9 +1956,45 @@
     */
    PropertiesRef GetProperties() const;
  
@@ -330,7 +330,7 @@
  
    /**
     * Query the current format of an audio stream.
-@@ -1926,15 +2008,69 @@
+@@ -1930,15 +2012,69 @@
     */
    void GetFormat(AudioSpec* src_spec, AudioSpec* dst_spec) const;
  
@@ -408,7 +408,7 @@
  
    /**
     * Change the input and output formats of an audio stream.
-@@ -2065,11 +2201,8 @@
+@@ -2069,11 +2205,8 @@
     * Audio streams default to no remapping applied. This is represented by
     * returning nullptr, and does not signify an error.
     *
@@ -421,7 +421,7 @@
     *
     * @threadsafety It is safe to call this function from any thread, as it holds
     *               a stream-specific mutex while running.
-@@ -2089,11 +2222,8 @@
+@@ -2093,11 +2226,8 @@
     * Audio streams default to no remapping applied. This is represented by
     * returning nullptr, and does not signify an error.
     *
@@ -434,7 +434,7 @@
     *
     * @threadsafety It is safe to call this function from any thread, as it holds
     *               a stream-specific mutex while running.
-@@ -2148,7 +2278,6 @@
+@@ -2152,7 +2282,6 @@
     * mapping, but previously-added data will still have the prior mapping.
     *
     * @param chmap the new channel map, nullptr to reset to default.
@@ -442,7 +442,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread, as it holds
-@@ -2204,7 +2333,6 @@
+@@ -2208,7 +2337,6 @@
     * before feeding it to the device for playback.
     *
     * @param chmap the new channel map, nullptr to reset to default.
@@ -450,7 +450,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread, as it holds
-@@ -2230,7 +2358,6 @@
+@@ -2234,7 +2362,6 @@
     * Get call would just dequeue the previously-converted data.
     *
     * @param buf a pointer to the audio data to add.
@@ -458,7 +458,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread, but if the
-@@ -2273,7 +2400,6 @@
+@@ -2277,7 +2404,6 @@
     * AudioStream.PutData(), which allocates and buffers in blocks.
     *
     * @param buf a pointer to the audio data to add.
@@ -466,7 +466,7 @@
     * @param callback the callback function to call when the data is no longer
     *                 needed by the stream. May be nullptr.
     * @param userdata an opaque pointer provided to the callback for its own
-@@ -2295,10 +2421,6 @@
+@@ -2299,10 +2425,6 @@
                       AudioStreamDataCompleteCallback callback,
                       void* userdata);
  
@@ -477,7 +477,7 @@
    /**
     * Add external data to an audio stream without copying it.
     *
-@@ -2324,11 +2446,8 @@
+@@ -2328,11 +2450,8 @@
     * AudioStream.PutData(), which allocates and buffers in blocks.
     *
     * @param buf a pointer to the audio data to add.
@@ -489,7 +489,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread, but if the
-@@ -2359,7 +2478,6 @@
+@@ -2363,7 +2482,6 @@
     * the stream and requesting the output just copied the converted data.
     *
     * @param buf a buffer to fill with audio data.
@@ -497,7 +497,7 @@
     * @returns the number of bytes read from the stream or -1 on failure; call
     *          GetError() for more information.
     *
-@@ -2653,8 +2771,6 @@
+@@ -2657,8 +2775,6 @@
     *
     * @param callback the new callback function to call when data is requested
     *                 from the stream.
@@ -506,7 +506,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -2747,8 +2863,6 @@
+@@ -2751,8 +2867,6 @@
     *
     * @param callback the new callback function to call when data is added to the
     *                 stream.
@@ -515,7 +515,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -2972,11 +3086,8 @@
+@@ -2976,11 +3090,8 @@
   * If this function returns nullptr, to signify an error, `*count` will be set
   * to zero.
   *
@@ -529,7 +529,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2987,7 +3098,10 @@
+@@ -2991,7 +3102,10 @@
   */
  inline OwnArray<AudioDeviceRef> GetAudioPlaybackDevices()
  {
@@ -541,7 +541,7 @@
  }
  
  /**
-@@ -3004,11 +3118,8 @@
+@@ -3008,11 +3122,8 @@
   * If this function returns nullptr, to signify an error, `*count` will be set
   * to zero.
   *
@@ -555,7 +555,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -3019,7 +3130,10 @@
+@@ -3023,7 +3134,10 @@
   */
  inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
  {
@@ -567,7 +567,7 @@
  }
  
  /**
-@@ -3035,8 +3149,8 @@
+@@ -3039,8 +3153,8 @@
   * not the abstract system default.
   *
   * @param devid the instance ID of the device to query.
@@ -578,7 +578,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -3047,7 +3161,7 @@
+@@ -3051,7 +3165,7 @@
   */
  inline const char* GetAudioDeviceName(AudioDeviceParam devid)
  {
@@ -587,7 +587,7 @@
  }
  
  inline const char* AudioDevice::GetName() const
-@@ -3077,7 +3191,6 @@
+@@ -3081,7 +3195,6 @@
   * playback timing. Most apps do not need this.
   *
   * @param devid the instance ID of the device to query.
@@ -595,7 +595,7 @@
   * @param sample_frames pointer to store device buffer size, in sample frames.
   *                      Can be nullptr.
   * @throws Error on failure.
-@@ -3089,7 +3202,9 @@
+@@ -3093,7 +3206,9 @@
  inline AudioSpec GetAudioDeviceFormat(AudioDeviceParam devid,
                                        int* sample_frames = nullptr)
  {
@@ -606,7 +606,7 @@
  }
  
  inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
-@@ -3107,10 +3222,8 @@
+@@ -3111,10 +3226,8 @@
   * returning nullptr, and does not signify an error.
   *
   * @param devid the instance ID of the device to query.
@@ -618,7 +618,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -3120,7 +3233,9 @@
+@@ -3124,7 +3237,9 @@
   */
  inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceParam devid)
  {
@@ -629,7 +629,7 @@
  }
  
  inline OwnArray<int> AudioDevice::GetChannelMap() const
-@@ -3199,7 +3314,7 @@
+@@ -3203,7 +3318,7 @@
   * @sa AudioDevice.GetFormat
   */
  inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
@@ -638,7 +638,7 @@
  {
    return AudioDevice(devid, spec);
  }
-@@ -3480,7 +3595,6 @@
+@@ -3484,7 +3599,6 @@
   *
   * @param devid an audio device to bind a stream to.
   * @param streams an array of audio streams to bind.
@@ -646,7 +646,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -3494,7 +3608,10 @@
+@@ -3498,7 +3612,10 @@
  inline void BindAudioStreams(AudioDeviceParam devid,
                               std::span<AudioStreamRef> streams)
  {
@@ -658,7 +658,7 @@
  }
  
  inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
-@@ -3541,7 +3658,6 @@
+@@ -3545,7 +3662,6 @@
   *
   * @param streams an array of audio streams to unbind. Can be nullptr or contain
   *                nullptr.
@@ -666,7 +666,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -3551,7 +3667,8 @@
+@@ -3555,7 +3671,8 @@
   */
  inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
  {
@@ -676,7 +676,7 @@
  }
  
  /**
-@@ -3595,7 +3712,7 @@
+@@ -3599,7 +3716,7 @@
   */
  inline AudioDeviceRef GetAudioStreamDevice(AudioStreamParam stream)
  {
@@ -685,7 +685,7 @@
  }
  
  inline AudioDeviceRef AudioStream::GetDevice() const
-@@ -3623,8 +3740,8 @@
+@@ -3627,8 +3744,8 @@
   * @sa AudioStream.SetFormat
   * @sa AudioStream.Destroy
   */
@@ -696,7 +696,7 @@
  {
    return AudioStream(src_spec, dst_spec);
  }
-@@ -3653,7 +3770,7 @@
+@@ -3657,7 +3774,7 @@
   */
  inline PropertiesRef GetAudioStreamProperties(AudioStreamParam stream)
  {
@@ -705,7 +705,7 @@
  }
  
  inline PropertiesRef AudioStream::GetProperties() const
-@@ -3661,17 +3778,17 @@
+@@ -3665,17 +3782,17 @@
    return SDL::GetAudioStreamProperties(m_resource);
  }
  
@@ -727,7 +727,7 @@
  /**
   * Query the current format of an audio stream.
   *
-@@ -3877,10 +3994,8 @@
+@@ -3881,10 +3998,8 @@
   * returning nullptr, and does not signify an error.
   *
   * @param stream the AudioStream to query.
@@ -739,7 +739,7 @@
   *
   * @threadsafety It is safe to call this function from any thread, as it holds a
   *               stream-specific mutex while running.
-@@ -3891,7 +4006,10 @@
+@@ -3895,7 +4010,10 @@
   */
  inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamParam stream)
  {
@@ -751,7 +751,7 @@
  }
  
  inline OwnArray<int> AudioStream::GetInputChannelMap() const
-@@ -3909,10 +4027,8 @@
+@@ -3913,10 +4031,8 @@
   * returning nullptr, and does not signify an error.
   *
   * @param stream the AudioStream to query.
@@ -763,7 +763,7 @@
   *
   * @threadsafety It is safe to call this function from any thread, as it holds a
   *               stream-specific mutex while running.
-@@ -3923,7 +4039,10 @@
+@@ -3927,7 +4043,10 @@
   */
  inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamParam stream)
  {
@@ -775,7 +775,7 @@
  }
  
  inline OwnArray<int> AudioStream::GetOutputChannelMap() const
-@@ -3976,7 +4095,6 @@
+@@ -3980,7 +4099,6 @@
   *
   * @param stream the AudioStream to change.
   * @param chmap the new channel map, nullptr to reset to default.
@@ -783,7 +783,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, as it holds a
-@@ -3991,7 +4109,8 @@
+@@ -3995,7 +4113,8 @@
  inline void SetAudioStreamInputChannelMap(AudioStreamParam stream,
                                            std::span<int> chmap)
  {
@@ -793,7 +793,7 @@
  }
  
  inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
-@@ -4042,7 +4161,6 @@
+@@ -4046,7 +4165,6 @@
   *
   * @param stream the AudioStream to change.
   * @param chmap the new channel map, nullptr to reset to default.
@@ -801,7 +801,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, as it holds a
-@@ -4057,7 +4175,8 @@
+@@ -4061,7 +4179,8 @@
  inline void SetAudioStreamOutputChannelMap(AudioStreamParam stream,
                                             std::span<int> chmap)
  {
@@ -811,7 +811,7 @@
  }
  
  inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
-@@ -4078,7 +4197,6 @@
+@@ -4082,7 +4201,6 @@
   *
   * @param stream the stream the audio data is being added to.
   * @param buf a pointer to the audio data to add.
@@ -819,7 +819,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, but if the
-@@ -4130,7 +4248,6 @@
+@@ -4134,7 +4252,6 @@
   *
   * @param stream the stream the audio data is being added to.
   * @param buf a pointer to the audio data to add.
@@ -827,7 +827,7 @@
   * @param callback the callback function to call when the data is no longer
   *                 needed by the stream. May be nullptr.
   * @param userdata an opaque pointer provided to the callback for its own
-@@ -4157,10 +4274,6 @@
+@@ -4161,10 +4278,6 @@
      stream, buf.data(), buf.size_bytes(), callback, userdata));
  }
  
@@ -838,7 +838,7 @@
  /**
   * Add external data to an audio stream without copying it.
   *
-@@ -4187,11 +4300,8 @@
+@@ -4191,11 +4304,8 @@
   *
   * @param stream the stream the audio data is being added to.
   * @param buf a pointer to the audio data to add.
@@ -850,7 +850,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, but if the
-@@ -4209,13 +4319,13 @@
+@@ -4213,13 +4323,13 @@
                                       SourceBytes buf,
                                       AudioStreamDataCompleteCB callback)
  {
@@ -869,7 +869,7 @@
  inline void AudioStream::PutDataNoCopy(SourceBytes buf,
                                         AudioStreamDataCompleteCallback callback,
                                         void* userdata)
-@@ -4223,20 +4333,12 @@
+@@ -4227,20 +4337,12 @@
    SDL::PutAudioStreamDataNoCopy(m_resource, std::move(buf), callback, userdata);
  }
  
@@ -890,7 +890,7 @@
  /**
   * Add data to the stream with each channel in a separate array.
   *
-@@ -4294,10 +4396,6 @@
+@@ -4298,10 +4400,6 @@
      stream, channel_buffers, num_channels, num_samples));
  }
  
@@ -901,7 +901,7 @@
  inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
                                         int num_channels,
                                         int num_samples)
-@@ -4322,7 +4420,6 @@
+@@ -4326,7 +4424,6 @@
   *
   * @param stream the stream the audio is being requested from.
   * @param buf a buffer to fill with audio data.
@@ -909,7 +909,7 @@
   * @returns the number of bytes read from the stream or -1 on failure; call
   *          GetError() for more information.
   *
-@@ -4694,8 +4791,6 @@
+@@ -4698,8 +4795,6 @@
   * @param stream the audio stream to set the new callback on.
   * @param callback the new callback function to call when data is requested from
   *                 the stream.
@@ -918,7 +918,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -4707,7 +4802,7 @@
+@@ -4711,7 +4806,7 @@
  inline void SetAudioStreamGetCallback(AudioStreamParam stream,
                                        AudioStreamCB callback)
  {
@@ -927,7 +927,7 @@
  }
  
  inline void AudioStream::SetGetCallback(AudioStreamCallback callback,
-@@ -4808,8 +4903,6 @@
+@@ -4812,8 +4907,6 @@
   * @param stream the audio stream to set the new callback on.
   * @param callback the new callback function to call when data is added to the
   *                 stream.
@@ -936,7 +936,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -4821,7 +4914,7 @@
+@@ -4825,7 +4918,7 @@
  inline void SetAudioStreamPutCallback(AudioStreamParam stream,
                                        AudioStreamCB callback)
  {
@@ -945,7 +945,7 @@
  }
  
  inline void AudioStream::SetPutCallback(AudioStreamCallback callback,
-@@ -4918,9 +5011,9 @@
+@@ -4922,9 +5015,9 @@
   * @sa AudioStream.ResumeDevice
   */
  inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
@@ -958,7 +958,7 @@
  {
    return AudioStream(devid, spec, callback, userdata);
  }
-@@ -4967,11 +5060,7 @@
+@@ -4971,11 +5064,7 @@
   *              AUDIO_DEVICE_DEFAULT_RECORDING.
   * @param spec the audio stream's data format. Can be nullptr.
   * @param callback a callback where the app will provide new data for playback,
@@ -971,7 +971,7 @@
   * @returns an audio stream on success.
   * @throws Error on failure.
   *
-@@ -4989,9 +5078,9 @@
+@@ -4993,9 +5082,9 @@
    return AudioStream(devid, spec, callback);
  }
  
@@ -984,7 +984,7 @@
  {
    return AudioStream(m_resource, spec, callback, userdata);
  }
-@@ -4999,13 +5088,19 @@
+@@ -5003,13 +5092,19 @@
  inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                             AudioStreamCB callback)
  {
@@ -1005,7 +1005,7 @@
  }
  
  /**
-@@ -5110,7 +5205,6 @@
+@@ -5114,7 +5209,6 @@
   *
   * @param devid the ID of an opened audio device.
   * @param callback a callback function to be called. Can be nullptr.
@@ -1013,7 +1013,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5120,7 +5214,7 @@
+@@ -5124,7 +5218,7 @@
  inline void SetAudioPostmixCallback(AudioDeviceParam devid,
                                      AudioPostmixCB callback)
  {
@@ -1022,7 +1022,7 @@
  }
  
  inline void AudioDevice::SetPostmixCallback(AudioPostmixCallback callback,
-@@ -5173,46 +5267,41 @@
+@@ -5177,46 +5271,41 @@
   *
   * Example:
   *
@@ -1081,7 +1081,7 @@
  }
  
  /**
-@@ -5227,28 +5316,23 @@
+@@ -5231,28 +5320,23 @@
   * @param path the file path of the WAV file to open.
   * @param spec a pointer to an AudioSpec that will be set to the WAVE data's
   *             format details on successful return.
@@ -1116,7 +1116,7 @@
  }
  
  /**
-@@ -5274,7 +5358,6 @@
+@@ -5278,7 +5362,6 @@
   * @param src the source audio buffer to be mixed.
   * @param format the AudioFormat structure representing the desired audio
   *               format.
@@ -1124,7 +1124,7 @@
   * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
   *               volume.
   * @throws Error on failure.
-@@ -5288,7 +5371,8 @@
+@@ -5292,7 +5375,8 @@
                       AudioFormat format,
                       float volume)
  {
@@ -1134,7 +1134,7 @@
  }
  
  /**
-@@ -5314,7 +5398,6 @@
+@@ -5318,7 +5402,6 @@
   * @param src the source audio buffer to be mixed.
   * @param format the AudioFormat structure representing the desired audio
   *               format.
@@ -1142,7 +1142,7 @@
   * @param volume ranges from 0.0 - 1.0, and should be set to 1.0 for full audio
   *               volume.
   * @throws Error on failure.
-@@ -5328,7 +5411,13 @@
+@@ -5332,7 +5415,13 @@
                       AudioFormat format,
                       float volume)
  {
@@ -1157,7 +1157,7 @@
  }
  
  /**
-@@ -5346,11 +5435,7 @@
+@@ -5350,11 +5439,7 @@
   *
   * @param src_spec the format details of the input audio.
   * @param src_data the audio data to be converted.
@@ -1169,7 +1169,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -5361,8 +5446,15 @@
+@@ -5365,8 +5450,15 @@
                                             SourceBytes src_data,
                                             const AudioSpec& dst_spec)
  {

@@ -454,9 +454,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Font(const Font& other) = delete;
+  constexpr Font(const Font& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Font(Font&& other) noexcept
     : Font(other.release())
@@ -4058,9 +4060,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr TextEngine(const TextEngine& other) = delete;
+  constexpr TextEngine(const TextEngine& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr TextEngine(TextEngine&& other) noexcept
     : TextEngine(other.release())
@@ -4414,9 +4418,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Text(const Text& other) = delete;
+  constexpr Text(const Text& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Text(Text&& other) noexcept
     : Text(other.release())

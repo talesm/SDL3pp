@@ -84,9 +84,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr MetalView(const MetalView& other) = delete;
+  constexpr MetalView(const MetalView& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr MetalView(MetalView&& other) noexcept
     : MetalView(other.release())

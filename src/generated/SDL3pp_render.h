@@ -335,9 +335,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr Renderer(const Renderer& other) = delete;
+  constexpr Renderer(const Renderer& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr Renderer(Renderer&& other) noexcept
     : Renderer(other.release())
@@ -7795,9 +7797,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr GPURenderState(const GPURenderState& other) = delete;
+  constexpr GPURenderState(const GPURenderState& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr GPURenderState(GPURenderState&& other) noexcept
     : GPURenderState(other.release())

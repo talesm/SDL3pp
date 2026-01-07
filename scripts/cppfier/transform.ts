@@ -1269,7 +1269,7 @@ function expandTypes(
         type: "",
         constexpr: true,
         parameters: [{ name: "other", type: `const ${targetName} &` }],
-        hints: { delete: true },
+        hints: { default: true, noexcept: true },
         doc: ["Copy constructor"],
       },
       [`${targetName}#4`]: {
@@ -1309,8 +1309,9 @@ function expandTypes(
           ],
         };
       }
-    } else if (hasScoped) {
-      ctors[`${targetName}#3`].hints = { default: true };
+    } else if (!hasScoped) {
+      ctors[`${targetName}#3`].hints.changeAccess = "protected";
+      ctors[`${targetName}#4`].hints.changeAccess = "public";
     }
     if (hasRef) {
       insertTransform(

@@ -110,9 +110,11 @@ public:
   {
   }
 
+protected:
   /// Copy constructor
-  constexpr SharedObject(const SharedObject& other) = delete;
+  constexpr SharedObject(const SharedObject& other) noexcept = default;
 
+public:
   /// Move constructor
   constexpr SharedObject(SharedObject&& other) noexcept
     : SharedObject(other.release())
