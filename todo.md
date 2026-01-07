@@ -29,7 +29,7 @@ Next version
   several APIS;
   - [ ] AudioStreamLock for SDL_LockAudioStream;
   - [ ] CameraFrameLock for SDL_AcquireCameraFrame;
-  - [ ] JoystickApiLock for SDL_LockJoysticks;
+  - [x] JoystickApiLock for SDL_LockJoysticks;
   - [ ] MemoryBarrierLock for SDL_MemoryBarrierAcquire
   - [ ] PropertiesLock for SDL_LockProperties;
   - [ ] SurfaceLock for SDL_LockSurface;

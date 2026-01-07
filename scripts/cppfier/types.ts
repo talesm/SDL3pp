@@ -149,6 +149,7 @@ export interface ApiEntryTransform extends ApiEntryBase {
   enum?: boolean | string | EnumerationDefinition;
   wrapper?: boolean | WrapperDefinition;
   resource?: boolean | string | ResourceDefinition;
+  lock?: boolean | LockDefinition;
   before?: string;
   after?: string;
 }
@@ -222,8 +223,14 @@ export interface ResourceDefinition {
   ref?: boolean;
 }
 
-export interface ApiLock extends ApiEntryTransform {
-  kind?: "struct";
+export interface LockDefinition {
+  lockFunc?: string;
+  unlockFunc?: string;
+
+  /**
+   * If false, does not generate control variable
+   */
+  controlVar?: boolean;
 }
 
 export interface WrapperDefinition {

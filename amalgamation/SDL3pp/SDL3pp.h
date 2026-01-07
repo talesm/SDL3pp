@@ -70249,6 +70249,9 @@ using JoystickIDRaw = SDL_JoystickID;
 // Forward decl
 struct JoystickID;
 
+// Forward decl
+struct JoystickApiLock;
+
 /**
  * An enum of some common joystick types.
  *
@@ -71422,7 +71425,93 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  *
  * @since This function is available since SDL 3.2.0.
  */
+class JoystickApiLock
+{
+  bool m_lock;
+
+public:
+  /**
+   * Locking for atomic access to the joystick API.
+   *
+   * The SDL joystick functions are thread-safe, however you can lock the
+   * joysticks while processing to guarantee that the joystick list won't change
+   * and joystick and gamepad events will not be delivered.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickApiLock();
+
+  /**
+   * Locking for atomic access to the joystick API.
+   *
+   * The SDL joystick functions are thread-safe, however you can lock the
+   * joysticks while processing to guarantee that the joystick list won't change
+   * and joystick and gamepad events will not be delivered.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickApiLock(const JoystickApiLock& other) = delete;
+
+  /// Move constructor
+  constexpr JoystickApiLock(JoystickApiLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = false;
+  }
+
+  /**
+   * Unlocking for atomic access to the joystick API.
+   *
+   * @threadsafety This should be called from the same thread that called
+   *               LockJoysticks().
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  ~JoystickApiLock() { reset(); }
+
+  /// Assignment operator
+  JoystickApiLock& operator=(JoystickApiLock other)
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlocking for atomic access to the joystick API.
+   *
+   * @threadsafety This should be called from the same thread that called
+   *               LockJoysticks().
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void reset();
+};
+
+/**
+ * Locking for atomic access to the joystick API.
+ *
+ * The SDL joystick functions are thread-safe, however you can lock the
+ * joysticks while processing to guarantee that the joystick list won't change
+ * and joystick and gamepad events will not be delivered.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
 inline void LockJoysticks() { SDL_LockJoysticks(); }
+
+inline JoystickApiLock::JoystickApiLock()
+  : m_lock(true)
+{
+  LockJoysticks();
+}
 
 /**
  * Unlocking for atomic access to the joystick API.
@@ -71433,6 +71522,13 @@ inline void LockJoysticks() { SDL_LockJoysticks(); }
  * @since This function is available since SDL 3.2.0.
  */
 inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
+
+inline void JoystickApiLock::reset()
+{
+  if (!m_lock) return;
+  UnlockJoysticks();
+  m_lock = false;
+}
 
 /**
  * Return whether a joystick is currently connected.

@@ -18,6 +18,7 @@ import {
   EntryHint,
   FunctorSupport,
   ListContent,
+  LockDefinition,
   ParsedDoc,
   ParsedDocContent,
   QuickTransform,
@@ -479,6 +480,8 @@ function expandTypes(
       expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
     if (targetDelta.enum)
       expandEnumeration(sourceName, sourceEntry, targetName, targetDelta);
+    if (targetDelta.lock)
+      expandLock(sourceName, sourceEntry, targetName, targetDelta);
 
     if (!targetDelta.kind) {
       targetDelta.kind = "alias";
@@ -505,6 +508,7 @@ function expandTypes(
   }
 
   for (const [targetName, targetDelta] of Object.entries(file.transform)) {
+    if (sourceEntries[targetName]) continue;
     if (targetDelta.enum)
       expandEnumeration(
         targetName,
@@ -512,6 +516,8 @@ function expandTypes(
         targetName,
         targetDelta
       );
+    if (targetDelta.lock)
+      expandLock(targetName, undefined, targetName, targetDelta);
   }
 
   function tryDetectType(
@@ -2011,6 +2017,161 @@ function expandTypes(
     }
     delete transform.enum;
   }
+
+  function expandLock(
+    sourceName: string,
+    sourceEntry: ApiEntry,
+    targetName: string,
+    targetEntry: ApiEntryTransform
+  ) {
+    const lockDef = getLockDefinition(targetEntry, targetName);
+    delete targetEntry.lock;
+
+    context.includeAfter(
+      {
+        kind: "forward",
+        name: targetName,
+      },
+      "__begin"
+    );
+
+    if (!targetEntry.doc) addHints(targetEntry, { copyDoc: lockDef.lockFunc });
+
+    if (!targetEntry.kind) targetEntry.kind = "struct";
+    const ctors: Dict<ApiEntryTransform> = {};
+    if (lockDef.controlVar !== false) {
+      addHints(targetEntry, { private: true });
+      ctors["m_lock"] = {
+        kind: "var",
+        type: "bool",
+      };
+    }
+    const lockTargetName =
+      file.transform[lockDef.lockFunc]?.name ??
+      transformName(lockDef.lockFunc, context);
+    const unlockTargetName =
+      file.transform[lockDef.unlockFunc]?.name ??
+      transformName(lockDef.unlockFunc, context);
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}::${targetName}`,
+        type: "",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.lockFunc,
+          changeAccess: "public",
+          init: ["m_lock(true)"],
+          body: `${lockTargetName}();`,
+        },
+      },
+      lockTargetName
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.${targetName}`,
+        type: "",
+        parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        hints: {
+          delete: true,
+        },
+      },
+      lockTargetName
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.${targetName}`,
+        type: "",
+        doc: ["Move constructor"],
+        parameters: [{ type: `${targetName} &&`, name: "other" }],
+        constexpr: true,
+        hints: {
+          init: ["m_lock(other.m_lock)"],
+          body: `other.m_lock = false;`,
+          noexcept: true,
+        },
+      },
+      lockTargetName
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.~${targetName}`,
+        type: "",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.unlockFunc,
+          body: `reset();`,
+        },
+      },
+      lockTargetName
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator=`,
+        type: `${targetName} &`,
+        parameters: [{ type: targetName, name: "other" }],
+        static: false,
+        doc: ["Assignment operator"],
+        hints: {
+          body: `std::swap(m_lock, other.m_lock);return *this;`,
+        },
+      },
+      lockTargetName
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator bool`,
+        type: "",
+        constexpr: true,
+        immutable: true,
+        parameters: [],
+        doc: ["True if not locked."],
+        hints: {
+          body: `return bool(m_lock);`,
+        },
+      },
+      lockTargetName
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}::reset`,
+        type: sourceEntries[lockDef.unlockFunc]?.type ?? "void",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.unlockFunc,
+          body: `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`,
+        },
+      },
+      unlockTargetName
+    );
+
+    const subEntries = targetEntry.entries || {};
+    targetEntry.entries = { ...ctors, ...subEntries };
+  }
+}
+
+function getLockDefinition(
+  targetEntry: ApiEntryTransform,
+  sourceName: string
+): LockDefinition {
+  if (typeof targetEntry.lock === "object") {
+    return {
+      lockFunc: `SDL_Lock${sourceName}`,
+      unlockFunc: `SDL_Unlock${sourceName}`,
+      ...targetEntry.lock,
+    };
+  }
+  if (!targetEntry.lock) return undefined;
+  return {
+    lockFunc: `SDL_Lock${sourceName}`,
+    unlockFunc: `SDL_Unlock${sourceName}`,
+  };
 }
 
 function transformEntries(
@@ -2038,7 +2199,7 @@ function transformEntries(
     }
     if (sourceName)
       context.addName(sourceName, targetEntry.name?.replaceAll("::", "."));
-    insertEntryAndCheck(targetEntries, targetEntry, context, file);
+    insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
   }
 
   return targetEntries;
@@ -2058,7 +2219,7 @@ function transformEntries(
           (p) => typeof p === "string" || (p.type && p.name)
         );
       }
-      insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+      insertEntryAndCheck(targetEntries, linkedEntry, context, sourceEntries);
     }
   }
 }
@@ -2097,11 +2258,6 @@ function makeSortedEntryArray(
     }
     delete entryDelta.before;
     delete entryDelta.after;
-    if (entryDelta.hints?.copyDoc) {
-      const copyDoc = entryDelta.hints.copyDoc;
-      delete entryDelta.hints.copyDoc;
-      entryDelta.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
-    }
   }
 
   const sortedEntries: Dict<ApiEntry> = {};
@@ -2625,7 +2781,7 @@ function insertEntryAndCheck(
   entries: ApiEntries,
   entry: ApiEntry,
   context: ApiContext,
-  file: ApiFileTransform,
+  sourceEntries: ApiEntries,
   defaultName?: string
 ) {
   insertEntry(entries, entry, defaultName);
@@ -2637,6 +2793,12 @@ function insertEntryAndCheck(
     } else {
       context.types[entry.name] = entry as ApiType;
     }
+  }
+
+  if (!entry.doc && entry.hints?.copyDoc) {
+    const copyDoc = entry.hints.copyDoc;
+    delete entry.hints.copyDoc;
+    entry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
   }
 }
 
@@ -2668,6 +2830,7 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
         const nextEntry = entry.overload;
         prepareForTypeInsert(entry, targetName, typeName);
         insertCopyEntry(entry);
+        delete entry.hints?.changeAccess;
         entry = nextEntry;
       }
     }

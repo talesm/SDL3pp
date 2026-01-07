@@ -9,7 +9,7 @@
   *
   * SDL offers facilities for pixel management.
   *
-@@ -209,6 +209,13 @@
+@@ -212,6 +212,13 @@
  /**
   * Pixel type.
   *
@@ -23,7 +23,7 @@
   * @since This enum is available since SDL 3.2.0.
   */
  using PixelType = SDL_PixelType;
-@@ -239,6 +246,13 @@
+@@ -242,6 +249,13 @@
  
  constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2; ///< INDEX2
  
@@ -37,7 +37,7 @@
  /**
   * Bitmap pixel order, high bit -> low bit.
   *
-@@ -252,6 +266,13 @@
+@@ -255,6 +269,13 @@
  
  constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234; ///< 1234
  
@@ -51,7 +51,7 @@
  /**
   * Packed component order, high bit -> low bit.
   *
-@@ -277,6 +298,13 @@
+@@ -280,6 +301,13 @@
  
  constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA; ///< BGRA
  
@@ -65,7 +65,7 @@
  /**
   * Array component order, low byte -> high byte.
   *
-@@ -298,6 +326,13 @@
+@@ -301,6 +329,13 @@
  
  constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR; ///< ABGR
  
@@ -79,7 +79,7 @@
  /**
   * Packed component layout.
   *
-@@ -325,6 +360,13 @@
+@@ -328,6 +363,13 @@
  constexpr PackedLayout PACKEDLAYOUT_1010102 =
    SDL_PACKEDLAYOUT_1010102; ///< 1010102
  
@@ -93,7 +93,7 @@
  /**
   * Pixel format.
   *
-@@ -359,6 +401,11 @@
+@@ -362,6 +404,11 @@
   * on big-endian CPUs.
   *
   * @since This enum is available since SDL 3.2.0.
@@ -105,7 +105,7 @@
   */
  class PixelFormat
  {
-@@ -376,12 +423,12 @@
+@@ -379,12 +426,12 @@
    }
  
    /**
@@ -121,7 +121,7 @@
     * PACKEDLAYOUT_8888, 32, 4)
     * ```
     *
-@@ -403,7 +450,8 @@
+@@ -406,7 +453,8 @@
                          PackedLayout layout,
                          int bits,
                          int bytes)
@@ -131,7 +131,7 @@
    {
    }
  
-@@ -440,9 +488,9 @@
+@@ -443,9 +491,9 @@
                                Uint32 Amask);
  
    /**
@@ -143,7 +143,7 @@
     * specific tests, like PixelFormat.IsFourCC, instead.
     *
     * @returns the flags of `format`.
-@@ -454,11 +502,9 @@
+@@ -457,11 +505,9 @@
    constexpr Uint8 GetFlags() const;
  
    /**
@@ -157,7 +157,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -467,12 +513,12 @@
+@@ -470,12 +516,12 @@
    constexpr PixelType GetType() const;
  
    /**
@@ -172,7 +172,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -481,12 +527,12 @@
+@@ -484,12 +530,12 @@
    constexpr int GetOrder() const;
  
    /**
@@ -187,7 +187,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -495,26 +541,23 @@
+@@ -498,26 +544,23 @@
    constexpr PackedLayout GetLayout() const;
  
    /**
@@ -218,7 +218,7 @@
     *
     * Note that this macro double-evaluates its parameter, so do not use
     * expressions with side-effects here.
-@@ -522,21 +565,18 @@
+@@ -525,21 +568,18 @@
     * FourCC formats do their best here, but many of them don't have a meaningful
     * measurement of bytes per pixel.
     *
@@ -243,7 +243,7 @@
     *
     * @returns true if the format is indexed, false otherwise.
     *
-@@ -547,10 +587,7 @@
+@@ -550,10 +590,7 @@
    constexpr bool IsIndexed() const;
  
    /**
@@ -255,7 +255,7 @@
     *
     * @returns true if the format is packed, false otherwise.
     *
-@@ -561,10 +598,7 @@
+@@ -564,10 +601,7 @@
    constexpr bool IsPacked() const;
  
    /**
@@ -267,7 +267,7 @@
     *
     * @returns true if the format is an array, false otherwise.
     *
-@@ -575,10 +609,7 @@
+@@ -578,10 +612,7 @@
    constexpr bool IsArray() const;
  
    /**
@@ -279,7 +279,7 @@
     *
     * @returns true if the format is 10-bit, false otherwise.
     *
-@@ -589,10 +620,7 @@
+@@ -592,10 +623,7 @@
    constexpr bool Is10Bit() const;
  
    /**
@@ -291,7 +291,7 @@
     *
     * @returns true if the format is a floating point, false otherwise.
     *
-@@ -603,10 +631,7 @@
+@@ -606,10 +634,7 @@
    constexpr bool IsFloat() const;
  
    /**
@@ -303,7 +303,7 @@
     *
     * @returns true if the format has alpha, false otherwise.
     *
-@@ -617,13 +642,10 @@
+@@ -620,13 +645,10 @@
    constexpr bool IsAlpha() const;
  
    /**
@@ -318,7 +318,7 @@
     * @returns true if the format has alpha, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -673,8 +695,8 @@
+@@ -676,8 +698,8 @@
     * allocated), and hence should not be modified, especially the palette. Weird
     * errors such as `Blit combination not supported` may occur.
     *
@@ -329,7 +329,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -685,8 +707,64 @@
+@@ -688,8 +710,64 @@
    /// Same as GetDetails()
    operator const PixelFormatDetails&() const;
  
@@ -394,7 +394,7 @@
    Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
  };
  
-@@ -892,12 +970,14 @@
+@@ -895,12 +973,14 @@
  
  constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32; ///< XBGR32
  
@@ -411,7 +411,7 @@
   * DefinePixelFourCC('Y', 'V', '1', '2')
   * ```
   *
-@@ -949,9 +1029,9 @@
+@@ -952,9 +1032,9 @@
  }
  
  /**
@@ -423,7 +423,7 @@
   * specific tests, like PixelFormat.IsFourCC, instead.
   *
   * @param format an PixelFormat to check.
-@@ -985,7 +1065,7 @@
+@@ -988,7 +1068,7 @@
   */
  constexpr PixelType PixelFormatType(PixelFormatRaw format)
  {
@@ -432,7 +432,7 @@
  }
  
  constexpr PixelType PixelFormat::GetType() const
-@@ -1031,7 +1111,7 @@
+@@ -1034,7 +1114,7 @@
   */
  constexpr PackedLayout PixelFormatLayout(PixelFormatRaw format)
  {
@@ -441,7 +441,7 @@
  }
  
  constexpr PackedLayout PixelFormat::GetLayout() const
-@@ -1211,6 +1291,11 @@
+@@ -1214,6 +1294,11 @@
  }
  
  /**
@@ -453,7 +453,7 @@
   * A macro to determine if an PixelFormat has an alpha channel.
   *
   * Note that this macro double-evaluates its parameter, so do not use
-@@ -1273,6 +1358,13 @@
+@@ -1276,6 +1361,13 @@
  constexpr ColorType COLOR_TYPE_YCBCR =
    SDL_COLOR_TYPE_YCBCR; ///< COLOR_TYPE_YCBCR
  
@@ -467,7 +467,7 @@
  /**
   * Colorspace color range, as described by
   * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
-@@ -1292,6 +1384,13 @@
+@@ -1295,6 +1387,13 @@
  /// Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
  constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
  
@@ -481,7 +481,7 @@
  /**
   * Colorspace color primaries, as described by
   * https://www.itu.int/rec/T-REC-H.273-201612-S/en
-@@ -1345,6 +1444,13 @@
+@@ -1348,6 +1447,13 @@
  constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM =
    SDL_COLOR_PRIMARIES_CUSTOM; ///< COLOR_PRIMARIES_CUSTOM
  
@@ -495,7 +495,7 @@
  /**
   * Colorspace transfer characteristics.
   *
-@@ -1415,6 +1521,13 @@
+@@ -1418,6 +1524,13 @@
  constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
    SDL_TRANSFER_CHARACTERISTICS_CUSTOM; ///< TRANSFER_CHARACTERISTICS_CUSTOM
  
@@ -509,7 +509,7 @@
  /**
   * Colorspace matrix coefficients.
   *
-@@ -1474,6 +1587,13 @@
+@@ -1477,6 +1590,13 @@
  constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
    SDL_MATRIX_COEFFICIENTS_CUSTOM; ///< MATRIX_COEFFICIENTS_CUSTOM
  
@@ -523,7 +523,7 @@
  /**
   * Colorspace chroma sample location.
   *
-@@ -1505,6 +1625,13 @@
+@@ -1508,6 +1628,13 @@
   */
  constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  
@@ -537,7 +537,7 @@
  /**
   * Colorspace definitions.
   *
-@@ -1514,6 +1641,9 @@
+@@ -1517,6 +1644,9 @@
   *
   * @since This enum is available since SDL 3.2.0.
   *
@@ -547,7 +547,7 @@
   * @sa ColorPrimaries
   * @sa ColorRange
   * @sa ColorType
-@@ -1536,12 +1666,12 @@
+@@ -1539,12 +1669,12 @@
    }
  
    /**
@@ -563,7 +563,7 @@
     *                       COLOR_RANGE_FULL,
     *                       COLOR_PRIMARIES_BT709,
     *                       TRANSFER_CHARACTERISTICS_SRGB,
-@@ -1571,8 +1701,12 @@
+@@ -1574,8 +1704,12 @@
                         TransferCharacteristics transfer,
                         MatrixCoefficients matrix,
                         ChromaLocation chroma)
@@ -578,7 +578,7 @@
    {
    }
  
-@@ -1584,7 +1718,7 @@
+@@ -1587,7 +1721,7 @@
    constexpr operator ColorspaceRaw() const noexcept { return m_cspace; }
  
    /**
@@ -587,7 +587,7 @@
     *
     * @returns the ColorType for `cspace`.
     *
-@@ -1595,7 +1729,7 @@
+@@ -1598,7 +1732,7 @@
    constexpr ColorType GetType() const;
  
    /**
@@ -596,7 +596,7 @@
     *
     * @returns the ColorRange of `cspace`.
     *
-@@ -1606,7 +1740,7 @@
+@@ -1609,7 +1743,7 @@
    constexpr ColorRange GetRange() const;
  
    /**
@@ -605,7 +605,7 @@
     *
     * @returns the ChromaLocation of `cspace`.
     *
-@@ -1617,7 +1751,7 @@
+@@ -1620,7 +1754,7 @@
    constexpr ChromaLocation GetChroma() const;
  
    /**
@@ -614,7 +614,7 @@
     *
     * @returns the ColorPrimaries of `cspace`.
     *
-@@ -1628,7 +1762,7 @@
+@@ -1631,7 +1765,7 @@
    constexpr ColorPrimaries GetPrimaries() const;
  
    /**
@@ -623,7 +623,7 @@
     *
     * @returns the TransferCharacteristics of `cspace`.
     *
-@@ -1639,7 +1773,7 @@
+@@ -1642,7 +1776,7 @@
    constexpr TransferCharacteristics GetTransfer() const;
  
    /**
@@ -632,7 +632,7 @@
     *
     * @returns the MatrixCoefficients of `cspace`.
     *
-@@ -1650,11 +1784,7 @@
+@@ -1653,11 +1787,7 @@
    constexpr MatrixCoefficients GetMatrix() const;
  
    /**
@@ -645,7 +645,7 @@
     *
     * @returns true if BT601 or BT470BG, false otherwise.
     *
-@@ -1665,7 +1795,7 @@
+@@ -1668,7 +1798,7 @@
    constexpr bool IsMatrixBT601() const;
  
    /**
@@ -654,7 +654,7 @@
     *
     * @returns true if BT709, false otherwise.
     *
-@@ -1676,7 +1806,7 @@
+@@ -1679,7 +1809,7 @@
    constexpr bool IsMatrixBT709() const;
  
    /**
@@ -663,7 +663,7 @@
     *
     * @returns true if BT2020_NCL, false otherwise.
     *
-@@ -1687,7 +1817,7 @@
+@@ -1690,7 +1820,7 @@
    constexpr bool IsMatrixBT2020_NCL() const;
  
    /**
@@ -672,7 +672,7 @@
     *
     * @returns true if limited range, false otherwise.
     *
-@@ -1698,7 +1828,7 @@
+@@ -1701,7 +1831,7 @@
    constexpr bool IsLimitedRange() const;
  
    /**
@@ -681,7 +681,7 @@
     *
     * @returns true if full range, false otherwise.
     *
-@@ -1747,6 +1877,8 @@
+@@ -1750,6 +1880,8 @@
  /// The default colorspace for YUV surfaces if no colorspace is specified
  constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  
@@ -690,7 +690,7 @@
  /**
   * A macro for defining custom Colorspace formats.
   *
-@@ -1952,7 +2084,7 @@
+@@ -1955,7 +2087,7 @@
  }
  
  /**
@@ -699,7 +699,7 @@
   *
   * @param cspace an Colorspace to check.
   * @returns true if BT2020_NCL, false otherwise.
-@@ -2049,6 +2181,9 @@
+@@ -2052,6 +2184,9 @@
   * little-endian systems and PIXELFORMAT_RGBA8888 on big-endian systems).
   *
   * @since This struct is available since SDL 3.2.0.
@@ -709,7 +709,7 @@
   */
  struct Color : ColorRaw
  {
-@@ -2065,27 +2200,27 @@
+@@ -2068,27 +2203,27 @@
    /**
     * Constructs from its fields.
     *
@@ -746,7 +746,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetR(Uint8 newR) noexcept
-@@ -2095,16 +2230,17 @@
+@@ -2098,16 +2233,17 @@
    }
  
    /**
@@ -768,7 +768,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetG(Uint8 newG) noexcept
-@@ -2114,16 +2250,17 @@
+@@ -2117,16 +2253,17 @@
    }
  
    /**
@@ -790,7 +790,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetB(Uint8 newB) noexcept
-@@ -2133,16 +2270,17 @@
+@@ -2136,16 +2273,17 @@
    }
  
    /**
@@ -812,7 +812,7 @@
     * @returns Reference to self.
     */
    constexpr Color& SetA(Uint8 newA) noexcept
-@@ -2151,12 +2289,63 @@
+@@ -2154,12 +2292,63 @@
      return *this;
    }
  
@@ -879,7 +879,7 @@
  };
  
  /**
-@@ -2164,6 +2353,10 @@
+@@ -2167,6 +2356,10 @@
   * color which uses the PIXELFORMAT_RGBA128_FLOAT format
   *
   * @since This struct is available since SDL 3.2.0.
@@ -890,7 +890,7 @@
   */
  struct FColor : FColorRaw
  {
-@@ -2185,22 +2378,22 @@
+@@ -2188,22 +2381,22 @@
     * @param b the value for b.
     * @param a the value for a.
     */
@@ -918,7 +918,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetR(float newR) noexcept
-@@ -2210,16 +2403,17 @@
+@@ -2213,16 +2406,17 @@
    }
  
    /**
@@ -940,7 +940,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetG(float newG) noexcept
-@@ -2229,16 +2423,17 @@
+@@ -2232,16 +2426,17 @@
    }
  
    /**
@@ -962,7 +962,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetB(float newB) noexcept
-@@ -2248,16 +2443,17 @@
+@@ -2251,16 +2446,17 @@
    }
  
    /**
@@ -984,7 +984,7 @@
     * @returns Reference to self.
     */
    constexpr FColor& SetA(float newA) noexcept
-@@ -2401,16 +2597,16 @@
+@@ -2404,16 +2600,16 @@
     */
    void Destroy();
  
@@ -1007,7 +1007,7 @@
    }
  
    /**
-@@ -2418,13 +2614,14 @@
+@@ -2421,13 +2617,14 @@
     *
     * @param colors an array of Color structures to copy into the palette.
     * @param firstcolor the index of the first palette entry to modify.
@@ -1023,7 +1023,7 @@
     */
    void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
  };
-@@ -2532,8 +2729,8 @@
+@@ -2553,8 +2750,8 @@
   * errors such as `Blit combination not supported` may occur.
   *
   * @param format one of the PixelFormat values.
@@ -1034,7 +1034,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2541,7 +2738,7 @@
+@@ -2562,7 +2759,7 @@
   */
  inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
  {
@@ -1043,7 +1043,7 @@
  }
  
  inline const PixelFormatDetails& PixelFormat::GetDetails() const
-@@ -2579,7 +2776,6 @@
+@@ -2600,7 +2797,6 @@
   * @param palette the Palette structure to modify.
   * @param colors an array of Color structures to copy into the palette.
   * @param firstcolor the index of the first palette entry to modify.
@@ -1051,7 +1051,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2591,7 +2787,8 @@
+@@ -2612,7 +2808,8 @@
                               SpanRef<const ColorRaw> colors,
                               int firstcolor = 0)
  {
@@ -1061,7 +1061,7 @@
  }
  
  inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-@@ -2659,6 +2856,43 @@
+@@ -2680,6 +2877,43 @@
    return SDL_MapRGB(&format, palette, r, g, b);
  }
  
@@ -1105,7 +1105,7 @@
  inline Uint32 MapRGBA(const PixelFormatDetails& format,
                        Uint8 r,
                        Uint8 g,
-@@ -2666,7 +2900,7 @@
+@@ -2687,7 +2921,7 @@
                        Uint8 a,
                        PaletteConstParam palette = {})
  {
@@ -1114,7 +1114,7 @@
  }
  
  /**
-@@ -2688,11 +2922,8 @@
+@@ -2709,11 +2943,8 @@
   * for an 8-bpp format).
   *
   * @param format a pointer to PixelFormatDetails describing the pixel format.
@@ -1127,7 +1127,7 @@
   * @returns a pixel value.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2709,18 +2940,18 @@
+@@ -2730,18 +2961,18 @@
                         ColorRaw c,
                         PaletteConstParam palette = {})
  {
@@ -1149,7 +1149,7 @@
  }
  
  /**
-@@ -2798,23 +3029,52 @@
+@@ -2819,23 +3050,52 @@
    SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
  }
  

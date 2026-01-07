@@ -2013,6 +2013,13 @@ const transform = {
           type: "OwnArray<JoystickID>",
           parameters: [],
         },
+        "JoystickApiLock": {
+          before: "SDL_LockJoysticks",
+          lock: {
+            lockFunc: "SDL_LockJoysticks",
+            unlockFunc: "SDL_UnlockJoysticks",
+          }
+        },
       },
     },
     "SDL_haptic.h": {
