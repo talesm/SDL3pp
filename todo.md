@@ -30,7 +30,6 @@ Next version
   - [ ] AudioStreamLock for SDL_LockAudioStream;
   - [ ] CameraFrameLock for SDL_AcquireCameraFrame;
   - [x] JoystickApiLock for SDL_LockJoysticks;
-  - [ ] MemoryBarrierLock for SDL_MemoryBarrierAcquire
   - [ ] PropertiesLock for SDL_LockProperties;
   - [ ] SurfaceLock for SDL_LockSurface;
   - [ ] TextureLock for SDL_LockTexture;
