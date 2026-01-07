@@ -56,6 +56,7 @@ jobs:
           -DSDL3PP_BUNDLE_SHALLOW=ON
           -DSDL3PP_BUILD_TESTING=ON
           -DSDL_UNIX_CONSOLE_BUILD=ON
+          -DSDL3PP_ENABLE_TTF=OFF
           -S ${{ github.workspace }}
 
       - name: Build
