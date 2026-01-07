@@ -2125,7 +2125,20 @@ function expandTypes(
         kind: "function",
         name: `${targetName}.operator=`,
         type: `${targetName} &`,
-        parameters: [{ type: targetName, name: "other" }],
+        parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        static: false,
+        hints: {
+          delete: true,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator=`,
+        type: `${targetName} &`,
+        parameters: [{ type: `${targetName} &&`, name: "other" }],
         static: false,
         doc: ["Assignment operator"],
         hints: {

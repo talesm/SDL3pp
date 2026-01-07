@@ -36425,8 +36425,10 @@ public:
    */
   ~AudioStreamLock() { reset(); }
 
+  AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
+
   /// Assignment operator
-  AudioStreamLock& operator=(AudioStreamLock other)
+  AudioStreamLock& operator=(AudioStreamLock&& other)
   {
     std::swap(m_lock, other.m_lock);
     return *this;
@@ -71621,8 +71623,10 @@ public:
    */
   ~JoystickApiLock() { reset(); }
 
+  JoystickApiLock& operator=(const JoystickApiLock& other) = delete;
+
   /// Assignment operator
-  JoystickApiLock& operator=(JoystickApiLock other)
+  JoystickApiLock& operator=(JoystickApiLock&& other)
   {
     std::swap(m_lock, other.m_lock);
     return *this;

@@ -1319,8 +1319,10 @@ public:
    */
   ~JoystickApiLock() { reset(); }
 
+  JoystickApiLock& operator=(const JoystickApiLock& other) = delete;
+
   /// Assignment operator
-  JoystickApiLock& operator=(JoystickApiLock other)
+  JoystickApiLock& operator=(JoystickApiLock&& other)
   {
     std::swap(m_lock, other.m_lock);
     return *this;
