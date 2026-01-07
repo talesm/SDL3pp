@@ -97,6 +97,9 @@ struct Palette;
 /// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
+// Forward decl
+struct PaletteRef;
+
 /// Safely wrap Palette for non owning parameters
 struct PaletteParam
 {
@@ -2624,6 +2627,24 @@ public:
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/// Safe reference for Palette.
+struct PaletteRef : Palette
+{
+  using Palette::Palette;
+
+  /**
+   * Constructs from PaletteRaw.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This borrows the ownership, increments the refcount!
+   */
+  PaletteRef(PaletteRaw resource) noexcept
+    : Palette(Borrow(resource))
+  {
+  }
 };
 
 /**

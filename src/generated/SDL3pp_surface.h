@@ -44,6 +44,9 @@ struct Surface;
 /// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
+// Forward decl
+struct SurfaceRef;
+
 /// Safely wrap Surface for non owning parameters
 struct SurfaceParam
 {
@@ -1939,6 +1942,24 @@ public:
   constexpr PixelFormat GetFormat() const;
 
   constexpr void* GetPixels() const;
+};
+
+/// Safe reference for Surface.
+struct SurfaceRef : Surface
+{
+  using Surface::Surface;
+
+  /**
+   * Constructs from SurfaceRaw.
+   *
+   * @param resource a SurfaceRaw.
+   *
+   * This borrows the ownership, increments the refcount!
+   */
+  SurfaceRef(SurfaceRaw resource) noexcept
+    : Surface(Borrow(resource))
+  {
+  }
 };
 
 /**

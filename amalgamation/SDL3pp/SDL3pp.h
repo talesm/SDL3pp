@@ -8916,6 +8916,9 @@ struct Palette;
 /// Alias to raw representation for Palette.
 using PaletteRaw = SDL_Palette*;
 
+// Forward decl
+struct PaletteRef;
+
 /// Safely wrap Palette for non owning parameters
 struct PaletteParam
 {
@@ -11443,6 +11446,24 @@ public:
    * @sa Palette.Palette
    */
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
+};
+
+/// Safe reference for Palette.
+struct PaletteRef : Palette
+{
+  using Palette::Palette;
+
+  /**
+   * Constructs from PaletteRaw.
+   *
+   * @param resource a PaletteRaw.
+   *
+   * This borrows the ownership, increments the refcount!
+   */
+  PaletteRef(PaletteRaw resource) noexcept
+    : Palette(Borrow(resource))
+  {
+  }
 };
 
 /**
@@ -42125,6 +42146,9 @@ struct Surface;
 /// Alias to raw representation for Surface.
 using SurfaceRaw = SDL_Surface*;
 
+// Forward decl
+struct SurfaceRef;
+
 /// Safely wrap Surface for non owning parameters
 struct SurfaceParam
 {
@@ -44067,6 +44091,24 @@ public:
 
   /// Get the pixels.
   constexpr void* GetPixels() const;
+};
+
+/// Safe reference for Surface.
+struct SurfaceRef : Surface
+{
+  using Surface::Surface;
+
+  /**
+   * Constructs from SurfaceRaw.
+   *
+   * @param resource a SurfaceRaw.
+   *
+   * This borrows the ownership, increments the refcount!
+   */
+  SurfaceRef(SurfaceRaw resource) noexcept
+    : Surface(Borrow(resource))
+  {
+  }
 };
 
 /**
@@ -80905,6 +80947,9 @@ struct Texture;
 /// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
+// Forward decl
+struct TextureRef;
+
 /// Safely wrap Texture for non owning parameters
 struct TextureParam
 {
@@ -84339,6 +84384,24 @@ public:
    * @sa Texture.Lock
    */
   void Unlock();
+};
+
+/// Safe reference for Texture.
+struct TextureRef : Texture
+{
+  using Texture::Texture;
+
+  /**
+   * Constructs from TextureRaw.
+   *
+   * @param resource a TextureRaw.
+   *
+   * This borrows the ownership, increments the refcount!
+   */
+  TextureRef(TextureRaw resource) noexcept
+    : Texture(Borrow(resource))
+  {
+  }
 };
 
 /**

@@ -82,6 +82,9 @@ struct Texture;
 /// Alias to raw representation for Texture.
 using TextureRaw = SDL_Texture*;
 
+// Forward decl
+struct TextureRef;
+
 /// Safely wrap Texture for non owning parameters
 struct TextureParam
 {
@@ -3516,6 +3519,24 @@ public:
    * @sa Texture.Lock
    */
   void Unlock();
+};
+
+/// Safe reference for Texture.
+struct TextureRef : Texture
+{
+  using Texture::Texture;
+
+  /**
+   * Constructs from TextureRaw.
+   *
+   * @param resource a TextureRaw.
+   *
+   * This borrows the ownership, increments the refcount!
+   */
+  TextureRef(TextureRaw resource) noexcept
+    : Texture(Borrow(resource))
+  {
+  }
 };
 
 /**

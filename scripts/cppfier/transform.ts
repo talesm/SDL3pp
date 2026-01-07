@@ -1060,7 +1060,7 @@ function expandTypes(
     if (!targetEntry.kind) targetEntry.kind = "struct";
     const hasShared = !!resourceEntry.shared;
     const hasScoped = resourceEntry.owning === false;
-    const hasRef = resourceEntry.ref ?? !(hasShared || hasScoped);
+    const hasRef = resourceEntry.ref ?? !hasScoped;
     const refName = `${targetName}Ref`;
     const scopedName = `${targetName}Scoped`;
 
@@ -1247,10 +1247,10 @@ function expandTypes(
       );
     }
 
-    if (hasRef) {
-      context.addReturnType(pointerType, refName);
-    } else if (hasShared || hasScoped) {
+    if (hasShared || hasScoped) {
       context.addReturnType(pointerType, targetName);
+    } else if (hasRef) {
+      context.addReturnType(pointerType, refName);
     } else {
       context.addReturnType(pointerType, rawName);
     }
@@ -1340,7 +1340,7 @@ function expandTypes(
       ctors[`${targetName}#3`].hints.changeAccess = "protected";
       ctors[`${targetName}#4`].hints.changeAccess = "public";
     }
-    if (hasRef) {
+    if (hasRef && !hasShared) {
       insertTransform(
         ctors,
         {
@@ -1648,7 +1648,39 @@ function expandTypes(
 
     const derivedEntries: ApiEntryTransform[] = [];
 
-    if (hasRef)
+    if (hasShared && hasRef) {
+      derivedEntries.push({
+        kind: "struct",
+        name: refName,
+        type: targetName,
+        doc: [`Safe reference for ${targetName}.`],
+        entries: {
+          [`${targetName}::${targetName}`]: "alias",
+          [refName]: {
+            kind: "function",
+            type: "",
+            parameters: [
+              {
+                type: rawName,
+                name: "resource",
+              },
+            ],
+            hints: {
+              init: [`${targetName}(Borrow(resource))`],
+              noexcept: true,
+            },
+            doc: [
+              `Constructs from ${rawName}.`,
+              {
+                tag: "@param resource",
+                content: `a ${rawName}.`,
+              },
+              "This borrows the ownership, increments the refcount!",
+            ],
+          },
+        },
+      });
+    } else if (hasRef) {
       derivedEntries.push({
         kind: "struct",
         name: refName,
@@ -1716,6 +1748,7 @@ function expandTypes(
           },
         },
       });
+    }
     if (hasScoped)
       derivedEntries.push({
         kind: "struct",
