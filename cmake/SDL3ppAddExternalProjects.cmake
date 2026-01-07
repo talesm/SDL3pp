@@ -17,7 +17,7 @@ set(SDL_TEST_LIBRARY OFF) # passed to SDL3External
 set(SDL_X11_XTEST OFF)  # passed to SDL3External
 
 FetchContent_Declare(SDL3External
-  GIT_REPOSITORY git@github.com:libsdl-org/SDL.git
+  GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
   GIT_TAG ${SDL3_TAG}
   GIT_SUBMODULES_RECURSE ON
   GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
@@ -35,7 +35,7 @@ if (SDL3PP_ENABLE_IMAGE)
     set(SDL3IMAGE_TAG release-3.2.6)
   endif ()
   FetchContent_Declare(SDL3ImageExternal
-    GIT_REPOSITORY git@github.com:libsdl-org/SDL_image.git
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
     GIT_TAG ${SDL3IMAGE_TAG}
     GIT_SUBMODULES_RECURSE ON
     GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
@@ -53,7 +53,7 @@ if (SDL3PP_ENABLE_TTF)
     set(SDL3TTF_TAG release-3.2.2)
   endif ()
   FetchContent_Declare(SDL3TTFExternal
-    GIT_REPOSITORY git@github.com:libsdl-org/SDL_ttf.git
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
     GIT_TAG ${SDL3TTF_TAG}
     GIT_SUBMODULES_RECURSE ON
     GIT_SHALLOW ${SDL3PP_BUNDLE_SHALLOW}
