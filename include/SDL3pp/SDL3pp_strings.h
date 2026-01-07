@@ -175,7 +175,7 @@ struct StringResult : OwnArray<char>
   }
 
   /// Convert to StringParam
-  constexpr operator StringParam() const { return std::string_view{*this}; }
+  operator StringParam() const { return std::string_view{*this}; }
 
   /// Convert to std::string_view
   constexpr operator std::string_view() const
