@@ -151,7 +151,6 @@ using StringParam = const char*;
  */
 struct StringResult : OwnArray<char>
 {
-
   /// Use parent ctors
   using OwnArray::OwnArray;
 
@@ -162,7 +161,7 @@ struct StringResult : OwnArray<char>
   }
 
   /// Move ctor
-  constexpr StringResult(StringResult&& other)
+  constexpr StringResult(StringResult&& other) noexcept
     : OwnArray(other.release(), other.size())
   {
   }
@@ -209,15 +208,17 @@ struct StringResult : OwnArray<char>
   }
 
   /// Append string.
-  StringResult operator+(std::string_view other) const
+  friend inline StringResult operator+(StringResult lhs, std::string_view rhs)
   {
-    StringResult t{*this};
-    t += other;
-    return t;
+    lhs += rhs;
+    return lhs;
   }
 
   /// Append char.
-  StringResult operator+(char ch) { return (*this) + std::string_view{&ch, 1}; }
+  friend inline StringResult operator+(const StringResult& lhs, char rhs)
+  {
+    return lhs + std::string_view{&rhs, 1};
+  }
 
   /// Convert to string.
   std::string str() const { return std::string{data(), size()}; }
@@ -350,7 +351,7 @@ public:
 
   /// Just to have better error message
   template<class T, size_t N>
-  constexpr TargetBytes(std::span<const T, N> span)
+  constexpr TargetBytes(std::span<const T, N>)
   {
     static_assert(false, "Non-const type is required");
   }
