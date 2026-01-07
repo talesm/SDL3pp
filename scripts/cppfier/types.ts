@@ -233,6 +233,8 @@ export interface LockDefinition {
   controlVar?: boolean;
 
   controlType?: string;
+
+  paramType?: string;
 }
 
 export interface WrapperDefinition {

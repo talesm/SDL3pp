@@ -506,7 +506,6 @@ function expandTypes(
   }
 
   for (const [targetName, targetDelta] of Object.entries(file.transform)) {
-    if (sourceEntries[targetName]) continue;
     if (targetDelta.enum)
       expandEnumeration(
         targetName,
@@ -1098,11 +1097,16 @@ function expandTypes(
       const lockEntry: ApiEntryTransform = {
         lock: hasLock,
       };
-      hasLock.controlType = hasRef ? refName : targetName;
       if (currDef) {
         combineObject(lockEntry, currDef ?? {});
       } else {
         lockEntry.after = hasRef ? refName : targetName;
+      }
+      if (lockEntry.type === undefined) {
+        hasLock.controlType = lockEntry.type = targetName;
+        hasLock.paramType = paramType;
+      } else {
+        hasLock.controlType = hasRef ? refName : targetName;
       }
       file.transform[lockName] = lockEntry;
     }
@@ -2044,13 +2048,16 @@ function expandTypes(
       "__begin"
     );
 
+    addHints(targetEntry, { private: true });
     if (!targetEntry.doc) addHints(targetEntry, { copyDoc: lockDef.lockFunc });
     if (!targetEntry.kind) targetEntry.kind = "struct";
     const controlType = lockDef.controlType;
+    const paramType = lockDef.paramType ?? controlType;
 
     const ctors: Dict<ApiEntryTransform> = {};
-    if (lockDef.controlVar !== false) {
-      addHints(targetEntry, { private: true });
+    const inheritResource = controlType && controlType === targetEntry.type;
+    const controlVar = lockDef.controlVar !== false && !inheritResource;
+    if (controlVar) {
       ctors["m_lock"] = {
         kind: "var",
         type: controlType ?? "bool",
@@ -2067,14 +2074,18 @@ function expandTypes(
         kind: "function",
         name: `${targetName}::${targetName}`,
         type: "",
-        parameters: controlType
-          ? [{ type: controlType, name: "resource" }]
-          : [],
+        parameters: paramType ? [{ type: paramType, name: "resource" }] : [],
         hints: {
           copyDoc: lockDef.lockFunc,
           changeAccess: "public",
-          init: [`m_lock(${controlType ? "std::move(resource)" : "true"})`],
-          body: `${lockTargetName}(${controlType ? "m_lock" : ""});`,
+          init: [
+            inheritResource
+              ? `${controlType}(resource.value)`
+              : `m_lock(${controlType ? "std::move(resource)" : "true"})`,
+          ],
+          body: inheritResource
+            ? ""
+            : `${lockTargetName}(${controlType ? "m_lock" : ""});`,
         },
       },
       lockDef.lockFunc
@@ -2100,6 +2111,7 @@ function expandTypes(
         parameters: [{ type: `${targetName} &&`, name: "other" }],
         constexpr: true,
         hints: {
+          default: inheritResource,
           init: ["m_lock(other.m_lock)"],
           body: `other.m_lock = {};`,
           noexcept: true,
@@ -2142,26 +2154,34 @@ function expandTypes(
         static: false,
         doc: ["Assignment operator"],
         hints: {
+          default: inheritResource,
           body: `std::swap(m_lock, other.m_lock);return *this;`,
         },
       },
       lockDef.lockFunc
     );
-    context.includeAfter(
-      {
-        kind: "function",
-        name: `${targetName}.operator bool`,
-        type: "",
-        constexpr: true,
-        immutable: true,
-        parameters: [],
-        doc: ["True if not locked."],
-        hints: {
-          body: `return bool(m_lock);`,
+    if (!inheritResource)
+      context.includeAfter(
+        {
+          kind: "function",
+          name: `${targetName}.operator bool`,
+          type: "",
+          constexpr: true,
+          immutable: true,
+          parameters: [],
+          doc: ["True if not locked."],
+          hints: {
+            body: `return bool(m_lock);`,
+          },
         },
-      },
-      lockDef.lockFunc
-    );
+        lockDef.lockFunc
+      );
+
+    const resetBody = inheritResource
+      ? `if (!*this) return;\n${unlockTargetName}(release());`
+      : controlType
+      ? `if (!m_lock) return;\n${unlockTargetName}(m_lock);\nm_lock = {};`
+      : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`;
     context.includeAfter(
       {
         kind: "function",
@@ -2170,13 +2190,25 @@ function expandTypes(
         parameters: [],
         hints: {
           copyDoc: lockDef.unlockFunc,
-          body: controlType
-            ? `if (!m_lock) return;\n${unlockTargetName}(m_lock);\nm_lock = {};`
-            : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`,
+          body: resetBody,
         },
       },
       lockDef.unlockFunc
     );
+    if (!inheritResource)
+      context.includeAfter(
+        {
+          kind: "function",
+          name: `${targetName}.release`,
+          type: "void",
+          parameters: [],
+          doc: [`Releases the lock without unlocking.`],
+          hints: {
+            body: controlType ? `m_lock.release();` : `m_lock = false;`,
+          },
+        },
+        lockDef.unlockFunc
+      );
 
     const subEntries = targetEntry.entries || {};
     targetEntry.entries = { ...ctors, ...subEntries };

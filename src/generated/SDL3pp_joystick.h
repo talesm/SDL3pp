@@ -1340,6 +1340,9 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void reset();
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock = false; }
 };
 
 /**

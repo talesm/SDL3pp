@@ -36339,10 +36339,8 @@ struct AudioStreamRef : AudioStream
  *
  * @sa AudioStream.Lock
  */
-class AudioStreamLock
+class AudioStreamLock : public AudioStream
 {
-  AudioStreamRef m_lock;
-
 public:
   /**
    * Lock an audio stream for serialized access.
@@ -36370,7 +36368,7 @@ public:
    *
    * @sa AudioStream.Unlock
    */
-  AudioStreamLock(AudioStreamRef resource);
+  AudioStreamLock(AudioStreamParam resource);
 
   /**
    * Lock an audio stream for serialized access.
@@ -36401,11 +36399,7 @@ public:
   AudioStreamLock(const AudioStreamLock& other) = delete;
 
   /// Move constructor
-  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
-    : m_lock(other.m_lock)
-  {
-    other.m_lock = {};
-  }
+  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept = default;
 
   /**
    * Unlock an audio stream for serialized access.
@@ -36428,14 +36422,7 @@ public:
   AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
 
   /// Assignment operator
-  AudioStreamLock& operator=(AudioStreamLock&& other)
-  {
-    std::swap(m_lock, other.m_lock);
-    return *this;
-  }
-
-  /// True if not locked.
-  constexpr operator bool() const { return bool(m_lock); }
+  AudioStreamLock& operator=(AudioStreamLock&& other) = default;
 
   /**
    * Unlock an audio stream for serialized access.
@@ -38142,10 +38129,9 @@ inline void LockAudioStream(AudioStreamParam stream)
 
 inline void AudioStream::Lock() { SDL::LockAudioStream(m_resource); }
 
-inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
-  : m_lock(std::move(resource))
+inline AudioStreamLock::AudioStreamLock(AudioStreamParam resource)
+  : AudioStream(resource.value)
 {
-  LockAudioStream(m_lock);
 }
 
 /**
@@ -38172,9 +38158,8 @@ inline void AudioStream::Unlock() { SDL::UnlockAudioStream(m_resource); }
 
 inline void AudioStreamLock::reset()
 {
-  if (!m_lock) return;
-  UnlockAudioStream(m_lock);
-  m_lock = {};
+  if (!*this) return;
+  UnlockAudioStream(release());
 }
 
 /**
@@ -71644,6 +71629,9 @@ public:
    * @since This function is available since SDL 3.2.0.
    */
   void reset();
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock = false; }
 };
 
 /**
