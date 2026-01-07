@@ -63,6 +63,7 @@ jobs:
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DSDL3PP_FORCE_BUNDLED=ON
+          -DSDL3PP_BUNDLE_SHALLOW=ON
           -DSDL3PP_BUILD_TESTING=ON
           -S ${{ github.workspace }}
 
