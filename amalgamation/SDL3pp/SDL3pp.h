@@ -19376,9 +19376,9 @@ public:
   constexpr auto operator<=>(const IConv& other) const noexcept = default;
 
   /// Converts to bool
-  constexpr explicit operator bool() const noexcept
+  explicit operator bool() const noexcept
   {
-    return size_t(m_resource) != SDL_ICONV_ERROR;
+    return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
   }
 
   /// Converts to IConvParam
