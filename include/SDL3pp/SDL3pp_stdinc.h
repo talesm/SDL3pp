@@ -5952,7 +5952,7 @@ class IConv
 public:
   /// Default ctor
   constexpr IConv(std::nullptr_t = nullptr) noexcept
-    : m_resource(IConvRaw(SDL_ICONV_ERROR))
+    : m_resource(reinterpret_cast<IConvRaw>(SDL_ICONV_ERROR))
   {
   }
 
@@ -6032,7 +6032,7 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept
   {
-    return m_resource != IConvRaw(SDL_ICONV_ERROR);
+    return size_t(m_resource) != SDL_ICONV_ERROR;
   }
 
   /// Converts to IConvParam

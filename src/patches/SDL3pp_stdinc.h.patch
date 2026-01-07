@@ -966,7 +966,7 @@
    /// Default ctor
    constexpr IConv(std::nullptr_t = nullptr) noexcept
 -    : m_resource(0)
-+    : m_resource(IConvRaw(SDL_ICONV_ERROR))
++    : m_resource(reinterpret_cast<IConvRaw>(SDL_ICONV_ERROR))
    {
    }
  
@@ -987,7 +987,7 @@
 -  constexpr explicit operator bool() const noexcept { return !!m_resource; }
 +  constexpr explicit operator bool() const noexcept
 +  {
-+    return m_resource != IConvRaw(SDL_ICONV_ERROR);
++    return size_t(m_resource) != SDL_ICONV_ERROR;
 +  }
  
    /// Converts to IConvParam
