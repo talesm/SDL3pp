@@ -19,7 +19,18 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1346,26 +1345,26 @@
+@@ -815,9 +814,7 @@
+    *
+    * @param count a pointer filled in with the number of bindings returned.
+    * @returns a nullptr terminated array of pointers to bindings or nullptr on
+-   *          failure; call GetError() for more information. This is a single
+-   *          allocation that should be freed with free() when it is no longer
+-   *          needed.
++   *          failure; call GetError() for more information.
+    *
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -1346,26 +1343,26 @@
  /**
   * Get the current gamepad mappings.
   *
@@ -54,7 +65,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1376,7 +1375,7 @@
+@@ -1376,7 +1373,7 @@
   */
  inline StringResult GetGamepadMappingForGUID(GUID guid)
  {
@@ -63,7 +74,7 @@
  }
  
  /**
-@@ -1386,8 +1385,7 @@
+@@ -1386,8 +1383,7 @@
   *
   * @param gamepad the gamepad you want to get the current mapping for.
   * @returns a string that has the gamepad's mapping or nullptr if no mapping is
@@ -73,7 +84,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1400,7 +1398,7 @@
+@@ -1400,7 +1396,7 @@
   */
  inline StringResult GetGamepadMapping(GamepadParam gamepad)
  {
@@ -82,7 +93,7 @@
  }
  
  inline StringResult Gamepad::GetMapping()
-@@ -1446,11 +1444,8 @@
+@@ -1446,11 +1442,8 @@
  /**
   * Get a list of currently connected gamepads.
   *
@@ -95,7 +106,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1459,7 +1454,12 @@
+@@ -1459,7 +1452,12 @@
   * @sa HasGamepad
   * @sa Gamepad.Gamepad
   */
@@ -109,7 +120,7 @@
  
  /**
   * Check if the given joystick is supported by the gamepad interface.
-@@ -1725,7 +1725,7 @@
+@@ -1725,7 +1723,7 @@
   */
  inline GamepadRef GetGamepadFromID(JoystickID instance_id)
  {
@@ -118,7 +129,7 @@
  }
  
  /**
-@@ -1743,7 +1743,7 @@
+@@ -1743,7 +1741,7 @@
   */
  inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  {
@@ -127,7 +138,7 @@
  }
  
  /**
-@@ -1774,7 +1774,7 @@
+@@ -1774,7 +1772,7 @@
   */
  inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
  {
@@ -136,7 +147,7 @@
  }
  
  inline PropertiesRef Gamepad::GetProperties()
-@@ -2179,7 +2179,7 @@
+@@ -2179,7 +2177,7 @@
   */
  inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
  {
@@ -145,3 +156,25 @@
  }
  
  inline JoystickRef Gamepad::GetJoystick()
+@@ -2229,9 +2227,7 @@
+  * @param gamepad a gamepad.
+  * @param count a pointer filled in with the number of bindings returned.
+  * @returns a nullptr terminated array of pointers to bindings or nullptr on
+- *          failure; call GetError() for more information. This is a single
+- *          allocation that should be freed with free() when it is no longer
+- *          needed.
++ *          failure; call GetError() for more information.
+  *
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -2239,7 +2235,9 @@
+  */
+ inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
+ {
+-  return SDL_GetGamepadBindings(gamepad);
++  int count;
++  auto r = (SDL_GetGamepadBindings(gamepad, &count));
++  return OwnArray<GamepadBinding*>(r, count);
+ }
+ 
+ inline OwnArray<GamepadBinding*> Gamepad::GetBindings()

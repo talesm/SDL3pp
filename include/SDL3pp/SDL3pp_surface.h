@@ -1733,7 +1733,7 @@ public:
   void BlitTiledWithScale(SurfaceParam src,
                           OptionalRef<const RectRaw> srcrect,
                           float scale,
-                          SDL_ScaleMode scaleMode,
+                          ScaleMode scaleMode,
                           OptionalRef<const RectRaw> dstrect);
 
   /**
@@ -1776,7 +1776,7 @@ public:
                  int bottom_height,
                  OptionalRef<const RectRaw> dstrect,
                  float scale = 1,
-                 SDL_ScaleMode scaleMode = SCALEMODE_NEAREST);
+                 ScaleMode scaleMode = SCALEMODE_NEAREST);
 
   /**
    * Map an RGB triple to an opaque pixel value for a surface.
@@ -4049,7 +4049,7 @@ inline void Surface::BlitTiled(SurfaceParam src,
 inline void BlitSurfaceTiledWithScale(SurfaceParam src,
                                       OptionalRef<const RectRaw> srcrect,
                                       float scale,
-                                      SDL_ScaleMode scaleMode,
+                                      ScaleMode scaleMode,
                                       SurfaceParam dst,
                                       OptionalRef<const RectRaw> dstrect)
 {
@@ -4060,7 +4060,7 @@ inline void BlitSurfaceTiledWithScale(SurfaceParam src,
 inline void Surface::BlitTiledWithScale(SurfaceParam src,
                                         OptionalRef<const RectRaw> srcrect,
                                         float scale,
-                                        SDL_ScaleMode scaleMode,
+                                        ScaleMode scaleMode,
                                         OptionalRef<const RectRaw> dstrect)
 {
   SDL::BlitSurfaceTiledWithScale(
@@ -4109,7 +4109,7 @@ inline void BlitSurface9Grid(SurfaceParam src,
                              SurfaceParam dst,
                              OptionalRef<const RectRaw> dstrect,
                              float scale = 1,
-                             SDL_ScaleMode scaleMode = SCALEMODE_NEAREST)
+                             ScaleMode scaleMode = SCALEMODE_NEAREST)
 {
   CheckError(SDL_BlitSurface9Grid(src,
                                   srcrect,
@@ -4131,7 +4131,7 @@ inline void Surface::Blit9Grid(SurfaceParam src,
                                int bottom_height,
                                OptionalRef<const RectRaw> dstrect,
                                float scale,
-                               SDL_ScaleMode scaleMode)
+                               ScaleMode scaleMode)
 {
   SDL::BlitSurface9Grid(src,
                         srcrect,

@@ -1478,7 +1478,7 @@
  inline void Surface::Blit9Grid(SurfaceParam src,
 @@ -4005,13 +4133,13 @@
                                 float scale,
-                                SDL_ScaleMode scaleMode)
+                                ScaleMode scaleMode)
  {
 -  SDL::BlitSurface9Grid(m_resource,
 -                        src,

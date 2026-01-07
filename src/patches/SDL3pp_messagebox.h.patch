@@ -72,23 +72,22 @@
     * @param buttons the value for buttons.
     * @param colorScheme the value for colorScheme.
     */
--  constexpr MessageBox(SDL_MessageBoxFlags flags,
--                       SDL_Window* window,
--                       const char* title,
--                       const char* message,
+-  constexpr MessageBox(MessageBoxFlags flags,
+-                       WindowParam window,
+-                       StringParam title,
+-                       StringParam message,
 -                       int numbuttons,
--                       const SDL_MessageBoxButtonData* buttons,
--                       const SDL_MessageBoxColorScheme* colorScheme) noexcept
+-                       const MessageBoxButtonData& buttons,
+-                       const MessageBoxColorScheme& colorScheme) noexcept
 +  constexpr MessageBox(
 +    MessageBoxFlags flags,
-+    WindowRef window,
++    WindowParam window,
 +    const char* title,
 +    const char* message,
 +    std::span<const MessageBoxButtonData> buttons,
 +    OptionalRef<const MessageBoxColorScheme> colorScheme) noexcept
      : MessageBoxRaw{flags,
--                    window,
-+                    window.get(),
+                     window,
                      title,
                      message,
 -                    numbuttons,
@@ -113,6 +112,24 @@
     * Get the flags.
     *
     * @returns current flags value.
+@@ -219,7 +228,7 @@
+    * @param newTitle the new title value.
+    * @returns Reference to self.
+    */
+-  constexpr MessageBox& SetTitle(StringParam newTitle) noexcept
++  constexpr MessageBox& SetTitle(const char* newTitle) noexcept
+   {
+     title = newTitle;
+     return *this;
+@@ -238,7 +247,7 @@
+    * @param newMessage the new message value.
+    * @returns Reference to self.
+    */
+-  constexpr MessageBox& SetMessage(StringParam newMessage) noexcept
++  constexpr MessageBox& SetMessage(const char* newMessage) noexcept
+   {
+     message = newMessage;
+     return *this;
 @@ -266,11 +275,12 @@
    /**
     * Get the buttons.
@@ -120,7 +137,7 @@
 -   * @returns current buttons value.
 +   * @returns current buttons.
     */
--  constexpr const SDL_MessageBoxButtonData* GetButtons() const noexcept
+-  constexpr const MessageBoxButtonData& GetButtons() const noexcept
 +  constexpr std::span<const MessageBoxButtonData> GetButtons() const noexcept
    {
 -    return buttons;
@@ -133,7 +150,7 @@
     * @returns Reference to self.
     */
    constexpr MessageBox& SetButtons(
--    const SDL_MessageBoxButtonData* newButtons) noexcept
+-    const MessageBoxButtonData& newButtons) noexcept
 +    std::span<const MessageBoxButtonData> newButtons) noexcept
    {
 -    buttons = newButtons;
@@ -151,7 +168,7 @@
     *
     * @returns current colorScheme value.
     */
--  constexpr const SDL_MessageBoxColorScheme* GetColorScheme() const noexcept
+-  constexpr const MessageBoxColorScheme& GetColorScheme() const noexcept
 +  constexpr const MessageBoxColorScheme* GetColorScheme() const noexcept
    {
      return colorScheme;
@@ -160,7 +177,7 @@
     * @returns Reference to self.
     */
    constexpr MessageBox& SetColorScheme(
--    const SDL_MessageBoxColorScheme* newColorScheme) noexcept
+-    const MessageBoxColorScheme& newColorScheme) noexcept
 +    OptionalRef<const MessageBoxColorScheme> newColorScheme) noexcept
    {
      colorScheme = newColorScheme;
