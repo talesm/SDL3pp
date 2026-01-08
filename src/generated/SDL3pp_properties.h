@@ -861,6 +861,9 @@ public:
    */
   void reset();
 
+  /// Get the reference to locked resource.
+  PropertiesRef get() { return m_lock; }
+
   /// Releases the lock without unlocking.
   void release() { m_lock.release(); }
 };
@@ -1006,7 +1009,11 @@ inline void UnlockProperties(PropertiesParam props)
   SDL_UnlockProperties(props);
 }
 
-inline void Properties::Unlock(PropertiesLock&& lock) { lock.reset(); }
+inline void Properties::Unlock(PropertiesLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
 
 inline void PropertiesLock::reset()
 {

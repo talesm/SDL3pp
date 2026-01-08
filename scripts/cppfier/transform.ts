@@ -480,7 +480,9 @@ function wrapLockFunctions(
   if (currUnlockDelta) {
     currUnlockDelta.type = "void";
     currUnlockDelta.parameters = [{}, { type: `${lockName} &&`, name: "lock" }];
-    addHints(currUnlockDelta, { body: `lock.reset();` });
+    addHints(currUnlockDelta, {
+      body: `SDL_assert_paranoid(lock.get()==*this);lock.reset();`,
+    });
   }
 }
 
@@ -2211,6 +2213,22 @@ function expandTypes(
       },
       lockDef.unlockFunc
     );
+
+    if (controlType) {
+      context.includeAfter(
+        {
+          kind: "function",
+          name: `${targetName}.get`,
+          type: controlType,
+          parameters: [],
+          doc: [`Get the reference to locked resource.`],
+          hints: {
+            body: "return m_lock;",
+          },
+        },
+        lockDef.unlockFunc
+      );
+    }
     context.includeAfter(
       {
         kind: "function",
@@ -2219,7 +2237,7 @@ function expandTypes(
         parameters: [],
         doc: [`Releases the lock without unlocking.`],
         hints: {
-          body: controlType ? `m_lock.release();` : `m_lock = false;`,
+          body: controlType ? "m_lock.release();" : `m_lock = false;`,
         },
       },
       lockDef.unlockFunc
