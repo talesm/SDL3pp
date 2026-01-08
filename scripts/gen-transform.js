@@ -6486,6 +6486,64 @@ const transform = {
         "SurfaceLock": {
           after: "SDL_Surface",
           entries: {
+            "ReadPixel": {
+              kind: "function",
+              immutable: true,
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { name: "r", type: "Uint8 *" },
+                { name: "g", type: "Uint8 *" },
+                { name: "b", type: "Uint8 *" },
+                { name: "a", type: "Uint8 *" },
+              ],
+              hints: {
+                body: "m_lock.ReadPixel(p, r, g, b, a);",
+                copyDoc: "SDL_ReadSurfacePixel",
+              },
+            },
+            "ReadPixel#2": {
+              kind: "function",
+              name: "ReadPixel",
+              immutable: true,
+              type: "Color",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+              ],
+              hints: {
+                body: "return m_lock.ReadPixel(p);",
+                copyDoc: "SDL_ReadSurfacePixel",
+              },
+            },
+            "ReadPixelFloat": {
+              kind: "function",
+              immutable: true,
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { name: "r", type: "float *" },
+                { name: "g", type: "float *" },
+                { name: "b", type: "float *" },
+                { name: "a", type: "float *" },
+              ],
+              hints: {
+                body: "m_lock.ReadPixelFloat(p, r, g, b, a);",
+                copyDoc: "SDL_ReadSurfacePixelFloat",
+              },
+            },
+            "ReadPixelFloat#2": {
+              kind: "function",
+              name: "ReadPixelFloat",
+              immutable: true,
+              type: "FColor",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+              ],
+              hints: {
+                body: "return m_lock.ReadPixelFloat(p);",
+                copyDoc: "SDL_ReadSurfacePixelFloat",
+              },
+            },
             "GetWidth": {
               kind: "function",
               immutable: true,
@@ -7131,6 +7189,54 @@ const transform = {
             { type: "SurfaceConstParam", name: "surface" },
             { type: "const PointRaw &", name: "p" },
           ]
+        },
+        "ReadSurfacePixel#3": {
+          kind: "function",
+          name: "ReadSurfacePixel",
+          type: "void",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { name: "r", type: "Uint8 *" },
+            { name: "g", type: "Uint8 *" },
+            { name: "b", type: "Uint8 *" },
+            { name: "a", type: "Uint8 *" },
+          ],
+          hints: { body: "lock.ReadPixel(p, r, g, b, a);" },
+        },
+        "ReadSurfacePixel#4": {
+          kind: "function",
+          name: "ReadSurfacePixel",
+          type: "Color",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+          ],
+          hints: { body: "return lock.ReadPixel(p);" },
+        },
+        "ReadSurfacePixelFloat#3": {
+          kind: "function",
+          name: "ReadSurfacePixelFloat",
+          type: "void",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { name: "r", type: "float *" },
+            { name: "g", type: "float *" },
+            { name: "b", type: "float *" },
+            { name: "a", type: "float *" },
+          ],
+          hints: { body: "lock.ReadPixelFloat(p, r, g, b, a);" },
+        },
+        "ReadSurfacePixelFloat#4": {
+          kind: "function",
+          name: "ReadSurfacePixelFloat",
+          type: "FColor",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+          ],
+          hints: { body: "return lock.ReadPixelFloat(p);" },
         },
         "GetSurfaceWidth": {
           after: "SDL_WriteSurfacePixelFloat",

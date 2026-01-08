@@ -2304,6 +2304,11 @@ function transformEntries(
         );
       }
     }
+    if (targetEntry.hints?.copyDoc) {
+      const copyDoc = targetEntry.hints.copyDoc;
+      delete targetEntry.hints.copyDoc;
+      targetEntry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+    }
     if (sourceName)
       context.addName(sourceName, targetEntry.name?.replaceAll("::", "."));
     insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
@@ -2902,10 +2907,26 @@ function insertEntryAndCheck(
     }
   }
 
+  checkCopyDoc(entry, sourceEntries, context);
+}
+
+function checkCopyDoc(
+  entry: ApiEntry,
+  sourceEntries: ApiEntries,
+  context: ApiContext
+) {
   if (!entry.doc && entry.hints?.copyDoc) {
     const copyDoc = entry.hints.copyDoc;
     delete entry.hints.copyDoc;
     entry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+  }
+  if (entry.entries) {
+    Object.values(entry.entries).forEach((subEntry) =>
+      checkCopyDoc(subEntry, sourceEntries, context)
+    );
+  }
+  if (entry.overload) {
+    checkCopyDoc(entry.overload, sourceEntries, context);
   }
 }
 

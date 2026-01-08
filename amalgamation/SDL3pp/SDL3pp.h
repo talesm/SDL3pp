@@ -44545,6 +44545,112 @@ public:
   /// True if not locked.
   constexpr operator bool() const { return bool(m_lock); }
 
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void ReadPixel(const PointRaw& p,
+                 Uint8* r,
+                 Uint8* g,
+                 Uint8* b,
+                 Uint8* a) const
+  {
+    m_lock.ReadPixel(p, r, g, b, a);
+  }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param surface the surface to read.
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Color ReadPixel(const PointRaw& p) const { return m_lock.ReadPixel(p); }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @param r a pointer filled in with the red channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param g a pointer filled in with the green channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param b a pointer filled in with the blue channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param a a pointer filled in with the alpha channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void ReadPixelFloat(const PointRaw& p,
+                      float* r,
+                      float* g,
+                      float* b,
+                      float* a) const
+  {
+    m_lock.ReadPixelFloat(p, r, g, b, a);
+  }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  FColor ReadPixelFloat(const PointRaw& p) const
+  {
+    return m_lock.ReadPixelFloat(p);
+  }
+
   /// Get the width in pixels.
   constexpr int GetWidth() const { return m_lock.GetWidth(); }
 
@@ -46903,6 +47009,66 @@ inline Color ReadSurfacePixel(SurfaceConstParam surface, const PointRaw& p)
   return c;
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like GetRGBA, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void ReadSurfacePixel(const SurfaceLock& lock,
+                             const PointRaw& p,
+                             Uint8* r,
+                             Uint8* g,
+                             Uint8* b,
+                             Uint8* a)
+{
+  lock.ReadPixel(p, r, g, b, a);
+}
+
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like GetRGBA, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @returns color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Color ReadSurfacePixel(const SurfaceLock& lock, const PointRaw& p)
+{
+  return lock.ReadPixel(p);
+}
+
 inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* r,
                                Uint8* g,
@@ -46972,6 +47138,60 @@ inline FColor ReadSurfacePixelFloat(SurfaceConstParam surface,
   FColor c;
   ReadSurfacePixelFloat(surface, p, &c.r, &c.g, &c.b, &c.a);
   return c;
+}
+
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @param r a pointer filled in with the red channel, normally in the range 0-1,
+ *          or nullptr to ignore this channel.
+ * @param g a pointer filled in with the green channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param b a pointer filled in with the blue channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param a a pointer filled in with the alpha channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void ReadSurfacePixelFloat(const SurfaceLock& lock,
+                                  const PointRaw& p,
+                                  float* r,
+                                  float* g,
+                                  float* b,
+                                  float* a)
+{
+  lock.ReadPixelFloat(p, r, g, b, a);
+}
+
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @returns color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline FColor ReadSurfacePixelFloat(const SurfaceLock& lock, const PointRaw& p)
+{
+  return lock.ReadPixelFloat(p);
 }
 
 inline void Surface::ReadPixelFloat(const PointRaw& p,
