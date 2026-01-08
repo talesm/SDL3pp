@@ -27,7 +27,7 @@ Next version
 - [x] Fix GetGamepadBindings()
 - [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
   several APIS;
-  - [ ] AudioStreamLock for SDL_LockAudioStream;
+  - [x] AudioStreamLock for SDL_LockAudioStream;
   - [ ] CameraFrameLock for SDL_AcquireCameraFrame;
   - [x] JoystickApiLock for SDL_LockJoysticks;
   - [ ] PropertiesLock for SDL_LockProperties;

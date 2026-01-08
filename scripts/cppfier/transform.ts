@@ -2056,6 +2056,10 @@ function expandTypes(
         type: controlType ?? "bool",
       };
     }
+    ctors[targetName] = { kind: "plc" };
+    ctors[`~${targetName}`] = { kind: "plc" };
+    ctors["operator="] = { kind: "plc" };
+    ctors["operator bool"] = { kind: "plc" };
     const lockTargetName =
       file.transform[lockDef.lockFunc]?.name ??
       transformName(lockDef.lockFunc, context);
