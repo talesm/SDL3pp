@@ -2237,6 +2237,46 @@ public:
     return m_lock.ReadPixelFloat(p);
   }
 
+  /**
+   * Writes a single pixel to a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like MapColor, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+   * @param c the color channels value, 0-255.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WritePixel(const PointRaw& p, ColorRaw c) { m_lock.WritePixel(p, c); }
+
+  /**
+   * Writes a single pixel to a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+   * @param c the color channels values, normally in the range 0-1.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WritePixelFloat(const PointRaw& p, const FColorRaw& c)
+  {
+    m_lock.WritePixelFloat(p, c);
+  }
+
   /// Get the width in pixels.
   constexpr int GetWidth() const { return m_lock.GetWidth(); }
 
@@ -4820,6 +4860,30 @@ inline void WriteSurfacePixel(SurfaceParam surface,
   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
 
+/**
+ * Writes a single pixel to a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like MapColor, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param lock the surface to write.
+ * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+ * @param c the color channels value, 0-255.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void WriteSurfacePixel(SurfaceLock& lock, const PointRaw& p, ColorRaw c)
+{
+  lock.WritePixel(p, c);
+}
+
 inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
 {
   SDL::WriteSurfacePixel(m_resource, p, c);
@@ -4846,6 +4910,29 @@ inline void WriteSurfacePixelFloat(SurfaceParam surface,
                                    const FColorRaw& c)
 {
   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
+}
+
+/**
+ * Writes a single pixel to a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param lock the surface to write.
+ * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+ * @param c the color channels values, normally in the range 0-1.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void WriteSurfacePixelFloat(SurfaceLock& lock,
+                                   const PointRaw& p,
+                                   const FColorRaw& c)
+{
+  lock.WritePixelFloat(p, c);
 }
 
 inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)

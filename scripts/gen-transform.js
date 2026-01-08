@@ -6544,6 +6544,30 @@ const transform = {
                 copyDoc: "SDL_ReadSurfacePixelFloat",
               },
             },
+            "WritePixel": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { type: "ColorRaw", name: "c" },
+              ],
+              hints: {
+                body: "m_lock.WritePixel(p, c);",
+                copyDoc: "SDL_WriteSurfacePixel",
+              },
+            },
+            "WritePixelFloat": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { type: "const FColorRaw &", name: "c" },
+              ],
+              hints: {
+                body: "m_lock.WritePixelFloat(p, c);",
+                copyDoc: "SDL_WriteSurfacePixelFloat",
+              },
+            },
             "GetWidth": {
               kind: "function",
               immutable: true,
@@ -7237,6 +7261,28 @@ const transform = {
             { type: "const PointRaw &", name: "p" },
           ],
           hints: { body: "return lock.ReadPixelFloat(p);" },
+        },
+        "WriteSurfacePixel": {
+          after: "SDL_WriteSurfacePixel",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { type: "ColorRaw", name: "c" },
+          ],
+          hints: { body: "lock.WritePixel(p, c);" },
+        },
+        "WriteSurfacePixelFloat": {
+          after: "SDL_WriteSurfacePixelFloat",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { type: "const FColorRaw &", name: "c" },
+          ],
+          hints: { body: "lock.WritePixelFloat(p, c);" },
         },
         "GetSurfaceWidth": {
           after: "SDL_WriteSurfacePixelFloat",
