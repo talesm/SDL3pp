@@ -44545,6 +44545,24 @@ public:
   /// True if not locked.
   constexpr operator bool() const { return bool(m_lock); }
 
+  /// Get the width in pixels.
+  constexpr int GetWidth() const { return m_lock.GetWidth(); }
+
+  /// Get the height in pixels.
+  constexpr int GetHeight() const { return m_lock.GetHeight(); }
+
+  /// Get the size in pixels.
+  constexpr Point GetSize() const { return m_lock.GetSize(); }
+
+  /// Get pitch in bytes.
+  constexpr int GetPitch() const { return m_lock.GetPitch(); }
+
+  /// Get the pixel format.
+  constexpr PixelFormat GetFormat() const { return m_lock.GetFormat(); }
+
+  /// Get the pixels.
+  constexpr void* GetPixels() const { return m_lock.GetPixels(); }
+
   /**
    * Release a surface after directly accessing the pixels.
    *
@@ -47029,32 +47047,44 @@ inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
   SDL::WriteSurfacePixelFloat(m_resource, p, c);
 }
 
-/**
- * Get the width in pixels.
- */
+/// Get the width in pixels.
 constexpr int GetSurfaceWidth(SurfaceConstParam surface) { return surface->w; }
+
+/// Get the width in pixels.
+constexpr int GetSurfaceWidth(const SurfaceLock& lock)
+{
+  return lock.GetWidth();
+}
 
 constexpr int Surface::GetWidth() const
 {
   return SDL::GetSurfaceWidth(m_resource);
 }
 
-/**
- * Get the height in pixels.
- */
+/// Get the height in pixels.
 constexpr int GetSurfaceHeight(SurfaceConstParam surface) { return surface->h; }
+
+/// Get the height in pixels.
+constexpr int GetSurfaceHeight(const SurfaceLock& lock)
+{
+  return lock.GetHeight();
+}
 
 constexpr int Surface::GetHeight() const
 {
   return SDL::GetSurfaceHeight(m_resource);
 }
 
-/**
- * Get the size in pixels.
- */
+/// Get the size in pixels.
 constexpr Point GetSurfaceSize(SurfaceConstParam surface)
 {
   return Point(surface->w, surface->h);
+}
+
+/// Get the size in pixels.
+constexpr Point GetSurfaceSize(const SurfaceLock& lock)
+{
+  return lock.GetSize();
 }
 
 constexpr Point Surface::GetSize() const
@@ -47062,12 +47092,16 @@ constexpr Point Surface::GetSize() const
   return SDL::GetSurfaceSize(m_resource);
 }
 
-/**
- * Get pitch in bytes.
- */
+/// Get pitch in bytes.
 constexpr int GetSurfacePitch(SurfaceConstParam surface)
 {
   return surface->pitch;
+}
+
+/// Get pitch in bytes.
+constexpr int GetSurfacePitch(const SurfaceLock& lock)
+{
+  return lock.GetPitch();
 }
 
 constexpr int Surface::GetPitch() const
@@ -47075,12 +47109,16 @@ constexpr int Surface::GetPitch() const
   return SDL::GetSurfacePitch(m_resource);
 }
 
-/**
- * Get the pixel format.
- */
+/// Get the pixel format.
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
 {
   return surface->format;
+}
+
+/// Get the pixel format.
+constexpr PixelFormat GetSurfaceFormat(const SurfaceLock& lock)
+{
+  return lock.GetFormat();
 }
 
 constexpr PixelFormat Surface::GetFormat() const
@@ -47088,12 +47126,16 @@ constexpr PixelFormat Surface::GetFormat() const
   return SDL::GetSurfaceFormat(m_resource);
 }
 
-/**
- * Get the pixels.
- */
+/// Get the pixels.
 constexpr void* GetSurfacePixels(SurfaceConstParam surface)
 {
   return surface->pixels;
+}
+
+/// Get the pixels.
+constexpr void* GetSurfacePixels(const SurfaceLock& lock)
+{
+  return lock.GetPixels();
 }
 
 constexpr void* Surface::GetPixels() const

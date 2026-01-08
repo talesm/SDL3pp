@@ -38,6 +38,7 @@ Backlog
 -------
 
 - [ ] Add windows-prebuilt option mode, downloading the version automatically.
+- [ ] Create GetPixel/SetPixel on surface
 - [ ] All SDL_*ID representing devices must have uniform interface:
   - [ ] AudioDeviceID;
   - [ ] CameraID;
