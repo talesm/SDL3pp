@@ -1023,7 +1023,7 @@
     */
    void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
  };
-@@ -2553,8 +2750,8 @@
+@@ -2559,8 +2756,8 @@
   * errors such as `Blit combination not supported` may occur.
   *
   * @param format one of the PixelFormat values.
@@ -1034,7 +1034,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2562,7 +2759,7 @@
+@@ -2568,7 +2765,7 @@
   */
  inline const PixelFormatDetails& GetPixelFormatDetails(PixelFormatRaw format)
  {
@@ -1043,7 +1043,7 @@
  }
  
  inline const PixelFormatDetails& PixelFormat::GetDetails() const
-@@ -2600,7 +2797,6 @@
+@@ -2606,7 +2803,6 @@
   * @param palette the Palette structure to modify.
   * @param colors an array of Color structures to copy into the palette.
   * @param firstcolor the index of the first palette entry to modify.
@@ -1051,7 +1051,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2612,7 +2808,8 @@
+@@ -2618,7 +2814,8 @@
                               SpanRef<const ColorRaw> colors,
                               int firstcolor = 0)
  {
@@ -1061,7 +1061,7 @@
  }
  
  inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
-@@ -2680,6 +2877,43 @@
+@@ -2686,6 +2883,43 @@
    return SDL_MapRGB(&format, palette, r, g, b);
  }
  
@@ -1105,7 +1105,7 @@
  inline Uint32 MapRGBA(const PixelFormatDetails& format,
                        Uint8 r,
                        Uint8 g,
-@@ -2687,7 +2921,7 @@
+@@ -2693,7 +2927,7 @@
                        Uint8 a,
                        PaletteConstParam palette = {})
  {
@@ -1114,7 +1114,7 @@
  }
  
  /**
-@@ -2709,11 +2943,8 @@
+@@ -2715,11 +2949,8 @@
   * for an 8-bpp format).
   *
   * @param format a pointer to PixelFormatDetails describing the pixel format.
@@ -1127,7 +1127,7 @@
   * @returns a pixel value.
   *
   * @threadsafety It is safe to call this function from any thread, as long as
-@@ -2730,18 +2961,18 @@
+@@ -2736,18 +2967,18 @@
                         ColorRaw c,
                         PaletteConstParam palette = {})
  {
@@ -1149,7 +1149,7 @@
  }
  
  /**
-@@ -2819,23 +3050,52 @@
+@@ -2825,23 +3056,52 @@
    SDL_GetRGBA(pixelvalue, &format, palette, r, g, b, a);
  }
  

@@ -31,7 +31,7 @@ Next version
   - [ ] CameraFrameLock for SDL_AcquireCameraFrame;
   - [x] JoystickApiLock for SDL_LockJoysticks;
   - [x] PropertiesLock for SDL_LockProperties;
-  - [ ] SurfaceLock for SDL_LockSurface;
+  - [x] SurfaceLock for SDL_LockSurface;
   - [ ] TextureLock for SDL_LockTexture;
 
 Backlog

@@ -114,6 +114,9 @@ struct SurfaceConstParam
   constexpr auto operator->() { return value; }
 };
 
+// Forward decl
+struct SurfaceLock;
+
 /**
  * The flags on an Surface.
  *
@@ -808,7 +811,7 @@ public:
    * @sa Surface.MustLock
    * @sa Surface.Unlock
    */
-  void Lock();
+  SurfaceLock Lock();
 
   /**
    * Release a surface after directly accessing the pixels.
@@ -821,7 +824,7 @@ public:
    *
    * @sa Surface.Lock
    */
-  void Unlock();
+  void Unlock(SurfaceLock&& lock);
 
   /**
    * Save a surface to a seekable SDL data stream in BMP format.
@@ -2008,6 +2011,146 @@ struct SurfaceRef : Surface
     : Surface(Borrow(resource))
   {
   }
+
+  /// Constructs from Surface.
+  SurfaceRef(Surface resource) noexcept
+    : Surface(std::move(resource))
+  {
+  }
+};
+
+/**
+ * Set up a surface for directly accessing the pixels.
+ *
+ * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and read
+ * from `surface->pixels`, using the pixel format stored in `surface->format`.
+ * Once you are done accessing the surface, you should use Surface.Unlock() to
+ * release it.
+ *
+ * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates to
+ * 0, then you can read and write to the surface at any time, and the pixel
+ * format of the surface will not change.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface.MustLock
+ * @sa Surface.Unlock
+ */
+class SurfaceLock
+{
+  SurfaceRef m_lock;
+
+public:
+  /**
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and
+   * read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * Surface.Unlock() to release it.
+   *
+   * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
+   * to 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
+   *
+   * @param surface the Surface structure to be locked.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces. The locking referred to by this function
+   *               is making the pixels available for direct access, not
+   *               thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.MustLock
+   * @sa Surface.Unlock
+   */
+  SurfaceLock(SurfaceRef resource);
+
+  /**
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and
+   * read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * Surface.Unlock() to release it.
+   *
+   * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
+   * to 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
+   *
+   * @param surface the Surface structure to be locked.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces. The locking referred to by this function
+   *               is making the pixels available for direct access, not
+   *               thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.MustLock
+   * @sa Surface.Unlock
+   */
+  SurfaceLock(const SurfaceLock& other) = delete;
+
+  /// Move constructor
+  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Release a surface after directly accessing the pixels.
+   *
+   * @param surface the Surface structure to be unlocked.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Lock
+   */
+  ~SurfaceLock() { reset(); }
+
+  SurfaceLock& operator=(const SurfaceLock& other) = delete;
+
+  /// Assignment operator
+  SurfaceLock& operator=(SurfaceLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Release a surface after directly accessing the pixels.
+   *
+   * @param surface the Surface structure to be unlocked.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  SurfaceRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
 };
 
 /**
@@ -2452,7 +2595,13 @@ inline void LockSurface(SurfaceParam surface)
   CheckError(SDL_LockSurface(surface));
 }
 
-inline void Surface::Lock() { SDL::LockSurface(m_resource); }
+inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
+
+inline SurfaceLock::SurfaceLock(SurfaceRef resource)
+  : m_lock(std::move(resource))
+{
+  LockSurface(m_lock);
+}
 
 /**
  * Release a surface after directly accessing the pixels.
@@ -2469,7 +2618,18 @@ inline void Surface::Lock() { SDL::LockSurface(m_resource); }
  */
 inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
-inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
+inline void Surface::Unlock(SurfaceLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void SurfaceLock::reset()
+{
+  if (!m_lock) return;
+  UnlockSurface(m_lock);
+  m_lock = {};
+}
 
 #ifndef SDL3PP_ENABLE_IMAGE
 #if SDL_VERSION_ATLEAST(3, 4, 0)

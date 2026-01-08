@@ -2448,6 +2448,12 @@ struct PaletteRef : Palette
     : Palette(Borrow(resource))
   {
   }
+
+  /// Constructs from Palette.
+  PaletteRef(Palette resource) noexcept
+    : Palette(std::move(resource))
+  {
+  }
 };
 
 /**

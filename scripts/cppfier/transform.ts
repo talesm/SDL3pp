@@ -1730,6 +1730,21 @@ function expandTypes(
               "This borrows the ownership, increments the refcount!",
             ],
           },
+          [`${refName}#2`]: {
+            kind: "function",
+            type: "",
+            parameters: [
+              {
+                type: targetName,
+                name: "resource",
+              },
+            ],
+            hints: {
+              init: [`${targetName}(std::move(resource))`],
+              noexcept: true,
+            },
+            doc: [`Constructs from ${targetName}.`],
+          },
         },
       });
     } else if (hasRef) {

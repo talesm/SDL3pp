@@ -3477,6 +3477,12 @@ struct TextureRef : Texture
     : Texture(Borrow(resource))
   {
   }
+
+  /// Constructs from Texture.
+  TextureRef(Texture resource) noexcept
+    : Texture(std::move(resource))
+  {
+  }
 };
 
 /**

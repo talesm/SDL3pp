@@ -6459,6 +6459,7 @@ const transform = {
             shared: 'refcount',
             ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP", "SDL_LoadPNG_IO", "SDL_LoadPNG"],
           },
+          lock: true,
           entries: {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
