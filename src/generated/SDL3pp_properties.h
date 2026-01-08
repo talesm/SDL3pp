@@ -839,7 +839,7 @@ public:
   PropertiesLock& operator=(const PropertiesLock& other) = delete;
 
   /// Assignment operator
-  PropertiesLock& operator=(PropertiesLock&& other)
+  PropertiesLock& operator=(PropertiesLock&& other) noexcept
   {
     std::swap(m_lock, other.m_lock);
     return *this;

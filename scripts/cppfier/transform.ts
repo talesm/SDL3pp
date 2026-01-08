@@ -2175,6 +2175,7 @@ function expandTypes(
         static: false,
         doc: ["Assignment operator"],
         hints: {
+          noexcept: true,
           body: `std::swap(m_lock, other.m_lock);return *this;`,
         },
       },

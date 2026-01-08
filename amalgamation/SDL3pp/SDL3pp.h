@@ -12755,7 +12755,7 @@ public:
   PropertiesLock& operator=(const PropertiesLock& other) = delete;
 
   /// Assignment operator
-  PropertiesLock& operator=(PropertiesLock&& other)
+  PropertiesLock& operator=(PropertiesLock&& other) noexcept
   {
     std::swap(m_lock, other.m_lock);
     return *this;
@@ -36568,7 +36568,7 @@ public:
   AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
 
   /// Assignment operator
-  AudioStreamLock& operator=(AudioStreamLock&& other)
+  AudioStreamLock& operator=(AudioStreamLock&& other) noexcept
   {
     std::swap(m_lock, other.m_lock);
     return *this;
@@ -71769,7 +71769,7 @@ public:
   JoystickApiLock& operator=(const JoystickApiLock& other) = delete;
 
   /// Assignment operator
-  JoystickApiLock& operator=(JoystickApiLock&& other)
+  JoystickApiLock& operator=(JoystickApiLock&& other) noexcept
   {
     std::swap(m_lock, other.m_lock);
     return *this;
