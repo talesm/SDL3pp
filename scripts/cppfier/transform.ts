@@ -1097,16 +1097,11 @@ function expandTypes(
       const lockEntry: ApiEntryTransform = {
         lock: hasLock,
       };
+      hasLock.controlType = hasRef ? refName : targetName;
       if (currDef) {
         combineObject(lockEntry, currDef ?? {});
       } else {
         lockEntry.after = hasRef ? refName : targetName;
-      }
-      if (lockEntry.type === undefined) {
-        hasLock.controlType = lockEntry.type = targetName;
-        hasLock.paramType = paramType;
-      } else {
-        hasLock.controlType = hasRef ? refName : targetName;
       }
       file.transform[lockName] = lockEntry;
     }
@@ -2055,9 +2050,7 @@ function expandTypes(
     const paramType = lockDef.paramType ?? controlType;
 
     const ctors: Dict<ApiEntryTransform> = {};
-    const inheritResource = controlType && controlType === targetEntry.type;
-    const controlVar = lockDef.controlVar !== false && !inheritResource;
-    if (controlVar) {
+    if (lockDef.controlVar !== false) {
       ctors["m_lock"] = {
         kind: "var",
         type: controlType ?? "bool",
@@ -2078,14 +2071,8 @@ function expandTypes(
         hints: {
           copyDoc: lockDef.lockFunc,
           changeAccess: "public",
-          init: [
-            inheritResource
-              ? `${controlType}(resource.value)`
-              : `m_lock(${controlType ? "std::move(resource)" : "true"})`,
-          ],
-          body: inheritResource
-            ? ""
-            : `${lockTargetName}(${controlType ? "m_lock" : ""});`,
+          init: [`m_lock(${controlType ? "std::move(resource)" : "true"})`],
+          body: `${lockTargetName}(${controlType ? "m_lock" : ""});`,
         },
       },
       lockDef.lockFunc
@@ -2111,7 +2098,6 @@ function expandTypes(
         parameters: [{ type: `${targetName} &&`, name: "other" }],
         constexpr: true,
         hints: {
-          default: inheritResource,
           init: ["m_lock(other.m_lock)"],
           body: `other.m_lock = {};`,
           noexcept: true,
@@ -2154,34 +2140,26 @@ function expandTypes(
         static: false,
         doc: ["Assignment operator"],
         hints: {
-          default: inheritResource,
           body: `std::swap(m_lock, other.m_lock);return *this;`,
         },
       },
       lockDef.lockFunc
     );
-    if (!inheritResource)
-      context.includeAfter(
-        {
-          kind: "function",
-          name: `${targetName}.operator bool`,
-          type: "",
-          constexpr: true,
-          immutable: true,
-          parameters: [],
-          doc: ["True if not locked."],
-          hints: {
-            body: `return bool(m_lock);`,
-          },
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator bool`,
+        type: "",
+        constexpr: true,
+        immutable: true,
+        parameters: [],
+        doc: ["True if not locked."],
+        hints: {
+          body: `return bool(m_lock);`,
         },
-        lockDef.lockFunc
-      );
-
-    const resetBody = inheritResource
-      ? `if (!*this) return;\n${unlockTargetName}(release());`
-      : controlType
-      ? `if (!m_lock) return;\n${unlockTargetName}(m_lock);\nm_lock = {};`
-      : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`;
+      },
+      lockDef.lockFunc
+    );
     context.includeAfter(
       {
         kind: "function",
@@ -2190,25 +2168,26 @@ function expandTypes(
         parameters: [],
         hints: {
           copyDoc: lockDef.unlockFunc,
-          body: resetBody,
+          body: controlType
+            ? `if (!m_lock) return;\n${unlockTargetName}(m_lock);\nm_lock = {};`
+            : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`,
         },
       },
       lockDef.unlockFunc
     );
-    if (!inheritResource)
-      context.includeAfter(
-        {
-          kind: "function",
-          name: `${targetName}.release`,
-          type: "void",
-          parameters: [],
-          doc: [`Releases the lock without unlocking.`],
-          hints: {
-            body: controlType ? `m_lock.release();` : `m_lock = false;`,
-          },
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.release`,
+        type: "void",
+        parameters: [],
+        doc: [`Releases the lock without unlocking.`],
+        hints: {
+          body: controlType ? `m_lock.release();` : `m_lock = false;`,
         },
-        lockDef.unlockFunc
-      );
+      },
+      lockDef.unlockFunc
+    );
 
     const subEntries = targetEntry.entries || {};
     targetEntry.entries = { ...ctors, ...subEntries };
