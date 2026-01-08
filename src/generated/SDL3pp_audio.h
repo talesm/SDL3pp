@@ -2563,7 +2563,7 @@ public:
    *
    * @sa AudioStream.Unlock
    */
-  void Lock();
+  AudioStreamLock Lock();
 
   /**
    * Unlock an audio stream for serialized access.
@@ -2579,7 +2579,7 @@ public:
    *
    * @sa AudioStream.Lock
    */
-  void Unlock();
+  void Unlock(AudioStreamLock&& lock);
 
   /**
    * Set a callback that runs when data is requested from an audio stream.
@@ -4738,7 +4738,7 @@ inline void LockAudioStream(AudioStreamParam stream)
   CheckError(SDL_LockAudioStream(stream));
 }
 
-inline void AudioStream::Lock() { SDL::LockAudioStream(m_resource); }
+inline AudioStreamLock AudioStream::Lock() { return {AudioStreamRef(*this)}; }
 
 inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
   : m_lock(std::move(resource))
@@ -4766,7 +4766,7 @@ inline void UnlockAudioStream(AudioStreamParam stream)
   CheckError(SDL_UnlockAudioStream(stream));
 }
 
-inline void AudioStream::Unlock() { SDL::UnlockAudioStream(m_resource); }
+inline void AudioStream::Unlock(AudioStreamLock&& lock) { lock.reset(); }
 
 inline void AudioStreamLock::reset()
 {

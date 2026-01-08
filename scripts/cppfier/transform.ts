@@ -457,6 +457,33 @@ function getCallbackDef(
   }
 }
 
+function wrapLockFunctions(
+  entries: ApiEntryTransformMap,
+  lockName: string,
+  lockDef: LockDefinition
+) {
+  const currLockTransform = entries[lockDef.lockFunc];
+  const currLockDelta =
+    typeof currLockTransform === "object"
+      ? currLockTransform
+      : (entries[lockDef.lockFunc] = {});
+  if (currLockDelta) {
+    currLockDelta.type = lockName;
+    const paramName = lockDef.paramType ?? lockDef.controlType;
+    addHints(currLockDelta, { body: `return {${paramName}(*this)};` });
+  }
+  const currUnlockTransform = entries[lockDef.unlockFunc];
+  const currUnlockDelta =
+    typeof currUnlockTransform === "object"
+      ? currUnlockTransform
+      : (entries[lockDef.unlockFunc] = {});
+  if (currUnlockDelta) {
+    currUnlockDelta.type = "void";
+    currUnlockDelta.parameters = [{}, { type: `${lockName} &&`, name: "lock" }];
+    addHints(currUnlockDelta, { body: `lock.reset();` });
+  }
+}
+
 function expandTypes(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
@@ -1664,6 +1691,10 @@ function expandTypes(
       super: "m_resource",
       private: true,
     });
+
+    if (hasLock) {
+      wrapLockFunctions(targetEntry.entries, lockName, hasLock);
+    }
 
     const derivedEntries: ApiEntryTransform[] = [];
 
