@@ -3982,6 +3982,10 @@ const transform = {
       transform: {
         "SDL_PropertiesID": {
           name: "Properties",
+          lock: {
+            lockFunc: "SDL_LockProperties",
+            unlockFunc: "SDL_UnlockProperties",
+          },
           resource: {
             ctors: ["SDL_CreateProperties"],
             free: "SDL_DestroyProperties",
