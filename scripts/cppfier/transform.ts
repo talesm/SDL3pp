@@ -2135,6 +2135,7 @@ function expandTypes(
         name: `${targetName}.${targetName}`,
         type: "",
         parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        doc: ["Copy constructor"],
         hints: {
           delete: true,
         },

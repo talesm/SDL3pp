@@ -798,28 +798,7 @@ public:
    */
   PropertiesLock(PropertiesRef resource);
 
-  /**
-   * Lock a group of properties.
-   *
-   * Obtain a multi-threaded lock for these properties. Other threads will wait
-   * while trying to lock these properties until they are unlocked. Properties
-   * must be unlocked before they are destroyed.
-   *
-   * The lock is automatically taken when setting individual properties, this
-   * function is only needed when you want to set several properties atomically
-   * or want to guarantee that properties being queried aren't freed in another
-   * thread.
-   *
-   * @param props the properties to lock.
-   * @post true on success or false on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Unlock
-   */
+  /// Copy constructor
   PropertiesLock(const PropertiesLock& other) = delete;
 
   /// Move constructor

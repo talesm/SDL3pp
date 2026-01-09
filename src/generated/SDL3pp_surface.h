@@ -2036,32 +2036,7 @@ public:
    */
   SurfaceLock(SurfaceRef resource);
 
-  /**
-   * Set up a surface for directly accessing the pixels.
-   *
-   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and
-   * read from `surface->pixels`, using the pixel format stored in
-   * `surface->format`. Once you are done accessing the surface, you should use
-   * Surface.Unlock() to release it.
-   *
-   * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
-   * to 0, then you can read and write to the surface at any time, and the pixel
-   * format of the surface will not change.
-   *
-   * @param surface the Surface structure to be locked.
-   * @post true on success or false on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety This function can be called on different threads with
-   *               different surfaces. The locking referred to by this function
-   *               is making the pixels available for direct access, not
-   *               thread-safe locking.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.MustLock
-   * @sa Surface.Unlock
-   */
+  /// Copy constructor
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor

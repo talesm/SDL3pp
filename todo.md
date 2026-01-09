@@ -32,7 +32,7 @@ Next version
   - [x] JoystickApiLock for SDL_LockJoysticks;
   - [x] PropertiesLock for SDL_LockProperties;
   - [x] SurfaceLock for SDL_LockSurface;
-  - [ ] TextureLock for SDL_LockTexture;
+  - [x] TextureLock for SDL_LockTexture;
 
 Backlog
 -------

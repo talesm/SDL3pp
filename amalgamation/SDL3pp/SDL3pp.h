@@ -12714,28 +12714,7 @@ public:
    */
   PropertiesLock(PropertiesRef resource);
 
-  /**
-   * Lock a group of properties.
-   *
-   * Obtain a multi-threaded lock for these properties. Other threads will wait
-   * while trying to lock these properties until they are unlocked. Properties
-   * must be unlocked before they are destroyed.
-   *
-   * The lock is automatically taken when setting individual properties, this
-   * function is only needed when you want to set several properties atomically
-   * or want to guarantee that properties being queried aren't freed in another
-   * thread.
-   *
-   * @param props the properties to lock.
-   * @post true on success or false on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Properties.Unlock
-   */
+  /// Copy constructor
   PropertiesLock(const PropertiesLock& other) = delete;
 
   /// Move constructor
@@ -36525,32 +36504,7 @@ public:
    */
   AudioStreamLock(AudioStreamRef resource);
 
-  /**
-   * Lock an audio stream for serialized access.
-   *
-   * Each AudioStream has an internal mutex it uses to protect its data
-   * structures from threading conflicts. This function allows an app to lock
-   * that mutex, which could be useful if registering callbacks on this stream.
-   *
-   * One does not need to lock a stream to use in it most cases, as the stream
-   * manages this lock internally. However, this lock is held during callbacks,
-   * which may run from arbitrary threads at any time, so if an app needs to
-   * protect shared data during those callbacks, locking the stream guarantees
-   * that the callback is not running while the lock is held.
-   *
-   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
-   * the same attributes (recursive locks are allowed, etc).
-   *
-   * @param stream the audio stream to lock.
-   * @post true on success or false on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa AudioStream.Unlock
-   */
+  /// Copy constructor
   AudioStreamLock(const AudioStreamLock& other) = delete;
 
   /// Move constructor
@@ -44483,32 +44437,7 @@ public:
    */
   SurfaceLock(SurfaceRef resource);
 
-  /**
-   * Set up a surface for directly accessing the pixels.
-   *
-   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and
-   * read from `surface->pixels`, using the pixel format stored in
-   * `surface->format`. Once you are done accessing the surface, you should use
-   * Surface.Unlock() to release it.
-   *
-   * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
-   * to 0, then you can read and write to the surface at any time, and the pixel
-   * format of the surface will not change.
-   *
-   * @param surface the Surface structure to be locked.
-   * @post true on success or false on failure; call GetError() for more
-   *       information.
-   *
-   * @threadsafety This function can be called on different threads with
-   *               different surfaces. The locking referred to by this function
-   *               is making the pixels available for direct access, not
-   *               thread-safe locking.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Surface.MustLock
-   * @sa Surface.Unlock
-   */
+  /// Copy constructor
   SurfaceLock(const SurfaceLock& other) = delete;
 
   /// Move constructor
@@ -72265,17 +72194,7 @@ public:
    */
   JoystickApiLock();
 
-  /**
-   * Locking for atomic access to the joystick API.
-   *
-   * The SDL joystick functions are thread-safe, however you can lock the
-   * joysticks while processing to guarantee that the joystick list won't change
-   * and joystick and gamepad events will not be delivered.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
+  /// Copy constructor
   JoystickApiLock(const JoystickApiLock& other) = delete;
 
   /// Move constructor
@@ -81979,6 +81898,9 @@ struct GPURenderStateParam
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
+// Forward decl
+struct TextureLock;
+
 /**
  * The name of the software renderer.
  *
@@ -85287,7 +85209,7 @@ public:
    * @sa Texture.Lock
    * @sa Texture.Unlock
    */
-  Surface LockToSurface(OptionalRef<const RectRaw> rect = std::nullopt);
+  TextureLock LockToSurface(OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -85306,7 +85228,7 @@ public:
    *
    * @sa Texture.Lock
    */
-  void Unlock();
+  void Unlock(TextureLock&& lock);
 };
 
 /// Safe reference for Texture.
@@ -85330,6 +85252,140 @@ struct TextureRef : Texture
   TextureRef(Texture resource) noexcept
     : Texture(std::move(resource))
   {
+  }
+};
+
+/**
+ * Lock a portion of the texture for **write-only** pixel access, and expose it
+ * as a SDL surface.
+ *
+ * Besides providing an Surface instead of raw pixel data, this function
+ * operates like Texture.Lock.
+ *
+ * As an optimization, the pixels made available for editing don't necessarily
+ * contain the old texture data. This is a write-only operation, and if you need
+ * to keep a copy of the texture data you should do that at the application
+ * level.
+ *
+ * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+ *
+ * The returned surface is freed internally after calling Texture.Unlock() or
+ * Texture.Destroy(). The caller should not free it.
+ *
+ * @since This class is available since SDL 3.2.0.
+ *
+ * @sa Texture.Lock
+ * @sa Texture.Unlock
+ */
+class TextureLock : public Surface
+{
+  TextureRef m_lock;
+
+public:
+  /**
+   * Lock a portion of the texture for **write-only** pixel access, and expose
+   * it as a SDL surface.
+   *
+   * Besides providing an Surface instead of raw pixel data, this function
+   * operates like Texture.Lock.
+   *
+   * As an optimization, the pixels made available for editing don't necessarily
+   * contain the old texture data. This is a write-only operation, and if you
+   * need to keep a copy of the texture data you should do that at the
+   * application level.
+   *
+   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+   *
+   * The returned surface is freed internally after calling Texture.Unlock() or
+   * Texture.Destroy(). The caller should not free it.
+   *
+   * @param resource the texture to lock for access, which must be created with
+   *                `TEXTUREACCESS_STREAMING`.
+   * @param rect a pointer to the rectangle to lock for access. If the rect is
+   *             nullptr, the entire texture will be locked.
+   * @returns a surface of size **rect**. Don't assume any specific pixel
+   *          content.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   * @sa Texture.Unlock
+   */
+  TextureLock(TextureRef resource,
+              OptionalRef<const RectRaw> rect = std::nullopt);
+
+  /// Copy constructor
+  TextureLock(const TextureLock& other) = delete;
+
+  /// Move constructor
+  constexpr TextureLock(TextureLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock a texture, uploading the changes to video memory, if needed.
+   *
+   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * it will not guarantee the previous contents of the texture will be
+   * provided. You must fully initialize any area of a texture that you lock
+   * before unlocking it, as the pixels might otherwise be uninitialized memory.
+   *
+   * Which is to say: locking and immediately unlocking a texture can result in
+   * corrupted textures, depending on the renderer in use.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   */
+  ~TextureLock() { reset(); }
+
+  TextureLock& operator=(const TextureLock& other) = delete;
+
+  /// Assignment operator
+  TextureLock& operator=(TextureLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    Surface::operator=(std::move(other));
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock a texture, uploading the changes to video memory, if needed.
+   *
+   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * it will not guarantee the previous contents of the texture will be
+   * provided. You must fully initialize any area of a texture that you lock
+   * before unlocking it, as the pixels might otherwise be uninitialized memory.
+   *
+   * Which is to say: locking and immediately unlocking a texture can result in
+   * corrupted textures, depending on the renderer in use.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  TextureRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release()
+  {
+    Surface::release();
+    m_lock.release();
   }
 };
 
@@ -87460,9 +87516,16 @@ inline Surface LockTextureToSurface(
   return Surface::Borrow(surface);
 }
 
-inline Surface Texture::LockToSurface(OptionalRef<const RectRaw> rect)
+inline TextureLock Texture::LockToSurface(OptionalRef<const RectRaw> rect)
 {
-  return SDL::LockTextureToSurface(m_resource, rect);
+  return {TextureRef(*this)};
+}
+
+inline TextureLock::TextureLock(TextureRef resource,
+                                OptionalRef<const RectRaw> rect)
+  : Surface(LockTextureToSurface(resource, rect))
+  , m_lock(std::move(resource))
+{
 }
 
 /**
@@ -87486,7 +87549,19 @@ inline Surface Texture::LockToSurface(OptionalRef<const RectRaw> rect)
  */
 inline void UnlockTexture(TextureParam texture) { SDL_UnlockTexture(texture); }
 
-inline void Texture::Unlock() { SDL::UnlockTexture(m_resource); }
+inline void Texture::Unlock(TextureLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void TextureLock::reset()
+{
+  if (!m_lock) return;
+  UnlockTexture(m_lock);
+  m_lock = {};
+  Surface::release();
+}
 
 /**
  * Set a texture as the current rendering target.

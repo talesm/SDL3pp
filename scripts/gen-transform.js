@@ -5316,11 +5316,18 @@ const transform = {
           resource: {
             shared: "refcount",
           },
+          lock: {
+            lockFunc: "SDL_LockTextureToSurface",
+            unlockFunc: "SDL_UnlockTexture",
+          },
           entries: {
             "SDL_CreateTexture": "ctor",
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
           }
+        },
+        "TextureLock": {
+          type: "Surface"
         },
         "SDL_GetTextureProperties": { parameters: [{ type: "TextureConstParam" }] },
         "SDL_GetRendererFromTexture": {
