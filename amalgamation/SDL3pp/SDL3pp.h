@@ -8931,7 +8931,7 @@ struct PaletteParam
   }
 
   /// Constructs null/invalid
-  constexpr PaletteParam(std::nullptr_t _ = nullptr)
+  constexpr PaletteParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -8967,7 +8967,7 @@ struct PaletteConstParam
   }
 
   /// Constructs null/invalid
-  constexpr PaletteConstParam(std::nullptr_t _ = nullptr)
+  constexpr PaletteConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -11976,7 +11976,7 @@ struct PropertiesParam
   }
 
   /// Constructs null/invalid
-  constexpr PropertiesParam(std::nullptr_t _ = nullptr)
+  constexpr PropertiesParam(std::nullptr_t = nullptr)
     : value(0)
   {
   }
@@ -13562,7 +13562,7 @@ struct EnvironmentParam
   }
 
   /// Constructs null/invalid
-  constexpr EnvironmentParam(std::nullptr_t _ = nullptr)
+  constexpr EnvironmentParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -13598,7 +13598,7 @@ struct IConvParam
   }
 
   /// Constructs null/invalid
-  constexpr IConvParam(std::nullptr_t _ = nullptr)
+  constexpr IConvParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -19989,7 +19989,7 @@ struct AsyncIOParam
   }
 
   /// Constructs null/invalid
-  constexpr AsyncIOParam(std::nullptr_t _ = nullptr)
+  constexpr AsyncIOParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -20025,7 +20025,7 @@ struct AsyncIOQueueParam
   }
 
   /// Constructs null/invalid
-  constexpr AsyncIOQueueParam(std::nullptr_t _ = nullptr)
+  constexpr AsyncIOQueueParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -23947,7 +23947,7 @@ struct HidDeviceParam
   }
 
   /// Constructs null/invalid
-  constexpr HidDeviceParam(std::nullptr_t _ = nullptr)
+  constexpr HidDeviceParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -24980,7 +24980,7 @@ struct IOStreamParam
   }
 
   /// Constructs null/invalid
-  constexpr IOStreamParam(std::nullptr_t _ = nullptr)
+  constexpr IOStreamParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -28167,7 +28167,7 @@ struct SharedObjectParam
   }
 
   /// Constructs null/invalid
-  constexpr SharedObjectParam(std::nullptr_t _ = nullptr)
+  constexpr SharedObjectParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -32026,7 +32026,7 @@ struct SensorParam
   }
 
   /// Constructs null/invalid
-  constexpr SensorParam(std::nullptr_t _ = nullptr)
+  constexpr SensorParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -33588,7 +33588,7 @@ struct AudioDeviceParam
   }
 
   /// Constructs null/invalid
-  constexpr AudioDeviceParam(std::nullptr_t _ = nullptr)
+  constexpr AudioDeviceParam(std::nullptr_t = nullptr)
     : value(0)
   {
   }
@@ -33624,7 +33624,7 @@ struct AudioStreamParam
   }
 
   /// Constructs null/invalid
-  constexpr AudioStreamParam(std::nullptr_t _ = nullptr)
+  constexpr AudioStreamParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -40032,7 +40032,7 @@ struct ProcessParam
   }
 
   /// Constructs null/invalid
-  constexpr ProcessParam(std::nullptr_t _ = nullptr)
+  constexpr ProcessParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -41189,7 +41189,7 @@ struct StorageParam
   }
 
   /// Constructs null/invalid
-  constexpr StorageParam(std::nullptr_t _ = nullptr)
+  constexpr StorageParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -42428,7 +42428,7 @@ struct SurfaceParam
   }
 
   /// Constructs null/invalid
-  constexpr SurfaceParam(std::nullptr_t _ = nullptr)
+  constexpr SurfaceParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -42464,7 +42464,7 @@ struct SurfaceConstParam
   }
 
   /// Constructs null/invalid
-  constexpr SurfaceConstParam(std::nullptr_t _ = nullptr)
+  constexpr SurfaceConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -47417,7 +47417,7 @@ struct ThreadParam
   }
 
   /// Constructs null/invalid
-  constexpr ThreadParam(std::nullptr_t _ = nullptr)
+  constexpr ThreadParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -48310,7 +48310,7 @@ struct CameraParam
   }
 
   /// Constructs null/invalid
-  constexpr CameraParam(std::nullptr_t _ = nullptr)
+  constexpr CameraParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -49364,7 +49364,7 @@ struct MutexParam
   }
 
   /// Constructs null/invalid
-  constexpr MutexParam(std::nullptr_t _ = nullptr)
+  constexpr MutexParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -49400,7 +49400,7 @@ struct RWLockParam
   }
 
   /// Constructs null/invalid
-  constexpr RWLockParam(std::nullptr_t _ = nullptr)
+  constexpr RWLockParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -49436,7 +49436,7 @@ struct SemaphoreParam
   }
 
   /// Constructs null/invalid
-  constexpr SemaphoreParam(std::nullptr_t _ = nullptr)
+  constexpr SemaphoreParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -49472,7 +49472,7 @@ struct ConditionParam
   }
 
   /// Constructs null/invalid
-  constexpr ConditionParam(std::nullptr_t _ = nullptr)
+  constexpr ConditionParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -51419,7 +51419,7 @@ struct TrayParam
   }
 
   /// Constructs null/invalid
-  constexpr TrayParam(std::nullptr_t _ = nullptr)
+  constexpr TrayParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -51464,7 +51464,7 @@ struct TrayEntryParam
   }
 
   /// Constructs null/invalid
-  constexpr TrayEntryParam(std::nullptr_t _ = nullptr)
+  constexpr TrayEntryParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -52869,7 +52869,7 @@ struct WindowParam
   }
 
   /// Constructs null/invalid
-  constexpr WindowParam(std::nullptr_t _ = nullptr)
+  constexpr WindowParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -52905,7 +52905,7 @@ struct GLContextParam
   }
 
   /// Constructs null/invalid
-  constexpr GLContextParam(std::nullptr_t _ = nullptr)
+  constexpr GLContextParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -63304,7 +63304,7 @@ struct GPUDeviceParam
   }
 
   /// Constructs null/invalid
-  constexpr GPUDeviceParam(std::nullptr_t _ = nullptr)
+  constexpr GPUDeviceParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -71127,7 +71127,7 @@ struct JoystickParam
   }
 
   /// Constructs null/invalid
-  constexpr JoystickParam(std::nullptr_t _ = nullptr)
+  constexpr JoystickParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -74791,7 +74791,7 @@ struct MetalViewParam
   }
 
   /// Constructs null/invalid
-  constexpr MetalViewParam(std::nullptr_t _ = nullptr)
+  constexpr MetalViewParam(std::nullptr_t = nullptr)
     : value(0)
   {
   }
@@ -75084,7 +75084,7 @@ struct CursorParam
   }
 
   /// Constructs null/invalid
-  constexpr CursorParam(std::nullptr_t _ = nullptr)
+  constexpr CursorParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -76268,7 +76268,7 @@ struct GamepadParam
   }
 
   /// Constructs null/invalid
-  constexpr GamepadParam(std::nullptr_t _ = nullptr)
+  constexpr GamepadParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -79255,7 +79255,7 @@ struct HapticParam
   }
 
   /// Constructs null/invalid
-  constexpr HapticParam(std::nullptr_t _ = nullptr)
+  constexpr HapticParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -81916,7 +81916,7 @@ struct RendererParam
   }
 
   /// Constructs null/invalid
-  constexpr RendererParam(std::nullptr_t _ = nullptr)
+  constexpr RendererParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -81952,7 +81952,7 @@ struct TextureParam
   }
 
   /// Constructs null/invalid
-  constexpr TextureParam(std::nullptr_t _ = nullptr)
+  constexpr TextureParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -81988,7 +81988,7 @@ struct TextureConstParam
   }
 
   /// Constructs null/invalid
-  constexpr TextureConstParam(std::nullptr_t _ = nullptr)
+  constexpr TextureConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -82029,7 +82029,7 @@ struct GPURenderStateParam
   }
 
   /// Constructs null/invalid
-  constexpr GPURenderStateParam(std::nullptr_t _ = nullptr)
+  constexpr GPURenderStateParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -91616,7 +91616,7 @@ struct AnimationParam
   }
 
   /// Constructs null/invalid
-  constexpr AnimationParam(std::nullptr_t _ = nullptr)
+  constexpr AnimationParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -91652,7 +91652,7 @@ struct AnimationConstParam
   }
 
   /// Constructs null/invalid
-  constexpr AnimationConstParam(std::nullptr_t _ = nullptr)
+  constexpr AnimationConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -94140,7 +94140,7 @@ struct FontParam
   }
 
   /// Constructs null/invalid
-  constexpr FontParam(std::nullptr_t _ = nullptr)
+  constexpr FontParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -94173,7 +94173,7 @@ struct TextEngineParam
   }
 
   /// Constructs null/invalid
-  constexpr TextEngineParam(std::nullptr_t _ = nullptr)
+  constexpr TextEngineParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -94209,7 +94209,7 @@ struct TextParam
   }
 
   /// Constructs null/invalid
-  constexpr TextParam(std::nullptr_t _ = nullptr)
+  constexpr TextParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -94245,7 +94245,7 @@ struct TextConstParam
   }
 
   /// Constructs null/invalid
-  constexpr TextConstParam(std::nullptr_t _ = nullptr)
+  constexpr TextConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

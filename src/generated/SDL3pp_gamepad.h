@@ -89,7 +89,7 @@ struct GamepadParam
   }
 
   /// Constructs null/invalid
-  constexpr GamepadParam(std::nullptr_t _ = nullptr)
+  constexpr GamepadParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

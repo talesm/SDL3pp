@@ -39,7 +39,7 @@ struct TrayParam
   }
 
   /// Constructs null/invalid
-  constexpr TrayParam(std::nullptr_t _ = nullptr)
+  constexpr TrayParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -84,7 +84,7 @@ struct TrayEntryParam
   }
 
   /// Constructs null/invalid
-  constexpr TrayEntryParam(std::nullptr_t _ = nullptr)
+  constexpr TrayEntryParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

@@ -44,7 +44,7 @@ struct SensorParam
   }
 
   /// Constructs null/invalid
-  constexpr SensorParam(std::nullptr_t _ = nullptr)
+  constexpr SensorParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

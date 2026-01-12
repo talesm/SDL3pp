@@ -394,7 +394,7 @@ struct GPUDeviceParam
   }
 
   /// Constructs null/invalid
-  constexpr GPUDeviceParam(std::nullptr_t _ = nullptr)
+  constexpr GPUDeviceParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

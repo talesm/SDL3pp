@@ -48,7 +48,7 @@ struct MutexParam
   }
 
   /// Constructs null/invalid
-  constexpr MutexParam(std::nullptr_t _ = nullptr)
+  constexpr MutexParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -84,7 +84,7 @@ struct RWLockParam
   }
 
   /// Constructs null/invalid
-  constexpr RWLockParam(std::nullptr_t _ = nullptr)
+  constexpr RWLockParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -120,7 +120,7 @@ struct SemaphoreParam
   }
 
   /// Constructs null/invalid
-  constexpr SemaphoreParam(std::nullptr_t _ = nullptr)
+  constexpr SemaphoreParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -156,7 +156,7 @@ struct ConditionParam
   }
 
   /// Constructs null/invalid
-  constexpr ConditionParam(std::nullptr_t _ = nullptr)
+  constexpr ConditionParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

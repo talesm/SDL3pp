@@ -125,7 +125,7 @@ struct HapticParam
   }
 
   /// Constructs null/invalid
-  constexpr HapticParam(std::nullptr_t _ = nullptr)
+  constexpr HapticParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

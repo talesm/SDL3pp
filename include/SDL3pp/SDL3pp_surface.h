@@ -60,7 +60,7 @@ struct SurfaceParam
   }
 
   /// Constructs null/invalid
-  constexpr SurfaceParam(std::nullptr_t _ = nullptr)
+  constexpr SurfaceParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -96,7 +96,7 @@ struct SurfaceConstParam
   }
 
   /// Constructs null/invalid
-  constexpr SurfaceConstParam(std::nullptr_t _ = nullptr)
+  constexpr SurfaceConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

@@ -59,7 +59,7 @@ struct PropertiesParam
   }
 
   /// Constructs null/invalid
-  constexpr PropertiesParam(std::nullptr_t _ = nullptr)
+  constexpr PropertiesParam(std::nullptr_t = nullptr)
     : value(0)
   {
   }

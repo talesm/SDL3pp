@@ -107,7 +107,7 @@ struct AsyncIOParam
   }
 
   /// Constructs null/invalid
-  constexpr AsyncIOParam(std::nullptr_t _ = nullptr)
+  constexpr AsyncIOParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -143,7 +143,7 @@ struct AsyncIOQueueParam
   }
 
   /// Constructs null/invalid
-  constexpr AsyncIOQueueParam(std::nullptr_t _ = nullptr)
+  constexpr AsyncIOQueueParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

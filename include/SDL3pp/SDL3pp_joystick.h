@@ -75,7 +75,7 @@ struct JoystickParam
   }
 
   /// Constructs null/invalid
-  constexpr JoystickParam(std::nullptr_t _ = nullptr)
+  constexpr JoystickParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

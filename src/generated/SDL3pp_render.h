@@ -61,7 +61,7 @@ struct RendererParam
   }
 
   /// Constructs null/invalid
-  constexpr RendererParam(std::nullptr_t _ = nullptr)
+  constexpr RendererParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -97,7 +97,7 @@ struct TextureParam
   }
 
   /// Constructs null/invalid
-  constexpr TextureParam(std::nullptr_t _ = nullptr)
+  constexpr TextureParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -133,7 +133,7 @@ struct TextureConstParam
   }
 
   /// Constructs null/invalid
-  constexpr TextureConstParam(std::nullptr_t _ = nullptr)
+  constexpr TextureConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -172,7 +172,7 @@ struct GPURenderStateParam
   }
 
   /// Constructs null/invalid
-  constexpr GPURenderStateParam(std::nullptr_t _ = nullptr)
+  constexpr GPURenderStateParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

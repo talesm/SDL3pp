@@ -39,7 +39,7 @@ struct MetalViewParam
   }
 
   /// Constructs null/invalid
-  constexpr MetalViewParam(std::nullptr_t _ = nullptr)
+  constexpr MetalViewParam(std::nullptr_t = nullptr)
     : value(0)
   {
   }

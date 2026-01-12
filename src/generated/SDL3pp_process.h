@@ -51,7 +51,7 @@ struct ProcessParam
   }
 
   /// Constructs null/invalid
-  constexpr ProcessParam(std::nullptr_t _ = nullptr)
+  constexpr ProcessParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

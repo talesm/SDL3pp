@@ -41,7 +41,7 @@ struct IOStreamParam
   }
 
   /// Constructs null/invalid
-  constexpr IOStreamParam(std::nullptr_t _ = nullptr)
+  constexpr IOStreamParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

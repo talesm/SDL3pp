@@ -61,7 +61,7 @@ struct SharedObjectParam
   }
 
   /// Constructs null/invalid
-  constexpr SharedObjectParam(std::nullptr_t _ = nullptr)
+  constexpr SharedObjectParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

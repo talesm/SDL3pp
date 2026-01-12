@@ -299,7 +299,7 @@ function createParam(
         doc: [`Constructs null/invalid`],
         constexpr: true,
         type: "",
-        parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
+        parameters: [{ type: "std::nullptr_t", default: "nullptr" }],
         hints: { init: [`value(${nullValue})`] },
       },
       "operator bool": {
@@ -379,7 +379,7 @@ function createConstParam(
         doc: [`Constructs null/invalid`],
         constexpr: true,
         type: "",
-        parameters: [{ type: "std::nullptr_t", name: "_", default: "nullptr" }],
+        parameters: [{ type: "std::nullptr_t", default: "nullptr" }],
         hints: { init: [`value(${nullValue})`] },
       },
       "operator bool": {

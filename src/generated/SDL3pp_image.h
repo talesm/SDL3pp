@@ -41,7 +41,7 @@ struct AnimationParam
   }
 
   /// Constructs null/invalid
-  constexpr AnimationParam(std::nullptr_t _ = nullptr)
+  constexpr AnimationParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -77,7 +77,7 @@ struct AnimationConstParam
   }
 
   /// Constructs null/invalid
-  constexpr AnimationConstParam(std::nullptr_t _ = nullptr)
+  constexpr AnimationConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

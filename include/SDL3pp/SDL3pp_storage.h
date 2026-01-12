@@ -244,7 +244,7 @@ struct StorageParam
   }
 
   /// Constructs null/invalid
-  constexpr StorageParam(std::nullptr_t _ = nullptr)
+  constexpr StorageParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

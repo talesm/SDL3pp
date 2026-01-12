@@ -139,7 +139,7 @@ struct AudioDeviceParam
   }
 
   /// Constructs null/invalid
-  constexpr AudioDeviceParam(std::nullptr_t _ = nullptr)
+  constexpr AudioDeviceParam(std::nullptr_t = nullptr)
     : value(0)
   {
   }
@@ -175,7 +175,7 @@ struct AudioStreamParam
   }
 
   /// Constructs null/invalid
-  constexpr AudioStreamParam(std::nullptr_t _ = nullptr)
+  constexpr AudioStreamParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

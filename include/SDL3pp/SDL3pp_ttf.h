@@ -45,7 +45,7 @@ struct FontParam
   }
 
   /// Constructs null/invalid
-  constexpr FontParam(std::nullptr_t _ = nullptr)
+  constexpr FontParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -78,7 +78,7 @@ struct TextEngineParam
   }
 
   /// Constructs null/invalid
-  constexpr TextEngineParam(std::nullptr_t _ = nullptr)
+  constexpr TextEngineParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -114,7 +114,7 @@ struct TextParam
   }
 
   /// Constructs null/invalid
-  constexpr TextParam(std::nullptr_t _ = nullptr)
+  constexpr TextParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -150,7 +150,7 @@ struct TextConstParam
   }
 
   /// Constructs null/invalid
-  constexpr TextConstParam(std::nullptr_t _ = nullptr)
+  constexpr TextConstParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

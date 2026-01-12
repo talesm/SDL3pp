@@ -65,7 +65,7 @@ struct CursorParam
   }
 
   /// Constructs null/invalid
-  constexpr CursorParam(std::nullptr_t _ = nullptr)
+  constexpr CursorParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

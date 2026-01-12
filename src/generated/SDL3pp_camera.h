@@ -78,7 +78,7 @@ struct CameraParam
   }
 
   /// Constructs null/invalid
-  constexpr CameraParam(std::nullptr_t _ = nullptr)
+  constexpr CameraParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }

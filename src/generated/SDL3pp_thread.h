@@ -50,7 +50,7 @@ struct ThreadParam
   }
 
   /// Constructs null/invalid
-  constexpr ThreadParam(std::nullptr_t _ = nullptr)
+  constexpr ThreadParam(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
