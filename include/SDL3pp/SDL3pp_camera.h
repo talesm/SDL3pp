@@ -598,7 +598,10 @@ public:
   }
 
   /// True if not locked.
-  constexpr operator bool() const { return bool(m_lock); }
+  constexpr operator bool() const
+  {
+    return bool(m_lock) && Surface::operator bool();
+  }
 
   /**
    * Release a frame of video acquired from a camera.
@@ -629,7 +632,11 @@ public:
   CameraRef get() { return m_lock; }
 
   /// Releases the lock without unlocking.
-  void release() { m_lock.release(); }
+  void release()
+  {
+    Surface::release();
+    m_lock.release();
+  }
 };
 
 /**
@@ -1019,6 +1026,7 @@ inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
   : Surface(AcquireCameraFrame(resource, timestampNS))
   , m_lock(std::move(resource))
 {
+  if (!*this) m_lock.release();
 }
 
 /**
@@ -1061,7 +1069,7 @@ inline void Camera::ReleaseFrame(CameraFrame&& lock)
 inline void CameraFrame::reset()
 {
   if (!m_lock) return;
-  ReleaseCameraFrame(m_lock, *this);
+  ReleaseCameraFrame(m_lock, Surface::release());
   m_lock = {};
 }
 
