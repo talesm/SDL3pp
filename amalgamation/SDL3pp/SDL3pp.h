@@ -44421,7 +44421,6 @@ public:
    * to 0, then you can read and write to the surface at any time, and the pixel
    * format of the surface will not change.
    *
-   * @param surface the Surface structure to be locked.
    * @post true on success or false on failure; call GetError() for more
    *       information.
    *
@@ -44449,8 +44448,6 @@ public:
 
   /**
    * Release a surface after directly accessing the pixels.
-   *
-   * @param surface the Surface structure to be unlocked.
    *
    * @threadsafety This function is not thread safe. The locking referred to by
    *               this function is making the pixels available for direct
@@ -44484,7 +44481,14 @@ public:
    * components from pixel formats with less than 8 bits per RGB component.
    *
    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-   * @returns color on success.
+   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+   *          ignore this channel.
    * @throws Error on failure.
    *
    * @threadsafety This function can be called on different threads with
@@ -44510,16 +44514,8 @@ public:
    * Like GetRGBA, this uses the entire 0..255 range when converting color
    * components from pixel formats with less than 8 bits per RGB component.
    *
-   * @param surface the surface to read.
    * @param p the coordinates, 0 <= x < width and 0 <= y < height.
-   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
-   *          ignore this channel.
-   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-   *          ignore this channel.
-   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
-   *          ignore this channel.
-   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
-   *          ignore this channel.
+   * @returns color on success.
    * @throws Error on failure.
    *
    * @threadsafety This function can be called on different threads with
@@ -44640,8 +44636,6 @@ public:
 
   /**
    * Release a surface after directly accessing the pixels.
-   *
-   * @param surface the Surface structure to be unlocked.
    *
    * @threadsafety This function is not thread safe. The locking referred to by
    *               this function is making the pixels available for direct
