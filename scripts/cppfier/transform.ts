@@ -2082,7 +2082,6 @@ function expandTypes(
   function expandLock(targetName: string, targetEntry: ApiEntryTransform) {
     const lockDef = getLockDefinition(targetEntry, targetName);
     delete targetEntry.lock;
-
     context.includeAfter(
       {
         kind: "forward",
@@ -2090,6 +2089,7 @@ function expandTypes(
       },
       "__begin"
     );
+    if (!transformMap[targetName]) transformMap[targetName] = targetEntry;
 
     addHints(targetEntry, { private: true });
     if (!targetEntry.doc) addHints(targetEntry, { copyDoc: lockDef.lockFunc });

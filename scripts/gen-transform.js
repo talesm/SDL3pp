@@ -894,6 +894,22 @@ const transform = {
           before: "SDL_Camera",
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
+        "SDL_Camera": {
+          resource: true,
+          lock: {
+            lockFunc: "SDL_AcquireCameraFrame",
+            unlockFunc: "SDL_ReleaseCameraFrame",
+          },
+          entries: {
+            "SDL_OpenCamera": "ctor",
+          },
+        },
+        "CameraLock": {
+          kind: "struct",
+          after: "SDL_Camera",
+          name: "CameraFrame",
+          type: "Surface",
+        },
         "SDL_GetCameras": {
           type: "OwnArray<CameraID>",
           parameters: [],
@@ -910,6 +926,9 @@ const transform = {
         "SDL_OpenCamera": {
           parameters: [{}, { type: "OptionalRef<const CameraSpec>", default: "{}" }]
         },
+        "SDL_AcquireCameraFrame": {
+          parameters: [{}, { default: "nullptr" }],
+        }
       },
     },
     "SDL_clipboard.h": {

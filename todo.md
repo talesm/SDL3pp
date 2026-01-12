@@ -25,10 +25,10 @@ Next version
 - [x] Fix MemoryBarrierRelease and MemoryBarrierAcquire;
 - [x] Replace all SDL_\* parameters with \*Raw equivalents;
 - [x] Fix GetGamepadBindings()
-- [ ] Design a RAII workflow to deal with Lock/Unlock patterns present on
+- [x] Design a RAII workflow to deal with Lock/Unlock patterns present on
   several APIS;
   - [x] AudioStreamLock for SDL_LockAudioStream;
-  - [ ] CameraFrameLock for SDL_AcquireCameraFrame;
+  - [x] CameraFrameLock for SDL_AcquireCameraFrame;
   - [x] JoystickApiLock for SDL_LockJoysticks;
   - [x] PropertiesLock for SDL_LockProperties;
   - [x] SurfaceLock for SDL_LockSurface;

@@ -3615,7 +3615,8 @@ public:
 
   /// Move constructor
   constexpr TextureLock(TextureLock&& other) noexcept
-    : m_lock(other.m_lock)
+    : Surface(std::move(other))
+    , m_lock(other.m_lock)
   {
     other.m_lock = {};
   }
