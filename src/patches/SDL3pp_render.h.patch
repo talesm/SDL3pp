@@ -991,8 +991,8 @@
 -   *                any specific pixel content.
 -   * @post true on success or false on failure; call GetError() for more
 -   *       information.
-+   * @returns a surface of size **rect**. Don't assume any specific pixel
-+   *          content.
++   * @post a surface of size **rect**. Don't assume any specific pixel
++   *       content.
 +   * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
@@ -1704,7 +1704,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -5708,7 +5805,9 @@
+@@ -5708,18 +5805,21 @@
    TextureParam texture,
    OptionalRef<const RectRaw> rect = std::nullopt)
  {
@@ -1715,8 +1715,9 @@
  }
  
  inline TextureLock Texture::LockToSurface(OptionalRef<const RectRaw> rect)
-@@ -5716,10 +5815,11 @@
-   return {TextureRef(*this)};
+ {
+-  return {TextureRef(*this)};
++  return {TextureRef(*this), rect};
  }
  
 -inline TextureLock::TextureLock(TextureRef resource)
@@ -1769,8 +1770,8 @@
  inline Texture GetRenderTarget(RendererParam renderer)
  {
 -  return SDL_GetRenderTarget(renderer);
-+  TextureRaw texture = SDL_GetRenderTarget(renderer);
-+  if (texture) return Texture::Borrow(texture);
++  if (auto texture = SDL_GetRenderTarget(renderer))
++    return Texture::Borrow(texture);
 +  return {};
  }
  

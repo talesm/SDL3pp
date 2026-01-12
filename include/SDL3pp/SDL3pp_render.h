@@ -3596,8 +3596,8 @@ public:
    *                `TEXTUREACCESS_STREAMING`.
    * @param rect a pointer to the rectangle to lock for access. If the rect is
    *             nullptr, the entire texture will be locked.
-   * @returns a surface of size **rect**. Don't assume any specific pixel
-   *          content.
+   * @post a surface of size **rect**. Don't assume any specific pixel
+   *       content.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -5812,7 +5812,7 @@ inline Surface LockTextureToSurface(
 
 inline TextureLock Texture::LockToSurface(OptionalRef<const RectRaw> rect)
 {
-  return {TextureRef(*this)};
+  return {TextureRef(*this), rect};
 }
 
 inline TextureLock::TextureLock(TextureRef resource,
@@ -5930,8 +5930,8 @@ inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
  */
 inline Texture GetRenderTarget(RendererParam renderer)
 {
-  TextureRaw texture = SDL_GetRenderTarget(renderer);
-  if (texture) return Texture::Borrow(texture);
+  if (auto texture = SDL_GetRenderTarget(renderer))
+    return Texture::Borrow(texture);
   return {};
 }
 
