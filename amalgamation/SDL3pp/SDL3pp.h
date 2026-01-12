@@ -11464,6 +11464,12 @@ struct PaletteRef : Palette
     : Palette(Borrow(resource))
   {
   }
+
+  /// Constructs from Palette.
+  PaletteRef(Palette resource) noexcept
+    : Palette(std::move(resource))
+  {
+  }
 };
 
 /**
@@ -11985,6 +11991,9 @@ struct PropertiesParam
   constexpr operator PropertiesID() const { return value; }
 };
 
+// Forward decl
+struct PropertiesLock;
+
 /**
  * SDL property type
  *
@@ -12253,7 +12262,7 @@ public:
    *
    * @sa Properties.Unlock
    */
-  void Lock();
+  PropertiesLock Lock();
 
   /**
    * Unlock a group of properties.
@@ -12264,7 +12273,7 @@ public:
    *
    * @sa Properties.Lock
    */
-  void Unlock();
+  void Unlock(PropertiesLock&& lock);
 
   /**
    * Set a pointer property in a group of properties with a cleanup function
@@ -12654,6 +12663,112 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
+/**
+ * Lock a group of properties.
+ *
+ * Obtain a multi-threaded lock for these properties. Other threads will wait
+ * while trying to lock these properties until they are unlocked. Properties
+ * must be unlocked before they are destroyed.
+ *
+ * The lock is automatically taken when setting individual properties, this
+ * function is only needed when you want to set several properties atomically or
+ * want to guarantee that properties being queried aren't freed in another
+ * thread.
+ *
+ * @param props the properties to lock.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Properties.Unlock
+ */
+class PropertiesLock
+{
+  PropertiesRef m_lock;
+
+public:
+  /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @param props the properties to lock.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Unlock
+   */
+  PropertiesLock(PropertiesRef resource);
+
+  /// Copy constructor
+  PropertiesLock(const PropertiesLock& other) = delete;
+
+  /// Move constructor
+  constexpr PropertiesLock(PropertiesLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @param props the properties to unlock.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Lock
+   */
+  ~PropertiesLock() { reset(); }
+
+  PropertiesLock& operator=(const PropertiesLock& other) = delete;
+
+  /// Assignment operator
+  PropertiesLock& operator=(PropertiesLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @param props the properties to unlock.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  PropertiesRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
+};
+
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
@@ -12771,7 +12886,13 @@ inline void LockProperties(PropertiesParam props)
   CheckError(SDL_LockProperties(props));
 }
 
-inline void Properties::Lock() { SDL::LockProperties(m_resource); }
+inline PropertiesLock Properties::Lock() { return {PropertiesRef(*this)}; }
+
+inline PropertiesLock::PropertiesLock(PropertiesRef resource)
+  : m_lock(std::move(resource))
+{
+  LockProperties(m_lock);
+}
 
 /**
  * Unlock a group of properties.
@@ -12789,7 +12910,18 @@ inline void UnlockProperties(PropertiesParam props)
   SDL_UnlockProperties(props);
 }
 
-inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
+inline void Properties::Unlock(PropertiesLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void PropertiesLock::reset()
+{
+  if (!m_lock) return;
+  UnlockProperties(m_lock);
+  m_lock = {};
+}
 
 /**
  * Set a pointer property in a group of properties with a cleanup function that
@@ -33507,6 +33639,9 @@ struct AudioStreamParam
   constexpr operator AudioStreamRaw() const { return value; }
 };
 
+// Forward decl
+struct AudioStreamLock;
+
 /**
  * Mask of bits in an AudioFormat that contains the format bit size.
  *
@@ -35995,7 +36130,7 @@ public:
    *
    * @sa AudioStream.Unlock
    */
-  void Lock();
+  AudioStreamLock Lock();
 
   /**
    * Unlock an audio stream for serialized access.
@@ -36011,7 +36146,7 @@ public:
    *
    * @sa AudioStream.Lock
    */
-  void Unlock();
+  void Unlock(AudioStreamLock&& lock);
 
   /**
    * Set a callback that runs when data is requested from an audio stream.
@@ -36316,6 +36451,121 @@ struct AudioStreamRef : AudioStream
 
   /// Destructor
   ~AudioStreamRef() { release(); }
+};
+
+/**
+ * Lock an audio stream for serialized access.
+ *
+ * Each AudioStream has an internal mutex it uses to protect its data structures
+ * from threading conflicts. This function allows an app to lock that mutex,
+ * which could be useful if registering callbacks on this stream.
+ *
+ * One does not need to lock a stream to use in it most cases, as the stream
+ * manages this lock internally. However, this lock is held during callbacks,
+ * which may run from arbitrary threads at any time, so if an app needs to
+ * protect shared data during those callbacks, locking the stream guarantees
+ * that the callback is not running while the lock is held.
+ *
+ * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+ * the same attributes (recursive locks are allowed, etc).
+ *
+ * @sa AudioStream.Lock
+ */
+class AudioStreamLock
+{
+  AudioStreamRef m_lock;
+
+public:
+  /**
+   * Lock an audio stream for serialized access.
+   *
+   * Each AudioStream has an internal mutex it uses to protect its data
+   * structures from threading conflicts. This function allows an app to lock
+   * that mutex, which could be useful if registering callbacks on this stream.
+   *
+   * One does not need to lock a stream to use in it most cases, as the stream
+   * manages this lock internally. However, this lock is held during callbacks,
+   * which may run from arbitrary threads at any time, so if an app needs to
+   * protect shared data during those callbacks, locking the stream guarantees
+   * that the callback is not running while the lock is held.
+   *
+   * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
+   * the same attributes (recursive locks are allowed, etc).
+   *
+   * @param stream the audio stream to lock.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Unlock
+   */
+  AudioStreamLock(AudioStreamRef resource);
+
+  /// Copy constructor
+  AudioStreamLock(const AudioStreamLock& other) = delete;
+
+  /// Move constructor
+  constexpr AudioStreamLock(AudioStreamLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock an audio stream for serialized access.
+   *
+   * This unlocks an audio stream after a call to AudioStream.Lock.
+   *
+   * @param stream the audio stream to unlock.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety You should only call this from the same thread that
+   *               previously called AudioStream.Lock.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Lock
+   */
+  ~AudioStreamLock() { reset(); }
+
+  AudioStreamLock& operator=(const AudioStreamLock& other) = delete;
+
+  /// Assignment operator
+  AudioStreamLock& operator=(AudioStreamLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock an audio stream for serialized access.
+   *
+   * This unlocks an audio stream after a call to AudioStream.Lock.
+   *
+   * @param stream the audio stream to unlock.
+   * @throws Error on failure.
+   *
+   * @threadsafety You should only call this from the same thread that
+   *               previously called AudioStream.Lock.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa AudioStream.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  AudioStreamRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
 };
 
 /**
@@ -38003,7 +38253,13 @@ inline void LockAudioStream(AudioStreamParam stream)
   CheckError(SDL_LockAudioStream(stream));
 }
 
-inline void AudioStream::Lock() { SDL::LockAudioStream(m_resource); }
+inline AudioStreamLock AudioStream::Lock() { return {AudioStreamRef(*this)}; }
+
+inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
+  : m_lock(std::move(resource))
+{
+  LockAudioStream(m_lock);
+}
 
 /**
  * Unlock an audio stream for serialized access.
@@ -38025,7 +38281,18 @@ inline void UnlockAudioStream(AudioStreamParam stream)
   CheckError(SDL_UnlockAudioStream(stream));
 }
 
-inline void AudioStream::Unlock() { SDL::UnlockAudioStream(m_resource); }
+inline void AudioStream::Unlock(AudioStreamLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void AudioStreamLock::reset()
+{
+  if (!m_lock) return;
+  UnlockAudioStream(m_lock);
+  m_lock = {};
+}
 
 /**
  * Set a callback that runs when data is requested from an audio stream.
@@ -42215,6 +42482,9 @@ struct SurfaceConstParam
   constexpr auto operator->() { return value; }
 };
 
+// Forward decl
+struct SurfaceLock;
+
 /**
  * The flags on an Surface.
  *
@@ -42909,7 +43179,7 @@ public:
    * @sa Surface.MustLock
    * @sa Surface.Unlock
    */
-  void Lock();
+  SurfaceLock Lock();
 
   /**
    * Release a surface after directly accessing the pixels.
@@ -42922,7 +43192,7 @@ public:
    *
    * @sa Surface.Lock
    */
-  void Unlock();
+  void Unlock(SurfaceLock&& lock);
 
   /**
    * Save a surface to a seekable SDL data stream in BMP format.
@@ -44109,6 +44379,279 @@ struct SurfaceRef : Surface
     : Surface(Borrow(resource))
   {
   }
+
+  /// Constructs from Surface.
+  SurfaceRef(Surface resource) noexcept
+    : Surface(std::move(resource))
+  {
+  }
+};
+
+/**
+ * Set up a surface for directly accessing the pixels.
+ *
+ * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and read
+ * from `surface->pixels`, using the pixel format stored in `surface->format`.
+ * Once you are done accessing the surface, you should use Surface.Unlock() to
+ * release it.
+ *
+ * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates to
+ * 0, then you can read and write to the surface at any time, and the pixel
+ * format of the surface will not change.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface.MustLock
+ * @sa Surface.Unlock
+ */
+class SurfaceLock
+{
+  SurfaceRef m_lock;
+
+public:
+  /**
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to Surface.Lock() / Surface.Unlock(), you can write to and
+   * read from `surface->pixels`, using the pixel format stored in
+   * `surface->format`. Once you are done accessing the surface, you should use
+   * Surface.Unlock() to release it.
+   *
+   * Not all surfaces require locking. If `Surface.MustLock(surface)` evaluates
+   * to 0, then you can read and write to the surface at any time, and the pixel
+   * format of the surface will not change.
+   *
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces. The locking referred to by this function
+   *               is making the pixels available for direct access, not
+   *               thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.MustLock
+   * @sa Surface.Unlock
+   */
+  SurfaceLock(SurfaceRef resource);
+
+  /// Copy constructor
+  SurfaceLock(const SurfaceLock& other) = delete;
+
+  /// Move constructor
+  constexpr SurfaceLock(SurfaceLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Release a surface after directly accessing the pixels.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Lock
+   */
+  ~SurfaceLock() { reset(); }
+
+  SurfaceLock& operator=(const SurfaceLock& other) = delete;
+
+  /// Assignment operator
+  SurfaceLock& operator=(SurfaceLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+   *          ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void ReadPixel(const PointRaw& p,
+                 Uint8* r,
+                 Uint8* g,
+                 Uint8* b,
+                 Uint8* a) const
+  {
+    m_lock.ReadPixel(p, r, g, b, a);
+  }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like GetRGBA, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Color ReadPixel(const PointRaw& p) const { return m_lock.ReadPixel(p); }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @param r a pointer filled in with the red channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param g a pointer filled in with the green channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param b a pointer filled in with the blue channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @param a a pointer filled in with the alpha channel, normally in the range
+   *          0-1, or nullptr to ignore this channel.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void ReadPixelFloat(const PointRaw& p,
+                      float* r,
+                      float* g,
+                      float* b,
+                      float* a) const
+  {
+    m_lock.ReadPixelFloat(p, r, g, b, a);
+  }
+
+  /**
+   * Retrieves a single pixel from a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+   * @returns color on success.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  FColor ReadPixelFloat(const PointRaw& p) const
+  {
+    return m_lock.ReadPixelFloat(p);
+  }
+
+  /**
+   * Writes a single pixel to a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * Like MapColor, this uses the entire 0..255 range when converting color
+   * components from pixel formats with less than 8 bits per RGB component.
+   *
+   * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+   * @param c the color channels value, 0-255.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WritePixel(const PointRaw& p, ColorRaw c) { m_lock.WritePixel(p, c); }
+
+  /**
+   * Writes a single pixel to a surface.
+   *
+   * This function prioritizes correctness over speed: it is suitable for unit
+   * tests, but is not intended for use in a game engine.
+   *
+   * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+   * @param c the color channels values, normally in the range 0-1.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function can be called on different threads with
+   *               different surfaces.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void WritePixelFloat(const PointRaw& p, const FColorRaw& c)
+  {
+    m_lock.WritePixelFloat(p, c);
+  }
+
+  /// Get the width in pixels.
+  constexpr int GetWidth() const { return m_lock.GetWidth(); }
+
+  /// Get the height in pixels.
+  constexpr int GetHeight() const { return m_lock.GetHeight(); }
+
+  /// Get the size in pixels.
+  constexpr Point GetSize() const { return m_lock.GetSize(); }
+
+  /// Get pitch in bytes.
+  constexpr int GetPitch() const { return m_lock.GetPitch(); }
+
+  /// Get the pixel format.
+  constexpr PixelFormat GetFormat() const { return m_lock.GetFormat(); }
+
+  /// Get the pixels.
+  constexpr void* GetPixels() const { return m_lock.GetPixels(); }
+
+  /**
+   * Release a surface after directly accessing the pixels.
+   *
+   * @threadsafety This function is not thread safe. The locking referred to by
+   *               this function is making the pixels available for direct
+   *               access, not thread-safe locking.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Surface.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  SurfaceRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
 };
 
 /**
@@ -44553,7 +45096,13 @@ inline void LockSurface(SurfaceParam surface)
   CheckError(SDL_LockSurface(surface));
 }
 
-inline void Surface::Lock() { SDL::LockSurface(m_resource); }
+inline SurfaceLock Surface::Lock() { return {SurfaceRef(*this)}; }
+
+inline SurfaceLock::SurfaceLock(SurfaceRef resource)
+  : m_lock(std::move(resource))
+{
+  LockSurface(m_lock);
+}
 
 /**
  * Release a surface after directly accessing the pixels.
@@ -44570,7 +45119,18 @@ inline void Surface::Lock() { SDL::LockSurface(m_resource); }
  */
 inline void UnlockSurface(SurfaceParam surface) { SDL_UnlockSurface(surface); }
 
-inline void Surface::Unlock() { SDL::UnlockSurface(m_resource); }
+inline void Surface::Unlock(SurfaceLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void SurfaceLock::reset()
+{
+  if (!m_lock) return;
+  UnlockSurface(m_lock);
+  m_lock = {};
+}
 
 #ifndef SDL3PP_ENABLE_IMAGE
 #if SDL_VERSION_ATLEAST(3, 4, 0)
@@ -46412,6 +46972,66 @@ inline Color ReadSurfacePixel(SurfaceConstParam surface, const PointRaw& p)
   return c;
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like GetRGBA, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @param r a pointer filled in with the red channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param g a pointer filled in with the green channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param b a pointer filled in with the blue channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @param a a pointer filled in with the alpha channel, 0-255, or nullptr to
+ *          ignore this channel.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void ReadSurfacePixel(const SurfaceLock& lock,
+                             const PointRaw& p,
+                             Uint8* r,
+                             Uint8* g,
+                             Uint8* b,
+                             Uint8* a)
+{
+  lock.ReadPixel(p, r, g, b, a);
+}
+
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like GetRGBA, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @returns color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Color ReadSurfacePixel(const SurfaceLock& lock, const PointRaw& p)
+{
+  return lock.ReadPixel(p);
+}
+
 inline void Surface::ReadPixel(const PointRaw& p,
                                Uint8* r,
                                Uint8* g,
@@ -46483,6 +47103,60 @@ inline FColor ReadSurfacePixelFloat(SurfaceConstParam surface,
   return c;
 }
 
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @param r a pointer filled in with the red channel, normally in the range 0-1,
+ *          or nullptr to ignore this channel.
+ * @param g a pointer filled in with the green channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param b a pointer filled in with the blue channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @param a a pointer filled in with the alpha channel, normally in the range
+ *          0-1, or nullptr to ignore this channel.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void ReadSurfacePixelFloat(const SurfaceLock& lock,
+                                  const PointRaw& p,
+                                  float* r,
+                                  float* g,
+                                  float* b,
+                                  float* a)
+{
+  lock.ReadPixelFloat(p, r, g, b, a);
+}
+
+/**
+ * Retrieves a single pixel from a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param lock the surface to read.
+ * @param p the coordinates, 0 <= x < width and 0 <= y < height.
+ * @returns color on success.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline FColor ReadSurfacePixelFloat(const SurfaceLock& lock, const PointRaw& p)
+{
+  return lock.ReadPixelFloat(p);
+}
+
 inline void Surface::ReadPixelFloat(const PointRaw& p,
                                     float* r,
                                     float* g,
@@ -46523,6 +47197,30 @@ inline void WriteSurfacePixel(SurfaceParam surface,
   CheckError(SDL_WriteSurfacePixel(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
 
+/**
+ * Writes a single pixel to a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * Like MapColor, this uses the entire 0..255 range when converting color
+ * components from pixel formats with less than 8 bits per RGB component.
+ *
+ * @param lock the surface to write.
+ * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+ * @param c the color channels value, 0-255.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void WriteSurfacePixel(SurfaceLock& lock, const PointRaw& p, ColorRaw c)
+{
+  lock.WritePixel(p, c);
+}
+
 inline void Surface::WritePixel(const PointRaw& p, ColorRaw c)
 {
   SDL::WriteSurfacePixel(m_resource, p, c);
@@ -46551,37 +47249,72 @@ inline void WriteSurfacePixelFloat(SurfaceParam surface,
   CheckError(SDL_WriteSurfacePixelFloat(surface, p.x, p.y, c.r, c.g, c.b, c.a));
 }
 
+/**
+ * Writes a single pixel to a surface.
+ *
+ * This function prioritizes correctness over speed: it is suitable for unit
+ * tests, but is not intended for use in a game engine.
+ *
+ * @param lock the surface to write.
+ * @param p the coordinates, 0 <= x < width, 0 <= y < height.
+ * @param c the color channels values, normally in the range 0-1.
+ * @throws Error on failure.
+ *
+ * @threadsafety This function can be called on different threads with different
+ *               surfaces.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline void WriteSurfacePixelFloat(SurfaceLock& lock,
+                                   const PointRaw& p,
+                                   const FColorRaw& c)
+{
+  lock.WritePixelFloat(p, c);
+}
+
 inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 {
   SDL::WriteSurfacePixelFloat(m_resource, p, c);
 }
 
-/**
- * Get the width in pixels.
- */
+/// Get the width in pixels.
 constexpr int GetSurfaceWidth(SurfaceConstParam surface) { return surface->w; }
+
+/// Get the width in pixels.
+constexpr int GetSurfaceWidth(const SurfaceLock& lock)
+{
+  return lock.GetWidth();
+}
 
 constexpr int Surface::GetWidth() const
 {
   return SDL::GetSurfaceWidth(m_resource);
 }
 
-/**
- * Get the height in pixels.
- */
+/// Get the height in pixels.
 constexpr int GetSurfaceHeight(SurfaceConstParam surface) { return surface->h; }
+
+/// Get the height in pixels.
+constexpr int GetSurfaceHeight(const SurfaceLock& lock)
+{
+  return lock.GetHeight();
+}
 
 constexpr int Surface::GetHeight() const
 {
   return SDL::GetSurfaceHeight(m_resource);
 }
 
-/**
- * Get the size in pixels.
- */
+/// Get the size in pixels.
 constexpr Point GetSurfaceSize(SurfaceConstParam surface)
 {
   return Point(surface->w, surface->h);
+}
+
+/// Get the size in pixels.
+constexpr Point GetSurfaceSize(const SurfaceLock& lock)
+{
+  return lock.GetSize();
 }
 
 constexpr Point Surface::GetSize() const
@@ -46589,12 +47322,16 @@ constexpr Point Surface::GetSize() const
   return SDL::GetSurfaceSize(m_resource);
 }
 
-/**
- * Get pitch in bytes.
- */
+/// Get pitch in bytes.
 constexpr int GetSurfacePitch(SurfaceConstParam surface)
 {
   return surface->pitch;
+}
+
+/// Get pitch in bytes.
+constexpr int GetSurfacePitch(const SurfaceLock& lock)
+{
+  return lock.GetPitch();
 }
 
 constexpr int Surface::GetPitch() const
@@ -46602,12 +47339,16 @@ constexpr int Surface::GetPitch() const
   return SDL::GetSurfacePitch(m_resource);
 }
 
-/**
- * Get the pixel format.
- */
+/// Get the pixel format.
 constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
 {
   return surface->format;
+}
+
+/// Get the pixel format.
+constexpr PixelFormat GetSurfaceFormat(const SurfaceLock& lock)
+{
+  return lock.GetFormat();
 }
 
 constexpr PixelFormat Surface::GetFormat() const
@@ -46615,12 +47356,16 @@ constexpr PixelFormat Surface::GetFormat() const
   return SDL::GetSurfaceFormat(m_resource);
 }
 
-/**
- * Get the pixels.
- */
+/// Get the pixels.
 constexpr void* GetSurfacePixels(SurfaceConstParam surface)
 {
   return surface->pixels;
+}
+
+/// Get the pixels.
+constexpr void* GetSurfacePixels(const SurfaceLock& lock)
+{
+  return lock.GetPixels();
 }
 
 constexpr void* Surface::GetPixels() const
@@ -47580,6 +48325,9 @@ struct CameraParam
   constexpr operator CameraRaw() const { return value; }
 };
 
+// Forward decl
+struct CameraFrame;
+
 /**
  * This is a unique ID for a camera device for the time it is connected to the
  * system, and is never reused for the lifetime of the application.
@@ -47921,7 +48669,7 @@ public:
    *
    * @sa Camera.ReleaseFrame
    */
-  Surface AcquireFrame(Uint64* timestampNS = nullptr);
+  CameraFrame AcquireFrame(Uint64* timestampNS = nullptr);
 
   /**
    * Release a frame of video acquired from a camera.
@@ -47940,7 +48688,7 @@ public:
    * The app should not use the surface again after calling this function;
    * assume the surface is freed and the pointer is invalid.
    *
-   * @param frame the video frame surface to release.
+   * @param lock the video frame surface to release.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -47948,7 +48696,7 @@ public:
    *
    * @sa Camera.AcquireFrame
    */
-  void ReleaseFrame(SurfaceParam frame);
+  void ReleaseFrame(CameraFrame&& lock);
 };
 
 /// Semi-safe reference for Camera.
@@ -47985,6 +48733,135 @@ struct CameraRef : Camera
 
   /// Destructor
   ~CameraRef() { release(); }
+};
+
+/// Camera Frame.
+class CameraFrame : public Surface
+{
+  CameraRef m_lock;
+
+public:
+  /**
+   * Acquire a frame.
+   *
+   * The frame is a memory pointer to the image data, whose size and format are
+   * given by the spec requested when opening the device.
+   *
+   * This is a non blocking API. If there is a frame available, a non-nullptr
+   * surface is returned, and timestampNS will be filled with a non-zero value.
+   *
+   * Note that an error case can also return nullptr, but a nullptr by itself is
+   * normal and just signifies that a new frame is not yet available. Note that
+   * even if a camera device fails outright (a USB camera is unplugged while in
+   * use, etc), SDL will send an event separately to notify the app, but
+   * continue to provide blank frames at ongoing intervals until Camera.Close()
+   * is called, so real failure here is almost always an out of memory
+   * condition.
+   *
+   * After use, the frame should be released with Camera.ReleaseFrame(). If you
+   * don't do this, the system may stop providing more video!
+   *
+   * Do not call Surface.Destroy() on the returned surface! It must be given
+   * back to the camera subsystem with Camera.ReleaseFrame!
+   *
+   * If the system is waiting for the user to approve access to the camera, as
+   * some platforms require, this will return nullptr (no frames available); you
+   * should either wait for an EVENT_CAMERA_DEVICE_APPROVED (or
+   * EVENT_CAMERA_DEVICE_DENIED) event, or poll Camera.GetPermissionState()
+   * occasionally until it returns non-zero.
+   *
+   * @param resource opened camera device.
+   * @param timestampNS a pointer filled in with the frame's timestamp, or 0 on
+   *                    error. Can be nullptr.
+   * @post a new frame of video on success, nullptr if none is currently
+   *       available.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Camera.ReleaseFrame
+   */
+  CameraFrame(CameraRef resource, Uint64* timestampNS = nullptr);
+
+  /// Copy constructor
+  CameraFrame(const CameraFrame& other) = delete;
+
+  /// Move constructor
+  constexpr CameraFrame(CameraFrame&& other) noexcept
+    : Surface(std::move(other))
+    , m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Release a frame of video acquired from a camera.
+   *
+   * Let the back-end re-use the internal buffer for camera.
+   *
+   * This function _must_ be called only on surface objects returned by
+   * Camera.AcquireFrame(). This function should be called as quickly as
+   * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
+   * video frames; if surfaces aren't released in a timely manner, SDL may drop
+   * upcoming video frames from the camera.
+   *
+   * If the app needs to keep the surface for a significant time, they should
+   * make a copy of it and release the original.
+   *
+   * The app should not use the surface again after calling this function;
+   * assume the surface is freed and the pointer is invalid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Camera.AcquireFrame
+   */
+  ~CameraFrame() { reset(); }
+
+  CameraFrame& operator=(const CameraFrame& other) = delete;
+
+  /// Assignment operator
+  CameraFrame& operator=(CameraFrame&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Release a frame of video acquired from a camera.
+   *
+   * Let the back-end re-use the internal buffer for camera.
+   *
+   * This function _must_ be called only on surface objects returned by
+   * Camera.AcquireFrame(). This function should be called as quickly as
+   * possible after acquisition, as SDL keeps a small FIFO queue of surfaces for
+   * video frames; if surfaces aren't released in a timely manner, SDL may drop
+   * upcoming video frames from the camera.
+   *
+   * If the app needs to keep the surface for a significant time, they should
+   * make a copy of it and release the original.
+   *
+   * The app should not use the surface again after calling this function;
+   * assume the surface is freed and the pointer is invalid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Camera.AcquireFrame
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  CameraRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
 };
 
 /**
@@ -48365,9 +49242,15 @@ inline Surface AcquireCameraFrame(CameraParam camera,
   return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
 }
 
-inline Surface Camera::AcquireFrame(Uint64* timestampNS)
+inline CameraFrame Camera::AcquireFrame(Uint64* timestampNS)
 {
-  return SDL::AcquireCameraFrame(m_resource, timestampNS);
+  return {CameraRef(*this)};
+}
+
+inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
+  : Surface(AcquireCameraFrame(resource, timestampNS))
+  , m_lock(std::move(resource))
+{
 }
 
 /**
@@ -48401,9 +49284,17 @@ inline void ReleaseCameraFrame(CameraParam camera, SurfaceParam frame)
   SDL_ReleaseCameraFrame(camera, frame);
 }
 
-inline void Camera::ReleaseFrame(SurfaceParam frame)
+inline void Camera::ReleaseFrame(CameraFrame&& lock)
 {
-  SDL::ReleaseCameraFrame(m_resource, frame);
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void CameraFrame::reset()
+{
+  if (!m_lock) return;
+  ReleaseCameraFrame(m_lock, *this);
+  m_lock = {};
 }
 
 /**
@@ -70249,6 +71140,9 @@ using JoystickIDRaw = SDL_JoystickID;
 // Forward decl
 struct JoystickID;
 
+// Forward decl
+struct JoystickApiLock;
+
 /**
  * An enum of some common joystick types.
  *
@@ -71422,7 +72316,88 @@ constexpr int JOYSTICK_AXIS_MIN = SDL_JOYSTICK_AXIS_MIN;
  *
  * @since This function is available since SDL 3.2.0.
  */
+class JoystickApiLock
+{
+  bool m_lock;
+
+public:
+  /**
+   * Locking for atomic access to the joystick API.
+   *
+   * The SDL joystick functions are thread-safe, however you can lock the
+   * joysticks while processing to guarantee that the joystick list won't change
+   * and joystick and gamepad events will not be delivered.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  JoystickApiLock();
+
+  /// Copy constructor
+  JoystickApiLock(const JoystickApiLock& other) = delete;
+
+  /// Move constructor
+  constexpr JoystickApiLock(JoystickApiLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlocking for atomic access to the joystick API.
+   *
+   * @threadsafety This should be called from the same thread that called
+   *               LockJoysticks().
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  ~JoystickApiLock() { reset(); }
+
+  JoystickApiLock& operator=(const JoystickApiLock& other) = delete;
+
+  /// Assignment operator
+  JoystickApiLock& operator=(JoystickApiLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlocking for atomic access to the joystick API.
+   *
+   * @threadsafety This should be called from the same thread that called
+   *               LockJoysticks().
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void reset();
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock = false; }
+};
+
+/**
+ * Locking for atomic access to the joystick API.
+ *
+ * The SDL joystick functions are thread-safe, however you can lock the
+ * joysticks while processing to guarantee that the joystick list won't change
+ * and joystick and gamepad events will not be delivered.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
 inline void LockJoysticks() { SDL_LockJoysticks(); }
+
+inline JoystickApiLock::JoystickApiLock()
+  : m_lock(true)
+{
+  LockJoysticks();
+}
 
 /**
  * Unlocking for atomic access to the joystick API.
@@ -71433,6 +72408,13 @@ inline void LockJoysticks() { SDL_LockJoysticks(); }
  * @since This function is available since SDL 3.2.0.
  */
 inline void UnlockJoysticks() { SDL_UnlockJoysticks(); }
+
+inline void JoystickApiLock::reset()
+{
+  if (!m_lock) return;
+  UnlockJoysticks();
+  m_lock = false;
+}
 
 /**
  * Return whether a joystick is currently connected.
@@ -81056,6 +82038,9 @@ struct GPURenderStateParam
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
+// Forward decl
+struct TextureLock;
+
 /**
  * The name of the software renderer.
  *
@@ -84364,7 +85349,7 @@ public:
    * @sa Texture.Lock
    * @sa Texture.Unlock
    */
-  Surface LockToSurface(OptionalRef<const RectRaw> rect = std::nullopt);
+  TextureLock LockToSurface(OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
    * Unlock a texture, uploading the changes to video memory, if needed.
@@ -84383,7 +85368,7 @@ public:
    *
    * @sa Texture.Lock
    */
-  void Unlock();
+  void Unlock(TextureLock&& lock);
 };
 
 /// Safe reference for Texture.
@@ -84401,6 +85386,147 @@ struct TextureRef : Texture
   TextureRef(TextureRaw resource) noexcept
     : Texture(Borrow(resource))
   {
+  }
+
+  /// Constructs from Texture.
+  TextureRef(Texture resource) noexcept
+    : Texture(std::move(resource))
+  {
+  }
+};
+
+/**
+ * Lock a portion of the texture for **write-only** pixel access, and expose it
+ * as a SDL surface.
+ *
+ * Besides providing an Surface instead of raw pixel data, this function
+ * operates like Texture.Lock.
+ *
+ * As an optimization, the pixels made available for editing don't necessarily
+ * contain the old texture data. This is a write-only operation, and if you need
+ * to keep a copy of the texture data you should do that at the application
+ * level.
+ *
+ * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+ *
+ * The returned surface is freed internally after calling Texture.Unlock() or
+ * Texture.Destroy(). The caller should not free it.
+ *
+ * @since This class is available since SDL 3.2.0.
+ *
+ * @sa Texture.Lock
+ * @sa Texture.Unlock
+ */
+class TextureLock : public Surface
+{
+  TextureRef m_lock;
+
+public:
+  /**
+   * Lock a portion of the texture for **write-only** pixel access, and expose
+   * it as a SDL surface.
+   *
+   * Besides providing an Surface instead of raw pixel data, this function
+   * operates like Texture.Lock.
+   *
+   * As an optimization, the pixels made available for editing don't necessarily
+   * contain the old texture data. This is a write-only operation, and if you
+   * need to keep a copy of the texture data you should do that at the
+   * application level.
+   *
+   * You must use Texture.Unlock() to unlock the pixels and apply any changes.
+   *
+   * The returned surface is freed internally after calling Texture.Unlock() or
+   * Texture.Destroy(). The caller should not free it.
+   *
+   * @param resource the texture to lock for access, which must be created with
+   *                `TEXTUREACCESS_STREAMING`.
+   * @param rect a pointer to the rectangle to lock for access. If the rect is
+   *             nullptr, the entire texture will be locked.
+   * @post a surface of size **rect**. Don't assume any specific pixel
+   *       content.
+   * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   * @sa Texture.Unlock
+   */
+  TextureLock(TextureRef resource,
+              OptionalRef<const RectRaw> rect = std::nullopt);
+
+  /// Copy constructor
+  TextureLock(const TextureLock& other) = delete;
+
+  /// Move constructor
+  constexpr TextureLock(TextureLock&& other) noexcept
+    : Surface(std::move(other))
+    , m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock a texture, uploading the changes to video memory, if needed.
+   *
+   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * it will not guarantee the previous contents of the texture will be
+   * provided. You must fully initialize any area of a texture that you lock
+   * before unlocking it, as the pixels might otherwise be uninitialized memory.
+   *
+   * Which is to say: locking and immediately unlocking a texture can result in
+   * corrupted textures, depending on the renderer in use.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   */
+  ~TextureLock() { reset(); }
+
+  TextureLock& operator=(const TextureLock& other) = delete;
+
+  /// Assignment operator
+  TextureLock& operator=(TextureLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    Surface::operator=(std::move(other));
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock a texture, uploading the changes to video memory, if needed.
+   *
+   * **Warning**: Please note that Texture.Lock() is intended to be write-only;
+   * it will not guarantee the previous contents of the texture will be
+   * provided. You must fully initialize any area of a texture that you lock
+   * before unlocking it, as the pixels might otherwise be uninitialized memory.
+   *
+   * Which is to say: locking and immediately unlocking a texture can result in
+   * corrupted textures, depending on the renderer in use.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Texture.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  TextureRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release()
+  {
+    Surface::release();
+    m_lock.release();
   }
 };
 
@@ -86531,9 +87657,16 @@ inline Surface LockTextureToSurface(
   return Surface::Borrow(surface);
 }
 
-inline Surface Texture::LockToSurface(OptionalRef<const RectRaw> rect)
+inline TextureLock Texture::LockToSurface(OptionalRef<const RectRaw> rect)
 {
-  return SDL::LockTextureToSurface(m_resource, rect);
+  return {TextureRef(*this), rect};
+}
+
+inline TextureLock::TextureLock(TextureRef resource,
+                                OptionalRef<const RectRaw> rect)
+  : Surface(LockTextureToSurface(resource, rect))
+  , m_lock(std::move(resource))
+{
 }
 
 /**
@@ -86557,7 +87690,19 @@ inline Surface Texture::LockToSurface(OptionalRef<const RectRaw> rect)
  */
 inline void UnlockTexture(TextureParam texture) { SDL_UnlockTexture(texture); }
 
-inline void Texture::Unlock() { SDL::UnlockTexture(m_resource); }
+inline void Texture::Unlock(TextureLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void TextureLock::reset()
+{
+  if (!m_lock) return;
+  UnlockTexture(m_lock);
+  m_lock = {};
+  Surface::release();
+}
 
 /**
  * Set a texture as the current rendering target.
@@ -86632,8 +87777,8 @@ inline void Renderer::ResetTarget() { SDL::ResetRenderTarget(m_resource); }
  */
 inline Texture GetRenderTarget(RendererParam renderer)
 {
-  TextureRaw texture = SDL_GetRenderTarget(renderer);
-  if (texture) return Texture::Borrow(texture);
+  if (auto texture = SDL_GetRenderTarget(renderer))
+    return Texture::Borrow(texture);
   return {};
 }
 

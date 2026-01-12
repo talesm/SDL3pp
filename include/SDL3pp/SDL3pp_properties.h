@@ -75,6 +75,9 @@ struct PropertiesParam
   constexpr operator PropertiesID() const { return value; }
 };
 
+// Forward decl
+struct PropertiesLock;
+
 /**
  * SDL property type
  *
@@ -343,7 +346,7 @@ public:
    *
    * @sa Properties.Unlock
    */
-  void Lock();
+  PropertiesLock Lock();
 
   /**
    * Unlock a group of properties.
@@ -354,7 +357,7 @@ public:
    *
    * @sa Properties.Lock
    */
-  void Unlock();
+  void Unlock(PropertiesLock&& lock);
 
   /**
    * Set a pointer property in a group of properties with a cleanup function
@@ -744,6 +747,112 @@ struct PropertiesRef : Properties
   ~PropertiesRef() { release(); }
 };
 
+/**
+ * Lock a group of properties.
+ *
+ * Obtain a multi-threaded lock for these properties. Other threads will wait
+ * while trying to lock these properties until they are unlocked. Properties
+ * must be unlocked before they are destroyed.
+ *
+ * The lock is automatically taken when setting individual properties, this
+ * function is only needed when you want to set several properties atomically or
+ * want to guarantee that properties being queried aren't freed in another
+ * thread.
+ *
+ * @param props the properties to lock.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Properties.Unlock
+ */
+class PropertiesLock
+{
+  PropertiesRef m_lock;
+
+public:
+  /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @param props the properties to lock.
+   * @post true on success or false on failure; call GetError() for more
+   *       information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Unlock
+   */
+  PropertiesLock(PropertiesRef resource);
+
+  /// Copy constructor
+  PropertiesLock(const PropertiesLock& other) = delete;
+
+  /// Move constructor
+  constexpr PropertiesLock(PropertiesLock&& other) noexcept
+    : m_lock(other.m_lock)
+  {
+    other.m_lock = {};
+  }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @param props the properties to unlock.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Lock
+   */
+  ~PropertiesLock() { reset(); }
+
+  PropertiesLock& operator=(const PropertiesLock& other) = delete;
+
+  /// Assignment operator
+  PropertiesLock& operator=(PropertiesLock&& other) noexcept
+  {
+    std::swap(m_lock, other.m_lock);
+    return *this;
+  }
+
+  /// True if not locked.
+  constexpr operator bool() const { return bool(m_lock); }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @param props the properties to unlock.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Properties.Lock
+   */
+  void reset();
+
+  /// Get the reference to locked resource.
+  PropertiesRef get() { return m_lock; }
+
+  /// Releases the lock without unlocking.
+  void release() { m_lock.release(); }
+};
+
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
@@ -861,7 +970,13 @@ inline void LockProperties(PropertiesParam props)
   CheckError(SDL_LockProperties(props));
 }
 
-inline void Properties::Lock() { SDL::LockProperties(m_resource); }
+inline PropertiesLock Properties::Lock() { return {PropertiesRef(*this)}; }
+
+inline PropertiesLock::PropertiesLock(PropertiesRef resource)
+  : m_lock(std::move(resource))
+{
+  LockProperties(m_lock);
+}
 
 /**
  * Unlock a group of properties.
@@ -879,7 +994,18 @@ inline void UnlockProperties(PropertiesParam props)
   SDL_UnlockProperties(props);
 }
 
-inline void Properties::Unlock() { SDL::UnlockProperties(m_resource); }
+inline void Properties::Unlock(PropertiesLock&& lock)
+{
+  SDL_assert_paranoid(lock.get() == *this);
+  lock.reset();
+}
+
+inline void PropertiesLock::reset()
+{
+  if (!m_lock) return;
+  UnlockProperties(m_lock);
+  m_lock = {};
+}
 
 /**
  * Set a pointer property in a group of properties with a cleanup function that

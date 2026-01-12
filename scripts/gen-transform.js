@@ -568,6 +568,7 @@ const transform = {
         },
         "SDL_AudioStream": {
           resource: true,
+          lock: true,
           entries: {
             "SDL_CreateAudioStream": {
               name: "ctor",
@@ -893,6 +894,22 @@ const transform = {
           before: "SDL_Camera",
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
         },
+        "SDL_Camera": {
+          resource: true,
+          lock: {
+            lockFunc: "SDL_AcquireCameraFrame",
+            unlockFunc: "SDL_ReleaseCameraFrame",
+          },
+          entries: {
+            "SDL_OpenCamera": "ctor",
+          },
+        },
+        "CameraLock": {
+          kind: "struct",
+          after: "SDL_Camera",
+          name: "CameraFrame",
+          type: "Surface",
+        },
         "SDL_GetCameras": {
           type: "OwnArray<CameraID>",
           parameters: [],
@@ -909,6 +926,9 @@ const transform = {
         "SDL_OpenCamera": {
           parameters: [{}, { type: "OptionalRef<const CameraSpec>", default: "{}" }]
         },
+        "SDL_AcquireCameraFrame": {
+          parameters: [{}, { default: "nullptr" }],
+        }
       },
     },
     "SDL_clipboard.h": {
@@ -2012,6 +2032,13 @@ const transform = {
         "SDL_GetJoysticks": {
           type: "OwnArray<JoystickID>",
           parameters: [],
+        },
+        "JoystickApiLock": {
+          before: "SDL_LockJoysticks",
+          lock: {
+            lockFunc: "SDL_LockJoysticks",
+            unlockFunc: "SDL_UnlockJoysticks",
+          }
         },
       },
     },
@@ -3974,6 +4001,10 @@ const transform = {
       transform: {
         "SDL_PropertiesID": {
           name: "Properties",
+          lock: {
+            lockFunc: "SDL_LockProperties",
+            unlockFunc: "SDL_UnlockProperties",
+          },
           resource: {
             ctors: ["SDL_CreateProperties"],
             free: "SDL_DestroyProperties",
@@ -5304,11 +5335,18 @@ const transform = {
           resource: {
             shared: "refcount",
           },
+          lock: {
+            lockFunc: "SDL_LockTextureToSurface",
+            unlockFunc: "SDL_UnlockTexture",
+          },
           entries: {
             "SDL_CreateTexture": "ctor",
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
           }
+        },
+        "TextureLock": {
+          type: "Surface"
         },
         "SDL_GetTextureProperties": { parameters: [{ type: "TextureConstParam" }] },
         "SDL_GetRendererFromTexture": {
@@ -6447,6 +6485,7 @@ const transform = {
             shared: 'refcount',
             ctors: ["SDL_LoadBMP_IO", "SDL_LoadBMP", "SDL_LoadPNG_IO", "SDL_LoadPNG"],
           },
+          lock: true,
           entries: {
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
@@ -6469,6 +6508,147 @@ const transform = {
               hints: { delegate: "SDL::MustLock" },
             },
           }
+        },
+        "SurfaceLock": {
+          after: "SDL_Surface",
+          entries: {
+            "ReadPixel": {
+              kind: "function",
+              immutable: true,
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { name: "r", type: "Uint8 *" },
+                { name: "g", type: "Uint8 *" },
+                { name: "b", type: "Uint8 *" },
+                { name: "a", type: "Uint8 *" },
+              ],
+              hints: {
+                body: "m_lock.ReadPixel(p, r, g, b, a);",
+                copyDoc: "SDL_ReadSurfacePixel",
+              },
+            },
+            "ReadPixel#2": {
+              kind: "function",
+              name: "ReadPixel",
+              immutable: true,
+              type: "Color",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+              ],
+              hints: {
+                body: "return m_lock.ReadPixel(p);",
+                copyDoc: "SDL_ReadSurfacePixel",
+              },
+            },
+            "ReadPixelFloat": {
+              kind: "function",
+              immutable: true,
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { name: "r", type: "float *" },
+                { name: "g", type: "float *" },
+                { name: "b", type: "float *" },
+                { name: "a", type: "float *" },
+              ],
+              hints: {
+                body: "m_lock.ReadPixelFloat(p, r, g, b, a);",
+                copyDoc: "SDL_ReadSurfacePixelFloat",
+              },
+            },
+            "ReadPixelFloat#2": {
+              kind: "function",
+              name: "ReadPixelFloat",
+              immutable: true,
+              type: "FColor",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+              ],
+              hints: {
+                body: "return m_lock.ReadPixelFloat(p);",
+                copyDoc: "SDL_ReadSurfacePixelFloat",
+              },
+            },
+            "WritePixel": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { type: "ColorRaw", name: "c" },
+              ],
+              hints: {
+                body: "m_lock.WritePixel(p, c);",
+                copyDoc: "SDL_WriteSurfacePixel",
+              },
+            },
+            "WritePixelFloat": {
+              kind: "function",
+              type: "void",
+              parameters: [
+                { type: "const PointRaw &", name: "p" },
+                { type: "const FColorRaw &", name: "c" },
+              ],
+              hints: {
+                body: "m_lock.WritePixelFloat(p, c);",
+                copyDoc: "SDL_WriteSurfacePixelFloat",
+              },
+            },
+            "GetWidth": {
+              kind: "function",
+              immutable: true,
+              type: "int",
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_lock.GetWidth();" },
+              doc: ["Get the width in pixels."],
+            },
+            "GetHeight": {
+              kind: "function",
+              immutable: true,
+              type: "int",
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_lock.GetHeight();" },
+              doc: ["Get the height in pixels."],
+            },
+            "GetSize": {
+              kind: "function",
+              immutable: true,
+              type: "Point",
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_lock.GetSize();" },
+              doc: ["Get the size in pixels."],
+            },
+            "GetPitch": {
+              kind: "function",
+              type: "int",
+              immutable: true,
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_lock.GetPitch();" },
+              doc: ["Get pitch in bytes."],
+            },
+            "GetFormat": {
+              kind: "function",
+              immutable: true,
+              type: "PixelFormat",
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_lock.GetFormat();" },
+              doc: ["Get the pixel format."],
+            },
+            "GetPixels": {
+              kind: "function",
+              immutable: true,
+              type: "void *",
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_lock.GetPixels();" },
+              doc: ["Get the pixels."],
+            },
+          },
         },
         "SDL_GetSurfaceProperties": { immutable: true },
         "SDL_GetSurfaceColorspace": { immutable: true },
@@ -7060,48 +7240,172 @@ const transform = {
             { type: "const PointRaw &", name: "p" },
           ]
         },
+        "ReadSurfacePixel#3": {
+          kind: "function",
+          name: "ReadSurfacePixel",
+          type: "void",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { name: "r", type: "Uint8 *" },
+            { name: "g", type: "Uint8 *" },
+            { name: "b", type: "Uint8 *" },
+            { name: "a", type: "Uint8 *" },
+          ],
+          hints: { body: "lock.ReadPixel(p, r, g, b, a);" },
+        },
+        "ReadSurfacePixel#4": {
+          kind: "function",
+          name: "ReadSurfacePixel",
+          type: "Color",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+          ],
+          hints: { body: "return lock.ReadPixel(p);" },
+        },
+        "ReadSurfacePixelFloat#3": {
+          kind: "function",
+          name: "ReadSurfacePixelFloat",
+          type: "void",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { name: "r", type: "float *" },
+            { name: "g", type: "float *" },
+            { name: "b", type: "float *" },
+            { name: "a", type: "float *" },
+          ],
+          hints: { body: "lock.ReadPixelFloat(p, r, g, b, a);" },
+        },
+        "ReadSurfacePixelFloat#4": {
+          kind: "function",
+          name: "ReadSurfacePixelFloat",
+          type: "FColor",
+          parameters: [
+            { type: "const SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+          ],
+          hints: { body: "return lock.ReadPixelFloat(p);" },
+        },
+        "WriteSurfacePixel": {
+          after: "SDL_WriteSurfacePixel",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { type: "ColorRaw", name: "c" },
+          ],
+          hints: { body: "lock.WritePixel(p, c);" },
+        },
+        "WriteSurfacePixelFloat": {
+          after: "SDL_WriteSurfacePixelFloat",
+          kind: "function",
+          type: "void",
+          parameters: [
+            { type: "SurfaceLock &", name: "lock" },
+            { type: "const PointRaw &", name: "p" },
+            { type: "const FColorRaw &", name: "c" },
+          ],
+          hints: { body: "lock.WritePixelFloat(p, c);" },
+        },
         "GetSurfaceWidth": {
           after: "SDL_WriteSurfacePixelFloat",
           kind: "function",
           immutable: true,
           type: "int",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          doc: ["Get the width in pixels."],
         },
         "GetSurfaceHeight": {
           kind: "function",
           immutable: true,
           type: "int",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          doc: ["Get the height in pixels."],
         },
         "GetSurfaceSize": {
           kind: "function",
           immutable: true,
           type: "Point",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          doc: ["Get the size in pixels."],
         },
         "GetSurfacePitch": {
           kind: "function",
           type: "int",
           immutable: true,
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          doc: ["Get pitch in bytes."],
         },
         "GetSurfaceFormat": {
           kind: "function",
           immutable: true,
           type: "PixelFormat",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          doc: ["Get the pixel format."],
         },
         "GetSurfacePixels": {
           kind: "function",
           immutable: true,
           type: "void *",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          doc: ["Get the pixels."],
+        },
+        "GetSurfaceWidth#2": {
+          kind: "function",
+          name: "GetSurfaceWidth",
+          type: "int",
+          constexpr: true,
+          parameters: [{ type: "const SurfaceLock &", name: "lock" }],
+          hints: { body: "return lock.GetWidth();" },
+        },
+        "GetSurfaceHeight#2": {
+          kind: "function",
+          name: "GetSurfaceHeight",
+          type: "int",
+          constexpr: true,
+          parameters: [{ type: "const SurfaceLock &", name: "lock" }],
+          hints: { body: "return lock.GetHeight();" },
+        },
+        "GetSurfaceSize#2": {
+          kind: "function",
+          name: "GetSurfaceSize",
+          type: "Point",
+          constexpr: true,
+          parameters: [{ type: "const SurfaceLock &", name: "lock" }],
+          hints: { body: "return lock.GetSize();" },
+        },
+        "GetSurfacePitch#2": {
+          kind: "function",
+          type: "int",
+          name: "GetSurfacePitch",
+          constexpr: true,
+          parameters: [{ type: "const SurfaceLock &", name: "lock" }],
+          hints: { body: "return lock.GetPitch();" },
+        },
+        "GetSurfaceFormat#2": {
+          kind: "function",
+          name: "GetSurfaceFormat",
+          type: "PixelFormat",
+          constexpr: true,
+          parameters: [{ type: "const SurfaceLock &", name: "lock" }],
+          hints: { body: "return lock.GetFormat();" },
+        },
+        "GetSurfacePixels#2": {
+          kind: "function",
+          name: "GetSurfacePixels",
+          type: "void *",
+          constexpr: true,
+          parameters: [{ type: "const SurfaceLock &", name: "lock" }],
+          hints: { body: "return lock.GetPixels();" },
         },
       }
     },

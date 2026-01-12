@@ -18,6 +18,7 @@ import {
   EntryHint,
   FunctorSupport,
   ListContent,
+  LockDefinition,
   ParsedDoc,
   ParsedDocContent,
   QuickTransform,
@@ -456,6 +457,35 @@ function getCallbackDef(
   }
 }
 
+function wrapLockFunctions(
+  entries: ApiEntryTransformMap,
+  lockName: string,
+  lockDef: LockDefinition
+) {
+  const currLockTransform = entries[lockDef.lockFunc];
+  const currLockDelta =
+    typeof currLockTransform === "object"
+      ? currLockTransform
+      : (entries[lockDef.lockFunc] = {});
+  if (currLockDelta) {
+    currLockDelta.type = lockName;
+    const paramName = lockDef.paramType ?? lockDef.controlType;
+    addHints(currLockDelta, { body: `return {${paramName}(*this)};` });
+  }
+  const currUnlockTransform = entries[lockDef.unlockFunc];
+  const currUnlockDelta =
+    typeof currUnlockTransform === "object"
+      ? currUnlockTransform
+      : (entries[lockDef.unlockFunc] = {});
+  if (currUnlockDelta) {
+    currUnlockDelta.type = "void";
+    currUnlockDelta.parameters = [{}, { type: `${lockName} &&`, name: "lock" }];
+    addHints(currUnlockDelta, {
+      body: `SDL_assert_paranoid(lock.get()==*this);lock.reset();`,
+    });
+  }
+}
+
 function expandTypes(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
@@ -512,6 +542,7 @@ function expandTypes(
         targetName,
         targetDelta
       );
+    if (targetDelta.lock) expandLock(targetName, targetDelta);
   }
 
   function tryDetectType(
@@ -1086,6 +1117,23 @@ function expandTypes(
     });
     if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
     if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
+    const hasLock = getLockDefinition(targetEntry, targetName);
+    let lockName = `${targetName}Lock`;
+    if (hasLock) {
+      delete targetEntry.lock;
+      const currDef = file.transform[lockName];
+      lockName = currDef?.name || lockName;
+      const lockEntry: ApiEntryTransform = {
+        lock: hasLock,
+      };
+      hasLock.controlType = hasRef ? refName : targetName;
+      if (currDef) {
+        combineObject(lockEntry, currDef ?? {});
+      } else {
+        lockEntry.after = hasRef ? refName : targetName;
+      }
+      file.transform[lockName] = lockEntry;
+    }
 
     const memberAccess: ApiEntryTransformMap = {};
     if (enableMemberAccess) {
@@ -1646,6 +1694,10 @@ function expandTypes(
       private: true,
     });
 
+    if (hasLock) {
+      wrapLockFunctions(targetEntry.entries, lockName, hasLock);
+    }
+
     const derivedEntries: ApiEntryTransform[] = [];
 
     if (hasShared && hasRef) {
@@ -1677,6 +1729,21 @@ function expandTypes(
               },
               "This borrows the ownership, increments the refcount!",
             ],
+          },
+          [`${refName}#2`]: {
+            kind: "function",
+            type: "",
+            parameters: [
+              {
+                type: targetName,
+                name: "resource",
+              },
+            ],
+            hints: {
+              init: [`${targetName}(std::move(resource))`],
+              noexcept: true,
+            },
+            doc: [`Constructs from ${targetName}.`],
           },
         },
       });
@@ -2011,6 +2078,208 @@ function expandTypes(
     }
     delete transform.enum;
   }
+
+  function expandLock(targetName: string, targetEntry: ApiEntryTransform) {
+    const lockDef = getLockDefinition(targetEntry, targetName);
+    delete targetEntry.lock;
+    context.includeAfter(
+      {
+        kind: "forward",
+        name: targetName,
+      },
+      "__begin"
+    );
+    if (!transformMap[targetName]) transformMap[targetName] = targetEntry;
+
+    addHints(targetEntry, { private: true });
+    if (!targetEntry.doc) addHints(targetEntry, { copyDoc: lockDef.lockFunc });
+    if (!targetEntry.kind) targetEntry.kind = "struct";
+    const controlType = lockDef.controlType;
+    const paramType = lockDef.paramType ?? controlType;
+
+    const ctors: Dict<ApiEntryTransform> = {};
+    if (lockDef.controlVar !== false) {
+      ctors["m_lock"] = {
+        kind: "var",
+        type: controlType ?? "bool",
+      };
+    }
+    ctors[targetName] = { kind: "plc" };
+    ctors[`~${targetName}`] = { kind: "plc" };
+    ctors["operator="] = { kind: "plc" };
+    ctors["operator bool"] = { kind: "plc" };
+    const lockTargetName =
+      file.transform[lockDef.lockFunc]?.name ??
+      transformName(lockDef.lockFunc, context);
+    const unlockTargetName =
+      file.transform[lockDef.unlockFunc]?.name ??
+      transformName(lockDef.unlockFunc, context);
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}::${targetName}`,
+        type: "",
+        parameters: paramType ? [{ type: paramType, name: "resource" }] : [],
+        hints: {
+          copyDoc: lockDef.lockFunc,
+          changeAccess: "public",
+          init: [`m_lock(${controlType ? "std::move(resource)" : "true"})`],
+          body: `${lockTargetName}(${controlType ? "m_lock" : ""});`,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.${targetName}`,
+        type: "",
+        parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        doc: ["Copy constructor"],
+        hints: {
+          delete: true,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.${targetName}`,
+        type: "",
+        doc: ["Move constructor"],
+        parameters: [{ type: `${targetName} &&`, name: "other" }],
+        constexpr: true,
+        hints: {
+          init: ["m_lock(other.m_lock)"],
+          body: `other.m_lock = {};`,
+          noexcept: true,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.~${targetName}`,
+        type: "",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.unlockFunc,
+          body: `reset();`,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator=`,
+        type: `${targetName} &`,
+        parameters: [{ type: `const ${targetName} &`, name: "other" }],
+        static: false,
+        hints: {
+          delete: true,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator=`,
+        type: `${targetName} &`,
+        parameters: [{ type: `${targetName} &&`, name: "other" }],
+        static: false,
+        doc: ["Assignment operator"],
+        hints: {
+          noexcept: true,
+          body: `std::swap(m_lock, other.m_lock);return *this;`,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.operator bool`,
+        type: "",
+        constexpr: true,
+        immutable: true,
+        parameters: [],
+        doc: ["True if not locked."],
+        hints: {
+          body: `return bool(m_lock);`,
+        },
+      },
+      lockDef.lockFunc
+    );
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}::reset`,
+        type: "void",
+        parameters: [],
+        hints: {
+          copyDoc: lockDef.unlockFunc,
+          body: controlType
+            ? `if (!m_lock) return;\n${unlockTargetName}(m_lock);\nm_lock = {};`
+            : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`,
+        },
+      },
+      lockDef.unlockFunc
+    );
+
+    if (controlType) {
+      context.includeAfter(
+        {
+          kind: "function",
+          name: `${targetName}.get`,
+          type: controlType,
+          parameters: [],
+          doc: [`Get the reference to locked resource.`],
+          hints: {
+            body: "return m_lock;",
+          },
+        },
+        lockDef.unlockFunc
+      );
+    }
+    context.includeAfter(
+      {
+        kind: "function",
+        name: `${targetName}.release`,
+        type: "void",
+        parameters: [],
+        doc: [`Releases the lock without unlocking.`],
+        hints: {
+          body: controlType ? "m_lock.release();" : `m_lock = false;`,
+        },
+      },
+      lockDef.unlockFunc
+    );
+
+    const subEntries = targetEntry.entries || {};
+    targetEntry.entries = { ...ctors, ...subEntries };
+  }
+}
+
+function getLockDefinition(
+  targetEntry: ApiEntryTransform,
+  sourceName: string
+): LockDefinition {
+  if (typeof targetEntry.lock === "object") {
+    return {
+      lockFunc: `SDL_Lock${sourceName}`,
+      unlockFunc: `SDL_Unlock${sourceName}`,
+      ...targetEntry.lock,
+    };
+  }
+  if (!targetEntry.lock) return undefined;
+  return {
+    lockFunc: `SDL_Lock${sourceName}`,
+    unlockFunc: `SDL_Unlock${sourceName}`,
+  };
 }
 
 function transformEntries(
@@ -2036,9 +2305,14 @@ function transformEntries(
         );
       }
     }
+    if (targetEntry.hints?.copyDoc) {
+      const copyDoc = targetEntry.hints.copyDoc;
+      delete targetEntry.hints.copyDoc;
+      targetEntry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+    }
     if (sourceName)
       context.addName(sourceName, targetEntry.name?.replaceAll("::", "."));
-    insertEntryAndCheck(targetEntries, targetEntry, context, file);
+    insertEntryAndCheck(targetEntries, targetEntry, context, sourceEntries);
   }
 
   return targetEntries;
@@ -2058,7 +2332,7 @@ function transformEntries(
           (p) => typeof p === "string" || (p.type && p.name)
         );
       }
-      insertEntryAndCheck(targetEntries, linkedEntry, context, file);
+      insertEntryAndCheck(targetEntries, linkedEntry, context, sourceEntries);
     }
   }
 }
@@ -2097,11 +2371,6 @@ function makeSortedEntryArray(
     }
     delete entryDelta.before;
     delete entryDelta.after;
-    if (entryDelta.hints?.copyDoc) {
-      const copyDoc = entryDelta.hints.copyDoc;
-      delete entryDelta.hints.copyDoc;
-      entryDelta.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
-    }
   }
 
   const sortedEntries: Dict<ApiEntry> = {};
@@ -2625,7 +2894,7 @@ function insertEntryAndCheck(
   entries: ApiEntries,
   entry: ApiEntry,
   context: ApiContext,
-  file: ApiFileTransform,
+  sourceEntries: ApiEntries,
   defaultName?: string
 ) {
   insertEntry(entries, entry, defaultName);
@@ -2637,6 +2906,28 @@ function insertEntryAndCheck(
     } else {
       context.types[entry.name] = entry as ApiType;
     }
+  }
+
+  checkCopyDoc(entry, sourceEntries, context);
+}
+
+function checkCopyDoc(
+  entry: ApiEntry,
+  sourceEntries: ApiEntries,
+  context: ApiContext
+) {
+  if (!entry.doc && entry.hints?.copyDoc) {
+    const copyDoc = entry.hints.copyDoc;
+    delete entry.hints.copyDoc;
+    entry.doc = transformDoc(sourceEntries[copyDoc]?.doc, context);
+  }
+  if (entry.entries) {
+    Object.values(entry.entries).forEach((subEntry) =>
+      checkCopyDoc(subEntry, sourceEntries, context)
+    );
+  }
+  if (entry.overload) {
+    checkCopyDoc(entry.overload, sourceEntries, context);
   }
 }
 
@@ -2668,6 +2959,7 @@ function transformHierarchy(targetEntries: ApiEntries, context: ApiContext) {
         const nextEntry = entry.overload;
         prepareForTypeInsert(entry, targetName, typeName);
         insertCopyEntry(entry);
+        delete entry.hints?.changeAccess;
         entry = nextEntry;
       }
     }
