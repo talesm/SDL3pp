@@ -5336,7 +5336,7 @@ const transform = {
             shared: "refcount",
           },
           lock: {
-            lockFunc: "SDL_LockTextureToSurface",
+            lockFunc: "SDL_LockTexture",
             unlockFunc: "SDL_UnlockTexture",
           },
           entries: {
@@ -5345,8 +5345,14 @@ const transform = {
             "SDL_CreateTextureWithProperties": "ctor",
           }
         },
-        "TextureLock": {
-          type: "Surface"
+        "TextureSurfaceLock": {
+          after: "TextureLock",
+          type: "Surface",
+          lock: {
+            controlType: "TextureRef",
+            lockFunc: "SDL_LockTextureToSurface",
+            unlockFunc: "SDL_UnlockTexture",
+          }
         },
         "SDL_GetTextureProperties": { parameters: [{ type: "TextureConstParam" }] },
         "SDL_GetRendererFromTexture": {
@@ -5474,7 +5480,15 @@ const transform = {
         },
         "SDL_LockTextureToSurface": {
           parameters: [{}, { type: "OptionalRef<const RectRaw>", default: "std::nullopt" }],
-          type: "Surface",
+          type: "TextureSurfaceLock",
+        },
+        "SDL_UnlockTexture": {},
+        "Texture::Unlock": {
+          kind: "function",
+          type: "void",
+          static: false,
+          parameters: [{ type: "TextureSurfaceLock &&", name: "lock" }],
+          hints: { body: "SDL_assert_paranoid(lock.get() == *this);\nlock.reset();" }
         },
         "SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER": {
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 },
