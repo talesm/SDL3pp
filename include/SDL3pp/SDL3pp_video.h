@@ -832,7 +832,6 @@ public:
    *                     Window.Window(StringParam,const
    *                     PointRaw&,WindowFlags)).
    * @param renderer a pointer filled with the renderer.
-   * @returns the created window on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.

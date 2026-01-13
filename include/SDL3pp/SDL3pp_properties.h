@@ -786,7 +786,7 @@ public:
    * or want to guarantee that properties being queried aren't freed in another
    * thread.
    *
-   * @param props the properties to lock.
+   * @param resource the properties to lock.
    * @post true on success or false on failure; call GetError() for more
    *       information.
    *
@@ -835,8 +835,6 @@ public:
 
   /**
    * Unlock a group of properties.
-   *
-   * @param props the properties to unlock.
    *
    * @threadsafety It is safe to call this function from any thread.
    *

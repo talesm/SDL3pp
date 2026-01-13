@@ -156,9 +156,11 @@
  }
  
  inline JoystickRef Gamepad::GetJoystick()
-@@ -2228,9 +2226,7 @@
+@@ -2226,11 +2224,8 @@
+  * Get the SDL joystick layer bindings for a gamepad.
+  *
   * @param gamepad a gamepad.
-  * @param count a pointer filled in with the number of bindings returned.
+- * @param count a pointer filled in with the number of bindings returned.
   * @returns a nullptr terminated array of pointers to bindings or nullptr on
 - *          failure; call GetError() for more information. This is a single
 - *          allocation that should be freed with free() when it is no longer
@@ -167,7 +169,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2238,7 +2234,9 @@
+@@ -2238,7 +2233,9 @@
   */
  inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
  {

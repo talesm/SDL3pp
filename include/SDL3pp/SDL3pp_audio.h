@@ -3043,7 +3043,7 @@ public:
    * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
    * the same attributes (recursive locks are allowed, etc).
    *
-   * @param stream the audio stream to lock.
+   * @param resource the audio stream to lock.
    * @post true on success or false on failure; call GetError() for more
    *       information.
    *
@@ -3070,7 +3070,6 @@ public:
    *
    * This unlocks an audio stream after a call to AudioStream.Lock.
    *
-   * @param stream the audio stream to unlock.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -3100,7 +3099,6 @@ public:
    *
    * This unlocks an audio stream after a call to AudioStream.Lock.
    *
-   * @param stream the audio stream to unlock.
    * @throws Error on failure.
    *
    * @threadsafety You should only call this from the same thread that

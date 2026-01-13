@@ -12702,7 +12702,7 @@ public:
    * or want to guarantee that properties being queried aren't freed in another
    * thread.
    *
-   * @param props the properties to lock.
+   * @param resource the properties to lock.
    * @post true on success or false on failure; call GetError() for more
    *       information.
    *
@@ -12751,8 +12751,6 @@ public:
 
   /**
    * Unlock a group of properties.
-   *
-   * @param props the properties to unlock.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -36492,7 +36490,7 @@ public:
    * As this is just a wrapper over Mutex.Lock for an internal lock; it has all
    * the same attributes (recursive locks are allowed, etc).
    *
-   * @param stream the audio stream to lock.
+   * @param resource the audio stream to lock.
    * @post true on success or false on failure; call GetError() for more
    *       information.
    *
@@ -36519,7 +36517,6 @@ public:
    *
    * This unlocks an audio stream after a call to AudioStream.Lock.
    *
-   * @param stream the audio stream to unlock.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -36549,7 +36546,6 @@ public:
    *
    * This unlocks an audio stream after a call to AudioStream.Lock.
    *
-   * @param stream the audio stream to unlock.
    * @throws Error on failure.
    *
    * @threadsafety You should only call this from the same thread that
@@ -53640,7 +53636,6 @@ public:
    *                     Window.Window(StringParam,const
    *                     PointRaw&,WindowFlags)).
    * @param renderer a pointer filled with the renderer.
-   * @returns the created window on success.
    * @throws Error on failure.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -78403,7 +78398,6 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  * Get the SDL joystick layer bindings for a gamepad.
  *
  * @param gamepad a gamepad.
- * @param count a pointer filled in with the number of bindings returned.
  * @returns a nullptr terminated array of pointers to bindings or nullptr on
  *          failure; call GetError() for more information.
  *
@@ -85515,8 +85509,6 @@ public:
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
    *
-   * @param texture a texture locked by Texture.Lock().
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -85547,8 +85539,6 @@ public:
    *
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
-   *
-   * @param texture a texture locked by Texture.Lock().
    *
    * @threadsafety This function should only be called on the main thread.
    *

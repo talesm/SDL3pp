@@ -2224,7 +2224,6 @@ inline bool GamepadEventsEnabled() { return SDL_GamepadEventsEnabled(); }
  * Get the SDL joystick layer bindings for a gamepad.
  *
  * @param gamepad a gamepad.
- * @param count a pointer filled in with the number of bindings returned.
  * @returns a nullptr terminated array of pointers to bindings or nullptr on
  *          failure; call GetError() for more information.
  *

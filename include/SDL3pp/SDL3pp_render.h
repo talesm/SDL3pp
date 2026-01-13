@@ -3660,8 +3660,6 @@ public:
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
    *
-   * @param texture a texture locked by Texture.Lock().
-   *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
@@ -3692,8 +3690,6 @@ public:
    *
    * Which is to say: locking and immediately unlocking a texture can result in
    * corrupted textures, depending on the renderer in use.
-   *
-   * @param texture a texture locked by Texture.Lock().
    *
    * @threadsafety This function should only be called on the main thread.
    *
