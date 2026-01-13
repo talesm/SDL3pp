@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 0.7.0
+
+The main theme is Lock types being a RAII construct:
+
+- Fix a few build failures on clang (not all yet, unfortunately);
+- Clean up generated resource code;
+- Fix MemoryBarrierRelease and MemoryBarrierAcquire to use macros;
+- Replace all SDL_\* parameters with \*Raw equivalents;
+- Fix GetGamepadBindings() return type to use OwnArray;
+- Design a RAII workflow to deal with Lock/Unlock patterns present on several
+  APIS:
+  - AudioStreamLock for SDL_LockAudioStream;
+  - CameraFrameLock for SDL_AcquireCameraFrame;
+  - JoystickApiLock for SDL_LockJoysticks;
+  - PropertiesLock for SDL_LockProperties;
+  - SurfaceLock for SDL_LockSurface;
+  - TextureLock for SDL_LockTexture;
+
 ## Version 0.6.1
 
 Support SDL 3.4.0
