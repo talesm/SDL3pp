@@ -8274,6 +8274,7 @@ const transform = {
     "SDL_image.h": {
       localIncludes: [
         "SDL3pp_error.h",
+        "SDL3pp_mouse.h",
         "SDL3pp_render.h",
         "SDL3pp_surface.h",
         "SDL3pp_version.h",

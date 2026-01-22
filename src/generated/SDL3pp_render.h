@@ -2677,7 +2677,7 @@ public:
   }
 
   /**
-   * Load an image from a filesystem path into a GPU texture.
+   * Load an image from a filesystem path into a texture.
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
@@ -2699,7 +2699,7 @@ public:
    * When done with the returned texture, the app should dispose of it with a
    * call to Texture.Destroy().
    *
-   * @param renderer the Renderer to use to create the GPU texture.
+   * @param renderer the Renderer to use to create the texture.
    * @param file a path on the filesystem to load an image from.
    * @post a new texture, or nullptr on error.
    *
@@ -2711,7 +2711,7 @@ public:
   Texture(RendererParam renderer, StringParam file);
 
   /**
-   * Load an image from an SDL data source into a GPU texture.
+   * Load an image from an SDL data source into a texture.
    *
    * An Texture represents an image in GPU memory, usable by SDL's 2D Render
    * API. This can be significantly more efficient than using a CPU-bound
@@ -2742,7 +2742,7 @@ public:
    * When done with the returned texture, the app should dispose of it with a
    * call to Texture.Destroy().
    *
-   * @param renderer the Renderer to use to create the GPU texture.
+   * @param renderer the Renderer to use to create the texture.
    * @param src an IOStream that data will be read from.
    * @param closeio true to close/free the IOStream before returning, false to
    *                leave it open.
@@ -2752,7 +2752,6 @@ public:
    *
    * @sa Texture.Texture
    * @sa LoadTextureTyped
-   * @sa Texture.Destroy
    */
   Texture(RendererParam renderer, IOStreamParam src, bool closeio);
 
