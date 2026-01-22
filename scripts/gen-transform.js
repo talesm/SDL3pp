@@ -8508,6 +8508,22 @@ const transform = {
             { name: "closeio", type: "bool", default: "false" },
           ]
         },
+        "IMG_SaveBMP_IO": {
+          name: "SaveBMP",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveCUR_IO": {
+          name: "SaveCUR",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveGIF_IO": {
+          name: "SaveGIF",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveICO_IO": {
+          name: "SaveICO",
+          parameters: [{}, {}, { default: "false" }],
+        },
         "IMG_SavePNG_IO": {
           name: "SavePNG",
           parameters: [
@@ -8515,6 +8531,21 @@ const transform = {
             {},
             { name: "closeio", type: "bool", default: "false" },
           ]
+        },
+        "IMG_SaveTGA_IO": {
+          name: "SaveTGA",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveWEBP_IO": {
+          name: "SaveWEBP",
+          parameters: [{}, {}, {
+            name: "quality",
+            type: "float"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
         },
         "IMG_SaveJPG_IO": {
           name: "SaveJPG",
@@ -8530,7 +8561,11 @@ const transform = {
         },
         "IMG_LoadWEBPAnimation_IO": {
           "name": "LoadWEBPAnimation"
-        }
+        },
+        "IMG_CreateAnimatedCursor": {
+          type: "Cursor",
+          parameters: [{}, { type: "const PointRaw &", name: "hotspot" }],
+        },
       }
     },
     "SDL_ttf.h": {

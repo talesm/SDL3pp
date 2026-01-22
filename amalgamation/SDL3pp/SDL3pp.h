@@ -94066,14 +94066,14 @@ inline void Save(SurfaceParam surface, StringParam file)
  *
  * @sa Save
  * @sa SaveAVIF
- * @sa SaveBMP_IO
- * @sa SaveCUR_IO
- * @sa SaveGIF_IO
- * @sa SaveICO_IO
+ * @sa SaveBMP
+ * @sa SaveCUR
+ * @sa SaveGIF
+ * @sa SaveICO
  * @sa SaveJPG
  * @sa SavePNG
- * @sa SaveTGA_IO
- * @sa SaveWEBP_IO
+ * @sa SaveTGA
+ * @sa SaveWEBP
  */
 inline void SaveTyped_IO(SurfaceParam surface,
                          IOStreamParam dst,
@@ -94146,7 +94146,7 @@ inline void SaveAVIF(SurfaceParam surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveBMP_IO
+ * @sa SaveBMP
  */
 inline void SaveBMP(SurfaceParam surface, StringParam file)
 {
@@ -94171,9 +94171,9 @@ inline void SaveBMP(SurfaceParam surface, StringParam file)
  *
  * @sa SaveBMP
  */
-inline void SaveBMP_IO(SurfaceParam surface,
-                       IOStreamParam dst,
-                       bool closeio = false)
+inline void SaveBMP(SurfaceParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
 }
@@ -94189,7 +94189,7 @@ inline void SaveBMP_IO(SurfaceParam surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveCUR_IO
+ * @sa SaveCUR
  */
 inline void SaveCUR(SurfaceParam surface, StringParam file)
 {
@@ -94214,9 +94214,9 @@ inline void SaveCUR(SurfaceParam surface, StringParam file)
  *
  * @sa SaveCUR
  */
-inline void SaveCUR_IO(SurfaceParam surface,
-                       IOStreamParam dst,
-                       bool closeio = false)
+inline void SaveCUR(SurfaceParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
 }
@@ -94232,7 +94232,7 @@ inline void SaveCUR_IO(SurfaceParam surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveGIF_IO
+ * @sa SaveGIF
  */
 inline void SaveGIF(SurfaceParam surface, StringParam file)
 {
@@ -94257,9 +94257,9 @@ inline void SaveGIF(SurfaceParam surface, StringParam file)
  *
  * @sa SaveGIF
  */
-inline void SaveGIF_IO(SurfaceParam surface,
-                       IOStreamParam dst,
-                       bool closeio = false)
+inline void SaveGIF(SurfaceParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
 }
@@ -94275,7 +94275,7 @@ inline void SaveGIF_IO(SurfaceParam surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveICO_IO
+ * @sa SaveICO
  */
 inline void SaveICO(SurfaceParam surface, StringParam file)
 {
@@ -94300,9 +94300,9 @@ inline void SaveICO(SurfaceParam surface, StringParam file)
  *
  * @sa SaveICO
  */
-inline void SaveICO_IO(SurfaceParam surface,
-                       IOStreamParam dst,
-                       bool closeio = false)
+inline void SaveICO(SurfaceParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveICO_IO(surface, dst, closeio));
 }
@@ -94413,7 +94413,7 @@ inline void SavePNG(SurfaceParam surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTGA_IO
+ * @sa SaveTGA
  */
 inline void SaveTGA(SurfaceParam surface, StringParam file)
 {
@@ -94438,9 +94438,9 @@ inline void SaveTGA(SurfaceParam surface, StringParam file)
  *
  * @sa SaveTGA
  */
-inline void SaveTGA_IO(SurfaceParam surface,
-                       IOStreamParam dst,
-                       bool closeio = false)
+inline void SaveTGA(SurfaceParam surface,
+                    IOStreamParam dst,
+                    bool closeio = false)
 {
   CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
 }
@@ -94460,7 +94460,7 @@ inline void SaveTGA_IO(SurfaceParam surface,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveWEBP_IO
+ * @sa SaveWEBP
  */
 inline void SaveWEBP(SurfaceParam surface, StringParam file, float quality)
 {
@@ -94489,10 +94489,10 @@ inline void SaveWEBP(SurfaceParam surface, StringParam file, float quality)
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP_IO(SurfaceParam surface,
-                        IOStreamParam dst,
-                        float quality,
-                        bool closeio = false)
+inline void SaveWEBP(SurfaceParam surface,
+                     IOStreamParam dst,
+                     float quality,
+                     bool closeio = false)
 {
   CheckError(IMG_SaveWEBP_IO(surface, dst, closeio, quality));
 }
@@ -94856,8 +94856,7 @@ public:
   /**
    * Create an animated cursor from an animation.
    *
-   * @param hot_x the x position of the cursor hot spot.
-   * @param hot_y the y position of the cursor hot spot.
+   * @param hotspot the x, y position of the cursor hot spot.
    * @returns the new cursor on success.
    * @throws Error on failure.
    *
@@ -94867,7 +94866,7 @@ public:
    * @sa Animation.Animation
    * @sa LoadAnimationTyped
    */
-  CursorRef CreateAnimatedCursor(int hot_x, int hot_y);
+  Cursor CreateAnimatedCursor(const PointRaw& hotspot);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
@@ -95475,8 +95474,7 @@ inline void Animation::SaveWEBP_IO(IOStreamParam dst, int quality, bool closeio)
  * Create an animated cursor from an animation.
  *
  * @param anim an animation to use to create an animated cursor.
- * @param hot_x the x position of the cursor hot spot.
- * @param hot_y the y position of the cursor hot spot.
+ * @param hotspot the x, y position of the cursor hot spot.
  * @returns the new cursor on success.
  * @throws Error on failure.
  *
@@ -95486,14 +95484,15 @@ inline void Animation::SaveWEBP_IO(IOStreamParam dst, int quality, bool closeio)
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
  */
-inline CursorRef CreateAnimatedCursor(AnimationParam anim, int hot_x, int hot_y)
+inline Cursor CreateAnimatedCursor(AnimationParam anim, const PointRaw& hotspot)
 {
-  return CheckError(IMG_CreateAnimatedCursor(anim, hot_x, hot_y));
+  return Cursor{
+    CheckError(IMG_CreateAnimatedCursor(anim, hotspot.x, hotspot.y))};
 }
 
-inline CursorRef Animation::CreateAnimatedCursor(int hot_x, int hot_y)
+inline Cursor Animation::CreateAnimatedCursor(const PointRaw& hotspot)
 {
-  return SDL::CreateAnimatedCursor(m_resource, hot_x, hot_y);
+  return SDL::CreateAnimatedCursor(m_resource, hotspot);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
