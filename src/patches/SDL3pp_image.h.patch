@@ -1451,7 +1451,23 @@
    /**
     * Create an encoder to save a series of images to an IOStream.
     *
-@@ -3977,10 +3880,6 @@
+@@ -3959,9 +3862,9 @@
+    * succeeds.
+    *
+    * @param dst an IOStream that will be used to save the stream.
++   * @param type a filename extension that represent this data ("WEBP", etc).
+    * @param closeio true to close the IOStream when done, false to leave it
+    *                open.
+-   * @param type a filename extension that represent this data ("WEBP", etc).
+    * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
+    *       more information.
+    *
+@@ -3973,14 +3876,10 @@
+    * @sa AnimationEncoder.Close
+    */
+   AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false)
+-    : m_resource(IMG_CreateAnimationEncoder_IO(dst, type, closeio))
++    : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
    {
    }
  
@@ -1531,8 +1547,18 @@
  /**
   * Create an encoder to save a series of images to an IOStream.
   *
+@@ -4208,8 +4090,8 @@
+  * fails, or when the animation encoder is closed if this function succeeds.
+  *
+  * @param dst an IOStream that will be used to save the stream.
+- * @param closeio true to close the IOStream when done, false to leave it open.
+  * @param type a filename extension that represent this data ("WEBP", etc).
++ * @param closeio true to close the IOStream when done, false to leave it open.
+  * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
+  *          more information.
+  *
 @@ -4227,10 +4109,6 @@
-   return AnimationEncoder(dst, closeio, std::move(type));
+   return AnimationEncoder(dst, std::move(type), closeio);
  }
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)

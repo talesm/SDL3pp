@@ -3862,9 +3862,9 @@ public:
    * succeeds.
    *
    * @param dst an IOStream that will be used to save the stream.
+   * @param type a filename extension that represent this data ("WEBP", etc).
    * @param closeio true to close the IOStream when done, false to leave it
    *                open.
-   * @param type a filename extension that represent this data ("WEBP", etc).
    * @post a new AnimationEncoder, or nullptr on failure; call GetError() for
    *       more information.
    *
@@ -3875,7 +3875,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(IOStreamParam dst, bool closeio, StringParam type)
+  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false)
     : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
   {
   }
@@ -4090,8 +4090,8 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * fails, or when the animation encoder is closed if this function succeeds.
  *
  * @param dst an IOStream that will be used to save the stream.
- * @param closeio true to close the IOStream when done, false to leave it open.
  * @param type a filename extension that represent this data ("WEBP", etc).
+ * @param closeio true to close the IOStream when done, false to leave it open.
  * @returns a new AnimationEncoder, or nullptr on failure; call GetError() for
  *          more information.
  *
@@ -4102,11 +4102,11 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
-inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamParam dst,
-                                                  bool closeio,
-                                                  StringParam type)
+inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
+                                               StringParam type,
+                                               bool closeio = false)
 {
-  return AnimationEncoder(dst, closeio, std::move(type));
+  return AnimationEncoder(dst, std::move(type), closeio);
 }
 
 /**

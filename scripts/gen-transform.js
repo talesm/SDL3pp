@@ -8566,6 +8566,17 @@ const transform = {
           type: "Cursor",
           parameters: [{}, { type: "const PointRaw &", name: "hotspot" }],
         },
+        "IMG_CreateAnimationEncoder_IO": {
+          name: "CreateAnimationEncoder",
+          parameters: [{}, {
+            type: "StringParam",
+            name: "type"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+        }
       }
     },
     "SDL_ttf.h": {

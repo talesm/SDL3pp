@@ -3972,8 +3972,8 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(IOStreamParam dst, bool closeio, StringParam type)
-    : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
+  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false)
+    : m_resource(IMG_CreateAnimationEncoder_IO(dst, type, closeio))
   {
   }
 
@@ -4220,11 +4220,11 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
-inline AnimationEncoder CreateAnimationEncoder_IO(IOStreamParam dst,
-                                                  bool closeio,
-                                                  StringParam type)
+inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
+                                               StringParam type,
+                                               bool closeio = false)
 {
-  return AnimationEncoder(dst, closeio, std::move(type));
+  return AnimationEncoder(dst, std::move(type), closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
