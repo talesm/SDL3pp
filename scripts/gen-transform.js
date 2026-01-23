@@ -8281,6 +8281,11 @@ const transform = {
         "SDL3pp_version.h",
         "SDL3pp_video.h",
       ],
+      namespacesMap: {
+        "IMG_PROP_ANIMATION_ENCODER_": "prop::AnimationEncoder",
+        "IMG_PROP_ANIMATION_DECODER_": "prop::AnimationDecoder",
+        "IMG_PROP_METADATA_": "prop::Metadata",
+      },
       transform: {
         "IMG": {
           kind: "ns",

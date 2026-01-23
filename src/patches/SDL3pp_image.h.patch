@@ -1487,25 +1487,25 @@
  /**
   * Create an animation encoder with the specified properties.
   *
-@@ -4285,8 +4168,6 @@
+@@ -4284,8 +4167,6 @@
    return AnimationEncoder(props);
  }
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
- #define SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING                      \
-   IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING
+ namespace prop::AnimationEncoder {
  
-@@ -4317,8 +4198,6 @@
- #define SDL_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN                  \
-   IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN
+ constexpr auto CREATE_FILENAME_STRING =
+@@ -4320,8 +4201,6 @@
+ 
+ } // namespace prop::AnimationEncoder
  
 -#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Add a frame to an animation encoder.
   *
-@@ -4344,19 +4223,11 @@
+@@ -4347,19 +4226,11 @@
    CheckError(IMG_AddAnimationEncoderFrame(encoder, surface, duration));
  }
  
@@ -1525,7 +1525,7 @@
  /**
   * Close an animation encoder, finishing any encoding.
   *
-@@ -4377,18 +4248,7 @@
+@@ -4380,18 +4251,7 @@
    CheckError(IMG_CloseAnimationEncoder(encoder));
  }
  
@@ -1545,7 +1545,7 @@
  
  /**
   * An enum representing the status of an animation decoder.
-@@ -4397,8 +4257,6 @@
+@@ -4400,8 +4260,6 @@
   */
  using AnimationDecoderStatus = IMG_AnimationDecoderStatus;
  
@@ -1554,7 +1554,7 @@
  constexpr AnimationDecoderStatus DECODER_STATUS_INVALID =
    IMG_DECODER_STATUS_INVALID; ///< The decoder is invalid
  
-@@ -4456,8 +4314,6 @@
+@@ -4459,8 +4317,6 @@
  
    constexpr AnimationDecoder(AnimationDecoderRef&& other) = delete;
  
@@ -1563,7 +1563,7 @@
    /**
     * Create a decoder to read a series of images from a file.
     *
-@@ -4489,10 +4345,6 @@
+@@ -4492,10 +4348,6 @@
    {
    }
  
@@ -1574,7 +1574,7 @@
    /**
     * Create a decoder to read a series of images from an IOStream.
     *
-@@ -4524,14 +4376,10 @@
+@@ -4527,14 +4379,10 @@
     * @sa AnimationDecoder.Close
     */
    AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false)
@@ -1590,7 +1590,7 @@
    /**
     * Create an animation decoder with the specified properties.
     *
-@@ -4575,8 +4423,6 @@
+@@ -4578,8 +4426,6 @@
    {
    }
  
@@ -1599,7 +1599,7 @@
    /// Destructor
    ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
  
-@@ -4617,16 +4463,13 @@
+@@ -4620,16 +4466,13 @@
      return {m_resource};
    }
  
@@ -1617,7 +1617,7 @@
     *
     * @since This function is available since SDL_image 3.4.0.
     *
-@@ -4634,11 +4477,7 @@
+@@ -4637,11 +4480,7 @@
     * @sa AnimationDecoder.AnimationDecoder
     * @sa AnimationDecoder.AnimationDecoder
     */
@@ -1630,7 +1630,7 @@
  
    /**
     * Get the properties of an animation decoder.
-@@ -4658,10 +4497,6 @@
+@@ -4661,10 +4500,6 @@
     */
    PropertiesRef GetProperties();
  
@@ -1641,7 +1641,7 @@
    /**
     * Get the next frame in an animation decoder.
     *
-@@ -4694,10 +4529,6 @@
+@@ -4697,10 +4532,6 @@
     */
    void GetFrame(SDL_Surface** frame, Uint64* duration);
  
@@ -1652,7 +1652,7 @@
    /**
     * Get the decoder status indicating the current state of the decoder.
     *
-@@ -4710,10 +4541,6 @@
+@@ -4713,10 +4544,6 @@
     */
    AnimationDecoderStatus GetStatus();
  
@@ -1663,7 +1663,7 @@
    /**
     * Reset an animation decoder.
     *
-@@ -4732,8 +4559,6 @@
+@@ -4735,8 +4562,6 @@
     * @sa AnimationDecoder.Close
     */
    void Reset();
@@ -1672,7 +1672,7 @@
  };
  
  /// Semi-safe reference for AnimationDecoder.
-@@ -4773,8 +4598,6 @@
+@@ -4776,8 +4601,6 @@
    ~AnimationDecoderRef() { release(); }
  };
  
@@ -1681,7 +1681,7 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4806,10 +4629,6 @@
+@@ -4809,10 +4632,6 @@
    return AnimationDecoder(std::move(file));
  }
  
@@ -1692,7 +1692,7 @@
  /**
   * Create a decoder to read a series of images from an IOStream.
   *
-@@ -4845,10 +4664,6 @@
+@@ -4848,10 +4667,6 @@
    return AnimationDecoder(src, std::move(type), closeio);
  }
  
@@ -1703,25 +1703,25 @@
  /**
   * Create an animation decoder with the specified properties.
   *
-@@ -4893,8 +4708,6 @@
+@@ -4896,8 +4711,6 @@
    return AnimationDecoder(props);
  }
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
- #define SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING                      \
-   IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING
+ namespace prop::AnimationDecoder {
  
-@@ -4928,8 +4741,6 @@
- #define SDL_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER                \
-   IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER
+ constexpr auto CREATE_FILENAME_STRING =
+@@ -4935,8 +4748,6 @@
+ 
+ } // namespace prop::AnimationDecoder
  
 -#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Get the properties of an animation decoder.
   *
-@@ -4953,17 +4764,11 @@
+@@ -4960,17 +4771,11 @@
    return IMG_GetAnimationDecoderProperties(decoder);
  }
  
@@ -1736,19 +1736,19 @@
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
- #define SDL_PROP_METADATA_IGNORE_PROPS_BOOLEAN                                 \
-   IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN
+ namespace prop::Metadata {
  
-@@ -4984,8 +4789,6 @@
+ constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
+@@ -4991,8 +4796,6 @@
  
- #define SDL_PROP_METADATA_LOOP_COUNT_NUMBER IMG_PROP_METADATA_LOOP_COUNT_NUMBER
+ } // namespace prop::Metadata
  
 -#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
  /**
   * Get the next frame in an animation decoder.
   *
-@@ -5024,19 +4827,11 @@
+@@ -5031,19 +4834,11 @@
    CheckError(IMG_GetAnimationDecoderFrame(decoder, frame, duration));
  }
  
@@ -1768,7 +1768,7 @@
  /**
   * Get the decoder status indicating the current state of the decoder.
   *
-@@ -5054,19 +4849,11 @@
+@@ -5061,19 +4856,11 @@
    return IMG_GetAnimationDecoderStatus(decoder);
  }
  
@@ -1788,7 +1788,7 @@
  /**
   * Reset an animation decoder.
   *
-@@ -5090,19 +4877,11 @@
+@@ -5097,19 +4884,11 @@
    CheckError(IMG_ResetAnimationDecoder(decoder));
  }
  
@@ -1808,7 +1808,7 @@
  /**
   * Close an animation decoder, finishing any decoding.
   *
-@@ -5123,19 +4902,40 @@
+@@ -5130,19 +4909,40 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  

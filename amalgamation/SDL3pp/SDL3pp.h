@@ -95638,26 +95638,26 @@ public:
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING`: the file to save, if
-   *   an IOStream isn't being used. This is required if
-   *   `SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER` isn't set.
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER`: an IOStream that
-   *   will be used to save the stream. This should not be closed until the
-   *   animation encoder is closed. This is required if
-   *   `SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING` isn't set.
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   * - `prop::AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+   *   IOStream isn't being used. This is required if
+   *   `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
+   * - `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will
+   *   be used to save the stream. This should not be closed until the animation
+   *   encoder is closed. This is required if
+   *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
+   * - `prop::AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation encoder should also close the associated IOStream.
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING`: the output file type,
-   *   e.g. "webp", defaults to the file extension if
-   *   `SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING` is set.
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER`: the compression
-   *   quality, in the range of 0 to 100. The higher the number, the higher the
-   *   quality and file size. This defaults to a balanced value for compression
-   *   and quality.
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER`: the
-   *   numerator of the fraction used to multiply the pts to convert it to
-   *   seconds. This defaults to 1.
-   * - `SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
+   * - `prop::AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
+   *   "webp", defaults to the file extension if
+   *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` is set.
+   * - `prop::AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality,
+   *   in the range of 0 to 100. The higher the number, the higher the quality
+   *   and file size. This defaults to a balanced value for compression and
+   *   quality.
+   * - `prop::AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator
+   *   of the fraction used to multiply the pts to convert it to seconds. This
+   *   defaults to 1.
+   * - `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
    *   denominator of the fraction used to multiply the pts to convert it to
    *   seconds. This defaults to 1000.
    *
@@ -95739,7 +95739,7 @@ public:
    * @param surface the surface to add as the next frame in the animation.
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the encoder.
    * @throws Error on failure.
    *
@@ -95867,26 +95867,25 @@ inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING`: the file to save, if
- *   an IOStream isn't being used. This is required if
- *   `SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER` isn't set.
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER`: an IOStream that will
- *   be used to save the stream. This should not be closed until the animation
+ * - `prop::AnimationEncoder.CREATE_FILENAME_STRING`: the file to save, if an
+ *   IOStream isn't being used. This is required if
+ *   `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER` isn't set.
+ * - `prop::AnimationEncoder.CREATE_IOSTREAM_POINTER`: an IOStream that will be
+ *   used to save the stream. This should not be closed until the animation
  *   encoder is closed. This is required if
- *   `SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING` isn't set.
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
- *   closing the animation encoder should also close the associated IOStream.
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING`: the output file type, e.g.
+ *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` isn't set.
+ * - `prop::AnimationEncoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ *   the animation encoder should also close the associated IOStream.
+ * - `prop::AnimationEncoder.CREATE_TYPE_STRING`: the output file type, e.g.
  *   "webp", defaults to the file extension if
- *   `SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING` is set.
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER`: the compression
- *   quality, in the range of 0 to 100. The higher the number, the higher the
- *   quality and file size. This defaults to a balanced value for compression
- *   and quality.
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER`: the
- *   numerator of the fraction used to multiply the pts to convert it to
- *   seconds. This defaults to 1.
- * - `SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
+ *   `prop::AnimationEncoder.CREATE_FILENAME_STRING` is set.
+ * - `prop::AnimationEncoder.CREATE_QUALITY_NUMBER`: the compression quality, in
+ *   the range of 0 to 100. The higher the number, the higher the quality and
+ *   file size. This defaults to a balanced value for compression and quality.
+ * - `prop::AnimationEncoder.CREATE_TIMEBASE_NUMERATOR_NUMBER`: the numerator of
+ *   the fraction used to multiply the pts to convert it to seconds. This
+ *   defaults to 1.
+ * - `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`: the
  *   denominator of the fraction used to multiply the pts to convert it to
  *   seconds. This defaults to 1000.
  *
@@ -95907,35 +95906,39 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
   return AnimationEncoder(props);
 }
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING                      \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING
+namespace prop::AnimationEncoder {
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER                     \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER
+constexpr auto CREATE_FILENAME_STRING =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_FILENAME_STRING;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN           \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN
+constexpr auto CREATE_IOSTREAM_POINTER =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_POINTER;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING                          \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING
+constexpr auto CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER                       \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER
+constexpr auto CREATE_TYPE_STRING =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TYPE_STRING;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER            \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER
+constexpr auto CREATE_QUALITY_NUMBER =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_QUALITY_NUMBER;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER          \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER
+constexpr auto CREATE_TIMEBASE_NUMERATOR_NUMBER =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER              \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER
+constexpr auto CREATE_TIMEBASE_DENOMINATOR_NUMBER =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER        \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER
+constexpr auto CREATE_AVIF_MAX_THREADS_NUMBER =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_MAX_THREADS_NUMBER;
 
-#define SDL_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN                  \
-  IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN
+constexpr auto CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_AVIF_KEYFRAME_INTERVAL_NUMBER;
+
+constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
+  IMG_PROP_ANIMATION_ENCODER_CREATE_GIF_USE_LUT_BOOLEAN;
+
+} // namespace prop::AnimationEncoder
 
 /**
  * Add a frame to an animation encoder.
@@ -95944,7 +95947,7 @@ inline AnimationEncoder CreateAnimationEncoderWithProperties(
  * @param surface the surface to add as the next frame in the animation.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `SDL_PROP_ANIMATION_ENCODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop::AnimationEncoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the encoder.
  * @throws Error on failure.
  *
@@ -96132,18 +96135,18 @@ public:
    *
    * These are the supported properties:
    *
-   * - `SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING`: the file to load, if
-   *   an IOStream isn't being used. This is required if
-   *   `SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER` isn't set.
-   * - `SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER`: an IOStream
-   *   containing a series of images. This should not be closed until the
-   *   animation decoder is closed. This is required if
-   *   `SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING` isn't set.
-   * - `SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
+   * - `prop::AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+   *   IOStream isn't being used. This is required if
+   *   `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
+   * - `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing
+   *   a series of images. This should not be closed until the animation decoder
+   *   is closed. This is required if
+   *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` isn't set.
+   * - `prop::AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
    *   closing the animation decoder should also close the associated IOStream.
-   * - `SDL_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING`: the input file type,
-   *   e.g. "webp", defaults to the file extension if
-   *   `SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING` is set.
+   * - `prop::AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
+   *   "webp", defaults to the file extension if
+   *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
    *
    * @param props the properties of the animation decoder.
    * @post a new AnimationDecoder, or nullptr on failure; call GetError() for
@@ -96253,7 +96256,7 @@ public:
    *              animation.
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
-   *                 `SDL_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+   *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the decoder.
    * @throws Error on failure.
    *
@@ -96416,18 +96419,18 @@ inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
  *
  * These are the supported properties:
  *
- * - `SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING`: the file to load, if
- *   an IOStream isn't being used. This is required if
- *   `SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER` isn't set.
- * - `SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER`: an IOStream
- *   containing a series of images. This should not be closed until the
- *   animation decoder is closed. This is required if
- *   `SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING` isn't set.
- * - `SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if
- *   closing the animation decoder should also close the associated IOStream.
- * - `SDL_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING`: the input file type, e.g.
+ * - `prop::AnimationDecoder.CREATE_FILENAME_STRING`: the file to load, if an
+ *   IOStream isn't being used. This is required if
+ *   `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER` isn't set.
+ * - `prop::AnimationDecoder.CREATE_IOSTREAM_POINTER`: an IOStream containing a
+ *   series of images. This should not be closed until the animation decoder is
+ *   closed. This is required if `prop::AnimationDecoder.CREATE_FILENAME_STRING`
+ *   isn't set.
+ * - `prop::AnimationDecoder.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing
+ *   the animation decoder should also close the associated IOStream.
+ * - `prop::AnimationDecoder.CREATE_TYPE_STRING`: the input file type, e.g.
  *   "webp", defaults to the file extension if
- *   `SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING` is set.
+ *   `prop::AnimationDecoder.CREATE_FILENAME_STRING` is set.
  *
  * @param props the properties of the animation decoder.
  * @returns a new AnimationDecoder, or nullptr on failure; call GetError() for
@@ -96447,38 +96450,42 @@ inline AnimationDecoder CreateAnimationDecoderWithProperties(
   return AnimationDecoder(props);
 }
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING                      \
-  IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING
+namespace prop::AnimationDecoder {
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER                     \
-  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER
+constexpr auto CREATE_FILENAME_STRING =
+  IMG_PROP_ANIMATION_DECODER_CREATE_FILENAME_STRING;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN           \
-  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN
+constexpr auto CREATE_IOSTREAM_POINTER =
+  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_POINTER;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING                          \
-  IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING
+constexpr auto CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN =
+  IMG_PROP_ANIMATION_DECODER_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER            \
-  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER
+constexpr auto CREATE_TYPE_STRING =
+  IMG_PROP_ANIMATION_DECODER_CREATE_TYPE_STRING;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER          \
-  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER
+constexpr auto CREATE_TIMEBASE_NUMERATOR_NUMBER =
+  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_NUMERATOR_NUMBER;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER              \
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER
+constexpr auto CREATE_TIMEBASE_DENOMINATOR_NUMBER =
+  IMG_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN       \
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN
+constexpr auto CREATE_AVIF_MAX_THREADS_NUMBER =
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_MAX_THREADS_NUMBER;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN       \
-  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN
+constexpr auto CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN =
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_INCREMENTAL_BOOLEAN;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER   \
-  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER
+constexpr auto CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN =
+  IMG_PROP_ANIMATION_DECODER_CREATE_AVIF_ALLOW_PROGRESSIVE_BOOLEAN;
 
-#define SDL_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER                \
-  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER
+constexpr auto CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER =
+  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_TRANSPARENT_COLOR_INDEX_NUMBER;
+
+constexpr auto CREATE_GIF_NUM_COLORS_NUMBER =
+  IMG_PROP_ANIMATION_DECODER_CREATE_GIF_NUM_COLORS_NUMBER;
+
+} // namespace prop::AnimationDecoder
 
 /**
  * Get the properties of an animation decoder.
@@ -96508,25 +96515,25 @@ inline PropertiesRef AnimationDecoder::GetProperties()
   return SDL::GetAnimationDecoderProperties(m_resource);
 }
 
-#define SDL_PROP_METADATA_IGNORE_PROPS_BOOLEAN                                 \
-  IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN
+namespace prop::Metadata {
 
-#define SDL_PROP_METADATA_DESCRIPTION_STRING                                   \
-  IMG_PROP_METADATA_DESCRIPTION_STRING
+constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
 
-#define SDL_PROP_METADATA_COPYRIGHT_STRING IMG_PROP_METADATA_COPYRIGHT_STRING
+constexpr auto DESCRIPTION_STRING = IMG_PROP_METADATA_DESCRIPTION_STRING;
 
-#define SDL_PROP_METADATA_TITLE_STRING IMG_PROP_METADATA_TITLE_STRING
+constexpr auto COPYRIGHT_STRING = IMG_PROP_METADATA_COPYRIGHT_STRING;
 
-#define SDL_PROP_METADATA_AUTHOR_STRING IMG_PROP_METADATA_AUTHOR_STRING
+constexpr auto TITLE_STRING = IMG_PROP_METADATA_TITLE_STRING;
 
-#define SDL_PROP_METADATA_CREATION_TIME_STRING                                 \
-  IMG_PROP_METADATA_CREATION_TIME_STRING
+constexpr auto AUTHOR_STRING = IMG_PROP_METADATA_AUTHOR_STRING;
 
-#define SDL_PROP_METADATA_FRAME_COUNT_NUMBER                                   \
-  IMG_PROP_METADATA_FRAME_COUNT_NUMBER
+constexpr auto CREATION_TIME_STRING = IMG_PROP_METADATA_CREATION_TIME_STRING;
 
-#define SDL_PROP_METADATA_LOOP_COUNT_NUMBER IMG_PROP_METADATA_LOOP_COUNT_NUMBER
+constexpr auto FRAME_COUNT_NUMBER = IMG_PROP_METADATA_FRAME_COUNT_NUMBER;
+
+constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
+
+} // namespace prop::Metadata
 
 /**
  * Get the next frame in an animation decoder.
@@ -96546,7 +96553,7 @@ inline PropertiesRef AnimationDecoder::GetProperties()
  *              animation.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
- *                 `SDL_PROP_ANIMATION_DECODER_CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+ *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the decoder.
  * @throws Error on failure.
  *
