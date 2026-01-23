@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_image.h>
 #include "SDL3pp_error.h"
+#include "SDL3pp_gpu.h"
 #include "SDL3pp_mouse.h"
 #include "SDL3pp_render.h"
 #include "SDL3pp_surface.h"
@@ -535,7 +536,7 @@ inline Texture LoadTextureTyped(RendererParam renderer,
  *
  * There is a separate function to read files from an IOStream, if you need an
  * i/o abstraction to provide data from anywhere instead of a simple filesystem
- * read; that function is LoadGPUTexture_IO().
+ * read; that function is LoadGPUTexture().
  *
  * When done with the returned texture, the app should dispose of it with a call
  * to GPUDevice.ReleaseTexture().
@@ -552,14 +553,14 @@ inline Texture LoadTextureTyped(RendererParam renderer,
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa LoadGPUTextureTyped_IO
- * @sa LoadGPUTexture_IO
+ * @sa LoadGPUTextureTyped
+ * @sa LoadGPUTexture
  */
 inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
                                  GPUCopyPass copy_pass,
                                  StringParam file,
-                                 int* width,
-                                 int* height)
+                                 int* width = nullptr,
+                                 int* height = nullptr)
 {
   return IMG_LoadGPUTexture(device, copy_pass, file, width, height);
 }
@@ -586,7 +587,7 @@ inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
  * height) will call this function and manage those details for you, determining
  * the file type from the filename's extension.
  *
- * There is also LoadGPUTextureTyped_IO(), which is equivalent to this function
+ * There is also LoadGPUTextureTyped(), which is equivalent to this function
  * except a file extension (like "BMP", "JPG", etc) can be specified, in case
  * SDL_image cannot autodetect the file format.
  *
@@ -608,14 +609,14 @@ inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa LoadGPUTexture
- * @sa LoadGPUTextureTyped_IO
+ * @sa LoadGPUTextureTyped
  */
-inline GPUTexture LoadGPUTexture_IO(GPUDeviceParam device,
-                                    GPUCopyPass copy_pass,
-                                    IOStreamParam src,
-                                    bool closeio,
-                                    int* width,
-                                    int* height)
+inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
+                                 GPUCopyPass copy_pass,
+                                 IOStreamParam src,
+                                 bool closeio = false,
+                                 int* width = nullptr,
+                                 int* height = nullptr)
 {
   return IMG_LoadGPUTexture_IO(device, copy_pass, src, closeio, width, height);
 }
@@ -648,9 +649,9 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceParam device,
  * height) will call this function and manage those details for you, determining
  * the file type from the filename's extension.
  *
- * There is also LoadGPUTexture_IO(), which is equivalent to this function
- * except that it will rely on SDL_image to determine what type of data it is
- * loading, much like passing a nullptr for type.
+ * There is also LoadGPUTexture(), which is equivalent to this function except
+ * that it will rely on SDL_image to determine what type of data it is loading,
+ * much like passing a nullptr for type.
  *
  * When done with the returned texture, the app should dispose of it with a call
  * to GPUDevice.ReleaseTexture().
@@ -672,18 +673,18 @@ inline GPUTexture LoadGPUTexture_IO(GPUDeviceParam device,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa LoadGPUTexture
- * @sa LoadGPUTexture_IO
+ * @sa LoadGPUTexture
  */
-inline GPUTexture LoadGPUTextureTyped_IO(GPUDeviceParam device,
-                                         GPUCopyPass copy_pass,
-                                         IOStreamParam src,
-                                         bool closeio,
-                                         StringParam type,
-                                         int* width,
-                                         int* height)
+inline GPUTexture LoadGPUTextureTyped(GPUDeviceParam device,
+                                      GPUCopyPass copy_pass,
+                                      IOStreamParam src,
+                                      StringParam type,
+                                      bool closeio = false,
+                                      int* width = nullptr,
+                                      int* height = nullptr)
 {
   return IMG_LoadGPUTextureTyped_IO(
-    device, copy_pass, src, closeio, type, width, height);
+    device, copy_pass, src, type, closeio, width, height);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2252,7 +2253,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa SaveTyped_IO
+ * @sa SaveTyped
  * @sa SaveAVIF
  * @sa SaveBMP
  * @sa SaveCUR
@@ -2303,12 +2304,12 @@ inline void Save(SurfaceParam surface, StringParam file)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void SaveTyped_IO(SurfaceParam surface,
-                         IOStreamParam dst,
-                         bool closeio,
-                         StringParam type)
+inline void SaveTyped(SurfaceParam surface,
+                      IOStreamParam dst,
+                      StringParam type,
+                      bool closeio = false)
 {
-  CheckError(IMG_SaveTyped_IO(surface, dst, closeio, type));
+  CheckError(IMG_SaveTyped_IO(surface, dst, type, closeio));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -2821,12 +2822,12 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.CreateAnimatedCursor
+   * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
+   * @sa LoadANIAnimation
+   * @sa LoadAPNGAnimation
+   * @sa LoadAVIFAnimation
    * @sa LoadGIFAnimation
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
@@ -2853,12 +2854,12 @@ public:
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa Animation.CreateAnimatedCursor
+   * @sa Animation.CreateCursor
    * @sa Animation.Animation
    * @sa LoadAnimationTyped
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
+   * @sa LoadANIAnimation
+   * @sa LoadAPNGAnimation
+   * @sa LoadAVIFAnimation
    * @sa LoadGIFAnimation
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
@@ -2922,9 +2923,9 @@ public:
    * @sa Animation.Animation
    * @sa Animation.Animation
    * @sa LoadAnimationTyped
-   * @sa LoadANIAnimation_IO
-   * @sa LoadAPNGAnimation_IO
-   * @sa LoadAVIFAnimation_IO
+   * @sa LoadANIAnimation
+   * @sa LoadAPNGAnimation
+   * @sa LoadAVIFAnimation
    * @sa LoadGIFAnimation
    * @sa LoadWEBPAnimation
    */
@@ -2954,12 +2955,12 @@ public:
    *
    * @since This function is available since SDL_image 3.4.0.
    *
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa Animation.SaveTyped
+   * @sa Animation.SaveANI
+   * @sa Animation.SaveAPNG
+   * @sa Animation.SaveAVIF
+   * @sa Animation.SaveGIF
+   * @sa Animation.SaveWEBP
    */
   void Save(StringParam file);
 
@@ -2987,13 +2988,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa Animation.SaveANI
+   * @sa Animation.SaveAPNG
+   * @sa Animation.SaveAVIF
+   * @sa Animation.SaveGIF
+   * @sa Animation.SaveWEBP
    */
-  void SaveTyped_IO(IOStreamParam dst, bool closeio, StringParam type);
+  void SaveTyped(IOStreamParam dst, StringParam type, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3013,13 +3014,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa Animation.SaveTyped
+   * @sa Animation.SaveAPNG
+   * @sa Animation.SaveAVIF
+   * @sa Animation.SaveGIF
+   * @sa Animation.SaveWEBP
    */
-  void SaveANI_IO(IOStreamParam dst, bool closeio);
+  void SaveANI(IOStreamParam dst, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3039,13 +3040,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa Animation.SaveTyped
+   * @sa Animation.SaveANI
+   * @sa Animation.SaveAVIF
+   * @sa Animation.SaveGIF
+   * @sa Animation.SaveWEBP
    */
-  void SaveAPNG_IO(IOStreamParam dst, bool closeio);
+  void SaveAPNG(IOStreamParam dst, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3067,13 +3068,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveGIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa Animation.SaveTyped
+   * @sa Animation.SaveANI
+   * @sa Animation.SaveAPNG
+   * @sa Animation.SaveGIF
+   * @sa Animation.SaveWEBP
    */
-  void SaveAVIF_IO(IOStreamParam dst, bool closeio, int quality);
+  void SaveAVIF(IOStreamParam dst, int quality, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3093,13 +3094,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveWEBP_IO
+   * @sa Animation.SaveTyped
+   * @sa Animation.SaveANI
+   * @sa Animation.SaveAPNG
+   * @sa Animation.SaveAVIF
+   * @sa Animation.SaveWEBP
    */
-  void SaveGIF_IO(IOStreamParam dst, bool closeio);
+  void SaveGIF(IOStreamParam dst, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3123,13 +3124,13 @@ public:
    * @since This function is available since SDL_image 3.4.0.
    *
    * @sa Animation.Save
-   * @sa Animation.SaveTyped_IO
-   * @sa Animation.SaveANI_IO
-   * @sa Animation.SaveAPNG_IO
-   * @sa Animation.SaveAVIF_IO
-   * @sa Animation.SaveGIF_IO
+   * @sa Animation.SaveTyped
+   * @sa Animation.SaveANI
+   * @sa Animation.SaveAPNG
+   * @sa Animation.SaveAVIF
+   * @sa Animation.SaveGIF
    */
-  void SaveWEBP_IO(IOStreamParam dst, bool closeio, int quality);
+  void SaveWEBP(IOStreamParam dst, int quality, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3149,7 +3150,7 @@ public:
    * @sa Animation.Animation
    * @sa LoadAnimationTyped
    */
-  Cursor CreateAnimatedCursor(const PointRaw& hotspot);
+  Cursor CreateCursor(const PointRaw& hotspot);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
@@ -3261,12 +3262,12 @@ inline int Animation::GetDelay(int index) const
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.CreateAnimatedCursor
+ * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
@@ -3293,12 +3294,12 @@ inline Animation LoadAnimation(StringParam file)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.CreateAnimatedCursor
+ * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
@@ -3332,12 +3333,12 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa Animation.CreateAnimatedCursor
+ * @sa Animation.CreateCursor
  * @sa Animation.Animation
  * @sa Animation.Animation
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
@@ -3371,13 +3372,13 @@ inline Animation LoadAnimationTyped(IOStreamParam src,
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline AnimationRef LoadANIAnimation_IO(IOStreamParam src)
+inline Animation LoadANIAnimation(IOStreamParam src)
 {
   return IMG_LoadANIAnimation_IO(src);
 }
@@ -3406,13 +3407,13 @@ inline AnimationRef LoadANIAnimation_IO(IOStreamParam src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline AnimationRef LoadAPNGAnimation_IO(IOStreamParam src)
+inline Animation LoadAPNGAnimation(IOStreamParam src)
 {
   return IMG_LoadAPNGAnimation_IO(src);
 }
@@ -3441,13 +3442,13 @@ inline AnimationRef LoadAPNGAnimation_IO(IOStreamParam src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline AnimationRef LoadAVIFAnimation_IO(IOStreamParam src)
+inline Animation LoadAVIFAnimation(IOStreamParam src)
 {
   return IMG_LoadAVIFAnimation_IO(src);
 }
@@ -3471,13 +3472,13 @@ inline AnimationRef LoadAVIFAnimation_IO(IOStreamParam src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline AnimationRef LoadGIFAnimation(IOStreamParam src)
+inline Animation LoadGIFAnimation(IOStreamParam src)
 {
   return IMG_LoadGIFAnimation_IO(src);
 }
@@ -3499,13 +3500,13 @@ inline AnimationRef LoadGIFAnimation(IOStreamParam src)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa Animation.Free
  */
-inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
+inline Animation LoadWEBPAnimation(IOStreamParam src)
 {
   return IMG_LoadWEBPAnimation_IO(src);
 }
@@ -3523,12 +3524,12 @@ inline AnimationRef LoadWEBPAnimation(IOStreamParam src)
  *
  * @since This function is available since SDL_image 3.4.0.
  *
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa Animation.SaveTyped
+ * @sa Animation.SaveANI
+ * @sa Animation.SaveAPNG
+ * @sa Animation.SaveAVIF
+ * @sa Animation.SaveGIF
+ * @sa Animation.SaveWEBP
  */
 inline void SaveAnimation(AnimationParam anim, StringParam file)
 {
@@ -3568,29 +3569,29 @@ inline void Animation::Save(StringParam file)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa Animation.SaveANI
+ * @sa Animation.SaveAPNG
+ * @sa Animation.SaveAVIF
+ * @sa Animation.SaveGIF
+ * @sa Animation.SaveWEBP
  */
-inline void SaveAnimationTyped_IO(AnimationParam anim,
-                                  IOStreamParam dst,
-                                  bool closeio,
-                                  StringParam type)
+inline void SaveAnimationTyped(AnimationParam anim,
+                               IOStreamParam dst,
+                               StringParam type,
+                               bool closeio = false)
 {
-  CheckError(IMG_SaveAnimationTyped_IO(anim, dst, closeio, type));
+  CheckError(IMG_SaveAnimationTyped_IO(anim, dst, type, closeio));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveTyped_IO(IOStreamParam dst,
-                                    bool closeio,
-                                    StringParam type)
+inline void Animation::SaveTyped(IOStreamParam dst,
+                                 StringParam type,
+                                 bool closeio)
 {
-  SDL::SaveAnimationTyped_IO(m_resource, dst, closeio, std::move(type));
+  SDL::SaveAnimationTyped(m_resource, dst, std::move(type), closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3612,15 +3613,15 @@ inline void Animation::SaveTyped_IO(IOStreamParam dst,
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa Animation.SaveTyped
+ * @sa Animation.SaveAPNG
+ * @sa Animation.SaveAVIF
+ * @sa Animation.SaveGIF
+ * @sa Animation.SaveWEBP
  */
-inline void SaveANIAnimation_IO(AnimationParam anim,
-                                IOStreamParam dst,
-                                bool closeio)
+inline void SaveANIAnimation(AnimationParam anim,
+                             IOStreamParam dst,
+                             bool closeio = false)
 {
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
 }
@@ -3629,9 +3630,9 @@ inline void SaveANIAnimation_IO(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveANI_IO(IOStreamParam dst, bool closeio)
+inline void Animation::SaveANI(IOStreamParam dst, bool closeio)
 {
-  SDL::SaveANIAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveANIAnimation(m_resource, dst, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3653,15 +3654,15 @@ inline void Animation::SaveANI_IO(IOStreamParam dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa Animation.SaveTyped
+ * @sa Animation.SaveANI
+ * @sa Animation.SaveAVIF
+ * @sa Animation.SaveGIF
+ * @sa Animation.SaveWEBP
  */
-inline void SaveAPNGAnimation_IO(AnimationParam anim,
-                                 IOStreamParam dst,
-                                 bool closeio)
+inline void SaveAPNGAnimation(AnimationParam anim,
+                              IOStreamParam dst,
+                              bool closeio = false)
 {
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
 }
@@ -3670,9 +3671,9 @@ inline void SaveAPNGAnimation_IO(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveAPNG_IO(IOStreamParam dst, bool closeio)
+inline void Animation::SaveAPNG(IOStreamParam dst, bool closeio)
 {
-  SDL::SaveAPNGAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveAPNGAnimation(m_resource, dst, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3696,27 +3697,27 @@ inline void Animation::SaveAPNG_IO(IOStreamParam dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveGIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa Animation.SaveTyped
+ * @sa Animation.SaveANI
+ * @sa Animation.SaveAPNG
+ * @sa Animation.SaveGIF
+ * @sa Animation.SaveWEBP
  */
-inline void SaveAVIFAnimation_IO(AnimationParam anim,
-                                 IOStreamParam dst,
-                                 bool closeio,
-                                 int quality)
+inline void SaveAVIFAnimation(AnimationParam anim,
+                              IOStreamParam dst,
+                              int quality,
+                              bool closeio = false)
 {
-  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, closeio, quality));
+  CheckError(IMG_SaveAVIFAnimation_IO(anim, dst, quality, closeio));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveAVIF_IO(IOStreamParam dst, bool closeio, int quality)
+inline void Animation::SaveAVIF(IOStreamParam dst, int quality, bool closeio)
 {
-  SDL::SaveAVIFAnimation_IO(m_resource, dst, closeio, quality);
+  SDL::SaveAVIFAnimation(m_resource, dst, quality, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3738,15 +3739,15 @@ inline void Animation::SaveAVIF_IO(IOStreamParam dst, bool closeio, int quality)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveWEBP_IO
+ * @sa Animation.SaveTyped
+ * @sa Animation.SaveANI
+ * @sa Animation.SaveAPNG
+ * @sa Animation.SaveAVIF
+ * @sa Animation.SaveWEBP
  */
-inline void SaveGIFAnimation_IO(AnimationParam anim,
-                                IOStreamParam dst,
-                                bool closeio)
+inline void SaveGIFAnimation(AnimationParam anim,
+                             IOStreamParam dst,
+                             bool closeio = false)
 {
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
 }
@@ -3755,9 +3756,9 @@ inline void SaveGIFAnimation_IO(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveGIF_IO(IOStreamParam dst, bool closeio)
+inline void Animation::SaveGIF(IOStreamParam dst, bool closeio)
 {
-  SDL::SaveGIFAnimation_IO(m_resource, dst, closeio);
+  SDL::SaveGIFAnimation(m_resource, dst, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3783,27 +3784,27 @@ inline void Animation::SaveGIF_IO(IOStreamParam dst, bool closeio)
  * @since This function is available since SDL_image 3.4.0.
  *
  * @sa Animation.Save
- * @sa Animation.SaveTyped_IO
- * @sa Animation.SaveANI_IO
- * @sa Animation.SaveAPNG_IO
- * @sa Animation.SaveAVIF_IO
- * @sa Animation.SaveGIF_IO
+ * @sa Animation.SaveTyped
+ * @sa Animation.SaveANI
+ * @sa Animation.SaveAPNG
+ * @sa Animation.SaveAVIF
+ * @sa Animation.SaveGIF
  */
-inline void SaveWEBPAnimation_IO(AnimationParam anim,
-                                 IOStreamParam dst,
-                                 bool closeio,
-                                 int quality)
+inline void SaveWEBPAnimation(AnimationParam anim,
+                              IOStreamParam dst,
+                              int quality,
+                              bool closeio = false)
 {
-  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, closeio, quality));
+  CheckError(IMG_SaveWEBPAnimation_IO(anim, dst, quality, closeio));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveWEBP_IO(IOStreamParam dst, bool closeio, int quality)
+inline void Animation::SaveWEBP(IOStreamParam dst, int quality, bool closeio)
 {
-  SDL::SaveWEBPAnimation_IO(m_resource, dst, closeio, quality);
+  SDL::SaveWEBPAnimation(m_resource, dst, quality, closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -3834,7 +3835,7 @@ inline Cursor CreateAnimatedCursor(AnimationParam anim, const PointRaw& hotspot)
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline Cursor Animation::CreateAnimatedCursor(const PointRaw& hotspot)
+inline Cursor Animation::CreateCursor(const PointRaw& hotspot)
 {
   return SDL::CreateAnimatedCursor(m_resource, hotspot);
 }
@@ -3853,9 +3854,9 @@ inline Cursor Animation::CreateAnimatedCursor(const PointRaw& hotspot)
  * @sa Animation.Animation
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
- * @sa LoadANIAnimation_IO
- * @sa LoadAPNGAnimation_IO
- * @sa LoadAVIFAnimation_IO
+ * @sa LoadANIAnimation
+ * @sa LoadAPNGAnimation
+ * @sa LoadAVIFAnimation
  * @sa LoadGIFAnimation
  * @sa LoadWEBPAnimation
  */
@@ -4522,8 +4523,8 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(IOStreamParam src, bool closeio, StringParam type)
-    : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
+  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false)
+    : m_resource(IMG_CreateAnimationDecoder_IO(src, type, closeio))
   {
   }
 
@@ -4837,11 +4838,11 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline AnimationDecoder CreateAnimationDecoder_IO(IOStreamParam src,
-                                                  bool closeio,
-                                                  StringParam type)
+inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
+                                               StringParam type,
+                                               bool closeio = false)
 {
-  return AnimationDecoder(src, closeio, std::move(type));
+  return AnimationDecoder(src, std::move(type), closeio);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
