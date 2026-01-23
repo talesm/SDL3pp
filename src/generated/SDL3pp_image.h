@@ -4695,7 +4695,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  void GetFrame(SDL_Surface** frame, Uint64* duration);
+  Surface GetFrame(Uint64* duration);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -5024,20 +5024,19 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline void GetAnimationDecoderFrame(AnimationDecoderParam decoder,
-                                     SDL_Surface** frame,
-                                     Uint64* duration)
+inline Surface GetAnimationDecoderFrame(AnimationDecoderParam decoder,
+                                        Uint64* duration)
 {
-  CheckError(IMG_GetAnimationDecoderFrame(decoder, frame, duration));
+  return CheckError(IMG_GetAnimationDecoderFrame(decoder, duration));
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void AnimationDecoder::GetFrame(SDL_Surface** frame, Uint64* duration)
+inline Surface AnimationDecoder::GetFrame(Uint64* duration)
 {
-  SDL::GetAnimationDecoderFrame(m_resource, frame, duration);
+  return SDL::GetAnimationDecoderFrame(m_resource, duration);
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)

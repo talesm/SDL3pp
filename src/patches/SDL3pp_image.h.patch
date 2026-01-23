@@ -1641,9 +1641,29 @@
    /**
     * Get the next frame in an animation decoder.
     *
-@@ -4697,10 +4532,6 @@
+@@ -4672,18 +4507,11 @@
+    * as an Surface. The returned surface should be freed with SDL_FreeSurface()
+    * when no longer needed.
+    *
+-   * If the animation decoder has no more frames or an error occurred while
+-   * decoding the frame, this function returns false. In that case, please call
+-   * GetError() for more information. If GetError() returns an empty string,
+-   * that means there are no more available frames. If GetError() returns a
+-   * valid string, that means the decoding failed.
+-   *
+-   * @param frame a pointer filled in with the Surface for the next frame in the
+-   *              animation.
+    * @param duration the duration of the frame, usually in milliseconds but can
+    *                 be other units if the
+    *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+    *                 property is set when creating the decoder.
++   * @returns the Surface for the next frame in the animation.
+    * @throws Error on failure.
+    *
+    * @since This function is available since SDL_image 3.4.0.
+@@ -4697,10 +4525,6 @@
     */
-   void GetFrame(SDL_Surface** frame, Uint64* duration);
+   Surface GetFrame(Uint64* duration);
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
@@ -1652,7 +1672,7 @@
    /**
     * Get the decoder status indicating the current state of the decoder.
     *
-@@ -4713,10 +4544,6 @@
+@@ -4713,10 +4537,6 @@
     */
    AnimationDecoderStatus GetStatus();
  
@@ -1663,7 +1683,7 @@
    /**
     * Reset an animation decoder.
     *
-@@ -4735,8 +4562,6 @@
+@@ -4735,8 +4555,6 @@
     * @sa AnimationDecoder.Close
     */
    void Reset();
@@ -1672,7 +1692,7 @@
  };
  
  /// Semi-safe reference for AnimationDecoder.
-@@ -4776,8 +4601,6 @@
+@@ -4776,8 +4594,6 @@
    ~AnimationDecoderRef() { release(); }
  };
  
@@ -1681,7 +1701,7 @@
  /**
   * Create a decoder to read a series of images from a file.
   *
-@@ -4809,10 +4632,6 @@
+@@ -4809,10 +4625,6 @@
    return AnimationDecoder(std::move(file));
  }
  
@@ -1692,7 +1712,7 @@
  /**
   * Create a decoder to read a series of images from an IOStream.
   *
-@@ -4848,10 +4667,6 @@
+@@ -4848,10 +4660,6 @@
    return AnimationDecoder(src, std::move(type), closeio);
  }
  
@@ -1703,7 +1723,7 @@
  /**
   * Create an animation decoder with the specified properties.
   *
-@@ -4896,8 +4711,6 @@
+@@ -4896,8 +4704,6 @@
    return AnimationDecoder(props);
  }
  
@@ -1712,7 +1732,7 @@
  namespace prop::AnimationDecoder {
  
  constexpr auto CREATE_FILENAME_STRING =
-@@ -4935,8 +4748,6 @@
+@@ -4935,8 +4741,6 @@
  
  } // namespace prop::AnimationDecoder
  
@@ -1721,7 +1741,7 @@
  /**
   * Get the properties of an animation decoder.
   *
-@@ -4960,17 +4771,11 @@
+@@ -4960,17 +4764,11 @@
    return IMG_GetAnimationDecoderProperties(decoder);
  }
  
@@ -1739,7 +1759,7 @@
  namespace prop::Metadata {
  
  constexpr auto IGNORE_PROPS_BOOLEAN = IMG_PROP_METADATA_IGNORE_PROPS_BOOLEAN;
-@@ -4991,8 +4796,6 @@
+@@ -4991,28 +4789,18 @@
  
  } // namespace prop::Metadata
  
@@ -1748,17 +1768,45 @@
  /**
   * Get the next frame in an animation decoder.
   *
-@@ -5031,19 +4834,11 @@
-   CheckError(IMG_GetAnimationDecoderFrame(decoder, frame, duration));
+  * This function decodes the next frame in the animation decoder, returning it
+- * as an Surface. The returned surface should be freed with SDL_FreeSurface()
+- * when no longer needed.
+- *
+- * If the animation decoder has no more frames or an error occurred while
+- * decoding the frame, this function returns false. In that case, please call
+- * GetError() for more information. If GetError() returns an empty string, that
+- * means there are no more available frames. If GetError() returns a valid
+- * string, that means the decoding failed.
++ * as an Surface.
+  *
+  * @param decoder the animation decoder.
+- * @param frame a pointer filled in with the Surface for the next frame in the
+- *              animation.
+  * @param duration the duration of the frame, usually in milliseconds but can be
+  *                 other units if the
+  *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
+  *                 property is set when creating the decoder.
++ * @returns the Surface for the next frame in the animation.
+  * @throws Error on failure.
+  *
+  * @since This function is available since SDL_image 3.4.0.
+@@ -5027,22 +4815,16 @@
+ inline Surface GetAnimationDecoderFrame(AnimationDecoderParam decoder,
+                                         Uint64* duration)
+ {
+-  return CheckError(IMG_GetAnimationDecoderFrame(decoder, duration));
++  SDL_Surface* frame = nullptr;
++  CheckError(IMG_GetAnimationDecoderFrame(decoder, &frame, duration));
++  return Surface::Borrow(frame);
  }
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
 -#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 -
- inline void AnimationDecoder::GetFrame(SDL_Surface** frame, Uint64* duration)
+ inline Surface AnimationDecoder::GetFrame(Uint64* duration)
  {
-   SDL::GetAnimationDecoderFrame(m_resource, frame, duration);
+   return SDL::GetAnimationDecoderFrame(m_resource, duration);
  }
  
 -#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -1768,7 +1816,7 @@
  /**
   * Get the decoder status indicating the current state of the decoder.
   *
-@@ -5061,19 +4856,11 @@
+@@ -5060,19 +4842,11 @@
    return IMG_GetAnimationDecoderStatus(decoder);
  }
  
@@ -1788,7 +1836,7 @@
  /**
   * Reset an animation decoder.
   *
-@@ -5097,19 +4884,11 @@
+@@ -5096,19 +4870,11 @@
    CheckError(IMG_ResetAnimationDecoder(decoder));
  }
  
@@ -1808,7 +1856,7 @@
  /**
   * Close an animation decoder, finishing any decoding.
   *
-@@ -5130,19 +4909,40 @@
+@@ -5129,19 +4895,40 @@
    CheckError(IMG_CloseAnimationDecoder(decoder));
  }
  

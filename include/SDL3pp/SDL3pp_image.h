@@ -4507,18 +4507,11 @@ public:
    * as an Surface. The returned surface should be freed with SDL_FreeSurface()
    * when no longer needed.
    *
-   * If the animation decoder has no more frames or an error occurred while
-   * decoding the frame, this function returns false. In that case, please call
-   * GetError() for more information. If GetError() returns an empty string,
-   * that means there are no more available frames. If GetError() returns a
-   * valid string, that means the decoding failed.
-   *
-   * @param frame a pointer filled in with the Surface for the next frame in the
-   *              animation.
    * @param duration the duration of the frame, usually in milliseconds but can
    *                 be other units if the
    *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
    *                 property is set when creating the decoder.
+   * @returns the Surface for the next frame in the animation.
    * @throws Error on failure.
    *
    * @since This function is available since SDL_image 3.4.0.
@@ -4530,7 +4523,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  void GetFrame(SDL_Surface** frame, Uint64* duration);
+  Surface GetFrame(Uint64* duration);
 
   /**
    * Get the decoder status indicating the current state of the decoder.
@@ -4800,22 +4793,14 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * Get the next frame in an animation decoder.
  *
  * This function decodes the next frame in the animation decoder, returning it
- * as an Surface. The returned surface should be freed with SDL_FreeSurface()
- * when no longer needed.
- *
- * If the animation decoder has no more frames or an error occurred while
- * decoding the frame, this function returns false. In that case, please call
- * GetError() for more information. If GetError() returns an empty string, that
- * means there are no more available frames. If GetError() returns a valid
- * string, that means the decoding failed.
+ * as an Surface.
  *
  * @param decoder the animation decoder.
- * @param frame a pointer filled in with the Surface for the next frame in the
- *              animation.
  * @param duration the duration of the frame, usually in milliseconds but can be
  *                 other units if the
  *                 `prop::AnimationDecoder.CREATE_TIMEBASE_DENOMINATOR_NUMBER`
  *                 property is set when creating the decoder.
+ * @returns the Surface for the next frame in the animation.
  * @throws Error on failure.
  *
  * @since This function is available since SDL_image 3.4.0.
@@ -4827,16 +4812,17 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline void GetAnimationDecoderFrame(AnimationDecoderParam decoder,
-                                     SDL_Surface** frame,
-                                     Uint64* duration)
+inline Surface GetAnimationDecoderFrame(AnimationDecoderParam decoder,
+                                        Uint64* duration)
 {
-  CheckError(IMG_GetAnimationDecoderFrame(decoder, frame, duration));
+  SDL_Surface* frame = nullptr;
+  CheckError(IMG_GetAnimationDecoderFrame(decoder, &frame, duration));
+  return Surface::Borrow(frame);
 }
 
-inline void AnimationDecoder::GetFrame(SDL_Surface** frame, Uint64* duration)
+inline Surface AnimationDecoder::GetFrame(Uint64* duration)
 {
-  SDL::GetAnimationDecoderFrame(m_resource, frame, duration);
+  return SDL::GetAnimationDecoderFrame(m_resource, duration);
 }
 
 /**

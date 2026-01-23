@@ -8689,6 +8689,10 @@ const transform = {
             default: "false",
           }],
         },
+        "IMG_GetAnimationDecoderFrame": {
+          type: "Surface",
+          parameters: [{}, { type: "Uint64 *", name: "duration" }],
+        }
       }
     },
     "SDL_ttf.h": {
