@@ -3,7 +3,6 @@ Todo for next version
 
 New Version checklist:
 
-- [ ] Create version branch (b0.7.0);
 - [ ] Update [changelog](changelog.md);
 - [ ] Update version on [CMakeLists line 1](CMakeLists.txt#1);
 - [ ] Update version on [gen-transform](scripts/gen-transform.js#7);

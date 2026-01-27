@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.7.1
+
+Small update to add support to SDL_image 3.4.0 new features.
+
 ## Version 0.7.0
 
 The main theme is Lock types being a RAII construct:
