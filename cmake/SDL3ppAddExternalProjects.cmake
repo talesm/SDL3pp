@@ -33,7 +33,7 @@ if (SDL3PP_ENABLE_IMAGE)
   if(SDL3PP_USE_SDL3IMAGE_TAG)
     set(SDL3IMAGE_TAG ${SDL3PP_USE_SDL3IMAGE_TAG})
   else ()
-    set(SDL3IMAGE_TAG release-3.2.6)
+    set(SDL3IMAGE_TAG release-3.4.0)
   endif ()
   FetchContent_Declare(SDL3ImageExternal
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git

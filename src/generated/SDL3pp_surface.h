@@ -354,7 +354,6 @@ public:
    *
    * @sa LoadSurfaceTyped
    * @sa Surface.Surface
-   * @sa Surface.Destroy
    */
   Surface(StringParam file);
 
@@ -407,7 +406,6 @@ public:
    *
    * @sa Surface.Surface
    * @sa LoadSurfaceTyped
-   * @sa Surface.Destroy
    */
   Surface(IOStreamParam src, bool closeio);
 

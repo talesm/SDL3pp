@@ -8274,11 +8274,18 @@ const transform = {
     "SDL_image.h": {
       localIncludes: [
         "SDL3pp_error.h",
+        "SDL3pp_gpu.h",
+        "SDL3pp_mouse.h",
         "SDL3pp_render.h",
         "SDL3pp_surface.h",
         "SDL3pp_version.h",
         "SDL3pp_video.h",
       ],
+      namespacesMap: {
+        "IMG_PROP_ANIMATION_ENCODER_": "prop::AnimationEncoder",
+        "IMG_PROP_ANIMATION_DECODER_": "prop::AnimationDecoder",
+        "IMG_PROP_METADATA_": "prop::Metadata",
+      },
       transform: {
         "IMG": {
           kind: "ns",
@@ -8295,69 +8302,6 @@ const transform = {
         },
         "SDL_IMAGE_MICRO_VERSION": {
           value: ""
-        },
-        "IMG_Animation": {
-          resource: { free: "IMG_FreeAnimation" },
-          entries: {
-            "IMG_LoadAnimation": "ctor",
-            "IMG_LoadAnimation_IO": { name: "ctor" },
-          }
-        },
-        "GetAnimationWidth": {
-          kind: "function",
-          immutable: true,
-          type: "int",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
-        },
-        "GetAnimationHeight": {
-          kind: "function",
-          immutable: true,
-          type: "int",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
-        },
-        "GetAnimationSize": {
-          kind: "function",
-          immutable: true,
-          type: "Point",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
-        },
-        "GetAnimationCount": {
-          kind: "function",
-          immutable: true,
-          type: "int",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
-        },
-        "GetAnimationFrame": {
-          kind: "function",
-          type: "Surface",
-          immutable: true,
-          parameters: [
-            { type: "AnimationConstParam", name: "anim" },
-            { type: "int", name: "index" },
-          ]
-        },
-        "GetAnimationDelay": {
-          kind: "function",
-          type: "int",
-          immutable: true,
-          parameters: [
-            { type: "AnimationConstParam", name: "anim" },
-            { type: "int", name: "index" },
-          ]
-        },
-        "IMG_LoadAnimation": { type: "Animation" },
-        "IMG_LoadAnimation_IO": {
-          type: "Animation",
-          name: "LoadAnimation"
-        },
-        "IMG_LoadAnimationTyped_IO": {
-          type: "Animation",
-          name: "LoadAnimationTyped",
-          parameters: [
-            { name: "src", type: "IOStreamParam" },
-            { name: "type", type: "StringParam" },
-            { name: "closeio", type: "bool", default: "false" },
-          ]
         },
         "IMG_LoadTyped_IO": {
           type: "Surface",
@@ -8409,6 +8353,24 @@ const transform = {
             { name: "type", type: "StringParam" },
             { name: "closeio", type: "bool", default: "false" },
           ]
+        },
+        "IMG_LoadGPUTexture": {
+          parameters: [{}, {}, {}, { default: "nullptr" }, { default: "nullptr" }],
+        },
+        "IMG_LoadGPUTexture_IO": {
+          name: "LoadGPUTexture",
+          parameters: [{}, {}, {}, { default: "false" }, { default: "nullptr" }, { default: "nullptr" }],
+        },
+        "IMG_LoadGPUTextureTyped_IO": {
+          name: "LoadGPUTextureTyped",
+          parameters: [{}, {}, {}, {
+            name: "type",
+            type: "StringParam",
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false",
+          }, { default: "nullptr" }, { default: "nullptr" }],
         },
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
@@ -8498,6 +8460,17 @@ const transform = {
           "type": "Surface",
           "name": "ReadXPMFromArrayToRGB888"
         },
+        "IMG_SaveTyped_IO": {
+          name: "SaveTyped",
+          parameters: [{}, {}, {
+            name: "type",
+            type: "StringParam"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+        },
         "IMG_SaveAVIF_IO": {
           name: "SaveAVIF",
           parameters: [
@@ -8507,6 +8480,22 @@ const transform = {
             { name: "closeio", type: "bool", default: "false" },
           ]
         },
+        "IMG_SaveBMP_IO": {
+          name: "SaveBMP",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveCUR_IO": {
+          name: "SaveCUR",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveGIF_IO": {
+          name: "SaveGIF",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveICO_IO": {
+          name: "SaveICO",
+          parameters: [{}, {}, { default: "false" }],
+        },
         "IMG_SavePNG_IO": {
           name: "SavePNG",
           parameters: [
@@ -8514,6 +8503,21 @@ const transform = {
             {},
             { name: "closeio", type: "bool", default: "false" },
           ]
+        },
+        "IMG_SaveTGA_IO": {
+          name: "SaveTGA",
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveWEBP_IO": {
+          name: "SaveWEBP",
+          parameters: [{}, {}, {
+            name: "quality",
+            type: "float"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
         },
         "IMG_SaveJPG_IO": {
           name: "SaveJPG",
@@ -8524,11 +8528,170 @@ const transform = {
             { name: "closeio", type: "bool", default: "false" },
           ]
         },
+        "IMG_Animation": {
+          resource: { free: "IMG_FreeAnimation" },
+          entries: {
+            "IMG_LoadAnimation": "ctor",
+            "IMG_LoadAnimation_IO": { name: "ctor" },
+          }
+        },
+        "GetAnimationWidth": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationHeight": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationSize": {
+          kind: "function",
+          immutable: true,
+          type: "Point",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationCount": {
+          kind: "function",
+          immutable: true,
+          type: "int",
+          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+        },
+        "GetAnimationFrame": {
+          kind: "function",
+          type: "Surface",
+          immutable: true,
+          parameters: [
+            { type: "AnimationConstParam", name: "anim" },
+            { type: "int", name: "index" },
+          ]
+        },
+        "GetAnimationDelay": {
+          kind: "function",
+          type: "int",
+          immutable: true,
+          parameters: [
+            { type: "AnimationConstParam", name: "anim" },
+            { type: "int", name: "index" },
+          ]
+        },
+        "IMG_LoadAnimation": { type: "Animation" },
+        "IMG_LoadAnimation_IO": {
+          type: "Animation",
+          name: "LoadAnimation"
+        },
+        "IMG_LoadAnimationTyped_IO": {
+          type: "Animation",
+          name: "LoadAnimationTyped",
+          parameters: [
+            { name: "src", type: "IOStreamParam" },
+            { name: "type", type: "StringParam" },
+            { name: "closeio", type: "bool", default: "false" },
+          ]
+        },
+        "IMG_LoadANIAnimation_IO": {
+          type: "Animation",
+          name: "LoadANIAnimation"
+        },
+        "IMG_LoadAPNGAnimation_IO": {
+          type: "Animation",
+          name: "LoadAPNGAnimation"
+        },
+        "IMG_LoadAVIFAnimation_IO": {
+          type: "Animation",
+          name: "LoadAVIFAnimation"
+        },
         "IMG_LoadGIFAnimation_IO": {
-          "name": "LoadGIFAnimation"
+          type: "Animation",
+          name: "LoadGIFAnimation"
         },
         "IMG_LoadWEBPAnimation_IO": {
-          "name": "LoadWEBPAnimation"
+          type: "Animation",
+          name: "LoadWEBPAnimation"
+        },
+        "IMG_SaveAnimationTyped_IO": {
+          name: "SaveAnimationTyped",
+          parameters: [{}, {}, {
+            name: "type",
+            type: "StringParam"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+          hints: { methodName: "SaveTyped" },
+        },
+        "IMG_SaveANIAnimation_IO": {
+          name: "SaveANIAnimation",
+          hints: { methodName: "SaveANI" },
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveAPNGAnimation_IO": {
+          name: "SaveAPNGAnimation",
+          hints: { methodName: "SaveAPNG" },
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveAVIFAnimation_IO": {
+          name: "SaveAVIFAnimation",
+          hints: { methodName: "SaveAVIF" },
+          parameters: [{}, {}, {
+            name: "quality",
+            type: "int"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+        },
+        "IMG_SaveGIFAnimation_IO": {
+          name: "SaveGIFAnimation",
+          hints: { methodName: "SaveGIF" },
+          parameters: [{}, {}, { default: "false" }],
+        },
+        "IMG_SaveWEBPAnimation_IO": {
+          name: "SaveWEBPAnimation",
+          hints: { methodName: "SaveWEBP" },
+          parameters: [{}, {}, {
+            name: "quality",
+            type: "int"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+        },
+        "IMG_CreateAnimatedCursor": {
+          type: "Cursor",
+          parameters: [{}, { type: "const PointRaw &", name: "hotspot" }],
+          hints: { methodName: "CreateCursor" },
+        },
+        "IMG_CreateAnimationEncoder_IO": {
+          name: "CreateAnimationEncoder",
+          parameters: [{}, {
+            type: "StringParam",
+            name: "type"
+          }, {
+            name: "closeio",
+            type: "bool",
+            default: "false"
+          }],
+        },
+        "IMG_CreateAnimationDecoder_IO": {
+          name: "CreateAnimationDecoder",
+          parameters: [{}, {
+            type: "StringParam",
+            name: "type"
+          }, {
+            type: "bool",
+            name: "closeio",
+            default: "false",
+          }],
+        },
+        "IMG_GetAnimationDecoderFrame": {
+          type: "Surface",
+          parameters: [{}, { type: "Uint64 *", name: "duration" }],
         }
       }
     },

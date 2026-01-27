@@ -3070,9 +3070,6 @@ public:
    *
    * This unlocks an audio stream after a call to AudioStream.Lock.
    *
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
    * @threadsafety You should only call this from the same thread that
    *               previously called AudioStream.Lock.
    *
