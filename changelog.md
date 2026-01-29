@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.7.2
+
+- Fix retrocompatibility error on SDL3pp_image.h's SDL::IsANI();
+- Make bundled libs downloaded from URL instead of checking out the entire
+  repository;
+
 ## Version 0.7.1
 
 Small update to add support to SDL_image 3.4.0 new features.
