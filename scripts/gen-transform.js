@@ -8372,6 +8372,9 @@ const transform = {
             default: "false",
           }, { default: "nullptr" }, { default: "nullptr" }],
         },
+        "IMG_isANI": {
+          since: { tag: "SDL_IMAGE", major: 3, minor: 4, patch: 0 },
+        },
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
           "name": "LoadAVIF"

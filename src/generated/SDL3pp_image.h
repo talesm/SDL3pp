@@ -705,6 +705,8 @@ inline Surface GetClipboardImage() { return IMG_GetClipboardImage(); }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * Detect ANI animated cursor data on a readable/seekable IOStream.
  *
@@ -747,6 +749,8 @@ inline Surface GetClipboardImage() { return IMG_GetClipboardImage(); }
  * @sa isXV
  */
 inline bool isANI(IOStreamParam src) { return IMG_isANI(src); }
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Detect AVIF image data on a readable/seekable IOStream.

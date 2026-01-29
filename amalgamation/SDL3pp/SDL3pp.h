@@ -92428,8 +92428,6 @@ inline GPUTexture LoadGPUTextureTyped(GPUDeviceParam device,
  */
 inline Surface GetClipboardImage() { return Surface{IMG_GetClipboardImage()}; }
 
-#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-
 /**
  * Detect ANI animated cursor data on a readable/seekable IOStream.
  *
@@ -92450,7 +92448,7 @@ inline Surface GetClipboardImage() { return Surface{IMG_GetClipboardImage()}; }
  * @param src a seekable/readable IOStream to provide image data.
  * @returns true if this is ANI animated cursor data, false otherwise.
  *
- * @since This function is available since SDL_image 3.0.0.
+ * @since This function is available since SDL_image 3.4.0.
  *
  * @sa isAVIF
  * @sa isBMP
@@ -92472,6 +92470,8 @@ inline Surface GetClipboardImage() { return Surface{IMG_GetClipboardImage()}; }
  * @sa isXV
  */
 inline bool isANI(IOStreamParam src) { return IMG_isANI(src); }
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * Detect AVIF image data on a readable/seekable IOStream.
