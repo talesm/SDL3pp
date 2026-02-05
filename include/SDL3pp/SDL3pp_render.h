@@ -2489,7 +2489,7 @@ public:
   constexpr Texture(const Texture& other)
     : m_resource(other.m_resource)
   {
-    ++m_resource->refcount;
+    if (m_resource) ++m_resource->refcount;
   }
 
   /// Move constructor

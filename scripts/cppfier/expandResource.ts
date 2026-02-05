@@ -34,7 +34,7 @@ export function expandResource(
   sourceName: string,
   sourceEntry: ApiEntry,
   targetName: string,
-  targetEntry: ApiEntryTransform
+  targetEntry: ApiEntryTransform,
 ) {
   const resourceEntry = getResourceDefinition(targetEntry) ?? {};
 
@@ -74,7 +74,7 @@ export function expandResource(
       kind: "alias",
       type: pointerType,
       doc: [`Alias to raw representation for ${targetName}.`],
-    }
+    },
   );
   if (hasRef) referenceAliases.push({ name: refName, kind: "forward" });
   if (hasScoped) referenceAliases.push({ name: scopedName, kind: "forward" });
@@ -84,7 +84,7 @@ export function expandResource(
     targetName,
     hasRef ? refName : targetName,
     targetEntry,
-    hasLock
+    hasLock,
   );
 
   const memberAccess: ApiEntryTransformMap = {};
@@ -100,7 +100,7 @@ export function expandResource(
   }
 
   referenceAliases.push(
-    createParam(paramType, targetName, rawName, nullValue, memberAccess)
+    createParam(paramType, targetName, rawName, nullValue, memberAccess),
   );
   if (enableConstParam) {
     referenceAliases.push(
@@ -110,8 +110,8 @@ export function expandResource(
         constRawName,
         paramType,
         nullValue,
-        memberAccess
-      )
+        memberAccess,
+      ),
     );
   }
   setupTypeTranslations(
@@ -127,7 +127,7 @@ export function expandResource(
     hasRef,
     refName,
     rawName,
-    constRawName
+    constRawName,
   );
 
   const ctors: Dict<ApiEntryTransform> = createBaselineCtors(
@@ -135,7 +135,7 @@ export function expandResource(
     targetName,
     constRawName,
     paramType,
-    rawName
+    rawName,
   );
   if (hasShared) {
     addBorrowFunction(ctors, targetName, resourceEntry, paramType, rawName);
@@ -156,7 +156,7 @@ export function expandResource(
     targetName,
     context,
     sourceEntries,
-    ctors
+    ctors,
   );
   wrapCtors(subEntries, file, targetName, ctors, sourceEntries);
 
@@ -169,7 +169,7 @@ export function expandResource(
     subEntries,
     title,
     file,
-    rawName
+    rawName,
   );
   if (resourceEntry.enableAutoMethods === false) {
     mirrorMethods(
@@ -178,7 +178,7 @@ export function expandResource(
       subEntries,
       paramType,
       constParamType,
-      targetName
+      targetName,
     );
   } else {
     const blockedNames = createBlockedNames(subEntries);
@@ -192,7 +192,7 @@ export function expandResource(
       targetName,
       paramType,
       constParamType,
-      blockedNames
+      blockedNames,
     );
     mirrorMethods(
       sourceEntries,
@@ -200,7 +200,7 @@ export function expandResource(
       subEntries,
       paramType,
       constParamType,
-      targetName
+      targetName,
     );
     combineObject(subEntries, detectedMethods);
   }
@@ -242,7 +242,7 @@ export function expandResource(
     targetName,
     destroyFunction,
     paramType,
-    subEntries
+    subEntries,
   );
 
   if (hasLock) wrapLockFunctions(targetEntry.entries, lockName, hasLock);
@@ -253,12 +253,12 @@ export function expandResource(
     derivedEntries.push(createSharedRefEntry(refName, targetName, rawName));
   } else if (hasRef) {
     derivedEntries.push(
-      createRefEntry(refName, targetName, paramType, rawName)
+      createRefEntry(refName, targetName, paramType, rawName),
     );
   }
   if (hasScoped)
     derivedEntries.push(
-      createScopedEntry(scopedName, targetName, destroyFunction)
+      createScopedEntry(scopedName, targetName, destroyFunction),
     );
 
   context.includeBefore(referenceAliases, "__begin");
@@ -271,7 +271,7 @@ function createParam(
   targetName: string,
   rawName: string,
   nullValue: string,
-  memberAccess: ApiEntryTransformMap
+  memberAccess: ApiEntryTransformMap,
 ): ApiEntryTransform {
   return {
     name: paramType,
@@ -342,7 +342,7 @@ function createConstParam(
   constRawName: string,
   paramType: string,
   nullValue: string,
-  memberAccess: ApiEntryTransformMap
+  memberAccess: ApiEntryTransformMap,
 ): ApiEntryTransform {
   return {
     name: constParamType,
@@ -429,7 +429,7 @@ function setupTypeTranslations(
   hasRef: boolean,
   refName: string,
   rawName: string,
-  constRawName: string
+  constRawName: string,
 ) {
   if (hasScoped) {
     context.addParamType(pointerType, targetName);
@@ -438,7 +438,7 @@ function setupTypeTranslations(
     context.addParamType(pointerType, paramType);
     context.addParamType(
       constPointerType,
-      enableConstParam ? constParamType : paramType
+      enableConstParam ? constParamType : paramType,
     );
   }
 
@@ -457,7 +457,7 @@ function createBaselineCtors(
   targetName: string,
   constRawName: string,
   paramType: string,
-  rawName: string
+  rawName: string,
 ) {
   const ownershipDisclaimer = hasScoped
     ? []
@@ -520,13 +520,13 @@ function addBorrowFunction(
   targetName: string,
   resourceEntry: ResourceDefinition,
   paramType: string,
-  rawName: string
+  rawName: string,
 ) {
   const copyCtorHints: EntryHint = {};
   ctors[`${targetName}#3`].hints = copyCtorHints;
   if (resourceEntry.shared !== true) {
     copyCtorHints.init = ["m_resource(other.m_resource)"];
-    copyCtorHints.body = `++m_resource->${resourceEntry.shared};`;
+    copyCtorHints.body = `if (m_resource) ++m_resource->${resourceEntry.shared};`;
     ctors["Borrow"] = {
       kind: "function",
       static: true,
@@ -551,7 +551,7 @@ function addBorrowFunction(
 function deleteCtorsFromRef(
   ctors: Dict<ApiEntryTransform>,
   refName: string,
-  targetName: string
+  targetName: string,
 ) {
   insertTransform(
     ctors,
@@ -563,7 +563,7 @@ function deleteCtorsFromRef(
       parameters: [{ name: "other", type: `const ${refName} &` }],
       hints: { delete: true },
     },
-    targetName
+    targetName,
   );
   insertTransform(
     ctors,
@@ -575,14 +575,14 @@ function deleteCtorsFromRef(
       parameters: [{ name: "other", type: `${refName} &&` }],
       hints: { delete: true },
     },
-    targetName
+    targetName,
   );
 }
 
 function wrapCustomCtors(
   subEntries: ApiEntryTransformMap,
   targetName: string,
-  ctors: Dict<ApiEntryTransform>
+  ctors: Dict<ApiEntryTransform>,
 ) {
   Object.keys(subEntries)
     .filter((k) => k === targetName || k.startsWith(targetName + "#"))
@@ -602,7 +602,7 @@ function createCustomFactories(
   targetName: string,
   context: ApiContext,
   sourceEntries: Dict<ApiEntry>,
-  ctors: Dict<ApiEntryTransform>
+  ctors: Dict<ApiEntryTransform>,
 ) {
   for (const sourceName of resourceEntry.ctors ?? []) {
     const entry = subEntries[sourceName] ?? {};
@@ -610,7 +610,7 @@ function createCustomFactories(
     const ctorTransform = file.transform[sourceName];
     if (typeof entry === "string") {
       system.warn(
-        `${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`
+        `${sourceName} can not be a custom ctor, only objects containing name property can be accepted.`,
       );
       continue;
     }
@@ -639,7 +639,7 @@ function wrapCtors(
   file: ApiFileTransform,
   targetName: string,
   ctors: Dict<ApiEntryTransform>,
-  sourceEntries: Dict<ApiEntry>
+  sourceEntries: Dict<ApiEntry>,
 ) {
   for (const [sourceName, entry] of Object.entries(subEntries)) {
     const ctorTransform = file.transform[sourceName];
@@ -690,7 +690,7 @@ function createOrDetectDestroyFunction(
   subEntries: ApiEntryTransformMap,
   title: string,
   file: ApiFileTransform,
-  rawName: string
+  rawName: string,
 ) {
   let freeFunction: ApiEntry =
     sourceEntries[resourceEntry.free ?? "reset"] ??
@@ -744,7 +744,7 @@ function populateTargetEntry(
   targetName: string,
   freeFunction: ApiEntry,
   paramType: string,
-  subEntries: ApiEntryTransformMap
+  subEntries: ApiEntryTransformMap,
 ) {
   const isCopyable = hasScoped || hasShared;
   targetEntry.entries = {
@@ -854,7 +854,7 @@ function populateTargetEntry(
 function createSharedRefEntry(
   refName: string,
   targetName: string,
-  rawName: string
+  rawName: string,
 ): ApiEntryTransform {
   return {
     kind: "struct",
@@ -908,7 +908,7 @@ function createRefEntry(
   refName: string,
   targetName: string,
   paramType: string,
-  rawName: string
+  rawName: string,
 ): ApiEntryTransform {
   return {
     kind: "struct",
@@ -982,7 +982,7 @@ function createRefEntry(
 function createScopedEntry(
   scopedName: string,
   targetName: string,
-  freeFunction: ApiEntry
+  freeFunction: ApiEntry,
 ): ApiEntryTransform {
   return {
     kind: "struct",
@@ -1039,7 +1039,7 @@ function makeResourceLock(
   targetName: string,
   controlType: string,
   targetEntry: ApiEntryTransform,
-  lockDef: LockDefinition
+  lockDef: LockDefinition,
 ) {
   let lockName = `${targetName}Lock`;
   if (lockDef) {
