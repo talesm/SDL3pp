@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.7.3
+
+Fix segfault when copying empty Surface.
+
 ## Version 0.7.2
 
 - Fix retrocompatibility error on SDL3pp_image.h's SDL::IsANI();
