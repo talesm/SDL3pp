@@ -182,7 +182,7 @@
    {
      colorScheme = newColorScheme;
      return *this;
-@@ -376,12 +392,12 @@
+@@ -380,12 +396,12 @@
   */
  inline void ShowMessageBox(const MessageBoxRaw& messageboxdata, int* buttonid)
  {

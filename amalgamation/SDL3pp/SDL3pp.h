@@ -1025,6 +1025,8 @@ using RefArray = std::span<T>;
  * @returns the name of the platform. If the correct platform name is not
  *          available, returns a string beginning with the text "Unknown".
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetPlatform() { return SDL_GetPlatform(); }
@@ -1423,6 +1425,8 @@ public:
  *
  * @param version the version number.
  *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)
@@ -1433,6 +1437,8 @@ public:
  * 1002003 becomes 2.
  *
  * @param version the version number.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -1445,12 +1451,16 @@ public:
  *
  * @param version the version number.
  *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
  * @since This macro is available since SDL 3.2.0.
  */
 #define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)
 
 /**
  * This is the version number macro for the current SDL version.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  *
@@ -1461,6 +1471,8 @@ public:
 
 /**
  * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
  *
  * @since This macro is available since SDL 3.2.0.
  */
@@ -1479,6 +1491,8 @@ public:
  * This function may be called safely at any time, even before Init().
  *
  * @returns the version of the linked library.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1505,6 +1519,8 @@ inline int GetVersion() { return SDL_GetVersion(); }
  *
  * @returns an arbitrary string, uniquely identifying the exact revision of the
  *          SDL library in use.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -2036,7 +2052,7 @@ public:
 #define SDL_TriggerBreakpoint() TriggerABreakpointInAPlatformSpecificManner
 
 /**
- * A macro that reports the current function being compiled.
+ * A constant that contains the current function being compiled.
  *
  * If SDL can't figure how the compiler reports this, it will use "???".
  *
@@ -3895,6 +3911,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_HIDAPI_LIBUSB "SDL_HIDAPI_LIBUSB"
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * A variable to control whether HIDAPI uses libusb for GameCube adapters.
  *
@@ -3905,9 +3923,11 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * This hint should be set before SDL is initialized.
  *
- * @since This hint is available since SDL 3.2.0.
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_HIDAPI_LIBUSB_GAMECUBE "SDL_HIDAPI_LIBUSB_GAMECUBE"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable to control whether HIDAPI uses libusb only for whitelisted
@@ -4597,23 +4617,35 @@ inline bool ClearError() { return SDL_ClearError(); }
  * A variable controlling whether the HIDAPI driver for HORI licensed Steam
  * controllers should be used.
  *
- * This variable can be set to the following values: "0" - HIDAPI driver is not
- * used "1" - HIDAPI driver is used
+ * The variable can be set to the following values:
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI "SDL_JOYSTICK_HIDAPI_STEAM_HORI"
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for some Logitech wheels
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * - "0": HIDAPI driver is not used
- * - "1": HIDAPI driver is used
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_LG4FF "SDL_JOYSTICK_HIDAPI_LG4FF"
 
@@ -4621,11 +4653,16 @@ inline bool ClearError() { return SDL_ClearError(); }
  * A variable controlling whether the HIDAPI driver for 8BitDo controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_8BITDO "SDL_JOYSTICK_HIDAPI_8BITDO"
 
@@ -4635,11 +4672,16 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * More info - https://github.com/HandHeldLegend/SInput-HID
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SINPUT "SDL_JOYSTICK_HIDAPI_SINPUT"
 
@@ -4647,11 +4689,16 @@ inline bool ClearError() { return SDL_ClearError(); }
  * A variable controlling whether the HIDAPI driver for ZUIKI controllers should
  * be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_ZUIKI "SDL_JOYSTICK_HIDAPI_ZUIKI"
 
@@ -4659,13 +4706,20 @@ inline bool ClearError() { return SDL_ClearError(); }
  * A variable controlling whether the HIDAPI driver for Flydigi controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI "SDL_JOYSTICK_HIDAPI_FLYDIGI"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch
@@ -5463,8 +5517,8 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * The variable can be set to the following values:
  *
- * - "0": Holding a key will open the accents menu for that key.
- * - "1": Holding a key will repeat the pressed key. (default)
+ * - "0": Holding a key will repeat the pressed key.
+ * - "1": Holding a key will open the accents menu for that key. (default)
  *
  * This hint needs to be set before Init().
  *
@@ -5826,6 +5880,51 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_OPENGL_ES_DRIVER "SDL_OPENGL_ES_DRIVER"
 
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+/**
+ * A variable controlling whether to force an sRGB-capable OpenGL context.
+ *
+ * At OpenGL context creation time, some platforms can request an sRGB-capable
+ * context. However, sometimes any form of the request can cause surprising
+ * results on some drivers, platforms, and hardware. Usually the surprise is in
+ * the form of rendering that is either a little darker or a little brighter
+ * than intended.
+ *
+ * This hint allows the user to override the app's sRGB requests and either
+ * force a specific value, or avoid requesting anything at all, depending on
+ * what makes things work correctly for their system.
+ *
+ * This is meant as a fail-safe; apps should probably not explicitly set this,
+ * and most users should not, either.
+ *
+ * Note that some platforms cannot make this request at all, and on all
+ * platforms this request can be denied by the operating system.
+ *
+ * In addition to attempting to obtain the type of sRGB-capable OpenGL context
+ * requested by this hint, SDL will try to force the state of
+ * GL_FRAMEBUFFER_SRGB on the new context, if appropriate.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Force a request for an OpenGL context that is _not_ sRGB-capable.
+ * - "1": Force a request for an OpenGL context that _is_ sRGB-capable.
+ * - "skip": Don't make any request for an sRGB-capable context (don't specify
+ *   the attribute at all during context creation time).
+ * - any other string is undefined behavior.
+ *
+ * If unset, or set to an empty string, SDL will make a request using the value
+ * the app specified with the GL_FRAMEBUFFER_SRGB_CAPABLE attribute.
+ *
+ * This hint should be set before an OpenGL context is created.
+ *
+ * @since This hint is available since SDL 3.4.2.
+ */
+#define SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER                                 \
+  "SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
 /**
  * Mechanism to specify openvr_api library location
  *
@@ -6154,36 +6253,56 @@ inline bool ClearError() { return SDL_ClearError(); }
  */
 #define SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED "SDL_ROG_GAMEPAD_MICE_EXCLUDED"
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Variable controlling the width of the PS2's framebuffer in pixels
+ * A variable controlling the width of the PS2's framebuffer in pixels.
  *
- * By default, this variable is "640"
+ * By default, the variable is "640".
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_WIDTH "SDL_PS2_GS_WIDTH"
 
 /**
- * Variable controlling the height of the PS2's framebuffer in pixels
+ * A variable controlling the height of the PS2's framebuffer in pixels.
  *
- * By default, this variable is "448"
+ * By default, the variable is "448".
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_HEIGHT "SDL_PS2_GS_HEIGHT"
 
 /**
- * Variable controlling whether the signal is interlaced or progressive
+ * A variable controlling whether the signal is interlaced or progressive.
+ *
+ * The variable can be set to the following values:
  *
  * - "0": Image is interlaced. (default)
- * - "1": Image is progressive
+ * - "1": Image is progressive.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_PROGRESSIVE "SDL_PS2_GS_PROGRESSIVE"
 
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Variable controlling the video mode of the console
+ * A variable controlling the video mode of the console.
+ *
+ * The variable can be set to the following values:
  *
  * - "": Console-native. (default)
- * - "NTSC": 60hz region
- * - "PAL": 50hz region
+ * - "NTSC": 60hz region.
+ * - "PAL": 50hz region.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_MODE "SDL_PS2_GS_MODE"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling which Dispmanx layer to use on a Raspberry PI.
@@ -12841,6 +12960,8 @@ inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
  *
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PropertiesRef GetGlobalProperties()
@@ -13740,13 +13861,6 @@ constexpr std::size_t arraysize(const T (&array)[N])
 /**
  * Macro useful for building other macros with strings in them.
  *
- * For example:
- *
- * ```c
- * #define LOG_ERROR(X) OutputDebugString(SDL_STRINGIFY_ARG(__FUNCTION__) ": " X
- * "@n")`
- * ```
- *
  * @param arg the text to turn into a string literal.
  *
  * @since This macro is available since SDL 3.2.0.
@@ -13987,6 +14101,8 @@ public:
    *
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static Time Current();
@@ -14038,6 +14154,8 @@ public:
    * @param dwHighDateTime the high portion of the Windows FILETIME value.
    * @returns the converted SDL time.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
@@ -14052,6 +14170,8 @@ public:
    *                      Windows FILETIME value.
    * @param dwHighDateTime a pointer filled in with the high portion of the
    *                       Windows FILETIME value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -19525,6 +19645,8 @@ public:
    * @param fromcode The source character encoding, must not be nullptr.
    * @post a valid handle or falsy on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
@@ -19579,6 +19701,8 @@ public:
    *
    * @returns 0 on success, or -1 on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
@@ -19614,6 +19738,8 @@ public:
    * @param outbytesleft The number of bytes in the output buffer.
    * @returns the number of conversions on success.
    * @throws Error on failure.
+   *
+   * @threadsafety Do not use the same IConv from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -19671,6 +19797,8 @@ struct IConvRef : IConv
  * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
  *          failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.iconv
@@ -19688,6 +19816,8 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  * @param cd The character set conversion handle.
  * @returns 0 on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -19726,6 +19856,8 @@ inline int IConv::close() { return iconv_close(release()); }
  * @param outbytesleft The number of bytes in the output buffer.
  * @returns the number of conversions on success.
  * @throws Error on failure.
+ *
+ * @threadsafety Do not use the same IConv from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -19777,6 +19909,8 @@ constexpr size_t ICONV_EINVAL =
  * @param inbuf the string to convert to a different encoding.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.IConv
@@ -19801,6 +19935,8 @@ inline OwnArray<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<char> iconv_utf8_locale(std::string_view S)
@@ -19817,6 +19953,8 @@ inline OwnArray<char> iconv_utf8_locale(std::string_view S)
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -19836,6 +19974,8 @@ inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
@@ -19853,6 +19993,8 @@ inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -20157,6 +20299,8 @@ public:
    *             the file.
    * @post a pointer to the AsyncIO structure that is created or nullptr on
    *       failure; call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -20764,6 +20908,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
  * @returns a pointer to the AsyncIO structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Close
@@ -21210,6 +21356,8 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  * @param userdata an app-defined pointer that will be provided with the task
  *                 results.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -23396,8 +23544,8 @@ inline const char* GetUserFolder(Folder folder)
 /**
  * Types of filesystem entries.
  *
- * Note that there may be other sorts of items on a filesystem: devices,
- * symlinks, named pipes, etc. They are currently reported as PATHTYPE_OTHER.
+ * Note that there may be other sorts of items on a filesystem: devices, named
+ * pipes, etc. They are currently reported as PATHTYPE_OTHER.
  *
  * @since This enum is available since SDL 3.2.0.
  *
@@ -23730,6 +23878,10 @@ inline void CopyFile(StringParam oldpath, StringParam newpath)
 
 /**
  * Get information about a filesystem path.
+ *
+ * Symlinks, on filesystems that support them, are always followed, so you will
+ * always get information on what the symlink eventually points to, and not the
+ * symlink itself.
  *
  * @param path the path to query.
  * @returns the information about the path on success.
@@ -28542,6 +28694,8 @@ using Locale = SDL_Locale;
  * @returns a nullptr terminated array of locale pointers on success.
  * @throws Error on failure.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<Locale*> GetPreferredLocales()
@@ -28586,6 +28740,8 @@ inline OwnArray<Locale*> GetPreferredLocales()
  * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for local
  *            files, if supported.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -28673,6 +28829,8 @@ constexpr PowerState POWERSTATE_CHARGED =
  *                battery.
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -29653,6 +29811,8 @@ struct Rect : RectRaw
    *          rectangle or an empty rect if all the points were outside of the
    *          clipping rectangle.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static Rect GetEnclosingPoints(
@@ -29846,6 +30006,8 @@ struct Rect : RectRaw
    * @param Y2 a pointer to the ending Y-coordinate of the line.
    * @returns true if there is an intersection, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
@@ -29953,6 +30115,8 @@ struct Rect : RectRaw
    * @returns a Rect structure filled in with the intersection of if there is
    *          intersection, std::nullopt otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Rect.HasIntersection
@@ -29965,6 +30129,8 @@ struct Rect : RectRaw
    * @param other an SDL_Rect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -30238,6 +30404,8 @@ struct FRect : FRectRaw
    *          rectangle or an empty FRect if all the points were outside of
    *          the clipping rectangle.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static constexpr FRect GetEnclosingPoints(
@@ -30408,6 +30576,8 @@ struct FRect : FRectRaw
    * @param Y2 a pointer to the ending Y-coordinate of the line.
    * @returns true if there is an intersection, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   bool GetLineIntersection(float* X1, float* Y1, float* X2, float* Y2) const;
@@ -30556,6 +30726,8 @@ struct FRect : FRectRaw
    * @returns an FRect structure filled in with the intersection of
    *          if there is intersection, an empty FRect otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa FRect.HasIntersection
@@ -30568,6 +30740,8 @@ struct FRect : FRectRaw
    * @param other an FRect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -30829,6 +31003,8 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  * @returns a Rect structure filled in with the intersection of if there is
  *          intersection, std::nullopt otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Rect.HasIntersection
@@ -30851,6 +31027,8 @@ constexpr Rect Rect::GetIntersection(const RectRaw& other) const
  * @param B an Rect structure representing the second rectangle.
  * @returns Rect representing union of two rectangles
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -30877,6 +31055,8 @@ constexpr Rect Rect::GetUnion(const RectRaw& other) const
  * @param clip an Rect used for clipping or nullptr to enclose all points.
  * @returns Result if any points were enclosed or empty rect if all the points
  * were outside of the clipping rectangle.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -30912,6 +31092,8 @@ inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
  * @param X2 a pointer to the ending X-coordinate of the line.
  * @param Y2 a pointer to the ending Y-coordinate of the line.
  * @returns true if there is an intersection, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -31067,6 +31249,8 @@ constexpr bool FRect::Equal(const FRectRaw& other) const
  * @param B an FRect structure representing the second rectangle.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Rect.GetIntersection
@@ -31091,6 +31275,8 @@ constexpr bool FRect::HasIntersection(const FRectRaw& other) const
  * @returns a FRect structure filled in with the intersection of if there is
  *          intersection, std::nullopt otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa FRect.HasIntersection
@@ -31114,6 +31300,8 @@ constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
  * @returns a FRect structure filled in with the union of rectangles `A` and
  *          `B`.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -31140,6 +31328,8 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  * @param clip an FRect used for clipping or nullptr to enclose all points.
  * @returns a FRect structure filled in with the minimal enclosing rectangle or
  *          false if all the points were outside of the clipping rectangle.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -31176,6 +31366,8 @@ constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
  * @param X2 a pointer to the ending X-coordinate of the line.
  * @param Y2 a pointer to the ending Y-coordinate of the line.
  * @returns true if there is an intersection, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -32682,6 +32874,8 @@ struct DateTime : DateTimeRaw
    *                  (UTC).
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   DateTime(Time ticks, bool localTime = true)
@@ -32880,6 +33074,8 @@ struct DateTime : DateTimeRaw
    * @returns time on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   operator Time() const;
@@ -32930,6 +33126,8 @@ constexpr TimeFormat TIME_FORMAT_12HR = SDL_TIME_FORMAT_12HR; ///< 12 hour time
  *                   format, may be nullptr.
  * @throws Error on failure.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void GetDateTimeLocalePreferences(DateFormat* dateFormat,
@@ -32956,6 +33154,8 @@ inline Time Time::Current()
  * @returns the resulting DateTime.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
@@ -32972,6 +33172,8 @@ inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
  * @param dt the source DateTime.
  * @returns the resulting Time.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -33002,6 +33204,8 @@ inline Time Time::FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime)
  * @returns the number of days in the requested month.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDaysInMonth(int year, int month)
@@ -33018,6 +33222,8 @@ inline int GetDaysInMonth(int year, int month)
  * @returns the day of year [0-365] if the date is valid.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetDayOfYear(int year, int month, int day)
@@ -33033,6 +33239,8 @@ inline int GetDayOfYear(int year, int month, int day)
  * @param day the day component of the date.
  * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -47635,6 +47843,8 @@ public:
    * @post an opaque pointer to the new thread object on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -47701,6 +47911,8 @@ public:
    * @param props the properties to use.
    * @post an opaque pointer to the new thread object on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -47773,6 +47985,8 @@ public:
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -47785,6 +47999,8 @@ public:
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -47799,6 +48015,8 @@ public:
    *
    * @returns the ID of the specified thread, or the ID of the current thread if
    *          `thread` is nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -47815,6 +48033,8 @@ public:
    *
    * @param priority the ThreadPriority to set.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -47846,6 +48066,9 @@ public:
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
    *
+   * @threadsafety It is safe to call this function from any thread, but only a
+   *               single thread can wait any specific thread to finish.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -47858,6 +48081,8 @@ public:
    *
    * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
    *          isn't valid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -47940,6 +48165,8 @@ using TLSID = AtomicInt;
  * @returns an opaque pointer to the new thread object on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -48007,6 +48234,8 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * @returns an opaque pointer to the new thread object on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -48039,6 +48268,8 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  * @returns a pointer to a UTF-8 string that names the specified thread, or
  *          nullptr if it doesn't have a name.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetThreadName(ThreadParam thread)
@@ -48063,6 +48294,8 @@ inline const char* Thread::GetName() const
  *
  * @returns the ID of the current thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.GetID
@@ -48079,6 +48312,8 @@ inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
  * @param thread the thread to query.
  * @returns the ID of the specified thread, or the ID of the current thread if
  *          `thread` is nullptr.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -48100,6 +48335,8 @@ inline ThreadID Thread::GetID() const { return SDL::GetThreadID(m_resource); }
  *
  * @param priority the ThreadPriority to set.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -48140,6 +48377,9 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  *               function by its 'return', or -1 if the thread has been detached
  *               or isn't valid, may be nullptr.
  *
+ * @threadsafety It is safe to call this function from any thread, but only a
+ *               single thread can wait any specific thread to finish.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -48158,6 +48398,8 @@ inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
  * @param thread the thread to query.
  * @returns the current state of a thread, or THREAD_UNKNOWN if the thread isn't
  *          valid.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -48197,6 +48439,8 @@ inline ThreadState Thread::GetState() const
  * that function or this one, but not both, or behavior is undefined.
  *
  * It is safe to pass nullptr to this function; it is a no-op.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @param thread the Thread pointer that was returned from the Thread.Thread()
  *               call that started this thread.
@@ -49588,6 +49832,8 @@ public:
    * @post the initialized and unlocked mutex or nullptr on failure; call
    *       GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Destroy
@@ -49644,6 +49890,8 @@ public:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Mutex
@@ -49665,6 +49913,8 @@ public:
    * immediately having locked nothing. If the mutex is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.TryLock
@@ -49685,6 +49935,8 @@ public:
    *
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Lock
@@ -49701,6 +49953,9 @@ public:
    *
    * It is illegal to unlock a mutex that has not been locked by the current
    * thread, and doing so results in undefined behavior.
+   *
+   * @threadsafety This call must be paired with a previous locking call on the
+   *               same thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -49759,6 +50014,8 @@ struct MutexRef : Mutex
  * @returns the initialized and unlocked mutex or nullptr on failure; call
  *          GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Mutex.Destroy
@@ -49785,6 +50042,8 @@ inline Mutex CreateMutex() { return Mutex(); }
  *
  * @param mutex the mutex to lock.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Mutex.TryLock
@@ -49807,6 +50066,8 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  *
  * @param mutex the mutex to try to lock.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -49832,6 +50093,9 @@ inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
  *
  * @param mutex the mutex to unlock.
  *
+ * @threadsafety This call must be paired with a previous locking call on the
+ *               same thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Mutex.Lock
@@ -49851,6 +50115,8 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  * platform.
  *
  * @param mutex the mutex to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -49949,6 +50215,8 @@ public:
    * @post the initialized and unlocked read/write lock or nullptr on failure;
    *       call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.Destroy
@@ -50007,6 +50275,8 @@ public:
    * is not safe to attempt to destroy a locked rwlock, and may result in
    * undefined behavior depending on the platform.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.RWLock
@@ -50040,6 +50310,8 @@ public:
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForWriting
@@ -50069,6 +50341,8 @@ public:
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForReading
@@ -50092,6 +50366,8 @@ public:
    * This function returns true if passed a nullptr rwlock.
    *
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -50122,6 +50398,8 @@ public:
    *
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForWriting
@@ -50143,6 +50421,9 @@ public:
    *
    * It is illegal to unlock a rwlock that has not been locked by the current
    * thread, and doing so results in undefined behavior.
+   *
+   * @threadsafety This call must be paired with a previous locking call on the
+   *               same thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -50221,6 +50502,8 @@ struct RWLockRef : RWLock
  * @returns the initialized and unlocked read/write lock or nullptr on failure;
  *          call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.Destroy
@@ -50261,6 +50544,8 @@ inline RWLock CreateRWLock() { return RWLock(); }
  *
  * @param rwlock the read/write lock to lock.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForWriting
@@ -50297,6 +50582,8 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  *
  * @param rwlock the read/write lock to lock.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForReading
@@ -50326,6 +50613,8 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  *
  * @param rwlock the rwlock to try to lock.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -50365,6 +50654,8 @@ inline void RWLock::TryLockForReading()
  * @param rwlock the rwlock to try to lock.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForWriting
@@ -50397,6 +50688,9 @@ inline void RWLock::TryLockForWriting()
  *
  * @param rwlock the rwlock to unlock.
  *
+ * @threadsafety This call must be paired with a previous locking call on the
+ *               same thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForReading
@@ -50418,6 +50712,8 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
  * depending on the platform.
  *
  * @param rwlock the rwlock to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -50494,6 +50790,8 @@ public:
    * @post a new semaphore or nullptr on failure; call GetError() for more
    *       information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Destroy
@@ -50549,6 +50847,8 @@ public:
    * It is not safe to destroy a semaphore if there are threads currently
    * waiting on it.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Semaphore
@@ -50564,6 +50864,8 @@ public:
    *
    * This function is the equivalent of calling Semaphore.WaitTimeout() with a
    * time length of -1.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -50582,6 +50884,8 @@ public:
    * returns false.
    *
    * @returns true if the wait succeeds, false if the wait would block.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -50602,6 +50906,8 @@ public:
    *                indefinitely.
    * @returns true if the wait succeeds or false if the wait times out.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Signal
@@ -50612,6 +50918,8 @@ public:
 
   /**
    * Atomically increment a semaphore's value and wake waiting threads.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -50625,6 +50933,8 @@ public:
    * Get the current value of a semaphore.
    *
    * @returns the current value of the semaphore.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -50680,6 +50990,8 @@ struct SemaphoreRef : Semaphore
  * @returns a new semaphore or nullptr on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.Destroy
@@ -50702,6 +51014,8 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
  *
  * @param sem the semaphore to destroy.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.Semaphore
@@ -50721,6 +51035,8 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * time length of -1.
  *
  * @param sem the semaphore wait on.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -50742,6 +51058,8 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
  *
  * @param sem the semaphore to wait on.
  * @returns true if the wait succeeds, false if the wait would block.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -50768,6 +51086,8 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  *                indefinitely.
  * @returns true if the wait succeeds or false if the wait times out.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.Signal
@@ -50790,6 +51110,8 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  *
  * @param sem the semaphore to increment.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.TryWait
@@ -50805,6 +51127,8 @@ inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
  *
  * @param sem the semaphore to query.
  * @returns the current value of the semaphore.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -50877,6 +51201,8 @@ public:
    * @post a new condition variable or nullptr on failure; call GetError() for
    *       more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Condition.Broadcast
@@ -50927,6 +51253,8 @@ public:
 
   /**
    * Destroy a condition variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -51059,6 +51387,8 @@ struct ConditionRef : Condition
  * @returns a new condition variable or nullptr on failure; call GetError() for
  *          more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Condition.Broadcast
@@ -51073,6 +51403,8 @@ inline Condition CreateCondition() { return Condition(); }
  * Destroy a condition variable.
  *
  * @param cond the condition variable to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -62138,15 +62470,13 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * Poll for currently pending events.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
- * stored in the Event structure pointed to by `event`. The 1 returned refers to
- * this event, immediately stored in the SDL Event structure -- not an event to
- * follow.
+ * stored in the Event structure pointed to by `event`.
  *
- * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
- * but will not remove it from the queue.
+ * If `event` is nullptr, it simply returns true if there is an event in the
+ * queue, but will not remove it from the queue.
  *
  * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that set the video mode.
+ * function in the thread that initialized the video subsystem.
  *
  * PollEvent() is the favored way of receiving system events since it can be
  * done from the main loop and does not suspend the main loop while waiting on
@@ -62193,7 +62523,7 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  * The next event is removed from the queue and returned.
  *
  * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that set the video mode.
+ * function in the thread that initialized the video subsystem.
  *
  * PollEvent() is the favored way of receiving system events since it can be
  * done from the main loop and does not suspend the main loop while waiting on
@@ -64689,11 +65019,12 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  * GPUCopyPass.DownloadFromTexture are used as default values respectively and
  * data is considered to be tightly packed.
  *
- * **WARNING**: Direct3D 12 requires texture data row pitch to be 256 byte
- * aligned, and offsets to be aligned to 512 bytes. If they are not, SDL will
- * make a temporary copy of the data that is properly aligned, but this adds
- * overhead to the transfer process. Apps can avoid this by aligning their data
- * appropriately, or using a different GPU backend than Direct3D 12.
+ * **WARNING**: On some older/integrated hardware, Direct3D 12 requires texture
+ * data row pitch to be 256 byte aligned, and offsets to be aligned to 512
+ * bytes. If they are not, SDL will make a temporary copy of the data that is
+ * properly aligned, but this adds overhead to the transfer process. Apps can
+ * avoid this by aligning their data appropriately, or using a different GPU
+ * backend than Direct3D 12.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -66170,6 +66501,20 @@ public:
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
+   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
+   *   feature checks are only possible on Windows 11 by default. By setting
+   *   this alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The version you provide must
+   *   match the one given in the DLL.
+   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The path you provide must be
+   *   relative to the executable path of your app. Be sure not to put the DLL
+   *   in the same directory as the exe; Microsoft strongly advises against
+   *   this!
    *
    * With the Vulkan backend:
    *
@@ -66184,6 +66529,15 @@ public:
    *   allows configuring a variety of Vulkan-specific options such as
    *   increasing the API version and opting into extensions aside from the
    *   minimal set SDL requires.
+   *
+   * With the Metal backend: -
+   * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+   * However, an application can set this property to true to enable support for
+   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
+   * write to sRGB textures. (For history's sake: MacFamily1 also does not
+   * support indirect command buffers, MSAA depth resolve, and stencil
+   * resolve/feedback, but these are not exposed features in SDL_GPU.)
    *
    * @param props the properties to use.
    * @post a GPU context on success.
@@ -68038,6 +68392,19 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
+ * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+ *   checks are only possible on Windows 11 by default. By setting this
+ *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The version you provide must
+ *   match the one given in the DLL.
+ * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+ *   checks are only possible on Windows 11 by default. By setting this
+ *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The path you provide must be
+ *   relative to the executable path of your app. Be sure not to put the DLL in
+ *   the same directory as the exe; Microsoft strongly advises against this!
  *
  * With the Vulkan backend:
  *
@@ -68052,6 +68419,15 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   allows configuring a variety of Vulkan-specific options such as increasing
  *   the API version and opting into extensions aside from the minimal set SDL
  *   requires.
+ *
+ * With the Metal backend: -
+ * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+ * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+ * However, an application can set this property to true to enable support for
+ * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not write
+ * to sRGB textures. (For history's sake: MacFamily1 also does not support
+ * indirect command buffers, MSAA depth resolve, and stencil resolve/feedback,
+ * but these are not exposed features in SDL_GPU.)
  *
  * @param props the properties to use.
  * @returns a GPU context on success.
@@ -68130,6 +68506,16 @@ constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+constexpr auto CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER;
+
+constexpr auto CREATE_D3D12_AGILITY_SDK_PATH_STRING =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
@@ -68137,6 +68523,17 @@ constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
 
 constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+constexpr auto CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
 
@@ -74690,6 +75087,8 @@ struct MessageBox : MessageBoxRaw
    *                 copied.
    * @throws Error on failure.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ShowSimpleMessageBox
@@ -74723,6 +75122,8 @@ struct MessageBox : MessageBoxRaw
  *                       options.
  * @param buttonid the pointer to which user id of hit button should be copied.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74772,6 +75173,8 @@ inline void MessageBox::Show(int* buttonid) const
  * @param message UTF-8 message text.
  * @param window the parent window, or nullptr for no parent.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -74893,6 +75296,8 @@ public:
    * @param window the window.
    * @post handle NSView or UIView.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.Destroy
@@ -74944,6 +75349,8 @@ public:
    * This should be called before Window.Destroy, if MetalView.MetalView was
    * called after Window.Window.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.MetalView
@@ -74954,6 +75361,8 @@ public:
    * Get a pointer to the backing CAMetalLayer for the given view.
    *
    * @returns a pointer.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -75009,6 +75418,8 @@ struct MetalViewRef : MetalView
  * @param window the window.
  * @returns handle NSView or UIView.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MetalView.Destroy
@@ -75027,6 +75438,8 @@ inline MetalView Metal_CreateView(WindowParam window)
  *
  * @param view the MetalView object.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MetalView.MetalView
@@ -75043,6 +75456,8 @@ inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
  *
  * @param view the MetalView object.
  * @returns a pointer.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -81340,6 +81755,8 @@ using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
  * @param flags subsystem initialization flags.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetAppMetadata
@@ -81358,6 +81775,8 @@ inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }
  *
  * @param flags any of the flags used by Init(); see Init for details.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -81378,6 +81797,8 @@ inline void InitSubSystem(InitFlags flags)
  *
  * @param flags any of the flags used by Init(); see Init for details.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa InitSubSystem
@@ -81391,6 +81812,8 @@ inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
  * @param flags any of the flags used by Init(); see Init for details.
  * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
  *          returns the initialization status of the specified subsystems.
+ *
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -81409,6 +81832,8 @@ inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
  * You can use this function with atexit() to ensure that it is run when your
  * application is shutdown, but it is not wise to do this from a library or
  * other dynamically loaded code.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -83917,6 +84342,8 @@ public:
    *               coordinates in Renderer.RenderGeometry().
    * @throws Error on failure.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Renderer.RenderGeometry
@@ -83936,6 +84363,8 @@ public:
    *               vertical texture coordinates in Renderer.RenderGeometry(),
    *               may be nullptr.
    * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.4.0.
    *
@@ -89588,6 +90017,8 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
  *               in Renderer.RenderGeometry().
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Renderer.RenderGeometry
@@ -89618,6 +90049,8 @@ inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
  *               vertical texture coordinates in Renderer.RenderGeometry(), may
  *               be nullptr.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.4.0.
  *
@@ -90448,6 +90881,8 @@ using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
  * @param callback the WindowsMessageHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa WindowsMessageHook
@@ -90537,6 +90972,8 @@ using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
  * @param callback the X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
@@ -90556,6 +90993,8 @@ inline void SetX11EventHook(X11EventHook callback, void* userdata)
  * @param priority the new, Unix-specific, priority value.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetLinuxThreadPriority(Sint64 threadID, int priority)
@@ -90573,6 +91012,8 @@ inline void SetLinuxThreadPriority(Sint64 threadID, int priority)
  * @param schedPolicy the new scheduling policy (SCHED_FIFO, SCHED_RR,
  *                    SCHED_OTHER, etc...).
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -90639,6 +91080,8 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  * @param callbackParam a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetiOSEventPump
@@ -90658,6 +91101,8 @@ inline void SetiOSAnimationCallback(WindowParam window,
  * This function is only available on Apple iOS.
  *
  * @param enabled true to enable the event pump, false to disable it.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -90751,6 +91196,8 @@ inline void* GetAndroidActivity() { return SDL_GetAndroidActivity(); }
  *
  * @returns the Android API level.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetAndroidSDKVersion() { return SDL_GetAndroidSDKVersion(); }
@@ -90760,6 +91207,8 @@ inline int GetAndroidSDKVersion() { return SDL_GetAndroidSDKVersion(); }
  *
  * @returns true if this is a Chromebook, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool IsChromebook() { return SDL_IsChromebook(); }
@@ -90768,6 +91217,8 @@ inline bool IsChromebook() { return SDL_IsChromebook(); }
  * Query if the application is running on a Samsung DeX docking station.
  *
  * @returns true if this is a DeX docking station, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -91076,6 +91527,8 @@ inline void SendAndroidMessage(Uint32 command, int param)
  *
  * @returns true if the device is a tablet, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool IsTablet() { return SDL_IsTablet(); }
@@ -91086,6 +91539,8 @@ inline bool IsTablet() { return SDL_IsTablet(); }
  * If SDL can't determine this, it will return false.
  *
  * @returns true if the device is a TV, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

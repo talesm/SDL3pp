@@ -1062,6 +1062,8 @@ namespace SDL {
  */
 #define SDL_HINT_HIDAPI_LIBUSB "SDL_HIDAPI_LIBUSB"
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
  * A variable to control whether HIDAPI uses libusb for GameCube adapters.
  *
@@ -1072,9 +1074,11 @@ namespace SDL {
  *
  * This hint should be set before SDL is initialized.
  *
- * @since This hint is available since SDL 3.2.0.
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_HIDAPI_LIBUSB_GAMECUBE "SDL_HIDAPI_LIBUSB_GAMECUBE"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable to control whether HIDAPI uses libusb only for whitelisted
@@ -1764,37 +1768,62 @@ namespace SDL {
  * A variable controlling whether the HIDAPI driver for HORI licensed Steam
  * controllers should be used.
  *
- * This variable can be set to the following values: "0" - HIDAPI driver is not
- * used "1" - HIDAPI driver is used
+ * The variable can be set to the following values:
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
+ *
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.2.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI "SDL_JOYSTICK_HIDAPI_STEAM_HORI"
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for some Logitech wheels
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * - "0": HIDAPI driver is not used
- * - "1": HIDAPI driver is used
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_LG4FF "SDL_JOYSTICK_HIDAPI_LG4FF"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for 8BitDo controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_8BITDO "SDL_JOYSTICK_HIDAPI_8BITDO"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for SInput controllers
@@ -1802,37 +1831,62 @@ namespace SDL {
  *
  * More info - https://github.com/HandHeldLegend/SInput-HID
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_SINPUT "SDL_JOYSTICK_HIDAPI_SINPUT"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for ZUIKI controllers should
  * be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_ZUIKI "SDL_JOYSTICK_HIDAPI_ZUIKI"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for Flydigi controllers
  * should be used.
  *
- * This variable can be set to the following values:
+ * The variable can be set to the following values:
  *
- * "0" - HIDAPI driver is not used. "1" - HIDAPI driver is used.
+ * - "0": HIDAPI driver is not used.
+ * - "1": HIDAPI driver is used.
  *
- * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
+ * The default is the value of SDL_HINT_JOYSTICK_HIDAPI.
+ *
+ * This hint should be set before initializing joysticks and gamepads.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI "SDL_JOYSTICK_HIDAPI_FLYDIGI"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch
@@ -2634,8 +2688,8 @@ namespace SDL {
  *
  * The variable can be set to the following values:
  *
- * - "0": Holding a key will open the accents menu for that key.
- * - "1": Holding a key will repeat the pressed key. (default)
+ * - "0": Holding a key will repeat the pressed key.
+ * - "1": Holding a key will open the accents menu for that key. (default)
  *
  * This hint needs to be set before Init().
  *
@@ -2997,6 +3051,51 @@ namespace SDL {
  */
 #define SDL_HINT_OPENGL_ES_DRIVER "SDL_OPENGL_ES_DRIVER"
 
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+/**
+ * A variable controlling whether to force an sRGB-capable OpenGL context.
+ *
+ * At OpenGL context creation time, some platforms can request an sRGB-capable
+ * context. However, sometimes any form of the request can cause surprising
+ * results on some drivers, platforms, and hardware. Usually the surprise is in
+ * the form of rendering that is either a little darker or a little brighter
+ * than intended.
+ *
+ * This hint allows the user to override the app's sRGB requests and either
+ * force a specific value, or avoid requesting anything at all, depending on
+ * what makes things work correctly for their system.
+ *
+ * This is meant as a fail-safe; apps should probably not explicitly set this,
+ * and most users should not, either.
+ *
+ * Note that some platforms cannot make this request at all, and on all
+ * platforms this request can be denied by the operating system.
+ *
+ * In addition to attempting to obtain the type of sRGB-capable OpenGL context
+ * requested by this hint, SDL will try to force the state of
+ * GL_FRAMEBUFFER_SRGB on the new context, if appropriate.
+ *
+ * The variable can be set to the following values:
+ *
+ * - "0": Force a request for an OpenGL context that is _not_ sRGB-capable.
+ * - "1": Force a request for an OpenGL context that _is_ sRGB-capable.
+ * - "skip": Don't make any request for an sRGB-capable context (don't specify
+ *   the attribute at all during context creation time).
+ * - any other string is undefined behavior.
+ *
+ * If unset, or set to an empty string, SDL will make a request using the value
+ * the app specified with the GL_FRAMEBUFFER_SRGB_CAPABLE attribute.
+ *
+ * This hint should be set before an OpenGL context is created.
+ *
+ * @since This hint is available since SDL 3.4.2.
+ */
+#define SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER                                 \
+  "SDL_OPENGL_FORCE_SRGB_FRAMEBUFFER"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
 /**
  * Mechanism to specify openvr_api library location
  *
@@ -3325,36 +3424,64 @@ namespace SDL {
  */
 #define SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED "SDL_ROG_GAMEPAD_MICE_EXCLUDED"
 
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Variable controlling the width of the PS2's framebuffer in pixels
+ * A variable controlling the width of the PS2's framebuffer in pixels.
  *
- * By default, this variable is "640"
+ * By default, the variable is "640".
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_WIDTH "SDL_PS2_GS_WIDTH"
 
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Variable controlling the height of the PS2's framebuffer in pixels
+ * A variable controlling the height of the PS2's framebuffer in pixels.
  *
- * By default, this variable is "448"
+ * By default, the variable is "448".
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_HEIGHT "SDL_PS2_GS_HEIGHT"
 
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Variable controlling whether the signal is interlaced or progressive
+ * A variable controlling whether the signal is interlaced or progressive.
+ *
+ * The variable can be set to the following values:
  *
  * - "0": Image is interlaced. (default)
- * - "1": Image is progressive
+ * - "1": Image is progressive.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_PROGRESSIVE "SDL_PS2_GS_PROGRESSIVE"
 
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
+
 /**
- * Variable controlling the video mode of the console
+ * A variable controlling the video mode of the console.
+ *
+ * The variable can be set to the following values:
  *
  * - "": Console-native. (default)
- * - "NTSC": 60hz region
- * - "PAL": 50hz region
+ * - "NTSC": 60hz region.
+ * - "PAL": 50hz region.
+ *
+ * @since This hint is available since SDL 3.4.0.
  */
 #define SDL_HINT_PS2_GS_MODE "SDL_PS2_GS_MODE"
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
 /**
  * A variable controlling which Dispmanx layer to use on a Raspberry PI.

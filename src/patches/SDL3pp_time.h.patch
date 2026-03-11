@@ -17,7 +17,7 @@
     * @param localTime the resulting DateTime will be expressed in local time if
     *                  true, otherwise it will be in Universal Coordinated Time
     *                  (UTC).
-@@ -93,8 +92,8 @@
+@@ -95,8 +94,8 @@
     * @since This function is available since SDL 3.2.0.
     */
    DateTime(Time ticks, bool localTime = true)
@@ -27,7 +27,7 @@
    }
  
    /**
-@@ -104,7 +103,8 @@
+@@ -106,7 +105,8 @@
     */
    constexpr explicit operator bool() const noexcept
    {
@@ -37,7 +37,7 @@
    }
  
    /**
-@@ -284,8 +284,7 @@
+@@ -286,8 +286,7 @@
     * This function ignores the day_of_week member of the DateTime struct, so it
     * may remain unset.
     *
@@ -46,8 +46,8 @@
 +   * @returns time on success.
     * @throws Error on failure.
     *
-    * @since This function is available since SDL 3.2.0.
-@@ -346,17 +345,22 @@
+    * @threadsafety It is safe to call this function from any thread.
+@@ -352,17 +351,22 @@
    CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
  }
  
@@ -71,8 +71,8 @@
 + * @returns the resulting DateTime.
   * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
-@@ -373,26 +377,28 @@
+  * @threadsafety It is safe to call this function from any thread.
+@@ -381,7 +385,7 @@
   * may remain unset.
   *
   * @param dt the source DateTime.
@@ -80,7 +80,8 @@
 + * @returns the resulting Time.
   * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+@@ -390,19 +394,21 @@
   */
  inline Time DateTimeToTime(const DateTimeRaw& dt)
  {
@@ -106,7 +107,7 @@
  }
  
  /**
-@@ -400,14 +406,14 @@
+@@ -410,8 +416,8 @@
   *
   * @param year the year.
   * @param month the month [1-12].
@@ -115,7 +116,9 @@
 + * @returns the number of days in the requested month.
 + * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -419,7 +425,7 @@
   */
  inline int GetDaysInMonth(int year, int month)
  {
@@ -124,7 +127,7 @@
  }
  
  /**
-@@ -416,14 +422,14 @@
+@@ -428,8 +434,8 @@
   * @param year the year component of the date.
   * @param month the month component of the date.
   * @param day the day component of the date.
@@ -133,7 +136,9 @@
 + * @returns the day of year [0-365] if the date is valid.
 + * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -437,7 +443,7 @@
   */
  inline int GetDayOfYear(int year, int month, int day)
  {
@@ -142,7 +147,7 @@
  }
  
  /**
-@@ -432,14 +438,14 @@
+@@ -446,8 +452,8 @@
   * @param year the year component of the date.
   * @param month the month component of the date.
   * @param day the day component of the date.
@@ -151,7 +156,9 @@
 + * @returns a value between 0 and 6 (0 being Sunday) if the date is valid.
 + * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -455,7 +461,7 @@
   */
  inline int GetDayOfWeek(int year, int month, int day)
  {

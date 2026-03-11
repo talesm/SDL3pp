@@ -336,6 +336,8 @@ struct MessageBox : MessageBoxRaw
    *                 copied.
    * @throws Error on failure.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa ShowSimpleMessageBox
@@ -369,6 +371,8 @@ struct MessageBox : MessageBoxRaw
  *                       options.
  * @param buttonid the pointer to which user id of hit button should be copied.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -418,6 +422,8 @@ inline void MessageBox::Show(int* buttonid) const
  * @param message UTF-8 message text.
  * @param window the parent window, or nullptr for no parent.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *

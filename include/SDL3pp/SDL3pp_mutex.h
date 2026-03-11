@@ -242,6 +242,8 @@ public:
    * @post the initialized and unlocked mutex or nullptr on failure; call
    *       GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Destroy
@@ -298,6 +300,8 @@ public:
    * to destroy a locked mutex, and may result in undefined behavior depending
    * on the platform.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Mutex
@@ -319,6 +323,8 @@ public:
    * immediately having locked nothing. If the mutex is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.TryLock
@@ -339,6 +345,8 @@ public:
    *
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Mutex.Lock
@@ -355,6 +363,9 @@ public:
    *
    * It is illegal to unlock a mutex that has not been locked by the current
    * thread, and doing so results in undefined behavior.
+   *
+   * @threadsafety This call must be paired with a previous locking call on the
+   *               same thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -413,6 +424,8 @@ struct MutexRef : Mutex
  * @returns the initialized and unlocked mutex or nullptr on failure; call
  *          GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Mutex.Destroy
@@ -439,6 +452,8 @@ inline Mutex CreateMutex() { return Mutex(); }
  *
  * @param mutex the mutex to lock.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Mutex.TryLock
@@ -461,6 +476,8 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  *
  * @param mutex the mutex to try to lock.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -486,6 +503,9 @@ inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
  *
  * @param mutex the mutex to unlock.
  *
+ * @threadsafety This call must be paired with a previous locking call on the
+ *               same thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Mutex.Lock
@@ -505,6 +525,8 @@ inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
  * platform.
  *
  * @param mutex the mutex to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -603,6 +625,8 @@ public:
    * @post the initialized and unlocked read/write lock or nullptr on failure;
    *       call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.Destroy
@@ -661,6 +685,8 @@ public:
    * is not safe to attempt to destroy a locked rwlock, and may result in
    * undefined behavior depending on the platform.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.RWLock
@@ -694,6 +720,8 @@ public:
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForWriting
@@ -723,6 +751,8 @@ public:
    * immediately having locked nothing. If the rwlock is valid, this function
    * will always block until it can lock the mutex, and return with it locked.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForReading
@@ -746,6 +776,8 @@ public:
    * This function returns true if passed a nullptr rwlock.
    *
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -776,6 +808,8 @@ public:
    *
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa RWLock.LockForWriting
@@ -797,6 +831,9 @@ public:
    *
    * It is illegal to unlock a rwlock that has not been locked by the current
    * thread, and doing so results in undefined behavior.
+   *
+   * @threadsafety This call must be paired with a previous locking call on the
+   *               same thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -875,6 +912,8 @@ struct RWLockRef : RWLock
  * @returns the initialized and unlocked read/write lock or nullptr on failure;
  *          call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.Destroy
@@ -915,6 +954,8 @@ inline RWLock CreateRWLock() { return RWLock(); }
  *
  * @param rwlock the read/write lock to lock.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForWriting
@@ -951,6 +992,8 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  *
  * @param rwlock the read/write lock to lock.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForReading
@@ -980,6 +1023,8 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  *
  * @param rwlock the rwlock to try to lock.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1019,6 +1064,8 @@ inline void RWLock::TryLockForReading()
  * @param rwlock the rwlock to try to lock.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForWriting
@@ -1051,6 +1098,9 @@ inline void RWLock::TryLockForWriting()
  *
  * @param rwlock the rwlock to unlock.
  *
+ * @threadsafety This call must be paired with a previous locking call on the
+ *               same thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa RWLock.LockForReading
@@ -1072,6 +1122,8 @@ inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
  * depending on the platform.
  *
  * @param rwlock the rwlock to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1148,6 +1200,8 @@ public:
    * @post a new semaphore or nullptr on failure; call GetError() for more
    *       information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Destroy
@@ -1203,6 +1257,8 @@ public:
    * It is not safe to destroy a semaphore if there are threads currently
    * waiting on it.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Semaphore
@@ -1218,6 +1274,8 @@ public:
    *
    * This function is the equivalent of calling Semaphore.WaitTimeout() with a
    * time length of -1.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1236,6 +1294,8 @@ public:
    * returns false.
    *
    * @returns true if the wait succeeds, false if the wait would block.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1256,6 +1316,8 @@ public:
    *                indefinitely.
    * @returns true if the wait succeeds or false if the wait times out.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Semaphore.Signal
@@ -1266,6 +1328,8 @@ public:
 
   /**
    * Atomically increment a semaphore's value and wake waiting threads.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1279,6 +1343,8 @@ public:
    * Get the current value of a semaphore.
    *
    * @returns the current value of the semaphore.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1334,6 +1400,8 @@ struct SemaphoreRef : Semaphore
  * @returns a new semaphore or nullptr on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.Destroy
@@ -1356,6 +1424,8 @@ inline Semaphore CreateSemaphore(Uint32 initial_value)
  *
  * @param sem the semaphore to destroy.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.Semaphore
@@ -1375,6 +1445,8 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * time length of -1.
  *
  * @param sem the semaphore wait on.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1396,6 +1468,8 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
  *
  * @param sem the semaphore to wait on.
  * @returns true if the wait succeeds, false if the wait would block.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1422,6 +1496,8 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  *                indefinitely.
  * @returns true if the wait succeeds or false if the wait times out.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.Signal
@@ -1444,6 +1520,8 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  *
  * @param sem the semaphore to increment.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Semaphore.TryWait
@@ -1459,6 +1537,8 @@ inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
  *
  * @param sem the semaphore to query.
  * @returns the current value of the semaphore.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1531,6 +1611,8 @@ public:
    * @post a new condition variable or nullptr on failure; call GetError() for
    *       more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Condition.Broadcast
@@ -1581,6 +1663,8 @@ public:
 
   /**
    * Destroy a condition variable.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -1713,6 +1797,8 @@ struct ConditionRef : Condition
  * @returns a new condition variable or nullptr on failure; call GetError() for
  *          more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Condition.Broadcast
@@ -1727,6 +1813,8 @@ inline Condition CreateCondition() { return Condition(); }
  * Destroy a condition variable.
  *
  * @param cond the condition variable to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *

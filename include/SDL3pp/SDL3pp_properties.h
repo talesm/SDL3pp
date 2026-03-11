@@ -884,6 +884,8 @@ inline auto PROP_NAME_STRING = SDL_PROP_NAME_STRING;
  *
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PropertiesRef GetGlobalProperties()

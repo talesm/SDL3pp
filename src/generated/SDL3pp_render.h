@@ -2005,6 +2005,8 @@ public:
    *               coordinates in Renderer.RenderGeometry().
    * @throws Error on failure.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Renderer.RenderGeometry
@@ -2028,6 +2030,8 @@ public:
    *               vertical texture coordinates in Renderer.RenderGeometry(),
    *               may be nullptr.
    * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.4.0.
    *
@@ -2375,7 +2379,8 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderStateRef CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+  GPURenderStateRef CreateGPURenderState(
+    const GPURenderStateCreateInfo& createinfo);
 
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 
@@ -7570,6 +7575,8 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
  *               in Renderer.RenderGeometry().
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Renderer.RenderGeometry
@@ -7608,6 +7615,8 @@ inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
  *               vertical texture coordinates in Renderer.RenderGeometry(), may
  *               be nullptr.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.4.0.
  *
@@ -8199,8 +8208,9 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderState(RendererParam renderer, GPURenderStateCreateInfo* createinfo)
-    : m_resource(SDL_CreateGPURenderState(renderer, createinfo))
+  GPURenderState(RendererParam renderer,
+                 const GPURenderStateCreateInfo& createinfo)
+    : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
   {
   }
 
@@ -8343,8 +8353,9 @@ struct GPURenderStateRef : GPURenderState
  * @sa Renderer.SetGPURenderState
  * @sa GPURenderState.Destroy
  */
-inline GPURenderState CreateGPURenderState(RendererParam renderer,
-                                           GPURenderStateCreateInfo* createinfo)
+inline GPURenderState CreateGPURenderState(
+  RendererParam renderer,
+  const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(renderer, createinfo);
 }
@@ -8354,7 +8365,7 @@ inline GPURenderState CreateGPURenderState(RendererParam renderer,
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 inline GPURenderStateRef Renderer::CreateGPURenderState(
-  GPURenderStateCreateInfo* createinfo)
+  const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(m_resource, createinfo);
 }

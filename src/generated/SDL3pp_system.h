@@ -54,6 +54,8 @@ using WindowsMessageHook = bool(SDLCALL*)(void* userdata, MSG* msg);
  * @param callback the WindowsMessageHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa WindowsMessageHook
@@ -135,6 +137,8 @@ using X11EventHook = bool(SDLCALL*)(void* userdata, XEvent* xevent);
  * @param callback the X11EventHook function to call.
  * @param userdata a pointer to pass to every iteration of `callback`.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void SetX11EventHook(X11EventHook callback, void* userdata)
@@ -150,6 +154,8 @@ inline void SetX11EventHook(X11EventHook callback, void* userdata)
  * @param threadID the Unix thread ID to change priority of.
  * @param priority the new, Unix-specific, priority value.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -168,6 +174,8 @@ inline void SetLinuxThreadPriority(Sint64 threadID, int priority)
  * @param schedPolicy the new scheduling policy (SCHED_FIFO, SCHED_RR,
  *                    SCHED_OTHER, etc...).
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -227,6 +235,8 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  * @param callbackParam a pointer that is passed to `callback`.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetiOSEventPump
@@ -246,6 +256,8 @@ inline void SetiOSAnimationCallback(WindowParam window,
  * This function is only available on Apple iOS.
  *
  * @param enabled true to enable the event pump, false to disable it.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -332,6 +344,8 @@ inline void* GetAndroidActivity() { return SDL_GetAndroidActivity(); }
  *
  * @returns the Android API level.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline int GetAndroidSDKVersion() { return SDL_GetAndroidSDKVersion(); }
@@ -341,6 +355,8 @@ inline int GetAndroidSDKVersion() { return SDL_GetAndroidSDKVersion(); }
  *
  * @returns true if this is a Chromebook, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool IsChromebook() { return SDL_IsChromebook(); }
@@ -349,6 +365,8 @@ inline bool IsChromebook() { return SDL_IsChromebook(); }
  * Query if the application is running on a Samsung DeX docking station.
  *
  * @returns true if this is a DeX docking station, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -651,6 +669,8 @@ inline void SendAndroidMessage(Uint32 command, int param)
  *
  * @returns true if the device is a tablet, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool IsTablet() { return SDL_IsTablet(); }
@@ -661,6 +681,8 @@ inline bool IsTablet() { return SDL_IsTablet(); }
  * If SDL can't determine this, it will return false.
  *
  * @returns true if the device is a TV, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

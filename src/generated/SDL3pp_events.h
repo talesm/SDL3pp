@@ -1036,15 +1036,13 @@ inline void FlushEvents(Uint32 minType = EVENT_FIRST,
  * Poll for currently pending events.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
- * stored in the Event structure pointed to by `event`. The 1 returned refers to
- * this event, immediately stored in the SDL Event structure -- not an event to
- * follow.
+ * stored in the Event structure pointed to by `event`.
  *
- * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
- * but will not remove it from the queue.
+ * If `event` is nullptr, it simply returns true if there is an event in the
+ * queue, but will not remove it from the queue.
  *
  * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that set the video mode.
+ * function in the thread that initialized the video subsystem.
  *
  * PollEvent() is the favored way of receiving system events since it can be
  * done from the main loop and does not suspend the main loop while waiting on
@@ -1089,15 +1087,13 @@ inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
  * Poll for currently pending events.
  *
  * If `event` is not nullptr, the next event is removed from the queue and
- * stored in the Event structure pointed to by `event`. The 1 returned refers to
- * this event, immediately stored in the SDL Event structure -- not an event to
- * follow.
+ * stored in the Event structure pointed to by `event`.
  *
- * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
- * but will not remove it from the queue.
+ * If `event` is nullptr, it simply returns true if there is an event in the
+ * queue, but will not remove it from the queue.
  *
  * As this function may implicitly call PumpEvents(), you can only call this
- * function in the thread that set the video mode.
+ * function in the thread that initialized the video subsystem.
  *
  * PollEvent() is the favored way of receiving system events since it can be
  * done from the main loop and does not suspend the main loop while waiting on

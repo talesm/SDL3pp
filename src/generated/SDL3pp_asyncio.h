@@ -239,6 +239,8 @@ public:
    * @post a pointer to the AsyncIO structure that is created or nullptr on
    *       failure; call GetError() for more information.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AsyncIO.Close
@@ -845,6 +847,8 @@ struct AsyncIOQueueRef : AsyncIOQueue
  * @returns a pointer to the AsyncIO structure that is created or nullptr on
  *          failure; call GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa AsyncIO.Close
@@ -1286,6 +1290,8 @@ inline void AsyncIOQueue::Signal() { SDL::SignalAsyncIOQueue(m_resource); }
  * @param userdata an app-defined pointer that will be provided with the task
  *                 results.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *

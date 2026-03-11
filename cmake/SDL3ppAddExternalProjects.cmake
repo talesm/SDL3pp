@@ -8,7 +8,7 @@ set(SDL3PP_USE_SDL3_URL OFF CACHE STRING "Bundle SDL3 with this named tag/branch
 if(SDL3PP_USE_SDL3_URL)
   set(SDL3_URL ${SDL3PP_USE_SDL3_URL})
 else ()
-  set(SDL3_URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.0/SDL3-3.4.0.tar.gz)
+  set(SDL3_URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.2/SDL3-3.4.2.tar.gz)
 endif ()
 
 set(SDL_INSTALL ON) # passed to SDL3External

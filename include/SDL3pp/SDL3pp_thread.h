@@ -238,6 +238,8 @@ public:
    * @post an opaque pointer to the new thread object on success.
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -304,6 +306,8 @@ public:
    * @param props the properties to use.
    * @post an opaque pointer to the new thread object on success.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -376,6 +380,8 @@ public:
    *
    * It is safe to pass nullptr to this function; it is a no-op.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -388,6 +394,8 @@ public:
    *
    * @returns a pointer to a UTF-8 string that names the specified thread, or
    *          nullptr if it doesn't have a name.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -402,6 +410,8 @@ public:
    *
    * @returns the ID of the specified thread, or the ID of the current thread if
    *          `thread` is nullptr.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -418,6 +428,8 @@ public:
    *
    * @param priority the ThreadPriority to set.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -449,6 +461,9 @@ public:
    *               function by its 'return', or -1 if the thread has been
    *               detached or isn't valid, may be nullptr.
    *
+   * @threadsafety It is safe to call this function from any thread, but only a
+   *               single thread can wait any specific thread to finish.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Thread.Thread
@@ -461,6 +476,8 @@ public:
    *
    * @returns the current state of a thread, or THREAD_UNKNOWN if the thread
    *          isn't valid.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -543,6 +560,8 @@ using TLSID = AtomicInt;
  * @returns an opaque pointer to the new thread object on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -610,6 +629,8 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * @returns an opaque pointer to the new thread object on success.
  * @throws Error on failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -642,6 +663,8 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  * @returns a pointer to a UTF-8 string that names the specified thread, or
  *          nullptr if it doesn't have a name.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline const char* GetThreadName(ThreadParam thread)
@@ -666,6 +689,8 @@ inline const char* Thread::GetName() const
  *
  * @returns the ID of the current thread.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.GetID
@@ -682,6 +707,8 @@ inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
  * @param thread the thread to query.
  * @returns the ID of the specified thread, or the ID of the current thread if
  *          `thread` is nullptr.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -703,6 +730,8 @@ inline ThreadID Thread::GetID() const { return SDL::GetThreadID(m_resource); }
  *
  * @param priority the ThreadPriority to set.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -743,6 +772,9 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  *               function by its 'return', or -1 if the thread has been detached
  *               or isn't valid, may be nullptr.
  *
+ * @threadsafety It is safe to call this function from any thread, but only a
+ *               single thread can wait any specific thread to finish.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Thread.Thread
@@ -761,6 +793,8 @@ inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
  * @param thread the thread to query.
  * @returns the current state of a thread, or THREAD_UNKNOWN if the thread isn't
  *          valid.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -800,6 +834,8 @@ inline ThreadState Thread::GetState() const
  * that function or this one, but not both, or behavior is undefined.
  *
  * It is safe to pass nullptr to this function; it is a no-op.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @param thread the Thread pointer that was returned from the Thread.Thread()
  *               call that started this thread.

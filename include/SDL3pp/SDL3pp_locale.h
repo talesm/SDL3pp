@@ -68,6 +68,8 @@ using Locale = SDL_Locale;
  * @returns a nullptr terminated array of locale pointers on success.
  * @throws Error on failure.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<Locale*> GetPreferredLocales()

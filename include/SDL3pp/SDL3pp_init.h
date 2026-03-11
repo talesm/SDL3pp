@@ -241,6 +241,8 @@ using AppQuit_func = void(SDLCALL*)(void* appstate, AppResult result);
  * @param flags subsystem initialization flags.
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SetAppMetadata
@@ -259,6 +261,8 @@ inline void Init(InitFlags flags) { CheckError(SDL_Init(flags)); }
  *
  * @param flags any of the flags used by Init(); see Init for details.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -279,6 +283,8 @@ inline void InitSubSystem(InitFlags flags)
  *
  * @param flags any of the flags used by Init(); see Init for details.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa InitSubSystem
@@ -292,6 +298,8 @@ inline void QuitSubSystem(InitFlags flags) { SDL_QuitSubSystem(flags); }
  * @param flags any of the flags used by Init(); see Init for details.
  * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
  *          returns the initialization status of the specified subsystems.
+ *
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -310,6 +318,8 @@ inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
  * You can use this function with atexit() to ensure that it is run when your
  * application is shutdown, but it is not wise to do this from a library or
  * other dynamically loaded code.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *

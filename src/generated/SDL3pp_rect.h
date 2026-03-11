@@ -419,6 +419,8 @@ struct Rect : RectRaw
    * @returns true if any points were enclosed or false if all the points were
    *          outside of the clipping rectangle.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static Rect GetEnclosingPoints(
@@ -484,6 +486,8 @@ struct Rect : RectRaw
    * @param X2 a pointer to the ending X-coordinate of the line.
    * @param Y2 a pointer to the ending Y-coordinate of the line.
    * @returns true if there is an intersection, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -580,6 +584,8 @@ struct Rect : RectRaw
    *               rectangles `A` and `B`.
    * @returns true if there is an intersection, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Rect.HasIntersection
@@ -593,6 +599,8 @@ struct Rect : RectRaw
    * @param result an Rect structure filled in with the union of rectangles `A`
    *               and `B`.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -748,6 +756,8 @@ struct FRect : FRectRaw
    * @returns true if any points were enclosed or false if all the points were
    *          outside of the clipping rectangle.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static constexpr FRect GetEnclosingPoints(
@@ -810,6 +820,8 @@ struct FRect : FRectRaw
    * @param X2 a pointer to the ending X-coordinate of the line.
    * @param Y2 a pointer to the ending Y-coordinate of the line.
    * @returns true if there is an intersection, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -904,6 +916,8 @@ struct FRect : FRectRaw
    * @param B an FRect structure representing the second rectangle.
    * @returns true if there is an intersection, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa Rect.GetIntersection
@@ -920,6 +934,8 @@ struct FRect : FRectRaw
    *               rectangles `A` and `B`.
    * @returns true if there is an intersection, false otherwise.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa FRect.HasIntersection
@@ -933,6 +949,8 @@ struct FRect : FRectRaw
    * @param result an FRect structure filled in with the union of rectangles `A`
    *               and `B`.
    * @throws Error on failure.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1075,6 +1093,8 @@ constexpr bool Rect::HasIntersection(const RectRaw& other) const
  *               `A` and `B`.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Rect.HasIntersection
@@ -1097,6 +1117,8 @@ constexpr Rect Rect::GetIntersection(const RectRaw& other) const
  * @param result an Rect structure filled in with the union of rectangles `A`
  *               and `B`.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1124,6 +1146,8 @@ constexpr Rect Rect::GetUnion(const RectRaw& other) const
  *               rectangle.
  * @returns true if any points were enclosed or false if all the points were
  *          outside of the clipping rectangle.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1155,6 +1179,8 @@ inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
  * @param X2 a pointer to the ending X-coordinate of the line.
  * @param Y2 a pointer to the ending Y-coordinate of the line.
  * @returns true if there is an intersection, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1310,6 +1336,8 @@ constexpr bool FRect::Equal(const FRectRaw& other) const
  * @param B an FRect structure representing the second rectangle.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Rect.GetIntersection
@@ -1336,6 +1364,8 @@ constexpr bool FRect::HasIntersection(const FRectRaw& other) const
  *               rectangles `A` and `B`.
  * @returns true if there is an intersection, false otherwise.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa FRect.HasIntersection
@@ -1359,6 +1389,8 @@ constexpr FRect FRect::GetIntersection(const FRectRaw& other) const
  * @param result an FRect structure filled in with the union of rectangles `A`
  *               and `B`.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1386,6 +1418,8 @@ constexpr FRect FRect::GetUnion(const FRectRaw& other) const
  *               rectangle.
  * @returns true if any points were enclosed or false if all the points were
  *          outside of the clipping rectangle.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -1418,6 +1452,8 @@ constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
  * @param X2 a pointer to the ending X-coordinate of the line.
  * @param Y2 a pointer to the ending Y-coordinate of the line.
  * @returns true if there is an intersection, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

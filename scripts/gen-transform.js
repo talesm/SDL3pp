@@ -1933,11 +1933,20 @@ const transform = {
         "SDL_PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
+        "SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER": {
+          since: { tag: "SDL", major: 3, minor: 4, patch: 2 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING": {
+          since: { tag: "SDL", major: 3, minor: 4, patch: 2 }
+        },
         "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN": {
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
         },
         "SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER": {
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 }
+        },
+        "SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN": {
+          since: { tag: "SDL", major: 3, minor: 4, patch: 2 }
         },
         "SDL_PROP_GPU_DEVICE_NAME_STRING": {
           since: { tag: "SDL", major: 3, minor: 4, patch: 0 }

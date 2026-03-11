@@ -866,9 +866,9 @@
 +   *          rectangle or an empty rect if all the points were outside of the
 +   *          clipping rectangle.
     *
-    * @since This function is available since SDL 3.2.0.
-    */
-@@ -425,49 +985,176 @@
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -427,49 +987,176 @@
      SpanRef<const PointRaw> points,
      OptionalRef<const RectRaw> clip = std::nullopt);
  
@@ -1063,7 +1063,7 @@
    }
  
    /**
-@@ -490,10 +1177,9 @@
+@@ -494,10 +1181,9 @@
    bool GetLineIntersection(int* X1, int* Y1, int* X2, int* Y2) const;
  
    /**
@@ -1076,7 +1076,7 @@
     *              `rect`.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -503,7 +1189,7 @@
+@@ -507,7 +1193,7 @@
    constexpr operator SDL_FRect() const;
  
    /// @sa operator ToFRect()
@@ -1085,7 +1085,7 @@
  
    /**
     * Determine whether a rectangle has no area.
-@@ -535,7 +1221,7 @@
+@@ -539,7 +1225,7 @@
     * embedded in the calling program and the linker and dynamic loader will not
     * be able to find this function inside SDL itself).
     *
@@ -1094,7 +1094,7 @@
     * @returns true if the rectangles are equal, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -544,22 +1230,36 @@
+@@ -548,22 +1234,36 @@
     */
    constexpr bool Equal(const RectRaw& other) const;
  
@@ -1136,7 +1136,7 @@
     * @returns true if there is an intersection, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -575,10 +1275,9 @@
+@@ -579,10 +1279,9 @@
     *
     * If `result` is nullptr then this function will return false.
     *
@@ -1148,9 +1148,9 @@
 +   * @returns a Rect structure filled in with the intersection of if there is
 +   *          intersection, std::nullopt otherwise.
     *
-    * @since This function is available since SDL 3.2.0.
+    * @threadsafety It is safe to call this function from any thread.
     *
-@@ -589,14 +1288,132 @@
+@@ -595,9 +1294,8 @@
    /**
     * Calculate the union of two rectangles.
     *
@@ -1161,6 +1161,8 @@
 +   * @returns Rect representing union of two rectangles
     * @throws Error on failure.
     *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -605,6 +1303,125 @@
     * @since This function is available since SDL 3.2.0.
     */
    constexpr Rect GetUnion(const RectRaw& other) const;
@@ -1286,7 +1288,7 @@
  };
  
  /**
-@@ -608,6 +1425,8 @@
+@@ -616,6 +1433,8 @@
   *
   * @since This struct is available since SDL 3.2.0.
   *
@@ -1295,7 +1297,7 @@
   * @sa FRect.Empty
   * @sa FRect.Equal
   * @sa FRect.EqualEpsilon
-@@ -633,10 +1452,10 @@
+@@ -641,10 +1460,10 @@
    /**
     * Constructs from its fields.
     *
@@ -1310,7 +1312,7 @@
     */
    constexpr FRect(float x, float y, float w, float h) noexcept
      : FRectRaw{x, y, w, h}
-@@ -644,29 +1463,27 @@
+@@ -652,29 +1471,27 @@
    }
  
    /**
@@ -1350,7 +1352,7 @@
     * @returns Reference to self.
     */
    constexpr FRect& SetX(float newX) noexcept
-@@ -676,16 +1493,16 @@
+@@ -684,16 +1501,16 @@
    }
  
    /**
@@ -1371,7 +1373,7 @@
     * @returns Reference to self.
     */
    constexpr FRect& SetY(float newY) noexcept
-@@ -695,16 +1512,16 @@
+@@ -703,16 +1520,16 @@
    }
  
    /**
@@ -1392,7 +1394,7 @@
     * @returns Reference to self.
     */
    constexpr FRect& SetW(float newW) noexcept
-@@ -714,16 +1531,16 @@
+@@ -722,16 +1539,16 @@
    }
  
    /**
@@ -1413,7 +1415,7 @@
     * @returns Reference to self.
     */
    constexpr FRect& SetH(float newH) noexcept
-@@ -739,14 +1556,13 @@
+@@ -747,14 +1564,13 @@
     * If `clip` is not nullptr then only points inside of the clipping rectangle
     * are considered.
     *
@@ -1432,9 +1434,9 @@
 +   *          rectangle or an empty FRect if all the points were outside of
 +   *          the clipping rectangle.
     *
-    * @since This function is available since SDL 3.2.0.
-    */
-@@ -754,46 +1570,153 @@
+    * @threadsafety It is safe to call this function from any thread.
+    *
+@@ -764,46 +1580,153 @@
      SpanRef<const FPointRaw> points,
      OptionalRef<const FRectRaw> clip = std::nullopt);
  
@@ -1605,7 +1607,7 @@
  
    /**
     * Calculate the intersection of a rectangle and line segment with float
-@@ -818,8 +1741,32 @@
+@@ -830,8 +1753,32 @@
    /**
     * Determine whether a floating point rectangle takes no space.
     *
@@ -1640,7 +1642,7 @@
     *
     * Note that this is a forced-inline function in a header, and not a public
     * API function available in the SDL library (which is to say, the code is
-@@ -848,7 +1795,7 @@
+@@ -860,7 +1807,7 @@
     * embedded in the calling program and the linker and dynamic loader will not
     * be able to find this function inside SDL itself).
     *
@@ -1649,7 +1651,7 @@
     * @param epsilon the epsilon value for comparison.
     * @returns true if the rectangles are equal, false otherwise.
     *
-@@ -875,7 +1822,7 @@
+@@ -887,7 +1834,7 @@
     * embedded in the calling program and the linker and dynamic loader will not
     * be able to find this function inside SDL itself).
     *
@@ -1658,7 +1660,7 @@
     * @returns true if the rectangles are equal, false otherwise.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -886,24 +1833,40 @@
+@@ -898,22 +1845,36 @@
     */
    constexpr bool Equal(const FRectRaw& other) const;
  
@@ -1699,12 +1701,8 @@
 +   * @param other an FRect structure representing the second rectangle.
     * @returns true if there is an intersection, false otherwise.
     *
-+   * @threadsafety It is safe to call this function from any thread.
-+   *
-    * @since This function is available since SDL 3.2.0.
-    *
-    * @sa Rect.GetIntersection
-@@ -915,10 +1878,9 @@
+    * @threadsafety It is safe to call this function from any thread.
+@@ -929,10 +1890,9 @@
     *
     * If `result` is nullptr then this function will return false.
     *
@@ -1716,9 +1714,9 @@
 +   * @returns an FRect structure filled in with the intersection of
 +   *          if there is intersection, an empty FRect otherwise.
     *
-    * @since This function is available since SDL 3.2.0.
+    * @threadsafety It is safe to call this function from any thread.
     *
-@@ -929,33 +1891,152 @@
+@@ -945,9 +1905,8 @@
    /**
     * Calculate the union of two rectangles with float precision.
     *
@@ -1729,6 +1727,8 @@
 +   * @returns Rect representing union of two rectangles
     * @throws Error on failure.
     *
+    * @threadsafety It is safe to call this function from any thread.
+@@ -955,25 +1914,145 @@
     * @since This function is available since SDL 3.2.0.
     */
    constexpr FRect GetUnion(const FRectRaw& other) const;
@@ -1879,7 +1879,7 @@
  
  /**
   * Determine whether a point resides inside a rectangle.
-@@ -978,14 +2059,14 @@
+@@ -996,14 +2075,14 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1897,7 +1897,7 @@
  }
  
  /**
-@@ -1006,9 +2087,9 @@
+@@ -1024,9 +2103,9 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1909,7 +1909,7 @@
  
  /**
   * Determine whether two rectangles are equal.
-@@ -1029,14 +2110,14 @@
+@@ -1047,14 +2126,14 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -1927,7 +1927,7 @@
  }
  
  /**
-@@ -1054,14 +2135,14 @@
+@@ -1072,14 +2151,14 @@
   *
   * @sa Rect.GetIntersection
   */
@@ -1945,7 +1945,7 @@
  }
  
  /**
-@@ -1071,22 +2152,22 @@
+@@ -1089,9 +2168,8 @@
   *
   * @param A an Rect structure representing the first rectangle.
   * @param B an Rect structure representing the second rectangle.
@@ -1955,7 +1955,9 @@
 + * @returns a Rect structure filled in with the intersection of if there is
 + *          intersection, std::nullopt otherwise.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1099,14 +2177,15 @@
   *
   * @sa Rect.HasIntersection
   */
@@ -1974,7 +1976,7 @@
  }
  
  /**
-@@ -1094,36 +2175,34 @@
+@@ -1114,38 +2193,36 @@
   *
   * @param A an Rect structure representing the first rectangle.
   * @param B an Rect structure representing the second rectangle.
@@ -1982,6 +1984,8 @@
 - *               and `B`.
 + * @returns Rect representing union of two rectangles
   * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -2018,9 +2022,9 @@
 + * @returns Result if any points were enclosed or empty rect if all the points
 + * were outside of the clipping rectangle.
   *
-  * @since This function is available since SDL 3.2.0.
-  */
-@@ -1131,7 +2210,11 @@
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1155,7 +2232,11 @@
    SpanRef<const PointRaw> points,
    OptionalRef<const RectRaw> clip = std::nullopt)
  {
@@ -2033,7 +2037,7 @@
  }
  
  inline Rect Rect::GetEnclosingPoints(SpanRef<const PointRaw> points,
-@@ -1164,12 +2247,12 @@
+@@ -1190,12 +2271,12 @@
                                         int* X2,
                                         int* Y2)
  {
@@ -2048,7 +2052,7 @@
  }
  
  /**
-@@ -1193,14 +2276,14 @@
+@@ -1219,14 +2300,14 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -2066,7 +2070,7 @@
  }
  
  /**
-@@ -1223,10 +2306,10 @@
+@@ -1249,10 +2330,10 @@
   */
  constexpr bool RectEmptyFloat(const FRectRaw& r)
  {
@@ -2079,7 +2083,7 @@
  
  /**
   * Determine whether two floating point rectangles are equal, within some given
-@@ -1253,17 +2336,17 @@
+@@ -1279,17 +2360,17 @@
   *
   * @sa FRect.Equal
   */
@@ -2101,7 +2105,7 @@
  }
  
  /**
-@@ -1291,14 +2374,14 @@
+@@ -1317,14 +2398,14 @@
   *
   * @sa FRect.EqualEpsilon
   */
@@ -2119,7 +2123,7 @@
  }
  
  /**
-@@ -1314,15 +2397,14 @@
+@@ -1342,15 +2423,14 @@
   *
   * @sa Rect.GetIntersection
   */
@@ -2138,7 +2142,7 @@
  }
  
  /**
-@@ -1332,23 +2414,22 @@
+@@ -1360,9 +2440,8 @@
   *
   * @param A an FRect structure representing the first rectangle.
   * @param B an FRect structure representing the second rectangle.
@@ -2148,7 +2152,9 @@
 + * @returns a FRect structure filled in with the intersection of if there is
 + *          intersection, std::nullopt otherwise.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1370,15 +2449,15 @@
   *
   * @sa FRect.HasIntersection
   */
@@ -2168,7 +2174,7 @@
  }
  
  /**
-@@ -1356,36 +2437,35 @@
+@@ -1386,38 +2465,37 @@
   *
   * @param A an FRect structure representing the first rectangle.
   * @param B an FRect structure representing the second rectangle.
@@ -2177,6 +2183,8 @@
 + * @returns a FRect structure filled in with the union of rectangles `A` and
 + *          `B`.
   * @throws Error on failure.
+  *
+  * @threadsafety It is safe to call this function from any thread.
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -2214,9 +2222,9 @@
 + * @returns a FRect structure filled in with the minimal enclosing rectangle or
 + *          false if all the points were outside of the clipping rectangle.
   *
-  * @since This function is available since SDL 3.2.0.
-  */
-@@ -1393,7 +2473,11 @@
+  * @threadsafety It is safe to call this function from any thread.
+  *
+@@ -1427,7 +2505,11 @@
    SpanRef<const FPointRaw> points,
    OptionalRef<const FRectRaw> clip = std::nullopt)
  {
@@ -2229,7 +2237,7 @@
  }
  
  constexpr FRect FRect::GetEnclosingPoints(SpanRef<const FPointRaw> points,
-@@ -1427,7 +2511,7 @@
+@@ -1463,7 +2545,7 @@
                                              float* X2,
                                              float* Y2)
  {
@@ -2238,7 +2246,7 @@
  }
  
  inline bool FRect::GetLineIntersection(float* X1,
-@@ -1435,11 +2519,103 @@
+@@ -1471,11 +2553,103 @@
                                         float* X2,
                                         float* Y2) const
  {

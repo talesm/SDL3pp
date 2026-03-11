@@ -112,6 +112,8 @@ public:
    * @param window the window.
    * @post handle NSView or UIView.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.Destroy
@@ -163,6 +165,8 @@ public:
    * This should be called before Window.Destroy, if MetalView.MetalView was
    * called after Window.Window.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa MetalView.MetalView
@@ -173,6 +177,8 @@ public:
    * Get a pointer to the backing CAMetalLayer for the given view.
    *
    * @returns a pointer.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -228,6 +234,8 @@ struct MetalViewRef : MetalView
  * @param window the window.
  * @returns handle NSView or UIView.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MetalView.Destroy
@@ -246,6 +254,8 @@ inline MetalView Metal_CreateView(WindowParam window)
  *
  * @param view the MetalView object.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa MetalView.MetalView
@@ -262,6 +272,8 @@ inline void MetalView::Destroy() { SDL::Metal_DestroyView(release()); }
  *
  * @param view the MetalView object.
  * @returns a pointer.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

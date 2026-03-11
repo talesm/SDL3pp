@@ -1750,11 +1750,12 @@ using GPUTextureRegion = SDL_GPUTextureRegion;
  * GPUCopyPass.DownloadFromTexture are used as default values respectively and
  * data is considered to be tightly packed.
  *
- * **WARNING**: Direct3D 12 requires texture data row pitch to be 256 byte
- * aligned, and offsets to be aligned to 512 bytes. If they are not, SDL will
- * make a temporary copy of the data that is properly aligned, but this adds
- * overhead to the transfer process. Apps can avoid this by aligning their data
- * appropriately, or using a different GPU backend than Direct3D 12.
+ * **WARNING**: On some older/integrated hardware, Direct3D 12 requires texture
+ * data row pitch to be 256 byte aligned, and offsets to be aligned to 512
+ * bytes. If they are not, SDL will make a temporary copy of the data that is
+ * properly aligned, but this adds overhead to the transfer process. Apps can
+ * avoid this by aligning their data appropriately, or using a different GPU
+ * backend than Direct3D 12.
  *
  * @since This struct is available since SDL 3.2.0.
  *
@@ -3231,6 +3232,20 @@ public:
    *   useful for targeting Intel Haswell and Broadwell GPUs; other hardware
    *   either supports Tier 2 Resource Binding or does not support D3D12 in any
    *   capacity. Defaults to false.
+   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain
+   *   feature checks are only possible on Windows 11 by default. By setting
+   *   this alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The version you provide must
+   *   match the one given in the DLL.
+   * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+   *   checks are only possible on Windows 11 by default. By setting this
+   *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+   *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+   *   feature checks possible on older platforms. The path you provide must be
+   *   relative to the executable path of your app. Be sure not to put the DLL
+   *   in the same directory as the exe; Microsoft strongly advises against
+   *   this!
    *
    * With the Vulkan backend:
    *
@@ -3245,6 +3260,15 @@ public:
    *   allows configuring a variety of Vulkan-specific options such as
    *   increasing the API version and opting into extensions aside from the
    *   minimal set SDL requires.
+   *
+   * With the Metal backend: -
+   * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+   * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+   * However, an application can set this property to true to enable support for
+   * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not
+   * write to sRGB textures. (For history's sake: MacFamily1 also does not
+   * support indirect command buffers, MSAA depth resolve, and stencil
+   * resolve/feedback, but these are not exposed features in SDL_GPU.)
    *
    * @param props the properties to use.
    * @post a GPU context on success.
@@ -5099,6 +5123,19 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   shader stages. As of writing, this property is useful for targeting Intel
  *   Haswell and Broadwell GPUs; other hardware either supports Tier 2 Resource
  *   Binding or does not support D3D12 in any capacity. Defaults to false.
+ * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER`: Certain feature
+ *   checks are only possible on Windows 11 by default. By setting this
+ *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The version you provide must
+ *   match the one given in the DLL.
+ * - `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_PATH_STRING`: Certain feature
+ *   checks are only possible on Windows 11 by default. By setting this
+ *   alongside `prop::GpuDevice.CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER` and
+ *   vendoring D3D12Core.dll from the D3D12 Agility SDK, you can make those
+ *   feature checks possible on older platforms. The path you provide must be
+ *   relative to the executable path of your app. Be sure not to put the DLL in
+ *   the same directory as the exe; Microsoft strongly advises against this!
  *
  * With the Vulkan backend:
  *
@@ -5113,6 +5150,15 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
  *   allows configuring a variety of Vulkan-specific options such as increasing
  *   the API version and opting into extensions aside from the minimal set SDL
  *   requires.
+ *
+ * With the Metal backend: -
+ * `prop::GpuDevice.CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN`: By default, macOS
+ * support requires what Apple calls "MTLGPUFamilyMac2" hardware or newer.
+ * However, an application can set this property to true to enable support for
+ * "MTLGPUFamilyMac1" hardware, if (and only if) the application does not write
+ * to sRGB textures. (For history's sake: MacFamily1 also does not support
+ * indirect command buffers, MSAA depth resolve, and stencil resolve/feedback,
+ * but these are not exposed features in SDL_GPU.)
  *
  * @param props the properties to use.
  * @returns a GPU context on success.
@@ -5191,6 +5237,16 @@ constexpr auto CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN =
 constexpr auto CREATE_D3D12_SEMANTIC_NAME_STRING =
   SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING;
 
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+constexpr auto CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER;
+
+constexpr auto CREATE_D3D12_AGILITY_SDK_PATH_STRING =
+  SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
 #if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
@@ -5198,6 +5254,17 @@ constexpr auto CREATE_VULKAN_REQUIRE_HARDWARE_ACCELERATION_BOOLEAN =
 
 constexpr auto CREATE_VULKAN_OPTIONS_POINTER =
   SDL_PROP_GPU_DEVICE_CREATE_VULKAN_OPTIONS_POINTER;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_VERSION_ATLEAST(3, 4, 2)
+
+constexpr auto CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN =
+  SDL_PROP_GPU_DEVICE_CREATE_METAL_ALLOW_MACFAMILY1_BOOLEAN;
+
+#endif // SDL_VERSION_ATLEAST(3, 4, 2)
+
+#if SDL_VERSION_ATLEAST(3, 4, 0)
 
 constexpr auto NAME_STRING = SDL_PROP_GPU_DEVICE_NAME_STRING;
 

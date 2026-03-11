@@ -90,7 +90,7 @@ namespace SDL {
 #define SDL_TriggerBreakpoint() TriggerABreakpointInAPlatformSpecificManner
 
 /**
- * A macro that reports the current function being compiled.
+ * A constant that contains the current function being compiled.
  *
  * If SDL can't figure how the compiler reports this, it will use "???".
  *

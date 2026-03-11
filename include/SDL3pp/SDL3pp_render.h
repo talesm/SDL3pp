@@ -2034,6 +2034,8 @@ public:
    *               coordinates in Renderer.RenderGeometry().
    * @throws Error on failure.
    *
+   * @threadsafety This function should only be called on the main thread.
+   *
    * @since This function is available since SDL 3.4.0.
    *
    * @sa Renderer.RenderGeometry
@@ -2053,6 +2055,8 @@ public:
    *               vertical texture coordinates in Renderer.RenderGeometry(),
    *               may be nullptr.
    * @throws Error on failure.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.4.0.
    *
@@ -7705,6 +7709,8 @@ inline void Renderer::RenderGeometryRaw(TextureParam texture,
  *               in Renderer.RenderGeometry().
  * @throws Error on failure.
  *
+ * @threadsafety This function should only be called on the main thread.
+ *
  * @since This function is available since SDL 3.4.0.
  *
  * @sa Renderer.RenderGeometry
@@ -7735,6 +7741,8 @@ inline void Renderer::SetRenderTextureAddressMode(TextureAddressMode u_mode,
  *               vertical texture coordinates in Renderer.RenderGeometry(), may
  *               be nullptr.
  * @throws Error on failure.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.4.0.
  *

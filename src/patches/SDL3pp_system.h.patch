@@ -29,7 +29,7 @@
  using MSG = ::MSG;
  
  /**
-@@ -64,6 +72,11 @@
+@@ -66,6 +74,11 @@
    SDL_SetWindowsMessageHook(callback, userdata);
  }
  
@@ -41,7 +41,7 @@
  /**
   * Get the D3D9 adapter index that matches the specified display.
   *
-@@ -102,6 +115,9 @@
+@@ -104,6 +117,9 @@
    CheckError(SDL_GetDXGIOutputInfo(displayID, adapterIndex, outputIndex));
  }
  
@@ -51,7 +51,7 @@
  using XEvent = ::XEvent;
  
  /**
-@@ -142,6 +158,9 @@
+@@ -146,6 +162,9 @@
    SDL_SetX11EventHook(callback, userdata);
  }
  
@@ -61,7 +61,7 @@
  /**
   * Sets the UNIX nice value for a thread.
   *
-@@ -179,6 +198,13 @@
+@@ -187,6 +206,13 @@
      SDL_SetLinuxThreadPriorityAndPolicy(threadID, sdlPriority, schedPolicy));
  }
  
@@ -75,7 +75,7 @@
  /**
   * The prototype for an Apple iOS animation callback.
   *
-@@ -253,6 +279,13 @@
+@@ -265,6 +291,13 @@
   */
  inline void SetiOSEventPump(bool enabled) { SDL_SetiOSEventPump(enabled); }
  
@@ -89,7 +89,7 @@
  /**
   * Get the Android Java Native Interface Environment of the current thread.
   *
-@@ -498,13 +531,13 @@
+@@ -516,13 +549,13 @@
  /**
   * Callback that presents a response from a RequestAndroidPermission call.
   *
@@ -104,7 +104,7 @@
   * @sa RequestAndroidPermissionCallback
   */
  using RequestAndroidPermissionCB =
-@@ -576,7 +609,6 @@
+@@ -594,7 +627,6 @@
   *
   * @param permission the permission to request.
   * @param cb the callback to trigger when the request has a response.
@@ -112,7 +112,7 @@
   * @returns true if the request was submitted, false if there was an error
   *          submitting. The result of the request is only ever reported through
   *          the callback, not this return value.
-@@ -588,7 +620,12 @@
+@@ -606,7 +638,12 @@
  inline bool RequestAndroidPermission(StringParam permission,
                                       RequestAndroidPermissionCB cb)
  {
@@ -126,7 +126,7 @@
  }
  
  /**
-@@ -644,6 +681,8 @@
+@@ -662,6 +699,8 @@
    CheckError(SDL_SendAndroidMessage(command, param));
  }
  
@@ -135,7 +135,7 @@
  /**
   * Query if the current device is a tablet.
   *
-@@ -810,6 +849,8 @@
+@@ -832,6 +871,8 @@
    SDL_OnApplicationDidEnterForeground();
  }
  
@@ -144,7 +144,7 @@
  /**
   * Let iOS apps with external event handling report
   * onApplicationDidChangeStatusBarOrientation.
-@@ -830,8 +871,14 @@
+@@ -852,8 +893,14 @@
    SDL_OnApplicationDidChangeStatusBarOrientation();
  }
  
@@ -159,7 +159,7 @@
  using XUserHandle = ::XUserHandle;
  
  /**
-@@ -867,6 +914,7 @@
+@@ -889,6 +936,7 @@
  {
    return SDL_GetGDKDefaultUser(outUserHandle);
  }

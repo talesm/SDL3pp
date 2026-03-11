@@ -79,6 +79,8 @@ constexpr PowerState POWERSTATE_CHARGED =
  * @returns the current battery state or `POWERSTATE_ERROR` on failure; call
  *          GetError() for more information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline PowerState GetPowerInfo(int* seconds, int* percent)

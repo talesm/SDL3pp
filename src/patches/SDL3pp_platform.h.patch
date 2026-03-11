@@ -16,7 +16,7 @@
   * @{
   */
  
-@@ -32,6 +35,271 @@
+@@ -34,6 +37,271 @@
   */
  inline const char* GetPlatform() { return SDL_GetPlatform(); }
  

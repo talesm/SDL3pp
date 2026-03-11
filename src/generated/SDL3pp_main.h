@@ -97,6 +97,8 @@ using main_func = int(SDLCALL*)(int argc, char* argv[]);
  * not be changed it is necessary to define SDL3PP_MAIN_HANDLED before including
  * SDL.h.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Init
@@ -200,6 +202,8 @@ inline int EnterAppMainCallbacks(int argc,
  * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline bool RegisterApp(StringParam name, Uint32 style, void* hInst)
@@ -220,6 +224,8 @@ inline bool RegisterApp(StringParam name, Uint32 style, void* hInst)
  * deregistered when the registration counter in RegisterApp decrements to zero
  * through calls to this function.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline void UnregisterApp() { SDL_UnregisterApp(); }
@@ -229,6 +235,8 @@ inline void UnregisterApp() { SDL_UnregisterApp(); }
  *
  * This function is only needed for Xbox GDK support; all other platforms will
  * do nothing and set an "unsupported" error message.
+ *
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  */

@@ -90,7 +90,7 @@
   * - `ADDEVENT`: up to `numevents` events will be added to the back of the event
   *   queue.
   * - `PEEKEVENT`: `numevents` events at the front of the event queue, within the
-@@ -1053,10 +1060,10 @@
+@@ -1051,10 +1058,10 @@
   * The common practice is to fully process the event queue once every frame,
   * usually as a first step before updating the game's state:
   *
@@ -104,22 +104,20 @@
   *         // decide what to do with this event.
   *     }
   *
-@@ -1088,13 +1095,7 @@
+@@ -1086,11 +1093,7 @@
  /**
   * Poll for currently pending events.
   *
 - * If `event` is not nullptr, the next event is removed from the queue and
-- * stored in the Event structure pointed to by `event`. The 1 returned refers to
-- * this event, immediately stored in the SDL Event structure -- not an event to
-- * follow.
+- * stored in the Event structure pointed to by `event`.
 - *
-- * If `event` is nullptr, it simply returns 1 if there is an event in the queue,
-- * but will not remove it from the queue.
+- * If `event` is nullptr, it simply returns true if there is an event in the
+- * queue, but will not remove it from the queue.
 + * The next event is removed from the queue and returned.
   *
   * As this function may implicitly call PumpEvents(), you can only call this
-  * function in the thread that set the video mode.
-@@ -1108,8 +1109,7 @@
+  * function in the thread that initialized the video subsystem.
+@@ -1104,8 +1107,7 @@
   *
   * ```c
   * while (game_is_still_running) {
@@ -129,7 +127,7 @@
   *         // decide what to do with this event.
   *     }
   *
-@@ -1124,9 +1124,8 @@
+@@ -1120,9 +1122,8 @@
   *
   * https://wiki.libsdl.org/SDL3/AppFreezeDuringDrag
   *
@@ -141,7 +139,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -1138,7 +1137,8 @@
+@@ -1134,7 +1135,8 @@
   */
  inline std::optional<Event> PollEvent()
  {
@@ -151,7 +149,7 @@
  }
  
  /**
-@@ -1167,14 +1167,13 @@
+@@ -1163,14 +1165,13 @@
  /**
   * Wait indefinitely for the next available event.
   *
@@ -169,7 +167,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -1185,7 +1184,12 @@
+@@ -1181,7 +1182,12 @@
   * @sa PushEvent
   * @sa WaitEventTimeout
   */
@@ -183,7 +181,7 @@
  
  /**
   * Wait until the specified timeout (in milliseconds) for the next available
-@@ -1224,21 +1228,16 @@
+@@ -1220,21 +1226,16 @@
   * Wait until the specified timeout (in milliseconds) for the next available
   * event.
   *
@@ -207,7 +205,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -1250,7 +1249,8 @@
+@@ -1246,7 +1247,8 @@
   */
  inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
  {
@@ -217,7 +215,7 @@
  }
  
  /**
-@@ -1268,8 +1268,8 @@
+@@ -1264,8 +1266,8 @@
   *
   * @param event the Event structure to be filled in with the next event from the
   *              queue, or nullptr.
@@ -228,7 +226,7 @@
   * @returns true if this got an event or false if the timeout elapsed without
   *          any events available.
   *
-@@ -1284,15 +1284,15 @@
+@@ -1280,15 +1282,15 @@
  inline bool WaitEventTimeout(Event* event,
                               std::chrono::milliseconds timeoutDuration)
  {
@@ -247,7 +245,7 @@
   *
   * As this function may implicitly call PumpEvents(), you can only call this
   * function in the thread that initialized the video subsystem.
-@@ -1300,12 +1300,10 @@
+@@ -1296,12 +1298,10 @@
   * The timeout is not guaranteed, the actual wait time could be longer due to
   * system scheduling.
   *
@@ -264,7 +262,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -1318,7 +1316,8 @@
+@@ -1314,7 +1314,8 @@
  inline std::optional<Event> WaitEventTimeout(
    std::chrono::milliseconds timeoutDuration)
  {
@@ -274,7 +272,7 @@
  }
  
  /**
-@@ -1385,7 +1384,7 @@
+@@ -1381,7 +1382,7 @@
   */
  inline void PushEvent(const Event& event)
  {
@@ -283,7 +281,7 @@
  }
  
  /**
-@@ -1409,7 +1408,7 @@
+@@ -1405,7 +1406,7 @@
  using EventFilter = bool(SDLCALL*)(void* userdata, Event* event);
  
  /**
@@ -292,7 +290,7 @@
   *
   * @param event the event that triggered the callback.
   * @returns true to permit event to be added to the queue, and false to disallow
-@@ -1421,12 +1420,34 @@
+@@ -1417,12 +1418,34 @@
   *
   * @since This datatype is available since SDL 3.2.0.
   *
@@ -327,7 +325,7 @@
  using EventWatcherCB = MakeFrontCallback<bool(Event* event)>;
  
  /**
-@@ -1502,12 +1523,13 @@
+@@ -1498,12 +1521,13 @@
   * event filter, but events pushed onto the queue with PeepEvents() do not.
   *
   * @param filter a function to call when an event happens.
@@ -342,7 +340,7 @@
   * @sa AddEventWatch
   * @sa SetEventEnabled
   * @sa GetEventFilter
-@@ -1516,7 +1538,10 @@
+@@ -1512,7 +1536,10 @@
   */
  inline void SetEventFilter(EventFilterCB filter)
  {
@@ -354,7 +352,7 @@
  }
  
  /**
-@@ -1594,19 +1619,20 @@
+@@ -1590,19 +1617,20 @@
   * PeepEvents().
   *
   * @param filter an EventFilter function to call when an event happens.
@@ -377,7 +375,7 @@
  }
  
  /**
-@@ -1661,18 +1687,24 @@
+@@ -1657,18 +1685,24 @@
   * filter until this function returns.
   *
   * @param filter the EventFilter function to call when an event happens.
@@ -404,7 +402,7 @@
  }
  
  /**
-@@ -1742,7 +1774,7 @@
+@@ -1738,7 +1772,7 @@
   */
  inline WindowRef GetWindowFromEvent(const Event& event)
  {
@@ -413,7 +411,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -1750,26 +1782,26 @@
+@@ -1746,26 +1780,26 @@
  /**
   * Generate an English description of an event.
   *
@@ -452,7 +450,7 @@
   * @returns number of bytes needed for the full string, not counting the
   *          null-terminator byte.
   *
-@@ -1779,13 +1811,10 @@
+@@ -1775,13 +1809,10 @@
   */
  inline int GetEventDescription(const Event& event, TargetBytes buf)
  {
@@ -467,7 +465,7 @@
  /**
   * Generate an English description of an event.
   *
-@@ -1806,11 +1835,8 @@
+@@ -1802,11 +1833,8 @@
   * complete string, not counting the nullptr-terminator, whether the string was
   * truncated or not. Unlike snprintf(), though, this function never returns -1.
   *
@@ -481,7 +479,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1818,7 +1844,11 @@
+@@ -1814,7 +1842,11 @@
   */
  inline std::string GetEventDescription(const Event& event)
  {

@@ -9,7 +9,7 @@
   *
   * SDL locale services.
   *
-@@ -65,18 +65,16 @@
+@@ -65,12 +65,8 @@
   * possible, and you can call this function again to get an updated copy of
   * preferred locales.
   *
@@ -22,7 +22,9 @@
 + * @returns a nullptr terminated array of locale pointers on success.
 + * @throws Error on failure.
   *
-  * @since This function is available since SDL 3.2.0.
+  * @threadsafety This function is not thread safe.
+  *
+@@ -78,7 +74,9 @@
   */
  inline OwnArray<Locale*> GetPreferredLocales()
  {

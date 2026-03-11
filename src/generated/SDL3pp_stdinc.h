@@ -223,13 +223,6 @@ constexpr std::size_t arraysize(const T (&array)[N])
 /**
  * Macro useful for building other macros with strings in them.
  *
- * For example:
- *
- * ```c
- * #define LOG_ERROR(X) OutputDebugString(SDL_STRINGIFY_ARG(__FUNCTION__) ": " X
- * "@n")`
- * ```
- *
  * @param arg the text to turn into a string literal.
  *
  * @since This macro is available since SDL 3.2.0.
@@ -458,6 +451,8 @@ public:
    *
    * @throws Error on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   Time Current();
@@ -509,6 +504,8 @@ public:
    * @param dwHighDateTime the high portion of the Windows FILETIME value.
    * @returns the converted SDL time.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    */
   static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
@@ -523,6 +520,8 @@ public:
    *                      Windows FILETIME value.
    * @param dwHighDateTime a pointer filled in with the high portion of the
    *                       Windows FILETIME value.
+   *
+   * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -5814,6 +5813,8 @@ public:
    * @post a handle that must be freed with IConv.close, or ICONV_ERROR on
    *       failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
@@ -5866,6 +5867,8 @@ public:
    * @param cd The character set conversion handle.
    * @returns 0 on success, or -1 on failure.
    *
+   * @threadsafety It is safe to call this function from any thread.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa IConv.iconv
@@ -5901,6 +5904,8 @@ public:
    * @param outbytesleft The number of bytes in the output buffer.
    * @returns the number of conversions on success.
    * @throws Error on failure.
+   *
+   * @threadsafety Do not use the same IConv from two threads at once.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -5958,6 +5963,8 @@ struct IConvRef : IConv
  * @returns a handle that must be freed with IConv.close, or ICONV_ERROR on
  *          failure.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.iconv
@@ -5975,6 +5982,8 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  * @param cd The character set conversion handle.
  * @returns 0 on success.
  * @throws Error on failure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6013,6 +6022,8 @@ inline int IConv::close() { return iconv_close(release()); }
  * @param outbytesleft The number of bytes in the output buffer.
  * @returns the number of conversions on success.
  * @throws Error on failure.
+ *
+ * @threadsafety Do not use the same IConv from two threads at once.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -6068,6 +6079,8 @@ constexpr size_t ICONV_EINVAL =
  * @param inbytesleft the size of the input string _in bytes_.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IConv.IConv
@@ -6091,6 +6104,8 @@ inline OwnArray<char> iconv_string(StringParam tocode,
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<char> iconv_utf8_locale(std::string_view S)
@@ -6107,6 +6122,8 @@ inline OwnArray<char> iconv_utf8_locale(std::string_view S)
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
@@ -6125,6 +6142,8 @@ inline OwnArray<Uint16> iconv_utf8_ucs2(std::string_view S)
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  */
 inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
@@ -6141,6 +6160,8 @@ inline OwnArray<Uint32> iconv_utf8_ucs4(std::string_view S)
  *
  * @param S the string to convert.
  * @returns a new string, converted to the new encoding, or nullptr on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */

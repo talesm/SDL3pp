@@ -18,7 +18,7 @@
  /**
   * Specify the behavior of Alt+Tab while the keyboard is grabbed.
   *
-@@ -1338,7 +1340,7 @@
+@@ -1342,7 +1344,7 @@
   *
   * `0xAAAA/0xBBBB,0xCCCC/0xDDDD`
   *
@@ -27,7 +27,51 @@
   * will be loaded and interpreted as the value of the variable.
   *
   * This hint can be set anytime.
-@@ -2084,10 +2086,6 @@
+@@ -1800,10 +1802,6 @@
+  */
+ #define SDL_HINT_JOYSTICK_HIDAPI_LG4FF "SDL_JOYSTICK_HIDAPI_LG4FF"
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * A variable controlling whether the HIDAPI driver for 8BitDo controllers
+  * should be used.
+@@ -1821,10 +1819,6 @@
+  */
+ #define SDL_HINT_JOYSTICK_HIDAPI_8BITDO "SDL_JOYSTICK_HIDAPI_8BITDO"
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * A variable controlling whether the HIDAPI driver for SInput controllers
+  * should be used.
+@@ -1844,10 +1838,6 @@
+  */
+ #define SDL_HINT_JOYSTICK_HIDAPI_SINPUT "SDL_JOYSTICK_HIDAPI_SINPUT"
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * A variable controlling whether the HIDAPI driver for ZUIKI controllers should
+  * be used.
+@@ -1865,10 +1855,6 @@
+  */
+ #define SDL_HINT_JOYSTICK_HIDAPI_ZUIKI "SDL_JOYSTICK_HIDAPI_ZUIKI"
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * A variable controlling whether the HIDAPI driver for Flydigi controllers
+  * should be used.
+@@ -2138,10 +2124,6 @@
   */
  #define SDL_HINT_JOYSTICK_HIDAPI_GIP "SDL_JOYSTICK_HIDAPI_GIP"
  
@@ -38,7 +82,29 @@
  /**
   * A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP)
   * controllers should reset the controller if it can't get the metadata from the
-@@ -3741,10 +3739,6 @@
+@@ -3435,10 +3417,6 @@
+  */
+ #define SDL_HINT_PS2_GS_WIDTH "SDL_PS2_GS_WIDTH"
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * A variable controlling the height of the PS2's framebuffer in pixels.
+  *
+@@ -3448,10 +3426,6 @@
+  */
+ #define SDL_HINT_PS2_GS_HEIGHT "SDL_PS2_GS_HEIGHT"
+ 
+-#endif // SDL_VERSION_ATLEAST(3, 4, 0)
+-
+-#if SDL_VERSION_ATLEAST(3, 4, 0)
+-
+ /**
+  * A variable controlling whether the signal is interlaced or progressive.
+  *
+@@ -3868,10 +3842,6 @@
  #define SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE                              \
    "SDL_VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
  
@@ -49,7 +115,7 @@
  /**
   * A variable controlling whether SDL will attempt to automatically set the
   * destination display to a mode most closely matching that of the previous
-@@ -4679,6 +4673,8 @@
+@@ -4806,6 +4776,8 @@
   */
  #define SDL_HINT_PEN_TOUCH_EVENTS "SDL_PEN_TOUCH_EVENTS"
  
@@ -58,7 +124,7 @@
  /**
   * An enumeration of hint priorities.
   *
-@@ -4893,7 +4889,6 @@
+@@ -5020,7 +4992,6 @@
   * @param name the hint to watch.
   * @param callback An HintCallback function that will be called when the hint
   *                 value changes.
@@ -66,7 +132,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -4904,7 +4899,7 @@
+@@ -5031,7 +5002,7 @@
   */
  inline void AddHintCallback(StringParam name, HintCB callback)
  {

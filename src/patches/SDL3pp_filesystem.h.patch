@@ -188,8 +188,8 @@
   * delete directory trees.
   *
   * @param path the path to remove from the filesystem.
-@@ -629,8 +655,7 @@
-  * Get information about a filesystem path.
+@@ -633,8 +659,7 @@
+  * symlink itself.
   *
   * @param path the path to query.
 - * @param info a pointer filled in with information about the path, or nullptr
@@ -198,7 +198,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -639,7 +664,9 @@
+@@ -643,7 +668,9 @@
   */
  inline PathInfo GetPathInfo(StringParam path)
  {
@@ -209,7 +209,7 @@
  }
  
  /**
-@@ -663,8 +690,6 @@
+@@ -667,8 +694,6 @@
   * @param pattern the pattern that files in the directory must match. Can be
   *                nullptr.
   * @param flags `SDL_GLOB_*` bitflags that affect this search.
@@ -218,7 +218,7 @@
   * @returns an array of strings on success.
   * @throws Error on failure.
   *
-@@ -674,9 +699,11 @@
+@@ -678,9 +703,11 @@
   */
  inline OwnArray<char*> GlobDirectory(StringParam path,
                                       StringParam pattern,
@@ -232,7 +232,7 @@
  }
  
  /**
-@@ -700,7 +727,7 @@
+@@ -704,7 +731,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
