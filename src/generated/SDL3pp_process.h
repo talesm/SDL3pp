@@ -531,9 +531,9 @@ struct ProcessRef : Process
   }
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from raw Process.
    *
-   * @param resource a ProcessRaw or Process.
+   * @param resource a ProcessRaw.
    *
    * This does not takes ownership!
    */
@@ -542,11 +542,42 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ProcessRef(const Process& resource) noexcept
+    : Process(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ProcessRef(const ProcessRef& other) noexcept = default;
+  constexpr ProcessRef(const ProcessRef& other) noexcept
+    : Process(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ProcessRef(ProcessRef&& other) noexcept
+    : Process(other.release())
+  {
+  }
 
   /// Destructor
   ~ProcessRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ProcessRef& operator=(ProcessRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ProcessRaw
+  constexpr operator ProcessRaw() const noexcept { return get(); }
 };
 
 /**

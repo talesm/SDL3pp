@@ -1361,9 +1361,9 @@ struct IOStreamRef : IOStream
   }
 
   /**
-   * Constructs from IOStreamParam.
+   * Constructs from raw IOStream.
    *
-   * @param resource a IOStreamRaw or IOStream.
+   * @param resource a IOStreamRaw.
    *
    * This does not takes ownership!
    */
@@ -1372,11 +1372,42 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStream.
+   *
+   * @param resource a IOStream.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IOStreamRef(const IOStream& resource) noexcept
+    : IOStream(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr IOStreamRef(const IOStreamRef& other) noexcept = default;
+  constexpr IOStreamRef(const IOStreamRef& other) noexcept
+    : IOStream(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IOStreamRef(IOStreamRef&& other) noexcept
+    : IOStream(other.release())
+  {
+  }
 
   /// Destructor
   ~IOStreamRef() { release(); }
+
+  /// Assignment operator.
+  constexpr IOStreamRef& operator=(IOStreamRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to IOStreamRaw
+  constexpr operator IOStreamRaw() const noexcept { return get(); }
 };
 
 /**

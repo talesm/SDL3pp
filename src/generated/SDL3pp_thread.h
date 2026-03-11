@@ -509,9 +509,9 @@ struct ThreadRef : Thread
   }
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from raw Thread.
    *
-   * @param resource a ThreadRaw or Thread.
+   * @param resource a ThreadRaw.
    *
    * This does not takes ownership!
    */
@@ -520,11 +520,42 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ThreadRef(const Thread& resource) noexcept
+    : Thread(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ThreadRef(const ThreadRef& other) noexcept = default;
+  constexpr ThreadRef(const ThreadRef& other) noexcept
+    : Thread(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ThreadRef(ThreadRef&& other) noexcept
+    : Thread(other.release())
+  {
+  }
 
   /// Destructor
   ~ThreadRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ThreadRef& operator=(ThreadRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ThreadRaw
+  constexpr operator ThreadRaw() const noexcept { return get(); }
 };
 
 /**

@@ -810,9 +810,9 @@ struct StorageRef : Storage
   }
 
   /**
-   * Constructs from StorageParam.
+   * Constructs from raw Storage.
    *
-   * @param resource a StorageRaw or Storage.
+   * @param resource a StorageRaw.
    *
    * This does not takes ownership!
    */
@@ -821,11 +821,42 @@ struct StorageRef : Storage
   {
   }
 
+  /**
+   * Constructs from Storage.
+   *
+   * @param resource a Storage.
+   *
+   * This does not takes ownership!
+   */
+  constexpr StorageRef(const Storage& resource) noexcept
+    : Storage(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr StorageRef(const StorageRef& other) noexcept = default;
+  constexpr StorageRef(const StorageRef& other) noexcept
+    : Storage(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr StorageRef(StorageRef&& other) noexcept
+    : Storage(other.release())
+  {
+  }
 
   /// Destructor
   ~StorageRef() { release(); }
+
+  /// Assignment operator.
+  constexpr StorageRef& operator=(StorageRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to StorageRaw
+  constexpr operator StorageRaw() const noexcept { return get(); }
 };
 
 /**

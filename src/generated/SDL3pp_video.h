@@ -3216,9 +3216,9 @@ struct WindowRef : Window
   }
 
   /**
-   * Constructs from WindowParam.
+   * Constructs from raw Window.
    *
-   * @param resource a WindowRaw or Window.
+   * @param resource a WindowRaw.
    *
    * This does not takes ownership!
    */
@@ -3227,11 +3227,42 @@ struct WindowRef : Window
   {
   }
 
+  /**
+   * Constructs from Window.
+   *
+   * @param resource a Window.
+   *
+   * This does not takes ownership!
+   */
+  constexpr WindowRef(const Window& resource) noexcept
+    : Window(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr WindowRef(const WindowRef& other) noexcept = default;
+  constexpr WindowRef(const WindowRef& other) noexcept
+    : Window(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr WindowRef(WindowRef&& other) noexcept
+    : Window(other.release())
+  {
+  }
 
   /// Destructor
   ~WindowRef() { release(); }
+
+  /// Assignment operator.
+  constexpr WindowRef& operator=(WindowRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to WindowRaw
+  constexpr operator WindowRaw() const noexcept { return get(); }
 };
 
 /**

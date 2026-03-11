@@ -1956,9 +1956,9 @@ struct FontRef : Font
   }
 
   /**
-   * Constructs from FontParam.
+   * Constructs from raw Font.
    *
-   * @param resource a FontRaw or Font.
+   * @param resource a FontRaw.
    *
    * This does not takes ownership!
    */
@@ -1967,11 +1967,42 @@ struct FontRef : Font
   {
   }
 
+  /**
+   * Constructs from Font.
+   *
+   * @param resource a Font.
+   *
+   * This does not takes ownership!
+   */
+  constexpr FontRef(const Font& resource) noexcept
+    : Font(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr FontRef(const FontRef& other) noexcept = default;
+  constexpr FontRef(const FontRef& other) noexcept
+    : Font(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr FontRef(FontRef&& other) noexcept
+    : Font(other.release())
+  {
+  }
 
   /// Destructor
   ~FontRef() { release(); }
+
+  /// Assignment operator.
+  constexpr FontRef& operator=(FontRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to FontRaw
+  constexpr operator FontRaw() const noexcept { return get(); }
 };
 
 /**
@@ -5258,9 +5289,9 @@ struct TextRef : Text
   }
 
   /**
-   * Constructs from TextParam.
+   * Constructs from raw Text.
    *
-   * @param resource a TextRaw or Text.
+   * @param resource a TextRaw.
    *
    * This does not takes ownership!
    */
@@ -5269,11 +5300,42 @@ struct TextRef : Text
   {
   }
 
+  /**
+   * Constructs from Text.
+   *
+   * @param resource a Text.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TextRef(const Text& resource) noexcept
+    : Text(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TextRef(const TextRef& other) noexcept = default;
+  constexpr TextRef(const TextRef& other) noexcept
+    : Text(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TextRef(TextRef&& other) noexcept
+    : Text(other.release())
+  {
+  }
 
   /// Destructor
   ~TextRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TextRef& operator=(TextRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TextRaw
+  constexpr operator TextRaw() const noexcept { return get(); }
 };
 
 /**

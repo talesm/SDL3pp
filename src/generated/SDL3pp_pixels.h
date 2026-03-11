@@ -2490,9 +2490,9 @@ struct PaletteRef : Palette
   }
 
   /**
-   * Constructs from PaletteParam.
+   * Constructs from raw Palette.
    *
-   * @param resource a PaletteRaw or Palette.
+   * @param resource a PaletteRaw.
    *
    * This does not takes ownership!
    */
@@ -2501,11 +2501,42 @@ struct PaletteRef : Palette
   {
   }
 
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PaletteRef(const Palette& resource) noexcept
+    : Palette(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr PaletteRef(const PaletteRef& other) noexcept = default;
+  constexpr PaletteRef(const PaletteRef& other) noexcept
+    : Palette(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PaletteRef(PaletteRef&& other) noexcept
+    : Palette(other.release())
+  {
+  }
 
   /// Destructor
   ~PaletteRef() { release(); }
+
+  /// Assignment operator.
+  constexpr PaletteRef& operator=(PaletteRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to PaletteRaw
+  constexpr operator PaletteRaw() const noexcept { return get(); }
 };
 
 /**

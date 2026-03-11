@@ -369,9 +369,9 @@ struct TrayRef : Tray
   }
 
   /**
-   * Constructs from TrayParam.
+   * Constructs from raw Tray.
    *
-   * @param resource a TrayRaw or Tray.
+   * @param resource a TrayRaw.
    *
    * This does not takes ownership!
    */
@@ -380,11 +380,42 @@ struct TrayRef : Tray
   {
   }
 
+  /**
+   * Constructs from Tray.
+   *
+   * @param resource a Tray.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TrayRef(const Tray& resource) noexcept
+    : Tray(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TrayRef(const TrayRef& other) noexcept = default;
+  constexpr TrayRef(const TrayRef& other) noexcept
+    : Tray(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TrayRef(TrayRef&& other) noexcept
+    : Tray(other.release())
+  {
+  }
 
   /// Destructor
   ~TrayRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TrayRef& operator=(TrayRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TrayRaw
+  constexpr operator TrayRaw() const noexcept { return get(); }
 };
 
 /**

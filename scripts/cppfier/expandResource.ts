@@ -890,10 +890,10 @@ function createRefEntry(
         ],
         hints: { init: [`${targetName}(resource)`], noexcept: true },
         doc: [
-          `Constructs from ${paramType}.`,
+          `Constructs from raw ${targetName}.`,
           {
             tag: "@param resource",
-            content: `a ${rawName} or ${targetName}.`,
+            content: `a ${rawName}.`,
           },
           "This does not takes ownership!",
         ],
@@ -904,12 +904,45 @@ function createRefEntry(
         constexpr: true,
         parameters: [
           {
+            type: `const ${targetName} &`,
+            name: "resource",
+          },
+        ],
+        hints: { init: [`${targetName}(resource.get())`], noexcept: true },
+        doc: [
+          `Constructs from ${targetName}.`,
+          {
+            tag: "@param resource",
+            content: `a ${targetName}.`,
+          },
+          "This does not takes ownership!",
+        ],
+      },
+      [`${refName}#4`]: {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [
+          {
             type: `const ${refName} &`,
             name: "other",
           },
         ],
-        hints: { default: true, noexcept: true },
+        hints: { init: [`${targetName}(other.get())`], noexcept: true },
         doc: ["Copy constructor."],
+      },
+      [`${refName}#5`]: {
+        kind: "function",
+        type: "",
+        constexpr: true,
+        parameters: [
+          {
+            type: `${refName} &&`,
+            name: "other",
+          },
+        ],
+        hints: { init: [`${targetName}(other.release())`], noexcept: true },
+        doc: ["Move constructor."],
       },
       [`~${refName}`]: {
         kind: "function",
@@ -917,6 +950,26 @@ function createRefEntry(
         type: "",
         parameters: [],
         hints: { body: "release();" },
+      },
+      [`operator=`]: {
+        kind: "function",
+        type: `${refName} &`,
+        constexpr: true,
+        parameters: [{ type: refName, name: "other" }],
+        hints: {
+          body: `std::swap(*this, other);\nreturn *this;`,
+          noexcept: true,
+        },
+        doc: [`Assignment operator.`],
+      },
+      [`operator ${rawName}`]: {
+        kind: "function",
+        type: "",
+        immutable: true,
+        constexpr: true,
+        parameters: [],
+        hints: { body: "return get();", noexcept: true },
+        doc: [`Converts to ${rawName}`],
       },
     },
   };

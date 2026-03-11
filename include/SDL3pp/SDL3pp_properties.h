@@ -733,9 +733,9 @@ struct PropertiesRef : Properties
   }
 
   /**
-   * Constructs from PropertiesParam.
+   * Constructs from raw Properties.
    *
-   * @param resource a PropertiesID or Properties.
+   * @param resource a PropertiesID.
    *
    * This does not takes ownership!
    */
@@ -744,11 +744,42 @@ struct PropertiesRef : Properties
   {
   }
 
+  /**
+   * Constructs from Properties.
+   *
+   * @param resource a Properties.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PropertiesRef(const Properties& resource) noexcept
+    : Properties(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr PropertiesRef(const PropertiesRef& other) noexcept = default;
+  constexpr PropertiesRef(const PropertiesRef& other) noexcept
+    : Properties(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PropertiesRef(PropertiesRef&& other) noexcept
+    : Properties(other.release())
+  {
+  }
 
   /// Destructor
   ~PropertiesRef() { release(); }
+
+  /// Assignment operator.
+  constexpr PropertiesRef& operator=(PropertiesRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to PropertiesID
+  constexpr operator PropertiesID() const noexcept { return get(); }
 };
 
 /**

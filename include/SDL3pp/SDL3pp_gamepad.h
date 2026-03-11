@@ -1185,9 +1185,9 @@ struct GamepadRef : Gamepad
   }
 
   /**
-   * Constructs from GamepadParam.
+   * Constructs from raw Gamepad.
    *
-   * @param resource a GamepadRaw or Gamepad.
+   * @param resource a GamepadRaw.
    *
    * This does not takes ownership!
    */
@@ -1196,11 +1196,42 @@ struct GamepadRef : Gamepad
   {
   }
 
+  /**
+   * Constructs from Gamepad.
+   *
+   * @param resource a Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  constexpr GamepadRef(const Gamepad& resource) noexcept
+    : Gamepad(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr GamepadRef(const GamepadRef& other) noexcept = default;
+  constexpr GamepadRef(const GamepadRef& other) noexcept
+    : Gamepad(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr GamepadRef(GamepadRef&& other) noexcept
+    : Gamepad(other.release())
+  {
+  }
 
   /// Destructor
   ~GamepadRef() { release(); }
+
+  /// Assignment operator.
+  constexpr GamepadRef& operator=(GamepadRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to GamepadRaw
+  constexpr operator GamepadRaw() const noexcept { return get(); }
 };
 
 /**

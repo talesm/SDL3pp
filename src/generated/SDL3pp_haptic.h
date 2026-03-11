@@ -1268,9 +1268,9 @@ struct HapticRef : Haptic
   }
 
   /**
-   * Constructs from HapticParam.
+   * Constructs from raw Haptic.
    *
-   * @param resource a HapticRaw or Haptic.
+   * @param resource a HapticRaw.
    *
    * This does not takes ownership!
    */
@@ -1279,11 +1279,42 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from Haptic.
+   *
+   * @param resource a Haptic.
+   *
+   * This does not takes ownership!
+   */
+  constexpr HapticRef(const Haptic& resource) noexcept
+    : Haptic(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr HapticRef(const HapticRef& other) noexcept = default;
+  constexpr HapticRef(const HapticRef& other) noexcept
+    : Haptic(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr HapticRef(HapticRef&& other) noexcept
+    : Haptic(other.release())
+  {
+  }
 
   /// Destructor
   ~HapticRef() { release(); }
+
+  /// Assignment operator.
+  constexpr HapticRef& operator=(HapticRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to HapticRaw
+  constexpr operator HapticRaw() const noexcept { return get(); }
 };
 
 /**

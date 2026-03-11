@@ -2440,9 +2440,9 @@ struct RendererRef : Renderer
   }
 
   /**
-   * Constructs from RendererParam.
+   * Constructs from raw Renderer.
    *
-   * @param resource a RendererRaw or Renderer.
+   * @param resource a RendererRaw.
    *
    * This does not takes ownership!
    */
@@ -2451,11 +2451,42 @@ struct RendererRef : Renderer
   {
   }
 
+  /**
+   * Constructs from Renderer.
+   *
+   * @param resource a Renderer.
+   *
+   * This does not takes ownership!
+   */
+  constexpr RendererRef(const Renderer& resource) noexcept
+    : Renderer(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr RendererRef(const RendererRef& other) noexcept = default;
+  constexpr RendererRef(const RendererRef& other) noexcept
+    : Renderer(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr RendererRef(RendererRef&& other) noexcept
+    : Renderer(other.release())
+  {
+  }
 
   /// Destructor
   ~RendererRef() { release(); }
+
+  /// Assignment operator.
+  constexpr RendererRef& operator=(RendererRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to RendererRaw
+  constexpr operator RendererRaw() const noexcept { return get(); }
 };
 
 /**
@@ -3580,9 +3611,9 @@ struct TextureRef : Texture
   }
 
   /**
-   * Constructs from TextureParam.
+   * Constructs from raw Texture.
    *
-   * @param resource a TextureRaw or Texture.
+   * @param resource a TextureRaw.
    *
    * This does not takes ownership!
    */
@@ -3591,11 +3622,42 @@ struct TextureRef : Texture
   {
   }
 
+  /**
+   * Constructs from Texture.
+   *
+   * @param resource a Texture.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TextureRef(const Texture& resource) noexcept
+    : Texture(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TextureRef(const TextureRef& other) noexcept = default;
+  constexpr TextureRef(const TextureRef& other) noexcept
+    : Texture(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TextureRef(TextureRef&& other) noexcept
+    : Texture(other.release())
+  {
+  }
 
   /// Destructor
   ~TextureRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TextureRef& operator=(TextureRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TextureRaw
+  constexpr operator TextureRaw() const noexcept { return get(); }
 };
 
 /**
@@ -8428,12 +8490,54 @@ struct GPURenderStateRef : GPURenderState
   {
   }
 
+  /**
+   * Constructs from raw GPURenderState.
+   *
+   * @param resource a GPURenderStateRaw.
+   *
+   * This does not takes ownership!
+   */
+  GPURenderStateRef(GPURenderStateRaw resource) noexcept
+    : GPURenderState(resource)
+  {
+  }
+
+  /**
+   * Constructs from GPURenderState.
+   *
+   * @param resource a GPURenderState.
+   *
+   * This does not takes ownership!
+   */
+  constexpr GPURenderStateRef(const GPURenderState& resource) noexcept
+    : GPURenderState(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept =
-    default;
+  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept
+    : GPURenderState(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr GPURenderStateRef(GPURenderStateRef&& other) noexcept
+    : GPURenderState(other.release())
+  {
+  }
 
   /// Destructor
   ~GPURenderStateRef() { release(); }
+
+  /// Assignment operator.
+  constexpr GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to GPURenderStateRaw
+  constexpr operator GPURenderStateRaw() const noexcept { return get(); }
 };
 
 /**

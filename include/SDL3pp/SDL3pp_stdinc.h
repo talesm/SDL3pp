@@ -1190,9 +1190,9 @@ struct EnvironmentRef : Environment
   }
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from raw Environment.
    *
-   * @param resource a EnvironmentRaw or Environment.
+   * @param resource a EnvironmentRaw.
    *
    * This does not takes ownership!
    */
@@ -1201,11 +1201,42 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This does not takes ownership!
+   */
+  constexpr EnvironmentRef(const Environment& resource) noexcept
+    : Environment(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept = default;
+  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
+    : Environment(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
+    : Environment(other.release())
+  {
+  }
 
   /// Destructor
   ~EnvironmentRef() { release(); }
+
+  /// Assignment operator.
+  constexpr EnvironmentRef& operator=(EnvironmentRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to EnvironmentRaw
+  constexpr operator EnvironmentRaw() const noexcept { return get(); }
 };
 
 /**
@@ -6123,9 +6154,9 @@ struct IConvRef : IConv
   }
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from raw IConv.
    *
-   * @param resource a IConvRaw or IConv.
+   * @param resource a IConvRaw.
    *
    * This does not takes ownership!
    */
@@ -6134,11 +6165,42 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IConvRef(const IConv& resource) noexcept
+    : IConv(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr IConvRef(const IConvRef& other) noexcept = default;
+  constexpr IConvRef(const IConvRef& other) noexcept
+    : IConv(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IConvRef(IConvRef&& other) noexcept
+    : IConv(other.release())
+  {
+  }
 
   /// Destructor
   ~IConvRef() { release(); }
+
+  /// Assignment operator.
+  constexpr IConvRef& operator=(IConvRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to IConvRaw
+  constexpr operator IConvRaw() const noexcept { return get(); }
 };
 
 /**

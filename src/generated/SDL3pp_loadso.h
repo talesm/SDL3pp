@@ -246,9 +246,9 @@ struct SharedObjectRef : SharedObject
   }
 
   /**
-   * Constructs from SharedObjectParam.
+   * Constructs from raw SharedObject.
    *
-   * @param resource a SharedObjectRaw or SharedObject.
+   * @param resource a SharedObjectRaw.
    *
    * This does not takes ownership!
    */
@@ -257,11 +257,42 @@ struct SharedObjectRef : SharedObject
   {
   }
 
+  /**
+   * Constructs from SharedObject.
+   *
+   * @param resource a SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SharedObjectRef(const SharedObject& resource) noexcept
+    : SharedObject(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept = default;
+  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
+    : SharedObject(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
+    : SharedObject(other.release())
+  {
+  }
 
   /// Destructor
   ~SharedObjectRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SharedObjectRef& operator=(SharedObjectRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SharedObjectRaw
+  constexpr operator SharedObjectRaw() const noexcept { return get(); }
 };
 
 /**

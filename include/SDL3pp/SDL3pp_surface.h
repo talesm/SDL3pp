@@ -2019,9 +2019,9 @@ struct SurfaceRef : Surface
   }
 
   /**
-   * Constructs from SurfaceParam.
+   * Constructs from raw Surface.
    *
-   * @param resource a SurfaceRaw or Surface.
+   * @param resource a SurfaceRaw.
    *
    * This does not takes ownership!
    */
@@ -2030,11 +2030,42 @@ struct SurfaceRef : Surface
   {
   }
 
+  /**
+   * Constructs from Surface.
+   *
+   * @param resource a Surface.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SurfaceRef(const Surface& resource) noexcept
+    : Surface(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SurfaceRef(const SurfaceRef& other) noexcept = default;
+  constexpr SurfaceRef(const SurfaceRef& other) noexcept
+    : Surface(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SurfaceRef(SurfaceRef&& other) noexcept
+    : Surface(other.release())
+  {
+  }
 
   /// Destructor
   ~SurfaceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SurfaceRef& operator=(SurfaceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SurfaceRaw
+  constexpr operator SurfaceRaw() const noexcept { return get(); }
 };
 
 /**

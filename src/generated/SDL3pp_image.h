@@ -3181,9 +3181,9 @@ struct AnimationRef : Animation
   }
 
   /**
-   * Constructs from AnimationParam.
+   * Constructs from raw Animation.
    *
-   * @param resource a AnimationRaw or Animation.
+   * @param resource a AnimationRaw.
    *
    * This does not takes ownership!
    */
@@ -3192,11 +3192,42 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from Animation.
+   *
+   * @param resource a Animation.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationRef(const Animation& resource) noexcept
+    : Animation(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationRef(const AnimationRef& other) noexcept = default;
+  constexpr AnimationRef(const AnimationRef& other) noexcept
+    : Animation(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationRef(AnimationRef&& other) noexcept
+    : Animation(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationRef& operator=(AnimationRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationRaw
+  constexpr operator AnimationRaw() const noexcept { return get(); }
 };
 
 inline int GetAnimationWidth(AnimationConstParam anim)
@@ -4151,9 +4182,9 @@ struct AnimationEncoderRef : AnimationEncoder
   }
 
   /**
-   * Constructs from AnimationEncoderParam.
+   * Constructs from raw AnimationEncoder.
    *
-   * @param resource a AnimationEncoderRaw or AnimationEncoder.
+   * @param resource a AnimationEncoderRaw.
    *
    * This does not takes ownership!
    */
@@ -4162,12 +4193,42 @@ struct AnimationEncoderRef : AnimationEncoder
   {
   }
 
+  /**
+   * Constructs from AnimationEncoder.
+   *
+   * @param resource a AnimationEncoder.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationEncoderRef(const AnimationEncoder& resource) noexcept
+    : AnimationEncoder(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept =
-    default;
+  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
+    : AnimationEncoder(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
+    : AnimationEncoder(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationEncoderRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationEncoderRaw
+  constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -4773,9 +4834,9 @@ struct AnimationDecoderRef : AnimationDecoder
   }
 
   /**
-   * Constructs from AnimationDecoderParam.
+   * Constructs from raw AnimationDecoder.
    *
-   * @param resource a AnimationDecoderRaw or AnimationDecoder.
+   * @param resource a AnimationDecoderRaw.
    *
    * This does not takes ownership!
    */
@@ -4784,12 +4845,42 @@ struct AnimationDecoderRef : AnimationDecoder
   {
   }
 
+  /**
+   * Constructs from AnimationDecoder.
+   *
+   * @param resource a AnimationDecoder.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationDecoderRef(const AnimationDecoder& resource) noexcept
+    : AnimationDecoder(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept =
-    default;
+  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
+    : AnimationDecoder(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
+    : AnimationDecoder(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationDecoderRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationDecoderRaw
+  constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)

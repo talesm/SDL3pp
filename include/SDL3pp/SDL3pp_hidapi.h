@@ -499,9 +499,9 @@ struct HidDeviceRef : HidDevice
   }
 
   /**
-   * Constructs from HidDeviceParam.
+   * Constructs from raw HidDevice.
    *
-   * @param resource a HidDeviceRaw or HidDevice.
+   * @param resource a HidDeviceRaw.
    *
    * This does not takes ownership!
    */
@@ -510,11 +510,42 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDevice.
+   *
+   * @param resource a HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr HidDeviceRef(const HidDevice& resource) noexcept
+    : HidDevice(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept = default;
+  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
+    : HidDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
+    : HidDevice(other.release())
+  {
+  }
 
   /// Destructor
   ~HidDeviceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr HidDeviceRef& operator=(HidDeviceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to HidDeviceRaw
+  constexpr operator HidDeviceRaw() const noexcept { return get(); }
 };
 
 /**

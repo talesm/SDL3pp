@@ -207,9 +207,9 @@ struct MetalViewRef : MetalView
   }
 
   /**
-   * Constructs from MetalViewParam.
+   * Constructs from raw MetalView.
    *
-   * @param resource a MetalViewRaw or MetalView.
+   * @param resource a MetalViewRaw.
    *
    * This does not takes ownership!
    */
@@ -218,11 +218,42 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalView.
+   *
+   * @param resource a MetalView.
+   *
+   * This does not takes ownership!
+   */
+  constexpr MetalViewRef(const MetalView& resource) noexcept
+    : MetalView(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr MetalViewRef(const MetalViewRef& other) noexcept = default;
+  constexpr MetalViewRef(const MetalViewRef& other) noexcept
+    : MetalView(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr MetalViewRef(MetalViewRef&& other) noexcept
+    : MetalView(other.release())
+  {
+  }
 
   /// Destructor
   ~MetalViewRef() { release(); }
+
+  /// Assignment operator.
+  constexpr MetalViewRef& operator=(MetalViewRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to MetalViewRaw
+  constexpr operator MetalViewRaw() const noexcept { return get(); }
 };
 
 /**

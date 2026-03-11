@@ -489,9 +489,9 @@ struct CameraRef : Camera
   }
 
   /**
-   * Constructs from CameraParam.
+   * Constructs from raw Camera.
    *
-   * @param resource a CameraRaw or Camera.
+   * @param resource a CameraRaw.
    *
    * This does not takes ownership!
    */
@@ -500,11 +500,42 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from Camera.
+   *
+   * @param resource a Camera.
+   *
+   * This does not takes ownership!
+   */
+  constexpr CameraRef(const Camera& resource) noexcept
+    : Camera(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr CameraRef(const CameraRef& other) noexcept = default;
+  constexpr CameraRef(const CameraRef& other) noexcept
+    : Camera(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr CameraRef(CameraRef&& other) noexcept
+    : Camera(other.release())
+  {
+  }
 
   /// Destructor
   ~CameraRef() { release(); }
+
+  /// Assignment operator.
+  constexpr CameraRef& operator=(CameraRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to CameraRaw
+  constexpr operator CameraRaw() const noexcept { return get(); }
 };
 
 /// Camera Frame.

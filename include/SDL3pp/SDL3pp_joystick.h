@@ -1227,9 +1227,9 @@ struct JoystickRef : Joystick
   }
 
   /**
-   * Constructs from JoystickParam.
+   * Constructs from raw Joystick.
    *
-   * @param resource a JoystickRaw or Joystick.
+   * @param resource a JoystickRaw.
    *
    * This does not takes ownership!
    */
@@ -1238,11 +1238,42 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from Joystick.
+   *
+   * @param resource a Joystick.
+   *
+   * This does not takes ownership!
+   */
+  constexpr JoystickRef(const Joystick& resource) noexcept
+    : Joystick(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr JoystickRef(const JoystickRef& other) noexcept = default;
+  constexpr JoystickRef(const JoystickRef& other) noexcept
+    : Joystick(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr JoystickRef(JoystickRef&& other) noexcept
+    : Joystick(other.release())
+  {
+  }
 
   /// Destructor
   ~JoystickRef() { release(); }
+
+  /// Assignment operator.
+  constexpr JoystickRef& operator=(JoystickRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to JoystickRaw
+  constexpr operator JoystickRaw() const noexcept { return get(); }
 };
 
 /**

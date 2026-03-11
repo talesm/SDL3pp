@@ -65,7 +65,7 @@
    }
  
    /**
-@@ -749,7 +774,7 @@
+@@ -780,7 +805,7 @@
   */
  inline PropertiesRef GetProcessProperties(ProcessParam process)
  {
@@ -74,7 +74,7 @@
  }
  
  inline PropertiesRef Process::GetProperties() const
-@@ -771,8 +796,6 @@
+@@ -802,8 +827,6 @@
   * The data should be freed with free().
   *
   * @param process The process to read.
@@ -83,7 +83,7 @@
   * @param exitcode a pointer filled in with the process exit code if the process
   *                 has exited, may be nullptr.
   * @returns the data or nullptr on failure; call GetError() for more
-@@ -788,7 +811,9 @@
+@@ -819,7 +842,9 @@
   */
  inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
  {
@@ -94,7 +94,7 @@
  }
  
  inline StringResult Process::Read(int* exitcode)
-@@ -822,7 +847,7 @@
+@@ -853,7 +878,7 @@
   */
  inline IOStreamRef GetProcessInput(ProcessParam process)
  {
@@ -103,7 +103,7 @@
  }
  
  inline IOStreamRef Process::GetInput()
-@@ -854,7 +879,7 @@
+@@ -885,7 +910,7 @@
   */
  inline IOStreamRef GetProcessOutput(ProcessParam process)
  {

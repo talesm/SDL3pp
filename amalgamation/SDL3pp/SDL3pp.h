@@ -11628,9 +11628,9 @@ struct PaletteRef : Palette
   }
 
   /**
-   * Constructs from PaletteParam.
+   * Constructs from raw Palette.
    *
-   * @param resource a PaletteRaw or Palette.
+   * @param resource a PaletteRaw.
    *
    * This does not takes ownership!
    */
@@ -11639,11 +11639,42 @@ struct PaletteRef : Palette
   {
   }
 
+  /**
+   * Constructs from Palette.
+   *
+   * @param resource a Palette.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PaletteRef(const Palette& resource) noexcept
+    : Palette(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr PaletteRef(const PaletteRef& other) noexcept = default;
+  constexpr PaletteRef(const PaletteRef& other) noexcept
+    : Palette(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PaletteRef(PaletteRef&& other) noexcept
+    : Palette(other.release())
+  {
+  }
 
   /// Destructor
   ~PaletteRef() { release(); }
+
+  /// Assignment operator.
+  constexpr PaletteRef& operator=(PaletteRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to PaletteRaw
+  constexpr operator PaletteRaw() const noexcept { return get(); }
 };
 
 /**
@@ -12829,9 +12860,9 @@ struct PropertiesRef : Properties
   }
 
   /**
-   * Constructs from PropertiesParam.
+   * Constructs from raw Properties.
    *
-   * @param resource a PropertiesID or Properties.
+   * @param resource a PropertiesID.
    *
    * This does not takes ownership!
    */
@@ -12840,11 +12871,42 @@ struct PropertiesRef : Properties
   {
   }
 
+  /**
+   * Constructs from Properties.
+   *
+   * @param resource a Properties.
+   *
+   * This does not takes ownership!
+   */
+  constexpr PropertiesRef(const Properties& resource) noexcept
+    : Properties(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr PropertiesRef(const PropertiesRef& other) noexcept = default;
+  constexpr PropertiesRef(const PropertiesRef& other) noexcept
+    : Properties(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr PropertiesRef(PropertiesRef&& other) noexcept
+    : Properties(other.release())
+  {
+  }
 
   /// Destructor
   ~PropertiesRef() { release(); }
+
+  /// Assignment operator.
+  constexpr PropertiesRef& operator=(PropertiesRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to PropertiesID
+  constexpr operator PropertiesID() const noexcept { return get(); }
 };
 
 /**
@@ -14870,9 +14932,9 @@ struct EnvironmentRef : Environment
   }
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from raw Environment.
    *
-   * @param resource a EnvironmentRaw or Environment.
+   * @param resource a EnvironmentRaw.
    *
    * This does not takes ownership!
    */
@@ -14881,11 +14943,42 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This does not takes ownership!
+   */
+  constexpr EnvironmentRef(const Environment& resource) noexcept
+    : Environment(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept = default;
+  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
+    : Environment(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
+    : Environment(other.release())
+  {
+  }
 
   /// Destructor
   ~EnvironmentRef() { release(); }
+
+  /// Assignment operator.
+  constexpr EnvironmentRef& operator=(EnvironmentRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to EnvironmentRaw
+  constexpr operator EnvironmentRaw() const noexcept { return get(); }
 };
 
 /**
@@ -19803,9 +19896,9 @@ struct IConvRef : IConv
   }
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from raw IConv.
    *
-   * @param resource a IConvRaw or IConv.
+   * @param resource a IConvRaw.
    *
    * This does not takes ownership!
    */
@@ -19814,11 +19907,42 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IConvRef(const IConv& resource) noexcept
+    : IConv(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr IConvRef(const IConvRef& other) noexcept = default;
+  constexpr IConvRef(const IConvRef& other) noexcept
+    : IConv(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IConvRef(IConvRef&& other) noexcept
+    : IConv(other.release())
+  {
+  }
 
   /// Destructor
   ~IConvRef() { release(); }
+
+  /// Assignment operator.
+  constexpr IConvRef& operator=(IConvRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to IConvRaw
+  constexpr operator IConvRaw() const noexcept { return get(); }
 };
 
 /**
@@ -20551,9 +20675,9 @@ struct AsyncIORef : AsyncIO
   }
 
   /**
-   * Constructs from AsyncIOParam.
+   * Constructs from raw AsyncIO.
    *
-   * @param resource a AsyncIORaw or AsyncIO.
+   * @param resource a AsyncIORaw.
    *
    * This does not takes ownership!
    */
@@ -20562,11 +20686,42 @@ struct AsyncIORef : AsyncIO
   {
   }
 
+  /**
+   * Constructs from AsyncIO.
+   *
+   * @param resource a AsyncIO.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AsyncIORef(const AsyncIO& resource) noexcept
+    : AsyncIO(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AsyncIORef(const AsyncIORef& other) noexcept = default;
+  constexpr AsyncIORef(const AsyncIORef& other) noexcept
+    : AsyncIO(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AsyncIORef(AsyncIORef&& other) noexcept
+    : AsyncIO(other.release())
+  {
+  }
 
   /// Destructor
   ~AsyncIORef() { release(); }
+
+  /// Assignment operator.
+  constexpr AsyncIORef& operator=(AsyncIORef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AsyncIORaw
+  constexpr operator AsyncIORaw() const noexcept { return get(); }
 };
 
 /**
@@ -20900,9 +21055,9 @@ struct AsyncIOQueueRef : AsyncIOQueue
   }
 
   /**
-   * Constructs from AsyncIOQueueParam.
+   * Constructs from raw AsyncIOQueue.
    *
-   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
+   * @param resource a AsyncIOQueueRaw.
    *
    * This does not takes ownership!
    */
@@ -20911,11 +21066,42 @@ struct AsyncIOQueueRef : AsyncIOQueue
   {
   }
 
+  /**
+   * Constructs from AsyncIOQueue.
+   *
+   * @param resource a AsyncIOQueue.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AsyncIOQueueRef(const AsyncIOQueue& resource) noexcept
+    : AsyncIOQueue(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept = default;
+  constexpr AsyncIOQueueRef(const AsyncIOQueueRef& other) noexcept
+    : AsyncIOQueue(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AsyncIOQueueRef(AsyncIOQueueRef&& other) noexcept
+    : AsyncIOQueue(other.release())
+  {
+  }
 
   /// Destructor
   ~AsyncIOQueueRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AsyncIOQueueRef& operator=(AsyncIOQueueRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AsyncIOQueueRaw
+  constexpr operator AsyncIOQueueRaw() const noexcept { return get(); }
 };
 
 /**
@@ -24616,9 +24802,9 @@ struct HidDeviceRef : HidDevice
   }
 
   /**
-   * Constructs from HidDeviceParam.
+   * Constructs from raw HidDevice.
    *
-   * @param resource a HidDeviceRaw or HidDevice.
+   * @param resource a HidDeviceRaw.
    *
    * This does not takes ownership!
    */
@@ -24627,11 +24813,42 @@ struct HidDeviceRef : HidDevice
   {
   }
 
+  /**
+   * Constructs from HidDevice.
+   *
+   * @param resource a HidDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr HidDeviceRef(const HidDevice& resource) noexcept
+    : HidDevice(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept = default;
+  constexpr HidDeviceRef(const HidDeviceRef& other) noexcept
+    : HidDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr HidDeviceRef(HidDeviceRef&& other) noexcept
+    : HidDevice(other.release())
+  {
+  }
 
   /// Destructor
   ~HidDeviceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr HidDeviceRef& operator=(HidDeviceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to HidDeviceRaw
+  constexpr operator HidDeviceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -26846,9 +27063,9 @@ struct IOStreamRef : IOStream
   }
 
   /**
-   * Constructs from IOStreamParam.
+   * Constructs from raw IOStream.
    *
-   * @param resource a IOStreamRaw or IOStream.
+   * @param resource a IOStreamRaw.
    *
    * This does not takes ownership!
    */
@@ -26857,11 +27074,42 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStream.
+   *
+   * @param resource a IOStream.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IOStreamRef(const IOStream& resource) noexcept
+    : IOStream(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr IOStreamRef(const IOStreamRef& other) noexcept = default;
+  constexpr IOStreamRef(const IOStreamRef& other) noexcept
+    : IOStream(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IOStreamRef(IOStreamRef&& other) noexcept
+    : IOStream(other.release())
+  {
+  }
 
   /// Destructor
   ~IOStreamRef() { release(); }
+
+  /// Assignment operator.
+  constexpr IOStreamRef& operator=(IOStreamRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to IOStreamRaw
+  constexpr operator IOStreamRaw() const noexcept { return get(); }
 };
 
 /**
@@ -28589,9 +28837,9 @@ struct SharedObjectRef : SharedObject
   }
 
   /**
-   * Constructs from SharedObjectParam.
+   * Constructs from raw SharedObject.
    *
-   * @param resource a SharedObjectRaw or SharedObject.
+   * @param resource a SharedObjectRaw.
    *
    * This does not takes ownership!
    */
@@ -28600,11 +28848,42 @@ struct SharedObjectRef : SharedObject
   {
   }
 
+  /**
+   * Constructs from SharedObject.
+   *
+   * @param resource a SharedObject.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SharedObjectRef(const SharedObject& resource) noexcept
+    : SharedObject(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept = default;
+  constexpr SharedObjectRef(const SharedObjectRef& other) noexcept
+    : SharedObject(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SharedObjectRef(SharedObjectRef&& other) noexcept
+    : SharedObject(other.release())
+  {
+  }
 
   /// Destructor
   ~SharedObjectRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SharedObjectRef& operator=(SharedObjectRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SharedObjectRaw
+  constexpr operator SharedObjectRaw() const noexcept { return get(); }
 };
 
 /**
@@ -32600,9 +32879,9 @@ struct SensorRef : Sensor
   }
 
   /**
-   * Constructs from SensorParam.
+   * Constructs from raw Sensor.
    *
-   * @param resource a SensorRaw or Sensor.
+   * @param resource a SensorRaw.
    *
    * This does not takes ownership!
    */
@@ -32611,11 +32890,42 @@ struct SensorRef : Sensor
   {
   }
 
+  /**
+   * Constructs from Sensor.
+   *
+   * @param resource a Sensor.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SensorRef(const Sensor& resource) noexcept
+    : Sensor(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SensorRef(const SensorRef& other) noexcept = default;
+  constexpr SensorRef(const SensorRef& other) noexcept
+    : Sensor(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SensorRef(SensorRef&& other) noexcept
+    : Sensor(other.release())
+  {
+  }
 
   /// Destructor
   ~SensorRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SensorRef& operator=(SensorRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SensorRaw
+  constexpr operator SensorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -35297,9 +35607,9 @@ struct AudioDeviceRef : AudioDevice
   }
 
   /**
-   * Constructs from AudioDeviceParam.
+   * Constructs from raw AudioDevice.
    *
-   * @param resource a AudioDeviceID or AudioDevice.
+   * @param resource a AudioDeviceID.
    *
    * This does not takes ownership!
    */
@@ -35308,11 +35618,42 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDevice.
+   *
+   * @param resource a AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AudioDeviceRef(const AudioDevice& resource) noexcept
+    : AudioDevice(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept = default;
+  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
+    : AudioDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
+    : AudioDevice(other.release())
+  {
+  }
 
   /// Destructor
   ~AudioDeviceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AudioDeviceID
+  constexpr operator AudioDeviceID() const noexcept { return get(); }
 };
 
 /**
@@ -36744,9 +37085,9 @@ struct AudioStreamRef : AudioStream
   }
 
   /**
-   * Constructs from AudioStreamParam.
+   * Constructs from raw AudioStream.
    *
-   * @param resource a AudioStreamRaw or AudioStream.
+   * @param resource a AudioStreamRaw.
    *
    * This does not takes ownership!
    */
@@ -36755,11 +37096,42 @@ struct AudioStreamRef : AudioStream
   {
   }
 
+  /**
+   * Constructs from AudioStream.
+   *
+   * @param resource a AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AudioStreamRef(const AudioStream& resource) noexcept
+    : AudioStream(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept = default;
+  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
+    : AudioStream(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
+    : AudioStream(other.release())
+  {
+  }
 
   /// Destructor
   ~AudioStreamRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AudioStreamRaw
+  constexpr operator AudioStreamRaw() const noexcept { return get(); }
 };
 
 /**
@@ -40841,9 +41213,9 @@ struct ProcessRef : Process
   }
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from raw Process.
    *
-   * @param resource a ProcessRaw or Process.
+   * @param resource a ProcessRaw.
    *
    * This does not takes ownership!
    */
@@ -40852,11 +41224,42 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ProcessRef(const Process& resource) noexcept
+    : Process(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ProcessRef(const ProcessRef& other) noexcept = default;
+  constexpr ProcessRef(const ProcessRef& other) noexcept
+    : Process(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ProcessRef(ProcessRef&& other) noexcept
+    : Process(other.release())
+  {
+  }
 
   /// Destructor
   ~ProcessRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ProcessRef& operator=(ProcessRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ProcessRaw
+  constexpr operator ProcessRaw() const noexcept { return get(); }
 };
 
 /**
@@ -42061,9 +42464,9 @@ struct StorageRef : Storage
   }
 
   /**
-   * Constructs from StorageParam.
+   * Constructs from raw Storage.
    *
-   * @param resource a StorageRaw or Storage.
+   * @param resource a StorageRaw.
    *
    * This does not takes ownership!
    */
@@ -42072,11 +42475,42 @@ struct StorageRef : Storage
   {
   }
 
+  /**
+   * Constructs from Storage.
+   *
+   * @param resource a Storage.
+   *
+   * This does not takes ownership!
+   */
+  constexpr StorageRef(const Storage& resource) noexcept
+    : Storage(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr StorageRef(const StorageRef& other) noexcept = default;
+  constexpr StorageRef(const StorageRef& other) noexcept
+    : Storage(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr StorageRef(StorageRef&& other) noexcept
+    : Storage(other.release())
+  {
+  }
 
   /// Destructor
   ~StorageRef() { release(); }
+
+  /// Assignment operator.
+  constexpr StorageRef& operator=(StorageRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to StorageRaw
+  constexpr operator StorageRaw() const noexcept { return get(); }
 };
 
 /**
@@ -44699,9 +45133,9 @@ struct SurfaceRef : Surface
   }
 
   /**
-   * Constructs from SurfaceParam.
+   * Constructs from raw Surface.
    *
-   * @param resource a SurfaceRaw or Surface.
+   * @param resource a SurfaceRaw.
    *
    * This does not takes ownership!
    */
@@ -44710,11 +45144,42 @@ struct SurfaceRef : Surface
   {
   }
 
+  /**
+   * Constructs from Surface.
+   *
+   * @param resource a Surface.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SurfaceRef(const Surface& resource) noexcept
+    : Surface(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SurfaceRef(const SurfaceRef& other) noexcept = default;
+  constexpr SurfaceRef(const SurfaceRef& other) noexcept
+    : Surface(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SurfaceRef(SurfaceRef&& other) noexcept
+    : Surface(other.release())
+  {
+  }
 
   /// Destructor
   ~SurfaceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SurfaceRef& operator=(SurfaceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SurfaceRaw
+  constexpr operator SurfaceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -48205,9 +48670,9 @@ struct ThreadRef : Thread
   }
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from raw Thread.
    *
-   * @param resource a ThreadRaw or Thread.
+   * @param resource a ThreadRaw.
    *
    * This does not takes ownership!
    */
@@ -48216,11 +48681,42 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ThreadRef(const Thread& resource) noexcept
+    : Thread(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ThreadRef(const ThreadRef& other) noexcept = default;
+  constexpr ThreadRef(const ThreadRef& other) noexcept
+    : Thread(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ThreadRef(ThreadRef&& other) noexcept
+    : Thread(other.release())
+  {
+  }
 
   /// Destructor
   ~ThreadRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ThreadRef& operator=(ThreadRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ThreadRaw
+  constexpr operator ThreadRaw() const noexcept { return get(); }
 };
 
 /**
@@ -49091,9 +49587,9 @@ struct CameraRef : Camera
   }
 
   /**
-   * Constructs from CameraParam.
+   * Constructs from raw Camera.
    *
-   * @param resource a CameraRaw or Camera.
+   * @param resource a CameraRaw.
    *
    * This does not takes ownership!
    */
@@ -49102,11 +49598,42 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from Camera.
+   *
+   * @param resource a Camera.
+   *
+   * This does not takes ownership!
+   */
+  constexpr CameraRef(const Camera& resource) noexcept
+    : Camera(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr CameraRef(const CameraRef& other) noexcept = default;
+  constexpr CameraRef(const CameraRef& other) noexcept
+    : Camera(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr CameraRef(CameraRef&& other) noexcept
+    : Camera(other.release())
+  {
+  }
 
   /// Destructor
   ~CameraRef() { release(); }
+
+  /// Assignment operator.
+  constexpr CameraRef& operator=(CameraRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to CameraRaw
+  constexpr operator CameraRaw() const noexcept { return get(); }
 };
 
 /// Camera Frame.
@@ -50087,9 +50614,9 @@ struct MutexRef : Mutex
   }
 
   /**
-   * Constructs from MutexParam.
+   * Constructs from raw Mutex.
    *
-   * @param resource a MutexRaw or Mutex.
+   * @param resource a MutexRaw.
    *
    * This does not takes ownership!
    */
@@ -50098,11 +50625,42 @@ struct MutexRef : Mutex
   {
   }
 
+  /**
+   * Constructs from Mutex.
+   *
+   * @param resource a Mutex.
+   *
+   * This does not takes ownership!
+   */
+  constexpr MutexRef(const Mutex& resource) noexcept
+    : Mutex(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr MutexRef(const MutexRef& other) noexcept = default;
+  constexpr MutexRef(const MutexRef& other) noexcept
+    : Mutex(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr MutexRef(MutexRef&& other) noexcept
+    : Mutex(other.release())
+  {
+  }
 
   /// Destructor
   ~MutexRef() { release(); }
+
+  /// Assignment operator.
+  constexpr MutexRef& operator=(MutexRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to MutexRaw
+  constexpr operator MutexRaw() const noexcept { return get(); }
 };
 
 /**
@@ -50561,9 +51119,9 @@ struct RWLockRef : RWLock
   }
 
   /**
-   * Constructs from RWLockParam.
+   * Constructs from raw RWLock.
    *
-   * @param resource a RWLockRaw or RWLock.
+   * @param resource a RWLockRaw.
    *
    * This does not takes ownership!
    */
@@ -50572,11 +51130,42 @@ struct RWLockRef : RWLock
   {
   }
 
+  /**
+   * Constructs from RWLock.
+   *
+   * @param resource a RWLock.
+   *
+   * This does not takes ownership!
+   */
+  constexpr RWLockRef(const RWLock& resource) noexcept
+    : RWLock(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr RWLockRef(const RWLockRef& other) noexcept = default;
+  constexpr RWLockRef(const RWLockRef& other) noexcept
+    : RWLock(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr RWLockRef(RWLockRef&& other) noexcept
+    : RWLock(other.release())
+  {
+  }
 
   /// Destructor
   ~RWLockRef() { release(); }
+
+  /// Assignment operator.
+  constexpr RWLockRef& operator=(RWLockRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to RWLockRaw
+  constexpr operator RWLockRaw() const noexcept { return get(); }
 };
 
 /**
@@ -51071,9 +51660,9 @@ struct SemaphoreRef : Semaphore
   }
 
   /**
-   * Constructs from SemaphoreParam.
+   * Constructs from raw Semaphore.
    *
-   * @param resource a SemaphoreRaw or Semaphore.
+   * @param resource a SemaphoreRaw.
    *
    * This does not takes ownership!
    */
@@ -51082,11 +51671,42 @@ struct SemaphoreRef : Semaphore
   {
   }
 
+  /**
+   * Constructs from Semaphore.
+   *
+   * @param resource a Semaphore.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SemaphoreRef(const Semaphore& resource) noexcept
+    : Semaphore(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept = default;
+  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept
+    : Semaphore(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SemaphoreRef(SemaphoreRef&& other) noexcept
+    : Semaphore(other.release())
+  {
+  }
 
   /// Destructor
   ~SemaphoreRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SemaphoreRef& operator=(SemaphoreRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SemaphoreRaw
+  constexpr operator SemaphoreRaw() const noexcept { return get(); }
 };
 
 /**
@@ -51479,9 +52099,9 @@ struct ConditionRef : Condition
   }
 
   /**
-   * Constructs from ConditionParam.
+   * Constructs from raw Condition.
    *
-   * @param resource a ConditionRaw or Condition.
+   * @param resource a ConditionRaw.
    *
    * This does not takes ownership!
    */
@@ -51490,11 +52110,42 @@ struct ConditionRef : Condition
   {
   }
 
+  /**
+   * Constructs from Condition.
+   *
+   * @param resource a Condition.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ConditionRef(const Condition& resource) noexcept
+    : Condition(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ConditionRef(const ConditionRef& other) noexcept = default;
+  constexpr ConditionRef(const ConditionRef& other) noexcept
+    : Condition(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ConditionRef(ConditionRef&& other) noexcept
+    : Condition(other.release())
+  {
+  }
 
   /// Destructor
   ~ConditionRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ConditionRef& operator=(ConditionRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ConditionRaw
+  constexpr operator ConditionRaw() const noexcept { return get(); }
 };
 
 /**
@@ -52230,9 +52881,9 @@ struct TrayRef : Tray
   }
 
   /**
-   * Constructs from TrayParam.
+   * Constructs from raw Tray.
    *
-   * @param resource a TrayRaw or Tray.
+   * @param resource a TrayRaw.
    *
    * This does not takes ownership!
    */
@@ -52241,11 +52892,42 @@ struct TrayRef : Tray
   {
   }
 
+  /**
+   * Constructs from Tray.
+   *
+   * @param resource a Tray.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TrayRef(const Tray& resource) noexcept
+    : Tray(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TrayRef(const TrayRef& other) noexcept = default;
+  constexpr TrayRef(const TrayRef& other) noexcept
+    : Tray(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TrayRef(TrayRef&& other) noexcept
+    : Tray(other.release())
+  {
+  }
 
   /// Destructor
   ~TrayRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TrayRef& operator=(TrayRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TrayRaw
+  constexpr operator TrayRaw() const noexcept { return get(); }
 };
 
 /**
@@ -56476,9 +57158,9 @@ struct WindowRef : Window
   }
 
   /**
-   * Constructs from WindowParam.
+   * Constructs from raw Window.
    *
-   * @param resource a WindowRaw or Window.
+   * @param resource a WindowRaw.
    *
    * This does not takes ownership!
    */
@@ -56487,11 +57169,42 @@ struct WindowRef : Window
   {
   }
 
+  /**
+   * Constructs from Window.
+   *
+   * @param resource a Window.
+   *
+   * This does not takes ownership!
+   */
+  constexpr WindowRef(const Window& resource) noexcept
+    : Window(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr WindowRef(const WindowRef& other) noexcept = default;
+  constexpr WindowRef(const WindowRef& other) noexcept
+    : Window(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr WindowRef(WindowRef&& other) noexcept
+    : Window(other.release())
+  {
+  }
 
   /// Destructor
   ~WindowRef() { release(); }
+
+  /// Assignment operator.
+  constexpr WindowRef& operator=(WindowRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to WindowRaw
+  constexpr operator WindowRaw() const noexcept { return get(); }
 };
 
 /**
@@ -67594,9 +68307,9 @@ struct GPUDeviceRef : GPUDevice
   }
 
   /**
-   * Constructs from GPUDeviceParam.
+   * Constructs from raw GPUDevice.
    *
-   * @param resource a GPUDeviceRaw or GPUDevice.
+   * @param resource a GPUDeviceRaw.
    *
    * This does not takes ownership!
    */
@@ -67605,11 +68318,42 @@ struct GPUDeviceRef : GPUDevice
   {
   }
 
+  /**
+   * Constructs from GPUDevice.
+   *
+   * @param resource a GPUDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr GPUDeviceRef(const GPUDevice& resource) noexcept
+    : GPUDevice(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept = default;
+  constexpr GPUDeviceRef(const GPUDeviceRef& other) noexcept
+    : GPUDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr GPUDeviceRef(GPUDeviceRef&& other) noexcept
+    : GPUDevice(other.release())
+  {
+  }
 
   /// Destructor
   ~GPUDeviceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr GPUDeviceRef& operator=(GPUDeviceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to GPUDeviceRaw
+  constexpr operator GPUDeviceRaw() const noexcept { return get(); }
 };
 
 /**
@@ -72833,9 +73577,9 @@ struct JoystickRef : Joystick
   }
 
   /**
-   * Constructs from JoystickParam.
+   * Constructs from raw Joystick.
    *
-   * @param resource a JoystickRaw or Joystick.
+   * @param resource a JoystickRaw.
    *
    * This does not takes ownership!
    */
@@ -72844,11 +73588,42 @@ struct JoystickRef : Joystick
   {
   }
 
+  /**
+   * Constructs from Joystick.
+   *
+   * @param resource a Joystick.
+   *
+   * This does not takes ownership!
+   */
+  constexpr JoystickRef(const Joystick& resource) noexcept
+    : Joystick(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr JoystickRef(const JoystickRef& other) noexcept = default;
+  constexpr JoystickRef(const JoystickRef& other) noexcept
+    : Joystick(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr JoystickRef(JoystickRef&& other) noexcept
+    : Joystick(other.release())
+  {
+  }
 
   /// Destructor
   ~JoystickRef() { release(); }
+
+  /// Assignment operator.
+  constexpr JoystickRef& operator=(JoystickRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to JoystickRaw
+  constexpr operator JoystickRaw() const noexcept { return get(); }
 };
 
 /**
@@ -75523,9 +76298,9 @@ struct MetalViewRef : MetalView
   }
 
   /**
-   * Constructs from MetalViewParam.
+   * Constructs from raw MetalView.
    *
-   * @param resource a MetalViewRaw or MetalView.
+   * @param resource a MetalViewRaw.
    *
    * This does not takes ownership!
    */
@@ -75534,11 +76309,42 @@ struct MetalViewRef : MetalView
   {
   }
 
+  /**
+   * Constructs from MetalView.
+   *
+   * @param resource a MetalView.
+   *
+   * This does not takes ownership!
+   */
+  constexpr MetalViewRef(const MetalView& resource) noexcept
+    : MetalView(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr MetalViewRef(const MetalViewRef& other) noexcept = default;
+  constexpr MetalViewRef(const MetalViewRef& other) noexcept
+    : MetalView(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr MetalViewRef(MetalViewRef&& other) noexcept
+    : MetalView(other.release())
+  {
+  }
 
   /// Destructor
   ~MetalViewRef() { release(); }
+
+  /// Assignment operator.
+  constexpr MetalViewRef& operator=(MetalViewRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to MetalViewRaw
+  constexpr operator MetalViewRaw() const noexcept { return get(); }
 };
 
 /**
@@ -76013,9 +76819,9 @@ struct CursorRef : Cursor
   }
 
   /**
-   * Constructs from CursorParam.
+   * Constructs from raw Cursor.
    *
-   * @param resource a CursorRaw or Cursor.
+   * @param resource a CursorRaw.
    *
    * This does not takes ownership!
    */
@@ -76024,11 +76830,42 @@ struct CursorRef : Cursor
   {
   }
 
+  /**
+   * Constructs from Cursor.
+   *
+   * @param resource a Cursor.
+   *
+   * This does not takes ownership!
+   */
+  constexpr CursorRef(const Cursor& resource) noexcept
+    : Cursor(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr CursorRef(const CursorRef& other) noexcept = default;
+  constexpr CursorRef(const CursorRef& other) noexcept
+    : Cursor(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr CursorRef(CursorRef&& other) noexcept
+    : Cursor(other.release())
+  {
+  }
 
   /// Destructor
   ~CursorRef() { release(); }
+
+  /// Assignment operator.
+  constexpr CursorRef& operator=(CursorRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to CursorRaw
+  constexpr operator CursorRaw() const noexcept { return get(); }
 };
 
 /**
@@ -77948,9 +78785,9 @@ struct GamepadRef : Gamepad
   }
 
   /**
-   * Constructs from GamepadParam.
+   * Constructs from raw Gamepad.
    *
-   * @param resource a GamepadRaw or Gamepad.
+   * @param resource a GamepadRaw.
    *
    * This does not takes ownership!
    */
@@ -77959,11 +78796,42 @@ struct GamepadRef : Gamepad
   {
   }
 
+  /**
+   * Constructs from Gamepad.
+   *
+   * @param resource a Gamepad.
+   *
+   * This does not takes ownership!
+   */
+  constexpr GamepadRef(const Gamepad& resource) noexcept
+    : Gamepad(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr GamepadRef(const GamepadRef& other) noexcept = default;
+  constexpr GamepadRef(const GamepadRef& other) noexcept
+    : Gamepad(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr GamepadRef(GamepadRef&& other) noexcept
+    : Gamepad(other.release())
+  {
+  }
 
   /// Destructor
   ~GamepadRef() { release(); }
+
+  /// Assignment operator.
+  constexpr GamepadRef& operator=(GamepadRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to GamepadRaw
+  constexpr operator GamepadRaw() const noexcept { return get(); }
 };
 
 /**
@@ -80999,9 +81867,9 @@ struct HapticRef : Haptic
   }
 
   /**
-   * Constructs from HapticParam.
+   * Constructs from raw Haptic.
    *
-   * @param resource a HapticRaw or Haptic.
+   * @param resource a HapticRaw.
    *
    * This does not takes ownership!
    */
@@ -81010,11 +81878,42 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from Haptic.
+   *
+   * @param resource a Haptic.
+   *
+   * This does not takes ownership!
+   */
+  constexpr HapticRef(const Haptic& resource) noexcept
+    : Haptic(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr HapticRef(const HapticRef& other) noexcept = default;
+  constexpr HapticRef(const HapticRef& other) noexcept
+    : Haptic(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr HapticRef(HapticRef&& other) noexcept
+    : Haptic(other.release())
+  {
+  }
 
   /// Destructor
   ~HapticRef() { release(); }
+
+  /// Assignment operator.
+  constexpr HapticRef& operator=(HapticRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to HapticRaw
+  constexpr operator HapticRaw() const noexcept { return get(); }
 };
 
 /**
@@ -84896,9 +85795,9 @@ struct RendererRef : Renderer
   }
 
   /**
-   * Constructs from RendererParam.
+   * Constructs from raw Renderer.
    *
-   * @param resource a RendererRaw or Renderer.
+   * @param resource a RendererRaw.
    *
    * This does not takes ownership!
    */
@@ -84907,11 +85806,42 @@ struct RendererRef : Renderer
   {
   }
 
+  /**
+   * Constructs from Renderer.
+   *
+   * @param resource a Renderer.
+   *
+   * This does not takes ownership!
+   */
+  constexpr RendererRef(const Renderer& resource) noexcept
+    : Renderer(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr RendererRef(const RendererRef& other) noexcept = default;
+  constexpr RendererRef(const RendererRef& other) noexcept
+    : Renderer(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr RendererRef(RendererRef&& other) noexcept
+    : Renderer(other.release())
+  {
+  }
 
   /// Destructor
   ~RendererRef() { release(); }
+
+  /// Assignment operator.
+  constexpr RendererRef& operator=(RendererRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to RendererRaw
+  constexpr operator RendererRaw() const noexcept { return get(); }
 };
 
 /**
@@ -86036,9 +86966,9 @@ struct TextureRef : Texture
   }
 
   /**
-   * Constructs from TextureParam.
+   * Constructs from raw Texture.
    *
-   * @param resource a TextureRaw or Texture.
+   * @param resource a TextureRaw.
    *
    * This does not takes ownership!
    */
@@ -86047,11 +86977,42 @@ struct TextureRef : Texture
   {
   }
 
+  /**
+   * Constructs from Texture.
+   *
+   * @param resource a Texture.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TextureRef(const Texture& resource) noexcept
+    : Texture(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TextureRef(const TextureRef& other) noexcept = default;
+  constexpr TextureRef(const TextureRef& other) noexcept
+    : Texture(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TextureRef(TextureRef&& other) noexcept
+    : Texture(other.release())
+  {
+  }
 
   /// Destructor
   ~TextureRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TextureRef& operator=(TextureRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TextureRaw
+  constexpr operator TextureRaw() const noexcept { return get(); }
 };
 
 /**
@@ -90884,12 +91845,54 @@ struct GPURenderStateRef : GPURenderState
   {
   }
 
+  /**
+   * Constructs from raw GPURenderState.
+   *
+   * @param resource a GPURenderStateRaw.
+   *
+   * This does not takes ownership!
+   */
+  GPURenderStateRef(GPURenderStateRaw resource) noexcept
+    : GPURenderState(resource)
+  {
+  }
+
+  /**
+   * Constructs from GPURenderState.
+   *
+   * @param resource a GPURenderState.
+   *
+   * This does not takes ownership!
+   */
+  constexpr GPURenderStateRef(const GPURenderState& resource) noexcept
+    : GPURenderState(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept =
-    default;
+  constexpr GPURenderStateRef(const GPURenderStateRef& other) noexcept
+    : GPURenderState(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr GPURenderStateRef(GPURenderStateRef&& other) noexcept
+    : GPURenderState(other.release())
+  {
+  }
 
   /// Destructor
   ~GPURenderStateRef() { release(); }
+
+  /// Assignment operator.
+  constexpr GPURenderStateRef& operator=(GPURenderStateRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to GPURenderStateRaw
+  constexpr operator GPURenderStateRaw() const noexcept { return get(); }
 };
 
 /**
@@ -95560,9 +96563,9 @@ struct AnimationRef : Animation
   }
 
   /**
-   * Constructs from AnimationParam.
+   * Constructs from raw Animation.
    *
-   * @param resource a AnimationRaw or Animation.
+   * @param resource a AnimationRaw.
    *
    * This does not takes ownership!
    */
@@ -95571,11 +96574,42 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from Animation.
+   *
+   * @param resource a Animation.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationRef(const Animation& resource) noexcept
+    : Animation(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationRef(const AnimationRef& other) noexcept = default;
+  constexpr AnimationRef(const AnimationRef& other) noexcept
+    : Animation(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationRef(AnimationRef&& other) noexcept
+    : Animation(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationRef& operator=(AnimationRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationRaw
+  constexpr operator AnimationRaw() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.
@@ -96449,9 +97483,9 @@ struct AnimationEncoderRef : AnimationEncoder
   }
 
   /**
-   * Constructs from AnimationEncoderParam.
+   * Constructs from raw AnimationEncoder.
    *
-   * @param resource a AnimationEncoderRaw or AnimationEncoder.
+   * @param resource a AnimationEncoderRaw.
    *
    * This does not takes ownership!
    */
@@ -96460,12 +97494,42 @@ struct AnimationEncoderRef : AnimationEncoder
   {
   }
 
+  /**
+   * Constructs from AnimationEncoder.
+   *
+   * @param resource a AnimationEncoder.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationEncoderRef(const AnimationEncoder& resource) noexcept
+    : AnimationEncoder(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept =
-    default;
+  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
+    : AnimationEncoder(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
+    : AnimationEncoder(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationEncoderRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationEncoderRaw
+  constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
 };
 
 /**
@@ -96996,9 +98060,9 @@ struct AnimationDecoderRef : AnimationDecoder
   }
 
   /**
-   * Constructs from AnimationDecoderParam.
+   * Constructs from raw AnimationDecoder.
    *
-   * @param resource a AnimationDecoderRaw or AnimationDecoder.
+   * @param resource a AnimationDecoderRaw.
    *
    * This does not takes ownership!
    */
@@ -97007,12 +98071,42 @@ struct AnimationDecoderRef : AnimationDecoder
   {
   }
 
+  /**
+   * Constructs from AnimationDecoder.
+   *
+   * @param resource a AnimationDecoder.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationDecoderRef(const AnimationDecoder& resource) noexcept
+    : AnimationDecoder(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept =
-    default;
+  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
+    : AnimationDecoder(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
+    : AnimationDecoder(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationDecoderRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationDecoderRaw
+  constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
 };
 
 /**
@@ -99301,9 +100395,9 @@ struct FontRef : Font
   }
 
   /**
-   * Constructs from FontParam.
+   * Constructs from raw Font.
    *
-   * @param resource a FontRaw or Font.
+   * @param resource a FontRaw.
    *
    * This does not takes ownership!
    */
@@ -99312,11 +100406,42 @@ struct FontRef : Font
   {
   }
 
+  /**
+   * Constructs from Font.
+   *
+   * @param resource a Font.
+   *
+   * This does not takes ownership!
+   */
+  constexpr FontRef(const Font& resource) noexcept
+    : Font(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr FontRef(const FontRef& other) noexcept = default;
+  constexpr FontRef(const FontRef& other) noexcept
+    : Font(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr FontRef(FontRef&& other) noexcept
+    : Font(other.release())
+  {
+  }
 
   /// Destructor
   ~FontRef() { release(); }
+
+  /// Assignment operator.
+  constexpr FontRef& operator=(FontRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to FontRaw
+  constexpr operator FontRaw() const noexcept { return get(); }
 };
 
 /**
@@ -102603,9 +103728,9 @@ struct TextRef : Text
   }
 
   /**
-   * Constructs from TextParam.
+   * Constructs from raw Text.
    *
-   * @param resource a TextRaw or Text.
+   * @param resource a TextRaw.
    *
    * This does not takes ownership!
    */
@@ -102614,11 +103739,42 @@ struct TextRef : Text
   {
   }
 
+  /**
+   * Constructs from Text.
+   *
+   * @param resource a Text.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TextRef(const Text& resource) noexcept
+    : Text(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TextRef(const TextRef& other) noexcept = default;
+  constexpr TextRef(const TextRef& other) noexcept
+    : Text(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TextRef(TextRef&& other) noexcept
+    : Text(other.release())
+  {
+  }
 
   /// Destructor
   ~TextRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TextRef& operator=(TextRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TextRaw
+  constexpr operator TextRaw() const noexcept { return get(); }
 };
 
 /**

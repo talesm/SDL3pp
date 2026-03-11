@@ -1547,9 +1547,9 @@ struct AudioDeviceRef : AudioDevice
   }
 
   /**
-   * Constructs from AudioDeviceParam.
+   * Constructs from raw AudioDevice.
    *
-   * @param resource a AudioDeviceID or AudioDevice.
+   * @param resource a AudioDeviceID.
    *
    * This does not takes ownership!
    */
@@ -1558,11 +1558,42 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDevice.
+   *
+   * @param resource a AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AudioDeviceRef(const AudioDevice& resource) noexcept
+    : AudioDevice(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept = default;
+  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
+    : AudioDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
+    : AudioDevice(other.release())
+  {
+  }
 
   /// Destructor
   ~AudioDeviceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AudioDeviceID
+  constexpr operator AudioDeviceID() const noexcept { return get(); }
 };
 
 /**
@@ -2994,9 +3025,9 @@ struct AudioStreamRef : AudioStream
   }
 
   /**
-   * Constructs from AudioStreamParam.
+   * Constructs from raw AudioStream.
    *
-   * @param resource a AudioStreamRaw or AudioStream.
+   * @param resource a AudioStreamRaw.
    *
    * This does not takes ownership!
    */
@@ -3005,11 +3036,42 @@ struct AudioStreamRef : AudioStream
   {
   }
 
+  /**
+   * Constructs from AudioStream.
+   *
+   * @param resource a AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AudioStreamRef(const AudioStream& resource) noexcept
+    : AudioStream(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept = default;
+  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
+    : AudioStream(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
+    : AudioStream(other.release())
+  {
+  }
 
   /// Destructor
   ~AudioStreamRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AudioStreamRaw
+  constexpr operator AudioStreamRaw() const noexcept { return get(); }
 };
 
 /**
