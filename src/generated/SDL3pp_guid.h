@@ -68,10 +68,7 @@ struct GUID : GUIDRaw
    *
    * @sa GUID.ToString
    */
-  GUID(StringParam pchGUID)
-    : GUIDRaw(SDL_StringToGUID(pchGUID))
-  {
-  }
+  GUID(StringParam pchGUID);
 
   /**
    * Check if valid.
@@ -138,6 +135,11 @@ inline std::string GUID::ToString() const { return SDL::GUIDToString(this); }
 inline GUID StringToGUID(StringParam pchGUID)
 {
   return GUID(std::move(pchGUID));
+}
+
+inline GUID::GUID(StringParam pchGUID)
+  : GUIDRaw(SDL_StringToGUID(pchGUID))
+{
 }
 
 /// @}

@@ -26,6 +26,7 @@ import {
   ResourceDefinition,
 } from "./types";
 import { combineObject, system } from "./utils";
+import { ref } from "node:process";
 
 export function expandResource(
   sourceEntries: Dict<ApiEntry>,
@@ -99,9 +100,18 @@ export function expandResource(
     };
   }
 
-  referenceAliases.push(
-    createParam(paramType, targetName, rawName, nullValue, memberAccess),
-  );
+  if (hasRef || hasScoped) {
+    referenceAliases.push({
+      kind: "alias",
+      name: paramType,
+      type: hasRef ? refName : targetName,
+    });
+  } else {
+    referenceAliases.push(
+      createParam(paramType, targetName, rawName, nullValue, memberAccess),
+    );
+  }
+
   if (enableConstParam) {
     referenceAliases.push(
       createConstParam(
@@ -230,6 +240,16 @@ export function expandResource(
   } else {
     targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
   }
+  if (hasScoped) {
+    ctors[`operator ${rawName}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return m_resource;", noexcept: true },
+    };
+  }
   populateTargetEntry(
     hasScoped,
     hasShared,
@@ -249,7 +269,12 @@ export function expandResource(
 
   if (hasRef) {
     derivedEntries.push(
-      createRefEntry(refName, targetName, paramType, rawName),
+      createRefEntry(
+        refName,
+        targetName,
+        rawName,
+        enableConstParam ? constParamType : undefined,
+      ),
     );
   } else if (hasScoped) {
     derivedEntries.push(
@@ -359,15 +384,6 @@ function createConstParam(
         type: "",
         parameters: [{ type: constRawName, name: "value" }],
         hints: { init: ["value(value)"] },
-      },
-      [`${constParamType}#2`]: {
-        kind: "function",
-        name: constParamType,
-        doc: [`Constructs from ${paramType}`],
-        constexpr: true,
-        type: "",
-        parameters: [{ type: paramType, name: "value" }],
-        hints: { init: ["value(value.value)"] },
       },
       [`${constParamType}#3`]: {
         kind: "function",
@@ -528,15 +544,15 @@ function addBorrowFunction(
       static: true,
       constexpr: true,
       type: targetName,
-      parameters: [{ name: "resource", type: paramType }],
+      parameters: [{ name: "resource", type: rawName }],
       hints: {
-        body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};`,
+        body: `if (resource) {\n  ++resource->${resourceEntry.shared};\n  return ${targetName}(resource);}\nreturn {};`,
       },
       doc: [
-        `Safely borrows the from ${paramType}.`,
+        `Safely borrows the from ${rawName}.`,
         {
           tag: "@param resource",
-          content: `a ${rawName} or ${targetName}.`,
+          content: `a ${rawName}.`,
         },
         "This does not takes ownership!",
       ],
@@ -828,15 +844,6 @@ function populateTargetEntry(
       hints: { body: "return !!m_resource;", noexcept: true },
       doc: [`Converts to bool`],
     },
-    [`operator ${paramType}`]: {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return {m_resource};", noexcept: true },
-      doc: [`Converts to ${paramType}`],
-    },
     [freeFunction.name]: "plc",
     ...subEntries,
   };
@@ -850,128 +857,121 @@ function populateTargetEntry(
 function createRefEntry(
   refName: string,
   targetName: string,
-  paramType: string,
   rawName: string,
+  constParamType: string,
 ): ApiEntryTransform {
+  const entries = {
+    [`${targetName}::${targetName}`]: "alias",
+    [refName]: {
+      kind: "function",
+      type: "",
+      parameters: [
+        {
+          type: rawName,
+          name: "resource",
+        },
+      ],
+      hints: { init: [`${targetName}(resource)`], noexcept: true },
+      doc: [
+        `Constructs from raw ${targetName}.`,
+        {
+          tag: "@param resource",
+          content: `a ${rawName}.`,
+        },
+        "This does not takes ownership!",
+      ],
+    },
+    [`${refName}#2`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
+          type: `const ${targetName} &`,
+          name: "resource",
+        },
+      ],
+      hints: { init: [`${targetName}(resource.get())`], noexcept: true },
+      doc: [
+        `Constructs from ${targetName}.`,
+        {
+          tag: "@param resource",
+          content: `a ${targetName}.`,
+        },
+        "This does not takes ownership!",
+      ],
+    },
+    [`${refName}#3`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
+          type: `const ${refName} &`,
+          name: "other",
+        },
+      ],
+      hints: { init: [`${targetName}(other.get())`], noexcept: true },
+      doc: ["Copy constructor."],
+    },
+    [`${refName}#4`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
+          type: `${refName} &&`,
+          name: "other",
+        },
+      ],
+      hints: { init: [`${targetName}(other.release())`], noexcept: true },
+      doc: ["Move constructor."],
+    },
+    [`~${refName}`]: {
+      kind: "function",
+      doc: ["Destructor"],
+      type: "",
+      parameters: [],
+      hints: { body: "release();" },
+    },
+    [`operator=`]: {
+      kind: "function",
+      type: `${refName} &`,
+      constexpr: true,
+      parameters: [{ type: refName, name: "other" }],
+      hints: {
+        body: `std::swap(*this, other);\nreturn *this;`,
+        noexcept: true,
+      },
+      doc: [`Assignment operator.`],
+    },
+    [`operator ${rawName}`]: {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return get();", noexcept: true },
+      doc: [`Converts to ${rawName}`],
+    },
+  } as Dict<ApiEntryTransform>;
+  if (constParamType) {
+    entries[`operator ${constParamType}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return get();", noexcept: true },
+      doc: [`Converts to ${constParamType}`],
+    };
+  }
   return {
     kind: "struct",
     name: refName,
     type: targetName,
     doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
-    entries: {
-      [`${targetName}::${targetName}`]: "alias",
-      [refName]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: paramType,
-            name: "resource",
-          },
-        ],
-        hints: { init: [`${targetName}(resource.value)`], noexcept: true },
-        doc: [
-          `Constructs from ${paramType}.`,
-          {
-            tag: "@param resource",
-            content: `a ${rawName} or ${targetName}.`,
-          },
-          "This does not takes ownership!",
-        ],
-      },
-      [`${refName}#2`]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: rawName,
-            name: "resource",
-          },
-        ],
-        hints: { init: [`${targetName}(resource)`], noexcept: true },
-        doc: [
-          `Constructs from raw ${targetName}.`,
-          {
-            tag: "@param resource",
-            content: `a ${rawName}.`,
-          },
-          "This does not takes ownership!",
-        ],
-      },
-      [`${refName}#3`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [
-          {
-            type: `const ${targetName} &`,
-            name: "resource",
-          },
-        ],
-        hints: { init: [`${targetName}(resource.get())`], noexcept: true },
-        doc: [
-          `Constructs from ${targetName}.`,
-          {
-            tag: "@param resource",
-            content: `a ${targetName}.`,
-          },
-          "This does not takes ownership!",
-        ],
-      },
-      [`${refName}#4`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [
-          {
-            type: `const ${refName} &`,
-            name: "other",
-          },
-        ],
-        hints: { init: [`${targetName}(other.get())`], noexcept: true },
-        doc: ["Copy constructor."],
-      },
-      [`${refName}#5`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [
-          {
-            type: `${refName} &&`,
-            name: "other",
-          },
-        ],
-        hints: { init: [`${targetName}(other.release())`], noexcept: true },
-        doc: ["Move constructor."],
-      },
-      [`~${refName}`]: {
-        kind: "function",
-        doc: ["Destructor"],
-        type: "",
-        parameters: [],
-        hints: { body: "release();" },
-      },
-      [`operator=`]: {
-        kind: "function",
-        type: `${refName} &`,
-        constexpr: true,
-        parameters: [{ type: refName, name: "other" }],
-        hints: {
-          body: `std::swap(*this, other);\nreturn *this;`,
-          noexcept: true,
-        },
-        doc: [`Assignment operator.`],
-      },
-      [`operator ${rawName}`]: {
-        kind: "function",
-        type: "",
-        immutable: true,
-        constexpr: true,
-        parameters: [],
-        hints: { body: "return get();", noexcept: true },
-        doc: [`Converts to ${rawName}`],
-      },
-    },
+    entries,
   };
 }
 

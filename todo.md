@@ -21,10 +21,11 @@ Next version
 
 - [ ] Merge \*Ref with \*Param resources:
   - [x] Make \*Ref always non-owning
+  - [x] Replace \*Param with \*Ref;
+  - [x] Remove \*Param;
   - [ ] Create \*ConstRef when it has \*ConstParam
   - [ ] Replace \*ConstParam with \*ConstRef;
-  - [ ] Replace \*Param with \*Ref;
-  - [ ] Remove \*Param and \*ConstParam;
+  - [ ] Remove \*ConstParam;
 
 Backlog
 -------

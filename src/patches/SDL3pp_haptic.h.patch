@@ -9,8 +9,8 @@
   *
   * The SDL haptic subsystem manages haptic (force feedback) devices.
   *
-@@ -141,16 +141,21 @@
- };
+@@ -116,16 +116,21 @@
+ using HapticParam = HapticRef;
  
  /**
 + * @name Haptic effects
@@ -33,7 +33,7 @@
  
  /**
   * Constant effect supported.
-@@ -363,8 +368,15 @@
+@@ -338,8 +343,15 @@
   */
  constexpr HapticEffectType HAPTIC_PAUSE = SDL_HAPTIC_PAUSE;
  
@@ -50,7 +50,7 @@
  
  /**
   * Uses polar coordinates for the direction.
-@@ -405,6 +417,8 @@
+@@ -380,6 +392,8 @@
   */
  constexpr HapticDirectionType HAPTIC_STEERING_AXIS = SDL_HAPTIC_STEERING_AXIS;
  
@@ -59,7 +59,7 @@
  /**
   * Used to play a device an infinite number of times.
   *
-@@ -1320,17 +1334,19 @@
+@@ -1274,17 +1288,19 @@
  /**
   * Get a list of currently connected haptic devices.
   *
@@ -84,7 +84,7 @@
  
  /**
   * Get the implementation dependent name of a haptic device.
-@@ -1387,7 +1403,7 @@
+@@ -1351,7 +1367,7 @@
   */
  inline HapticRef GetHapticFromID(HapticID instance_id)
  {

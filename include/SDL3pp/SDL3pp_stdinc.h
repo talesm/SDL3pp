@@ -52,32 +52,7 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-/// Safely wrap Environment for non owning parameters
-struct EnvironmentParam
-{
-  EnvironmentRaw value; ///< parameter's EnvironmentRaw
-
-  /// Constructs from EnvironmentRaw
-  constexpr EnvironmentParam(EnvironmentRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr EnvironmentParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const EnvironmentParam& other) const = default;
-
-  /// Converts to underlying EnvironmentRaw
-  constexpr operator EnvironmentRaw() const { return value; }
-};
+using EnvironmentParam = EnvironmentRef;
 
 // Forward decl
 struct IConv;
@@ -88,32 +63,7 @@ using IConvRaw = SDL_iconv_t;
 // Forward decl
 struct IConvRef;
 
-/// Safely wrap IConv for non owning parameters
-struct IConvParam
-{
-  IConvRaw value; ///< parameter's IConvRaw
-
-  /// Constructs from IConvRaw
-  constexpr IConvParam(IConvRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IConvParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IConvParam& other) const = default;
-
-  /// Converts to underlying IConvRaw
-  constexpr operator IConvRaw() const { return value; }
-};
+using IConvParam = IConvRef;
 
 #ifdef SDL3PP_DOC
 
@@ -1020,10 +970,7 @@ public:
    * @sa Environment.UnsetVariable
    * @sa Environment.Destroy
    */
-  Environment(bool populated)
-    : m_resource(SDL_CreateEnvironment(populated))
-  {
-  }
+  Environment(bool populated);
 
   /// Destructor
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
@@ -1056,9 +1003,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -1178,18 +1122,6 @@ struct EnvironmentRef : Environment
   using Environment::Environment;
 
   /**
-   * Constructs from EnvironmentParam.
-   *
-   * @param resource a EnvironmentRaw or Environment.
-   *
-   * This does not takes ownership!
-   */
-  EnvironmentRef(EnvironmentParam resource) noexcept
-    : Environment(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Environment.
    *
    * @param resource a EnvironmentRaw.
@@ -1285,6 +1217,11 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
 inline Environment CreateEnvironment(bool populated)
 {
   return Environment(populated);
+}
+
+inline Environment::Environment(bool populated)
+  : m_resource(SDL_CreateEnvironment(populated))
+{
 }
 
 /**
@@ -6032,10 +5969,7 @@ public:
    * @sa IConv.close
    * @sa iconv_string
    */
-  IConv(StringParam tocode, StringParam fromcode)
-    : m_resource(SDL_iconv_open(tocode, fromcode))
-  {
-  }
+  IConv(StringParam tocode, StringParam fromcode);
 
   /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
@@ -6071,9 +6005,6 @@ public:
   {
     return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
   }
-
-  /// Converts to IConvParam
-  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -6140,18 +6071,6 @@ public:
 struct IConvRef : IConv
 {
   using IConv::IConv;
-
-  /**
-   * Constructs from IConvParam.
-   *
-   * @param resource a IConvRaw or IConv.
-   *
-   * This does not takes ownership!
-   */
-  IConvRef(IConvParam resource) noexcept
-    : IConv(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw IConv.
@@ -6222,6 +6141,11 @@ struct IConvRef : IConv
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
   return IConv(std::move(tocode), std::move(fromcode));
+}
+
+inline IConv::IConv(StringParam tocode, StringParam fromcode)
+  : m_resource(SDL_iconv_open(tocode, fromcode))
+{
 }
 
 /**

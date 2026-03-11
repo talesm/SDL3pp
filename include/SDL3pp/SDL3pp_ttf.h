@@ -33,32 +33,7 @@ using FontRaw = TTF_Font*;
 // Forward decl
 struct FontRef;
 
-/// Safely wrap Font for non owning parameters
-struct FontParam
-{
-  FontRaw value; ///< parameter's FontRaw
-
-  /// Constructs from FontRaw
-  constexpr FontParam(FontRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr FontParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const FontParam& other) const = default;
-
-  /// Converts to underlying FontRaw
-  constexpr operator FontRaw() const { return value; }
-};
+using FontParam = FontRef;
 
 // Forward decl
 struct TextEngine;
@@ -102,35 +77,7 @@ using TextRaw = TTF_Text*;
 // Forward decl
 struct TextRef;
 
-/// Safely wrap Text for non owning parameters
-struct TextParam
-{
-  TextRaw value; ///< parameter's TextRaw
-
-  /// Constructs from TextRaw
-  constexpr TextParam(TextRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextParam& other) const = default;
-
-  /// Converts to underlying TextRaw
-  constexpr operator TextRaw() const { return value; }
-
-  /// member access to underlying TextRaw.
-  constexpr auto operator->() { return value; }
-};
+using TextParam = TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstParam
@@ -140,12 +87,6 @@ struct TextConstParam
   /// Constructs from const TextRaw
   constexpr TextConstParam(const TextRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from TextParam
-  constexpr TextConstParam(TextParam value)
-    : value(value.value)
   {
   }
 
@@ -504,10 +445,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(StringParam file, float ptsize)
-    : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
-  {
-  }
+  Font(StringParam file, float ptsize);
 
   /**
    * Create a font from an IOStream, using a specified point size.
@@ -532,10 +470,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(IOStreamParam src, float ptsize, bool closeio = false)
-    : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
-  {
-  }
+  Font(IOStreamParam src, float ptsize, bool closeio = false);
 
   /**
    * Create a font with the specified properties.
@@ -580,10 +515,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(PropertiesParam props)
-    : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
-  {
-  }
+  Font(PropertiesParam props);
 
   /// Destructor
   ~Font() { TTF_CloseFont(m_resource); }
@@ -616,9 +548,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to FontParam
-  constexpr operator FontParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of a previously-created font.
@@ -1944,18 +1873,6 @@ struct FontRef : Font
   using Font::Font;
 
   /**
-   * Constructs from FontParam.
-   *
-   * @param resource a FontRaw or Font.
-   *
-   * This does not takes ownership!
-   */
-  FontRef(FontParam resource) noexcept
-    : Font(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Font.
    *
    * @param resource a FontRaw.
@@ -2058,6 +1975,21 @@ inline Font OpenFont(StringParam file, float ptsize)
 inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
 {
   return Font(src, ptsize, closeio);
+}
+
+inline Font::Font(StringParam file, float ptsize)
+  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
+{
+}
+
+inline Font::Font(IOStreamParam src, float ptsize, bool closeio)
+  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+{
+}
+
+inline Font::Font(PropertiesParam props)
+  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
+{
 }
 
 /**
@@ -4095,9 +4027,6 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-  /// Converts to TextEngineParam
-  constexpr operator TextEngineParam() const noexcept { return {m_resource}; }
-
   /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
 
@@ -4135,10 +4064,7 @@ struct SurfaceTextEngine : TextEngine
    * @sa SurfaceTextEngine.Destroy
    * @sa Text.DrawSurface
    */
-  SurfaceTextEngine()
-    : TextEngine(TTF_CreateSurfaceTextEngine())
-  {
-  }
+  SurfaceTextEngine();
 
   ~SurfaceTextEngine() { Destroy(); }
 
@@ -4177,10 +4103,7 @@ struct RendererTextEngine : TextEngine
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
-  RendererTextEngine(RendererParam renderer)
-    : TextEngine(TTF_CreateRendererTextEngine(renderer))
-  {
-  }
+  RendererTextEngine(RendererParam renderer);
 
   /**
    * Create a text engine for drawing text on an SDL renderer, with the
@@ -4206,10 +4129,7 @@ struct RendererTextEngine : TextEngine
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
-  RendererTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
-  {
-  }
+  RendererTextEngine(PropertiesParam props);
 
   ~RendererTextEngine() { Destroy(); }
 
@@ -4248,10 +4168,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(GPUDeviceParam device)
-    : TextEngine(TTF_CreateGPUTextEngine(device))
-  {
-  }
+  GPUTextEngine(GPUDeviceParam device);
 
   /**
    * Create a text engine for drawing text with the SDL GPU API, with the
@@ -4277,10 +4194,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
-  {
-  }
+  GPUTextEngine(PropertiesParam props);
 
   ~GPUTextEngine() { Destroy(); }
 
@@ -4430,10 +4344,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  Text(TextEngineParam engine, FontParam font, std::string_view text)
-    : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
-  {
-  }
+  Text(TextEngineParam engine, FontParam font, std::string_view text);
 
   /// member access to underlying TextRaw.
   constexpr const TextRaw operator->() const noexcept { return m_resource; }
@@ -4472,9 +4383,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TextParam
-  constexpr operator TextParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a text object created by a text engine.
@@ -5277,18 +5185,6 @@ struct TextRef : Text
   using Text::Text;
 
   /**
-   * Constructs from TextParam.
-   *
-   * @param resource a TextRaw or Text.
-   *
-   * This does not takes ownership!
-   */
-  TextRef(TextParam resource = nullptr) noexcept
-    : Text(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Text.
    *
    * @param resource a TextRaw.
@@ -5336,6 +5232,9 @@ struct TextRef : Text
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
+
+  /// Converts to TextConstParam
+  constexpr operator TextConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -5427,6 +5326,11 @@ inline SurfaceTextEngine CreateSurfaceTextEngine()
   return SurfaceTextEngine();
 }
 
+inline SurfaceTextEngine::SurfaceTextEngine()
+  : TextEngine(TTF_CreateSurfaceTextEngine())
+{
+}
+
 /**
  * Draw text to an SDL surface.
  *
@@ -5502,6 +5406,16 @@ inline void SurfaceTextEngine::Destroy()
 inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
 {
   return RendererTextEngine(renderer);
+}
+
+inline RendererTextEngine::RendererTextEngine(RendererParam renderer)
+  : TextEngine(TTF_CreateRendererTextEngine(renderer))
+{
+}
+
+inline RendererTextEngine::RendererTextEngine(PropertiesParam props)
+  : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
+{
 }
 
 /**
@@ -5622,6 +5536,16 @@ inline void RendererTextEngine::Destroy()
 inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
 {
   return GPUTextEngine(device);
+}
+
+inline GPUTextEngine::GPUTextEngine(GPUDeviceParam device)
+  : TextEngine(TTF_CreateGPUTextEngine(device))
+{
+}
+
+inline GPUTextEngine::GPUTextEngine(PropertiesParam props)
+  : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
+{
 }
 
 /**
@@ -5803,6 +5727,11 @@ inline Text CreateText(TextEngineParam engine,
 inline Text TextEngine::CreateText(FontParam font, std::string_view text)
 {
   return Text(m_resource, font, text);
+}
+
+inline Text::Text(TextEngineParam engine, FontParam font, std::string_view text)
+  : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
+{
 }
 
 /**

@@ -77,32 +77,7 @@ using GamepadRaw = SDL_Gamepad*;
 // Forward decl
 struct GamepadRef;
 
-/// Safely wrap Gamepad for non owning parameters
-struct GamepadParam
-{
-  GamepadRaw value; ///< parameter's GamepadRaw
-
-  /// Constructs from GamepadRaw
-  constexpr GamepadParam(GamepadRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GamepadParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GamepadParam& other) const = default;
-
-  /// Converts to underlying GamepadRaw
-  constexpr operator GamepadRaw() const { return value; }
-};
+using GamepadParam = GamepadRef;
 
 /**
  * Standard gamepad types.
@@ -466,10 +441,7 @@ public:
    * @sa Gamepad.Close
    * @sa IsGamepad
    */
-  Gamepad(JoystickID instance_id)
-    : m_resource(SDL_OpenGamepad(instance_id))
-  {
-  }
+  Gamepad(JoystickID instance_id);
 
   /// Destructor
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
@@ -502,9 +474,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GamepadParam
-  constexpr operator GamepadParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
@@ -1176,18 +1145,6 @@ struct GamepadRef : Gamepad
   using Gamepad::Gamepad;
 
   /**
-   * Constructs from GamepadParam.
-   *
-   * @param resource a GamepadRaw or Gamepad.
-   *
-   * This does not takes ownership!
-   */
-  GamepadRef(GamepadParam resource) noexcept
-    : Gamepad(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Gamepad.
    *
    * @param resource a GamepadRaw.
@@ -1743,6 +1700,11 @@ inline char* GetGamepadMappingForID(JoystickID instance_id)
 inline Gamepad OpenGamepad(JoystickID instance_id)
 {
   return Gamepad(instance_id);
+}
+
+inline Gamepad::Gamepad(JoystickID instance_id)
+  : m_resource(SDL_OpenGamepad(instance_id))
+{
 }
 
 /**

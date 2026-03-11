@@ -9,7 +9,7 @@
   *
   * SDL provides a low-level joystick API, which just treats joysticks as an
   * arbitrary pile of buttons, axes, and hat switches. If you're planning to
-@@ -523,8 +523,7 @@
+@@ -492,8 +492,7 @@
     * Details about mappings are discussed with AddGamepadMapping().
     *
     * @returns a string that has the gamepad's mapping or nullptr if no mapping
@@ -19,7 +19,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -817,9 +816,7 @@
+@@ -786,9 +785,7 @@
     *
     * @param count a pointer filled in with the number of bindings returned.
     * @returns a nullptr terminated array of pointers to bindings or nullptr on
@@ -30,7 +30,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -1380,26 +1377,26 @@
+@@ -1337,26 +1334,26 @@
  /**
   * Get the current gamepad mappings.
   *
@@ -65,7 +65,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1410,7 +1407,7 @@
+@@ -1367,7 +1364,7 @@
   */
  inline StringResult GetGamepadMappingForGUID(GUID guid)
  {
@@ -74,7 +74,7 @@
  }
  
  /**
-@@ -1420,8 +1417,7 @@
+@@ -1377,8 +1374,7 @@
   *
   * @param gamepad the gamepad you want to get the current mapping for.
   * @returns a string that has the gamepad's mapping or nullptr if no mapping is
@@ -84,7 +84,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1434,7 +1430,7 @@
+@@ -1391,7 +1387,7 @@
   */
  inline StringResult GetGamepadMapping(GamepadParam gamepad)
  {
@@ -93,7 +93,7 @@
  }
  
  inline StringResult Gamepad::GetMapping()
-@@ -1480,11 +1476,8 @@
+@@ -1437,11 +1433,8 @@
  /**
   * Get a list of currently connected gamepads.
   *
@@ -106,7 +106,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -1493,7 +1486,12 @@
+@@ -1450,7 +1443,12 @@
   * @sa HasGamepad
   * @sa Gamepad.Gamepad
   */
@@ -120,7 +120,7 @@
  
  /**
   * Check if the given joystick is supported by the gamepad interface.
-@@ -1759,7 +1757,7 @@
+@@ -1721,7 +1719,7 @@
   */
  inline GamepadRef GetGamepadFromID(JoystickID instance_id)
  {
@@ -129,7 +129,7 @@
  }
  
  /**
-@@ -1777,7 +1775,7 @@
+@@ -1739,7 +1737,7 @@
   */
  inline GamepadRef GetGamepadFromPlayerIndex(int player_index)
  {
@@ -138,7 +138,7 @@
  }
  
  /**
-@@ -1808,7 +1806,7 @@
+@@ -1770,7 +1768,7 @@
   */
  inline PropertiesRef GetGamepadProperties(GamepadParam gamepad)
  {
@@ -147,7 +147,7 @@
  }
  
  inline PropertiesRef Gamepad::GetProperties()
-@@ -2213,7 +2211,7 @@
+@@ -2175,7 +2173,7 @@
   */
  inline JoystickRef GetGamepadJoystick(GamepadParam gamepad)
  {
@@ -156,7 +156,7 @@
  }
  
  inline JoystickRef Gamepad::GetJoystick()
-@@ -2261,11 +2259,8 @@
+@@ -2223,11 +2221,8 @@
   * Get the SDL joystick layer bindings for a gamepad.
   *
   * @param gamepad a gamepad.
@@ -169,7 +169,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -2273,7 +2268,9 @@
+@@ -2235,7 +2230,9 @@
   */
  inline OwnArray<GamepadBinding*> GetGamepadBindings(GamepadParam gamepad)
  {

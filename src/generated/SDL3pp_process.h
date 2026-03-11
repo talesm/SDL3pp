@@ -39,32 +39,7 @@ using ProcessRaw = SDL_Process*;
 // Forward decl
 struct ProcessRef;
 
-/// Safely wrap Process for non owning parameters
-struct ProcessParam
-{
-  ProcessRaw value; ///< parameter's ProcessRaw
-
-  /// Constructs from ProcessRaw
-  constexpr ProcessParam(ProcessRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ProcessParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ProcessParam& other) const = default;
-
-  /// Converts to underlying ProcessRaw
-  constexpr operator ProcessRaw() const { return value; }
-};
+using ProcessParam = ProcessRef;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -210,10 +185,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(const char* const* args, bool pipe_stdio)
-    : m_resource(SDL_CreateProcess(args, pipe_stdio))
-  {
-  }
+  Process(const char* const* args, bool pipe_stdio);
 
   /**
    * Create a new process with the specified properties.
@@ -285,10 +257,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(PropertiesParam props)
-    : m_resource(SDL_CreateProcessWithProperties(props))
-  {
-  }
+  Process(PropertiesParam props);
 
   /// Destructor
   ~Process() { SDL_DestroyProcess(m_resource); }
@@ -321,9 +290,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ProcessParam
-  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -519,18 +485,6 @@ struct ProcessRef : Process
   using Process::Process;
 
   /**
-   * Constructs from ProcessParam.
-   *
-   * @param resource a ProcessRaw or Process.
-   *
-   * This does not takes ownership!
-   */
-  ProcessRef(ProcessParam resource) noexcept
-    : Process(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Process.
    *
    * @param resource a ProcessRaw.
@@ -622,6 +576,16 @@ struct ProcessRef : Process
 inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 {
   return Process(args, pipe_stdio);
+}
+
+inline Process::Process(const char* const* args, bool pipe_stdio)
+  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+{
+}
+
+inline Process::Process(PropertiesParam props)
+  : m_resource(SDL_CreateProcessWithProperties(props))
+{
 }
 
 /**

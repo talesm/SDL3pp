@@ -53,32 +53,7 @@ using CursorRaw = SDL_Cursor*;
 // Forward decl
 struct CursorRef;
 
-/// Safely wrap Cursor for non owning parameters
-struct CursorParam
-{
-  CursorRaw value; ///< parameter's CursorRaw
-
-  /// Constructs from CursorRaw
-  constexpr CursorParam(CursorRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr CursorParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const CursorParam& other) const = default;
-
-  /// Converts to underlying CursorRaw
-  constexpr operator CursorRaw() const { return value; }
-};
+using CursorParam = CursorRef;
 
 /**
  * Cursor types for Cursor.Cursor().
@@ -264,10 +239,7 @@ public:
   Cursor(const Uint8* data,
          const Uint8* mask,
          const PointRaw& size,
-         const PointRaw& hot)
-    : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
-  {
-  }
+         const PointRaw& hot);
 
   /**
    * Create a color cursor.
@@ -301,10 +273,7 @@ public:
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
-  Cursor(SurfaceParam surface, const PointRaw& hot)
-    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
-  {
-  }
+  Cursor(SurfaceParam surface, const PointRaw& hot);
 
   /**
    * Create a system cursor.
@@ -319,10 +288,7 @@ public:
    *
    * @sa Cursor.Destroy
    */
-  Cursor(SystemCursor id)
-    : m_resource(CheckError(SDL_CreateSystemCursor(id)))
-  {
-  }
+  Cursor(SystemCursor id);
 
   /// Destructor
   ~Cursor() { SDL_DestroyCursor(m_resource); }
@@ -355,9 +321,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to CursorParam
-  constexpr operator CursorParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
@@ -403,18 +366,6 @@ public:
 struct CursorRef : Cursor
 {
   using Cursor::Cursor;
-
-  /**
-   * Constructs from CursorParam.
-   *
-   * @param resource a CursorRaw or Cursor.
-   *
-   * This does not takes ownership!
-   */
-  CursorRef(CursorParam resource) noexcept
-    : Cursor(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Cursor.
@@ -986,6 +937,24 @@ inline Cursor CreateCursor(const Uint8* data,
                            const PointRaw& hot)
 {
   return Cursor(data, mask, size, hot);
+}
+
+inline Cursor::Cursor(const Uint8* data,
+                      const Uint8* mask,
+                      const PointRaw& size,
+                      const PointRaw& hot)
+  : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
+{
+}
+
+inline Cursor::Cursor(SurfaceParam surface, const PointRaw& hot)
+  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
+{
+}
+
+inline Cursor::Cursor(SystemCursor id)
+  : m_resource(CheckError(SDL_CreateSystemCursor(id)))
+{
 }
 
 /**

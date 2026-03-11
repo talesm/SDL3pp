@@ -9,7 +9,7 @@
   *
   * SDL offers several thread synchronization primitives. This document can't
   * cover the complicated topic of thread safety, but reading up on what each of
-@@ -197,7 +197,7 @@
+@@ -97,7 +97,7 @@
  
  public:
    /// Default ctor
@@ -18,7 +18,7 @@
      : m_resource(0)
    {
    }
-@@ -597,7 +597,7 @@
+@@ -484,7 +484,7 @@
  
  public:
    /// Default ctor
@@ -27,7 +27,7 @@
      : m_resource(0)
    {
    }
-@@ -1382,8 +1382,8 @@
+@@ -1250,8 +1250,8 @@
     * pointed to by `sem` has a positive value or the specified time has elapsed.
     * If the call is successful it will atomically decrement the semaphore value.
     *
@@ -38,7 +38,7 @@
     * @returns true if the wait succeeds or false if the wait times out.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -1597,8 +1597,8 @@
+@@ -1458,8 +1458,8 @@
   * call is successful it will atomically decrement the semaphore value.
   *
   * @param sem the semaphore to wait on.
@@ -49,7 +49,7 @@
   * @returns true if the wait succeeds or false if the wait times out.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1612,7 +1612,7 @@
+@@ -1473,7 +1473,7 @@
  inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
                                   std::chrono::milliseconds timeout)
  {
@@ -58,7 +58,7 @@
  }
  
  inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
-@@ -1678,7 +1678,7 @@
+@@ -1539,7 +1539,7 @@
  
  public:
    /// Default ctor
@@ -67,7 +67,7 @@
      : m_resource(0)
    {
    }
-@@ -1844,8 +1844,8 @@
+@@ -1699,8 +1699,8 @@
     * behavior.
     *
     * @param mutex the mutex used to coordinate thread access.
@@ -78,7 +78,7 @@
     * @returns true if the condition variable is signaled, false if the condition
     *          is not signaled in the allotted time.
     *
-@@ -2052,8 +2052,8 @@
+@@ -1900,8 +1900,8 @@
   *
   * @param cond the condition variable to wait on.
   * @param mutex the mutex used to coordinate thread access.
@@ -89,7 +89,7 @@
   * @returns true if the condition variable is signaled, false if the condition
   *          is not signaled in the allotted time.
   *
-@@ -2069,7 +2069,7 @@
+@@ -1917,7 +1917,7 @@
                                   MutexParam mutex,
                                   std::chrono::milliseconds timeout)
  {
@@ -98,7 +98,7 @@
  }
  
  inline bool Condition::WaitTimeout(MutexParam mutex,
-@@ -2102,8 +2102,8 @@
+@@ -1950,8 +1950,8 @@
   *
   * Here is an example of using this:
   *

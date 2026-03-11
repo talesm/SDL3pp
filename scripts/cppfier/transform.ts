@@ -129,18 +129,18 @@ export function transformApi(config: TransformConfig) {
 function stepExpandTypes(
   source: Api,
   context: ApiContext,
-  fileTransformMap: Dict<ApiFileTransform>
+  fileTransformMap: Dict<ApiFileTransform>,
 ) {
   const unorderedEntries = Object.entries(source.files);
   const targetNames = new Set(
-    unorderedEntries.map(([sourceName, sourceFile]) => sourceFile.name)
+    unorderedEntries.map(([sourceName, sourceFile]) => sourceFile.name),
   );
   const processed = new Set<string>();
   while (unorderedEntries.length) {
     const [sourceName, sourceFile] = unorderedEntries.shift();
     if (
       fileTransformMap[sourceName].localIncludes?.some(
-        (dep) => targetNames.has(dep) && !processed.has(dep)
+        (dep) => targetNames.has(dep) && !processed.has(dep),
       )
     ) {
       unorderedEntries.push([sourceName, sourceFile]);
@@ -194,8 +194,8 @@ export class ApiContext {
 
     this.source = Object.fromEntries(
       Object.values(source.files).flatMap((f) =>
-        Object.entries(/** @type {Dict<ApiEntry>} */ f.entries ?? {})
-      )
+        Object.entries(/** @type {Dict<ApiEntry>} */ f.entries ?? {}),
+      ),
     );
 
     this.blacklist = new Set();
@@ -236,12 +236,12 @@ export class ApiContext {
 
     this.renameRules = transform.renameRules ?? [];
     this.renameRules.forEach(
-      (rule) => (rule.pattern = new RegExp(rule.pattern))
+      (rule) => (rule.pattern = new RegExp(rule.pattern)),
     );
 
     this.docRules = transform.docRules ?? [];
     this.docRules.forEach(
-      (rule) => (rule.pattern = new RegExp(rule.pattern, "g"))
+      (rule) => (rule.pattern = new RegExp(rule.pattern, "g")),
     );
 
     this.definitionPrefix = transform.definitionPrefix ?? "";
@@ -362,14 +362,14 @@ export class ApiContext {
    */
   includeBefore(
     entryOrName: string | ApiEntryTransform | ApiEntryTransform[],
-    includeBeforeKey: string
+    includeBeforeKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.push(...entryOrName);
     } else {
       includeTarget.push(
-        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
       );
     }
   }
@@ -379,14 +379,14 @@ export class ApiContext {
    */
   prependIncludeBefore(
     entryOrName: string | ApiEntryTransform | ApiEntryTransform[],
-    includeBeforeKey: string
+    includeBeforeKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeBefore(includeBeforeKey);
     if (Array.isArray(entryOrName)) {
       includeTarget.unshift(...entryOrName);
     } else {
       includeTarget.unshift(
-        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+        typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
       );
     }
   }
@@ -396,11 +396,11 @@ export class ApiContext {
    */
   includeAfter(
     entryOrName: string | ApiEntryTransform,
-    includeAfterKey: string
+    includeAfterKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     includeTarget.push(
-      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
     );
   }
 
@@ -409,11 +409,11 @@ export class ApiContext {
    */
   prependIncludeAfter(
     entryOrName: string | ApiEntryTransform,
-    includeAfterKey: string
+    includeAfterKey: string,
   ) {
     const includeTarget = this.getOrCreateIncludeAfter(includeAfterKey);
     includeTarget.unshift(
-      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName
+      typeof entryOrName === "string" ? { name: entryOrName } : entryOrName,
     );
   }
 }
@@ -435,7 +435,7 @@ export function isType(kind: ApiEntryKind) {
 export function insertOrLink(
   entries: Dict<ApiEntryTransform>,
   entry: ApiEntryTransform,
-  key: string
+  key: string,
 ) {
   let currLink = entries[key];
   if (!currLink) {
@@ -447,7 +447,7 @@ export function insertOrLink(
 }
 
 export function getCallbackDef(
-  callback: FunctorSupport | boolean | CallbackDefinition
+  callback: FunctorSupport | boolean | CallbackDefinition,
 ): CallbackDefinition {
   switch (typeof callback) {
     case "boolean":
@@ -462,7 +462,7 @@ export function getCallbackDef(
 export function wrapLockFunctions(
   entries: ApiEntryTransformMap,
   lockName: string,
-  lockDef: LockDefinition
+  lockDef: LockDefinition,
 ) {
   const currLockTransform = entries[lockDef.lockFunc];
   const currLockDelta =
@@ -506,7 +506,7 @@ export function detectMethods(
   targetType: string,
   paramType: string,
   constParamType: string,
-  blockedNames: Set<string>
+  blockedNames: Set<string>,
 ) {
   const transformMap = file.transform;
   const foundEntries: Dict<ApiEntryTransform | QuickTransform> = {};
@@ -536,7 +536,7 @@ export function detectMethods(
     const m = paramMatchesVariants(
       param0,
       [paramType, `${paramType} *`],
-      [constParamType, `${constParamType} &`]
+      [constParamType, `${constParamType} &`],
     );
     if (!m && !hasPrefix) {
       blockedNames.add(sourceName);
@@ -561,7 +561,7 @@ export function detectMethods(
       const methodName = transformMemberName(
         entryDelta.hints?.methodName ?? entryDelta.name ?? sourceName,
         targetType,
-        context
+        context,
       );
       if (blockedNames.has(methodName)) continue;
       if (entryDelta.after) lastKey = entryDelta.after;
@@ -579,11 +579,11 @@ export function detectMethods(
           hints: {
             delegate: `${context.namespace}::${transformName(
               sourceName,
-              context
+              context,
             )}`,
           },
         },
-        name
+        name,
       );
       delete entryDelta.immutable;
     }
@@ -598,7 +598,7 @@ export function detectMethods(
     const m = paramMatchesVariants(
       param0,
       [sourceType, `${sourceType} *`],
-      [`const ${sourceType}`, `const ${sourceType} *`]
+      [`const ${sourceType}`, `const ${sourceType} *`],
     );
     if (!m) continue;
     const entryDelta = transformMap[sourceName];
@@ -654,7 +654,7 @@ export function detectMethods(
 function expandTypes(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   expandNamespaces(sourceEntries, file, context);
 
@@ -676,7 +676,7 @@ function expandTypes(
         sourceName,
         sourceEntry,
         targetName,
-        targetDelta
+        targetDelta,
       );
     if (targetDelta.wrapper)
       expandWrapper(sourceName, sourceEntry, targetName, targetDelta);
@@ -713,14 +713,14 @@ function expandTypes(
         targetName,
         { kind: "alias", name: targetName },
         targetName,
-        targetDelta
+        targetDelta,
       );
     if (targetDelta.lock) expandLock(targetName, targetDelta);
   }
 
   function tryDetectType(
     sourceEntry: ApiEntry,
-    targetDelta: ApiEntryTransform
+    targetDelta: ApiEntryTransform,
   ) {
     if (targetDelta.callback === undefined && sourceEntry.kind === "callback") {
       targetDelta.callback = true;
@@ -784,7 +784,7 @@ function expandTypes(
     sourceName: string,
     sourceEntry: ApiEntry,
     name: string,
-    targetDelta: ApiEntryTransform
+    targetDelta: ApiEntryTransform,
   ) {
     const parameters = transformCbParameters(sourceEntry.parameters, context);
     const callback = getCallbackDef(targetDelta.callback);
@@ -798,7 +798,7 @@ function expandTypes(
     const userdataIndex =
       callback.userdataIndex ??
       parameters.findIndex(
-        (p) => p.type.endsWith("void *") && p.name === "userdata"
+        (p) => p.type.endsWith("void *") && p.name === "userdata",
       );
     if (userdataIndex < 0) return;
     const callbackName =
@@ -807,9 +807,9 @@ function expandTypes(
       addToTagGroup(
         transformDoc(sourceEntry.doc ?? undefined, context),
         "@sa",
-        name
+        name,
       ),
-      "@param userdata"
+      "@param userdata",
     );
     if (
       callback.functorSupport === "std" ||
@@ -820,7 +820,7 @@ function expandTypes(
         makeCallbackAlias(
           "std::function",
           callback.type ?? resultType,
-          callback.parameters ?? typeParams
+          callback.parameters ?? typeParams,
         );
       } else if (
         callback.type === undefined &&
@@ -829,7 +829,7 @@ function expandTypes(
         makeCallbackAlias(
           userdataIndex === 0 ? "MakeFrontCallback" : "MakeTrailingCallback",
           resultType,
-          typeParams
+          typeParams,
         );
       } else {
         const templateType =
@@ -891,7 +891,7 @@ function expandTypes(
     function makeCallbackAlias(
       wrapper: string,
       resultType: string,
-      typeParams: ApiParameters
+      typeParams: ApiParameters,
     ) {
       const parameters = typeParams
         .map((p) => `${p.type} ${p.name}`)
@@ -913,7 +913,7 @@ function expandTypes(
     sourceType: string,
     sourceEntry: ApiEntry,
     targetType: string,
-    transform: ApiEntryTransform
+    transform: ApiEntryTransform,
   ) {
     const wrapper = transform.wrapper === true ? {} : transform.wrapper;
     if (!wrapper) return;
@@ -943,7 +943,7 @@ function expandTypes(
             : sourceType,
         doc: [`Alias to raw representation for ${targetType}.`],
       },
-      "__begin"
+      "__begin",
     );
 
     context.includeBefore(
@@ -951,7 +951,7 @@ function expandTypes(
         name: targetType,
         kind: "forward",
       },
-      "__begin"
+      "__begin",
     );
 
     const fields: string[] = [];
@@ -1022,7 +1022,7 @@ function expandTypes(
           doc: [`Comparison operator for ${targetType}.`],
           hints: { body, noexcept: true },
         },
-        sourceType
+        sourceType,
       );
       if (wrapper.ordered) {
         const lastField = fields.length - 1;
@@ -1047,7 +1047,7 @@ function expandTypes(
             doc: [`Spaceship operator for ${targetType}.`],
             hints: { body, noexcept: true },
           },
-          sourceType
+          sourceType,
         );
       }
     }
@@ -1188,7 +1188,7 @@ function expandTypes(
       insertTransform(
         entries,
         typeof currentCtor === "string" ? {} : currentCtor,
-        targetType
+        targetType,
       );
       delete transform.entries[targetType];
     }
@@ -1204,7 +1204,7 @@ function expandTypes(
       targetType,
       rawType,
       `const ${rawType}`,
-      blockedNames
+      blockedNames,
     );
     mirrorMethods(
       sourceEntries,
@@ -1212,7 +1212,7 @@ function expandTypes(
       transform.entries ?? {},
       paramType,
       constParamType,
-      targetType
+      targetType,
     );
     mirrorMethods(
       sourceEntries,
@@ -1220,7 +1220,7 @@ function expandTypes(
       detectedMethods,
       paramType,
       constParamType,
-      targetType
+      targetType,
     );
     transform.entries = {
       ...entries,
@@ -1239,7 +1239,7 @@ function expandTypes(
     sourceName: string,
     sourceEntry: ApiEntry,
     targetName: string,
-    transform: ApiEntryTransform
+    transform: ApiEntryTransform,
   ) {
     const definition = getEnumDefinition(transform) ?? {};
     const valueType = definition.valueType ?? targetName;
@@ -1262,14 +1262,14 @@ function expandTypes(
             e.kind === "def" &&
             !e.parameters &&
             e.name.startsWith(prefix) &&
-            !transformMap[e.name]?.type
+            !transformMap[e.name]?.type,
         )
         .map((e) => e.name);
       const newPrefix = definition.newPrefix;
       if (newPrefix) {
         const oldPrefixLen = prefix.length;
         values.forEach(
-          (n) => (newNames[n] = newPrefix + n.slice(oldPrefixLen))
+          (n) => (newNames[n] = newPrefix + n.slice(oldPrefixLen)),
         );
       }
     }
@@ -1314,7 +1314,7 @@ function expandTypes(
         kind: "forward",
         name: targetName,
       },
-      "__begin"
+      "__begin",
     );
     if (!transformMap[targetName]) transformMap[targetName] = targetEntry;
 
@@ -1354,7 +1354,7 @@ function expandTypes(
           body: `${lockTargetName}(${controlType ? "m_lock" : ""});`,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1367,7 +1367,7 @@ function expandTypes(
           delete: true,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1383,7 +1383,7 @@ function expandTypes(
           noexcept: true,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1396,7 +1396,7 @@ function expandTypes(
           body: `reset();`,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1409,7 +1409,7 @@ function expandTypes(
           delete: true,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1424,7 +1424,7 @@ function expandTypes(
           body: `std::swap(m_lock, other.m_lock);return *this;`,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1439,7 +1439,7 @@ function expandTypes(
           body: `return bool(m_lock);`,
         },
       },
-      lockDef.lockFunc
+      lockDef.lockFunc,
     );
     context.includeAfter(
       {
@@ -1454,7 +1454,7 @@ function expandTypes(
             : `if (!m_lock) return;\n${unlockTargetName}();\nm_lock = false;`,
         },
       },
-      lockDef.unlockFunc
+      lockDef.unlockFunc,
     );
 
     if (controlType) {
@@ -1469,7 +1469,7 @@ function expandTypes(
             body: "return m_lock;",
           },
         },
-        lockDef.unlockFunc
+        lockDef.unlockFunc,
       );
     }
     context.includeAfter(
@@ -1483,7 +1483,7 @@ function expandTypes(
           body: controlType ? "m_lock.release();" : `m_lock = false;`,
         },
       },
-      lockDef.unlockFunc
+      lockDef.unlockFunc,
     );
 
     const subEntries = targetEntry.entries || {};
@@ -1494,7 +1494,7 @@ function expandTypes(
 function transformEntries(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   const targetEntries: ApiEntries = {};
   const transformMap = file.transform;
@@ -1510,7 +1510,7 @@ function transformEntries(
       delete targetEntry.link;
       if (targetEntry.parameters) {
         targetEntry.parameters = targetEntry.parameters.filter(
-          (p) => p.type || p.name
+          (p) => p.type || p.name,
         );
       }
     }
@@ -1538,7 +1538,7 @@ function transformEntries(
       delete linkedEntry.link;
       if (linkedEntry.parameters) {
         linkedEntry.parameters = linkedEntry.parameters.filter(
-          (p) => typeof p === "string" || (p.type && p.name)
+          (p) => typeof p === "string" || (p.type && p.name),
         );
       }
       insertEntryAndCheck(targetEntries, linkedEntry, context, sourceEntries);
@@ -1549,7 +1549,7 @@ function transformEntries(
 function makeSortedEntryArray(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   const transformEntries = file.transform ?? {};
 
@@ -1711,7 +1711,7 @@ function makeSortedEntryArray(
 
     function transformSubEntry(
       key: string,
-      entry: ApiEntryTransform | QuickTransform
+      entry: ApiEntryTransform | QuickTransform,
     ) {
       const sourceEntry = context.source[key];
       const nameCandidate = transformName(key, context);
@@ -1729,7 +1729,7 @@ function makeSortedEntryArray(
         } else if (entry.hints?.delegate) {
           context.includeAfter(
             { ...entry, name: `${type}::${nameCandidate}` },
-            entry.hints.delegate
+            entry.hints.delegate,
           );
           if (!entries[nameCandidate]) {
             insertEntry(entries, { name: nameCandidate, kind: "plc" });
@@ -1751,13 +1751,15 @@ function makeSortedEntryArray(
         (typeof entry !== "string" &&
           !entry.name?.startsWith("operator") &&
           entry.type === "");
-      if (isCtor || (typeof entry !== "string" && entry.proto === false)) {
+      if (typeof entry !== "string" && entry.proto === false) {
         nameChange.name = `${type}.${nameChange.name}`;
       } else {
         nameChange.name = `${type}::${nameChange.name}`;
-        addHints(nameChange, {
-          delegate: `${context.namespace}::${currLinkName}`,
-        });
+        if (!isCtor) {
+          addHints(nameChange, {
+            delegate: `${context.namespace}::${currLinkName}`,
+          });
+        }
       }
       if (typeof entry !== "string") delete nameChange.proto;
       file.transform[key] = nameChange;
@@ -1779,7 +1781,7 @@ function makeSortedEntryArray(
 export function insertTransform(
   entries: Dict<ApiEntryTransform>,
   entryDelta: ApiEntryTransform,
-  defaultName: string = undefined
+  defaultName: string = undefined,
 ) {
   if (defaultName) entryDelta.name = entryDelta.name ?? defaultName;
   const currEntry = entries[entryDelta.name];
@@ -1809,13 +1811,13 @@ function makeSignatureSuffix(parameters: ApiParameter[]) {
 export function expandNamespaces(
   sourceEntries: Dict<ApiEntry>,
   file: ApiFileTransform,
-  context: ApiContext
+  context: ApiContext,
 ) {
   const namespacesMap = file.namespacesMap ?? {};
   for (const [prefix, nsName] of Object.entries(namespacesMap)) {
     const nsEntries: Dict<ApiEntryTransform> = {};
     const sourceEntriesListed = Object.entries(sourceEntries).filter(([key]) =>
-      key.startsWith(prefix)
+      key.startsWith(prefix),
     );
     for (const [key, entry] of sourceEntriesListed) {
       const entryDelta = file.transform[key] || {};
@@ -1833,7 +1835,7 @@ export function expandNamespaces(
     if (sourceEntriesListed.length) {
       context.includeBefore(
         { kind: "ns", name: nsName, entries: nsEntries },
-        sourceEntriesListed[0][0]
+        sourceEntriesListed[0][0],
       );
     }
   }
@@ -1866,7 +1868,7 @@ export function mirrorMethods(
   transformSubEntries: ApiEntryTransformMap,
   paramType: string,
   constParamType: string,
-  resultType: string
+  resultType: string,
 ) {
   for (const [sourceName, subEntry] of Object.entries(transformSubEntries)) {
     const sourceEntry = sourceEntries[sourceName];
@@ -1901,7 +1903,7 @@ export function mirrorMethods(
 
   function mirrorParameters(
     sourceEntry: ApiEntry,
-    targetEntry: ApiEntryTransform
+    targetEntry: ApiEntryTransform,
   ) {
     if (targetEntry.static) return;
 
@@ -1970,7 +1972,7 @@ export function mirrorMethods(
 export function paramMatchesVariants(
   param0: ApiParameter,
   variants: string[],
-  constVariants: string[]
+  constVariants: string[],
 ) {
   for (const variant of variants) {
     if (param0.type === variant) return "function";
@@ -1998,7 +2000,7 @@ export function getEnumDefinition(entry: ApiEntryTransform) {
 export function scanFreeFunction(
   entries: Dict<ApiEntry>,
   uniqueType: string,
-  pointerType: string
+  pointerType: string,
 ) {
   const candidates: ApiEntry[] = [];
   for (const sourceName of Object.keys(entries)) {
@@ -2024,7 +2026,7 @@ export function scanFreeFunction(
 function insertEntry(
   entries: ApiEntries,
   entry: ApiEntry | ApiEntry[],
-  defaultName: string = ""
+  defaultName: string = "",
 ) {
   if (Array.isArray(entry)) entry.forEach(doInsertEntry);
   else doInsertEntry(entry);
@@ -2090,7 +2092,7 @@ function insertEntryAndCheck(
   entry: ApiEntry,
   context: ApiContext,
   sourceEntries: ApiEntries,
-  defaultName?: string
+  defaultName?: string,
 ) {
   insertEntry(entries, entry, defaultName);
   if (entry.kind === "ns" || entry.kind === "struct") {
@@ -2109,7 +2111,7 @@ function insertEntryAndCheck(
 function checkCopyDoc(
   entry: ApiEntry,
   sourceEntries: ApiEntries,
-  context: ApiContext
+  context: ApiContext,
 ) {
   if (!entry.doc && entry.hints?.copyDoc) {
     const copyDoc = entry.hints.copyDoc;
@@ -2118,7 +2120,7 @@ function checkCopyDoc(
   }
   if (entry.entries) {
     Object.values(entry.entries).forEach((subEntry) =>
-      checkCopyDoc(subEntry, sourceEntries, context)
+      checkCopyDoc(subEntry, sourceEntries, context),
     );
   }
   if (entry.overload) {
@@ -2219,7 +2221,7 @@ function validateEntries(targetEntries: ApiEntries) {
 function makeRenameEntry(
   entry: ApiEntryTransform | string,
   name: string,
-  typeName: string
+  typeName: string,
 ): ApiEntryTransform {
   let newEntry: ApiEntryTransform = {};
   if (entry === "placeholder") {
@@ -2250,7 +2252,7 @@ function makeRenameEntry(
 export function transformMemberName(
   name: string,
   typeName: string,
-  context: ApiContext
+  context: ApiContext,
 ) {
   return makeNaturalName(transformName(name, context), typeName);
 }
@@ -2316,7 +2318,7 @@ export function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
     case "function":
       targetEntry.parameters = transformParameters(
         sourceEntry.parameters,
-        context
+        context,
       );
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       checkSignatureRules(targetEntry, context);
@@ -2324,7 +2326,7 @@ export function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
         const r = getTagInGroup(targetEntry.doc, "@returns");
         if (r) {
           const m = r.content.match(
-            /(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/
+            /(.*) on success|(an? valid [^,]+), or (?:\w+) on failure/,
           );
           if (m) {
             targetEntry.hints = { mayFail: true };
@@ -2354,7 +2356,7 @@ export function transformEntry(sourceEntry: ApiEntry, context: ApiContext) {
 
 function transformParameters(
   parameters: ApiParameters,
-  context: ApiContext
+  context: ApiContext,
 ): ApiParameters {
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
@@ -2365,7 +2367,7 @@ function transformParameters(
 
 export function transformCbParameters(
   parameters: ApiParameters,
-  context: ApiContext
+  context: ApiContext,
 ): ApiParameters {
   return parameters.map((parameter) => {
     let { name, type, default: defaultValue } = parameter;
@@ -2378,7 +2380,7 @@ export function transformCbParameters(
 export function transformCbType(type: string, context: ApiContext): string {
   return type.replace(
     /^(const\s+)?(\w+(\s+\*)?)/,
-    (_, ct: string, type: string) => (ct ?? "") + context.getCallbackType(type)
+    (_, ct: string, type: string) => (ct ?? "") + context.getCallbackType(type),
   );
 }
 
@@ -2508,7 +2510,7 @@ function resolveDocRefs(doc: ParsedDoc, context: ApiContext): ParsedDoc {
 
   function resolveDocRefStr(docStr: string) {
     return docStr.replaceAll(context.referenceCandidate, (ref) =>
-      context.getName(ref)
+      context.getName(ref),
     );
   }
 }
@@ -2538,7 +2540,7 @@ export function addToTagGroup(doc: ParsedDoc, tag: string, content: string) {
 export function removeTagFromGroup(
   doc: ParsedDoc,
   tag: string,
-  count: number = 0
+  count: number = 0,
 ) {
   if (!doc) return;
   return removeItemFromGroup(doc, findTagInGroup(doc, tag, count));
@@ -2558,7 +2560,7 @@ function removeItemFromGroup(doc: ParsedDoc, r: number | [number, number]) {
 function findTagInGroup(
   doc: ParsedDoc,
   tagOrFunction: string | ((tag: string) => boolean),
-  count: number = 0
+  count: number = 0,
 ): number | [number, number] {
   if (!doc) return -1;
   const test =
@@ -2580,7 +2582,7 @@ function findTagInGroup(
 
 function getItemInGroup(
   doc: ParsedDoc,
-  index: number | [number, number]
+  index: number | [number, number],
 ): ParsedDocContent {
   if (Array.isArray(index)) {
     return doc?.[index[0]]?.[index[1]];
@@ -2592,7 +2594,7 @@ function getItemInGroup(
 function getTagInGroup(
   doc: ParsedDoc,
   tagOrFunction: string | ((tag: string) => boolean),
-  count: number = 0
+  count: number = 0,
 ) {
   const r = findTagInGroup(doc, tagOrFunction, count);
   return getItemInGroup(doc, r) as TaggedContent;

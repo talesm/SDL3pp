@@ -127,32 +127,7 @@ using AudioDeviceID = SDL_AudioDeviceID;
 // Forward decl
 struct AudioDeviceRef;
 
-/// Safely wrap AudioDevice for non owning parameters
-struct AudioDeviceParam
-{
-  AudioDeviceID value; ///< parameter's AudioDeviceID
-
-  /// Constructs from AudioDeviceID
-  constexpr AudioDeviceParam(AudioDeviceID value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AudioDeviceParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioDeviceParam& other) const = default;
-
-  /// Converts to underlying AudioDeviceID
-  constexpr operator AudioDeviceID() const { return value; }
-};
+using AudioDeviceParam = AudioDeviceRef;
 
 // Forward decl
 struct AudioStream;
@@ -163,32 +138,7 @@ using AudioStreamRaw = SDL_AudioStream*;
 // Forward decl
 struct AudioStreamRef;
 
-/// Safely wrap AudioStream for non owning parameters
-struct AudioStreamParam
-{
-  AudioStreamRaw value; ///< parameter's AudioStreamRaw
-
-  /// Constructs from AudioStreamRaw
-  constexpr AudioStreamParam(AudioStreamRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AudioStreamParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioStreamParam& other) const = default;
-
-  /// Converts to underlying AudioStreamRaw
-  constexpr operator AudioStreamRaw() const { return value; }
-};
+using AudioStreamParam = AudioStreamRef;
 
 // Forward decl
 struct AudioStreamLock;
@@ -294,11 +244,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size)
-    : m_audioFormat(
-        AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
-  {
-  }
+  constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size);
 
   /**
    * Unwraps to the underlying AudioFormat.
@@ -503,6 +449,15 @@ constexpr AudioFormat DefineAudioFormat(bool sign,
                                         Uint16 size)
 {
   return AudioFormat(sign, bigendian, flt, size);
+}
+
+constexpr AudioFormat::AudioFormat(bool sign,
+                                   bool bigendian,
+                                   bool flt,
+                                   Uint16 size)
+  : m_audioFormat(
+      AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
+{
 }
 
 /**
@@ -950,10 +905,7 @@ public:
    * @sa AudioDevice.Close
    * @sa AudioDevice.GetFormat
    */
-  AudioDevice(AudioDeviceParam devid, OptionalRef<const AudioSpec> spec)
-    : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
-  {
-  }
+  AudioDevice(AudioDeviceParam devid, OptionalRef<const AudioSpec> spec);
 
   /// Destructor
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
@@ -986,9 +938,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AudioDeviceParam
-  constexpr operator AudioDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a previously-opened audio device.
@@ -1535,18 +1484,6 @@ struct AudioDeviceRef : AudioDevice
   using AudioDevice::AudioDevice;
 
   /**
-   * Constructs from AudioDeviceParam.
-   *
-   * @param resource a AudioDeviceID or AudioDevice.
-   *
-   * This does not takes ownership!
-   */
-  AudioDeviceRef(AudioDeviceParam resource) noexcept
-    : AudioDevice(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw AudioDevice.
    *
    * @param resource a AudioDeviceID.
@@ -1786,10 +1723,7 @@ public:
    * @sa AudioStream.Destroy
    */
   AudioStream(OptionalRef<const AudioSpec> src_spec,
-              OptionalRef<const AudioSpec> dst_spec)
-    : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
-  {
-  }
+              OptionalRef<const AudioSpec> dst_spec);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -1851,11 +1785,7 @@ public:
   AudioStream(AudioDeviceParam devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
               AudioStreamCallback callback = nullptr,
-              void* userdata = nullptr)
-    : m_resource(
-        CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
-  {
-  }
+              void* userdata = nullptr);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -1945,9 +1875,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AudioStreamParam
-  constexpr operator AudioStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Free an audio stream.
@@ -3013,18 +2940,6 @@ struct AudioStreamRef : AudioStream
   using AudioStream::AudioStream;
 
   /**
-   * Constructs from AudioStreamParam.
-   *
-   * @param resource a AudioStreamRaw or AudioStream.
-   *
-   * This does not takes ownership!
-   */
-  AudioStreamRef(AudioStreamParam resource) noexcept
-    : AudioStream(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw AudioStream.
    *
    * @param resource a AudioStreamRaw.
@@ -3500,6 +3415,12 @@ inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
   return AudioDevice(devid, spec);
 }
 
+inline AudioDevice::AudioDevice(AudioDeviceParam devid,
+                                OptionalRef<const AudioSpec> spec)
+  : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
+{
+}
+
 /**
  * Determine if an audio device is physical (instead of logical).
  *
@@ -3925,6 +3846,33 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
                                      OptionalRef<const AudioSpec> dst_spec)
 {
   return AudioStream(src_spec, dst_spec);
+}
+
+inline AudioStream::AudioStream(OptionalRef<const AudioSpec> src_spec,
+                                OptionalRef<const AudioSpec> dst_spec)
+  : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
+{
+}
+
+inline AudioStream::AudioStream(AudioDeviceParam devid,
+                                OptionalRef<const AudioSpec> spec,
+                                AudioStreamCallback callback,
+                                void* userdata)
+  : m_resource(
+      CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
+{
+}
+
+inline AudioStream::AudioStream(AudioDeviceParam devid,
+                                OptionalRef<const AudioSpec> spec,
+                                AudioStreamCB callback)
+  : AudioStream(devid, spec)
+{
+  if (IsAudioDevicePlayback(devid)) {
+    SetGetCallback(std::move(callback));
+  } else {
+    SetPutCallback(std::move(callback));
+  }
 }
 
 /**
@@ -5287,18 +5235,6 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCB callback)
 {
   return AudioStream(m_resource, spec, callback);
-}
-
-inline AudioStream::AudioStream(AudioDeviceParam devid,
-                                OptionalRef<const AudioSpec> spec,
-                                AudioStreamCB callback)
-  : AudioStream(devid, spec)
-{
-  if (IsAudioDevicePlayback(devid)) {
-    SetGetCallback(std::move(callback));
-  } else {
-    SetPutCallback(std::move(callback));
-  }
 }
 
 /**

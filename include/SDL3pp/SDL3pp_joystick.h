@@ -63,32 +63,7 @@ using JoystickRaw = SDL_Joystick*;
 // Forward decl
 struct JoystickRef;
 
-/// Safely wrap Joystick for non owning parameters
-struct JoystickParam
-{
-  JoystickRaw value; ///< parameter's JoystickRaw
-
-  /// Constructs from JoystickRaw
-  constexpr JoystickParam(JoystickRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr JoystickParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const JoystickParam& other) const = default;
-
-  /// Converts to underlying JoystickRaw
-  constexpr operator JoystickRaw() const { return value; }
-};
+using JoystickParam = JoystickRef;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -483,10 +458,7 @@ public:
    *
    * @sa Joystick.Close
    */
-  Joystick(JoystickID instance_id)
-    : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
-  {
-  }
+  Joystick(JoystickID instance_id);
 
   /// Destructor
   ~Joystick() { SDL_CloseJoystick(m_resource); }
@@ -519,9 +491,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to JoystickParam
-  constexpr operator JoystickParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
@@ -1215,18 +1184,6 @@ struct JoystickRef : Joystick
   using Joystick::Joystick;
 
   /**
-   * Constructs from JoystickParam.
-   *
-   * @param resource a JoystickRaw or Joystick.
-   *
-   * This does not takes ownership!
-   */
-  JoystickRef(JoystickParam resource) noexcept
-    : Joystick(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Joystick.
    *
    * @param resource a JoystickRaw.
@@ -1670,6 +1627,11 @@ inline JoystickType JoystickID::GetJoystickTypeForID()
 inline Joystick OpenJoystick(JoystickID instance_id)
 {
   return Joystick(instance_id);
+}
+
+inline Joystick::Joystick(JoystickID instance_id)
+  : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+{
 }
 
 inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }

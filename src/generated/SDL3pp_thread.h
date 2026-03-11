@@ -38,32 +38,7 @@ using ThreadRaw = SDL_Thread*;
 // Forward decl
 struct ThreadRef;
 
-/// Safely wrap Thread for non owning parameters
-struct ThreadParam
-{
-  ThreadRaw value; ///< parameter's ThreadRaw
-
-  /// Constructs from ThreadRaw
-  constexpr ThreadParam(ThreadRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ThreadParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ThreadParam& other) const = default;
-
-  /// Converts to underlying ThreadRaw
-  constexpr operator ThreadRaw() const { return value; }
-};
+using ThreadParam = ThreadRef;
 
 /**
  * The SDL thread priority.
@@ -246,10 +221,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(ThreadFunction fn, StringParam name, void* data)
-    : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
-  {
-  }
+  Thread(ThreadFunction fn, StringParam name, void* data);
 
   /**
    * Create a new thread with with the specified properties.
@@ -315,10 +287,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
-  {
-  }
+  Thread(PropertiesParam props);
 
   /// Destructor
   ~Thread() { SDL_DetachThread(m_resource); }
@@ -351,9 +320,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ThreadParam
-  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -497,18 +463,6 @@ struct ThreadRef : Thread
   using Thread::Thread;
 
   /**
-   * Constructs from ThreadParam.
-   *
-   * @param resource a ThreadRaw or Thread.
-   *
-   * This does not takes ownership!
-   */
-  ThreadRef(ThreadParam resource) noexcept
-    : Thread(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Thread.
    *
    * @param resource a ThreadRaw.
@@ -606,6 +560,16 @@ using TLSID = AtomicInt;
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
   return Thread(fn, std::move(name), data);
+}
+
+inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
+  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+{
+}
+
+inline Thread::Thread(PropertiesParam props)
+  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+{
 }
 
 /**

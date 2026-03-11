@@ -66,32 +66,7 @@ using CameraRaw = SDL_Camera*;
 // Forward decl
 struct CameraRef;
 
-/// Safely wrap Camera for non owning parameters
-struct CameraParam
-{
-  CameraRaw value; ///< parameter's CameraRaw
-
-  /// Constructs from CameraRaw
-  constexpr CameraParam(CameraRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr CameraParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const CameraParam& other) const = default;
-
-  /// Converts to underlying CameraRaw
-  constexpr operator CameraRaw() const { return value; }
-};
+using CameraParam = CameraRef;
 
 // Forward decl
 struct CameraFrame;
@@ -262,10 +237,7 @@ public:
    * @sa GetCameras
    * @sa Camera.GetFormat
    */
-  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {})
-    : m_resource(SDL_OpenCamera(instance_id, spec))
-  {
-  }
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
 
   /// Destructor
   ~Camera() { SDL_CloseCamera(m_resource); }
@@ -298,9 +270,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to CameraParam
-  constexpr operator CameraParam() const noexcept { return {m_resource}; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -475,18 +444,6 @@ public:
 struct CameraRef : Camera
 {
   using Camera::Camera;
-
-  /**
-   * Constructs from CameraParam.
-   *
-   * @param resource a CameraRaw or Camera.
-   *
-   * This does not takes ownership!
-   */
-  CameraRef(CameraParam resource) noexcept
-    : Camera(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Camera.
@@ -889,6 +846,11 @@ inline Camera OpenCamera(CameraID instance_id,
                          OptionalRef<const CameraSpec> spec = {})
 {
   return Camera(instance_id, spec);
+}
+
+inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
+  : m_resource(SDL_OpenCamera(instance_id, spec))
+{
 }
 
 /**

@@ -47,32 +47,7 @@ using HidDeviceRaw = SDL_hid_device*;
 // Forward decl
 struct HidDeviceRef;
 
-/// Safely wrap HidDevice for non owning parameters
-struct HidDeviceParam
-{
-  HidDeviceRaw value; ///< parameter's HidDeviceRaw
-
-  /// Constructs from HidDeviceRaw
-  constexpr HidDeviceParam(HidDeviceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr HidDeviceParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const HidDeviceParam& other) const = default;
-
-  /// Converts to underlying HidDeviceRaw
-  constexpr operator HidDeviceRaw() const { return value; }
-};
+using HidDeviceParam = HidDeviceRef;
 
 /**
  * HID underlying bus types.
@@ -183,10 +158,7 @@ public:
    */
   HidDevice(unsigned short vendor_id,
             unsigned short product_id,
-            const wchar_t* serial_number)
-    : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
-  {
-  }
+            const wchar_t* serial_number);
 
   /**
    * Open a HID device by its path name.
@@ -199,10 +171,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  HidDevice(StringParam path)
-    : m_resource(CheckError(SDL_hid_open_path(path)))
-  {
-  }
+  HidDevice(StringParam path);
 
   /// Destructor
   ~HidDevice() { SDL_hid_close(m_resource); }
@@ -235,9 +204,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to HidDeviceParam
-  constexpr operator HidDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a HID device.
@@ -487,18 +453,6 @@ struct HidDeviceRef : HidDevice
   using HidDevice::HidDevice;
 
   /**
-   * Constructs from HidDeviceParam.
-   *
-   * @param resource a HidDeviceRaw or HidDevice.
-   *
-   * This does not takes ownership!
-   */
-  HidDeviceRef(HidDeviceParam resource) noexcept
-    : HidDevice(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw HidDevice.
    *
    * @param resource a HidDeviceRaw.
@@ -672,6 +626,18 @@ inline HidDevice hid_open(unsigned short vendor_id,
                           const wchar_t* serial_number)
 {
   return HidDevice(vendor_id, product_id, serial_number);
+}
+
+inline HidDevice::HidDevice(unsigned short vendor_id,
+                            unsigned short product_id,
+                            const wchar_t* serial_number)
+  : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
+{
+}
+
+inline HidDevice::HidDevice(StringParam path)
+  : m_resource(CheckError(SDL_hid_open_path(path)))
+{
 }
 
 /**

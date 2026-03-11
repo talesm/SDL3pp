@@ -232,32 +232,7 @@ using StorageRaw = SDL_Storage*;
 // Forward decl
 struct StorageRef;
 
-/// Safely wrap Storage for non owning parameters
-struct StorageParam
-{
-  StorageRaw value; ///< parameter's StorageRaw
-
-  /// Constructs from StorageRaw
-  constexpr StorageParam(StorageRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr StorageParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const StorageParam& other) const = default;
-
-  /// Converts to underlying StorageRaw
-  constexpr operator StorageRaw() const { return value; }
-};
+using StorageParam = StorageRef;
 
 /**
  * Function interface for Storage.
@@ -345,10 +320,7 @@ public:
    * @sa Storage.Storage
    * @sa Storage.ReadFile
    */
-  Storage(StringParam override, PropertiesParam props)
-    : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
-  {
-  }
+  Storage(StringParam override, PropertiesParam props);
 
   /**
    * Opens up a container for a user's unique read/write filesystem.
@@ -374,10 +346,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(StringParam org, StringParam app, PropertiesParam props)
-    : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
-  {
-  }
+  Storage(StringParam org, StringParam app, PropertiesParam props);
 
   /**
    * Opens up a container for local filesystem storage.
@@ -401,10 +370,7 @@ public:
    * @sa Storage.ReadFile
    * @sa Storage.WriteFile
    */
-  Storage(StringParam path)
-    : m_resource(CheckError(SDL_OpenFileStorage(path)))
-  {
-  }
+  Storage(StringParam path);
 
   /**
    * Opens up a container using a client-provided storage interface.
@@ -433,10 +399,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(const StorageInterface& iface, void* userdata)
-    : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
-  {
-  }
+  Storage(const StorageInterface& iface, void* userdata);
 
   /// Destructor
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
@@ -469,9 +432,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to StorageParam
-  constexpr operator StorageParam() const noexcept { return {m_resource}; }
 
   /**
    * Closes and frees a storage container.
@@ -796,18 +756,6 @@ struct StorageRef : Storage
   using Storage::Storage;
 
   /**
-   * Constructs from StorageParam.
-   *
-   * @param resource a StorageRaw or Storage.
-   *
-   * This does not takes ownership!
-   */
-  StorageRef(StorageParam resource) noexcept
-    : Storage(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Storage.
    *
    * @param resource a StorageRaw.
@@ -879,6 +827,26 @@ struct StorageRef : Storage
 inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
 {
   return Storage(std::move(override), props);
+}
+
+inline Storage::Storage(StringParam override, PropertiesParam props)
+  : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
+{
+}
+
+inline Storage::Storage(StringParam org, StringParam app, PropertiesParam props)
+  : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
+{
+}
+
+inline Storage::Storage(StringParam path)
+  : m_resource(CheckError(SDL_OpenFileStorage(path)))
+{
+}
+
+inline Storage::Storage(const StorageInterface& iface, void* userdata)
+  : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
+{
 }
 
 /**

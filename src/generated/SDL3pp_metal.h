@@ -27,32 +27,7 @@ using MetalViewRaw = SDL_MetalView;
 // Forward decl
 struct MetalViewRef;
 
-/// Safely wrap MetalView for non owning parameters
-struct MetalViewParam
-{
-  MetalViewRaw value; ///< parameter's MetalViewRaw
-
-  /// Constructs from MetalViewRaw
-  constexpr MetalViewParam(MetalViewRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr MetalViewParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const MetalViewParam& other) const = default;
-
-  /// Converts to underlying MetalViewRaw
-  constexpr operator MetalViewRaw() const { return value; }
-};
+using MetalViewParam = MetalViewRef;
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -119,10 +94,7 @@ public:
    * @sa MetalView.Metal_DestroyView
    * @sa MetalView.GetLayer
    */
-  MetalView(WindowParam window)
-    : m_resource(SDL_Metal_CreateView(window))
-  {
-  }
+  MetalView(WindowParam window);
 
   /// Destructor
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
@@ -155,9 +127,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to MetalViewParam
-  constexpr operator MetalViewParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy an existing MetalView object.
@@ -193,18 +162,6 @@ public:
 struct MetalViewRef : MetalView
 {
   using MetalView::MetalView;
-
-  /**
-   * Constructs from MetalViewParam.
-   *
-   * @param resource a MetalViewRaw or MetalView.
-   *
-   * This does not takes ownership!
-   */
-  MetalViewRef(MetalViewParam resource) noexcept
-    : MetalView(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw MetalView.
@@ -279,6 +236,11 @@ struct MetalViewRef : MetalView
 inline MetalView Metal_CreateView(WindowParam window)
 {
   return MetalView(window);
+}
+
+inline MetalView::MetalView(WindowParam window)
+  : m_resource(SDL_Metal_CreateView(window))
+{
 }
 
 /**

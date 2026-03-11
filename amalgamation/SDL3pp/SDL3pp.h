@@ -9038,35 +9038,7 @@ using PaletteRaw = SDL_Palette*;
 // Forward decl
 struct PaletteRef;
 
-/// Safely wrap Palette for non owning parameters
-struct PaletteParam
-{
-  PaletteRaw value; ///< parameter's PaletteRaw
-
-  /// Constructs from PaletteRaw
-  constexpr PaletteParam(PaletteRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PaletteParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PaletteParam& other) const = default;
-
-  /// Converts to underlying PaletteRaw
-  constexpr operator PaletteRaw() const { return value; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
-};
+using PaletteParam = PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstParam
@@ -9076,12 +9048,6 @@ struct PaletteConstParam
   /// Constructs from const PaletteRaw
   constexpr PaletteConstParam(const PaletteRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from PaletteParam
-  constexpr PaletteConstParam(PaletteParam value)
-    : value(value.value)
   {
   }
 
@@ -9390,11 +9356,7 @@ public:
                         int order,
                         PackedLayout layout,
                         int bits,
-                        int bytes)
-    : m_format(PixelFormatRaw(
-        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-  {
-  }
+                        int bytes);
 
   /**
    * Unwraps to the underlying PixelFormat.
@@ -9967,6 +9929,16 @@ constexpr PixelFormat DefinePixelFormat(PixelType type,
                                         int bytes)
 {
   return PixelFormat(type, order, layout, bits, bytes);
+}
+
+constexpr PixelFormat::PixelFormat(PixelType type,
+                                   int order,
+                                   PackedLayout layout,
+                                   int bits,
+                                   int bytes)
+  : m_format(
+      PixelFormatRaw(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+{
 }
 
 /**
@@ -10641,15 +10613,7 @@ public:
                        ColorPrimaries primaries,
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
-                       ChromaLocation chroma)
-    : m_cspace(ColorspaceRaw(SDL_DEFINE_COLORSPACE(type,
-                                                   range,
-                                                   primaries,
-                                                   transfer,
-                                                   matrix,
-                                                   chroma)))
-  {
-  }
+                       ChromaLocation chroma);
 
   /**
    * Unwraps to the underlying Colorspace.
@@ -10858,6 +10822,17 @@ constexpr Colorspace DefineColorspace(ColorType type,
                                       ChromaLocation chroma)
 {
   return Colorspace(type, range, primaries, transfer, matrix, chroma);
+}
+
+constexpr Colorspace::Colorspace(ColorType type,
+                                 ColorRange range,
+                                 ColorPrimaries primaries,
+                                 TransferCharacteristics transfer,
+                                 MatrixCoefficients matrix,
+                                 ChromaLocation chroma)
+  : m_cspace(ColorspaceRaw(
+      SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma)))
+{
 }
 
 /**
@@ -11499,23 +11474,20 @@ public:
    * @sa Palette.SetColors
    * @sa Surface.SetPalette
    */
-  Palette(int ncolors)
-    : m_resource(CheckError(SDL_CreatePalette(ncolors)))
-  {
-  }
+  Palette(int ncolors);
 
   /**
-   * Safely borrows the from PaletteParam.
+   * Safely borrows the from PaletteRaw.
    *
-   * @param resource a PaletteRaw or Palette.
+   * @param resource a PaletteRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteParam resource)
+  static constexpr Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Palette(resource.value);
+      ++resource->refcount;
+      return Palette(resource);
     }
     return {};
   }
@@ -11555,9 +11527,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to PaletteParam
-  constexpr operator PaletteParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a palette created with Palette.Palette().
@@ -11616,18 +11585,6 @@ struct PaletteRef : Palette
   using Palette::Palette;
 
   /**
-   * Constructs from PaletteParam.
-   *
-   * @param resource a PaletteRaw or Palette.
-   *
-   * This does not takes ownership!
-   */
-  PaletteRef(PaletteParam resource) noexcept
-    : Palette(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Palette.
    *
    * @param resource a PaletteRaw.
@@ -11675,6 +11632,9 @@ struct PaletteRef : Palette
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
+
+  /// Converts to PaletteConstParam
+  constexpr operator PaletteConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -11820,6 +11780,11 @@ inline PixelFormat::operator const PixelFormatDetails&() const
  * @sa Surface.SetPalette
  */
 inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
+
+inline Palette::Palette(int ncolors)
+  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
+{
+}
 
 /**
  * Set a range of colors in a palette.
@@ -12175,32 +12140,7 @@ using PropertiesID = SDL_PropertiesID;
 // Forward decl
 struct PropertiesRef;
 
-/// Safely wrap Properties for non owning parameters
-struct PropertiesParam
-{
-  PropertiesID value; ///< parameter's PropertiesID
-
-  /// Constructs from PropertiesID
-  constexpr PropertiesParam(PropertiesID value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PropertiesParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PropertiesParam& other) const = default;
-
-  /// Converts to underlying PropertiesID
-  constexpr operator PropertiesID() const { return value; }
-};
+using PropertiesParam = PropertiesRef;
 
 // Forward decl
 struct PropertiesLock;
@@ -12414,9 +12354,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -12846,18 +12783,6 @@ public:
 struct PropertiesRef : Properties
 {
   using Properties::Properties;
-
-  /**
-   * Constructs from PropertiesParam.
-   *
-   * @param resource a PropertiesID or Properties.
-   *
-   * This does not takes ownership!
-   */
-  PropertiesRef(PropertiesParam resource) noexcept
-    : Properties(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Properties.
@@ -13794,32 +13719,7 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-/// Safely wrap Environment for non owning parameters
-struct EnvironmentParam
-{
-  EnvironmentRaw value; ///< parameter's EnvironmentRaw
-
-  /// Constructs from EnvironmentRaw
-  constexpr EnvironmentParam(EnvironmentRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr EnvironmentParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const EnvironmentParam& other) const = default;
-
-  /// Converts to underlying EnvironmentRaw
-  constexpr operator EnvironmentRaw() const { return value; }
-};
+using EnvironmentParam = EnvironmentRef;
 
 // Forward decl
 struct IConv;
@@ -13830,32 +13730,7 @@ using IConvRaw = SDL_iconv_t;
 // Forward decl
 struct IConvRef;
 
-/// Safely wrap IConv for non owning parameters
-struct IConvParam
-{
-  IConvRaw value; ///< parameter's IConvRaw
-
-  /// Constructs from IConvRaw
-  constexpr IConvParam(IConvRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IConvParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IConvParam& other) const = default;
-
-  /// Converts to underlying IConvRaw
-  constexpr operator IConvRaw() const { return value; }
-};
+using IConvParam = IConvRef;
 
 #ifdef SDL3PP_DOC
 
@@ -14762,10 +14637,7 @@ public:
    * @sa Environment.UnsetVariable
    * @sa Environment.Destroy
    */
-  Environment(bool populated)
-    : m_resource(SDL_CreateEnvironment(populated))
-  {
-  }
+  Environment(bool populated);
 
   /// Destructor
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
@@ -14798,9 +14670,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -14920,18 +14789,6 @@ struct EnvironmentRef : Environment
   using Environment::Environment;
 
   /**
-   * Constructs from EnvironmentParam.
-   *
-   * @param resource a EnvironmentRaw or Environment.
-   *
-   * This does not takes ownership!
-   */
-  EnvironmentRef(EnvironmentParam resource) noexcept
-    : Environment(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Environment.
    *
    * @param resource a EnvironmentRaw.
@@ -15027,6 +14884,11 @@ inline EnvironmentRaw GetEnvironment() { return SDL_GetEnvironment(); }
 inline Environment CreateEnvironment(bool populated)
 {
   return Environment(populated);
+}
+
+inline Environment::Environment(bool populated)
+  : m_resource(SDL_CreateEnvironment(populated))
+{
 }
 
 /**
@@ -19774,10 +19636,7 @@ public:
    * @sa IConv.close
    * @sa iconv_string
    */
-  IConv(StringParam tocode, StringParam fromcode)
-    : m_resource(SDL_iconv_open(tocode, fromcode))
-  {
-  }
+  IConv(StringParam tocode, StringParam fromcode);
 
   /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
@@ -19813,9 +19672,6 @@ public:
   {
     return reinterpret_cast<size_t>(m_resource) != SDL_ICONV_ERROR;
   }
-
-  /// Converts to IConvParam
-  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -19882,18 +19738,6 @@ public:
 struct IConvRef : IConv
 {
   using IConv::IConv;
-
-  /**
-   * Constructs from IConvParam.
-   *
-   * @param resource a IConvRaw or IConv.
-   *
-   * This does not takes ownership!
-   */
-  IConvRef(IConvParam resource) noexcept
-    : IConv(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw IConv.
@@ -19964,6 +19808,11 @@ struct IConvRef : IConv
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
   return IConv(std::move(tocode), std::move(fromcode));
+}
+
+inline IConv::IConv(StringParam tocode, StringParam fromcode)
+  : m_resource(SDL_iconv_open(tocode, fromcode))
+{
 }
 
 /**
@@ -20312,32 +20161,7 @@ using AsyncIORaw = SDL_AsyncIO*;
 // Forward decl
 struct AsyncIORef;
 
-/// Safely wrap AsyncIO for non owning parameters
-struct AsyncIOParam
-{
-  AsyncIORaw value; ///< parameter's AsyncIORaw
-
-  /// Constructs from AsyncIORaw
-  constexpr AsyncIOParam(AsyncIORaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AsyncIOParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOParam& other) const = default;
-
-  /// Converts to underlying AsyncIORaw
-  constexpr operator AsyncIORaw() const { return value; }
-};
+using AsyncIOParam = AsyncIORef;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -20348,32 +20172,7 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 // Forward decl
 struct AsyncIOQueueRef;
 
-/// Safely wrap AsyncIOQueue for non owning parameters
-struct AsyncIOQueueParam
-{
-  AsyncIOQueueRaw value; ///< parameter's AsyncIOQueueRaw
-
-  /// Constructs from AsyncIOQueueRaw
-  constexpr AsyncIOQueueParam(AsyncIOQueueRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AsyncIOQueueParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueueParam& other) const = default;
-
-  /// Converts to underlying AsyncIOQueueRaw
-  constexpr operator AsyncIOQueueRaw() const { return value; }
-};
+using AsyncIOQueueParam = AsyncIOQueueRef;
 
 /**
  * The asynchronous I/O operation structure.
@@ -20464,10 +20263,7 @@ public:
    * @sa AsyncIO.Read
    * @sa AsyncIO.Write
    */
-  AsyncIO(StringParam file, StringParam mode)
-    : m_resource(SDL_AsyncIOFromFile(file, mode))
-  {
-  }
+  AsyncIO(StringParam file, StringParam mode);
 
   /// Destructor
   ~AsyncIO()
@@ -20506,9 +20302,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AsyncIOParam
-  constexpr operator AsyncIOParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -20661,18 +20454,6 @@ public:
 struct AsyncIORef : AsyncIO
 {
   using AsyncIO::AsyncIO;
-
-  /**
-   * Constructs from AsyncIOParam.
-   *
-   * @param resource a AsyncIORaw or AsyncIO.
-   *
-   * This does not takes ownership!
-   */
-  AsyncIORef(AsyncIOParam resource) noexcept
-    : AsyncIO(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw AsyncIO.
@@ -20836,10 +20617,7 @@ public:
    * @sa AsyncIOQueue.GetResult
    * @sa AsyncIOQueue.WaitResult
    */
-  AsyncIOQueue()
-    : m_resource(SDL_CreateAsyncIOQueue())
-  {
-  }
+  AsyncIOQueue();
 
   /// Destructor
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
@@ -20874,9 +20652,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AsyncIOQueueParam
-  constexpr operator AsyncIOQueueParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -21043,18 +20818,6 @@ struct AsyncIOQueueRef : AsyncIOQueue
   using AsyncIOQueue::AsyncIOQueue;
 
   /**
-   * Constructs from AsyncIOQueueParam.
-   *
-   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
-   *
-   * This does not takes ownership!
-   */
-  AsyncIOQueueRef(AsyncIOQueueParam resource) noexcept
-    : AsyncIOQueue(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw AsyncIOQueue.
    *
    * @param resource a AsyncIOQueueRaw.
@@ -21145,6 +20908,11 @@ struct AsyncIOQueueRef : AsyncIOQueue
 inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 {
   return AsyncIO(std::move(file), std::move(mode));
+}
+
+inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
+  : m_resource(SDL_AsyncIOFromFile(file, mode))
+{
 }
 
 /**
@@ -21352,6 +21120,11 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
  * @sa AsyncIOQueue.WaitResult
  */
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
+
+inline AsyncIOQueue::AsyncIOQueue()
+  : m_resource(SDL_CreateAsyncIOQueue())
+{
+}
 
 /**
  * Destroy a previously-created async I/O task queue.
@@ -24248,10 +24021,7 @@ struct GUID : GUIDRaw
    *
    * @sa GUID.ToString
    */
-  GUID(StringParam pchGUID)
-    : GUIDRaw(SDL_StringToGUID(pchGUID))
-  {
-  }
+  GUID(StringParam pchGUID);
 
   /**
    * Get an ASCII string representation for a given GUID.
@@ -24309,6 +24079,11 @@ inline GUID StringToGUID(StringParam pchGUID)
   return GUID(std::move(pchGUID));
 }
 
+inline GUID::GUID(StringParam pchGUID)
+  : GUIDRaw(SDL_StringToGUID(pchGUID))
+{
+}
+
 /// @}
 
 /**
@@ -24350,32 +24125,7 @@ using HidDeviceRaw = SDL_hid_device*;
 // Forward decl
 struct HidDeviceRef;
 
-/// Safely wrap HidDevice for non owning parameters
-struct HidDeviceParam
-{
-  HidDeviceRaw value; ///< parameter's HidDeviceRaw
-
-  /// Constructs from HidDeviceRaw
-  constexpr HidDeviceParam(HidDeviceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr HidDeviceParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const HidDeviceParam& other) const = default;
-
-  /// Converts to underlying HidDeviceRaw
-  constexpr operator HidDeviceRaw() const { return value; }
-};
+using HidDeviceParam = HidDeviceRef;
 
 /**
  * HID underlying bus types.
@@ -24486,10 +24236,7 @@ public:
    */
   HidDevice(unsigned short vendor_id,
             unsigned short product_id,
-            const wchar_t* serial_number)
-    : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
-  {
-  }
+            const wchar_t* serial_number);
 
   /**
    * Open a HID device by its path name.
@@ -24502,10 +24249,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  HidDevice(StringParam path)
-    : m_resource(CheckError(SDL_hid_open_path(path)))
-  {
-  }
+  HidDevice(StringParam path);
 
   /// Destructor
   ~HidDevice() { SDL_hid_close(m_resource); }
@@ -24538,9 +24282,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to HidDeviceParam
-  constexpr operator HidDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a HID device.
@@ -24790,18 +24531,6 @@ struct HidDeviceRef : HidDevice
   using HidDevice::HidDevice;
 
   /**
-   * Constructs from HidDeviceParam.
-   *
-   * @param resource a HidDeviceRaw or HidDevice.
-   *
-   * This does not takes ownership!
-   */
-  HidDeviceRef(HidDeviceParam resource) noexcept
-    : HidDevice(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw HidDevice.
    *
    * @param resource a HidDeviceRaw.
@@ -24975,6 +24704,18 @@ inline HidDevice hid_open(unsigned short vendor_id,
                           const wchar_t* serial_number)
 {
   return HidDevice(vendor_id, product_id, serial_number);
+}
+
+inline HidDevice::HidDevice(unsigned short vendor_id,
+                            unsigned short product_id,
+                            const wchar_t* serial_number)
+  : m_resource(CheckError(SDL_hid_open(vendor_id, product_id, serial_number)))
+{
+}
+
+inline HidDevice::HidDevice(StringParam path)
+  : m_resource(CheckError(SDL_hid_open_path(path)))
+{
 }
 
 /**
@@ -25418,32 +25159,7 @@ using IOStreamRaw = SDL_IOStream*;
 // Forward decl
 struct IOStreamRef;
 
-/// Safely wrap IOStream for non owning parameters
-struct IOStreamParam
-{
-  IOStreamRaw value; ///< parameter's IOStreamRaw
-
-  /// Constructs from IOStreamRaw
-  constexpr IOStreamParam(IOStreamRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IOStreamParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IOStreamParam& other) const = default;
-
-  /// Converts to underlying IOStreamRaw
-  constexpr operator IOStreamRaw() const { return value; }
-};
+using IOStreamParam = IOStreamRef;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -25824,9 +25540,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to IOStreamParam
-  constexpr operator IOStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free an allocated IOStream structure.
@@ -27049,18 +26762,6 @@ public:
 struct IOStreamRef : IOStream
 {
   using IOStream::IOStream;
-
-  /**
-   * Constructs from IOStreamParam.
-   *
-   * @param resource a IOStreamRaw or IOStream.
-   *
-   * This does not takes ownership!
-   */
-  IOStreamRef(IOStreamParam resource) noexcept
-    : IOStream(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw IOStream.
@@ -28640,32 +28341,7 @@ using SharedObjectRaw = SDL_SharedObject*;
 // Forward decl
 struct SharedObjectRef;
 
-/// Safely wrap SharedObject for non owning parameters
-struct SharedObjectParam
-{
-  SharedObjectRaw value; ///< parameter's SharedObjectRaw
-
-  /// Constructs from SharedObjectRaw
-  constexpr SharedObjectParam(SharedObjectRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SharedObjectParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SharedObjectParam& other) const = default;
-
-  /// Converts to underlying SharedObjectRaw
-  constexpr operator SharedObjectRaw() const { return value; }
-};
+using SharedObjectParam = SharedObjectRef;
 
 /**
  * An opaque datatype that represents a loaded shared object.
@@ -28730,10 +28406,7 @@ public:
    * @sa SharedObject.LoadFunction
    * @sa SharedObject.Unload
    */
-  SharedObject(StringParam sofile)
-    : m_resource(SDL_LoadObject(sofile))
-  {
-  }
+  SharedObject(StringParam sofile);
 
   /// Destructor
   ~SharedObject() { SDL_UnloadObject(m_resource); }
@@ -28768,9 +28441,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SharedObjectParam
-  constexpr operator SharedObjectParam() const noexcept { return {m_resource}; }
 
   /**
    * Unload a shared object from memory.
@@ -28823,18 +28493,6 @@ public:
 struct SharedObjectRef : SharedObject
 {
   using SharedObject::SharedObject;
-
-  /**
-   * Constructs from SharedObjectParam.
-   *
-   * @param resource a SharedObjectRaw or SharedObject.
-   *
-   * This does not takes ownership!
-   */
-  SharedObjectRef(SharedObjectParam resource) noexcept
-    : SharedObject(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw SharedObject.
@@ -28903,6 +28561,11 @@ struct SharedObjectRef : SharedObject
 inline SharedObject LoadObject(StringParam sofile)
 {
   return SharedObject(std::move(sofile));
+}
+
+inline SharedObject::SharedObject(StringParam sofile)
+  : m_resource(SDL_LoadObject(sofile))
+{
 }
 
 /**
@@ -32574,32 +32237,7 @@ using SensorRaw = SDL_Sensor*;
 // Forward decl
 struct SensorRef;
 
-/// Safely wrap Sensor for non owning parameters
-struct SensorParam
-{
-  SensorRaw value; ///< parameter's SensorRaw
-
-  /// Constructs from SensorRaw
-  constexpr SensorParam(SensorRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SensorParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SensorParam& other) const = default;
-
-  /// Converts to underlying SensorRaw
-  constexpr operator SensorRaw() const { return value; }
-};
+using SensorParam = SensorRef;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -32748,10 +32386,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sensor(SensorID instance_id)
-    : m_resource(SDL_OpenSensor(instance_id))
-  {
-  }
+  Sensor(SensorID instance_id);
 
   /// Destructor
   ~Sensor() { SDL_CloseSensor(m_resource); }
@@ -32784,9 +32419,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SensorParam
-  constexpr operator SensorParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a sensor previously opened with Sensor.Sensor().
@@ -32865,18 +32497,6 @@ public:
 struct SensorRef : Sensor
 {
   using Sensor::Sensor;
-
-  /**
-   * Constructs from SensorParam.
-   *
-   * @param resource a SensorRaw or Sensor.
-   *
-   * This does not takes ownership!
-   */
-  SensorRef(SensorParam resource) noexcept
-    : Sensor(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Sensor.
@@ -33011,6 +32631,11 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
  * @since This function is available since SDL 3.2.0.
  */
 inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
+
+inline Sensor::Sensor(SensorID instance_id)
+  : m_resource(SDL_OpenSensor(instance_id))
+{
+}
 
 /**
  * Return the Sensor associated with an instance ID.
@@ -33244,10 +32869,7 @@ struct DateTime : DateTimeRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  DateTime(Time ticks, bool localTime = true)
-  {
-    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
-  }
+  DateTime(Time ticks, bool localTime = true);
 
   /**
    * Check if valid.
@@ -33527,6 +33149,11 @@ inline Time Time::Current()
 inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
 {
   return DateTime(ticks, localTime);
+}
+
+inline DateTime::DateTime(Time ticks, bool localTime)
+{
+  CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
 }
 
 /**
@@ -34187,32 +33814,7 @@ using AudioDeviceID = SDL_AudioDeviceID;
 // Forward decl
 struct AudioDeviceRef;
 
-/// Safely wrap AudioDevice for non owning parameters
-struct AudioDeviceParam
-{
-  AudioDeviceID value; ///< parameter's AudioDeviceID
-
-  /// Constructs from AudioDeviceID
-  constexpr AudioDeviceParam(AudioDeviceID value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AudioDeviceParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioDeviceParam& other) const = default;
-
-  /// Converts to underlying AudioDeviceID
-  constexpr operator AudioDeviceID() const { return value; }
-};
+using AudioDeviceParam = AudioDeviceRef;
 
 // Forward decl
 struct AudioStream;
@@ -34223,32 +33825,7 @@ using AudioStreamRaw = SDL_AudioStream*;
 // Forward decl
 struct AudioStreamRef;
 
-/// Safely wrap AudioStream for non owning parameters
-struct AudioStreamParam
-{
-  AudioStreamRaw value; ///< parameter's AudioStreamRaw
-
-  /// Constructs from AudioStreamRaw
-  constexpr AudioStreamParam(AudioStreamRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AudioStreamParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioStreamParam& other) const = default;
-
-  /// Converts to underlying AudioStreamRaw
-  constexpr operator AudioStreamRaw() const { return value; }
-};
+using AudioStreamParam = AudioStreamRef;
 
 // Forward decl
 struct AudioStreamLock;
@@ -34354,11 +33931,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size)
-    : m_audioFormat(
-        AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
-  {
-  }
+  constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size);
 
   /**
    * Unwraps to the underlying AudioFormat.
@@ -34563,6 +34136,15 @@ constexpr AudioFormat DefineAudioFormat(bool sign,
                                         Uint16 size)
 {
   return AudioFormat(sign, bigendian, flt, size);
+}
+
+constexpr AudioFormat::AudioFormat(bool sign,
+                                   bool bigendian,
+                                   bool flt,
+                                   Uint16 size)
+  : m_audioFormat(
+      AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
+{
 }
 
 /**
@@ -35010,10 +34592,7 @@ public:
    * @sa AudioDevice.Close
    * @sa AudioDevice.GetFormat
    */
-  AudioDevice(AudioDeviceParam devid, OptionalRef<const AudioSpec> spec)
-    : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
-  {
-  }
+  AudioDevice(AudioDeviceParam devid, OptionalRef<const AudioSpec> spec);
 
   /// Destructor
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
@@ -35046,9 +34625,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AudioDeviceParam
-  constexpr operator AudioDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a previously-opened audio device.
@@ -35595,18 +35171,6 @@ struct AudioDeviceRef : AudioDevice
   using AudioDevice::AudioDevice;
 
   /**
-   * Constructs from AudioDeviceParam.
-   *
-   * @param resource a AudioDeviceID or AudioDevice.
-   *
-   * This does not takes ownership!
-   */
-  AudioDeviceRef(AudioDeviceParam resource) noexcept
-    : AudioDevice(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw AudioDevice.
    *
    * @param resource a AudioDeviceID.
@@ -35846,10 +35410,7 @@ public:
    * @sa AudioStream.Destroy
    */
   AudioStream(OptionalRef<const AudioSpec> src_spec,
-              OptionalRef<const AudioSpec> dst_spec)
-    : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
-  {
-  }
+              OptionalRef<const AudioSpec> dst_spec);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -35911,11 +35472,7 @@ public:
   AudioStream(AudioDeviceParam devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
               AudioStreamCallback callback = nullptr,
-              void* userdata = nullptr)
-    : m_resource(
-        CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
-  {
-  }
+              void* userdata = nullptr);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -36005,9 +35562,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AudioStreamParam
-  constexpr operator AudioStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Free an audio stream.
@@ -37073,18 +36627,6 @@ struct AudioStreamRef : AudioStream
   using AudioStream::AudioStream;
 
   /**
-   * Constructs from AudioStreamParam.
-   *
-   * @param resource a AudioStreamRaw or AudioStream.
-   *
-   * This does not takes ownership!
-   */
-  AudioStreamRef(AudioStreamParam resource) noexcept
-    : AudioStream(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw AudioStream.
    *
    * @param resource a AudioStreamRaw.
@@ -37560,6 +37102,12 @@ inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
   return AudioDevice(devid, spec);
 }
 
+inline AudioDevice::AudioDevice(AudioDeviceParam devid,
+                                OptionalRef<const AudioSpec> spec)
+  : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
+{
+}
+
 /**
  * Determine if an audio device is physical (instead of logical).
  *
@@ -37985,6 +37533,33 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
                                      OptionalRef<const AudioSpec> dst_spec)
 {
   return AudioStream(src_spec, dst_spec);
+}
+
+inline AudioStream::AudioStream(OptionalRef<const AudioSpec> src_spec,
+                                OptionalRef<const AudioSpec> dst_spec)
+  : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
+{
+}
+
+inline AudioStream::AudioStream(AudioDeviceParam devid,
+                                OptionalRef<const AudioSpec> spec,
+                                AudioStreamCallback callback,
+                                void* userdata)
+  : m_resource(
+      CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
+{
+}
+
+inline AudioStream::AudioStream(AudioDeviceParam devid,
+                                OptionalRef<const AudioSpec> spec,
+                                AudioStreamCB callback)
+  : AudioStream(devid, spec)
+{
+  if (IsAudioDevicePlayback(devid)) {
+    SetGetCallback(std::move(callback));
+  } else {
+    SetPutCallback(std::move(callback));
+  }
 }
 
 /**
@@ -39349,18 +38924,6 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
   return AudioStream(m_resource, spec, callback);
 }
 
-inline AudioStream::AudioStream(AudioDeviceParam devid,
-                                OptionalRef<const AudioSpec> spec,
-                                AudioStreamCB callback)
-  : AudioStream(devid, spec)
-{
-  if (IsAudioDevicePlayback(devid)) {
-    SetGetCallback(std::move(callback));
-  } else {
-    SetPutCallback(std::move(callback));
-  }
-}
-
 /**
  * Set a callback that fires when data is about to be fed to an audio device.
  *
@@ -40696,32 +40259,7 @@ using ProcessRaw = SDL_Process*;
 // Forward decl
 struct ProcessRef;
 
-/// Safely wrap Process for non owning parameters
-struct ProcessParam
-{
-  ProcessRaw value; ///< parameter's ProcessRaw
-
-  /// Constructs from ProcessRaw
-  constexpr ProcessParam(ProcessRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ProcessParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ProcessParam& other) const = default;
-
-  /// Converts to underlying ProcessRaw
-  constexpr operator ProcessRaw() const { return value; }
-};
+using ProcessParam = ProcessRef;
 
 /**
  * Description of where standard I/O should be directed when creating a process.
@@ -40867,10 +40405,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(const char* const* args, bool pipe_stdio)
-    : m_resource(SDL_CreateProcess(args, pipe_stdio))
-  {
-  }
+  Process(const char* const* args, bool pipe_stdio);
 
   /**
    * Create a new process with the specified properties.
@@ -40942,10 +40477,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(PropertiesParam props)
-    : m_resource(SDL_CreateProcessWithProperties(props))
-  {
-  }
+  Process(PropertiesParam props);
 
   /// Destructor
   ~Process() { SDL_DestroyProcess(m_resource); }
@@ -40978,9 +40510,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ProcessParam
-  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -41201,18 +40730,6 @@ struct ProcessRef : Process
   using Process::Process;
 
   /**
-   * Constructs from ProcessParam.
-   *
-   * @param resource a ProcessRaw or Process.
-   *
-   * This does not takes ownership!
-   */
-  ProcessRef(ProcessParam resource) noexcept
-    : Process(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Process.
    *
    * @param resource a ProcessRaw.
@@ -41304,6 +40821,16 @@ struct ProcessRef : Process
 inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 {
   return Process(args, pipe_stdio);
+}
+
+inline Process::Process(const char* const* args, bool pipe_stdio)
+  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+{
+}
+
+inline Process::Process(PropertiesParam props)
+  : m_resource(SDL_CreateProcessWithProperties(props))
+{
 }
 
 /**
@@ -41888,32 +41415,7 @@ using StorageRaw = SDL_Storage*;
 // Forward decl
 struct StorageRef;
 
-/// Safely wrap Storage for non owning parameters
-struct StorageParam
-{
-  StorageRaw value; ///< parameter's StorageRaw
-
-  /// Constructs from StorageRaw
-  constexpr StorageParam(StorageRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr StorageParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const StorageParam& other) const = default;
-
-  /// Converts to underlying StorageRaw
-  constexpr operator StorageRaw() const { return value; }
-};
+using StorageParam = StorageRef;
 
 /**
  * Function interface for Storage.
@@ -42001,10 +41503,7 @@ public:
    * @sa Storage.Storage
    * @sa Storage.ReadFile
    */
-  Storage(StringParam override, PropertiesParam props)
-    : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
-  {
-  }
+  Storage(StringParam override, PropertiesParam props);
 
   /**
    * Opens up a container for a user's unique read/write filesystem.
@@ -42030,10 +41529,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(StringParam org, StringParam app, PropertiesParam props)
-    : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
-  {
-  }
+  Storage(StringParam org, StringParam app, PropertiesParam props);
 
   /**
    * Opens up a container for local filesystem storage.
@@ -42057,10 +41553,7 @@ public:
    * @sa Storage.ReadFile
    * @sa Storage.WriteFile
    */
-  Storage(StringParam path)
-    : m_resource(CheckError(SDL_OpenFileStorage(path)))
-  {
-  }
+  Storage(StringParam path);
 
   /**
    * Opens up a container using a client-provided storage interface.
@@ -42089,10 +41582,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(const StorageInterface& iface, void* userdata)
-    : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
-  {
-  }
+  Storage(const StorageInterface& iface, void* userdata);
 
   /// Destructor
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
@@ -42125,9 +41615,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to StorageParam
-  constexpr operator StorageParam() const noexcept { return {m_resource}; }
 
   /**
    * Closes and frees a storage container.
@@ -42452,18 +41939,6 @@ struct StorageRef : Storage
   using Storage::Storage;
 
   /**
-   * Constructs from StorageParam.
-   *
-   * @param resource a StorageRaw or Storage.
-   *
-   * This does not takes ownership!
-   */
-  StorageRef(StorageParam resource) noexcept
-    : Storage(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Storage.
    *
    * @param resource a StorageRaw.
@@ -42535,6 +42010,26 @@ struct StorageRef : Storage
 inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
 {
   return Storage(std::move(override), props);
+}
+
+inline Storage::Storage(StringParam override, PropertiesParam props)
+  : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
+{
+}
+
+inline Storage::Storage(StringParam org, StringParam app, PropertiesParam props)
+  : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
+{
+}
+
+inline Storage::Storage(StringParam path)
+  : m_resource(CheckError(SDL_OpenFileStorage(path)))
+{
+}
+
+inline Storage::Storage(const StorageInterface& iface, void* userdata)
+  : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
+{
 }
 
 /**
@@ -43162,35 +42657,7 @@ using SurfaceRaw = SDL_Surface*;
 // Forward decl
 struct SurfaceRef;
 
-/// Safely wrap Surface for non owning parameters
-struct SurfaceParam
-{
-  SurfaceRaw value; ///< parameter's SurfaceRaw
-
-  /// Constructs from SurfaceRaw
-  constexpr SurfaceParam(SurfaceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SurfaceParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SurfaceParam& other) const = default;
-
-  /// Converts to underlying SurfaceRaw
-  constexpr operator SurfaceRaw() const { return value; }
-
-  /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() { return value; }
-};
+using SurfaceParam = SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstParam
@@ -43200,12 +42667,6 @@ struct SurfaceConstParam
   /// Constructs from const SurfaceRaw
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from SurfaceParam
-  constexpr SurfaceConstParam(SurfaceParam value)
-    : value(value.value)
   {
   }
 
@@ -43393,10 +42854,7 @@ public:
    * @sa Surface.Surface
    * @sa Surface.Destroy
    */
-  Surface(const PointRaw& size, PixelFormat format)
-    : m_resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
-  {
-  }
+  Surface(const PointRaw& size, PixelFormat format);
 
   /**
    * Allocate a new surface with a specific pixel format and existing pixel
@@ -43424,11 +42882,7 @@ public:
    * @sa Surface.Surface
    * @sa Surface.Destroy
    */
-  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch)
-    : m_resource(CheckError(
-        SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
-  {
-  }
+  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -43518,17 +42972,17 @@ public:
   Surface(IOStreamParam src, bool closeio = false);
 
   /**
-   * Safely borrows the from SurfaceParam.
+   * Safely borrows the from SurfaceRaw.
    *
-   * @param resource a SurfaceRaw or Surface.
+   * @param resource a SurfaceRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Surface Borrow(SurfaceParam resource)
+  static constexpr Surface Borrow(SurfaceRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Surface(resource.value);
+      ++resource->refcount;
+      return Surface(resource);
     }
     return {};
   }
@@ -43661,9 +43115,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SurfaceParam
-  constexpr operator SurfaceParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a surface.
@@ -45121,18 +44572,6 @@ struct SurfaceRef : Surface
   using Surface::Surface;
 
   /**
-   * Constructs from SurfaceParam.
-   *
-   * @param resource a SurfaceRaw or Surface.
-   *
-   * This does not takes ownership!
-   */
-  SurfaceRef(SurfaceParam resource) noexcept
-    : Surface(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Surface.
    *
    * @param resource a SurfaceRaw.
@@ -45180,6 +44619,9 @@ struct SurfaceRef : Surface
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
+
+  /// Converts to SurfaceConstParam
+  constexpr operator SurfaceConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -45469,6 +44911,20 @@ public:
 inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 {
   return Surface(size, format);
+}
+
+inline Surface::Surface(const PointRaw& size, PixelFormat format)
+  : m_resource(CheckError(SDL_CreateSurface(size.x, size.y, format)))
+{
+}
+
+inline Surface::Surface(const PointRaw& size,
+                        PixelFormat format,
+                        void* pixels,
+                        int pitch)
+  : m_resource(
+      CheckError(SDL_CreateSurfaceFrom(size.x, size.y, format, pixels, pitch)))
+{
 }
 
 /**
@@ -48200,32 +47656,7 @@ using ThreadRaw = SDL_Thread*;
 // Forward decl
 struct ThreadRef;
 
-/// Safely wrap Thread for non owning parameters
-struct ThreadParam
-{
-  ThreadRaw value; ///< parameter's ThreadRaw
-
-  /// Constructs from ThreadRaw
-  constexpr ThreadParam(ThreadRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ThreadParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ThreadParam& other) const = default;
-
-  /// Converts to underlying ThreadRaw
-  constexpr operator ThreadRaw() const { return value; }
-};
+using ThreadParam = ThreadRef;
 
 /**
  * The SDL thread priority.
@@ -48407,10 +47838,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(ThreadFunction fn, StringParam name, void* data)
-    : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
-  {
-  }
+  Thread(ThreadFunction fn, StringParam name, void* data);
 
   /**
    * Create a new thread with with the specified properties.
@@ -48476,10 +47904,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
-  {
-  }
+  Thread(PropertiesParam props);
 
   /// Destructor
   ~Thread() { SDL_DetachThread(m_resource); }
@@ -48512,9 +47937,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ThreadParam
-  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -48658,18 +48080,6 @@ struct ThreadRef : Thread
   using Thread::Thread;
 
   /**
-   * Constructs from ThreadParam.
-   *
-   * @param resource a ThreadRaw or Thread.
-   *
-   * This does not takes ownership!
-   */
-  ThreadRef(ThreadParam resource) noexcept
-    : Thread(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Thread.
    *
    * @param resource a ThreadRaw.
@@ -48767,6 +48177,16 @@ using TLSID = AtomicInt;
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
   return Thread(fn, std::move(name), data);
+}
+
+inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
+  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+{
+}
+
+inline Thread::Thread(PropertiesParam props)
+  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+{
 }
 
 /**
@@ -49164,32 +48584,7 @@ using CameraRaw = SDL_Camera*;
 // Forward decl
 struct CameraRef;
 
-/// Safely wrap Camera for non owning parameters
-struct CameraParam
-{
-  CameraRaw value; ///< parameter's CameraRaw
-
-  /// Constructs from CameraRaw
-  constexpr CameraParam(CameraRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr CameraParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const CameraParam& other) const = default;
-
-  /// Converts to underlying CameraRaw
-  constexpr operator CameraRaw() const { return value; }
-};
+using CameraParam = CameraRef;
 
 // Forward decl
 struct CameraFrame;
@@ -49360,10 +48755,7 @@ public:
    * @sa GetCameras
    * @sa Camera.GetFormat
    */
-  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {})
-    : m_resource(SDL_OpenCamera(instance_id, spec))
-  {
-  }
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
 
   /// Destructor
   ~Camera() { SDL_CloseCamera(m_resource); }
@@ -49396,9 +48788,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to CameraParam
-  constexpr operator CameraParam() const noexcept { return {m_resource}; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -49573,18 +48962,6 @@ public:
 struct CameraRef : Camera
 {
   using Camera::Camera;
-
-  /**
-   * Constructs from CameraParam.
-   *
-   * @param resource a CameraRaw or Camera.
-   *
-   * This does not takes ownership!
-   */
-  CameraRef(CameraParam resource) noexcept
-    : Camera(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Camera.
@@ -49989,6 +49366,11 @@ inline Camera OpenCamera(CameraID instance_id,
   return Camera(instance_id, spec);
 }
 
+inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
+  : m_resource(SDL_OpenCamera(instance_id, spec))
+{
+}
+
 /**
  * Query if camera access has been approved by the user.
  *
@@ -50253,32 +49635,7 @@ using MutexRaw = SDL_Mutex*;
 // Forward decl
 struct MutexRef;
 
-/// Safely wrap Mutex for non owning parameters
-struct MutexParam
-{
-  MutexRaw value; ///< parameter's MutexRaw
-
-  /// Constructs from MutexRaw
-  constexpr MutexParam(MutexRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr MutexParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const MutexParam& other) const = default;
-
-  /// Converts to underlying MutexRaw
-  constexpr operator MutexRaw() const { return value; }
-};
+using MutexParam = MutexRef;
 
 // Forward decl
 struct RWLock;
@@ -50289,32 +49646,7 @@ using RWLockRaw = SDL_RWLock*;
 // Forward decl
 struct RWLockRef;
 
-/// Safely wrap RWLock for non owning parameters
-struct RWLockParam
-{
-  RWLockRaw value; ///< parameter's RWLockRaw
-
-  /// Constructs from RWLockRaw
-  constexpr RWLockParam(RWLockRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr RWLockParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const RWLockParam& other) const = default;
-
-  /// Converts to underlying RWLockRaw
-  constexpr operator RWLockRaw() const { return value; }
-};
+using RWLockParam = RWLockRef;
 
 // Forward decl
 struct Semaphore;
@@ -50325,32 +49657,7 @@ using SemaphoreRaw = SDL_Semaphore*;
 // Forward decl
 struct SemaphoreRef;
 
-/// Safely wrap Semaphore for non owning parameters
-struct SemaphoreParam
-{
-  SemaphoreRaw value; ///< parameter's SemaphoreRaw
-
-  /// Constructs from SemaphoreRaw
-  constexpr SemaphoreParam(SemaphoreRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SemaphoreParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SemaphoreParam& other) const = default;
-
-  /// Converts to underlying SemaphoreRaw
-  constexpr operator SemaphoreRaw() const { return value; }
-};
+using SemaphoreParam = SemaphoreRef;
 
 // Forward decl
 struct Condition;
@@ -50361,32 +49668,7 @@ using ConditionRaw = SDL_Condition*;
 // Forward decl
 struct ConditionRef;
 
-/// Safely wrap Condition for non owning parameters
-struct ConditionParam
-{
-  ConditionRaw value; ///< parameter's ConditionRaw
-
-  /// Constructs from ConditionRaw
-  constexpr ConditionParam(ConditionRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ConditionParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ConditionParam& other) const = default;
-
-  /// Converts to underlying ConditionRaw
-  constexpr operator ConditionRaw() const { return value; }
-};
+using ConditionParam = ConditionRef;
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -50468,10 +49750,7 @@ public:
    * @sa Mutex.TryLock
    * @sa Mutex.Unlock
    */
-  Mutex()
-    : m_resource(SDL_CreateMutex())
-  {
-  }
+  Mutex();
 
   /// Destructor
   ~Mutex() { SDL_DestroyMutex(m_resource); }
@@ -50504,9 +49783,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to MutexParam
-  constexpr operator MutexParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a mutex created with Mutex.Mutex().
@@ -50602,18 +49878,6 @@ struct MutexRef : Mutex
   using Mutex::Mutex;
 
   /**
-   * Constructs from MutexParam.
-   *
-   * @param resource a MutexRaw or Mutex.
-   *
-   * This does not takes ownership!
-   */
-  MutexRef(MutexParam resource) noexcept
-    : Mutex(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Mutex.
    *
    * @param resource a MutexRaw.
@@ -50686,6 +49950,11 @@ struct MutexRef : Mutex
  * @sa Mutex.Unlock
  */
 inline Mutex CreateMutex() { return Mutex(); }
+
+inline Mutex::Mutex()
+  : m_resource(SDL_CreateMutex())
+{
+}
 
 /**
  * Lock the mutex.
@@ -50888,10 +50157,7 @@ public:
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
-  RWLock()
-    : m_resource(SDL_CreateRWLock())
-  {
-  }
+  RWLock();
 
   /// Destructor
   ~RWLock() { SDL_DestroyRWLock(m_resource); }
@@ -50924,9 +50190,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to RWLockParam
-  constexpr operator RWLockParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a read/write lock created with RWLock.RWLock().
@@ -51107,18 +50370,6 @@ struct RWLockRef : RWLock
   using RWLock::RWLock;
 
   /**
-   * Constructs from RWLockParam.
-   *
-   * @param resource a RWLockRaw or RWLock.
-   *
-   * This does not takes ownership!
-   */
-  RWLockRef(RWLockParam resource) noexcept
-    : RWLock(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw RWLock.
    *
    * @param resource a RWLockRaw.
@@ -51211,6 +50462,11 @@ struct RWLockRef : RWLock
  * @sa RWLock.Unlock
  */
 inline RWLock CreateRWLock() { return RWLock(); }
+
+inline RWLock::RWLock()
+  : m_resource(SDL_CreateRWLock())
+{
+}
 
 /**
  * Lock the read/write lock for _read only_ operations.
@@ -51498,10 +50754,7 @@ public:
    * @sa Semaphore.Wait
    * @sa Semaphore.WaitTimeout
    */
-  Semaphore(Uint32 initial_value)
-    : m_resource(SDL_CreateSemaphore(initial_value))
-  {
-  }
+  Semaphore(Uint32 initial_value);
 
   /// Destructor
   ~Semaphore() { SDL_DestroySemaphore(m_resource); }
@@ -51534,9 +50787,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SemaphoreParam
-  constexpr operator SemaphoreParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a semaphore.
@@ -51648,18 +50898,6 @@ struct SemaphoreRef : Semaphore
   using Semaphore::Semaphore;
 
   /**
-   * Constructs from SemaphoreParam.
-   *
-   * @param resource a SemaphoreRaw or Semaphore.
-   *
-   * This does not takes ownership!
-   */
-  SemaphoreRef(SemaphoreParam resource) noexcept
-    : Semaphore(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Semaphore.
    *
    * @param resource a SemaphoreRaw.
@@ -51736,6 +50974,11 @@ struct SemaphoreRef : Semaphore
 inline Semaphore CreateSemaphore(Uint32 initial_value)
 {
   return Semaphore(initial_value);
+}
+
+inline Semaphore::Semaphore(Uint32 initial_value)
+  : m_resource(SDL_CreateSemaphore(initial_value))
+{
 }
 
 /**
@@ -51943,10 +51186,7 @@ public:
    * @sa Condition.WaitTimeout
    * @sa Condition.Destroy
    */
-  Condition()
-    : m_resource(SDL_CreateCondition())
-  {
-  }
+  Condition();
 
   /// Destructor
   ~Condition() { SDL_DestroyCondition(m_resource); }
@@ -51979,9 +51219,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ConditionParam
-  constexpr operator ConditionParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a condition variable.
@@ -52087,18 +51324,6 @@ struct ConditionRef : Condition
   using Condition::Condition;
 
   /**
-   * Constructs from ConditionParam.
-   *
-   * @param resource a ConditionRaw or Condition.
-   *
-   * This does not takes ownership!
-   */
-  ConditionRef(ConditionParam resource) noexcept
-    : Condition(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Condition.
    *
    * @param resource a ConditionRaw.
@@ -52165,6 +51390,11 @@ struct ConditionRef : Condition
  * @sa Condition.Destroy
  */
 inline Condition CreateCondition() { return Condition(); }
+
+inline Condition::Condition()
+  : m_resource(SDL_CreateCondition())
+{
+}
 
 /**
  * Destroy a condition variable.
@@ -52536,32 +51766,7 @@ using TrayRaw = SDL_Tray*;
 // Forward decl
 struct TrayRef;
 
-/// Safely wrap Tray for non owning parameters
-struct TrayParam
-{
-  TrayRaw value; ///< parameter's TrayRaw
-
-  /// Constructs from TrayRaw
-  constexpr TrayParam(TrayRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TrayParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayParam& other) const = default;
-
-  /// Converts to underlying TrayRaw
-  constexpr operator TrayRaw() const { return value; }
-};
+using TrayParam = TrayRef;
 
 /// Alias to raw representation for TrayMenu.
 struct TrayMenu;
@@ -52581,32 +51786,7 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-/// Safely wrap TrayEntry for non owning parameters
-struct TrayEntryParam
-{
-  TrayEntryRaw value; ///< parameter's TrayEntryRaw
-
-  /// Constructs from TrayEntryRaw
-  constexpr TrayEntryParam(TrayEntryRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TrayEntryParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayEntryParam& other) const = default;
-
-  /// Converts to underlying TrayEntryRaw
-  constexpr operator TrayEntryRaw() const { return value; }
-};
+using TrayEntryParam = TrayEntry;
 
 /**
  * Flags that control the creation of system tray entries.
@@ -52730,10 +51910,7 @@ public:
    * @sa Tray.GetMenu
    * @sa Tray.Destroy
    */
-  Tray(SurfaceParam icon, StringParam tooltip)
-    : m_resource(SDL_CreateTray(icon, tooltip))
-  {
-  }
+  Tray(SurfaceParam icon, StringParam tooltip);
 
   /// Destructor
   ~Tray() { SDL_DestroyTray(m_resource); }
@@ -52766,9 +51943,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TrayParam
-  constexpr operator TrayParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a tray object.
@@ -52867,18 +52041,6 @@ public:
 struct TrayRef : Tray
 {
   using Tray::Tray;
-
-  /**
-   * Constructs from TrayParam.
-   *
-   * @param resource a TrayRaw or Tray.
-   *
-   * This does not takes ownership!
-   */
-  TrayRef(TrayParam resource) noexcept
-    : Tray(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Tray.
@@ -53103,6 +52265,8 @@ public:
   {
   }
 
+  constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
+
   /// Destructor
   ~TrayEntry() {}
 
@@ -53132,9 +52296,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TrayEntryParam
-  constexpr operator TrayEntryParam() const noexcept { return {m_resource}; }
 
   /**
    * Removes a tray entry.
@@ -53402,6 +52563,11 @@ struct TrayEntryScoped : TrayEntry
 inline Tray CreateTray(SurfaceParam icon, StringParam tooltip)
 {
   return Tray(icon, std::move(tooltip));
+}
+
+inline Tray::Tray(SurfaceParam icon, StringParam tooltip)
+  : m_resource(SDL_CreateTray(icon, tooltip))
+{
 }
 
 /**
@@ -54021,32 +53187,7 @@ using WindowRaw = SDL_Window*;
 // Forward decl
 struct WindowRef;
 
-/// Safely wrap Window for non owning parameters
-struct WindowParam
-{
-  WindowRaw value; ///< parameter's WindowRaw
-
-  /// Constructs from WindowRaw
-  constexpr WindowParam(WindowRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr WindowParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const WindowParam& other) const = default;
-
-  /// Converts to underlying WindowRaw
-  constexpr operator WindowRaw() const { return value; }
-};
+using WindowParam = WindowRef;
 
 // Forward decl
 struct GLContext;
@@ -54057,32 +53198,7 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-/// Safely wrap GLContext for non owning parameters
-struct GLContextParam
-{
-  GLContextRaw value; ///< parameter's GLContextRaw
-
-  /// Constructs from GLContextRaw
-  constexpr GLContextParam(GLContextRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GLContextParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GLContextParam& other) const = default;
-
-  /// Converts to underlying GLContextRaw
-  constexpr operator GLContextRaw() const { return value; }
-};
+using GLContextParam = GLContext;
 
 // Forward decl
 struct RendererRef;
@@ -54903,10 +54019,7 @@ public:
    * @sa Window.Window
    * @sa Window.Destroy
    */
-  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0)
-    : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
-  {
-  }
+  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
 
   /**
    * Create a child popup window of the specified parent window.
@@ -54982,15 +54095,7 @@ public:
   Window(WindowParam parent,
          const PointRaw& offset,
          const PointRaw& size,
-         WindowFlags flags = 0)
-    : m_resource(SDL_CreatePopupWindow(parent,
-                                       offset.x,
-                                       offset.y,
-                                       size.x,
-                                       size.y,
-                                       flags))
-  {
-  }
+         WindowFlags flags = 0);
 
   /**
    * Create a window with the specified properties.
@@ -55136,10 +54241,7 @@ public:
    * @sa Window.Window
    * @sa Window.Destroy
    */
-  Window(PropertiesParam props)
-    : m_resource(SDL_CreateWindowWithProperties(props))
-  {
-  }
+  Window(PropertiesParam props);
 
   /// Destructor
   ~Window() { SDL_DestroyWindow(m_resource); }
@@ -55172,9 +54274,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to WindowParam
-  constexpr operator WindowParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a window.
@@ -57146,18 +56245,6 @@ struct WindowRef : Window
   using Window::Window;
 
   /**
-   * Constructs from WindowParam.
-   *
-   * @param resource a WindowRaw or Window.
-   *
-   * This does not takes ownership!
-   */
-  WindowRef(WindowParam resource) noexcept
-    : Window(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Window.
    *
    * @param resource a WindowRaw.
@@ -57385,10 +56472,9 @@ public:
    * @sa GLContext.Destroy
    * @sa GLContext.MakeCurrent
    */
-  GLContext(WindowParam window)
-    : m_resource(SDL_GL_CreateContext(window))
-  {
-  }
+  GLContext(WindowParam window);
+
+  constexpr operator GLContextRaw() const noexcept { return m_resource; }
 
   /// Destructor
   ~GLContext() {}
@@ -57419,9 +56505,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GLContextParam
-  constexpr operator GLContextParam() const noexcept { return {m_resource}; }
 
   /**
    * Delete an OpenGL context.
@@ -58596,6 +57679,27 @@ inline Window CreateWindow(StringParam title,
                            WindowFlags flags)
 {
   return Window(std::move(title), size, flags);
+}
+
+inline Window::Window(StringParam title,
+                      const PointRaw& size,
+                      WindowFlags flags)
+  : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
+{
+}
+
+inline Window::Window(WindowParam parent,
+                      const PointRaw& offset,
+                      const PointRaw& size,
+                      WindowFlags flags)
+  : m_resource(
+      SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags))
+{
+}
+
+inline Window::Window(PropertiesParam props)
+  : m_resource(SDL_CreateWindowWithProperties(props))
+{
 }
 
 /**
@@ -61411,6 +60515,11 @@ inline GLContext GL_CreateContext(WindowParam window)
 }
 
 inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
+
+inline GLContext::GLContext(WindowParam window)
+  : m_resource(SDL_GL_CreateContext(window))
+{
+}
 
 /**
  * Set up an OpenGL context for rendering into an OpenGL window.
@@ -64488,32 +63597,7 @@ using GPUDeviceRaw = SDL_GPUDevice*;
 // Forward decl
 struct GPUDeviceRef;
 
-/// Safely wrap GPUDevice for non owning parameters
-struct GPUDeviceParam
-{
-  GPUDeviceRaw value; ///< parameter's GPUDeviceRaw
-
-  /// Constructs from GPUDeviceRaw
-  constexpr GPUDeviceParam(GPUDeviceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GPUDeviceParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPUDeviceParam& other) const = default;
-
-  /// Converts to underlying GPUDeviceRaw
-  constexpr operator GPUDeviceRaw() const { return value; }
-};
+using GPUDeviceParam = GPUDeviceRef;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -64673,10 +63757,7 @@ public:
    * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo)
-    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
-  {
-  }
+  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUBuffer.
@@ -64755,11 +63836,7 @@ public:
    * @sa GPUDevice.ReleaseTransferBuffer
    */
   GPUTransferBuffer(GPUDeviceParam device,
-                    const GPUTransferBufferCreateInfo& createinfo)
-    : m_gPUTransferBuffer(
-        CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
-  {
-  }
+                    const GPUTransferBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTransferBuffer.
@@ -64880,10 +63957,7 @@ public:
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.TextureSupportsFormat
    */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo)
-    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
-  {
-  }
+  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTexture.
@@ -64955,10 +64029,7 @@ public:
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
-    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
-  {
-  }
+  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUSampler.
@@ -65076,10 +64147,7 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo)
-    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
-  {
-  }
+  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUShader.
@@ -65172,11 +64240,7 @@ public:
    * @sa GPUDevice.ReleaseComputePipeline
    */
   GPUComputePipeline(GPUDeviceParam device,
-                     const GPUComputePipelineCreateInfo& createinfo)
-    : m_gPUComputePipeline(
-        CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
-  {
-  }
+                     const GPUComputePipelineCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUComputePipeline.
@@ -65254,11 +64318,7 @@ public:
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
   GPUGraphicsPipeline(GPUDeviceParam device,
-                      const GPUGraphicsPipelineCreateInfo& createinfo)
-    : m_gPUGraphicsPipeline(
-        CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
-  {
-  }
+                      const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUGraphicsPipeline.
@@ -67270,11 +66330,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsShaderFormats
    */
-  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name)
-    : m_resource(
-        CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
-  {
-  }
+  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
 
   /**
    * Creates a GPU context.
@@ -67387,10 +66443,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsProperties
    */
-  GPUDevice(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
-  {
-  }
+  GPUDevice(PropertiesParam props);
 
   /// Destructor
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
@@ -67423,9 +66476,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GPUDeviceParam
-  constexpr operator GPUDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -68293,18 +67343,6 @@ public:
 struct GPUDeviceRef : GPUDevice
 {
   using GPUDevice::GPUDevice;
-
-  /**
-   * Constructs from GPUDeviceParam.
-   *
-   * @param resource a GPUDeviceRaw or GPUDevice.
-   *
-   * This does not takes ownership!
-   */
-  GPUDeviceRef(GPUDeviceParam resource) noexcept
-    : GPUDevice(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw GPUDevice.
@@ -69203,6 +68241,18 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
   return GPUDevice(format_flags, debug_mode, std::move(name));
 }
 
+inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
+                            bool debug_mode,
+                            StringParam name)
+  : m_resource(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
+{
+}
+
+inline GPUDevice::GPUDevice(PropertiesParam props)
+  : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
+{
+}
+
 /**
  * Creates a GPU context.
  *
@@ -69699,6 +68749,14 @@ inline GPUComputePipeline GPUDevice::CreateComputePipeline(
   return GPUComputePipeline(m_resource, createinfo);
 }
 
+inline GPUComputePipeline::GPUComputePipeline(
+  GPUDeviceParam device,
+  const GPUComputePipelineCreateInfo& createinfo)
+  : m_gPUComputePipeline(
+      CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
+{
+}
+
 namespace prop::GPUComputePipeline {
 
 constexpr auto CREATE_NAME_STRING =
@@ -69740,6 +68798,14 @@ inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
   return GPUGraphicsPipeline(m_resource, createinfo);
 }
 
+inline GPUGraphicsPipeline::GPUGraphicsPipeline(
+  GPUDeviceParam device,
+  const GPUGraphicsPipelineCreateInfo& createinfo)
+  : m_gPUGraphicsPipeline(
+      CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
+{
+}
+
 namespace prop::GPUGraphicsPipeline {
 
 constexpr auto CREATE_NAME_STRING =
@@ -69778,6 +68844,12 @@ inline GPUSampler GPUDevice::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(m_resource, createinfo);
+}
+
+inline GPUSampler::GPUSampler(GPUDeviceParam device,
+                              const GPUSamplerCreateInfo& createinfo)
+  : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
+{
 }
 
 namespace prop::GPUSampler {
@@ -69867,6 +68939,12 @@ inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
   return GPUShader(m_resource, createinfo);
 }
 
+inline GPUShader::GPUShader(GPUDeviceParam device,
+                            const GPUShaderCreateInfo& createinfo)
+  : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
+{
+}
+
 namespace prop::GPUShader {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
@@ -69941,6 +69019,12 @@ inline GPUTexture GPUDevice::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(m_resource, createinfo);
+}
+
+inline GPUTexture::GPUTexture(GPUDeviceParam device,
+                              const GPUTextureCreateInfo& createinfo)
+  : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
+{
 }
 
 namespace prop::GPUTexture {
@@ -70025,6 +69109,12 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
   return GPUBuffer(m_resource, createinfo);
 }
 
+inline GPUBuffer::GPUBuffer(GPUDeviceParam device,
+                            const GPUBufferCreateInfo& createinfo)
+  : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
+{
+}
+
 namespace prop::GPUBuffer {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
@@ -70069,6 +69159,14 @@ inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(m_resource, createinfo);
+}
+
+inline GPUTransferBuffer::GPUTransferBuffer(
+  GPUDeviceParam device,
+  const GPUTransferBufferCreateInfo& createinfo)
+  : m_gPUTransferBuffer(
+      CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
+{
 }
 
 namespace prop::GPUTransferBuffer {
@@ -72413,32 +71511,7 @@ using JoystickRaw = SDL_Joystick*;
 // Forward decl
 struct JoystickRef;
 
-/// Safely wrap Joystick for non owning parameters
-struct JoystickParam
-{
-  JoystickRaw value; ///< parameter's JoystickRaw
-
-  /// Constructs from JoystickRaw
-  constexpr JoystickParam(JoystickRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr JoystickParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const JoystickParam& other) const = default;
-
-  /// Converts to underlying JoystickRaw
-  constexpr operator JoystickRaw() const { return value; }
-};
+using JoystickParam = JoystickRef;
 
 /// Alias to raw representation for JoystickID.
 using JoystickIDRaw = SDL_JoystickID;
@@ -72833,10 +71906,7 @@ public:
    *
    * @sa Joystick.Close
    */
-  Joystick(JoystickID instance_id)
-    : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
-  {
-  }
+  Joystick(JoystickID instance_id);
 
   /// Destructor
   ~Joystick() { SDL_CloseJoystick(m_resource); }
@@ -72869,9 +71939,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to JoystickParam
-  constexpr operator JoystickParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a joystick previously opened with JoystickID.OpenJoystick().
@@ -73565,18 +72632,6 @@ struct JoystickRef : Joystick
   using Joystick::Joystick;
 
   /**
-   * Constructs from JoystickParam.
-   *
-   * @param resource a JoystickRaw or Joystick.
-   *
-   * This does not takes ownership!
-   */
-  JoystickRef(JoystickParam resource) noexcept
-    : Joystick(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Joystick.
    *
    * @param resource a JoystickRaw.
@@ -74020,6 +73075,11 @@ inline JoystickType JoystickID::GetJoystickTypeForID()
 inline Joystick OpenJoystick(JoystickID instance_id)
 {
   return Joystick(instance_id);
+}
+
+inline Joystick::Joystick(JoystickID instance_id)
+  : m_resource(CheckError(SDL_OpenJoystick(instance_id)))
+{
 }
 
 inline Joystick JoystickID::OpenJoystick() { return Joystick(m_joystickID); }
@@ -76118,32 +75178,7 @@ using MetalViewRaw = SDL_MetalView;
 // Forward decl
 struct MetalViewRef;
 
-/// Safely wrap MetalView for non owning parameters
-struct MetalViewParam
-{
-  MetalViewRaw value; ///< parameter's MetalViewRaw
-
-  /// Constructs from MetalViewRaw
-  constexpr MetalViewParam(MetalViewRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr MetalViewParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const MetalViewParam& other) const = default;
-
-  /// Converts to underlying MetalViewRaw
-  constexpr operator MetalViewRaw() const { return value; }
-};
+using MetalViewParam = MetalViewRef;
 
 /**
  * A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
@@ -76210,10 +75245,7 @@ public:
    * @sa MetalView.Destroy
    * @sa MetalView.GetLayer
    */
-  MetalView(WindowParam window)
-    : m_resource(SDL_Metal_CreateView(window))
-  {
-  }
+  MetalView(WindowParam window);
 
   /// Destructor
   ~MetalView() { SDL_Metal_DestroyView(m_resource); }
@@ -76246,9 +75278,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to MetalViewParam
-  constexpr operator MetalViewParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy an existing MetalView object.
@@ -76284,18 +75313,6 @@ public:
 struct MetalViewRef : MetalView
 {
   using MetalView::MetalView;
-
-  /**
-   * Constructs from MetalViewParam.
-   *
-   * @param resource a MetalViewRaw or MetalView.
-   *
-   * This does not takes ownership!
-   */
-  MetalViewRef(MetalViewParam resource) noexcept
-    : MetalView(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw MetalView.
@@ -76370,6 +75387,11 @@ struct MetalViewRef : MetalView
 inline MetalView Metal_CreateView(WindowParam window)
 {
   return MetalView(window);
+}
+
+inline MetalView::MetalView(WindowParam window)
+  : m_resource(SDL_Metal_CreateView(window))
+{
 }
 
 /**
@@ -76458,32 +75480,7 @@ using CursorRaw = SDL_Cursor*;
 // Forward decl
 struct CursorRef;
 
-/// Safely wrap Cursor for non owning parameters
-struct CursorParam
-{
-  CursorRaw value; ///< parameter's CursorRaw
-
-  /// Constructs from CursorRaw
-  constexpr CursorParam(CursorRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr CursorParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const CursorParam& other) const = default;
-
-  /// Converts to underlying CursorRaw
-  constexpr operator CursorRaw() const { return value; }
-};
+using CursorParam = CursorRef;
 
 /**
  * Cursor types for Cursor.Cursor().
@@ -76666,11 +75663,7 @@ public:
   Cursor(const Uint8* data,
          const Uint8* mask,
          const PointRaw& size,
-         const PointRaw& hot)
-    : m_resource(
-        CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
-  {
-  }
+         const PointRaw& hot);
 
   /**
    * Create a color cursor.
@@ -76703,10 +75696,7 @@ public:
    * @sa Cursor.Destroy
    * @sa Cursor.Set
    */
-  Cursor(SurfaceParam surface, const PointRaw& hot)
-    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
-  {
-  }
+  Cursor(SurfaceParam surface, const PointRaw& hot);
 
   /**
    * Create a system cursor.
@@ -76721,10 +75711,7 @@ public:
    *
    * @sa Cursor.Destroy
    */
-  Cursor(SystemCursor id)
-    : m_resource(CheckError(SDL_CreateSystemCursor(id)))
-  {
-  }
+  Cursor(SystemCursor id);
 
   /// Destructor
   ~Cursor() { SDL_DestroyCursor(m_resource); }
@@ -76757,9 +75744,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to CursorParam
-  constexpr operator CursorParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a previously-created cursor.
@@ -76805,18 +75789,6 @@ public:
 struct CursorRef : Cursor
 {
   using Cursor::Cursor;
-
-  /**
-   * Constructs from CursorParam.
-   *
-   * @param resource a CursorRaw or Cursor.
-   *
-   * This does not takes ownership!
-   */
-  CursorRef(CursorParam resource) noexcept
-    : Cursor(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Cursor.
@@ -77384,6 +76356,25 @@ inline Cursor CreateCursor(const Uint8* data,
   return Cursor(data, mask, size, hot);
 }
 
+inline Cursor::Cursor(const Uint8* data,
+                      const Uint8* mask,
+                      const PointRaw& size,
+                      const PointRaw& hot)
+  : m_resource(
+      CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
+{
+}
+
+inline Cursor::Cursor(SurfaceParam surface, const PointRaw& hot)
+  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+{
+}
+
+inline Cursor::Cursor(SystemCursor id)
+  : m_resource(CheckError(SDL_CreateSystemCursor(id)))
+{
+}
+
 /**
  * Create a color cursor.
  *
@@ -77677,32 +76668,7 @@ using GamepadRaw = SDL_Gamepad*;
 // Forward decl
 struct GamepadRef;
 
-/// Safely wrap Gamepad for non owning parameters
-struct GamepadParam
-{
-  GamepadRaw value; ///< parameter's GamepadRaw
-
-  /// Constructs from GamepadRaw
-  constexpr GamepadParam(GamepadRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GamepadParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GamepadParam& other) const = default;
-
-  /// Converts to underlying GamepadRaw
-  constexpr operator GamepadRaw() const { return value; }
-};
+using GamepadParam = GamepadRef;
 
 /**
  * Standard gamepad types.
@@ -78066,10 +77032,7 @@ public:
    * @sa Gamepad.Close
    * @sa IsGamepad
    */
-  Gamepad(JoystickID instance_id)
-    : m_resource(SDL_OpenGamepad(instance_id))
-  {
-  }
+  Gamepad(JoystickID instance_id);
 
   /// Destructor
   ~Gamepad() { SDL_CloseGamepad(m_resource); }
@@ -78102,9 +77065,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GamepadParam
-  constexpr operator GamepadParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a gamepad previously opened with Gamepad.Gamepad().
@@ -78773,18 +77733,6 @@ struct GamepadRef : Gamepad
   using Gamepad::Gamepad;
 
   /**
-   * Constructs from GamepadParam.
-   *
-   * @param resource a GamepadRaw or Gamepad.
-   *
-   * This does not takes ownership!
-   */
-  GamepadRef(GamepadParam resource) noexcept
-    : Gamepad(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Gamepad.
    *
    * @param resource a GamepadRaw.
@@ -79341,6 +78289,11 @@ inline char* GetGamepadMappingForID(JoystickID instance_id)
 inline Gamepad OpenGamepad(JoystickID instance_id)
 {
   return Gamepad(instance_id);
+}
+
+inline Gamepad::Gamepad(JoystickID instance_id)
+  : m_resource(SDL_OpenGamepad(instance_id))
+{
 }
 
 /**
@@ -80698,32 +79651,7 @@ using HapticRaw = SDL_Haptic*;
 // Forward decl
 struct HapticRef;
 
-/// Safely wrap Haptic for non owning parameters
-struct HapticParam
-{
-  HapticRaw value; ///< parameter's HapticRaw
-
-  /// Constructs from HapticRaw
-  constexpr HapticParam(HapticRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr HapticParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const HapticParam& other) const = default;
-
-  /// Converts to underlying HapticRaw
-  constexpr operator HapticRaw() const { return value; }
-};
+using HapticParam = HapticRef;
 
 /**
  * @name Haptic effects
@@ -81436,10 +80364,7 @@ public:
    * @sa Haptic.SetAutocenter
    * @sa Haptic.SetGain
    */
-  Haptic(HapticID instance_id)
-    : m_resource(SDL_OpenHaptic(instance_id))
-  {
-  }
+  Haptic(HapticID instance_id);
 
   /**
    * Open a haptic device for use from a joystick device.
@@ -81461,10 +80386,7 @@ public:
    * @sa Haptic.Close
    * @sa IsJoystickHaptic
    */
-  Haptic(JoystickParam joystick)
-    : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
-  {
-  }
+  Haptic(JoystickParam joystick);
 
   /**
    * Try to open a haptic device from the current mouse.
@@ -81510,9 +80432,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to HapticParam
-  constexpr operator HapticParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
@@ -81855,18 +80774,6 @@ struct HapticRef : Haptic
   using Haptic::Haptic;
 
   /**
-   * Constructs from HapticParam.
-   *
-   * @param resource a HapticRaw or Haptic.
-   *
-   * This does not takes ownership!
-   */
-  HapticRef(HapticParam resource) noexcept
-    : Haptic(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Haptic.
    *
    * @param resource a HapticRaw.
@@ -81976,6 +80883,16 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  * @sa Haptic.SetGain
  */
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
+
+inline Haptic::Haptic(HapticID instance_id)
+  : m_resource(SDL_OpenHaptic(instance_id))
+{
+}
+
+inline Haptic::Haptic(JoystickParam joystick)
+  : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+{
+}
 
 /**
  * Get the Haptic associated with an instance ID, if it has been opened.
@@ -83404,32 +82321,7 @@ using RendererRaw = SDL_Renderer*;
 // Forward decl
 struct RendererRef;
 
-/// Safely wrap Renderer for non owning parameters
-struct RendererParam
-{
-  RendererRaw value; ///< parameter's RendererRaw
-
-  /// Constructs from RendererRaw
-  constexpr RendererParam(RendererRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr RendererParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const RendererParam& other) const = default;
-
-  /// Converts to underlying RendererRaw
-  constexpr operator RendererRaw() const { return value; }
-};
+using RendererParam = RendererRef;
 
 // Forward decl
 struct Texture;
@@ -83440,35 +82332,7 @@ using TextureRaw = SDL_Texture*;
 // Forward decl
 struct TextureRef;
 
-/// Safely wrap Texture for non owning parameters
-struct TextureParam
-{
-  TextureRaw value; ///< parameter's TextureRaw
-
-  /// Constructs from TextureRaw
-  constexpr TextureParam(TextureRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextureParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextureParam& other) const = default;
-
-  /// Converts to underlying TextureRaw
-  constexpr operator TextureRaw() const { return value; }
-
-  /// member access to underlying TextureRaw.
-  constexpr auto operator->() { return value; }
-};
+using TextureParam = TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstParam
@@ -83478,12 +82342,6 @@ struct TextureConstParam
   /// Constructs from const TextureRaw
   constexpr TextureConstParam(const TextureRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from TextureParam
-  constexpr TextureConstParam(TextureParam value)
-    : value(value.value)
   {
   }
 
@@ -83517,32 +82375,7 @@ using GPURenderStateRaw = SDL_GPURenderState*;
 // Forward decl
 struct GPURenderStateRef;
 
-/// Safely wrap GPURenderState for non owning parameters
-struct GPURenderStateParam
-{
-  GPURenderStateRaw value; ///< parameter's GPURenderStateRaw
-
-  /// Constructs from GPURenderStateRaw
-  constexpr GPURenderStateParam(GPURenderStateRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GPURenderStateParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPURenderStateParam& other) const = default;
-
-  /// Converts to underlying GPURenderStateRaw
-  constexpr operator GPURenderStateRaw() const { return value; }
-};
+using GPURenderStateParam = GPURenderStateRef;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -83786,10 +82619,7 @@ public:
    * @sa GetRenderDriver
    * @sa Renderer.GetName
    */
-  Renderer(WindowParam window, StringParam name)
-    : m_resource(CheckError(SDL_CreateRenderer(window, name)))
-  {
-  }
+  Renderer(WindowParam window, StringParam name);
 
   /**
    * Create a 2D rendering context for a window, with the specified properties.
@@ -83852,10 +82682,7 @@ public:
    * @sa Renderer.Destroy
    * @sa Renderer.GetName
    */
-  Renderer(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateRendererWithProperties(props)))
-  {
-  }
+  Renderer(PropertiesParam props);
 
   /**
    * Create a 2D software rendering context for a surface.
@@ -83875,10 +82702,7 @@ public:
    *
    * @sa Renderer.Destroy
    */
-  Renderer(SurfaceParam surface)
-    : m_resource(CheckError(SDL_CreateSoftwareRenderer(surface)))
-  {
-  }
+  Renderer(SurfaceParam surface);
 
   /// Destructor
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
@@ -83911,9 +82735,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to RendererParam
-  constexpr operator RendererParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -85751,7 +84572,8 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderState CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+  GPURenderState CreateGPURenderState(
+    const GPURenderStateCreateInfo& createinfo);
 
   /**
    * Set custom GPU render state.
@@ -85781,18 +84603,6 @@ public:
 struct RendererRef : Renderer
 {
   using Renderer::Renderer;
-
-  /**
-   * Constructs from RendererParam.
-   *
-   * @param resource a RendererRaw or Renderer.
-   *
-   * This does not takes ownership!
-   */
-  RendererRef(RendererParam resource) noexcept
-    : Renderer(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Renderer.
@@ -85920,11 +84730,7 @@ public:
   Texture(RendererParam renderer,
           PixelFormat format,
           TextureAccess access,
-          const PointRaw& size)
-    : m_resource(
-        CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)))
-  {
-  }
+          const PointRaw& size);
 
   /**
    * Create a texture from an existing surface.
@@ -85949,10 +84755,7 @@ public:
    * @sa Texture.Texture
    * @sa Texture.Destroy
    */
-  Texture(RendererParam renderer, SurfaceParam surface)
-    : m_resource(CheckError(SDL_CreateTextureFromSurface(renderer, surface)))
-  {
-  }
+  Texture(RendererParam renderer, SurfaceParam surface);
 
   /**
    * Create a texture for a rendering context with the specified properties.
@@ -86078,10 +84881,7 @@ public:
    * @sa Texture.GetSize
    * @sa Texture.Update
    */
-  Texture(RendererParam renderer, PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateTextureWithProperties(renderer, props)))
-  {
-  }
+  Texture(RendererParam renderer, PropertiesParam props);
 
   /**
    * Load an image from a filesystem path into a texture.
@@ -86157,17 +84957,17 @@ public:
   Texture(RendererParam renderer, IOStreamParam src, bool closeio = false);
 
   /**
-   * Safely borrows the from TextureParam.
+   * Safely borrows the from TextureRaw.
    *
-   * @param resource a TextureRaw or Texture.
+   * @param resource a TextureRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Texture Borrow(TextureParam resource)
+  static constexpr Texture Borrow(TextureRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Texture(resource.value);
+      ++resource->refcount;
+      return Texture(resource);
     }
     return {};
   }
@@ -86207,9 +85007,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TextureParam
-  constexpr operator TextureParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the specified texture.
@@ -86954,18 +85751,6 @@ struct TextureRef : Texture
   using Texture::Texture;
 
   /**
-   * Constructs from TextureParam.
-   *
-   * @param resource a TextureRaw or Texture.
-   *
-   * This does not takes ownership!
-   */
-  TextureRef(TextureParam resource) noexcept
-    : Texture(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Texture.
    *
    * @param resource a TextureRaw.
@@ -87013,6 +85798,9 @@ struct TextureRef : Texture
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
+
+  /// Converts to TextureConstParam
+  constexpr operator TextureConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -87495,6 +86283,21 @@ inline Window::Window(StringParam title,
 inline Renderer CreateRenderer(WindowParam window, StringParam name)
 {
   return Renderer(window, std::move(name));
+}
+
+inline Renderer::Renderer(WindowParam window, StringParam name)
+  : m_resource(SDL_CreateRenderer(window, name))
+{
+}
+
+inline Renderer::Renderer(PropertiesParam props)
+  : m_resource(SDL_CreateRendererWithProperties(props))
+{
+}
+
+inline Renderer::Renderer(SurfaceParam surface)
+  : m_resource(SDL_CreateSoftwareRenderer(surface))
+{
 }
 
 /**
@@ -88069,6 +86872,24 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
                                        const PointRaw& size)
 {
   return Texture(m_resource, format, access, size);
+}
+
+inline Texture::Texture(RendererParam renderer,
+                        PixelFormat format,
+                        TextureAccess access,
+                        const PointRaw& size)
+  : m_resource(SDL_CreateTexture(renderer, format, access, size.x, size.y))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, SurfaceParam surface)
+  : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, PropertiesParam props)
+  : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+{
 }
 
 /**
@@ -91753,10 +90574,8 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderState(RendererParam renderer, GPURenderStateCreateInfo* createinfo)
-    : m_resource(SDL_CreateGPURenderState(renderer, createinfo))
-  {
-  }
+  GPURenderState(RendererParam renderer,
+                 const GPURenderStateCreateInfo& createinfo);
 
   /// Destructor
   ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
@@ -91787,12 +90606,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Converts to GPURenderStateParam
-  constexpr operator GPURenderStateParam() const noexcept
-  {
-    return {m_resource};
-  }
 
   /**
    * Destroy custom GPU render state.
@@ -91833,18 +90646,6 @@ public:
  */
 struct GPURenderStateRef : GPURenderState
 {
-  /**
-   * Constructs from GPURenderStateParam.
-   *
-   * @param resource a GPURenderStateRaw or GPURenderState.
-   *
-   * This does not takes ownership!
-   */
-  GPURenderStateRef(GPURenderStateParam resource)
-    : GPURenderState(resource.value)
-  {
-  }
-
   /**
    * Constructs from raw GPURenderState.
    *
@@ -91912,16 +90713,24 @@ struct GPURenderStateRef : GPURenderState
  * @sa Renderer.SetGPURenderState
  * @sa GPURenderState.Destroy
  */
-inline GPURenderState CreateGPURenderState(RendererParam renderer,
-                                           GPURenderStateCreateInfo* createinfo)
+inline GPURenderState CreateGPURenderState(
+  RendererParam renderer,
+  const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(renderer, createinfo);
 }
 
 inline GPURenderState Renderer::CreateGPURenderState(
-  GPURenderStateCreateInfo* createinfo)
+  const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(m_resource, createinfo);
+}
+
+inline GPURenderState::GPURenderState(
+  RendererParam renderer,
+  const GPURenderStateCreateInfo& createinfo)
+  : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
+{
 }
 
 /**
@@ -93446,35 +92255,7 @@ using AnimationRaw = IMG_Animation*;
 // Forward decl
 struct AnimationRef;
 
-/// Safely wrap Animation for non owning parameters
-struct AnimationParam
-{
-  AnimationRaw value; ///< parameter's AnimationRaw
-
-  /// Constructs from AnimationRaw
-  constexpr AnimationParam(AnimationRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationParam& other) const = default;
-
-  /// Converts to underlying AnimationRaw
-  constexpr operator AnimationRaw() const { return value; }
-
-  /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
-};
+using AnimationParam = AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstParam
@@ -93484,12 +92265,6 @@ struct AnimationConstParam
   /// Constructs from const AnimationRaw
   constexpr AnimationConstParam(const AnimationRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from AnimationParam
-  constexpr AnimationConstParam(AnimationParam value)
-    : value(value.value)
   {
   }
 
@@ -93523,33 +92298,7 @@ using AnimationEncoderRaw = IMG_AnimationEncoder*;
 // Forward decl
 struct AnimationEncoderRef;
 
-/// Safely wrap AnimationEncoder for non owning parameters
-struct AnimationEncoderParam
-{
-  AnimationEncoderRaw value; ///< parameter's AnimationEncoderRaw
-
-  /// Constructs from AnimationEncoderRaw
-  constexpr AnimationEncoderParam(AnimationEncoderRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationEncoderParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationEncoderParam& other) const =
-    default;
-
-  /// Converts to underlying AnimationEncoderRaw
-  constexpr operator AnimationEncoderRaw() const { return value; }
-};
+using AnimationEncoderParam = AnimationEncoderRef;
 
 // Forward decl
 struct AnimationDecoder;
@@ -93560,33 +92309,7 @@ using AnimationDecoderRaw = IMG_AnimationDecoder*;
 // Forward decl
 struct AnimationDecoderRef;
 
-/// Safely wrap AnimationDecoder for non owning parameters
-struct AnimationDecoderParam
-{
-  AnimationDecoderRaw value; ///< parameter's AnimationDecoderRaw
-
-  /// Constructs from AnimationDecoderRaw
-  constexpr AnimationDecoderParam(AnimationDecoderRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationDecoderParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationDecoderParam& other) const =
-    default;
-
-  /// Converts to underlying AnimationDecoderRaw
-  constexpr operator AnimationDecoderRaw() const { return value; }
-};
+using AnimationDecoderParam = AnimationDecoderRef;
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #ifdef SDL3PP_DOC
@@ -96233,10 +94956,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(StringParam file)
-    : m_resource(IMG_LoadAnimation(file))
-  {
-  }
+  Animation(StringParam file);
 
   /**
    * Load an animation from an IOStream.
@@ -96265,10 +94985,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(IOStreamParam src, bool closeio = false)
-    : m_resource(IMG_LoadAnimation_IO(src, closeio))
-  {
-  }
+  Animation(IOStreamParam src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
   constexpr const AnimationRaw operator->() const noexcept
@@ -96310,9 +95027,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationParam
-  constexpr operator AnimationParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -96551,18 +95265,6 @@ struct AnimationRef : Animation
   using Animation::Animation;
 
   /**
-   * Constructs from AnimationParam.
-   *
-   * @param resource a AnimationRaw or Animation.
-   *
-   * This does not takes ownership!
-   */
-  AnimationRef(AnimationParam resource) noexcept
-    : Animation(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Animation.
    *
    * @param resource a AnimationRaw.
@@ -96610,6 +95312,9 @@ struct AnimationRef : Animation
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
+
+  /// Converts to AnimationConstParam
+  constexpr operator AnimationConstParam() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.
@@ -96735,6 +95440,16 @@ inline Animation LoadAnimation(StringParam file)
 inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
 {
   return Animation(src, closeio);
+}
+
+inline Animation::Animation(StringParam file)
+  : m_resource(IMG_LoadAnimation(file))
+{
+}
+
+inline Animation::Animation(IOStreamParam src, bool closeio)
+  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+{
 }
 
 /**
@@ -97294,10 +96009,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(StringParam file)
-    : m_resource(IMG_CreateAnimationEncoder(file))
-  {
-  }
+  AnimationEncoder(StringParam file);
 
   /**
    * Create an encoder to save a series of images to an IOStream.
@@ -97328,10 +96040,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false)
-    : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
-  {
-  }
+  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false);
 
   /**
    * Create an animation encoder with the specified properties.
@@ -97380,10 +96089,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(PropertiesParam props)
-    : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
-  {
-  }
+  AnimationEncoder(PropertiesParam props);
 
   /// Destructor
   ~AnimationEncoder() { IMG_CloseAnimationEncoder(m_resource); }
@@ -97418,12 +96124,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationEncoderParam
-  constexpr operator AnimationEncoderParam() const noexcept
-  {
-    return {m_resource};
-  }
 
   /**
    * Close an animation encoder, finishing any encoding.
@@ -97469,18 +96169,6 @@ public:
 struct AnimationEncoderRef : AnimationEncoder
 {
   using AnimationEncoder::AnimationEncoder;
-
-  /**
-   * Constructs from AnimationEncoderParam.
-   *
-   * @param resource a AnimationEncoderRaw or AnimationEncoder.
-   *
-   * This does not takes ownership!
-   */
-  AnimationEncoderRef(AnimationEncoderParam resource) noexcept
-    : AnimationEncoder(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw AnimationEncoder.
@@ -97594,6 +96282,23 @@ inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
                                                bool closeio = false)
 {
   return AnimationEncoder(dst, std::move(type), closeio);
+}
+
+inline AnimationEncoder::AnimationEncoder(StringParam file)
+  : m_resource(IMG_CreateAnimationEncoder(file))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(IOStreamParam dst,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(PropertiesParam props)
+  : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
+{
 }
 
 /**
@@ -97824,10 +96529,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(StringParam file)
-    : m_resource(IMG_CreateAnimationDecoder(file))
-  {
-  }
+  AnimationDecoder(StringParam file);
 
   /**
    * Create a decoder to read a series of images from an IOStream.
@@ -97859,10 +96561,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false)
-    : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
-  {
-  }
+  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false);
 
   /**
    * Create an animation decoder with the specified properties.
@@ -97902,10 +96601,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(PropertiesParam props)
-    : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
-  {
-  }
+  AnimationDecoder(PropertiesParam props);
 
   /// Destructor
   ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
@@ -97940,12 +96636,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationDecoderParam
-  constexpr operator AnimationDecoderParam() const noexcept
-  {
-    return {m_resource};
-  }
 
   /**
    * Close an animation decoder, finishing any decoding.
@@ -98046,18 +96736,6 @@ public:
 struct AnimationDecoderRef : AnimationDecoder
 {
   using AnimationDecoder::AnimationDecoder;
-
-  /**
-   * Constructs from AnimationDecoderParam.
-   *
-   * @param resource a AnimationDecoderRaw or AnimationDecoder.
-   *
-   * This does not takes ownership!
-   */
-  AnimationDecoderRef(AnimationDecoderParam resource) noexcept
-    : AnimationDecoder(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw AnimationDecoder.
@@ -98173,6 +96851,23 @@ inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
                                                bool closeio = false)
 {
   return AnimationDecoder(src, std::move(type), closeio);
+}
+
+inline AnimationDecoder::AnimationDecoder(StringParam file)
+  : m_resource(IMG_CreateAnimationDecoder(file))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(IOStreamParam src,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(PropertiesParam props)
+  : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
+{
 }
 
 /**
@@ -98472,32 +97167,7 @@ using FontRaw = TTF_Font*;
 // Forward decl
 struct FontRef;
 
-/// Safely wrap Font for non owning parameters
-struct FontParam
-{
-  FontRaw value; ///< parameter's FontRaw
-
-  /// Constructs from FontRaw
-  constexpr FontParam(FontRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr FontParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const FontParam& other) const = default;
-
-  /// Converts to underlying FontRaw
-  constexpr operator FontRaw() const { return value; }
-};
+using FontParam = FontRef;
 
 // Forward decl
 struct TextEngine;
@@ -98541,35 +97211,7 @@ using TextRaw = TTF_Text*;
 // Forward decl
 struct TextRef;
 
-/// Safely wrap Text for non owning parameters
-struct TextParam
-{
-  TextRaw value; ///< parameter's TextRaw
-
-  /// Constructs from TextRaw
-  constexpr TextParam(TextRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextParam& other) const = default;
-
-  /// Converts to underlying TextRaw
-  constexpr operator TextRaw() const { return value; }
-
-  /// member access to underlying TextRaw.
-  constexpr auto operator->() { return value; }
-};
+using TextParam = TextRef;
 
 /// Safely wrap Text for non owning const parameters
 struct TextConstParam
@@ -98579,12 +97221,6 @@ struct TextConstParam
   /// Constructs from const TextRaw
   constexpr TextConstParam(const TextRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from TextParam
-  constexpr TextConstParam(TextParam value)
-    : value(value.value)
   {
   }
 
@@ -98943,10 +97579,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(StringParam file, float ptsize)
-    : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
-  {
-  }
+  Font(StringParam file, float ptsize);
 
   /**
    * Create a font from an IOStream, using a specified point size.
@@ -98971,10 +97604,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(IOStreamParam src, float ptsize, bool closeio = false)
-    : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
-  {
-  }
+  Font(IOStreamParam src, float ptsize, bool closeio = false);
 
   /**
    * Create a font with the specified properties.
@@ -99019,10 +97649,7 @@ public:
    *
    * @sa Font.Close
    */
-  Font(PropertiesParam props)
-    : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
-  {
-  }
+  Font(PropertiesParam props);
 
   /// Destructor
   ~Font() { TTF_CloseFont(m_resource); }
@@ -99055,9 +97682,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to FontParam
-  constexpr operator FontParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of a previously-created font.
@@ -100383,18 +99007,6 @@ struct FontRef : Font
   using Font::Font;
 
   /**
-   * Constructs from FontParam.
-   *
-   * @param resource a FontRaw or Font.
-   *
-   * This does not takes ownership!
-   */
-  FontRef(FontParam resource) noexcept
-    : Font(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Font.
    *
    * @param resource a FontRaw.
@@ -100497,6 +99109,21 @@ inline Font OpenFont(StringParam file, float ptsize)
 inline Font OpenFont(IOStreamParam src, float ptsize, bool closeio = false)
 {
   return Font(src, ptsize, closeio);
+}
+
+inline Font::Font(StringParam file, float ptsize)
+  : m_resource(CheckError(TTF_OpenFont(file, ptsize)))
+{
+}
+
+inline Font::Font(IOStreamParam src, float ptsize, bool closeio)
+  : m_resource(CheckError(TTF_OpenFontIO(src, closeio, ptsize)))
+{
+}
+
+inline Font::Font(PropertiesParam props)
+  : m_resource(CheckError(TTF_OpenFontWithProperties(props)))
+{
 }
 
 /**
@@ -102534,9 +101161,6 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-  /// Converts to TextEngineParam
-  constexpr operator TextEngineParam() const noexcept { return {m_resource}; }
-
   /// frees up textEngine. Pure virtual
   virtual void Destroy() = 0;
 
@@ -102574,10 +101198,7 @@ struct SurfaceTextEngine : TextEngine
    * @sa SurfaceTextEngine.Destroy
    * @sa Text.DrawSurface
    */
-  SurfaceTextEngine()
-    : TextEngine(TTF_CreateSurfaceTextEngine())
-  {
-  }
+  SurfaceTextEngine();
 
   ~SurfaceTextEngine() { Destroy(); }
 
@@ -102616,10 +101237,7 @@ struct RendererTextEngine : TextEngine
    * @sa Text.DrawRenderer
    * @sa RendererTextEngine.RendererTextEngine
    */
-  RendererTextEngine(RendererParam renderer)
-    : TextEngine(TTF_CreateRendererTextEngine(renderer))
-  {
-  }
+  RendererTextEngine(RendererParam renderer);
 
   /**
    * Create a text engine for drawing text on an SDL renderer, with the
@@ -102645,10 +101263,7 @@ struct RendererTextEngine : TextEngine
    * @sa RendererTextEngine.Destroy
    * @sa Text.DrawRenderer
    */
-  RendererTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
-  {
-  }
+  RendererTextEngine(PropertiesParam props);
 
   ~RendererTextEngine() { Destroy(); }
 
@@ -102687,10 +101302,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(GPUDeviceParam device)
-    : TextEngine(TTF_CreateGPUTextEngine(device))
-  {
-  }
+  GPUTextEngine(GPUDeviceParam device);
 
   /**
    * Create a text engine for drawing text with the SDL GPU API, with the
@@ -102716,10 +101328,7 @@ struct GPUTextEngine : TextEngine
    * @sa GPUTextEngine.Destroy
    * @sa Text.GetGPUDrawData
    */
-  GPUTextEngine(PropertiesParam props)
-    : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
-  {
-  }
+  GPUTextEngine(PropertiesParam props);
 
   ~GPUTextEngine() { Destroy(); }
 
@@ -102869,10 +101478,7 @@ public:
    *
    * @sa Text.Destroy
    */
-  Text(TextEngineParam engine, FontParam font, std::string_view text)
-    : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
-  {
-  }
+  Text(TextEngineParam engine, FontParam font, std::string_view text);
 
   /// member access to underlying TextRaw.
   constexpr const TextRaw operator->() const noexcept { return m_resource; }
@@ -102911,9 +101517,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TextParam
-  constexpr operator TextParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a text object created by a text engine.
@@ -103716,18 +102319,6 @@ struct TextRef : Text
   using Text::Text;
 
   /**
-   * Constructs from TextParam.
-   *
-   * @param resource a TextRaw or Text.
-   *
-   * This does not takes ownership!
-   */
-  TextRef(TextParam resource = nullptr) noexcept
-    : Text(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Text.
    *
    * @param resource a TextRaw.
@@ -103775,6 +102366,9 @@ struct TextRef : Text
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
+
+  /// Converts to TextConstParam
+  constexpr operator TextConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -103866,6 +102460,11 @@ inline SurfaceTextEngine CreateSurfaceTextEngine()
   return SurfaceTextEngine();
 }
 
+inline SurfaceTextEngine::SurfaceTextEngine()
+  : TextEngine(TTF_CreateSurfaceTextEngine())
+{
+}
+
 /**
  * Draw text to an SDL surface.
  *
@@ -103941,6 +102540,16 @@ inline void SurfaceTextEngine::Destroy()
 inline RendererTextEngine CreateRendererTextEngine(RendererParam renderer)
 {
   return RendererTextEngine(renderer);
+}
+
+inline RendererTextEngine::RendererTextEngine(RendererParam renderer)
+  : TextEngine(TTF_CreateRendererTextEngine(renderer))
+{
+}
+
+inline RendererTextEngine::RendererTextEngine(PropertiesParam props)
+  : TextEngine(TTF_CreateRendererTextEngineWithProperties(props))
+{
 }
 
 /**
@@ -104061,6 +102670,16 @@ inline void RendererTextEngine::Destroy()
 inline GPUTextEngine CreateGPUTextEngine(GPUDeviceParam device)
 {
   return GPUTextEngine(device);
+}
+
+inline GPUTextEngine::GPUTextEngine(GPUDeviceParam device)
+  : TextEngine(TTF_CreateGPUTextEngine(device))
+{
+}
+
+inline GPUTextEngine::GPUTextEngine(PropertiesParam props)
+  : TextEngine(TTF_CreateGPUTextEngineWithProperties(props))
+{
 }
 
 /**
@@ -104242,6 +102861,11 @@ inline Text CreateText(TextEngineParam engine,
 inline Text TextEngine::CreateText(FontParam font, std::string_view text)
 {
   return Text(m_resource, font, text);
+}
+
+inline Text::Text(TextEngineParam engine, FontParam font, std::string_view text)
+  : m_resource(TTF_CreateText(engine, font, text.data(), text.size()))
+{
 }
 
 /**

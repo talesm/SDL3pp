@@ -29,32 +29,7 @@ using IOStreamRaw = SDL_IOStream*;
 // Forward decl
 struct IOStreamRef;
 
-/// Safely wrap IOStream for non owning parameters
-struct IOStreamParam
-{
-  IOStreamRaw value; ///< parameter's IOStreamRaw
-
-  /// Constructs from IOStreamRaw
-  constexpr IOStreamParam(IOStreamRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IOStreamParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IOStreamParam& other) const = default;
-
-  /// Converts to underlying IOStreamRaw
-  constexpr operator IOStreamRaw() const { return value; }
-};
+using IOStreamParam = IOStreamRef;
 
 /**
  * IOStream status, set by a read or write operation.
@@ -437,9 +412,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to IOStreamParam
-  constexpr operator IOStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free an allocated IOStream structure.
@@ -1347,18 +1319,6 @@ public:
 struct IOStreamRef : IOStream
 {
   using IOStream::IOStream;
-
-  /**
-   * Constructs from IOStreamParam.
-   *
-   * @param resource a IOStreamRaw or IOStream.
-   *
-   * This does not takes ownership!
-   */
-  IOStreamRef(IOStreamParam resource) noexcept
-    : IOStream(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw IOStream.

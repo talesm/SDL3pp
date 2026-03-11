@@ -32,32 +32,7 @@ using SensorRaw = SDL_Sensor*;
 // Forward decl
 struct SensorRef;
 
-/// Safely wrap Sensor for non owning parameters
-struct SensorParam
-{
-  SensorRaw value; ///< parameter's SensorRaw
-
-  /// Constructs from SensorRaw
-  constexpr SensorParam(SensorRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SensorParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SensorParam& other) const = default;
-
-  /// Converts to underlying SensorRaw
-  constexpr operator SensorRaw() const { return value; }
-};
+using SensorParam = SensorRef;
 
 /**
  * This is a unique ID for a sensor for the time it is connected to the system,
@@ -206,10 +181,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  Sensor(SensorID instance_id)
-    : m_resource(SDL_OpenSensor(instance_id))
-  {
-  }
+  Sensor(SensorID instance_id);
 
   /// Destructor
   ~Sensor() { SDL_CloseSensor(m_resource); }
@@ -242,9 +214,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SensorParam
-  constexpr operator SensorParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a sensor previously opened with Sensor.Sensor().
@@ -323,18 +292,6 @@ public:
 struct SensorRef : Sensor
 {
   using Sensor::Sensor;
-
-  /**
-   * Constructs from SensorParam.
-   *
-   * @param resource a SensorRaw or Sensor.
-   *
-   * This does not takes ownership!
-   */
-  SensorRef(SensorParam resource) noexcept
-    : Sensor(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Sensor.
@@ -467,6 +424,11 @@ inline int GetSensorNonPortableTypeForID(SensorID instance_id)
  * @since This function is available since SDL 3.2.0.
  */
 inline Sensor OpenSensor(SensorID instance_id) { return Sensor(instance_id); }
+
+inline Sensor::Sensor(SensorID instance_id)
+  : m_resource(SDL_OpenSensor(instance_id))
+{
+}
 
 /**
  * Return the Sensor associated with an instance ID.

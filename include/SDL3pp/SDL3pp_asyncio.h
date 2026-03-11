@@ -95,32 +95,7 @@ using AsyncIORaw = SDL_AsyncIO*;
 // Forward decl
 struct AsyncIORef;
 
-/// Safely wrap AsyncIO for non owning parameters
-struct AsyncIOParam
-{
-  AsyncIORaw value; ///< parameter's AsyncIORaw
-
-  /// Constructs from AsyncIORaw
-  constexpr AsyncIOParam(AsyncIORaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AsyncIOParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOParam& other) const = default;
-
-  /// Converts to underlying AsyncIORaw
-  constexpr operator AsyncIORaw() const { return value; }
-};
+using AsyncIOParam = AsyncIORef;
 
 // Forward decl
 struct AsyncIOQueue;
@@ -131,32 +106,7 @@ using AsyncIOQueueRaw = SDL_AsyncIOQueue*;
 // Forward decl
 struct AsyncIOQueueRef;
 
-/// Safely wrap AsyncIOQueue for non owning parameters
-struct AsyncIOQueueParam
-{
-  AsyncIOQueueRaw value; ///< parameter's AsyncIOQueueRaw
-
-  /// Constructs from AsyncIOQueueRaw
-  constexpr AsyncIOQueueParam(AsyncIOQueueRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AsyncIOQueueParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AsyncIOQueueParam& other) const = default;
-
-  /// Converts to underlying AsyncIOQueueRaw
-  constexpr operator AsyncIOQueueRaw() const { return value; }
-};
+using AsyncIOQueueParam = AsyncIOQueueRef;
 
 /**
  * The asynchronous I/O operation structure.
@@ -247,10 +197,7 @@ public:
    * @sa AsyncIO.Read
    * @sa AsyncIO.Write
    */
-  AsyncIO(StringParam file, StringParam mode)
-    : m_resource(SDL_AsyncIOFromFile(file, mode))
-  {
-  }
+  AsyncIO(StringParam file, StringParam mode);
 
   /// Destructor
   ~AsyncIO()
@@ -289,9 +236,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AsyncIOParam
-  constexpr operator AsyncIOParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free any allocated resources for an async I/O object.
@@ -444,18 +388,6 @@ public:
 struct AsyncIORef : AsyncIO
 {
   using AsyncIO::AsyncIO;
-
-  /**
-   * Constructs from AsyncIOParam.
-   *
-   * @param resource a AsyncIORaw or AsyncIO.
-   *
-   * This does not takes ownership!
-   */
-  AsyncIORef(AsyncIOParam resource) noexcept
-    : AsyncIO(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw AsyncIO.
@@ -619,10 +551,7 @@ public:
    * @sa AsyncIOQueue.GetResult
    * @sa AsyncIOQueue.WaitResult
    */
-  AsyncIOQueue()
-    : m_resource(SDL_CreateAsyncIOQueue())
-  {
-  }
+  AsyncIOQueue();
 
   /// Destructor
   ~AsyncIOQueue() { SDL_DestroyAsyncIOQueue(m_resource); }
@@ -657,9 +586,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AsyncIOQueueParam
-  constexpr operator AsyncIOQueueParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously-created async I/O task queue.
@@ -826,18 +752,6 @@ struct AsyncIOQueueRef : AsyncIOQueue
   using AsyncIOQueue::AsyncIOQueue;
 
   /**
-   * Constructs from AsyncIOQueueParam.
-   *
-   * @param resource a AsyncIOQueueRaw or AsyncIOQueue.
-   *
-   * This does not takes ownership!
-   */
-  AsyncIOQueueRef(AsyncIOQueueParam resource) noexcept
-    : AsyncIOQueue(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw AsyncIOQueue.
    *
    * @param resource a AsyncIOQueueRaw.
@@ -928,6 +842,11 @@ struct AsyncIOQueueRef : AsyncIOQueue
 inline AsyncIO AsyncIOFromFile(StringParam file, StringParam mode)
 {
   return AsyncIO(std::move(file), std::move(mode));
+}
+
+inline AsyncIO::AsyncIO(StringParam file, StringParam mode)
+  : m_resource(SDL_AsyncIOFromFile(file, mode))
+{
 }
 
 /**
@@ -1135,6 +1054,11 @@ inline bool AsyncIO::Close(bool flush, AsyncIOQueueParam queue, void* userdata)
  * @sa AsyncIOQueue.WaitResult
  */
 inline AsyncIOQueue CreateAsyncIOQueue() { return AsyncIOQueue(); }
+
+inline AsyncIOQueue::AsyncIOQueue()
+  : m_resource(SDL_CreateAsyncIOQueue())
+{
+}
 
 /**
  * Destroy a previously-created async I/O task queue.

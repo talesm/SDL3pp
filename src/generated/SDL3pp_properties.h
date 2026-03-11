@@ -47,32 +47,7 @@ using PropertiesID = SDL_PropertiesID;
 // Forward decl
 struct PropertiesRef;
 
-/// Safely wrap Properties for non owning parameters
-struct PropertiesParam
-{
-  PropertiesID value; ///< parameter's PropertiesID
-
-  /// Constructs from PropertiesID
-  constexpr PropertiesParam(PropertiesID value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PropertiesParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PropertiesParam& other) const = default;
-
-  /// Converts to underlying PropertiesID
-  constexpr operator PropertiesID() const { return value; }
-};
+using PropertiesParam = PropertiesRef;
 
 // Forward decl
 struct PropertiesLock;
@@ -286,9 +261,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to PropertiesParam
-  constexpr operator PropertiesParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a group of properties.
@@ -713,18 +685,6 @@ public:
 struct PropertiesRef : Properties
 {
   using Properties::Properties;
-
-  /**
-   * Constructs from PropertiesParam.
-   *
-   * @param resource a PropertiesID or Properties.
-   *
-   * This does not takes ownership!
-   */
-  PropertiesRef(PropertiesParam resource) noexcept
-    : Properties(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Properties.

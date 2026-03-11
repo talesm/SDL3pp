@@ -47,35 +47,7 @@ using SurfaceRaw = SDL_Surface*;
 // Forward decl
 struct SurfaceRef;
 
-/// Safely wrap Surface for non owning parameters
-struct SurfaceParam
-{
-  SurfaceRaw value; ///< parameter's SurfaceRaw
-
-  /// Constructs from SurfaceRaw
-  constexpr SurfaceParam(SurfaceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SurfaceParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SurfaceParam& other) const = default;
-
-  /// Converts to underlying SurfaceRaw
-  constexpr operator SurfaceRaw() const { return value; }
-
-  /// member access to underlying SurfaceRaw.
-  constexpr auto operator->() { return value; }
-};
+using SurfaceParam = SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
 struct SurfaceConstParam
@@ -85,12 +57,6 @@ struct SurfaceConstParam
   /// Constructs from const SurfaceRaw
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from SurfaceParam
-  constexpr SurfaceConstParam(SurfaceParam value)
-    : value(value.value)
   {
   }
 
@@ -282,10 +248,7 @@ public:
    * @sa Surface.Surface
    * @sa Surface.Destroy
    */
-  Surface(const PointRaw& size, PixelFormat format)
-    : m_resource(SDL_CreateSurface(size, format))
-  {
-  }
+  Surface(const PointRaw& size, PixelFormat format);
 
   /**
    * Allocate a new surface with a specific pixel format and existing pixel
@@ -315,10 +278,7 @@ public:
    * @sa Surface.Surface
    * @sa Surface.Destroy
    */
-  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch)
-    : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
-  {
-  }
+  Surface(const PointRaw& size, PixelFormat format, void* pixels, int pitch);
 
   /**
    * Load an image from a filesystem path into a software surface.
@@ -414,17 +374,17 @@ public:
   Surface(IOStreamParam src, bool closeio);
 
   /**
-   * Safely borrows the from SurfaceParam.
+   * Safely borrows the from SurfaceRaw.
    *
-   * @param resource a SurfaceRaw or Surface.
+   * @param resource a SurfaceRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Surface Borrow(SurfaceParam resource)
+  static constexpr Surface Borrow(SurfaceRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Surface(resource.value);
+      ++resource->refcount;
+      return Surface(resource);
     }
     return {};
   }
@@ -564,9 +524,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SurfaceParam
-  constexpr operator SurfaceParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a surface.
@@ -1965,18 +1922,6 @@ struct SurfaceRef : Surface
   using Surface::Surface;
 
   /**
-   * Constructs from SurfaceParam.
-   *
-   * @param resource a SurfaceRaw or Surface.
-   *
-   * This does not takes ownership!
-   */
-  SurfaceRef(SurfaceParam resource) noexcept
-    : Surface(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Surface.
    *
    * @param resource a SurfaceRaw.
@@ -2024,6 +1969,9 @@ struct SurfaceRef : Surface
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
+
+  /// Converts to SurfaceConstParam
+  constexpr operator SurfaceConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -2366,6 +2314,19 @@ public:
 inline Surface CreateSurface(const PointRaw& size, PixelFormat format)
 {
   return Surface(size, format);
+}
+
+inline Surface::Surface(const PointRaw& size, PixelFormat format)
+  : m_resource(SDL_CreateSurface(size, format))
+{
+}
+
+inline Surface::Surface(const PointRaw& size,
+                        PixelFormat format,
+                        void* pixels,
+                        int pitch)
+  : m_resource(SDL_CreateSurfaceFrom(size, format, pixels, pitch))
+{
 }
 
 /**

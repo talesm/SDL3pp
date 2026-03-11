@@ -9,8 +9,8 @@
   *
   * A GUID is a 128-bit value that represents something that is uniquely
   * identifiable by this value: "globally unique."
-@@ -74,21 +74,9 @@
-   }
+@@ -71,21 +71,9 @@
+   GUID(StringParam pchGUID);
  
    /**
 -   * Check if valid.
@@ -32,7 +32,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -103,8 +91,7 @@
+@@ -100,8 +88,7 @@
   * Get an ASCII string representation for a given GUID.
   *
   * @param guid the GUID you wish to convert to string.
@@ -42,7 +42,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -114,10 +101,12 @@
+@@ -111,10 +98,12 @@
   */
  inline std::string GUIDToString(const GUIDRaw& guid)
  {

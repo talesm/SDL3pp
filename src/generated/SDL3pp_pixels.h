@@ -101,35 +101,7 @@ using PaletteRaw = SDL_Palette*;
 // Forward decl
 struct PaletteRef;
 
-/// Safely wrap Palette for non owning parameters
-struct PaletteParam
-{
-  PaletteRaw value; ///< parameter's PaletteRaw
-
-  /// Constructs from PaletteRaw
-  constexpr PaletteParam(PaletteRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr PaletteParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const PaletteParam& other) const = default;
-
-  /// Converts to underlying PaletteRaw
-  constexpr operator PaletteRaw() const { return value; }
-
-  /// member access to underlying PaletteRaw.
-  constexpr auto operator->() { return value; }
-};
+using PaletteParam = PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
 struct PaletteConstParam
@@ -139,12 +111,6 @@ struct PaletteConstParam
   /// Constructs from const PaletteRaw
   constexpr PaletteConstParam(const PaletteRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from PaletteParam
-  constexpr PaletteConstParam(PaletteParam value)
-    : value(value.value)
   {
   }
 
@@ -406,10 +372,7 @@ public:
                         int order,
                         PackedLayout layout,
                         int bits,
-                        int bytes)
-    : m_format(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes))
-  {
-  }
+                        int bytes);
 
   /**
    * Unwraps to the underlying PixelFormat.
@@ -950,6 +913,15 @@ constexpr PixelFormat DefinePixelFormat(PixelType type,
                                         int bytes)
 {
   return PixelFormat(type, order, layout, bits, bytes);
+}
+
+constexpr PixelFormat::PixelFormat(PixelType type,
+                                   int order,
+                                   PackedLayout layout,
+                                   int bits,
+                                   int bytes)
+  : m_format(SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes))
+{
 }
 
 /**
@@ -1574,11 +1546,7 @@ public:
                        ColorPrimaries primaries,
                        TransferCharacteristics transfer,
                        MatrixCoefficients matrix,
-                       ChromaLocation chroma)
-    : m_cspace(
-        SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma))
-  {
-  }
+                       ChromaLocation chroma);
 
   /**
    * Unwraps to the underlying Colorspace.
@@ -1789,6 +1757,17 @@ constexpr Colorspace DefineColorspace(ColorType type,
                                       ChromaLocation chroma)
 {
   return Colorspace(type, range, primaries, transfer, matrix, chroma);
+}
+
+constexpr Colorspace::Colorspace(ColorType type,
+                                 ColorRange range,
+                                 ColorPrimaries primaries,
+                                 TransferCharacteristics transfer,
+                                 MatrixCoefficients matrix,
+                                 ChromaLocation chroma)
+  : m_cspace(
+      SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma))
+{
 }
 
 /**
@@ -2363,23 +2342,20 @@ public:
    * @sa Palette.SetColors
    * @sa Surface.SetPalette
    */
-  Palette(int ncolors)
-    : m_resource(CheckError(SDL_CreatePalette(ncolors)))
-  {
-  }
+  Palette(int ncolors);
 
   /**
-   * Safely borrows the from PaletteParam.
+   * Safely borrows the from PaletteRaw.
    *
-   * @param resource a PaletteRaw or Palette.
+   * @param resource a PaletteRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Palette Borrow(PaletteParam resource)
+  static constexpr Palette Borrow(PaletteRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Palette(resource.value);
+      ++resource->refcount;
+      return Palette(resource);
     }
     return {};
   }
@@ -2419,9 +2395,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to PaletteParam
-  constexpr operator PaletteParam() const noexcept { return {m_resource}; }
 
   /**
    * Free a palette created with Palette.Palette().
@@ -2478,18 +2451,6 @@ struct PaletteRef : Palette
   using Palette::Palette;
 
   /**
-   * Constructs from PaletteParam.
-   *
-   * @param resource a PaletteRaw or Palette.
-   *
-   * This does not takes ownership!
-   */
-  PaletteRef(PaletteParam resource) noexcept
-    : Palette(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Palette.
    *
    * @param resource a PaletteRaw.
@@ -2537,6 +2498,9 @@ struct PaletteRef : Palette
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
+
+  /// Converts to PaletteConstParam
+  constexpr operator PaletteConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -2682,6 +2646,11 @@ inline PixelFormat::operator const PixelFormatDetails&() const
  * @sa Surface.SetPalette
  */
 inline Palette CreatePalette(int ncolors) { return Palette(ncolors); }
+
+inline Palette::Palette(int ncolors)
+  : m_resource(CheckError(SDL_CreatePalette(ncolors)))
+{
+}
 
 /**
  * Set a range of colors in a palette.

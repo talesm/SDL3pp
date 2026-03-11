@@ -9,7 +9,7 @@
   *
   * Functions to creating Metal layers and views on SDL windows.
   *
-@@ -116,7 +116,7 @@
+@@ -91,7 +91,7 @@
     *
     * @since This function is available since SDL 3.2.0.
     *
@@ -17,8 +17,8 @@
 +   * @sa MetalView.Destroy
     * @sa MetalView.GetLayer
     */
-   MetalView(WindowParam window)
-@@ -171,7 +171,7 @@
+   MetalView(WindowParam window);
+@@ -140,7 +140,7 @@
     *
     * @sa MetalView.MetalView
     */
@@ -27,7 +27,7 @@
  
    /**
     * Get a pointer to the backing CAMetalLayer for the given view.
-@@ -273,7 +273,7 @@
+@@ -230,7 +230,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   *
@@ -36,7 +36,7 @@
   * @sa MetalView.GetLayer
   */
  inline MetalView Metal_CreateView(WindowParam window)
-@@ -300,7 +300,7 @@
+@@ -262,7 +262,7 @@
    SDL_Metal_DestroyView(view);
  }
  

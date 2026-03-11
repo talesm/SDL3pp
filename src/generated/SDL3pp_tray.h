@@ -27,32 +27,7 @@ using TrayRaw = SDL_Tray*;
 // Forward decl
 struct TrayRef;
 
-/// Safely wrap Tray for non owning parameters
-struct TrayParam
-{
-  TrayRaw value; ///< parameter's TrayRaw
-
-  /// Constructs from TrayRaw
-  constexpr TrayParam(TrayRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TrayParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayParam& other) const = default;
-
-  /// Converts to underlying TrayRaw
-  constexpr operator TrayRaw() const { return value; }
-};
+using TrayParam = TrayRef;
 
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
@@ -69,32 +44,7 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-/// Safely wrap TrayEntry for non owning parameters
-struct TrayEntryParam
-{
-  TrayEntryRaw value; ///< parameter's TrayEntryRaw
-
-  /// Constructs from TrayEntryRaw
-  constexpr TrayEntryParam(TrayEntryRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TrayEntryParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayEntryParam& other) const = default;
-
-  /// Converts to underlying TrayEntryRaw
-  constexpr operator TrayEntryRaw() const { return value; }
-};
+using TrayEntryParam = TrayEntry;
 
 /**
  * Flags that control the creation of system tray entries.
@@ -218,10 +168,7 @@ public:
    * @sa Tray.GetMenu
    * @sa Tray.Destroy
    */
-  Tray(SurfaceParam icon, StringParam tooltip)
-    : m_resource(SDL_CreateTray(icon, tooltip))
-  {
-  }
+  Tray(SurfaceParam icon, StringParam tooltip);
 
   /// Destructor
   ~Tray() { SDL_DestroyTray(m_resource); }
@@ -254,9 +201,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TrayParam
-  constexpr operator TrayParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a tray object.
@@ -355,18 +299,6 @@ public:
 struct TrayRef : Tray
 {
   using Tray::Tray;
-
-  /**
-   * Constructs from TrayParam.
-   *
-   * @param resource a TrayRaw or Tray.
-   *
-   * This does not takes ownership!
-   */
-  TrayRef(TrayParam resource) noexcept
-    : Tray(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Tray.
@@ -569,6 +501,8 @@ public:
   {
   }
 
+  constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
+
   /// Destructor
   ~TrayEntry() {}
 
@@ -598,9 +532,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TrayEntryParam
-  constexpr operator TrayEntryParam() const noexcept { return {m_resource}; }
 
   /**
    * Removes a tray entry.
@@ -855,6 +786,11 @@ struct TrayEntryScoped : TrayEntry
 inline Tray CreateTray(SurfaceParam icon, StringParam tooltip)
 {
   return Tray(icon, std::move(tooltip));
+}
+
+inline Tray::Tray(SurfaceParam icon, StringParam tooltip)
+  : m_resource(SDL_CreateTray(icon, tooltip))
+{
 }
 
 /**

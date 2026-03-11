@@ -18,7 +18,7 @@
   *
   * Properties can be added to and retrieved from a property group through the
   * following functions:
-@@ -137,8 +138,6 @@
+@@ -112,8 +113,6 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @sa Properties.Enumerate
@@ -27,7 +27,7 @@
   */
  using EnumeratePropertiesCB =
    std::function<void(PropertiesID props, const char* name)>;
-@@ -200,6 +199,8 @@
+@@ -175,6 +174,8 @@
   * @since This datatype is available since SDL 3.2.0.
   *
   * @cat resource
@@ -36,7 +36,7 @@
   */
  class Properties
  {
-@@ -244,8 +245,8 @@
+@@ -219,8 +220,8 @@
     *
     * All properties are automatically destroyed when Quit() is called.
     *
@@ -47,7 +47,7 @@
     *
     * @threadsafety It is safe to call this function from any thread.
     *
-@@ -410,7 +411,6 @@
+@@ -382,7 +383,6 @@
     *              property.
     * @param cleanup the function to call when this property is deleted, or
     *                nullptr if no cleanup is necessary.
@@ -55,7 +55,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -693,7 +693,6 @@
+@@ -665,7 +665,6 @@
     * properties. The properties are locked during enumeration.
     *
     * @param callback the function to call for each property.
@@ -63,7 +63,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -702,6 +701,13 @@
+@@ -674,6 +673,13 @@
     */
    void Enumerate(EnumeratePropertiesCB callback);
  
@@ -77,7 +77,7 @@
    Uint64 GetCount();
  };
  
-@@ -815,7 +821,7 @@
+@@ -775,7 +781,7 @@
     * or want to guarantee that properties being queried aren't freed in another
     * thread.
     *
@@ -86,7 +86,7 @@
     * @post true on success or false on failure; call GetError() for more
     *       information.
     *
-@@ -840,8 +846,6 @@
+@@ -800,8 +806,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -95,7 +95,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -865,8 +869,6 @@
+@@ -825,8 +829,6 @@
    /**
     * Unlock a group of properties.
     *
@@ -104,7 +104,7 @@
     * @threadsafety It is safe to call this function from any thread.
     *
     * @since This function is available since SDL 3.2.0.
-@@ -923,7 +925,7 @@
+@@ -883,7 +885,7 @@
   */
  inline PropertiesRef GetGlobalProperties()
  {
@@ -113,7 +113,7 @@
  }
  
  /**
-@@ -931,8 +933,8 @@
+@@ -891,8 +893,8 @@
   *
   * All properties are automatically destroyed when Quit() is called.
   *
@@ -124,7 +124,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -942,7 +944,7 @@
+@@ -902,7 +904,7 @@
   */
  inline Properties CreateProperties()
  {
@@ -133,7 +133,7 @@
  }
  
  inline Properties Properties::Create() { return SDL::CreateProperties(); }
-@@ -1095,7 +1097,6 @@
+@@ -1055,7 +1057,6 @@
   *              property.
   * @param cleanup the function to call when this property is deleted, or nullptr
   *                if no cleanup is necessary.
@@ -141,7 +141,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1111,7 +1112,12 @@
+@@ -1071,7 +1072,12 @@
                                            void* value,
                                            CleanupPropertyCB cleanup)
  {
@@ -155,7 +155,7 @@
  }
  
  inline void Properties::SetPointerPropertyWithCleanup(
-@@ -1547,7 +1553,6 @@
+@@ -1507,7 +1513,6 @@
   *
   * @param props the properties to query.
   * @param callback the function to call for each property.
@@ -163,7 +163,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -1557,7 +1562,13 @@
+@@ -1517,7 +1522,13 @@
  inline void EnumerateProperties(PropertiesParam props,
                                  EnumeratePropertiesCB callback)
  {
@@ -178,7 +178,7 @@
  }
  
  inline void Properties::Enumerate(EnumeratePropertiesCallback callback,
-@@ -1571,9 +1582,19 @@
+@@ -1531,9 +1542,19 @@
    SDL::EnumerateProperties(m_resource, callback);
  }
  

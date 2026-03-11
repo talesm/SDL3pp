@@ -49,32 +49,7 @@ using WindowRaw = SDL_Window*;
 // Forward decl
 struct WindowRef;
 
-/// Safely wrap Window for non owning parameters
-struct WindowParam
-{
-  WindowRaw value; ///< parameter's WindowRaw
-
-  /// Constructs from WindowRaw
-  constexpr WindowParam(WindowRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr WindowParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const WindowParam& other) const = default;
-
-  /// Converts to underlying WindowRaw
-  constexpr operator WindowRaw() const { return value; }
-};
+using WindowParam = WindowRef;
 
 // Forward decl
 struct GLContext;
@@ -85,32 +60,7 @@ using GLContextRaw = SDL_GLContext;
 // Forward decl
 struct GLContextScoped;
 
-/// Safely wrap GLContext for non owning parameters
-struct GLContextParam
-{
-  GLContextRaw value; ///< parameter's GLContextRaw
-
-  /// Constructs from GLContextRaw
-  constexpr GLContextParam(GLContextRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GLContextParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GLContextParam& other) const = default;
-
-  /// Converts to underlying GLContextRaw
-  constexpr operator GLContextRaw() const { return value; }
-};
+using GLContextParam = GLContext;
 
 // Forward decl
 struct RendererRef;
@@ -931,10 +881,7 @@ public:
    * @sa Window.Window
    * @sa Window.Destroy
    */
-  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0)
-    : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
-  {
-  }
+  Window(StringParam title, const PointRaw& size, WindowFlags flags = 0);
 
   /**
    * Create a child popup window of the specified parent window.
@@ -1010,15 +957,7 @@ public:
   Window(WindowParam parent,
          const PointRaw& offset,
          const PointRaw& size,
-         WindowFlags flags = 0)
-    : m_resource(SDL_CreatePopupWindow(parent,
-                                       offset.x,
-                                       offset.y,
-                                       size.x,
-                                       size.y,
-                                       flags))
-  {
-  }
+         WindowFlags flags = 0);
 
   /**
    * Create a window with the specified properties.
@@ -1164,10 +1103,7 @@ public:
    * @sa Window.Window
    * @sa Window.Destroy
    */
-  Window(PropertiesParam props)
-    : m_resource(SDL_CreateWindowWithProperties(props))
-  {
-  }
+  Window(PropertiesParam props);
 
   /// Destructor
   ~Window() { SDL_DestroyWindow(m_resource); }
@@ -1200,9 +1136,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to WindowParam
-  constexpr operator WindowParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a window.
@@ -3174,18 +3107,6 @@ struct WindowRef : Window
   using Window::Window;
 
   /**
-   * Constructs from WindowParam.
-   *
-   * @param resource a WindowRaw or Window.
-   *
-   * This does not takes ownership!
-   */
-  WindowRef(WindowParam resource) noexcept
-    : Window(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Window.
    *
    * @param resource a WindowRaw.
@@ -3413,10 +3334,9 @@ public:
    * @sa GLContext.Destroy
    * @sa GLContext.MakeCurrent
    */
-  GLContext(WindowParam window)
-    : m_resource(SDL_GL_CreateContext(window))
-  {
-  }
+  GLContext(WindowParam window);
+
+  constexpr operator GLContextRaw() const noexcept { return m_resource; }
 
   /// Destructor
   ~GLContext() {}
@@ -3447,9 +3367,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GLContextParam
-  constexpr operator GLContextParam() const noexcept { return {m_resource}; }
 
   /**
    * Delete an OpenGL context.
@@ -4624,6 +4541,27 @@ inline Window CreateWindow(StringParam title,
                            WindowFlags flags)
 {
   return Window(std::move(title), size, flags);
+}
+
+inline Window::Window(StringParam title,
+                      const PointRaw& size,
+                      WindowFlags flags)
+  : m_resource(SDL_CreateWindow(title, size.x, size.y, flags))
+{
+}
+
+inline Window::Window(WindowParam parent,
+                      const PointRaw& offset,
+                      const PointRaw& size,
+                      WindowFlags flags)
+  : m_resource(
+      SDL_CreatePopupWindow(parent, offset.x, offset.y, size.x, size.y, flags))
+{
+}
+
+inline Window::Window(PropertiesParam props)
+  : m_resource(SDL_CreateWindowWithProperties(props))
+{
 }
 
 /**
@@ -7439,6 +7377,11 @@ inline GLContext GL_CreateContext(WindowParam window)
 }
 
 inline GLContext Window::CreateGLContext() { return GLContext(m_resource); }
+
+inline GLContext::GLContext(WindowParam window)
+  : m_resource(SDL_GL_CreateContext(window))
+{
+}
 
 /**
  * Set up an OpenGL context for rendering into an OpenGL window.

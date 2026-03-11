@@ -49,32 +49,7 @@ using SharedObjectRaw = SDL_SharedObject*;
 // Forward decl
 struct SharedObjectRef;
 
-/// Safely wrap SharedObject for non owning parameters
-struct SharedObjectParam
-{
-  SharedObjectRaw value; ///< parameter's SharedObjectRaw
-
-  /// Constructs from SharedObjectRaw
-  constexpr SharedObjectParam(SharedObjectRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SharedObjectParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SharedObjectParam& other) const = default;
-
-  /// Converts to underlying SharedObjectRaw
-  constexpr operator SharedObjectRaw() const { return value; }
-};
+using SharedObjectParam = SharedObjectRef;
 
 /**
  * An opaque datatype that represents a loaded shared object.
@@ -139,10 +114,7 @@ public:
    * @sa SharedObject.LoadFunction
    * @sa SharedObject.Unload
    */
-  SharedObject(StringParam sofile)
-    : m_resource(SDL_LoadObject(sofile))
-  {
-  }
+  SharedObject(StringParam sofile);
 
   /// Destructor
   ~SharedObject() { SDL_UnloadObject(m_resource); }
@@ -177,9 +149,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SharedObjectParam
-  constexpr operator SharedObjectParam() const noexcept { return {m_resource}; }
 
   /**
    * Unload a shared object from memory.
@@ -232,18 +201,6 @@ public:
 struct SharedObjectRef : SharedObject
 {
   using SharedObject::SharedObject;
-
-  /**
-   * Constructs from SharedObjectParam.
-   *
-   * @param resource a SharedObjectRaw or SharedObject.
-   *
-   * This does not takes ownership!
-   */
-  SharedObjectRef(SharedObjectParam resource) noexcept
-    : SharedObject(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw SharedObject.
@@ -312,6 +269,11 @@ struct SharedObjectRef : SharedObject
 inline SharedObject LoadObject(StringParam sofile)
 {
   return SharedObject(std::move(sofile));
+}
+
+inline SharedObject::SharedObject(StringParam sofile)
+  : m_resource(SDL_LoadObject(sofile))
+{
 }
 
 /**

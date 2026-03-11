@@ -9,7 +9,7 @@
   *
   * Any GUI application has to deal with the mouse, and SDL provides functions to
   * manage mouse input and the displayed cursor.
-@@ -242,12 +242,9 @@
+@@ -217,12 +217,9 @@
     *
     * @param data the color value for each pixel of the cursor.
     * @param mask the mask value for each pixel of the cursor.
@@ -25,17 +25,7 @@
     * @post a new cursor with the specified parameters on success.
     * @throws Error on failure.
     *
-@@ -265,7 +262,8 @@
-          const Uint8* mask,
-          const PointRaw& size,
-          const PointRaw& hot)
--    : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
-+    : m_resource(
-+        CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
-   {
-   }
- 
-@@ -285,8 +283,7 @@
+@@ -257,8 +254,7 @@
     * used instead.
     *
     * @param surface an Surface structure representing the cursor image.
@@ -45,16 +35,7 @@
     * @post the new cursor on success.
     * @throws Error on failure.
     *
-@@ -302,7 +299,7 @@
-    * @sa Cursor.Set
-    */
-   Cursor(SurfaceParam surface, const PointRaw& hot)
--    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
-+    : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
-   {
-   }
- 
-@@ -490,17 +487,21 @@
+@@ -441,17 +437,21 @@
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
  
@@ -81,7 +62,7 @@
  
  /**
   * A bitmask of pressed mouse buttons, as reported by GetMouseState, etc.
-@@ -529,6 +530,7 @@
+@@ -480,6 +480,7 @@
  
  constexpr MouseButtonFlags BUTTON_X2MASK = SDL_BUTTON_X2MASK; ///< X2MASK
  
@@ -89,7 +70,7 @@
  constexpr MouseButtonFlags ButtonMask(MouseButton button)
  {
    return SDL_BUTTON_MASK(button);
-@@ -573,10 +575,6 @@
+@@ -524,10 +525,6 @@
                                                      float* x,
                                                      float* y);
  
@@ -100,7 +81,7 @@
  /**
   * A callback used to transform mouse motion delta from raw values.
   *
-@@ -636,11 +634,8 @@
+@@ -587,11 +584,8 @@
   * functionality, including some game controllers, KVM switches, etc. You should
   * wait for input from a device before you consider it actively in use.
   *
@@ -114,7 +95,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
   *
-@@ -649,7 +644,12 @@
+@@ -600,7 +594,12 @@
   * @sa GetMouseNameForID
   * @sa HasMouse
   */
@@ -128,7 +109,7 @@
  
  /**
   * Get the name of a mouse.
-@@ -680,7 +680,7 @@
+@@ -631,7 +630,7 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
@@ -137,7 +118,7 @@
  
  /**
   * Query SDL's cache for the synchronous mouse button state and the
-@@ -798,7 +798,7 @@
+@@ -749,7 +748,7 @@
  
  inline void Window::WarpMouse(const FPointRaw& p)
  {
@@ -146,7 +127,7 @@
  }
  
  /**
-@@ -812,8 +812,7 @@
+@@ -763,8 +762,7 @@
   * Note that this function will appear to succeed, but not actually move the
   * mouse when used over Microsoft Remote Desktop.
   *
@@ -156,7 +137,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -824,7 +823,7 @@
+@@ -775,7 +773,7 @@
   */
  inline void WarpMouse(const FPointRaw& p)
  {
@@ -165,7 +146,7 @@
  }
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -850,10 +849,6 @@
+@@ -801,10 +799,6 @@
    CheckError(SDL_SetRelativeMouseTransform(callback, userdata));
  }
  
@@ -176,7 +157,7 @@
  /**
   * Set a user-defined function by which to transform relative mouse inputs.
   *
-@@ -862,7 +857,6 @@
+@@ -813,7 +807,6 @@
   *
   * @param callback a callback used to transform relative mouse motion, or
   *                 nullptr for default behavior.
@@ -184,7 +165,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function should only be called on the main thread.
-@@ -871,7 +865,7 @@
+@@ -822,7 +815,7 @@
   */
  inline void SetRelativeMouseTransform(MouseMotionTransformCB callback)
  {
@@ -193,7 +174,7 @@
  }
  
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -961,12 +955,9 @@
+@@ -912,12 +905,9 @@
   *
   * @param data the color value for each pixel of the cursor.
   * @param mask the mask value for each pixel of the cursor.
@@ -209,7 +190,23 @@
   * @returns a new cursor with the specified parameters on success.
   * @throws Error on failure.
   *
-@@ -1003,8 +994,7 @@
+@@ -943,12 +933,13 @@
+                       const Uint8* mask,
+                       const PointRaw& size,
+                       const PointRaw& hot)
+-  : m_resource(CheckError(SDL_CreateCursor(data, mask, size, hot)))
++  : m_resource(
++      CheckError(SDL_CreateCursor(data, mask, size.x, size.y, hot.x, hot.y)))
+ {
+ }
+ 
+ inline Cursor::Cursor(SurfaceParam surface, const PointRaw& hot)
+-  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot)))
++  : m_resource(CheckError(SDL_CreateColorCursor(surface, hot.x, hot.y)))
+ {
+ }
+ 
+@@ -972,8 +963,7 @@
   * upscaled and be used instead.
   *
   * @param surface an Surface structure representing the cursor image.
@@ -219,7 +216,7 @@
   * @returns the new cursor on success.
   * @throws Error on failure.
   *
-@@ -1131,7 +1121,7 @@
+@@ -1100,7 +1090,7 @@
   *
   * @sa Cursor.Set
   */
@@ -228,7 +225,7 @@
  
  /**
   * Get the default cursor.
-@@ -1149,7 +1139,7 @@
+@@ -1118,7 +1108,7 @@
   */
  inline CursorRef GetDefaultCursor()
  {

@@ -113,32 +113,7 @@ using HapticRaw = SDL_Haptic*;
 // Forward decl
 struct HapticRef;
 
-/// Safely wrap Haptic for non owning parameters
-struct HapticParam
-{
-  HapticRaw value; ///< parameter's HapticRaw
-
-  /// Constructs from HapticRaw
-  constexpr HapticParam(HapticRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr HapticParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const HapticParam& other) const = default;
-
-  /// Converts to underlying HapticRaw
-  constexpr operator HapticRaw() const { return value; }
-};
+using HapticParam = HapticRef;
 
 /**
  * ID for haptic effects.
@@ -837,10 +812,7 @@ public:
    * @sa Haptic.SetAutocenter
    * @sa Haptic.SetGain
    */
-  Haptic(HapticID instance_id)
-    : m_resource(SDL_OpenHaptic(instance_id))
-  {
-  }
+  Haptic(HapticID instance_id);
 
   /**
    * Open a haptic device for use from a joystick device.
@@ -862,10 +834,7 @@ public:
    * @sa Haptic.Close
    * @sa IsJoystickHaptic
    */
-  Haptic(JoystickParam joystick)
-    : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
-  {
-  }
+  Haptic(JoystickParam joystick);
 
   /**
    * Try to open a haptic device from the current mouse.
@@ -911,9 +880,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to HapticParam
-  constexpr operator HapticParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
@@ -1256,18 +1222,6 @@ struct HapticRef : Haptic
   using Haptic::Haptic;
 
   /**
-   * Constructs from HapticParam.
-   *
-   * @param resource a HapticRaw or Haptic.
-   *
-   * This does not takes ownership!
-   */
-  HapticRef(HapticParam resource) noexcept
-    : Haptic(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Haptic.
    *
    * @param resource a HapticRaw.
@@ -1375,6 +1329,16 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  * @sa Haptic.SetGain
  */
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
+
+inline Haptic::Haptic(HapticID instance_id)
+  : m_resource(SDL_OpenHaptic(instance_id))
+{
+}
+
+inline Haptic::Haptic(JoystickParam joystick)
+  : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+{
+}
 
 /**
  * Get the Haptic associated with an instance ID, if it has been opened.

@@ -34,35 +34,7 @@ using AnimationRaw = IMG_Animation*;
 // Forward decl
 struct AnimationRef;
 
-/// Safely wrap Animation for non owning parameters
-struct AnimationParam
-{
-  AnimationRaw value; ///< parameter's AnimationRaw
-
-  /// Constructs from AnimationRaw
-  constexpr AnimationParam(AnimationRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationParam& other) const = default;
-
-  /// Converts to underlying AnimationRaw
-  constexpr operator AnimationRaw() const { return value; }
-
-  /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
-};
+using AnimationParam = AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
 struct AnimationConstParam
@@ -72,12 +44,6 @@ struct AnimationConstParam
   /// Constructs from const AnimationRaw
   constexpr AnimationConstParam(const AnimationRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from AnimationParam
-  constexpr AnimationConstParam(AnimationParam value)
-    : value(value.value)
   {
   }
 
@@ -111,33 +77,7 @@ using AnimationEncoderRaw = IMG_AnimationEncoder*;
 // Forward decl
 struct AnimationEncoderRef;
 
-/// Safely wrap AnimationEncoder for non owning parameters
-struct AnimationEncoderParam
-{
-  AnimationEncoderRaw value; ///< parameter's AnimationEncoderRaw
-
-  /// Constructs from AnimationEncoderRaw
-  constexpr AnimationEncoderParam(AnimationEncoderRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationEncoderParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationEncoderParam& other) const =
-    default;
-
-  /// Converts to underlying AnimationEncoderRaw
-  constexpr operator AnimationEncoderRaw() const { return value; }
-};
+using AnimationEncoderParam = AnimationEncoderRef;
 
 // Forward decl
 struct AnimationDecoder;
@@ -148,33 +88,7 @@ using AnimationDecoderRaw = IMG_AnimationDecoder*;
 // Forward decl
 struct AnimationDecoderRef;
 
-/// Safely wrap AnimationDecoder for non owning parameters
-struct AnimationDecoderParam
-{
-  AnimationDecoderRaw value; ///< parameter's AnimationDecoderRaw
-
-  /// Constructs from AnimationDecoderRaw
-  constexpr AnimationDecoderParam(AnimationDecoderRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationDecoderParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationDecoderParam& other) const =
-    default;
-
-  /// Converts to underlying AnimationDecoderRaw
-  constexpr operator AnimationDecoderRaw() const { return value; }
-};
+using AnimationDecoderParam = AnimationDecoderRef;
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
 #ifdef SDL3PP_DOC
@@ -2821,10 +2735,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(StringParam file)
-    : m_resource(IMG_LoadAnimation(file))
-  {
-  }
+  Animation(StringParam file);
 
   /**
    * Load an animation from an IOStream.
@@ -2853,10 +2764,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(IOStreamParam src, bool closeio = false)
-    : m_resource(IMG_LoadAnimation_IO(src, closeio))
-  {
-  }
+  Animation(IOStreamParam src, bool closeio = false);
 
   /// member access to underlying AnimationRaw.
   constexpr const AnimationRaw operator->() const noexcept
@@ -2898,9 +2806,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationParam
-  constexpr operator AnimationParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -3139,18 +3044,6 @@ struct AnimationRef : Animation
   using Animation::Animation;
 
   /**
-   * Constructs from AnimationParam.
-   *
-   * @param resource a AnimationRaw or Animation.
-   *
-   * This does not takes ownership!
-   */
-  AnimationRef(AnimationParam resource) noexcept
-    : Animation(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Animation.
    *
    * @param resource a AnimationRaw.
@@ -3198,6 +3091,9 @@ struct AnimationRef : Animation
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
+
+  /// Converts to AnimationConstParam
+  constexpr operator AnimationConstParam() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.
@@ -3323,6 +3219,16 @@ inline Animation LoadAnimation(StringParam file)
 inline Animation LoadAnimation(IOStreamParam src, bool closeio = false)
 {
   return Animation(src, closeio);
+}
+
+inline Animation::Animation(StringParam file)
+  : m_resource(IMG_LoadAnimation(file))
+{
+}
+
+inline Animation::Animation(IOStreamParam src, bool closeio)
+  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+{
 }
 
 /**
@@ -3882,10 +3788,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(StringParam file)
-    : m_resource(IMG_CreateAnimationEncoder(file))
-  {
-  }
+  AnimationEncoder(StringParam file);
 
   /**
    * Create an encoder to save a series of images to an IOStream.
@@ -3916,10 +3819,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false)
-    : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
-  {
-  }
+  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false);
 
   /**
    * Create an animation encoder with the specified properties.
@@ -3968,10 +3868,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(PropertiesParam props)
-    : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
-  {
-  }
+  AnimationEncoder(PropertiesParam props);
 
   /// Destructor
   ~AnimationEncoder() { IMG_CloseAnimationEncoder(m_resource); }
@@ -4006,12 +3903,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationEncoderParam
-  constexpr operator AnimationEncoderParam() const noexcept
-  {
-    return {m_resource};
-  }
 
   /**
    * Close an animation encoder, finishing any encoding.
@@ -4057,18 +3948,6 @@ public:
 struct AnimationEncoderRef : AnimationEncoder
 {
   using AnimationEncoder::AnimationEncoder;
-
-  /**
-   * Constructs from AnimationEncoderParam.
-   *
-   * @param resource a AnimationEncoderRaw or AnimationEncoder.
-   *
-   * This does not takes ownership!
-   */
-  AnimationEncoderRef(AnimationEncoderParam resource) noexcept
-    : AnimationEncoder(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw AnimationEncoder.
@@ -4182,6 +4061,23 @@ inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
                                                bool closeio = false)
 {
   return AnimationEncoder(dst, std::move(type), closeio);
+}
+
+inline AnimationEncoder::AnimationEncoder(StringParam file)
+  : m_resource(IMG_CreateAnimationEncoder(file))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(IOStreamParam dst,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(IMG_CreateAnimationEncoder_IO(dst, closeio, type))
+{
+}
+
+inline AnimationEncoder::AnimationEncoder(PropertiesParam props)
+  : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
+{
 }
 
 /**
@@ -4412,10 +4308,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(StringParam file)
-    : m_resource(IMG_CreateAnimationDecoder(file))
-  {
-  }
+  AnimationDecoder(StringParam file);
 
   /**
    * Create a decoder to read a series of images from an IOStream.
@@ -4447,10 +4340,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false)
-    : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
-  {
-  }
+  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false);
 
   /**
    * Create an animation decoder with the specified properties.
@@ -4490,10 +4380,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(PropertiesParam props)
-    : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
-  {
-  }
+  AnimationDecoder(PropertiesParam props);
 
   /// Destructor
   ~AnimationDecoder() { IMG_CloseAnimationDecoder(m_resource); }
@@ -4528,12 +4415,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationDecoderParam
-  constexpr operator AnimationDecoderParam() const noexcept
-  {
-    return {m_resource};
-  }
 
   /**
    * Close an animation decoder, finishing any decoding.
@@ -4634,18 +4515,6 @@ public:
 struct AnimationDecoderRef : AnimationDecoder
 {
   using AnimationDecoder::AnimationDecoder;
-
-  /**
-   * Constructs from AnimationDecoderParam.
-   *
-   * @param resource a AnimationDecoderRaw or AnimationDecoder.
-   *
-   * This does not takes ownership!
-   */
-  AnimationDecoderRef(AnimationDecoderParam resource) noexcept
-    : AnimationDecoder(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw AnimationDecoder.
@@ -4761,6 +4630,23 @@ inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
                                                bool closeio = false)
 {
   return AnimationDecoder(src, std::move(type), closeio);
+}
+
+inline AnimationDecoder::AnimationDecoder(StringParam file)
+  : m_resource(IMG_CreateAnimationDecoder(file))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(IOStreamParam src,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(IMG_CreateAnimationDecoder_IO(src, closeio, type))
+{
+}
+
+inline AnimationDecoder::AnimationDecoder(PropertiesParam props)
+  : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
+{
 }
 
 /**

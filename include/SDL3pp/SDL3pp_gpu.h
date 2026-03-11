@@ -382,32 +382,7 @@ using GPUDeviceRaw = SDL_GPUDevice*;
 // Forward decl
 struct GPUDeviceRef;
 
-/// Safely wrap GPUDevice for non owning parameters
-struct GPUDeviceParam
-{
-  GPUDeviceRaw value; ///< parameter's GPUDeviceRaw
-
-  /// Constructs from GPUDeviceRaw
-  constexpr GPUDeviceParam(GPUDeviceRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GPUDeviceParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPUDeviceParam& other) const = default;
-
-  /// Converts to underlying GPUDeviceRaw
-  constexpr operator GPUDeviceRaw() const { return value; }
-};
+using GPUDeviceParam = GPUDeviceRef;
 
 /// Alias to raw representation for GPUBuffer.
 using GPUBufferRaw = SDL_GPUBuffer*;
@@ -567,10 +542,7 @@ public:
    * @sa GPUComputePass.DispatchIndirect
    * @sa GPUDevice.ReleaseBuffer
    */
-  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo)
-    : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
-  {
-  }
+  GPUBuffer(GPUDeviceParam device, const GPUBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUBuffer.
@@ -649,11 +621,7 @@ public:
    * @sa GPUDevice.ReleaseTransferBuffer
    */
   GPUTransferBuffer(GPUDeviceParam device,
-                    const GPUTransferBufferCreateInfo& createinfo)
-    : m_gPUTransferBuffer(
-        CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
-  {
-  }
+                    const GPUTransferBufferCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTransferBuffer.
@@ -774,10 +742,7 @@ public:
    * @sa GPUDevice.ReleaseTexture
    * @sa GPUDevice.TextureSupportsFormat
    */
-  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo)
-    : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
-  {
-  }
+  GPUTexture(GPUDeviceParam device, const GPUTextureCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUTexture.
@@ -849,10 +814,7 @@ public:
    * @sa GPURenderPass.BindFragmentSamplers
    * @sa GPUDevice.ReleaseSampler
    */
-  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo)
-    : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
-  {
-  }
+  GPUSampler(GPUDeviceParam device, const GPUSamplerCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUSampler.
@@ -970,10 +932,7 @@ public:
    * @sa GPUGraphicsPipeline.GPUGraphicsPipeline
    * @sa GPUDevice.ReleaseShader
    */
-  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo)
-    : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
-  {
-  }
+  GPUShader(GPUDeviceParam device, const GPUShaderCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUShader.
@@ -1066,11 +1025,7 @@ public:
    * @sa GPUDevice.ReleaseComputePipeline
    */
   GPUComputePipeline(GPUDeviceParam device,
-                     const GPUComputePipelineCreateInfo& createinfo)
-    : m_gPUComputePipeline(
-        CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
-  {
-  }
+                     const GPUComputePipelineCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUComputePipeline.
@@ -1148,11 +1103,7 @@ public:
    * @sa GPUDevice.ReleaseGraphicsPipeline
    */
   GPUGraphicsPipeline(GPUDeviceParam device,
-                      const GPUGraphicsPipelineCreateInfo& createinfo)
-    : m_gPUGraphicsPipeline(
-        CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
-  {
-  }
+                      const GPUGraphicsPipelineCreateInfo& createinfo);
 
   /**
    * Unwraps to the underlying GPUGraphicsPipeline.
@@ -3164,11 +3115,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsShaderFormats
    */
-  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name)
-    : m_resource(
-        CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
-  {
-  }
+  GPUDevice(GPUShaderFormat format_flags, bool debug_mode, StringParam name);
 
   /**
    * Creates a GPU context.
@@ -3281,10 +3228,7 @@ public:
    * @sa GPUDevice.Destroy
    * @sa GPUSupportsProperties
    */
-  GPUDevice(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
-  {
-  }
+  GPUDevice(PropertiesParam props);
 
   /// Destructor
   ~GPUDevice() { SDL_DestroyGPUDevice(m_resource); }
@@ -3317,9 +3261,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to GPUDeviceParam
-  constexpr operator GPUDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroys a GPU context previously returned by GPUDevice.GPUDevice.
@@ -4187,18 +4128,6 @@ public:
 struct GPUDeviceRef : GPUDevice
 {
   using GPUDevice::GPUDevice;
-
-  /**
-   * Constructs from GPUDeviceParam.
-   *
-   * @param resource a GPUDeviceRaw or GPUDevice.
-   *
-   * This does not takes ownership!
-   */
-  GPUDeviceRef(GPUDeviceParam resource) noexcept
-    : GPUDevice(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw GPUDevice.
@@ -5097,6 +5026,18 @@ inline GPUDevice CreateGPUDevice(GPUShaderFormat format_flags,
   return GPUDevice(format_flags, debug_mode, std::move(name));
 }
 
+inline GPUDevice::GPUDevice(GPUShaderFormat format_flags,
+                            bool debug_mode,
+                            StringParam name)
+  : m_resource(CheckError(SDL_CreateGPUDevice(format_flags, debug_mode, name)))
+{
+}
+
+inline GPUDevice::GPUDevice(PropertiesParam props)
+  : m_resource(CheckError(SDL_CreateGPUDeviceWithProperties(props)))
+{
+}
+
 /**
  * Creates a GPU context.
  *
@@ -5593,6 +5534,14 @@ inline GPUComputePipeline GPUDevice::CreateComputePipeline(
   return GPUComputePipeline(m_resource, createinfo);
 }
 
+inline GPUComputePipeline::GPUComputePipeline(
+  GPUDeviceParam device,
+  const GPUComputePipelineCreateInfo& createinfo)
+  : m_gPUComputePipeline(
+      CheckError(SDL_CreateGPUComputePipeline(device, &createinfo)))
+{
+}
+
 namespace prop::GPUComputePipeline {
 
 constexpr auto CREATE_NAME_STRING =
@@ -5634,6 +5583,14 @@ inline GPUGraphicsPipeline GPUDevice::CreateGraphicsPipeline(
   return GPUGraphicsPipeline(m_resource, createinfo);
 }
 
+inline GPUGraphicsPipeline::GPUGraphicsPipeline(
+  GPUDeviceParam device,
+  const GPUGraphicsPipelineCreateInfo& createinfo)
+  : m_gPUGraphicsPipeline(
+      CheckError(SDL_CreateGPUGraphicsPipeline(device, &createinfo)))
+{
+}
+
 namespace prop::GPUGraphicsPipeline {
 
 constexpr auto CREATE_NAME_STRING =
@@ -5672,6 +5629,12 @@ inline GPUSampler GPUDevice::CreateSampler(
   const GPUSamplerCreateInfo& createinfo)
 {
   return GPUSampler(m_resource, createinfo);
+}
+
+inline GPUSampler::GPUSampler(GPUDeviceParam device,
+                              const GPUSamplerCreateInfo& createinfo)
+  : m_gPUSampler(CheckError(SDL_CreateGPUSampler(device, &createinfo)))
+{
 }
 
 namespace prop::GPUSampler {
@@ -5761,6 +5724,12 @@ inline GPUShader GPUDevice::CreateShader(const GPUShaderCreateInfo& createinfo)
   return GPUShader(m_resource, createinfo);
 }
 
+inline GPUShader::GPUShader(GPUDeviceParam device,
+                            const GPUShaderCreateInfo& createinfo)
+  : m_gPUShader(CheckError(SDL_CreateGPUShader(device, &createinfo)))
+{
+}
+
 namespace prop::GPUShader {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_SHADER_CREATE_NAME_STRING;
@@ -5835,6 +5804,12 @@ inline GPUTexture GPUDevice::CreateTexture(
   const GPUTextureCreateInfo& createinfo)
 {
   return GPUTexture(m_resource, createinfo);
+}
+
+inline GPUTexture::GPUTexture(GPUDeviceParam device,
+                              const GPUTextureCreateInfo& createinfo)
+  : m_gPUTexture(CheckError(SDL_CreateGPUTexture(device, &createinfo)))
+{
 }
 
 namespace prop::GPUTexture {
@@ -5919,6 +5894,12 @@ inline GPUBuffer GPUDevice::CreateBuffer(const GPUBufferCreateInfo& createinfo)
   return GPUBuffer(m_resource, createinfo);
 }
 
+inline GPUBuffer::GPUBuffer(GPUDeviceParam device,
+                            const GPUBufferCreateInfo& createinfo)
+  : m_gPUBuffer(CheckError(SDL_CreateGPUBuffer(device, &createinfo)))
+{
+}
+
 namespace prop::GPUBuffer {
 
 constexpr auto CREATE_NAME_STRING = SDL_PROP_GPU_BUFFER_CREATE_NAME_STRING;
@@ -5963,6 +5944,14 @@ inline GPUTransferBuffer GPUDevice::CreateTransferBuffer(
   const GPUTransferBufferCreateInfo& createinfo)
 {
   return GPUTransferBuffer(m_resource, createinfo);
+}
+
+inline GPUTransferBuffer::GPUTransferBuffer(
+  GPUDeviceParam device,
+  const GPUTransferBufferCreateInfo& createinfo)
+  : m_gPUTransferBuffer(
+      CheckError(SDL_CreateGPUTransferBuffer(device, &createinfo)))
+{
 }
 
 namespace prop::GPUTransferBuffer {

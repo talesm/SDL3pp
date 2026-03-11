@@ -49,32 +49,7 @@ using RendererRaw = SDL_Renderer*;
 // Forward decl
 struct RendererRef;
 
-/// Safely wrap Renderer for non owning parameters
-struct RendererParam
-{
-  RendererRaw value; ///< parameter's RendererRaw
-
-  /// Constructs from RendererRaw
-  constexpr RendererParam(RendererRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr RendererParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const RendererParam& other) const = default;
-
-  /// Converts to underlying RendererRaw
-  constexpr operator RendererRaw() const { return value; }
-};
+using RendererParam = RendererRef;
 
 // Forward decl
 struct Texture;
@@ -85,35 +60,7 @@ using TextureRaw = SDL_Texture*;
 // Forward decl
 struct TextureRef;
 
-/// Safely wrap Texture for non owning parameters
-struct TextureParam
-{
-  TextureRaw value; ///< parameter's TextureRaw
-
-  /// Constructs from TextureRaw
-  constexpr TextureParam(TextureRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TextureParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TextureParam& other) const = default;
-
-  /// Converts to underlying TextureRaw
-  constexpr operator TextureRaw() const { return value; }
-
-  /// member access to underlying TextureRaw.
-  constexpr auto operator->() { return value; }
-};
+using TextureParam = TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
 struct TextureConstParam
@@ -123,12 +70,6 @@ struct TextureConstParam
   /// Constructs from const TextureRaw
   constexpr TextureConstParam(const TextureRaw value)
     : value(value)
-  {
-  }
-
-  /// Constructs from TextureParam
-  constexpr TextureConstParam(TextureParam value)
-    : value(value.value)
   {
   }
 
@@ -162,32 +103,7 @@ using GPURenderStateRaw = SDL_GPURenderState*;
 // Forward decl
 struct GPURenderStateRef;
 
-/// Safely wrap GPURenderState for non owning parameters
-struct GPURenderStateParam
-{
-  GPURenderStateRaw value; ///< parameter's GPURenderStateRaw
-
-  /// Constructs from GPURenderStateRaw
-  constexpr GPURenderStateParam(GPURenderStateRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr GPURenderStateParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const GPURenderStateParam& other) const = default;
-
-  /// Converts to underlying GPURenderStateRaw
-  constexpr operator GPURenderStateRaw() const { return value; }
-};
+using GPURenderStateParam = GPURenderStateRef;
 
 #endif // SDL_VERSION_ATLEAST(3, 3, 6)
 
@@ -431,10 +347,7 @@ public:
    * @sa GetRenderDriver
    * @sa Renderer.GetName
    */
-  Renderer(WindowParam window, StringParam name)
-    : m_resource(CheckError(SDL_CreateRenderer(window, name)))
-  {
-  }
+  Renderer(WindowParam window, StringParam name);
 
   /**
    * Create a 2D rendering context for a window, with the specified properties.
@@ -497,10 +410,7 @@ public:
    * @sa Renderer.Destroy
    * @sa Renderer.GetName
    */
-  Renderer(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateRendererWithProperties(props)))
-  {
-  }
+  Renderer(PropertiesParam props);
 
   /**
    * Create a 2D software rendering context for a surface.
@@ -520,10 +430,7 @@ public:
    *
    * @sa Renderer.Destroy
    */
-  Renderer(SurfaceParam surface)
-    : m_resource(CheckError(SDL_CreateSoftwareRenderer(surface)))
-  {
-  }
+  Renderer(SurfaceParam surface);
 
   /// Destructor
   ~Renderer() { SDL_DestroyRenderer(m_resource); }
@@ -556,9 +463,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to RendererParam
-  constexpr operator RendererParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the rendering context for a window and free all associated
@@ -2396,7 +2300,8 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderState CreateGPURenderState(GPURenderStateCreateInfo* createinfo);
+  GPURenderState CreateGPURenderState(
+    const GPURenderStateCreateInfo& createinfo);
 
   /**
    * Set custom GPU render state.
@@ -2426,18 +2331,6 @@ public:
 struct RendererRef : Renderer
 {
   using Renderer::Renderer;
-
-  /**
-   * Constructs from RendererParam.
-   *
-   * @param resource a RendererRaw or Renderer.
-   *
-   * This does not takes ownership!
-   */
-  RendererRef(RendererParam resource) noexcept
-    : Renderer(resource.value)
-  {
-  }
 
   /**
    * Constructs from raw Renderer.
@@ -2565,11 +2458,7 @@ public:
   Texture(RendererParam renderer,
           PixelFormat format,
           TextureAccess access,
-          const PointRaw& size)
-    : m_resource(
-        CheckError(SDL_CreateTexture(renderer, format, access, size.x, size.y)))
-  {
-  }
+          const PointRaw& size);
 
   /**
    * Create a texture from an existing surface.
@@ -2594,10 +2483,7 @@ public:
    * @sa Texture.Texture
    * @sa Texture.Destroy
    */
-  Texture(RendererParam renderer, SurfaceParam surface)
-    : m_resource(CheckError(SDL_CreateTextureFromSurface(renderer, surface)))
-  {
-  }
+  Texture(RendererParam renderer, SurfaceParam surface);
 
   /**
    * Create a texture for a rendering context with the specified properties.
@@ -2723,10 +2609,7 @@ public:
    * @sa Texture.GetSize
    * @sa Texture.Update
    */
-  Texture(RendererParam renderer, PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateTextureWithProperties(renderer, props)))
-  {
-  }
+  Texture(RendererParam renderer, PropertiesParam props);
 
   /**
    * Load an image from a filesystem path into a texture.
@@ -2802,17 +2685,17 @@ public:
   Texture(RendererParam renderer, IOStreamParam src, bool closeio = false);
 
   /**
-   * Safely borrows the from TextureParam.
+   * Safely borrows the from TextureRaw.
    *
-   * @param resource a TextureRaw or Texture.
+   * @param resource a TextureRaw.
    *
    * This does not takes ownership!
    */
-  static constexpr Texture Borrow(TextureParam resource)
+  static constexpr Texture Borrow(TextureRaw resource)
   {
     if (resource) {
-      ++resource.value->refcount;
-      return Texture(resource.value);
+      ++resource->refcount;
+      return Texture(resource);
     }
     return {};
   }
@@ -2852,9 +2735,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TextureParam
-  constexpr operator TextureParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy the specified texture.
@@ -3599,18 +3479,6 @@ struct TextureRef : Texture
   using Texture::Texture;
 
   /**
-   * Constructs from TextureParam.
-   *
-   * @param resource a TextureRaw or Texture.
-   *
-   * This does not takes ownership!
-   */
-  TextureRef(TextureParam resource) noexcept
-    : Texture(resource.value)
-  {
-  }
-
-  /**
    * Constructs from raw Texture.
    *
    * @param resource a TextureRaw.
@@ -3658,6 +3526,9 @@ struct TextureRef : Texture
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
+
+  /// Converts to TextureConstParam
+  constexpr operator TextureConstParam() const noexcept { return get(); }
 };
 
 /**
@@ -4140,6 +4011,21 @@ inline Window::Window(StringParam title,
 inline Renderer CreateRenderer(WindowParam window, StringParam name)
 {
   return Renderer(window, std::move(name));
+}
+
+inline Renderer::Renderer(WindowParam window, StringParam name)
+  : m_resource(SDL_CreateRenderer(window, name))
+{
+}
+
+inline Renderer::Renderer(PropertiesParam props)
+  : m_resource(SDL_CreateRendererWithProperties(props))
+{
+}
+
+inline Renderer::Renderer(SurfaceParam surface)
+  : m_resource(SDL_CreateSoftwareRenderer(surface))
+{
 }
 
 /**
@@ -4714,6 +4600,24 @@ inline Texture Renderer::CreateTexture(PixelFormat format,
                                        const PointRaw& size)
 {
   return Texture(m_resource, format, access, size);
+}
+
+inline Texture::Texture(RendererParam renderer,
+                        PixelFormat format,
+                        TextureAccess access,
+                        const PointRaw& size)
+  : m_resource(SDL_CreateTexture(renderer, format, access, size.x, size.y))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, SurfaceParam surface)
+  : m_resource(SDL_CreateTextureFromSurface(renderer, surface))
+{
+}
+
+inline Texture::Texture(RendererParam renderer, PropertiesParam props)
+  : m_resource(SDL_CreateTextureWithProperties(renderer, props))
+{
 }
 
 /**
@@ -8398,10 +8302,8 @@ public:
    * @sa Renderer.SetGPURenderState
    * @sa GPURenderState.Destroy
    */
-  GPURenderState(RendererParam renderer, GPURenderStateCreateInfo* createinfo)
-    : m_resource(SDL_CreateGPURenderState(renderer, createinfo))
-  {
-  }
+  GPURenderState(RendererParam renderer,
+                 const GPURenderStateCreateInfo& createinfo);
 
   /// Destructor
   ~GPURenderState() { SDL_DestroyGPURenderState(m_resource); }
@@ -8432,12 +8334,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const { return !!m_resource; }
-
-  /// Converts to GPURenderStateParam
-  constexpr operator GPURenderStateParam() const noexcept
-  {
-    return {m_resource};
-  }
 
   /**
    * Destroy custom GPU render state.
@@ -8478,18 +8374,6 @@ public:
  */
 struct GPURenderStateRef : GPURenderState
 {
-  /**
-   * Constructs from GPURenderStateParam.
-   *
-   * @param resource a GPURenderStateRaw or GPURenderState.
-   *
-   * This does not takes ownership!
-   */
-  GPURenderStateRef(GPURenderStateParam resource)
-    : GPURenderState(resource.value)
-  {
-  }
-
   /**
    * Constructs from raw GPURenderState.
    *
@@ -8557,16 +8441,24 @@ struct GPURenderStateRef : GPURenderState
  * @sa Renderer.SetGPURenderState
  * @sa GPURenderState.Destroy
  */
-inline GPURenderState CreateGPURenderState(RendererParam renderer,
-                                           GPURenderStateCreateInfo* createinfo)
+inline GPURenderState CreateGPURenderState(
+  RendererParam renderer,
+  const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(renderer, createinfo);
 }
 
 inline GPURenderState Renderer::CreateGPURenderState(
-  GPURenderStateCreateInfo* createinfo)
+  const GPURenderStateCreateInfo& createinfo)
 {
   return GPURenderState(m_resource, createinfo);
+}
+
+inline GPURenderState::GPURenderState(
+  RendererParam renderer,
+  const GPURenderStateCreateInfo& createinfo)
+  : m_resource(SDL_CreateGPURenderState(renderer, &createinfo))
+{
 }
 
 /**
