@@ -83,7 +83,7 @@ struct SurfaceConstParam
 {
   const SurfaceRaw value; ///< parameter's const SurfaceRaw
 
-  /// Constructs from SurfaceRaw
+  /// Constructs from const SurfaceRaw
   constexpr SurfaceConstParam(const SurfaceRaw value)
     : value(value)
   {

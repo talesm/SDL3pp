@@ -19,15 +19,6 @@
   *
   * In general these functions are thread-safe in that they can be called on
   * different threads with different surfaces. You should not try to modify any
-@@ -82,7 +83,7 @@
- {
-   const SurfaceRaw value; ///< parameter's const SurfaceRaw
- 
--  /// Constructs from const SurfaceRaw
-+  /// Constructs from SurfaceRaw
-   constexpr SurfaceConstParam(const SurfaceRaw value)
-     : value(value)
-   {
 @@ -142,7 +143,7 @@
   *
   * @since This function is available since SDL 3.2.0.
