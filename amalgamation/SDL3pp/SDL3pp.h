@@ -11285,6 +11285,35 @@ struct FColor : FColorRaw
   }
 };
 
+class PaletteIndex
+{
+  PaletteRaw m_palette;
+
+  int m_index;
+
+public:
+  constexpr PaletteIndex(PaletteRaw palette, int index)
+    : m_palette{palette}
+    , m_index{index}
+  {
+  }
+
+  /// Converts to bool, true if this is a valid palette index.
+  constexpr explicit operator bool() const
+  {
+    return m_palette && m_index >= 0 && m_index < m_palette->ncolors;
+  }
+
+  /// Converts to ColorRaw.
+  constexpr operator ColorRaw() const
+  {
+    return *this ? m_palette->colors[m_index] : ColorRaw{};
+  }
+
+  /// Assignment operator.
+  PaletteIndex& operator=(ColorRaw color);
+};
+
 /**
  * A set of indexed colors representing a palette.
  *
@@ -11429,6 +11458,12 @@ public:
   constexpr ColorRaw operator[](int index) const
   {
     return m_resource->colors[index];
+  }
+
+  /// Change specific pallete index
+  constexpr PaletteIndex operator[](int index)
+  {
+    return PaletteIndex{m_resource, index};
   }
 
   /**
@@ -11640,6 +11675,12 @@ inline void SetPaletteColors(PaletteParam palette,
 inline void Palette::SetColors(SpanRef<const ColorRaw> colors, int firstcolor)
 {
   SDL::SetPaletteColors(m_resource, colors, firstcolor);
+}
+
+inline PaletteIndex& PaletteIndex::operator=(ColorRaw color)
+{
+  m_palette->colors[m_index] = color;
+  return *this;
 }
 
 /**
@@ -12726,8 +12767,6 @@ public:
 
   /**
    * Unlock a group of properties.
-   *
-   * @param props the properties to unlock.
    *
    * @threadsafety It is safe to call this function from any thread.
    *

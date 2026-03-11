@@ -3436,7 +3436,7 @@ const transform = {
       }
     },
     "SDL_pixels.h": {
-      localIncludes: ["SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
+      localIncludes: ["SDL3pp_assert.h", "SDL3pp_spanRef.h", "SDL3pp_error.h", "SDL3pp_version.h"],
       transform: {
         "SDL_PixelFormatDetails": {
           kind: "alias",
@@ -3807,6 +3807,55 @@ const transform = {
             invalidState: false
           }
         },
+        "PaletteIndex": {
+          kind: "struct",
+          entries: {
+            "m_palette": { kind: "var", type: "PaletteRaw" },
+            "m_index": { kind: "var", type: "int" },
+            "PaletteIndex": {
+              kind: "function",
+              type: "",
+              constexpr: true,
+              parameters: [{
+                type: "PaletteRaw",
+                name: "palette"
+              },
+              {
+                type: "int",
+                name: "index"
+              }],
+              hints: {
+                init: ["m_palette{palette}, m_index{index}"],
+                changeAccess: "public",
+              },
+            },
+            "operator bool": {
+              kind: "function",
+              type: "",
+              explicit: true,
+              immutable: true,
+              constexpr: true,
+              parameters: [],
+              hints: { body: "return m_palette && m_index >= 0 && m_index < m_palette->ncolors;" },
+            },
+            "operator ColorRaw": {
+              kind: "function",
+              type: "",
+              immutable: true,
+              constexpr: true,
+              parameters: []
+            },
+            // "operator Color": {
+            //   kind: "function",
+            //   type: "",
+            //   immutable: true,
+            //   constexpr: true,
+            //   parameters: [],
+            //   hints: { body: "return Color{static_cast<ColorRaw>(*this)};" },
+            // },
+          },
+          hints: { private: true },
+        },
         "SDL_Palette": {
           resource: {
             shared: 'refcount',
@@ -3838,7 +3887,20 @@ const transform = {
                   name: "index"
                 }
               ]
-            }
+            },
+            "operator[]#2": {
+              kind: "function",
+              name: "operator[]",
+              type: "PaletteIndex",
+              constexpr: true,
+              parameters: [
+                {
+                  type: "int",
+                  name: "index"
+                }
+              ],
+              hints: { body: "return PaletteIndex{m_resource, index};" },
+            },
           }
         },
         "SDL_SetPaletteColors": {
@@ -3854,6 +3916,15 @@ const transform = {
               default: "0"
             }
           ]
+        },
+        "PaletteIndex::operator=": {
+          kind: "function",
+          type: "PaletteIndex &",
+          static: false,
+          parameters: [{
+            type: "ColorRaw",
+            name: "color"
+          }],
         },
         "SDL_GetPixelFormatName": {
           immutable: true,

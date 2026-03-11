@@ -811,8 +811,6 @@ public:
   /**
    * Unlock a group of properties.
    *
-   * @param props the properties to unlock.
-   *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.

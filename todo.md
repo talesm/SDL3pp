@@ -19,19 +19,8 @@ New Version checklist:
 Next version
 ------------
 
-- [x] Fix a few build failure on clang;
-- [x] Clean up generated resource code;
-- [x] Fix MemoryBarrierRelease and MemoryBarrierAcquire;
-- [x] Replace all SDL_\* parameters with \*Raw equivalents;
-- [x] Fix GetGamepadBindings()
-- [x] Design a RAII workflow to deal with Lock/Unlock patterns present on
-  several APIS;
-  - [x] AudioStreamLock for SDL_LockAudioStream;
-  - [x] CameraFrameLock for SDL_AcquireCameraFrame;
-  - [x] JoystickApiLock for SDL_LockJoysticks;
-  - [x] PropertiesLock for SDL_LockProperties;
-  - [x] SurfaceLock for SDL_LockSurface;
-  - [x] TextureLock for SDL_LockTexture;
+- [x] Add operator[] for Palette;
+- [ ] Bump to 3.4.2;
 
 Backlog
 -------
