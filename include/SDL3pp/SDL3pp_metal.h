@@ -185,7 +185,11 @@ public:
   void* GetLayer();
 };
 
-/// Semi-safe reference for MetalView.
+/**
+ * Reference for MetalView.
+ *
+ * This does not take ownership!
+ */
 struct MetalViewRef : MetalView
 {
   using MetalView::MetalView;

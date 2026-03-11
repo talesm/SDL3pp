@@ -467,7 +467,11 @@ public:
   void ReleaseFrame(CameraFrame&& lock);
 };
 
-/// Semi-safe reference for Camera.
+/**
+ * Reference for Camera.
+ *
+ * This does not take ownership!
+ */
 struct CameraRef : Camera
 {
   using Camera::Camera;

@@ -1204,7 +1204,11 @@ public:
   PowerState GetPowerInfo(int* percent);
 };
 
-/// Semi-safe reference for Joystick.
+/**
+ * Reference for Joystick.
+ *
+ * This does not take ownership!
+ */
 struct JoystickRef : Joystick
 {
   using Joystick::Joystick;

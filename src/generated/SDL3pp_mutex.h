@@ -375,7 +375,11 @@ public:
   void Unlock();
 };
 
-/// Semi-safe reference for Mutex.
+/**
+ * Reference for Mutex.
+ *
+ * This does not take ownership!
+ */
 struct MutexRef : Mutex
 {
   using Mutex::Mutex;
@@ -845,7 +849,11 @@ public:
   void Unlock();
 };
 
-/// Semi-safe reference for RWLock.
+/**
+ * Reference for RWLock.
+ *
+ * This does not take ownership!
+ */
 struct RWLockRef : RWLock
 {
   using RWLock::RWLock;
@@ -1351,7 +1359,11 @@ public:
   Uint32 GetValue() const;
 };
 
-/// Semi-safe reference for Semaphore.
+/**
+ * Reference for Semaphore.
+ *
+ * This does not take ownership!
+ */
 struct SemaphoreRef : Semaphore
 {
   using Semaphore::Semaphore;
@@ -1755,7 +1767,11 @@ public:
   bool WaitTimeout(MutexParam mutex, std::chrono::milliseconds timeout);
 };
 
-/// Semi-safe reference for Condition.
+/**
+ * Reference for Condition.
+ *
+ * This does not take ownership!
+ */
 struct ConditionRef : Condition
 {
   using Condition::Condition;

@@ -477,7 +477,11 @@ public:
   int get_report_descriptor(TargetBytes buf);
 };
 
-/// Semi-safe reference for HidDevice.
+/**
+ * Reference for HidDevice.
+ *
+ * This does not take ownership!
+ */
 struct HidDeviceRef : HidDevice
 {
   using HidDevice::HidDevice;

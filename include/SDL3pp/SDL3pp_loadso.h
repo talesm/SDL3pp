@@ -224,7 +224,11 @@ public:
   FunctionPointer LoadFunction(StringParam name);
 };
 
-/// Semi-safe reference for SharedObject.
+/**
+ * Reference for SharedObject.
+ *
+ * This does not take ownership!
+ */
 struct SharedObjectRef : SharedObject
 {
   using SharedObject::SharedObject;

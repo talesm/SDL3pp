@@ -3194,7 +3194,11 @@ public:
   RendererRef GetRenderer() const;
 };
 
-/// Semi-safe reference for Window.
+/**
+ * Reference for Window.
+ *
+ * This does not take ownership!
+ */
 struct WindowRef : Window
 {
   using Window::Window;

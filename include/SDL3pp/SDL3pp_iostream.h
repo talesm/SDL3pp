@@ -1652,7 +1652,11 @@ public:
   void WriteS64BE(Sint64 value);
 };
 
-/// Semi-safe reference for IOStream.
+/**
+ * Reference for IOStream.
+ *
+ * This does not take ownership!
+ */
 struct IOStreamRef : IOStream
 {
   using IOStream::IOStream;

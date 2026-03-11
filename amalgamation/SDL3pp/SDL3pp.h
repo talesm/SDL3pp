@@ -11478,6 +11478,10 @@ public:
   {
   }
 
+  constexpr Palette(const PaletteRef& other) = delete;
+
+  constexpr Palette(PaletteRef&& other) = delete;
+
   /**
    * Create a palette structure with the specified number of color entries.
    *
@@ -11602,28 +11606,44 @@ public:
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
 };
 
-/// Safe reference for Palette.
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
 struct PaletteRef : Palette
 {
   using Palette::Palette;
 
   /**
-   * Constructs from PaletteRaw.
+   * Constructs from PaletteParam.
    *
-   * @param resource a PaletteRaw.
+   * @param resource a PaletteRaw or Palette.
    *
-   * This borrows the ownership, increments the refcount!
+   * This does not takes ownership!
    */
-  PaletteRef(PaletteRaw resource) noexcept
-    : Palette(Borrow(resource))
+  PaletteRef(PaletteParam resource) noexcept
+    : Palette(resource.value)
   {
   }
 
-  /// Constructs from Palette.
-  PaletteRef(Palette resource) noexcept
-    : Palette(std::move(resource))
+  /**
+   * Constructs from PaletteParam.
+   *
+   * @param resource a PaletteRaw or Palette.
+   *
+   * This does not takes ownership!
+   */
+  PaletteRef(PaletteRaw resource) noexcept
+    : Palette(resource)
   {
   }
+
+  /// Copy constructor.
+  constexpr PaletteRef(const PaletteRef& other) noexcept = default;
+
+  /// Destructor
+  ~PaletteRef() { release(); }
 };
 
 /**
@@ -12787,7 +12807,11 @@ public:
   Uint64 GetCount();
 };
 
-/// Semi-safe reference for Properties.
+/**
+ * Reference for Properties.
+ *
+ * This does not take ownership!
+ */
 struct PropertiesRef : Properties
 {
   using Properties::Properties;
@@ -14824,7 +14848,11 @@ public:
   void UnsetVariable(StringParam name);
 };
 
-/// Semi-safe reference for Environment.
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
 struct EnvironmentRef : Environment
 {
   using Environment::Environment;
@@ -19753,7 +19781,11 @@ public:
                size_t* outbytesleft);
 };
 
-/// Semi-safe reference for IConv.
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
 struct IConvRef : IConv
 {
   using IConv::IConv;
@@ -20497,7 +20529,11 @@ public:
              void* userdata);
 };
 
-/// Semi-safe reference for AsyncIO.
+/**
+ * Reference for AsyncIO.
+ *
+ * This does not take ownership!
+ */
 struct AsyncIORef : AsyncIO
 {
   using AsyncIO::AsyncIO;
@@ -20842,7 +20878,11 @@ public:
   void Signal();
 };
 
-/// Semi-safe reference for AsyncIOQueue.
+/**
+ * Reference for AsyncIOQueue.
+ *
+ * This does not take ownership!
+ */
 struct AsyncIOQueueRef : AsyncIOQueue
 {
   using AsyncIOQueue::AsyncIOQueue;
@@ -24554,7 +24594,11 @@ public:
   int get_report_descriptor(TargetBytes buf);
 };
 
-/// Semi-safe reference for HidDevice.
+/**
+ * Reference for HidDevice.
+ *
+ * This does not take ownership!
+ */
 struct HidDeviceRef : HidDevice
 {
   using HidDevice::HidDevice;
@@ -26780,7 +26824,11 @@ public:
   void WriteS64BE(Sint64 value);
 };
 
-/// Semi-safe reference for IOStream.
+/**
+ * Reference for IOStream.
+ *
+ * This does not take ownership!
+ */
 struct IOStreamRef : IOStream
 {
   using IOStream::IOStream;
@@ -28519,7 +28567,11 @@ public:
   FunctionPointer LoadFunction(StringParam name);
 };
 
-/// Semi-safe reference for SharedObject.
+/**
+ * Reference for SharedObject.
+ *
+ * This does not take ownership!
+ */
 struct SharedObjectRef : SharedObject
 {
   using SharedObject::SharedObject;
@@ -32526,7 +32578,11 @@ public:
   void GetData(float* data, int num_values);
 };
 
-/// Semi-safe reference for Sensor.
+/**
+ * Reference for Sensor.
+ *
+ * This does not take ownership!
+ */
 struct SensorRef : Sensor
 {
   using Sensor::Sensor;
@@ -35219,7 +35275,11 @@ public:
                          AudioStreamCB callback);
 };
 
-/// Semi-safe reference for AudioDevice.
+/**
+ * Reference for AudioDevice.
+ *
+ * This does not take ownership!
+ */
 struct AudioDeviceRef : AudioDevice
 {
   using AudioDevice::AudioDevice;
@@ -36662,7 +36722,11 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AudioStream.
+/**
+ * Reference for AudioStream.
+ *
+ * This does not take ownership!
+ */
 struct AudioStreamRef : AudioStream
 {
   using AudioStream::AudioStream;
@@ -40755,7 +40819,11 @@ public:
   bool Wait(bool block, int* exitcode);
 };
 
-/// Semi-safe reference for Process.
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
 struct ProcessRef : Process
 {
   using Process::Process;
@@ -41971,7 +42039,11 @@ public:
                                 GlobFlags flags);
 };
 
-/// Semi-safe reference for Storage.
+/**
+ * Reference for Storage.
+ *
+ * This does not take ownership!
+ */
 struct StorageRef : Storage
 {
   using Storage::Storage;
@@ -42866,6 +42938,10 @@ public:
     : Surface(other.release())
   {
   }
+
+  constexpr Surface(const SurfaceRef& other) = delete;
+
+  constexpr Surface(SurfaceRef&& other) = delete;
 
   /**
    * Allocate a new surface with a specific pixel format.
@@ -44601,28 +44677,44 @@ public:
   constexpr void* GetPixels() const;
 };
 
-/// Safe reference for Surface.
+/**
+ * Reference for Surface.
+ *
+ * This does not take ownership!
+ */
 struct SurfaceRef : Surface
 {
   using Surface::Surface;
 
   /**
-   * Constructs from SurfaceRaw.
+   * Constructs from SurfaceParam.
    *
-   * @param resource a SurfaceRaw.
+   * @param resource a SurfaceRaw or Surface.
    *
-   * This borrows the ownership, increments the refcount!
+   * This does not takes ownership!
    */
-  SurfaceRef(SurfaceRaw resource) noexcept
-    : Surface(Borrow(resource))
+  SurfaceRef(SurfaceParam resource) noexcept
+    : Surface(resource.value)
   {
   }
 
-  /// Constructs from Surface.
-  SurfaceRef(Surface resource) noexcept
-    : Surface(std::move(resource))
+  /**
+   * Constructs from SurfaceParam.
+   *
+   * @param resource a SurfaceRaw or Surface.
+   *
+   * This does not takes ownership!
+   */
+  SurfaceRef(SurfaceRaw resource) noexcept
+    : Surface(resource)
   {
   }
+
+  /// Copy constructor.
+  constexpr SurfaceRef(const SurfaceRef& other) noexcept = default;
+
+  /// Destructor
+  ~SurfaceRef() { release(); }
 };
 
 /**
@@ -48091,7 +48183,11 @@ public:
   ThreadState GetState() const;
 };
 
-/// Semi-safe reference for Thread.
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
 struct ThreadRef : Thread
 {
   using Thread::Thread;
@@ -48973,7 +49069,11 @@ public:
   void ReleaseFrame(CameraFrame&& lock);
 };
 
-/// Semi-safe reference for Camera.
+/**
+ * Reference for Camera.
+ *
+ * This does not take ownership!
+ */
 struct CameraRef : Camera
 {
   using Camera::Camera;
@@ -49965,7 +50065,11 @@ public:
   void Unlock();
 };
 
-/// Semi-safe reference for Mutex.
+/**
+ * Reference for Mutex.
+ *
+ * This does not take ownership!
+ */
 struct MutexRef : Mutex
 {
   using Mutex::Mutex;
@@ -50435,7 +50539,11 @@ public:
   void Unlock();
 };
 
-/// Semi-safe reference for RWLock.
+/**
+ * Reference for RWLock.
+ *
+ * This does not take ownership!
+ */
 struct RWLockRef : RWLock
 {
   using RWLock::RWLock;
@@ -50941,7 +51049,11 @@ public:
   Uint32 GetValue() const;
 };
 
-/// Semi-safe reference for Semaphore.
+/**
+ * Reference for Semaphore.
+ *
+ * This does not take ownership!
+ */
 struct SemaphoreRef : Semaphore
 {
   using Semaphore::Semaphore;
@@ -51345,7 +51457,11 @@ public:
   bool WaitTimeout(MutexParam mutex, std::chrono::milliseconds timeout);
 };
 
-/// Semi-safe reference for Condition.
+/**
+ * Reference for Condition.
+ *
+ * This does not take ownership!
+ */
 struct ConditionRef : Condition
 {
   using Condition::Condition;
@@ -52092,7 +52208,11 @@ public:
   TrayMenu GetMenu() const;
 };
 
-/// Semi-safe reference for Tray.
+/**
+ * Reference for Tray.
+ *
+ * This does not take ownership!
+ */
 struct TrayRef : Tray
 {
   using Tray::Tray;
@@ -56334,7 +56454,11 @@ public:
   RendererRef GetRenderer() const;
 };
 
-/// Semi-safe reference for Window.
+/**
+ * Reference for Window.
+ *
+ * This does not take ownership!
+ */
 struct WindowRef : Window
 {
   using Window::Window;
@@ -67448,7 +67572,11 @@ public:
 #endif /* SDL_PLATFORM_GDK */
 };
 
-/// Semi-safe reference for GPUDevice.
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
 struct GPUDeviceRef : GPUDevice
 {
   using GPUDevice::GPUDevice;
@@ -72683,7 +72811,11 @@ public:
   PowerState GetPowerInfo(int* percent);
 };
 
-/// Semi-safe reference for Joystick.
+/**
+ * Reference for Joystick.
+ *
+ * This does not take ownership!
+ */
 struct JoystickRef : Joystick
 {
   using Joystick::Joystick;
@@ -75369,7 +75501,11 @@ public:
   void* GetLayer();
 };
 
-/// Semi-safe reference for MetalView.
+/**
+ * Reference for MetalView.
+ *
+ * This does not take ownership!
+ */
 struct MetalViewRef : MetalView
 {
   using MetalView::MetalView;
@@ -75855,7 +75991,11 @@ public:
   void Set();
 };
 
-/// Semi-safe reference for Cursor.
+/**
+ * Reference for Cursor.
+ *
+ * This does not take ownership!
+ */
 struct CursorRef : Cursor
 {
   using Cursor::Cursor;
@@ -77786,7 +77926,11 @@ public:
   const char* GetAppleSFSymbolsNameForAxis(GamepadAxis axis);
 };
 
-/// Semi-safe reference for Gamepad.
+/**
+ * Reference for Gamepad.
+ *
+ * This does not take ownership!
+ */
 struct GamepadRef : Gamepad
 {
   using Gamepad::Gamepad;
@@ -80833,7 +80977,11 @@ public:
   void StopRumble();
 };
 
-/// Semi-safe reference for Haptic.
+/**
+ * Reference for Haptic.
+ *
+ * This does not take ownership!
+ */
 struct HapticRef : Haptic
 {
   using Haptic::Haptic;
@@ -84726,7 +84874,11 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for Renderer.
+/**
+ * Reference for Renderer.
+ *
+ * This does not take ownership!
+ */
 struct RendererRef : Renderer
 {
   using Renderer::Renderer;
@@ -84809,6 +84961,10 @@ public:
     : Texture(other.release())
   {
   }
+
+  constexpr Texture(const TextureRef& other) = delete;
+
+  constexpr Texture(TextureRef&& other) = delete;
 
   /**
    * Create a texture for a rendering context.
@@ -85858,28 +86014,44 @@ public:
   void Unlock(TextureSurfaceLock&& lock);
 };
 
-/// Safe reference for Texture.
+/**
+ * Reference for Texture.
+ *
+ * This does not take ownership!
+ */
 struct TextureRef : Texture
 {
   using Texture::Texture;
 
   /**
-   * Constructs from TextureRaw.
+   * Constructs from TextureParam.
    *
-   * @param resource a TextureRaw.
+   * @param resource a TextureRaw or Texture.
    *
-   * This borrows the ownership, increments the refcount!
+   * This does not takes ownership!
    */
-  TextureRef(TextureRaw resource) noexcept
-    : Texture(Borrow(resource))
+  TextureRef(TextureParam resource) noexcept
+    : Texture(resource.value)
   {
   }
 
-  /// Constructs from Texture.
-  TextureRef(Texture resource) noexcept
-    : Texture(std::move(resource))
+  /**
+   * Constructs from TextureParam.
+   *
+   * @param resource a TextureRaw or Texture.
+   *
+   * This does not takes ownership!
+   */
+  TextureRef(TextureRaw resource) noexcept
+    : Texture(resource)
   {
   }
+
+  /// Copy constructor.
+  constexpr TextureRef(const TextureRef& other) noexcept = default;
+
+  /// Destructor
+  ~TextureRef() { release(); }
 };
 
 /**
@@ -90693,7 +90865,11 @@ public:
   void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
 };
 
-/// Semi-safe reference for GPURenderState.
+/**
+ * Reference for GPURenderState.
+ *
+ * This does not take ownership!
+ */
 struct GPURenderStateRef : GPURenderState
 {
   /**
@@ -95362,7 +95538,11 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for Animation.
+/**
+ * Reference for Animation.
+ *
+ * This does not take ownership!
+ */
 struct AnimationRef : Animation
 {
   using Animation::Animation;
@@ -96247,7 +96427,11 @@ public:
   void AddFrame(SurfaceParam surface, Uint64 duration);
 };
 
-/// Semi-safe reference for AnimationEncoder.
+/**
+ * Reference for AnimationEncoder.
+ *
+ * This does not take ownership!
+ */
 struct AnimationEncoderRef : AnimationEncoder
 {
   using AnimationEncoder::AnimationEncoder;
@@ -96790,7 +96974,11 @@ public:
   void Reset();
 };
 
-/// Semi-safe reference for AnimationDecoder.
+/**
+ * Reference for AnimationDecoder.
+ *
+ * This does not take ownership!
+ */
 struct AnimationDecoderRef : AnimationDecoder
 {
   using AnimationDecoder::AnimationDecoder;
@@ -99091,7 +99279,11 @@ public:
   Surface RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const;
 };
 
-/// Semi-safe reference for Font.
+/**
+ * Reference for Font.
+ *
+ * This does not take ownership!
+ */
 struct FontRef : Font
 {
   using Font::Font;
@@ -102389,7 +102581,11 @@ public:
   int GetNumLines() const { return m_resource->num_lines; }
 };
 
-/// Semi-safe reference for Text.
+/**
+ * Reference for Text.
+ *
+ * This does not take ownership!
+ */
 struct TextRef : Text
 {
   using Text::Text;

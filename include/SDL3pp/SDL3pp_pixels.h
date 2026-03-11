@@ -2541,6 +2541,10 @@ public:
   {
   }
 
+  constexpr Palette(const PaletteRef& other) = delete;
+
+  constexpr Palette(PaletteRef&& other) = delete;
+
   /**
    * Create a palette structure with the specified number of color entries.
    *
@@ -2665,28 +2669,44 @@ public:
   void SetColors(SpanRef<const ColorRaw> colors, int firstcolor = 0);
 };
 
-/// Safe reference for Palette.
+/**
+ * Reference for Palette.
+ *
+ * This does not take ownership!
+ */
 struct PaletteRef : Palette
 {
   using Palette::Palette;
 
   /**
-   * Constructs from PaletteRaw.
+   * Constructs from PaletteParam.
    *
-   * @param resource a PaletteRaw.
+   * @param resource a PaletteRaw or Palette.
    *
-   * This borrows the ownership, increments the refcount!
+   * This does not takes ownership!
    */
-  PaletteRef(PaletteRaw resource) noexcept
-    : Palette(Borrow(resource))
+  PaletteRef(PaletteParam resource) noexcept
+    : Palette(resource.value)
   {
   }
 
-  /// Constructs from Palette.
-  PaletteRef(Palette resource) noexcept
-    : Palette(std::move(resource))
+  /**
+   * Constructs from PaletteParam.
+   *
+   * @param resource a PaletteRaw or Palette.
+   *
+   * This does not takes ownership!
+   */
+  PaletteRef(PaletteRaw resource) noexcept
+    : Palette(resource)
   {
   }
+
+  /// Copy constructor.
+  constexpr PaletteRef(const PaletteRef& other) noexcept = default;
+
+  /// Destructor
+  ~PaletteRef() { release(); }
 };
 
 /**

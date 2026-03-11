@@ -3159,7 +3159,11 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for Animation.
+/**
+ * Reference for Animation.
+ *
+ * This does not take ownership!
+ */
 struct AnimationRef : Animation
 {
   using Animation::Animation;
@@ -4125,7 +4129,11 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AnimationEncoder.
+/**
+ * Reference for AnimationEncoder.
+ *
+ * This does not take ownership!
+ */
 struct AnimationEncoderRef : AnimationEncoder
 {
   using AnimationEncoder::AnimationEncoder;
@@ -4743,7 +4751,11 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AnimationDecoder.
+/**
+ * Reference for AnimationDecoder.
+ *
+ * This does not take ownership!
+ */
 struct AnimationDecoderRef : AnimationDecoder
 {
   using AnimationDecoder::AnimationDecoder;

@@ -1166,7 +1166,11 @@ public:
   const char* GetAppleSFSymbolsNameForAxis(GamepadAxis axis);
 };
 
-/// Semi-safe reference for Gamepad.
+/**
+ * Reference for Gamepad.
+ *
+ * This does not take ownership!
+ */
 struct GamepadRef : Gamepad
 {
   using Gamepad::Gamepad;

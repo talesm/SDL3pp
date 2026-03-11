@@ -143,9 +143,7 @@ export function expandResource(
     ctors[`${targetName}#3`].hints.changeAccess = "protected";
     ctors[`${targetName}#4`].hints.changeAccess = "public";
   }
-  if (hasRef && !hasShared) {
-    deleteCtorsFromRef(ctors, refName, targetName);
-  }
+  if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);
@@ -249,17 +247,15 @@ export function expandResource(
 
   const derivedEntries: ApiEntryTransform[] = [];
 
-  if (hasShared && hasRef) {
-    derivedEntries.push(createSharedRefEntry(refName, targetName, rawName));
-  } else if (hasRef) {
+  if (hasRef) {
     derivedEntries.push(
       createRefEntry(refName, targetName, paramType, rawName),
     );
-  }
-  if (hasScoped)
+  } else if (hasScoped) {
     derivedEntries.push(
       createScopedEntry(scopedName, targetName, destroyFunction),
     );
+  }
 
   context.includeBefore(referenceAliases, "__begin");
   derivedEntries.forEach((e) => context.includeAfter(e, targetName));
@@ -851,59 +847,6 @@ function populateTargetEntry(
   });
 }
 
-function createSharedRefEntry(
-  refName: string,
-  targetName: string,
-  rawName: string,
-): ApiEntryTransform {
-  return {
-    kind: "struct",
-    name: refName,
-    type: targetName,
-    doc: [`Safe reference for ${targetName}.`],
-    entries: {
-      [`${targetName}::${targetName}`]: "alias",
-      [refName]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: rawName,
-            name: "resource",
-          },
-        ],
-        hints: {
-          init: [`${targetName}(Borrow(resource))`],
-          noexcept: true,
-        },
-        doc: [
-          `Constructs from ${rawName}.`,
-          {
-            tag: "@param resource",
-            content: `a ${rawName}.`,
-          },
-          "This borrows the ownership, increments the refcount!",
-        ],
-      },
-      [`${refName}#2`]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: targetName,
-            name: "resource",
-          },
-        ],
-        hints: {
-          init: [`${targetName}(std::move(resource))`],
-          noexcept: true,
-        },
-        doc: [`Constructs from ${targetName}.`],
-      },
-    },
-  };
-}
-
 function createRefEntry(
   refName: string,
   targetName: string,
@@ -914,7 +857,7 @@ function createRefEntry(
     kind: "struct",
     name: refName,
     type: targetName,
-    doc: [`Semi-safe reference for ${targetName}.`],
+    doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
     entries: {
       [`${targetName}::${targetName}`]: "alias",
       [refName]: {

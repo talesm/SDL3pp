@@ -395,7 +395,11 @@ public:
   void Set();
 };
 
-/// Semi-safe reference for Cursor.
+/**
+ * Reference for Cursor.
+ *
+ * This does not take ownership!
+ */
 struct CursorRef : Cursor
 {
   using Cursor::Cursor;

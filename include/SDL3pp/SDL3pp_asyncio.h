@@ -436,7 +436,11 @@ public:
              void* userdata);
 };
 
-/// Semi-safe reference for AsyncIO.
+/**
+ * Reference for AsyncIO.
+ *
+ * This does not take ownership!
+ */
 struct AsyncIORef : AsyncIO
 {
   using AsyncIO::AsyncIO;
@@ -781,7 +785,11 @@ public:
   void Signal();
 };
 
-/// Semi-safe reference for AsyncIOQueue.
+/**
+ * Reference for AsyncIOQueue.
+ *
+ * This does not take ownership!
+ */
 struct AsyncIOQueueRef : AsyncIOQueue
 {
   using AsyncIOQueue::AsyncIOQueue;

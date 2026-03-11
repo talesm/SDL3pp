@@ -19,8 +19,12 @@ New Version checklist:
 Next version
 ------------
 
-- [x] Add operator[] for Palette;
-- [x] Bump to 3.4.2;
+- [ ] Merge \*Ref with \*Param resources:
+  - [x] Make \*Ref always non-owning
+  - [ ] Create \*ConstRef when it has \*ConstParam
+  - [ ] Replace \*ConstParam with \*ConstRef;
+  - [ ] Replace \*Param with \*Ref;
+  - [ ] Remove \*Param and \*ConstParam;
 
 Backlog
 -------

@@ -534,7 +534,11 @@ public:
   bool Wait(bool block, int* exitcode);
 };
 
-/// Semi-safe reference for Process.
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
 struct ProcessRef : Process
 {
   using Process::Process;

@@ -347,7 +347,11 @@ public:
   TrayMenu GetMenu() const;
 };
 
-/// Semi-safe reference for Tray.
+/**
+ * Reference for Tray.
+ *
+ * This does not take ownership!
+ */
 struct TrayRef : Tray
 {
   using Tray::Tray;

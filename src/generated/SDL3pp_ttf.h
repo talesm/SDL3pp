@@ -1918,7 +1918,11 @@ public:
   Surface RenderGlyph_LCD(Uint32 ch, ColorRaw fg, ColorRaw bg) const;
 };
 
-/// Semi-safe reference for Font.
+/**
+ * Reference for Font.
+ *
+ * This does not take ownership!
+ */
 struct FontRef : Font
 {
   using Font::Font;
@@ -5287,7 +5291,11 @@ public:
   int GetNumLines() const { static_assert(false, "Not implemented"); }
 };
 
-/// Semi-safe reference for Text.
+/**
+ * Reference for Text.
+ *
+ * This does not take ownership!
+ */
 struct TextRef : Text
 {
   using Text::Text;

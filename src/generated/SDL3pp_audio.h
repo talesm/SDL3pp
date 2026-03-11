@@ -1527,7 +1527,11 @@ public:
                          AudioStreamCB callback);
 };
 
-/// Semi-safe reference for AudioDevice.
+/**
+ * Reference for AudioDevice.
+ *
+ * This does not take ownership!
+ */
 struct AudioDeviceRef : AudioDevice
 {
   using AudioDevice::AudioDevice;
@@ -2854,7 +2858,11 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AudioStream.
+/**
+ * Reference for AudioStream.
+ *
+ * This does not take ownership!
+ */
 struct AudioStreamRef : AudioStream
 {
   using AudioStream::AudioStream;

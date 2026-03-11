@@ -711,7 +711,11 @@ public:
   Uint64 GetCount();
 };
 
-/// Semi-safe reference for Properties.
+/**
+ * Reference for Properties.
+ *
+ * This does not take ownership!
+ */
 struct PropertiesRef : Properties
 {
   using Properties::Properties;

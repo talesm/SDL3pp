@@ -259,6 +259,10 @@ public:
   {
   }
 
+  constexpr Surface(const SurfaceRef& other) = delete;
+
+  constexpr Surface(SurfaceRef&& other) = delete;
+
   /**
    * Allocate a new surface with a specific pixel format.
    *
@@ -1993,28 +1997,44 @@ public:
   constexpr void* GetPixels() const;
 };
 
-/// Safe reference for Surface.
+/**
+ * Reference for Surface.
+ *
+ * This does not take ownership!
+ */
 struct SurfaceRef : Surface
 {
   using Surface::Surface;
 
   /**
-   * Constructs from SurfaceRaw.
+   * Constructs from SurfaceParam.
    *
-   * @param resource a SurfaceRaw.
+   * @param resource a SurfaceRaw or Surface.
    *
-   * This borrows the ownership, increments the refcount!
+   * This does not takes ownership!
    */
-  SurfaceRef(SurfaceRaw resource) noexcept
-    : Surface(Borrow(resource))
+  SurfaceRef(SurfaceParam resource) noexcept
+    : Surface(resource.value)
   {
   }
 
-  /// Constructs from Surface.
-  SurfaceRef(Surface resource) noexcept
-    : Surface(std::move(resource))
+  /**
+   * Constructs from SurfaceParam.
+   *
+   * @param resource a SurfaceRaw or Surface.
+   *
+   * This does not takes ownership!
+   */
+  SurfaceRef(SurfaceRaw resource) noexcept
+    : Surface(resource)
   {
   }
+
+  /// Copy constructor.
+  constexpr SurfaceRef(const SurfaceRef& other) noexcept = default;
+
+  /// Destructor
+  ~SurfaceRef() { release(); }
 };
 
 /**

@@ -4179,7 +4179,11 @@ public:
 #endif /* SDL_PLATFORM_GDK */
 };
 
-/// Semi-safe reference for GPUDevice.
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
 struct GPUDeviceRef : GPUDevice
 {
   using GPUDevice::GPUDevice;

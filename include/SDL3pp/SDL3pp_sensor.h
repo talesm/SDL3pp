@@ -315,7 +315,11 @@ public:
   void GetData(float* data, int num_values);
 };
 
-/// Semi-safe reference for Sensor.
+/**
+ * Reference for Sensor.
+ *
+ * This does not take ownership!
+ */
 struct SensorRef : Sensor
 {
   using Sensor::Sensor;

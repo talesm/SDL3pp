@@ -1168,7 +1168,11 @@ public:
   void UnsetVariable(StringParam name);
 };
 
-/// Semi-safe reference for Environment.
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
 struct EnvironmentRef : Environment
 {
   using Environment::Environment;
@@ -6097,7 +6101,11 @@ public:
                size_t* outbytesleft);
 };
 
-/// Semi-safe reference for IConv.
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
 struct IConvRef : IConv
 {
   using IConv::IConv;

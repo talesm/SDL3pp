@@ -1246,7 +1246,11 @@ public:
   void StopRumble();
 };
 
-/// Semi-safe reference for Haptic.
+/**
+ * Reference for Haptic.
+ *
+ * This does not take ownership!
+ */
 struct HapticRef : Haptic
 {
   using Haptic::Haptic;

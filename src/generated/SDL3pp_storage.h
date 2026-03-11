@@ -788,7 +788,11 @@ public:
                                 GlobFlags flags);
 };
 
-/// Semi-safe reference for Storage.
+/**
+ * Reference for Storage.
+ *
+ * This does not take ownership!
+ */
 struct StorageRef : Storage
 {
   using Storage::Storage;

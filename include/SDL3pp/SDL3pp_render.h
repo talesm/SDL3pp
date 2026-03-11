@@ -2418,7 +2418,11 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for Renderer.
+/**
+ * Reference for Renderer.
+ *
+ * This does not take ownership!
+ */
 struct RendererRef : Renderer
 {
   using Renderer::Renderer;
@@ -2501,6 +2505,10 @@ public:
     : Texture(other.release())
   {
   }
+
+  constexpr Texture(const TextureRef& other) = delete;
+
+  constexpr Texture(TextureRef&& other) = delete;
 
   /**
    * Create a texture for a rendering context.
@@ -3550,28 +3558,44 @@ public:
   void Unlock(TextureSurfaceLock&& lock);
 };
 
-/// Safe reference for Texture.
+/**
+ * Reference for Texture.
+ *
+ * This does not take ownership!
+ */
 struct TextureRef : Texture
 {
   using Texture::Texture;
 
   /**
-   * Constructs from TextureRaw.
+   * Constructs from TextureParam.
    *
-   * @param resource a TextureRaw.
+   * @param resource a TextureRaw or Texture.
    *
-   * This borrows the ownership, increments the refcount!
+   * This does not takes ownership!
    */
-  TextureRef(TextureRaw resource) noexcept
-    : Texture(Borrow(resource))
+  TextureRef(TextureParam resource) noexcept
+    : Texture(resource.value)
   {
   }
 
-  /// Constructs from Texture.
-  TextureRef(Texture resource) noexcept
-    : Texture(std::move(resource))
+  /**
+   * Constructs from TextureParam.
+   *
+   * @param resource a TextureRaw or Texture.
+   *
+   * This does not takes ownership!
+   */
+  TextureRef(TextureRaw resource) noexcept
+    : Texture(resource)
   {
   }
+
+  /// Copy constructor.
+  constexpr TextureRef(const TextureRef& other) noexcept = default;
+
+  /// Destructor
+  ~TextureRef() { release(); }
 };
 
 /**
@@ -8385,7 +8409,11 @@ public:
   void SetFragmentUniforms(Uint32 slot_index, const void* data, Uint32 length);
 };
 
-/// Semi-safe reference for GPURenderState.
+/**
+ * Reference for GPURenderState.
+ *
+ * This does not take ownership!
+ */
 struct GPURenderStateRef : GPURenderState
 {
   /**

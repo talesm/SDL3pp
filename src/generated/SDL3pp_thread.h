@@ -487,7 +487,11 @@ public:
   ThreadState GetState() const;
 };
 
-/// Semi-safe reference for Thread.
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
 struct ThreadRef : Thread
 {
   using Thread::Thread;

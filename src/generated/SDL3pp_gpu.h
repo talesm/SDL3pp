@@ -4200,7 +4200,11 @@ public:
   void GDKResumeGPU();
 };
 
-/// Semi-safe reference for GPUDevice.
+/**
+ * Reference for GPUDevice.
+ *
+ * This does not take ownership!
+ */
 struct GPUDeviceRef : GPUDevice
 {
   using GPUDevice::GPUDevice;
