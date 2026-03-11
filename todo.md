@@ -20,7 +20,7 @@ Next version
 ------------
 
 - [x] Add operator[] for Palette;
-- [ ] Bump to 3.4.2;
+- [x] Bump to 3.4.2;
 
 Backlog
 -------

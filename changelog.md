@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.7.4
+
+- Add operator[] to SDL::Palette;
+- Bump SDL3 compatibility to 3.4.2;
+
 ## Version 0.7.3
 
 Fix segfault when copying empty Surface.
