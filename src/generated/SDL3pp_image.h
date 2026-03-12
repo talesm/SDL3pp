@@ -34,18 +34,18 @@ struct AnimationRef;
 using AnimationParam = AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-struct AnimationConstParam
+struct AnimationConstRef
 {
   const AnimationRaw value; ///< parameter's const AnimationRaw
 
   /// Constructs from const AnimationRaw
-  constexpr AnimationConstParam(const AnimationRaw value)
+  constexpr AnimationConstRef(const AnimationRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr AnimationConstParam(std::nullptr_t = nullptr)
+  constexpr AnimationConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -54,7 +54,7 @@ struct AnimationConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const AnimationConstParam& other) const = default;
+  constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
   /// Converts to underlying const AnimationRaw
   constexpr operator const AnimationRaw() const { return value; }
@@ -3122,11 +3122,11 @@ struct AnimationRef : Animation
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
 
-  /// Converts to AnimationConstParam
-  constexpr operator AnimationConstParam() const noexcept { return get(); }
+  /// Converts to AnimationConstRef
+  constexpr operator AnimationConstRef() const noexcept { return get(); }
 };
 
-inline int GetAnimationWidth(AnimationConstParam anim)
+inline int GetAnimationWidth(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3136,7 +3136,7 @@ inline int Animation::GetWidth() const
   return SDL::GetAnimationWidth(m_resource);
 }
 
-inline int GetAnimationHeight(AnimationConstParam anim)
+inline int GetAnimationHeight(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3146,7 +3146,7 @@ inline int Animation::GetHeight() const
   return SDL::GetAnimationHeight(m_resource);
 }
 
-inline Point GetAnimationSize(AnimationConstParam anim)
+inline Point GetAnimationSize(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3156,7 +3156,7 @@ inline Point Animation::GetSize() const
   return SDL::GetAnimationSize(m_resource);
 }
 
-inline int GetAnimationCount(AnimationConstParam anim)
+inline int GetAnimationCount(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3166,7 +3166,7 @@ inline int Animation::GetCount() const
   return SDL::GetAnimationCount(m_resource);
 }
 
-inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
   static_assert(false, "Not implemented");
 }
@@ -3176,7 +3176,7 @@ inline Surface Animation::GetFrame(int index) const
   return SDL::GetAnimationFrame(m_resource, index);
 }
 
-inline int GetAnimationDelay(AnimationConstParam anim, int index)
+inline int GetAnimationDelay(AnimationConstRef anim, int index)
 {
   static_assert(false, "Not implemented");
 }

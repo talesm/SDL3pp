@@ -1348,7 +1348,7 @@
  
  /**
 @@ -5292,53 +5237,75 @@
-   constexpr operator TextConstParam() const noexcept { return get(); }
+   constexpr operator TextConstRef() const noexcept { return get(); }
  };
  
 +/**
@@ -1463,7 +1463,7 @@
   *
 @@ -5388,7 +5353,7 @@
   */
- inline void DrawSurfaceText(TextConstParam text, Point p, SurfaceParam surface)
+ inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceParam surface)
  {
 -  CheckError(TTF_DrawSurfaceText(text, p, surface));
 +  CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
@@ -1536,7 +1536,7 @@
 - * @sa Text.Text
 + * @sa GPUTextEngine.GPUTextEngine
   */
- inline void DrawRendererText(TextConstParam text, FPoint p)
+ inline void DrawRendererText(TextConstRef text, FPoint p)
  {
 -  CheckError(TTF_DrawRendererText(text, p));
 +  CheckError(TTF_DrawRendererText(text, p.x, p.y));
@@ -1596,7 +1596,7 @@
 - * @sa Text.Text
 + * @sa GPUTextEngine.GPUTextEngine
   */
- inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstParam text)
+ inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
  {
 @@ -5691,16 +5648,56 @@
  
@@ -1681,7 +1681,7 @@
  
 @@ -5753,7 +5748,7 @@
   */
- inline PropertiesRef GetTextProperties(TextConstParam text)
+ inline PropertiesRef GetTextProperties(TextConstRef text)
  {
 -  return CheckError(TTF_GetTextProperties(text));
 +  return {CheckError(TTF_GetTextProperties(text))};
@@ -1690,7 +1690,7 @@
  inline PropertiesRef Text::GetProperties() const
 @@ -5858,7 +5853,7 @@
   */
- inline FontRef GetTextFont(TextConstParam text)
+ inline FontRef GetTextFont(TextConstRef text)
  {
 -  return CheckError(TTF_GetTextFont(text));
 +  return {CheckError(TTF_GetTextFont(text))};
@@ -1898,7 +1898,7 @@
   * @threadsafety This function should be called on the thread that created the
 @@ -6274,7 +6258,9 @@
   */
- inline int GetTextWrapWidth(TextConstParam text)
+ inline int GetTextWrapWidth(TextConstRef text)
  {
 -  return CheckError(TTF_GetTextWrapWidth(text));
 +  int w;

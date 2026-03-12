@@ -44,9 +44,7 @@ export function expandResource(
   const enableMemberAccess =
     resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
   const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
-  const constParamType = enableConstParam
-    ? `${targetName}ConstParam`
-    : paramType;
+  const constParamType = enableConstParam ? `${targetName}ConstRef` : paramType;
   if (!targetEntry.kind) targetEntry.kind = "struct";
   const hasShared = !!resourceEntry.shared;
   const hasScoped = resourceEntry.owning === false;

@@ -37,18 +37,18 @@ struct AnimationRef;
 using AnimationParam = AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-struct AnimationConstParam
+struct AnimationConstRef
 {
   const AnimationRaw value; ///< parameter's const AnimationRaw
 
   /// Constructs from const AnimationRaw
-  constexpr AnimationConstParam(const AnimationRaw value)
+  constexpr AnimationConstRef(const AnimationRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr AnimationConstParam(std::nullptr_t = nullptr)
+  constexpr AnimationConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -57,7 +57,7 @@ struct AnimationConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const AnimationConstParam& other) const = default;
+  constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
   /// Converts to underlying const AnimationRaw
   constexpr operator const AnimationRaw() const { return value; }
@@ -3092,12 +3092,12 @@ struct AnimationRef : Animation
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
 
-  /// Converts to AnimationConstParam
-  constexpr operator AnimationConstParam() const noexcept { return get(); }
+  /// Converts to AnimationConstRef
+  constexpr operator AnimationConstRef() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.
-inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
+inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
 inline int Animation::GetWidth() const
 {
@@ -3105,7 +3105,7 @@ inline int Animation::GetWidth() const
 }
 
 /// Get the height in pixels.
-inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
+inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
 
 inline int Animation::GetHeight() const
 {
@@ -3113,7 +3113,7 @@ inline int Animation::GetHeight() const
 }
 
 /// Get the size in pixels.
-inline Point GetAnimationSize(AnimationConstParam anim)
+inline Point GetAnimationSize(AnimationConstRef anim)
 {
   return {anim->w, anim->h};
 }
@@ -3124,7 +3124,7 @@ inline Point Animation::GetSize() const
 }
 
 /// Return the number of frames.
-inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
+inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
 
 inline int Animation::GetCount() const
 {
@@ -3137,7 +3137,7 @@ inline int Animation::GetCount() const
  * @param anim Animation to dispose of.
  * @param index the index to get frame, within [0, GetCount() - 1]
  */
-inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
   return Surface::Borrow(anim->frames[index]);
 }
@@ -3153,7 +3153,7 @@ inline Surface Animation::GetFrame(int index) const
  * @param anim Animation to dispose of.
  * @param index the index to get frame, within [0, GetCount() - 1]
  */
-inline int GetAnimationDelay(AnimationConstParam anim, int index)
+inline int GetAnimationDelay(AnimationConstRef anim, int index)
 {
   return anim->delays[index];
 }

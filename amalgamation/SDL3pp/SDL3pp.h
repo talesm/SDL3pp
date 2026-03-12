@@ -9041,18 +9041,18 @@ struct PaletteRef;
 using PaletteParam = PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-struct PaletteConstParam
+struct PaletteConstRef
 {
   const PaletteRaw value; ///< parameter's const PaletteRaw
 
   /// Constructs from const PaletteRaw
-  constexpr PaletteConstParam(const PaletteRaw value)
+  constexpr PaletteConstRef(const PaletteRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr PaletteConstParam(std::nullptr_t = nullptr)
+  constexpr PaletteConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -9061,7 +9061,7 @@ struct PaletteConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const PaletteConstParam& other) const = default;
+  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
@@ -9642,7 +9642,7 @@ public:
    * @sa MapRGBA()
    * @sa Surface.MapColor()
    */
-  Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
+  Uint32 Map(ColorRaw c, PaletteConstRef palette = {}) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -9668,7 +9668,7 @@ public:
    * @sa GetRGBA()
    * @sa Map()
    */
-  Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
+  Color Get(Uint32 pixel, PaletteConstRef palette = {}) const;
 };
 
 constexpr PixelFormat PIXELFORMAT_UNKNOWN =
@@ -11231,7 +11231,7 @@ struct Color : ColorRaw
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
    */
-  Uint32 Map(const PixelFormatDetails& format, PaletteConstParam palette) const;
+  Uint32 Map(const PixelFormatDetails& format, PaletteConstRef palette) const;
 
   /**
    * Get RGBA values from a pixel in the specified format.
@@ -11261,7 +11261,7 @@ struct Color : ColorRaw
    */
   static Color Get(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   PaletteConstParam palette);
+                   PaletteConstRef palette = {});
 };
 
 /**
@@ -11633,8 +11633,8 @@ struct PaletteRef : Palette
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
 
-  /// Converts to PaletteConstParam
-  constexpr operator PaletteConstParam() const noexcept { return get(); }
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -11870,7 +11870,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     PaletteConstParam palette,
+                     PaletteConstRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -11920,7 +11920,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       Uint8 g,
                       Uint8 b,
                       Uint8 a,
-                      PaletteConstParam palette = {})
+                      PaletteConstRef palette = {})
 {
   return SDL_MapRGBA(&format, palette, r, g, b, a);
 }
@@ -11960,18 +11960,18 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  */
 inline Uint32 MapColor(const PixelFormatDetails& format,
                        ColorRaw c,
-                       PaletteConstParam palette = {})
+                       PaletteConstRef palette = {})
 {
   return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
 }
 
 inline Uint32 Color::Map(const PixelFormatDetails& format,
-                         PaletteConstParam palette) const
+                         PaletteConstRef palette) const
 {
   return MapColor(format, *this, palette);
 }
 
-inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
+inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
 {
   return MapColor(GetDetails(), c, palette);
 }
@@ -12003,7 +12003,7 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  */
 inline void GetRGB(Uint32 pixelvalue,
                    const PixelFormatDetails& format,
-                   PaletteConstParam palette,
+                   PaletteConstRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
@@ -12042,7 +12042,7 @@ inline void GetRGB(Uint32 pixelvalue,
  */
 inline void GetRGBA(Uint32 pixelvalue,
                     const PixelFormatDetails& format,
-                    PaletteConstParam palette,
+                    PaletteConstRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
@@ -12080,7 +12080,7 @@ inline void GetRGBA(Uint32 pixelvalue,
  */
 inline Color GetColor(Uint32 pixel,
                       const PixelFormatDetails& format,
-                      PaletteConstParam palette = {})
+                      PaletteConstRef palette = {})
 {
   Color c;
   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
@@ -12089,12 +12089,12 @@ inline Color GetColor(Uint32 pixel,
 
 inline Color Color::Get(Uint32 pixel,
                         const PixelFormatDetails& format,
-                        PaletteConstParam palette)
+                        PaletteConstRef palette)
 {
   return GetColor(pixel, format, palette);
 }
 
-inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
+inline Color PixelFormat::Get(Uint32 pixel, PaletteConstRef palette) const
 {
   return GetColor(pixel, GetDetails(), palette);
 }
@@ -42660,18 +42660,18 @@ struct SurfaceRef;
 using SurfaceParam = SurfaceRef;
 
 /// Safely wrap Surface for non owning const parameters
-struct SurfaceConstParam
+struct SurfaceConstRef
 {
   const SurfaceRaw value; ///< parameter's const SurfaceRaw
 
   /// Constructs from const SurfaceRaw
-  constexpr SurfaceConstParam(const SurfaceRaw value)
+  constexpr SurfaceConstRef(const SurfaceRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr SurfaceConstParam(std::nullptr_t = nullptr)
+  constexpr SurfaceConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -42680,7 +42680,7 @@ struct SurfaceConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const SurfaceConstParam& other) const = default;
+  constexpr auto operator<=>(const SurfaceConstRef& other) const = default;
 
   /// Converts to underlying const SurfaceRaw
   constexpr operator const SurfaceRaw() const { return value; }
@@ -42718,7 +42718,7 @@ constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
  *
  * @since This function is available since SDL 3.2.0.
  */
-constexpr bool MustLock(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
+constexpr bool MustLock(SurfaceConstRef S) { return SDL_MUSTLOCK((S.value)); }
 
 /**
  * The scaling mode.
@@ -44620,8 +44620,8 @@ struct SurfaceRef : Surface
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
 
-  /// Converts to SurfaceConstParam
-  constexpr operator SurfaceConstParam() const noexcept { return get(); }
+  /// Converts to SurfaceConstRef
+  constexpr operator SurfaceConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -45016,7 +45016,7 @@ inline void Surface::Destroy() { DestroySurface(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetSurfaceProperties(SurfaceConstParam surface)
+inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
 {
   return {CheckError(SDL_GetSurfaceProperties(surface))};
 }
@@ -45096,7 +45096,7 @@ inline void Surface::SetColorspace(Colorspace colorspace)
  *
  * @sa Surface.SetColorspace
  */
-inline Colorspace GetSurfaceColorspace(SurfaceConstParam surface)
+inline Colorspace GetSurfaceColorspace(SurfaceConstRef surface)
 {
   return SDL_GetSurfaceColorspace(surface);
 }
@@ -45186,7 +45186,7 @@ inline void Surface::SetPalette(PaletteParam palette)
  *
  * @sa Surface.SetPalette
  */
-inline Palette GetSurfacePalette(SurfaceConstParam surface)
+inline Palette GetSurfacePalette(SurfaceConstRef surface)
 {
   return Palette::Borrow(SDL_GetSurfacePalette(surface));
 }
@@ -45245,7 +45245,7 @@ inline void Surface::AddAlternateImage(SurfaceParam image)
  * @sa Surface.RemoveAlternateImages
  * @sa Surface.GetImages
  */
-inline bool SurfaceHasAlternateImages(SurfaceConstParam surface)
+inline bool SurfaceHasAlternateImages(SurfaceConstRef surface)
 {
   return SDL_SurfaceHasAlternateImages(surface);
 }
@@ -45278,7 +45278,7 @@ inline bool Surface::HasAlternateImages() const
  * @sa Surface.RemoveAlternateImages
  * @sa Surface.HasAlternateImages
  */
-inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
+inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
 {
   int count = 0;
   auto data = SDL_GetSurfaceImages(surface, &count);
@@ -45512,7 +45512,7 @@ inline Surface Surface::LoadBMP(StringParam file)
  * @sa Surface.LoadBMP
  * @sa Surface.SaveBMP
  */
-inline void SaveBMP(SurfaceConstParam surface,
+inline void SaveBMP(SurfaceConstRef surface,
                     IOStreamParam dst,
                     bool closeio = false)
 {
@@ -45540,7 +45540,7 @@ inline void SaveBMP(SurfaceConstParam surface,
  * @sa Surface.LoadBMP
  * @sa Surface.SaveBMP
  */
-inline void SaveBMP(SurfaceConstParam surface, StringParam file)
+inline void SaveBMP(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SaveBMP(surface, file));
 }
@@ -45637,7 +45637,7 @@ inline Surface Surface::LoadPNG(StringParam file)
  * @sa Surface.LoadPNG
  * @sa Surface.SavePNG
  */
-inline void SavePNG(SurfaceConstParam surface,
+inline void SavePNG(SurfaceConstRef surface,
                     IOStreamParam dst,
                     bool closeio = false)
 {
@@ -45659,7 +45659,7 @@ inline void SavePNG(SurfaceConstParam surface,
  * @sa Surface.LoadPNG
  * @sa Surface.SavePNG
  */
-inline void SavePNG(SurfaceConstParam surface, StringParam file)
+inline void SavePNG(SurfaceConstRef surface, StringParam file)
 {
   CheckError(SDL_SavePNG(surface, file));
 }
@@ -45719,7 +45719,7 @@ inline void Surface::SetRLE(bool enabled)
  *
  * @sa Surface.SetRLE
  */
-inline bool SurfaceHasRLE(SurfaceConstParam surface)
+inline bool SurfaceHasRLE(SurfaceConstRef surface)
 {
   return SDL_SurfaceHasRLE(surface);
 }
@@ -45790,7 +45790,7 @@ inline void Surface::ClearColorKey() { SDL::ClearSurfaceColorKey(m_resource); }
  * @sa Surface.SetColorKey
  * @sa Surface.GetColorKey
  */
-inline bool SurfaceHasColorKey(SurfaceConstParam surface)
+inline bool SurfaceHasColorKey(SurfaceConstRef surface)
 {
   return SDL_SurfaceHasColorKey(surface);
 }
@@ -45819,7 +45819,7 @@ inline bool Surface::HasColorKey() const
  * @sa Surface.SetColorKey
  * @sa Surface.HasColorKey
  */
-inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstParam surface)
+inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
 {
   if (Uint32 key; SDL_GetSurfaceColorKey(surface, &key)) return key;
   return std::nullopt;
@@ -45880,7 +45880,7 @@ inline void Surface::SetColorMod(Uint8 r, Uint8 g, Uint8 b)
  * @sa Surface.GetAlphaMod
  * @sa Surface.SetColorMod
  */
-inline void GetSurfaceColorMod(SurfaceConstParam surface,
+inline void GetSurfaceColorMod(SurfaceConstRef surface,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b)
@@ -45937,7 +45937,7 @@ inline void Surface::SetAlphaMod(Uint8 alpha)
  * @sa Surface.GetColorMod
  * @sa Surface.SetAlphaMod
  */
-inline Uint8 GetSurfaceAlphaMod(SurfaceConstParam surface)
+inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
 {
   Uint8 alpha;
   CheckError(SDL_GetSurfaceAlphaMod(surface, &alpha));
@@ -45980,7 +45980,7 @@ inline void Surface::SetMod(Color color) { SetSurfaceMod(m_resource, color); }
  * @returns a Color containing RGBA value on success or std::nullopt on
  * failure; call GetError() for more information.
  */
-inline Color GetSurfaceMod(SurfaceConstParam surface)
+inline Color GetSurfaceMod(SurfaceConstRef surface)
 {
   Color c;
   GetSurfaceColorMod(surface, &c.r, &c.g, &c.b);
@@ -46031,7 +46031,7 @@ inline void Surface::SetBlendMode(BlendMode blendMode)
  *
  * @sa Surface.SetBlendMode
  */
-inline BlendMode GetSurfaceBlendMode(SurfaceConstParam surface)
+inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
 {
   BlendMode blendmode;
   CheckError(SDL_GetSurfaceBlendMode(surface, &blendmode));
@@ -46106,7 +46106,7 @@ inline void Surface::ResetClipRect() { SDL::ResetSurfaceClipRect(m_resource); }
  *
  * @sa Surface.SetClipRect
  */
-inline Rect GetSurfaceClipRect(SurfaceConstParam surface)
+inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
 {
   Rect r;
   CheckError(SDL_GetSurfaceClipRect(surface, &r));
@@ -46197,7 +46197,7 @@ inline Surface Surface::Rotate(float angle)
  *
  * @sa Surface.Destroy
  */
-inline Surface DuplicateSurface(SurfaceConstParam surface)
+inline Surface DuplicateSurface(SurfaceConstRef surface)
 {
   return Surface(SDL_DuplicateSurface(surface));
 }
@@ -46226,7 +46226,7 @@ inline Surface Surface::Duplicate() const
  *
  * @sa Surface.Destroy
  */
-inline Surface ScaleSurface(SurfaceConstParam surface,
+inline Surface ScaleSurface(SurfaceConstRef surface,
                             const PointRaw& size,
                             ScaleMode scaleMode)
 {
@@ -46265,7 +46265,7 @@ inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
+inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
 {
   return Surface(SDL_ConvertSurface(surface, format));
 }
@@ -46303,7 +46303,7 @@ inline Surface Surface::Convert(PixelFormat format) const
  * @sa Surface.Convert
  * @sa Surface.Destroy
  */
-inline Surface ConvertSurfaceAndColorspace(SurfaceConstParam surface,
+inline Surface ConvertSurfaceAndColorspace(SurfaceConstRef surface,
                                            PixelFormat format,
                                            PaletteParam palette,
                                            Colorspace colorspace,
@@ -47109,10 +47109,7 @@ inline void Surface::Blit9Grid(SurfaceParam src,
  *
  * @sa Surface.MapRGBA
  */
-inline Uint32 MapSurfaceRGB(SurfaceConstParam surface,
-                            Uint8 r,
-                            Uint8 g,
-                            Uint8 b)
+inline Uint32 MapSurfaceRGB(SurfaceConstRef surface, Uint8 r, Uint8 g, Uint8 b)
 {
   return SDL_MapSurfaceRGB(surface, r, g, b);
 }
@@ -47151,7 +47148,7 @@ inline Uint32 Surface::MapRGB(Uint8 r, Uint8 g, Uint8 b) const
  *
  * @sa Surface.MapRGB
  */
-inline Uint32 MapSurfaceRGBA(SurfaceConstParam surface, ColorRaw c)
+inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
 {
   return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
 }
@@ -47187,7 +47184,7 @@ inline Uint32 Surface::MapRGBA(ColorRaw c) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReadSurfacePixel(SurfaceConstParam surface,
+inline void ReadSurfacePixel(SurfaceConstRef surface,
                              const PointRaw& p,
                              Uint8* r,
                              Uint8* g,
@@ -47216,7 +47213,7 @@ inline void ReadSurfacePixel(SurfaceConstParam surface,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Color ReadSurfacePixel(SurfaceConstParam surface, const PointRaw& p)
+inline Color ReadSurfacePixel(SurfaceConstRef surface, const PointRaw& p)
 {
   Color c;
   ReadSurfacePixel(surface, p, &c.r, &c.g, &c.b, &c.a);
@@ -47320,7 +47317,7 @@ inline Color Surface::ReadPixel(const PointRaw& p) const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
+inline void ReadSurfacePixelFloat(SurfaceConstRef surface,
                                   const PointRaw& p,
                                   float* r,
                                   float* g,
@@ -47346,8 +47343,7 @@ inline void ReadSurfacePixelFloat(SurfaceConstParam surface,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FColor ReadSurfacePixelFloat(SurfaceConstParam surface,
-                                    const PointRaw& p)
+inline FColor ReadSurfacePixelFloat(SurfaceConstRef surface, const PointRaw& p)
 {
   FColor c;
   ReadSurfacePixelFloat(surface, p, &c.r, &c.g, &c.b, &c.a);
@@ -47529,7 +47525,7 @@ inline void Surface::WritePixelFloat(const PointRaw& p, const FColorRaw& c)
 }
 
 /// Get the width in pixels.
-constexpr int GetSurfaceWidth(SurfaceConstParam surface) { return surface->w; }
+constexpr int GetSurfaceWidth(SurfaceConstRef surface) { return surface->w; }
 
 /// Get the width in pixels.
 constexpr int GetSurfaceWidth(const SurfaceLock& lock)
@@ -47543,7 +47539,7 @@ constexpr int Surface::GetWidth() const
 }
 
 /// Get the height in pixels.
-constexpr int GetSurfaceHeight(SurfaceConstParam surface) { return surface->h; }
+constexpr int GetSurfaceHeight(SurfaceConstRef surface) { return surface->h; }
 
 /// Get the height in pixels.
 constexpr int GetSurfaceHeight(const SurfaceLock& lock)
@@ -47557,7 +47553,7 @@ constexpr int Surface::GetHeight() const
 }
 
 /// Get the size in pixels.
-constexpr Point GetSurfaceSize(SurfaceConstParam surface)
+constexpr Point GetSurfaceSize(SurfaceConstRef surface)
 {
   return Point(surface->w, surface->h);
 }
@@ -47574,7 +47570,7 @@ constexpr Point Surface::GetSize() const
 }
 
 /// Get pitch in bytes.
-constexpr int GetSurfacePitch(SurfaceConstParam surface)
+constexpr int GetSurfacePitch(SurfaceConstRef surface)
 {
   return surface->pitch;
 }
@@ -47591,7 +47587,7 @@ constexpr int Surface::GetPitch() const
 }
 
 /// Get the pixel format.
-constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
+constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
 {
   return surface->format;
 }
@@ -47608,7 +47604,7 @@ constexpr PixelFormat Surface::GetFormat() const
 }
 
 /// Get the pixels.
-constexpr void* GetSurfacePixels(SurfaceConstParam surface)
+constexpr void* GetSurfacePixels(SurfaceConstRef surface)
 {
   return surface->pixels;
 }
@@ -82337,18 +82333,18 @@ struct TextureRef;
 using TextureParam = TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
-struct TextureConstParam
+struct TextureConstRef
 {
   const TextureRaw value; ///< parameter's const TextureRaw
 
   /// Constructs from const TextureRaw
-  constexpr TextureConstParam(const TextureRaw value)
+  constexpr TextureConstRef(const TextureRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr TextureConstParam(std::nullptr_t = nullptr)
+  constexpr TextureConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -82357,7 +82353,7 @@ struct TextureConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const TextureConstParam& other) const = default;
+  constexpr auto operator<=>(const TextureConstRef& other) const = default;
 
   /// Converts to underlying const TextureRaw
   constexpr operator const TextureRaw() const { return value; }
@@ -85575,7 +85571,7 @@ public:
    * @sa Texture.UpdateNV
    * @sa Texture.UpdateYUV
    */
-  void Update(SurfaceConstParam surface,
+  void Update(SurfaceConstRef surface,
               OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
@@ -85801,8 +85797,8 @@ struct TextureRef : Texture
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
 
-  /// Converts to TextureConstParam
-  constexpr operator TextureConstParam() const noexcept { return get(); }
+  /// Converts to TextureConstRef
+  constexpr operator TextureConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -87334,7 +87330,7 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetTextureProperties(TextureConstParam texture)
+inline PropertiesRef GetTextureProperties(TextureConstRef texture)
 {
   return {CheckError(SDL_GetTextureProperties(texture))};
 }
@@ -87355,7 +87351,7 @@ inline PropertiesRef Texture::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline RendererRef GetRendererFromTexture(TextureConstParam texture)
+inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 {
   return {SDL_GetRendererFromTexture(texture)};
 }
@@ -87379,13 +87375,13 @@ inline RendererRef Texture::GetRenderer() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
+inline void GetTextureSize(TextureConstRef texture, float* w, float* h)
 {
   CheckError(SDL_GetTextureSize(texture, w, h));
 }
 
 /// Get the size of a texture.
-inline Point GetTextureSize(TextureConstParam texture)
+inline Point GetTextureSize(TextureConstRef texture)
 {
   return Point(texture->w, texture->h);
 }
@@ -87401,7 +87397,7 @@ inline Point Texture::GetSize() const
 }
 
 /// Get the size of a texture, as floating point values.
-inline FPoint GetTextureSizeFloat(TextureConstParam texture)
+inline FPoint GetTextureSizeFloat(TextureConstRef texture)
 {
   FPoint p;
   GetTextureSize(texture, &p.x, &p.y);
@@ -87414,7 +87410,7 @@ inline FPoint Texture::GetSizeFloat() const
 }
 
 /// Get the width in pixels.
-inline int GetTextureWidth(TextureConstParam texture) { return texture->w; }
+inline int GetTextureWidth(TextureConstRef texture) { return texture->w; }
 
 inline int Texture::GetWidth() const
 {
@@ -87422,7 +87418,7 @@ inline int Texture::GetWidth() const
 }
 
 /// Get the height in pixels.
-inline int GetTextureHeight(TextureConstParam texture) { return texture->h; }
+inline int GetTextureHeight(TextureConstRef texture) { return texture->h; }
 
 inline int Texture::GetHeight() const
 {
@@ -87430,7 +87426,7 @@ inline int Texture::GetHeight() const
 }
 
 /// Get the pixel format.
-inline PixelFormat GetTextureFormat(TextureConstParam texture)
+inline PixelFormat GetTextureFormat(TextureConstRef texture)
 {
   return texture->format;
 }
@@ -87588,7 +87584,7 @@ inline void Texture::SetColorModFloat(float r, float g, float b)
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetColorMod
  */
-inline void GetTextureColorMod(TextureConstParam texture,
+inline void GetTextureColorMod(TextureConstRef texture,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b)
@@ -87618,7 +87614,7 @@ inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @sa Texture.GetColorMod
  * @sa Texture.SetColorModFloat
  */
-inline void GetTextureColorModFloat(TextureConstParam texture,
+inline void GetTextureColorModFloat(TextureConstRef texture,
                                     float* r,
                                     float* g,
                                     float* b)
@@ -87712,7 +87708,7 @@ inline void Texture::SetAlphaModFloat(float alpha)
  * @sa Texture.GetColorMod
  * @sa Texture.SetAlphaMod
  */
-inline Uint8 GetTextureAlphaMod(TextureConstParam texture)
+inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
 {
   Uint8 alpha;
   CheckError(SDL_GetTextureAlphaMod(texture, &alpha));
@@ -87739,7 +87735,7 @@ inline Uint8 Texture::GetAlphaMod() const
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetAlphaModFloat
  */
-inline float GetTextureAlphaModFloat(TextureConstParam texture)
+inline float GetTextureAlphaModFloat(TextureConstRef texture)
 {
   float alpha;
   CheckError(SDL_GetTextureAlphaModFloat(texture, &alpha));
@@ -87830,7 +87826,7 @@ inline void Texture::SetModFloat(FColor c)
  * @sa GetAlphaMod()
  * @sa SetColorMod()
  */
-inline Color GetTextureMod(TextureConstParam texture)
+inline Color GetTextureMod(TextureConstRef texture)
 {
   Color c;
   GetTextureColorMod(texture, &c.r, &c.g, &c.b);
@@ -87854,7 +87850,7 @@ inline Color Texture::GetMod() const { return SDL::GetTextureMod(m_resource); }
  * @sa GetAlphaMod()
  * @sa SetColorMod()
  */
-inline FColor GetTextureModFloat(TextureConstParam texture)
+inline FColor GetTextureModFloat(TextureConstRef texture)
 {
   FColor c;
   GetTextureColorModFloat(texture, &c.r, &c.g, &c.b);
@@ -87906,7 +87902,7 @@ inline void Texture::SetBlendMode(BlendMode blendMode)
  *
  * @sa Texture.SetBlendMode
  */
-inline BlendMode GetTextureBlendMode(TextureConstParam texture)
+inline BlendMode GetTextureBlendMode(TextureConstRef texture)
 {
   BlendMode blendMode;
   CheckError(SDL_GetTextureBlendMode(texture, &blendMode));
@@ -87958,7 +87954,7 @@ inline void Texture::SetScaleMode(ScaleMode scaleMode)
  *
  * @sa Texture.SetScaleMode
  */
-inline ScaleMode GetTextureScaleMode(TextureConstParam texture)
+inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
 {
   ScaleMode scaleMode;
   CheckError(SDL_GetTextureScaleMode(texture, &scaleMode));
@@ -88040,7 +88036,7 @@ inline void UpdateTexture(TextureParam texture,
  * @sa Texture.UpdateYUV
  */
 inline void UpdateTexture(TextureParam texture,
-                          SurfaceConstParam surface,
+                          SurfaceConstRef surface,
                           OptionalRef<const RectRaw> rect = std::nullopt)
 {
   UpdateTexture(texture, rect, surface->pixels, surface->pitch);
@@ -88053,7 +88049,7 @@ inline void Texture::Update(OptionalRef<const RectRaw> rect,
   SDL::UpdateTexture(m_resource, rect, pixels, pitch);
 }
 
-inline void Texture::Update(SurfaceConstParam surface,
+inline void Texture::Update(SurfaceConstRef surface,
                             OptionalRef<const RectRaw> rect)
 {
   SDL::UpdateTexture(m_resource, surface, rect);
@@ -92260,18 +92256,18 @@ struct AnimationRef;
 using AnimationParam = AnimationRef;
 
 /// Safely wrap Animation for non owning const parameters
-struct AnimationConstParam
+struct AnimationConstRef
 {
   const AnimationRaw value; ///< parameter's const AnimationRaw
 
   /// Constructs from const AnimationRaw
-  constexpr AnimationConstParam(const AnimationRaw value)
+  constexpr AnimationConstRef(const AnimationRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr AnimationConstParam(std::nullptr_t = nullptr)
+  constexpr AnimationConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -92280,7 +92276,7 @@ struct AnimationConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const AnimationConstParam& other) const = default;
+  constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
   /// Converts to underlying const AnimationRaw
   constexpr operator const AnimationRaw() const { return value; }
@@ -95315,12 +95311,12 @@ struct AnimationRef : Animation
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
 
-  /// Converts to AnimationConstParam
-  constexpr operator AnimationConstParam() const noexcept { return get(); }
+  /// Converts to AnimationConstRef
+  constexpr operator AnimationConstRef() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.
-inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
+inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
 
 inline int Animation::GetWidth() const
 {
@@ -95328,7 +95324,7 @@ inline int Animation::GetWidth() const
 }
 
 /// Get the height in pixels.
-inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
+inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
 
 inline int Animation::GetHeight() const
 {
@@ -95336,7 +95332,7 @@ inline int Animation::GetHeight() const
 }
 
 /// Get the size in pixels.
-inline Point GetAnimationSize(AnimationConstParam anim)
+inline Point GetAnimationSize(AnimationConstRef anim)
 {
   return {anim->w, anim->h};
 }
@@ -95347,7 +95343,7 @@ inline Point Animation::GetSize() const
 }
 
 /// Return the number of frames.
-inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
+inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
 
 inline int Animation::GetCount() const
 {
@@ -95360,7 +95356,7 @@ inline int Animation::GetCount() const
  * @param anim Animation to dispose of.
  * @param index the index to get frame, within [0, GetCount() - 1]
  */
-inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
   return Surface::Borrow(anim->frames[index]);
 }
@@ -95376,7 +95372,7 @@ inline Surface Animation::GetFrame(int index) const
  * @param anim Animation to dispose of.
  * @param index the index to get frame, within [0, GetCount() - 1]
  */
-inline int GetAnimationDelay(AnimationConstParam anim, int index)
+inline int GetAnimationDelay(AnimationConstRef anim, int index)
 {
   return anim->delays[index];
 }
@@ -97216,18 +97212,18 @@ struct TextRef;
 using TextParam = TextRef;
 
 /// Safely wrap Text for non owning const parameters
-struct TextConstParam
+struct TextConstRef
 {
   const TextRaw value; ///< parameter's const TextRaw
 
   /// Constructs from const TextRaw
-  constexpr TextConstParam(const TextRaw value)
+  constexpr TextConstRef(const TextRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr TextConstParam(std::nullptr_t = nullptr)
+  constexpr TextConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -97236,7 +97232,7 @@ struct TextConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const TextConstParam& other) const = default;
+  constexpr auto operator<=>(const TextConstRef& other) const = default;
 
   /// Converts to underlying const TextRaw
   constexpr operator const TextRaw() const { return value; }
@@ -102369,8 +102365,8 @@ struct TextRef : Text
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
 
-  /// Converts to TextConstParam
-  constexpr operator TextConstParam() const noexcept { return get(); }
+  /// Converts to TextConstRef
+  constexpr operator TextConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -102487,7 +102483,7 @@ inline SurfaceTextEngine::SurfaceTextEngine()
  * @sa SurfaceTextEngine.SurfaceTextEngine
  * @sa Text.Text
  */
-inline void DrawSurfaceText(TextConstParam text, Point p, SurfaceParam surface)
+inline void DrawSurfaceText(TextConstRef text, Point p, SurfaceParam surface)
 {
   CheckError(TTF_DrawSurfaceText(text, p.x, p.y, surface));
 }
@@ -102617,7 +102613,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @sa RendererTextEngine.RendererTextEngine
  * @sa GPUTextEngine.GPUTextEngine
  */
-inline void DrawRendererText(TextConstParam text, FPoint p)
+inline void DrawRendererText(TextConstRef text, FPoint p)
 {
   CheckError(TTF_DrawRendererText(text, p.x, p.y));
 }
@@ -102752,7 +102748,7 @@ constexpr auto ATLAS_TEXTURE_SIZE_NUMBER =
  * @sa GPUTextEngine.GPUTextEngine
  * @sa GPUTextEngine.GPUTextEngine
  */
-inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstParam text)
+inline GPUAtlasDrawSequence* GetGPUTextDrawData(TextConstRef text)
 {
   return TTF_GetGPUTextDrawData(text);
 }
@@ -102882,7 +102878,7 @@ inline Text::Text(TextEngineParam engine, FontParam font, std::string_view text)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline PropertiesRef GetTextProperties(TextConstParam text)
+inline PropertiesRef GetTextProperties(TextConstRef text)
 {
   return {CheckError(TTF_GetTextProperties(text))};
 }
@@ -102932,7 +102928,7 @@ inline void Text::SetEngine(TextEngineParam engine)
  *
  * @sa Text.SetEngine
  */
-inline TextEngineParam GetTextEngine(TextConstParam text)
+inline TextEngineParam GetTextEngine(TextConstRef text)
 {
   return CheckError(TTF_GetTextEngine(text));
 }
@@ -102987,7 +102983,7 @@ inline bool Text::SetFont(FontParam font)
  *
  * @sa Text.SetFont
  */
-inline FontRef GetTextFont(TextConstParam text)
+inline FontRef GetTextFont(TextConstRef text)
 {
   return {CheckError(TTF_GetTextFont(text))};
 }
@@ -103032,7 +103028,7 @@ inline void Text::SetDirection(Direction direction)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline Direction GetTextDirection(TextConstParam text)
+inline Direction GetTextDirection(TextConstRef text)
 {
   return TTF_GetTextDirection(text);
 }
@@ -103086,7 +103082,7 @@ inline void Text::SetScript(Uint32 script)
  *
  * @sa TagToString
  */
-inline Uint32 GetTextScript(TextConstParam text)
+inline Uint32 GetTextScript(TextConstRef text)
 {
   return TTF_GetTextScript(text);
 }
@@ -103166,7 +103162,7 @@ inline void Text::SetColorFloat(FColor c)
  * @sa Text.GetColorFloat
  * @sa Text.SetColor
  */
-inline void GetTextColor(TextConstParam text,
+inline void GetTextColor(TextConstRef text,
                          Uint8* r,
                          Uint8* g,
                          Uint8* b,
@@ -103226,7 +103222,7 @@ inline Color Text::GetColor() const { return SDL::GetTextColor(m_resource); }
  * @sa Text.GetColor
  * @sa Text.SetColorFloat
  */
-inline void GetTextColorFloat(TextConstParam text,
+inline void GetTextColorFloat(TextConstRef text,
                               float* r,
                               float* g,
                               float* b,
@@ -103313,7 +103309,7 @@ inline void Text::SetPosition(const PointRaw& p)
  *
  * @sa Text.SetPosition
  */
-inline void GetTextPosition(TextConstParam text, int* x, int* y)
+inline void GetTextPosition(TextConstRef text, int* x, int* y)
 {
   CheckError(TTF_GetTextPosition(text, x, y));
 }
@@ -103392,7 +103388,7 @@ inline void Text::SetWrapWidth(int wrap_width)
  *
  * @sa Text.SetWrapWidth
  */
-inline int GetTextWrapWidth(TextConstParam text)
+inline int GetTextWrapWidth(TextConstRef text)
 {
   int w;
   CheckError(TTF_GetTextWrapWidth(text, &w));
@@ -103447,7 +103443,7 @@ inline void Text::SetWrapWhitespaceVisible(bool visible)
  *
  * @sa Text.SetWrapWhitespaceVisible
  */
-inline bool TextWrapWhitespaceVisible(TextConstParam text)
+inline bool TextWrapWhitespaceVisible(TextConstRef text)
 {
   return TTF_TextWrapWhitespaceVisible(text);
 }
@@ -103597,7 +103593,7 @@ inline void Text::DeleteString(int offset, int length)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSize(TextConstParam text, int* w, int* h)
+inline void GetTextSize(TextConstRef text, int* w, int* h)
 {
   CheckError(TTF_GetTextSize(text, w, h));
 }
@@ -103651,7 +103647,7 @@ inline Point Text::GetSize() const { return SDL::GetTextSize(m_resource); }
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubString(TextConstParam text,
+inline void GetTextSubString(TextConstRef text,
                              int offset,
                              SubString* substring)
 {
@@ -103682,7 +103678,7 @@ inline void Text::GetSubString(int offset, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubStringForLine(TextConstParam text,
+inline void GetTextSubStringForLine(TextConstRef text,
                                     int line,
                                     SubString* substring)
 {
@@ -103709,7 +103705,7 @@ inline void Text::GetSubStringForLine(int line, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstParam text,
+inline OwnArray<SubString*> GetTextSubStringsForRange(TextConstRef text,
                                                       int offset,
                                                       int length)
 {
@@ -103741,7 +103737,7 @@ inline OwnArray<SubString*> Text::GetSubStringsForRange(int offset,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetTextSubStringForPoint(TextConstParam text,
+inline void GetTextSubStringForPoint(TextConstRef text,
                                      Point p,
                                      SubString* substring)
 {
@@ -103770,7 +103766,7 @@ inline void Text::GetSubStringForPoint(Point p, SubString* substring) const
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetPreviousTextSubString(TextConstParam text,
+inline void GetPreviousTextSubString(TextConstRef text,
                                      const SubString& substring,
                                      SubString* previous)
 {
@@ -103799,7 +103795,7 @@ inline void Text::GetPreviousSubString(const SubString& substring,
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void GetNextTextSubString(TextConstParam text,
+inline void GetNextTextSubString(TextConstRef text,
                                  const SubString& substring,
                                  SubString* next)
 {

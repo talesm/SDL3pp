@@ -355,7 +355,7 @@
 +   * @sa MapRGBA()
 +   * @sa Surface.MapColor()
 +   */
-   Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
+   Uint32 Map(ColorRaw c, PaletteConstRef palette = {}) const;
  
 +  /**
 +   * Get RGBA values from a pixel in the specified format.
@@ -381,7 +381,7 @@
 +   * @sa GetRGBA()
 +   * @sa Map()
 +   */
-   Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
+   Color Get(Uint32 pixel, PaletteConstRef palette = {}) const;
  };
  
 @@ -859,12 +936,14 @@
@@ -805,12 +805,12 @@
     * @returns Reference to self.
     */
    constexpr Color& SetA(Uint8 newA) noexcept
-@@ -2134,12 +2268,63 @@
+@@ -2134,9 +2268,60 @@
      return *this;
    }
  
 -  Uint32 Map(const PixelFormatDetails& format,
--             PaletteConstParam palette = {}) const;
+-             PaletteConstRef palette = {}) const;
 +  /**
 +   * Map an RGBA quadruple to a pixel value for a given pixel format.
 +   *
@@ -837,7 +837,7 @@
 +   * @threadsafety It is safe to call this function from any thread, as long as
 +   *               the palette is not modified.
 +   */
-+  Uint32 Map(const PixelFormatDetails& format, PaletteConstParam palette) const;
++  Uint32 Map(const PixelFormatDetails& format, PaletteConstRef palette) const;
  
 +  /**
 +   * Get RGBA values from a pixel in the specified format.
@@ -867,11 +867,7 @@
 +   */
    static Color Get(Uint32 pixel,
                     const PixelFormatDetails& format,
--                   PaletteConstParam palette = {});
-+                   PaletteConstParam palette);
- };
- 
- /**
+                    PaletteConstRef palette = {});
 @@ -2147,6 +2332,10 @@
   * color which uses the PIXELFORMAT_RGBA128_FLOAT format
   *
@@ -1134,7 +1130,7 @@
                        Uint8 g,
 @@ -2750,7 +2985,7 @@
                        Uint8 a,
-                       PaletteConstParam palette = {})
+                       PaletteConstRef palette = {})
  {
 -  static_assert(false, "Not implemented");
 +  return SDL_MapRGBA(&format, palette, r, g, b, a);
@@ -1156,20 +1152,20 @@
   * @threadsafety It is safe to call this function from any thread, as long as
 @@ -2793,18 +3025,18 @@
                         ColorRaw c,
-                        PaletteConstParam palette = {})
+                        PaletteConstRef palette = {})
  {
 -  return SDL_MapRGBA(&format, c, palette);
 +  return SDL_MapRGBA(&format, palette, c.r, c.g, c.b, c.a);
  }
  
  inline Uint32 Color::Map(const PixelFormatDetails& format,
-                          PaletteConstParam palette) const
+                          PaletteConstRef palette) const
  {
 -  static_assert(false, "Not implemented");
 +  return MapColor(format, *this, palette);
  }
  
- inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
+ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
  {
 -  static_assert(false, "Not implemented");
 +  return MapColor(GetDetails(), c, palette);
@@ -1209,7 +1205,7 @@
 + */
  inline Color GetColor(Uint32 pixel,
                        const PixelFormatDetails& format,
-                       PaletteConstParam palette = {})
+                       PaletteConstRef palette = {})
  {
 -  static_assert(false, "Not implemented");
 +  Color c;
@@ -1219,13 +1215,13 @@
  
  inline Color Color::Get(Uint32 pixel,
                          const PixelFormatDetails& format,
-                         PaletteConstParam palette)
+                         PaletteConstRef palette)
  {
 -  static_assert(false, "Not implemented");
 +  return GetColor(pixel, format, palette);
  }
  
- inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
+ inline Color PixelFormat::Get(Uint32 pixel, PaletteConstRef palette) const
  {
 -  static_assert(false, "Not implemented");
 +  return GetColor(pixel, GetDetails(), palette);

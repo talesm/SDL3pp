@@ -982,27 +982,27 @@
     * @throws Error on failure.
     *
 @@ -3126,29 +3096,26 @@
-   constexpr operator AnimationConstParam() const noexcept { return get(); }
+   constexpr operator AnimationConstRef() const noexcept { return get(); }
  };
  
--inline int GetAnimationWidth(AnimationConstParam anim)
+-inline int GetAnimationWidth(AnimationConstRef anim)
 -{
 -  static_assert(false, "Not implemented");
 -}
 +/// Get the width in pixels.
-+inline int GetAnimationWidth(AnimationConstParam anim) { return anim->w; }
++inline int GetAnimationWidth(AnimationConstRef anim) { return anim->w; }
  
  inline int Animation::GetWidth() const
  {
    return SDL::GetAnimationWidth(m_resource);
  }
  
--inline int GetAnimationHeight(AnimationConstParam anim)
+-inline int GetAnimationHeight(AnimationConstRef anim)
 -{
 -  static_assert(false, "Not implemented");
 -}
 +/// Get the height in pixels.
-+inline int GetAnimationHeight(AnimationConstParam anim) { return anim->h; }
++inline int GetAnimationHeight(AnimationConstRef anim) { return anim->h; }
  
  inline int Animation::GetHeight() const
  {
@@ -1010,7 +1010,7 @@
  }
  
 +/// Get the size in pixels.
- inline Point GetAnimationSize(AnimationConstParam anim)
+ inline Point GetAnimationSize(AnimationConstRef anim)
  {
 -  static_assert(false, "Not implemented");
 +  return {anim->w, anim->h};
@@ -1021,12 +1021,12 @@
    return SDL::GetAnimationSize(m_resource);
  }
  
--inline int GetAnimationCount(AnimationConstParam anim)
+-inline int GetAnimationCount(AnimationConstRef anim)
 -{
 -  static_assert(false, "Not implemented");
 -}
 +/// Return the number of frames.
-+inline int GetAnimationCount(AnimationConstParam anim) { return anim->count; }
++inline int GetAnimationCount(AnimationConstRef anim) { return anim->count; }
  
  inline int Animation::GetCount() const
  {
@@ -1039,7 +1039,7 @@
 + * @param anim Animation to dispose of.
 + * @param index the index to get frame, within [0, GetCount() - 1]
 + */
- inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+ inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
  {
 -  static_assert(false, "Not implemented");
 +  return Surface::Borrow(anim->frames[index]);
@@ -1056,7 +1056,7 @@
 + * @param anim Animation to dispose of.
 + * @param index the index to get frame, within [0, GetCount() - 1]
 + */
- inline int GetAnimationDelay(AnimationConstParam anim, int index)
+ inline int GetAnimationDelay(AnimationConstRef anim, int index)
  {
 -  static_assert(false, "Not implemented");
 +  return anim->delays[index];

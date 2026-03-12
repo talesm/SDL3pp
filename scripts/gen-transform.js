@@ -3964,7 +3964,7 @@ const transform = {
             { type: "Uint8", name: "g" },
             { type: "Uint8", name: "b" },
             { type: "Uint8", name: "a" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ]
         },
         "SDL_MapRGBA": {
@@ -3972,7 +3972,7 @@ const transform = {
           parameters: [
             { type: "const PixelFormatDetails &", name: "format" },
             { type: "ColorRaw", name: "c" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ]
         },
         "Color::Map": {
@@ -3981,7 +3981,7 @@ const transform = {
           immutable: true,
           parameters: [
             { type: "const PixelFormatDetails &", name: "format" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ]
         },
         "PixelFormat::Map": {
@@ -3990,7 +3990,7 @@ const transform = {
           immutable: true,
           parameters: [
             { type: "ColorRaw", name: "c" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ]
         },
         "GetColor": {
@@ -4000,7 +4000,7 @@ const transform = {
           parameters: [
             { type: "Uint32", name: "pixel" },
             { type: "const PixelFormatDetails &", name: "format" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ],
         },
         "Color::Get": {
@@ -4010,7 +4010,7 @@ const transform = {
           parameters: [
             { type: "Uint32", name: "pixel" },
             { type: "const PixelFormatDetails &", name: "format" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ],
         },
         "PixelFormat::Get": {
@@ -4019,7 +4019,7 @@ const transform = {
           immutable: true,
           parameters: [
             { type: "Uint32", name: "pixel" },
-            { type: "PaletteConstParam", name: "palette", default: "{}" },
+            { type: "PaletteConstRef", name: "palette", default: "{}" },
           ],
         },
       }
@@ -5434,51 +5434,51 @@ const transform = {
             unlockFunc: "SDL_UnlockTexture",
           }
         },
-        "SDL_GetTextureProperties": { parameters: [{ type: "TextureConstParam" }] },
+        "SDL_GetTextureProperties": { parameters: [{ type: "TextureConstRef" }] },
         "SDL_GetRendererFromTexture": {
-          parameters: [{ type: "TextureConstParam" }],
+          parameters: [{ type: "TextureConstRef" }],
           hints: { methodName: "GetRenderer" },
         },
-        "SDL_GetTextureSize": { parameters: [{ type: "TextureConstParam" }, {}, {}] },
+        "SDL_GetTextureSize": { parameters: [{ type: "TextureConstRef" }, {}, {}] },
         "GetTextureSize": {
           kind: "function",
           immutable: true,
           type: "Point",
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
         "GetTextureSizeFloat": {
           kind: "function",
           immutable: true,
           type: "FPoint",
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
         "GetTextureWidth": {
           kind: "function",
           immutable: true,
           type: "int",
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
         "GetTextureHeight": {
           kind: "function",
           immutable: true,
           type: "int",
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
         "GetTextureFormat": {
           kind: "function",
           immutable: true,
           type: "PixelFormat",
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
-        "SDL_GetTextureColorMod": { parameters: [{ type: "TextureConstParam" }, {}, {}, {}] },
-        "SDL_GetTextureColorModFloat": { parameters: [{ type: "TextureConstParam" }, {}, {}, {}] },
+        "SDL_GetTextureColorMod": { parameters: [{ type: "TextureConstRef" }, {}, {}, {}] },
+        "SDL_GetTextureColorModFloat": { parameters: [{ type: "TextureConstRef" }, {}, {}, {}] },
         "SDL_GetTextureAlphaMod": {
           type: "Uint8",
-          parameters: [{ type: "TextureConstParam" }],
+          parameters: [{ type: "TextureConstRef" }],
         },
         "SDL_GetTextureAlphaModFloat": {
           type: "float",
-          parameters: [{ type: "TextureConstParam" }],
+          parameters: [{ type: "TextureConstRef" }],
         },
         "SetTextureMod": {
           kind: "function",
@@ -5500,21 +5500,21 @@ const transform = {
           kind: "function",
           type: "Color",
           immutable: true,
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
         "GetTextureModFloat": {
           kind: "function",
           type: "FColor",
           immutable: true,
-          parameters: [{ type: "TextureConstParam", name: "texture" }]
+          parameters: [{ type: "TextureConstRef", name: "texture" }]
         },
         "SDL_GetTextureBlendMode": {
           type: "BlendMode",
-          parameters: [{ type: "TextureConstParam" }]
+          parameters: [{ type: "TextureConstRef" }]
         },
         "SDL_GetTextureScaleMode": {
           type: "ScaleMode",
-          parameters: [{ type: "TextureConstParam" }]
+          parameters: [{ type: "TextureConstRef" }]
         },
         "SDL_UpdateTexture": {
           parameters: [
@@ -5529,7 +5529,7 @@ const transform = {
           type: "void",
           parameters: [
             { type: "TextureParam", name: "texture" },
-            { type: "SurfaceConstParam", name: "surface" },
+            { type: "SurfaceConstRef", name: "surface" },
             { type: "OptionalRef<const RectRaw>", name: "rect", default: "std::nullopt" },
           ]
         },
@@ -6572,7 +6572,7 @@ const transform = {
           constexpr: true,
           immutable: true,
           type: "bool",
-          parameters: [{ type: "SurfaceConstParam" }],
+          parameters: [{ type: "SurfaceConstRef" }],
         },
         "SDL_Surface": {
           resource: {
@@ -6750,7 +6750,7 @@ const transform = {
         "SDL_SurfaceHasAlternateImages": { immutable: true },
         "SDL_GetSurfaceImages": {
           type: "OwnArray<SurfaceRaw>",
-          parameters: [{ type: "SurfaceConstParam" }]
+          parameters: [{ type: "SurfaceConstRef" }]
         },
         "SDL_LoadSurface_IO": {
           name: "LoadSurface",
@@ -6762,21 +6762,21 @@ const transform = {
         },
         "SDL_SaveBMP_IO": {
           name: "SaveBMP",
-          parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
+          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }],
           hints: { methodName: "SaveBMP" },
         },
-        "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstParam" }, {}] },
+        "SDL_SaveBMP": { parameters: [{ type: "SurfaceConstRef" }, {}] },
         "SDL_LoadPNG_IO": {
           name: "LoadPNG",
           parameters: [{}, { default: "false" }]
         },
         "SDL_SavePNG_IO": {
           name: "SavePNG",
-          parameters: [{ type: "SurfaceConstParam" }, {}, { default: "false" }],
+          parameters: [{ type: "SurfaceConstRef" }, {}, { default: "false" }],
           hints: { methodName: "SavePNG" },
         },
-        "SDL_SavePNG": { parameters: [{ type: "SurfaceConstParam" }, {}] },
-        "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstParam" }] },
+        "SDL_SavePNG": { parameters: [{ type: "SurfaceConstRef" }, {}] },
+        "SDL_SurfaceHasRLE": { parameters: [{ type: "SurfaceConstRef" }] },
         "SDL_SetSurfaceColorKey": {
           parameters: [
             {},
@@ -6792,15 +6792,15 @@ const transform = {
           type: "void",
           parameters: [{ type: "SurfaceParam", name: "surface" }]
         },
-        "SDL_SurfaceHasColorKey": { parameters: [{ type: "SurfaceConstParam" }] },
+        "SDL_SurfaceHasColorKey": { parameters: [{ type: "SurfaceConstRef" }] },
         "SDL_GetSurfaceColorKey": {
           type: "std::optional<Uint32>",
-          parameters: [{ type: "SurfaceConstParam" }],
+          parameters: [{ type: "SurfaceConstRef" }],
         },
-        "SDL_GetSurfaceColorMod": { parameters: [{ type: "SurfaceConstParam" }, {}, {}, {}] },
+        "SDL_GetSurfaceColorMod": { parameters: [{ type: "SurfaceConstRef" }, {}, {}, {}] },
         "SDL_GetSurfaceAlphaMod": {
           type: "Uint8",
-          parameters: [{ type: "SurfaceConstParam" }]
+          parameters: [{ type: "SurfaceConstRef" }]
         },
         "SetSurfaceMod": {
           kind: "function",
@@ -6814,11 +6814,11 @@ const transform = {
           kind: "function",
           type: "Color",
           immutable: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }]
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }]
         },
         "SDL_GetSurfaceBlendMode": {
           type: "BlendMode",
-          parameters: [{ type: "SurfaceConstParam" }]
+          parameters: [{ type: "SurfaceConstRef" }]
         },
         "SDL_SetSurfaceClipRect": {
           parameters: [
@@ -6833,7 +6833,7 @@ const transform = {
         },
         "SDL_GetSurfaceClipRect": {
           type: "Rect",
-          parameters: [{ type: "SurfaceConstParam" }]
+          parameters: [{ type: "SurfaceConstRef" }]
         },
         "SDL_DuplicateSurface": {
           type: "Surface",
@@ -7318,7 +7318,7 @@ const transform = {
           immutable: true,
           type: "Color",
           parameters: [
-            { type: "SurfaceConstParam", name: "surface" },
+            { type: "SurfaceConstRef", name: "surface" },
             { type: "const PointRaw &", name: "p" },
           ]
         },
@@ -7330,7 +7330,7 @@ const transform = {
           immutable: true,
           type: "FColor",
           parameters: [
-            { type: "SurfaceConstParam", name: "surface" },
+            { type: "SurfaceConstRef", name: "surface" },
             { type: "const PointRaw &", name: "p" },
           ]
         },
@@ -7410,7 +7410,7 @@ const transform = {
           immutable: true,
           type: "int",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }],
           doc: ["Get the width in pixels."],
         },
         "GetSurfaceHeight": {
@@ -7418,7 +7418,7 @@ const transform = {
           immutable: true,
           type: "int",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }],
           doc: ["Get the height in pixels."],
         },
         "GetSurfaceSize": {
@@ -7426,7 +7426,7 @@ const transform = {
           immutable: true,
           type: "Point",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }],
           doc: ["Get the size in pixels."],
         },
         "GetSurfacePitch": {
@@ -7434,7 +7434,7 @@ const transform = {
           type: "int",
           immutable: true,
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }],
           doc: ["Get pitch in bytes."],
         },
         "GetSurfaceFormat": {
@@ -7442,7 +7442,7 @@ const transform = {
           immutable: true,
           type: "PixelFormat",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }],
           doc: ["Get the pixel format."],
         },
         "GetSurfacePixels": {
@@ -7450,7 +7450,7 @@ const transform = {
           immutable: true,
           type: "void *",
           constexpr: true,
-          parameters: [{ type: "SurfaceConstParam", name: "surface" }],
+          parameters: [{ type: "SurfaceConstRef", name: "surface" }],
           doc: ["Get the pixels."],
         },
         "GetSurfaceWidth#2": {
@@ -8622,32 +8622,32 @@ const transform = {
           kind: "function",
           immutable: true,
           type: "int",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+          parameters: [{ type: "AnimationConstRef", name: "anim" }]
         },
         "GetAnimationHeight": {
           kind: "function",
           immutable: true,
           type: "int",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+          parameters: [{ type: "AnimationConstRef", name: "anim" }]
         },
         "GetAnimationSize": {
           kind: "function",
           immutable: true,
           type: "Point",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+          parameters: [{ type: "AnimationConstRef", name: "anim" }]
         },
         "GetAnimationCount": {
           kind: "function",
           immutable: true,
           type: "int",
-          parameters: [{ type: "AnimationConstParam", name: "anim" }]
+          parameters: [{ type: "AnimationConstRef", name: "anim" }]
         },
         "GetAnimationFrame": {
           kind: "function",
           type: "Surface",
           immutable: true,
           parameters: [
-            { type: "AnimationConstParam", name: "anim" },
+            { type: "AnimationConstRef", name: "anim" },
             { type: "int", name: "index" },
           ]
         },
@@ -8656,7 +8656,7 @@ const transform = {
           type: "int",
           immutable: true,
           parameters: [
-            { type: "AnimationConstParam", name: "anim" },
+            { type: "AnimationConstRef", name: "anim" },
             { type: "int", name: "index" },
           ]
         },

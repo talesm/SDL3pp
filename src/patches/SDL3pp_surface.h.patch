@@ -23,8 +23,8 @@
   *
   * @since This function is available since SDL 3.2.0.
   */
--constexpr bool MustLock(SurfaceConstParam S) const { return SDL_MUSTLOCK(S); }
-+constexpr bool MustLock(SurfaceConstParam S) { return SDL_MUSTLOCK((S.value)); }
+-constexpr bool MustLock(SurfaceConstRef S) const { return SDL_MUSTLOCK(S); }
++constexpr bool MustLock(SurfaceConstRef S) { return SDL_MUSTLOCK((S.value)); }
  
  /**
   * The scaling mode.
@@ -832,7 +832,7 @@
   * @param pitch the number of bytes between each row, including padding.
 @@ -2421,7 +2409,7 @@
   */
- inline PropertiesRef GetSurfaceProperties(SurfaceConstParam surface)
+ inline PropertiesRef GetSurfaceProperties(SurfaceConstRef surface)
  {
 -  return CheckError(SDL_GetSurfaceProperties(surface));
 +  return {CheckError(SDL_GetSurfaceProperties(surface))};
@@ -861,7 +861,7 @@
  inline Palette Surface::CreatePalette()
 @@ -2595,7 +2579,7 @@
   */
- inline Palette GetSurfacePalette(SurfaceConstParam surface)
+ inline Palette GetSurfacePalette(SurfaceConstRef surface)
  {
 -  return SDL_GetSurfacePalette(surface);
 +  return Palette::Borrow(SDL_GetSurfacePalette(surface));
@@ -883,7 +883,7 @@
   *               surfaces.
 @@ -2690,7 +2671,9 @@
   */
- inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstParam surface)
+ inline OwnArray<SurfaceRaw> GetSurfaceImages(SurfaceConstRef surface)
  {
 -  return SDL_GetSurfaceImages(surface);
 +  int count = 0;
@@ -1061,7 +1061,7 @@
   * @threadsafety It is safe to call this function from any thread.
 @@ -3248,7 +3212,8 @@
   */
- inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstParam surface)
+ inline std::optional<Uint32> GetSurfaceColorKey(SurfaceConstRef surface)
  {
 -  return CheckError(SDL_GetSurfaceColorKey(surface));
 +  if (Uint32 key; SDL_GetSurfaceColorKey(surface, &key)) return key;
@@ -1080,7 +1080,7 @@
   * @threadsafety It is safe to call this function from any thread.
 @@ -3365,7 +3330,9 @@
   */
- inline Uint8 GetSurfaceAlphaMod(SurfaceConstParam surface)
+ inline Uint8 GetSurfaceAlphaMod(SurfaceConstRef surface)
  {
 -  return CheckError(SDL_GetSurfaceAlphaMod(surface));
 +  Uint8 alpha;
@@ -1129,7 +1129,7 @@
 + * @returns a Color containing RGBA value on success or std::nullopt on
 + * failure; call GetError() for more information.
 + */
- inline Color GetSurfaceMod(SurfaceConstParam surface)
+ inline Color GetSurfaceMod(SurfaceConstRef surface)
  {
 -  static_assert(false, "Not implemented");
 +  Color c;
@@ -1150,7 +1150,7 @@
   * @threadsafety It is safe to call this function from any thread.
 @@ -3433,7 +3424,9 @@
   */
- inline BlendMode GetSurfaceBlendMode(SurfaceConstParam surface)
+ inline BlendMode GetSurfaceBlendMode(SurfaceConstRef surface)
  {
 -  return CheckError(SDL_GetSurfaceBlendMode(surface));
 +  BlendMode blendmode;
@@ -1188,7 +1188,7 @@
   * @threadsafety This function can be called on different threads with different
 @@ -3501,7 +3499,9 @@
   */
- inline Rect GetSurfaceClipRect(SurfaceConstParam surface)
+ inline Rect GetSurfaceClipRect(SurfaceConstRef surface)
  {
 -  return CheckError(SDL_GetSurfaceClipRect(surface));
 +  Rect r;
@@ -1214,7 +1214,7 @@
    return SDL::RotateSurface(m_resource, angle);
 @@ -3594,7 +3590,7 @@
   */
- inline Surface DuplicateSurface(SurfaceConstParam surface)
+ inline Surface DuplicateSurface(SurfaceConstRef surface)
  {
 -  return SDL_DuplicateSurface(surface);
 +  return Surface(SDL_DuplicateSurface(surface));
@@ -1242,7 +1242,7 @@
  inline Surface Surface::Scale(const PointRaw& size, ScaleMode scaleMode) const
 @@ -3663,7 +3658,7 @@
   */
- inline Surface ConvertSurface(SurfaceConstParam surface, PixelFormat format)
+ inline Surface ConvertSurface(SurfaceConstRef surface, PixelFormat format)
  {
 -  return SDL_ConvertSurface(surface, format);
 +  return Surface(SDL_ConvertSurface(surface, format));
@@ -1628,7 +1628,7 @@
                          dstrect,
                          scale,
                          scaleMode);
-@@ -4462,10 +4532,7 @@
+@@ -4459,10 +4529,7 @@
   * for an 8-bpp format).
   *
   * @param surface the surface to use for the pixel format and palette.
@@ -1640,16 +1640,16 @@
   * @returns a pixel value.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4477,7 +4544,7 @@
+@@ -4474,7 +4541,7 @@
   */
- inline Uint32 MapSurfaceRGBA(SurfaceConstParam surface, ColorRaw c)
+ inline Uint32 MapSurfaceRGBA(SurfaceConstRef surface, ColorRaw c)
  {
 -  return SDL_MapSurfaceRGBA(surface, c);
 +  return SDL_MapSurfaceRGBA(surface, c.r, c.g, c.b, c.a);
  }
  
  inline Uint32 Surface::MapRGBA(ColorRaw c) const
-@@ -4495,8 +4562,7 @@
+@@ -4492,8 +4559,7 @@
   * components from pixel formats with less than 8 bits per RGB component.
   *
   * @param surface the surface to read.
@@ -1659,7 +1659,7 @@
   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
   *          ignore this channel.
   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-@@ -4519,7 +4585,7 @@
+@@ -4516,7 +4582,7 @@
                               Uint8* b,
                               Uint8* a)
  {
@@ -1668,7 +1668,7 @@
  }
  
  /**
-@@ -4532,16 +4598,8 @@
+@@ -4529,16 +4595,8 @@
   * components from pixel formats with less than 8 bits per RGB component.
   *
   * @param surface the surface to read.
@@ -1687,9 +1687,9 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4551,7 +4609,9 @@
+@@ -4548,7 +4606,9 @@
   */
- inline Color ReadSurfacePixel(SurfaceConstParam surface, const PointRaw& p)
+ inline Color ReadSurfacePixel(SurfaceConstRef surface, const PointRaw& p)
  {
 -  static_assert(false, "Not implemented");
 +  Color c;
@@ -1698,7 +1698,7 @@
  }
  
  /**
-@@ -4563,9 +4623,8 @@
+@@ -4560,9 +4620,8 @@
   * Like GetRGBA, this uses the entire 0..255 range when converting color
   * components from pixel formats with less than 8 bits per RGB component.
   *
@@ -1710,7 +1710,7 @@
   * @param r a pointer filled in with the red channel, 0-255, or nullptr to
   *          ignore this channel.
   * @param g a pointer filled in with the green channel, 0-255, or nullptr to
-@@ -4600,17 +4659,9 @@
+@@ -4597,17 +4656,9 @@
   * Like GetRGBA, this uses the entire 0..255 range when converting color
   * components from pixel formats with less than 8 bits per RGB component.
   *
@@ -1731,7 +1731,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4644,8 +4695,7 @@
+@@ -4641,8 +4692,7 @@
   * tests, but is not intended for use in a game engine.
   *
   * @param surface the surface to read.
@@ -1741,7 +1741,7 @@
   * @param r a pointer filled in with the red channel, normally in the range 0-1,
   *          or nullptr to ignore this channel.
   * @param g a pointer filled in with the green channel, normally in the range
-@@ -4668,7 +4718,7 @@
+@@ -4665,7 +4715,7 @@
                                    float* b,
                                    float* a)
  {
@@ -1750,7 +1750,7 @@
  }
  
  /**
-@@ -4678,16 +4728,8 @@
+@@ -4675,16 +4725,8 @@
   * tests, but is not intended for use in a game engine.
   *
   * @param surface the surface to read.
@@ -1769,9 +1769,9 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4698,7 +4740,9 @@
- inline FColor ReadSurfacePixelFloat(SurfaceConstParam surface,
-                                     const PointRaw& p)
+@@ -4694,7 +4736,9 @@
+  */
+ inline FColor ReadSurfacePixelFloat(SurfaceConstRef surface, const PointRaw& p)
  {
 -  static_assert(false, "Not implemented");
 +  FColor c;
@@ -1780,7 +1780,7 @@
  }
  
  /**
-@@ -4707,9 +4751,8 @@
+@@ -4703,9 +4747,8 @@
   * This function prioritizes correctness over speed: it is suitable for unit
   * tests, but is not intended for use in a game engine.
   *
@@ -1792,7 +1792,7 @@
   * @param r a pointer filled in with the red channel, normally in the range 0-1,
   *          or nullptr to ignore this channel.
   * @param g a pointer filled in with the green channel, normally in the range
-@@ -4741,17 +4784,9 @@
+@@ -4737,17 +4780,9 @@
   * This function prioritizes correctness over speed: it is suitable for unit
   * tests, but is not intended for use in a game engine.
   *
@@ -1813,7 +1813,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4788,12 +4823,8 @@
+@@ -4784,12 +4819,8 @@
   * components from pixel formats with less than 8 bits per RGB component.
   *
   * @param surface the surface to write.
@@ -1828,7 +1828,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4805,7 +4836,7 @@
+@@ -4801,7 +4832,7 @@
                                const PointRaw& p,
                                ColorRaw c)
  {
@@ -1837,7 +1837,7 @@
  }
  
  /**
-@@ -4817,13 +4848,9 @@
+@@ -4813,13 +4844,9 @@
   * Like MapColor, this uses the entire 0..255 range when converting color
   * components from pixel formats with less than 8 bits per RGB component.
   *
@@ -1854,7 +1854,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4848,12 +4875,8 @@
+@@ -4844,12 +4871,8 @@
   * tests, but is not intended for use in a game engine.
   *
   * @param surface the surface to write.
@@ -1869,7 +1869,7 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4865,7 +4888,7 @@
+@@ -4861,7 +4884,7 @@
                                     const PointRaw& p,
                                     const FColorRaw& c)
  {
@@ -1878,7 +1878,7 @@
  }
  
  /**
-@@ -4874,13 +4897,9 @@
+@@ -4870,13 +4893,9 @@
   * This function prioritizes correctness over speed: it is suitable for unit
   * tests, but is not intended for use in a game engine.
   *
@@ -1895,60 +1895,60 @@
   * @throws Error on failure.
   *
   * @threadsafety This function can be called on different threads with different
-@@ -4901,10 +4920,7 @@
+@@ -4897,10 +4916,7 @@
  }
  
  /// Get the width in pixels.
--constexpr int GetSurfaceWidth(SurfaceConstParam surface)
+-constexpr int GetSurfaceWidth(SurfaceConstRef surface)
 -{
 -  static_assert(false, "Not implemented");
 -}
-+constexpr int GetSurfaceWidth(SurfaceConstParam surface) { return surface->w; }
++constexpr int GetSurfaceWidth(SurfaceConstRef surface) { return surface->w; }
  
  /// Get the width in pixels.
  constexpr int GetSurfaceWidth(const SurfaceLock& lock)
-@@ -4918,10 +4934,7 @@
+@@ -4914,10 +4930,7 @@
  }
  
  /// Get the height in pixels.
--constexpr int GetSurfaceHeight(SurfaceConstParam surface)
+-constexpr int GetSurfaceHeight(SurfaceConstRef surface)
 -{
 -  static_assert(false, "Not implemented");
 -}
-+constexpr int GetSurfaceHeight(SurfaceConstParam surface) { return surface->h; }
++constexpr int GetSurfaceHeight(SurfaceConstRef surface) { return surface->h; }
  
  /// Get the height in pixels.
  constexpr int GetSurfaceHeight(const SurfaceLock& lock)
-@@ -4937,7 +4950,7 @@
+@@ -4933,7 +4946,7 @@
  /// Get the size in pixels.
- constexpr Point GetSurfaceSize(SurfaceConstParam surface)
+ constexpr Point GetSurfaceSize(SurfaceConstRef surface)
  {
 -  static_assert(false, "Not implemented");
 +  return Point(surface->w, surface->h);
  }
  
  /// Get the size in pixels.
-@@ -4954,7 +4967,7 @@
+@@ -4950,7 +4963,7 @@
  /// Get pitch in bytes.
- constexpr int GetSurfacePitch(SurfaceConstParam surface)
+ constexpr int GetSurfacePitch(SurfaceConstRef surface)
  {
 -  static_assert(false, "Not implemented");
 +  return surface->pitch;
  }
  
  /// Get pitch in bytes.
-@@ -4971,7 +4984,7 @@
+@@ -4967,7 +4980,7 @@
  /// Get the pixel format.
- constexpr PixelFormat GetSurfaceFormat(SurfaceConstParam surface)
+ constexpr PixelFormat GetSurfaceFormat(SurfaceConstRef surface)
  {
 -  static_assert(false, "Not implemented");
 +  return surface->format;
  }
  
  /// Get the pixel format.
-@@ -4988,7 +5001,7 @@
+@@ -4984,7 +4997,7 @@
  /// Get the pixels.
- constexpr void* GetSurfacePixels(SurfaceConstParam surface)
+ constexpr void* GetSurfacePixels(SurfaceConstRef surface)
  {
 -  static_assert(false, "Not implemented");
 +  return surface->pixels;

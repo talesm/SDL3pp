@@ -1352,7 +1352,7 @@
  #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 @@ -5032,7 +5062,7 @@
   */
- inline PropertiesRef GetTextureProperties(TextureConstParam texture)
+ inline PropertiesRef GetTextureProperties(TextureConstRef texture)
  {
 -  return CheckError(SDL_GetTextureProperties(texture));
 +  return {CheckError(SDL_GetTextureProperties(texture))};
@@ -1361,7 +1361,7 @@
  inline PropertiesRef Texture::GetProperties() const
 @@ -5053,7 +5083,7 @@
   */
- inline RendererRef GetRendererFromTexture(TextureConstParam texture)
+ inline RendererRef GetRendererFromTexture(TextureConstRef texture)
  {
 -  return SDL_GetRendererFromTexture(texture);
 +  return {SDL_GetRendererFromTexture(texture)};
@@ -1387,7 +1387,7 @@
 - * @since This function is available since SDL 3.2.0.
 - */
 +/// Get the size of a texture.
- inline Point GetTextureSize(TextureConstParam texture)
+ inline Point GetTextureSize(TextureConstRef texture)
  {
 -  static_assert(false, "Not implemented");
 +  return Point(texture->w, texture->h);
@@ -1399,7 +1399,7 @@
  }
  
 +/// Get the size of a texture, as floating point values.
- inline FPoint GetTextureSizeFloat(TextureConstParam texture)
+ inline FPoint GetTextureSizeFloat(TextureConstRef texture)
  {
 -  static_assert(false, "Not implemented");
 +  FPoint p;
@@ -1412,24 +1412,24 @@
    return SDL::GetTextureSizeFloat(m_resource);
  }
  
--inline int GetTextureWidth(TextureConstParam texture)
+-inline int GetTextureWidth(TextureConstRef texture)
 -{
 -  static_assert(false, "Not implemented");
 -}
 +/// Get the width in pixels.
-+inline int GetTextureWidth(TextureConstParam texture) { return texture->w; }
++inline int GetTextureWidth(TextureConstRef texture) { return texture->w; }
  
  inline int Texture::GetWidth() const
  {
    return SDL::GetTextureWidth(m_resource);
  }
  
--inline int GetTextureHeight(TextureConstParam texture)
+-inline int GetTextureHeight(TextureConstRef texture)
 -{
 -  static_assert(false, "Not implemented");
 -}
 +/// Get the height in pixels.
-+inline int GetTextureHeight(TextureConstParam texture) { return texture->h; }
++inline int GetTextureHeight(TextureConstRef texture) { return texture->h; }
  
  inline int Texture::GetHeight() const
  {
@@ -1437,7 +1437,7 @@
  }
  
 +/// Get the pixel format.
- inline PixelFormat GetTextureFormat(TextureConstParam texture)
+ inline PixelFormat GetTextureFormat(TextureConstRef texture)
  {
 -  static_assert(false, "Not implemented");
 +  return texture->format;
@@ -1490,7 +1490,7 @@
   * @threadsafety This function should only be called on the main thread.
 @@ -5435,7 +5440,9 @@
   */
- inline Uint8 GetTextureAlphaMod(TextureConstParam texture)
+ inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
  {
 -  return CheckError(SDL_GetTextureAlphaMod(texture));
 +  Uint8 alpha;
@@ -1510,7 +1510,7 @@
   * @threadsafety This function should only be called on the main thread.
 @@ -5460,7 +5467,9 @@
   */
- inline float GetTextureAlphaModFloat(TextureConstParam texture)
+ inline float GetTextureAlphaModFloat(TextureConstRef texture)
  {
 -  return CheckError(SDL_GetTextureAlphaModFloat(texture));
 +  float alpha;
@@ -1604,7 +1604,7 @@
 + * @sa GetAlphaMod()
 + * @sa SetColorMod()
 + */
- inline Color GetTextureMod(TextureConstParam texture)
+ inline Color GetTextureMod(TextureConstRef texture)
  {
 -  static_assert(false, "Not implemented");
 +  Color c;
@@ -1629,7 +1629,7 @@
 + * @sa GetAlphaMod()
 + * @sa SetColorMod()
 + */
- inline FColor GetTextureModFloat(TextureConstParam texture)
+ inline FColor GetTextureModFloat(TextureConstRef texture)
  {
 -  static_assert(false, "Not implemented");
 +  FColor c;
@@ -1650,7 +1650,7 @@
   * @threadsafety This function should only be called on the main thread.
 @@ -5543,7 +5634,9 @@
   */
- inline BlendMode GetTextureBlendMode(TextureConstParam texture)
+ inline BlendMode GetTextureBlendMode(TextureConstRef texture)
  {
 -  return CheckError(SDL_GetTextureBlendMode(texture));
 +  BlendMode blendMode;
@@ -1670,7 +1670,7 @@
   * @threadsafety This function should only be called on the main thread.
 @@ -5593,7 +5686,9 @@
   */
- inline ScaleMode GetTextureScaleMode(TextureConstParam texture)
+ inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
  {
 -  return CheckError(SDL_GetTextureScaleMode(texture));
 +  ScaleMode scaleMode;
@@ -1696,7 +1696,7 @@
   *
   * @threadsafety This function should only be called on the main thread.
 @@ -5675,7 +5769,7 @@
-                           SurfaceConstParam surface,
+                           SurfaceConstRef surface,
                            OptionalRef<const RectRaw> rect = std::nullopt)
  {
 -  static_assert(false, "Not implemented");

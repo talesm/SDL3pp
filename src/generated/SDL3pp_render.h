@@ -63,18 +63,18 @@ struct TextureRef;
 using TextureParam = TextureRef;
 
 /// Safely wrap Texture for non owning const parameters
-struct TextureConstParam
+struct TextureConstRef
 {
   const TextureRaw value; ///< parameter's const TextureRaw
 
   /// Constructs from const TextureRaw
-  constexpr TextureConstParam(const TextureRaw value)
+  constexpr TextureConstRef(const TextureRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr TextureConstParam(std::nullptr_t = nullptr)
+  constexpr TextureConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -83,7 +83,7 @@ struct TextureConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const TextureConstParam& other) const = default;
+  constexpr auto operator<=>(const TextureConstRef& other) const = default;
 
   /// Converts to underlying const TextureRaw
   constexpr operator const TextureRaw() const { return value; }
@@ -3242,7 +3242,7 @@ public:
    * @sa Texture.UpdateNV
    * @sa Texture.UpdateYUV
    */
-  void Update(SurfaceConstParam surface,
+  void Update(SurfaceConstRef surface,
               OptionalRef<const RectRaw> rect = std::nullopt);
 
   /**
@@ -3470,8 +3470,8 @@ struct TextureRef : Texture
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
 
-  /// Converts to TextureConstParam
-  constexpr operator TextureConstParam() const noexcept { return get(); }
+  /// Converts to TextureConstRef
+  constexpr operator TextureConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -5030,7 +5030,7 @@ constexpr auto GPU_TEXTURE_V_POINTER = SDL_PROP_TEXTURE_GPU_TEXTURE_V_POINTER;
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetTextureProperties(TextureConstParam texture)
+inline PropertiesRef GetTextureProperties(TextureConstRef texture)
 {
   return CheckError(SDL_GetTextureProperties(texture));
 }
@@ -5051,7 +5051,7 @@ inline PropertiesRef Texture::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline RendererRef GetRendererFromTexture(TextureConstParam texture)
+inline RendererRef GetRendererFromTexture(TextureConstRef texture)
 {
   return SDL_GetRendererFromTexture(texture);
 }
@@ -5075,7 +5075,7 @@ inline RendererRef Texture::GetRenderer() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
+inline void GetTextureSize(TextureConstRef texture, float* w, float* h)
 {
   CheckError(SDL_GetTextureSize(texture, w, h));
 }
@@ -5094,7 +5094,7 @@ inline void GetTextureSize(TextureConstParam texture, float* w, float* h)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Point GetTextureSize(TextureConstParam texture)
+inline Point GetTextureSize(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
@@ -5109,7 +5109,7 @@ inline Point Texture::GetSize() const
   return SDL::GetTextureSize(m_resource);
 }
 
-inline FPoint GetTextureSizeFloat(TextureConstParam texture)
+inline FPoint GetTextureSizeFloat(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
@@ -5119,7 +5119,7 @@ inline FPoint Texture::GetSizeFloat() const
   return SDL::GetTextureSizeFloat(m_resource);
 }
 
-inline int GetTextureWidth(TextureConstParam texture)
+inline int GetTextureWidth(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
@@ -5129,7 +5129,7 @@ inline int Texture::GetWidth() const
   return SDL::GetTextureWidth(m_resource);
 }
 
-inline int GetTextureHeight(TextureConstParam texture)
+inline int GetTextureHeight(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
@@ -5139,7 +5139,7 @@ inline int Texture::GetHeight() const
   return SDL::GetTextureHeight(m_resource);
 }
 
-inline PixelFormat GetTextureFormat(TextureConstParam texture)
+inline PixelFormat GetTextureFormat(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
@@ -5309,7 +5309,7 @@ inline void Texture::SetColorModFloat(float r, float g, float b)
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetColorMod
  */
-inline void GetTextureColorMod(TextureConstParam texture,
+inline void GetTextureColorMod(TextureConstRef texture,
                                Uint8* r,
                                Uint8* g,
                                Uint8* b)
@@ -5339,7 +5339,7 @@ inline void Texture::GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
  * @sa Texture.GetColorMod
  * @sa Texture.SetColorModFloat
  */
-inline void GetTextureColorModFloat(TextureConstParam texture,
+inline void GetTextureColorModFloat(TextureConstRef texture,
                                     float* r,
                                     float* g,
                                     float* b)
@@ -5433,7 +5433,7 @@ inline void Texture::SetAlphaModFloat(float alpha)
  * @sa Texture.GetColorMod
  * @sa Texture.SetAlphaMod
  */
-inline Uint8 GetTextureAlphaMod(TextureConstParam texture)
+inline Uint8 GetTextureAlphaMod(TextureConstRef texture)
 {
   return CheckError(SDL_GetTextureAlphaMod(texture));
 }
@@ -5458,7 +5458,7 @@ inline Uint8 Texture::GetAlphaMod() const
  * @sa Texture.GetColorModFloat
  * @sa Texture.SetAlphaModFloat
  */
-inline float GetTextureAlphaModFloat(TextureConstParam texture)
+inline float GetTextureAlphaModFloat(TextureConstRef texture)
 {
   return CheckError(SDL_GetTextureAlphaModFloat(texture));
 }
@@ -5485,14 +5485,14 @@ inline void Texture::SetModFloat(FColor c)
   SDL::SetTextureModFloat(m_resource, c);
 }
 
-inline Color GetTextureMod(TextureConstParam texture)
+inline Color GetTextureMod(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
 
 inline Color Texture::GetMod() const { return SDL::GetTextureMod(m_resource); }
 
-inline FColor GetTextureModFloat(TextureConstParam texture)
+inline FColor GetTextureModFloat(TextureConstRef texture)
 {
   static_assert(false, "Not implemented");
 }
@@ -5541,7 +5541,7 @@ inline void Texture::SetBlendMode(BlendMode blendMode)
  *
  * @sa Texture.SetBlendMode
  */
-inline BlendMode GetTextureBlendMode(TextureConstParam texture)
+inline BlendMode GetTextureBlendMode(TextureConstRef texture)
 {
   return CheckError(SDL_GetTextureBlendMode(texture));
 }
@@ -5591,7 +5591,7 @@ inline void Texture::SetScaleMode(ScaleMode scaleMode)
  *
  * @sa Texture.SetScaleMode
  */
-inline ScaleMode GetTextureScaleMode(TextureConstParam texture)
+inline ScaleMode GetTextureScaleMode(TextureConstRef texture)
 {
   return CheckError(SDL_GetTextureScaleMode(texture));
 }
@@ -5672,7 +5672,7 @@ inline void UpdateTexture(TextureParam texture,
  * @sa Texture.UpdateYUV
  */
 inline void UpdateTexture(TextureParam texture,
-                          SurfaceConstParam surface,
+                          SurfaceConstRef surface,
                           OptionalRef<const RectRaw> rect = std::nullopt)
 {
   static_assert(false, "Not implemented");
@@ -5685,7 +5685,7 @@ inline void Texture::Update(OptionalRef<const RectRaw> rect,
   SDL::UpdateTexture(m_resource, rect, pixels, pitch);
 }
 
-inline void Texture::Update(SurfaceConstParam surface,
+inline void Texture::Update(SurfaceConstRef surface,
                             OptionalRef<const RectRaw> rect)
 {
   SDL::UpdateTexture(m_resource, surface, rect);

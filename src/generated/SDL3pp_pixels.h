@@ -104,18 +104,18 @@ struct PaletteRef;
 using PaletteParam = PaletteRef;
 
 /// Safely wrap Palette for non owning const parameters
-struct PaletteConstParam
+struct PaletteConstRef
 {
   const PaletteRaw value; ///< parameter's const PaletteRaw
 
   /// Constructs from const PaletteRaw
-  constexpr PaletteConstParam(const PaletteRaw value)
+  constexpr PaletteConstRef(const PaletteRaw value)
     : value(value)
   {
   }
 
   /// Constructs null/invalid
-  constexpr PaletteConstParam(std::nullptr_t = nullptr)
+  constexpr PaletteConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -124,7 +124,7 @@ struct PaletteConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const PaletteConstParam& other) const = default;
+  constexpr auto operator<=>(const PaletteConstRef& other) const = default;
 
   /// Converts to underlying const PaletteRaw
   constexpr operator const PaletteRaw() const { return value; }
@@ -652,9 +652,9 @@ public:
   /// Same as GetDetails()
   operator const PixelFormatDetails&() const;
 
-  Uint32 Map(ColorRaw c, PaletteConstParam palette = {}) const;
+  Uint32 Map(ColorRaw c, PaletteConstRef palette = {}) const;
 
-  Color Get(Uint32 pixel, PaletteConstParam palette = {}) const;
+  Color Get(Uint32 pixel, PaletteConstRef palette = {}) const;
 };
 
 constexpr PixelFormat PIXELFORMAT_UNKNOWN =
@@ -2135,11 +2135,11 @@ struct Color : ColorRaw
   }
 
   Uint32 Map(const PixelFormatDetails& format,
-             PaletteConstParam palette = {}) const;
+             PaletteConstRef palette = {}) const;
 
   static Color Get(Uint32 pixel,
                    const PixelFormatDetails& format,
-                   PaletteConstParam palette = {});
+                   PaletteConstRef palette = {});
 };
 
 /**
@@ -2499,8 +2499,8 @@ struct PaletteRef : Palette
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
 
-  /// Converts to PaletteConstParam
-  constexpr operator PaletteConstParam() const noexcept { return get(); }
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -2735,7 +2735,7 @@ inline void Palette::Destroy() { DestroyPalette(release()); }
  * @sa Surface.MapRGB
  */
 inline Uint32 MapRGB(const PixelFormatDetails& format,
-                     PaletteConstParam palette,
+                     PaletteConstRef palette,
                      Uint8 r,
                      Uint8 g,
                      Uint8 b)
@@ -2748,7 +2748,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
                       Uint8 g,
                       Uint8 b,
                       Uint8 a,
-                      PaletteConstParam palette = {})
+                      PaletteConstRef palette = {})
 {
   static_assert(false, "Not implemented");
 }
@@ -2791,18 +2791,18 @@ inline Uint32 MapRGBA(const PixelFormatDetails& format,
  */
 inline Uint32 MapColor(const PixelFormatDetails& format,
                        ColorRaw c,
-                       PaletteConstParam palette = {})
+                       PaletteConstRef palette = {})
 {
   return SDL_MapRGBA(&format, c, palette);
 }
 
 inline Uint32 Color::Map(const PixelFormatDetails& format,
-                         PaletteConstParam palette) const
+                         PaletteConstRef palette) const
 {
   static_assert(false, "Not implemented");
 }
 
-inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
+inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstRef palette) const
 {
   static_assert(false, "Not implemented");
 }
@@ -2834,7 +2834,7 @@ inline Uint32 PixelFormat::Map(ColorRaw c, PaletteConstParam palette) const
  */
 inline void GetRGB(Uint32 pixelvalue,
                    const PixelFormatDetails& format,
-                   PaletteConstParam palette,
+                   PaletteConstRef palette,
                    Uint8* r,
                    Uint8* g,
                    Uint8* b)
@@ -2873,7 +2873,7 @@ inline void GetRGB(Uint32 pixelvalue,
  */
 inline void GetRGBA(Uint32 pixelvalue,
                     const PixelFormatDetails& format,
-                    PaletteConstParam palette,
+                    PaletteConstRef palette,
                     Uint8* r,
                     Uint8* g,
                     Uint8* b,
@@ -2884,19 +2884,19 @@ inline void GetRGBA(Uint32 pixelvalue,
 
 inline Color GetColor(Uint32 pixel,
                       const PixelFormatDetails& format,
-                      PaletteConstParam palette = {})
+                      PaletteConstRef palette = {})
 {
   static_assert(false, "Not implemented");
 }
 
 inline Color Color::Get(Uint32 pixel,
                         const PixelFormatDetails& format,
-                        PaletteConstParam palette)
+                        PaletteConstRef palette)
 {
   static_assert(false, "Not implemented");
 }
 
-inline Color PixelFormat::Get(Uint32 pixel, PaletteConstParam palette) const
+inline Color PixelFormat::Get(Uint32 pixel, PaletteConstRef palette) const
 {
   static_assert(false, "Not implemented");
 }
