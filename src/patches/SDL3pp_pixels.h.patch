@@ -994,7 +994,7 @@
    PaletteIndex& operator=(ColorRaw color);
  };
  
-@@ -2406,18 +2601,19 @@
+@@ -2409,18 +2604,19 @@
     */
    void Destroy();
  
@@ -1020,7 +1020,7 @@
    constexpr PaletteIndex operator[](int index)
    {
      return PaletteIndex{m_resource, index};
-@@ -2428,13 +2624,14 @@
+@@ -2431,13 +2627,14 @@
     *
     * @param colors an array of Color structures to copy into the palette.
     * @param firstcolor the index of the first palette entry to modify.

@@ -2710,6 +2710,9 @@ public:
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to AnimationConstRef
+  constexpr operator AnimationConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
@@ -3026,9 +3029,6 @@ struct AnimationRef : Animation
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
-
-  /// Converts to AnimationConstRef
-  constexpr operator AnimationConstRef() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.

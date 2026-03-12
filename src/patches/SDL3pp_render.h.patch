@@ -713,7 +713,7 @@
  
    /**
     * Safely borrows the from TextureRaw.
-@@ -2868,27 +2870,19 @@
+@@ -2871,27 +2873,19 @@
     */
    void GetSize(float* w, float* h) const;
  
@@ -746,7 +746,7 @@
    PixelFormat GetFormat() const;
  
  #if SDL_VERSION_ATLEAST(3, 4, 0)
-@@ -2913,10 +2907,6 @@
+@@ -2916,10 +2910,6 @@
     */
    void SetPalette(PaletteRef palette);
  
@@ -757,7 +757,7 @@
    /**
     * Get the palette used by a texture.
     *
-@@ -3074,7 +3064,7 @@
+@@ -3077,7 +3067,7 @@
    /**
     * Get the additional alpha value multiplied into render copy operations.
     *
@@ -766,7 +766,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3090,7 +3080,7 @@
+@@ -3093,7 +3083,7 @@
    /**
     * Get the additional alpha value multiplied into render copy operations.
     *
@@ -775,7 +775,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3103,12 +3093,82 @@
+@@ -3106,12 +3096,82 @@
     */
    float GetAlphaModFloat() const;
  
@@ -858,7 +858,7 @@
    FColor GetModFloat() const;
  
    /**
-@@ -3131,7 +3191,7 @@
+@@ -3134,7 +3194,7 @@
    /**
     * Get the blend mode used for texture copy operations.
     *
@@ -867,7 +867,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3163,7 +3223,7 @@
+@@ -3166,7 +3226,7 @@
    /**
     * Get the scale mode used for texture scale operations.
     *
@@ -876,7 +876,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3220,11 +3280,10 @@
+@@ -3223,11 +3283,10 @@
     * While this function will work with streaming textures, for optimization
     * reasons you may not get the pixels back if you lock the texture afterward.
     *
@@ -892,7 +892,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3351,8 +3410,8 @@
+@@ -3354,8 +3413,8 @@
     *
     * @param rect a pointer to the rectangle to lock for access. If the rect is
     *             nullptr, the entire texture will be locked.
@@ -903,7 +903,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should only be called on the main thread.
-@@ -3395,8 +3454,6 @@
+@@ -3398,8 +3457,6 @@
     * Which is to say: locking and immediately unlocking a texture can result in
     * corrupted textures, depending on the renderer in use.
     *

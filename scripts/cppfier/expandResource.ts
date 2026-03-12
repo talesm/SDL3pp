@@ -256,8 +256,8 @@ export function expandResource(
     ctors,
     targetName,
     destroyFunction,
-    refName,
     subEntries,
+    enableConstParam ? constParamType : undefined,
   );
 
   if (hasLock) wrapLockFunctions(targetEntry.entries, lockName, hasLock);
@@ -265,14 +265,7 @@ export function expandResource(
   const derivedEntries: ApiEntryTransform[] = [];
 
   if (hasRef) {
-    derivedEntries.push(
-      createRefEntry(
-        refName,
-        targetName,
-        rawName,
-        enableConstParam ? constParamType : undefined,
-      ),
-    );
+    derivedEntries.push(createRefEntry(refName, targetName, rawName));
   } else if (hasScoped) {
     derivedEntries.push(
       createScopedEntry(scopedName, targetName, destroyFunction),
@@ -751,10 +744,22 @@ function populateTargetEntry(
   ctors: Dict<ApiEntryTransform>,
   targetName: string,
   freeFunction: ApiEntry,
-  paramType: string,
   subEntries: ApiEntryTransformMap,
+  constParamType: string,
 ) {
   const isCopyable = hasScoped || hasShared;
+
+  if (constParamType) {
+    ctors[`operator ${constParamType}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return m_resource;", noexcept: true },
+      doc: [`Converts to ${constParamType}`],
+    };
+  }
   targetEntry.entries = {
     m_resource: {
       kind: "var",
@@ -854,7 +859,6 @@ function createRefEntry(
   refName: string,
   targetName: string,
   rawName: string,
-  constParamType: string,
 ): ApiEntryTransform {
   const entries = {
     [`${targetName}::${targetName}`]: "alias",
@@ -951,17 +955,6 @@ function createRefEntry(
       doc: [`Converts to ${rawName}`],
     },
   } as Dict<ApiEntryTransform>;
-  if (constParamType) {
-    entries[`operator ${constParamType}`] = {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return get();", noexcept: true },
-      doc: [`Converts to ${constParamType}`],
-    };
-  }
   return {
     kind: "struct",
     name: refName,

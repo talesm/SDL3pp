@@ -4343,6 +4343,9 @@ public:
   /// member access to underlying TextRaw.
   constexpr TextRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to TextConstRef
+  constexpr operator TextConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }
 
@@ -5223,9 +5226,6 @@ struct TextRef : Text
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
-
-  /// Converts to TextConstRef
-  constexpr operator TextConstRef() const noexcept { return get(); }
 };
 
 /**

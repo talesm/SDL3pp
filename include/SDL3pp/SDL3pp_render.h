@@ -2700,6 +2700,9 @@ public:
   /// member access to underlying TextureRaw.
   constexpr TextureRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to TextureConstRef
+  constexpr operator TextureConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
@@ -3520,9 +3523,6 @@ struct TextureRef : Texture
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
-
-  /// Converts to TextureConstRef
-  constexpr operator TextureConstRef() const noexcept { return get(); }
 };
 
 /**

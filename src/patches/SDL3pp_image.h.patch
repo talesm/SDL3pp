@@ -782,7 +782,7 @@
  
    /// member access to underlying AnimationRaw.
    constexpr const AnimationRaw operator->() const noexcept
-@@ -2820,16 +2760,30 @@
+@@ -2823,16 +2763,30 @@
     */
    void Free();
  
@@ -813,7 +813,7 @@
    int GetDelay(int index) const;
  
  #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
-@@ -2853,10 +2807,6 @@
+@@ -2856,10 +2810,6 @@
     */
    void Save(StringParam file);
  
@@ -824,7 +824,7 @@
    /**
     * Save an animation to an IOStream.
     *
-@@ -2869,9 +2819,9 @@
+@@ -2872,9 +2822,9 @@
     * For formats that accept a quality, a default quality of 90 will be used.
     *
     * @param dst an IOStream that data will be written to.
@@ -835,7 +835,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -2885,10 +2835,6 @@
+@@ -2888,10 +2838,6 @@
     */
    void SaveTyped(IOStreamRef dst, StringParam type, bool closeio = false);
  
@@ -846,7 +846,7 @@
    /**
     * Save an animation in ANI format to an IOStream.
     *
-@@ -2911,10 +2857,6 @@
+@@ -2914,10 +2860,6 @@
     */
    void SaveANI(IOStreamRef dst, bool closeio = false);
  
@@ -857,7 +857,7 @@
    /**
     * Save an animation in APNG format to an IOStream.
     *
-@@ -2937,10 +2879,6 @@
+@@ -2940,10 +2882,6 @@
     */
    void SaveAPNG(IOStreamRef dst, bool closeio = false);
  
@@ -868,7 +868,7 @@
    /**
     * Save an animation in AVIF format to an IOStream.
     *
-@@ -2948,10 +2886,10 @@
+@@ -2951,10 +2889,10 @@
     * function succeeds or not.
     *
     * @param dst an IOStream from which data will be written to.
@@ -881,7 +881,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -2965,10 +2903,6 @@
+@@ -2968,10 +2906,6 @@
     */
    void SaveAVIF(IOStreamRef dst, int quality, bool closeio = false);
  
@@ -892,7 +892,7 @@
    /**
     * Save an animation in GIF format to an IOStream.
     *
-@@ -2991,10 +2925,6 @@
+@@ -2994,10 +2928,6 @@
     */
    void SaveGIF(IOStreamRef dst, bool closeio = false);
  
@@ -903,7 +903,7 @@
    /**
     * Save an animation in WEBP format to an IOStream.
     *
-@@ -3002,12 +2932,12 @@
+@@ -3005,12 +2935,12 @@
     * function succeeds or not.
     *
     * @param dst an IOStream from which data will be written to.
@@ -918,7 +918,7 @@
     * @throws Error on failure.
     *
     * @since This function is available since SDL_image 3.4.0.
-@@ -3021,15 +2951,10 @@
+@@ -3024,15 +2954,10 @@
     */
    void SaveWEBP(IOStreamRef dst, int quality, bool closeio = false);
  
@@ -936,7 +936,7 @@
     * @throws Error on failure.
     *
 @@ -3106,29 +3031,26 @@
-   constexpr operator AnimationConstRef() const noexcept { return get(); }
+   constexpr operator AnimationRaw() const noexcept { return get(); }
  };
  
 -inline int GetAnimationWidth(AnimationConstRef anim)

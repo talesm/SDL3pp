@@ -985,7 +985,7 @@
     * @post a Text object or nullptr on failure; call GetError() for more
     *       information.
     *
-@@ -4446,11 +4393,8 @@
+@@ -4449,11 +4396,8 @@
     * `text` must have been created using a TextEngine from
     * SurfaceTextEngine.SurfaceTextEngine().
     *
@@ -999,7 +999,7 @@
     * @param surface the surface to draw on.
     * @throws Error on failure.
     *
-@@ -4471,11 +4415,8 @@
+@@ -4474,11 +4418,8 @@
     * RendererTextEngine.RendererTextEngine(), and will draw using the renderer
     * passed to that function.
     *
@@ -1013,7 +1013,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4634,7 +4575,7 @@
+@@ -4637,7 +4578,7 @@
     * This returns false if SDL_ttf isn't built with HarfBuzz support.
     *
     * @param script an [ISO 15924
@@ -1022,7 +1022,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4669,11 +4610,7 @@
+@@ -4672,11 +4613,7 @@
     *
     * The default text color is white (255, 255, 255, 255).
     *
@@ -1035,7 +1035,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4691,11 +4628,7 @@
+@@ -4694,11 +4631,7 @@
     *
     * The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).
     *
@@ -1048,7 +1048,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4734,14 +4667,7 @@
+@@ -4737,14 +4670,7 @@
    /**
     * Get the color of a text object.
     *
@@ -1064,7 +1064,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4752,7 +4678,7 @@
+@@ -4755,7 +4681,7 @@
     * @sa Text.GetColorFloat
     * @sa Text.SetColor
     */
@@ -1073,7 +1073,7 @@
  
    /**
     * Get the color of a text object.
-@@ -4780,14 +4706,7 @@
+@@ -4783,14 +4709,7 @@
    /**
     * Get the color of a text object.
     *
@@ -1089,7 +1089,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4798,7 +4717,7 @@
+@@ -4801,7 +4720,7 @@
     * @sa Text.GetColor
     * @sa Text.SetColorFloat
     */
@@ -1098,7 +1098,7 @@
  
    /**
     * Set the position of a text object.
-@@ -4808,8 +4727,8 @@
+@@ -4811,8 +4730,8 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1109,7 +1109,7 @@
     *
     * @threadsafety This function should be called on the thread that created the
     *               text.
-@@ -4827,6 +4746,7 @@
+@@ -4830,6 +4749,7 @@
     *          this text in pixels, may be nullptr.
     * @param y a pointer filled in with the y offset of the upper left corner of
     *          this text in pixels, may be nullptr.
@@ -1117,7 +1117,7 @@
     *
     * @threadsafety This function should be called on the thread that created the
     *               text.
-@@ -4840,10 +4760,9 @@
+@@ -4843,10 +4763,9 @@
    /**
     * Get the position of a text object.
     *
@@ -1131,7 +1131,7 @@
     *
     * @threadsafety This function should be called on the thread that created the
     *               text.
-@@ -4852,7 +4771,7 @@
+@@ -4855,7 +4774,7 @@
     *
     * @sa Text.SetPosition
     */
@@ -1140,7 +1140,7 @@
  
    /**
     * Set whether wrapping is enabled on a text object.
-@@ -4875,9 +4794,8 @@
+@@ -4878,9 +4797,8 @@
    /**
     * Get whether wrapping is enabled on a text object.
     *
@@ -1152,7 +1152,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4932,10 +4850,7 @@
+@@ -4935,10 +4853,7 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1164,7 +1164,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4954,14 +4869,11 @@
+@@ -4957,14 +4872,11 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1179,7 +1179,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -4980,10 +4892,7 @@
+@@ -4983,10 +4895,7 @@
     *
     * This function may cause the internal text representation to be rebuilt.
     *
@@ -1190,7 +1190,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -5046,18 +4955,17 @@
+@@ -5049,18 +4958,17 @@
     * The size of the text may change when the font or font style and size
     * change.
     *
@@ -1213,7 +1213,7 @@
  
    /**
     * Get the substring of a text object that surrounds a text offset.
-@@ -5080,14 +4988,32 @@
+@@ -5083,14 +4991,32 @@
     */
    void GetSubString(int offset, SubString* substring) const;
  
@@ -1252,7 +1252,7 @@
  
    /**
     * Get the substring of a text object that contains the given line.
-@@ -5109,9 +5035,20 @@
+@@ -5112,9 +5038,20 @@
     */
    void GetSubStringForLine(int line, SubString* substring) const;
  
@@ -1274,7 +1274,7 @@
    }
  
    /**
-@@ -5120,8 +5057,6 @@
+@@ -5123,8 +5060,6 @@
     * @param offset a byte offset into the text string.
     * @param length the length of the range being queried, in bytes, or -1 for
     *               the remainder of the string.
@@ -1283,7 +1283,7 @@
     * @returns a nullptr terminated array of substring pointers or nullptr on
     *          failure; call GetError() for more information. This is a single
     *          allocation that should be freed with free() when it is no longer
-@@ -5132,22 +5067,31 @@
+@@ -5135,22 +5070,31 @@
     *
     * @since This function is available since SDL_ttf 3.0.0.
     */
@@ -1324,7 +1324,7 @@
     *          outside the bounds of the text area.
     * @param substring a pointer filled in with the closest substring of text to
     *                  the given point.
-@@ -5167,6 +5111,8 @@
+@@ -5170,6 +5114,8 @@
     * substring with the SUBSTRING_TEXT_START flag set.
     *
     * @param substring the SubString to query.
@@ -1333,7 +1333,7 @@
     * @throws Error on failure.
     *
     * @threadsafety This function should be called on the thread that created the
-@@ -5214,10 +5160,10 @@
+@@ -5217,10 +5163,10 @@
     * A copy of the UTF-8 string that this text object represents, useful for
     * layout, debugging and retrieving substring text
     */
@@ -1347,7 +1347,7 @@
  
  /**
 @@ -5282,53 +5228,75 @@
-   constexpr operator TextConstRef() const noexcept { return get(); }
+   constexpr operator TextRaw() const noexcept { return get(); }
  };
  
 +/**

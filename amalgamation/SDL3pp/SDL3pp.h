@@ -11496,6 +11496,9 @@ public:
   /// member access to underlying PaletteRaw.
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
@@ -11630,9 +11633,6 @@ struct PaletteRef : Palette
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
-
-  /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -43053,6 +43053,9 @@ public:
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to SurfaceConstRef
+  constexpr operator SurfaceConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
@@ -44586,9 +44589,6 @@ struct SurfaceRef : Surface
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
-
-  /// Converts to SurfaceConstRef
-  constexpr operator SurfaceConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -84892,6 +84892,9 @@ public:
   /// member access to underlying TextureRaw.
   constexpr TextureRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to TextureConstRef
+  constexpr operator TextureConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Texture() { SDL_DestroyTexture(m_resource); }
 
@@ -85712,9 +85715,6 @@ struct TextureRef : Texture
 
   /// Converts to TextureRaw
   constexpr operator TextureRaw() const noexcept { return get(); }
-
-  /// Converts to TextureConstRef
-  constexpr operator TextureConstRef() const noexcept { return get(); }
 };
 
 /**
@@ -94842,6 +94842,9 @@ public:
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to AnimationConstRef
+  constexpr operator AnimationConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
 
@@ -95158,9 +95161,6 @@ struct AnimationRef : Animation
 
   /// Converts to AnimationRaw
   constexpr operator AnimationRaw() const noexcept { return get(); }
-
-  /// Converts to AnimationConstRef
-  constexpr operator AnimationConstRef() const noexcept { return get(); }
 };
 
 /// Get the width in pixels.
@@ -101322,6 +101322,9 @@ public:
   /// member access to underlying TextRaw.
   constexpr TextRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to TextConstRef
+  constexpr operator TextConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Text() { TTF_DestroyText(m_resource); }
 
@@ -102202,9 +102205,6 @@ struct TextRef : Text
 
   /// Converts to TextRaw
   constexpr operator TextRaw() const noexcept { return get(); }
-
-  /// Converts to TextConstRef
-  constexpr operator TextConstRef() const noexcept { return get(); }
 };
 
 /**

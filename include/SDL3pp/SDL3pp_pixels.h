@@ -2559,6 +2559,9 @@ public:
   /// member access to underlying PaletteRaw.
   constexpr PaletteRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to PaletteConstRef
+  constexpr operator PaletteConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Palette() { SDL_DestroyPalette(m_resource); }
 
@@ -2693,9 +2696,6 @@ struct PaletteRef : Palette
 
   /// Converts to PaletteRaw
   constexpr operator PaletteRaw() const noexcept { return get(); }
-
-  /// Converts to PaletteConstRef
-  constexpr operator PaletteConstRef() const noexcept { return get(); }
 };
 
 /**

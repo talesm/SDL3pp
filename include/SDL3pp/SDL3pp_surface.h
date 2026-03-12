@@ -475,6 +475,9 @@ public:
   /// member access to underlying SurfaceRaw.
   constexpr SurfaceRaw operator->() noexcept { return m_resource; }
 
+  /// Converts to SurfaceConstRef
+  constexpr operator SurfaceConstRef() const noexcept { return m_resource; }
+
   /// Destructor
   ~Surface() { SDL_DestroySurface(m_resource); }
 
@@ -2008,9 +2011,6 @@ struct SurfaceRef : Surface
 
   /// Converts to SurfaceRaw
   constexpr operator SurfaceRaw() const noexcept { return get(); }
-
-  /// Converts to SurfaceConstRef
-  constexpr operator SurfaceConstRef() const noexcept { return get(); }
 };
 
 /**
