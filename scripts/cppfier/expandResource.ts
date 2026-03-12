@@ -40,18 +40,15 @@ export function expandResource(
 
   const rawName = resourceEntry.rawName || `${targetName}Raw`;
   const constRawName = `const ${rawName}`;
-  const paramType = `${targetName}Param`;
+  const refName = `${targetName}Ref`;
   const enableMemberAccess =
     resourceEntry.enableMemberAccess ?? sourceEntry.kind === "struct";
   const enableConstParam = resourceEntry.enableConstParam ?? enableMemberAccess;
-  const constParamType = enableConstParam
-    ? `${targetName}ConstParam`
-    : paramType;
+  const constParamType = enableConstParam ? `${targetName}ConstRef` : refName;
   if (!targetEntry.kind) targetEntry.kind = "struct";
   const hasShared = !!resourceEntry.shared;
   const hasScoped = resourceEntry.owning === false;
   const hasRef = resourceEntry.ref ?? !hasScoped;
-  const refName = `${targetName}Ref`;
   const scopedName = `${targetName}Scoped`;
 
   const type = targetEntry.type ?? sourceName;
@@ -99,16 +96,25 @@ export function expandResource(
     };
   }
 
-  referenceAliases.push(
-    createParam(paramType, targetName, rawName, nullValue, memberAccess),
-  );
+  if (hasScoped) {
+    referenceAliases.push({
+      kind: "alias",
+      name: refName,
+      type: targetName,
+      doc: [`Alias to ${targetName} for non owning parameters.`],
+    });
+  } else if (!hasRef) {
+    referenceAliases.push(
+      createParam(refName, targetName, rawName, nullValue, memberAccess),
+    );
+  }
+
   if (enableConstParam) {
     referenceAliases.push(
       createConstParam(
         constParamType,
         targetName,
         constRawName,
-        paramType,
         nullValue,
         memberAccess,
       ),
@@ -120,7 +126,7 @@ export function expandResource(
     pointerType,
     targetName,
     constPointerType,
-    paramType,
+    refName,
     enableConstParam,
     constParamType,
     hasShared,
@@ -134,18 +140,16 @@ export function expandResource(
     hasScoped,
     targetName,
     constRawName,
-    paramType,
+    refName,
     rawName,
   );
   if (hasShared) {
-    addBorrowFunction(ctors, targetName, resourceEntry, paramType, rawName);
+    addBorrowFunction(ctors, targetName, resourceEntry, refName, rawName);
   } else if (!hasScoped) {
     ctors[`${targetName}#3`].hints.changeAccess = "protected";
     ctors[`${targetName}#4`].hints.changeAccess = "public";
   }
-  if (hasRef && !hasShared) {
-    deleteCtorsFromRef(ctors, refName, targetName);
-  }
+  if (hasRef) deleteCtorsFromRef(ctors, refName, targetName);
   const subEntries = targetEntry.entries || {};
 
   wrapCustomCtors(subEntries, targetName, ctors);
@@ -176,7 +180,7 @@ export function expandResource(
       sourceEntries,
       file.transform,
       subEntries,
-      paramType,
+      refName,
       constParamType,
       targetName,
     );
@@ -190,7 +194,7 @@ export function expandResource(
       context,
       sourceName,
       targetName,
-      paramType,
+      refName,
       constParamType,
       blockedNames,
     );
@@ -198,7 +202,7 @@ export function expandResource(
       sourceEntries,
       file.transform,
       subEntries,
-      paramType,
+      refName,
       constParamType,
       targetName,
     );
@@ -232,6 +236,17 @@ export function expandResource(
   } else {
     targetEntry.doc = [`Wraps ${title} resource.`, "@cat resource"];
   }
+  if (hasScoped) {
+    ctors[`operator ${rawName}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return m_resource;", noexcept: true },
+      doc: [`Converts to underlying ${rawName}.`],
+    };
+  }
   populateTargetEntry(
     hasScoped,
     hasShared,
@@ -241,25 +256,21 @@ export function expandResource(
     ctors,
     targetName,
     destroyFunction,
-    paramType,
     subEntries,
+    enableConstParam ? constParamType : undefined,
   );
 
   if (hasLock) wrapLockFunctions(targetEntry.entries, lockName, hasLock);
 
   const derivedEntries: ApiEntryTransform[] = [];
 
-  if (hasShared && hasRef) {
-    derivedEntries.push(createSharedRefEntry(refName, targetName, rawName));
-  } else if (hasRef) {
-    derivedEntries.push(
-      createRefEntry(refName, targetName, paramType, rawName),
-    );
-  }
-  if (hasScoped)
+  if (hasRef) {
+    derivedEntries.push(createRefEntry(refName, targetName, rawName));
+  } else if (hasScoped) {
     derivedEntries.push(
       createScopedEntry(scopedName, targetName, destroyFunction),
     );
+  }
 
   context.includeBefore(referenceAliases, "__begin");
   derivedEntries.forEach((e) => context.includeAfter(e, targetName));
@@ -340,7 +351,6 @@ function createConstParam(
   constParamType: string,
   targetName: string,
   constRawName: string,
-  paramType: string,
   nullValue: string,
   memberAccess: ApiEntryTransformMap,
 ): ApiEntryTransform {
@@ -363,15 +373,6 @@ function createConstParam(
         type: "",
         parameters: [{ type: constRawName, name: "value" }],
         hints: { init: ["value(value)"] },
-      },
-      [`${constParamType}#2`]: {
-        kind: "function",
-        name: constParamType,
-        doc: [`Constructs from ${paramType}`],
-        constexpr: true,
-        type: "",
-        parameters: [{ type: paramType, name: "value" }],
-        hints: { init: ["value(value.value)"] },
       },
       [`${constParamType}#3`]: {
         kind: "function",
@@ -532,15 +533,15 @@ function addBorrowFunction(
       static: true,
       constexpr: true,
       type: targetName,
-      parameters: [{ name: "resource", type: paramType }],
+      parameters: [{ name: "resource", type: rawName }],
       hints: {
-        body: `if (resource) {\n  ++resource.value->${resourceEntry.shared};\n  return ${targetName}(resource.value);}\nreturn {};`,
+        body: `if (resource) {\n  ++resource->${resourceEntry.shared};\n  return ${targetName}(resource);}\nreturn {};`,
       },
       doc: [
-        `Safely borrows the from ${paramType}.`,
+        `Safely borrows the from ${rawName}.`,
         {
           tag: "@param resource",
-          content: `a ${rawName} or ${targetName}.`,
+          content: `a ${rawName}.`,
         },
         "This does not takes ownership!",
       ],
@@ -743,10 +744,22 @@ function populateTargetEntry(
   ctors: Dict<ApiEntryTransform>,
   targetName: string,
   freeFunction: ApiEntry,
-  paramType: string,
   subEntries: ApiEntryTransformMap,
+  constParamType: string,
 ) {
   const isCopyable = hasScoped || hasShared;
+
+  if (constParamType) {
+    ctors[`operator ${constParamType}`] = {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return m_resource;", noexcept: true },
+      doc: [`Converts to ${constParamType}`],
+    };
+  }
   targetEntry.entries = {
     m_resource: {
       kind: "var",
@@ -832,15 +845,6 @@ function populateTargetEntry(
       hints: { body: "return !!m_resource;", noexcept: true },
       doc: [`Converts to bool`],
     },
-    [`operator ${paramType}`]: {
-      kind: "function",
-      type: "",
-      immutable: true,
-      constexpr: true,
-      parameters: [],
-      hints: { body: "return {m_resource};", noexcept: true },
-      doc: [`Converts to ${paramType}`],
-    },
     [freeFunction.name]: "plc",
     ...subEntries,
   };
@@ -851,131 +855,112 @@ function populateTargetEntry(
   });
 }
 
-function createSharedRefEntry(
-  refName: string,
-  targetName: string,
-  rawName: string,
-): ApiEntryTransform {
-  return {
-    kind: "struct",
-    name: refName,
-    type: targetName,
-    doc: [`Safe reference for ${targetName}.`],
-    entries: {
-      [`${targetName}::${targetName}`]: "alias",
-      [refName]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: rawName,
-            name: "resource",
-          },
-        ],
-        hints: {
-          init: [`${targetName}(Borrow(resource))`],
-          noexcept: true,
-        },
-        doc: [
-          `Constructs from ${rawName}.`,
-          {
-            tag: "@param resource",
-            content: `a ${rawName}.`,
-          },
-          "This borrows the ownership, increments the refcount!",
-        ],
-      },
-      [`${refName}#2`]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: targetName,
-            name: "resource",
-          },
-        ],
-        hints: {
-          init: [`${targetName}(std::move(resource))`],
-          noexcept: true,
-        },
-        doc: [`Constructs from ${targetName}.`],
-      },
-    },
-  };
-}
-
 function createRefEntry(
   refName: string,
   targetName: string,
-  paramType: string,
   rawName: string,
 ): ApiEntryTransform {
+  const entries = {
+    [`${targetName}::${targetName}`]: "alias",
+    [refName]: {
+      kind: "function",
+      type: "",
+      parameters: [
+        {
+          type: rawName,
+          name: "resource",
+        },
+      ],
+      hints: { init: [`${targetName}(resource)`], noexcept: true },
+      doc: [
+        `Constructs from raw ${targetName}.`,
+        {
+          tag: "@param resource",
+          content: `a ${rawName}.`,
+        },
+        "This does not takes ownership!",
+      ],
+    },
+    [`${refName}#2`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
+          type: `const ${targetName} &`,
+          name: "resource",
+        },
+      ],
+      hints: { init: [`${targetName}(resource.get())`], noexcept: true },
+      doc: [
+        `Constructs from ${targetName}.`,
+        {
+          tag: "@param resource",
+          content: `a ${targetName}.`,
+        },
+        "This does not takes ownership!",
+      ],
+    },
+    [`${refName}#3`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
+          type: `const ${refName} &`,
+          name: "other",
+        },
+      ],
+      hints: { init: [`${targetName}(other.get())`], noexcept: true },
+      doc: ["Copy constructor."],
+    },
+    [`${refName}#4`]: {
+      kind: "function",
+      type: "",
+      constexpr: true,
+      parameters: [
+        {
+          type: `${refName} &&`,
+          name: "other",
+        },
+      ],
+      hints: { init: [`${targetName}(other.release())`], noexcept: true },
+      doc: ["Move constructor."],
+    },
+    [`~${refName}`]: {
+      kind: "function",
+      doc: ["Destructor"],
+      type: "",
+      parameters: [],
+      hints: { body: "release();" },
+    },
+    [`operator=`]: {
+      kind: "function",
+      type: `${refName} &`,
+      constexpr: true,
+      parameters: [{ type: refName, name: "other" }],
+      hints: {
+        body: `std::swap(*this, other);\nreturn *this;`,
+        noexcept: true,
+      },
+      doc: [`Assignment operator.`],
+    },
+    [`operator ${rawName}`]: {
+      kind: "function",
+      type: "",
+      immutable: true,
+      constexpr: true,
+      parameters: [],
+      hints: { body: "return get();", noexcept: true },
+      doc: [`Converts to ${rawName}`],
+    },
+  } as Dict<ApiEntryTransform>;
   return {
     kind: "struct",
     name: refName,
     type: targetName,
-    doc: [`Semi-safe reference for ${targetName}.`],
-    entries: {
-      [`${targetName}::${targetName}`]: "alias",
-      [refName]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: paramType,
-            name: "resource",
-          },
-        ],
-        hints: { init: [`${targetName}(resource.value)`], noexcept: true },
-        doc: [
-          `Constructs from ${paramType}.`,
-          {
-            tag: "@param resource",
-            content: `a ${rawName} or ${targetName}.`,
-          },
-          "This does not takes ownership!",
-        ],
-      },
-      [`${refName}#2`]: {
-        kind: "function",
-        type: "",
-        parameters: [
-          {
-            type: rawName,
-            name: "resource",
-          },
-        ],
-        hints: { init: [`${targetName}(resource)`], noexcept: true },
-        doc: [
-          `Constructs from ${paramType}.`,
-          {
-            tag: "@param resource",
-            content: `a ${rawName} or ${targetName}.`,
-          },
-          "This does not takes ownership!",
-        ],
-      },
-      [`${refName}#3`]: {
-        kind: "function",
-        type: "",
-        constexpr: true,
-        parameters: [
-          {
-            type: `const ${refName} &`,
-            name: "other",
-          },
-        ],
-        hints: { default: true, noexcept: true },
-        doc: ["Copy constructor."],
-      },
-      [`~${refName}`]: {
-        kind: "function",
-        doc: ["Destructor"],
-        type: "",
-        parameters: [],
-        hints: { body: "release();" },
-      },
-    },
+    doc: [`Reference for ${targetName}.`, "This does not take ownership!"],
+    entries,
   };
 }
 

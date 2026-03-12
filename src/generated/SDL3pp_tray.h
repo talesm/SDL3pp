@@ -27,33 +27,6 @@ using TrayRaw = SDL_Tray*;
 // Forward decl
 struct TrayRef;
 
-/// Safely wrap Tray for non owning parameters
-struct TrayParam
-{
-  TrayRaw value; ///< parameter's TrayRaw
-
-  /// Constructs from TrayRaw
-  constexpr TrayParam(TrayRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TrayParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayParam& other) const = default;
-
-  /// Converts to underlying TrayRaw
-  constexpr operator TrayRaw() const { return value; }
-};
-
 /// Alias to raw representation for TrayMenu.
 using TrayMenuRaw = SDL_TrayMenu*;
 
@@ -69,32 +42,8 @@ using TrayEntryRaw = SDL_TrayEntry*;
 // Forward decl
 struct TrayEntryScoped;
 
-/// Safely wrap TrayEntry for non owning parameters
-struct TrayEntryParam
-{
-  TrayEntryRaw value; ///< parameter's TrayEntryRaw
-
-  /// Constructs from TrayEntryRaw
-  constexpr TrayEntryParam(TrayEntryRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr TrayEntryParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const TrayEntryParam& other) const = default;
-
-  /// Converts to underlying TrayEntryRaw
-  constexpr operator TrayEntryRaw() const { return value; }
-};
+/// Alias to TrayEntry for non owning parameters.
+using TrayEntryRef = TrayEntry;
 
 /**
  * Flags that control the creation of system tray entries.
@@ -169,7 +118,7 @@ public:
   }
 
   /**
-   * Constructs from TrayParam.
+   * Constructs from TrayRef.
    *
    * @param resource a TrayRaw to be wrapped.
    *
@@ -218,10 +167,7 @@ public:
    * @sa Tray.GetMenu
    * @sa Tray.Destroy
    */
-  Tray(SurfaceParam icon, StringParam tooltip)
-    : m_resource(SDL_CreateTray(icon, tooltip))
-  {
-  }
+  Tray(SurfaceRef icon, StringParam tooltip);
 
   /// Destructor
   ~Tray() { SDL_DestroyTray(m_resource); }
@@ -255,9 +201,6 @@ public:
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
 
-  /// Converts to TrayParam
-  constexpr operator TrayParam() const noexcept { return {m_resource}; }
-
   /**
    * Destroys a tray object.
    *
@@ -284,7 +227,7 @@ public:
    *
    * @sa Tray.Tray
    */
-  void SetIcon(SurfaceParam icon);
+  void SetIcon(SurfaceRef icon);
 
   /**
    * Updates the system tray icon's tooltip.
@@ -347,27 +290,19 @@ public:
   TrayMenu GetMenu() const;
 };
 
-/// Semi-safe reference for Tray.
+/**
+ * Reference for Tray.
+ *
+ * This does not take ownership!
+ */
 struct TrayRef : Tray
 {
   using Tray::Tray;
 
   /**
-   * Constructs from TrayParam.
+   * Constructs from raw Tray.
    *
-   * @param resource a TrayRaw or Tray.
-   *
-   * This does not takes ownership!
-   */
-  TrayRef(TrayParam resource) noexcept
-    : Tray(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from TrayParam.
-   *
-   * @param resource a TrayRaw or Tray.
+   * @param resource a TrayRaw.
    *
    * This does not takes ownership!
    */
@@ -376,11 +311,42 @@ struct TrayRef : Tray
   {
   }
 
+  /**
+   * Constructs from Tray.
+   *
+   * @param resource a Tray.
+   *
+   * This does not takes ownership!
+   */
+  constexpr TrayRef(const Tray& resource) noexcept
+    : Tray(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr TrayRef(const TrayRef& other) noexcept = default;
+  constexpr TrayRef(const TrayRef& other) noexcept
+    : Tray(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr TrayRef(TrayRef&& other) noexcept
+    : Tray(other.release())
+  {
+  }
 
   /// Destructor
   ~TrayRef() { release(); }
+
+  /// Assignment operator.
+  constexpr TrayRef& operator=(TrayRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to TrayRaw
+  constexpr operator TrayRaw() const noexcept { return get(); }
 };
 
 /**
@@ -475,7 +441,7 @@ public:
    * @sa TrayEntry.CreateSubmenu
    * @sa TrayMenu.GetParentTray
    */
-  TrayEntryParam GetParentEntry() const;
+  TrayEntryRef GetParentEntry() const;
 
   /**
    * Gets the tray for which this menu is the first-level menu, if the current
@@ -494,7 +460,7 @@ public:
    * @sa Tray.CreateMenu
    * @sa TrayMenu.GetParentEntry
    */
-  TrayParam GetParentTray() const;
+  TrayRef GetParentTray() const;
 };
 
 /**
@@ -516,7 +482,7 @@ public:
   }
 
   /**
-   * Constructs from TrayEntryParam.
+   * Constructs from TrayEntryRef.
    *
    * @param resource a TrayEntryRaw to be wrapped.
    */
@@ -533,6 +499,9 @@ public:
     : TrayEntry(other.release())
   {
   }
+
+  /// Converts to underlying TrayEntryRaw.
+  constexpr operator TrayEntryRaw() const noexcept { return m_resource; }
 
   /// Destructor
   ~TrayEntry() {}
@@ -563,9 +532,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to TrayEntryParam
-  constexpr operator TrayEntryParam() const noexcept { return {m_resource}; }
 
   /**
    * Removes a tray entry.
@@ -817,9 +783,14 @@ struct TrayEntryScoped : TrayEntry
  * @sa Tray.GetMenu
  * @sa Tray.Destroy
  */
-inline Tray CreateTray(SurfaceParam icon, StringParam tooltip)
+inline Tray CreateTray(SurfaceRef icon, StringParam tooltip)
 {
   return Tray(icon, std::move(tooltip));
+}
+
+inline Tray::Tray(SurfaceRef icon, StringParam tooltip)
+  : m_resource(SDL_CreateTray(icon, tooltip))
+{
 }
 
 /**
@@ -835,12 +806,12 @@ inline Tray CreateTray(SurfaceParam icon, StringParam tooltip)
  *
  * @sa Tray.Tray
  */
-inline void SetTrayIcon(TrayParam tray, SurfaceParam icon)
+inline void SetTrayIcon(TrayRef tray, SurfaceRef icon)
 {
   SDL_SetTrayIcon(tray, icon);
 }
 
-inline void Tray::SetIcon(SurfaceParam icon)
+inline void Tray::SetIcon(SurfaceRef icon)
 {
   SDL::SetTrayIcon(m_resource, icon);
 }
@@ -858,7 +829,7 @@ inline void Tray::SetIcon(SurfaceParam icon)
  *
  * @sa Tray.Tray
  */
-inline void SetTrayTooltip(TrayParam tray, StringParam tooltip)
+inline void SetTrayTooltip(TrayRef tray, StringParam tooltip)
 {
   SDL_SetTrayTooltip(tray, tooltip);
 }
@@ -890,7 +861,7 @@ inline void Tray::SetTooltip(StringParam tooltip)
  * @sa Tray.GetMenu
  * @sa TrayMenu.GetParentTray
  */
-inline TrayMenu CreateTrayMenu(TrayParam tray)
+inline TrayMenu CreateTrayMenu(TrayRef tray)
 {
   return SDL_CreateTrayMenu(tray);
 }
@@ -919,7 +890,7 @@ inline TrayMenu Tray::CreateMenu() { return SDL::CreateTrayMenu(m_resource); }
  * @sa TrayEntry.GetSubmenu
  * @sa TrayMenu.GetParentEntry
  */
-inline TrayMenu CreateTraySubmenu(TrayEntryParam entry)
+inline TrayMenu CreateTraySubmenu(TrayEntryRef entry)
 {
   return SDL_CreateTraySubmenu(entry);
 }
@@ -951,7 +922,7 @@ inline TrayMenu TrayEntry::CreateSubmenu()
  * @sa Tray.Tray
  * @sa Tray.CreateMenu
  */
-inline TrayMenu GetTrayMenu(TrayParam tray) { return SDL_GetTrayMenu(tray); }
+inline TrayMenu GetTrayMenu(TrayRef tray) { return SDL_GetTrayMenu(tray); }
 
 inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
 
@@ -977,7 +948,7 @@ inline TrayMenu Tray::GetMenu() const { return SDL::GetTrayMenu(m_resource); }
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.CreateSubmenu
  */
-inline TrayMenu GetTraySubmenu(TrayEntryParam entry)
+inline TrayMenu GetTraySubmenu(TrayEntryRef entry)
 {
   return SDL_GetTraySubmenu(entry);
 }
@@ -1092,7 +1063,7 @@ inline TrayEntry TrayMenu::InsertEntry(int pos,
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetLabel
  */
-inline void SetTrayEntryLabel(TrayEntryParam entry, StringParam label)
+inline void SetTrayEntryLabel(TrayEntryRef entry, StringParam label)
 {
   SDL_SetTrayEntryLabel(entry, label);
 }
@@ -1119,7 +1090,7 @@ inline void TrayEntry::SetLabel(StringParam label)
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.SetLabel
  */
-inline const char* GetTrayEntryLabel(TrayEntryParam entry)
+inline const char* GetTrayEntryLabel(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryLabel(entry);
 }
@@ -1146,7 +1117,7 @@ inline const char* TrayEntry::GetLabel() const
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetChecked
  */
-inline void SetTrayEntryChecked(TrayEntryParam entry, bool checked)
+inline void SetTrayEntryChecked(TrayEntryRef entry, bool checked)
 {
   SDL_SetTrayEntryChecked(entry, checked);
 }
@@ -1173,7 +1144,7 @@ inline void TrayEntry::SetChecked(bool checked)
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.SetChecked
  */
-inline bool GetTrayEntryChecked(TrayEntryParam entry)
+inline bool GetTrayEntryChecked(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryChecked(entry);
 }
@@ -1198,7 +1169,7 @@ inline bool TrayEntry::GetChecked() const
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.GetEnabled
  */
-inline void SetTrayEntryEnabled(TrayEntryParam entry, bool enabled)
+inline void SetTrayEntryEnabled(TrayEntryRef entry, bool enabled)
 {
   SDL_SetTrayEntryEnabled(entry, enabled);
 }
@@ -1223,7 +1194,7 @@ inline void TrayEntry::SetEnabled(bool enabled)
  * @sa TrayMenu.InsertEntry
  * @sa TrayEntry.SetEnabled
  */
-inline bool GetTrayEntryEnabled(TrayEntryParam entry)
+inline bool GetTrayEntryEnabled(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryEnabled(entry);
 }
@@ -1249,7 +1220,7 @@ inline bool TrayEntry::GetEnabled() const
  * @sa TrayMenu.GetEntries
  * @sa TrayMenu.InsertEntry
  */
-inline void SetTrayEntryCallback(TrayEntryParam entry,
+inline void SetTrayEntryCallback(TrayEntryRef entry,
                                  TrayCallback callback,
                                  void* userdata)
 {
@@ -1271,7 +1242,7 @@ inline void TrayEntry::SetCallback(TrayCallback callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void ClickTrayEntry(TrayEntryParam entry) { SDL_ClickTrayEntry(entry); }
+inline void ClickTrayEntry(TrayEntryRef entry) { SDL_ClickTrayEntry(entry); }
 
 inline void TrayEntry::Click() { SDL::ClickTrayEntry(m_resource); }
 
@@ -1306,7 +1277,7 @@ inline void Tray::Destroy() { DestroyTray(release()); }
  *
  * @sa TrayMenu.InsertEntry
  */
-inline TrayMenu GetTrayEntryParent(TrayEntryParam entry)
+inline TrayMenu GetTrayEntryParent(TrayEntryRef entry)
 {
   return SDL_GetTrayEntryParent(entry);
 }
@@ -1334,12 +1305,12 @@ inline TrayMenu TrayEntry::GetParent()
  * @sa TrayEntry.CreateSubmenu
  * @sa TrayMenu.GetParentTray
  */
-inline TrayEntryParam GetTrayMenuParentEntry(TrayMenuRaw menu)
+inline TrayEntryRef GetTrayMenuParentEntry(TrayMenuRaw menu)
 {
   return SDL_GetTrayMenuParentEntry(menu);
 }
 
-inline TrayEntryParam TrayMenu::GetParentEntry() const
+inline TrayEntryRef TrayMenu::GetParentEntry() const
 {
   return SDL::GetTrayMenuParentEntry(m_trayMenu);
 }
@@ -1362,12 +1333,12 @@ inline TrayEntryParam TrayMenu::GetParentEntry() const
  * @sa Tray.CreateMenu
  * @sa TrayMenu.GetParentEntry
  */
-inline TrayParam GetTrayMenuParentTray(TrayMenuRaw menu)
+inline TrayRef GetTrayMenuParentTray(TrayMenuRaw menu)
 {
   return SDL_GetTrayMenuParentTray(menu);
 }
 
-inline TrayParam TrayMenu::GetParentTray() const
+inline TrayRef TrayMenu::GetParentTray() const
 {
   return SDL::GetTrayMenuParentTray(m_trayMenu);
 }

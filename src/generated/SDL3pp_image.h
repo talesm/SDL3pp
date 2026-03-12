@@ -31,55 +31,19 @@ using AnimationRaw = IMG_Animation*;
 // Forward decl
 struct AnimationRef;
 
-/// Safely wrap Animation for non owning parameters
-struct AnimationParam
-{
-  AnimationRaw value; ///< parameter's AnimationRaw
-
-  /// Constructs from AnimationRaw
-  constexpr AnimationParam(AnimationRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationParam& other) const = default;
-
-  /// Converts to underlying AnimationRaw
-  constexpr operator AnimationRaw() const { return value; }
-
-  /// member access to underlying AnimationRaw.
-  constexpr auto operator->() { return value; }
-};
-
 /// Safely wrap Animation for non owning const parameters
-struct AnimationConstParam
+struct AnimationConstRef
 {
   const AnimationRaw value; ///< parameter's const AnimationRaw
 
   /// Constructs from const AnimationRaw
-  constexpr AnimationConstParam(const AnimationRaw value)
+  constexpr AnimationConstRef(const AnimationRaw value)
     : value(value)
   {
   }
 
-  /// Constructs from AnimationParam
-  constexpr AnimationConstParam(AnimationParam value)
-    : value(value.value)
-  {
-  }
-
   /// Constructs null/invalid
-  constexpr AnimationConstParam(std::nullptr_t = nullptr)
+  constexpr AnimationConstRef(std::nullptr_t = nullptr)
     : value(nullptr)
   {
   }
@@ -88,7 +52,7 @@ struct AnimationConstParam
   constexpr explicit operator bool() const { return !!value; }
 
   /// Comparison
-  constexpr auto operator<=>(const AnimationConstParam& other) const = default;
+  constexpr auto operator<=>(const AnimationConstRef& other) const = default;
 
   /// Converts to underlying const AnimationRaw
   constexpr operator const AnimationRaw() const { return value; }
@@ -106,34 +70,6 @@ using AnimationEncoderRaw = IMG_AnimationEncoder*;
 // Forward decl
 struct AnimationEncoderRef;
 
-/// Safely wrap AnimationEncoder for non owning parameters
-struct AnimationEncoderParam
-{
-  AnimationEncoderRaw value; ///< parameter's AnimationEncoderRaw
-
-  /// Constructs from AnimationEncoderRaw
-  constexpr AnimationEncoderParam(AnimationEncoderRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationEncoderParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationEncoderParam& other) const =
-    default;
-
-  /// Converts to underlying AnimationEncoderRaw
-  constexpr operator AnimationEncoderRaw() const { return value; }
-};
-
 // Forward decl
 struct AnimationDecoder;
 
@@ -142,34 +78,6 @@ using AnimationDecoderRaw = IMG_AnimationDecoder*;
 
 // Forward decl
 struct AnimationDecoderRef;
-
-/// Safely wrap AnimationDecoder for non owning parameters
-struct AnimationDecoderParam
-{
-  AnimationDecoderRaw value; ///< parameter's AnimationDecoderRaw
-
-  /// Constructs from AnimationDecoderRaw
-  constexpr AnimationDecoderParam(AnimationDecoderRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AnimationDecoderParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AnimationDecoderParam& other) const =
-    default;
-
-  /// Converts to underlying AnimationDecoderRaw
-  constexpr operator AnimationDecoderRaw() const { return value; }
-};
 
 /// Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
 #define SDL_IMAGE_MAJOR_VERSION
@@ -292,7 +200,7 @@ inline Surface LoadSurface(StringParam file) { return IMG_Load(file); }
  * @sa Surface.Surface
  * @sa LoadSurfaceTyped
  */
-inline Surface LoadSurface(IOStreamParam src, bool closeio)
+inline Surface LoadSurface(IOStreamRef src, bool closeio)
 {
   return IMG_Load_IO(src, closeio);
 }
@@ -302,7 +210,7 @@ inline Surface::Surface(StringParam file)
 {
 }
 
-inline Surface::Surface(IOStreamParam src, bool closeio)
+inline Surface::Surface(IOStreamRef src, bool closeio)
   : m_resource(IMG_Load_IO(src, closeio))
 {
 }
@@ -363,7 +271,7 @@ inline Surface::Surface(IOStreamParam src, bool closeio)
  * @sa Surface.Surface
  * @sa Surface.Surface
  */
-inline Surface LoadSurfaceTyped(IOStreamParam src,
+inline Surface LoadSurfaceTyped(IOStreamRef src,
                                 StringParam type,
                                 bool closeio = false)
 {
@@ -401,7 +309,7 @@ inline Surface LoadSurfaceTyped(IOStreamParam src,
  * @sa LoadTextureTyped
  * @sa Texture.Texture
  */
-inline Texture LoadTexture(RendererParam renderer, StringParam file)
+inline Texture LoadTexture(RendererRef renderer, StringParam file)
 {
   return IMG_LoadTexture(renderer, file);
 }
@@ -448,19 +356,17 @@ inline Texture LoadTexture(RendererParam renderer, StringParam file)
  * @sa Texture.Texture
  * @sa LoadTextureTyped
  */
-inline Texture LoadTexture(RendererParam renderer,
-                           IOStreamParam src,
-                           bool closeio)
+inline Texture LoadTexture(RendererRef renderer, IOStreamRef src, bool closeio)
 {
   return IMG_LoadTexture_IO(renderer, src, closeio);
 }
 
-inline Texture::Texture(RendererParam renderer, StringParam file)
+inline Texture::Texture(RendererRef renderer, StringParam file)
   : m_resource(IMG_LoadTexture(renderer, file))
 {
 }
 
-inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
+inline Texture::Texture(RendererRef renderer, IOStreamRef src, bool closeio)
   : m_resource(IMG_LoadTexture_IO(renderer, src, closeio))
 {
 }
@@ -515,8 +421,8 @@ inline Texture::Texture(RendererParam renderer, IOStreamParam src, bool closeio)
  * @sa Texture.Texture
  * @sa Texture.Texture
  */
-inline Texture LoadTextureTyped(RendererParam renderer,
-                                IOStreamParam src,
+inline Texture LoadTextureTyped(RendererRef renderer,
+                                IOStreamRef src,
                                 StringParam type,
                                 bool closeio = false)
 {
@@ -556,7 +462,7 @@ inline Texture LoadTextureTyped(RendererParam renderer,
  * @sa LoadGPUTextureTyped
  * @sa LoadGPUTexture
  */
-inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
+inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
                                  GPUCopyPass copy_pass,
                                  StringParam file,
                                  int* width = nullptr,
@@ -611,9 +517,9 @@ inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
  * @sa LoadGPUTexture
  * @sa LoadGPUTextureTyped
  */
-inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
+inline GPUTexture LoadGPUTexture(GPUDeviceRef device,
                                  GPUCopyPass copy_pass,
-                                 IOStreamParam src,
+                                 IOStreamRef src,
                                  bool closeio = false,
                                  int* width = nullptr,
                                  int* height = nullptr)
@@ -675,9 +581,9 @@ inline GPUTexture LoadGPUTexture(GPUDeviceParam device,
  * @sa LoadGPUTexture
  * @sa LoadGPUTexture
  */
-inline GPUTexture LoadGPUTextureTyped(GPUDeviceParam device,
+inline GPUTexture LoadGPUTextureTyped(GPUDeviceRef device,
                                       GPUCopyPass copy_pass,
-                                      IOStreamParam src,
+                                      IOStreamRef src,
                                       StringParam type,
                                       bool closeio = false,
                                       int* width = nullptr,
@@ -748,7 +654,7 @@ inline Surface GetClipboardImage() { return IMG_GetClipboardImage(); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isANI(IOStreamParam src) { return IMG_isANI(src); }
+inline bool isANI(IOStreamRef src) { return IMG_isANI(src); }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -793,7 +699,7 @@ inline bool isANI(IOStreamParam src) { return IMG_isANI(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isAVIF(IOStreamParam src) { return IMG_isAVIF(src); }
+inline bool isAVIF(IOStreamRef src) { return IMG_isAVIF(src); }
 
 /**
  * Detect CUR image data on a readable/seekable IOStream.
@@ -836,7 +742,7 @@ inline bool isAVIF(IOStreamParam src) { return IMG_isAVIF(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isCUR(IOStreamParam src) { return IMG_isCUR(src); }
+inline bool isCUR(IOStreamRef src) { return IMG_isCUR(src); }
 
 /**
  * Detect BMP image data on a readable/seekable IOStream.
@@ -879,7 +785,7 @@ inline bool isCUR(IOStreamParam src) { return IMG_isCUR(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isBMP(IOStreamParam src) { return IMG_isBMP(src); }
+inline bool isBMP(IOStreamRef src) { return IMG_isBMP(src); }
 
 /**
  * Detect GIF image data on a readable/seekable IOStream.
@@ -922,7 +828,7 @@ inline bool isBMP(IOStreamParam src) { return IMG_isBMP(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isGIF(IOStreamParam src) { return IMG_isGIF(src); }
+inline bool isGIF(IOStreamRef src) { return IMG_isGIF(src); }
 
 /**
  * Detect ICO image data on a readable/seekable IOStream.
@@ -965,7 +871,7 @@ inline bool isGIF(IOStreamParam src) { return IMG_isGIF(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isICO(IOStreamParam src) { return IMG_isICO(src); }
+inline bool isICO(IOStreamRef src) { return IMG_isICO(src); }
 
 /**
  * Detect JPG image data on a readable/seekable IOStream.
@@ -1008,7 +914,7 @@ inline bool isICO(IOStreamParam src) { return IMG_isICO(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isJPG(IOStreamParam src) { return IMG_isJPG(src); }
+inline bool isJPG(IOStreamRef src) { return IMG_isJPG(src); }
 
 /**
  * Detect JXL image data on a readable/seekable IOStream.
@@ -1051,7 +957,7 @@ inline bool isJPG(IOStreamParam src) { return IMG_isJPG(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isJXL(IOStreamParam src) { return IMG_isJXL(src); }
+inline bool isJXL(IOStreamRef src) { return IMG_isJXL(src); }
 
 /**
  * Detect LBM image data on a readable/seekable IOStream.
@@ -1094,7 +1000,7 @@ inline bool isJXL(IOStreamParam src) { return IMG_isJXL(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isLBM(IOStreamParam src) { return IMG_isLBM(src); }
+inline bool isLBM(IOStreamRef src) { return IMG_isLBM(src); }
 
 /**
  * Detect PCX image data on a readable/seekable IOStream.
@@ -1137,7 +1043,7 @@ inline bool isLBM(IOStreamParam src) { return IMG_isLBM(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isPCX(IOStreamParam src) { return IMG_isPCX(src); }
+inline bool isPCX(IOStreamRef src) { return IMG_isPCX(src); }
 
 /**
  * Detect PNG image data on a readable/seekable IOStream.
@@ -1180,7 +1086,7 @@ inline bool isPCX(IOStreamParam src) { return IMG_isPCX(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isPNG(IOStreamParam src) { return IMG_isPNG(src); }
+inline bool isPNG(IOStreamRef src) { return IMG_isPNG(src); }
 
 /**
  * Detect PNM image data on a readable/seekable IOStream.
@@ -1223,7 +1129,7 @@ inline bool isPNG(IOStreamParam src) { return IMG_isPNG(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isPNM(IOStreamParam src) { return IMG_isPNM(src); }
+inline bool isPNM(IOStreamRef src) { return IMG_isPNM(src); }
 
 /**
  * Detect QOI image data on a readable/seekable IOStream.
@@ -1266,7 +1172,7 @@ inline bool isPNM(IOStreamParam src) { return IMG_isPNM(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isQOI(IOStreamParam src) { return IMG_isQOI(src); }
+inline bool isQOI(IOStreamRef src) { return IMG_isQOI(src); }
 
 /**
  * Detect SVG image data on a readable/seekable IOStream.
@@ -1309,7 +1215,7 @@ inline bool isQOI(IOStreamParam src) { return IMG_isQOI(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isSVG(IOStreamParam src) { return IMG_isSVG(src); }
+inline bool isSVG(IOStreamRef src) { return IMG_isSVG(src); }
 
 /**
  * Detect TIFF image data on a readable/seekable IOStream.
@@ -1352,7 +1258,7 @@ inline bool isSVG(IOStreamParam src) { return IMG_isSVG(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isTIF(IOStreamParam src) { return IMG_isTIF(src); }
+inline bool isTIF(IOStreamRef src) { return IMG_isTIF(src); }
 
 /**
  * Detect WEBP image data on a readable/seekable IOStream.
@@ -1395,7 +1301,7 @@ inline bool isTIF(IOStreamParam src) { return IMG_isTIF(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(IOStreamParam src) { return IMG_isWEBP(src); }
+inline bool isWEBP(IOStreamRef src) { return IMG_isWEBP(src); }
 
 /**
  * Detect XCF image data on a readable/seekable IOStream.
@@ -1438,7 +1344,7 @@ inline bool isWEBP(IOStreamParam src) { return IMG_isWEBP(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isXCF(IOStreamParam src) { return IMG_isXCF(src); }
+inline bool isXCF(IOStreamRef src) { return IMG_isXCF(src); }
 
 /**
  * Detect XPM image data on a readable/seekable IOStream.
@@ -1481,7 +1387,7 @@ inline bool isXCF(IOStreamParam src) { return IMG_isXCF(src); }
  * @sa isXCF
  * @sa isXV
  */
-inline bool isXPM(IOStreamParam src) { return IMG_isXPM(src); }
+inline bool isXPM(IOStreamRef src) { return IMG_isXPM(src); }
 
 /**
  * Detect XV image data on a readable/seekable IOStream.
@@ -1524,7 +1430,7 @@ inline bool isXPM(IOStreamParam src) { return IMG_isXPM(src); }
  * @sa isXCF
  * @sa isXPM
  */
-inline bool isXV(IOStreamParam src) { return IMG_isXV(src); }
+inline bool isXV(IOStreamRef src) { return IMG_isXV(src); }
 
 /**
  * Load a AVIF image directly.
@@ -1558,7 +1464,7 @@ inline bool isXV(IOStreamParam src) { return IMG_isXV(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadAVIF(IOStreamParam src) { return IMG_LoadAVIF_IO(src); }
+inline Surface LoadAVIF(IOStreamRef src) { return IMG_LoadAVIF_IO(src); }
 
 /**
  * Load a BMP image directly.
@@ -1592,7 +1498,7 @@ inline Surface LoadAVIF(IOStreamParam src) { return IMG_LoadAVIF_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadBMP(IOStreamParam src) { return IMG_LoadBMP_IO(src); }
+inline Surface LoadBMP(IOStreamRef src) { return IMG_LoadBMP_IO(src); }
 
 /**
  * Load a CUR image directly.
@@ -1626,7 +1532,7 @@ inline Surface LoadBMP(IOStreamParam src) { return IMG_LoadBMP_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadCUR(IOStreamParam src) { return IMG_LoadCUR_IO(src); }
+inline Surface LoadCUR(IOStreamRef src) { return IMG_LoadCUR_IO(src); }
 
 /**
  * Load a GIF image directly.
@@ -1660,7 +1566,7 @@ inline Surface LoadCUR(IOStreamParam src) { return IMG_LoadCUR_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadGIF(IOStreamParam src) { return IMG_LoadGIF_IO(src); }
+inline Surface LoadGIF(IOStreamRef src) { return IMG_LoadGIF_IO(src); }
 
 /**
  * Load a ICO image directly.
@@ -1694,7 +1600,7 @@ inline Surface LoadGIF(IOStreamParam src) { return IMG_LoadGIF_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadICO(IOStreamParam src) { return IMG_LoadICO_IO(src); }
+inline Surface LoadICO(IOStreamRef src) { return IMG_LoadICO_IO(src); }
 
 /**
  * Load a JPG image directly.
@@ -1728,7 +1634,7 @@ inline Surface LoadICO(IOStreamParam src) { return IMG_LoadICO_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadJPG(IOStreamParam src) { return IMG_LoadJPG_IO(src); }
+inline Surface LoadJPG(IOStreamRef src) { return IMG_LoadJPG_IO(src); }
 
 /**
  * Load a JXL image directly.
@@ -1762,7 +1668,7 @@ inline Surface LoadJPG(IOStreamParam src) { return IMG_LoadJPG_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadJXL(IOStreamParam src) { return IMG_LoadJXL_IO(src); }
+inline Surface LoadJXL(IOStreamRef src) { return IMG_LoadJXL_IO(src); }
 
 /**
  * Load a LBM image directly.
@@ -1796,7 +1702,7 @@ inline Surface LoadJXL(IOStreamParam src) { return IMG_LoadJXL_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadLBM(IOStreamParam src) { return IMG_LoadLBM_IO(src); }
+inline Surface LoadLBM(IOStreamRef src) { return IMG_LoadLBM_IO(src); }
 
 /**
  * Load a PCX image directly.
@@ -1830,7 +1736,7 @@ inline Surface LoadLBM(IOStreamParam src) { return IMG_LoadLBM_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadPCX(IOStreamParam src) { return IMG_LoadPCX_IO(src); }
+inline Surface LoadPCX(IOStreamRef src) { return IMG_LoadPCX_IO(src); }
 
 /**
  * Load a PNG image directly.
@@ -1864,7 +1770,7 @@ inline Surface LoadPCX(IOStreamParam src) { return IMG_LoadPCX_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadPNG(IOStreamParam src) { return IMG_LoadPNG_IO(src); }
+inline Surface LoadPNG(IOStreamRef src) { return IMG_LoadPNG_IO(src); }
 
 /**
  * Load a PNM image directly.
@@ -1898,7 +1804,7 @@ inline Surface LoadPNG(IOStreamParam src) { return IMG_LoadPNG_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadPNM(IOStreamParam src) { return IMG_LoadPNM_IO(src); }
+inline Surface LoadPNM(IOStreamRef src) { return IMG_LoadPNM_IO(src); }
 
 /**
  * Load a SVG image directly.
@@ -1933,7 +1839,7 @@ inline Surface LoadPNM(IOStreamParam src) { return IMG_LoadPNM_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadSVG(IOStreamParam src) { return IMG_LoadSVG_IO(src); }
+inline Surface LoadSVG(IOStreamRef src) { return IMG_LoadSVG_IO(src); }
 
 /**
  * Load an SVG image, scaled to a specific size.
@@ -1956,7 +1862,7 @@ inline Surface LoadSVG(IOStreamParam src) { return IMG_LoadSVG_IO(src); }
  *
  * @sa LoadSVG
  */
-inline Surface LoadSizedSVG(IOStreamParam src, const PointRaw& size)
+inline Surface LoadSizedSVG(IOStreamRef src, const PointRaw& size)
 {
   return IMG_LoadSizedSVG_IO(src, size);
 }
@@ -1993,7 +1899,7 @@ inline Surface LoadSizedSVG(IOStreamParam src, const PointRaw& size)
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadQOI(IOStreamParam src) { return IMG_LoadQOI_IO(src); }
+inline Surface LoadQOI(IOStreamRef src) { return IMG_LoadQOI_IO(src); }
 
 /**
  * Load a TGA image directly.
@@ -2027,7 +1933,7 @@ inline Surface LoadQOI(IOStreamParam src) { return IMG_LoadQOI_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadTGA(IOStreamParam src) { return IMG_LoadTGA_IO(src); }
+inline Surface LoadTGA(IOStreamRef src) { return IMG_LoadTGA_IO(src); }
 
 /**
  * Load a TIFF image directly.
@@ -2061,7 +1967,7 @@ inline Surface LoadTGA(IOStreamParam src) { return IMG_LoadTGA_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadTIF(IOStreamParam src) { return IMG_LoadTIF_IO(src); }
+inline Surface LoadTIF(IOStreamRef src) { return IMG_LoadTIF_IO(src); }
 
 /**
  * Load a WEBP image directly.
@@ -2095,7 +2001,7 @@ inline Surface LoadTIF(IOStreamParam src) { return IMG_LoadTIF_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadWEBP(IOStreamParam src) { return IMG_LoadWEBP_IO(src); }
+inline Surface LoadWEBP(IOStreamRef src) { return IMG_LoadWEBP_IO(src); }
 
 /**
  * Load a XCF image directly.
@@ -2129,7 +2035,7 @@ inline Surface LoadWEBP(IOStreamParam src) { return IMG_LoadWEBP_IO(src); }
  * @sa LoadXPM
  * @sa LoadXV
  */
-inline Surface LoadXCF(IOStreamParam src) { return IMG_LoadXCF_IO(src); }
+inline Surface LoadXCF(IOStreamRef src) { return IMG_LoadXCF_IO(src); }
 
 /**
  * Load a XPM image directly.
@@ -2163,7 +2069,7 @@ inline Surface LoadXCF(IOStreamParam src) { return IMG_LoadXCF_IO(src); }
  * @sa LoadXCF
  * @sa LoadXV
  */
-inline Surface LoadXPM(IOStreamParam src) { return IMG_LoadXPM_IO(src); }
+inline Surface LoadXPM(IOStreamRef src) { return IMG_LoadXPM_IO(src); }
 
 /**
  * Load a XV image directly.
@@ -2197,7 +2103,7 @@ inline Surface LoadXPM(IOStreamParam src) { return IMG_LoadXPM_IO(src); }
  * @sa LoadXCF
  * @sa LoadXPM
  */
-inline Surface LoadXV(IOStreamParam src) { return IMG_LoadXV_IO(src); }
+inline Surface LoadXV(IOStreamRef src) { return IMG_LoadXV_IO(src); }
 
 /**
  * Load an XPM image from a memory array.
@@ -2268,7 +2174,7 @@ inline Surface ReadXPMFromArrayToRGB888(char** xpm)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void Save(SurfaceParam surface, StringParam file)
+inline void Save(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_Save(surface, file));
 }
@@ -2308,8 +2214,8 @@ inline void Save(SurfaceParam surface, StringParam file)
  * @sa SaveTGA
  * @sa SaveWEBP
  */
-inline void SaveTyped(SurfaceParam surface,
-                      IOStreamParam dst,
+inline void SaveTyped(SurfaceRef surface,
+                      IOStreamRef dst,
                       StringParam type,
                       bool closeio = false)
 {
@@ -2333,7 +2239,7 @@ inline void SaveTyped(SurfaceParam surface,
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
+inline void SaveAVIF(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveAVIF(surface, file, quality));
 }
@@ -2358,8 +2264,8 @@ inline void SaveAVIF(SurfaceParam surface, StringParam file, int quality)
  *
  * @sa SaveAVIF
  */
-inline void SaveAVIF(SurfaceParam surface,
-                     IOStreamParam dst,
+inline void SaveAVIF(SurfaceRef surface,
+                     IOStreamRef dst,
                      int quality,
                      bool closeio = false)
 {
@@ -2381,7 +2287,7 @@ inline void SaveAVIF(SurfaceParam surface,
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceParam surface, StringParam file)
+inline void SaveBMP(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveBMP(surface, file));
 }
@@ -2408,9 +2314,7 @@ inline void SaveBMP(SurfaceParam surface, StringParam file)
  *
  * @sa SaveBMP
  */
-inline void SaveBMP(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveBMP(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveBMP_IO(surface, dst, closeio));
 }
@@ -2432,7 +2336,7 @@ inline void SaveBMP(SurfaceParam surface,
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceParam surface, StringParam file)
+inline void SaveCUR(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveCUR(surface, file));
 }
@@ -2459,9 +2363,7 @@ inline void SaveCUR(SurfaceParam surface, StringParam file)
  *
  * @sa SaveCUR
  */
-inline void SaveCUR(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveCUR(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveCUR_IO(surface, dst, closeio));
 }
@@ -2483,7 +2385,7 @@ inline void SaveCUR(SurfaceParam surface,
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceParam surface, StringParam file)
+inline void SaveGIF(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveGIF(surface, file));
 }
@@ -2510,9 +2412,7 @@ inline void SaveGIF(SurfaceParam surface, StringParam file)
  *
  * @sa SaveGIF
  */
-inline void SaveGIF(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveGIF(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveGIF_IO(surface, dst, closeio));
 }
@@ -2534,7 +2434,7 @@ inline void SaveGIF(SurfaceParam surface,
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceParam surface, StringParam file)
+inline void SaveICO(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveICO(surface, file));
 }
@@ -2561,9 +2461,7 @@ inline void SaveICO(SurfaceParam surface, StringParam file)
  *
  * @sa SaveICO
  */
-inline void SaveICO(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveICO(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveICO_IO(surface, dst, closeio));
 }
@@ -2585,7 +2483,7 @@ inline void SaveICO(SurfaceParam surface,
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
+inline void SaveJPG(SurfaceRef surface, StringParam file, int quality)
 {
   CheckError(IMG_SaveJPG(surface, file, quality));
 }
@@ -2610,8 +2508,8 @@ inline void SaveJPG(SurfaceParam surface, StringParam file, int quality)
  *
  * @sa SaveJPG
  */
-inline void SaveJPG(SurfaceParam surface,
-                    IOStreamParam dst,
+inline void SaveJPG(SurfaceRef surface,
+                    IOStreamRef dst,
                     int quality,
                     bool closeio = false)
 {
@@ -2631,7 +2529,7 @@ inline void SaveJPG(SurfaceParam surface,
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceParam surface, StringParam file)
+inline void SavePNG(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SavePNG(surface, file));
 }
@@ -2654,9 +2552,7 @@ inline void SavePNG(SurfaceParam surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline void SavePNG(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SavePNG(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SavePNG_IO(surface, dst, closeio));
 }
@@ -2676,7 +2572,7 @@ inline void SavePNG(SurfaceParam surface,
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceParam surface, StringParam file)
+inline void SaveTGA(SurfaceRef surface, StringParam file)
 {
   CheckError(IMG_SaveTGA(surface, file));
 }
@@ -2703,9 +2599,7 @@ inline void SaveTGA(SurfaceParam surface, StringParam file)
  *
  * @sa SaveTGA
  */
-inline void SaveTGA(SurfaceParam surface,
-                    IOStreamParam dst,
-                    bool closeio = false)
+inline void SaveTGA(SurfaceRef surface, IOStreamRef dst, bool closeio = false)
 {
   CheckError(IMG_SaveTGA_IO(surface, dst, closeio));
 }
@@ -2731,7 +2625,7 @@ inline void SaveTGA(SurfaceParam surface,
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceParam surface, StringParam file, float quality)
+inline void SaveWEBP(SurfaceRef surface, StringParam file, float quality)
 {
   CheckError(IMG_SaveWEBP(surface, file, quality));
 }
@@ -2762,8 +2656,8 @@ inline void SaveWEBP(SurfaceParam surface, StringParam file, float quality)
  *
  * @sa SaveWEBP
  */
-inline void SaveWEBP(SurfaceParam surface,
-                     IOStreamParam dst,
+inline void SaveWEBP(SurfaceRef surface,
+                     IOStreamRef dst,
                      float quality,
                      bool closeio = false)
 {
@@ -2789,7 +2683,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationParam.
+   * Constructs from AnimationRef.
    *
    * @param resource a AnimationRaw to be wrapped.
    *
@@ -2836,10 +2730,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(StringParam file)
-    : m_resource(IMG_LoadAnimation(file))
-  {
-  }
+  Animation(StringParam file);
 
   /**
    * Load an animation from an IOStream.
@@ -2868,10 +2759,7 @@ public:
    * @sa LoadWEBPAnimation
    * @sa Animation.Free
    */
-  Animation(IOStreamParam src, bool closeio)
-    : m_resource(IMG_LoadAnimation_IO(src, closeio))
-  {
-  }
+  Animation(IOStreamRef src, bool closeio);
 
   /// member access to underlying AnimationRaw.
   constexpr const AnimationRaw operator->() const noexcept
@@ -2881,6 +2769,9 @@ public:
 
   /// member access to underlying AnimationRaw.
   constexpr AnimationRaw operator->() noexcept { return m_resource; }
+
+  /// Converts to AnimationConstRef
+  constexpr operator AnimationConstRef() const noexcept { return m_resource; }
 
   /// Destructor
   ~Animation() { IMG_FreeAnimation(m_resource); }
@@ -2913,9 +2804,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationParam
-  constexpr operator AnimationParam() const noexcept { return {m_resource}; }
 
   /**
    * Dispose of an Animation and free its resources.
@@ -2998,7 +2886,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveTyped(IOStreamParam dst, StringParam type, bool closeio = false);
+  void SaveTyped(IOStreamRef dst, StringParam type, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3024,7 +2912,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveANI(IOStreamParam dst, bool closeio = false);
+  void SaveANI(IOStreamRef dst, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3050,7 +2938,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveAPNG(IOStreamParam dst, bool closeio = false);
+  void SaveAPNG(IOStreamRef dst, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3078,7 +2966,7 @@ public:
    * @sa Animation.SaveGIF
    * @sa Animation.SaveWEBP
    */
-  void SaveAVIF(IOStreamParam dst, int quality, bool closeio = false);
+  void SaveAVIF(IOStreamRef dst, int quality, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3104,7 +2992,7 @@ public:
    * @sa Animation.SaveAVIF
    * @sa Animation.SaveWEBP
    */
-  void SaveGIF(IOStreamParam dst, bool closeio = false);
+  void SaveGIF(IOStreamRef dst, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3134,7 +3022,7 @@ public:
    * @sa Animation.SaveAVIF
    * @sa Animation.SaveGIF
    */
-  void SaveWEBP(IOStreamParam dst, int quality, bool closeio = false);
+  void SaveWEBP(IOStreamRef dst, int quality, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3159,27 +3047,19 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for Animation.
+/**
+ * Reference for Animation.
+ *
+ * This does not take ownership!
+ */
 struct AnimationRef : Animation
 {
   using Animation::Animation;
 
   /**
-   * Constructs from AnimationParam.
+   * Constructs from raw Animation.
    *
-   * @param resource a AnimationRaw or Animation.
-   *
-   * This does not takes ownership!
-   */
-  AnimationRef(AnimationParam resource) noexcept
-    : Animation(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AnimationParam.
-   *
-   * @param resource a AnimationRaw or Animation.
+   * @param resource a AnimationRaw.
    *
    * This does not takes ownership!
    */
@@ -3188,14 +3068,45 @@ struct AnimationRef : Animation
   {
   }
 
+  /**
+   * Constructs from Animation.
+   *
+   * @param resource a Animation.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationRef(const Animation& resource) noexcept
+    : Animation(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationRef(const AnimationRef& other) noexcept = default;
+  constexpr AnimationRef(const AnimationRef& other) noexcept
+    : Animation(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationRef(AnimationRef&& other) noexcept
+    : Animation(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationRef& operator=(AnimationRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationRaw
+  constexpr operator AnimationRaw() const noexcept { return get(); }
 };
 
-inline int GetAnimationWidth(AnimationConstParam anim)
+inline int GetAnimationWidth(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3205,7 +3116,7 @@ inline int Animation::GetWidth() const
   return SDL::GetAnimationWidth(m_resource);
 }
 
-inline int GetAnimationHeight(AnimationConstParam anim)
+inline int GetAnimationHeight(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3215,7 +3126,7 @@ inline int Animation::GetHeight() const
   return SDL::GetAnimationHeight(m_resource);
 }
 
-inline Point GetAnimationSize(AnimationConstParam anim)
+inline Point GetAnimationSize(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3225,7 +3136,7 @@ inline Point Animation::GetSize() const
   return SDL::GetAnimationSize(m_resource);
 }
 
-inline int GetAnimationCount(AnimationConstParam anim)
+inline int GetAnimationCount(AnimationConstRef anim)
 {
   static_assert(false, "Not implemented");
 }
@@ -3235,7 +3146,7 @@ inline int Animation::GetCount() const
   return SDL::GetAnimationCount(m_resource);
 }
 
-inline Surface GetAnimationFrame(AnimationConstParam anim, int index)
+inline Surface GetAnimationFrame(AnimationConstRef anim, int index)
 {
   static_assert(false, "Not implemented");
 }
@@ -3245,7 +3156,7 @@ inline Surface Animation::GetFrame(int index) const
   return SDL::GetAnimationFrame(m_resource, index);
 }
 
-inline int GetAnimationDelay(AnimationConstParam anim, int index)
+inline int GetAnimationDelay(AnimationConstRef anim, int index)
 {
   static_assert(false, "Not implemented");
 }
@@ -3308,9 +3219,19 @@ inline Animation LoadAnimation(StringParam file)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAnimation(IOStreamParam src, bool closeio)
+inline Animation LoadAnimation(IOStreamRef src, bool closeio)
 {
   return Animation(src, closeio);
+}
+
+inline Animation::Animation(StringParam file)
+  : m_resource(IMG_LoadAnimation(file))
+{
+}
+
+inline Animation::Animation(IOStreamRef src, bool closeio)
+  : m_resource(IMG_LoadAnimation_IO(src, closeio))
+{
 }
 
 /**
@@ -3347,7 +3268,7 @@ inline Animation LoadAnimation(IOStreamParam src, bool closeio)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAnimationTyped(IOStreamParam src,
+inline Animation LoadAnimationTyped(IOStreamRef src,
                                     StringParam type,
                                     bool closeio = false)
 {
@@ -3382,7 +3303,7 @@ inline Animation LoadAnimationTyped(IOStreamParam src,
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadANIAnimation(IOStreamParam src)
+inline Animation LoadANIAnimation(IOStreamRef src)
 {
   return IMG_LoadANIAnimation_IO(src);
 }
@@ -3417,7 +3338,7 @@ inline Animation LoadANIAnimation(IOStreamParam src)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAPNGAnimation(IOStreamParam src)
+inline Animation LoadAPNGAnimation(IOStreamRef src)
 {
   return IMG_LoadAPNGAnimation_IO(src);
 }
@@ -3452,7 +3373,7 @@ inline Animation LoadAPNGAnimation(IOStreamParam src)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadAVIFAnimation(IOStreamParam src)
+inline Animation LoadAVIFAnimation(IOStreamRef src)
 {
   return IMG_LoadAVIFAnimation_IO(src);
 }
@@ -3482,7 +3403,7 @@ inline Animation LoadAVIFAnimation(IOStreamParam src)
  * @sa LoadWEBPAnimation
  * @sa Animation.Free
  */
-inline Animation LoadGIFAnimation(IOStreamParam src)
+inline Animation LoadGIFAnimation(IOStreamRef src)
 {
   return IMG_LoadGIFAnimation_IO(src);
 }
@@ -3510,7 +3431,7 @@ inline Animation LoadGIFAnimation(IOStreamParam src)
  * @sa LoadGIFAnimation
  * @sa Animation.Free
  */
-inline Animation LoadWEBPAnimation(IOStreamParam src)
+inline Animation LoadWEBPAnimation(IOStreamRef src)
 {
   return IMG_LoadWEBPAnimation_IO(src);
 }
@@ -3535,7 +3456,7 @@ inline Animation LoadWEBPAnimation(IOStreamParam src)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAnimation(AnimationParam anim, StringParam file)
+inline void SaveAnimation(AnimationRef anim, StringParam file)
 {
   CheckError(IMG_SaveAnimation(anim, file));
 }
@@ -3579,8 +3500,8 @@ inline void Animation::Save(StringParam file)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAnimationTyped(AnimationParam anim,
-                               IOStreamParam dst,
+inline void SaveAnimationTyped(AnimationRef anim,
+                               IOStreamRef dst,
                                StringParam type,
                                bool closeio = false)
 {
@@ -3591,7 +3512,7 @@ inline void SaveAnimationTyped(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveTyped(IOStreamParam dst,
+inline void Animation::SaveTyped(IOStreamRef dst,
                                  StringParam type,
                                  bool closeio)
 {
@@ -3623,8 +3544,8 @@ inline void Animation::SaveTyped(IOStreamParam dst,
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveANIAnimation(AnimationParam anim,
-                             IOStreamParam dst,
+inline void SaveANIAnimation(AnimationRef anim,
+                             IOStreamRef dst,
                              bool closeio = false)
 {
   CheckError(IMG_SaveANIAnimation_IO(anim, dst, closeio));
@@ -3634,7 +3555,7 @@ inline void SaveANIAnimation(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveANI(IOStreamParam dst, bool closeio)
+inline void Animation::SaveANI(IOStreamRef dst, bool closeio)
 {
   SDL::SaveANIAnimation(m_resource, dst, closeio);
 }
@@ -3664,8 +3585,8 @@ inline void Animation::SaveANI(IOStreamParam dst, bool closeio)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAPNGAnimation(AnimationParam anim,
-                              IOStreamParam dst,
+inline void SaveAPNGAnimation(AnimationRef anim,
+                              IOStreamRef dst,
                               bool closeio = false)
 {
   CheckError(IMG_SaveAPNGAnimation_IO(anim, dst, closeio));
@@ -3675,7 +3596,7 @@ inline void SaveAPNGAnimation(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveAPNG(IOStreamParam dst, bool closeio)
+inline void Animation::SaveAPNG(IOStreamRef dst, bool closeio)
 {
   SDL::SaveAPNGAnimation(m_resource, dst, closeio);
 }
@@ -3707,8 +3628,8 @@ inline void Animation::SaveAPNG(IOStreamParam dst, bool closeio)
  * @sa Animation.SaveGIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveAVIFAnimation(AnimationParam anim,
-                              IOStreamParam dst,
+inline void SaveAVIFAnimation(AnimationRef anim,
+                              IOStreamRef dst,
                               int quality,
                               bool closeio = false)
 {
@@ -3719,7 +3640,7 @@ inline void SaveAVIFAnimation(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveAVIF(IOStreamParam dst, int quality, bool closeio)
+inline void Animation::SaveAVIF(IOStreamRef dst, int quality, bool closeio)
 {
   SDL::SaveAVIFAnimation(m_resource, dst, quality, closeio);
 }
@@ -3749,8 +3670,8 @@ inline void Animation::SaveAVIF(IOStreamParam dst, int quality, bool closeio)
  * @sa Animation.SaveAVIF
  * @sa Animation.SaveWEBP
  */
-inline void SaveGIFAnimation(AnimationParam anim,
-                             IOStreamParam dst,
+inline void SaveGIFAnimation(AnimationRef anim,
+                             IOStreamRef dst,
                              bool closeio = false)
 {
   CheckError(IMG_SaveGIFAnimation_IO(anim, dst, closeio));
@@ -3760,7 +3681,7 @@ inline void SaveGIFAnimation(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveGIF(IOStreamParam dst, bool closeio)
+inline void Animation::SaveGIF(IOStreamRef dst, bool closeio)
 {
   SDL::SaveGIFAnimation(m_resource, dst, closeio);
 }
@@ -3794,8 +3715,8 @@ inline void Animation::SaveGIF(IOStreamParam dst, bool closeio)
  * @sa Animation.SaveAVIF
  * @sa Animation.SaveGIF
  */
-inline void SaveWEBPAnimation(AnimationParam anim,
-                              IOStreamParam dst,
+inline void SaveWEBPAnimation(AnimationRef anim,
+                              IOStreamRef dst,
                               int quality,
                               bool closeio = false)
 {
@@ -3806,7 +3727,7 @@ inline void SaveWEBPAnimation(AnimationParam anim,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void Animation::SaveWEBP(IOStreamParam dst, int quality, bool closeio)
+inline void Animation::SaveWEBP(IOStreamRef dst, int quality, bool closeio)
 {
   SDL::SaveWEBPAnimation(m_resource, dst, quality, closeio);
 }
@@ -3830,7 +3751,7 @@ inline void Animation::SaveWEBP(IOStreamParam dst, int quality, bool closeio)
  * @sa Animation.Animation
  * @sa LoadAnimationTyped
  */
-inline Cursor CreateAnimatedCursor(AnimationParam anim, const PointRaw& hotspot)
+inline Cursor CreateAnimatedCursor(AnimationRef anim, const PointRaw& hotspot)
 {
   return CheckError(IMG_CreateAnimatedCursor(anim, hotspot));
 }
@@ -3885,7 +3806,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationEncoderParam.
+   * Constructs from AnimationEncoderRef.
    *
    * @param resource a AnimationEncoderRaw to be wrapped.
    *
@@ -3939,10 +3860,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(StringParam file)
-    : m_resource(IMG_CreateAnimationEncoder(file))
-  {
-  }
+  AnimationEncoder(StringParam file);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -3977,10 +3895,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(IOStreamParam dst, StringParam type, bool closeio = false)
-    : m_resource(IMG_CreateAnimationEncoder_IO(dst, type, closeio))
-  {
-  }
+  AnimationEncoder(IOStreamRef dst, StringParam type, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4033,10 +3948,7 @@ public:
    * @sa AnimationEncoder.AddFrame
    * @sa AnimationEncoder.Close
    */
-  AnimationEncoder(PropertiesParam props)
-    : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
-  {
-  }
+  AnimationEncoder(PropertiesRef props);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4073,12 +3985,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationEncoderParam
-  constexpr operator AnimationEncoderParam() const noexcept
-  {
-    return {m_resource};
-  }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4120,32 +4026,24 @@ public:
    * @sa AnimationEncoder.AnimationEncoder
    * @sa AnimationEncoder.Close
    */
-  void AddFrame(SurfaceParam surface, Uint64 duration);
+  void AddFrame(SurfaceRef surface, Uint64 duration);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AnimationEncoder.
+/**
+ * Reference for AnimationEncoder.
+ *
+ * This does not take ownership!
+ */
 struct AnimationEncoderRef : AnimationEncoder
 {
   using AnimationEncoder::AnimationEncoder;
 
   /**
-   * Constructs from AnimationEncoderParam.
+   * Constructs from raw AnimationEncoder.
    *
-   * @param resource a AnimationEncoderRaw or AnimationEncoder.
-   *
-   * This does not takes ownership!
-   */
-  AnimationEncoderRef(AnimationEncoderParam resource) noexcept
-    : AnimationEncoder(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AnimationEncoderParam.
-   *
-   * @param resource a AnimationEncoderRaw or AnimationEncoder.
+   * @param resource a AnimationEncoderRaw.
    *
    * This does not takes ownership!
    */
@@ -4154,12 +4052,42 @@ struct AnimationEncoderRef : AnimationEncoder
   {
   }
 
+  /**
+   * Constructs from AnimationEncoder.
+   *
+   * @param resource a AnimationEncoder.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationEncoderRef(const AnimationEncoder& resource) noexcept
+    : AnimationEncoder(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept =
-    default;
+  constexpr AnimationEncoderRef(const AnimationEncoderRef& other) noexcept
+    : AnimationEncoder(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationEncoderRef(AnimationEncoderRef&& other) noexcept
+    : AnimationEncoder(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationEncoderRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationEncoderRef& operator=(AnimationEncoderRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationEncoderRaw
+  constexpr operator AnimationEncoderRaw() const noexcept { return get(); }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -4225,11 +4153,40 @@ inline AnimationEncoder CreateAnimationEncoder(StringParam file)
  * @sa AnimationEncoder.AddFrame
  * @sa AnimationEncoder.Close
  */
-inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
+inline AnimationEncoder CreateAnimationEncoder(IOStreamRef dst,
                                                StringParam type,
                                                bool closeio = false)
 {
   return AnimationEncoder(dst, std::move(type), closeio);
+}
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+inline AnimationEncoder::AnimationEncoder(StringParam file)
+  : m_resource(IMG_CreateAnimationEncoder(file))
+{
+}
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+inline AnimationEncoder::AnimationEncoder(IOStreamRef dst,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(IMG_CreateAnimationEncoder_IO(dst, type, closeio))
+{
+}
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+inline AnimationEncoder::AnimationEncoder(PropertiesRef props)
+  : m_resource(IMG_CreateAnimationEncoderWithProperties(props))
+{
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -4283,7 +4240,7 @@ inline AnimationEncoder CreateAnimationEncoder(IOStreamParam dst,
  * @sa AnimationEncoder.Close
  */
 inline AnimationEncoder CreateAnimationEncoderWithProperties(
-  PropertiesParam props)
+  PropertiesRef props)
 {
   return AnimationEncoder(props);
 }
@@ -4344,8 +4301,8 @@ constexpr auto CREATE_GIF_USE_LUT_BOOLEAN =
  * @sa AnimationEncoder.AnimationEncoder
  * @sa AnimationEncoder.Close
  */
-inline void AddAnimationEncoderFrame(AnimationEncoderParam encoder,
-                                     SurfaceParam surface,
+inline void AddAnimationEncoderFrame(AnimationEncoderRef encoder,
+                                     SurfaceRef surface,
                                      Uint64 duration)
 {
   CheckError(IMG_AddAnimationEncoderFrame(encoder, surface, duration));
@@ -4355,7 +4312,7 @@ inline void AddAnimationEncoderFrame(AnimationEncoderParam encoder,
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
-inline void AnimationEncoder::AddFrame(SurfaceParam surface, Uint64 duration)
+inline void AnimationEncoder::AddFrame(SurfaceRef surface, Uint64 duration)
 {
   SDL::AddAnimationEncoderFrame(m_resource, surface, duration);
 }
@@ -4436,7 +4393,7 @@ public:
   }
 
   /**
-   * Constructs from AnimationDecoderParam.
+   * Constructs from AnimationDecoderRef.
    *
    * @param resource a AnimationDecoderRaw to be wrapped.
    *
@@ -4491,10 +4448,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(StringParam file)
-    : m_resource(IMG_CreateAnimationDecoder(file))
-  {
-  }
+  AnimationDecoder(StringParam file);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4530,10 +4484,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(IOStreamParam src, StringParam type, bool closeio = false)
-    : m_resource(IMG_CreateAnimationDecoder_IO(src, type, closeio))
-  {
-  }
+  AnimationDecoder(IOStreamRef src, StringParam type, bool closeio = false);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4577,10 +4528,7 @@ public:
    * @sa AnimationDecoder.Reset
    * @sa AnimationDecoder.Close
    */
-  AnimationDecoder(PropertiesParam props)
-    : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
-  {
-  }
+  AnimationDecoder(PropertiesRef props);
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4617,12 +4565,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AnimationDecoderParam
-  constexpr operator AnimationDecoderParam() const noexcept
-  {
-    return {m_resource};
-  }
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 
@@ -4743,27 +4685,19 @@ public:
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AnimationDecoder.
+/**
+ * Reference for AnimationDecoder.
+ *
+ * This does not take ownership!
+ */
 struct AnimationDecoderRef : AnimationDecoder
 {
   using AnimationDecoder::AnimationDecoder;
 
   /**
-   * Constructs from AnimationDecoderParam.
+   * Constructs from raw AnimationDecoder.
    *
-   * @param resource a AnimationDecoderRaw or AnimationDecoder.
-   *
-   * This does not takes ownership!
-   */
-  AnimationDecoderRef(AnimationDecoderParam resource) noexcept
-    : AnimationDecoder(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AnimationDecoderParam.
-   *
-   * @param resource a AnimationDecoderRaw or AnimationDecoder.
+   * @param resource a AnimationDecoderRaw.
    *
    * This does not takes ownership!
    */
@@ -4772,12 +4706,42 @@ struct AnimationDecoderRef : AnimationDecoder
   {
   }
 
+  /**
+   * Constructs from AnimationDecoder.
+   *
+   * @param resource a AnimationDecoder.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AnimationDecoderRef(const AnimationDecoder& resource) noexcept
+    : AnimationDecoder(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept =
-    default;
+  constexpr AnimationDecoderRef(const AnimationDecoderRef& other) noexcept
+    : AnimationDecoder(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AnimationDecoderRef(AnimationDecoderRef&& other) noexcept
+    : AnimationDecoder(other.release())
+  {
+  }
 
   /// Destructor
   ~AnimationDecoderRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AnimationDecoderRef& operator=(AnimationDecoderRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AnimationDecoderRaw
+  constexpr operator AnimationDecoderRaw() const noexcept { return get(); }
 };
 
 #if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -4845,11 +4809,40 @@ inline AnimationDecoder CreateAnimationDecoder(StringParam file)
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
+inline AnimationDecoder CreateAnimationDecoder(IOStreamRef src,
                                                StringParam type,
                                                bool closeio = false)
 {
   return AnimationDecoder(src, std::move(type), closeio);
+}
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+inline AnimationDecoder::AnimationDecoder(StringParam file)
+  : m_resource(IMG_CreateAnimationDecoder(file))
+{
+}
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+inline AnimationDecoder::AnimationDecoder(IOStreamRef src,
+                                          StringParam type,
+                                          bool closeio)
+  : m_resource(IMG_CreateAnimationDecoder_IO(src, type, closeio))
+{
+}
+
+#endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+#if SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
+
+inline AnimationDecoder::AnimationDecoder(PropertiesRef props)
+  : m_resource(IMG_CreateAnimationDecoderWithProperties(props))
+{
 }
 
 #endif // SDL_IMAGE_VERSION_ATLEAST(3, 4, 0)
@@ -4895,7 +4888,7 @@ inline AnimationDecoder CreateAnimationDecoder(IOStreamParam src,
  * @sa AnimationDecoder.Close
  */
 inline AnimationDecoder CreateAnimationDecoderWithProperties(
-  PropertiesParam props)
+  PropertiesRef props)
 {
   return AnimationDecoder(props);
 }
@@ -4958,8 +4951,7 @@ constexpr auto CREATE_GIF_NUM_COLORS_NUMBER =
  * @sa AnimationDecoder.AnimationDecoder
  * @sa AnimationDecoder.AnimationDecoder
  */
-inline PropertiesRef GetAnimationDecoderProperties(
-  AnimationDecoderParam decoder)
+inline PropertiesRef GetAnimationDecoderProperties(AnimationDecoderRef decoder)
 {
   return IMG_GetAnimationDecoderProperties(decoder);
 }
@@ -5028,7 +5020,7 @@ constexpr auto LOOP_COUNT_NUMBER = IMG_PROP_METADATA_LOOP_COUNT_NUMBER;
  * @sa AnimationDecoder.Reset
  * @sa AnimationDecoder.Close
  */
-inline Surface GetAnimationDecoderFrame(AnimationDecoderParam decoder,
+inline Surface GetAnimationDecoderFrame(AnimationDecoderRef decoder,
                                         Uint64* duration)
 {
   return CheckError(IMG_GetAnimationDecoderFrame(decoder, duration));
@@ -5059,7 +5051,7 @@ inline Surface AnimationDecoder::GetFrame(Uint64* duration)
  * @sa AnimationDecoder.GetFrame
  */
 inline AnimationDecoderStatus GetAnimationDecoderStatus(
-  AnimationDecoderParam decoder)
+  AnimationDecoderRef decoder)
 {
   return IMG_GetAnimationDecoderStatus(decoder);
 }
@@ -5095,7 +5087,7 @@ inline AnimationDecoderStatus AnimationDecoder::GetStatus()
  * @sa AnimationDecoder.GetFrame
  * @sa AnimationDecoder.Close
  */
-inline void ResetAnimationDecoder(AnimationDecoderParam decoder)
+inline void ResetAnimationDecoder(AnimationDecoderRef decoder)
 {
   CheckError(IMG_ResetAnimationDecoder(decoder));
 }

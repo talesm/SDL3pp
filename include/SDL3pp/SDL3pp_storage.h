@@ -232,33 +232,6 @@ using StorageRaw = SDL_Storage*;
 // Forward decl
 struct StorageRef;
 
-/// Safely wrap Storage for non owning parameters
-struct StorageParam
-{
-  StorageRaw value; ///< parameter's StorageRaw
-
-  /// Constructs from StorageRaw
-  constexpr StorageParam(StorageRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr StorageParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const StorageParam& other) const = default;
-
-  /// Converts to underlying StorageRaw
-  constexpr operator StorageRaw() const { return value; }
-};
-
 /**
  * Function interface for Storage.
  *
@@ -300,7 +273,7 @@ public:
   }
 
   /**
-   * Constructs from StorageParam.
+   * Constructs from StorageRef.
    *
    * @param resource a StorageRaw to be wrapped.
    *
@@ -345,10 +318,7 @@ public:
    * @sa Storage.Storage
    * @sa Storage.ReadFile
    */
-  Storage(StringParam override, PropertiesParam props)
-    : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
-  {
-  }
+  Storage(StringParam override, PropertiesRef props);
 
   /**
    * Opens up a container for a user's unique read/write filesystem.
@@ -374,10 +344,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(StringParam org, StringParam app, PropertiesParam props)
-    : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
-  {
-  }
+  Storage(StringParam org, StringParam app, PropertiesRef props);
 
   /**
    * Opens up a container for local filesystem storage.
@@ -401,10 +368,7 @@ public:
    * @sa Storage.ReadFile
    * @sa Storage.WriteFile
    */
-  Storage(StringParam path)
-    : m_resource(CheckError(SDL_OpenFileStorage(path)))
-  {
-  }
+  Storage(StringParam path);
 
   /**
    * Opens up a container using a client-provided storage interface.
@@ -433,10 +397,7 @@ public:
    * @sa Storage.Ready
    * @sa Storage.WriteFile
    */
-  Storage(const StorageInterface& iface, void* userdata)
-    : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
-  {
-  }
+  Storage(const StorageInterface& iface, void* userdata);
 
   /// Destructor
   ~Storage() { CheckError(SDL_CloseStorage(m_resource)); }
@@ -469,9 +430,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to StorageParam
-  constexpr operator StorageParam() const noexcept { return {m_resource}; }
 
   /**
    * Closes and frees a storage container.
@@ -786,27 +744,19 @@ public:
                                 GlobFlags flags);
 };
 
-/// Semi-safe reference for Storage.
+/**
+ * Reference for Storage.
+ *
+ * This does not take ownership!
+ */
 struct StorageRef : Storage
 {
   using Storage::Storage;
 
   /**
-   * Constructs from StorageParam.
+   * Constructs from raw Storage.
    *
-   * @param resource a StorageRaw or Storage.
-   *
-   * This does not takes ownership!
-   */
-  StorageRef(StorageParam resource) noexcept
-    : Storage(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from StorageParam.
-   *
-   * @param resource a StorageRaw or Storage.
+   * @param resource a StorageRaw.
    *
    * This does not takes ownership!
    */
@@ -815,11 +765,42 @@ struct StorageRef : Storage
   {
   }
 
+  /**
+   * Constructs from Storage.
+   *
+   * @param resource a Storage.
+   *
+   * This does not takes ownership!
+   */
+  constexpr StorageRef(const Storage& resource) noexcept
+    : Storage(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr StorageRef(const StorageRef& other) noexcept = default;
+  constexpr StorageRef(const StorageRef& other) noexcept
+    : Storage(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr StorageRef(StorageRef&& other) noexcept
+    : Storage(other.release())
+  {
+  }
 
   /// Destructor
   ~StorageRef() { release(); }
+
+  /// Assignment operator.
+  constexpr StorageRef& operator=(StorageRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to StorageRaw
+  constexpr operator StorageRaw() const noexcept { return get(); }
 };
 
 /**
@@ -841,9 +822,29 @@ struct StorageRef : Storage
  * @sa Storage.Storage
  * @sa Storage.ReadFile
  */
-inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
+inline Storage OpenTitleStorage(StringParam override, PropertiesRef props)
 {
   return Storage(std::move(override), props);
+}
+
+inline Storage::Storage(StringParam override, PropertiesRef props)
+  : m_resource(CheckError(SDL_OpenTitleStorage(override, props)))
+{
+}
+
+inline Storage::Storage(StringParam org, StringParam app, PropertiesRef props)
+  : m_resource(CheckError(SDL_OpenUserStorage(org, app, props)))
+{
+}
+
+inline Storage::Storage(StringParam path)
+  : m_resource(CheckError(SDL_OpenFileStorage(path)))
+{
+}
+
+inline Storage::Storage(const StorageInterface& iface, void* userdata)
+  : m_resource(CheckError(SDL_OpenStorage(&iface, userdata)))
+{
 }
 
 /**
@@ -872,7 +873,7 @@ inline Storage OpenTitleStorage(StringParam override, PropertiesParam props)
  */
 inline Storage OpenUserStorage(StringParam org,
                                StringParam app,
-                               PropertiesParam props)
+                               PropertiesRef props)
 {
   return Storage(std::move(org), std::move(app), props);
 }
@@ -971,7 +972,7 @@ inline bool Storage::Close() { return CloseStorage(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool StorageReady(StorageParam storage)
+inline bool StorageReady(StorageRef storage)
 {
   return SDL_StorageReady(storage);
 }
@@ -991,7 +992,7 @@ inline bool Storage::Ready() { return SDL::StorageReady(m_resource); }
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  */
-inline std::optional<Uint64> GetStorageFileSize(StorageParam storage,
+inline std::optional<Uint64> GetStorageFileSize(StorageRef storage,
                                                 StringParam path)
 {
   if (Uint64 length; SDL_GetStorageFileSize(storage, path, &length)) {
@@ -1025,7 +1026,7 @@ inline std::optional<Uint64> Storage::GetFileSize(StringParam path)
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline bool ReadStorageFile(StorageParam storage,
+inline bool ReadStorageFile(StorageRef storage,
                             StringParam path,
                             TargetBytes destination)
 {
@@ -1048,7 +1049,7 @@ inline bool ReadStorageFile(StorageParam storage,
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline std::string ReadStorageFile(StorageParam storage, StringParam path)
+inline std::string ReadStorageFile(StorageRef storage, StringParam path)
 {
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
@@ -1084,7 +1085,7 @@ inline std::string Storage::ReadFile(StringParam path)
  * @sa Storage.WriteFile
  */
 template<class T>
-inline std::vector<T> ReadStorageFileAs(StorageParam storage, StringParam path)
+inline std::vector<T> ReadStorageFileAs(StorageRef storage, StringParam path)
 {
   auto sz = GetStorageFileSize(storage, path.c_str());
   if (!sz || *sz == 0) return {};
@@ -1113,7 +1114,7 @@ inline std::vector<T> Storage::ReadFileAs(StringParam path)
  * @sa Storage.ReadFile
  * @sa Storage.Ready
  */
-inline void WriteStorageFile(StorageParam storage,
+inline void WriteStorageFile(StorageRef storage,
                              StringParam path,
                              SourceBytes source)
 {
@@ -1137,7 +1138,7 @@ inline void Storage::WriteFile(StringParam path, SourceBytes source)
  *
  * @sa Storage.Ready
  */
-inline void CreateStorageDirectory(StorageParam storage, StringParam path)
+inline void CreateStorageDirectory(StorageRef storage, StringParam path)
 {
   CheckError(SDL_CreateStorageDirectory(storage, path));
 }
@@ -1171,7 +1172,7 @@ inline void Storage::CreateDirectory(StringParam path)
  *
  * @sa Storage.Ready
  */
-inline void EnumerateStorageDirectory(StorageParam storage,
+inline void EnumerateStorageDirectory(StorageRef storage,
                                       StringParam path,
                                       EnumerateDirectoryCallback callback,
                                       void* userdata)
@@ -1202,7 +1203,7 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * @sa Storage.Ready
  */
-inline void EnumerateStorageDirectory(StorageParam storage,
+inline void EnumerateStorageDirectory(StorageRef storage,
                                       StringParam path,
                                       EnumerateDirectoryCB callback)
 {
@@ -1239,7 +1240,7 @@ inline void EnumerateStorageDirectory(StorageParam storage,
  *
  * @sa Storage.Ready
  */
-inline std::vector<Path> EnumerateStorageDirectory(StorageParam storage,
+inline std::vector<Path> EnumerateStorageDirectory(StorageRef storage,
                                                    StringParam path)
 {
   std::vector<Path> r;
@@ -1280,7 +1281,7 @@ inline void Storage::EnumerateDirectory(StringParam path,
  *
  * @sa Storage.Ready
  */
-inline void RemoveStoragePath(StorageParam storage, StringParam path)
+inline void RemoveStoragePath(StorageRef storage, StringParam path)
 {
   CheckError(SDL_RemoveStoragePath(storage, path));
 }
@@ -1302,7 +1303,7 @@ inline void Storage::RemovePath(StringParam path)
  *
  * @sa Storage.Ready
  */
-inline void RenameStoragePath(StorageParam storage,
+inline void RenameStoragePath(StorageRef storage,
                               StringParam oldpath,
                               StringParam newpath)
 {
@@ -1326,7 +1327,7 @@ inline void Storage::RenamePath(StringParam oldpath, StringParam newpath)
  *
  * @sa Storage.Ready
  */
-inline void CopyStorageFile(StorageParam storage,
+inline void CopyStorageFile(StorageRef storage,
                             StringParam oldpath,
                             StringParam newpath)
 {
@@ -1350,7 +1351,7 @@ inline void Storage::CopyFile(StringParam oldpath, StringParam newpath)
  *
  * @sa Storage.Ready
  */
-inline PathInfo GetStoragePathInfo(StorageParam storage, StringParam path)
+inline PathInfo GetStoragePathInfo(StorageRef storage, StringParam path)
 {
   if (PathInfo info; SDL_GetStoragePathInfo(storage, path, &info)) {
     return info;
@@ -1374,7 +1375,7 @@ inline PathInfo Storage::GetPathInfo(StringParam path)
  * @sa Storage.Ready
  * @sa Storage.WriteFile
  */
-inline Uint64 GetStorageSpaceRemaining(StorageParam storage)
+inline Uint64 GetStorageSpaceRemaining(StorageRef storage)
 {
   return SDL_GetStorageSpaceRemaining(storage);
 }
@@ -1417,7 +1418,7 @@ inline Uint64 Storage::GetSpaceRemaining()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline OwnArray<char*> GlobStorageDirectory(StorageParam storage,
+inline OwnArray<char*> GlobStorageDirectory(StorageRef storage,
                                             StringParam path,
                                             StringParam pattern,
                                             GlobFlags flags)

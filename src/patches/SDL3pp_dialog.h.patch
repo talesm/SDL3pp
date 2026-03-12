@@ -22,7 +22,7 @@
 @@ -181,12 +178,17 @@
  inline void ShowOpenFileDialog(DialogFileCallback callback,
                                 void* userdata,
-                                WindowParam window,
+                                WindowRef window,
 -                               std::span<const DialogFileFilter> filters,
 -                               StringParam default_location,
 -                               bool allow_many)
@@ -62,7 +62,7 @@
 @@ -242,11 +241,17 @@
   */
  inline void ShowOpenFileDialog(DialogFileCB callback,
-                                WindowParam window,
+                                WindowRef window,
 -                               std::span<const DialogFileFilter> filters,
 -                               StringParam default_location,
 -                               bool allow_many)
@@ -93,10 +93,10 @@
   */
  inline void ShowSaveFileDialog(DialogFileCallback callback,
                                 void* userdata,
--                               WindowParam window,
+-                               WindowRef window,
 -                               std::span<const DialogFileFilter> filters,
 -                               StringParam default_location)
-+                               WindowParam window = {},
++                               WindowRef window = {},
 +                               std::span<const DialogFileFilter> filters = {},
 +                               StringParam default_location = {})
  {
@@ -130,10 +130,10 @@
   * @sa ShowFileDialogWithProperties
   */
  inline void ShowSaveFileDialog(DialogFileCB callback,
--                               WindowParam window,
+-                               WindowRef window,
 -                               std::span<const DialogFileFilter> filters,
 -                               StringParam default_location)
-+                               WindowParam window = {},
++                               WindowRef window = {},
 +                               std::span<const DialogFileFilter> filters = {},
 +                               StringParam default_location = {})
  {
@@ -151,10 +151,10 @@
   */
  inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                   void* userdata,
--                                 WindowParam window,
+-                                 WindowRef window,
 -                                 StringParam default_location,
 -                                 bool allow_many)
-+                                 WindowParam window = {},
++                                 WindowRef window = {},
 +                                 StringParam default_location = {},
 +                                 bool allow_many = false)
  {
@@ -173,10 +173,10 @@
   * @sa ShowFileDialogWithProperties
   */
  inline void ShowOpenFolderDialog(DialogFileCB callback,
--                                 WindowParam window,
+-                                 WindowRef window,
 -                                 StringParam default_location,
 -                                 bool allow_many)
-+                                 WindowParam window = {},
++                                 WindowRef window = {},
 +                                 StringParam default_location = {},
 +                                 bool allow_many = false)
  {

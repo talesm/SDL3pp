@@ -29,33 +29,6 @@ using IOStreamRaw = SDL_IOStream*;
 // Forward decl
 struct IOStreamRef;
 
-/// Safely wrap IOStream for non owning parameters
-struct IOStreamParam
-{
-  IOStreamRaw value; ///< parameter's IOStreamRaw
-
-  /// Constructs from IOStreamRaw
-  constexpr IOStreamParam(IOStreamRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IOStreamParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IOStreamParam& other) const = default;
-
-  /// Converts to underlying IOStreamRaw
-  constexpr operator IOStreamRaw() const { return value; }
-};
-
 /**
  * IOStream status, set by a read or write operation.
  *
@@ -139,7 +112,7 @@ public:
   }
 
   /**
-   * Constructs from IOStreamParam.
+   * Constructs from IOStreamRef.
    *
    * @param resource a IOStreamRaw to be wrapped.
    *
@@ -437,9 +410,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to IOStreamParam
-  constexpr operator IOStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Close and free an allocated IOStream structure.
@@ -1339,27 +1309,19 @@ public:
   void WriteS64BE(Sint64 value);
 };
 
-/// Semi-safe reference for IOStream.
+/**
+ * Reference for IOStream.
+ *
+ * This does not take ownership!
+ */
 struct IOStreamRef : IOStream
 {
   using IOStream::IOStream;
 
   /**
-   * Constructs from IOStreamParam.
+   * Constructs from raw IOStream.
    *
-   * @param resource a IOStreamRaw or IOStream.
-   *
-   * This does not takes ownership!
-   */
-  IOStreamRef(IOStreamParam resource) noexcept
-    : IOStream(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from IOStreamParam.
-   *
-   * @param resource a IOStreamRaw or IOStream.
+   * @param resource a IOStreamRaw.
    *
    * This does not takes ownership!
    */
@@ -1368,11 +1330,42 @@ struct IOStreamRef : IOStream
   {
   }
 
+  /**
+   * Constructs from IOStream.
+   *
+   * @param resource a IOStream.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IOStreamRef(const IOStream& resource) noexcept
+    : IOStream(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr IOStreamRef(const IOStreamRef& other) noexcept = default;
+  constexpr IOStreamRef(const IOStreamRef& other) noexcept
+    : IOStream(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IOStreamRef(IOStreamRef&& other) noexcept
+    : IOStream(other.release())
+  {
+  }
 
   /// Destructor
   ~IOStreamRef() { release(); }
+
+  /// Assignment operator.
+  constexpr IOStreamRef& operator=(IOStreamRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to IOStreamRaw
+  constexpr operator IOStreamRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1719,7 +1712,7 @@ inline void IOStream::Close() { CloseIO(release()); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetIOProperties(IOStreamParam context)
+inline PropertiesRef GetIOProperties(IOStreamRef context)
 {
   return CheckError(SDL_GetIOProperties(context));
 }
@@ -1747,7 +1740,7 @@ inline PropertiesRef IOStream::GetProperties() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline IOStatus GetIOStatus(IOStreamParam context)
+inline IOStatus GetIOStatus(IOStreamRef context)
 {
   return SDL_GetIOStatus(context);
 }
@@ -1768,7 +1761,7 @@ inline IOStatus IOStream::GetStatus() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 GetIOSize(IOStreamParam context)
+inline Sint64 GetIOSize(IOStreamRef context)
 {
   return CheckError(SDL_GetIOSize(context));
 }
@@ -1801,7 +1794,7 @@ inline Sint64 IOStream::GetSize() const { return SDL::GetIOSize(m_resource); }
  *
  * @sa IOStream.Tell
  */
-inline Sint64 SeekIO(IOStreamParam context, Sint64 offset, IOWhence whence)
+inline Sint64 SeekIO(IOStreamRef context, Sint64 offset, IOWhence whence)
 {
   return SDL_SeekIO(context, offset, whence);
 }
@@ -1829,7 +1822,7 @@ inline Sint64 IOStream::Seek(Sint64 offset, IOWhence whence)
  *
  * @sa IOStream.Seek
  */
-inline Sint64 TellIO(IOStreamParam context) { return SDL_TellIO(context); }
+inline Sint64 TellIO(IOStreamRef context) { return SDL_TellIO(context); }
 
 inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
 
@@ -1861,7 +1854,7 @@ inline Sint64 IOStream::Tell() const { return SDL::TellIO(m_resource); }
  * @sa IOStream.Write
  * @sa IOStream.GetStatus
  */
-inline size_t ReadIO(IOStreamParam context, TargetBytes buf)
+inline size_t ReadIO(IOStreamRef context, TargetBytes buf)
 {
   return SDL_ReadIO(context, buf.data(), buf.size_bytes());
 }
@@ -1905,7 +1898,7 @@ inline size_t IOStream::Read(TargetBytes buf)
  * @sa IOStream.Flush
  * @sa IOStream.GetStatus
  */
-inline size_t WriteIO(IOStreamParam context, SourceBytes buf)
+inline size_t WriteIO(IOStreamRef context, SourceBytes buf)
 {
   return SDL_WriteIO(context, buf.data(), buf.size_bytes());
 }
@@ -1934,7 +1927,7 @@ inline size_t IOStream::Write(SourceBytes buf)
  * @sa IOStream.vprintf
  * @sa IOStream.Write
  */
-inline size_t IOprintf(IOStreamParam context,
+inline size_t IOprintf(IOStreamRef context,
                        SDL_PRINTF_FORMAT_STRING const char* fmt)
 {
   return SDL_IOprintf(context, fmt);
@@ -1958,7 +1951,7 @@ inline size_t IOprintf(IOStreamParam context,
  * @sa IOStream.printf
  * @sa IOStream.Write
  */
-inline size_t IOvprintf(IOStreamParam context,
+inline size_t IOvprintf(IOStreamRef context,
                         SDL_PRINTF_FORMAT_STRING const char* fmt,
                         va_list ap)
 {
@@ -1988,7 +1981,7 @@ inline size_t IOStream::vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt,
  * @sa IOStream.Open
  * @sa IOStream.Write
  */
-inline void FlushIO(IOStreamParam context) { CheckError(SDL_FlushIO(context)); }
+inline void FlushIO(IOStreamRef context) { CheckError(SDL_FlushIO(context)); }
 
 inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
 
@@ -2016,7 +2009,7 @@ inline void IOStream::Flush() { SDL::FlushIO(m_resource); }
  * @sa LoadFile
  * @sa IOStream.SaveFile
  */
-inline StringResult LoadFile(IOStreamParam src, bool closeio = true)
+inline StringResult LoadFile(IOStreamRef src, bool closeio = true)
 {
   return SDL_LoadFile_IO(src, closeio);
 }
@@ -2070,7 +2063,7 @@ inline OwnArray<T> LoadFileAs(StringParam file)
  * @sa SaveFile
  * @sa IOStream.LoadFile
  */
-inline void SaveFile(IOStreamParam src, SourceBytes data, bool closeio = true)
+inline void SaveFile(IOStreamRef src, SourceBytes data, bool closeio = true)
 {
   CheckError(SDL_SaveFile_IO(src, data.data(), data.size_bytes(), closeio));
 }
@@ -2117,7 +2110,7 @@ inline void IOStream::SaveFile(SourceBytes data)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint8 ReadU8(IOStreamParam src) { return CheckError(SDL_ReadU8(src)); }
+inline Uint8 ReadU8(IOStreamRef src) { return CheckError(SDL_ReadU8(src)); }
 
 inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(m_resource); }
 
@@ -2137,7 +2130,7 @@ inline Uint8 IOStream::ReadU8() { return SDL::ReadU8(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint8 ReadS8(IOStreamParam src) { return CheckError(SDL_ReadS8(src)); }
+inline Sint8 ReadS8(IOStreamRef src) { return CheckError(SDL_ReadS8(src)); }
 
 inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(m_resource); }
 
@@ -2161,7 +2154,7 @@ inline Sint8 IOStream::ReadS8() { return SDL::ReadS8(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 ReadU16LE(IOStreamParam src)
+inline Uint16 ReadU16LE(IOStreamRef src)
 {
   return CheckError(SDL_ReadU16LE(src));
 }
@@ -2188,7 +2181,7 @@ inline Uint16 IOStream::ReadU16LE() { return SDL::ReadU16LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint16 ReadS16LE(IOStreamParam src)
+inline Sint16 ReadS16LE(IOStreamRef src)
 {
   return CheckError(SDL_ReadS16LE(src));
 }
@@ -2215,7 +2208,7 @@ inline Sint16 IOStream::ReadS16LE() { return SDL::ReadS16LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint16 ReadU16BE(IOStreamParam src)
+inline Uint16 ReadU16BE(IOStreamRef src)
 {
   return CheckError(SDL_ReadU16BE(src));
 }
@@ -2242,7 +2235,7 @@ inline Uint16 IOStream::ReadU16BE() { return SDL::ReadU16BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint16 ReadS16BE(IOStreamParam src)
+inline Sint16 ReadS16BE(IOStreamRef src)
 {
   return CheckError(SDL_ReadS16BE(src));
 }
@@ -2269,7 +2262,7 @@ inline Sint16 IOStream::ReadS16BE() { return SDL::ReadS16BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 ReadU32LE(IOStreamParam src)
+inline Uint32 ReadU32LE(IOStreamRef src)
 {
   return CheckError(SDL_ReadU32LE(src));
 }
@@ -2296,7 +2289,7 @@ inline Uint32 IOStream::ReadU32LE() { return SDL::ReadU32LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint32 ReadS32LE(IOStreamParam src)
+inline Sint32 ReadS32LE(IOStreamRef src)
 {
   return CheckError(SDL_ReadS32LE(src));
 }
@@ -2323,7 +2316,7 @@ inline Sint32 IOStream::ReadS32LE() { return SDL::ReadS32LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 ReadU32BE(IOStreamParam src)
+inline Uint32 ReadU32BE(IOStreamRef src)
 {
   return CheckError(SDL_ReadU32BE(src));
 }
@@ -2350,7 +2343,7 @@ inline Uint32 IOStream::ReadU32BE() { return SDL::ReadU32BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint32 ReadS32BE(IOStreamParam src)
+inline Sint32 ReadS32BE(IOStreamRef src)
 {
   return CheckError(SDL_ReadS32BE(src));
 }
@@ -2377,7 +2370,7 @@ inline Sint32 IOStream::ReadS32BE() { return SDL::ReadS32BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 ReadU64LE(IOStreamParam src)
+inline Uint64 ReadU64LE(IOStreamRef src)
 {
   return CheckError(SDL_ReadU64LE(src));
 }
@@ -2404,7 +2397,7 @@ inline Uint64 IOStream::ReadU64LE() { return SDL::ReadU64LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 ReadS64LE(IOStreamParam src)
+inline Sint64 ReadS64LE(IOStreamRef src)
 {
   return CheckError(SDL_ReadS64LE(src));
 }
@@ -2431,7 +2424,7 @@ inline Sint64 IOStream::ReadS64LE() { return SDL::ReadS64LE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 ReadU64BE(IOStreamParam src)
+inline Uint64 ReadU64BE(IOStreamRef src)
 {
   return CheckError(SDL_ReadU64BE(src));
 }
@@ -2458,7 +2451,7 @@ inline Uint64 IOStream::ReadU64BE() { return SDL::ReadU64BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Sint64 ReadS64BE(IOStreamParam src)
+inline Sint64 ReadS64BE(IOStreamRef src)
 {
   return CheckError(SDL_ReadS64BE(src));
 }
@@ -2476,7 +2469,7 @@ inline Sint64 IOStream::ReadS64BE() { return SDL::ReadS64BE(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU8(IOStreamParam dst, Uint8 value)
+inline void WriteU8(IOStreamRef dst, Uint8 value)
 {
   CheckError(SDL_WriteU8(dst, value));
 }
@@ -2494,7 +2487,7 @@ inline void IOStream::WriteU8(Uint8 value) { SDL::WriteU8(m_resource, value); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS8(IOStreamParam dst, Sint8 value)
+inline void WriteS8(IOStreamRef dst, Sint8 value)
 {
   CheckError(SDL_WriteS8(dst, value));
 }
@@ -2516,7 +2509,7 @@ inline void IOStream::WriteS8(Sint8 value) { SDL::WriteS8(m_resource, value); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU16LE(IOStreamParam dst, Uint16 value)
+inline void WriteU16LE(IOStreamRef dst, Uint16 value)
 {
   CheckError(SDL_WriteU16LE(dst, value));
 }
@@ -2541,7 +2534,7 @@ inline void IOStream::WriteU16LE(Uint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS16LE(IOStreamParam dst, Sint16 value)
+inline void WriteS16LE(IOStreamRef dst, Sint16 value)
 {
   CheckError(SDL_WriteS16LE(dst, value));
 }
@@ -2566,7 +2559,7 @@ inline void IOStream::WriteS16LE(Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU16BE(IOStreamParam dst, Uint16 value)
+inline void WriteU16BE(IOStreamRef dst, Uint16 value)
 {
   CheckError(SDL_WriteU16BE(dst, value));
 }
@@ -2591,7 +2584,7 @@ inline void IOStream::WriteU16BE(Uint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS16BE(IOStreamParam dst, Sint16 value)
+inline void WriteS16BE(IOStreamRef dst, Sint16 value)
 {
   CheckError(SDL_WriteS16BE(dst, value));
 }
@@ -2616,7 +2609,7 @@ inline void IOStream::WriteS16BE(Sint16 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU32LE(IOStreamParam dst, Uint32 value)
+inline void WriteU32LE(IOStreamRef dst, Uint32 value)
 {
   CheckError(SDL_WriteU32LE(dst, value));
 }
@@ -2641,7 +2634,7 @@ inline void IOStream::WriteU32LE(Uint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS32LE(IOStreamParam dst, Sint32 value)
+inline void WriteS32LE(IOStreamRef dst, Sint32 value)
 {
   CheckError(SDL_WriteS32LE(dst, value));
 }
@@ -2666,7 +2659,7 @@ inline void IOStream::WriteS32LE(Sint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU32BE(IOStreamParam dst, Uint32 value)
+inline void WriteU32BE(IOStreamRef dst, Uint32 value)
 {
   CheckError(SDL_WriteU32BE(dst, value));
 }
@@ -2691,7 +2684,7 @@ inline void IOStream::WriteU32BE(Uint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS32BE(IOStreamParam dst, Sint32 value)
+inline void WriteS32BE(IOStreamRef dst, Sint32 value)
 {
   CheckError(SDL_WriteS32BE(dst, value));
 }
@@ -2716,7 +2709,7 @@ inline void IOStream::WriteS32BE(Sint32 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU64LE(IOStreamParam dst, Uint64 value)
+inline void WriteU64LE(IOStreamRef dst, Uint64 value)
 {
   CheckError(SDL_WriteU64LE(dst, value));
 }
@@ -2741,7 +2734,7 @@ inline void IOStream::WriteU64LE(Uint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS64LE(IOStreamParam dst, Sint64 value)
+inline void WriteS64LE(IOStreamRef dst, Sint64 value)
 {
   CheckError(SDL_WriteS64LE(dst, value));
 }
@@ -2766,7 +2759,7 @@ inline void IOStream::WriteS64LE(Sint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteU64BE(IOStreamParam dst, Uint64 value)
+inline void WriteU64BE(IOStreamRef dst, Uint64 value)
 {
   CheckError(SDL_WriteU64BE(dst, value));
 }
@@ -2791,7 +2784,7 @@ inline void IOStream::WriteU64BE(Uint64 value)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void WriteS64BE(IOStreamParam dst, Sint64 value)
+inline void WriteS64BE(IOStreamRef dst, Sint64 value)
 {
   CheckError(SDL_WriteS64BE(dst, value));
 }

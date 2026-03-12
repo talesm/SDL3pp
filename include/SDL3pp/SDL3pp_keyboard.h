@@ -228,7 +228,7 @@ inline void Window::StartTextInput()
   CheckError(SDL_StartTextInput(m_resource));
 }
 
-inline void Window::StartTextInput(PropertiesParam props)
+inline void Window::StartTextInput(PropertiesRef props)
 {
   CheckError(SDL_StartTextInputWithProperties(m_resource, props));
 }

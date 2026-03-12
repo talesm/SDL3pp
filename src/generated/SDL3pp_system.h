@@ -241,7 +241,7 @@ using iOSAnimationCallback = void(SDLCALL*)(void* userdata);
  *
  * @sa SetiOSEventPump
  */
-inline void SetiOSAnimationCallback(WindowParam window,
+inline void SetiOSAnimationCallback(WindowRef window,
                                     int interval,
                                     iOSAnimationCallback callback,
                                     void* callbackParam)

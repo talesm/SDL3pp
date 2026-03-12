@@ -19,8 +19,12 @@ New Version checklist:
 Next version
 ------------
 
-- [x] Add operator[] for Palette;
-- [x] Bump to 3.4.2;
+- [x] Merge \*Ref with \*Param resource classes into a single class:
+  - [x] Make \*Ref always non-owning
+  - [x] Replace \*Param with \*Ref;
+  - [x] Remove \*Param;
+  - [x] Rename \*ConstRef to \*ConstParam
+- [ ] Wrap SDL_mixer
 
 Backlog
 -------

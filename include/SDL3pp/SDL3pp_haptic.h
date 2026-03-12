@@ -113,33 +113,6 @@ using HapticRaw = SDL_Haptic*;
 // Forward decl
 struct HapticRef;
 
-/// Safely wrap Haptic for non owning parameters
-struct HapticParam
-{
-  HapticRaw value; ///< parameter's HapticRaw
-
-  /// Constructs from HapticRaw
-  constexpr HapticParam(HapticRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr HapticParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const HapticParam& other) const = default;
-
-  /// Converts to underlying HapticRaw
-  constexpr operator HapticRaw() const { return value; }
-};
-
 /**
  * @name Haptic effects
  * @{
@@ -802,7 +775,7 @@ public:
   }
 
   /**
-   * Constructs from HapticParam.
+   * Constructs from HapticRef.
    *
    * @param resource a HapticRaw to be wrapped.
    *
@@ -851,10 +824,7 @@ public:
    * @sa Haptic.SetAutocenter
    * @sa Haptic.SetGain
    */
-  Haptic(HapticID instance_id)
-    : m_resource(SDL_OpenHaptic(instance_id))
-  {
-  }
+  Haptic(HapticID instance_id);
 
   /**
    * Open a haptic device for use from a joystick device.
@@ -876,10 +846,7 @@ public:
    * @sa Haptic.Close
    * @sa IsJoystickHaptic
    */
-  Haptic(JoystickParam joystick)
-    : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
-  {
-  }
+  Haptic(JoystickRef joystick);
 
   /**
    * Try to open a haptic device from the current mouse.
@@ -925,9 +892,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to HapticParam
-  constexpr operator HapticParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a haptic device previously opened with Haptic.Haptic().
@@ -1260,27 +1224,19 @@ public:
   void StopRumble();
 };
 
-/// Semi-safe reference for Haptic.
+/**
+ * Reference for Haptic.
+ *
+ * This does not take ownership!
+ */
 struct HapticRef : Haptic
 {
   using Haptic::Haptic;
 
   /**
-   * Constructs from HapticParam.
+   * Constructs from raw Haptic.
    *
-   * @param resource a HapticRaw or Haptic.
-   *
-   * This does not takes ownership!
-   */
-  HapticRef(HapticParam resource) noexcept
-    : Haptic(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from HapticParam.
-   *
-   * @param resource a HapticRaw or Haptic.
+   * @param resource a HapticRaw.
    *
    * This does not takes ownership!
    */
@@ -1289,11 +1245,42 @@ struct HapticRef : Haptic
   {
   }
 
+  /**
+   * Constructs from Haptic.
+   *
+   * @param resource a Haptic.
+   *
+   * This does not takes ownership!
+   */
+  constexpr HapticRef(const Haptic& resource) noexcept
+    : Haptic(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr HapticRef(const HapticRef& other) noexcept = default;
+  constexpr HapticRef(const HapticRef& other) noexcept
+    : Haptic(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr HapticRef(HapticRef&& other) noexcept
+    : Haptic(other.release())
+  {
+  }
 
   /// Destructor
   ~HapticRef() { release(); }
+
+  /// Assignment operator.
+  constexpr HapticRef& operator=(HapticRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to HapticRaw
+  constexpr operator HapticRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1357,6 +1344,16 @@ inline const char* GetHapticNameForID(HapticID instance_id)
  */
 inline Haptic OpenHaptic(HapticID instance_id) { return Haptic(instance_id); }
 
+inline Haptic::Haptic(HapticID instance_id)
+  : m_resource(SDL_OpenHaptic(instance_id))
+{
+}
+
+inline Haptic::Haptic(JoystickRef joystick)
+  : m_resource(CheckError(SDL_OpenHapticFromJoystick(joystick)))
+{
+}
+
 /**
  * Get the Haptic associated with an instance ID, if it has been opened.
  *
@@ -1380,7 +1377,7 @@ inline HapticRef GetHapticFromID(HapticID instance_id)
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline HapticID GetHapticID(HapticParam haptic)
+inline HapticID GetHapticID(HapticRef haptic)
 {
   return CheckError(SDL_GetHapticID(haptic));
 }
@@ -1398,7 +1395,7 @@ inline HapticID Haptic::GetID() { return SDL::GetHapticID(m_resource); }
  *
  * @sa GetHapticNameForID
  */
-inline const char* GetHapticName(HapticParam haptic)
+inline const char* GetHapticName(HapticRef haptic)
 {
   return SDL_GetHapticName(haptic);
 }
@@ -1444,7 +1441,7 @@ inline Haptic Haptic::OpenFromMouse() { return SDL::OpenHapticFromMouse(); }
  *
  * @sa Haptic.Haptic
  */
-inline bool IsJoystickHaptic(JoystickParam joystick)
+inline bool IsJoystickHaptic(JoystickRef joystick)
 {
   return SDL_IsJoystickHaptic(joystick);
 }
@@ -1469,7 +1466,7 @@ inline bool IsJoystickHaptic(JoystickParam joystick)
  * @sa Haptic.Close
  * @sa IsJoystickHaptic
  */
-inline Haptic OpenHapticFromJoystick(JoystickParam joystick)
+inline Haptic OpenHapticFromJoystick(JoystickRef joystick)
 {
   return Haptic(joystick);
 }
@@ -1503,7 +1500,7 @@ inline void Haptic::Close() { CloseHaptic(release()); }
  * @sa Haptic.GetMaxEffectsPlaying
  * @sa Haptic.GetFeatures
  */
-inline int GetMaxHapticEffects(HapticParam haptic)
+inline int GetMaxHapticEffects(HapticRef haptic)
 {
   return SDL_GetMaxHapticEffects(haptic);
 }
@@ -1527,7 +1524,7 @@ inline int Haptic::GetMaxEffects()
  * @sa Haptic.GetMaxEffects
  * @sa Haptic.GetFeatures
  */
-inline int GetMaxHapticEffectsPlaying(HapticParam haptic)
+inline int GetMaxHapticEffectsPlaying(HapticRef haptic)
 {
   return SDL_GetMaxHapticEffectsPlaying(haptic);
 }
@@ -1549,7 +1546,7 @@ inline int Haptic::GetMaxEffectsPlaying()
  * @sa Haptic.EffectSupported
  * @sa Haptic.GetMaxEffects
  */
-inline Uint32 GetHapticFeatures(HapticParam haptic)
+inline Uint32 GetHapticFeatures(HapticRef haptic)
 {
   return SDL_GetHapticFeatures(haptic);
 }
@@ -1571,7 +1568,7 @@ inline Uint32 Haptic::GetFeatures()
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline int GetNumHapticAxes(HapticParam haptic)
+inline int GetNumHapticAxes(HapticRef haptic)
 {
   return CheckError(SDL_GetNumHapticAxes(haptic));
 }
@@ -1590,8 +1587,7 @@ inline int Haptic::GetNumAxes() { return SDL::GetNumHapticAxes(m_resource); }
  * @sa Haptic.CreateEffect
  * @sa Haptic.GetFeatures
  */
-inline bool HapticEffectSupported(HapticParam haptic,
-                                  const HapticEffect& effect)
+inline bool HapticEffectSupported(HapticRef haptic, const HapticEffect& effect)
 {
   return SDL_HapticEffectSupported(haptic, &effect);
 }
@@ -1616,7 +1612,7 @@ inline bool Haptic::EffectSupported(const HapticEffect& effect)
  * @sa Haptic.RunEffect
  * @sa Haptic.UpdateEffect
  */
-inline HapticEffectID CreateHapticEffect(HapticParam haptic,
+inline HapticEffectID CreateHapticEffect(HapticRef haptic,
                                          const HapticEffect& effect)
 {
   return CheckError(SDL_CreateHapticEffect(haptic, &effect));
@@ -1646,7 +1642,7 @@ inline HapticEffectID Haptic::CreateEffect(const HapticEffect& effect)
  * @sa Haptic.CreateEffect
  * @sa Haptic.RunEffect
  */
-inline void UpdateHapticEffect(HapticParam haptic,
+inline void UpdateHapticEffect(HapticRef haptic,
                                HapticEffectID effect,
                                const HapticEffect& data)
 {
@@ -1679,7 +1675,7 @@ inline void Haptic::UpdateEffect(HapticEffectID effect,
  * @sa Haptic.StopEffect
  * @sa Haptic.StopEffects
  */
-inline void RunHapticEffect(HapticParam haptic,
+inline void RunHapticEffect(HapticRef haptic,
                             HapticEffectID effect,
                             Uint32 iterations)
 {
@@ -1703,7 +1699,7 @@ inline void Haptic::RunEffect(HapticEffectID effect, Uint32 iterations)
  * @sa Haptic.RunEffect
  * @sa Haptic.StopEffects
  */
-inline void StopHapticEffect(HapticParam haptic, HapticEffectID effect)
+inline void StopHapticEffect(HapticRef haptic, HapticEffectID effect)
 {
   CheckError(SDL_StopHapticEffect(haptic, effect));
 }
@@ -1726,7 +1722,7 @@ inline void Haptic::StopEffect(HapticEffectID effect)
  *
  * @sa Haptic.CreateEffect
  */
-inline void DestroyHapticEffect(HapticParam haptic, HapticEffectID effect)
+inline void DestroyHapticEffect(HapticRef haptic, HapticEffectID effect)
 {
   SDL_DestroyHapticEffect(haptic, effect);
 }
@@ -1750,7 +1746,7 @@ inline void Haptic::DestroyEffect(HapticEffectID effect)
  *
  * @sa Haptic.GetFeatures
  */
-inline bool GetHapticEffectStatus(HapticParam haptic, HapticEffectID effect)
+inline bool GetHapticEffectStatus(HapticRef haptic, HapticEffectID effect)
 {
   return SDL_GetHapticEffectStatus(haptic, effect);
 }
@@ -1778,7 +1774,7 @@ inline bool Haptic::GetEffectStatus(HapticEffectID effect)
  *
  * @sa Haptic.GetFeatures
  */
-inline void SetHapticGain(HapticParam haptic, int gain)
+inline void SetHapticGain(HapticRef haptic, int gain)
 {
   CheckError(SDL_SetHapticGain(haptic, gain));
 }
@@ -1801,7 +1797,7 @@ inline void Haptic::SetGain(int gain) { SDL::SetHapticGain(m_resource, gain); }
  *
  * @sa Haptic.GetFeatures
  */
-inline void SetHapticAutocenter(HapticParam haptic, int autocenter)
+inline void SetHapticAutocenter(HapticRef haptic, int autocenter)
 {
   CheckError(SDL_SetHapticAutocenter(haptic, autocenter));
 }
@@ -1827,7 +1823,7 @@ inline void Haptic::SetAutocenter(int autocenter)
  *
  * @sa Haptic.Resume
  */
-inline void PauseHaptic(HapticParam haptic)
+inline void PauseHaptic(HapticRef haptic)
 {
   CheckError(SDL_PauseHaptic(haptic));
 }
@@ -1846,7 +1842,7 @@ inline void Haptic::Pause() { SDL::PauseHaptic(m_resource); }
  *
  * @sa Haptic.Pause
  */
-inline void ResumeHaptic(HapticParam haptic)
+inline void ResumeHaptic(HapticRef haptic)
 {
   CheckError(SDL_ResumeHaptic(haptic));
 }
@@ -1864,7 +1860,7 @@ inline void Haptic::Resume() { SDL::ResumeHaptic(m_resource); }
  * @sa Haptic.RunEffect
  * @sa Haptic.StopEffects
  */
-inline void StopHapticEffects(HapticParam haptic)
+inline void StopHapticEffects(HapticRef haptic)
 {
   CheckError(SDL_StopHapticEffects(haptic));
 }
@@ -1881,7 +1877,7 @@ inline void Haptic::StopEffects() { SDL::StopHapticEffects(m_resource); }
  *
  * @sa Haptic.InitRumble
  */
-inline bool HapticRumbleSupported(HapticParam haptic)
+inline bool HapticRumbleSupported(HapticRef haptic)
 {
   return SDL_HapticRumbleSupported(haptic);
 }
@@ -1903,7 +1899,7 @@ inline bool Haptic::RumbleSupported()
  * @sa Haptic.StopRumble
  * @sa Haptic.RumbleSupported
  */
-inline void InitHapticRumble(HapticParam haptic)
+inline void InitHapticRumble(HapticRef haptic)
 {
   CheckError(SDL_InitHapticRumble(haptic));
 }
@@ -1923,7 +1919,7 @@ inline void Haptic::InitRumble() { SDL::InitHapticRumble(m_resource); }
  * @sa Haptic.InitRumble
  * @sa Haptic.StopRumble
  */
-inline void PlayHapticRumble(HapticParam haptic, float strength, Uint32 length)
+inline void PlayHapticRumble(HapticRef haptic, float strength, Uint32 length)
 {
   CheckError(SDL_PlayHapticRumble(haptic, strength, length));
 }
@@ -1943,7 +1939,7 @@ inline void Haptic::PlayRumble(float strength, Uint32 length)
  *
  * @sa Haptic.PlayRumble
  */
-inline void StopHapticRumble(HapticParam haptic)
+inline void StopHapticRumble(HapticRef haptic)
 {
   CheckError(SDL_StopHapticRumble(haptic));
 }

@@ -180,7 +180,7 @@ using DialogFileCB =
  */
 inline void ShowOpenFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowParam window,
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters,
                                StringParam default_location,
                                bool allow_many)
@@ -241,7 +241,7 @@ inline void ShowOpenFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFileDialog(DialogFileCB callback,
-                               WindowParam window,
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters,
                                StringParam default_location,
                                bool allow_many)
@@ -298,7 +298,7 @@ inline void ShowOpenFileDialog(DialogFileCB callback,
  */
 inline void ShowSaveFileDialog(DialogFileCallback callback,
                                void* userdata,
-                               WindowParam window,
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters,
                                StringParam default_location)
 {
@@ -353,7 +353,7 @@ inline void ShowSaveFileDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowSaveFileDialog(DialogFileCB callback,
-                               WindowParam window,
+                               WindowRef window,
                                std::span<const DialogFileFilter> filters,
                                StringParam default_location)
 {
@@ -405,7 +405,7 @@ inline void ShowSaveFileDialog(DialogFileCB callback,
  */
 inline void ShowOpenFolderDialog(DialogFileCallback callback,
                                  void* userdata,
-                                 WindowParam window,
+                                 WindowRef window,
                                  StringParam default_location,
                                  bool allow_many)
 {
@@ -457,7 +457,7 @@ inline void ShowOpenFolderDialog(DialogFileCallback callback,
  * @sa ShowFileDialogWithProperties
  */
 inline void ShowOpenFolderDialog(DialogFileCB callback,
-                                 WindowParam window,
+                                 WindowRef window,
                                  StringParam default_location,
                                  bool allow_many)
 {
@@ -533,7 +533,7 @@ constexpr FileDialogType FILEDIALOG_OPENFOLDER =
 inline void ShowFileDialogWithProperties(FileDialogType type,
                                          DialogFileCallback callback,
                                          void* userdata,
-                                         PropertiesParam props)
+                                         PropertiesRef props)
 {
   SDL_ShowFileDialogWithProperties(type, callback, userdata, props);
 }

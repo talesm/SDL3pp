@@ -52,33 +52,6 @@ using EnvironmentRaw = SDL_Environment*;
 // Forward decl
 struct EnvironmentRef;
 
-/// Safely wrap Environment for non owning parameters
-struct EnvironmentParam
-{
-  EnvironmentRaw value; ///< parameter's EnvironmentRaw
-
-  /// Constructs from EnvironmentRaw
-  constexpr EnvironmentParam(EnvironmentRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr EnvironmentParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const EnvironmentParam& other) const = default;
-
-  /// Converts to underlying EnvironmentRaw
-  constexpr operator EnvironmentRaw() const { return value; }
-};
-
 // Forward decl
 struct IConv;
 
@@ -87,33 +60,6 @@ using IConvRaw = SDL_iconv_t*;
 
 // Forward decl
 struct IConvRef;
-
-/// Safely wrap IConv for non owning parameters
-struct IConvParam
-{
-  IConvRaw value; ///< parameter's IConvRaw
-
-  /// Constructs from IConvRaw
-  constexpr IConvParam(IConvRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr IConvParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const IConvParam& other) const = default;
-
-  /// Converts to underlying IConvRaw
-  constexpr operator IConvRaw() const { return value; }
-};
 
 using int8_t = ::int8_t;
 
@@ -965,7 +911,7 @@ public:
   }
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from EnvironmentRef.
    *
    * @param resource a EnvironmentRaw to be wrapped.
    *
@@ -1011,10 +957,7 @@ public:
    * @sa Environment.UnsetVariable
    * @sa Environment.Destroy
    */
-  Environment(bool populated)
-    : m_resource(SDL_CreateEnvironment(populated))
-  {
-  }
+  Environment(bool populated);
 
   /// Destructor
   ~Environment() { SDL_DestroyEnvironment(m_resource); }
@@ -1047,9 +990,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to EnvironmentParam
-  constexpr operator EnvironmentParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a set of environment variables.
@@ -1146,27 +1086,19 @@ public:
   void UnsetVariable(StringParam name);
 };
 
-/// Semi-safe reference for Environment.
+/**
+ * Reference for Environment.
+ *
+ * This does not take ownership!
+ */
 struct EnvironmentRef : Environment
 {
   using Environment::Environment;
 
   /**
-   * Constructs from EnvironmentParam.
+   * Constructs from raw Environment.
    *
-   * @param resource a EnvironmentRaw or Environment.
-   *
-   * This does not takes ownership!
-   */
-  EnvironmentRef(EnvironmentParam resource) noexcept
-    : Environment(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from EnvironmentParam.
-   *
-   * @param resource a EnvironmentRaw or Environment.
+   * @param resource a EnvironmentRaw.
    *
    * This does not takes ownership!
    */
@@ -1175,11 +1107,42 @@ struct EnvironmentRef : Environment
   {
   }
 
+  /**
+   * Constructs from Environment.
+   *
+   * @param resource a Environment.
+   *
+   * This does not takes ownership!
+   */
+  constexpr EnvironmentRef(const Environment& resource) noexcept
+    : Environment(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept = default;
+  constexpr EnvironmentRef(const EnvironmentRef& other) noexcept
+    : Environment(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr EnvironmentRef(EnvironmentRef&& other) noexcept
+    : Environment(other.release())
+  {
+  }
 
   /// Destructor
   ~EnvironmentRef() { release(); }
+
+  /// Assignment operator.
+  constexpr EnvironmentRef& operator=(EnvironmentRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to EnvironmentRaw
+  constexpr operator EnvironmentRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1230,6 +1193,11 @@ inline Environment CreateEnvironment(bool populated)
   return Environment(populated);
 }
 
+inline Environment::Environment(bool populated)
+  : m_resource(SDL_CreateEnvironment(populated))
+{
+}
+
 /**
  * Get the value of a variable in the environment.
  *
@@ -1248,8 +1216,7 @@ inline Environment CreateEnvironment(bool populated)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline const char* GetEnvironmentVariable(EnvironmentParam env,
-                                          StringParam name)
+inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   return SDL_GetEnvironmentVariable(env, name);
 }
@@ -1278,7 +1245,7 @@ inline const char* Environment::GetVariable(StringParam name)
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline OwnArray<char*> GetEnvironmentVariables(EnvironmentParam env)
+inline OwnArray<char*> GetEnvironmentVariables(EnvironmentRef env)
 {
   return SDL_GetEnvironmentVariables(env);
 }
@@ -1308,7 +1275,7 @@ inline OwnArray<char*> Environment::GetVariables()
  * @sa Environment.GetVariables
  * @sa Environment.UnsetVariable
  */
-inline void SetEnvironmentVariable(EnvironmentParam env,
+inline void SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam name,
                                    StringParam value,
                                    bool overwrite)
@@ -1342,7 +1309,7 @@ inline void Environment::SetVariable(StringParam name,
  * @sa Environment.SetVariable
  * @sa Environment.UnsetVariable
  */
-inline void UnsetEnvironmentVariable(EnvironmentParam env, StringParam name)
+inline void UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   CheckError(SDL_UnsetEnvironmentVariable(env, name));
 }
@@ -5778,7 +5745,7 @@ public:
   }
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from IConvRef.
    *
    * @param resource a IConvRaw to be wrapped.
    *
@@ -5821,10 +5788,7 @@ public:
    * @sa IConv.close
    * @sa iconv_string
    */
-  IConv(StringParam tocode, StringParam fromcode)
-    : m_resource(SDL_iconv_open(tocode, fromcode))
-  {
-  }
+  IConv(StringParam tocode, StringParam fromcode);
 
   /// Destructor
   ~IConv() { SDL_iconv_close(m_resource); }
@@ -5857,9 +5821,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to IConvParam
-  constexpr operator IConvParam() const noexcept { return {m_resource}; }
 
   /**
    * This function frees a context used for character set conversion.
@@ -5919,27 +5880,19 @@ public:
                size_t* outbytesleft);
 };
 
-/// Semi-safe reference for IConv.
+/**
+ * Reference for IConv.
+ *
+ * This does not take ownership!
+ */
 struct IConvRef : IConv
 {
   using IConv::IConv;
 
   /**
-   * Constructs from IConvParam.
+   * Constructs from raw IConv.
    *
-   * @param resource a IConvRaw or IConv.
-   *
-   * This does not takes ownership!
-   */
-  IConvRef(IConvParam resource) noexcept
-    : IConv(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from IConvParam.
-   *
-   * @param resource a IConvRaw or IConv.
+   * @param resource a IConvRaw.
    *
    * This does not takes ownership!
    */
@@ -5948,11 +5901,42 @@ struct IConvRef : IConv
   {
   }
 
+  /**
+   * Constructs from IConv.
+   *
+   * @param resource a IConv.
+   *
+   * This does not takes ownership!
+   */
+  constexpr IConvRef(const IConv& resource) noexcept
+    : IConv(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr IConvRef(const IConvRef& other) noexcept = default;
+  constexpr IConvRef(const IConvRef& other) noexcept
+    : IConv(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr IConvRef(IConvRef&& other) noexcept
+    : IConv(other.release())
+  {
+  }
 
   /// Destructor
   ~IConvRef() { release(); }
+
+  /// Assignment operator.
+  constexpr IConvRef& operator=(IConvRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to IConvRaw
+  constexpr operator IConvRaw() const noexcept { return get(); }
 };
 
 /**
@@ -5974,6 +5958,11 @@ struct IConvRef : IConv
 inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
   return IConv(std::move(tocode), std::move(fromcode));
+}
+
+inline IConv::IConv(StringParam tocode, StringParam fromcode)
+  : m_resource(SDL_iconv_open(tocode, fromcode))
+{
 }
 
 /**

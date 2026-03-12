@@ -39,33 +39,6 @@ using ProcessRaw = SDL_Process*;
 // Forward decl
 struct ProcessRef;
 
-/// Safely wrap Process for non owning parameters
-struct ProcessParam
-{
-  ProcessRaw value; ///< parameter's ProcessRaw
-
-  /// Constructs from ProcessRaw
-  constexpr ProcessParam(ProcessRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ProcessParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ProcessParam& other) const = default;
-
-  /// Converts to underlying ProcessRaw
-  constexpr operator ProcessRaw() const { return value; }
-};
-
 /**
  * Description of where standard I/O should be directed when creating a process.
  *
@@ -145,7 +118,7 @@ public:
   }
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from ProcessRef.
    *
    * @param resource a ProcessRaw to be wrapped.
    *
@@ -210,10 +183,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(const char* const* args, bool pipe_stdio)
-    : m_resource(SDL_CreateProcess(args, pipe_stdio))
-  {
-  }
+  Process(const char* const* args, bool pipe_stdio);
 
   /**
    * Create a new process with the specified properties.
@@ -285,10 +255,7 @@ public:
    * @sa Process.Wait
    * @sa Process.Destroy
    */
-  Process(PropertiesParam props)
-    : m_resource(SDL_CreateProcessWithProperties(props))
-  {
-  }
+  Process(PropertiesRef props);
 
   /// Destructor
   ~Process() { SDL_DestroyProcess(m_resource); }
@@ -321,9 +288,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ProcessParam
-  constexpr operator ProcessParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a previously created process object.
@@ -534,27 +498,19 @@ public:
   bool Wait(bool block, int* exitcode);
 };
 
-/// Semi-safe reference for Process.
+/**
+ * Reference for Process.
+ *
+ * This does not take ownership!
+ */
 struct ProcessRef : Process
 {
   using Process::Process;
 
   /**
-   * Constructs from ProcessParam.
+   * Constructs from raw Process.
    *
-   * @param resource a ProcessRaw or Process.
-   *
-   * This does not takes ownership!
-   */
-  ProcessRef(ProcessParam resource) noexcept
-    : Process(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from ProcessParam.
-   *
-   * @param resource a ProcessRaw or Process.
+   * @param resource a ProcessRaw.
    *
    * This does not takes ownership!
    */
@@ -563,11 +519,42 @@ struct ProcessRef : Process
   {
   }
 
+  /**
+   * Constructs from Process.
+   *
+   * @param resource a Process.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ProcessRef(const Process& resource) noexcept
+    : Process(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ProcessRef(const ProcessRef& other) noexcept = default;
+  constexpr ProcessRef(const ProcessRef& other) noexcept
+    : Process(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ProcessRef(ProcessRef&& other) noexcept
+    : Process(other.release())
+  {
+  }
 
   /// Destructor
   ~ProcessRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ProcessRef& operator=(ProcessRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ProcessRaw
+  constexpr operator ProcessRaw() const noexcept { return get(); }
 };
 
 /**
@@ -612,6 +599,16 @@ struct ProcessRef : Process
 inline Process CreateProcess(const char* const* args, bool pipe_stdio)
 {
   return Process(args, pipe_stdio);
+}
+
+inline Process::Process(const char* const* args, bool pipe_stdio)
+  : m_resource(SDL_CreateProcess(args, pipe_stdio))
+{
+}
+
+inline Process::Process(PropertiesRef props)
+  : m_resource(SDL_CreateProcessWithProperties(props))
+{
 }
 
 /**
@@ -684,7 +681,7 @@ inline Process CreateProcess(const char* const* args, bool pipe_stdio)
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline Process CreateProcessWithProperties(PropertiesParam props)
+inline Process CreateProcessWithProperties(PropertiesRef props)
 {
   return Process(props);
 }
@@ -768,7 +765,7 @@ constexpr auto BACKGROUND_BOOLEAN = SDL_PROP_PROCESS_BACKGROUND_BOOLEAN;
  * @sa Process.Process
  * @sa Process.Process
  */
-inline PropertiesRef GetProcessProperties(ProcessParam process)
+inline PropertiesRef GetProcessProperties(ProcessRef process)
 {
   return {CheckError(SDL_GetProcessProperties(process))};
 }
@@ -805,7 +802,7 @@ inline PropertiesRef Process::GetProperties() const
  * @sa Process.Process
  * @sa Process.Destroy
  */
-inline StringResult ReadProcess(ProcessParam process, int* exitcode = nullptr)
+inline StringResult ReadProcess(ProcessRef process, int* exitcode = nullptr)
 {
   size_t size = 0;
   auto data = static_cast<char*>(SDL_ReadProcess(process, &size, exitcode));
@@ -841,7 +838,7 @@ inline StringResult Process::Read(int* exitcode)
  * @sa Process.Process
  * @sa Process.GetOutput
  */
-inline IOStreamRef GetProcessInput(ProcessParam process)
+inline IOStreamRef GetProcessInput(ProcessRef process)
 {
   return {SDL_GetProcessInput(process)};
 }
@@ -873,7 +870,7 @@ inline IOStreamRef Process::GetInput()
  * @sa Process.Process
  * @sa Process.GetInput
  */
-inline IOStreamRef GetProcessOutput(ProcessParam process)
+inline IOStreamRef GetProcessOutput(ProcessRef process)
 {
   return {SDL_GetProcessOutput(process)};
 }
@@ -902,7 +899,7 @@ inline IOStreamRef Process::GetOutput()
  * @sa Process.Wait
  * @sa Process.Destroy
  */
-inline void KillProcess(ProcessParam process, bool force)
+inline void KillProcess(ProcessRef process, bool force)
 {
   CheckError(SDL_KillProcess(process, force));
 }
@@ -940,7 +937,7 @@ inline void Process::Kill(bool force) { SDL::KillProcess(m_resource, force); }
  * @sa Process.Kill
  * @sa Process.Destroy
  */
-inline bool WaitProcess(ProcessParam process, bool block, int* exitcode)
+inline bool WaitProcess(ProcessRef process, bool block, int* exitcode)
 {
   return SDL_WaitProcess(process, block, exitcode);
 }

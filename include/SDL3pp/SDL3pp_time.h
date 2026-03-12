@@ -93,10 +93,7 @@ struct DateTime : DateTimeRaw
    *
    * @since This function is available since SDL 3.2.0.
    */
-  DateTime(Time ticks, bool localTime = true)
-  {
-    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
-  }
+  DateTime(Time ticks, bool localTime = true);
 
   /**
    * Check if valid.
@@ -376,6 +373,11 @@ inline Time Time::Current()
 inline DateTime TimeToDateTime(Time ticks, bool localTime = true)
 {
   return DateTime(ticks, localTime);
+}
+
+inline DateTime::DateTime(Time ticks, bool localTime)
+{
+  CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
 }
 
 /**

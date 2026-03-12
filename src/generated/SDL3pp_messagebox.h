@@ -142,7 +142,7 @@ struct MessageBox : MessageBoxRaw
    * @param colorScheme the value for colorScheme.
    */
   constexpr MessageBox(MessageBoxFlags flags,
-                       WindowParam window,
+                       WindowRef window,
                        StringParam title,
                        StringParam message,
                        int numbuttons,
@@ -200,7 +200,7 @@ struct MessageBox : MessageBoxRaw
    * @param newWindow the new window value.
    * @returns Reference to self.
    */
-  constexpr MessageBox& SetWindow(WindowParam newWindow) noexcept
+  constexpr MessageBox& SetWindow(WindowRef newWindow) noexcept
   {
     window = newWindow;
     return *this;
@@ -432,7 +432,7 @@ inline void MessageBox::Show(int* buttonid) const
 inline void ShowSimpleMessageBox(MessageBoxFlags flags,
                                  StringParam title,
                                  StringParam message,
-                                 WindowParam window)
+                                 WindowRef window)
 {
   CheckError(SDL_ShowSimpleMessageBox(flags, title, message, window));
 }

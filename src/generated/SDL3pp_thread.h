@@ -38,33 +38,6 @@ using ThreadRaw = SDL_Thread*;
 // Forward decl
 struct ThreadRef;
 
-/// Safely wrap Thread for non owning parameters
-struct ThreadParam
-{
-  ThreadRaw value; ///< parameter's ThreadRaw
-
-  /// Constructs from ThreadRaw
-  constexpr ThreadParam(ThreadRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ThreadParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ThreadParam& other) const = default;
-
-  /// Converts to underlying ThreadRaw
-  constexpr operator ThreadRaw() const { return value; }
-};
-
 /**
  * The SDL thread priority.
  *
@@ -185,7 +158,7 @@ public:
   }
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from ThreadRef.
    *
    * @param resource a ThreadRaw to be wrapped.
    *
@@ -246,10 +219,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(ThreadFunction fn, StringParam name, void* data)
-    : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
-  {
-  }
+  Thread(ThreadFunction fn, StringParam name, void* data);
 
   /**
    * Create a new thread with with the specified properties.
@@ -315,10 +285,7 @@ public:
    * @sa Thread.Thread
    * @sa Thread.Wait
    */
-  Thread(PropertiesParam props)
-    : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
-  {
-  }
+  Thread(PropertiesRef props);
 
   /// Destructor
   ~Thread() { SDL_DetachThread(m_resource); }
@@ -351,9 +318,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ThreadParam
-  constexpr operator ThreadParam() const noexcept { return {m_resource}; }
 
   /**
    * Let a thread clean up on exit without intervention.
@@ -487,27 +451,19 @@ public:
   ThreadState GetState() const;
 };
 
-/// Semi-safe reference for Thread.
+/**
+ * Reference for Thread.
+ *
+ * This does not take ownership!
+ */
 struct ThreadRef : Thread
 {
   using Thread::Thread;
 
   /**
-   * Constructs from ThreadParam.
+   * Constructs from raw Thread.
    *
-   * @param resource a ThreadRaw or Thread.
-   *
-   * This does not takes ownership!
-   */
-  ThreadRef(ThreadParam resource) noexcept
-    : Thread(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from ThreadParam.
-   *
-   * @param resource a ThreadRaw or Thread.
+   * @param resource a ThreadRaw.
    *
    * This does not takes ownership!
    */
@@ -516,11 +472,42 @@ struct ThreadRef : Thread
   {
   }
 
+  /**
+   * Constructs from Thread.
+   *
+   * @param resource a Thread.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ThreadRef(const Thread& resource) noexcept
+    : Thread(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ThreadRef(const ThreadRef& other) noexcept = default;
+  constexpr ThreadRef(const ThreadRef& other) noexcept
+    : Thread(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ThreadRef(ThreadRef&& other) noexcept
+    : Thread(other.release())
+  {
+  }
 
   /// Destructor
   ~ThreadRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ThreadRef& operator=(ThreadRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ThreadRaw
+  constexpr operator ThreadRaw() const noexcept { return get(); }
 };
 
 /**
@@ -571,6 +558,16 @@ using TLSID = AtomicInt;
 inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
 {
   return Thread(fn, std::move(name), data);
+}
+
+inline Thread::Thread(ThreadFunction fn, StringParam name, void* data)
+  : m_resource(CheckError(SDL_CreateThread(fn, name, data)))
+{
+}
+
+inline Thread::Thread(PropertiesRef props)
+  : m_resource(CheckError(SDL_CreateThreadWithProperties(props)))
+{
 }
 
 /**
@@ -637,7 +634,7 @@ inline Thread CreateThread(ThreadFunction fn, StringParam name, void* data)
  * @sa Thread.Thread
  * @sa Thread.Wait
  */
-inline Thread CreateThreadWithProperties(PropertiesParam props)
+inline Thread CreateThreadWithProperties(PropertiesRef props)
 {
   return Thread(props);
 }
@@ -668,7 +665,7 @@ constexpr auto CREATE_STACKSIZE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline const char* GetThreadName(ThreadParam thread)
+inline const char* GetThreadName(ThreadRef thread)
 {
   return SDL_GetThreadName(thread);
 }
@@ -715,7 +712,7 @@ inline ThreadID GetCurrentThreadID() { return SDL_GetCurrentThreadID(); }
  *
  * @sa GetCurrentThreadID
  */
-inline ThreadID GetThreadID(ThreadParam thread)
+inline ThreadID GetThreadID(ThreadRef thread)
 {
   return SDL_GetThreadID(thread);
 }
@@ -781,7 +778,7 @@ inline void Thread::SetCurrentPriority(ThreadPriority priority)
  * @sa Thread.Thread
  * @sa Thread.Detach
  */
-inline void WaitThread(ThreadParam thread, int* status)
+inline void WaitThread(ThreadRef thread, int* status)
 {
   SDL_WaitThread(thread, status);
 }
@@ -801,7 +798,7 @@ inline void Thread::Wait(int* status) { SDL::WaitThread(m_resource, status); }
  *
  * @sa ThreadState
  */
-inline ThreadState GetThreadState(ThreadParam thread)
+inline ThreadState GetThreadState(ThreadRef thread)
 {
   return SDL_GetThreadState(thread);
 }

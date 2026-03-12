@@ -66,33 +66,6 @@ using CameraRaw = SDL_Camera*;
 // Forward decl
 struct CameraRef;
 
-/// Safely wrap Camera for non owning parameters
-struct CameraParam
-{
-  CameraRaw value; ///< parameter's CameraRaw
-
-  /// Constructs from CameraRaw
-  constexpr CameraParam(CameraRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr CameraParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const CameraParam& other) const = default;
-
-  /// Converts to underlying CameraRaw
-  constexpr operator CameraRaw() const { return value; }
-};
-
 // Forward decl
 struct CameraFrame;
 
@@ -192,7 +165,7 @@ public:
   }
 
   /**
-   * Constructs from CameraParam.
+   * Constructs from CameraRef.
    *
    * @param resource a CameraRaw to be wrapped.
    *
@@ -262,10 +235,7 @@ public:
    * @sa GetCameras
    * @sa Camera.GetFormat
    */
-  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {})
-    : m_resource(SDL_OpenCamera(instance_id, spec))
-  {
-  }
+  Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec = {});
 
   /// Destructor
   ~Camera() { SDL_CloseCamera(m_resource); }
@@ -298,9 +268,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to CameraParam
-  constexpr operator CameraParam() const noexcept { return {m_resource}; }
 
   /**
    * Use this function to shut down camera processing and close the camera
@@ -467,27 +434,19 @@ public:
   void ReleaseFrame(CameraFrame&& lock);
 };
 
-/// Semi-safe reference for Camera.
+/**
+ * Reference for Camera.
+ *
+ * This does not take ownership!
+ */
 struct CameraRef : Camera
 {
   using Camera::Camera;
 
   /**
-   * Constructs from CameraParam.
+   * Constructs from raw Camera.
    *
-   * @param resource a CameraRaw or Camera.
-   *
-   * This does not takes ownership!
-   */
-  CameraRef(CameraParam resource) noexcept
-    : Camera(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from CameraParam.
-   *
-   * @param resource a CameraRaw or Camera.
+   * @param resource a CameraRaw.
    *
    * This does not takes ownership!
    */
@@ -496,11 +455,42 @@ struct CameraRef : Camera
   {
   }
 
+  /**
+   * Constructs from Camera.
+   *
+   * @param resource a Camera.
+   *
+   * This does not takes ownership!
+   */
+  constexpr CameraRef(const Camera& resource) noexcept
+    : Camera(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr CameraRef(const CameraRef& other) noexcept = default;
+  constexpr CameraRef(const CameraRef& other) noexcept
+    : Camera(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr CameraRef(CameraRef&& other) noexcept
+    : Camera(other.release())
+  {
+  }
 
   /// Destructor
   ~CameraRef() { release(); }
+
+  /// Assignment operator.
+  constexpr CameraRef& operator=(CameraRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to CameraRaw
+  constexpr operator CameraRaw() const noexcept { return get(); }
 };
 
 /// Camera Frame.
@@ -856,6 +846,11 @@ inline Camera OpenCamera(CameraID instance_id,
   return Camera(instance_id, spec);
 }
 
+inline Camera::Camera(CameraID instance_id, OptionalRef<const CameraSpec> spec)
+  : m_resource(SDL_OpenCamera(instance_id, spec))
+{
+}
+
 /**
  * Query if camera access has been approved by the user.
  *
@@ -888,7 +883,7 @@ inline Camera OpenCamera(CameraID instance_id,
  * @sa Camera.Camera
  * @sa Camera.Close
  */
-inline CameraPermissionState GetCameraPermissionState(CameraParam camera)
+inline CameraPermissionState GetCameraPermissionState(CameraRef camera)
 {
   return SDL_GetCameraPermissionState(camera);
 }
@@ -911,7 +906,7 @@ inline CameraPermissionState Camera::GetPermissionState()
  *
  * @sa Camera.Camera
  */
-inline CameraID GetCameraID(CameraParam camera)
+inline CameraID GetCameraID(CameraRef camera)
 {
   return CheckError(SDL_GetCameraID(camera));
 }
@@ -929,7 +924,7 @@ inline CameraID Camera::GetID() { return SDL::GetCameraID(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetCameraProperties(CameraParam camera)
+inline PropertiesRef GetCameraProperties(CameraRef camera)
 {
   return {CheckError(SDL_GetCameraProperties(camera))};
 }
@@ -960,7 +955,7 @@ inline PropertiesRef Camera::GetProperties()
  *
  * @sa Camera.Camera
  */
-inline std::optional<CameraSpec> GetCameraFormat(CameraParam camera)
+inline std::optional<CameraSpec> GetCameraFormat(CameraRef camera)
 {
   if (CameraSpec spec; SDL_GetCameraFormat(camera, &spec)) return spec;
   return std::nullopt;
@@ -1011,7 +1006,7 @@ inline std::optional<CameraSpec> Camera::GetFormat()
  *
  * @sa Camera.ReleaseFrame
  */
-inline Surface AcquireCameraFrame(CameraParam camera,
+inline Surface AcquireCameraFrame(CameraRef camera,
                                   Uint64* timestampNS = nullptr)
 {
   return Surface::Borrow(SDL_AcquireCameraFrame(camera, timestampNS));
@@ -1055,7 +1050,7 @@ inline CameraFrame::CameraFrame(CameraRef resource, Uint64* timestampNS)
  *
  * @sa Camera.AcquireFrame
  */
-inline void ReleaseCameraFrame(CameraParam camera, SurfaceParam frame)
+inline void ReleaseCameraFrame(CameraRef camera, SurfaceRef frame)
 {
   SDL_ReleaseCameraFrame(camera, frame);
 }

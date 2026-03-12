@@ -36,33 +36,6 @@ using MutexRaw = SDL_Mutex*;
 // Forward decl
 struct MutexRef;
 
-/// Safely wrap Mutex for non owning parameters
-struct MutexParam
-{
-  MutexRaw value; ///< parameter's MutexRaw
-
-  /// Constructs from MutexRaw
-  constexpr MutexParam(MutexRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr MutexParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const MutexParam& other) const = default;
-
-  /// Converts to underlying MutexRaw
-  constexpr operator MutexRaw() const { return value; }
-};
-
 // Forward decl
 struct RWLock;
 
@@ -71,33 +44,6 @@ using RWLockRaw = SDL_RWLock*;
 
 // Forward decl
 struct RWLockRef;
-
-/// Safely wrap RWLock for non owning parameters
-struct RWLockParam
-{
-  RWLockRaw value; ///< parameter's RWLockRaw
-
-  /// Constructs from RWLockRaw
-  constexpr RWLockParam(RWLockRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr RWLockParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const RWLockParam& other) const = default;
-
-  /// Converts to underlying RWLockRaw
-  constexpr operator RWLockRaw() const { return value; }
-};
 
 // Forward decl
 struct Semaphore;
@@ -108,33 +54,6 @@ using SemaphoreRaw = SDL_Semaphore*;
 // Forward decl
 struct SemaphoreRef;
 
-/// Safely wrap Semaphore for non owning parameters
-struct SemaphoreParam
-{
-  SemaphoreRaw value; ///< parameter's SemaphoreRaw
-
-  /// Constructs from SemaphoreRaw
-  constexpr SemaphoreParam(SemaphoreRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr SemaphoreParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const SemaphoreParam& other) const = default;
-
-  /// Converts to underlying SemaphoreRaw
-  constexpr operator SemaphoreRaw() const { return value; }
-};
-
 // Forward decl
 struct Condition;
 
@@ -143,33 +62,6 @@ using ConditionRaw = SDL_Condition*;
 
 // Forward decl
 struct ConditionRef;
-
-/// Safely wrap Condition for non owning parameters
-struct ConditionParam
-{
-  ConditionRaw value; ///< parameter's ConditionRaw
-
-  /// Constructs from ConditionRaw
-  constexpr ConditionParam(ConditionRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr ConditionParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const ConditionParam& other) const = default;
-
-  /// Converts to underlying ConditionRaw
-  constexpr operator ConditionRaw() const { return value; }
-};
 
 /// Alias to raw representation for InitState.
 using InitStateRaw = SDL_InitState;
@@ -203,7 +95,7 @@ public:
   }
 
   /**
-   * Constructs from MutexParam.
+   * Constructs from MutexRef.
    *
    * @param resource a MutexRaw to be wrapped.
    *
@@ -251,10 +143,7 @@ public:
    * @sa Mutex.TryLock
    * @sa Mutex.Unlock
    */
-  Mutex()
-    : m_resource(SDL_CreateMutex())
-  {
-  }
+  Mutex();
 
   /// Destructor
   ~Mutex() { SDL_DestroyMutex(m_resource); }
@@ -287,9 +176,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to MutexParam
-  constexpr operator MutexParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a mutex created with Mutex.Mutex().
@@ -375,27 +261,19 @@ public:
   void Unlock();
 };
 
-/// Semi-safe reference for Mutex.
+/**
+ * Reference for Mutex.
+ *
+ * This does not take ownership!
+ */
 struct MutexRef : Mutex
 {
   using Mutex::Mutex;
 
   /**
-   * Constructs from MutexParam.
+   * Constructs from raw Mutex.
    *
-   * @param resource a MutexRaw or Mutex.
-   *
-   * This does not takes ownership!
-   */
-  MutexRef(MutexParam resource) noexcept
-    : Mutex(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from MutexParam.
-   *
-   * @param resource a MutexRaw or Mutex.
+   * @param resource a MutexRaw.
    *
    * This does not takes ownership!
    */
@@ -404,11 +282,42 @@ struct MutexRef : Mutex
   {
   }
 
+  /**
+   * Constructs from Mutex.
+   *
+   * @param resource a Mutex.
+   *
+   * This does not takes ownership!
+   */
+  constexpr MutexRef(const Mutex& resource) noexcept
+    : Mutex(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr MutexRef(const MutexRef& other) noexcept = default;
+  constexpr MutexRef(const MutexRef& other) noexcept
+    : Mutex(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr MutexRef(MutexRef&& other) noexcept
+    : Mutex(other.release())
+  {
+  }
 
   /// Destructor
   ~MutexRef() { release(); }
+
+  /// Assignment operator.
+  constexpr MutexRef& operator=(MutexRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to MutexRaw
+  constexpr operator MutexRaw() const noexcept { return get(); }
 };
 
 /**
@@ -435,6 +344,11 @@ struct MutexRef : Mutex
  */
 inline Mutex CreateMutex() { return Mutex(); }
 
+inline Mutex::Mutex()
+  : m_resource(SDL_CreateMutex())
+{
+}
+
 /**
  * Lock the mutex.
  *
@@ -459,7 +373,7 @@ inline Mutex CreateMutex() { return Mutex(); }
  * @sa Mutex.TryLock
  * @sa Mutex.Unlock
  */
-inline void LockMutex(MutexParam mutex) { SDL_LockMutex(mutex); }
+inline void LockMutex(MutexRef mutex) { SDL_LockMutex(mutex); }
 
 inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
 
@@ -484,7 +398,7 @@ inline void Mutex::Lock() { SDL::LockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.Unlock
  */
-inline void TryLockMutex(MutexParam mutex)
+inline void TryLockMutex(MutexRef mutex)
 {
   CheckError(SDL_TryLockMutex(mutex));
 }
@@ -511,7 +425,7 @@ inline void Mutex::TryLock() { SDL::TryLockMutex(m_resource); }
  * @sa Mutex.Lock
  * @sa Mutex.TryLock
  */
-inline void UnlockMutex(MutexParam mutex) { SDL_UnlockMutex(mutex); }
+inline void UnlockMutex(MutexRef mutex) { SDL_UnlockMutex(mutex); }
 
 inline void Mutex::Unlock() { SDL::UnlockMutex(m_resource); }
 
@@ -568,7 +482,7 @@ public:
   }
 
   /**
-   * Constructs from RWLockParam.
+   * Constructs from RWLockRef.
    *
    * @param resource a RWLockRaw to be wrapped.
    *
@@ -636,10 +550,7 @@ public:
    * @sa RWLock.TryLockForWriting
    * @sa RWLock.Unlock
    */
-  RWLock()
-    : m_resource(SDL_CreateRWLock())
-  {
-  }
+  RWLock();
 
   /// Destructor
   ~RWLock() { SDL_DestroyRWLock(m_resource); }
@@ -672,9 +583,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to RWLockParam
-  constexpr operator RWLockParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a read/write lock created with RWLock.RWLock().
@@ -845,27 +753,19 @@ public:
   void Unlock();
 };
 
-/// Semi-safe reference for RWLock.
+/**
+ * Reference for RWLock.
+ *
+ * This does not take ownership!
+ */
 struct RWLockRef : RWLock
 {
   using RWLock::RWLock;
 
   /**
-   * Constructs from RWLockParam.
+   * Constructs from raw RWLock.
    *
-   * @param resource a RWLockRaw or RWLock.
-   *
-   * This does not takes ownership!
-   */
-  RWLockRef(RWLockParam resource) noexcept
-    : RWLock(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from RWLockParam.
-   *
-   * @param resource a RWLockRaw or RWLock.
+   * @param resource a RWLockRaw.
    *
    * This does not takes ownership!
    */
@@ -874,11 +774,42 @@ struct RWLockRef : RWLock
   {
   }
 
+  /**
+   * Constructs from RWLock.
+   *
+   * @param resource a RWLock.
+   *
+   * This does not takes ownership!
+   */
+  constexpr RWLockRef(const RWLock& resource) noexcept
+    : RWLock(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr RWLockRef(const RWLockRef& other) noexcept = default;
+  constexpr RWLockRef(const RWLockRef& other) noexcept
+    : RWLock(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr RWLockRef(RWLockRef&& other) noexcept
+    : RWLock(other.release())
+  {
+  }
 
   /// Destructor
   ~RWLockRef() { release(); }
+
+  /// Assignment operator.
+  constexpr RWLockRef& operator=(RWLockRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to RWLockRaw
+  constexpr operator RWLockRaw() const noexcept { return get(); }
 };
 
 /**
@@ -925,6 +856,11 @@ struct RWLockRef : RWLock
  */
 inline RWLock CreateRWLock() { return RWLock(); }
 
+inline RWLock::RWLock()
+  : m_resource(SDL_CreateRWLock())
+{
+}
+
 /**
  * Lock the read/write lock for _read only_ operations.
  *
@@ -962,7 +898,7 @@ inline RWLock CreateRWLock() { return RWLock(); }
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForReading(RWLockParam rwlock)
+inline void LockRWLockForReading(RWLockRef rwlock)
 {
   SDL_LockRWLockForReading(rwlock);
 }
@@ -1000,7 +936,7 @@ inline void RWLock::LockForReading() { SDL::LockRWLockForReading(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void LockRWLockForWriting(RWLockParam rwlock)
+inline void LockRWLockForWriting(RWLockRef rwlock)
 {
   SDL_LockRWLockForWriting(rwlock);
 }
@@ -1032,7 +968,7 @@ inline void RWLock::LockForWriting() { SDL::LockRWLockForWriting(m_resource); }
  * @sa RWLock.TryLockForWriting
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForReading(RWLockParam rwlock)
+inline void TryLockRWLockForReading(RWLockRef rwlock)
 {
   CheckError(SDL_TryLockRWLockForReading(rwlock));
 }
@@ -1072,7 +1008,7 @@ inline void RWLock::TryLockForReading()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.Unlock
  */
-inline void TryLockRWLockForWriting(RWLockParam rwlock)
+inline void TryLockRWLockForWriting(RWLockRef rwlock)
 {
   CheckError(SDL_TryLockRWLockForWriting(rwlock));
 }
@@ -1108,7 +1044,7 @@ inline void RWLock::TryLockForWriting()
  * @sa RWLock.TryLockForReading
  * @sa RWLock.TryLockForWriting
  */
-inline void UnlockRWLock(RWLockParam rwlock) { SDL_UnlockRWLock(rwlock); }
+inline void UnlockRWLock(RWLockRef rwlock) { SDL_UnlockRWLock(rwlock); }
 
 inline void RWLock::Unlock() { SDL::UnlockRWLock(m_resource); }
 
@@ -1161,7 +1097,7 @@ public:
   }
 
   /**
-   * Constructs from SemaphoreParam.
+   * Constructs from SemaphoreRef.
    *
    * @param resource a SemaphoreRaw to be wrapped.
    *
@@ -1211,10 +1147,7 @@ public:
    * @sa Semaphore.Wait
    * @sa Semaphore.WaitTimeout
    */
-  Semaphore(Uint32 initial_value)
-    : m_resource(SDL_CreateSemaphore(initial_value))
-  {
-  }
+  Semaphore(Uint32 initial_value);
 
   /// Destructor
   ~Semaphore() { SDL_DestroySemaphore(m_resource); }
@@ -1247,9 +1180,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to SemaphoreParam
-  constexpr operator SemaphoreParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a semaphore.
@@ -1351,27 +1281,19 @@ public:
   Uint32 GetValue() const;
 };
 
-/// Semi-safe reference for Semaphore.
+/**
+ * Reference for Semaphore.
+ *
+ * This does not take ownership!
+ */
 struct SemaphoreRef : Semaphore
 {
   using Semaphore::Semaphore;
 
   /**
-   * Constructs from SemaphoreParam.
+   * Constructs from raw Semaphore.
    *
-   * @param resource a SemaphoreRaw or Semaphore.
-   *
-   * This does not takes ownership!
-   */
-  SemaphoreRef(SemaphoreParam resource) noexcept
-    : Semaphore(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from SemaphoreParam.
-   *
-   * @param resource a SemaphoreRaw or Semaphore.
+   * @param resource a SemaphoreRaw.
    *
    * This does not takes ownership!
    */
@@ -1380,11 +1302,42 @@ struct SemaphoreRef : Semaphore
   {
   }
 
+  /**
+   * Constructs from Semaphore.
+   *
+   * @param resource a Semaphore.
+   *
+   * This does not takes ownership!
+   */
+  constexpr SemaphoreRef(const Semaphore& resource) noexcept
+    : Semaphore(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept = default;
+  constexpr SemaphoreRef(const SemaphoreRef& other) noexcept
+    : Semaphore(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr SemaphoreRef(SemaphoreRef&& other) noexcept
+    : Semaphore(other.release())
+  {
+  }
 
   /// Destructor
   ~SemaphoreRef() { release(); }
+
+  /// Assignment operator.
+  constexpr SemaphoreRef& operator=(SemaphoreRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to SemaphoreRaw
+  constexpr operator SemaphoreRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1414,6 +1367,11 @@ struct SemaphoreRef : Semaphore
 inline Semaphore CreateSemaphore(Uint32 initial_value)
 {
   return Semaphore(initial_value);
+}
+
+inline Semaphore::Semaphore(Uint32 initial_value)
+  : m_resource(SDL_CreateSemaphore(initial_value))
+{
 }
 
 /**
@@ -1454,7 +1412,7 @@ inline void Semaphore::Destroy() { DestroySemaphore(release()); }
  * @sa Semaphore.TryWait
  * @sa Semaphore.WaitTimeout
  */
-inline void WaitSemaphore(SemaphoreParam sem) { SDL_WaitSemaphore(sem); }
+inline void WaitSemaphore(SemaphoreRef sem) { SDL_WaitSemaphore(sem); }
 
 inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
 
@@ -1477,7 +1435,7 @@ inline void Semaphore::Wait() { SDL::WaitSemaphore(m_resource); }
  * @sa Semaphore.Wait
  * @sa Semaphore.WaitTimeout
  */
-inline bool TryWaitSemaphore(SemaphoreParam sem)
+inline bool TryWaitSemaphore(SemaphoreRef sem)
 {
   return SDL_TryWaitSemaphore(sem);
 }
@@ -1504,7 +1462,7 @@ inline bool Semaphore::TryWait() { return SDL::TryWaitSemaphore(m_resource); }
  * @sa Semaphore.TryWait
  * @sa Semaphore.Wait
  */
-inline bool WaitSemaphoreTimeout(SemaphoreParam sem,
+inline bool WaitSemaphoreTimeout(SemaphoreRef sem,
                                  std::chrono::milliseconds timeout)
 {
   return SDL_WaitSemaphoreTimeout(sem, timeout.count());
@@ -1528,7 +1486,7 @@ inline bool Semaphore::WaitTimeout(std::chrono::milliseconds timeout)
  * @sa Semaphore.Wait
  * @sa Semaphore.WaitTimeout
  */
-inline void SignalSemaphore(SemaphoreParam sem) { SDL_SignalSemaphore(sem); }
+inline void SignalSemaphore(SemaphoreRef sem) { SDL_SignalSemaphore(sem); }
 
 inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
 
@@ -1542,7 +1500,7 @@ inline void Semaphore::Signal() { SDL::SignalSemaphore(m_resource); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint32 GetSemaphoreValue(SemaphoreParam sem)
+inline Uint32 GetSemaphoreValue(SemaphoreRef sem)
 {
   return SDL_GetSemaphoreValue(sem);
 }
@@ -1579,7 +1537,7 @@ public:
   }
 
   /**
-   * Constructs from ConditionParam.
+   * Constructs from ConditionRef.
    *
    * @param resource a ConditionRaw to be wrapped.
    *
@@ -1621,10 +1579,7 @@ public:
    * @sa Condition.WaitTimeout
    * @sa Condition.Destroy
    */
-  Condition()
-    : m_resource(SDL_CreateCondition())
-  {
-  }
+  Condition();
 
   /// Destructor
   ~Condition() { SDL_DestroyCondition(m_resource); }
@@ -1657,9 +1612,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to ConditionParam
-  constexpr operator ConditionParam() const noexcept { return {m_resource}; }
 
   /**
    * Destroy a condition variable.
@@ -1723,7 +1675,7 @@ public:
    * @sa Condition.Signal
    * @sa Condition.WaitTimeout
    */
-  void Wait(MutexParam mutex);
+  void Wait(MutexRef mutex);
 
   /**
    * Wait until a condition variable is signaled or a certain time has passed.
@@ -1752,30 +1704,22 @@ public:
    * @sa Condition.Signal
    * @sa Condition.Wait
    */
-  bool WaitTimeout(MutexParam mutex, std::chrono::milliseconds timeout);
+  bool WaitTimeout(MutexRef mutex, std::chrono::milliseconds timeout);
 };
 
-/// Semi-safe reference for Condition.
+/**
+ * Reference for Condition.
+ *
+ * This does not take ownership!
+ */
 struct ConditionRef : Condition
 {
   using Condition::Condition;
 
   /**
-   * Constructs from ConditionParam.
+   * Constructs from raw Condition.
    *
-   * @param resource a ConditionRaw or Condition.
-   *
-   * This does not takes ownership!
-   */
-  ConditionRef(ConditionParam resource) noexcept
-    : Condition(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from ConditionParam.
-   *
-   * @param resource a ConditionRaw or Condition.
+   * @param resource a ConditionRaw.
    *
    * This does not takes ownership!
    */
@@ -1784,11 +1728,42 @@ struct ConditionRef : Condition
   {
   }
 
+  /**
+   * Constructs from Condition.
+   *
+   * @param resource a Condition.
+   *
+   * This does not takes ownership!
+   */
+  constexpr ConditionRef(const Condition& resource) noexcept
+    : Condition(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr ConditionRef(const ConditionRef& other) noexcept = default;
+  constexpr ConditionRef(const ConditionRef& other) noexcept
+    : Condition(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr ConditionRef(ConditionRef&& other) noexcept
+    : Condition(other.release())
+  {
+  }
 
   /// Destructor
   ~ConditionRef() { release(); }
+
+  /// Assignment operator.
+  constexpr ConditionRef& operator=(ConditionRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to ConditionRaw
+  constexpr operator ConditionRaw() const noexcept { return get(); }
 };
 
 /**
@@ -1808,6 +1783,11 @@ struct ConditionRef : Condition
  * @sa Condition.Destroy
  */
 inline Condition CreateCondition() { return Condition(); }
+
+inline Condition::Condition()
+  : m_resource(SDL_CreateCondition())
+{
+}
 
 /**
  * Destroy a condition variable.
@@ -1837,7 +1817,7 @@ inline void Condition::Destroy() { DestroyCondition(release()); }
  * @sa Condition.Wait
  * @sa Condition.WaitTimeout
  */
-inline void SignalCondition(ConditionParam cond) { SDL_SignalCondition(cond); }
+inline void SignalCondition(ConditionRef cond) { SDL_SignalCondition(cond); }
 
 inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
 
@@ -1854,7 +1834,7 @@ inline void Condition::Signal() { SDL::SignalCondition(m_resource); }
  * @sa Condition.Wait
  * @sa Condition.WaitTimeout
  */
-inline void BroadcastCondition(ConditionParam cond)
+inline void BroadcastCondition(ConditionRef cond)
 {
   SDL_BroadcastCondition(cond);
 }
@@ -1887,12 +1867,12 @@ inline void Condition::Broadcast() { SDL::BroadcastCondition(m_resource); }
  * @sa Condition.Signal
  * @sa Condition.WaitTimeout
  */
-inline void WaitCondition(ConditionParam cond, MutexParam mutex)
+inline void WaitCondition(ConditionRef cond, MutexRef mutex)
 {
   SDL_WaitCondition(cond, mutex);
 }
 
-inline void Condition::Wait(MutexParam mutex)
+inline void Condition::Wait(MutexRef mutex)
 {
   SDL::WaitCondition(m_resource, mutex);
 }
@@ -1925,14 +1905,14 @@ inline void Condition::Wait(MutexParam mutex)
  * @sa Condition.Signal
  * @sa Condition.Wait
  */
-inline bool WaitConditionTimeout(ConditionParam cond,
-                                 MutexParam mutex,
+inline bool WaitConditionTimeout(ConditionRef cond,
+                                 MutexRef mutex,
                                  std::chrono::milliseconds timeout)
 {
   return SDL_WaitConditionTimeout(cond, mutex, timeout.count());
 }
 
-inline bool Condition::WaitTimeout(MutexParam mutex,
+inline bool Condition::WaitTimeout(MutexRef mutex,
                                    std::chrono::milliseconds timeout)
 {
   return SDL::WaitConditionTimeout(m_resource, mutex, timeout);

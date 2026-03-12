@@ -17,17 +17,7 @@
     * @param localTime the resulting DateTime will be expressed in local time if
     *                  true, otherwise it will be in Universal Coordinated Time
     *                  (UTC).
-@@ -95,8 +94,8 @@
-    * @since This function is available since SDL 3.2.0.
-    */
-   DateTime(Time ticks, bool localTime = true)
--    : DateTimeRaw(CheckError(SDL_TimeToDateTime(ticks, localTime)))
-   {
-+    CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
-   }
- 
-   /**
-@@ -106,7 +105,8 @@
+@@ -103,7 +102,8 @@
     */
    constexpr explicit operator bool() const noexcept
    {
@@ -37,7 +27,7 @@
    }
  
    /**
-@@ -286,8 +286,7 @@
+@@ -283,8 +283,7 @@
     * This function ignores the day_of_week member of the DateTime struct, so it
     * may remain unset.
     *
@@ -47,7 +37,7 @@
     * @throws Error on failure.
     *
     * @threadsafety It is safe to call this function from any thread.
-@@ -352,17 +351,22 @@
+@@ -349,17 +348,22 @@
    CheckError(SDL_GetDateTimeLocalePreferences(dateFormat, timeFormat));
  }
  
@@ -72,7 +62,17 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -381,7 +385,7 @@
+@@ -372,8 +376,8 @@
+ }
+ 
+ inline DateTime::DateTime(Time ticks, bool localTime)
+-  : DateTimeRaw(CheckError(SDL_TimeToDateTime(ticks, localTime)))
+ {
++  CheckError(SDL_TimeToDateTime(ticks.ToNS(), this, localTime));
+ }
+ 
+ /**
+@@ -383,7 +387,7 @@
   * may remain unset.
   *
   * @param dt the source DateTime.
@@ -81,7 +81,7 @@
   * @throws Error on failure.
   *
   * @threadsafety It is safe to call this function from any thread.
-@@ -390,19 +394,21 @@
+@@ -392,19 +396,21 @@
   */
  inline Time DateTimeToTime(const DateTimeRaw& dt)
  {
@@ -107,7 +107,7 @@
  }
  
  /**
-@@ -410,8 +416,8 @@
+@@ -412,8 +418,8 @@
   *
   * @param year the year.
   * @param month the month [1-12].
@@ -118,7 +118,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -419,7 +425,7 @@
+@@ -421,7 +427,7 @@
   */
  inline int GetDaysInMonth(int year, int month)
  {
@@ -127,7 +127,7 @@
  }
  
  /**
-@@ -428,8 +434,8 @@
+@@ -430,8 +436,8 @@
   * @param year the year component of the date.
   * @param month the month component of the date.
   * @param day the day component of the date.
@@ -138,7 +138,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -437,7 +443,7 @@
+@@ -439,7 +445,7 @@
   */
  inline int GetDayOfYear(int year, int month, int day)
  {
@@ -147,7 +147,7 @@
  }
  
  /**
-@@ -446,8 +452,8 @@
+@@ -448,8 +454,8 @@
   * @param year the year component of the date.
   * @param month the month component of the date.
   * @param day the day component of the date.
@@ -158,7 +158,7 @@
   *
   * @threadsafety It is safe to call this function from any thread.
   *
-@@ -455,7 +461,7 @@
+@@ -457,7 +463,7 @@
   */
  inline int GetDayOfWeek(int year, int month, int day)
  {

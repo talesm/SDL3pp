@@ -127,33 +127,6 @@ using AudioDeviceID = SDL_AudioDeviceID;
 // Forward decl
 struct AudioDeviceRef;
 
-/// Safely wrap AudioDevice for non owning parameters
-struct AudioDeviceParam
-{
-  AudioDeviceID value; ///< parameter's AudioDeviceID
-
-  /// Constructs from AudioDeviceID
-  constexpr AudioDeviceParam(AudioDeviceID value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AudioDeviceParam(std::nullptr_t = nullptr)
-    : value(0)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioDeviceParam& other) const = default;
-
-  /// Converts to underlying AudioDeviceID
-  constexpr operator AudioDeviceID() const { return value; }
-};
-
 // Forward decl
 struct AudioStream;
 
@@ -162,33 +135,6 @@ using AudioStreamRaw = SDL_AudioStream*;
 
 // Forward decl
 struct AudioStreamRef;
-
-/// Safely wrap AudioStream for non owning parameters
-struct AudioStreamParam
-{
-  AudioStreamRaw value; ///< parameter's AudioStreamRaw
-
-  /// Constructs from AudioStreamRaw
-  constexpr AudioStreamParam(AudioStreamRaw value)
-    : value(value)
-  {
-  }
-
-  /// Constructs null/invalid
-  constexpr AudioStreamParam(std::nullptr_t = nullptr)
-    : value(nullptr)
-  {
-  }
-
-  /// Converts to bool
-  constexpr explicit operator bool() const { return !!value; }
-
-  /// Comparison
-  constexpr auto operator<=>(const AudioStreamParam& other) const = default;
-
-  /// Converts to underlying AudioStreamRaw
-  constexpr operator AudioStreamRaw() const { return value; }
-};
 
 // Forward decl
 struct AudioStreamLock;
@@ -294,11 +240,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    */
-  constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size)
-    : m_audioFormat(
-        AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
-  {
-  }
+  constexpr AudioFormat(bool sign, bool bigendian, bool flt, Uint16 size);
 
   /**
    * Unwraps to the underlying AudioFormat.
@@ -503,6 +445,15 @@ constexpr AudioFormat DefineAudioFormat(bool sign,
                                         Uint16 size)
 {
   return AudioFormat(sign, bigendian, flt, size);
+}
+
+constexpr AudioFormat::AudioFormat(bool sign,
+                                   bool bigendian,
+                                   bool flt,
+                                   Uint16 size)
+  : m_audioFormat(
+      AudioFormatRaw(SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size)))
+{
 }
 
 /**
@@ -853,7 +804,7 @@ public:
   }
 
   /**
-   * Constructs from AudioDeviceParam.
+   * Constructs from AudioDeviceRef.
    *
    * @param resource a AudioDeviceID to be wrapped.
    *
@@ -950,10 +901,7 @@ public:
    * @sa AudioDevice.Close
    * @sa AudioDevice.GetFormat
    */
-  AudioDevice(AudioDeviceParam devid, OptionalRef<const AudioSpec> spec)
-    : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
-  {
-  }
+  AudioDevice(AudioDeviceRef devid, OptionalRef<const AudioSpec> spec);
 
   /// Destructor
   ~AudioDevice() { SDL_CloseAudioDevice(m_resource); }
@@ -986,9 +934,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AudioDeviceParam
-  constexpr operator AudioDeviceParam() const noexcept { return {m_resource}; }
 
   /**
    * Close a previously-opened audio device.
@@ -1306,7 +1251,7 @@ public:
    * @sa AudioStream.Unbind
    * @sa AudioStream.GetDevice
    */
-  void BindAudioStream(AudioStreamParam stream);
+  void BindAudioStream(AudioStreamRef stream);
 
   /**
    * Set a callback that fires when data is about to be fed to an audio device.
@@ -1525,27 +1470,19 @@ public:
                          AudioStreamCB callback);
 };
 
-/// Semi-safe reference for AudioDevice.
+/**
+ * Reference for AudioDevice.
+ *
+ * This does not take ownership!
+ */
 struct AudioDeviceRef : AudioDevice
 {
   using AudioDevice::AudioDevice;
 
   /**
-   * Constructs from AudioDeviceParam.
+   * Constructs from raw AudioDevice.
    *
-   * @param resource a AudioDeviceID or AudioDevice.
-   *
-   * This does not takes ownership!
-   */
-  AudioDeviceRef(AudioDeviceParam resource) noexcept
-    : AudioDevice(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AudioDeviceParam.
-   *
-   * @param resource a AudioDeviceID or AudioDevice.
+   * @param resource a AudioDeviceID.
    *
    * This does not takes ownership!
    */
@@ -1554,11 +1491,42 @@ struct AudioDeviceRef : AudioDevice
   {
   }
 
+  /**
+   * Constructs from AudioDevice.
+   *
+   * @param resource a AudioDevice.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AudioDeviceRef(const AudioDevice& resource) noexcept
+    : AudioDevice(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept = default;
+  constexpr AudioDeviceRef(const AudioDeviceRef& other) noexcept
+    : AudioDevice(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AudioDeviceRef(AudioDeviceRef&& other) noexcept
+    : AudioDevice(other.release())
+  {
+  }
 
   /// Destructor
   ~AudioDeviceRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AudioDeviceRef& operator=(AudioDeviceRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AudioDeviceID
+  constexpr operator AudioDeviceID() const noexcept { return get(); }
 };
 
 /**
@@ -1704,7 +1672,7 @@ public:
   }
 
   /**
-   * Constructs from AudioStreamParam.
+   * Constructs from AudioStreamRef.
    *
    * @param resource a AudioStreamRaw to be wrapped.
    *
@@ -1751,10 +1719,7 @@ public:
    * @sa AudioStream.Destroy
    */
   AudioStream(OptionalRef<const AudioSpec> src_spec,
-              OptionalRef<const AudioSpec> dst_spec)
-    : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
-  {
-  }
+              OptionalRef<const AudioSpec> dst_spec);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -1813,14 +1778,10 @@ public:
    * @sa AudioStream.GetDevice
    * @sa AudioStream.ResumeDevice
    */
-  AudioStream(AudioDeviceParam devid,
+  AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec = std::nullopt,
               AudioStreamCallback callback = nullptr,
-              void* userdata = nullptr)
-    : m_resource(
-        CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
-  {
-  }
+              void* userdata = nullptr);
 
   /**
    * Convenience function for straightforward audio init for the common case.
@@ -1875,7 +1836,7 @@ public:
    * @sa AudioStream.GetDevice
    * @sa AudioStream.ResumeDevice
    */
-  AudioStream(AudioDeviceParam devid,
+  AudioStream(AudioDeviceRef devid,
               OptionalRef<const AudioSpec> spec,
               AudioStreamCB callback);
 
@@ -1910,9 +1871,6 @@ public:
 
   /// Converts to bool
   constexpr explicit operator bool() const noexcept { return !!m_resource; }
-
-  /// Converts to AudioStreamParam
-  constexpr operator AudioStreamParam() const noexcept { return {m_resource}; }
 
   /**
    * Free an audio stream.
@@ -2968,27 +2926,19 @@ public:
 #endif // SDL_VERSION_ATLEAST(3, 4, 0)
 };
 
-/// Semi-safe reference for AudioStream.
+/**
+ * Reference for AudioStream.
+ *
+ * This does not take ownership!
+ */
 struct AudioStreamRef : AudioStream
 {
   using AudioStream::AudioStream;
 
   /**
-   * Constructs from AudioStreamParam.
+   * Constructs from raw AudioStream.
    *
-   * @param resource a AudioStreamRaw or AudioStream.
-   *
-   * This does not takes ownership!
-   */
-  AudioStreamRef(AudioStreamParam resource) noexcept
-    : AudioStream(resource.value)
-  {
-  }
-
-  /**
-   * Constructs from AudioStreamParam.
-   *
-   * @param resource a AudioStreamRaw or AudioStream.
+   * @param resource a AudioStreamRaw.
    *
    * This does not takes ownership!
    */
@@ -2997,11 +2947,42 @@ struct AudioStreamRef : AudioStream
   {
   }
 
+  /**
+   * Constructs from AudioStream.
+   *
+   * @param resource a AudioStream.
+   *
+   * This does not takes ownership!
+   */
+  constexpr AudioStreamRef(const AudioStream& resource) noexcept
+    : AudioStream(resource.get())
+  {
+  }
+
   /// Copy constructor.
-  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept = default;
+  constexpr AudioStreamRef(const AudioStreamRef& other) noexcept
+    : AudioStream(other.get())
+  {
+  }
+
+  /// Move constructor.
+  constexpr AudioStreamRef(AudioStreamRef&& other) noexcept
+    : AudioStream(other.release())
+  {
+  }
 
   /// Destructor
   ~AudioStreamRef() { release(); }
+
+  /// Assignment operator.
+  constexpr AudioStreamRef& operator=(AudioStreamRef other) noexcept
+  {
+    std::swap(*this, other);
+    return *this;
+  }
+
+  /// Converts to AudioStreamRaw
+  constexpr operator AudioStreamRaw() const noexcept { return get(); }
 };
 
 /**
@@ -3270,7 +3251,7 @@ inline OwnArray<AudioDeviceRef> GetAudioRecordingDevices()
  * @sa GetAudioPlaybackDevices
  * @sa GetAudioRecordingDevices
  */
-inline const char* GetAudioDeviceName(AudioDeviceParam devid)
+inline const char* GetAudioDeviceName(AudioDeviceRef devid)
 {
   return CheckError(SDL_GetAudioDeviceName(devid));
 }
@@ -3310,7 +3291,7 @@ inline const char* AudioDevice::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline AudioSpec GetAudioDeviceFormat(AudioDeviceParam devid,
+inline AudioSpec GetAudioDeviceFormat(AudioDeviceRef devid,
                                       int* sample_frames = nullptr)
 {
   AudioSpec spec;
@@ -3342,7 +3323,7 @@ inline AudioSpec AudioDevice::GetFormat(int* sample_frames) const
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceParam devid)
+inline OwnArray<int> GetAudioDeviceChannelMap(AudioDeviceRef devid)
 {
   int count;
   auto data = SDL_GetAudioDeviceChannelMap(devid, &count);
@@ -3424,10 +3405,16 @@ inline OwnArray<int> AudioDevice::GetChannelMap() const
  * @sa AudioDevice.Close
  * @sa AudioDevice.GetFormat
  */
-inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
+inline AudioDevice OpenAudioDevice(AudioDeviceRef devid,
                                    OptionalRef<const AudioSpec> spec)
 {
   return AudioDevice(devid, spec);
+}
+
+inline AudioDevice::AudioDevice(AudioDeviceRef devid,
+                                OptionalRef<const AudioSpec> spec)
+  : m_resource(CheckError(SDL_OpenAudioDevice(devid, spec)))
+{
 }
 
 /**
@@ -3453,7 +3440,7 @@ inline AudioDevice OpenAudioDevice(AudioDeviceParam devid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool IsAudioDevicePhysical(AudioDeviceParam devid)
+inline bool IsAudioDevicePhysical(AudioDeviceRef devid)
 {
   return SDL_IsAudioDevicePhysical(devid);
 }
@@ -3475,7 +3462,7 @@ inline bool AudioDevice::IsPhysical() const
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline bool IsAudioDevicePlayback(AudioDeviceParam devid)
+inline bool IsAudioDevicePlayback(AudioDeviceRef devid)
 {
   return SDL_IsAudioDevicePlayback(devid);
 }
@@ -3513,7 +3500,7 @@ inline bool AudioDevice::IsPlayback() const
  * @sa AudioDevice.Resume
  * @sa AudioDevice.Paused
  */
-inline void PauseAudioDevice(AudioDeviceParam devid)
+inline void PauseAudioDevice(AudioDeviceRef devid)
 {
   CheckError(SDL_PauseAudioDevice(devid));
 }
@@ -3544,7 +3531,7 @@ inline void AudioDevice::Pause() { SDL::PauseAudioDevice(m_resource); }
  * @sa AudioDevice.Paused
  * @sa AudioDevice.Pause
  */
-inline void ResumeAudioDevice(AudioDeviceParam devid)
+inline void ResumeAudioDevice(AudioDeviceRef devid)
 {
   CheckError(SDL_ResumeAudioDevice(devid));
 }
@@ -3571,7 +3558,7 @@ inline void AudioDevice::Resume() { SDL::ResumeAudioDevice(m_resource); }
  * @sa AudioDevice.Pause
  * @sa AudioDevice.Resume
  */
-inline bool AudioDevicePaused(AudioDeviceParam devid)
+inline bool AudioDevicePaused(AudioDeviceRef devid)
 {
   return SDL_AudioDevicePaused(devid);
 }
@@ -3602,7 +3589,7 @@ inline bool AudioDevice::Paused() const
  *
  * @sa AudioDevice.SetGain
  */
-inline float GetAudioDeviceGain(AudioDeviceParam devid)
+inline float GetAudioDeviceGain(AudioDeviceRef devid)
 {
   return SDL_GetAudioDeviceGain(devid);
 }
@@ -3644,7 +3631,7 @@ inline float AudioDevice::GetGain() const
  *
  * @sa AudioDevice.GetGain
  */
-inline void SetAudioDeviceGain(AudioDeviceParam devid, float gain)
+inline void SetAudioDeviceGain(AudioDeviceRef devid, float gain)
 {
   CheckError(SDL_SetAudioDeviceGain(devid, gain));
 }
@@ -3716,7 +3703,7 @@ inline void AudioDevice::Close() { CloseAudioDevice(release()); }
  * @sa AudioStream.Unbind
  * @sa AudioStream.GetDevice
  */
-inline void BindAudioStreams(AudioDeviceParam devid,
+inline void BindAudioStreams(AudioDeviceRef devid,
                              std::span<AudioStreamRef> streams)
 {
   CheckError(SDL_BindAudioStreams(
@@ -3748,12 +3735,12 @@ inline void AudioDevice::BindAudioStreams(std::span<AudioStreamRef> streams)
  * @sa AudioStream.Unbind
  * @sa AudioStream.GetDevice
  */
-inline void BindAudioStream(AudioDeviceParam devid, AudioStreamParam stream)
+inline void BindAudioStream(AudioDeviceRef devid, AudioStreamRef stream)
 {
   CheckError(SDL_BindAudioStream(devid, stream));
 }
 
-inline void AudioDevice::BindAudioStream(AudioStreamParam stream)
+inline void AudioDevice::BindAudioStream(AudioStreamRef stream)
 {
   SDL::BindAudioStream(m_resource, stream);
 }
@@ -3796,7 +3783,7 @@ inline void UnbindAudioStreams(std::span<AudioStreamRef> streams)
  *
  * @sa AudioDevice.BindAudioStream
  */
-inline void UnbindAudioStream(AudioStreamParam stream)
+inline void UnbindAudioStream(AudioStreamRef stream)
 {
   SDL_UnbindAudioStream(stream);
 }
@@ -3821,7 +3808,7 @@ inline void AudioStream::Unbind() { SDL::UnbindAudioStream(m_resource); }
  * @sa AudioDevice.BindAudioStream
  * @sa AudioDevice.BindAudioStreams
  */
-inline AudioDeviceRef GetAudioStreamDevice(AudioStreamParam stream)
+inline AudioDeviceRef GetAudioStreamDevice(AudioStreamRef stream)
 {
   return {SDL_GetAudioStreamDevice(stream)};
 }
@@ -3857,6 +3844,33 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
   return AudioStream(src_spec, dst_spec);
 }
 
+inline AudioStream::AudioStream(OptionalRef<const AudioSpec> src_spec,
+                                OptionalRef<const AudioSpec> dst_spec)
+  : m_resource(CheckError(SDL_CreateAudioStream(src_spec, dst_spec)))
+{
+}
+
+inline AudioStream::AudioStream(AudioDeviceRef devid,
+                                OptionalRef<const AudioSpec> spec,
+                                AudioStreamCallback callback,
+                                void* userdata)
+  : m_resource(
+      CheckError(SDL_OpenAudioDeviceStream(devid, spec, callback, userdata)))
+{
+}
+
+inline AudioStream::AudioStream(AudioDeviceRef devid,
+                                OptionalRef<const AudioSpec> spec,
+                                AudioStreamCB callback)
+  : AudioStream(devid, spec)
+{
+  if (IsAudioDevicePlayback(devid)) {
+    SetGetCallback(std::move(callback));
+  } else {
+    SetPutCallback(std::move(callback));
+  }
+}
+
 /**
  * Get the properties associated with an audio stream.
  *
@@ -3879,7 +3893,7 @@ inline AudioStream CreateAudioStream(OptionalRef<const AudioSpec> src_spec,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline PropertiesRef GetAudioStreamProperties(AudioStreamParam stream)
+inline PropertiesRef GetAudioStreamProperties(AudioStreamRef stream)
 {
   return {CheckError(SDL_GetAudioStreamProperties(stream))};
 }
@@ -3915,7 +3929,7 @@ constexpr auto _AUTO_CLEANUP_BOOLEAN =
  *
  * @sa AudioStream.SetFormat
  */
-inline void GetAudioStreamFormat(AudioStreamParam stream,
+inline void GetAudioStreamFormat(AudioStreamRef stream,
                                  AudioSpec* src_spec,
                                  AudioSpec* dst_spec)
 {
@@ -3962,7 +3976,7 @@ inline void AudioStream::GetFormat(AudioSpec* src_spec,
  * @sa AudioStream.GetFormat
  * @sa AudioStream.SetFrequencyRatio
  */
-inline void SetAudioStreamFormat(AudioStreamParam stream,
+inline void SetAudioStreamFormat(AudioStreamRef stream,
                                  OptionalRef<const AudioSpec> src_spec,
                                  OptionalRef<const AudioSpec> dst_spec)
 {
@@ -3989,7 +4003,7 @@ inline void AudioStream::SetFormat(OptionalRef<const AudioSpec> src_spec,
  *
  * @sa AudioStream.SetFrequencyRatio
  */
-inline float GetAudioStreamFrequencyRatio(AudioStreamParam stream)
+inline float GetAudioStreamFrequencyRatio(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamFrequencyRatio(stream);
 }
@@ -4024,7 +4038,7 @@ inline float AudioStream::GetFrequencyRatio() const
  * @sa AudioStream.GetFrequencyRatio
  * @sa AudioStream.SetFormat
  */
-inline void SetAudioStreamFrequencyRatio(AudioStreamParam stream, float ratio)
+inline void SetAudioStreamFrequencyRatio(AudioStreamRef stream, float ratio)
 {
   CheckError(SDL_SetAudioStreamFrequencyRatio(stream, ratio));
 }
@@ -4053,7 +4067,7 @@ inline void AudioStream::SetFrequencyRatio(float ratio)
  *
  * @sa AudioStream.SetGain
  */
-inline float GetAudioStreamGain(AudioStreamParam stream)
+inline float GetAudioStreamGain(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamGain(stream);
 }
@@ -4085,7 +4099,7 @@ inline float AudioStream::GetGain() const
  *
  * @sa AudioStream.GetGain
  */
-inline void SetAudioStreamGain(AudioStreamParam stream, float gain)
+inline void SetAudioStreamGain(AudioStreamRef stream, float gain)
 {
   CheckError(SDL_SetAudioStreamGain(stream, gain));
 }
@@ -4115,7 +4129,7 @@ inline void AudioStream::SetGain(float gain)
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamParam stream)
+inline OwnArray<int> GetAudioStreamInputChannelMap(AudioStreamRef stream)
 {
   int count;
   auto data = SDL_GetAudioStreamInputChannelMap(stream, &count);
@@ -4148,7 +4162,7 @@ inline OwnArray<int> AudioStream::GetInputChannelMap() const
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamParam stream)
+inline OwnArray<int> GetAudioStreamOutputChannelMap(AudioStreamRef stream)
 {
   int count;
   auto data = SDL_GetAudioStreamOutputChannelMap(stream, &count);
@@ -4217,7 +4231,7 @@ inline OwnArray<int> AudioStream::GetOutputChannelMap() const
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline void SetAudioStreamInputChannelMap(AudioStreamParam stream,
+inline void SetAudioStreamInputChannelMap(AudioStreamRef stream,
                                           std::span<int> chmap)
 {
   CheckError(
@@ -4283,7 +4297,7 @@ inline void AudioStream::SetInputChannelMap(std::span<int> chmap)
  *
  * @sa AudioStream.SetInputChannelMap
  */
-inline void SetAudioStreamOutputChannelMap(AudioStreamParam stream,
+inline void SetAudioStreamOutputChannelMap(AudioStreamRef stream,
                                            std::span<int> chmap)
 {
   CheckError(
@@ -4321,7 +4335,7 @@ inline void AudioStream::SetOutputChannelMap(std::span<int> chmap)
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamData(AudioStreamParam stream, SourceBytes buf)
+inline void PutAudioStreamData(AudioStreamRef stream, SourceBytes buf)
 {
   CheckError(SDL_PutAudioStreamData(stream, buf.data(), buf.size_bytes()));
 }
@@ -4376,7 +4390,7 @@ inline void AudioStream::PutData(SourceBytes buf)
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      SourceBytes buf,
                                      AudioStreamDataCompleteCallback callback,
                                      void* userdata)
@@ -4426,7 +4440,7 @@ inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamDataNoCopy(AudioStreamParam stream,
+inline void PutAudioStreamDataNoCopy(AudioStreamRef stream,
                                      SourceBytes buf,
                                      AudioStreamDataCompleteCB callback)
 {
@@ -4498,7 +4512,7 @@ inline void AudioStream::PutDataNoCopy(SourceBytes buf,
  * @sa AudioStream.GetData
  * @sa AudioStream.GetQueued
  */
-inline void PutAudioStreamPlanarData(AudioStreamParam stream,
+inline void PutAudioStreamPlanarData(AudioStreamRef stream,
                                      const void* const* channel_buffers,
                                      int num_channels,
                                      int num_samples)
@@ -4544,7 +4558,7 @@ inline void AudioStream::PutPlanarData(const void* const* channel_buffers,
  * @sa AudioStream.GetAvailable
  * @sa AudioStream.PutData
  */
-inline int GetAudioStreamData(AudioStreamParam stream, TargetBytes buf)
+inline int GetAudioStreamData(AudioStreamRef stream, TargetBytes buf)
 {
   return SDL_GetAudioStreamData(stream, buf.data(), buf.size_bytes());
 }
@@ -4577,7 +4591,7 @@ inline int AudioStream::GetData(TargetBytes buf)
  * @sa AudioStream.GetData
  * @sa AudioStream.PutData
  */
-inline int GetAudioStreamAvailable(AudioStreamParam stream)
+inline int GetAudioStreamAvailable(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamAvailable(stream);
 }
@@ -4622,7 +4636,7 @@ inline int AudioStream::GetAvailable() const
  * @sa AudioStream.PutData
  * @sa AudioStream.Clear
  */
-inline int GetAudioStreamQueued(AudioStreamParam stream)
+inline int GetAudioStreamQueued(AudioStreamRef stream)
 {
   return SDL_GetAudioStreamQueued(stream);
 }
@@ -4649,7 +4663,7 @@ inline int AudioStream::GetQueued() const
  *
  * @sa AudioStream.PutData
  */
-inline void FlushAudioStream(AudioStreamParam stream)
+inline void FlushAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_FlushAudioStream(stream));
 }
@@ -4674,7 +4688,7 @@ inline void AudioStream::Flush() { SDL::FlushAudioStream(m_resource); }
  * @sa AudioStream.GetQueued
  * @sa AudioStream.PutData
  */
-inline void ClearAudioStream(AudioStreamParam stream)
+inline void ClearAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_ClearAudioStream(stream));
 }
@@ -4702,7 +4716,7 @@ inline void AudioStream::Clear() { SDL::ClearAudioStream(m_resource); }
  *
  * @sa AudioStream.ResumeDevice
  */
-inline void PauseAudioStreamDevice(AudioStreamParam stream)
+inline void PauseAudioStreamDevice(AudioStreamRef stream)
 {
   CheckError(SDL_PauseAudioStreamDevice(stream));
 }
@@ -4732,7 +4746,7 @@ inline void AudioStream::PauseDevice()
  *
  * @sa AudioStream.PauseDevice
  */
-inline void ResumeAudioStreamDevice(AudioStreamParam stream)
+inline void ResumeAudioStreamDevice(AudioStreamRef stream)
 {
   CheckError(SDL_ResumeAudioStreamDevice(stream));
 }
@@ -4759,7 +4773,7 @@ inline void AudioStream::ResumeDevice()
  * @sa AudioStream.PauseDevice
  * @sa AudioStream.ResumeDevice
  */
-inline bool AudioStreamDevicePaused(AudioStreamParam stream)
+inline bool AudioStreamDevicePaused(AudioStreamRef stream)
 {
   return SDL_AudioStreamDevicePaused(stream);
 }
@@ -4794,7 +4808,7 @@ inline bool AudioStream::DevicePaused() const
  *
  * @sa AudioStream.Unlock
  */
-inline void LockAudioStream(AudioStreamParam stream)
+inline void LockAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_LockAudioStream(stream));
 }
@@ -4822,7 +4836,7 @@ inline AudioStreamLock::AudioStreamLock(AudioStreamRef resource)
  *
  * @sa AudioStream.Lock
  */
-inline void UnlockAudioStream(AudioStreamParam stream)
+inline void UnlockAudioStream(AudioStreamRef stream)
 {
   CheckError(SDL_UnlockAudioStream(stream));
 }
@@ -4881,7 +4895,7 @@ inline void AudioStreamLock::reset()
  *
  * @sa AudioStream.SetPutCallback
  */
-inline void SetAudioStreamGetCallback(AudioStreamParam stream,
+inline void SetAudioStreamGetCallback(AudioStreamRef stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
@@ -4927,7 +4941,7 @@ inline void SetAudioStreamGetCallback(AudioStreamParam stream,
  *
  * @sa AudioStream.SetPutCallback
  */
-inline void SetAudioStreamGetCallback(AudioStreamParam stream,
+inline void SetAudioStreamGetCallback(AudioStreamRef stream,
                                       AudioStreamCB callback)
 {
   SetAudioStreamGetCallback(stream, callback.wrapper, callback.data);
@@ -4989,7 +5003,7 @@ inline void AudioStream::SetGetCallback(AudioStreamCB callback)
  *
  * @sa AudioStream.SetGetCallback
  */
-inline void SetAudioStreamPutCallback(AudioStreamParam stream,
+inline void SetAudioStreamPutCallback(AudioStreamRef stream,
                                       AudioStreamCallback callback,
                                       void* userdata)
 {
@@ -5039,7 +5053,7 @@ inline void SetAudioStreamPutCallback(AudioStreamParam stream,
  *
  * @sa AudioStream.SetGetCallback
  */
-inline void SetAudioStreamPutCallback(AudioStreamParam stream,
+inline void SetAudioStreamPutCallback(AudioStreamRef stream,
                                       AudioStreamCB callback)
 {
   SetAudioStreamPutCallback(stream, callback.wrapper, callback.data);
@@ -5138,7 +5152,7 @@ inline void AudioStream::Destroy() { DestroyAudioStream(release()); }
  * @sa AudioStream.GetDevice
  * @sa AudioStream.ResumeDevice
  */
-inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
+inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
                                          OptionalRef<const AudioSpec> spec,
                                          AudioStreamCallback callback = nullptr,
                                          void* userdata = nullptr)
@@ -5199,7 +5213,7 @@ inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
  * @sa AudioStream.GetDevice
  * @sa AudioStream.ResumeDevice
  */
-inline AudioStream OpenAudioDeviceStream(AudioDeviceParam devid,
+inline AudioStream OpenAudioDeviceStream(AudioDeviceRef devid,
                                          OptionalRef<const AudioSpec> spec,
                                          AudioStreamCB callback)
 {
@@ -5217,18 +5231,6 @@ inline AudioStream AudioDevice::OpenStream(OptionalRef<const AudioSpec> spec,
                                            AudioStreamCB callback)
 {
   return AudioStream(m_resource, spec, callback);
-}
-
-inline AudioStream::AudioStream(AudioDeviceParam devid,
-                                OptionalRef<const AudioSpec> spec,
-                                AudioStreamCB callback)
-  : AudioStream(devid, spec)
-{
-  if (IsAudioDevicePlayback(devid)) {
-    SetGetCallback(std::move(callback));
-  } else {
-    SetPutCallback(std::move(callback));
-  }
 }
 
 /**
@@ -5282,7 +5284,7 @@ inline AudioStream::AudioStream(AudioDeviceParam devid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetAudioPostmixCallback(AudioDeviceParam devid,
+inline void SetAudioPostmixCallback(AudioDeviceRef devid,
                                     AudioPostmixCallback callback,
                                     void* userdata)
 {
@@ -5339,7 +5341,7 @@ inline void SetAudioPostmixCallback(AudioDeviceParam devid,
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline void SetAudioPostmixCallback(AudioDeviceParam devid,
+inline void SetAudioPostmixCallback(AudioDeviceRef devid,
                                     AudioPostmixCB callback)
 {
   SetAudioPostmixCallback(devid, callback.wrapper, callback.data);
@@ -5422,7 +5424,7 @@ inline void AudioDevice::SetPostmixCallback(AudioPostmixCB callback)
  *
  * @sa LoadWAV
  */
-inline OwnArray<Uint8> LoadWAV(IOStreamParam src,
+inline OwnArray<Uint8> LoadWAV(IOStreamRef src,
                                AudioSpec* spec,
                                bool closeio = false)
 {
